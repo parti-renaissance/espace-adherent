@@ -1137,8 +1137,8 @@ SQL;
 
         if (null !== $isRenaissanceMembership = $audience->getIsRenaissanceMembership()) {
             $qb->andWhere($isRenaissanceMembership
-                ? 'adherent.source = :source_renaissance'
-                : 'adherent.source != :source_renaissance OR adherent.source IS NULL'
+                ? 'adherent.source = :source_renaissance AND adherent.lastMembershipDonation IS NOT NULL'
+                : '(adherent.source = :source_renaissance AND adherent.lastMembershipDonation IS NULL) OR adherent.source != :source_renaissance OR adherent.source IS NULL'
             );
         }
 

@@ -274,8 +274,8 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb
                 ->andWhere(
                     $filter->getIsRenaissanceMembership()
-                        ? 'u.source = :source_renaissance'
-                        : 'u.source != :source_renaissance OR u.source IS NULL'
+                        ? 'u.source = :source_renaissance AND u.lastMembershipDonation IS NOT NULL'
+                        : '(u.source = :source_renaissance AND u.lastMembershipDonation IS NULL) OR u.source != :source_renaissance OR u.source IS NULL'
                 )
                 ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
             ;

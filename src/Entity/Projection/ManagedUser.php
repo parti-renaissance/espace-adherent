@@ -271,6 +271,13 @@ class ManagedUser
      */
     private $certifiedAt;
 
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastMembershipDonation;
+
     public function __construct(
         int $status,
         ?string $source,
@@ -300,6 +307,7 @@ class ManagedUser
         UuidInterface $uuid = null,
         int $voteCommitteeId = null,
         \DateTime $certifiedAt = null,
+        \DateTime $lastMembershipDonation = null,
         array $interests = []
     ) {
         $this->status = $status;
@@ -326,6 +334,7 @@ class ManagedUser
         $this->subscribedTags = $subscribedTags;
         $this->createdAt = $createdAt;
         $this->certifiedAt = $certifiedAt;
+        $this->lastMembershipDonation = $lastMembershipDonation;
         $this->gender = $gender;
         $this->supervisorTags = $supervisorTags;
         $this->voteCommitteeId = $voteCommitteeId;
@@ -539,7 +548,12 @@ class ManagedUser
      */
     public function getIsRenaissanceMembership(): bool
     {
-        return MembershipSourceEnum::RENAISSANCE === $this->source;
+        return MembershipSourceEnum::RENAISSANCE === $this->source && $this->getLastMembershipDonation();
+    }
+
+    public function getLastMembershipDonation(): ?\DateTime
+    {
+        return $this->lastMembershipDonation;
     }
 
     /**
