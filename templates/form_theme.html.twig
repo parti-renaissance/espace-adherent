@@ -216,7 +216,15 @@
     {{ block('choice_tab_widget') }}
 {% endblock %}
 
+{% block _simple_message_filter_isRenaissanceMembership_widget %}
+    {{ block('choice_tab_widget') }}
+{% endblock %}
+
 {% block _advanced_message_filter_gender_widget %}
+    {{ block('choice_tab_widget') }}
+{% endblock %}
+
+{% block _advanced_message_filter_isRenaissanceMembership_widget %}
     {{ block('choice_tab_widget') }}
 {% endblock %}
 
@@ -229,6 +237,10 @@
 {% endblock %}
 
 {% block _referent_filter_gender_widget %}
+    {{ block('choice_tab_widget') }}
+{% endblock %}
+
+{% block _referent_filter_isRenaissanceMembership_widget %}
     {{ block('choice_tab_widget') }}
 {% endblock %}
 

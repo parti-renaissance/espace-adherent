@@ -3,6 +3,7 @@
 namespace App\Form\AdherentMessage;
 
 use App\Entity\AdherentMessage\Filter\MessageFilter;
+use App\Form\BooleanChoiceType;
 use App\Form\DatePickerType;
 use App\Form\GenderType;
 use Symfony\Component\Form\AbstractType;
@@ -28,6 +29,7 @@ class SimpleMessageFilterType extends AbstractType
             ->add('ageMax', IntegerType::class, ['required' => false])
             ->add('registeredSince', DatePickerType::class, ['required' => false])
             ->add('registeredUntil', DatePickerType::class, ['required' => false])
+            ->add('isRenaissanceMembership', BooleanChoiceType::class)
         ;
     }
 

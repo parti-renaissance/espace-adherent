@@ -125,6 +125,13 @@ trait GeneralFilterTrait
      */
     private $registeredUntil;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
+     */
+    protected ?bool $isRenaissanceMembership = null;
+
     public function getGender(): ?string
     {
         return $this->gender;
@@ -220,6 +227,16 @@ trait GeneralFilterTrait
         $this->registeredUntil = $registeredUntil;
     }
 
+    public function isRenaissanceMembership(): ?bool
+    {
+        return $this->isRenaissanceMembership;
+    }
+
+    public function setIsRenaissanceMembership(?bool $isRenaissanceMembership): void
+    {
+        $this->isRenaissanceMembership = $isRenaissanceMembership;
+    }
+
     public function reset(): void
     {
         $this->gender = null;
@@ -231,5 +248,6 @@ trait GeneralFilterTrait
         $this->interests = [];
         $this->registeredSince = null;
         $this->registeredUntil = null;
+        $this->lastMembershipDonation = null;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
+use App\Entity\AdherentMessage\Filter\AbstractUserFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -11,7 +12,7 @@ class RenaissanceMembershipConditionBuilder implements SegmentConditionBuilderIn
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AudienceFilter && null !== $filter->isRenaissanceMembership();
+        return ($filter instanceof AudienceFilter || $filter instanceof AbstractUserFilter) && null !== $filter->isRenaissanceMembership();
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
