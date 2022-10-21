@@ -248,6 +248,6 @@ trait GeneralFilterTrait
         $this->interests = [];
         $this->registeredSince = null;
         $this->registeredUntil = null;
-        $this->lastMembershipDonation = null;
+        $this->isRenaissanceMembership = null;
     }
 }
