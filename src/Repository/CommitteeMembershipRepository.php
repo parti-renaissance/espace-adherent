@@ -350,8 +350,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                             ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
                         ;
                         break;
-                    default:
-                        break;
                 }
             }
 
