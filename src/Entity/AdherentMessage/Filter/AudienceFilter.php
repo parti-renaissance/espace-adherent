@@ -54,13 +54,6 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     protected $isCertified;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
-     */
-    protected ?bool $isRenaissanceMembership = null;
-
-    /**
      * @var Zone|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
@@ -151,16 +144,6 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     public function setIsCertified(?bool $isCertified): void
     {
         $this->isCertified = $isCertified;
-    }
-
-    public function isRenaissanceMembership(): ?bool
-    {
-        return $this->isRenaissanceMembership;
-    }
-
-    public function setIsRenaissanceMembership(?bool $isRenaissanceMembership): void
-    {
-        $this->isRenaissanceMembership = $isRenaissanceMembership;
     }
 
     public function getZone(): ?Zone
