@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Committee\Filter\ListFilterObject;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -42,6 +43,12 @@ class CommitteeMemberFilterType extends AbstractType
                 'placeholder' => 'Tous',
                 'expanded' => true,
                 'required' => false,
+            ])
+            ->add('renaissanceMembership', ChoiceType::class, [
+                'required' => false,
+                'expanded' => true,
+                'choices' => RenaissanceMembershipFilterEnum::CHOICES,
+                'placeholder' => 'Tous',
             ])
         ;
 

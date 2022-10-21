@@ -5,6 +5,7 @@ namespace App\Repository;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Collection\AdherentCollection;
 use App\Collection\CommitteeMembershipCollection;
+use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Committee\Filter\ListFilterObject;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
@@ -17,6 +18,7 @@ use App\Entity\CommitteeMembership;
 use App\Entity\PushToken;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -326,6 +328,29 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                 $qb
                     ->andWhere(sprintf('a.certifiedAt IS %s NULL', $filter->isCertified() ? 'NOT' : ''))
                 ;
+            }
+
+            if (null !== $renaissanceMembership = $filter->getRenaissanceMembership()) {
+                switch ($renaissanceMembership) {
+                    case RenaissanceMembershipFilterEnum::ADHERENT_RE:
+                        $qb
+                            ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL')
+                            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                        ;
+                        break;
+                    case RenaissanceMembershipFilterEnum::SYMPATHIZER_RE:
+                        $qb
+                            ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NULL')
+                            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                        ;
+                        break;
+                    case RenaissanceMembershipFilterEnum::OTHERS_ADHERENT:
+                        $qb
+                            ->andWhere('a.source != :source_renaissance OR a.source IS NULL')
+                            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                        ;
+                        break;
+                }
             }
 
             if (null !== $filter->isSubscribed()) {
