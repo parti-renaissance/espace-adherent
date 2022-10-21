@@ -108,7 +108,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setZones($adherent->getZones())
         ;
 
-        if (null === $adherent->getSource()) {
+        if (null === $adherent->getSource() || $adherent->isRenaissanceUser()) {
             $this
                 ->setTeamCode($adherent)
                 ->setIsCertified($adherent->isCertified())
