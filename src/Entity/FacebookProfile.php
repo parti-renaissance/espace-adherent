@@ -8,7 +8,7 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Table(name="facebook_profiles")
- * @ORM\Entity(repositoryClass="App\Repository\FacebookProfileRepository")
+ * @ORM\Entity
  */
 class FacebookProfile
 {
@@ -72,26 +72,6 @@ class FacebookProfile
     public static function createUuid(string $facebookId): UuidInterface
     {
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $facebookId);
-    }
-
-    public static function createFromSDKResponse(string $accessToken, array $data): self
-    {
-        $fbProfile = new self();
-        $fbProfile->uuid = self::createUuid($data['id']);
-        $fbProfile->facebookId = $data['id'];
-        $fbProfile->accessToken = $accessToken;
-        $fbProfile->emailAddress = $data['email'] ?: '';
-        $fbProfile->name = $data['name'] ?: '';
-        $fbProfile->ageRange = $data['age_range'] ?: [];
-        $fbProfile->gender = $data['gender'] ?: '';
-
-        return $fbProfile;
-    }
-
-    public function logAutoUploaded(string $uploadAccessToken)
-    {
-        $this->accessToken = $uploadAccessToken;
-        $this->hasAutoUploaded = true;
     }
 
     public function getFacebookId(): string

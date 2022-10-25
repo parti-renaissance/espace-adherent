@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "49ba1e8cad5c467752802db4484453f3",
+    "content-hash": "1ef35cdc76d4cbec89d285f4cb9c827c",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -3276,66 +3276,6 @@
             "time": "2021-12-25T01:21:49+00:00"
         },
         {
-            "name": "facebook/graph-sdk",
-            "version": "5.1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/facebook/php-graph-sdk.git",
-                "reference": "38fd7187a6704d3ab14ded2f3a534ac4ee6f3481"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/38fd7187a6704d3ab14ded2f3a534ac4ee6f3481",
-                "reference": "38fd7187a6704d3ab14ded2f3a534ac4ee6f3481",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "guzzlehttp/guzzle": "~5.0",
-                "mockery/mockery": "~0.8",
-                "phpunit/phpunit": "~4.0"
-            },
-            "suggest": {
-                "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Facebook\\": "src/Facebook/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Facebook Platform"
-            ],
-            "authors": [
-                {
-                    "name": "Facebook",
-                    "homepage": "https://github.com/facebook/facebook-php-sdk-v4/contributors"
-                }
-            ],
-            "description": "Facebook SDK for PHP",
-            "homepage": "https://github.com/facebook/facebook-php-sdk-v4",
-            "keywords": [
-                "facebook",
-                "sdk"
-            ],
-            "support": {
-                "issues": "https://github.com/facebook/php-graph-sdk/issues",
-                "source": "https://github.com/facebook/php-graph-sdk/tree/5.1.4"
-            },
-            "abandoned": true,
-            "time": "2016-05-13T17:28:30+00:00"
-        },
-        {
             "name": "fig/http-message-util",
             "version": "1.1.5",
             "source": {
@@ -5132,68 +5072,6 @@
                 "source": "https://github.com/http-interop/http-factory-guzzle/tree/1.2.0"
             },
             "time": "2021-07-21T13:50:14+00:00"
-        },
-        {
-            "name": "imagine/imagine",
-            "version": "v0.7.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-imagine/Imagine.git",
-                "reference": "a9a702a946073cbca166718f1b02a1e72d742daa"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-imagine/Imagine/zipball/a9a702a946073cbca166718f1b02a1e72d742daa",
-                "reference": "a9a702a946073cbca166718f1b02a1e72d742daa",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "sami/sami": "^3.3",
-                "symfony/phpunit-bridge": "^3.2"
-            },
-            "suggest": {
-                "ext-gd": "to use the GD implementation",
-                "ext-gmagick": "to use the Gmagick implementation",
-                "ext-imagick": "to use the Imagick implementation"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-develop": "0.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Imagine": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bulat Shakirzyanov",
-                    "email": "mallluhuct@gmail.com",
-                    "homepage": "http://avalanche123.com"
-                }
-            ],
-            "description": "Image processing for PHP 5.3",
-            "homepage": "http://imagine.readthedocs.org/",
-            "keywords": [
-                "drawing",
-                "graphics",
-                "image manipulation",
-                "image processing"
-            ],
-            "support": {
-                "issues": "https://github.com/php-imagine/Imagine/issues",
-                "source": "https://github.com/php-imagine/Imagine/tree/v0.7.1"
-            },
-            "time": "2017-05-16T10:31:22+00:00"
         },
         {
             "name": "intervention/image",
@@ -10926,16 +10804,16 @@
         },
         {
             "name": "sendinblue/api-v3-sdk",
-            "version": "v8.1.0",
+            "version": "v8.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sendinblue/APIv3-php-library.git",
-                "reference": "5f57580326d9e0e999eb7c050995b0c05c2ebe75"
+                "reference": "11af6be3c0a37f8d086238681256f796752dd1ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sendinblue/APIv3-php-library/zipball/5f57580326d9e0e999eb7c050995b0c05c2ebe75",
-                "reference": "5f57580326d9e0e999eb7c050995b0c05c2ebe75",
+                "url": "https://api.github.com/repos/sendinblue/APIv3-php-library/zipball/11af6be3c0a37f8d086238681256f796752dd1ad",
+                "reference": "11af6be3c0a37f8d086238681256f796752dd1ad",
                 "shasum": ""
             },
             "require": {
@@ -10983,9 +10861,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sendinblue/APIv3-php-library/issues",
-                "source": "https://github.com/sendinblue/APIv3-php-library/tree/v8.1.0"
+                "source": "https://github.com/sendinblue/APIv3-php-library/tree/v8.3.1"
             },
-            "time": "2022-03-03T07:34:15+00:00"
+            "time": "2022-07-13T09:14:38+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
