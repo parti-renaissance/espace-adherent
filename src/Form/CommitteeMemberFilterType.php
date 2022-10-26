@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Committee\Filter\ListFilterObject;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

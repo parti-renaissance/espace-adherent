@@ -126,11 +126,11 @@ trait GeneralFilterTrait
     private $registeredUntil;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      */
-    protected ?bool $isRenaissanceMembership = null;
+    protected ?string $renaissanceMembership = null;
 
     public function getGender(): ?string
     {
@@ -227,14 +227,14 @@ trait GeneralFilterTrait
         $this->registeredUntil = $registeredUntil;
     }
 
-    public function isRenaissanceMembership(): ?bool
+    public function getRenaissanceMembership(): ?string
     {
-        return $this->isRenaissanceMembership;
+        return $this->renaissanceMembership;
     }
 
-    public function setIsRenaissanceMembership(?bool $isRenaissanceMembership): void
+    public function setRenaissanceMembership(?string $renaissanceMembership): void
     {
-        $this->isRenaissanceMembership = $isRenaissanceMembership;
+        $this->renaissanceMembership = $renaissanceMembership;
     }
 
     public function reset(): void
@@ -248,6 +248,6 @@ trait GeneralFilterTrait
         $this->interests = [];
         $this->registeredSince = null;
         $this->registeredUntil = null;
-        $this->isRenaissanceMembership = null;
+        $this->renaissanceMembership = null;
     }
 }

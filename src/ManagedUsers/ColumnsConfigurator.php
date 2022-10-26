@@ -2,6 +2,7 @@
 
 namespace App\ManagedUsers;
 
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\ValueObject\Genders;
 
 class ColumnsConfigurator
@@ -35,9 +36,13 @@ class ColumnsConfigurator
                 'label' => 'Nom',
             ],
             [
-                'key' => 'is_renaissance_membership',
-                'label' => 'Adhérent Renaissance',
-                'type' => self::COLUMN_TYPE_BOOLEAN,
+                'key' => 'renaissance_membership',
+                'label' => 'Renaissance',
+                'type' => self::COLUMN_TYPE_TRANS,
+                'messages' => [
+                    RenaissanceMembershipFilterEnum::ADHERENT_RE => 'Adhérent',
+                    RenaissanceMembershipFilterEnum::SYMPATHIZER_RE => 'Sympathisant',
+                ],
             ],
             [
                 'key' => 'email_subscription',

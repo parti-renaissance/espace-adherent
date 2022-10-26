@@ -178,8 +178,10 @@ adherent.form.mandate.placeholder: Choisissez un ou plusieurs mandats
 
 adherent.admin.elected_representative.description: Ces informations sont celles de la fiche élu.
 
-adherent.renaissance.membership: Adhérents
-adherent.renaissance.sympathizer: Sympathisants
+renaissance.membership.all: Adhérent RE ou sympathisant RE
+renaissance.membership.adherent: Adhérent RE seulement
+renaissance.membership.sympathizer: Sympathisant RE seulement
+renaissance.membership.none: Ni adhérent RE ni sympathisant RE
 
 #
 # Dashboard

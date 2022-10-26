@@ -5,7 +5,6 @@ namespace App\Repository;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Collection\AdherentCollection;
 use App\Collection\CommitteeMembershipCollection;
-use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Committee\Filter\ListFilterObject;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
@@ -19,6 +18,7 @@ use App\Entity\PushToken;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Membership\MembershipSourceEnum;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -332,6 +332,12 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
             if (null !== $renaissanceMembership = $filter->getRenaissanceMembership()) {
                 switch ($renaissanceMembership) {
+                    case RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE:
+                        $qb
+                            ->andWhere('a.source = :source_renaissance')
+                            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                        ;
+                        break;
                     case RenaissanceMembershipFilterEnum::ADHERENT_RE:
                         $qb
                             ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL')

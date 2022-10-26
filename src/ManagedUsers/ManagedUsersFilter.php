@@ -134,8 +134,9 @@ class ManagedUsersFilter
 
     /**
      * @Groups({"filter_write"})
+     * @Assert\Choice(choices=App\Renaissance\Membership\RenaissanceMembershipFilterEnum::CHOICES)
      */
-    private ?bool $isRenaissanceMembership = null;
+    private ?string $renaissanceMembership = null;
 
     /**
      * @Groups({"filter_write"})
@@ -411,14 +412,14 @@ class ManagedUsersFilter
         $this->isCertified = $isCertified;
     }
 
-    public function getIsRenaissanceMembership(): ?bool
+    public function getRenaissanceMembership(): ?string
     {
-        return $this->isRenaissanceMembership;
+        return $this->renaissanceMembership;
     }
 
-    public function setIsRenaissanceMembership(?bool $isRenaissanceMembership): void
+    public function setRenaissanceMembership(?string $renaissanceMembership): void
     {
-        $this->isRenaissanceMembership = $isRenaissanceMembership;
+        $this->renaissanceMembership = $renaissanceMembership;
     }
 
     public function getSubscriptionType(): ?string

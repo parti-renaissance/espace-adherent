@@ -37,7 +37,7 @@ Feature:
     {
       "filter": {
         "is_certified": false,
-        "is_renaissance_membership": null,
+        "renaissance_membership": null,
         "scope": "deputy",
         "zone": {
           "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
@@ -77,7 +77,7 @@ Feature:
           "registered_until": "2021-04-29",
           "is_committee_member": false,
           "is_certified": false,
-          "is_renaissance_membership": false
+          "renaissance_membership": "others_adherent"
         }
     }
     """
@@ -101,7 +101,7 @@ Feature:
           "registered_until": "2021-04-29",
           "is_committee_member": false,
           "is_certified": false,
-          "is_renaissance_membership": false
+          "renaissance_membership": "others_adherent"
         }
     }
     """
@@ -164,7 +164,7 @@ Feature:
           "registered_until": "2021-04-29",
           "is_committee_member": true,
           "is_certified": false,
-          "is_renaissance_membership": false
+          "renaissance_membership": "others_adherent"
         }
     }
     """
@@ -174,7 +174,7 @@ Feature:
     {
       "filter": {
         "is_certified": false,
-        "is_renaissance_membership": false,
+        "renaissance_membership": "others_adherent",
         "scope": "deputy",
         "zone": {
           "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
@@ -206,7 +206,7 @@ Feature:
           "scope": "referent",
           "zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
           "is_certified": false,
-          "is_renaissance_membership": null
+          "renaissance_membership": null
         }
     }
     """
@@ -216,7 +216,7 @@ Feature:
     {
         "filter": {
             "is_certified": false,
-            "is_renaissance_membership": null,
+            "renaissance_membership": null,
             "zone": {
                 "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
                 "code": "92",
@@ -260,7 +260,7 @@ Feature:
           "registered_until": "2019-12-12",
           "is_committee_member": true,
           "is_certified": false,
-          "is_renaissance_membership": true
+          "renaissance_membership": "adherent_re"
         }
     }
     """
@@ -270,7 +270,7 @@ Feature:
     {
       "filter": {
         "is_certified": false,
-        "is_renaissance_membership": true,
+        "renaissance_membership": "adherent_re",
         "scope": "referent",
         "zone": {
           "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
