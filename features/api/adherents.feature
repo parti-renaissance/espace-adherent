@@ -471,8 +471,7 @@ Feature:
                 "adherent_re": "Adhérents RE seulement",
                 "others_adherent": "Ni adhérent ni sympathisant",
                 "sympathizer_re": "Sympathisants RE seulement"
-              },
-              "required": true
+              }
             },
             "type": "select"
         },
@@ -783,8 +782,7 @@ Feature:
                 "adherent_re": "Adhérents RE seulement",
                 "others_adherent": "Ni adhérent ni sympathisant",
                 "sympathizer_re": "Sympathisants RE seulement"
-              },
-              "required": true
+              }
             },
             "type": "select"
         },

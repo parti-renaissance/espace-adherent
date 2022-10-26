@@ -16,7 +16,6 @@ class RenaissanceMembershipFilterBuilder implements AdherentFilterBuilderInterfa
     {
         return (new FilterCollectionBuilder())
             ->createSelect('renaissance_membership', 'Renaissance')
-            ->setRequired(true)
             ->setChoices([
                 RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE => 'Adhérents RE + Sympathisants RE',
                 RenaissanceMembershipFilterEnum::ADHERENT_RE => 'Adhérents RE seulement',
