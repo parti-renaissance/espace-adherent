@@ -30,7 +30,7 @@ class MyTeamMemberValidator extends ConstraintValidator
             return;
         }
 
-        if (null !== $value->getSource() && !$value->isJemengageUser()) {
+        if (null !== $value->getSource() && !$value->isJemengageUser() && !$value->isRenaissanceUser()) {
             $this
                 ->context
                 ->buildViolation($constraint->messageInvalidAdherentSource)
