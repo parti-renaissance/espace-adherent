@@ -332,6 +332,12 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
             if (null !== $renaissanceMembership = $filter->getRenaissanceMembership()) {
                 switch ($renaissanceMembership) {
+                    case RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE:
+                        $qb
+                            ->andWhere('a.source = :source_renaissance')
+                            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                        ;
+                        break;
                     case RenaissanceMembershipFilterEnum::ADHERENT_RE:
                         $qb
                             ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL')

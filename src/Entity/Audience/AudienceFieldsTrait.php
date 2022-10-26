@@ -101,13 +101,11 @@ trait AudienceFieldsTrait
     private $isCertified;
 
     /**
-     * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
-    private $isRenaissanceMembership;
+    private ?string $renaissanceMembership = null;
 
     /**
      * @var bool|null
@@ -244,14 +242,14 @@ trait AudienceFieldsTrait
         $this->isCertified = $isCertified;
     }
 
-    public function getIsRenaissanceMembership(): ?bool
+    public function getRenaissanceMembership(): ?string
     {
-        return $this->isRenaissanceMembership;
+        return $this->renaissanceMembership;
     }
 
-    public function setIsRenaissanceMembership(?bool $isRenaissanceMembership): void
+    public function setRenaissanceMembership(?string $renaissanceMembership): void
     {
-        $this->isRenaissanceMembership = $isRenaissanceMembership;
+        $this->renaissanceMembership = $renaissanceMembership;
     }
 
     public function getHasEmailSubscription(): ?bool
@@ -318,7 +316,7 @@ trait AudienceFieldsTrait
             'has_email_subscription' => $this->hasEmailSubscription,
             'is_committee_member' => $this->isCommitteeMember,
             'is_certified' => $this->isCertified,
-            'is_renaissance_membership' => $this->isRenaissanceMembership,
+            'renaissance_membership' => $this->renaissanceMembership,
             'scope' => $this->scope,
             'zones' => array_map(function (Zone $zone): string {
                 return $zone->getUuid()->toString();

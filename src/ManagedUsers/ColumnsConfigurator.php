@@ -35,9 +35,8 @@ class ColumnsConfigurator
                 'label' => 'Nom',
             ],
             [
-                'key' => 'is_renaissance_membership',
-                'label' => 'Adhérent Renaissance',
-                'type' => self::COLUMN_TYPE_BOOLEAN,
+                'key' => 'renaissance_membership',
+                'label' => 'Renaissance',
             ],
             [
                 'key' => 'email_subscription',

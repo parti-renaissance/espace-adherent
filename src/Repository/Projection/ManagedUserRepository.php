@@ -3,6 +3,7 @@
 namespace App\Repository\Projection;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Entity\Projection\ManagedUser;
 use App\FranceCities\FranceCities;
 use App\ManagedUsers\ManagedUsersFilter;
@@ -270,15 +271,33 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere(sprintf('u.certifiedAt %s NULL', $filter->getIsCertified() ? 'IS NOT' : 'IS'));
         }
 
-        if (null !== $filter->getIsRenaissanceMembership()) {
-            $qb
-                ->andWhere(
-                    $filter->getIsRenaissanceMembership()
-                        ? 'u.source = :source_renaissance AND u.lastMembershipDonation IS NOT NULL'
-                        : '(u.source = :source_renaissance AND u.lastMembershipDonation IS NULL) OR u.source != :source_renaissance OR u.source IS NULL'
-                )
-                ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-            ;
+        if (null !== $filter->getRenaissanceMembership()) {
+            switch ($filter->getRenaissanceMembership()) {
+                case RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE:
+                    $qb
+                        ->andWhere('a.source = :source_renaissance')
+                        ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                    ;
+                    break;
+                case RenaissanceMembershipFilterEnum::ADHERENT_RE:
+                    $qb
+                        ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL')
+                        ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                    ;
+                    break;
+                case RenaissanceMembershipFilterEnum::SYMPATHIZER_RE:
+                    $qb
+                        ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NULL')
+                        ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                    ;
+                    break;
+                case RenaissanceMembershipFilterEnum::OTHERS_ADHERENT:
+                    $qb
+                        ->andWhere('a.source != :source_renaissance OR a.source IS NULL')
+                        ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                    ;
+                    break;
+            }
         }
 
         if (null !== $filter->getOnlyJeMengageUsers()) {

@@ -3,6 +3,7 @@
 namespace App\Form\Audience;
 
 use App\Adherent\AdherentRoleEnum;
+use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Entity\Audience\AudienceSnapshot;
 use App\Form\DatePickerType;
 use App\Form\GenderType;
@@ -29,7 +30,11 @@ class AudienceSnapshotType extends AbstractType
             ->add('isCertified', BooleanType::class, ['transform' => true, 'label' => 'Certifié', 'required' => false])
             ->add('isCommitteeMember', BooleanType::class, ['transform' => true, 'label' => 'Membre de comité', 'required' => false])
             ->add('hasSmsSubscription', BooleanType::class, ['transform' => true, 'label' => 'Abonné aux SMS', 'required' => false])
-            ->add('isRenaissanceMembership', BooleanType::class, ['transform' => true, 'label' => 'Adhérent Renaissance', 'required' => false])
+            ->add('renaissanceMembership', ChoiceType::class, [
+                'label' => 'Renaissance',
+                'required' => false,
+                'choices' => RenaissanceMembershipFilterEnum::CHOICES,
+            ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'Rôles',
                 'required' => false,
