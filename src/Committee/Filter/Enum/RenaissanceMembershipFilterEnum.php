@@ -17,11 +17,4 @@ class RenaissanceMembershipFilterEnum extends Enum
         'adherent.renaissance.sympathizer' => self::SYMPATHIZER_RE,
         'common.adherent.others' => self::OTHERS_ADHERENT,
     ];
-
-    public const ALL = [
-        self::ADHERENT_OR_SYMPATHIZER_RE,
-        self::ADHERENT_RE,
-        self::SYMPATHIZER_RE,
-        self::OTHERS_ADHERENT,
-    ];
 }

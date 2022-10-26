@@ -134,7 +134,7 @@ class ManagedUsersFilter
 
     /**
      * @Groups({"filter_write"})
-     * @Assert\Choice(choices=RenaissanceMembershipFilterEnum::ALL)
+     * @Assert\Choice(choices="App\Committee\Filter\Enum::CHOICES")
      */
     private ?string $renaissanceMembership = null;
 

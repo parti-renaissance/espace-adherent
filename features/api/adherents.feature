@@ -303,6 +303,13 @@ Feature:
         {
             "key": "renaissance_membership",
             "label": "Renaissance",
+            "messages": {
+              "adherent_or_sympathizer_re": "Adhérents ou sympathisants",
+              "adherent_re": "Adhérents",
+              "others_adherent": "Autres",
+              "sympathizer_re": "Sympathisants"
+            },
+            "type": "trans"
         },
         {
             "key": "email_subscription",
@@ -456,13 +463,16 @@ Feature:
             "type": "select"
         },
         {
-            "code": "isRenaissanceMembership",
-            "label": "Adhérent Renaissance",
+            "code": "renaissance_membership",
+            "label": "Renaissance",
             "options": {
-                "choices": [
-                    "Non",
-                    "Oui"
-                ]
+              "choices": {
+                "adherent_or_sympathizer_re": "Adhérents RE + Sympathisants RE",
+                "adherent_re": "Adhérents RE seulement",
+                "others_adherent": "Ni adhérent ni sympathisant",
+                "sympathizer_re": "Sympathisants RE seulement"
+              },
+              "required": true
             },
             "type": "select"
         },
@@ -516,7 +526,7 @@ Feature:
                 "region": "Île-de-France",
                 "sms_subscription": false,
                 "email_subscription": false,
-                "renaissance_membership": "others_adherent"
+                "renaissance_membership": null
             },
             {
                 "postal_code": "92110",
@@ -533,7 +543,7 @@ Feature:
                 "region": "Île-de-France",
                 "sms_subscription": true,
                 "email_subscription": true,
-                "renaissance_membership": "others_adherent"
+                "renaissance_membership": null
             },
             {
                 "city": "Melun",
@@ -550,7 +560,7 @@ Feature:
                 "region": "Île-de-France",
                 "region_code": "11",
                 "sms_subscription": false,
-                "renaissance_membership": "others_adherent"
+                "renaissance_membership": null
             },
             {
                 "postal_code": "8802",
@@ -569,7 +579,7 @@ Feature:
                 "region": null,
                 "sms_subscription": true,
                 "email_subscription": true,
-                "renaissance_membership": "others_adherent"
+                "renaissance_membership": null
             },
             {
                 "postal_code": "8057",
@@ -590,7 +600,7 @@ Feature:
                 "region": null,
                 "sms_subscription": true,
                 "email_subscription": false,
-                "renaissance_membership": "others_adherent"
+                "renaissance_membership": null
             }
         ]
     }
@@ -623,7 +633,7 @@ Feature:
                 "region": "Île-de-France",
                 "sms_subscription": false,
                 "email_subscription": false,
-                "renaissance_membership": "others_adherent"
+                "renaissance_membership": null
             }
         ]
     }
@@ -663,7 +673,7 @@ Feature:
                 "region": "Île-de-France",
                 "sms_subscription": false,
                 "email_subscription": false,
-                "renaissance_membership": "others_adherent"
+                "renaissance_membership": null
             },
             {
                 "postal_code": "92110",
@@ -680,7 +690,7 @@ Feature:
                 "region": "Île-de-France",
                 "sms_subscription": true,
                 "email_subscription": true,
-                "renaissance_membership": "others_adherent"
+                "renaissance_membership": null
             }
         ]
     }
@@ -765,13 +775,16 @@ Feature:
             "type": "select"
         },
         {
-            "code": "isRenaissanceMembership",
-            "label": "Adhérent Renaissance",
+            "code": "renaissance_membership",
+            "label": "Renaissance",
             "options": {
-                "choices": [
-                    "Non",
-                    "Oui"
-                ]
+              "choices": {
+                "adherent_or_sympathizer_re": "Adhérents RE + Sympathisants RE",
+                "adherent_re": "Adhérents RE seulement",
+                "others_adherent": "Ni adhérent ni sympathisant",
+                "sympathizer_re": "Sympathisants RE seulement"
+              },
+              "required": true
             },
             "type": "select"
         },
@@ -850,7 +863,7 @@ Feature:
                 "region": "Île-de-France",
                 "sms_subscription": true,
                 "email_subscription": true,
-                "renaissance_membership": "others_adherent"
+                "renaissance_membership": null
             },
             {
                 "postal_code": "75008",
@@ -871,7 +884,7 @@ Feature:
                 "region": "Île-de-France",
                 "sms_subscription": true,
                 "email_subscription": true,
-                "renaissance_membership": "others_adherent"
+                "renaissance_membership": null
             }
         ]
     }
@@ -908,7 +921,7 @@ Feature:
                 "region": "Île-de-France",
                 "sms_subscription": true,
                 "email_subscription": true,
-                "renaissance_membership": "others_adherent"
+                "renaissance_membership": null
             }
         ]
     }

@@ -2,8 +2,10 @@
 
 namespace App\Entity\Projection;
 
+use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
+use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -545,6 +547,21 @@ class ManagedUser
     public function getLastMembershipDonation(): ?\DateTime
     {
         return $this->lastMembershipDonation;
+    }
+
+    /**
+     * @Groups({"managed_user_read"})
+     */
+    public function getRenaissanceMembership(): ?string
+    {
+        if (MembershipSourceEnum::RENAISSANCE === $this->source) {
+            return null !== $this->lastMembershipDonation
+                ? RenaissanceMembershipFilterEnum::ADHERENT_RE
+                : RenaissanceMembershipFilterEnum::SYMPATHIZER_RE
+            ;
+        }
+
+        return null;
     }
 
     /**
