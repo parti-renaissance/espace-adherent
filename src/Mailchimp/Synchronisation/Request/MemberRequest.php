@@ -42,7 +42,6 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_SOURCE = 'SOURCE';
     public const MERGE_FIELD_CERTIFIED = 'CERTIFIED';
     public const MERGE_FIELD_LAST_LOGIN_GROUP = 'LOGIN_GRP';
-    public const MERGE_FIELD_RENAISSANCE_MEMBERSHIP = 'RE_MMBRSHP';
 
     private $memberIdentifier;
 
