@@ -132,14 +132,17 @@
     {% if object.isThematicCommunityChief %}
         <span class="label label-primary">Responsable Thématique</span>
     {% endif %}
-{% elseif object.isAdherent %}
-    <span class="label label-primary">Adhérent</span>
+{% elseif object.isAdherent and object.source is null %}
+    <span class="label label-primary">Adhérent EM</span>
 {% else %}
     <span class="label label-default">Utilisateur</span>
 {% endif %}
 
-{% if object.isRenaissanceUser %}
-    <span class="label label-info">Renaissance</span>
+{% if object.isRenaissanceAdherent %}
+    <span class="label label-primary">Adhérent RE</span>
+{% endif %}
+{% if object.isRenaissanceSympathizer %}
+    <span class="label label-primary">Sympathisant RE</span>
 {% endif %}
 
 {% if object.hasPrintPrivilege %}
