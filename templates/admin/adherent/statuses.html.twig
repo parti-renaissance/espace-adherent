@@ -132,18 +132,18 @@
     {% if object.isThematicCommunityChief %}
         <span class="label label-primary">Responsable Thématique</span>
     {% endif %}
+{% endif %}
+
+{% if object.isRenaissanceAdherent %}
+    <span class="label label-primary">Adhérent RE</span>
+{% elseif object.isRenaissanceSympathizer %}
+    <span class="label label-primary">Sympathisant RE</span>
 {% elseif object.isAdherent and object.source is null %}
     <span class="label label-primary">Adhérent EM</span>
 {% else %}
     <span class="label label-default">Utilisateur</span>
 {% endif %}
 
-{% if object.isRenaissanceAdherent %}
-    <span class="label label-primary">Adhérent RE</span>
-{% endif %}
-{% if object.isRenaissanceSympathizer %}
-    <span class="label label-primary">Sympathisant RE</span>
-{% endif %}
 
 {% if object.hasPrintPrivilege %}
     <span title="Accès LMI">&nbsp;🖨</span>
