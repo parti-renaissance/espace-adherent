@@ -4,9 +4,17 @@ namespace App\AdherentFilter\FilterBuilder;
 
 use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Filter\FilterCollectionBuilder;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RenaissanceMembershipFilterBuilder implements AdherentFilterBuilderInterface
 {
+    private TranslatorInterface $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function supports(string $scope, string $feature = null): bool
     {
         return true;
@@ -16,8 +24,18 @@ class RenaissanceMembershipFilterBuilder implements AdherentFilterBuilderInterfa
     {
         return (new FilterCollectionBuilder())
             ->createSelect('renaissance_membership', 'Renaissance')
-            ->setChoices(array_flip(RenaissanceMembershipFilterEnum::CHOICES))
+            ->setChoices($this->getTranslatedChoices())
             ->getFilters()
         ;
+    }
+
+    public function getTranslatedChoices(): array
+    {
+        $choices = [];
+        foreach (RenaissanceMembershipFilterEnum::CHOICES as $transKey => $choice) {
+            $choices[$choice] = $this->translator->trans($transKey);
+        }
+
+        return $choices;
     }
 }

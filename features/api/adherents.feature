@@ -304,10 +304,8 @@ Feature:
             "key": "renaissance_membership",
             "label": "Renaissance",
             "messages": {
-              "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
-              "adherent_re": "Adhérent RE",
-              "sympathizer_re": "Sympathisant RE",
-              "others_adherent": "Ni adhérent RE ni sympathisant RE"
+              "adherent_re": "Adhérent",
+              "sympathizer_re": "Sympathisant"
             },
 
             "type": "trans"
@@ -468,10 +466,10 @@ Feature:
             "label": "Renaissance",
             "options": {
               "choices": {
-                "adherent_or_sympathizer_re": "Adhérents RE + Sympathisants RE",
-                "adherent_re": "Adhérents RE seulement",
-                "others_adherent": "Ni adhérent ni sympathisant",
-                "sympathizer_re": "Sympathisants RE seulement"
+              "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
+              "adherent_re": "Adhérent RE seulement",
+              "sympathizer_re": "Sympathisant RE seulement",
+              "others_adherent": "Ni adhérent RE ni sympathisant RE"
               }
             },
             "type": "select"
@@ -779,10 +777,10 @@ Feature:
             "label": "Renaissance",
             "options": {
               "choices": {
-                "adherent_or_sympathizer_re": "Adhérents RE + Sympathisants RE",
-                "adherent_re": "Adhérents RE seulement",
-                "others_adherent": "Ni adhérent ni sympathisant",
-                "sympathizer_re": "Sympathisants RE seulement"
+                "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
+                "adherent_re": "Adhérent RE seulement",
+                "sympathizer_re": "Sympathisant RE seulement",
+                "others_adherent": "Ni adhérent RE ni sympathisant RE"
               }
             },
             "type": "select"
