@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Committee\Filter\Enum;
+namespace App\Renaissance\Membership;
 
 use MyCLabs\Enum\Enum;
 

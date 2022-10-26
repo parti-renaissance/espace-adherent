@@ -3,11 +3,11 @@
 namespace App\Repository\Projection;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Entity\Projection\ManagedUser;
 use App\FranceCities\FranceCities;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Membership\MembershipSourceEnum;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\ReferentTrait;

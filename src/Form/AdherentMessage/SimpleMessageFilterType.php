@@ -2,10 +2,10 @@
 
 namespace App\Form\AdherentMessage;
 
-use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Form\DatePickerType;
 use App\Form\GenderType;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;

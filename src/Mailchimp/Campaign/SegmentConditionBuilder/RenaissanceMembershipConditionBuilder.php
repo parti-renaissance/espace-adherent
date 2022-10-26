@@ -2,13 +2,13 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Entity\AdherentMessage\Filter\AbstractUserFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Membership\MembershipSourceEnum;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 
 class RenaissanceMembershipConditionBuilder implements SegmentConditionBuilderInterface
 {

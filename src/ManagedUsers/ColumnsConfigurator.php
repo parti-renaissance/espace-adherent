@@ -2,7 +2,7 @@
 
 namespace App\ManagedUsers;
 
-use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\ValueObject\Genders;
 
 class ColumnsConfigurator

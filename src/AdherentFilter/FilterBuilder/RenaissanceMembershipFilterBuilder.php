@@ -2,8 +2,8 @@
 
 namespace App\AdherentFilter\FilterBuilder;
 
-use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Filter\FilterCollectionBuilder;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RenaissanceMembershipFilterBuilder implements AdherentFilterBuilderInterface

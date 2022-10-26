@@ -2,10 +2,10 @@
 
 namespace App\Entity\Projection;
 
-use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Membership\MembershipSourceEnum;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;

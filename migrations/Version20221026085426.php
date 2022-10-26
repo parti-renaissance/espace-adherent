@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 

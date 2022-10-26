@@ -211,7 +211,6 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->includeAdherentsNoCommittee = true;
         $this->includeAdherentsInCommittee = true;
         $this->isCertified = null;
-        $this->renaissanceMembership = null;
         $this->audienceType = null;
 
         parent::reset();

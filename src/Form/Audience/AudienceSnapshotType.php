@@ -3,10 +3,10 @@
 namespace App\Form\Audience;
 
 use App\Adherent\AdherentRoleEnum;
-use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\Entity\Audience\AudienceSnapshot;
 use App\Form\DatePickerType;
 use App\Form\GenderType;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
