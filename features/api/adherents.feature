@@ -304,11 +304,12 @@ Feature:
             "key": "renaissance_membership",
             "label": "Renaissance",
             "messages": {
-              "adherent_or_sympathizer_re": "Adhérents ou sympathisants",
-              "adherent_re": "Adhérents",
-              "others_adherent": "Autres",
-              "sympathizer_re": "Sympathisants"
+              "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
+              "adherent_re": "Adhérent RE",
+              "sympathizer_re": "Sympathisant RE",
+              "others_adherent": "Ni adhérent RE ni sympathisant RE"
             },
+
             "type": "trans"
         },
         {

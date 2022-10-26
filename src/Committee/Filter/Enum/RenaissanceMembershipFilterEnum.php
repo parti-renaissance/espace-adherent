@@ -12,9 +12,9 @@ class RenaissanceMembershipFilterEnum extends Enum
     public const OTHERS_ADHERENT = 'others_adherent';
 
     public const CHOICES = [
-        'adherent.renaissance.membership_or_sympathizer' => self::ADHERENT_OR_SYMPATHIZER_RE,
-        'adherent.renaissance.membership' => self::ADHERENT_RE,
-        'adherent.renaissance.sympathizer' => self::SYMPATHIZER_RE,
-        'common.adherent.others' => self::OTHERS_ADHERENT,
+        'renaissance.membership.all' => self::ADHERENT_OR_SYMPATHIZER_RE,
+        'renaissance.membership.adherent' => self::ADHERENT_RE,
+        'renaissance.membership.sympathizer' => self::SYMPATHIZER_RE,
+        'renaissance.membership.none' => self::OTHERS_ADHERENT,
     ];
 }
