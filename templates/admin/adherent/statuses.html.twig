@@ -135,11 +135,11 @@
 {% endif %}
 
 {% if object.isRenaissanceAdherent %}
-    <span class="label label-primary">Adhérent RE</span>
+    <span class="label" style="background-color: #00205F">Adhérent RE</span>
 {% elseif object.isRenaissanceSympathizer %}
-    <span class="label label-primary">Sympathisant RE</span>
+    <span class="label" style="background-color: #73C0F1">Sympathisant RE</span>
 {% elseif object.isAdherent and object.source is null %}
-    <span class="label label-primary">Adhérent EM</span>
+    <span class="label label-default">Adhérent EM</span>
 {% else %}
     <span class="label label-default">Utilisateur</span>
 {% endif %}
