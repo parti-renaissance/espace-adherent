@@ -275,25 +275,25 @@ class ManagedUserRepository extends ServiceEntityRepository
             switch ($filter->getRenaissanceMembership()) {
                 case RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE:
                     $qb
-                        ->andWhere('a.source = :source_renaissance')
+                        ->andWhere('u.source = :source_renaissance')
                         ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
                     ;
                     break;
                 case RenaissanceMembershipFilterEnum::ADHERENT_RE:
                     $qb
-                        ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL')
+                        ->andWhere('u.source = :source_renaissance AND u.lastMembershipDonation IS NOT NULL')
                         ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
                     ;
                     break;
                 case RenaissanceMembershipFilterEnum::SYMPATHIZER_RE:
                     $qb
-                        ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NULL')
+                        ->andWhere('u.source = :source_renaissance AND u.lastMembershipDonation IS NULL')
                         ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
                     ;
                     break;
                 case RenaissanceMembershipFilterEnum::OTHERS_ADHERENT:
                     $qb
-                        ->andWhere('a.source != :source_renaissance OR a.source IS NULL')
+                        ->andWhere('u.source != :source_renaissance OR u.source IS NULL')
                         ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
                     ;
                     break;
