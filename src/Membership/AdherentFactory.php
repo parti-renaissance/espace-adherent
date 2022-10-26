@@ -156,6 +156,9 @@ class AdherentFactory
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
         $adherent->setPapUserRole(true);
 
+        $adherent->utmSource = $adherentRequest->utmSource;
+        $adherent->utmCampaign = $adherentRequest->utmCampaign;
+
         return $adherent;
     }
 

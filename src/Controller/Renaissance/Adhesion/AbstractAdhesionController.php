@@ -7,6 +7,7 @@ use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use App\Renaissance\Membership\MembershipRequestProcessor;
 use App\Renaissance\Membership\MembershipRequestStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractAdhesionController extends AbstractController
 {
@@ -19,7 +20,7 @@ abstract class AbstractAdhesionController extends AbstractController
         $this->processor = $processor;
     }
 
-    protected function getCommand(): RenaissanceMembershipRequest
+    protected function getCommand(Request $request = null): RenaissanceMembershipRequest
     {
         /** @var ?Adherent $user */
         $user = $this->getUser();
@@ -29,12 +30,26 @@ abstract class AbstractAdhesionController extends AbstractController
             if (!$user || $user->getId() !== $command->getAdherentId()) {
                 $this->storage->clear();
 
-                return new RenaissanceMembershipRequest();
+                $command = new RenaissanceMembershipRequest();
             }
         } elseif ($user) {
             $command->updateFromAdherent($user);
         }
 
+        if ($request && $request->query->has(RenaissanceMembershipRequest::UTM_SOURCE)) {
+            $command->utmSource = $this->filterUtmParameter((string) $request->query->get(RenaissanceMembershipRequest::UTM_SOURCE));
+            $command->utmCampaign = $this->filterUtmParameter((string) $request->query->get(RenaissanceMembershipRequest::UTM_CAMPAIGN));
+        }
+
         return $command;
+    }
+
+    private function filterUtmParameter($utmParameter): ?string
+    {
+        if (!$utmParameter) {
+            return null;
+        }
+
+        return mb_substr($utmParameter, 0, 255);
     }
 }
