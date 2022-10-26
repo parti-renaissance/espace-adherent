@@ -2,7 +2,9 @@
 
 namespace App\ManagedUsers;
 
+use App\Committee\Filter\Enum\RenaissanceMembershipFilterEnum;
 use App\ValueObject\Genders;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ColumnsConfigurator
 {
@@ -10,10 +12,12 @@ class ColumnsConfigurator
     private const COLUMN_TYPE_BOOLEAN = 'boolean';
     private const COLUMN_TYPE_TRANS = 'trans';
 
+    private TranslatorInterface $translator;
     private array $adherentInterests;
 
-    public function __construct(array $adherentInterests)
+    public function __construct(TranslatorInterface $translator, array $adherentInterests)
     {
+        $this->translator = $translator;
         $this->adherentInterests = $adherentInterests;
     }
 
@@ -37,6 +41,8 @@ class ColumnsConfigurator
             [
                 'key' => 'renaissance_membership',
                 'label' => 'Renaissance',
+                'type' => self::COLUMN_TYPE_TRANS,
+                'messages' => $this->getRenaissanceMembershipMessages(),
             ],
             [
                 'key' => 'email_subscription',
@@ -83,5 +89,15 @@ class ColumnsConfigurator
                 'messages' => $this->adherentInterests,
             ],
         ];
+    }
+
+    private function getRenaissanceMembershipMessages(): array
+    {
+        $messages = [];
+        foreach (RenaissanceMembershipFilterEnum::CHOICES as $transKey => $renaissanceMembership) {
+            $messages[$renaissanceMembership] = $this->translator->trans($transKey);
+        }
+
+        return $messages;
     }
 }
