@@ -2,7 +2,7 @@
 
 namespace App\Repository\TerritorialCouncil;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilFeedItem;
 use App\Repository\AuthorTrait;

@@ -4,7 +4,7 @@ namespace App\Entity\Team;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\ScopeVisibilityFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "denormalization_context": {
  *             "groups": {"team_write"}
  *         },
- *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'team')"
+ *         "security": "is_granted('IS_FEATURE_GRANTED', 'team')"
  *     },
  *     collectionOperations={
  *         "get": {
@@ -54,14 +54,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/teams/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', object)"
+ *             "path": "/v3/teams/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', object)"
  *         },
  *         "put": {
- *             "path": "/v3/teams/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', object)"
+ *             "path": "/v3/teams/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', object)"
  *         }
  *     }
  * )

@@ -2,7 +2,7 @@
 
 namespace App\Api\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Contact\ContactHandler;
 use App\Entity\Contact;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

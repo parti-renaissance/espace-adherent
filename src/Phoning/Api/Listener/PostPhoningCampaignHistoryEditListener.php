@@ -2,7 +2,7 @@
 
 namespace App\Phoning\Api\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\Phoning\CampaignHistory;
 use App\Phoning\Command\SendAdherentActionSummaryCommand;
 use Doctrine\ORM\EntityManagerInterface;

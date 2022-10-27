@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use ApiPlatform\Core\Exception\ItemNotFoundException;
+use ApiPlatform\Exception\ItemNotFoundException;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Repository\Jecoute\SurveyQuestionRepository;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

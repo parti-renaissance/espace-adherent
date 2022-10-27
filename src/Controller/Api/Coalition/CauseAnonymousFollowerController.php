@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Coalition;
 
-use ApiPlatform\Core\Problem\Serializer\ConstraintViolationListNormalizer;
+use ApiPlatform\Problem\Serializer\ConstraintViolationListNormalizer;
 use App\Coalition\CauseFollowerChangeEvent;
 use App\Coalition\MessageNotifier;
 use App\Entity\Coalition\Cause;

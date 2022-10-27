@@ -31,7 +31,7 @@ use Ramsey\Uuid\UuidInterface;
  *         "get_my_committees": {
  *             "method": "GET",
  *             "path": "/committees/me",
- *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "security": "is_granted('ROLE_ADHERENT')",
  *             "controller": "App\Controller\Api\CommitteesController::myCommitteesAction",
  *             "normalization_context": {
  *                 "groups": {"my_committees"},
@@ -61,13 +61,13 @@ use Ramsey\Uuid\UuidInterface;
  *         "get": {
  *             "normalization_context": {"groups": {"idea_list_read"}},
  *             "method": "GET",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "swagger_context": {
  *                 "summary": "Retrieves a Committee resource by UUID.",
  *                 "description": "Retrieves a Committee resource by UUID.",
  *                 "parameters": {
  *                     {
- *                         "name": "id",
+ *                         "name": "uuid",
  *                         "in": "path",
  *                         "type": "uuid",
  *                         "description": "The UUID of the Committee resource.",

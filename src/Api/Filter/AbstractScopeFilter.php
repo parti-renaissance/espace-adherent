@@ -2,8 +2,9 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Adherent;
 use App\Scope\Exception\ScopeExceptionInterface;
 use App\Scope\GeneralScopeGenerator;
@@ -11,26 +12,27 @@ use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
-abstract class AbstractScopeFilter extends AbstractContextAwareFilter
+abstract class AbstractScopeFilter extends AbstractFilter
 {
     private const PROPERTY_NAME = 'scope';
 
     protected GeneralScopeGenerator $generalScopeGenerator;
     protected Security $security;
 
-    final protected function filterProperty(
+    protected function filterProperty(
         string $property,
         $value,
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
+        Operation $operation = null,
+        array $context = []
     ) {
-        if (self::PROPERTY_NAME !== $property || !\in_array($operationName, $this->getAllowedOperationNames($resourceClass), true)) {
+        if (self::PROPERTY_NAME !== $property || !$this->isValidOperation($operation)) {
             return;
         }
 
-        if (!$this->needApplyFilter($property, $resourceClass, $operationName)) {
+        if (!$this->needApplyFilter($property, $resourceClass)) {
             return;
         }
 
@@ -49,11 +51,7 @@ abstract class AbstractScopeFilter extends AbstractContextAwareFilter
         $this->applyFilter($queryBuilder, $currentUser, $scopeGenerator);
     }
 
-    abstract protected function needApplyFilter(
-        string $property,
-        string $resourceClass,
-        string $operationName = null
-    ): bool;
+    abstract protected function needApplyFilter(string $property, string $resourceClass): bool;
 
     abstract protected function applyFilter(
         QueryBuilder $queryBuilder,
@@ -90,6 +88,23 @@ abstract class AbstractScopeFilter extends AbstractContextAwareFilter
 
     protected function getAllowedOperationNames(string $resourceClass): array
     {
-        return ['get'];
+        return ['_get_item', '_get_collection'];
+    }
+
+    private function isValidOperation(?Operation $operation): bool
+    {
+        if (!$operation) {
+            return false;
+        }
+
+        $operationName = $operation->getName();
+
+        foreach ($this->getAllowedOperationNames($operation->getClass()) as $routeSuffix) {
+            if (str_ends_with($operationName, $routeSuffix)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Controller\EnMarche\EventManager;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CoalitionEvent;

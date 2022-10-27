@@ -2,11 +2,12 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use Doctrine\ORM\QueryBuilder;
 
-final class OrTextSearchFilter extends AbstractContextAwareFilter
+final class OrTextSearchFilter extends AbstractFilter
 {
     public const PROPERTY_SUFFIX = '_contains';
     public const IGNORED_WORDS = ['avec', 'après', 'avant', 'depuis', 'jusque', 'jusqu’à', 'jusqu\'à', 'pendant', 'à côté',
@@ -21,8 +22,9 @@ final class OrTextSearchFilter extends AbstractContextAwareFilter
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
-    ): void {
+        Operation $operation = null,
+        array $context = []
+    ) {
         $property = str_replace(self::PROPERTY_SUFFIX, '', $property);
 
         // to be sure that filter is applied only to an existing string field

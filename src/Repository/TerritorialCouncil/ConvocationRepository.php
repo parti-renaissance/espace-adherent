@@ -2,7 +2,7 @@
 
 namespace App\Repository\TerritorialCouncil;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\Convocation;
 use App\Repository\PaginatorTrait;

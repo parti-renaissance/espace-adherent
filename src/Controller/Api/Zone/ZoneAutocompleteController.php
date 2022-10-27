@@ -62,6 +62,6 @@ class ZoneAutocompleteController extends AbstractController
             $zoneTypes,
             true,
             10
-        ));
+        ), Response::HTTP_OK, [], ['groups' => ['zone_read']]);
     }
 }

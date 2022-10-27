@@ -38,7 +38,7 @@ class CampaignScoreNormalizer implements NormalizerInterface, NormalizerAwareInt
         $caller = $this->security->getUser();
         $callerId = $caller->getId();
 
-        if (isset($context['item_operation_name']) && 'get_with_scores_public' === $context['item_operation_name']) {
+        if (isset($context['operation_name']) && 'api_phoning_campaigns_get_with_scores_public_item' === $context['operation_name']) {
             $campaign['nb_calls'] = $object->getCampaignHistoriesForAdherent($caller)->count();
             $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurveyForAdherent($caller)->count();
         } else {

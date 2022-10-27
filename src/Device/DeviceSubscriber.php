@@ -2,7 +2,7 @@
 
 namespace App\Device;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\Device;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +34,7 @@ class DeviceSubscriber implements EventSubscriberInterface
         $operationName = $request->attributes->get('_api_item_operation_name');
         $device = $request->get('data');
 
-        if ('put' !== $operationName || !$device instanceof Device) {
+        if ('api_devices_put_item' !== $operationName || !$device instanceof Device) {
             return;
         }
 

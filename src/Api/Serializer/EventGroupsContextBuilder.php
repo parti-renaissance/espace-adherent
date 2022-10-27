@@ -2,7 +2,7 @@
 
 namespace App\Api\Serializer;
 
-use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
+use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use App\Entity\Event\BaseEvent;
 use App\Scope\FeatureEnum;
 use App\Security\Voter\FeatureVoter;

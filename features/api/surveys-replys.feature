@@ -173,14 +173,17 @@ Feature:
       "detail": "profession: Cette valeur doit être l'un des choix proposés.\nage_range: Cette valeur doit être l'un des choix proposés.\ngender: Cette valeur doit être l'un des choix proposés.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "profession",
           "message": "Cette valeur doit être l'un des choix proposés."
         },
         {
+          "code": "@uuid@",
           "propertyPath": "age_range",
           "message": "Cette valeur doit être l'un des choix proposés."
         },
         {
+          "code": "@uuid@",
           "propertyPath": "gender",
           "message": "Cette valeur doit être l'un des choix proposés."
         }

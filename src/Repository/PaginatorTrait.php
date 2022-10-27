@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPaginator;
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\Doctrine\Orm\Paginator as ApiPaginator;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 

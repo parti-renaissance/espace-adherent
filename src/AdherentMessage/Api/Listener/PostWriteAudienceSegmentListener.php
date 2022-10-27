@@ -2,7 +2,7 @@
 
 namespace App\AdherentMessage\Api\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\AdherentMessage\Command\SynchronizeDynamicSegmentCommand;
 use App\Entity\AdherentMessage\Segment\AudienceSegment;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

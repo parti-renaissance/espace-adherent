@@ -2,7 +2,7 @@
 
 namespace App\Api\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\LegislativeNewsletterSubscription;
 use App\Legislative\Newsletter\Events;
 use App\Legislative\Newsletter\LegislativeNewsletterEvent;

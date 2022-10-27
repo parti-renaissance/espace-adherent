@@ -2,15 +2,16 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
-final class MySubscribedEventsFilter extends AbstractContextAwareFilter
+final class MySubscribedEventsFilter extends AbstractFilter
 {
     private const PROPERTY_NAME = 'subscribedOnly';
 
@@ -23,7 +24,8 @@ final class MySubscribedEventsFilter extends AbstractContextAwareFilter
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
+        Operation $operation = null,
+        array $context = []
     ) {
         if (
             !is_a($resourceClass, BaseEvent::class, true)

@@ -5,8 +5,8 @@ namespace App\Entity\Jecoute;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\JeMengageSurveyScopeFilter;
 use App\Api\Filter\SurveyTypeFilter;
 use App\Entity\Adherent;
@@ -55,17 +55,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/surveys/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', object)",
+ *             "path": "/v3/surveys/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', object)",
  *             "normalization_context": {
  *                 "groups": {"survey_read_dc"}
  *             }
  *         },
  *         "put": {
- *             "path": "/v3/surveys/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey')",
+ *             "path": "/v3/surveys/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey')",
  *             "denormalization_context": {"groups": {"survey_write_dc"}},
  *             "normalization_context": {"groups": {"survey_read_dc"}},
  *         },
@@ -73,7 +73,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "get": {
  *             "path": "/v3/surveys",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['survey', 'phoning_campaign', 'pap_v2'])",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', ['survey', 'phoning_campaign', 'pap_v2'])",
  *             "normalization_context": {
  *                 "groups": {"survey_list_dc"}
  *             },
@@ -81,7 +81,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "post": {
  *             "path": "/v3/surveys",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey')",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey')",
  *             "denormalization_context": {
  *                 "groups": {"survey_write_dc"},
  *             },
@@ -93,15 +93,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/surveys/kpi",
  *             "controller": "App\Controller\Api\Jecoute\GetSurveysKpiController",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey')",
- *         },
- *     },
- *     subresourceOperations={
- *         "api_phoning_campaigns_survey_get_subresource": {
- *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
- *         },
- *         "api_pap_campaigns_survey_get_subresource": {
- *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey')",
  *         },
  *     },
  * )

@@ -11,7 +11,7 @@ class CertifiedConditionBuilder implements SegmentConditionBuilderInterface
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AudienceFilter && null !== $filter->isCertified();
+        return $filter instanceof AudienceFilter && null !== $filter->getIsCertified();
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
@@ -28,7 +28,7 @@ class CertifiedConditionBuilder implements SegmentConditionBuilderInterface
             'condition_type' => 'TextMerge',
             'op' => 'is',
             'field' => MemberRequest::MERGE_FIELD_CERTIFIED,
-            'value' => $filter->isCertified() ? 'oui' : 'non',
+            'value' => $filter->getIsCertified() ? 'oui' : 'non',
         ]];
     }
 }

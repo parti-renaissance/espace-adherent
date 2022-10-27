@@ -835,6 +835,7 @@ Feature:
         "detail": "vote_places: Un ou plusieurs bureaux de vote ne sont pas dans la zone gérée",
         "violations": [
             {
+                "code": null,
                 "propertyPath": "vote_places",
                 "message": "Un ou plusieurs bureaux de vote ne sont pas dans la zone gérée"
             }
@@ -967,10 +968,12 @@ Feature:
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "violations": [
             {
+                "code": null,
                 "message": "La campagne a déjà commencé, vous ne pouvez pas changer le questionnaire.",
                 "propertyPath": "survey"
             },
             {
+                "code": null,
                 "message": "La campagne a déjà commencé, vous ne pouvez pas retirer les bureaux de vote déjà utilisés.",
                 "propertyPath": "vote_places"
             }
@@ -1522,10 +1525,12 @@ Feature:
         "detail": "building: Cette valeur ne doit pas être nulle.\nstatus: Le statut n'est pas valide.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "building",
                 "message": "Cette valeur ne doit pas être nulle."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "status",
                 "message": "Le statut n'est pas valide."
             }
@@ -1609,26 +1614,32 @@ Feature:
         "detail": "status: Le statut n'est pas valide.\nemail_address: Cette valeur n'est pas une adresse email valide.\nemail_address: L'adresse e-mail est trop longue, 255 caractères maximum.\ngender: Ce sexe n'est pas valide.\nage_range: Cette valeur doit être l'un des choix proposés.\nprofession: Cette valeur doit être l'un des choix proposés.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "status",
                 "message": "Le statut n'est pas valide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "email_address",
                 "message": "Cette valeur n'est pas une adresse email valide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "email_address",
                 "message": "L'adresse e-mail est trop longue, 255 caractères maximum."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "gender",
                 "message": "Ce sexe n'est pas valide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "age_range",
                 "message": "Cette valeur doit être l'un des choix proposés."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "profession",
                 "message": "Cette valeur doit être l'un des choix proposés."
             }
@@ -1684,18 +1695,22 @@ Feature:
         "detail": "title: Cette valeur ne doit pas être vide.\ngoal: Cette valeur ne doit pas être vide.\nfinish_at: La date de fin doit être postérieure à la date de début.\nsurvey: Cette valeur ne doit pas être vide.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "title",
                 "message": "Cette valeur ne doit pas être vide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "goal",
                 "message": "Cette valeur ne doit pas être vide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "finish_at",
                 "message": "La date de fin doit être postérieure à la date de début."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "survey",
                 "message": "Cette valeur ne doit pas être vide."
             }
@@ -1726,14 +1741,17 @@ Feature:
         "detail": "goal: Cette valeur doit être supérieure à \"0\".\nbegin_at: La date de début doit être dans le futur.\nfinish_at: La date de fin doit être postérieure à la date de début.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "goal",
                 "message": "Cette valeur doit être supérieure à \"0\"."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "begin_at",
                 "message": "La date de début doit être dans le futur."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "finish_at",
                 "message": "La date de fin doit être postérieure à la date de début."
             }

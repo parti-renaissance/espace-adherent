@@ -4,8 +4,7 @@ namespace App\Entity\Phoning;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\ScopeVisibilityFilter;
 use App\Entity\Adherent;
 use App\Entity\Audience\AudienceSnapshot;
@@ -57,20 +56,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/phoning_campaigns/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *             "path": "/v3/phoning_campaigns/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
  *         },
  *         "put": {
- *             "path": "/v3/phoning_campaigns/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign') and is_granted('SCOPE_CAN_MANAGE', object)"
+ *             "path": "/v3/phoning_campaigns/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign') and is_granted('SCOPE_CAN_MANAGE', object)"
  *         },
  *         "get_with_scores_public": {
  *             "method": "GET",
- *             "path": "/v3/phoning_campaigns/{id}/scores",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('CAN_MANAGE_PHONING_CAMPAIGN', object)",
+ *             "path": "/v3/phoning_campaigns/{uuid}/scores",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('CAN_MANAGE_PHONING_CAMPAIGN', object)",
  *             "normalization_context": {
  *                 "groups": {"phoning_campaign_read_with_score"},
  *             },
@@ -79,7 +78,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/{uuid}/callers",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
  *             "controller": "App\Controller\Api\Phoning\GetPhoningCampaignCallersStatsController",
  *             "defaults": {"_api_receive": false},
  *         }
@@ -90,11 +89,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {
  *                 "groups": {"phoning_campaign_list"},
  *             },
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
  *         },
  *         "post": {
  *             "path": "/v3/phoning_campaigns",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
  *         },
  *         "get_my_phoning_campaigns_scores": {
  *             "method": "GET",
@@ -109,15 +108,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/kpi",
  *             "controller": "App\Controller\Api\Phoning\GetPhoningCampaignsKpiController",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
- *         },
- *     },
- *     subresourceOperations={
- *         "survey_get_subresource": {
- *             "method": "GET",
- *             "path": "/v3/phoning_campaigns/{id}/survey",
- *             "access_control": "object.isPermanent() or is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
  *         },
  *     },
  * )
@@ -219,8 +210,6 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank
-     *
-     * @ApiSubresource
      *
      * @Groups({"phoning_campaign_read", "phoning_campaign_write"})
      */

@@ -4,8 +4,8 @@ namespace App\Entity\Phoning;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\AdherentIdentityFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "get": {
  *             "path": "/v3/phoning_campaign_histories",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
  *             "normalization_context": {
  *                 "groups": {"phoning_campaign_history_read_list"}
  *             },
@@ -44,9 +44,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "put": {
- *             "path": "/v3/phoning_campaign_histories/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)",
+ *             "path": "/v3/phoning_campaign_histories/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)",
  *         },
  *         "post_reply": {
  *             "method": "POST",

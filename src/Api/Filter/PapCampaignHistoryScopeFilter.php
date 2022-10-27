@@ -10,7 +10,7 @@ use Doctrine\ORM\QueryBuilder;
 
 final class PapCampaignHistoryScopeFilter extends AbstractScopeFilter
 {
-    protected function needApplyFilter(string $property, string $resourceClass, string $operationName = null): bool
+    protected function needApplyFilter(string $property, string $resourceClass): bool
     {
         return is_a($resourceClass, CampaignHistory::class, true);
     }

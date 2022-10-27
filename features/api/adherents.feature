@@ -2,7 +2,7 @@
 Feature:
   In order to get adherents information
   As a referent
-  I should be able to acces adherents API data
+  I should be able to access adherents API data
 
   Scenario: As a non logged-in user I can not access the adherents count information
     When I am on "/api/statistics/adherents/count"
@@ -204,6 +204,7 @@ Feature:
         "detail": "nickname: Cette valeur est déjà utilisée.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "nickname",
                 "message": "Cette valeur est déjà utilisée."
             }
@@ -230,6 +231,7 @@ Feature:
         "detail": "nickname: Vous devez saisir au maximum 25 caractères.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "nickname",
                 "message": "Vous devez saisir au maximum 25 caractères."
             }

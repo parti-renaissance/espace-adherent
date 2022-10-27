@@ -1308,26 +1308,32 @@ Feature:
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "violations": [
           {
-             "message": "La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.",
-             "propertyPath": "finish_at"
+              "code": null,
+              "message": "La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.",
+              "propertyPath": "finish_at"
           },
           {
+              "code": null,
               "message": "Catégorie est requise.",
               "propertyPath": "category"
           },
           {
+              "code": "@uuid@",
               "message": "Cette valeur ne doit pas être vide.",
               "propertyPath": "name"
           },
           {
+              "code": "@uuid@",
               "message": "Cette valeur ne doit pas être vide.",
               "propertyPath": "canonical_name"
           },
           {
+              "code": "@uuid@",
               "message": "Cette valeur ne doit pas être vide.",
               "propertyPath": "description"
           },
           {
+              "code": null,
               "propertyPath": "post_address",
               "message": "L'adresse saisie ne fait pas partie de la zone géographique que vous gérez."
           }
@@ -1368,6 +1374,7 @@ Feature:
       "title": "An error occurred",
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "violations": [{
+       "code": "@uuid@",
        "message": "La date de fin de l'événement doit être postérieure à la date de début.",
        "propertyPath": "finish_at"
       }]
@@ -1882,6 +1889,7 @@ Feature:
         "detail": "post_address: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.",
         "violations": [
             {
+                "code": null,
                 "propertyPath": "post_address",
                 "message": "L'adresse saisie ne fait pas partie de la zone géographique que vous gérez."
             }

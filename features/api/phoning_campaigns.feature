@@ -42,8 +42,8 @@ Feature:
       },
       "items": [
         {
-          "title": "Campagne sans adhérent dispo à appeler",
-          "goal": 100,
+          "title": "Campagne pour les hommes",
+          "goal": 500,
           "finish_at": "@string@.isDateTime()",
           "team": {
             "name": "Première équipe de phoning",
@@ -52,18 +52,18 @@ Feature:
             "zone": null,
             "members_count": 3
           },
-          "uuid": "b5e1b850-faec-4da7-8da6-d64b94494668",
+          "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387",
           "visibility": "national",
           "zone": null,
           "creator": "Admin",
-          "nb_calls": 0,
-          "nb_surveys": 0,
+          "nb_calls": 12,
+          "nb_surveys": 6,
           "participants_count": 0,
-          "nb_adherents_called": 0
+          "nb_adherents_called": 8
         },
         {
-          "title": "Campagne avec l'audience contenant tous les paramètres",
-          "goal": 10,
+          "title": "Campagne pour les femmes",
+          "goal": 500,
           "finish_at": "@string@.isDateTime()",
           "team": {
             "name": "Deuxième équipe de phoning",
@@ -72,14 +72,14 @@ Feature:
             "zone": null,
             "members_count": 4
           },
-          "uuid": "cc8f32ce-176c-42c8-a7e9-b854cc8fc61e",
+          "uuid": "4d91b94c-4b39-43c7-9c88-f4be7e2fe0bc",
           "visibility": "national",
           "zone": null,
           "creator": "Admin",
-          "nb_calls": 0,
-          "nb_surveys": 0,
+          "nb_calls": 6,
+          "nb_surveys": 5,
           "participants_count": 0,
-          "nb_adherents_called": 0
+          "nb_adherents_called": 6
         }
       ]
     }
@@ -283,6 +283,7 @@ Feature:
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "violations": [
         {
+          "code": null,
           "message": "Un rôle national ne peut pas définir de zone.",
           "propertyPath": "zone"
         }
@@ -667,6 +668,7 @@ Feature:
       "detail": "zone: La zone spécifiée n'est pas gérée par votre rôle.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "La zone spécifiée n'est pas gérée par votre rôle."
         }
@@ -732,6 +734,7 @@ Feature:
       "detail": "zone: Veuillez spécifier une zone.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "Veuillez spécifier une zone."
         }
@@ -1171,6 +1174,7 @@ Feature:
        "detail":"status: Le statut n'est pas valide.",
        "violations":[
           {
+             "code": "@uuid@",
              "propertyPath":"status",
              "message":"Le statut n'est pas valide."
           }
@@ -1675,14 +1679,17 @@ Feature:
       "detail": "title: Cette valeur ne doit pas être vide.\ngoal: Cette valeur ne doit pas être vide.\nsurvey: Cette valeur ne doit pas être vide.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "title",
           "message": "Cette valeur ne doit pas être vide."
         },
         {
+          "code": "@uuid@",
           "propertyPath": "goal",
           "message": "Cette valeur ne doit pas être vide."
         },
         {
+          "code": "@uuid@",
           "propertyPath": "survey",
           "message": "Cette valeur ne doit pas être vide."
         }

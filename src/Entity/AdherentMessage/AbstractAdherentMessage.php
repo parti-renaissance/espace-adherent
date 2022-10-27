@@ -4,12 +4,12 @@ namespace App\Entity\AdherentMessage;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use App\AdherentMessage\AdherentMessageDataObject;
 use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Api\Filter\AdherentMessageScopeFilter;
-use App\Api\Filter\OrderFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -46,7 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     shortName="AdherentMessage",
  *     attributes={
- *         "access_control": "is_granted('ROLE_MESSAGE_REDACTOR')",
+ *         "security": "is_granted('ROLE_MESSAGE_REDACTOR')",
  *         "normalization_context": {"groups": {"message_read_list"}},
  *         "denormalization_context": {"groups": {"message_write"}},
  *     },
@@ -54,7 +54,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/adherent_messages",
  *             "normalization_context": {
- *                 "authored_items_collection": false,
  *                 "groups": {"message_read_list"}
  *             },
  *         },
@@ -66,27 +65,27 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/adherent_messages/kpi",
  *             "controller": "App\Controller\Api\AdherentMessage\GetAdherentMessageKpiController",
- *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and is_granted('REQUEST_SCOPE_GRANTED')",
+ *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and is_granted('REQUEST_SCOPE_GRANTED')",
  *         },
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/adherent_messages/{id}",
- *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/adherent_messages/{uuid}",
+ *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"message_read"}},
  *         },
  *         "get_content": {
  *             "method": "GET",
- *             "path": "/v3/adherent_messages/{id}/content",
- *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/adherent_messages/{uuid}/content",
+ *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"message_read_content"}},
  *         },
  *         "put": {
- *             "path": "/v3/adherent_messages/{id}",
- *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/adherent_messages/{uuid}",
+ *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"message_read"}},
  *         },
  *         "send": {
@@ -111,9 +110,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "controller": "App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController"
  *         },
  *         "delete": {
- *             "path": "/v3/adherent_messages/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and not object.isSent() and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
+ *             "path": "/v3/adherent_messages/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and not object.isSent() and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
  *         }
  *     }
  * )

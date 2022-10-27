@@ -27,18 +27,22 @@ Feature:
       "detail": "recaptcha: Merci de confirmer le captcha avant de continuer.\nemail_address: Cette valeur est requise.\npostal_code: Cette valeur ne doit pas être vide.\npersonal_data_collection: L'acceptation des mentions d'information est obligatoire pour donner suite à votre demande.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "recaptcha",
           "message": "Merci de confirmer le captcha avant de continuer."
         },
         {
+          "code": "@uuid@",
           "propertyPath": "email_address",
           "message": "Cette valeur est requise."
         },
         {
+          "code": "@uuid@",
           "propertyPath": "postal_code",
           "message": "Cette valeur ne doit pas être vide."
         },
         {
+          "code": "@uuid@",
           "propertyPath": "personal_data_collection",
           "message": "L'acceptation des mentions d'information est obligatoire pour donner suite à votre demande."
         }
@@ -69,6 +73,7 @@ Feature:
       "detail": "recaptcha: Le captcha soumis est invalide.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "recaptcha",
           "message": "Le captcha soumis est invalide."
         }

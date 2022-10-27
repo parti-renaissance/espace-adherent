@@ -2,15 +2,16 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventTypeEnum;
 use Doctrine\ORM\QueryBuilder;
 
-final class EventsGroupSourceFilter extends AbstractContextAwareFilter
+final class EventsGroupSourceFilter extends AbstractFilter
 {
-    private const PROPERTY_NAME = 'group_source';
+    public const PROPERTY_NAME = 'group_source';
     private const GROUP_SOURCE_EN_MARCHE = 'en_marche';
     private const GROUP_SOURCE_COALITIONS = 'coalitions';
     private const GROUP_SOURCES = [
@@ -24,7 +25,8 @@ final class EventsGroupSourceFilter extends AbstractContextAwareFilter
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
+        Operation $operation = null,
+        array $context = []
     ) {
         if (
             !is_a($resourceClass, BaseEvent::class, true)
@@ -38,11 +40,10 @@ final class EventsGroupSourceFilter extends AbstractContextAwareFilter
         $alias = $queryBuilder->getRootAliases()[0];
         $queryBuilder
             ->andWhere(self::GROUP_SOURCE_COALITIONS === $value
-                ? "($alias INSTANCE OF :cause OR $alias INSTANCE OF :coalition)"
-                : "($alias NOT INSTANCE OF :cause AND $alias NOT INSTANCE OF :coalition)"
+                ? "$alias INSTANCE OF :types"
+                : "$alias NOT INSTANCE OF :types"
             )
-            ->setParameter('cause', EventTypeEnum::TYPE_CAUSE)
-            ->setParameter('coalition', EventTypeEnum::TYPE_COALITION)
+            ->setParameter('types', [EventTypeEnum::TYPE_CAUSE, EventTypeEnum::TYPE_COALITION])
         ;
     }
 

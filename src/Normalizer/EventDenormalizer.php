@@ -2,6 +2,7 @@
 
 namespace App\Normalizer;
 
+use ApiPlatform\Metadata\HttpOperation;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CauseEvent;
 use App\Entity\Event\CoalitionEvent;
@@ -27,6 +28,9 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
         unset($data['type']);
 
         $context['resource_class'] = $eventClass;
+        /** @var HttpOperation $operation */
+        $operation = $context['operation'];
+        $context['operation'] = $operation->withClass($eventClass);
 
         return $this->denormalizer->denormalize($data, $eventClass, $format, $context);
     }

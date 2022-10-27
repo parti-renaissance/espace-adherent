@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "post": {
  *             "path": "/adherent-segments",
- *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR')",
+ *             "security": "is_granted('ROLE_MESSAGE_REDACTOR')",
  *             "normalization_context": {
  *                 "iri": true,
  *                 "groups": {"public"}

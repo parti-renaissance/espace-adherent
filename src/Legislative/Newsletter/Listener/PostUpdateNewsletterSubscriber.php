@@ -2,7 +2,7 @@
 
 namespace App\Legislative\Newsletter\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\LegislativeNewsletterSubscription;
 use App\Newsletter\Command\MailchimpSyncLegislativeNewsletterCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

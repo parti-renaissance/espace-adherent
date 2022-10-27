@@ -2,7 +2,7 @@
 
 namespace App\Repository\ThematicCommunity;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\ThematicCommunity\ThematicCommunity;

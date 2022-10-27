@@ -569,6 +569,7 @@ Feature:
         "detail": "type: Le type n'est pas valide.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "type",
                 "message": "Le type n'est pas valide."
             }

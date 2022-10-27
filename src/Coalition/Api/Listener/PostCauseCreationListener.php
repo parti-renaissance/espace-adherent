@@ -2,7 +2,7 @@
 
 namespace App\Coalition\Api\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Coalition\MessageNotifier;
 use App\Entity\Coalition\Cause;
 use Doctrine\ORM\EntityManagerInterface;

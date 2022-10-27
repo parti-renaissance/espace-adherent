@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Committee\Filter\CommitteeDesignationsListFilter;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;

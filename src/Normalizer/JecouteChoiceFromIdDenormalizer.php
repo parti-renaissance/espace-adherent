@@ -2,12 +2,12 @@
 
 namespace App\Normalizer;
 
-use ApiPlatform\Core\Exception\ItemNotFoundException;
+use ApiPlatform\Exception\ItemNotFoundException;
 use App\Entity\Jecoute\Choice;
 use App\Repository\Jecoute\ChoiceRepository;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class ChoiceFromIdDenormalizer implements DenormalizerInterface
+class JecouteChoiceFromIdDenormalizer implements DenormalizerInterface
 {
     private $repository;
 

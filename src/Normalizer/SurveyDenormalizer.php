@@ -2,6 +2,7 @@
 
 namespace App\Normalizer;
 
+use ApiPlatform\Metadata\HttpOperation;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
@@ -39,6 +40,9 @@ class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
         }
 
         $context['resource_class'] = $surveyClass;
+        /** @var HttpOperation $operation */
+        $operation = $context['operation'];
+        $context['operation'] = $operation->withClass($surveyClass);
 
         return $this->denormalizer->denormalize($data, $surveyClass, $format, $context);
     }
@@ -47,7 +51,7 @@ class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
     {
         return !isset($context[self::ALREADY_CALLED])
             && is_a($type, Survey::class, true)
-            && 'post' === ($context['collection_operation_name'] ?? null)
+            && 'api_surveys_post_collection' === ($context['operation_name'] ?? null)
         ;
     }
 

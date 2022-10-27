@@ -2,6 +2,7 @@
 
 namespace App\Normalizer;
 
+use ApiPlatform\Metadata\HttpOperation;
 use App\AdherentMessage\AdherentMessageFactory;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
@@ -41,13 +42,21 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
 
         $context[self::ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED] = true;
 
+        if (!isset($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
+            $context[AbstractNormalizer::OBJECT_TO_POPULATE] = new $messageClass();
+        }
+        $context['resource_class'] = $messageClass;
+        /** @var HttpOperation $operation */
+        $operation = $context['operation'];
+        $context['operation'] = $operation->withClass($messageClass);
+
         /** @var AdherentMessageInterface $message */
         $message = $this->denormalizer->denormalize($data, $messageClass, $format, $context);
 
         $message->setSource(AdherentMessageInterface::SOURCE_API);
 
         if (
-            ($context['item_operation_name'] ?? null) === 'put'
+            ($context['operation_name'] ?? null) === 'api_adherent_messages_put_item'
             && $oldMessage
             && (
                 $oldMessage->getContent() !== $message->getContent()

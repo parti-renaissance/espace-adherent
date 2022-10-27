@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "POST",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "controller": "App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController",
- *             "access_control": "(is_granted('ROLE_ADHERENT') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
+ *             "security": "(is_granted('ROLE_ADHERENT') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
  *             "defaults": {"_api_receive": false},
  *             "normalization_context": {"groups": {"data_survey_read"}},
  *         },
@@ -39,13 +39,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "post": {
  *             "path": "/v3/jemarche_data_surveys",
- *             "access_control": "(is_granted('ROLE_ADHERENT') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"
+ *             "security": "(is_granted('ROLE_ADHERENT') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"
  *         },
  *         "get_jemarche_data_surveys_dashboard_kpi": {
  *             "method": "GET",
  *             "path": "/v3/jemarche_data_surveys/kpi",
  *             "controller": "App\Controller\Api\Jecoute\JemarcheDataSurveyKpiController",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey')",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey')",
  *         },
  *     },
  * )

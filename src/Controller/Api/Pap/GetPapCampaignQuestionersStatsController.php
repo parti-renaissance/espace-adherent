@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Pap;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Pap\Campaign;
 use App\Repository\AdherentRepository;
 use App\Security\Voter\ScopeVisibilityVoter;

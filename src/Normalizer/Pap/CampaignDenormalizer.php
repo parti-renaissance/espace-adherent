@@ -28,7 +28,7 @@ class CampaignDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
 
         /** @var Campaign $data */
         $data = $this->denormalizer->denormalize($data, $class, $format, $context);
-        if ('post' === ($context['collection_operation_name'] ?? null)
+        if ('api_pap_campaigns_post_collection' === ($context['operation_name'] ?? null)
             && ($scope = $this->scopeGeneratorResolver->generate())) {
             if ($scope->isNational()) {
                 $data->setVisibility(ScopeVisibilityEnum::NATIONAL);

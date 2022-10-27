@@ -2,16 +2,17 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
 use App\Entity\Phoning\CampaignHistory as PhoningCampaignHistory;
 use Doctrine\ORM\QueryBuilder;
 
-class AdherentIdentityFilter extends AbstractContextAwareFilter
+class AdherentIdentityFilter extends AbstractFilter
 {
     private const PROPERTY_NAMES = ['adherent', 'caller', 'questioner'];
-    private const OPERATION_NAMES = ['get'];
+    private const OPERATION_NAMES = ['api_phoning_campaign_histories_get_collection', 'api_pap_campaign_histories_get_collection'];
 
     protected function filterProperty(
         string $property,
@@ -19,13 +20,14 @@ class AdherentIdentityFilter extends AbstractContextAwareFilter
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
+        Operation $operation = null,
+        array $context = []
     ) {
         if (
             !\in_array($resourceClass, [PhoningCampaignHistory::class, PapCampaignHistory::class])
             || !\in_array($property, self::PROPERTY_NAMES, true)
             || empty($value)
-            || !\in_array($operationName, self::OPERATION_NAMES, true)
+            || !\in_array($operation->getName(), self::OPERATION_NAMES, true)
         ) {
             return;
         }

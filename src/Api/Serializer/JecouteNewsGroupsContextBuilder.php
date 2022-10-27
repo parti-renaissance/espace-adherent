@@ -2,7 +2,7 @@
 
 namespace App\Api\Serializer;
 
-use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
+use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use App\Entity\Jecoute\News;
 use App\Scope\AuthorizationChecker;
 use App\Scope\FeatureEnum;

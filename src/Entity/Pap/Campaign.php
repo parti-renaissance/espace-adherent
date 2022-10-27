@@ -5,7 +5,7 @@ namespace App\Entity\Pap;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\ScopeVisibilityFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
@@ -49,7 +49,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *         "order": {"createdAt": "DESC"},
  *         "pagination_client_enabled": true,
- *         "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))",
+ *         "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))",
  *         "normalization_context": {
  *             "iri": true,
  *             "groups": {"pap_campaign_read"},
@@ -61,27 +61,27 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *         "get": {
  *             "method": "GET",
- *             "path": "/v3/pap_campaigns/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/pap_campaigns/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *         "put": {
- *             "path": "/v3/pap_campaigns/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) and is_granted('SCOPE_CAN_MANAGE', object)",
+ *             "path": "/v3/pap_campaigns/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) and is_granted('SCOPE_CAN_MANAGE', object)",
  *             "normalization_context": {"groups": {"pap_campaign_read_after_write"}},
  *         },
  *         "get_questioners_with_scores": {
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns/{uuid}/questioners",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
  *             "controller": "App\Controller\Api\Pap\GetPapCampaignQuestionersStatsController",
  *             "defaults": {"_api_receive": false},
  *         },
  *         "delete": {
- *             "path": "/v3/pap_campaigns/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) and is_granted('CAN_DELETE_PAP_CAMPAIGN', object)",
+ *             "path": "/v3/pap_campaigns/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) and is_granted('CAN_DELETE_PAP_CAMPAIGN', object)",
  *         },
  *     },
  *     collectionOperations={
@@ -94,7 +94,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "post": {
  *             "path": "/v3/pap_campaigns",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
  *             "normalization_context": {"groups": {"pap_campaign_read_after_write"}},
  *             "validation_groups": {"Default", "pap_campaign_creation"},
  *         },
@@ -102,14 +102,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns/kpi",
  *             "controller": "App\Controller\Api\Pap\GetPapCampaignsKpiController",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
  *         },
  *         "get_campaign_building_statistics": {
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns/{uuid}/building_statistics",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "controller": "App\Controller\Api\Pap\GetCampaignBuildingStatisticsController",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
  *             "normalization_context": {
  *                 "groups": {"pap_building_statistics_read"},
  *             },
@@ -120,7 +120,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "controller": "App\Controller\Api\Pap\GetCampaignVotePlacesController",
  *             "pagination_enabled": false,
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
  *             "normalization_context": {"iri": true, "groups": {"pap_vote_place_read"}},
  *         },
  *         "get_available_vote_places": {
@@ -132,17 +132,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                 "iri": true,
  *                 "groups": {"pap_vote_place_read"},
  *             },
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
- *         },
- *     },
- *     subresourceOperations={
- *         "survey_get_subresource": {
- *             "method": "GET",
- *             "path": "/v3/pap_campaigns/{id}/survey",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "normalization_context": {
- *                 "groups": {"pap_campaign_survey_read"},
- *             },
+ *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
  *         },
  *     },
  * )
