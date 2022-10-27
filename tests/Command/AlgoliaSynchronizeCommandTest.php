@@ -34,7 +34,7 @@ class AlgoliaSynchronizeCommandTest extends AbstractCommandCaseTest
     public function dataProviderTestCommand(): array
     {
         return [
-            ['article', Article::class, 183],
+            ['article', Article::class, 191],
             ['proposal', Proposal::class, 3],
             ['clarification', Clarification::class, 21],
             ['custom_search_result', CustomSearchResult::class, 2],
