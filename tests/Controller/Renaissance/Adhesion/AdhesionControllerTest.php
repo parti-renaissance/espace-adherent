@@ -9,10 +9,8 @@ use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Mailer\Message\AdherentAccountActivationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountActivationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage;
-use App\Repository\AdherentActivationTokenRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\DonationRepository;
-use App\Repository\EmailRepository;
 use Goutte\Client as PayboxClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,15 +28,13 @@ class AdhesionControllerTest extends WebTestCase
     private const PAYBOX_PREPROD_URL = 'https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi';
 
     private ?AdherentRepository $adherentRepository = null;
-    private ?AdherentActivationTokenRepository $activationTokenRepository = null;
     private ?DonationRepository $donationRepository = null;
-    private ?EmailRepository $emailRepository = null;
     private ?PayboxClient $payboxClient = null;
     private ?PayboxProvider $payboxProvider = null;
 
     public function testRenaissanceMembershipRequest(): void
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/adhesion');
+        $crawler = $this->client->request(Request::METHOD_GET, '/adhesion?utm_source=test&utm_campaign=let_CI_be_green_again');
 
         $this->assertCount(0, $this->getEmailRepository()->findMessages(AdherentAccountActivationMessage::class));
 
@@ -107,6 +103,8 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertSame('Smith', $adherentRequest->lastName);
         $this->assertSame('John', $adherentRequest->firstName);
         $this->assertSame('john@test.com', $adherentRequest->email);
+        $this->assertSame('test', $adherentRequest->utmSource);
+        $this->assertSame('let_CI_be_green_again', $adherentRequest->utmCampaign);
 
         $this->assertCount(1, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountActivationMessage::class));
 
@@ -117,6 +115,9 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertInstanceOf(Adherent::class, $adherent = $this->adherentRepository->findOneByEmail('john@test.com'));
+
+        $this->assertSame('test', $adherent->utmSource);
+        $this->assertSame('let_CI_be_green_again', $adherent->utmCampaign);
 
         $this->client->click($crawler->selectLink('Procéder au paiement')->link());
 
@@ -207,17 +208,13 @@ class AdhesionControllerTest extends WebTestCase
 
         $this->client->setServerParameter('HTTP_HOST', $this->getParameter('renaissance_host'));
         $this->adherentRepository = $this->getAdherentRepository();
-        $this->activationTokenRepository = $this->getActivationTokenRepository();
         $this->donationRepository = $this->getDonationRepository();
-        $this->emailRepository = $this->getEmailRepository();
         $this->payboxClient = new PayboxClient();
         $this->payboxProvider = $this->get(PayboxProvider::class);
     }
 
     protected function tearDown(): void
     {
-        $this->emailRepository = null;
-        $this->activationTokenRepository = null;
         $this->adherentRepository = null;
         $this->donationRepository = null;
         $this->payboxClient = null;

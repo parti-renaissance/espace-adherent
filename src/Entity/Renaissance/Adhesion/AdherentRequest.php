@@ -6,6 +6,7 @@ use App\Address\PostAddressFactory;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\EntityUTMTrait;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -20,6 +21,7 @@ class AdherentRequest
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityPostAddressTrait;
+    use EntityUTMTrait;
 
     /**
      * @ORM\Column
@@ -92,6 +94,8 @@ class AdherentRequest
         $object->allowEmailNotifications = $command->allowEmailNotifications;
         $object->allowMobileNotifications = $command->allowMobileNotifications;
         $object->setPostAddress(PostAddressFactory::createFromAddress($command->getAddress()));
+        $object->utmSource = $command->utmSource;
+        $object->utmCampaign = $command->utmCampaign;
 
         return $object;
     }

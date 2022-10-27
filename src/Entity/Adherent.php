@@ -112,6 +112,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     use LazyCollectionTrait;
     use EntityReferentTagTrait;
     use EntityZoneTrait;
+    use EntityUTMTrait;
 
     public const ENABLED = 'ENABLED';
     public const TO_DELETE = 'TO_DELETE';

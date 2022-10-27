@@ -22,6 +22,9 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
 {
     use RecaptchaChallengeTrait;
 
+    public const UTM_SOURCE = 'utm_source';
+    public const UTM_CAMPAIGN = 'utm_campaign';
+
     private string $state = MembershipRequestStateEnum::STATE_START;
 
     /**
@@ -80,6 +83,9 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
 
     private ?int $adherentId = null;
     private bool $isCertified = false;
+
+    public ?string $utmSource = null;
+    public ?string $utmCampaign = null;
 
     public function __construct()
     {
