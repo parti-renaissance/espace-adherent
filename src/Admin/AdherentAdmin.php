@@ -6,7 +6,6 @@ use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Filter\AdherentRoleFilter;
 use App\Admin\Filter\ReferentTagAutocompleteFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
-use App\Coordinator\CoordinatorAreaSectors;
 use App\Entity\Adherent;
 use App\Entity\AdherentTag;
 use App\Entity\BaseGroup;
@@ -26,7 +25,6 @@ use App\Form\Admin\AdherentInstanceQualityType;
 use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AdherentZoneBasedRoleType;
 use App\Form\Admin\CandidateManagedAreaType;
-use App\Form\Admin\CoordinatorManagedAreaType;
 use App\Form\Admin\JecouteManagedAreaType;
 use App\Form\Admin\LreAreaType;
 use App\Form\Admin\MunicipalChiefManagedAreaType;
@@ -423,10 +421,6 @@ class AdherentAdmin extends AbstractAdmin
                     ])
                 ->end()
                 ->with('Responsabilités locales', ['class' => 'col-md-6'])
-                    ->add('coordinatorCommitteeArea', CoordinatorManagedAreaType::class, [
-                        'label' => 'coordinator.label.codes.committee',
-                        'sector' => CoordinatorAreaSectors::COMMITTEE_SECTOR,
-                    ])
                     ->add('managedArea', ReferentManagedAreaType::class, [
                         'label' => false,
                         'required' => false,

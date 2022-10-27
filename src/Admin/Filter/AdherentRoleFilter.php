@@ -77,12 +77,6 @@ class AdherentRoleFilter extends CallbackFilter
                     $where->add('boardMember IS NOT NULL');
                 }
 
-                // Coordinator
-                if (\in_array(AdherentRoleEnum::COORDINATOR, $value['value'], true)) {
-                    $qb->leftJoin(sprintf('%s.coordinatorCommitteeArea', $alias), 'coordinatorCommitteeArea');
-                    $where->add('coordinatorCommitteeArea IS NOT NULL');
-                }
-
                 // Procuration Manager
                 if (\in_array(AdherentRoleEnum::PROCURATION_MANAGER, $value['value'], true)) {
                     $qb->leftJoin(sprintf('%s.procurationManagedArea', $alias), 'procurationManagedArea');

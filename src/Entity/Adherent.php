@@ -1023,7 +1023,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_COORDINATOR';
         }
 
-        if ($this->isCoordinatorCommitteeSector()) {
+        if ($this->isRegionalCoordinator()) {
             $roles[] = 'ROLE_COORDINATOR_COMMITTEE';
         }
 
@@ -2783,6 +2783,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getDeputyZone(): ?Zone
     {
         return $this->isDeputy() ? $this->findZoneBasedRole(ScopeEnum::DEPUTY)->getZones()->first() : null;
+    }
+
+    public function isRegionalCoordinator(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::REGIONAL_COORDINATOR);
+    }
+
+    public function getRegionalCoordinatorZone(): array
+    {
+        return $this->isRegionalCoordinator() ? $this->findZoneBasedRole(ScopeEnum::REGIONAL_COORDINATOR)->getZones()->toArray() : [];
     }
 
     public function getLreArea(): ?LreArea

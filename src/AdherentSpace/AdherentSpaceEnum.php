@@ -19,6 +19,7 @@ class AdherentSpaceEnum
     public const MUNICIPAL_MANAGER_SUPERVISOR = 'municipal_manager_supervisor';
     public const ASSESSOR = 'assessor';
     public const CORRESPONDENT = 'correspondent';
+    public const REGIONAL_COORDINATOR = 'regional_coordinator';
 
     public const SCOPES = [
         ScopeEnum::REFERENT => self::REFERENT,
@@ -26,5 +27,6 @@ class AdherentSpaceEnum
         ScopeEnum::SENATOR => self::SENATOR,
         ScopeEnum::DEPUTY => self::DEPUTY,
         ScopeEnum::CORRESPONDENT => self::CORRESPONDENT,
+        ScopeEnum::REGIONAL_COORDINATOR => self::REGIONAL_COORDINATOR,
     ];
 }

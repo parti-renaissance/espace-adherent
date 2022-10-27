@@ -609,7 +609,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-09-20 15:31:21',
         ]);
         $coordinator->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $coordinator->setCoordinatorCommitteeArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
+        $coordinator->setCoordinatorCommitteeArea(new CoordinatorManagedArea(['77', '92', '94', '59'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
         $coordinator->addReferentTag($this->getReference('referent_tag_94'));
         $coordinator->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_94'));
 
