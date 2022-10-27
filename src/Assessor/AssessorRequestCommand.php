@@ -118,7 +118,7 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
 
     /**
      * @Assert\NotBlank(message="common.phone_number.required", groups={"fill_personal_info"})
-     * @AssertPhoneNumber(defaultRegion="FR", groups={"fill_personal_info"})
+     * @AssertPhoneNumber(groups={"fill_personal_info"})
      */
     private $phone;
 

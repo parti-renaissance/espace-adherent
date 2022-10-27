@@ -170,7 +170,7 @@ class ImportElectionMinistryResultFromXMLCommand extends Command
                     $listToUpdate = new MinistryListTotalResult();
                     $listToUpdate->setNuance(
                         \in_array($listNuance, VoteListNuanceEnum::getChoices(), true) ? $listNuance :
-                            \in_array($tmp = ltrim($listNuance, 'L'), VoteListNuanceEnum::getChoices(), true) ? $tmp : null
+                            (\in_array($tmp = ltrim($listNuance, 'L'), VoteListNuanceEnum::getChoices(), true) ? $tmp : null)
                     );
                     $listToUpdate->setLabel($listLabel);
                     $voteResult->addListTotalResult($listToUpdate);

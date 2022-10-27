@@ -122,7 +122,7 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
     /**
      * @var PhoneNumber|null
      *
-     * @AssertPhoneNumber(defaultRegion="FR", groups={"Update"})
+     * @AssertPhoneNumber(groups={"Update"})
      */
     private $phone;
 

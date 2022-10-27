@@ -52,7 +52,7 @@ class JeMengageMembershipRequest extends AbstractMembershipRequest
     public ?string $nationality = null;
 
     /**
-     * @AssertPhoneNumber(defaultRegion="FR")
+     * @AssertPhoneNumber
      *
      * @Groups({"merbership:write"})
      */

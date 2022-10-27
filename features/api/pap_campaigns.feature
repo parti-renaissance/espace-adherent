@@ -3377,12 +3377,12 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "nb_campaigns": "7",
-        "nb_ongoing_campaigns": "6",
-        "nb_visited_doors": "7",
-        "nb_visited_doors_last_30d": "6",
-        "nb_surveys": "3",
-        "nb_surveys_last_30d": "3"
+        "nb_campaigns": 7,
+        "nb_ongoing_campaigns": 6,
+        "nb_visited_doors": 7,
+        "nb_visited_doors_last_30d": 6,
+        "nb_surveys": 3,
+        "nb_surveys_last_30d": 3
     }
     """
 
@@ -3393,12 +3393,12 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "nb_campaigns": "9",
-        "nb_ongoing_campaigns": "8",
-        "nb_visited_doors": "9",
-        "nb_visited_doors_last_30d": "8",
-        "nb_surveys": "3",
-        "nb_surveys_last_30d": "3"
+        "nb_campaigns": 9,
+        "nb_ongoing_campaigns": 8,
+        "nb_visited_doors": 9,
+        "nb_visited_doors_last_30d": 8,
+        "nb_surveys": 3,
+        "nb_surveys_last_30d": 3
     }
     """
     Examples:
@@ -3424,8 +3424,8 @@ Feature:
             {
                 "first_name": "Patrick",
                 "last_name": "Bialès",
-                "nb_visited_doors": "3",
-                "nb_surveys": "3",
+                "nb_visited_doors": 3,
+                "nb_surveys": 3,
                 "nb_accept_to_answer": "3",
                 "nb_dont_accept_to_answer": "0",
                 "nb_contact_later": "0",
@@ -3435,8 +3435,8 @@ Feature:
             {
                 "first_name": "Jacques",
                 "last_name": "Picard",
-                "nb_visited_doors": "2",
-                "nb_surveys": "0",
+                "nb_visited_doors": 2,
+                "nb_surveys": 0,
                 "nb_accept_to_answer": "0",
                 "nb_dont_accept_to_answer": "1",
                 "nb_contact_later": "0",
@@ -3462,8 +3462,8 @@ Feature:
             {
                 "first_name": "Jacques",
                 "last_name": "Picard",
-                "nb_visited_doors": "2",
-                "nb_surveys": "0",
+                "nb_visited_doors": 2,
+                "nb_surveys": 0,
                 "nb_accept_to_answer": "0",
                 "nb_dont_accept_to_answer": "1",
                 "nb_contact_later": "0",
@@ -3497,14 +3497,14 @@ Feature:
                 "nb_contact_later": "0",
                 "nb_dont_accept_to_answer": "0",
                 "nb_door_open": "0",
-                "nb_surveys": "3",
-                "nb_visited_doors": "3"
+                "nb_surveys": 3,
+                "nb_visited_doors": 3
             },
             {
                 "first_name": "Jacques",
                 "last_name": "Picard",
-                "nb_visited_doors": "2",
-                "nb_surveys": "0",
+                "nb_visited_doors": 2,
+                "nb_surveys": 0,
                 "nb_accept_to_answer": "0",
                 "nb_dont_accept_to_answer": "1",
                 "nb_contact_later": "0",

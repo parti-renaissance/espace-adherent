@@ -14,7 +14,7 @@ class MessengerBusContext extends RawMinkContext implements Context
 
     private ?MessageRecorderInterface $messageRecorder = null;
 
-    protected function getMessageRecorder(): ?MessageRecorderInterface
+    protected function getMessageRecorder(): MessageRecorderInterface
     {
         return $this->messageRecorder;
     }

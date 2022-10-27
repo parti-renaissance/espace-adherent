@@ -173,7 +173,7 @@ class AssessorRequest implements RecaptchaChallengeInterface
      * @ORM\Column(type="phone_number")
      *
      * @Assert\NotBlank(message="common.phone_number.required")
-     * @AssertPhoneNumber(defaultRegion="FR")
+     * @AssertPhoneNumber
      */
     private $phone;
 

@@ -76,9 +76,9 @@ class Result implements \Countable, \Iterator
         return current($this->hits);
     }
 
-    public function next()
+    public function next(): void
     {
-        return next($this->hits);
+        next($this->hits);
     }
 
     public function key()
@@ -86,13 +86,13 @@ class Result implements \Countable, \Iterator
         return key($this->hits);
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return null !== key($this->hits);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
-        return reset($this->hits);
+        reset($this->hits);
     }
 }

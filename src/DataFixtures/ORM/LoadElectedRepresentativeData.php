@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\DataFixtures\AutoIncrementResetter;
 use App\Election\VoteListNuanceEnum;
 use App\Entity\ElectedRepresentative\CandidateNameEnum;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
@@ -33,8 +32,6 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
 
     public function load(ObjectManager $manager): void
     {
-        AutoIncrementResetter::resetAutoIncrement($manager, 'elected_representative');
-
         // with adherent, mandate 92 CITY_COUNCIL : functions OTHER_MEMBER, PRESIDENT_OF_EPCI
         $erAdherent92 = $this->createElectedRepresentative(
             'Michelle',

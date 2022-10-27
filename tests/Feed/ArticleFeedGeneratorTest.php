@@ -77,7 +77,7 @@ class ArticleFeedGeneratorTest extends TestCase
         $articleSlug = 'some-random-slug';
         $articleContent = 'kjdfskfjsdjd';
         $articlePublishDate = $this->createMock('DateTime');
-        $articlePublishDateTimeStamp = 42;
+        $articlePublishDateTimeStamp = '42';
         $category = $this->createMock(ArticleCategory::class);
         $categorySlug = 'category-slug';
 

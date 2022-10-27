@@ -99,7 +99,7 @@ class Contact implements RecaptchaChallengeInterface
     /**
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @AssertPhoneNumber(defaultRegion="FR")
+     * @AssertPhoneNumber
      *
      * @Groups({"contact_update"})
      */

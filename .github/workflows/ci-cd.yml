@@ -10,9 +10,11 @@ env:
   EXEC_ARGS: -T
   # Update this to force cache reset
   CACHE_KEY: ${{ secrets.CACHE_KEY }}
+  HASH: ${{ github.sha }}
+  TAG: ${{ github.ref_name }}
 
   NODE_VERSION: 16.18.0
-  PHP_VERSION: 7.4
+  PHP_VERSION: 8.1
   PHP_SECURITY_CHECKER_VERSION: 1.2.0
 
   REGISTRY: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
@@ -277,9 +279,6 @@ jobs:
     runs-on: ubuntu-20.04
     needs: [ lint, phpunit, behat, behat-selenium ]
     if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
-    env:
-      HASH: ${{ github.sha }}
-      TAG: ${{ github.ref_name }}
 
     steps:
       - uses: actions/checkout@v3
@@ -334,9 +333,6 @@ jobs:
     needs: [ docker-build-push-gcr ]
     environment: staging
     if: github.event.ref == 'refs/heads/master'
-    env:
-      HASH: ${{ github.sha }}
-      TAG: ${{ github.ref_name }}
 
     steps:
       - uses: actions/checkout@v3

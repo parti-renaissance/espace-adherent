@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Jecoute\LocalSurvey;
@@ -27,9 +26,6 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        AutoIncrementResetter::resetAutoIncrement($manager, 'jecoute_survey');
-        AutoIncrementResetter::resetAutoIncrement($manager, 'jecoute_survey_question');
-
         /** @var Adherent $referent1 */
         $referent1 = $this->getReference('adherent-8');
 

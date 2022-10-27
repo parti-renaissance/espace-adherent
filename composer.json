@@ -23,7 +23,7 @@
         }
     },
     "require": {
-        "php": ">=7.4",
+        "php": "^8.1",
         "ext-amqp": "*",
         "ext-apcu": "*",
         "ext-ctype": "*",
@@ -36,7 +36,7 @@
         "ext-pdo": "*",
         "ext-zip": "*",
         "a2lix/translation-form-bundle": "^3.0",
-        "algolia/search-bundle": "^4.1",
+        "algolia/search-bundle": "^5.0",
         "api-platform/core": "^2.7",
         "beberlei/doctrineextensions": "^1.2",
         "cakephp/chronos": "^2.1",
@@ -50,10 +50,11 @@
         "endroid/qr-code-bundle": "^3.4.2",
         "enmarche/majority-judgment": "^0.0.3",
         "exercise/htmlpurifier-bundle": "^3.1",
-        "facebook/graph-sdk": "^5.4",
+        "facebook/graph-sdk": "*",
         "fusonic/opengraph": "^2.1",
         "geocoder-php/google-maps-provider": "^4.5",
         "geoip2/geoip2": "^2.4",
+        "giggsey/libphonenumber-for-php": "~8.10.8",
         "google/cloud-recaptcha-enterprise": "^1.2",
         "google/cloud-storage": "^1.23",
         "google/cloud-vision": "^1.2",
@@ -63,7 +64,7 @@
         "knplabs/doctrine-behaviors": "^2.0.0",
         "knplabs/knp-snappy-bundle": "^1.5",
         "knplabs/knp-time-bundle": "^1.7",
-        "kreait/firebase-bundle": "^2.3",
+        "kreait/firebase-bundle": "*",
         "league/commonmark": "1.6.6",
         "league/csv": "^9.2",
         "league/flysystem": "^1.0",
@@ -204,7 +205,8 @@
         "symfony/polyfill-php70": "*",
         "symfony/polyfill-php72": "*",
         "symfony/polyfill-php73": "*",
-        "symfony/polyfill-php74": "*"
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*"
     },
     "repositories": [
         {
