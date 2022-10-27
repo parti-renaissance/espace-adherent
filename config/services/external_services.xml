@@ -44,17 +44,5 @@
             <argument>%campaign_sender_name%</argument>
             <argument>App\Mandrill\EmailTemplate</argument>
         </service>
-
-        <!-- Facebook API -->
-        <service id="Facebook\Facebook">
-            <argument type="collection">
-                <argument key="app_id">%env(FACEBOOK_APP_ID)%</argument>
-                <argument key="app_secret">%env(FACEBOOK_APP_SECRET)%</argument>
-                <argument key="default_graph_version">v2.8</argument>
-            </argument>
-        </service>
-
-        <!-- Imagine -->
-        <service id="app.imagine" class="Imagine\Gd\Imagine"/>
     </services>
 </container>

@@ -209,12 +209,6 @@ class App {
         });
     }
 
-    runFacebookPictureChooser(urls) {
-        import('pages/facebook_pictures').catch((error) => { throw error; }).then((module) => {
-            module.default(urls, this.get('api'));
-        });
-    }
-
     runLegislativesCandidatesList() {
         import('pages/candidates_list').catch((error) => { throw error; }).then((module) => {
             module.default();

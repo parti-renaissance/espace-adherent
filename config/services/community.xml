@@ -21,21 +21,5 @@
             <argument type="service" id="twig"/>
             <argument type="service" id="App\Repository\MyEuropeChoiceRepository"/>
         </service>
-
-        <!-- Facebook filters -->
-        <service id="App\Facebook\PictureImporter">
-            <argument type="service" id="app.http_client.facebook_graph_api" />
-            <argument type="service" id="cache.app" />
-        </service>
-
-        <service id="App\Facebook\PictureFilterer">
-            <argument type="service" id="app.imagine" />
-        </service>
-
-        <service id="App\Facebook\PictureUploader">
-            <argument type="service" id="Facebook\Facebook" />
-            <argument type="service" id="filesystem" />
-            <argument>%kernel.cache_dir%</argument>
-        </service>
     </services>
 </container>
