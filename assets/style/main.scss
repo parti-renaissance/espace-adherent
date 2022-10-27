@@ -93,4 +93,44 @@
             @apply list-disc;
         }
     }
+
+    .carousel {
+        @apply relative w-full;
+        
+        &-inner {
+            @apply relative grid transition-all duration-300;
+            transform: translate3d(0, 0, 0);
+        }
+
+        &-inner {
+            &__item {
+                padding: 0 20px;
+            }
+        }
+    
+        &-navigation__button {
+            @apply inline-flex h-[40px] w-[40px] items-center justify-center shadow-md text-light-blue-500 leading-5 transform rounded-full focus:ring-2 bg-lighter-blue hover:scale-110 transition duration-200 ease-in-out absolute top-1/2 -translate-y-1/2;
+
+            &--next {
+                @apply right-0;
+            }
+
+            &--prev {
+                @apply right-auto left-0;
+            }
+        }
+
+        &-widget {
+            article {
+                &:nth-child(4),
+                &:nth-child(5),
+                &:nth-child(6),
+                &:nth-child(7),
+                &:nth-child(8),
+                &:nth-child(9) {
+                    display: none;
+                }
+            }
+        }
+    }
 }

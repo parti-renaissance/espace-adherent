@@ -77,32 +77,6 @@ class LoadArticleData extends Fixture
         ]));
 
         $manager->persist($this->articleFactory->createFromArray([
-            'title' => 'Nouvelle actualité Renaissance: Premier article renaissance.',
-            'slug' => 'article-re',
-            'description' => 'article renaissance',
-            'media' => $media,
-            'displayMedia' => true,
-            'published' => true,
-            'forRenaissance' => true,
-            'publishedAt' => $faker->dateTimeThisDecade(),
-            'category' => $newsCategory,
-            'content' => file_get_contents(__DIR__.'/../content.md'),
-        ]));
-
-        $manager->persist($this->articleFactory->createFromArray([
-            'title' => '« Nouvelle actualité Renaissance: Suivez en direct notre Congrès du 17 septembre »',
-            'slug' => 'le-congrès',
-            'description' => 'On vous donne rendez-vous le 17 septembre à 20h sur nos réseaux sociaux pour suivre l\'événement.',
-            'media' => $media,
-            'displayMedia' => true,
-            'published' => true,
-            'forRenaissance' => true,
-            'publishedAt' => $faker->dateTimeThisDecade(),
-            'category' => $newsCategory,
-            'content' => file_get_contents(__DIR__.'/../content.md'),
-        ]));
-
-        $manager->persist($this->articleFactory->createFromArray([
             'title' => '« Mes opinions »',
             'slug' => 'mes-opinions',
             'description' => 'mes-opinions',
@@ -165,6 +139,21 @@ class LoadArticleData extends Fixture
                     'content' => file_get_contents(__DIR__.'/../content.md'),
                 ]));
             }
+        }
+
+        for ($i = 1; $i <= 10; ++$i) {
+            $manager->persist($this->articleFactory->createFromArray([
+                'title' => 'Article renaissance #'.$i,
+                'slug' => 'article-renaissance-'.$i,
+                'description' => 'Article renaissance',
+                'media' => $media,
+                'displayMedia' => true,
+                'published' => true,
+                'forRenaissance' => true,
+                'publishedAt' => $faker->dateTimeThisDecade(),
+                'category' => $newsCategory,
+                'content' => file_get_contents(__DIR__.'/../content.md'),
+            ]));
         }
 
         $manager->flush();

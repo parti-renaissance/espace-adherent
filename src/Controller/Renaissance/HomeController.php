@@ -28,7 +28,7 @@ class HomeController extends AbstractController
             'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class, null, ['action' => $this->generateUrl('app_renaissance_newsletter_save')])->createView(),
             'donation_form' => $this->createForm(DonationRequestAmountType::class, null, ['action' => $this->generateUrl('app_renaissance_donation')])->createView(),
             'commitments' => $commitmentRepository->getAllOrdered(),
-            'articles' => $repository->findLatestForRenaissance(3),
+            'articles' => $repository->findLatestForRenaissance(9),
             'executive_office_members' => $executiveOfficeMemberRepository->findAllPublishedMembers(true),
         ]);
     }

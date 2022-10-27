@@ -7,7 +7,7 @@
 {% block content %}
     {% set home_block_banner = blocks['Bannière principale accueil'] %}
 
-    <section class="flex flex-col justify-between h-screen bg-cover bg-bottom pb-12 md:pb-15" style="background-image: url('{{ media_asset(home_block_banner.media) }}')">
+    <section class="flex flex-col justify-between h-screen pb-12 bg-bottom bg-cover md:pb-15" style="background-image: url('{{ media_asset(home_block_banner.media) }}')">
         <div class="flex justify-between items-center w-full border-b border-b-white/10 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
             <a href="{{ path('app_renaissance_homepage') }}"><img src="{{ asset('/images/renaissance/logo.svg') }}" alt="logo"/></a>
 
@@ -55,8 +55,8 @@
 
     <!-- Articles section -->
     {% if articles %}
-        <section class="px-4 py-12 md:py-15">
-            <div class="flex justify-center mx-auto max-w-screen-lg gap-x-3.75">
+        <section class="px-4 py-12 mx-auto overflow-hidden max-w-7xl md:py-16 lg:py-20">
+            <div class="grid gap-5 md:grid-cols-3 md:gap-8 carousel-widget">
                 {% for article in articles %}
                     {% include 'article/partial/article-item.html.twig' %}
                 {% endfor %}
@@ -66,8 +66,8 @@
 
     <section class="px-4 py-12 md:py-15 bg-lighter-blue">
         <div class="xl:container md:flex md:gap-x-28 lg:gap-x-37.5">
-            <div class="md:sticky md:top-8 flex-1 md:w-1/3">
-                <p class="text-dark-blue text-custom-xl mb-8">
+            <div class="flex-1 md:sticky md:top-8 md:w-1/3">
+                <p class="mb-8 text-dark-blue text-custom-xl">
                     Qui<br/>
                     <span class="font-bold">sommes-nous ?</span>
                 </p>
@@ -77,7 +77,7 @@
             </div>
             <div class="flex-1">
                 <p class="mb-8">
-                    <img src="{{ asset('images/renaissance/qui-sommes-nous.jpg') }}" class="rounded-lg w-full" alt="qui-sommes-nous"/>
+                    <img src="{{ asset('images/renaissance/qui-sommes-nous.jpg') }}" class="w-full rounded-lg" alt="qui-sommes-nous"/>
                 </p>
                 <p class="font-normal md:text-lg md:leading-7.5">
                     « Retrouver l’esprit de conquête de 2016, construire le parti le plus décentralisé de la Vème République, unir un collectif qui puisera ses forces sur le terrain et rassemblera toutes les sensibilités progressistes de notre pays : voilà notre feuille de route pour les mois qui viennent.
@@ -101,16 +101,16 @@
         <div class="xl:container">
             <div class="md:flex md:gap-x-28 lg:gap-x-37.5">
                 <div>
-                    <p class="text-dark-blue text-custom-xl mb-8">
+                    <p class="mb-8 text-dark-blue text-custom-xl">
                         Nos valeurs<br/>
                         <span class="font-bold">et nos engagements</span>
                     </p>
-                    <p class="text-dark-blue mb-8">
+                    <p class="mb-8 text-dark-blue">
                         Ce texte coconstruit avec l’ensemble des fondateurs du parti, engage chaque adhérent de Renaissance.
                     </p>
                 </div>
                 <div class="mb-8">
-                    <img src="{{ asset('images/renaissance/nos-valeurs.jpg') }}" class="rounded-lg w-full" alt="nos-valeurs"/>
+                    <img src="{{ asset('images/renaissance/nos-valeurs.jpg') }}" class="w-full rounded-lg" alt="nos-valeurs"/>
                 </div>
             </div>
             <div class="columns-2 md:columns-3 lg:columns-4 gap-3.75 lg:gap-10">
@@ -125,7 +125,7 @@
                             data-commitment-description="{{ commitment.description|e('html_attr') }}"
                     >
                         <h3 class="text-light-blue font-medium text-custom-xs lg:text-custom-base2 mb-2.5">{{ commitment.title }}</h3>
-                        <div class="text-medium-gray font-normal text-xs lg:text-custom-base2">{{ commitment.shortDescription }}</div>
+                        <div class="text-xs font-normal text-medium-gray lg:text-custom-base2">{{ commitment.shortDescription }}</div>
                     </div>
                 {% endfor %}
             </div>
@@ -133,11 +133,11 @@
     </section>
 
     <!-- Donation section -->
-    <section class="w-full bg-lighter-green px-4 py-12 md:py-15 text-green">
+    <section class="w-full px-4 py-12 bg-lighter-green md:py-15 text-green">
         <div class="xl:container">
             <div class="md:flex md:gap-x-28 lg:gap-x-37.5">
                 <div class="flex-1">
-                    <p class="text-custom-xl mb-8">
+                    <p class="mb-8 text-custom-xl">
                         Faites un don<br/>
                         <span class="font-bold">pour aider Renaissance</span>
                     </p>
@@ -168,7 +168,7 @@
         <div class="xl:container">
             <div class="md:flex md:gap-x-28 lg:gap-x-37.5 mb-12.5">
                 <div class="flex-1">
-                    <p class="text-dark-blue text-custom-xl mb-8">
+                    <p class="mb-8 text-dark-blue text-custom-xl">
                         Le bureau<br/>
                         <span class="font-bold">exécutif</span>
                     </p>
@@ -178,7 +178,7 @@
                 </div>
 
                 <div class="flex-1 hidden md:flex">
-                    <img src="{{ asset('images/renaissance/burex-renaissance.jpg') }}" class="rounded-lg w-full" alt="Burex"/>
+                    <img src="{{ asset('images/renaissance/burex-renaissance.jpg') }}" class="w-full rounded-lg" alt="Burex"/>
                 </div>
             </div>
 
@@ -203,9 +203,9 @@
                             <div class="flex-none first:ml-auto last:mr-auto">
                                 <div class="flex flex-col">
                                     <p>
-                                        <img src="{{ path('asset_url', {path: member.imagePath}) }}" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out mx-auto" style="height:350px;" alt="{{ member.fullName }}"/>
+                                        <img src="{{ path('asset_url', {path: member.imagePath}) }}" class="mx-auto mb-10 transition ease-in-out rounded md:mb-5 hover:scale-105" style="height:350px;" alt="{{ member.fullName }}"/>
                                     </p>
-                                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">{{ member.fullName }}</p>
+                                    <p class="text-xs font-medium leading-5 text-center text-dark-gray md:text-sm">{{ member.fullName }}</p>
                                     <p class="text-center font-normal text-xs leading-4.5 md:text-sm max-w-fit self-center">{{ member.job }}</p>
                                 </div>
                             </div>
@@ -217,7 +217,7 @@
     </section>
 
     <section class="px-4 py-12 md:py-15">
-        <div class="max-w-7xl mx-auto">
+        <div class="mx-auto max-w-7xl">
             <div class="md:flex md:gap-12.5 lg:gap-37.5 mb-12.5 lg:mb-25">
                 <div class="md:w-2/5 lg:1/3">
                     <p class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5">
@@ -228,7 +228,7 @@
                     </p>
                 </div>
                 <div class="md:w-3/5 lg:2/3">
-                    <img src="{{ asset('images/renaissance/d2d.jpg') }}" class="rounded-lg w-full" alt="d2d"/>
+                    <img src="{{ asset('images/renaissance/d2d.jpg') }}" class="w-full rounded-lg" alt="d2d"/>
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10">
@@ -237,7 +237,7 @@
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         Les comités locaux
                     </p>
-                    <p class="text-medium-gray font-normal">
+                    <p class="font-normal text-medium-gray">
                         Enracinés partout en France, les comités sont en charge de l’animation locale de la vie du parti.
                     </p>
                 </div>
@@ -246,7 +246,7 @@
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         L’assemblée départementale
                     </p>
-                    <p class="text-medium-gray font-normal">
+                    <p class="font-normal text-medium-gray">
                         Rassemblant l’ensemble des adhérents d’un département, elle élit les membres du bureau départemental qui vote à la majorité pour son Président : il est en charge de l’animation de la vie du Parti et des investitures aux élections locales.
                     </p>
                 </div>
@@ -255,7 +255,7 @@
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         Le délégué régional
                     </p>
-                    <p class="text-medium-gray font-normal">
+                    <p class="font-normal text-medium-gray">
                         Il est le Président de la région ou est nommé par les Présidents des assemblées départementales du territoire. Il participe à l’animation des Assemblées départementales.
                     </p>
                 </div>
@@ -264,7 +264,7 @@
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         L’Assemblée des territoires
                     </p>
-                    <p class="text-medium-gray font-normal">
+                    <p class="font-normal text-medium-gray">
                         Composée de tous les élus adhérents, elle sera consultée sur les orientations politiques en vue de chaque élection et pour les investitures locales.
                     </p>
                 </div>
@@ -274,7 +274,7 @@
 
     <!-- Newsletter -->
     <section class="md:px-20 md:mb-25">
-        <div class="max-w-7xl lg:mx-auto md:flex w-full">
+        <div class="w-full max-w-7xl lg:mx-auto md:flex">
             <div
                 class="bg-cover bg-bottom md:rounded-tl-lg md:rounded-bl-lg lg:w-[34.375rem] px-7.5 py-12.5 lg:px-[6.875rem] lg:py-25 min-h-[15.75rem]"
                 style="background-image: url('{{ asset('/images/renaissance/newsletter.jpg') }}')"
@@ -311,11 +311,11 @@
                         </label>
                     </div>
 
-                    <div class="text-white mb-3">
+                    <div class="mb-3 text-white">
                         {{ form_widget(newsletter_form.cguAccepted) }}
                         <label for="{{ newsletter_form.cguAccepted.vars.id }}">
                             <span>
-                                J’accepte les <a class="underline font-bold" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}" target="_blank">CGU du site</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'Politique-de-protection-des-donnees', app_domain: renaissance_host}) }}" class="underline font-bold" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations accessibles <a class="underline font-bold" href="{{ path('app_static_page', {slug: 'mentions-informations-newsletter', app_domain: renaissance_host}) }}" target="_blank">ici</a>
+                                J’accepte les <a class="font-bold underline" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}" target="_blank">CGU du site</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'Politique-de-protection-des-donnees', app_domain: renaissance_host}) }}" class="font-bold underline" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations accessibles <a class="font-bold underline" href="{{ path('app_static_page', {slug: 'mentions-informations-newsletter', app_domain: renaissance_host}) }}" target="_blank">ici</a>
                             </span>
                         </label>
                     </div>
@@ -358,7 +358,7 @@
                         ></i>
                         <i class="fa fa-facebook-f fa-stack-1x fa-inverse"></i>
                     </span>
-                    <span class="text-white font-medium text-custom-base1">Facebook</span>
+                    <span class="font-medium text-white text-custom-base1">Facebook</span>
                 </a>
                 <!-- Instagram -->
                 <a
@@ -372,7 +372,7 @@
                         ></i>
                         <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
                     </span>
-                    <span class="text-white font-medium text-custom-base1">Instagram</span>
+                    <span class="font-medium text-white text-custom-base1">Instagram</span>
                 </a>
                 <!-- Twitter -->
                 <a
@@ -386,7 +386,7 @@
                         ></i>
                         <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                     </span>
-                    <span class="text-white font-medium text-custom-base1">Twitter</span>
+                    <span class="font-medium text-white text-custom-base1">Twitter</span>
                 </a>
                 <!-- Youtube -->
                 <a
@@ -400,7 +400,7 @@
                         ></i>
                         <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
                     </span>
-                    <span class="text-white font-medium text-custom-base1">Youtube</span>
+                    <span class="font-medium text-white text-custom-base1">Youtube</span>
                 </a>
                 <!-- Tik Tok -->
                 <a
@@ -425,7 +425,7 @@
                         ></i>
                         <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
                     </span>
-                    <span class="text-white font-medium text-custom-base1">LinkedIn</span>
+                    <span class="font-medium text-white text-custom-base1">LinkedIn</span>
                 </a>
             </div>
         </div>
