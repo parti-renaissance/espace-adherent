@@ -4,20 +4,16 @@ export default class Carousel {
    * @param {Object} options
    * @param {Object} [options.slidesVisible=3] Le nombre d'éléments à faire afficher.
    * @param {Object} [options.slidesToScroll=1] Le nombre d'éléments à défiler.
-   * @param {Object} [options.spaceBetween=20] L'espace entre les éléments.'
    * @param {Object} [options.loop=false] Determine si le carousel scroll a l'infini.
    * @param {Object} [options.navigation=true] Permet de definir si la navigation s'affiche ou pas.
-   * @param {Object} [options.pagination=false] Permet de definir si la pagination s'affiche ou pas.
    */
    constructor(element, options = {}) {
         this.element = element;
         this.options = {
           slidesVisible: 1,
           slidesToScroll: 1,
-          spaceBetween: 20,
           loop: false,
           navigation: true,
-          pagination: false,
           ...options,
         };
 
@@ -31,7 +27,7 @@ export default class Carousel {
         
         this.root.appendChild(this.carouselInner);
         this.element.appendChild(this.root);
-        this.element.classList.remove('grid', 'grid-cols-3', 'gap-8');
+        this.element.classList.remove('grid', 'md:grid-cols-3', 'md:gap-8', 'gap-5');
 
         this.items = children.map((child) => {
             let item = this.createDivElement('carousel-inner__item');
@@ -59,10 +55,6 @@ export default class Carousel {
 
     get slidesVisible() {
         return this.isMobile ? 1 : this.options.slidesVisible;
-    }
-
-    get spaceBetween() {
-        return this.isMobile ? 10 : this.options.spaceBetween;
     }
 
     onWindowResize() {
@@ -112,8 +104,6 @@ export default class Carousel {
             }
         });
     }
-
-    createPagination() {}
 
     next() {
         this.goToSlide(this.currentSlide + this.slidesToScroll);
