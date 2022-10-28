@@ -46,7 +46,7 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
         if ($filter instanceof MessageFilter) {
-            $zone = current($filter->getZones());
+            $zone = $filter->getZones()->first();
         } else {
             $zone = $filter->getZone();
         }
