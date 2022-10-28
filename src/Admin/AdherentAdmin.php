@@ -295,7 +295,7 @@ class AdherentAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Coordinateur', ['class' => 'col-md-3'])
-                ->add('isCoordinator', 'boolean', [
+                ->add('isRegionalCoordinator', 'boolean', [
                     'label' => 'Est coordinateur ?',
                 ])
             ->end()

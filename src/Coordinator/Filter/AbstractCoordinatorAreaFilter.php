@@ -2,7 +2,6 @@
 
 namespace App\Coordinator\Filter;
 
-use App\Entity\Adherent;
 use App\Entity\BaseGroup;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,8 +12,6 @@ abstract class AbstractCoordinatorAreaFilter
     public const PARAMETER_STATUS = 's';
     private const PARAMETER_OFFSET = 'o';
 
-    /** @var Adherent */
-    protected $coordinator;
     protected $offset = 0;
     private $count = 0;
     private $status;
@@ -25,12 +22,8 @@ abstract class AbstractCoordinatorAreaFilter
 
     abstract protected function getAvailableStatus(): array;
 
-    abstract protected function getCoordinatorAreaCodes(): array;
-
     final public function apply(QueryBuilder $qb, string $alias): void
     {
-        $this->applyGeoFilter($qb, $alias);
-
         $qb
             ->andWhere(sprintf('%s.status = :status', $alias))
             ->setParameter('status', $this->getStatus())
@@ -100,16 +93,6 @@ abstract class AbstractCoordinatorAreaFilter
     final public function getLimit(): int
     {
         return self::PER_PAGE;
-    }
-
-    public function getCoordinator(): Adherent
-    {
-        return $this->coordinator;
-    }
-
-    public function setCoordinator(Adherent $coordinator): void
-    {
-        $this->coordinator = $coordinator;
     }
 
     public function getQueryStringForOffset(?int $offset): string

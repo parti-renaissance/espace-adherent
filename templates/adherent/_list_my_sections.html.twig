@@ -39,7 +39,7 @@
         </li>
     {% endfor %}
 {% endif %}
-{% if app.user.isCoordinatorCommitteeSector %}
+{% if app.user.isRegionalCoordinator %}
     <li>
         <a href="{{ path('app_access_delegation_unset', {type: 'coordinator_committees', s: constant('App\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
     </li>

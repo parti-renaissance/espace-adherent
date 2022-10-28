@@ -104,6 +104,11 @@ class UpdateCoordinatorManagedAreaToZoneBasedRoleCommand extends Command
             $paginator->getQuery()->setFirstResult($offset);
             $this->entityManager->clear();
         } while ($offset < $count && (!$limit || $offset < $limit));
+
+        $this->io->progressFinish();
+        $this->io->note($offset.' account(s) updated');
+
+        return 0;
     }
 
     private function getQueryBuilder(): Paginator

@@ -60,6 +60,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public const ADHERENT_19_UUID = '1529f096-12d7-42bb-8c98-a4966a730e2a';
     public const COORDINATOR_1_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
     public const COORDINATOR_2_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
+    public const COORDINATOR_3_UUID = '4663329b-4e73-4f1a-8139-add08f9b50be';
     public const REFERENT_1_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
     public const REFERENT_2_UUID = '2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf';
     public const REFERENT_3_UUID = 'e1bee762-4dc1-42f6-9884-1c83ba9c6d17';
@@ -632,6 +633,24 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $coordinatorCP->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $this->addReference('adherent-17', $coordinatorCP);
 
+        $coordinatorIdf = $this->adherentFactory->createFromArray([
+            'uuid' => self::COORDINATOR_3_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'coordinateur-3@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Coordinateur IDF',
+            'last_name' => 'Coordinateur IDF',
+            'address' => $this->createPostAddress('75 Avenue Aristide Briand', '94110-94003', null, 48.805347, 2.325805),
+            'birthdate' => '1970-04-10',
+            'position' => 'employed',
+            'phone' => '+33665859054',
+            'registered_at' => '2020-09-20 15:31:21',
+        ]);
+        $coordinatorIdf->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $coordinatorIdf->addReferentTag($this->getReference('referent_tag_13'));
+        $coordinatorIdf->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_13'));
+        $coordinatorIdf->addZoneBasedRole(AdherentZoneBasedRole::createRegionalCoordinator([LoadGeoZoneData::getZoneReference($manager, 'zone_region_93')]));
+
         $deputy_75_1 = $this->adherentFactory->createFromArray([
             'uuid' => self::DEPUTY_1_UUID,
             'password' => self::DEFAULT_PASSWORD,
@@ -1173,6 +1192,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $key31 = AdherentActivationToken::generate($deputy_75_2);
         $key32 = AdherentActivationToken::generate($adherent19);
         $key33 = AdherentActivationToken::generate($senatorialCandidate);
+        $key34 = AdherentActivationToken::generate($coordinatorIdf);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -1195,6 +1215,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $referent->activate($key8, '2017-02-07 13:20:45');
         $coordinator->activate($key16, '2017-09-20 17:44:32');
         $coordinatorCP->activate($key17, '2018-01-20 14:34:11');
+        $coordinatorIdf->activate($key34, '2020-09-20 16:31:21');
         $referentChild->activate($key18, '2017-02-07 13:20:45');
         $referent75and77->activate($key19, '2018-05-13 07:21:01');
         $deputy_75_1->activate($key20, '2017-06-01 12:14:51');
@@ -1232,6 +1253,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $manager->persist($referentChild);
         $manager->persist($coordinator);
         $manager->persist($coordinatorCP);
+        $manager->persist($coordinatorIdf);
         $manager->persist($deputy_75_1);
         $manager->persist($deputy_75_2);
         $manager->persist($deputy_ch_li);
@@ -1282,6 +1304,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $manager->persist($key27);
         $manager->persist($key31);
         $manager->persist($key33);
+        $manager->persist($key34);
 
         $manager->persist($resetPasswordToken);
 

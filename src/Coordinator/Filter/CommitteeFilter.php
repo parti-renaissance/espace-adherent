@@ -14,13 +14,4 @@ class CommitteeFilter extends AbstractCoordinatorAreaFilter
             Committee::PRE_REFUSED,
         ];
     }
-
-    protected function getCoordinatorAreaCodes(): array
-    {
-        if ($this->coordinator->isCoordinatorCommitteeSector()) {
-            return $this->coordinator->getCoordinatorCommitteeArea()->getCodes();
-        }
-
-        return [];
-    }
 }
