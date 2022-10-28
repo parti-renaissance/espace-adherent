@@ -129,33 +129,6 @@ abstract class AbstractCoordinatorAreaFilter
         return $parameters ?? [];
     }
 
-    private function applyGeoFilter(QueryBuilder $qb, string $alias): void
-    {
-        $codesFilter = $qb->expr()->orX();
-
-        foreach ($this->getCoordinatorAreaCodes() as $key => $code) {
-            if (is_numeric($code)) {
-                // Postal code prefix
-                $codesFilter->add(
-                    $qb->expr()->andX(
-                        $alias.'.postAddress.country = \'FR\'',
-                        $qb->expr()->like($alias.'.postAddress.postalCode', ':code'.$key)
-                    )
-                );
-
-                $qb->setParameter('code'.$key, $code.'%');
-            } else {
-                // Country
-                $codesFilter->add($qb->expr()->eq($alias.'.postAddress.country', ':code'.$key));
-                $qb->setParameter('code'.$key, $code);
-            }
-        }
-
-        if ($codesFilter->count()) {
-            $qb->andWhere($codesFilter);
-        }
-    }
-
     private function updateCount(QueryBuilder $qb, string $alias): void
     {
         $qbCount = clone $qb;
