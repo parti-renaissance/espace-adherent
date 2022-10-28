@@ -478,6 +478,71 @@ Feature:
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
+    Scenario: As a user with supervisor role I can get adherents of my zones
+        Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents?scope=supervisor"
+        Then the response status code should be 200
+        Then print last JSON response
+        And the JSON should be equal to:
+        """
+        {
+            "metadata": {
+                "total_items": 2,
+                "items_per_page": 100,
+                "count": 2,
+                "current_page": 1,
+                "last_page": 1
+            },
+            "items": [
+                {
+                    "postal_code": "75008",
+                    "city": "Paris 8ème",
+                    "country": "FR",
+                    "first_name": "Député",
+                    "last_name": "PARIS I",
+                    "gender": "male",
+                    "interests": [
+                        "europe",
+                        "numerique"
+                    ],
+                    "renaissance_membership": null,
+                    "city_code": "75056",
+                    "department_code": "75",
+                    "department": "Paris",
+                    "region_code": "11",
+                    "region": "Île-de-France",
+                    "sms_subscription": true,
+                    "email_subscription": true
+                },
+                {
+                    "postal_code": "75008",
+                    "city": "Paris 8ème",
+                    "country": "FR",
+                    "first_name": "Jacques",
+                    "last_name": "Picard",
+                    "gender": "male",
+                    "interests": [
+                        "europe",
+                        "numerique",
+                        "sante"
+                    ],
+                    "renaissance_membership": null,
+                    "city_code": "75056",
+                    "department_code": "75",
+                    "department": "Paris",
+                    "region_code": "11",
+                    "region": "Île-de-France",
+                    "sms_subscription": true,
+                    "email_subscription": true
+                }
+            ]
+        }
+        """
+        When I send a "GET" request to "/api/v3/adherents?scope=supervisor&interests[]=sante"
+        Then the response status code should be 200
+        And the JSON nodes should match:
+            | metadata.total_items  | 1 |
+
   Scenario: As a user with correspondent role I can get adherents of my zones
     Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/adherents?scope=correspondent"

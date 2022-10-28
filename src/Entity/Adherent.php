@@ -2971,6 +2971,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         })->count() > 0;
     }
 
+    /** @return CommitteeAdherentMandate[]|Collection */
     public function getSupervisorMandates(bool $isProvisional = null, string $gender = null): Collection
     {
         return $this->adherentMandates->filter(static function (AdherentMandateInterface $mandate) use ($gender, $isProvisional) {
