@@ -5,9 +5,8 @@ namespace App\Form\Renaissance\Donation;
 use App\Address\Address;
 use App\Donation\DonationRequest;
 use App\Form\AutocompleteAddressType;
-use App\ValueObject\Genders;
+use App\Form\CivilityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,12 +20,8 @@ class DonationRequestDonatorType extends AbstractType
         $fromAdherent = $options['from_adherent'];
 
         $builder
-            ->add('gender', ChoiceType::class, [
-                'choices' => Genders::CIVILITY_CHOICES,
-                'translation_domain' => 'messages',
+            ->add('gender', CivilityType::class, [
                 'disabled' => $fromAdherent,
-                'expanded' => true,
-                'placeholder' => '',
             ])
             ->add('firstName', TextType::class, [
                 'format_identity_case' => true,

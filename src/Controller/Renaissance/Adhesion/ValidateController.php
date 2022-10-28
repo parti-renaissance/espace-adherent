@@ -60,8 +60,8 @@ class ValidateController extends AbstractController
             return $this->redirectToRoute('app_renaissance_adhesion_additional_informations');
         }
 
-        return $this->render('renaissance/adhesion/validate.html.twig', [
-            'adherent_request' => $adherentRequest,
-        ]);
+        $request->getSession()->set(PaymentController::AMOUNT_SESSION_KEY, $adherentRequest->amount);
+
+        return $this->redirectToRoute('app_renaissance_adhesion_complete_profil');
     }
 }

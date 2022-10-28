@@ -1,12 +1,7 @@
 .mention-checkbox-container {
     .form__checkbox {
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-
         label {
             flex-grow: 1;
-            cursor: pointer;
             margin-left: 8px;
             padding: 8px;
             border: 1px solid lighten($disable-grey, 10%);
@@ -14,13 +9,13 @@
             border-radius: .5rem;
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
-
-            &:hover {
-                border-color: $dark-blue;
-            }
         }
 
-        input:checked + label {
+        &:not(:disabled) + label:hover {
+            border-color: $dark-blue;
+        }
+
+        &:checked + label {
             border-color: $dark-blue;
             position: relative;
 

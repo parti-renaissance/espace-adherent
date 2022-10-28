@@ -20,6 +20,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class PaymentController extends AbstractAdhesionController
 {
+    public const AMOUNT_SESSION_KEY = 'adhesion_amount';
+
     /**
      * @Route(path="/adhesion/pre-paiement", name="app_renaissance_adhesion_pre_payment", methods={"GET"})
      *
