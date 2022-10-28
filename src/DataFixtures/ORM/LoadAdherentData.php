@@ -3,7 +3,6 @@
 namespace App\DataFixtures\ORM;
 
 use App\Address\Address;
-use App\Coordinator\CoordinatorAreaSectors;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentCharter\CandidateCharter;
@@ -17,7 +16,6 @@ use App\Entity\AdherentZoneBasedRole;
 use App\Entity\AssessorRoleAssociation;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
-use App\Entity\CoordinatorManagedArea;
 use App\Entity\LreArea;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MunicipalChiefManagedArea;
@@ -610,9 +608,9 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-09-20 15:31:21',
         ]);
         $coordinator->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $coordinator->setCoordinatorCommitteeArea(new CoordinatorManagedArea(['77', '92', '94', '59'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
-        $coordinator->addReferentTag($this->getReference('referent_tag_94'));
-        $coordinator->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_94'));
+        $coordinator->addReferentTag($this->getReference('referent_tag_13'));
+        $coordinator->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_13'));
+        $coordinator->addZoneBasedRole(AdherentZoneBasedRole::createRegionalCoordinator([LoadGeoZoneData::getZoneReference($manager, 'zone_region_93')]));
 
         $coordinatorCP = $this->adherentFactory->createFromArray([
             'uuid' => self::COORDINATOR_2_UUID,
@@ -632,24 +630,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $coordinatorCP->addReferentTag($this->getReference('referent_tag_75008'));
         $coordinatorCP->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $this->addReference('adherent-17', $coordinatorCP);
-
-        $coordinatorIdf = $this->adherentFactory->createFromArray([
-            'uuid' => self::COORDINATOR_3_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'coordinateur-3@en-marche-dev.fr',
-            'gender' => 'male',
-            'first_name' => 'Coordinateur IDF',
-            'last_name' => 'Coordinateur IDF',
-            'address' => $this->createPostAddress('75 Avenue Aristide Briand', '94110-94003', null, 48.805347, 2.325805),
-            'birthdate' => '1970-04-10',
-            'position' => 'employed',
-            'phone' => '+33665859054',
-            'registered_at' => '2020-09-20 15:31:21',
-        ]);
-        $coordinatorIdf->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $coordinatorIdf->addReferentTag($this->getReference('referent_tag_13'));
-        $coordinatorIdf->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_13'));
-        $coordinatorIdf->addZoneBasedRole(AdherentZoneBasedRole::createRegionalCoordinator([LoadGeoZoneData::getZoneReference($manager, 'zone_region_93')]));
 
         $deputy_75_1 = $this->adherentFactory->createFromArray([
             'uuid' => self::DEPUTY_1_UUID,
@@ -1192,7 +1172,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $key31 = AdherentActivationToken::generate($deputy_75_2);
         $key32 = AdherentActivationToken::generate($adherent19);
         $key33 = AdherentActivationToken::generate($senatorialCandidate);
-        $key34 = AdherentActivationToken::generate($coordinatorIdf);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -1215,7 +1194,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $referent->activate($key8, '2017-02-07 13:20:45');
         $coordinator->activate($key16, '2017-09-20 17:44:32');
         $coordinatorCP->activate($key17, '2018-01-20 14:34:11');
-        $coordinatorIdf->activate($key34, '2020-09-20 16:31:21');
         $referentChild->activate($key18, '2017-02-07 13:20:45');
         $referent75and77->activate($key19, '2018-05-13 07:21:01');
         $deputy_75_1->activate($key20, '2017-06-01 12:14:51');
@@ -1253,7 +1231,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $manager->persist($referentChild);
         $manager->persist($coordinator);
         $manager->persist($coordinatorCP);
-        $manager->persist($coordinatorIdf);
         $manager->persist($deputy_75_1);
         $manager->persist($deputy_75_2);
         $manager->persist($deputy_ch_li);
@@ -1304,7 +1281,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $manager->persist($key27);
         $manager->persist($key31);
         $manager->persist($key33);
-        $manager->persist($key34);
 
         $manager->persist($resetPasswordToken);
 

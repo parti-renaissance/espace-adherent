@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Coordinator\CoordinatorAreaSectors;
 use App\Entity\Adherent;
 use App\Entity\AdherentZoneBasedRole;
 use App\Entity\Geo\Zone;
@@ -41,7 +40,7 @@ class UpdateCoordinatorManagedAreaToZoneBasedRoleCommand extends Command
     {
         $this
             ->setDescription('Migrate coordinator managed committees areas to Zone based role')
-            ->addOption('limit', null, InputOption::VALUE_OPTIONAL)
+            ->addOption('limit', null, InputOption::VALUE_REQUIRED)
         ;
     }
 
@@ -58,7 +57,7 @@ class UpdateCoordinatorManagedAreaToZoneBasedRoleCommand extends Command
         $count = $paginator->count();
         $total = $limit && $limit < $count ? $limit : $count;
 
-        if (false === $this->io->confirm(sprintf('Are you sure to update %d Coordinator account(s)?', $total), false)) {
+        if (false === $this->io->confirm(sprintf('Are you sure to update %d Coordinator(s) account(s)?', $total), false)) {
             return 1;
         }
 
@@ -67,6 +66,7 @@ class UpdateCoordinatorManagedAreaToZoneBasedRoleCommand extends Command
         $this->io->progressStart($total);
         $offset = 0;
 
+        $this->entityManager->beginTransaction();
         do {
             /** @var Adherent $adherent */
             foreach ($paginator as $adherent) {
@@ -102,8 +102,10 @@ class UpdateCoordinatorManagedAreaToZoneBasedRoleCommand extends Command
             }
 
             $paginator->getQuery()->setFirstResult($offset);
-            $this->entityManager->clear();
         } while ($offset < $count && (!$limit || $offset < $limit));
+
+        $this->entityManager->flush();
+        $this->entityManager->commit();
 
         $this->io->progressFinish();
         $this->io->note($offset.' account(s) updated');
@@ -117,7 +119,7 @@ class UpdateCoordinatorManagedAreaToZoneBasedRoleCommand extends Command
             ->createQueryBuilder('adherent')
             ->leftJoin('adherent.coordinatorCommitteeArea', 'coordinatorCommitteeArea')
             ->where('coordinatorCommitteeArea IS NOT NULL AND coordinatorCommitteeArea.sector = :sector')
-            ->setParameter('sector', CoordinatorAreaSectors::COMMITTEE_SECTOR)
+            ->setParameter('sector', 'committee_sector')
         ;
 
         return new Paginator($queryBuilder->getQuery());

@@ -37,7 +37,7 @@ class CoordinatorControllerTest extends WebTestCase
 
     public function testCoordinatorCommitteeBackendIsAccessibleForCoordinator()
     {
-        $this->authenticateAsAdherent($this->client, 'coordinateur-3@en-marche-dev.fr');
+        $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites/list');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -45,7 +45,7 @@ class CoordinatorControllerTest extends WebTestCase
 
     public function testPreAcceptCommitteeWithSuccess()
     {
-        $this->authenticateAsAdherent($this->client, 'coordinateur-3@en-marche-dev.fr');
+        $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/evenements');
         $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur régional')->link());
@@ -76,7 +76,7 @@ class CoordinatorControllerTest extends WebTestCase
 
     public function testPreRefuseCommitteeWithSuccess()
     {
-        $this->authenticateAsAdherent($this->client, 'coordinateur-3@en-marche-dev.fr');
+        $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/evenements');
         $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur régional')->link());

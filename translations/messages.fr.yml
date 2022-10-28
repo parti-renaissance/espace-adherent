@@ -501,7 +501,6 @@ recaptcha.error: Une erreur s'est produite, pouvez-vous réessayer ?
 #
 coordinator.sector.committee: Secteur - Comités
 coordinator.label.codes: Responsable procurations
-coordinator.label.codes.committee: Codes des zones gérées dans le secteur "Comité"
 coordinator.placeholder.sector: Veuillez choisir un secteur
 
 #

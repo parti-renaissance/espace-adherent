@@ -27,7 +27,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "female":25,"male":39,"total":64
+      "female":25,"male":38,"total":63
     }
     """
 
