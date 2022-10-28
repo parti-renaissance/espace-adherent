@@ -1,4 +1,8 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
+    presets: [
+        require('./tailwind.config.site'),
+    ],
     content: [
         'templates/**/*.html.twig',
         'assets/**/*.js',
@@ -13,28 +17,6 @@ module.exports = {
             xl: '1280px',
         },
         extend: {
-            fontFamily: {
-                maax: 'Maax',
-                din: 'Din',
-            },
-            colors: {
-                'lighter-blue': '#EDF5FF',
-                'light-blue': '#73C0F1',
-                'light-blue-500': '#1254D8',
-                'dark-blue': '#00205F',
-                'lighter-green': '#2EA78F14',
-                'light-green': '#DAF5EF',
-                green: '#2EA78F',
-                gray: '#EEEEEE',
-                'medium-gray': '#555555',
-                'background-gray': '#F9F9F9;',
-                'dark-gray': '#222222',
-                'gray-border': '#DDDDDD',
-                yellow: '#FFDC6B',
-                'white-slate': '#FDFDFD',
-                'light-red': '#FFC9D4',
-                red: '#F00032',
-            },
             spacing: {
                 3.25: '0.8125rem',
                 3.75: '0.9375rem',
@@ -87,12 +69,7 @@ module.exports = {
             },
         },
     },
-    safelist: [
-        'form-group',
-        'form-control',
-    ],
     plugins: [
-        require('@tailwindcss/forms')({ strategy: 'base' }),
         require('@tailwindcss/line-clamp'),
     ],
 };
