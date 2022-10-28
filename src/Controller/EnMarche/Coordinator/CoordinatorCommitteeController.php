@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-coordinateur/comites")
- * @Security("has_role('ROLE_COORDINATOR_COMMITTEE')")
+ * @Security("has_role('ROLE_REGIONAL_COORDINATOR')")
  */
 class CoordinatorCommitteeController extends AbstractController
 {

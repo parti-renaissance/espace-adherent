@@ -25,7 +25,7 @@
                 is_granted('ROLE_DEPUTY') or
                 is_granted('ROLE_SENATOR') or
                 is_granted('ROLE_BOARD_MEMBER') or
-                is_granted('ROLE_COORDINATOR') or
+                is_granted('ROLE_REGIONAL_COORDINATOR') or
                 is_granted('ROLE_PROCURATION_MANAGER') or
                 is_granted('ROLE_LEGISLATIVE_CANDIDATE') or
                 is_granted('ROLE_ASSESSOR_MANAGER') or
@@ -48,7 +48,7 @@
                     (app.user.isReferent or app.user.isCoReferent) +
                     app.user.isDeputy +
                     app.user.isSenator +
-                    app.user.isCoordinatorCommitteeSector +
+                    app.user.isRegionalCoordinator +
                     app.user.isProcurationManager +
                     app.user.isAssessorManager +
                     app.user.isMunicipalChief +

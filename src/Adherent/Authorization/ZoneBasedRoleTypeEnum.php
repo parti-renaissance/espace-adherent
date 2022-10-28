@@ -11,6 +11,7 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::CORRESPONDENT,
         ScopeEnum::LEGISLATIVE_CANDIDATE,
         ScopeEnum::DEPUTY,
+        ScopeEnum::REGIONAL_COORDINATOR,
     ];
 
     public const ZONE_TYPES = [
@@ -24,6 +25,9 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::DEPUTY => [
             Zone::DISTRICT,
             Zone::FOREIGN_DISTRICT,
+        ],
+        ScopeEnum::REGIONAL_COORDINATOR => [
+            Zone::REGION,
         ],
     ];
 }

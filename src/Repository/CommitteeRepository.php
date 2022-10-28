@@ -340,7 +340,7 @@ class CommitteeRepository extends ServiceEntityRepository
 
     public function findManagedByCoordinator(Adherent $coordinator, CommitteeFilter $filter): array
     {
-        if (!$coordinator->isCoordinatorCommitteeSector()) {
+        if (!$coordinator->isRegionalCoordinator()) {
             return [];
         }
 
@@ -350,7 +350,16 @@ class CommitteeRepository extends ServiceEntityRepository
             ->orderBy('c.createdAt', 'DESC')
         ;
 
-        $filter->setCoordinator($coordinator);
+        $this->withGeoZones(
+            $coordinator->getRegionalCoordinatorZone(),
+            $qb,
+            'c',
+            Committee::class,
+            'c2',
+            'zones',
+            'z2'
+        );
+
         $filter->apply($qb, 'c');
 
         return $qb->getQuery()->getResult();

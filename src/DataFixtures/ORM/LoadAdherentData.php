@@ -3,7 +3,6 @@
 namespace App\DataFixtures\ORM;
 
 use App\Address\Address;
-use App\Coordinator\CoordinatorAreaSectors;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentCharter\CandidateCharter;
@@ -17,7 +16,6 @@ use App\Entity\AdherentZoneBasedRole;
 use App\Entity\AssessorRoleAssociation;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
-use App\Entity\CoordinatorManagedArea;
 use App\Entity\LreArea;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MunicipalChiefManagedArea;
@@ -60,6 +58,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public const ADHERENT_19_UUID = '1529f096-12d7-42bb-8c98-a4966a730e2a';
     public const COORDINATOR_1_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
     public const COORDINATOR_2_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
+    public const COORDINATOR_3_UUID = '4663329b-4e73-4f1a-8139-add08f9b50be';
     public const REFERENT_1_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
     public const REFERENT_2_UUID = '2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf';
     public const REFERENT_3_UUID = 'e1bee762-4dc1-42f6-9884-1c83ba9c6d17';
@@ -609,9 +608,9 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-09-20 15:31:21',
         ]);
         $coordinator->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $coordinator->setCoordinatorCommitteeArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
-        $coordinator->addReferentTag($this->getReference('referent_tag_94'));
-        $coordinator->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_94'));
+        $coordinator->addReferentTag($this->getReference('referent_tag_13'));
+        $coordinator->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_13'));
+        $coordinator->addZoneBasedRole(AdherentZoneBasedRole::createRegionalCoordinator([LoadGeoZoneData::getZoneReference($manager, 'zone_region_93')]));
 
         $coordinatorCP = $this->adherentFactory->createFromArray([
             'uuid' => self::COORDINATOR_2_UUID,

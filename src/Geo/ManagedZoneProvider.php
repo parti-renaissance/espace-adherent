@@ -66,6 +66,10 @@ class ManagedZoneProvider
             return [$adherent->getLegislativeCandidateZone()];
         }
 
+        if (AdherentSpaceEnum::REGIONAL_COORDINATOR === $spaceType) {
+            return $adherent->getRegionalCoordinatorZone();
+        }
+
         throw new \InvalidArgumentException(sprintf('Invalid "%s" space type', $spaceType));
     }
 

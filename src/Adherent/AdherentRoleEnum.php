@@ -22,8 +22,6 @@ class AdherentRoleEnum extends Enum
 
     public const BOARD_MEMBER = 'board_member';
 
-    public const COORDINATOR = 'coordinator';
-
     public const PROCURATION_MANAGER = 'procuration_manager';
     public const ASSESSOR_MANAGER = 'assessor_manager';
     public const ASSESSOR = 'assessor';

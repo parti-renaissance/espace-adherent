@@ -29,7 +29,7 @@
 {% endblock %}
 
 {% block adherent_space_header_title %}
-    Zones gérées : <span class="text--black text--bold">{{ app.user.coordinatorCommitteeArea }}</span>
+    Zones gérées : <span class="text--black text--bold">{{ app.user.regionalCoordinatorZone|join(', ') }}</span>
 {% endblock %}
 
 {% block coordinator_nav %}Comités{% endblock %}

@@ -65,6 +65,17 @@ class AdherentZoneBasedRole
         return $role;
     }
 
+    public static function createRegionalCoordinator(array $zones): self
+    {
+        $role = new self(ScopeEnum::REGIONAL_COORDINATOR);
+
+        foreach ($zones as $zone) {
+            $role->addZone($zone);
+        }
+
+        return $role;
+    }
+
     public function getType(): ?string
     {
         return $this->type;
