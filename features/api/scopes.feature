@@ -196,6 +196,30 @@ Feature:
     """
     [
       {
+        "code": "supervisor",
+        "name": "Superviseur",
+        "zones": [
+          {
+            "uuid": "e3f0cc51-906e-11eb-a875-0242ac150002",
+            "code": "77-1",
+            "name": "Seine-et-Marne (1)"
+          },
+          {
+            "uuid": "e3f29ef5-906e-11eb-a875-0242ac150002",
+            "code": "77152",
+            "name": "Dammarie-les-Lys"
+          },
+          {
+            "uuid": "e3f0e92b-906e-11eb-a875-0242ac150002",
+            "code": "91-1",
+            "name": "Essonne (1)"
+          }
+        ],
+        "apps": [
+          "data_corner"
+        ]
+      },
+      {
         "code": "delegated_96076afb-2243-4251-97fe-8201d50c3256",
         "name": "Délégué de circonscription délégué",
         "zones": [

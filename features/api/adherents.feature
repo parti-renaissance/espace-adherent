@@ -482,7 +482,6 @@ Feature:
         Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "GET" request to "/api/v3/adherents?scope=supervisor"
         Then the response status code should be 200
-        Then print last JSON response
         And the JSON should be equal to:
         """
         {

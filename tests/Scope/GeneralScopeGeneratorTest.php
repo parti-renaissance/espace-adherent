@@ -187,6 +187,21 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'apps' => ['jemarche'],
             ],
             [
+                'code' => 'supervisor',
+                'apps' => ['data_corner'],
+                'zones' => [
+                    [
+                        'code' => '75-1',
+                        'name' => 'Paris (1)',
+                    ],
+                    [
+                        'code' => '75108',
+                        'name' => 'Paris 8ème',
+                    ],
+                ],
+                'features' => ['dashboard', 'contacts', 'messages', 'events', 'my_team', 'mobile_app', 'news', 'elections', 'ripostes', 'pap', 'pap_v2', 'team', 'phoning_campaign', 'survey'],
+            ],
+            [
                 'code' => 'delegated_433e368f-fd4e-4a24-9f01-b667f8e3b9f2',
                 'zones' => [
                     [
