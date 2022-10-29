@@ -4,17 +4,19 @@ namespace App\Admin;
 
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Committee\CommitteeEvent;
-use App\Committee\CommitteeManager;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Events;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
@@ -30,20 +32,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
-
-    protected $accessMapping = [
-        'approve' => 'APPROVE',
-    ];
-
-    private $manager;
     private $committeeMembershipRepository;
-    private $cachedDatagrid;
     private $committeeRepository;
     private $adherentRepository;
     private $dispatcher;
@@ -52,42 +41,33 @@ class CommitteeAdmin extends AbstractAdmin
         $code,
         $class,
         $baseControllerName,
-        CommitteeManager $manager,
         ObjectManager $om,
         EventDispatcherInterface $dispatcher
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->manager = $manager;
         $this->committeeMembershipRepository = $om->getRepository(CommitteeMembership::class);
         $this->committeeRepository = $om->getRepository(Committee::class);
         $this->adherentRepository = $om->getRepository(Adherent::class);
         $this->dispatcher = $dispatcher;
     }
 
-    public function getDatagrid()
+    protected function configureDefaultSortValues(array &$sortValues): void
     {
-        if (!$this->cachedDatagrid) {
-            $this->cachedDatagrid = new CommitteeDatagrid(parent::getDatagrid(), $this->manager);
-        }
+        parent::configureDefaultSortValues($sortValues);
 
-        return $this->cachedDatagrid;
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
-    public function getTemplate($name)
+    protected function getAccessMapping(): array
     {
-        if ('show' === $name) {
-            return 'admin/committee/show.html.twig';
-        }
-
-        if ('edit' === $name) {
-            return 'admin/committee/edit.html.twig';
-        }
-
-        return parent::getTemplate($name);
+        return [
+            'approve' => 'APPROVE',
+        ];
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
             ->remove('create')
@@ -96,7 +76,7 @@ class CommitteeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->with('Comité', ['class' => 'col-md-7'])
@@ -162,12 +142,12 @@ class CommitteeAdmin extends AbstractAdmin
         ;
     }
 
-    public function postUpdate($object)
+    protected function postUpdate(object $object): void
     {
         $this->dispatcher->dispatch(new CommitteeEvent($object), Events::COMMITTEE_UPDATED);
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Comité', ['class' => 'col-md-7'])
@@ -212,7 +192,7 @@ class CommitteeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $committeeMembershipRepository = $this->committeeMembershipRepository;
         $committeeRepository = $this->committeeRepository;
@@ -235,13 +215,13 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Prénom de l\'animateur/créateur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository, $adherentRepository, $committeeRepository) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) use ($committeeMembershipRepository, $adherentRepository, $committeeRepository) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
-                    $creatorCommitteeIds = $committeeRepository->findCommitteesUuidByCreatorUuids($adherentRepository->findAdherentsUuidByFirstName($value['value']));
-                    $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostFirstName($value['value']);
+                    $creatorCommitteeIds = $committeeRepository->findCommitteesUuidByCreatorUuids($adherentRepository->findAdherentsUuidByFirstName($value->getValue()));
+                    $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostFirstName($value->getValue());
                     if (!$creatorCommitteeIds && !$hostCommitteeIds) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
@@ -259,13 +239,13 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Nom de l\'animateur/créateur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository, $committeeRepository, $adherentRepository) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) use ($committeeMembershipRepository, $committeeRepository, $adherentRepository) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
-                    $creatorCommitteeIds = $committeeRepository->findCommitteesUuidByCreatorUuids($adherentRepository->findAdherentsUuidByLastName($value['value']));
-                    $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostLastName($value['value']);
+                    $creatorCommitteeIds = $committeeRepository->findCommitteesUuidByCreatorUuids($adherentRepository->findAdherentsUuidByLastName($value->getValue()));
+                    $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostLastName($value->getValue());
                     if (!$creatorCommitteeIds && !$hostCommitteeIds) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
@@ -283,13 +263,13 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Email de l\'animateur/créateur',
                 'show_filter' => true,
                 'field_type' => EmailType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($committeeMembershipRepository, $adherentRepository, $committeeRepository) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) use ($committeeMembershipRepository, $adherentRepository, $committeeRepository) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
-                    $creatorCommitteeIds = $committeeRepository->findCommitteesUuidByCreatorUuids($adherentRepository->findAdherentsUuidByEmailAddress($value['value']));
-                    $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostEmailAddress($value['value']);
+                    $creatorCommitteeIds = $committeeRepository->findCommitteesUuidByCreatorUuids($adherentRepository->findAdherentsUuidByEmailAddress($value->getValue()));
+                    $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostEmailAddress($value->getValue());
                     if (!$creatorCommitteeIds && !$hostCommitteeIds) {
                         // Force no results when no user is found
                         $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
@@ -304,9 +284,12 @@ class CommitteeAdmin extends AbstractAdmin
                 },
             ])
             ->add('zones', ZoneAutocompleteFilter::class, [
+                'label' => 'Périmètres géographiques',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'admin_code' => $this->getCode(),
+                    'multiple' => true,
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
                     'property' => [
                         'name',
                         'code',
@@ -316,13 +299,13 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
+                    $qb->setParameter('cityName', '%'.strtolower($value->getValue()).'%');
 
                     return true;
                 },
@@ -331,13 +314,13 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Pays',
                 'show_filter' => true,
                 'field_type' => CountryType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
-                    $qb->setParameter('country', strtolower($value['value']));
+                    $qb->setParameter('country', strtolower($value->getValue()));
 
                     return true;
                 },
@@ -360,7 +343,7 @@ class CommitteeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('id', null, [
@@ -398,7 +381,7 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Statut',
                 'template' => 'admin/committee/list_status.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/committee/list_actions.html.twig',
             ])

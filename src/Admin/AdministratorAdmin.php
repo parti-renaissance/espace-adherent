@@ -5,10 +5,11 @@ namespace App\Admin;
 use App\Entity\Administrator;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -18,13 +19,6 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class AdministratorAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'id',
-    ];
-
     /**
      * @var EncoderFactoryInterface
      */
@@ -38,14 +32,22 @@ class AdministratorAdmin extends AbstractAdmin
     /**
      * @param Administrator $admin
      */
-    public function prePersist($admin)
+    protected function prePersist(object $admin): void
     {
         parent::prePersist($admin);
 
         $admin->setGoogleAuthenticatorSecret($this->googleAuthenticator->generateSecret());
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'id';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
+
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         /** @var Administrator $admin */
         $admin = $this->getSubject();
@@ -167,7 +169,7 @@ class AdministratorAdmin extends AbstractAdmin
         }
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('emailAddress', null, [
@@ -177,13 +179,13 @@ class AdministratorAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('emailAddress', null, [
                 'label' => 'Adresse e-mail',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'qrcode' => [
@@ -199,17 +201,17 @@ class AdministratorAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('delete');
     }
 
-    public function setEncoders(EncoderFactoryInterface $encoders)
+    public function setEncoders(EncoderFactoryInterface $encoders): void
     {
         $this->encoders = $encoders;
     }
 
-    public function setGoogleAuthenticator(GoogleAuthenticator $googleAuthenticator)
+    public function setGoogleAuthenticator(GoogleAuthenticator $googleAuthenticator): void
     {
         $this->googleAuthenticator = $googleAuthenticator;
     }

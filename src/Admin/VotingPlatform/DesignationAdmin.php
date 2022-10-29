@@ -31,7 +31,7 @@ class DesignationAdmin extends AbstractAdmin
 {
     public const FORM_TYPE_LOCAL_ELECTION = 'form_type_local_election';
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         /** @var Designation $subject */
         $subject = $this->getSubject();
@@ -183,7 +183,7 @@ class DesignationAdmin extends AbstractAdmin
         }
     }
 
-    public function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('label')
@@ -199,7 +199,7 @@ class DesignationAdmin extends AbstractAdmin
         ;
     }
 
-    public function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->add('id', null, ['label' => '#'])
@@ -210,7 +210,7 @@ class DesignationAdmin extends AbstractAdmin
             ->add('candidacyEndDate', null, ['label' => 'Clôture des candidatures'])
             ->add('voteStartDate', null, ['label' => 'Ouverture du vote'])
             ->add('voteEndDate', null, ['label' => 'Clôture du vote'])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'edit' => [],
                 ],
@@ -218,7 +218,7 @@ class DesignationAdmin extends AbstractAdmin
         ;
     }
 
-    public function toString($object)
+    public function toString(object $object): string
     {
         return 'Désignation';
     }

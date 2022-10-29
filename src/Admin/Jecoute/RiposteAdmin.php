@@ -7,10 +7,11 @@ use App\Entity\Jecoute\Riposte;
 use App\Jecoute\RiposteHandler;
 use App\Riposte\RiposteOpenGraphHandler;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -20,12 +21,14 @@ use Symfony\Component\Security\Core\Security;
 
 class RiposteAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 128,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+        $sortValues[DatagridInterface::PER_PAGE] = 128;
+    }
 
     private $security;
     /** @var RiposteOpenGraphHandler */
@@ -34,12 +37,12 @@ class RiposteAdmin extends AbstractAdmin
     /** @var RiposteHandler */
     private $riposteHandler;
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('show');
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('title', null, [
@@ -61,7 +64,7 @@ class RiposteAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id', null, [
@@ -105,7 +108,7 @@ class RiposteAdmin extends AbstractAdmin
                 'label' => 'Nb de ripostes',
                 'header_style' => 'max-width: 70px',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -115,7 +118,7 @@ class RiposteAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('title', TextType::class, [
@@ -151,7 +154,7 @@ class RiposteAdmin extends AbstractAdmin
     /**
      * @param Riposte $object
      */
-    public function prePersist($object)
+    protected function prePersist(object $object): void
     {
         /** @var Administrator $administrator */
         $administrator = $this->security->getUser();
@@ -162,7 +165,7 @@ class RiposteAdmin extends AbstractAdmin
     /**
      * @param Riposte $object
      */
-    public function postPersist($object)
+    protected function postPersist(object $object): void
     {
         parent::postPersist($object);
 

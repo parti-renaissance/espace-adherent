@@ -11,7 +11,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -22,7 +22,7 @@ class TeamAdmin extends AbstractAdmin
     /** @var Team|null */
     private $beforeUpdate;
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Informations ⚙️', ['class' => 'col-md-6'])
@@ -51,22 +51,25 @@ class TeamAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('name', null, [
                 'label' => 'Nom',
                 'show_filter' => true,
             ])
-            ->add('members.adherent', ModelAutocompleteFilter::class, [
+            ->add('members.adherent', ModelFilter::class, [
                 'label' => 'Adhérent',
                 'show_filter' => true,
                 'field_type' => MemberAdherentAutocompleteType::class,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                ],
             ])
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('name', null, [
@@ -76,7 +79,7 @@ class TeamAdmin extends AbstractAdmin
                 'label' => 'Membres',
                 'template' => 'admin/team/_list_members.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -86,22 +89,17 @@ class TeamAdmin extends AbstractAdmin
         ;
     }
 
-    /**
-     * @param Team $subject
-     */
-    public function setSubject($subject)
+    protected function alterObject(object $object): void
     {
         if (null === $this->beforeUpdate) {
-            $this->beforeUpdate = clone $subject;
+            $this->beforeUpdate = clone $object;
         }
-
-        parent::setSubject($subject);
     }
 
     /**
      * @param Team $object
      */
-    public function postPersist($object)
+    protected function postPersist(object $object): void
     {
         $this->teamMemberHistoryManager->handleChanges($object);
     }
@@ -109,7 +107,7 @@ class TeamAdmin extends AbstractAdmin
     /**
      * @param Team $object
      */
-    public function postUpdate($object)
+    protected function postUpdate(object $object): void
     {
         $this->teamMemberHistoryManager->handleChanges($object, $this->beforeUpdate);
     }

@@ -10,13 +10,13 @@ class RenaissanceHomeBlockAdmin extends AbstractHomeBlockAdmin
     protected $baseRouteName = 'renaissance-homeblock';
 
     /** @param HomeBlock $object */
-    public function prePersist($object)
+    protected function prePersist(object $object): void
     {
         $object->setForRenaissance(true);
     }
 
     /** @param HomeBlock $object */
-    public function preUpdate($object)
+    protected function preUpdate(object $object): void
     {
         if (!$object->isForRenaissance()) {
             $object->setForRenaissance(true);

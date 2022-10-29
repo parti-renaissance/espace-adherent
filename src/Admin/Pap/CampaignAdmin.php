@@ -12,7 +12,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DatePickerType;
@@ -30,7 +30,7 @@ class CampaignAdmin extends AbstractAdmin
     private Security $security;
     private MessageBusInterface $bus;
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
             ->remove('show')
@@ -38,7 +38,7 @@ class CampaignAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Informations ⚙️', ['class' => 'col-md-6'])
@@ -86,10 +86,8 @@ class CampaignAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $admin = $filter->getAdmin();
-
         $filter
             ->add('title', null, [
                 'label' => 'Nom',
@@ -116,9 +114,11 @@ class CampaignAdmin extends AbstractAdmin
             ])
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Zones',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
-                    'model_manager' => $admin->getModelManager(),
-                    'admin_code' => $admin->getCode(),
+                    'multiple' => true,
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
                     'property' => [
                         'name',
                         'code',
@@ -128,7 +128,7 @@ class CampaignAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('id', null, [
@@ -157,7 +157,7 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Zone',
                 'template' => 'admin/scope/list_zones.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -172,7 +172,7 @@ class CampaignAdmin extends AbstractAdmin
     /**
      * @param Campaign $object
      */
-    public function prePersist($object)
+    protected function prePersist(object $object): void
     {
         $object->setAdministrator($this->security->getUser());
         if ($object->getZones()->count() > 0) {
@@ -183,7 +183,7 @@ class CampaignAdmin extends AbstractAdmin
     /**
      * @param Campaign $object
      */
-    public function postPersist($object)
+    protected function postPersist(object $object): void
     {
         parent::postPersist($object);
 
@@ -193,7 +193,7 @@ class CampaignAdmin extends AbstractAdmin
     /**
      * @param Campaign $object
      */
-    public function preUpdate($object)
+    protected function preUpdate(object $object): void
     {
         if ($object->getZones()->count() > 0) {
             $object->setVisibility(ScopeVisibilityEnum::LOCAL);
@@ -205,7 +205,7 @@ class CampaignAdmin extends AbstractAdmin
     /**
      * @param Campaign $object
      */
-    public function postUpdate($object)
+    protected function postUpdate(object $object): void
     {
         parent::postUpdate($object);
 

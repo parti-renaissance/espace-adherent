@@ -16,17 +16,17 @@ class SimpleImageUploadExtension extends AbstractAdminExtension
         $this->imageManager = $imageManager;
     }
 
-    public function prePersist(AdminInterface $admin, $object)
+    public function prePersist(AdminInterface $admin, object $object): void
     {
         $this->saveImage($object);
     }
 
-    public function preUpdate(AdminInterface $admin, $object)
+    public function preUpdate(AdminInterface $admin, object $object): void
     {
         $this->saveImage($object);
     }
 
-    public function postRemove(AdminInterface $admin, $object)
+    public function postRemove(AdminInterface $admin, object $object): void
     {
         if (!$object instanceof ImageOwnerInterface) {
             return;

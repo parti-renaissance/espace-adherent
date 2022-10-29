@@ -8,15 +8,14 @@ use App\Scope\ScopeVisibilityEnum;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class EntityScopeVisibilityAdminExtension extends AbstractAdminExtension
 {
-    public function configureDatagridFilters(DatagridMapper $datagridMapper)
+    public function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
-        $admin = $datagridMapper->getAdmin();
-
         $datagridMapper
             ->add('visibility', ChoiceFilter::class, [
                 'label' => 'Visibilité',
@@ -31,9 +30,11 @@ class EntityScopeVisibilityAdminExtension extends AbstractAdminExtension
             ])
             ->add('zone', ZoneAutocompleteFilter::class, [
                 'label' => 'Zone',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
-                    'model_manager' => $admin->getModelManager(),
-                    'admin_code' => $admin->getCode(),
+                    'multiple' => true,
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
                     'property' => [
                         'name',
                         'code',
@@ -43,7 +44,7 @@ class EntityScopeVisibilityAdminExtension extends AbstractAdminExtension
         ;
     }
 
-    public function configureListFields(ListMapper $listMapper)
+    public function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('visibility', null, [
@@ -59,7 +60,7 @@ class EntityScopeVisibilityAdminExtension extends AbstractAdminExtension
         $keys = $listMapper->keys();
         $admin = $listMapper->getAdmin();
 
-        foreach ($admin instanceof ReorderableAdminInterface ? array_merge($admin->getListMapperEndColumns(), ['_action']) : ['_action'] as $column) {
+        foreach ($admin instanceof ReorderableAdminInterface ? array_merge($admin->getListMapperEndColumns(), ['_actions']) : ['_actions'] as $column) {
             if (false !== $actionKey = array_search($column, $keys)) {
                 unset($keys[$actionKey]);
                 $keys[] = $column;

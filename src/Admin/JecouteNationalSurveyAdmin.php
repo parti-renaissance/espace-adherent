@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\Form\Admin\JecouteAdminSurveyQuestionFormType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -13,14 +14,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class JecouteNationalSurveyAdmin extends AbstractAdmin implements ReorderableAdminInterface
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected function configureFormFields(FormMapper $formMapper)
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
+
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Questionnaire', ['class' => 'col-md-6'])
@@ -43,7 +45,7 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin implements ReorderableAdm
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('name', null, [
@@ -56,7 +58,7 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin implements ReorderableAdm
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('name', null, [
@@ -69,7 +71,7 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin implements ReorderableAdm
                 'label' => 'Publié',
                 'editable' => true,
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'edit' => [],
                     'delete' => [],

@@ -6,10 +6,11 @@ use App\Entity\Administrator;
 use App\Entity\QrCode;
 use App\QrCode\QrCodeHostEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
@@ -20,21 +21,23 @@ use Symfony\Component\Security\Core\Security;
 
 class QrCodeAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 128,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+        $sortValues[DatagridInterface::PER_PAGE] = 128;
+    }
 
     private $security;
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('show');
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('name', null, [
@@ -72,7 +75,7 @@ class QrCodeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id', null, [
@@ -102,7 +105,7 @@ class QrCodeAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/qr_code/list_qrcode.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -112,7 +115,7 @@ class QrCodeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('name', TextType::class, [
@@ -136,7 +139,7 @@ class QrCodeAdmin extends AbstractAdmin
     /**
      * @param QrCode $object
      */
-    public function prePersist($object)
+    protected function prePersist(object $object): void
     {
         /** @var Administrator $administrator */
         $administrator = $this->security->getUser();
@@ -147,7 +150,7 @@ class QrCodeAdmin extends AbstractAdmin
     /**
      * @required
      */
-    public function setSecurity(Security $security)
+    public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }

@@ -18,8 +18,9 @@ use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
@@ -34,7 +35,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
 {
     public $otherMemberships = [];
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
             ->remove('create')
@@ -42,7 +43,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id', null, [
@@ -75,8 +76,9 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
             ->add('joinedAt', null, [
                 'label' => 'Membre depuis le',
             ])
-            ->add('qualificatons', null, [
+            ->add('qualifications', null, [
                 'label' => 'Qualifications',
+                'virtual_field' => true,
                 'template' => 'admin/thematic_community/member/qualifications.html.twig',
             ])
             ->add('association', null, [
@@ -85,7 +87,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
             ->add('job', null, [
                 'label' => 'Métier',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -95,7 +97,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $this->setOtherMemberships($formMapper->getFormBuilder()->getDataClass());
 
@@ -209,7 +211,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('id', null, [
@@ -226,19 +228,19 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                     },
                     'multiple' => true,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     // no need to perform complex query if all types have been selected
-                    if (\count($value['value']) === \count(ThematicCommunityMembership::TYPES)) {
+                    if (\count($value->getValue()) === \count(ThematicCommunityMembership::TYPES)) {
                         return true;
                     }
 
                     $or = new Orx();
 
-                    if (\in_array(ThematicCommunityMembership::TYPE_ADHERENT, $value['value'], true)) {
+                    if (\in_array(ThematicCommunityMembership::TYPE_ADHERENT, $value->getValue(), true)) {
                         $qb
                             ->leftJoin("$alias.adherent", 'a')
                             ->leftJoin(ElectedRepresentative::class, 'e', Join::WITH, 'e.adherent = a')
@@ -246,7 +248,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         $or->add("e IS NULL AND $alias.contact IS NULL");
                     }
 
-                    if (\in_array(ThematicCommunityMembership::TYPE_ELECTED_REPRESENTATIVE, $value['value'], true)) {
+                    if (\in_array(ThematicCommunityMembership::TYPE_ELECTED_REPRESENTATIVE, $value->getValue(), true)) {
                         if (!\in_array('a', $qb->getAllAliases(), true)) {
                             $qb
                                 ->leftJoin("$alias.adherent", 'a')
@@ -256,7 +258,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         $or->add("e IS NOT NULL AND $alias.contact IS NULL");
                     }
 
-                    if (\in_array(ThematicCommunityMembership::TYPE_CONTACT, $value['value'], true)) {
+                    if (\in_array(ThematicCommunityMembership::TYPE_CONTACT, $value->getValue(), true)) {
                         $or->add("$alias.contact IS NOT NULL");
                     }
 
@@ -278,15 +280,15 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         ;
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     /** @var QueryBuilder $qb */
                     $qb
                         ->andWhere("$alias.community IN (:value)")
-                        ->setParameter('value', $value['value'])
+                        ->setParameter('value', $value->getValue())
                     ;
 
                     return true;
@@ -295,8 +297,8 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
             ->add('firstName', CallbackFilter::class, [
                 'label' => 'Prénom',
                 'show_filter' => true,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
@@ -305,7 +307,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         ->leftJoin("$alias.contact", 'contact')
                         ->leftJoin("$alias.adherent", 'adherent')
                         ->andWhere("adherent.$field LIKE :value OR contact.$field LIKE :value")
-                        ->setParameter('value', '%'.$value['value'].'%')
+                        ->setParameter('value', '%'.$value->getValue().'%')
                     ;
 
                     return true;
@@ -314,8 +316,8 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
             ->add('lastName', CallbackFilter::class, [
                 'label' => 'Nom',
                 'show_filter' => true,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
@@ -324,7 +326,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         ->leftJoin("$alias.contact", 'contact')
                         ->leftJoin("$alias.adherent", 'adherent')
                         ->andWhere("adherent.$field LIKE :value OR contact.$field LIKE :value")
-                        ->setParameter('value', '%'.$value['value'].'%')
+                        ->setParameter('value', '%'.$value->getValue().'%')
                     ;
 
                     return true;
@@ -333,8 +335,8 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
             ->add('emailAddress', CallbackFilter::class, [
                 'label' => 'Email',
                 'show_filter' => true,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
@@ -343,7 +345,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         ->leftJoin("$alias.contact", 'contact')
                         ->leftJoin("$alias.adherent", 'adherent')
                         ->andWhere("adherent.$field = :value OR contact.email = :value")
-                        ->setParameter('value', $value['value'])
+                        ->setParameter('value', $value->getValue())
                     ;
 
                     return true;
@@ -357,9 +359,9 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                 'label' => 'Ville',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     /** @var QueryBuilder $qb */
@@ -367,7 +369,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         ->leftJoin("$alias.contact", 'contact')
                         ->leftJoin("$alias.adherent", 'adherent')
                         ->andWhere("LOWER(adherent.postAddress.$field) LIKE :value OR LOWER(contact.postAddress.$field) LIKE :value")
-                        ->setParameter('value', '%'.mb_strtolower($value['value']).'%')
+                        ->setParameter('value', '%'.mb_strtolower($value->getValue()).'%')
                     ;
 
                     return true;
@@ -377,9 +379,9 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                 'label' => 'Pays',
                 'show_filter' => true,
                 'field_type' => CountryType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     /** @var QueryBuilder $qb */
@@ -387,7 +389,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         ->leftJoin("$alias.contact", 'contact')
                         ->leftJoin("$alias.adherent", 'adherent')
                         ->andWhere("LOWER(adherent.postAddress.$field) LIKE :value OR LOWER(contact.postAddress.$field) LIKE :value")
-                        ->setParameter('value', '%'.mb_strtolower($value['value']).'%')
+                        ->setParameter('value', '%'.mb_strtolower($value->getValue()).'%')
                     ;
 
                     return true;
@@ -411,13 +413,13 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         'Oui' => 1,
                     ],
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (0 !== $value['value'] && 1 !== $value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (0 !== $value->getValue() && 1 !== $value->getValue()) {
                         return false;
                     }
 
                     $qb->andWhere("$alias.hasJob = :with_job")
-                        ->setParameter('with_job', (bool) $value['value'])
+                        ->setParameter('with_job', (bool) $value->getValue())
                     ;
 
                     return true;
@@ -434,13 +436,13 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         return 'admin.thematic_community.membership.motivations.'.$choice;
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $or = new Orx();
-                    foreach ($value['value'] as $i => $motivation) {
+                    foreach ($value->getValue() as $i => $motivation) {
                         $or->add(sprintf('FIND_IN_SET(:motivation_%d, %s.motivations) > 0', $i, $alias));
                         $qb->setParameter(sprintf('motivation_%d', $i), mb_strtolower($motivation));
                     }
@@ -452,7 +454,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
         ;
     }
 
-    public function toString($object)
+    public function toString(object $object): string
     {
         return sprintf('Adhésion de %s à la communauté %s', $object->getFirstName().' '.$object->getLastName(), $object->getCommunity()->getName());
     }

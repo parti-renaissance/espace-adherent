@@ -2,36 +2,31 @@
 
 namespace App\Admin\Filter;
 
-use App\Entity\ReferentTag;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Doctrine\ORM\QueryBuilder;
+use Sonata\AdminBundle\Filter\Model\FilterData;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
-/** @phpstan-ignore-next-line */
-class ReferentTagAutocompleteFilter extends CallbackFilter
+class ReferentTagAutocompleteFilter extends AbstractCallbackDecoratorFilter
 {
-    public function getDefaultOptions()
+    protected function getInitialFilterOptions(): array
     {
         return [
-            'callback' => null,
-            'field_name' => false,
-            'field_type' => ModelAutocompleteType::class,
-            'field_options' => [],
-            'operator_options' => [],
-        ];
-    }
+            'show_filter' => true,
+            'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                if (!$value->hasValue()) {
+                    return false;
+                }
 
-    public function getFieldOptions()
-    {
-        return array_merge([
-            'context' => 'filter',
-            'class' => ReferentTag::class,
-            'req_params' => [
-                'field' => 'referentTags',
-            ],
-            'multiple' => true,
-            'property' => 'name',
-            'minimum_input_length' => 1,
-            'items_per_page' => 20,
-        ], parent::getFieldOptions());
+                /** @var QueryBuilder $qb */
+                $qb
+                    ->leftJoin("$alias.$field", 'managed_area')
+                    ->leftJoin('managed_area.tags', 'tags')
+                    ->andWhere('tags IN (:tags)')
+                    ->setParameter('tags', $value->getValue())
+                ;
+
+                return true;
+            },
+        ];
     }
 }

@@ -4,21 +4,23 @@ namespace App\Admin\ProgrammaticFoundation;
 
 use App\Form\PurifiedTextareaType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class ApproachAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_by' => 'position',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        $sortValues[DatagridInterface::SORT_BY] = 'position';
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('title', null, [
@@ -28,7 +30,7 @@ class ApproachAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('title', null, [
@@ -38,7 +40,7 @@ class ApproachAdmin extends AbstractAdmin
                 'label' => 'Ordre d\'affichage',
                 'header_style' => 'width: 10%',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'header_style' => 'width: 15%',
                 'actions' => [
                     'edit' => [],
@@ -48,7 +50,7 @@ class ApproachAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Grand axe')
@@ -72,7 +74,7 @@ class ApproachAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('show');
     }

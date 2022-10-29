@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class EmptyTranslationRemoverAdminExtension extends AbstractAdminExtension
 {
-    public function configureFormFields(FormMapper $formMapper)
+    public function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->getFormBuilder()

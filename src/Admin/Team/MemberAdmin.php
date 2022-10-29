@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class MemberAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('adherent', MemberAdherentAutocompleteType::class, [

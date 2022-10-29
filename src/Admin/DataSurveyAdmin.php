@@ -4,50 +4,49 @@ namespace App\Admin;
 
 use App\Repository\Jecoute\SurveyRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
 class DataSurveyAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'postedAt',
-    ];
-
     /** @var SurveyRepository */
     private $surveyRepository;
 
-    public function createQuery($context = 'list')
+    protected function configureDefaultSortValues(array &$sortValues): void
     {
-        $queryBuilder = parent::createQuery($context);
+        parent::configureDefaultSortValues($sortValues);
 
-        if ('list' === $context) {
-            $queryBuilder
-                ->leftJoin('o.survey', 'survey')
-                ->leftJoin('survey.questions', 'surveyQuestion')
-                ->leftJoin('surveyQuestion.question', 'question')
-                ->leftJoin('surveyQuestion.dataAnswers', 'dataAnswer')
-                ->leftJoin('dataAnswer.selectedChoices', 'selectedChoice')
-                ->leftJoin('o.jemarcheDataSurvey', 'jemarcheDataSurvey')
-                ->leftJoin('o.phoningCampaignHistory', 'phoningCampaignHistory')
-                ->leftJoin('o.papCampaignHistory', 'papCampaignHistory')
-                ->addSelect('survey', 'surveyQuestion', 'question', 'dataAnswer', 'selectedChoice')
-                ->addSelect('jemarcheDataSurvey', 'phoningCampaignHistory', 'papCampaignHistory')
-            ;
-        }
-
-        return $queryBuilder;
+        $sortValues[DatagridInterface::SORT_BY] = 'postedAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $query
+            ->leftJoin('o.survey', 'survey')
+            ->leftJoin('survey.questions', 'surveyQuestion')
+            ->leftJoin('surveyQuestion.question', 'question')
+            ->leftJoin('surveyQuestion.dataAnswers', 'dataAnswer')
+            ->leftJoin('dataAnswer.selectedChoices', 'selectedChoice')
+            ->leftJoin('o.jemarcheDataSurvey', 'jemarcheDataSurvey')
+            ->leftJoin('o.phoningCampaignHistory', 'phoningCampaignHistory')
+            ->leftJoin('o.papCampaignHistory', 'papCampaignHistory')
+            ->addSelect('survey', 'surveyQuestion', 'question', 'dataAnswer', 'selectedChoice')
+            ->addSelect('jemarcheDataSurvey', 'phoningCampaignHistory', 'papCampaignHistory')
+        ;
+
+        return $query;
+    }
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept('list');
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('survey', null, [
@@ -57,7 +56,7 @@ class DataSurveyAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('type', null, [
@@ -82,7 +81,7 @@ class DataSurveyAdmin extends AbstractAdmin
         ;
 
         if (($filter = $this->getRequest()->query->get('filter'))
-            && isset($filter['survey']['value']) && ($surveyId = $filter['survey']['value'])
+            && !empty($surveyId = $filter['survey']['value'])
         ) {
             $survey = $this->surveyRepository->find($surveyId);
 

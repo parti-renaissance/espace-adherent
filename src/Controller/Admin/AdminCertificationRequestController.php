@@ -38,7 +38,7 @@ class AdminCertificationRequestController extends CRUDController
                 $certificationRequest->getId()
             ));
 
-            return $this->redirectTo($certificationRequest);
+            return $this->redirectTo($request, $certificationRequest);
         }
 
         $form = $this
@@ -56,7 +56,7 @@ class AdminCertificationRequestController extends CRUDController
                 ));
             }
 
-            return $this->redirectTo($certificationRequest);
+            return $this->redirectTo($request, $certificationRequest);
         }
 
         return $this->renderWithExtraParams('admin/certification_request/approve.html.twig', [
@@ -80,7 +80,7 @@ class AdminCertificationRequestController extends CRUDController
                 $certificationRequest->getId()
             ));
 
-            return $this->redirectTo($certificationRequest);
+            return $this->redirectTo($request, $certificationRequest);
         }
 
         $refuseCommand = new CertificationRequestRefuseCommand($certificationRequest, $this->getUser());
@@ -98,7 +98,7 @@ class AdminCertificationRequestController extends CRUDController
                 $certificationRequest->getAdherent()->getFullName()
             ));
 
-            return $this->redirectTo($certificationRequest);
+            return $this->redirectTo($request, $certificationRequest);
         }
 
         return $this->renderWithExtraParams('admin/certification_request/refuse.html.twig', [
@@ -122,7 +122,7 @@ class AdminCertificationRequestController extends CRUDController
                 $certificationRequest->getId()
             ));
 
-            return $this->redirectTo($certificationRequest);
+            return $this->redirectTo($request, $certificationRequest);
         }
 
         $blockCommand = new CertificationRequestBlockCommand($certificationRequest, $this->getUser());
@@ -140,7 +140,7 @@ class AdminCertificationRequestController extends CRUDController
                 $certificationRequest->getAdherent()->getFullName()
             ));
 
-            return $this->redirectTo($certificationRequest);
+            return $this->redirectTo($request, $certificationRequest);
         }
 
         return $this->renderWithExtraParams('admin/certification_request/block.html.twig', [

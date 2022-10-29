@@ -8,8 +8,10 @@ use App\Form\InstitutionalEventCategoryType;
 use App\InstitutionalEvent\InstitutionalEventEvent;
 use App\Referent\ReferentTagManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -24,12 +26,13 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class InstitutionalEventAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
 
     private $dispatcher;
     private $referentTagManager;
@@ -47,7 +50,7 @@ class InstitutionalEventAdmin extends AbstractAdmin
         $this->referentTagManager = $referentTagManager;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->with('Événement', ['class' => 'col-md-7'])
@@ -109,14 +112,14 @@ class InstitutionalEventAdmin extends AbstractAdmin
         ;
     }
 
-    public function postUpdate($object)
+    protected function postUpdate(object $object): void
     {
         $this->referentTagManager->assignReferentLocalTags($object);
 
         $this->dispatcher->dispatch(new InstitutionalEventEvent($object), Events::INSTITUTIONAL_EVENT_UPDATED);
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Événement', ['class' => 'col-md-7'])
@@ -173,7 +176,7 @@ class InstitutionalEventAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('name', null, [
@@ -204,13 +207,13 @@ class InstitutionalEventAdmin extends AbstractAdmin
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
+                    $qb->setParameter('cityName', '%'.strtolower($value->getValue()).'%');
 
                     return true;
                 },
@@ -221,7 +224,7 @@ class InstitutionalEventAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('name', null, [
@@ -252,7 +255,7 @@ class InstitutionalEventAdmin extends AbstractAdmin
                 'label' => 'Statut',
                 'template' => 'admin/event/list_status.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'show' => [],
@@ -263,7 +266,7 @@ class InstitutionalEventAdmin extends AbstractAdmin
         ;
     }
 
-    public function getExportFields()
+    protected function configureExportFields(): array
     {
         return [
             'Nom' => 'name',

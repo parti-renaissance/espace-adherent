@@ -5,10 +5,11 @@ namespace App\Admin\OAuth;
 use App\Admin\AbstractAdmin;
 use App\AppCodeEnum;
 use App\Form\WebHookType;
-use App\OAuth\ClientManager;
 use App\OAuth\Form\GrantTypesType;
 use App\OAuth\Form\ScopesType;
+use App\OAuth\TokenRevocationAuthority;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,15 +19,10 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class ClientAdmin extends AbstractAdmin
 {
-    /**
-     * @var ClientManager
-     */
-    private $clientManager;
+    private ?TokenRevocationAuthority $tokenRevocationAuthority = null;
 
-    public function createQuery($context = 'list')
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        $query = parent::createQuery();
-
         $query->andWhere(
             $query->expr()->isNull($query->getRootAliases()[0].'.deletedAt')
         );
@@ -34,7 +30,7 @@ class ClientAdmin extends AbstractAdmin
         return $query;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('name', null, [
@@ -61,7 +57,7 @@ class ClientAdmin extends AbstractAdmin
                 'label' => 'Web hooks',
                 'template' => 'admin/oauth/client/_list_webHooks.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'show' => [],
                     'edit' => [],
@@ -73,7 +69,7 @@ class ClientAdmin extends AbstractAdmin
         ;
     }
 
-    public function configureShowFields(ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->with('Informations')
@@ -106,7 +102,7 @@ class ClientAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('name', null, [
@@ -150,13 +146,14 @@ class ClientAdmin extends AbstractAdmin
         ;
     }
 
-    public function delete($object)
+    protected function postRemove(object $object): void
     {
-        $this->clientManager->delete($object);
+        $this->tokenRevocationAuthority->revokeClientTokens($object);
     }
 
-    public function setClientManager(ClientManager $clientManager): void
+    /** @required */
+    public function setTokenRevocationAuthority(TokenRevocationAuthority $tokenRevocationAuthority): void
     {
-        $this->clientManager = $clientManager;
+        $this->tokenRevocationAuthority = $tokenRevocationAuthority;
     }
 }

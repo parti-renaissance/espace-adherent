@@ -3,22 +3,23 @@
 namespace App\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class SubscriptionTypeAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'label',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected function configureShowFields(ShowMapper $showMapper)
+        $sortValues[DatagridInterface::SORT_BY] = 'label';
+    }
+
+    protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->add('label', null, [
@@ -33,7 +34,7 @@ class SubscriptionTypeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $isCreation = null === $this->getSubject() || null === $this->getSubject()->getCode();
 
@@ -54,7 +55,7 @@ class SubscriptionTypeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('label', null, [
@@ -66,7 +67,7 @@ class SubscriptionTypeAdmin extends AbstractAdmin
             ->add('externalId', null, [
                 'label' => 'Id dans le service externe',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -75,7 +76,7 @@ class SubscriptionTypeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('delete');
     }

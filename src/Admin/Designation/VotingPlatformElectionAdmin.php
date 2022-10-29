@@ -9,61 +9,57 @@ use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\Model\FilterData;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class VotingPlatformElectionAdmin extends AbstractAdmin
 {
-    protected $maxPerPage = 40;
-    protected $perPageOptions = [];
-
-    public function createQuery($context = 'list')
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        $queryBuilder = parent::createQuery($context);
+        $query
+            ->leftJoin('o.electionResult', 'election_result')
+            ->leftJoin('o.electionPools', 'pool')
+            ->leftJoin('o.electionRounds', 'election_round')
+            ->leftJoin('o.electionEntity', 'election_entity')
+            ->leftJoin('o.votersList', 'voters_list')
+            ->leftJoin('election_entity.committee', 'committee')
+            ->leftJoin('election_entity.territorialCouncil', 'territorial_council')
+            ->leftJoin('o.designation', 'designation')
+            ->leftJoin('pool.candidateGroups', 'candidate_group')
+            ->addSelect(
+                'pool',
+                'candidate_group',
+                'election_round',
+                'election_entity',
+                'designation',
+                'committee',
+                'territorial_council',
+                'election_result',
+                'voters_list',
+            )
+        ;
 
-        if ('list' === $context) {
-            $queryBuilder
-                ->leftJoin('o.electionResult', 'election_result')
-                ->leftJoin('o.electionPools', 'pool')
-                ->leftJoin('o.electionRounds', 'election_round')
-                ->leftJoin('o.electionEntity', 'election_entity')
-                ->leftJoin('o.votersList', 'voters_list')
-                ->leftJoin('election_entity.committee', 'committee')
-                ->leftJoin('election_entity.territorialCouncil', 'territorial_council')
-                ->leftJoin('o.designation', 'designation')
-                ->leftJoin('pool.candidateGroups', 'candidate_group')
-                ->addSelect(
-                    'pool',
-                    'candidate_group',
-                    'election_round',
-                    'election_entity',
-                    'designation',
-                    'committee',
-                    'territorial_council',
-                    'election_result',
-                    'voters_list',
-                )
-            ;
-        }
-
-        return $queryBuilder;
+        return $query;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept('list');
     }
 
-    public function getBatchActions()
+    protected function configureBatchActions(array $actions): array
     {
         return [];
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('id', null, [
@@ -76,19 +72,23 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                     'choice_label' => 'label',
                 ],
             ])
-            ->add('electionEntity.committee', ModelAutocompleteFilter::class, [
+            ->add('electionEntity.committee', ModelFilter::class, [
                 'label' => 'Comité',
                 'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
+                    'model_manager' => $this->getModelManager(),
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
                     'property' => 'name',
                 ],
             ])
-            ->add('electionEntity.territorialCouncil', ModelAutocompleteFilter::class, [
+            ->add('electionEntity.territorialCouncil', ModelFilter::class, [
                 'label' => 'CoTerr',
                 'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
+                    'model_manager' => $this->getModelManager(),
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
                     'property' => 'name',
@@ -119,13 +119,13 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                         return "designation.status.$choice";
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     /** @var QueryBuilder */
-                    switch ($value['value']) {
+                    switch ($value->getValue()) {
                         case DesignationStatusEnum::NOT_STARTED:
                             $qb
                                 ->andWhere('designation.candidacyStartDate > :now')
@@ -169,7 +169,7 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->add('id')
@@ -190,20 +190,23 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
             ])
             ->add('dates', 'array', [
                 'inline' => false,
+                'virtual_field' => true,
                 'template' => 'admin/instances/election_list_dates_column.html.twig',
             ])
             ->add('pools', 'array', [
                 'label' => 'Pools / candidatures',
                 'inline' => false,
+                'virtual_field' => true,
                 'template' => 'admin/instances/election_list_pools_column.html.twig',
             ])
             ->add('Emargements', null, [
+                'virtual_field' => true,
                 'template' => 'admin/instances/election_list_details_column.html.twig',
             ])
         ;
     }
 
-    protected function configureDefaultFilterValues(array &$filterValues)
+    protected function configureDefaultFilterValues(array &$filterValues): void
     {
         $filterValues = array_merge($filterValues, [
             '_sort_order' => 'DESC',

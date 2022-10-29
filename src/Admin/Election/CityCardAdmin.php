@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CityCardAdmin extends AbstractCityCardAdmin
 {
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         parent::configureFormFields($form);
 
@@ -76,7 +76,7 @@ class CityCardAdmin extends AbstractCityCardAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         parent::configureListFields($list);
 
@@ -114,17 +114,8 @@ class CityCardAdmin extends AbstractCityCardAdmin
                 'nationalPrevision',
                 'results',
                 'allContactsDone',
-                '_action',
+                '_actions',
             ])
         ;
-    }
-
-    public function getTemplate($name)
-    {
-        if ('list' === $name) {
-            return 'admin/city_card/list.html.twig';
-        }
-
-        return parent::getTemplate($name);
     }
 }

@@ -7,7 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
 class ZoneAdmin extends AbstractAdmin
 {
-    protected function configureDefaultSortValues(array &$sortValues)
+    protected function configureDefaultSortValues(array &$sortValues): void
     {
         $sortValues['_sort_by'] = 'code';
     }

@@ -5,27 +5,29 @@ namespace App\Admin;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Form\Admin\JecouteAdminSurveyQuestionFormType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class JecouteLocalSurveyAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
-
-    public function createQuery($context = 'list')
+    protected function configureDefaultSortValues(array &$sortValues): void
     {
-        $query = parent::createQuery($context);
+        parent::configureDefaultSortValues($sortValues);
 
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
         $query
             ->addSelect('zone', 'question')
             ->leftJoin('o.zone', 'zone')
@@ -35,7 +37,7 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
         return $query;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Questionnaire', ['class' => 'col-md-6'])
@@ -58,7 +60,7 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('name')
@@ -71,9 +73,12 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
                 'show_filter' => true,
             ])
             ->add('zone', ZoneAutocompleteFilter::class, [
+                'label' => 'Périmètres géographiques',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'admin_code' => $this->getCode(),
+                    'multiple' => true,
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
                     'property' => [
                         'name',
                         'code',
@@ -83,7 +88,7 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('name', null, [
@@ -97,13 +102,13 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
             ])
             ->add('zone', null, [
                 'label' => 'Zone',
-                'template' => 'list_zone.html.twig',
+                'template' => 'admin/jecoute/list_zone.html.twig',
             ])
             ->add('published', null, [
                 'label' => 'Publié',
                 'editable' => true,
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
@@ -124,7 +129,7 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
         }
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('create');
     }

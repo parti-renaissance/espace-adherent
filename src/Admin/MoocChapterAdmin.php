@@ -4,11 +4,11 @@ namespace App\Admin;
 
 use App\Entity\Mooc\BaseMoocElement;
 use App\Entity\Mooc\Mooc;
-use Doctrine\ORM\QueryBuilder;
 use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\DatePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -19,17 +19,17 @@ class MoocChapterAdmin extends AbstractAdmin
 {
     use SortableAdminTrait;
 
-    public function createQuery($context = 'list')
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        /** @var QueryBuilder $proxyQuery */
-        $proxyQuery = parent::createQuery($context);
-        $proxyQuery->addOrderBy('o.mooc', 'ASC');
-        $proxyQuery->addOrderBy('o.position', 'ASC');
+        $query
+            ->addOrderBy('o.mooc', 'ASC')
+            ->addOrderBy('o.position', 'ASC')
+        ;
 
-        return $proxyQuery;
+        return $query;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->tab('Chapitres')
@@ -54,7 +54,7 @@ class MoocChapterAdmin extends AbstractAdmin
                     ])
                 ->end()
         ;
-        if (!$this->request->isXmlHttpRequest()) {
+        if (!$this->getRequest()->isXmlHttpRequest()) {
             $formMapper
                 ->with('Media', ['class' => 'col-md-6'])
                     ->add('elements', EntityType::class, [
@@ -71,7 +71,7 @@ class MoocChapterAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('title', null, [
@@ -85,7 +85,7 @@ class MoocChapterAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('title', null, [
@@ -107,7 +107,7 @@ class MoocChapterAdmin extends AbstractAdmin
             ->add('position', null, [
                 'label' => 'Ordre d\'affichage',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'move' => [
                         'template' => '@RunroomSortableBehavior/sort.html.twig',

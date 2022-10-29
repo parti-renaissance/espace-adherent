@@ -25,7 +25,7 @@ class OrganizationalChartItemAdmin extends AbstractAdmin
         $this->organizationalChartItemRepository = $organizationalChartItemRepository;
     }
 
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $this->OCItems = $this->organizationalChartItemRepository->getRootNodes();
 
@@ -40,7 +40,7 @@ class OrganizationalChartItemAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $show)
+    protected function configureShowFields(ShowMapper $show): void
     {
         $show
             ->add('typeLabel')
@@ -53,7 +53,7 @@ class OrganizationalChartItemAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('label', null, [

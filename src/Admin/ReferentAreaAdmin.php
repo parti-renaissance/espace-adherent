@@ -3,7 +3,7 @@
 namespace App\Admin;
 
 use App\Entity\ReferentArea;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
@@ -13,20 +13,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ReferentAreaAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'areaCode',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected $maxPerPage = 150;
-    protected $perPageOptions = [];
+        $sortValues[DatagridInterface::SORT_BY] = 'areaCode';
+    }
 
-    protected $formOptions = [
-        'validation_groups' => ['Admin'],
-    ];
-
-    protected function configureListFields(ListMapper $mapper)
+    protected function configureListFields(ListMapper $mapper): void
     {
         $mapper
             ->add('areaCode', null, [
@@ -38,7 +32,7 @@ class ReferentAreaAdmin extends AbstractAdmin
             ->add('areaTypeLabel', null, [
                 'label' => 'Type de zone',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'show' => [],
@@ -48,7 +42,7 @@ class ReferentAreaAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $mapper)
+    protected function configureShowFields(ShowMapper $mapper): void
     {
         $mapper
             ->add('id', null, [
@@ -66,7 +60,7 @@ class ReferentAreaAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $mapper)
+    protected function configureFormFields(FormMapper $mapper): void
     {
         $mapper
             ->with('Informations générales', ['class' => 'col-md-6'])

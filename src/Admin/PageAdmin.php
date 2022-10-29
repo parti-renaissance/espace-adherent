@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\Entity\Page;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -13,14 +14,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PageAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 64,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'title',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected function configureFormFields(FormMapper $formMapper)
+        $sortValues[DatagridInterface::SORT_BY] = 'title';
+        $sortValues[DatagridInterface::PER_PAGE] = 64;
+    }
+
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         if (null === $this->getSubject()->getId()) {
             $formMapper
@@ -79,7 +81,7 @@ class PageAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('title', null, [
@@ -93,7 +95,7 @@ class PageAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('title', null, [
@@ -108,7 +110,7 @@ class PageAdmin extends AbstractAdmin
             ->add('slug', null, [
                 'label' => 'Slug',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],

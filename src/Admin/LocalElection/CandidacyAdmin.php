@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class CandidacyAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('gender', CivilityType::class, ['expanded' => false, 'label' => 'Civilité'])

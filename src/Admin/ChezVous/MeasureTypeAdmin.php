@@ -28,7 +28,7 @@ class MeasureTypeAdmin extends AbstractAdmin
         $this->dispatcher = $dispatcher;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('label', TextType::class, [
@@ -59,7 +59,7 @@ class MeasureTypeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('label', null, [
@@ -72,7 +72,7 @@ class MeasureTypeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('label', null, [
@@ -84,7 +84,7 @@ class MeasureTypeAdmin extends AbstractAdmin
             ->add('updatedAt', null, [
                 'label' => 'Dernière modification',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -93,12 +93,12 @@ class MeasureTypeAdmin extends AbstractAdmin
         ;
     }
 
-    public function postUpdate($object)
+    protected function postUpdate(object $object): void
     {
         $this->dispatcher->dispatch(new MeasureTypeEvent($object), Events::CHEZVOUS_MEASURE_TYPE_UPDATED);
     }
 
-    public function postRemove($object)
+    protected function postRemove(object $object): void
     {
         $this->dispatcher->dispatch(new MeasureTypeEvent($object), Events::CHEZVOUS_MEASURE_TYPE_DELETED);
     }

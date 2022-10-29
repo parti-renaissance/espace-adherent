@@ -7,7 +7,7 @@ use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Repository\ElectedRepresentative\MandateRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\Form\Type\DatePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -29,16 +29,16 @@ class PoliticalFunctionAdmin extends AbstractAdmin
         $this->mandateRepository = $mandateRepository;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept(['create', 'edit', 'delete']);
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $mandates = [];
-        $electedRepresentativeId = $this->getRequest()->attributes->has('id') ? $this->getRequest()->attributes->getInt('id', null) : $this->getRequest()->query->getInt('objectId', null);
-        if (null !== $electedRepresentativeId) {
+        $electedRepresentativeId = $this->getRequest()->attributes->has('id') ? $this->getRequest()->attributes->getInt('id') : $this->getRequest()->query->getInt('objectId');
+        if ($electedRepresentativeId) {
             $mandates = $this->mandateRepository->getMandatesForPoliticalFunction($electedRepresentativeId);
         }
 

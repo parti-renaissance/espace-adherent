@@ -20,12 +20,12 @@ class ImageRelationUploadExtension extends AbstractAdminExtension
         $this->logger = $logger;
     }
 
-    public function prePersist(AdminInterface $admin, $object)
+    public function prePersist(AdminInterface $admin, object $object): void
     {
         $this->saveImage($admin, $object);
     }
 
-    public function preUpdate(AdminInterface $admin, $object)
+    public function preUpdate(AdminInterface $admin, object $object): void
     {
         $this->saveImage($admin, $object);
     }
@@ -85,7 +85,7 @@ class ImageRelationUploadExtension extends AbstractAdminExtension
         return false;
     }
 
-    public function postRemove(AdminInterface $admin, $object)
+    public function postRemove(AdminInterface $admin, object $object): void
     {
         foreach ($admin->getUploadableImagePropertyNames($object) as $imagePropertyName) {
             $imagePropertyName = ucfirst($imagePropertyName);

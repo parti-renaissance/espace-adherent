@@ -9,10 +9,10 @@ class RenaissanceExecutiveOfficeMemberAdmin extends AbstractExecutiveOfficeMembe
     protected $baseRoutePattern = 'renaissance-burex';
     protected $baseRouteName = 'renaissance-burex';
 
-    public function getNewInstance()
+    protected function createNewInstance(): object
     {
         /** @var ExecutiveOfficeMember $member */
-        $member = parent::getNewInstance();
+        $member = parent::createNewInstance();
         $member->setForRenaissance(true);
 
         return $member;

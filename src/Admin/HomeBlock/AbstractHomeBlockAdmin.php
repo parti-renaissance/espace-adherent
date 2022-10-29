@@ -5,43 +5,36 @@ namespace App\Admin\HomeBlock;
 use App\Admin\Color;
 use App\Entity\HomeBlock;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Object\Metadata;
+use Sonata\AdminBundle\Object\MetadataInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 abstract class AbstractHomeBlockAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'id',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'id';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
 
     /**
      * @param HomeBlock $object
-     *
-     * @return Metadata
      */
-    public function getObjectMetadata($object)
+    public function getObjectMetadata(object $object): MetadataInterface
     {
         return new Metadata($object->getTitle(), $object->getSubtitle(), $object->getMedia()->getPath());
     }
 
-    public function getTemplate($name)
-    {
-        if ('outer_list_rows_mosaic' === $name) {
-            return 'admin/media/mosaic.html.twig';
-        }
-
-        return parent::getTemplate($name);
-    }
-
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         if (null === $this->getSubject()->getId()) {
             // Creation
@@ -129,11 +122,11 @@ abstract class AbstractHomeBlockAdmin extends AbstractAdmin
         }
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('position_name', null, [
@@ -145,7 +138,7 @@ abstract class AbstractHomeBlockAdmin extends AbstractAdmin
             ->add('link', null, [
                 'label' => 'Cible du lien',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -155,10 +148,8 @@ abstract class AbstractHomeBlockAdmin extends AbstractAdmin
         ;
     }
 
-    public function createQuery($context = 'list')
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        $query = parent::createQuery();
-
         $query
             ->andWhere(sprintf('%s.forRenaissance = :forRenaissance', $query->getRootAliases()[0]))
             ->setParameter('forRenaissance', $this->isRenaissanceHomeBlock())

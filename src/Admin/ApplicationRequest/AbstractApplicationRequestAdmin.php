@@ -5,10 +5,12 @@ namespace App\Admin\ApplicationRequest;
 use App\Form\GenderType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
@@ -21,12 +23,14 @@ use Symfony\Component\Form\Extension\Core\Type\CountryType;
 
 abstract class AbstractApplicationRequestAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'name',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+        $sortValues[DatagridInterface::SORT_BY] = 'name';
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('lastName', null, [
@@ -52,13 +56,13 @@ abstract class AbstractApplicationRequestAdmin extends AbstractAdmin
             ->add('favoriteCities', CallbackFilter::class, [
                 'label' => 'Ville choisie (code INSEE)',
                 'show_filter' => true,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $qb->andWhere("FIND_IN_SET(:inseeCode, $alias.favoriteCities) > 0");
-                    $qb->setParameter('inseeCode', $value['value']);
+                    $qb->setParameter('inseeCode', $value->getValue());
 
                     return true;
                 },
@@ -67,12 +71,12 @@ abstract class AbstractApplicationRequestAdmin extends AbstractAdmin
                 'label' => 'Est adhérent ?',
                 'show_filter' => true,
                 'field_type' => BooleanType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
-                    switch ($value['value']) {
+                    switch ($value->getValue()) {
                         case BooleanType::TYPE_YES:
                             $qb->andWhere("$alias.adherent IS NOT NULL");
 
@@ -98,7 +102,7 @@ abstract class AbstractApplicationRequestAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('gender', 'trans', [
@@ -128,7 +132,7 @@ abstract class AbstractApplicationRequestAdmin extends AbstractAdmin
             ->add('createdAt', null, [
                 'label' => 'Candidaté le',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
@@ -137,7 +141,7 @@ abstract class AbstractApplicationRequestAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Informations personnelles')
@@ -180,12 +184,12 @@ abstract class AbstractApplicationRequestAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('create');
     }
 
-    public function getExportFields()
+    protected function configureExportFields(): array
     {
         return [
             'UUID' => 'uuid',

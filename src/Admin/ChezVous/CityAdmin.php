@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CityAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Metadonnées', ['class' => 'col-md-6'])
@@ -70,7 +70,7 @@ class CityAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('name', null, [
@@ -92,7 +92,7 @@ class CityAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('name', null, [
@@ -107,7 +107,7 @@ class CityAdmin extends AbstractAdmin
             ->add('department', null, [
                 'label' => 'Département',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -117,7 +117,7 @@ class CityAdmin extends AbstractAdmin
         ;
     }
 
-    public function getExportFields()
+    protected function configureExportFields(): array
     {
         return [
             'ID' => 'id',

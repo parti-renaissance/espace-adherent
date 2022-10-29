@@ -10,7 +10,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class TimelineManifestoAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Traductions', ['class' => 'col-md-6'])
@@ -40,7 +40,7 @@ class TimelineManifestoAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('translations.title', null, [
@@ -54,7 +54,7 @@ class TimelineManifestoAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('_thumbnail', null, [
@@ -67,7 +67,7 @@ class TimelineManifestoAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/timeline/manifesto/list_title.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -77,7 +77,7 @@ class TimelineManifestoAdmin extends AbstractAdmin
         ;
     }
 
-    public function getExportFields()
+    protected function configureExportFields(): array
     {
         return [
             'ID' => 'id',

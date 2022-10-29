@@ -10,7 +10,7 @@ use Sonata\Form\Type\DateTimePickerType;
 
 class RepublicanSilenceAdmin extends AbstractAdmin
 {
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->addIdentifier('zones', 'array', ['label' => 'silence_republican.zones.label'])
@@ -19,7 +19,7 @@ class RepublicanSilenceAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->with('Général', ['class' => 'col-md-6', 'description' => 'silence_republican.help'])
@@ -34,17 +34,15 @@ class RepublicanSilenceAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureBatchActions($actions)
+    protected function configureBatchActions(array $actions): array
     {
         return [];
     }
 
     /**
      * @param RepublicanSilence $object
-     *
-     * @return string
      */
-    public function toString($object)
+    public function toString(object $object): string
     {
         return implode(', ', $object->getZones()->toArray());
     }

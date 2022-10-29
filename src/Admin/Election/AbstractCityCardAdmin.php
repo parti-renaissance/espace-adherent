@@ -13,15 +13,17 @@ use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AbstractCityCardAdmin extends AbstractAdmin
 {
-    public function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept([
             'list',
@@ -30,22 +32,20 @@ class AbstractCityCardAdmin extends AbstractAdmin
         ]);
     }
 
-    public function createQuery($context = 'list')
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        /** @var QueryBuilder $proxyQuery */
-        $proxyQuery = parent::createQuery($context);
-
-        $proxyQuery
-            ->innerJoin(current($proxyQuery->getRootAliases()).'.city', 'city')
+        /** @var QueryBuilder $query */
+        $query
+            ->innerJoin(current($query->getRootAliases()).'.city', 'city')
             ->innerJoin('city.department', 'department')
             ->innerJoin('department.region', 'region')
             ->addSelect('city', 'department', 'region')
         ;
 
-        return $proxyQuery;
+        return $query;
     }
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->getFormBuilder()
@@ -53,7 +53,7 @@ class AbstractCityCardAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('city.name', null, [
@@ -88,17 +88,17 @@ class AbstractCityCardAdmin extends AbstractAdmin
                         return "election.city_card.priority.$choice";
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
-                    if ('without' === $value['value']) {
+                    if ('without' === $value->getValue()) {
                         $qb->andWhere($alias.'.priority IS NULL');
                     } else {
                         $qb
                             ->andWhere($alias.'.priority = :priority')
-                            ->setParameter('priority', $value['value'])
+                            ->setParameter('priority', $value->getValue())
                         ;
                     }
 
@@ -119,8 +119,8 @@ class AbstractCityCardAdmin extends AbstractAdmin
                         return $choice;
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
@@ -133,7 +133,7 @@ class AbstractCityCardAdmin extends AbstractAdmin
                         )
                     ;
 
-                    if (\in_array($value['value'], ['Ville', 'Bureaux'])) {
+                    if (\in_array($value->getValue(), ['Ville', 'Bureaux'])) {
                         $qb->leftJoin(
                             CityVoteResult::class,
                             'city_vote_result',
@@ -142,7 +142,7 @@ class AbstractCityCardAdmin extends AbstractAdmin
                         );
                     }
 
-                    if ('Bureaux' === $value['value']) {
+                    if ('Bureaux' === $value->getValue()) {
                         $qb
                             ->leftJoin(
                                 VotePlace::class,
@@ -154,7 +154,7 @@ class AbstractCityCardAdmin extends AbstractAdmin
                         ;
                     }
 
-                    switch ($value['value']) {
+                    switch ($value->getValue()) {
                         case 'Ministère':
                             $qb->andWhere('ministry_vote_result IS NOT NULL');
 
@@ -194,12 +194,12 @@ class AbstractCityCardAdmin extends AbstractAdmin
                         return $choice;
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
-                    switch ($value['value']) {
+                    switch ($value->getValue()) {
                         case 'Oui':
                             $qb
                                 ->innerJoin("$alias.contacts", 'contact')
@@ -238,7 +238,7 @@ class AbstractCityCardAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->addIdentifier('city.name', null, [
@@ -257,7 +257,7 @@ class AbstractCityCardAdmin extends AbstractAdmin
                 'label' => 'Priorité',
                 'template' => 'admin/election/city_card/_list_priority.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -266,7 +266,7 @@ class AbstractCityCardAdmin extends AbstractAdmin
         ;
     }
 
-    public function getExportFields()
+    protected function configureExportFields(): array
     {
         return [
             'ID' => 'id',

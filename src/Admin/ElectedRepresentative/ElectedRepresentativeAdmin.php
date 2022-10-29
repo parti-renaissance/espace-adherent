@@ -23,14 +23,18 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\CollectionType as SonataCollectionType;
 use Sonata\Form\Type\DatePickerType;
@@ -43,12 +47,13 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ElectedRepresentativeAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'id',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'id';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
 
     private $dispatcher;
     private $userListDefinitionHistoryManager;
@@ -57,6 +62,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
      * @var UserListDefinition[]|array
      */
     private $userListDefinitionsBeforeUpdate;
+    private $beforeUpdate;
 
     public function __construct(
         $code,
@@ -71,7 +77,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         $this->userListDefinitionHistoryManager = $userListDefinitionHistoryManager;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
             ->remove('show')
@@ -80,9 +86,8 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         ;
     }
 
-    public function createQuery($context = 'list')
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        $query = parent::createQuery();
         $alias = $query->getRootAlias();
 
         $query
@@ -94,7 +99,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         return $query;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('lastName', null, [
@@ -109,6 +114,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ])
             ->add('currentZones', null, [
                 'label' => 'Périmètre(s) géographique(s)',
+                'virtual_field' => true,
                 'template' => 'admin/elected_representative/list_zones.html.twig',
             ])
             ->add('currentPoliticalFunctions', null, [
@@ -117,16 +123,17 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ])
             ->add('type', null, [
                 'label' => 'Qualifications',
+                'virtual_field' => true,
                 'template' => 'admin/elected_representative/list_type.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/elected_representative/list_actions.html.twig',
             ])
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->with('Identité', ['class' => 'col-md-6'])
@@ -169,7 +176,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Identité', ['class' => 'col-md-6'])
@@ -315,7 +322,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         }
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('lastName', null, [
@@ -334,14 +341,14 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'choices' => MandateTypeEnum::CHOICES,
                     'multiple' => true,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $where = new Expr\Orx();
 
-                    foreach ($value['value'] as $mandate) {
+                    foreach ($value->getValue() as $mandate) {
                         $where->add("mandate.type = :mandate_$mandate");
                         $qb->setParameter("mandate_$mandate", $mandate);
                     }
@@ -355,12 +362,12 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'label' => 'Mandat en cours ?',
                 'show_filter' => true,
                 'field_type' => BooleanType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
-                    switch ($value['value']) {
+                    switch ($value->getValue()) {
                         case BooleanType::TYPE_YES:
                             $qb->andWhere('mandate.onGoing = 1');
 
@@ -382,14 +389,14 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'choices' => PoliticalFunctionNameEnum::CHOICES,
                     'multiple' => true,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $where = new Expr\Orx();
 
-                    foreach ($value['value'] as $politicalFunctions) {
+                    foreach ($value->getValue() as $politicalFunctions) {
                         $where->add("politicalFunction.name = :function_$politicalFunctions");
                         $qb->setParameter("function_$politicalFunctions", $politicalFunctions);
                     }
@@ -403,12 +410,12 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'label' => 'Fonction en cours ?',
                 'show_filter' => true,
                 'field_type' => BooleanType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
-                    switch ($value['value']) {
+                    switch ($value->getValue()) {
                         case BooleanType::TYPE_YES:
                             $qb->andWhere('politicalFunction.onGoing = 1');
 
@@ -430,14 +437,14 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'choices' => VoteListNuanceEnum::toArray(),
                     'multiple' => true,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $where = new Expr\Orx();
 
-                    foreach ($value['value'] as $politicalAffiliation) {
+                    foreach ($value->getValue() as $politicalAffiliation) {
                         $where->add("$alias.politicalAffiliation = :pa_".$politicalAffiliation);
                         $qb->setParameter('pa_'.$politicalAffiliation, $politicalAffiliation);
                     }
@@ -449,9 +456,12 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 },
             ])
             ->add('mandates.geoZone', ZoneAutocompleteFilter::class, [
+                'label' => 'Périmètres géographiques',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'admin_code' => $this->getCode(),
+                    'multiple' => true,
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
                     'property' => [
                         'name',
                         'code',
@@ -471,8 +481,8 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         return 'global.'.$choice;
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    switch ($value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    switch ($value->getValue()) {
                         case 'yes':
                             $qb->andWhere("$alias.adherent IS NOT NULL");
 
@@ -486,10 +496,12 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     }
                 },
             ])
-            ->add('userListDefinitions', ModelAutocompleteFilter::class, [
+            ->add('userListDefinitions', ModelFilter::class, [
                 'label' => 'Labels',
                 'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
+                    'model_manager' => $this->getModelManager(),
                     'minimum_input_length' => 0,
                     'items_per_page' => 20,
                     'multiple' => true,
@@ -521,13 +533,13 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         return $choice;
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $qb->andWhere('label.name IN (:label_names)');
-                    $qb->setParameter('label_names', $value['value']);
+                    $qb->setParameter('label_names', $value->getValue());
 
                     return true;
                 },
@@ -536,24 +548,28 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     }
 
     /**
-     * @param ElectedRepresentative $subject
+     * @param ElectedRepresentative $object
      */
-    public function setSubject($subject)
+    protected function alterObject(object $object): void
     {
         if (null === $this->userListDefinitionsBeforeUpdate) {
-            $this->userListDefinitionsBeforeUpdate = $subject->getUserListDefinitions()->toArray();
-
-            $this->dispatcher->dispatch(new ElectedRepresentativeEvent($subject), ElectedRepresentativeEvents::BEFORE_UPDATE);
+            $this->userListDefinitionsBeforeUpdate = $object->getUserListDefinitions()->toArray();
         }
 
-        parent::setSubject($subject);
+        if (null === $this->beforeUpdate) {
+            $this->beforeUpdate = clone $object;
+        }
     }
 
     /**
      * @param ElectedRepresentative $object
      */
-    public function preUpdate($object)
+    protected function preUpdate(object $object): void
     {
+        if ($this->beforeUpdate) {
+            $this->dispatcher->dispatch(new ElectedRepresentativeEvent($this->beforeUpdate), ElectedRepresentativeEvents::BEFORE_UPDATE);
+        }
+
         parent::preUpdate($object);
 
         $this->userListDefinitionHistoryManager->handleChanges($object, $this->userListDefinitionsBeforeUpdate);
@@ -562,14 +578,14 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     /**
      * @param ElectedRepresentative $object
      */
-    public function postUpdate($object)
+    protected function postUpdate(object $object): void
     {
         parent::postUpdate($object);
 
         $this->dispatcher->dispatch(new ElectedRepresentativeEvent($object), ElectedRepresentativeEvents::POST_UPDATE);
     }
 
-    public function getExportFields()
+    protected function configureExportFields(): array
     {
         return [
             'Nom' => 'lastName',
@@ -580,7 +596,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         ];
     }
 
-    public function getExportFormats()
+    public function getExportFormats(): array
     {
         return ['csv', 'xls'];
     }

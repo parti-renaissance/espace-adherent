@@ -8,21 +8,22 @@ use App\Phoning\CampaignHistoryTypeEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CampaignHistoryAdmin extends AbstractAdmin
 {
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept('list');
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('campaign', null, [
@@ -33,20 +34,24 @@ class CampaignHistoryAdmin extends AbstractAdmin
                 'label' => 'Questionnaire',
                 'show_filter' => true,
             ])
-            ->add('adherent', ModelAutocompleteFilter::class, [
+            ->add('adherent', ModelFilter::class, [
                 'label' => 'Appelé',
                 'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
+                    'model_manager' => $this->getModelManager(),
                     'property' => [
                         'firstName',
                         'lastName',
                     ],
                 ],
             ])
-            ->add('caller', ModelAutocompleteFilter::class, [
+            ->add('caller', ModelFilter::class, [
                 'label' => 'Appelant',
                 'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
+                    'model_manager' => $this->getModelManager(),
                     'property' => [
                         'firstName',
                         'lastName',
@@ -96,7 +101,7 @@ class CampaignHistoryAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('campaign', null, [

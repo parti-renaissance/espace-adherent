@@ -3,34 +3,27 @@
 namespace App\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class TonMacronFriendInvitationAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 64,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
-
-    public function getTemplate($name)
+    protected function configureDefaultSortValues(array &$sortValues): void
     {
-        if ('list' === $name) {
-            return 'admin/ton_macron/invitation_list.html.twig';
-        }
+        parent::configureDefaultSortValues($sortValues);
 
-        return parent::getTemplate($name);
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('create');
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('id', null, [
@@ -42,7 +35,7 @@ class TonMacronFriendInvitationAdmin extends AbstractAdmin
             ->add('createdAt', null, [
                 'label' => 'Date de création',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'show' => [],
@@ -51,7 +44,7 @@ class TonMacronFriendInvitationAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->add('id', null, [

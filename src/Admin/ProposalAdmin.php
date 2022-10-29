@@ -4,43 +4,35 @@ namespace App\Admin;
 
 use App\Entity\Proposal;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Object\Metadata;
+use Sonata\AdminBundle\Object\MetadataInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ProposalAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
 
     /**
      * @param Proposal $object
-     *
-     * @return Metadata
      */
-    public function getObjectMetadata($object)
+    public function getObjectMetadata(object $object): MetadataInterface
     {
         return new Metadata($object->getTitle(), $object->getDescription(), $object->getMedia()->getPath());
     }
 
-    public function getTemplate($name)
-    {
-        if ('outer_list_rows_mosaic' === $name) {
-            return 'admin/media/mosaic.html.twig';
-        }
-
-        return parent::getTemplate($name);
-    }
-
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $slugEditable =
             null === $this->getSubject()->getTitle()   // Creation
@@ -99,7 +91,7 @@ class ProposalAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('title', null, [
@@ -109,7 +101,7 @@ class ProposalAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('title', null, [
@@ -121,7 +113,7 @@ class ProposalAdmin extends AbstractAdmin
             ->add('updatedAt', null, [
                 'label' => 'Dernière mise à jour',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'preview' => [

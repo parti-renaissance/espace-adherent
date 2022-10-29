@@ -23,7 +23,7 @@ class DatagridBuilder implements DatagridBuilderInterface
         $this->filterFactory = $filterFactory;
     }
 
-    public function getBaseDatagrid(AdminInterface $admin, array $values = [])
+    public function getBaseDatagrid(AdminInterface $admin, array $values = []): DatagridInterface
     {
         $pager = new Pager();
 
@@ -34,18 +34,15 @@ class DatagridBuilder implements DatagridBuilderInterface
         return new Datagrid($admin->createQuery(), $admin->getList(), $pager, $formBuilder, $values);
     }
 
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
+    public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void
     {
-        // set default values
-        $fieldDescription->setAdmin($admin);
     }
 
     public function addFilter(
         DatagridInterface $datagrid,
-        $type,
-        FieldDescriptionInterface $fieldDescription,
-        AdminInterface $admin
-    ) {
+        ?string $type,
+        FieldDescriptionInterface $fieldDescription
+    ): void {
         $filter = $this->filterFactory->create($fieldDescription->getName(), $type, $fieldDescription->getOptions());
 
         $datagrid->addFilter($filter);

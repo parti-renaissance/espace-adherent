@@ -7,6 +7,7 @@ use Doctrine\ORM\QueryBuilder;
 use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,16 +20,15 @@ class ResourceLinkAdmin extends AbstractAdmin
     protected $baseRoutePattern = 'app/jecoute-resource-link';
     protected $baseRouteName = 'admin_app_jecoute_resource_link';
 
-    public function createQuery($context = 'list')
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        /** @var QueryBuilder $proxyQuery */
-        $proxyQuery = parent::createQuery($context);
-        $proxyQuery->addOrderBy('o.position', 'ASC');
+        /** @var QueryBuilder $query */
+        $query->addOrderBy('o.position', 'ASC');
 
-        return $proxyQuery;
+        return $query;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
              ->add('label', null, [
@@ -42,7 +42,7 @@ class ResourceLinkAdmin extends AbstractAdmin
          ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('label', null, [
@@ -58,7 +58,7 @@ class ResourceLinkAdmin extends AbstractAdmin
             ->add('position', null, [
                 'label' => 'Position',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'move' => [
@@ -71,7 +71,7 @@ class ResourceLinkAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Général', ['class' => 'col-md-6'])

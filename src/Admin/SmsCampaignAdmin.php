@@ -10,7 +10,7 @@ use App\Form\Audience\AudienceSnapshotType;
 use App\Repository\AdherentRepository;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -26,7 +26,7 @@ class SmsCampaignAdmin extends AbstractAdmin
     /** @var AdherentRepository */
     private $adherentRepository;
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
             ->add('confirm', $this->getRouterIdParameter().'/confirmation')
@@ -34,7 +34,7 @@ class SmsCampaignAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->add('id', null, ['label' => 'ID'])
@@ -45,7 +45,7 @@ class SmsCampaignAdmin extends AbstractAdmin
             ->add('recipientCount', null, ['label' => 'Nb contacts', 'template' => 'admin/sms_campaign/CRUD/list__recipient_count.html.twig'])
             ->add('createdAt', null, ['label' => 'Créée le'])
             ->add('sentAt', null, ['label' => 'Envoyée le'])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'show' => [],
@@ -57,7 +57,7 @@ class SmsCampaignAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->with('Contenu')
@@ -87,7 +87,7 @@ class SmsCampaignAdmin extends AbstractAdmin
         });
     }
 
-    protected function configureShowFields(ShowMapper $show)
+    protected function configureShowFields(ShowMapper $show): void
     {
         $show
             ->with('Général')
@@ -108,17 +108,15 @@ class SmsCampaignAdmin extends AbstractAdmin
         ;
     }
 
-    public function checkAccess($action, $object = null)
+    protected function preRemove(object $object): void
     {
-        if ($object instanceof SmsCampaign && 'delete' === $action && !$object->isDraft()) {
+        if ($object instanceof SmsCampaign && !$object->isDraft()) {
             throw new AccessDeniedException();
         }
-
-        return parent::checkAccess($action, $object);
     }
 
     /** @param SmsCampaign $object */
-    public function prePersist($object)
+    protected function prePersist(object $object): void
     {
         $object->setAdministrator($this->security->getUser());
 
@@ -126,7 +124,7 @@ class SmsCampaignAdmin extends AbstractAdmin
     }
 
     /** @param SmsCampaign $object */
-    public function preUpdate($object)
+    protected function preUpdate(object $object): void
     {
         $this->updateRecipientCount($object);
     }

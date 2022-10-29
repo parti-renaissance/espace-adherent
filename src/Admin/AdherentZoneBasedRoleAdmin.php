@@ -6,6 +6,7 @@ use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Entity\Geo\Zone;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 
@@ -13,14 +14,14 @@ class AdherentZoneBasedRoleAdmin extends AbstractAdmin
 {
     public const SERVICE_ID = 'app.admin.adherent_zone_based_role_admin';
 
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'type',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected function configureFormFields(FormMapper $form)
+        $sortValues[DatagridInterface::SORT_BY] = 'type';
+    }
+
+    protected function configureFormFields(FormMapper $form): void
     {
         $form->add('zones', ModelAutocompleteType::class, [
             'callback' => [$this, 'prepareAutocompleteFilterCallback'],
@@ -33,7 +34,7 @@ class AdherentZoneBasedRoleAdmin extends AbstractAdmin
     {
         return sprintf(
             '%s : %s (%s)',
-            $this->trans('geo_zone.'.$zone->getType()),
+            $this->getTranslator()->trans('geo_zone.'.$zone->getType()),
             $zone->getName(),
             $zone->getCode()
         );

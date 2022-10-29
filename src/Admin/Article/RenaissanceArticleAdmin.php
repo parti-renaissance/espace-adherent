@@ -10,13 +10,13 @@ class RenaissanceArticleAdmin extends AbstractArticleAdmin
     protected $baseRouteName = 'renaissance-article';
 
     /** @param Article $object */
-    public function prePersist($object)
+    protected function prePersist(object $object): void
     {
         $object->setForRenaissance(true);
     }
 
     /** @param Article $object */
-    public function preUpdate($object)
+    protected function preUpdate(object $object): void
     {
         if (!$object->isForRenaissance()) {
             $object->setForRenaissance(true);

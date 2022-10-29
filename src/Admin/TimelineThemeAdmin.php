@@ -6,6 +6,7 @@ use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
@@ -14,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TimelineThemeAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Traductions', ['class' => 'col-md-6'])
@@ -48,22 +49,22 @@ class TimelineThemeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('title', CallbackFilter::class, [
                 'label' => 'Titre',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb
                         ->join("$alias.translations", 'translations')
                         ->andWhere('translations.title LIKE :title')
-                        ->setParameter('title', '%'.$value['value'].'%')
+                        ->setParameter('title', '%'.$value->getValue().'%')
                     ;
 
                     return true;
@@ -73,15 +74,15 @@ class TimelineThemeAdmin extends AbstractAdmin
                 'label' => 'URL',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb
                         ->join("$alias.translations", 'translations')
                         ->andWhere('translations.slug LIKE :slug')
-                        ->setParameter('slug', '%'.$value['value'].'%')
+                        ->setParameter('slug', '%'.$value->getValue().'%')
                     ;
 
                     return true;
@@ -91,15 +92,15 @@ class TimelineThemeAdmin extends AbstractAdmin
                 'label' => 'Description',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb
                         ->join("$alias.translations", 'translations')
                         ->andWhere('translations.description LIKE :description')
-                        ->setParameter('description', '%'.$value['value'].'%')
+                        ->setParameter('description', '%'.$value->getValue().'%')
                     ;
 
                     return true;
@@ -112,7 +113,7 @@ class TimelineThemeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('_thumbnail', null, [
@@ -128,7 +129,7 @@ class TimelineThemeAdmin extends AbstractAdmin
             ->add('featured', null, [
                 'label' => 'Mise en avant',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -138,7 +139,7 @@ class TimelineThemeAdmin extends AbstractAdmin
         ;
     }
 
-    public function getExportFields()
+    protected function configureExportFields(): array
     {
         return [
             'ID' => 'id',

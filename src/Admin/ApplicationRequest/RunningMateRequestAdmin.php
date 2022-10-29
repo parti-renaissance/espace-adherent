@@ -15,13 +15,13 @@ class RunningMateRequestAdmin extends AbstractApplicationRequestAdmin
 {
     private $storage;
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         parent::configureListFields($listMapper);
 
         $listMapper
-            ->remove('_action')
-            ->add('_action', null, [
+            ->remove('_actions')
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'curriculum' => [
                         'template' => 'admin/running_mate/_action_curriculum.html.twig',
@@ -33,7 +33,7 @@ class RunningMateRequestAdmin extends AbstractApplicationRequestAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         parent::configureFormFields($formMapper);
 
@@ -88,7 +88,7 @@ class RunningMateRequestAdmin extends AbstractApplicationRequestAdmin
     /**
      * @param RunningMateRequest $runningMateRequest
      */
-    public function preUpdate($runningMateRequest)
+    protected function preUpdate(object $runningMateRequest): void
     {
         parent::preUpdate($runningMateRequest);
 
@@ -101,7 +101,7 @@ class RunningMateRequestAdmin extends AbstractApplicationRequestAdmin
     /**
      * @param RunningMateRequest $runningMateRequest
      */
-    public function postRemove($runningMateRequest)
+    protected function postRemove(object $runningMateRequest): void
     {
         parent::postRemove($runningMateRequest);
 
@@ -115,7 +115,7 @@ class RunningMateRequestAdmin extends AbstractApplicationRequestAdmin
         $this->storage = $storage;
     }
 
-    public function getExportFields()
+    protected function configureExportFields(): array
     {
         return array_merge(parent::getExportFields(), [
             'Profession' => 'profession',

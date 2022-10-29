@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class DeepLinkExtension extends AbstractAdminExtension
 {
-    public function configureListFields(ListMapper $listMapper)
+    public function configureListFields(ListMapper $listMapper): void
     {
         $listMapper->add('dynamicLink', null, [
             'label' => 'Lien de partage',
@@ -18,7 +18,7 @@ class DeepLinkExtension extends AbstractAdminExtension
         $keys = $listMapper->keys();
         $admin = $listMapper->getAdmin();
 
-        foreach ($admin instanceof ReorderableAdminInterface ? array_merge($admin->getListMapperEndColumns(), ['_action']) : ['_action'] as $column) {
+        foreach ($admin instanceof ReorderableAdminInterface ? array_merge($admin->getListMapperEndColumns(), ['_actions']) : ['_actions'] as $column) {
             if (false !== $actionKey = array_search($column, $keys)) {
                 unset($keys[$actionKey]);
                 $keys[] = $column;

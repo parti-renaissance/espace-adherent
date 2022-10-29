@@ -2,6 +2,8 @@
 
 namespace App\Admin;
 
+use App\Admin\Exporter\IterableCallbackDataSourceTrait;
+use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Donation\DonationEvents;
 use App\Donation\DonationWasCreatedEvent;
 use App\Donation\DonationWasUpdatedEvent;
@@ -14,17 +16,17 @@ use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use League\Flysystem\FilesystemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
-use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -37,12 +39,16 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DonationAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 128,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
+    use IterableCallbackDataSourceTrait;
+
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+        $sortValues[DatagridInterface::PER_PAGE] = 128;
+    }
 
     private $storage;
     private $dispatcher;
@@ -60,37 +66,32 @@ class DonationAdmin extends AbstractAdmin
         $this->dispatcher = $dispatcher;
     }
 
-    public function configureActionButtons($action, $object = null)
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
-        $actions = parent::configureActionButtons($action, $object);
+        $actions = parent::configureActionButtons($buttonList, $action, $object);
 
-        if (\in_array($action, ['edit'], true)) {
+        if ('edit' === $action) {
             $actions['refund'] = ['template' => 'admin/donation/action_button_refund.html.twig'];
         }
 
         return $actions;
     }
 
-    /**
-     * @param Donation|null $object
-     */
-    public function hasAccess($action, $object = null)
+    protected function preRemove(object $object): void
     {
-        if ($object && 'delete' === $action && $object->isCB()) {
-            return false;
+        if ($object->isCB()) {
+            throw new \RuntimeException();
         }
-
-        return parent::hasAccess($action, $object);
     }
 
-    public function configureBatchActions($actions)
+    protected function configureBatchActions(array $actions): array
     {
         unset($actions['delete']);
 
         return $actions;
     }
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         /** @var Donation $donation */
         $donation = $this->getSubject();
@@ -199,13 +200,15 @@ class DonationAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
-            ->add('donator', ModelAutocompleteFilter::class, [
+            ->add('donator', ModelFilter::class, [
                 'label' => 'Donateur',
                 'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
+                    'model_manager' => $this->getModelManager(),
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
                     'property' => [
@@ -232,8 +235,8 @@ class DonationAdmin extends AbstractAdmin
                         return "global.$choice";
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    switch ($value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    switch ($value->getValue()) {
                         case 'yes':
                             $qb->andWhere("$alias.membership = TRUE");
 
@@ -283,8 +286,8 @@ class DonationAdmin extends AbstractAdmin
                 'label' => 'Date de don',
                 'show_filter' => true,
                 'field_type' => DateRangePickerType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (empty($dates = $value['value'])) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (empty($dates = $value->getValue())) {
                         return false;
                     }
 
@@ -361,14 +364,14 @@ class DonationAdmin extends AbstractAdmin
                 'label' => 'Montant minimum',
                 'show_filter' => true,
                 'field_type' => FormNumberType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value'] || !is_numeric($value['value'])) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->getValue() || !is_numeric($value->getValue())) {
                         return false;
                     }
 
                     $qb
                         ->andWhere("$alias.amount >= :min_amount")
-                        ->setParameter('min_amount', $value['value'] * 100)
+                        ->setParameter('min_amount', $value->getValue() * 100)
                     ;
 
                     return true;
@@ -378,14 +381,14 @@ class DonationAdmin extends AbstractAdmin
                 'label' => 'Montant maximum',
                 'show_filter' => true,
                 'field_type' => FormNumberType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value'] || !is_numeric($value['value'])) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->getValue() || !is_numeric($value->getValue())) {
                         return false;
                     }
 
                     $qb
                         ->andWhere("$alias.amount <= :max_amount")
-                        ->setParameter('max_amount', $value['value'] * 100)
+                        ->setParameter('max_amount', $value->getValue() * 100)
                     ;
 
                     return true;
@@ -420,12 +423,12 @@ class DonationAdmin extends AbstractAdmin
                 'label' => 'Code postal (préfixe)',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return;
                     }
 
-                    $value = array_map('trim', explode(',', strtolower($value['value'])));
+                    $value = array_map('trim', explode(',', strtolower($value->getValue())));
 
                     $postalCodeExpression = $qb->expr()->orX();
                     foreach (array_filter($value) as $key => $code) {
@@ -441,7 +444,7 @@ class DonationAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('donator', null, [
@@ -472,7 +475,7 @@ class DonationAdmin extends AbstractAdmin
             ->add('membership', null, [
                 'label' => 'Cotisation',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -481,11 +484,11 @@ class DonationAdmin extends AbstractAdmin
         ;
     }
 
-    public function getDataSourceIterator()
+    protected function configureExportFields(): array
     {
         PhpConfigurator::disableMemoryLimit();
 
-        return new IteratorCallbackSourceIterator($this->getDonationIterator(), function (array $donation) {
+        return [IteratorCallbackDataSource::CALLBACK => static function (array $donation) {
             /** @var Donation $donation */
             $donation = $donation[0];
             $donator = $donation->getDonator();
@@ -514,44 +517,23 @@ class DonationAdmin extends AbstractAdmin
                 'Adresse e-mail' => $donator->getEmailAddress(),
                 'Ville du donateur' => $donator->getCity(),
                 'Pays du donateur' => $donator->getCountry(),
-                'Adresse de référence' => $referenceDonation ? $referenceDonation->getAddress() : null,
-                'Code postal de référence' => $referenceDonation ? $referenceDonation->getPostalCode() : null,
-                'Ville de référence' => $referenceDonation ? $referenceDonation->getCityName() : null,
-                'Pays de référence' => $referenceDonation ? $referenceDonation->getCountry() : null,
+                'Adresse de référence' => $referenceDonation?->getAddress(),
+                'Code postal de référence' => $referenceDonation?->getPostalCode(),
+                'Ville de référence' => $referenceDonation?->getCityName(),
+                'Pays de référence' => $referenceDonation?->getCountry(),
                 'Tags du donateur' => implode(', ', $donator->getTags()->toArray()),
                 'Transactions' => $donation->hasSubscription() ? implode(', ', $donation->getTransactions()->toArray()) : null,
                 'Adhérent' => $adherent instanceof Adherent,
                 'Téléphone adhérent' => $phone,
                 'Cotisation' => $donation->isMembership(),
             ];
-        });
-    }
-
-    private function getDonationIterator(): \Iterator
-    {
-        $datagrid = $this->getDatagrid();
-        $datagrid->buildPager();
-
-        $query = $datagrid->getQuery();
-        $alias = current($query->getRootAliases());
-
-        $query
-            ->select("DISTINCT $alias")
-            ->innerJoin("$alias.donator", 'donator')
-            ->addSelect('donator')
-            ->leftJoin('donator.adherent', 'adherent')
-            ->addSelect('adherent')
-        ;
-        $query->setFirstResult(0);
-        $query->setMaxResults(null);
-
-        return $query->getQuery()->iterate();
+        }];
     }
 
     /**
      * @param Donation $donation
      */
-    public function prePersist($donation)
+    protected function prePersist(object $donation): void
     {
         parent::prePersist($donation);
 
@@ -563,7 +545,7 @@ class DonationAdmin extends AbstractAdmin
     /**
      * @param Donation $donation
      */
-    public function preUpdate($donation)
+    protected function preUpdate(object $donation): void
     {
         parent::preUpdate($donation);
 
@@ -575,7 +557,7 @@ class DonationAdmin extends AbstractAdmin
     /**
      * @param Donation $donation
      */
-    public function postRemove($donation)
+    protected function postRemove(object $donation): void
     {
         parent::postRemove($donation);
 
@@ -588,10 +570,10 @@ class DonationAdmin extends AbstractAdmin
         }
     }
 
-    public function getNewInstance()
+    protected function createNewInstance(): object
     {
         /** @var Donation $donation */
-        $donation = parent::getNewInstance();
+        $donation = parent::createNewInstance();
         $donation->setPostAddress(PostAddress::createEmptyAddress());
 
         return $donation;

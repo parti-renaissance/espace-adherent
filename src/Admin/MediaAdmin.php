@@ -6,10 +6,12 @@ use App\Entity\Media;
 use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Object\Metadata;
+use Sonata\AdminBundle\Object\MetadataInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -25,17 +27,18 @@ class MediaAdmin extends AbstractAdmin
      */
     private $glide;
 
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
 
     /**
      * @param Media $media
      */
-    public function preRemove($media)
+    protected function preRemove(object $media): void
     {
         parent::preRemove($media);
 
@@ -49,7 +52,7 @@ class MediaAdmin extends AbstractAdmin
     /**
      * @param Media $media
      */
-    public function prePersist($media)
+    protected function prePersist(object $media): void
     {
         parent::prePersist($media);
 
@@ -60,7 +63,7 @@ class MediaAdmin extends AbstractAdmin
     /**
      * @param Media $media
      */
-    public function preUpdate($media)
+    protected function preUpdate(object $media): void
     {
         parent::preUpdate($media);
 
@@ -72,24 +75,13 @@ class MediaAdmin extends AbstractAdmin
 
     /**
      * @param Media $object
-     *
-     * @return Metadata
      */
-    public function getObjectMetadata($object)
+    public function getObjectMetadata(object $object): MetadataInterface
     {
         return new Metadata($object->getName(), null, $object->getPath());
     }
 
-    public function getTemplate($name)
-    {
-        if ('outer_list_rows_mosaic' === $name) {
-            return 'admin/media/mosaic.html.twig';
-        }
-
-        return parent::getTemplate($name);
-    }
-
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $isCreation = null === $this->getSubject() || null === $this->getSubject()->getSize();
 
@@ -111,7 +103,7 @@ class MediaAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('name', null, [
@@ -130,13 +122,13 @@ class MediaAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('_thumbnail', null, [
                 'label' => 'Miniature',
                 'virtual_field' => true,
-                'template' => 'admin/media/list_thumbnail.html.twig',
+                'template' => 'admin/list/list_thumbnail.html.twig',
             ])
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
@@ -162,7 +154,7 @@ class MediaAdmin extends AbstractAdmin
             ->add('updatedAt', null, [
                 'label' => 'Date de dernière mise à jour',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/media/list_actions.html.twig',
             ])

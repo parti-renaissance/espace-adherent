@@ -8,10 +8,11 @@ use App\Report\ReportType;
 use App\Repository\ReportRepository;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\Type\Filter\ChoiceType as FilterChoiceType;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Filter\Model\FilterData;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
@@ -25,13 +26,6 @@ class ReportAdmin extends AbstractAdmin
 {
     private const DATE_FORMAT = 'Y-m-d H:i:s';
 
-    protected $datagridValues = [
-        'status' => ['type' => FilterChoiceType::TYPE_EQUAL, 'value' => ReportStatusEnum::STATUS_UNRESOLVED],
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
     private $reportRepository;
 
     public function __construct(
@@ -45,12 +39,20 @@ class ReportAdmin extends AbstractAdmin
         $this->reportRepository = $reportRepository;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept(['list', 'show']);
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('id', null, [
@@ -72,14 +74,14 @@ class ReportAdmin extends AbstractAdmin
                     'choice_translation_domain' => 'reports',
                     'multiple' => true,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $instancesExpression = $qb->expr()->orX();
 
-                    foreach ($value['value'] as $value) {
+                    foreach ($value->getValue() as $value) {
                         $instancesExpression->add(sprintf('%s INSTANCE OF %s', $alias, $value));
                     }
 
@@ -93,12 +95,12 @@ class ReportAdmin extends AbstractAdmin
                 'help' => 'Non applicable aux threads & commentaires de l\'Atelier des idées.',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
-                    $ids = $this->reportRepository->findIdsByNameForAll($value['value']);
+                    $ids = $this->reportRepository->findIdsByNameForAll($value->getValue());
 
                     if (!$ids) {
                         return true;
@@ -114,8 +116,8 @@ class ReportAdmin extends AbstractAdmin
                 'label' => 'Prénom du requêteur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
@@ -123,7 +125,7 @@ class ReportAdmin extends AbstractAdmin
                     $qb
                         ->join("$alias.author", 'author')
                         ->andWhere('LOWER(author.firstName) LIKE :firstName')
-                        ->setParameter('firstName', sprintf('%%%s%%', mb_strtolower($value['value'])))
+                        ->setParameter('firstName', sprintf('%%%s%%', mb_strtolower($value->getValue())))
                     ;
 
                     return true;
@@ -133,8 +135,8 @@ class ReportAdmin extends AbstractAdmin
                 'label' => 'Nom du requêteur',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
@@ -145,7 +147,7 @@ class ReportAdmin extends AbstractAdmin
 
                     $qb
                         ->andWhere('LOWER(author.lastName) LIKE :lastName')
-                        ->setParameter('lastName', sprintf('%%%s%%', mb_strtolower($value['value'])))
+                        ->setParameter('lastName', sprintf('%%%s%%', mb_strtolower($value->getValue())))
                     ;
 
                     return true;
@@ -155,8 +157,8 @@ class ReportAdmin extends AbstractAdmin
                 'label' => 'Email du requêteur',
                 'show_filter' => true,
                 'field_type' => EmailType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
@@ -167,7 +169,7 @@ class ReportAdmin extends AbstractAdmin
 
                     $qb
                         ->andWhere('author.emailAddress=:emailAddress')
-                        ->setParameter('emailAddress', mb_strtolower($value['value']))
+                        ->setParameter('emailAddress', mb_strtolower($value->getValue()))
                     ;
 
                     return true;
@@ -181,13 +183,13 @@ class ReportAdmin extends AbstractAdmin
                     'choices' => array_combine(ReportReasonEnum::REASONS_LIST, ReportReasonEnum::REASONS_LIST),
                     'choice_translation_domain' => 'reports',
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $qb->andWhere($qb->expr()->eq(sprintf('json_contains(%s.reasons, :reason)', $alias), 1));
-                    $qb->setParameter(':reason', sprintf('"%s"', $value['value']));
+                    $qb->setParameter(':reason', sprintf('"%s"', $value->getValue()));
 
                     return true;
                 },
@@ -213,7 +215,7 @@ class ReportAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id', null, [
@@ -250,7 +252,7 @@ class ReportAdmin extends AbstractAdmin
                 'label' => 'Date du signalement',
                 'format' => self::DATE_FORMAT,
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'show' => [],
@@ -260,7 +262,7 @@ class ReportAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->add('uuid', null, [
@@ -302,6 +304,7 @@ class ReportAdmin extends AbstractAdmin
             ])
             ->add('details', null, [
                 'label' => 'Détails de l\'objet',
+                'virtual_field' => true,
                 'template' => 'admin/report/show_details.html.twig',
             ])
         ;

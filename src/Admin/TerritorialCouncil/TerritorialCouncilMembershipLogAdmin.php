@@ -5,34 +5,40 @@ namespace App\Admin\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog;
 use App\Form\TerritorialCouncil\TerritorialCouncilQualityChoiceType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TerritorialCouncilMembershipLogAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'id',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        $sortValues[DatagridInterface::SORT_BY] = 'id';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
-            ->add('adherent', ModelAutocompleteFilter::class, [
+            ->add('adherent', ModelFilter::class, [
                 'show_filter' => true,
                 'label' => 'Adhérent',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
+                    'model_manager' => $this->getModelManager(),
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
                     'property' => [
@@ -66,13 +72,13 @@ class TerritorialCouncilMembershipLogAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'label' => 'Description',
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb->andWhere(sprintf('%s.description LIKE :text', $alias));
-                    $qb->setParameter('text', '%'.strtolower($value['value']).'%');
+                    $qb->setParameter('text', '%'.strtolower($value->getValue()).'%');
 
                     return true;
                 },
@@ -85,12 +91,12 @@ class TerritorialCouncilMembershipLogAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept(['list', 'edit']);
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('type', null, [
@@ -125,14 +131,14 @@ class TerritorialCouncilMembershipLogAdmin extends AbstractAdmin
             ->add('isResolved', null, [
                 'label' => 'Résolu',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/territorial_council/membership_log_list_actions.html.twig',
             ])
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('isResolved', ChoiceType::class, [

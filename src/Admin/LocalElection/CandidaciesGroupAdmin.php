@@ -12,7 +12,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
@@ -20,7 +20,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
 {
     private ?FilesystemInterface $storage = null;
 
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->add('election.designation.label', null, ['label' => 'Libellé'])
@@ -38,7 +38,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         /** @var CandidaciesGroup $candidaciesGroup */
         $candidaciesGroup = $this->getSubject();
@@ -51,7 +51,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
                         'property' => 'designation.label',
                         'help' => sprintf(
                             'Si vous ne trouvez pas la bonne élection, veuillez la créer en cliquant <a href="%s">ici</a>',
-                            $this->routeGenerator->generate('admin_app_localelection_localelection_create')
+                            $this->getRouteGenerator()->generate('admin_app_localelection_localelection_create')
                         ),
                     ])
                 ->end()
@@ -77,19 +77,23 @@ class CandidaciesGroupAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('election', ModelAutocompleteFilter::class, [
+            ->add('election', ModelFilter::class, [
                 'show_filter' => true,
                 'label' => 'Élection',
+                'filter_type' => ModelAutocompleteType::class,
                 'field_options' => [
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
                     'property' => 'designation.label',
                 ],
             ])
-            ->add('election.designation.zones', ModelAutocompleteFilter::class, [
+            ->add('election.designation.zones', ModelFilter::class, [
                 'show_filter' => true,
                 'label' => 'Zones',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,

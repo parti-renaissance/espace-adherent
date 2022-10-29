@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class ArticleCategoryAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('name', TextType::class, [
@@ -35,7 +35,7 @@ class ArticleCategoryAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('name', null, [
@@ -57,7 +57,7 @@ class ArticleCategoryAdmin extends AbstractAdmin
                 'label' => 'Affichée ?',
                 'editable' => true,
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],

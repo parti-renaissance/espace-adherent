@@ -13,6 +13,8 @@ use App\Form\Admin\Filesystem\FilePermissionType;
 use App\Repository\Filesystem\FileRepository;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -33,6 +35,7 @@ class FileAdmin extends AbstractAdmin
     private $fileManager;
     /** @var FileRepository */
     private $repository;
+    private array $elementsToRemove = [];
 
     public function __construct(
         string $code,
@@ -47,34 +50,30 @@ class FileAdmin extends AbstractAdmin
         $this->fileManager = $fileManager;
     }
 
-    public function createQuery($context = 'list')
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        $queryBuilder = parent::createQuery($context);
+        $query
+            ->leftJoin('o.parent', 'parent')
+            ->leftJoin('o.permissions', 'permission')
+            ->leftJoin('o.createdBy', 'createdBy')
+            ->leftJoin('o.updatedBy', 'updatedBy')
+            ->addSelect('parent', 'permission', 'createdBy', 'updatedBy')
+            ->orderBy('parent.name', 'ASC')
+            ->addOrderBy('o.name', 'ASC')
+        ;
 
-        if ('list' === $context) {
-            $queryBuilder
-                ->leftJoin('o.parent', 'parent')
-                ->leftJoin('o.permissions', 'permission')
-                ->leftJoin('o.createdBy', 'createdBy')
-                ->leftJoin('o.updatedBy', 'updatedBy')
-                ->addSelect('parent', 'permission', 'createdBy', 'updatedBy')
-                ->orderBy('parent.name', 'ASC')
-                ->addOrderBy('o.name', 'ASC')
-            ;
-        }
-
-        return $queryBuilder;
+        return $query;
     }
 
-    public function getBatchActions()
+    protected function configureBatchActions(array $actions): array
     {
-        $actions = parent::getBatchActions();
+        $actions = parent::configureBatchActions($actions);
         unset($actions['delete']);
 
         return $actions;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('name', null, [
@@ -93,15 +92,15 @@ class FileAdmin extends AbstractAdmin
                     },
                     'multiple' => true,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!isset($value['value']) || null === $value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb
                         ->leftJoin("$alias.permissions", 'pm')
                         ->andWhere('pm.name IN (:roles)')
-                        ->setParameter(':roles', $value['value'])
+                        ->setParameter(':roles', $value->getValue())
                     ;
 
                     return true;
@@ -116,14 +115,14 @@ class FileAdmin extends AbstractAdmin
                     'class' => Administrator::class,
                     'multiple' => true,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!isset($value['value']) || null === $value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb
                         ->andWhere("($alias.createdBy IN (:admins) OR $alias.updatedBy IN (:admins))")
-                        ->setParameter('admins', $value['value'])
+                        ->setParameter('admins', $value->getValue())
                     ;
 
                     return true;
@@ -156,7 +155,7 @@ class FileAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         /** @var File $file */
         $file = $this->getSubject();
@@ -211,7 +210,7 @@ class FileAdmin extends AbstractAdmin
         }
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('fullPath', null, [
@@ -237,21 +236,21 @@ class FileAdmin extends AbstractAdmin
                 'label' => 'Est affiché ?',
                 'editable' => true,
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/filesystem/list_actions.html.twig',
             ])
         ;
     }
 
-    public function prePersist($file)
+    protected function prePersist(object $file): void
     {
         parent::prePersist($file);
 
         $this->fileManager->update($file);
     }
 
-    public function postPersist($file): void
+    protected function postPersist(object $file): void
     {
         parent::postPersist($file);
 
@@ -260,14 +259,14 @@ class FileAdmin extends AbstractAdmin
         }
     }
 
-    public function preUpdate($file)
+    protected function preUpdate(object $file): void
     {
         parent::preUpdate($file);
 
         $this->fileManager->update($file);
     }
 
-    public function postUpdate($file): void
+    protected function postUpdate(object $file): void
     {
         if ($file->getFile() instanceof UploadedFile) {
             $this->fileManager->upload($file);
@@ -276,21 +275,21 @@ class FileAdmin extends AbstractAdmin
         }
     }
 
-    public function preRemove($object)
+    protected function preRemove(object $object): void
     {
         parent::preRemove($object);
 
-        $this->children = [];
+        $this->elementsToRemove = [];
         if ($object->isDir()) {
-            $this->children = $this->repository->findBy(['parent' => $object]);
+            $this->elementsToRemove = $this->repository->findBy(['parent' => $object]);
         }
     }
 
-    public function postRemove($object)
+    protected function postRemove(object $object): void
     {
         parent::postRemove($object);
 
-        foreach ($this->children as $child) {
+        foreach ($this->elementsToRemove as $child) {
             $this->fileManager->remove($child);
         }
 

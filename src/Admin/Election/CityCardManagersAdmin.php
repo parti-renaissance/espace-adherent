@@ -11,7 +11,7 @@ class CityCardManagersAdmin extends AbstractCityCardAdmin
     protected $baseRouteName = 'admin_app_election_citycard_managers';
     protected $baseRoutePattern = 'app/election-citycard-managers';
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         parent::configureFormFields($form);
 
@@ -31,7 +31,7 @@ class CityCardManagersAdmin extends AbstractCityCardAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         parent::configureListFields($list);
 
@@ -57,7 +57,7 @@ class CityCardManagersAdmin extends AbstractCityCardAdmin
                 'headquartersManager',
                 'politicManager',
                 'taskForceManager',
-                '_action',
+                '_actions',
             ])
         ;
     }

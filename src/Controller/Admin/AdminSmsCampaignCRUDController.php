@@ -9,6 +9,7 @@ use App\SmsCampaign\Command\SendSmsCampaignCommand;
 use App\SmsCampaign\Statistics;
 use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -77,19 +78,17 @@ class AdminSmsCampaignCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    protected function redirectTo($object)
+    protected function redirectTo(Request $request, object $object): RedirectResponse
     {
-        $request = $this->getRequest();
-
         if (null !== $request->get('btn_edit_and_confirm')) {
             return $this->redirect($this->admin->generateUrl('confirm', ['id' => $object->getId()]));
         }
 
-        return parent::redirectTo($object);
+        return parent::redirectTo($request, $object);
     }
 
     /** @param SmsCampaign $object */
-    protected function preShow(Request $request, $object)
+    protected function preShow(Request $request, object $object): ?Response
     {
         if ($object->getExternalId()) {
             $data = $this->ovhDriver->getBatchStats($object->getExternalId())->toArray(false);

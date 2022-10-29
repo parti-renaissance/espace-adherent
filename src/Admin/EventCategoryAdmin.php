@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\Entity\Event\BaseEventCategory;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelType;
@@ -12,14 +13,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class EventCategoryAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'name',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected function configureFormFields(FormMapper $formMapper)
+        $sortValues[DatagridInterface::SORT_BY] = 'name';
+    }
+
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('name', TextType::class, [
@@ -42,7 +43,7 @@ class EventCategoryAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('name', null, [
@@ -55,7 +56,7 @@ class EventCategoryAdmin extends AbstractAdmin
                 'label' => 'Visibilité',
                 'template' => 'admin/event_category/list_status.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],

@@ -9,10 +9,12 @@ use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
 use App\Jecoute\NewsHandler;
 use App\Repository\Geo\ZoneRepository;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -26,16 +28,13 @@ use Symfony\Component\Security\Core\Security;
 
 class NewsAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected $accessMapping = [
-        'pin' => 'PIN',
-    ];
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
 
     private $security;
     private $zoneRepository;
@@ -56,23 +55,21 @@ class NewsAdmin extends AbstractAdmin
         $this->newsHandler = $newsHandler;
     }
 
-    public function getTemplate($name)
+    protected function getAccessMapping(): array
     {
-        if ('edit' === $name) {
-            return 'admin/jecoute/news/edit.html.twig';
-        }
-
-        return parent::getTemplate($name);
+        return [
+            'pin' => 'PIN',
+        ];
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
             ->add('pin', $this->getRouterIdParameter().'/pin')
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Informations', ['class' => 'col-md-6'])
@@ -126,15 +123,12 @@ class NewsAdmin extends AbstractAdmin
                     'class' => Zone::class,
                     'query_builder' => $this->zoneRepository->createSelectForJeMarcheNotificationsQueryBuilder(),
                     'required' => false,
-                    'group_by' => function (Zone $zone, $key, $value) {
-                        switch ($zone->getType()) {
-                            case Zone::DEPARTMENT:
-                                return 'Départements';
-                            case Zone::REGION:
-                                return 'Régions';
-                            default:
-                                return null;
-                        }
+                    'group_by' => function (Zone $zone) {
+                        return match ($zone->getType()) {
+                            Zone::DEPARTMENT => 'Départements',
+                            Zone::REGION => 'Régions',
+                            default => null,
+                        };
                     },
                 ])
             ->end()
@@ -188,7 +182,7 @@ class NewsAdmin extends AbstractAdmin
         $this->newsHandler->buildTopic($news);
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('createdAt', DateRangeFilter::class, [
@@ -205,26 +199,30 @@ class NewsAdmin extends AbstractAdmin
                 'show_filter' => true,
             ])
             ->add('zone', ZoneAutocompleteFilter::class, [
-                'label' => 'Audience',
+                'label' => 'Périmètres géographiques',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'admin_code' => $this->getCode(),
-                    'property' => 'name',
+                    'multiple' => true,
                     'minimum_input_length' => 1,
-                    'callback' => function ($admin, $property, $value) {
-                        $datagrid = $admin->getDatagrid();
-                        $qb = $datagrid->getQuery();
-                        $alias = $qb->getRootAlias();
-                        $qb
-                            ->andWhere($alias.'.type IN (:types)')
-                            ->setParameter('types', [
-                                Zone::REGION,
-                                Zone::DEPARTMENT,
-                            ])
-                        ;
-                        $datagrid->setValue($property, null, $value);
-                    },
+                    'items_per_page' => 20,
+                    'property' => [
+                        'name',
+                        'code',
+                    ],
                 ],
+                'callback' => function ($admin, $property, $value) {
+                    $datagrid = $admin->getDatagrid();
+                    $qb = $datagrid->getQuery();
+                    $alias = $qb->getRootAlias();
+                    $qb
+                        ->andWhere($alias.'.type IN (:types)')
+                        ->setParameter('types', [
+                            Zone::REGION,
+                            Zone::DEPARTMENT,
+                        ])
+                    ;
+                    $datagrid->setValue($property, null, $value);
+                },
             ])
             ->add('title', null, [
                 'label' => 'Titre',
@@ -241,7 +239,7 @@ class NewsAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('title', null, [
@@ -275,7 +273,7 @@ class NewsAdmin extends AbstractAdmin
             ->add('createdBy', null, [
                 'label' => 'Auteur',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'pin' => [
@@ -289,7 +287,7 @@ class NewsAdmin extends AbstractAdmin
     }
 
     /** @param News $object */
-    public function prePersist($object)
+    protected function prePersist(object $object): void
     {
         /** @var Administrator $administrator */
         $administrator = $this->security->getUser();
@@ -298,14 +296,14 @@ class NewsAdmin extends AbstractAdmin
     }
 
     /** @param News $object */
-    public function postPersist($object)
+    protected function postPersist(object $object): void
     {
         $this->newsHandler->handleNotification($object);
         $this->newsHandler->changePinned($object);
     }
 
     /** @param News $object */
-    public function postUpdate($object)
+    protected function postUpdate(object $object): void
     {
         $this->newsHandler->changePinned($object);
     }
@@ -313,7 +311,7 @@ class NewsAdmin extends AbstractAdmin
     /**
      * @required
      */
-    public function setSecurity(Security $security)
+    public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }

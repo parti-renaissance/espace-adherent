@@ -3,9 +3,11 @@
 namespace App\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Filter\Model\FilterData;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
@@ -14,19 +16,23 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CommitteeMergeHistoryAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'date',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected $accessMapping = [
-        'merge' => 'MERGE',
-        'revert' => 'REVERT',
-    ];
+        $sortValues[DatagridInterface::SORT_BY] = 'date';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
 
-    public function configureRoutes(RouteCollection $collection)
+    protected function getAccessMapping(): array
+    {
+        return [
+            'merge' => 'MERGE',
+            'revert' => 'REVERT',
+        ];
+    }
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
             ->clearExcept('list')
@@ -35,12 +41,12 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
         ;
     }
 
-    public function configureActionButtons($action, $object = null)
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
         if ('merge' === $action) {
-            $actions = parent::configureActionButtons('show', $object);
+            $actions = parent::configureActionButtons($buttonList, 'show', $object);
         } else {
-            $actions = parent::configureActionButtons($action, $object);
+            $actions = parent::configureActionButtons($buttonList, $action, $object);
         }
 
         if ($this->hasAccess('merge') && $this->hasRoute('merge')) {
@@ -50,22 +56,22 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
         return $actions;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('sourceCommittee', CallbackFilter::class, [
                 'label' => 'Comité source',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $qb
                         ->innerJoin("$alias.sourceCommittee", 'sc')
                         ->andWhere('sc.name LIKE :sourceName')
-                        ->setParameter('sourceName', '%'.$value['value'].'%')
+                        ->setParameter('sourceName', '%'.$value->getValue().'%')
                     ;
 
                     return true;
@@ -75,15 +81,15 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
                 'label' => 'Comité de destination',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $qb
                         ->innerJoin("$alias.destinationCommittee", 'dc')
                         ->andWhere('dc.name LIKE :destinationName')
-                        ->setParameter('destinationName', '%'.$value['value'].'%')
+                        ->setParameter('destinationName', '%'.$value->getValue().'%')
                     ;
 
                     return true;
@@ -110,7 +116,7 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('sourceCommittee', null, [
@@ -134,7 +140,7 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
         ;
 
         if ($this->hasAccess('revert') && $this->hasRoute('revert')) {
-            $listMapper->add('_action', null, [
+            $listMapper->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/committee/merge/list_actions.html.twig',
             ]);

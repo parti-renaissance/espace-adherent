@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class VolunteerRequestAdmin extends AbstractApplicationRequestAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         parent::configureFormFields($formMapper);
 
@@ -51,7 +51,7 @@ class VolunteerRequestAdmin extends AbstractApplicationRequestAdmin
         ;
     }
 
-    public function getExportFields()
+    protected function configureExportFields(): array
     {
         return array_merge(parent::getExportFields(), [
             'Profession' => 'profession',
