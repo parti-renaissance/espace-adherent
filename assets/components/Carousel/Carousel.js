@@ -1,20 +1,20 @@
 export default class Carousel {
     /**
-   * @param {HTMLElement} element
-   * @param {Object} options
-   * @param {Object} [options.slidesVisible=3] Le nombre d'éléments à faire afficher.
-   * @param {Object} [options.slidesToScroll=1] Le nombre d'éléments à défiler.
-   * @param {Object} [options.loop=false] Determine si le carousel scroll a l'infini.
-   * @param {Object} [options.navigation=true] Permet de definir si la navigation s'affiche ou pas.
-   */
-   constructor(element, options = {}) {
+     * @param {HTMLElement} element
+     * @param {Object} options
+     * @param {Object} [options.slidesVisible=3] Le nombre d'éléments à faire afficher.
+     * @param {Object} [options.slidesToScroll=1] Le nombre d'éléments à défiler.
+     * @param {Object} [options.loop=false] Determine si le carousel scroll a l'infini.
+     * @param {Object} [options.navigation=true] Permet de definir si la navigation s'affiche ou pas.
+     */
+    constructor(element, options = {}) {
         this.element = element;
         this.options = {
-          slidesVisible: 1,
-          slidesToScroll: 1,
-          loop: false,
-          navigation: true,
-          ...options,
+            slidesVisible: 1,
+            slidesToScroll: 1,
+            loop: false,
+            navigation: true,
+            ...options,
         };
 
         let children = [].slice.call(element.children);
@@ -24,7 +24,7 @@ export default class Carousel {
         this.currentSlide = 0;
         this.isMobile = true;
         this.onSlideCallback = [];
-        
+
         this.root.appendChild(this.carouselInner);
         this.element.appendChild(this.root);
         this.element.classList.remove('grid', 'md:grid-cols-3', 'md:gap-8', 'gap-5');
@@ -71,6 +71,7 @@ export default class Carousel {
         this.carouselInner.style.width = `${ratio * 100}%`;
         this.carouselInner.style.display = 'flex';
         this.carouselInner.style.alignItems = 'center';
+        this.items.forEach((item) => item.style.width = `${100 / this.slidesVisible / ratio}%`);
     }
 
     createNavigation() {
@@ -114,8 +115,8 @@ export default class Carousel {
     }
 
     /**
-   * @param {number} index
-   */
+     * @param {number} index
+     */
     goToSlide(index) {
         if (0 > index) {
             index = this.items.length - this.slidesVisible;
@@ -130,18 +131,18 @@ export default class Carousel {
     }
 
     /**
-   * Enregistre les différents callback au slide des elements du carousel
-   *
-   * @param {Carousel~onSlideCallback} callback
-   */
+     * Enregistre les différents callback au slide des elements du carousel
+     *
+     * @param {Carousel~onSlideCallback} callback
+     */
     onSlide(callback) {
         this.onSlideCallback.push(callback);
     }
 
     /**
-   * @param {string} className
-   * @returns {HTMLElement}
-   */
+     * @param {string} className
+     * @returns {HTMLElement}
+     */
     createNavigationButton(className) {
         let button = document.createElement('button');
         button.setAttribute('type', 'button');
@@ -151,9 +152,9 @@ export default class Carousel {
     }
 
     /**
-   * @param {string} path
-   * @returns {SVGSVGElement}
-   */
+     * @param {string} path
+     * @returns {SVGSVGElement}
+     */
     renderSvgIcon(path) {
         const iconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         const iconPath = document.createElementNS(
@@ -177,9 +178,9 @@ export default class Carousel {
     }
 
     /**
-   * @param {string} className
-   * @returns {HTMLElement}
-   */
+     * @param {string} className
+     * @returns {HTMLElement}
+     */
     createDivElement(className) {
         const rootElement = document.createElement('div');
         rootElement.classList.add(className);
