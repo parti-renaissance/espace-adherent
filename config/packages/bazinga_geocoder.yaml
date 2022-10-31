@@ -10,6 +10,5 @@ bazinga_geocoder:
 
 services:
     app.bazinga.geocoder_cache:
-        class: Symfony\Component\Cache\Simple\DoctrineCache
-        arguments:
-            $provider: '@cache.redis_doctrine_provider'
+        class: Symfony\Component\Cache\Psr16Cache
+        arguments: ['@app.cache.geocoder']

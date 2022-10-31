@@ -23,3 +23,4 @@ framework:
             app.cache.municipal_site: ~
             app.cache.voting_platform: ~
             app.cache.france_cities: ~
+            app.cache.geocoder: ~
