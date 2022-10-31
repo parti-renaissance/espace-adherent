@@ -6,4 +6,4 @@ parameters:
         - config
         - migrations
     symfony:
-        containerXmlPath: var/cache/dev/srcApp_KernelDevDebugContainer.xml
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml

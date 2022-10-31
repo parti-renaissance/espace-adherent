@@ -3,6 +3,7 @@ security:
     # see usages of App\Security\Exception\BadCredentialsException
     hide_user_not_found: false
     erase_credentials: false
+    enable_authenticator_manager: true
 
     encoders:
         App\Entity\Administrator: bcrypt
@@ -470,8 +471,6 @@ security:
             pattern: ^/admin
             provider: admins_db
             switch_user: true
-            anonymous:
-                secret: '%env(SECRET)%'
             form_login:
                 login_path: app_admin_login
                 check_path: app_admin_login_check
@@ -483,7 +482,6 @@ security:
                 password_parameter: _login_password
                 csrf_parameter: _login_csrf
                 csrf_token_id: authenticate
-                csrf_token_generator: security.csrf.token_manager
 
                 failure_handler: App\Security\Http\AuthenticationFailureHandler
             two_factor:
@@ -501,8 +499,6 @@ security:
             # No pattern means every path is behind this firewall
             provider: users_db
             switch_user: true
-            anonymous:
-                secret: '%env(SECRET)%'
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 7890000 # 3 months in seconds
@@ -520,7 +516,7 @@ security:
                 authenticators:
                     - App\Security\LoginFormGuardAuthenticator
                     - lexik_jwt_authentication.jwt_token_authenticator
-                entry_point: App\Security\LoginFormGuardAuthenticator
+            entry_point: App\Security\LoginFormGuardAuthenticator
 
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }
