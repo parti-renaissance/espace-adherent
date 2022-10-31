@@ -3,7 +3,7 @@
 {% set is_host = is_host(committee) %}
 
 {%- block meta_description -%}
-    {{ committee.name }} est un comité local de La République En Marche. Il se situe dans la ville de {{ committee.cityName }} et se compose de {{ 'committee.members_count'|transchoice(committee.membersCount) }}. Les comités locaux sont le fondement de notre mouvement, rejoignez-en un pour participer à la vie locale du mouvement !
+    {{ committee.name }} est un comité local de La République En Marche. Il se situe dans la ville de {{ committee.cityName }} et se compose de {{ 'committee.members_count'|trans({ count: committee.membersCount }) }}. Les comités locaux sont le fondement de notre mouvement, rejoignez-en un pour participer à la vie locale du mouvement !
 {%- endblock -%}
 
 {% block content %}
@@ -62,7 +62,7 @@
                         </li>
                         <li>
                             {{ include('components/users.html.twig') }}
-                            {{ 'committee.members_count'|transchoice(committee.membersCount) }}
+                            {{ 'committee.members_count'|trans({ count: committee.membersCount }) }}
                         </li>
                         <li>
                             {{ include('components/share.html.twig') }}

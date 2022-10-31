@@ -20,11 +20,27 @@ common.sector: Secteur
 common.role: Rôle
 common.begin_at: Date de début
 common.finish_at: Date de fin
-common.ordinal_number_feminine: '1ère|%count%ème'
-common.ordinal_number_masculine: '1er|%count%ème'
+common.ordinal_number_feminine: >-
+    {count, plural,
+        one {1ère}
+        other {#ème}
+    }
+common.ordinal_number_masculine: >-
+    {count, plural,
+        one {1er}
+        other {#ème}
+    }
 common.optional: optionnel
-common.committees_count: "%count% comité|%count% comités"
-common.members_count: "%count% membre|%count% membres"
+common.committees_count: >-
+    {count, plural,
+        one {1 comité}
+        other {# comités}
+    }
+common.members_count: >-
+    {count, plural,
+        one {1 membre}
+        other {# membres}
+    }
 common.i.am: Je suis
 common.all: Tous
 common.jecoute_manager: Accès aux questionnaires
@@ -62,8 +78,11 @@ global.no: Non
 global.maybe: Peut-être
 Choices: Choix possibles
 Survey List: Liste des questionnaires locaux
-number_of_days: '%days% jour|%days% jours'
-
+number_of_days: >-
+    {count, plural,
+        one {1 jour}
+        other {# jours}
+    }
 First name: Prénom
 Last name: Nom
 Theme: Théme
@@ -74,7 +93,7 @@ Gender: Genre
 #
 Invalid credentials.: L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.
 Max attempts reached.: Vous avez effectué 5 tentatives de connexion erronées. Veuillez attendre 1 minute avant de réessayer.
-adherent.error.must_be_validated: Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez <a href="url">cliquer ici</a> pour le recevoir à nouveau.
+adherent.error.must_be_validated: Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez <a href="{url}">cliquer ici</a> pour le recevoir à nouveau.
 user.error.must_be_validated: Pour vous connecter vous devez confirmer votre adresse email.
 adherent.activity_position.form_label: Profession
 adherent.activity_position.student: Étudiant
@@ -148,8 +167,11 @@ adherent.activation.expired_key: Votre clé d'activation est expirée ! Veuillez
 
 adherent.submit_donation_label: Je soutiens maintenant
 adherent.pass_donation_label: Pas maintenant
-adherent.stop_donation: '{1} Mettre fin à mon don mensuel|[2,Inf[ Mettre fin à mes dons mensuel'
-
+adherent.stop_donation: >-
+    {count, plural,
+        one {Mettre fin à mon don mensuel}
+        other {Mettre fin à mes dons mensuel}
+    }
 adherent.reset_password.email_sent: Si l'adresse que vous avez saisie est valide, un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.
 adherent.reset_password.success: Votre mot de passe a été réinitialisé.
 adherent.reset_password.expired_key: Votre demande de réinitialisation de mot de passe est expirée ! Veuillez faire une nouvelle demande.
@@ -159,7 +181,7 @@ adherent.update_interests.success: Vos centres d'intérêts ont bien été mis �
 adherent.update_password.success: Vôtre mot de passe a bien été mis à jour.
 adherent.set_emails_notifications.success: Vos préférences d'e-mails ont bien été mises à jour.
 
-adherent.change_email.email_sent: Nous avons envoyé un e-mail à {{ email }} pour vérifier votre adresse e-mail. Cliquez sur le lien qui y est présent pour valider le changement.
+adherent.change_email.email_sent: Nous avons envoyé un e-mail à {email} pour vérifier votre adresse e-mail. Cliquez sur le lien qui y est présent pour valider le changement.
 adherent.change_email.success: Votre demande de changement a bien été prise en compte. Vous pouvez désormais vous connecter avec votre nouvelle adresse e-mail.
 adherent.change_email.expired_key: Votre demande de changement d'email est expirée ! Veuillez faire une nouvelle demande.
 
@@ -187,16 +209,20 @@ renaissance.membership.none: Ni adhérent RE ni sympathisant RE
 #
 # Dashboard
 #
-dashboard.welcome: Bienvenue, %firstname% !
-dashboard.adherent_since: adhérent depuis %date%
-dashboard.members_stats: |
-    {0} <span class="newblue">Aucun adhérent</span> dans ce département|
-    {1} <span class="newblue">%nb_members% adhérent</span> dans ce département|
-    ]1,Inf[ <span class="newblue">%nb_members% adhérents</span> dans ce département
-dashboard.subscriber_stats: |
-    {0}, aucun accepte de recevoir des e-mails.|
-    {1}, %nb_subscribers% accepte de recevoir des e-mails.|
-    ]1,Inf[, %nb_subscribers% acceptent de recevoir des e-mails.
+dashboard.welcome: Bienvenue, {firstname} !
+dashboard.adherent_since: adhérent depuis {date}
+dashboard.members_stats: >-
+    {count, plural,
+    =0 {<span class="newblue">Aucun adhérent</span> dans ce département}
+    one {<span class="newblue">1 adhérent</span> dans ce département}
+    other {<span class="newblue"># adhérents</span> dans ce département}
+    }
+dashboard.subscriber_stats: >-
+    {count, plural,
+        =0 {aucun accepte de recevoir des e-mails.}
+        one {1 accepte de recevoir des e-mails.}
+        other {# acceptent de recevoir des e-mails.}
+    }
 dashboard.send_email: Envoyer un e-mail
 dashboard.create_event: Créer un événement
 dashboard.show_members: Voir tous les adhérents
@@ -217,26 +243,17 @@ dashboard.shortcut.committee_coordinator_space: 🐸 Espace coordinateur de comi
 dashboard.my_skills: Mes compétences
 dashboard.my_committes: Les comités dont je fais partie
 dashboard.recent_activity: Activité récente
-dashboard.events.participantsCount: |
-    {0} inscrit|
-    {1} inscrit|
-    ]1,Inf[ inscrits
 dashboard.edit: Modifier
-dashboard.emails.recipent: |
-    {0} destinataire|
-    {1} destinataire|
-    ]1,Inf[ destinataires
-dashboard.skills.empty: Aucune compétence pour l'instant, renseignez-en <a href="%url%">ici</a>
+dashboard.skills.empty: Aucune compétence pour l'instant, renseignez-en <a href="{url}">ici</a>
 dashboard.activity.empty: Aucune activitée pour l'instant
-dashboard.interests.empty: Aucun intérèt pour l'instant, renseignez-en <a href="%url%">ici</a>
-dashboard.committies.empty: Aucun comité pour l'instant, ajoutez-en <a href="%url%">ici</a>
+dashboard.interests.empty: Aucun intérèt pour l'instant, renseignez-en <a href="{url}">ici</a>
+dashboard.committies.empty: Aucun comité pour l'instant, ajoutez-en <a href="{url}">ici</a>
 dashboard.picture.update: Modifier ma photo
 
 #
 # Committee
 #
-committee.creation.success.adherent: |
-    Votre comité a été créé avec succès. Il ne manque plus que la validation d'un référent.
+committee.creation.success.adherent: Votre comité a été créé avec succès. Il ne manque plus que la validation d'un référent.
 committee.creation.success.referent: |
     Votre comité a été créé avec succès.
     Il ne manque plus que la validation d'un coordinateur régional pour qu'il soit pleinement opérationnel.
@@ -244,11 +261,16 @@ committee.creation.success.referent: |
 committee.update.success: Les informations du comité ont été mises à jour avec succès.
 committee.pre-approve.success: Le comité a été pré-approuvé.
 
-committee.members_count: '1 adhérent|%count% adhérents'
-event.participants_count: '1 inscrit|%count% inscrits'
-event.capacity: '1 inscrit|%count% inscrits'
-capacity: 'inscrit|inscrits'
-
+committee.members_count: >-
+    {count, plural,
+        one {1 adhérent}
+        other {# adhérents}
+    }
+participants_count: >-
+    {count, plural,
+        one {# inscrit}
+        other {# inscrits}
+    }
 committee.event.creation.success: Le nouvel événement a bien été créé et publié sur la page du comité.
 event.update.success: L'événement a bien été modifié.
 event.cancel.success: L'événement a bien été annulé.
@@ -269,7 +291,11 @@ committee.demote_host.success: Le membre a été redéfini simple membre du comi
 committee.elected_candidate_adherent.female: Désignée
 committee.elected_candidate_adherent.male: Désigné
 
-committee.pending.count: Vous avez %count% demande de création de comité en attente de traitement.|Vous avez %count% demandes de création de comité en attente de traitement.
+committee.pending.count: >-
+    {count, plural,
+        one {Vous avez 1 demande de création de comité en attente de traitement.}
+        other {Vous avez # demandes de création de comité en attente de traitement.}
+    }
 
 my_committees: Mes comités
 
@@ -397,6 +423,42 @@ procuration_manager.deassociate.success: La demande de procuration a bien été 
 procuration_manager.disabled.success: La proposition du mandataire a bien été désactivée.
 procuration_manager.enabled.success: La proposition du mandataire a bien été réactivée.
 procuration_manager.db_error: Vous avez modifié la base de données exactement au même moment qu'un autre responsable procuration, ce qui a provoqué une erreur. Pourriez-vous réessayer ?
+procuration_manager.processed.requests: >-
+    {count, plural,
+        one {Vous avez une demande de procuration traitée.}
+        other {Vous avez # demandes de procuration traitées.}
+    }
+procuration_manager.unprocessed.requests: >-
+    {count, plural,
+        one {Vous avez une demande de procuration à traiter.}
+        other {Vous avez # demandes de procuration à traiter.}
+    }
+procuration_manager.unassociated.proposals: >-
+    {count, plural,
+        one {Vous avez une proposition de mandataire disponible.}
+        other {Vous avez # propositions de mandataires disponibles.}
+    }
+procuration_manager.associated.proposals: >-
+    {count, plural,
+        one {Vous avez une proposition de mandataire associée.}
+        other {Vous avez # propositions de mandataires associées.}
+    }
+procuration_manager.deactivated.proposals: >-
+    {count, plural,
+        one {Vous avez une proposition de mandataire désactivée.}
+        other {Vous avez # propositions de mandataires désactivées.}
+    }
+
+procuration.request.next_rounds: >-
+    {count, plural,
+        one {le tour de scrutin suivant}
+        other {les tours de scrutins suivants}
+    }
+procuration.request.rounds: >-
+    {count, plural,
+        one {Scrutin concerné}
+        other {Scrutins concernés}
+    }
 
 #
 # Newsletter
@@ -405,7 +467,11 @@ newsletter.invitation.form.first_name: Votre prénom
 newsletter.invitation.form.last_name: Votre nom
 newsletter.invitation.form.guest: E-mail d'un ami
 newsletter.invitation.form.invite: J'invite des amis
-newsletter.invitation.form.invite_sent: Votre invitation a bien été envoyée ! | Vos %count% invitations ont bien été envoyées !
+newsletter.invitation.form.invite_sent: >-
+    {count, plural,
+        one {Votre invitation a bien été envoyée !}
+        other {Vos # invitations ont bien été envoyées !}
+    }
 
 #
 # Ton Macron
@@ -441,14 +507,22 @@ event.invitation.form.last_name: Votre nom
 event.invitation.form.message: Votre message (200 caractères max)
 event.invitation.form.guest: E-mail d'un ami
 event.invitation.form.invite: Envoyer
-event.invitation.form.invite_sent: Merci ! Votre invitation a bien été envoyée ! | Merci ! Vos %count% invitations ont bien été envoyées !
-event.next_events_nearby: 'one: Événement à proximité|some: Les événements à proximité'
+event.invitation.form.invite_sent: >-
+    {count, plural,
+        one {Merci ! Votre invitation a bien été envoyée !}
+        other {Merci ! Vos # invitations ont bien été envoyées !}
+    }
+event.next_events_nearby: >-
+    {count, plural,
+        one {Événement à proximité}
+        other {Les événements à proximité}
+    }
 event.report: Signaler cet évènement
 event.edit: Modifier l'événement
 event.cancel: Annuler l'événement
 event.manage_participants: Gérer les participants
 event.back_to_list: Retour à la liste des événements
-event.personal_data_collect: J’accepte que LaREM traite mes données personnelles ci-dessus et les partage avec l’organisateur de l’événement %organisator_name%
+event.personal_data_collect: J’accepte que LaREM traite mes données personnelles ci-dessus et les partage avec l’organisateur de l’événement {organisator_name}
 event_type.cause: Cause
 event_type.coalition: Coalition
 event_type.municipal: Municipal
@@ -462,14 +536,30 @@ event_type.default: Standard
 board_member.area.metropolitan: France métropolitaine
 board_member.area.overseas: France d'Outre-Mer
 board_member.area.abroad: Étranger
-board_member.message.send_to_members: 'one: Envoyer un message à cette personne|some: Envoyer un message à ces %count% personnes'
+board_member.message.send_to_members: >-
+    {count, plural,
+        one {Envoyer un message à cette personne}
+        other {Envoyer un message à ces # personnes}
+    }
 board_member.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
-board_member.message.filtered_members: 'one: Au membre filtré|some: Aux %count% membres filtrés'
-board_member_count_saved_profils: 'one: %count% profil sauvegardé|some: %count% profils sauvegardés'
+board_member.message.filtered_members: >-
+    {count, plural,
+        one {Au membre filtré}
+        other {Aux # membres filtrés}
+    }
+board_member_count_saved_profils: >-
+    {count, plural,
+        one {1 profil sauvegardé}
+        other {# profils sauvegardés}
+    }
 board_member.stats.area.metropolitan: Métropole
 board_member.stats.area.overseas: DOM-TOM
 board_member.stats.area.abroad: Étranger
-board_member.message.recipients: 'one: Un membre du Conseil|some: %count% membres du Conseil'
+board_member.message.recipients: >-
+    {count, plural,
+        one {Un membre du Conseil}
+        other {# membres du Conseil}
+    }
 
 #
 # Interactive
@@ -671,8 +761,16 @@ sent: Envoyé
 #
 # Assessor
 #
-assessor.processed.choices: "{1} Vous avez une demande d'assesseur traitée.|[2, Inf[ Vous avez %count% demandes d'assesseur traitées."
-assessor.unprocessed.choices: "{1} Vous avez une demande d'assesseur à traiter.|[2, Inf[ Vous avez %count% demandes d'assesseur à traiter."
+assessor.processed.choices: >-
+    {count, plural,
+        one {Vous avez une demande d'assesseur traitée.}
+        other {Vous avez # demandes d'assesseur traitées.}
+    }
+assessor.unprocessed.choices: >-
+    {count, plural,
+        one {Vous avez une demande d'assesseur à traiter.}
+        other {Vous avez # demandes d'assesseur à traiter.}
+    }
 assessor.associate.success: L'assesseur a bien été associé au bureau de vote.
 assessor.deassociate.success: L'assesseur a bien été désassocié du bureau de vote.
 assessor.disabled.success: L'assesseur a bien été désactivé.
@@ -690,8 +788,16 @@ assessor_request.election_rounds.second_round: Le deuxième tour
 #
 # Vote Place
 #
-vote_place.unassociated.choices: "{1} Vous avez un bureau de vote à remplir.|[2, Inf[ Vous avez %count% bureaux de vote à remplir."
-vote_place.associated.choices: "{1} Vous avez un bureau de vote complet.|[2, Inf[ Vous avez %count% bureaux de vote complet."
+vote_place.unassociated.choices: >-
+    {count, plural,
+        one {Vous avez un bureau de vote à remplir.}
+        other {Vous avez # bureaux de vote à remplir.}
+    }
+vote_place.associated.choices: >-
+    {count, plural,
+        one {Vous avez un bureau de vote complet.}
+        other {Vous avez # bureaux de vote complet.}
+    }
 vote_place.availability:none: 'Aucune'
 vote_place.results.completed: Complété
 vote_place.results.partial: Partiel
@@ -703,7 +809,11 @@ vote.type.innovative: 'Innovante'
 #
 # Vote Place Cities
 #
-cities.associated.choices: "{1} Vous avez une commune assignée avec au moins un assesseur.|[2, Inf[ Vous avez %count% communes assignées avec au moins un assesseur."
+cities.associated.choices: >-
+    {count, plural,
+        one {Vous avez une commune assignée avec au moins un assesseur.}
+        other {Vous avez # communes assignées avec au moins un assesseur.}
+    }
 
 #
 # Application request
@@ -1015,7 +1125,7 @@ territorial_council.membership.qualities.borough_councilor: Conseillers d'arrond
 territorial_council.membership.qualities.consular_councilor: Conseillers FDE
 territorial_council.membership.qualities.committee_supervisor: Animateurs locaux
 territorial_council.membership.qualities.elected_candidate_adherent: Adhérents désignés
-territorial_council.adherent_has_no_membership: L'adhérent ({{ email }}) n'est pas un membre du Conseil territorial "{{ territorialCouncil }}"
+territorial_council.adherent_has_no_membership: L'adhérent ({email}) n'est pas un membre du Conseil territorial "{territorialCouncil}"
 
 #
 # TerritorialCouncilMembershipLog
@@ -1045,9 +1155,9 @@ political_committee.membership.quality.borough_councilor: Conseiller(ère) d'arr
 political_committee.membership.quality.consular_councilor: Conseiller(ère) FDE désigné(e)
 political_committee.membership.quality.committee_supervisor: Animateur(trice) local(e) désigné(e) au CoPol
 political_committee.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e) au CoPol
-political_committee.membership.adherent_has_already: L'adhérent ({{ email }}) est déjà un membre du Comité politique "{{ politicalCommittee }}"
-political_committee.membership.adherent_has_no_membership: L'adhérent ({{ email }}) en'est pas un membre du Comité politique du Conseil territorial "{{ territorialCouncil }}"
-political_committee.membership.has_max_number_of_mayor_and_leader: Vous ne pouvez nommer que {{ max }} maire ou président du groupe d'opposition LaREM dans le Comité politique "{{ politicalCommittee }}".
+political_committee.membership.adherent_has_already: L'adhérent ({email}) est déjà un membre du Comité politique "{politicalCommittee}"
+political_committee.membership.adherent_has_no_membership: L'adhérent ({email}) n'est pas un membre du Comité politique du Conseil territorial "{territorialCouncil}"
+political_committee.membership.has_max_number_of_mayor_and_leader: Vous ne pouvez nommer que {max} maire ou président du groupe d'opposition LaREM dans le Comité politique "{politicalCommittee}".
 
 #
 # Adherent commitment
@@ -1108,11 +1218,11 @@ adherent_mandate.committee.elected_adherent_male: Adhérent désigné
 adherent_mandate.committee.provisional_supervisor.not_valid: Les Animateurs provisoires ne peuvent pas déjà être Animateurs, Animateurs provisoires, Parlementaires ou mineurs.
 adherent_mandate.committee.adherent.not_valid: L'adhérent ne doit pas être Parlementaire ou mineur.
 adherent_mandate.committee.committee_not_approved: Comité doit être approuvé pour gérer les adhérents désignés.
-adherent_mandate.committee.not_valid_gender: Le genre "{{ gender }}" de l'adhérent ({{ email }}) n'est pas valide.
+adherent_mandate.committee.not_valid_gender: Le genre "{gender}" de l'adhérent ({email}) n'est pas valide.
 adherent_mandate.committee.inappropriate_gender: Le genre de l'adhérent ne correspond pas au genre du mandat.
-adherent_mandate.committee.adherent_with_active_mandate: L'adhérent ({{ email }}) est déjà un adhérent désigné dans un comité "{{ committee }}".
-adherent_mandate.committee.committee_has_already_active_mandate: Le comité "{{ committee }}" a déjà un adhérent désigné ({{ gender }}).
-adherent_mandate.adherent_has_territorial_council_membership: L'adhérent ({{ email }}) est déjà membre du Conseil territorial "{{ territorialCouncil }}".
+adherent_mandate.committee.adherent_with_active_mandate: L'adhérent ({email}) est déjà un adhérent désigné dans un comité "{committee}".
+adherent_mandate.committee.committee_has_already_active_mandate: Le comité "{committee}" a déjà un adhérent désigné ({gender}).
+adherent_mandate.adherent_has_territorial_council_membership: L'adhérent ({email}) est déjà membre du Conseil territorial "{territorialCouncil}".
 adherent_mandate.conseiller_municipal: "Conseiller(e) municipal(e)"
 adherent_mandate.membre_EPCI: "Membre d'EPCI"
 adherent_mandate.conseiller_departemental: "Conseiller(e) départemental(e)"
@@ -1252,10 +1362,6 @@ help.markdown: Veuillez restreindre le contenu au format <a href="https://www.ma
 #
 # CmsBlock
 #
-cms_block.name.unique: Un bloc statique existe déjà avec ce nom.
-cms_block.name.not_blank: Veuillez renseigner un nom pour ce bloc statique.
-cms_block.name.max_length: Le nom d'un bloc statique ne doit pas dépasser {{ limit }} caractères.
-cms_block.description.max_length: La description d'un bloc statique ne doit pas dépasser {{ limit }} caractères.
 cms_block.description.help: Champ interne pour les administrateurs seulement; ne sera jamais affiché aux utilisateurs.
 
 # Mailchimp status
@@ -1278,15 +1384,6 @@ scope.visibility.national: Nationale
 # Exception
 #
 Account is disabled.: Votre compte a été désactivé par un administrateur.
-
-#
-# HeaderBlock
-#
-header_block.name.not_blank: Veuillez renseigner un nom pour cette en-tête.
-header_block.name.max_length: Le nom d'une en-tête ne doit pas dépasser {{ limit }} caractères.
-header_block.prefix.max_length: Le préfixe d'une en-tête ne doit pas dépasser {{ limit }} caractères.
-header_block.prefixe.not_blank: Veuillez renseigner un préfixe pour cette en-tête.
-header_block.slogen.max_length: Le slogan d'une en-tête ne doit pas dépasser {{ limit }} caractères.
 
 executive_office_role.president: Président
 executive_office_role.deputy_general_delegate: Secrétaire général délégué

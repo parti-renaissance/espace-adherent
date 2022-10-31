@@ -38,7 +38,7 @@
                 <li>
                     {{ form_label(form.subject, 'Destinataire(s)', { 'label_attr': {'class': 'label__header'} }) }}
                     <input type="text" disabled="disabled"
-                           value="{{ 'board_member.message.recipients'|transchoice(message.recipients|length) }}" />
+                           value="{{ 'board_member.message.recipients'|trans({ count: message.recipients|length }) }}" />
                 </li>
 
                 <li>

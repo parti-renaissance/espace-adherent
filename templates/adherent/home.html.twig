@@ -46,7 +46,7 @@
                                     <span class="btn btn--blue">En savoir plus</span>
                                     <div class="text--body icon--with-text l__row--center">
                                         {{ include('components/participants.html.twig') }}
-                                        {{ 'committee.members_count'|transchoice(committee.membersCount) }}
+                                        {{ 'committee.members_count'|trans({ count: committee.membersCount }) }}
                                     </div>
                                 </div>
                             </a>
@@ -124,7 +124,7 @@
                                     </div>
                                 {% endif %}
                                 <div class="text--body text--gray icon--with-text l__row--center">
-                                    {{ 'event.participants_count'|transchoice(event.participantsCount) }}
+                                    {{ 'participants_count'|trans({ count: event.participantsCount }) }}
                                 </div>
                             </div>
                         </div>

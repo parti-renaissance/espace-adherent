@@ -604,3 +604,18 @@ my_team.member.scope_features.invalid_choice: Une ou plusieurs des accès délé
 # Voting platform
 #
 voting_platform.pool_choice_is_empty: Une réponse est obligatoire
+
+# CMS Block
+cms_block.name.unique: Un bloc statique existe déjà avec ce nom.
+cms_block.name.not_blank: Veuillez renseigner un nom pour ce bloc statique.
+cms_block.name.max_length: Le nom d'un bloc statique ne doit pas dépasser {{ limit }} caractères.
+cms_block.description.max_length: La description d'un bloc statique ne doit pas dépasser {{ limit }} caractères.
+
+#
+# HeaderBlock
+#
+header_block.name.not_blank: Veuillez renseigner un nom pour cette en-tête.
+header_block.name.max_length: Le nom d'une en-tête ne doit pas dépasser {{ limit }} caractères.
+header_block.prefix.max_length: Le préfixe d'une en-tête ne doit pas dépasser {{ limit }} caractères.
+header_block.prefixe.not_blank: Veuillez renseigner un préfixe pour cette en-tête.
+header_block.slogen.max_length: Le slogan d'une en-tête ne doit pas dépasser {{ limit }} caractères.

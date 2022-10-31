@@ -83,7 +83,7 @@
                                 </a>
                                 <div class="text--body icon--with-text l__row--center">
                                     {{ include('components/participants.html.twig') }}
-                                    {{ 'event.participants_count'|transchoice(event.participantsCount) }}
+                                    {{ 'participants_count'|trans({ count: event.participantsCount }) }}
                                 </div>
                             </div>
                         </div>

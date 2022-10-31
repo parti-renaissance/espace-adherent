@@ -13,7 +13,7 @@
             {% if request.electionRoundsCount is same as(0) %}
                 <strong>Cette procuration ne concerne aucun scrutin.</strong>
             {% else %}
-                <strong>Cette procuration concerne {{ '{1} le tour de scrutin suivant|[2,Inf[ les tours de scrutins suivants'|transchoice(request.electionRoundsCount) }} :</strong>
+                <strong>Cette procuration concerne {{ 'procuration.request.next_rounds'|trans({ count: request.electionRoundsCount }) }} :</strong>
                 <ul class="concerned-election_rounds">
                     {% for round in request.electionRoundLabels %}
                         <li>{{ round }}</li>
@@ -113,7 +113,7 @@
                     <div class="profile-value"></div>
                 {% else %}
                     <div class="profile-label">
-                        {{ '{1} Scrutin concerné|[2,Inf[ Scrutins concernés'|transchoice(request.electionRoundsCount) }} :
+                        {{ 'procuration.request.rounds'|trans({ count: request.electionRoundsCount }) }} :
                     </div>
                     <div class="profile-value">
                         {% for round in request.electionRoundLabels %}

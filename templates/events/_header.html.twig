@@ -52,7 +52,7 @@
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10 committee-event-attendees event-attendees">
                 {{ include('components/participants.html.twig') }}
-                {{ event.participantsCount }} {{ 'capacity'|transchoice(event.participantsCount) }}
+                {{ 'participants_count'|trans({ count: event.participantsCount }) }}
             </div>
         {% endif %}
         <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">

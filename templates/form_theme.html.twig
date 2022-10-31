@@ -112,7 +112,7 @@
                     <h3 class="text--medium text--normal text--breakword">{{ choice.vars.label }}</h3>
                     <div class="text--body space--10-0 icon--with-text">
                         {{ include('components/participants.html.twig') }}
-                        {{ 'committee.members_count'|transchoice(committee_data['members_count']) }}
+                        {{ 'committee.members_count'|trans({ count: committee_data['members_count'] }) }}
                     </div>
                 </div>
                 <div class="register__comites__follow form__checkbox">

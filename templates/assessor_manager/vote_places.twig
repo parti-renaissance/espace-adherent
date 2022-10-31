@@ -26,9 +26,9 @@
         <div class="datagrid__pre-table b__nudge--bottom-larger assessor_vote_places_total_count">
             <h3>
                 {% if constant('UNASSOCIATED', filters) == filters.status %}
-                    {{ 'vote_place.unassociated.choices'|transchoice(total_count) }}
+                    {{ 'vote_place.unassociated.choices'|trans({ count: total_count }) }}
                 {% elseif constant('ASSOCIATED', filters) == filters.status %}
-                    {{ 'vote_place.associated.choices'|transchoice(total_count) }}
+                    {{ 'vote_place.associated.choices'|trans({ count: total_count }) }}
                 {% endif %}
             </h3>
         </div>
