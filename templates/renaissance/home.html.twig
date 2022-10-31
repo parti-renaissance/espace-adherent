@@ -67,7 +67,7 @@
     <section class="px-4 py-12 md:py-15 bg-lighter-blue">
         <div class="xl:container md:flex md:gap-x-28 lg:gap-x-37.5">
             <div class="flex-1 md:sticky md:top-8 md:w-1/3">
-                <p class="mb-8 text-dark-blue text-custom-xl">
+                <p class="mb-8 text-dark-blue text-xl">
                     Qui<br/>
                     <span class="font-bold">sommes-nous ?</span>
                 </p>
@@ -101,7 +101,7 @@
         <div class="xl:container">
             <div class="md:flex md:gap-x-28 lg:gap-x-37.5">
                 <div>
-                    <p class="mb-8 text-dark-blue text-custom-xl">
+                    <p class="mb-8 text-dark-blue text-xl">
                         Nos valeurs<br/>
                         <span class="font-bold">et nos engagements</span>
                     </p>
@@ -117,15 +117,15 @@
                 {% for commitment in commitments %}
                     {% set slug = commitment.title|slug %}
                     <div
-                            id="valeur-{{ slug }}"
-                            class="{{ not loop.first ? 'mt-8 ' }} h-fit bg-white active:bg-yellow px-3.75 py-5 cursor-pointer rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 slide-over--trigger break-inside-avoid"
-                            data-commitment-title="{{ commitment.title|e('html_attr') }}"
-                            data-commitment-slug="{{ slug }}"
-                            data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath()}) }}"
-                            data-commitment-description="{{ commitment.description|e('html_attr') }}"
+                        id="valeur-{{ slug }}"
+                        class="{{ not loop.first ? 'mt-8 ' }} h-fit bg-white active:bg-yellow px-3.75 py-5 cursor-pointer rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 slide-over--trigger break-inside-avoid"
+                        data-commitment-title="{{ commitment.title|e('html_attr') }}"
+                        data-commitment-slug="{{ slug }}"
+                        data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath()}) }}"
+                        data-commitment-description="{{ commitment.description|e('html_attr') }}"
                     >
-                        <h3 class="text-light-blue font-medium text-custom-xs lg:text-custom-base2 mb-2.5">{{ commitment.title }}</h3>
-                        <div class="text-xs font-normal text-medium-gray lg:text-custom-base2">{{ commitment.shortDescription }}</div>
+                        <h3 class="text-light-blue font-medium text-xs lg:text-base mb-2.5">{{ commitment.title }}</h3>
+                        <div class="text-xs font-normal text-medium-gray lg:text-base">{{ commitment.shortDescription }}</div>
                     </div>
                 {% endfor %}
             </div>
@@ -137,7 +137,7 @@
         <div class="xl:container">
             <div class="md:flex md:gap-x-28 lg:gap-x-37.5">
                 <div class="flex-1">
-                    <p class="mb-8 text-custom-xl">
+                    <p class="mb-8 text-xl">
                         Faites un don<br/>
                         <span class="font-bold">pour aider Renaissance</span>
                     </p>
@@ -168,7 +168,7 @@
         <div class="xl:container">
             <div class="md:flex md:gap-x-28 lg:gap-x-37.5 mb-12.5">
                 <div class="flex-1">
-                    <p class="mb-8 text-dark-blue text-custom-xl">
+                    <p class="mb-8 text-dark-blue text-xl">
                         Le bureau<br/>
                         <span class="font-bold">exécutif</span>
                     </p>
@@ -220,7 +220,7 @@
         <div class="mx-auto max-w-7xl">
             <div class="md:flex md:gap-12.5 lg:gap-37.5 mb-12.5 lg:mb-25">
                 <div class="md:w-2/5 lg:1/3">
-                    <p class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5">
+                    <p class="text-dark-blue font-bold text-2xl lg:text-xl mb-6.25 lg:mb-7.5">
                         Le parti le plus <span class="stabilo stabilo-yellow">décentralisé</span> de France
                     </p>
                     <p class="text-dark-blue font-normal text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-12.5 lg:mb-0">
@@ -234,7 +234,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10">
                 <div class="mb-6.25 lg:mb-25">
                     <div class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"></div>
-                    <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
+                    <p class="text-light-blue font-bold text-base mb-2.5">
                         Les comités locaux
                     </p>
                     <p class="font-normal text-medium-gray">
@@ -243,7 +243,7 @@
                 </div>
                 <div class="mb-6.25">
                     <div class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"></div>
-                    <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
+                    <p class="text-light-blue font-bold text-base mb-2.5">
                         L’assemblée départementale
                     </p>
                     <p class="font-normal text-medium-gray">
@@ -252,7 +252,7 @@
                 </div>
                 <div class="mb-6.25">
                     <div class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"></div>
-                    <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
+                    <p class="text-light-blue font-bold text-base mb-2.5">
                         Le délégué régional
                     </p>
                     <p class="font-normal text-medium-gray">
@@ -261,7 +261,7 @@
                 </div>
                 <div class="mb-6.25">
                     <div class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"></div>
-                    <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
+                    <p class="text-light-blue font-bold text-base mb-2.5">
                         L’Assemblée des territoires
                     </p>
                     <p class="font-normal text-medium-gray">
@@ -279,7 +279,7 @@
                 class="bg-cover bg-bottom md:rounded-tl-lg md:rounded-bl-lg lg:w-[34.375rem] px-7.5 py-12.5 lg:px-[6.875rem] lg:py-25 min-h-[15.75rem]"
                 style="background-image: url('{{ asset('/images/renaissance/newsletter.jpg') }}')"
             >
-                <p class="text-white font-bold text-custom-2xl mb-5 lg:text-3xl lg:leading-[2.1875rem]">
+                <p class="text-white font-bold text-2xl mb-5 lg:text-3xl lg:leading-[2.1875rem]">
                     Newsletter
                 </p>
                 <p class="text-white font-normal text-lg leading-6.25 lg:text-xl lg:leading-7.5">
@@ -358,7 +358,7 @@
                         ></i>
                         <i class="fa fa-facebook-f fa-stack-1x fa-inverse"></i>
                     </span>
-                    <span class="font-medium text-white text-custom-base1">Facebook</span>
+                    <span class="font-medium text-white text-base">Facebook</span>
                 </a>
                 <!-- Instagram -->
                 <a
@@ -372,7 +372,7 @@
                         ></i>
                         <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
                     </span>
-                    <span class="font-medium text-white text-custom-base1">Instagram</span>
+                    <span class="font-medium text-white text-base">Instagram</span>
                 </a>
                 <!-- Twitter -->
                 <a
@@ -386,7 +386,7 @@
                         ></i>
                         <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                     </span>
-                    <span class="font-medium text-white text-custom-base1">Twitter</span>
+                    <span class="font-medium text-white text-base">Twitter</span>
                 </a>
                 <!-- Youtube -->
                 <a
@@ -400,7 +400,7 @@
                         ></i>
                         <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
                     </span>
-                    <span class="font-medium text-white text-custom-base1">Youtube</span>
+                    <span class="font-medium text-white text-base">Youtube</span>
                 </a>
                 <!-- Tik Tok -->
                 <a
@@ -411,7 +411,7 @@
                         <img src="{{ asset('/images/icons/tiktok.svg') }}" alt="logo-tiktok" class="fa fa-stack-1x" style="width:15px;left:9px;top:7px;"/>
                         <i class="fa fa-circle fa-stack-2x" style="color: rgba(255, 255, 255, 0.1)"></i>
                     </span>
-                    <span class="text-white font-medium text-custom-base1">TikTok</span>
+                    <span class="text-white font-medium text-base">TikTok</span>
                 </a>
                 <!-- LinkedIn -->
                 <a
@@ -425,7 +425,7 @@
                         ></i>
                         <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
                     </span>
-                    <span class="font-medium text-white text-custom-base1">LinkedIn</span>
+                    <span class="font-medium text-white text-base">LinkedIn</span>
                 </a>
             </div>
         </div>
