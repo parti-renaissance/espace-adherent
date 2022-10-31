@@ -35,10 +35,6 @@ services:
     Tests\App\Test\SendInBlue\DummyClient:
         decorates: 'App\SendInBlue\Client'
 
-    data_collector.messenger:
-        class: Symfony\Component\Messenger\DataCollector\MessengerDataCollector
-        tags: [{ name: 'data_collector', id: messenger, template: profiler/messenger.html.twig }]
-
     Tests\App\Test\Firebase\DummyDynamicLinks: ~
     Tests\App\Test\Firebase\DummyMessaging: ~
 
