@@ -49,24 +49,6 @@ module.exports = {
                 6.25: '1.5625rem',
                 7.5: '1.875rem',
             },
-            fontSize: {
-                // font-size: 11px, line-height: 16px
-                'custom-xs': ['0.6875rem', '1rem'],
-                // font-size: 11px, line-height: 16px
-                'custom-sm': ['0.8125rem', '1.25rem'],
-                // font-size: 15px, line-height: 24px
-                'custom-base1': ['0.9375rem', '1.5rem'],
-                // font-size: 16px, line-height: 25px
-                'custom-base2': ['1rem', '1.5625rem'],
-                // font-size: 18px, line-height: 25px
-                'custom-lg': ['1.125rem', '1.5625rem'],
-                // font-size: 28px, line-height: 32px
-                custom: ['1.75rem', '2rem'],
-                // font-size: 40px, line-height: 50px
-                'custom-xl': ['2.5rem', '3.125rem'],
-                // font-size: 25px, line-height: 32px
-                'custom-2xl': ['1.5625rem', '2rem'],
-            },
         },
     },
     plugins: [
