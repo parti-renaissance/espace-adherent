@@ -7,7 +7,7 @@ use App\Repository\EventRepository;
 use App\Repository\OrderArticleRepository;
 use App\Repository\ProposalRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RedirectToRouteHandler extends AbstractRedirectTo implements RedirectToInterface
@@ -35,7 +35,7 @@ class RedirectToRouteHandler extends AbstractRedirectTo implements RedirectToInt
         $this->orderArticleRepository = $orderArticleRepository;
     }
 
-    public function handle(GetResponseForExceptionEvent $event, string $requestUri, string $redirectCode): bool
+    public function handle(ExceptionEvent $event, string $requestUri, string $redirectCode): bool
     {
         foreach ($this->provider->get(RedirectionsProvider::TO_ROUTE) as $pattern => $route) {
             if (!$this->hasPattern($pattern, $requestUri)) {

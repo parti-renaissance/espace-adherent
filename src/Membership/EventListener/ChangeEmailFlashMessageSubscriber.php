@@ -6,8 +6,8 @@ use App\Entity\Adherent;
 use App\Repository\AdherentChangeEmailTokenRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -42,7 +42,7 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function setChangeEmailFlashMessage(FilterControllerEvent $event): void
+    public function setChangeEmailFlashMessage(ControllerEvent $event): void
     {
         if (!$this->support($event)) {
             return;
@@ -56,7 +56,7 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function removeMessageOnRedirection(FilterResponseEvent $event): void
+    public function removeMessageOnRedirection(ResponseEvent $event): void
     {
         if ($event->getResponse()->isRedirection()) {
             $messages = $this->session->getFlashBag()->peek('info');
@@ -75,7 +75,7 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
      *  - Route should not be `user_validate_new_email`
      *  - FlashBag should not have already the same message
      */
-    private function support(FilterControllerEvent $event): bool
+    private function support(ControllerEvent $event): bool
     {
         if (!$event->isMasterRequest() || $event->getRequest()->isXmlHttpRequest()) {
             return false;
