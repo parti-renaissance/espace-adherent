@@ -72,7 +72,7 @@
         "lexik/jwt-authentication-bundle": "^2.6",
         "lexik/paybox-bundle": "^2.1",
         "myclabs/php-enum": "^1.5",
-        "nelmio/cors-bundle": "^1.5",
+        "nelmio/cors-bundle": "^2.2",
         "ninsuo/symfony-collection": "^2.1",
         "nyholm/psr7": "^1.5",
         "odolbeau/phone-number-bundle": "^3.3",
