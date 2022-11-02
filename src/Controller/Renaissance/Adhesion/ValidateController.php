@@ -62,6 +62,6 @@ class ValidateController extends AbstractController
 
         $request->getSession()->set(PaymentController::AMOUNT_SESSION_KEY, $adherentRequest->amount);
 
-        return $this->redirectToRoute('app_renaissance_adhesion_complete_profil');
+        return $this->redirectToRoute('app_renaissance_adhesion_complete_profile');
     }
 }

@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class CompleteProfilType extends AbstractType
+class CompleteProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -33,7 +33,7 @@ class CompleteProfilType extends AbstractType
             ->add('frenchTaxResidentConfirmation', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'constraints' => [new Callback(['groups' => ['adhesion_complete_profil'], 'callback' => function ($value, ExecutionContextInterface $context, $payload) {
+                'constraints' => [new Callback(['groups' => ['adhesion_complete_profile'], 'callback' => function ($value, ExecutionContextInterface $context, $payload) {
                     /** @var Adherent $adherent */
                     $adherent = $context->getRoot()->getData();
                     if ($adherent && !$adherent->isFrench() && false === $value) {
@@ -49,7 +49,7 @@ class CompleteProfilType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => Adherent::class,
-                'validation_groups' => ['adhesion_complete_profil'],
+                'validation_groups' => ['adhesion_complete_profile'],
                 'from_certified_adherent' => false,
             ])
             ->setAllowedTypes('from_certified_adherent', 'bool')

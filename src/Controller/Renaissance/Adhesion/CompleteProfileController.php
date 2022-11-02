@@ -3,7 +3,7 @@
 namespace App\Controller\Renaissance\Adhesion;
 
 use App\Entity\Adherent;
-use App\Form\Renaissance\Adhesion\CompleteProfilType;
+use App\Form\Renaissance\Adhesion\CompleteProfileType;
 use App\Membership\MembershipRegistrationProcess;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -15,13 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(
  *     path="/adhesion/completer-mon-profil",
- *     name="app_renaissance_adhesion_complete_profil",
+ *     name="app_renaissance_adhesion_complete_profile",
  *     methods={"GET|POST"}
  * )
  *
  * @Security("is_granted('ROLE_ADHERENT')")
  */
-class CompleteProfilController extends AbstractController
+class CompleteProfileController extends AbstractController
 {
     public function __invoke(
         Request $request,
@@ -32,7 +32,7 @@ class CompleteProfilController extends AbstractController
         $adherent = $this->getUser();
 
         $form = $this
-            ->createForm(CompleteProfilType::class, $adherent, ['from_certified_adherent' => $adherent->isCertified()])
+            ->createForm(CompleteProfileType::class, $adherent, ['from_certified_adherent' => $adherent->isCertified()])
             ->handleRequest($request)
         ;
 

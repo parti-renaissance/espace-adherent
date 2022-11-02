@@ -158,12 +158,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *     "survey_replies_list",
      *     "adherent_change_diff",
      * })
-     * @Assert\NotBlank(message="common.gender.not_blank", groups={"adhesion_complete_profil"})
+     * @Assert\NotBlank(message="common.gender.not_blank", groups={"adhesion_complete_profile"})
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true,
-     *     groups={"adhesion_complete_profil"}
+     *     groups={"adhesion_complete_profile"}
      * )
      */
     private $gender;
@@ -564,8 +564,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @Groups({"profile_read"})
      *
-     * @Assert\NotBlank(groups={"adhesion_complete_profil"})
-     * @Assert\Country(message="common.nationality.invalid", groups={"adhesion_complete_profil"})
+     * @Assert\NotBlank(groups={"adhesion_complete_profile"})
+     * @Assert\Country(message="common.nationality.invalid", groups={"adhesion_complete_profile"})
      */
     private $nationality;
 
@@ -837,7 +837,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Expression(
      *     expression="!(value == false and this.isTerritoireProgresMembership() == false and this.isAgirMembership() == false)",
      *     message="adherent.exclusive_membership.no_accepted",
-     *     groups={"adhesion_complete_profil"}
+     *     groups={"adhesion_complete_profile"}
      * )
      */
     private bool $exclusiveMembership = false;
