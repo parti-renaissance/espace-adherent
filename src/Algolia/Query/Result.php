@@ -71,7 +71,7 @@ class Result implements \Countable, \Iterator
         return \count($this->hits);
     }
 
-    public function current()
+    public function current(): mixed
     {
         return current($this->hits);
     }
@@ -81,7 +81,7 @@ class Result implements \Countable, \Iterator
         next($this->hits);
     }
 
-    public function key()
+    public function key(): mixed
     {
         return key($this->hits);
     }
