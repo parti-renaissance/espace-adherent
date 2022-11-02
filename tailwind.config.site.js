@@ -19,12 +19,12 @@ module.exports = {
                 'light-blue-500': '#1254D8',
                 'dark-blue': '#00205F',
                 gray: {
-                    DEFAULT: colors.gray[300],
-                    border: colors.gray[300],
+                    DEFAULT: colors.gray[50],
+                    border: colors.gray[200],
                     ...colors.gray,
                 },
                 'dark-gray': colors.slate[900],
-                'medium-gray': colors.slate[500],
+                'medium-gray': colors.slate[600],
                 'background-gray': colors.gray[50],
                 green: {
                     DEFAULT: '#2EA78F',
@@ -46,7 +46,17 @@ module.exports = {
                 maax: ['Maax', ...defaultTheme.fontFamily.sans],
                 din: ['Din', 'sans-serif'],
             },
-        }
+            fontSize: {
+                '4xl': ['2.5rem', { lineHeight: '3.125rem' }],
+            },
+            spacing: {
+                15: '3.75rem',
+                25: '6.25rem',
+                27: '6.875rem',
+                38: '9.575rem',
+                182: '45.625rem',
+            },
+        },
     },
     plugins: [
         require('@tailwindcss/forms')({ strategy: 'base' }),

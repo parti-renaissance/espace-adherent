@@ -8,18 +8,18 @@
 
 @layer components {
     .flex-column-container {
-        @apply block md:flex flex-col flex-1 border-t border-white w-10/12 pt-3.75 md:pt-7.5 mb-12.5 md:mb-0;
+        @apply block md:flex flex-col flex-1 border-t border-white w-10/12 pt-4 md:pt-8 mb-12 md:mb-0;
     }
 
     .button-group {
-        @apply cursor-pointer border-2 border-black/20 hover:border-light-blue-500/20 border-l-1 border-r-1 first:border-l-2 last:border-r-2 text-center font-medium text-sm text-black py-5 active:border-light-blue-500/20 active:text-black first:rounded-tl-lg first:rounded-bl-lg last:rounded-tr-lg last:rounded-br-lg;
+        @apply cursor-pointer border-2 border-black/20 hover:border-light-blue-500/20 border-l border-r first:border-l-2 last:border-r-2 text-center font-medium text-sm text-black py-5 active:border-light-blue-500/20 active:text-black first:rounded-tl-lg first:rounded-bl-lg last:rounded-tr-lg last:rounded-br-lg;
     }
 
     .button {
-        @apply px-5 py-3 md:px-7.5 md:py-4.25 text-xs border text-center md:text-base;
+        @apply px-5 py-3 md:px-7 md:py-4 text-xs border text-center md:text-base;
 
         &-full {
-            @apply w-full px-7.5 py-4.25;
+            @apply w-full px-7 py-4;
         }
     }
 
@@ -32,7 +32,7 @@
     }
 
     .form-group {
-        @apply flex flex-col gap-x-3.75 bg-gray w-full rounded-lg border-2 border-gray/20 focus-within:border-dark-blue px-4 py-3 mb-3.75;
+        @apply flex flex-col gap-x-4 bg-gray w-full rounded-lg border-2 border-gray/20 focus-within:border-dark-blue px-4 py-3 mb-4;
 
         label {
             font-size: small;
@@ -52,7 +52,7 @@
         @apply flex flex-col;
 
         &__button {
-            @apply bg-white text-green button-group grow border border-green border-x-0.5 first:border-l-1 last:border-r-1;
+            @apply bg-white text-green button-group grow border border-green border-x first:border-l last:border-r;
 
             &:hover {
                 @apply bg-lighter-green text-green border-green;
@@ -64,10 +64,10 @@
         }
 
         &__other {
-            @apply flex flex-col gap-x-3.75 w-full lg:max-w-[43.125rem];
+            @apply flex flex-col gap-x-4 w-full lg:max-w-2xl;
 
             &__input {
-                @apply rounded border focus:ring-0 border-green focus:border-green w-full bg-white text-green font-medium text-sm placeholder:text-green placeholder:font-medium p-5 mb-3.75;
+                @apply rounded border focus:ring-0 border-green focus:border-green w-full bg-white text-green font-medium text-sm placeholder:text-green placeholder:font-medium p-5 mb-4;
             }
         }
     }
@@ -109,7 +109,7 @@
         }
 
         &-navigation__button {
-            @apply inline-flex h-[40px] w-[40px] items-center justify-center shadow-md text-light-blue-500 leading-5 transform rounded-full focus:ring-2 bg-lighter-blue hover:scale-110 transition duration-200 ease-in-out absolute top-1/2 -translate-y-1/2;
+            @apply inline-flex h-10 w-10 items-center justify-center shadow-md text-light-blue-500 leading-5 transform rounded-full focus:ring-2 bg-lighter-blue hover:scale-110 transition duration-200 ease-in-out absolute top-1/2 -translate-y-1/2;
 
             &--next {
                 @apply right-0;

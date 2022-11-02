@@ -20,7 +20,7 @@
 
         {{ form_start(form) }}
             {{ form_errors(form) }}
-            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+            <div class="border-t-1 border-white/10 pt-4 mb-5">
                 {{ form_widget(form.isPhysicalPerson) }}
                 <label for="{{ form.isPhysicalPerson.vars.id }}">
                     <span>
@@ -30,7 +30,7 @@
                 {{ form_errors(form.isPhysicalPerson) }}
             </div>
 
-            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+            <div class="border-t-1 border-white/10 pt-4 mb-5">
                 {{ form_widget(form.hasFrenchNationality) }}
                 <label for="{{ form.hasFrenchNationality.vars.id }}">
                     <span>
@@ -40,7 +40,7 @@
                 {{ form_errors(form.hasFrenchNationality) }}
             </div>
 
-            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+            <div class="border-t-1 border-white/10 pt-4 mb-5">
                 {{ form_widget(form.personalDataCollection) }}
                 <label for="{{ form.personalDataCollection.vars.id }}">
                     <span>
@@ -67,7 +67,7 @@
                 next_button_label: 'Finaliser le don',
             } %}
 
-            <div class="mt-5 h-80 md:h-64 overflow-auto mb-5 border border-white/10 py-2 px-3.75">
+            <div class="mt-5 h-80 md:h-64 overflow-auto mb-5 border border-white/10 py-2 px-4">
                 {{ cms_block('renaissance-donation-rgpd-block') }}
             </div>
         {{ form_end(form) }}

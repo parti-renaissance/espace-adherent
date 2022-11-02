@@ -8,7 +8,7 @@
     {% set home_block_banner = blocks['Bannière principale accueil'] %}
 
     <section class="flex flex-col justify-between h-screen pb-12 bg-bottom bg-cover md:pb-15" style="background-image: url('{{ media_asset(home_block_banner.media) }}')">
-        <div class="flex justify-between items-center w-full border-b border-b-white/10 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
+        <div class="flex justify-between items-center w-full border-b border-b-white/10 px-4 py-5 md:px-7 md:py-6">
             <a href="{{ path('app_renaissance_homepage') }}"><img src="{{ asset('/images/renaissance/logo.svg') }}" alt="logo"/></a>
 
             <div class="flex flex-nowrap gap-x-2">
@@ -39,7 +39,7 @@
         </div>
 
         <div class="xl:container px-4 mb-2.5">
-            <p class="text-white font-bold text-3xl md:text-[4.375rem] md:leading-[5.5rem] mb-12.5">
+            <p class="text-white font-bold text-3xl md:text-7xl md:leading-tight mb-12">
                 {{ home_block_banner.title }}
             </p>
 
@@ -65,13 +65,13 @@
     {% endif %}
 
     <section class="px-4 py-12 md:py-15 bg-lighter-blue">
-        <div class="xl:container md:flex md:gap-x-28 lg:gap-x-37.5">
+        <div class="xl:container md:flex md:gap-x-28 lg:gap-x-38">
             <div class="flex-1 md:sticky md:top-8 md:w-1/3">
-                <p class="mb-8 text-dark-blue text-xl">
+                <h2 class="mb-8 text-dark-blue text-4xl">
                     Qui<br/>
                     <span class="font-bold">sommes-nous ?</span>
-                </p>
-                <p class="text-dark-blue font-normal text-lg leading-6.25 md:text-2xl md:leading-9 mb-8 md:mb-0">
+                </h2>
+                <p class="text-dark-blue font-normal text-lg leading-6 md:text-2xl md:leading-9 mb-8 md:mb-0">
                     Depuis le 6 avril 2016, nous avons entamé un rassemblement inédit des forces progressistes du pays autour d’un grand projet commun : bâtir une France unie dans une Europe plus forte.
                 </p>
             </div>
@@ -79,16 +79,16 @@
                 <p class="mb-8">
                     <img src="{{ asset('images/renaissance/qui-sommes-nous.jpg') }}" class="w-full rounded-lg" alt="qui-sommes-nous"/>
                 </p>
-                <p class="font-normal md:text-lg md:leading-7.5">
+                <p class="font-normal md:text-lg md:leading-7">
                     « Retrouver l’esprit de conquête de 2016, construire le parti le plus décentralisé de la Vème République, unir un collectif qui puisera ses forces sur le terrain et rassemblera toutes les sensibilités progressistes de notre pays : voilà notre feuille de route pour les mois qui viennent.
                 </p>
-                <p class="font-normal md:text-lg md:leading-7.5">
+                <p class="font-normal md:text-lg md:leading-7">
                     Face à la montée des populismes et des conservatismes, et par-delà les crises, nous ancrerons les idées et le projet de Renaissance dans les grands débats du siècle.
                 </p>
-                <p class="font-normal md:text-lg md:leading-7.5 mb-5">
+                <p class="font-normal md:text-lg md:leading-7 mb-5">
                     Ce sera notre honneur et notre responsabilité. »
                 </p>
-                <p class="font-roboto uppercase text-right md:text-lg md:leading-7.5">
+                <p class="font-roboto uppercase text-right md:text-lg md:leading-7">
                     <span class="font-medium">Stéphane Séjourné,</span><br/>
                     Secrétaire général de Renaissance
                 </p>
@@ -99,12 +99,12 @@
     <!-- Values and commitments -->
     <section class="px-4 py-12 md:py-15 bg-background-gray">
         <div class="xl:container">
-            <div class="md:flex md:gap-x-28 lg:gap-x-37.5">
+            <div class="md:flex md:gap-x-28 lg:gap-x-38">
                 <div>
-                    <p class="mb-8 text-dark-blue text-xl">
+                    <h2 class="mb-8 text-dark-blue text-4xl">
                         Nos valeurs<br/>
                         <span class="font-bold">et nos engagements</span>
-                    </p>
+                    </h2>
                     <p class="mb-8 text-dark-blue">
                         Ce texte coconstruit avec l’ensemble des fondateurs du parti, engage chaque adhérent de Renaissance.
                     </p>
@@ -113,12 +113,12 @@
                     <img src="{{ asset('images/renaissance/nos-valeurs.jpg') }}" class="w-full rounded-lg" alt="nos-valeurs"/>
                 </div>
             </div>
-            <div class="columns-2 md:columns-3 lg:columns-4 gap-3.75 lg:gap-10">
+            <div class="columns-2 md:columns-3 lg:columns-4 gap-4 lg:gap-10">
                 {% for commitment in commitments %}
                     {% set slug = commitment.title|slug %}
                     <div
                         id="valeur-{{ slug }}"
-                        class="{{ not loop.first ? 'mt-8 ' }} h-fit bg-white active:bg-yellow px-3.75 py-5 cursor-pointer rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 slide-over--trigger break-inside-avoid"
+                        class="{{ not loop.first ? 'mt-8 ' }} h-fit bg-white active:bg-yellow px-4 py-5 cursor-pointer rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 slide-over--trigger break-inside-avoid"
                         data-commitment-title="{{ commitment.title|e('html_attr') }}"
                         data-commitment-slug="{{ slug }}"
                         data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath()}) }}"
@@ -135,19 +135,19 @@
     <!-- Donation section -->
     <section class="w-full px-4 py-12 bg-lighter-green md:py-15 text-green">
         <div class="xl:container">
-            <div class="md:flex md:gap-x-28 lg:gap-x-37.5">
+            <div class="md:flex md:gap-x-28 lg:gap-x-38">
                 <div class="flex-1">
-                    <p class="mb-8 text-xl">
+                    <h2 class="mb-8 text-4xl">
                         Faites un don<br/>
                         <span class="font-bold">pour aider Renaissance</span>
-                    </p>
+                    </h2>
 
-                    <p class="lg:text-lg lg:leading-6.25">
+                    <p class="lg:text-lg lg:leading-6">
                         66 % de votre don vient en déduction de votre impôt sur le revenu
                         (dans la limite de 20 % du revenu imposable).
                     </p>
 
-                    <p class="lg:text-lg lg:leading-6.25 mb-3">
+                    <p class="lg:text-lg lg:leading-6 mb-3">
                         Par exemple : un don de 100 € vous revient en réalité à 34 € et vous
                         fait bénéficier d’une réduction d’impôt de 66 €. Le montant annuel
                         de votre don ne peut pas excéder 7500 € par personne physique. Le
@@ -166,13 +166,13 @@
 
     <section class="px-4 py-12 md:py-15">
         <div class="xl:container">
-            <div class="md:flex md:gap-x-28 lg:gap-x-37.5 mb-12.5">
+            <div class="md:flex md:gap-x-28 lg:gap-x-38 mb-12">
                 <div class="flex-1">
-                    <p class="mb-8 text-dark-blue text-xl">
+                    <h2 class="mb-8 text-dark-blue text-4xl">
                         Le bureau<br/>
                         <span class="font-bold">exécutif</span>
-                    </p>
-                    <p class="text-dark-blue text-lg leading-6.25 lg:text-2xl lg:leading-9">
+                    </h2>
+                    <p class="text-dark-blue text-lg leading-6 lg:text-2xl lg:leading-9">
                         Une équipe paritaire de femmes et d’hommes engagés, rassemblant toutes les sensibilités de Renaissance et représentative de l’ensemble de nos territoires.
                     </p>
                 </div>
@@ -195,10 +195,10 @@
                     {% set title = ('executive_office.title.'~member.getRole())|trans %}
 
                     {% if title != 'executive_office.title.'~member.getRole() %}
-                        <p class="text-dark-blue text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-10">{{ title }}</p>
+                        <p class="text-dark-blue text-lg leading-6 lg:text-2xl lg:leading-9 mb-10">{{ title }}</p>
                     {% endif %}
 
-                    <div class="flex overflow-x-auto flex-nowrap mx-auto gap-x-3.75 gap-y-6.25 lg:gap-x-7.5 lg:gap-y-10 mb-6.25 lg:mb-12.5 pb-10">
+                    <div class="flex overflow-x-auto flex-nowrap mx-auto gap-x-4 gap-y-6 lg:gap-x-7 lg:gap-y-10 mb-6 lg:mb-12 pb-10">
                         {% for member in executive_office_group %}
                             <div class="flex-none first:ml-auto last:mr-auto">
                                 <div class="flex flex-col">
@@ -206,7 +206,7 @@
                                         <img src="{{ path('asset_url', {path: member.imagePath}) }}" class="mx-auto mb-10 transition ease-in-out rounded md:mb-5 hover:scale-105" style="height:350px;" alt="{{ member.fullName }}"/>
                                     </p>
                                     <p class="text-xs font-medium leading-5 text-center text-dark-gray md:text-sm">{{ member.fullName }}</p>
-                                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm max-w-fit self-center">{{ member.job }}</p>
+                                    <p class="text-center font-normal text-xs leading-4 md:text-sm max-w-fit self-center">{{ member.job }}</p>
                                 </div>
                             </div>
                         {% endfor %}
@@ -218,12 +218,12 @@
 
     <section class="px-4 py-12 md:py-15">
         <div class="mx-auto max-w-7xl">
-            <div class="md:flex md:gap-12.5 lg:gap-37.5 mb-12.5 lg:mb-25">
+            <div class="md:flex md:gap-12 lg:gap-38 mb-12 lg:mb-25">
                 <div class="md:w-2/5 lg:1/3">
-                    <p class="text-dark-blue font-bold text-2xl lg:text-xl mb-6.25 lg:mb-7.5">
+                    <h2 class="text-dark-blue font-bold text-2xl lg:text-4xl mb-6 lg:mb-7">
                         Le parti le plus <span class="stabilo stabilo-yellow">décentralisé</span> de France
-                    </p>
-                    <p class="text-dark-blue font-normal text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-12.5 lg:mb-0">
+                    </h2>
+                    <p class="text-dark-blue font-normal text-lg leading-6 lg:text-2xl lg:leading-9 mb-12 lg:mb-0">
                         Pour aller au plus près des Français et être présents partout sur le terrain, nous avons inscrit dans nos statuts une organisation décentralisée et différenciée.
                     </p>
                 </div>
@@ -232,8 +232,8 @@
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10">
-                <div class="mb-6.25 lg:mb-25">
-                    <div class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"></div>
+                <div class="mb-6 lg:mb-25">
+                    <div class="divide-y border-gray-border border w-full mb-6 lg:mb-10"></div>
                     <p class="text-light-blue font-bold text-base mb-2.5">
                         Les comités locaux
                     </p>
@@ -241,8 +241,8 @@
                         Enracinés partout en France, les comités sont en charge de l’animation locale de la vie du parti.
                     </p>
                 </div>
-                <div class="mb-6.25">
-                    <div class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"></div>
+                <div class="mb-6">
+                    <div class="divide-y border-gray-border border w-full mb-6 lg:mb-10"></div>
                     <p class="text-light-blue font-bold text-base mb-2.5">
                         L’assemblée départementale
                     </p>
@@ -250,8 +250,8 @@
                         Rassemblant l’ensemble des adhérents d’un département, elle élit les membres du bureau départemental qui vote à la majorité pour son Président : il est en charge de l’animation de la vie du Parti et des investitures aux élections locales.
                     </p>
                 </div>
-                <div class="mb-6.25">
-                    <div class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"></div>
+                <div class="mb-6">
+                    <div class="divide-y border-gray-border border w-full mb-6 lg:mb-10"></div>
                     <p class="text-light-blue font-bold text-base mb-2.5">
                         Le délégué régional
                     </p>
@@ -259,8 +259,8 @@
                         Il est le Président de la région ou est nommé par les Présidents des assemblées départementales du territoire. Il participe à l’animation des Assemblées départementales.
                     </p>
                 </div>
-                <div class="mb-6.25">
-                    <div class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"></div>
+                <div class="mb-6">
+                    <div class="divide-y border-gray-border border w-full mb-6 lg:mb-10"></div>
                     <p class="text-light-blue font-bold text-base mb-2.5">
                         L’Assemblée des territoires
                     </p>
@@ -276,17 +276,17 @@
     <section class="md:px-20 md:mb-25">
         <div class="w-full max-w-7xl lg:mx-auto md:flex">
             <div
-                class="bg-cover bg-bottom md:rounded-tl-lg md:rounded-bl-lg lg:w-[34.375rem] px-7.5 py-12.5 lg:px-[6.875rem] lg:py-25 min-h-[15.75rem]"
-                style="background-image: url('{{ asset('/images/renaissance/newsletter.jpg') }}')"
+                class="bg-cover bg-bottom md:rounded-tl-lg md:rounded-bl-lg lg:w-[34.375rem] px-7 py-12 lg:px-28 lg:py-25 min-h-[15.75rem] text-white"
+                style="background-image: linear-gradient(to bottom, rgba(0,0,0,.3), transparent), url('{{ asset('/images/renaissance/newsletter.jpg') }}');"
             >
-                <p class="text-white font-bold text-2xl mb-5 lg:text-3xl lg:leading-[2.1875rem]">
+                <p class="font-bold text-2xl mb-5 lg:text-3xl lg:leading-8">
                     Newsletter
                 </p>
-                <p class="text-white font-normal text-lg leading-6.25 lg:text-xl lg:leading-7.5">
+                <p class="text-lg leading-6 lg:text-xl lg:leading-7">
                     Restez les premiers informés de l’actualité de <i>Renaissance</i>.
                 </p>
             </div>
-            <div class="bg-light-blue px-7.5 py-10 lg:px-[6.875rem] md:rounded-tr-lg md:rounded-br-lg lg:w-[45.625rem]">
+            <div class="bg-light-blue px-7 py-10 lg:px-27 md:rounded-tr-lg md:rounded-br-lg lg:w-182">
                 {{ form_start(newsletter_form) }}
                     {% set error = app.flashes('newsletter_error')|first %}
                     {% if error %}
@@ -295,7 +295,7 @@
                         </div>
                     {% endif %}
 
-                    <div class="lg:flex lg:flex-row lg:gap-x-3.75">
+                    <div class="lg:flex lg:flex-row lg:gap-x-4">
                         {{ form_row(newsletter_form.firstName, { label: 'Prénom' }) }}
                         {{ form_row(newsletter_form.zipCode, { label: 'Code postal' }) }}
                     </div>
@@ -322,7 +322,7 @@
 
                     <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
                     {% if recaptcha_public_key is not empty %}
-                        <div class="g-recaptcha mb-3.75" data-sitekey="{{ recaptcha_public_key }}"></div>
+                        <div class="g-recaptcha mb-4" data-sitekey="{{ recaptcha_public_key }}"></div>
                     {% elseif app.debug %}
                         <input type="hidden" name="g-recaptcha-response" value="fake" />
                     {% endif %}
@@ -336,22 +336,22 @@
     </section>
     <!-- Footer -->
     <section class="bg-dark-blue pt-25 md:pt-36">
-        <div class="max-w-7xl md:mx-auto mb-12.5">
+        <div class="max-w-7xl md:mx-auto mb-12">
             <a href="{{ path('app_renaissance_homepage') }}">
                 <img
                     height="35"
                     src="{{ asset('/images/renaissance/logo.svg') }}"
-                    class="mx-auto mb-[7.8125rem] md:mb-36 h-[1.25rem] md:h-8.75"
+                    class="mx-auto mb-32 md:mb-36 h-5 md:h-8"
                     alt="logo"
                 />
             </a>
-            <div class="flex justify-center flex-wrap md:mb-6.25 gap-y-6.25">
+            <div class="flex justify-center flex-wrap md:mb-6 gap-y-6">
                 <!-- Facebook -->
                 <a
                     href="https://www.facebook.com/Renaissance"
-                    class="flex flex-col md:flex-row items-center px-6.25 border-r-2 border-white/10"
+                    class="flex flex-col md:flex-row items-center px-6 border-r-2 border-white/10"
                 >
-                    <span class="fa-stack mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
+                    <span class="fa-stack mb-5 md:mb-0 md:mr-7 lg:mr-5">
                         <i
                             class="fa fa-circle fa-stack-2x"
                             style="color: rgba(255, 255, 255, 0.1)"
@@ -363,9 +363,9 @@
                 <!-- Instagram -->
                 <a
                     href="https://www.instagram.com/renaissance"
-                    class="flex flex-col md:flex-row items-center px-6.25 border-r-2 border-white/10"
+                    class="flex flex-col md:flex-row items-center px-6 border-r-2 border-white/10"
                 >
-                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
+                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7 lg:mr-5">
                         <i
                             class="fa fa-circle fa-stack-2x"
                             style="color: rgba(255, 255, 255, 0.1)"
@@ -377,9 +377,9 @@
                 <!-- Twitter -->
                 <a
                     href="https://twitter.com/renaissance"
-                    class="flex flex-col md:flex-row items-center px-6.25 border-r-2 border-white/10"
+                    class="flex flex-col md:flex-row items-center px-6 border-r-2 border-white/10"
                 >
-                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
+                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7 lg:mr-5">
                         <i
                             class="fa fa-circle fa-stack-2x"
                             style="color: rgba(255, 255, 255, 0.1)"
@@ -391,9 +391,9 @@
                 <!-- Youtube -->
                 <a
                         href="https://www.youtube.com/c/EnMarcheFr"
-                        class="flex flex-col md:flex-row items-center px-6.25 border-r-2 border-white/10"
+                        class="flex flex-col md:flex-row items-center px-6 border-r-2 border-white/10"
                 >
-                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
+                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7 lg:mr-5">
                         <i
                                 class="fa fa-circle fa-stack-2x"
                                 style="color: rgba(255, 255, 255, 0.1)"
@@ -405,9 +405,9 @@
                 <!-- Tik Tok -->
                 <a
                         href="https://www.tiktok.com/@parti_renaissance"
-                        class="flex flex-col md:flex-row items-center px-6.25 border-r-2 border-white/10"
+                        class="flex flex-col md:flex-row items-center px-6 border-r-2 border-white/10"
                 >
-                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
+                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7 lg:mr-5">
                         <img src="{{ asset('/images/icons/tiktok.svg') }}" alt="logo-tiktok" class="fa fa-stack-1x" style="width:15px;left:9px;top:7px;"/>
                         <i class="fa fa-circle fa-stack-2x" style="color: rgba(255, 255, 255, 0.1)"></i>
                     </span>
@@ -416,9 +416,9 @@
                 <!-- LinkedIn -->
                 <a
                         href="https://www.linkedin.com/company/parti-renaissance"
-                        class="flex flex-col md:flex-row items-center pl-6.25"
+                        class="flex flex-col md:flex-row items-center pl-6"
                 >
-                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
+                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7 lg:mr-5">
                         <i
                                 class="fa fa-circle fa-stack-2x"
                                 style="color: rgba(255, 255, 255, 0.1)"
@@ -431,17 +431,17 @@
         </div>
 
         <!-- Legal notice -->
-        <div class="md:bg-dark-gray/10 flex flex-col items-center md:flex-row md:justify-center gap-x-7.5 py-6.25 text-white font-normal text-sm">
-            <a href="{{ path('app_static_page', {slug: 're-mentions-legales', app_domain: renaissance_host}) }}">
+        <div class="md:bg-dark-gray/10 flex flex-col items-center md:flex-row md:justify-center gap-x-7 py-6 text-white font-normal text-sm">
+            <a href="{{ path('app_static_page', {slug: 're-mentions-legales', app_domain: renaissance_host}) }}" class="hover:underline">
                 Mentions légales
             </a>
-            <a href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}">
+            <a href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}" class="hover:underline">
                 CGU
             </a>
-            <a href="{{ path('app_static_page', {slug: 'politique-de-protection-des-donnees', app_domain: renaissance_host}) }}">
+            <a href="{{ path('app_static_page', {slug: 'politique-de-protection-des-donnees', app_domain: renaissance_host}) }}" class="hover:underline">
                 Données personnelles
             </a>
-            <a href="https://contact.parti-renaissance.fr">
+            <a href="https://contact.parti-renaissance.fr" class="hover:underline">
                 Contactez-nous
             </a>
         </div>

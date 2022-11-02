@@ -13,7 +13,7 @@
 {% block adhesion_content %}
     <section>
         {% if app.request.query.has('from_payment') %}
-            <h1 class="mb-5 text-lg leading-6.25 md:text-2xl md:leading-9">Paiement Validé ! Plus que quelques informations et c'est fini</h1>
+            <h1 class="mb-5 text-lg leading-6 md:text-2xl md:leading-9">Paiement Validé ! Plus que quelques informations et c'est fini</h1>
         {% endif %}
 
         {{ form_start(form) }}
