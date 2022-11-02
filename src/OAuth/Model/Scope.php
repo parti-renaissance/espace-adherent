@@ -42,7 +42,7 @@ final class Scope extends Enum implements ScopeEntityInterface
         return (string) $this->getIdentifier();
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getIdentifier();
     }

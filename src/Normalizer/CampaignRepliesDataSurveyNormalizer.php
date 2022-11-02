@@ -43,9 +43,7 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
                     'gender' => $object->getPapCampaignHistory()->getGender(),
                     'age_range' => $object->getPapCampaignHistory()->getAgeRange(),
                 ];
-                /** @phpstan-ignore-next-line */
                 $dataSurvey['begin_at'] = $dataSurvey['pap_campaign_history']['begin_at'] ?? null;
-                /** @phpstan-ignore-next-line */
                 $dataSurvey['finish_at'] = $dataSurvey['pap_campaign_history']['finish_at'] ?? null;
             } elseif ($object->isOfPhoningCampaignHistory()) {
                 $dataSurvey['type'] = 'Phoning';
@@ -57,9 +55,7 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
                         'age_range' => null,
                     ]
                     : null;
-                /** @phpstan-ignore-next-line */
                 $dataSurvey['begin_at'] = $dataSurvey['phoning_campaign_history']['begin_at'] ?? null;
-                /** @phpstan-ignore-next-line */
                 $dataSurvey['finish_at'] = $dataSurvey['phoning_campaign_history']['finish_at'] ?? null;
             } elseif ($object->isOfJemarcheDataSurvey()) {
                 $dataSurvey['type'] = 'Libre';
