@@ -10,7 +10,7 @@
             <a href="{{ path('article_view', {categorySlug: article.category.slug, articleSlug: article.slug, app_domain: renaissance_host}) }}" class="inline-block mt-2">
                 <span class="text-xl font-semibold text-dark-gray">{{ article.title }}</span>
             </a>
-            <p class="mt-3 text-base line-clamp-3">{{ article.description }}</p>
+            <p class="mt-3 text-base line-clamp-2">{{ article.description }}</p>
         </div>
         <div class="mt-6 flex items-center space-x-1 text-sm text-gray-500">
             <time datetime="{{ article.publishedAt|date('Y-m-d') }}">{{ article.publishedAt|date('d M, Y') }}</time>
