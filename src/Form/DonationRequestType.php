@@ -9,7 +9,6 @@ use App\Donation\PayboxPaymentSubscription;
 use App\Entity\Adherent;
 use App\Membership\MembershipRegistrationProcess;
 use App\Repository\AdherentRepository;
-use App\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -91,11 +90,7 @@ class DonationRequestType extends AbstractType
         }
 
         $builder
-            ->add('gender', ChoiceType::class, [
-                'choices' => Genders::CIVILITY_CHOICES,
-                'translation_domain' => 'messages',
-                'expanded' => true,
-            ])
+            ->add('gender', CivilityType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
             ->add('emailAddress', EmailType::class)

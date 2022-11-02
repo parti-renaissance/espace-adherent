@@ -1,19 +1,11 @@
-.form-control {
-    &:disabled {
-        cursor: not-allowed;
-        color: $disable-grey;
-        border-color: $disable-grey;
-
-        &::placeholder {
-            color: $disable-grey;
-        }
-    }
-}
-
 form {
-    label.required:after {
-        content: '*';
-        margin-left: 3px;
+    label {
+        cursor: pointer;
+
+        &.required:after {
+            content: '*';
+            margin-left: 3px;
+        }
     }
 
     .button-group {
@@ -30,8 +22,32 @@ form {
         }
     }
 
-    input:checked + label.button-group {
-        background: $white;
-        color: $dark-blue;
+    .form__checkbox {
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+
+        input[type=checkbox] {
+            &:checked + label.button-group {
+                background: $white;
+                color: $dark-blue;
+            }
+        }
+    }
+
+    input:disabled,
+    .form-control:disabled {
+        cursor: not-allowed;
+        color: $disable-grey;
+        border-color: $disable-grey;
+
+        &::placeholder {
+            color: $disable-grey;
+        }
+
+        & + label {
+            cursor: not-allowed;
+            color: $disable-grey;
+        }
     }
 }

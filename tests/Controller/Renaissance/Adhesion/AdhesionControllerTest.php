@@ -20,6 +20,7 @@ use Tests\App\Test\Payment\PayboxProvider;
 
 /**
  * @group functional
+ * @group debug
  */
 class AdhesionControllerTest extends WebTestCase
 {
@@ -112,20 +113,34 @@ class AdhesionControllerTest extends WebTestCase
 
         $this->assertCount(0, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountConfirmationMessage::class));
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $crawler = $this->client->followRedirect();
 
         $this->assertInstanceOf(Adherent::class, $adherent = $this->adherentRepository->findOneByEmail('john@test.com'));
 
         $this->assertSame('test', $adherent->utmSource);
         $this->assertSame('let_CI_be_green_again', $adherent->utmCampaign);
 
-        $this->client->click($crawler->selectLink('Procéder au paiement')->link());
+        $form = $crawler->filter('form[name="app_renaissance_membership"]')->form([
+            'app_renaissance_membership' => [
+                'nationality' => 'FR',
+                'gender' => 'male',
+                'exclusiveMembership' => true,
+                'territoireProgresMembership' => false,
+                'agirMembership' => false,
+            ],
+        ]);
 
-        $crawler = $this->client->followRedirect();
+        $this->client->submit($form);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
+        $this->client->followRedirect();
 
         $this->assertInstanceOf(Donation::class, $donation = $this->donationRepository->findInProgressMembershipDonationFromAdherent($adherent));
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $crawler = $this->client->followRedirect();
 
         $formNode = $crawler->filter('input[name=PBX_CMD]');
 
@@ -184,15 +199,10 @@ class AdhesionControllerTest extends WebTestCase
                     'month' => 1,
                     'year' => 1989,
                 ],
-                'nationality' => 'FR',
-                'gender' => 'male',
                 'phone' => [
                     'country' => 'FR',
                     'number' => '0612345678',
                 ],
-                'exclusiveMembership' => true,
-                'territoireProgresMembership' => false,
-                'agirMembership' => false,
             ],
         ]);
 
