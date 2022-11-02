@@ -126,6 +126,15 @@ class LoadAdminData extends Fixture
             'roles' => $writerRoles,
         ]));
 
+        $manager->persist($this->administratorFactory->createFromArray([
+            'email' => 'admin@renaissance.code',
+            'password' => 'renaissance',
+            'roles' => [
+                'ROLE_ADMIN_DASHBOARD',
+                'ROLE_ADMIN_RENAISSANCE',
+            ],
+        ]));
+
         $manager->persist($superAdmin2fa);
         $manager->persist($admin);
         $manager->persist($writer);
