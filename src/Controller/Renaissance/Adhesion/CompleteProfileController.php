@@ -42,7 +42,7 @@ class CompleteProfileController extends AbstractController
             return $this->redirectToRoute('app_renaissance_adhesion_pre_payment', ['amount' => $request->getSession()->get(PaymentController::AMOUNT_SESSION_KEY)]);
         }
 
-        return $this->render('renaissance/adhesion/complete_profil.html.twig', [
+        return $this->render('renaissance/adhesion/complete_profile.html.twig', [
            'form' => $form->createView(),
         ]);
     }
