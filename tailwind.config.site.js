@@ -15,8 +15,10 @@ module.exports = {
         extend: {
             colors: {
                 'lighter-blue': '#EDF5FF',
-                'light-blue': '#73C0F1',
-                'light-blue-500': '#1254D8',
+                'light-blue': {
+                    DEFAULT: '#73C0F1',
+                    500: '#1254D8',
+                },
                 'dark-blue': '#00205F',
                 gray: {
                     DEFAULT: colors.gray[50],
@@ -56,6 +58,19 @@ module.exports = {
                 38: '9.575rem',
                 182: '45.625rem',
             },
+            typography: (theme) => ({
+                DEFAULT: {
+                    css: {
+                        color: theme('colors.gray.600'),
+                        a: {
+                            color: theme('colors.light-blue-500'),
+                            '&:hover': {
+                                color: theme('colors.dark-blue'),
+                            },
+                        },
+                    },
+                },
+            }),
         },
     },
     plugins: [
