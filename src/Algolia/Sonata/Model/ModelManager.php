@@ -59,10 +59,12 @@ class ModelManager implements ModelManagerInterface
 
     public function findOneBy($class, array $criteria = []): ?object
     {
+        return null;
     }
 
     public function find($class, $id): ?object
     {
+        return null;
     }
 
     public function batchDelete($class, ProxyQueryInterface $queryProxy): void
@@ -90,6 +92,7 @@ class ModelManager implements ModelManagerInterface
 
     public function getUrlsafeIdentifier($model): ?string
     {
+        return null;
     }
 
     public function getModelInstance($class)
@@ -159,11 +162,10 @@ class ModelManager implements ModelManagerInterface
 
     public function reverseTransform(object $object, array $array = []): void
     {
-        // TODO: Implement reverseTransform() method.
     }
 
     public function supportsQuery(object $query): bool
     {
-        // TODO: Implement supportsQuery() method.
+        return false;
     }
 }

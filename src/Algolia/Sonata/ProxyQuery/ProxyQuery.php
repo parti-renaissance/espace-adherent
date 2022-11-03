@@ -17,14 +17,7 @@ class ProxyQuery implements ProxyQueryInterface
      */
     private $class;
 
-    /**
-     * @var array
-     */
     private $sortBy;
-
-    /**
-     * @var array
-     */
     private $sortOrder;
 
     /**
@@ -55,43 +48,43 @@ class ProxyQuery implements ProxyQueryInterface
         return \call_user_func_array([$this->queryBuilder, $name], $args);
     }
 
-    public function getSortBy()
+    public function getSortBy(): ?string
     {
         return $this->sortBy;
     }
 
-    public function setSortOrder($sortOrder)
+    public function setSortOrder($sortOrder): self
     {
         $this->sortOrder = $sortOrder;
 
         return $this;
     }
 
-    public function getSortOrder()
+    public function getSortOrder(): ?string
     {
         return $this->sortOrder;
     }
 
-    public function setFirstResult($firstResult)
+    public function setFirstResult($firstResult): self
     {
         $this->firstResult = $firstResult;
 
         return $this;
     }
 
-    public function getFirstResult()
+    public function getFirstResult(): ?int
     {
         return $this->firstResult;
     }
 
-    public function setMaxResults($maxResults)
+    public function setMaxResults($maxResults): self
     {
         $this->maxResults = $maxResults;
 
         return $this;
     }
 
-    public function getMaxResults()
+    public function getMaxResults(): ?int
     {
         return $this->maxResults;
     }
@@ -118,7 +111,7 @@ class ProxyQuery implements ProxyQueryInterface
         ));
     }
 
-    public function setSortBy($parentAssociationMappings, $fieldMapping)
+    public function setSortBy($parentAssociationMappings, $fieldMapping): self
     {
         return $this;
     }
