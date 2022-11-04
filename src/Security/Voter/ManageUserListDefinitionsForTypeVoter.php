@@ -21,7 +21,7 @@ class ManageUserListDefinitionsForTypeVoter extends AbstractAdherentVoter
         return true;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return UserListDefinitionPermissions::ABLE_TO_MANAGE_TYPE === $attribute;
     }

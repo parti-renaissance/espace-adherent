@@ -9,7 +9,7 @@ use App\Security\Voter\AbstractAdherentVoter;
 
 class SuperviseCommitteeVoter extends AbstractAdherentVoter
 {
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return CommitteePermissions::SUPERVISE === $attribute && $subject instanceof Committee;
     }

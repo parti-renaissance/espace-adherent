@@ -20,7 +20,7 @@ class FeatureVoter extends AbstractAdherentVoter
         $this->requestStack = $requestStack;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $this->requestStack->getMasterRequest();
     }

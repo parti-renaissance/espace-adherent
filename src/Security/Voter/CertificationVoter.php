@@ -7,7 +7,7 @@ use App\Entity\Adherent;
 
 class CertificationVoter extends AbstractAdherentVoter
 {
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return \in_array($attribute, [CertificationPermissions::CERTIFIED, CertificationPermissions::REQUEST], true)
             && null === $subject

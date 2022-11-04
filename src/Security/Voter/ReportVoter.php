@@ -17,7 +17,7 @@ class ReportVoter extends Voter
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return ReportPermissions::REPORT === $attribute;
     }
@@ -28,6 +28,6 @@ class ReportVoter extends Voter
             return false;
         }
 
-        return $this->authorizationChecker->isGranted(['IS_AUTHENTICATED_REMEMBERED']);
+        return $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED');
     }
 }

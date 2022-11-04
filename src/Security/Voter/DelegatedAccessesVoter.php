@@ -29,7 +29,7 @@ class DelegatedAccessesVoter extends AbstractAdherentVoter
         $this->session = $session;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return str_starts_with($attribute, 'HAS_DELEGATED_ACCESS_');
     }

@@ -69,7 +69,7 @@ class ChangeCommitteeVoteVoter extends Voter
         return true;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION === $attribute
             || (self::COMMITTEE_IS_NOT_LOCKED === $attribute && $subject instanceof Committee)

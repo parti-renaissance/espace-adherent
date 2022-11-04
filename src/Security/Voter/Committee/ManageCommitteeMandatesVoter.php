@@ -17,7 +17,7 @@ class ManageCommitteeMandatesVoter extends AbstractAdminVoter
         $this->committeeManager = $committeeManager;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return \in_array($attribute, [CommitteePermissions::CHANGE_MANDATE, CommitteePermissions::ADD_MANDATE], true)
             && $subject instanceof Committee;

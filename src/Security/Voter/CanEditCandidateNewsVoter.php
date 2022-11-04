@@ -36,7 +36,7 @@ class CanEditCandidateNewsVoter extends AbstractAdherentVoter
         return \in_array($managedZone, $subject->getZone()->getWithParents(), true);
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof News;
     }
