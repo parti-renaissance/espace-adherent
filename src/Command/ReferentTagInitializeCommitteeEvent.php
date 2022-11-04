@@ -26,7 +26,7 @@ class ReferentTagInitializeCommitteeEvent extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln(['', 'Starting Referent Tags import.']);
 
@@ -91,7 +91,7 @@ INSERT INTO committee_referent_tag (committee_id, referent_tag_id)
     SELECT committee.id, tag.id
     FROM committees committee
     INNER JOIN referent_tags tag ON tag.code = '20'
-    WHERE committee.address_country = 'FR' 
+    WHERE committee.address_country = 'FR'
     AND SUBSTRING(committee.address_postal_code, 1, 2) = '20'
 );
 
@@ -101,7 +101,7 @@ INSERT INTO committee_referent_tag (committee_id, referent_tag_id)
     SELECT committee.id, tag.id
     FROM committees committee
     INNER JOIN referent_tags tag ON tag.code = '75'
-    WHERE committee.address_country = 'FR' 
+    WHERE committee.address_country = 'FR'
     AND SUBSTRING(committee.address_postal_code, 1, 2) = '75'
 );
 SQL;
@@ -156,7 +156,7 @@ INSERT INTO event_referent_tag (event_id, referent_tag_id)
     SELECT event.id, tag.id
     FROM events event
     INNER JOIN referent_tags tag ON tag.code = '20'
-    WHERE event.address_country = 'FR' 
+    WHERE event.address_country = 'FR'
     AND SUBSTRING(event.address_postal_code, 1, 2) = '20'
 );
 
@@ -166,7 +166,7 @@ INSERT INTO event_referent_tag (event_id, referent_tag_id)
     SELECT event.id, tag.id
     FROM events event
     INNER JOIN referent_tags tag ON tag.code = '75'
-    WHERE event.address_country = 'FR' 
+    WHERE event.address_country = 'FR'
     AND SUBSTRING(event.address_postal_code, 1, 2) = '75'
 );
 SQL;

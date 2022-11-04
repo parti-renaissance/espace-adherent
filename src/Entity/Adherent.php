@@ -103,7 +103,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
  */
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, \Serializable, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface
 {
     use EntityCrudTrait;
     use EntityIdentityTrait;
@@ -1203,7 +1203,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ;
     }
 
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return !$this->password ? $this->oldPassword : $this->password;
     }
@@ -2244,19 +2244,19 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->oAuthUser;
     }
 
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize([
+        return [
             $this->id,
             $this->emailAddress,
             $this->password,
             $this->getRoles(),
-        ]);
+        ];
     }
 
-    public function unserialize($serialized)
+    public function __unserialize(array $serialized): void
     {
-        [$this->id, $this->emailAddress, $this->password, $this->roles] = unserialize($serialized);
+        [$this->id, $this->emailAddress, $this->password, $this->roles] = $serialized;
     }
 
     public function setRemindSent(bool $remindSent): void

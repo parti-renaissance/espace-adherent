@@ -61,7 +61,7 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $referentTags = $this->referentTagRepository->findAll();
         $this->io->progressStart(\count($referentTags));

@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CoalitionEventType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): ?string
     {
         return BaseEventCommandType::class;
     }

@@ -23,7 +23,7 @@ class UuidToObjectTransformer implements DataTransformerInterface
         $this->repository = $entityManager->getRepository($className);
     }
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         if ($value instanceof UuidEntityInterface) {
             return $value->getUuid()->toString();
@@ -32,7 +32,7 @@ class UuidToObjectTransformer implements DataTransformerInterface
         return $value;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if ($value && Uuid::isValid($value) && $object = $this->repository->findOneByUuid($value)) {
             return $object;

@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DesignationNotificationType extends AbstractType implements DataTransformerInterface
 {
-    public function getParent()
+    public function getParent(): ?string
     {
         return ChoiceType::class;
     }
@@ -29,7 +29,7 @@ class DesignationNotificationType extends AbstractType implements DataTransforme
         ]);
     }
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         if (null === $value) {
             return null;
@@ -40,7 +40,7 @@ class DesignationNotificationType extends AbstractType implements DataTransforme
         });
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if (\is_array($value)) {
             return array_sum($value);

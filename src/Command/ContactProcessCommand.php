@@ -48,7 +48,7 @@ class ContactProcessCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $limit = (int) $input->getOption('limit');
 

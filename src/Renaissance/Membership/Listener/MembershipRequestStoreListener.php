@@ -17,7 +17,7 @@ class MembershipRequestStoreListener implements EventSubscriberInterface
         $this->storage = $storage;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'workflow.membership_request.completed' => 'manageCommandStore',

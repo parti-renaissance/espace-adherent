@@ -26,7 +26,7 @@ class GuardListener implements EventSubscriberInterface
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'workflow.voting_process.guard' => ['guardStart'],

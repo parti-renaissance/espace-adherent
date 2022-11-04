@@ -48,7 +48,7 @@ class MailchimpSyncJecouteCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $limit = (int) $input->getOption('limit');
 

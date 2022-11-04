@@ -25,14 +25,14 @@ class MyEuropeChoiceEntityType extends AbstractType
                         return $repository->createQueryBuilderForStep($step);
                     };
                 },
-                'choice_value' => 'id', // we need to override the default because pre set data may not be managed by doctrine
+                'choice_value' => 'id', // we need to override the default because pre-set data may not be managed by doctrine
                 'choice_label' => 'label',
                 'label' => false,
             ])
         ;
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return EntityType::class;
     }

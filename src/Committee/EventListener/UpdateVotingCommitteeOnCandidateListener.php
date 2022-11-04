@@ -19,7 +19,7 @@ class UpdateVotingCommitteeOnCandidateListener implements EventSubscriberInterfa
         $this->committeeManager = $committeeManager;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::CANDIDACY_CREATED => 'onCandidacyCreated',

@@ -141,7 +141,7 @@ class DonationRequestType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'app_donation';
     }

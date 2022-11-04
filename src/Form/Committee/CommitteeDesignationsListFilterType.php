@@ -31,7 +31,7 @@ class CommitteeDesignationsListFilterType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'f';
     }

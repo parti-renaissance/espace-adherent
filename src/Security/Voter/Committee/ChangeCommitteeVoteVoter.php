@@ -20,7 +20,7 @@ class ChangeCommitteeVoteVoter extends Voter
         $this->lockPeriodManager = $lockPeriodManager;
     }
 
-    protected function voteOnAttribute($attribute, $committee, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $committee, TokenInterface $token): bool
     {
         /** @var Adherent $adherent */
         $adherent = $token->getUser();
@@ -69,7 +69,7 @@ class ChangeCommitteeVoteVoter extends Voter
         return true;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return self::PERMISSION === $attribute
             || (self::COMMITTEE_IS_NOT_LOCKED === $attribute && $subject instanceof Committee)

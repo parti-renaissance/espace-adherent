@@ -68,7 +68,7 @@ class SendVoteReminderCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($designationId = (int) $input->getOption('designation-id')) {
             $elections = $this->electionRepository->findBy(['designation' => $designationId, 'status' => ElectionStatusEnum::OPEN]);

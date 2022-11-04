@@ -26,7 +26,7 @@ class PromoteToHostInCommitteeVoter extends Voter
     /**
      * @param Committee $committee
      */
-    protected function voteOnAttribute($attribute, $committee, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $committee, TokenInterface $token): bool
     {
         return $committee->isApproved() && $this->committeeManager->countCommitteeHosts($committee, true) < 2;
     }

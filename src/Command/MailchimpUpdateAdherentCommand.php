@@ -43,7 +43,7 @@ class MailchimpUpdateAdherentCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filePath = $input->getArgument('file');
 

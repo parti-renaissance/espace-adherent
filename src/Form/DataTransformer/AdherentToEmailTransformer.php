@@ -17,12 +17,12 @@ class AdherentToEmailTransformer implements DataTransformerInterface
         $this->adherentRepository = $adherentRepository;
     }
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         return $value instanceof Adherent ? $value->getEmailAddress() : null;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if (null === $value) {
             return null;

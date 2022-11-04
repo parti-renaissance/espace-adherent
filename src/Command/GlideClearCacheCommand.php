@@ -22,7 +22,7 @@ class GlideClearCacheCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->glide->deleteCache($input->getArgument('path'));
 

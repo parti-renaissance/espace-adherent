@@ -61,7 +61,7 @@ class ImportReferentBioPictureCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $this->pathExtractedFile = $this->extractArchive($input->getArgument('fileUrl'));
@@ -237,7 +237,7 @@ class ImportReferentBioPictureCommand extends Command
     public function __destruct()
     {
         if (!\count($this->imageAddedOnStorage)) {
-            return;
+            return 0;
         }
 
         foreach ($this->imageAddedOnStorage as $imgePath) {

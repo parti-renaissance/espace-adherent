@@ -13,7 +13,7 @@ class NewsletterUnsubscribeType extends AbstractType
         $builder->add('email', EmailType::class);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'app_newsletter_unsubscribe';
     }

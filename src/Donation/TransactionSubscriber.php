@@ -40,7 +40,7 @@ class TransactionSubscriber implements EventSubscriberInterface
         $this->logger = $logger;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             PayboxEvents::PAYBOX_IPN_RESPONSE => ['onPayboxIpnResponse'],

@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 abstract class AbstractAdherentVoter extends Voter
 {
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $adherent = $token->getUser();
         if (!$adherent instanceof Adherent) {

@@ -45,7 +45,7 @@ class RepublicanSilenceCloseEventCommand extends Command
         $this->interval = (int) $input->getArgument('interval');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->getSilences() as $silence) {
             $this->closeEvents($silence);

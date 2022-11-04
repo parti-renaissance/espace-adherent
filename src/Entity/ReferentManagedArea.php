@@ -142,7 +142,7 @@ class ReferentManagedArea
     public function hasForeignTag(): bool
     {
         foreach ($this->tags as $tag) {
-            if ($tag->isCountryTag() || ($tag->isDistrictTag() && 0 === strpos($tag->getCode(), 'CIRCO_FDE'))) {
+            if ($tag->isCountryTag() || ($tag->isDistrictTag() && str_starts_with($tag->getCode(), 'CIRCO_FDE'))) {
                 return true;
             }
         }

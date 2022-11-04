@@ -22,7 +22,7 @@ class PostCauseCreationListener implements EventSubscriberInterface
         $this->notifier = $notifier;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::VIEW => ['attachFirstCauseFollower', EventPriorities::POST_WRITE]];
     }

@@ -53,7 +53,7 @@ class CharterVoter extends AbstractAdherentVoter
         return true;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return self::PERMISSION === $attribute
             && \is_string($subject)

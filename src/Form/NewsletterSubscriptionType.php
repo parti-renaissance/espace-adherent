@@ -68,7 +68,7 @@ class NewsletterSubscriptionType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'app_newsletter_subscription';
     }

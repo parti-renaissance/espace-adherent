@@ -20,7 +20,7 @@ class ProcurationListener implements EventSubscriberInterface
         $this->bus = $bus;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ProcurationEvents::PROXY_REGISTRATION => ['onProxyRegistration', -256],

@@ -8,7 +8,7 @@ use App\Entity\Administrator;
 
 class AdherentCertifyVoter extends AbstractAdminVoter
 {
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return CertificationPermissions::CERTIFY === $attribute && $subject instanceof Adherent;
     }

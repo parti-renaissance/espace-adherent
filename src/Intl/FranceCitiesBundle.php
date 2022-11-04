@@ -161,7 +161,7 @@ class FranceCitiesBundle
     public static function getCountryISOCode(string $postalCode)
     {
         foreach (self::$countries as $prefix => $country) {
-            if (0 === strpos($postalCode, (string) $prefix)) {
+            if (str_starts_with($postalCode, (string) $prefix)) {
                 return $country;
             }
         }

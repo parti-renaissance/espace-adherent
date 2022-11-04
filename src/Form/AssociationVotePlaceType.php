@@ -37,7 +37,7 @@ class AssociationVotePlaceType extends AbstractType implements DataTransformerIn
         $resolver->setDefaults(['label' => false]);
     }
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         if ($value instanceof VotePlace) {
             return [
@@ -49,7 +49,7 @@ class AssociationVotePlaceType extends AbstractType implements DataTransformerIn
         return $value;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if (isset($value['votePlace']) && is_numeric($value['votePlace'])) {
             /** @var VotePlace $votePlace */

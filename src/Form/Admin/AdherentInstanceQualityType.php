@@ -28,7 +28,7 @@ class AdherentInstanceQualityType extends AbstractType implements DataTransforme
         $builder->addModelTransformer($this);
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return EntityType::class;
     }
@@ -43,7 +43,7 @@ class AdherentInstanceQualityType extends AbstractType implements DataTransforme
        ]);
     }
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         if ($value instanceof Collection) {
             /** @var AdherentInstanceQuality[] $value */
@@ -67,7 +67,7 @@ class AdherentInstanceQualityType extends AbstractType implements DataTransforme
         return $value;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if ($value instanceof InstanceQuality) {
             return array_merge($this->persistingQualities, [

@@ -37,7 +37,7 @@ class AdherentLoginTimestampRecorder implements EventSubscriberInterface
         $this->manager->flush();
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',

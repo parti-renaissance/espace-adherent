@@ -23,7 +23,7 @@ class ManagedTerritorialCouncilChoiceType extends AbstractConnectedUserFormType
         ]);
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return EntityType::class;
     }

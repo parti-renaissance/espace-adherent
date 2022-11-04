@@ -20,7 +20,7 @@ class PreWritePapCampaignHistoryListener implements EventSubscriberInterface
         $this->security = $security;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::VIEW => ['preWrite', EventPriorities::PRE_WRITE]];
     }

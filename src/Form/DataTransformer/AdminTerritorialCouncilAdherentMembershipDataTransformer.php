@@ -27,7 +27,7 @@ class AdminTerritorialCouncilAdherentMembershipDataTransformer implements DataTr
     private $membership;
     private $skip = false;
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         if ($value instanceof TerritorialCouncilMembership) {
             $this->membership = $value;
@@ -48,7 +48,7 @@ class AdminTerritorialCouncilAdherentMembershipDataTransformer implements DataTr
         return $value;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if (\is_array($value)) {
             $filtered = array_filter($value);

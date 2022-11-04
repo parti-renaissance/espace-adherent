@@ -46,7 +46,7 @@ class AdherentFunnelGeneralType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'adherent_profile';
     }

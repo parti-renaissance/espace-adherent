@@ -36,7 +36,7 @@ class PapAssociateActiveCampaignsToBuildingsCommand extends Command implements L
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $date = new \DateTime();
 

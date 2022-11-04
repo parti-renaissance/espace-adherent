@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class LegacyRedirectionsSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::EXCEPTION => 'onKernelException',

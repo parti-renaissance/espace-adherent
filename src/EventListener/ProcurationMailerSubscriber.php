@@ -20,7 +20,7 @@ class ProcurationMailerSubscriber implements EventSubscriberInterface
         $this->factory = $factory;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ProcurationEvents::REQUEST_REGISTRATION => 'sendProcurationRequestRegistrationEmail',

@@ -17,7 +17,7 @@ class ReferentAreaTransformer implements DataTransformerInterface
         $this->em = $em;
     }
 
-    public function transform($arrayReferentArea)
+    public function transform($arrayReferentArea): mixed
     {
         $newArray = [];
 
@@ -33,7 +33,7 @@ class ReferentAreaTransformer implements DataTransformerInterface
         return implode(', ', $newArray);
     }
 
-    public function reverseTransform($strAreasCodes)
+    public function reverseTransform($strAreasCodes): mixed
     {
         $newArray = [];
 

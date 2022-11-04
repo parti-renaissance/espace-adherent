@@ -48,7 +48,7 @@ class MailchimpCreateTagFromReferentTagCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $url = sprintf('/3.0/lists/%s/segments', $this->mailchimpListId);
 

@@ -69,7 +69,7 @@ class UnregisterAdherentsCommand extends Command
         $this->adherentRepository = $this->em->getRepository(Adherent::class);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $emails = $this->parseCSV($input->getArgument('fileUrl'));
 

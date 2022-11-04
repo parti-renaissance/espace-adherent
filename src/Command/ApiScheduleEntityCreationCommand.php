@@ -28,7 +28,7 @@ abstract class ApiScheduleEntityCreationCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln(['', 'Starting synchronization.']);
 

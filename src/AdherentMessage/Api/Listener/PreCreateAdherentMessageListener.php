@@ -21,7 +21,7 @@ class PreCreateAdherentMessageListener implements EventSubscriberInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::VIEW => ['dispatchPreCreateEvent', EventPriorities::PRE_WRITE]];
     }

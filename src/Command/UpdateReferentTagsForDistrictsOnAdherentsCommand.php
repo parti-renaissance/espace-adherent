@@ -31,7 +31,7 @@ class UpdateReferentTagsForDistrictsOnAdherentsCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->getAdherentIds() as $row) {
             $this->bus->dispatch(new UpdateReferentTagOnDistrictCommand($row['id']));

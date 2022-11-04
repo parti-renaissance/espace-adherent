@@ -20,7 +20,7 @@ class RequestScopeVoter extends Voter
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $scope = $this->scopeGeneratorResolver->generate();
 
@@ -33,7 +33,7 @@ class RequestScopeVoter extends Voter
         return null === $subject || $subject === $scopeCode;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return
             self::PERMISSION === $attribute

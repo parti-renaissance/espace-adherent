@@ -22,12 +22,12 @@ class DataCornerVoter extends Voter
         $this->scopeGenerator = $scopeGenerator;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return self::DATA_CORNER === $attribute;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         if (
             !$subject instanceof Adherent

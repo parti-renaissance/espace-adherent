@@ -23,7 +23,7 @@ class CreateTimelineFeedFromConvocationListener implements EventSubscriberInterf
         $this->engine = $engine;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::CONVOCATION_CREATED => ['onConvocationCreate', -100],

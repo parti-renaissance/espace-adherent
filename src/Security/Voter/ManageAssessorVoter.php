@@ -11,7 +11,7 @@ class ManageAssessorVoter extends AbstractAdherentVoter
 {
     private const MANAGE = 'MANAGE_ASSESSOR';
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return self::MANAGE === $attribute && $subject instanceof AssessorRequest;
     }

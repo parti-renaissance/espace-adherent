@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BirthdateType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): ?string
     {
         return BirthdayType::class;
     }

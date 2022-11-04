@@ -47,7 +47,7 @@ class ManageUserListDefinitionElectedRepresentativeVoter extends AbstractAdheren
         return $isGranted;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return UserListDefinitionPermissions::ABLE_TO_MANAGE_MEMBER === $attribute
             && $subject instanceof ElectedRepresentative;

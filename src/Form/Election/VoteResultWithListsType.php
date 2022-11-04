@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class VoteResultWithListsType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): ?string
     {
         return BaseVoteResultType::class;
     }

@@ -16,12 +16,12 @@ class CityToInseeCodeTransformer implements DataTransformerInterface
         $this->cityRepository = $cityRepository;
     }
 
-    public function transform($city)
+    public function transform($city): mixed
     {
         return $city instanceof City ? $city->getInseeCode() : null;
     }
 
-    public function reverseTransform($inseeCode)
+    public function reverseTransform($inseeCode): mixed
     {
         $city = $this->cityRepository->findOneBy(['inseeCode' => $inseeCode]);
 

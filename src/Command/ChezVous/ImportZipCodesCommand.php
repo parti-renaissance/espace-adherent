@@ -47,7 +47,7 @@ class ImportZipCodesCommand extends AbstractImportCommand
         $this->setDescription('Import ChezVous zipcodes from CSV files');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io->title('ChezVous zipcodes import.');
 

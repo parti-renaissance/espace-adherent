@@ -234,9 +234,9 @@ class VotePlace
         return $this->code;
     }
 
-    public function getLocalCode(): string
+    public function getLocalCode(): int
     {
-        return explode('_', $this->code, 2)[1];
+        return (int) explode('_', $this->code, 2)[1];
     }
 
     public function getInseeCode(): string

@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RepeatedEmailType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): ?string
     {
         return RepeatedType::class;
     }

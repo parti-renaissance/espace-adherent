@@ -21,7 +21,7 @@ class PostLegislativeNewsletterCreateListener implements EventSubscriberInterfac
         $this->dispatcher = $dispatcher;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::VIEW => ['onSubscribe', EventPriorities::POST_WRITE]];
     }

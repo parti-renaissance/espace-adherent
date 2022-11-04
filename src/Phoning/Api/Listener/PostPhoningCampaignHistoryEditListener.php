@@ -23,7 +23,7 @@ class PostPhoningCampaignHistoryEditListener implements EventSubscriberInterface
         $this->bus = $bus;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::VIEW => ['dispatchPostWrite', EventPriorities::POST_WRITE]];
     }

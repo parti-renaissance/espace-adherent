@@ -47,7 +47,7 @@ class CommitteeAroundAdherentType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'app_membership_choose_committees_around_adherent';
     }

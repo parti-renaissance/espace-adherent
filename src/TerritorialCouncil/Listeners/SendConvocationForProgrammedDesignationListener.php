@@ -20,7 +20,7 @@ class SendConvocationForProgrammedDesignationListener implements EventSubscriber
         $this->urlGenerator = $urlGenerator;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::DESIGNATION_SWITCHED => 'onDesignationSwitch',

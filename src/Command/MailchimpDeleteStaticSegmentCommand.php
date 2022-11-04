@@ -41,7 +41,7 @@ class MailchimpDeleteStaticSegmentCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ids = $input->getArgument('ids');
 

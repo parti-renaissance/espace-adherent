@@ -38,12 +38,12 @@ class ProvisionalSupervisorType extends AbstractType implements DataTransformerI
         $view->vars['gender'] = $options['gender'];
     }
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         return $value;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         return !empty($value) ? $this->adherentRepository->find($value) : $value;
     }

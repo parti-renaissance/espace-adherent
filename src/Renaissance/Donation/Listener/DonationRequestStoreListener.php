@@ -17,7 +17,7 @@ class DonationRequestStoreListener implements EventSubscriberInterface
         $this->storage = $storage;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'workflow.donation_request.completed' => 'manageCommandStore',

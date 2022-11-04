@@ -60,7 +60,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             AdherentEvents::REGISTRATION_COMPLETED => ['updateCoordinates', -256],

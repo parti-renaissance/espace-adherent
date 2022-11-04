@@ -41,7 +41,7 @@ class ReferentSpaceController extends AbstractApplicationRequestController
             ApplicationRequestTypeEnum::VOLUNTEER !== $request->attributes->get('type')
             && array_filter(
                 $this->getUser()->getManagedAreaTagCodes(),
-                function ($code) { return 0 === strpos($code, '75'); }
+                function ($code) { return str_starts_with($code, '75'); }
             )
         ) {
             throw $this->createNotFoundException();

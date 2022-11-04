@@ -24,7 +24,7 @@ class CommitteeFeedItemMessageType extends AbstractType
         ]);
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return CommitteeFeedMessageType::class;
     }

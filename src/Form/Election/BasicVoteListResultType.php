@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BasicVoteListResultType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): ?string
     {
         return VoteResultListType::class;
     }

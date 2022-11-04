@@ -30,7 +30,7 @@ class AdherentUuidType extends AbstractType
         $view->vars['adherent'] = ($data = $form->getData()) instanceof Adherent ? $data : null;
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return HiddenType::class;
     }

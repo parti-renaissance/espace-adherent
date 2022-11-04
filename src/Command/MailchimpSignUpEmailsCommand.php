@@ -57,7 +57,7 @@ class MailchimpSignUpEmailsCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $file = $input->getArgument('file');
 

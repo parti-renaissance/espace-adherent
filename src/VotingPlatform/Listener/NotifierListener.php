@@ -20,7 +20,7 @@ class NotifierListener implements EventSubscriberInterface
         $this->notifier = $notifier;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             CommitteeElectionCandidacyPeriodIsOverEvent::class => 'onCandidacyPeriodClose',

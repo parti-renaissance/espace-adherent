@@ -18,7 +18,7 @@ class CreateStaticSegmentListener implements EventSubscriberInterface
         $this->bus = $bus;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::COMMITTEE_UPDATED => 'onCommitteeUpdate',

@@ -32,7 +32,7 @@ class ImportDonationCoordinatesCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln(['', 'Starting import of Donation coordinates.']);
 

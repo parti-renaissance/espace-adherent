@@ -53,7 +53,7 @@ class DonatorSynchronizeCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io->text('Starting synchronization.');
         $this->io->progressStart($this->getCount());

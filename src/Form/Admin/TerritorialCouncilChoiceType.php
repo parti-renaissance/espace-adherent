@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TerritorialCouncilChoiceType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): ?string
     {
         return EntityType::class;
     }

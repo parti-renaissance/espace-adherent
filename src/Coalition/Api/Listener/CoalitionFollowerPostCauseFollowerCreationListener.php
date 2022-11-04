@@ -19,7 +19,7 @@ class CoalitionFollowerPostCauseFollowerCreationListener implements EventSubscri
         $this->manager = $manager;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::VIEW => ['createCoalitionFollower', EventPriorities::POST_WRITE]];
     }

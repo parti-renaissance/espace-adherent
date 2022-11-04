@@ -40,14 +40,14 @@ class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filePath = $input->getArgument('path');
 
         if (!$this->storage->has($filePath)) {
             $this->io->comment("No CSV found ($filePath).");
 
-            return;
+            return 0;
         }
 
         $this->io->text('Start importing territorial councils');

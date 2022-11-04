@@ -30,7 +30,7 @@ class AddNewVoterAfterCertificationListener implements EventSubscriberInterface
         $this->entityManager = $entityManager;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::ADHERENT_CERTIFIED => 'onAdherentCertifiedChange',

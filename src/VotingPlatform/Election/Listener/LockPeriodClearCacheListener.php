@@ -20,7 +20,7 @@ class LockPeriodClearCacheListener implements EventSubscriberInterface
         $this->security = $security;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             sprintf('workflow.voting_process.completed.%s', VoteCommandStateEnum::TO_FINISH) => ['clearCache', -1],

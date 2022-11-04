@@ -35,12 +35,12 @@ class ZoneType extends AbstractType implements DataTransformerInterface
         $view->vars['zone_label'] = ($data = $form->getData()) instanceof Zone ? $data->getNameCode() : '';
     }
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         return $value instanceof Zone ? $value->getId() : $value;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         return !empty($value) ? $this->zoneRepository->find($value) : $value;
     }

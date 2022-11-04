@@ -32,7 +32,7 @@ class SendElectionConvocationCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var TerritorialCouncil $territorialCouncil */
         if (!$territorialCouncil = $this->entityManager->getRepository(TerritorialCouncil::class)->find($input->getArgument('coterr-id'))) {

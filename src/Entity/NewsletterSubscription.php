@@ -129,11 +129,6 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
         $this->postalCode = $postalCode;
     }
 
-    public function getCreatedAt(): ?\DateTime
-    {
-        return $this->createdAt;
-    }
-
     public function getCountry(): ?string
     {
         return $this->country;

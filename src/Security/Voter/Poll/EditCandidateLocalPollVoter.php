@@ -38,7 +38,7 @@ class EditCandidateLocalPollVoter extends AbstractAdherentVoter
         return \in_array($managedZone, $subject->getZone()->getWithParents());
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof LocalPoll;
     }

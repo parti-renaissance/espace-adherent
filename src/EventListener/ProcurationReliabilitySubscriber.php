@@ -21,7 +21,7 @@ class ProcurationReliabilitySubscriber implements EventSubscriberInterface
         $this->em = $em;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ProcurationEvents::PROXY_REGISTRATION => 'processReliability',

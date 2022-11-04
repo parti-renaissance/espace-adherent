@@ -16,12 +16,12 @@ class AdherentToIdTransformer implements DataTransformerInterface
         $this->adherentRepository = $adherentRepository;
     }
 
-    public function transform($adherent)
+    public function transform($adherent): mixed
     {
         return $adherent instanceof Adherent ? $adherent->getId() : null;
     }
 
-    public function reverseTransform($adherentId)
+    public function reverseTransform($adherentId): mixed
     {
         if (null === $adherentId) {
             return null;

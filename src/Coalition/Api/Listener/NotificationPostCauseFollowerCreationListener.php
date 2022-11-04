@@ -19,7 +19,7 @@ class NotificationPostCauseFollowerCreationListener implements EventSubscriberIn
         $this->notifier = $notifier;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::VIEW => ['sendConfirmationEmail', EventPriorities::POST_WRITE]];
     }

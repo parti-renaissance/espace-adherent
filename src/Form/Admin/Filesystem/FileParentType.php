@@ -18,7 +18,7 @@ class FileParentType extends AbstractType implements DataTransformerInterface
         $this->repository = $repository;
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return TextType::class;
     }
@@ -28,7 +28,7 @@ class FileParentType extends AbstractType implements DataTransformerInterface
         $builder->addModelTransformer($this);
     }
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         if ($value instanceof File) {
             return $value->getName();
@@ -37,7 +37,7 @@ class FileParentType extends AbstractType implements DataTransformerInterface
         return null;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if (!empty($value)) {
             if ($file = $this->repository->findDirectoryByName($value)) {

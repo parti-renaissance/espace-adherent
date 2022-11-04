@@ -25,7 +25,7 @@ class EventSubscriber implements EventSubscriberInterface
         $this->producer->dispatchMeasureTypeDeleted($event->getMeasureType());
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::CHEZVOUS_MEASURE_TYPE_UPDATED => [['publishMeasureTypeUpdated', -512]],

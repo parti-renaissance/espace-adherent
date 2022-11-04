@@ -46,7 +46,7 @@ class CommitteeSubscriber implements EventSubscriberInterface
         );
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             // Api Synchronization should be done after all others subscribers so we put the lowest priority

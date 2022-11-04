@@ -23,7 +23,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         $this->bus = $bus;
     }
 
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::postPersist,

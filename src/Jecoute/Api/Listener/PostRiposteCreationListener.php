@@ -19,7 +19,7 @@ class PostRiposteCreationListener implements EventSubscriberInterface
         $this->riposteHandler = $riposteHandler;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::VIEW => ['sendNotification', EventPriorities::POST_WRITE]];
     }

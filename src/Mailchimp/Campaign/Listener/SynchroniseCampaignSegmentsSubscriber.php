@@ -19,7 +19,7 @@ class SynchroniseCampaignSegmentsSubscriber implements EventSubscriberInterface
         $this->entityManager = $entityManager;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::CAMPAIGN_FILTERS_PRE_BUILD => 'preBuild',

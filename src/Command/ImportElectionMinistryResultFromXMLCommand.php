@@ -67,7 +67,7 @@ class ImportElectionMinistryResultFromXMLCommand extends Command
         $this->httpClient = HttpClient::create(['timeout' => 3600]);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->author = (int) $input->getArgument('author-id');
         $response = $this->httpClient->request('GET', self::INDEX_URL);

@@ -39,7 +39,7 @@ class RemindUnconfirmedMembershipCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $from = (new \DateTime())->modify(sprintf('-%d hours', (int) $input->getArgument('hours')));
 

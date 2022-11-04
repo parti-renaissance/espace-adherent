@@ -7,7 +7,7 @@ use App\Entity\Adherent;
 
 class LaREMAdherentVoter extends AbstractAdherentVoter
 {
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return AdherentRoleEnum::LAREM === $attribute;
     }
