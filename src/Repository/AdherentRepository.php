@@ -1146,19 +1146,19 @@ SQL;
                     break;
                 case RenaissanceMembershipFilterEnum::ADHERENT_RE:
                     $qb
-                        ->andWhere('adherent.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL')
+                        ->andWhere('adherent.source = :source_renaissance AND adherent.lastMembershipDonation IS NOT NULL')
                         ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
                     ;
                     break;
                 case RenaissanceMembershipFilterEnum::SYMPATHIZER_RE:
                     $qb
-                        ->andWhere('adherent.source = :source_renaissance AND a.lastMembershipDonation IS NULL')
+                        ->andWhere('adherent.source = :source_renaissance AND adherent.lastMembershipDonation IS NULL')
                         ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
                     ;
                     break;
                 case RenaissanceMembershipFilterEnum::OTHERS_ADHERENT:
                     $qb
-                        ->andWhere('adherent.source != :source_renaissance OR a.source IS NULL')
+                        ->andWhere('adherent.source != :source_renaissance OR adherent.source IS NULL')
                         ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
                     ;
                     break;
@@ -1496,7 +1496,7 @@ SQL;
         $sql = <<<SQL
 INSERT IGNORE INTO voting_platform_voter (adherent_id, created_at, is_poll_voter)
 SELECT adherent.id, NOW(), 1 FROM adherents AS adherent
-WHERE 
+WHERE
     adherent.status = :status
     AND adherent.registered_at < :since_date
     AND adherent.certified_at IS NOT NUll
@@ -1514,7 +1514,7 @@ SQL;
 INSERT IGNORE INTO voting_platform_voters_list_voter (voters_list_id, voter_id)
 SELECT :voter_list_id, voter.id FROM voting_platform_voter AS voter
 INNER JOIN adherents AS adherent ON adherent.id = voter.adherent_id
-WHERE 
+WHERE
     voter.is_poll_voter = 1
     AND adherent.status = :status
     AND adherent.registered_at < :since_date
