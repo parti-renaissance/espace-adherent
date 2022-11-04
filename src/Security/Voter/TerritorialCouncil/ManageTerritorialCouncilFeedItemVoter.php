@@ -21,7 +21,7 @@ class ManageTerritorialCouncilFeedItemVoter extends AbstractAdherentVoter
         ;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return FeedItemPermissions::CAN_MANAGE === $attribute && $subject instanceof TerritorialCouncilFeedItem;
     }

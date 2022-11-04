@@ -18,7 +18,7 @@ class AttendEventVoter extends AbstractAdherentVoter
         $this->registrationRepository = $registrationRepository;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return $subject instanceof CommitteeEvent && \in_array($attribute, EventPermissions::ATTEND, true);
     }

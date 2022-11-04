@@ -17,7 +17,7 @@ class FollowerCommitteeVoter extends AbstractAdherentVoter
         $this->adherentRepository = $adherentRepository;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return $subject instanceof Committee
             && \in_array($attribute, CommitteePermissions::FOLLOWER, true)

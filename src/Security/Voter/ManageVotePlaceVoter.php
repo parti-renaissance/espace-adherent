@@ -43,7 +43,7 @@ class ManageVotePlaceVoter extends AbstractAdherentVoter
         return $result;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::MANAGE_VOTE_PLACE === $attribute && $subject instanceof VotePlace;
     }

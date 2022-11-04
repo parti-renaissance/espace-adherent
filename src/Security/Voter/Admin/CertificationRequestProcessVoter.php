@@ -8,7 +8,7 @@ use App\Entity\CertificationRequest;
 
 class CertificationRequestProcessVoter extends AbstractAdminVoter
 {
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return \in_array($attribute, CertificationPermissions::REQUEST_PROCESS, true)
             && $subject instanceof CertificationRequest

@@ -23,7 +23,7 @@ class ReferentNewsPublicationVoter extends AbstractAdherentVoter
             && \in_array($subject->getZone(), $this->zoneRepository->findForJecouteByReferentTags($adherent->getManagedArea()->getTags()->toArray()), true);
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof News;
     }

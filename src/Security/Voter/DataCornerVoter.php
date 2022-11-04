@@ -6,10 +6,8 @@ use App\Entity\Adherent;
 use App\Repository\ScopeRepository;
 use App\Scope\GeneralScopeGenerator;
 use App\Scope\Scope;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class DataCornerVoter extends Voter
+class DataCornerVoter extends AbstractAdherentVoter
 {
     public const DATA_CORNER = 'DATA_CORNER';
 
@@ -22,23 +20,20 @@ class DataCornerVoter extends Voter
         $this->scopeGenerator = $scopeGenerator;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::DATA_CORNER === $attribute;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if (
-            !$subject instanceof Adherent
-            || !$codes = $this->scopeRepository->findCodesGrantedForDataCorner()
-        ) {
+        if (!$codes = $this->scopeRepository->findCodesGrantedForDataCorner()) {
             return false;
         }
 
         $adherentScopesCodes = array_map(function (Scope $scope) {
             return $scope->getMainCode();
-        }, $this->scopeGenerator->generateScopes($subject));
+        }, $this->scopeGenerator->generateScopes($adherent));
 
         return !empty(array_intersect($codes, $adherentScopesCodes));
     }

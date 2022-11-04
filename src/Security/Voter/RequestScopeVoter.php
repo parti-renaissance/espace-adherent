@@ -33,7 +33,7 @@ class RequestScopeVoter extends Voter
         return null === $subject || $subject === $scopeCode;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return
             self::PERMISSION === $attribute

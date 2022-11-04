@@ -39,7 +39,7 @@ class DownloadFileVoter extends AbstractAdherentVoter
         return \count(array_intersect($subject->getPermissionNames(), $adherent->getFilePermissions())) > 0;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof File;
     }

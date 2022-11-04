@@ -35,7 +35,7 @@ class CommitteeElectionVoter extends AbstractAdherentVoter
         return false;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return \in_array($attribute, [self::PERMISSION_ABLE_TO_CANDIDATE, self::PERMISSION_ABLE_TO_VOTE], true) && $subject instanceof Committee;
     }

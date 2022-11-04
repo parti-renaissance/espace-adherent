@@ -18,7 +18,7 @@ class PromoteToHostInCommitteeVoter extends Voter
         $this->committeeManager = $committeeManager;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return CommitteePermissions::PROMOTE_TO_HOST === $attribute && $subject instanceof Committee;
     }

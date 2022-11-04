@@ -17,7 +17,7 @@ class AdherentUnregistrationVoter extends AbstractAdherentVoter
         $this->adherentMandateRepository = $adherentMandateRepository;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION_UNREGISTER === $attribute && null === $subject;
     }

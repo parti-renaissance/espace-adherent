@@ -19,7 +19,7 @@ class PhoningCampaignVoter extends AbstractAdherentVoter
         return $team->hasAdherent($adherent);
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof Campaign;
     }

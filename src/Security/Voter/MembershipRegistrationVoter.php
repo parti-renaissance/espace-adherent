@@ -17,7 +17,7 @@ class MembershipRegistrationVoter extends Voter
         $this->membershipRegistrationProcess = $membershipRegistrationProcess;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::REGISTRATION_IN_PROGRESS === $attribute;
     }

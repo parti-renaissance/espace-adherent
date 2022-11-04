@@ -16,7 +16,7 @@ class ReferentPersonLinkVoter extends AbstractAdherentVoter
         $this->referentRepository = $referentRepository;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return static::IS_ROOT_REFERENT === $attribute || (
             \is_array($attribute) && \in_array(static::IS_ROOT_REFERENT, $attribute, true)

@@ -59,7 +59,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
         return false;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return str_starts_with($attribute, self::PERMISSION) && $subject instanceof ZoneableEntity;
     }
