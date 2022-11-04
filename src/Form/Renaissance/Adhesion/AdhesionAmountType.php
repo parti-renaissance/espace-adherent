@@ -19,8 +19,8 @@ class AdhesionAmountType extends AbstractType
            'required' => false,
            'placeholder' => false,
            'choices' => [
-               'Tarif réduit 10€ *' => 10,
-               'Tarif normal 30€' => 30,
+               'Tarif réduit *' => 10,
+               'Tarif normal' => 30,
            ],
            'expanded' => true,
        ]);

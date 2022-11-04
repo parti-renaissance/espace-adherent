@@ -4,11 +4,6 @@
             flex-grow: 1;
             margin-left: 8px;
             padding: 8px;
-            border: 1px solid lighten($disable-grey, 10%);
-            border-left-width: 0;
-            border-radius: .5rem;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
         }
 
         &:not(:disabled) + label:hover {
@@ -24,6 +19,35 @@
                 position: absolute;
                 bottom: 5px;
                 right: 5px;
+            }
+        }
+    }
+}
+
+.cotisation {
+    &-checkbox {
+        input[type=radio] {
+            display: none;
+        }
+
+        input[type=radio]:checked + label {
+            .amount-text-label {
+                color: var(--green-color);
+            }
+
+            svg {
+                display: block;
+            }
+
+            .active-border {
+                border-color: var(--green-color);
+                border-width: 2px;
+            }
+        }
+
+        label {
+            svg {
+                display: none;
             }
         }
     }
