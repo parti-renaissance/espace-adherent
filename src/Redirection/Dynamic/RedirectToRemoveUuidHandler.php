@@ -5,7 +5,7 @@ namespace App\Redirection\Dynamic;
 use App\Repository\EventRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 class RedirectToRemoveUuidHandler extends AbstractRedirectTo implements RedirectToInterface
@@ -27,7 +27,7 @@ class RedirectToRemoveUuidHandler extends AbstractRedirectTo implements Redirect
         $this->patternUuid = $patternUuid;
     }
 
-    public function handle(GetResponseForExceptionEvent $event, string $requestUri, string $redirectCode): bool
+    public function handle(ExceptionEvent $event, string $requestUri, string $redirectCode): bool
     {
         foreach ($this->provider->get(RedirectionsProvider::TO_REMOVE_UUID) as $pattern => $path) {
             if (!$this->hasPattern($pattern, $requestUri)) {

@@ -4,7 +4,7 @@ namespace App\Redirection;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -17,7 +17,7 @@ class LegacyRedirectionsSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onKernelException(GetResponseForExceptionEvent $event): void
+    public function onKernelException(ExceptionEvent $event): void
     {
         if (!$event->getThrowable() instanceof NotFoundHttpException) {
             return;

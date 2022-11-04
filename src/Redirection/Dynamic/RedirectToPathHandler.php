@@ -3,7 +3,7 @@
 namespace App\Redirection\Dynamic;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 class RedirectToPathHandler extends AbstractRedirectTo implements RedirectToInterface
 {
@@ -14,7 +14,7 @@ class RedirectToPathHandler extends AbstractRedirectTo implements RedirectToInte
         $this->provider = $provider;
     }
 
-    public function handle(GetResponseForExceptionEvent $event, string $requestUri, string $redirectCode): bool
+    public function handle(ExceptionEvent $event, string $requestUri, string $redirectCode): bool
     {
         foreach ($this->provider->get(RedirectionsProvider::TO_PATH) as $pattern => $path) {
             if (!$this->hasPattern($pattern, $requestUri)) {

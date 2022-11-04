@@ -3,7 +3,7 @@
 namespace App\Redirection\Dynamic;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 /**
  * Handles dynamic redirections editable in the administration panel.
@@ -17,7 +17,7 @@ class RedirectToAdminPanelHandler implements RedirectToInterface
         $this->redirectionManager = $redirectionManager;
     }
 
-    public function handle(GetResponseForExceptionEvent $event, string $requestUri, string $redirectCode): bool
+    public function handle(ExceptionEvent $event, string $requestUri, string $redirectCode): bool
     {
         if ($redirection = $this->redirectionManager->getRedirection($requestUri)) {
             $event->setResponse(new RedirectResponse($redirection->getTo(), $redirection->getType()));

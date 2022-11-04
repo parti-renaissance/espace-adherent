@@ -6,7 +6,7 @@ use App\Entity\Administrator;
 use App\Entity\Reporting\AdministratorExportHistory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Security;
 
@@ -21,7 +21,7 @@ class AdministratorExportHistoryListener implements EventSubscriberInterface
         $this->entityManager = $entityManager;
     }
 
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event)
     {
         $administrator = $this->security->getUser();
 
