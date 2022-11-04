@@ -44,7 +44,7 @@ class ImportVotePlacesCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $rows = $this->parseCSV($input->getArgument('fileUrl'));

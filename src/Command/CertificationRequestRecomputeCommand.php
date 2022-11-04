@@ -48,7 +48,7 @@ class CertificationRequestRecomputeCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $date = \DateTime::createFromFormat('Y-m-d', $input->getOption('date'));
 

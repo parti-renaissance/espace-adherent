@@ -32,9 +32,9 @@ class ContactMembersType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         // CSRF token is checked by the controller and must be at root
-        return;
+        return '';
     }
 }

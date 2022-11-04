@@ -22,7 +22,7 @@ class FileUploadVoter extends AbstractAdherentVoter
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return DocumentPermissions::FILE_UPLOAD === $attribute;
     }

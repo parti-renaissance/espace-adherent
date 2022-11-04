@@ -82,7 +82,7 @@ class SendEmailValidationSubscriber implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UserEvents::USER_CREATED => 'sendConfirmationEmail',

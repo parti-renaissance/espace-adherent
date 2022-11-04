@@ -46,6 +46,7 @@ services:
         public: false
         bind:
             $environment: '%kernel.environment%'
+            $projectDir: '%kernel.project_dir%'
             $canaryMode: '%env(ENABLE_CANARY)%'
             $mailchimpClient: '@app.http_client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
@@ -81,6 +82,8 @@ services:
             $dynamicLinksHost: '%env(DYNAMIC_LINKS_HOST)%'
             $jemengageAppPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'
             $invalidEmailHashKey: '%env(INVALID_EMAIL_HASH_KEY)%'
+            $campaignMailProducer: '@old_sound_rabbit_mq.mailer_campaign_producer'
+            $transactionalMailProducer: '@old_sound_rabbit_mq.mailer_transactional_producer'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:

@@ -33,7 +33,7 @@ class AdherentMessageTypeVoter extends AbstractAdherentVoter
         return false;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return self::USER_CAN_EDIT_MESSAGE_TYPE === $attribute && $subject instanceof AdherentMessageInterface;
     }

@@ -22,7 +22,7 @@ class VoteResultBlameableListener implements EventSubscriber
         $this->security = $security;
     }
 
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::onFlush => 'onFlush',

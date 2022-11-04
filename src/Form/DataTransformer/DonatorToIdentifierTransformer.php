@@ -16,12 +16,12 @@ class DonatorToIdentifierTransformer implements DataTransformerInterface
         $this->donatorRepository = $donatorRepository;
     }
 
-    public function transform($donator)
+    public function transform($donator): mixed
     {
         return $donator instanceof Donator ? $donator->getIdentifier() : null;
     }
 
-    public function reverseTransform($donatorIdentifier)
+    public function reverseTransform($donatorIdentifier): mixed
     {
         $donator = $this->donatorRepository->findOneBy(['identifier' => $donatorIdentifier]);
 

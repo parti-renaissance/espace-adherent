@@ -16,7 +16,7 @@ class EmailToAdherentTransformer implements DataTransformerInterface
         $this->adherentRepository = $adherentRepository;
     }
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         if ($value instanceof Adherent) {
             return $value->getEmailAddress();
@@ -25,7 +25,7 @@ class EmailToAdherentTransformer implements DataTransformerInterface
         return $value;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if ($value) {
             if (!$adherent = $this->adherentRepository->findOneByEmail($value)) {

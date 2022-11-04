@@ -119,7 +119,7 @@ class Candidacy extends BaseCandidacy
             \in_array($this->quality, [TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR, TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR], true)
             || (
                 TerritorialCouncilQualityEnum::CITY_COUNCILOR === $this->quality
-                && 0 === strpos($this->membership->getQualitiesWithZones()[$this->quality], 'Paris ')
+                && str_starts_with($this->membership->getQualitiesWithZones()[$this->quality], 'Paris ')
             )
         ;
     }

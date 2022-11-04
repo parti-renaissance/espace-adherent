@@ -9,7 +9,7 @@ use App\Security\Voter\AbstractAdherentVoter;
 
 class HostCommitteeVoter extends AbstractAdherentVoter
 {
-    protected function supports($attribute, $committee)
+    protected function supports($attribute, $committee): bool
     {
         return CommitteePermissions::HOST === $attribute && $committee instanceof Committee;
     }

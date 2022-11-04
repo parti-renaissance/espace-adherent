@@ -19,7 +19,7 @@ class AddCauseFollowerListener implements EventSubscriberInterface
         $this->entityManager = $entityManager;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             CauseFollowerChangeEvent::class => 'updateFollowersCount',

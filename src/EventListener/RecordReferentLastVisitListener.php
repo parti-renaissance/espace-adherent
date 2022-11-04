@@ -25,7 +25,7 @@ class RecordReferentLastVisitListener implements EventSubscriberInterface
         $this->repository = $this->manager->getRepository(ReferentSpaceAccessInformation::class);
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => ['onKernelResponse', -1],

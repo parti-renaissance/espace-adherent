@@ -59,9 +59,9 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
         return false;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
-        return 0 === strpos($attribute, self::PERMISSION) && $subject instanceof ZoneableEntity;
+        return str_starts_with($attribute, self::PERMISSION) && $subject instanceof ZoneableEntity;
     }
 
     private function getSpaceType(string $attribute): string

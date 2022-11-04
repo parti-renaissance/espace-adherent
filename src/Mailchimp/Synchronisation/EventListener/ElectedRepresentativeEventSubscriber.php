@@ -24,7 +24,7 @@ class ElectedRepresentativeEventSubscriber implements EventSubscriberInterface
         $this->bus = $bus;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ElectedRepresentativeEvents::BEFORE_UPDATE => 'onBeforeUpdate',

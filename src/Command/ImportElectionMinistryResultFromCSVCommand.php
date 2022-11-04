@@ -49,7 +49,7 @@ class ImportElectionMinistryResultFromCSVCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $electionRound = $this->electionManager->findElectionRound($input->getArgument('election-round-id'));
 

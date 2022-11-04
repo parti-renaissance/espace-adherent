@@ -19,7 +19,7 @@ class CommitteeUuidType extends AbstractType
         $this->committeeRepository = $committeeRepository;
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return HiddenType::class;
     }

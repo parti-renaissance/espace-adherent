@@ -16,7 +16,7 @@ class CreateCommitteeVoter extends AbstractAdherentVoter
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return CommitteePermissions::CREATE === $attribute && null === $subject;
     }

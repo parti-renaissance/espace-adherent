@@ -48,7 +48,7 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $adherents = $input->getOption('adherents');
         $candidates = $input->getOption('candidates');

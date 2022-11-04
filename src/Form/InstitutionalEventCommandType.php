@@ -20,7 +20,7 @@ class InstitutionalEventCommandType extends BaseEventCommandType
     public const CREATE_VIEW = 'create';
     public const EDIT_VIEW = 'edit';
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return BaseEventCommandType::class;
     }
@@ -82,7 +82,7 @@ class InstitutionalEventCommandType extends BaseEventCommandType
         $view->vars['view'] = $options['view'];
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'institutional_event';
     }

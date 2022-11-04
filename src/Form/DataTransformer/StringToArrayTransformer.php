@@ -16,12 +16,12 @@ class StringToArrayTransformer implements DataTransformerInterface
         $this->separator = $separator;
     }
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         return implode($this->separator, (array) $value);
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         return array_filter(array_map('trim', explode($this->separator, $value)));
     }

@@ -17,7 +17,7 @@ class AttributeAdditionalElectedPlacesListener implements EventSubscriberInterfa
         $this->entityManager = $entityManager;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             VotingPlatformElectionVoteIsOverEvent::class => 'onVoteClose',

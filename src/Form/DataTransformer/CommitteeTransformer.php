@@ -16,7 +16,7 @@ class CommitteeTransformer implements DataTransformerInterface
         $this->committeeRepository = $committeeRepository;
     }
 
-    public function transform($collection)
+    public function transform($collection): mixed
     {
         if (!is_iterable($collection)) {
             return [];
@@ -33,7 +33,7 @@ class CommitteeTransformer implements DataTransformerInterface
         return $uuids ?? [];
     }
 
-    public function reverseTransform($uuids)
+    public function reverseTransform($uuids): mixed
     {
         $collection = new ArrayCollection();
 

@@ -87,7 +87,7 @@ class BaseEventCommandType extends AbstractType
     }
 
     /**
-     * Creates the begin date in the future for the next minute step.
+     * Creates the beginning date in the future for the next minute step.
      * ex 1:
      *     if current time is 16h27m, the returned time will be 16h30m with these minutes steps: [0, 15, 30, 45]
      * ex 2:

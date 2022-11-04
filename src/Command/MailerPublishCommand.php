@@ -2,14 +2,22 @@
 
 namespace App\Command;
 
+use App\Producer\MailerProducerInterface;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MailerPublishCommand extends ContainerAwareCommand
+class MailerPublishCommand extends Command
 {
+    public function __construct(
+        private readonly MailerProducerInterface $campaignMailProducer,
+        private readonly MailerProducerInterface $transactionalMailProducer
+    ) {
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
@@ -20,7 +28,7 @@ class MailerPublishCommand extends ContainerAwareCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $client = $input->getArgument('client');
         if (!\in_array($client, ['campaign', 'transactional'], true)) {
@@ -32,7 +40,7 @@ class MailerPublishCommand extends ContainerAwareCommand
             throw new \InvalidArgumentException('Invalid UUID');
         }
 
-        $producer = $this->getContainer()->get('old_sound_rabbit_mq.mailer_'.$client.'_producer');
+        $producer = 'transactional' === $client ? $this->transactionalMailProducer : $this->campaignMailProducer;
         $producer->publish(json_encode(['uuid' => $uuid]));
 
         return 0;

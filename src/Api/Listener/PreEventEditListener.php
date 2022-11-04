@@ -20,7 +20,7 @@ class PreEventEditListener implements EventSubscriberInterface
         $this->dispatcher = $dispatcher;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::REQUEST => ['onBeforeEventChange', EventPriorities::PRE_DESERIALIZE]];
     }

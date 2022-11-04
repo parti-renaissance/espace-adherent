@@ -21,7 +21,7 @@ class PostEventEditListener implements EventSubscriberInterface
         $this->dispatcher = $dispatcher;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::VIEW => ['onEventChange', EventPriorities::POST_WRITE]];
     }

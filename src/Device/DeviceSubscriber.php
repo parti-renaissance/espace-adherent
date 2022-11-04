@@ -20,7 +20,7 @@ class DeviceSubscriber implements EventSubscriberInterface
         $this->deviceManager = $deviceManager;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => ['preDeserialize', EventPriorities::PRE_DESERIALIZE],

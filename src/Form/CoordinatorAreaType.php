@@ -34,7 +34,7 @@ class CoordinatorAreaType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coordinator_area';
     }

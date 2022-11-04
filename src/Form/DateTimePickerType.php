@@ -76,7 +76,7 @@ class DateTimePickerType extends AbstractType
         parent::configureOptions($resolver);
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return DateTimeType::class;
     }

@@ -59,7 +59,7 @@ class ImageContent
 
     public function getMimeType(): string
     {
-        if (0 === strpos($this->content, 'data:')) {
+        if (str_starts_with($this->content, 'data:')) {
             return substr($this->content, 5, strpos($this->content, ';') - 5);
         }
 

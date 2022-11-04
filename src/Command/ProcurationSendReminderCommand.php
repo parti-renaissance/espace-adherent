@@ -41,7 +41,7 @@ class ProcurationSendReminderCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $mode = (int) $input->getArgument('procuration-mode');
         $processedAfter = new \DateTime($input->getArgument('processed-after'));

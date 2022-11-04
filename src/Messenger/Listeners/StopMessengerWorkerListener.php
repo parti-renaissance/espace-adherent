@@ -12,7 +12,7 @@ class StopMessengerWorkerListener implements EventSubscriberInterface
 {
     private $run = true;
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             WorkerMessageFailedEvent::class => 'onMessageFailed',

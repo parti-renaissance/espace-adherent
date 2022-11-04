@@ -54,11 +54,11 @@ class LoadReferentTagsZonesLinksData extends Fixture implements DependentFixture
                 break;
 
             case ReferentTag::TYPE_DISTRICT:
-                if (0 === strpos($code, 'CIRCO_FDE')) {
+                if (str_starts_with($code, 'CIRCO_FDE')) {
                     $okCode = preg_replace('/\D/', '', $code);
                     $okCode = str_pad($okCode, 2, '0', \STR_PAD_LEFT);
                     $reference = 'zone_foreign_district_CIRCO_FDE-'.$okCode;
-                } elseif (0 === strpos($code, 'CIRCO_')) {
+                } elseif (str_starts_with($code, 'CIRCO_')) {
                     $okCode = preg_replace('/\D/', '', $code);
                     $okCode = str_pad($okCode, 6, '0', \STR_PAD_LEFT);
                     $okCode = str_pad(ltrim(substr($okCode, 0, 3), '0'), 2, '0', \STR_PAD_LEFT).'-'.ltrim(substr($okCode, -3), '0');
@@ -77,7 +77,7 @@ class LoadReferentTagsZonesLinksData extends Fixture implements DependentFixture
                 break;
 
             default:
-                if (0 === strpos($name, 'Paris 750')) {
+                if (str_starts_with($name, 'Paris 750')) {
                     $okCode = '751'.substr($code, 3);
                     $reference = 'zone_borough_'.$okCode;
                 } elseif ('Corse' === $name) {

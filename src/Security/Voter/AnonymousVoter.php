@@ -10,12 +10,12 @@ class AnonymousVoter extends Voter
 {
     private const IS_ANONYMOUS = 'IS_ANONYMOUS';
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return self::IS_ANONYMOUS === $attribute;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         return $token instanceof AnonymousToken;
     }

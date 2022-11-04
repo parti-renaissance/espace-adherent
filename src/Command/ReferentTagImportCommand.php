@@ -32,7 +32,7 @@ class ReferentTagImportCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln(['', 'Starting Referent Tags import.']);
 
@@ -127,7 +127,7 @@ INSERT INTO adherent_referent_tag (adherent_id, referent_tag_id)
     SELECT adherent.id, tag.id
     FROM adherents adherent
     INNER JOIN referent_tags tag ON tag.code = '20'
-    WHERE adherent.address_country = 'FR' 
+    WHERE adherent.address_country = 'FR'
     AND SUBSTRING(adherent.address_postal_code, 1, 2) = '20'
 );
 
@@ -137,7 +137,7 @@ INSERT INTO adherent_referent_tag (adherent_id, referent_tag_id)
     SELECT adherent.id, tag.id
     FROM adherents adherent
     INNER JOIN referent_tags tag ON tag.code = '75'
-    WHERE adherent.address_country = 'FR' 
+    WHERE adherent.address_country = 'FR'
     AND SUBSTRING(adherent.address_postal_code, 1, 2) = '75'
 );
 SQL;

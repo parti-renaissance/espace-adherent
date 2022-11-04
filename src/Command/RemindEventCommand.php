@@ -44,7 +44,7 @@ class RemindEventCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $mode = $input->getArgument('mode');
 

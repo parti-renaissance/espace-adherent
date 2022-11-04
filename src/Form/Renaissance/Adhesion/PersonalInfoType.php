@@ -55,7 +55,7 @@ class PersonalInfoType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'app_renaissance_membership';
     }

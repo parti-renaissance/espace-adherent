@@ -104,7 +104,7 @@ class ProcurationRequestType extends AbstractProcurationType
         $builder->addModelTransformer($this->cityNameDataTransformer);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'app_procuration_request';
     }

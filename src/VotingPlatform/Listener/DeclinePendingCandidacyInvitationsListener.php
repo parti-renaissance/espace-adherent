@@ -31,7 +31,7 @@ class DeclinePendingCandidacyInvitationsListener implements EventSubscriberInter
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::CANDIDACY_INVITATION_ACCEPT => 'onCandidacyInvitationAccept',

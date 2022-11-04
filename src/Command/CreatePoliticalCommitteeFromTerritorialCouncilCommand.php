@@ -45,7 +45,7 @@ class CreatePoliticalCommitteeFromTerritorialCouncilCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io->title('Starting creation of Political committees.');
 

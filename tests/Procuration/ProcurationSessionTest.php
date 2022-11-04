@@ -195,7 +195,7 @@ class ProcurationSessionTest extends TestCase
             ->expects($this->exactly(2))
             ->method('set')
             ->withConsecutive(
-                ['app_procuration_election_context', $this->matchesRegularExpression('~C:\d{2}:"Mock_ElectionContext_.{8}":4:{test}~')],
+                ['app_procuration_election_context', $this->matchesRegularExpression('~.+"Mock_ElectionContext_.{8}":1:\{i:0;s:4:"test";}~')],
                 ['app_procuration_model', $this->isInstanceOf(ProcurationRequest::class)]
             )
         ;
@@ -209,8 +209,8 @@ class ProcurationSessionTest extends TestCase
         $context = $this->createMock(ElectionContext::class);
         $context
             ->expects($this->once())
-            ->method('serialize')
-            ->willReturn('test')
+            ->method('__serialize')
+            ->willReturn(['test'])
         ;
 
         $procuration->setElectionContext($context);

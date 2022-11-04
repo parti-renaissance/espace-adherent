@@ -16,12 +16,12 @@ class CityNameDataTransformer implements DataTransformerInterface
         $this->franceCities = $franceCities;
     }
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         return $value;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if (method_exists($value, 'setCityName') && method_exists($value, 'getCity')) {
             if ($value->getCity() && false !== strpos($value->getCity(), '-')) {

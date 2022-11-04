@@ -24,7 +24,7 @@ class RedirectionsSubscriber implements EventSubscriberInterface
         $this->handlers = $handlers;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::EXCEPTION => 'onKernelException',

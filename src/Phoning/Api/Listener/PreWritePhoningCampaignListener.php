@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class PreWritePhoningCampaignListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::VIEW => ['dispatchPreWrite', EventPriorities::PRE_WRITE]];
     }

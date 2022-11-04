@@ -18,7 +18,7 @@ class UpdateAdherentRelationSubscriber implements EventSubscriberInterface
         $this->repository = $repository;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             AdherentEvents::REGISTRATION_COMPLETED => ['onAdherentRegistration', -1],

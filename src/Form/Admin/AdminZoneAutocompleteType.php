@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdminZoneAutocompleteType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): ?string
     {
         return ModelAutocompleteType::class;
     }

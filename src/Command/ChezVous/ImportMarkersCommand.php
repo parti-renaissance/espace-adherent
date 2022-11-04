@@ -53,7 +53,7 @@ class ImportMarkersCommand extends AbstractImportCommand
         $this->measureRepository = $measureRepository;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $type = $input->getArgument('type');
 

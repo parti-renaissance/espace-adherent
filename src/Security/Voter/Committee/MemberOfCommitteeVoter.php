@@ -10,7 +10,7 @@ class MemberOfCommitteeVoter extends AbstractAdherentVoter
 {
     private const PERMISSION = 'MEMBER_OF_COMMITTEE';
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return $subject instanceof Committee && self::PERMISSION === $attribute;
     }

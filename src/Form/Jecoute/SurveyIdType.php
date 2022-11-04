@@ -29,7 +29,7 @@ class SurveyIdType extends AbstractType
         ]);
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return IntegerType::class;
     }

@@ -54,7 +54,7 @@ class MailchimpUpdateSegmentsFromListCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $list = $input->getArgument('list');
         $listId = $this->getListId($list);

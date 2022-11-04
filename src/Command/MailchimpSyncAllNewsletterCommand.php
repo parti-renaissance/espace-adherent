@@ -47,7 +47,7 @@ class MailchimpSyncAllNewsletterCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $type = $input->getArgument('type');
         if (self::TYPE_RENAISSANCE !== $type) {

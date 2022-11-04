@@ -20,7 +20,7 @@ class SubscriptionListener implements EventSubscriberInterface
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UserEvents::USER_CREATED => 'onUserCreated',

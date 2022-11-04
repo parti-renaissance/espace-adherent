@@ -16,7 +16,7 @@ class AdherentEmailType extends AbstractType
         $this->emailToAdherentTransformer = $adherentToEmailTransformer;
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return EmailType::class;
     }

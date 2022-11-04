@@ -43,7 +43,7 @@ class ImportBoardMemberCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $fileNameOtherCSV = null;
         $typeFormRows = [];

@@ -6,7 +6,7 @@ use App\Entity\Election;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ElectionContext implements \Serializable
+class ElectionContext
 {
     public const ACTION_PROPOSAL = 'proposition';
     public const ACTION_REQUEST = 'demande';
@@ -63,15 +63,15 @@ class ElectionContext implements \Serializable
         $this->elections = $elections;
     }
 
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize(array_map(function (Election $election) {
+        return array_map(function (Election $election) {
             return $election->getId();
-        }, $this->elections instanceof Collection ? $this->elections->toArray() : $this->elections));
+        }, $this->elections instanceof Collection ? $this->elections->toArray() : $this->elections);
     }
 
-    public function unserialize($serialized)
+    public function __unserialize(array $serialized): void
     {
-        $this->cachedElectionIds = unserialize($serialized);
+        $this->cachedElectionIds = $serialized;
     }
 }

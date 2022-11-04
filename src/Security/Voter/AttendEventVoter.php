@@ -18,12 +18,12 @@ class AttendEventVoter extends AbstractAdherentVoter
         $this->registrationRepository = $registrationRepository;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return $subject instanceof CommitteeEvent && \in_array($attribute, EventPermissions::ATTEND, true);
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         if (EventPermissions::REGISTER === $attribute && !$token->getUser()) {
             // Anonymous are always granted to register, because we cannot check if they already did

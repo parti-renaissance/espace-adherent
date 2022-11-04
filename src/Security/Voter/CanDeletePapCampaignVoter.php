@@ -35,7 +35,7 @@ class CanDeletePapCampaignVoter extends AbstractAdherentVoter
         return $subject->getBeginAt() > new \DateTime();
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof Campaign;
     }

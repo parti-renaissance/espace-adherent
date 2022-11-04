@@ -48,7 +48,7 @@ class PayboxFormFactory
             'PBX_REPONDRE_A' => $this->router->generate('lexik_paybox_ipn', ['time' => time()], UrlGeneratorInterface::ABSOLUTE_URL),
         ];
 
-        if (0 === strpos($this->environment, 'test')) {
+        if (str_starts_with($this->environment, 'test')) {
             $parameters['PBX_REPONDRE_A'] = 'https://httpbin.org/status/200';
         }
 

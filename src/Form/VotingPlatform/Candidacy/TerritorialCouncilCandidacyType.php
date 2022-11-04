@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class TerritorialCouncilCandidacyType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): ?string
     {
         return BaseCandidacyBiographyType::class;
     }

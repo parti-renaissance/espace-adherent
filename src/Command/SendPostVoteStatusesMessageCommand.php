@@ -55,7 +55,7 @@ class SendPostVoteStatusesMessageCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $limit = (int) $input->getOption('limit');
         $selectedEmails = $input->getOption('emails');

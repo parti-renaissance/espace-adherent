@@ -40,14 +40,14 @@ class UpdateZoneTeamCodesFromCSVCommand extends AbstractImportCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filePath = $input->getArgument('path');
 
         if (!$this->storage->has($filePath)) {
             $this->io->comment("No CSV found ($filePath).");
 
-            return;
+            return 0;
         }
 
         $this->io->text('Start updating team code of zones');
@@ -61,7 +61,7 @@ class UpdateZoneTeamCodesFromCSVCommand extends AbstractImportCommand
         if (!isset($row['team_code'])) {
             $this->io->error('Impossible to update team codes: file does not contains a column "team_code".');
 
-            return;
+            return 0;
         }
 
         foreach ($reader as $index => $row) {

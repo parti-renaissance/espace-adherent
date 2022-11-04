@@ -12,36 +12,36 @@ use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 
-class ImportReferentNominationCommand extends ContainerAwareCommand
+class ImportReferentNominationCommand extends Command
 {
     private const MEDIAS_INFO = [
-      [
-        'path' => 'avatar_femme_01.jpg',
-        'name' => 'Avatar femme 1',
-        'sex' => 'F',
-      ],
-      [
-        'path' => 'avatar_femme_02.jpg',
-        'name' => 'Avatar femme 2',
-        'sex' => 'F',
-      ],
-      [
-        'path' => 'avatar_homme_01.jpg',
-        'name' => 'Avatar homme 1',
-        'sex' => 'M',
-      ],
-      [
-        'path' => 'avatar_homme_02.jpg',
-        'name' => 'Avatar homme 2',
-        'sex' => 'M',
-      ],
+        [
+            'path' => 'avatar_femme_01.jpg',
+            'name' => 'Avatar femme 1',
+            'sex' => 'F',
+        ],
+        [
+            'path' => 'avatar_femme_02.jpg',
+            'name' => 'Avatar femme 2',
+            'sex' => 'F',
+        ],
+        [
+            'path' => 'avatar_homme_01.jpg',
+            'name' => 'Avatar homme 1',
+            'sex' => 'M',
+        ],
+        [
+            'path' => 'avatar_homme_02.jpg',
+            'name' => 'Avatar homme 2',
+            'sex' => 'M',
+        ],
     ];
 
     /**
@@ -74,24 +74,29 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
      */
     private $storage;
 
+    public function __construct(private readonly string $projectDir)
+    {
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
-          ->setName('app:import:referent-nomination')
-          ->addArgument('fileUrl', InputArgument::REQUIRED)
-          ->setDescription(
-            'Import referent and referent area from file store in Google Storage'
-          )
+            ->setName('app:import:referent-nomination')
+            ->addArgument('fileUrl', InputArgument::REQUIRED)
+            ->setDescription(
+                'Import referent and referent area from file store in Google Storage'
+            )
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $rows = $this->parseCSV($input->getArgument('fileUrl'));
         } catch (FileNotFoundException $exception) {
             $output->writeln(
-              sprintf('%s file not found', $input->getArgument('fileUrl'))
+                sprintf('%s file not found', $input->getArgument('fileUrl'))
             );
 
             return 1;
@@ -120,81 +125,20 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
         while (false !== ($data = fgetcsv($handle, 10000, ';'))) {
             $row = array_map('trim', $data);
             $rows[] = [
-              'region_name' => $row[0],
-              'area_name' => $row[1],
-              'area_code' => $row[2],
-              'area_zip_code' => $row[3],
-              'referent_firstname' => $row[4],
-              'referent_lastname' => $row[5],
-              'referent_status' => $row[6],
-              'referent_age' => $row[7],
-              'referent_sex' => $row[8],
+                'region_name' => $row[0],
+                'area_name' => $row[1],
+                'area_code' => $row[2],
+                'area_zip_code' => $row[3],
+                'referent_firstname' => $row[4],
+                'referent_lastname' => $row[5],
+                'referent_status' => $row[6],
+                'referent_age' => $row[7],
+                'referent_sex' => $row[8],
             ];
         }
         fclose($handle);
 
         return $rows;
-    }
-
-    private function persistMedias(): array
-    {
-        $medias = [];
-        foreach (self::MEDIAS_INFO as $item) {
-            if ($this->mediaRepository->findOneBy(['name' => $item['name']])) {
-                continue;
-            }
-            $mediaFile = new File(sprintf(
-              '%s/app/data/dist/%s',
-              $this->getContainer()->getParameter('kernel.project_dir'),
-              $item['path']
-            ));
-            $this->storage->put(
-              'images/'.$item['path'],
-              file_get_contents($mediaFile->getPathname())
-            );
-            $media = $this->mediaFactory->createFromFile(
-                $item['name'],
-                $item['path'],
-                $mediaFile
-            );
-            $this->em->persist($media);
-            $medias[$item['sex']][] = $media;
-        }
-        $this->em->flush();
-
-        return $medias;
-    }
-
-    private function parseAreas(array $rows): array
-    {
-        $areas = [];
-        foreach ($rows as $row) {
-            if ('75' === substr($row['area_code'], 0, 2)) {
-                $parisDistrictZip = [$row['area_code']];
-                if (false !== strpos($row['area_code'], ',')) {
-                    $parisDistrictZip = explode(',', $row['area_code']);
-                }
-
-                foreach ($parisDistrictZip as $zipCode) {
-                    $areas[$zipCode] = [
-                          'name' => sprintf(
-                          'Paris %s',
-                          '0' === substr($zipCode, -2, 1)
-                            ? substr($zipCode, -1)
-                            : substr($zipCode, -2)
-                        ),
-                        'type' => 'arrondissement',
-                    ];
-                }
-            } else {
-                $areas[$row['area_code']] = [
-                  'name' => $row['area_name'],
-                  'type' => 'departement',
-                ];
-            }
-        }
-
-        return $areas;
     }
 
     private function createAndPersistReferentArea(array $areas): void
@@ -214,13 +158,45 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
         $this->em->flush();
     }
 
+    private function parseAreas(array $rows): array
+    {
+        $areas = [];
+        foreach ($rows as $row) {
+            if ('75' === substr($row['area_code'], 0, 2)) {
+                $parisDistrictZip = [$row['area_code']];
+                if (false !== strpos($row['area_code'], ',')) {
+                    $parisDistrictZip = explode(',', $row['area_code']);
+                }
+
+                foreach ($parisDistrictZip as $zipCode) {
+                    $areas[$zipCode] = [
+                        'name' => sprintf(
+                            'Paris %s',
+                            '0' === substr($zipCode, -2, 1)
+                                ? substr($zipCode, -1)
+                                : substr($zipCode, -2)
+                        ),
+                        'type' => 'arrondissement',
+                    ];
+                }
+            } else {
+                $areas[$row['area_code']] = [
+                    'name' => $row['area_name'],
+                    'type' => 'departement',
+                ];
+            }
+        }
+
+        return $areas;
+    }
+
     private function createAndPersistReferent(array $rows, array $medias): void
     {
         foreach ($rows as $row) {
             if ($this->referentRepository->findOneBy(
                 [
-                  'firstName' => $row['referent_firstname'],
-                  'lastName' => $row['referent_lastname'],
+                    'firstName' => $row['referent_firstname'],
+                    'lastName' => $row['referent_lastname'],
                 ]
             )
             ) {
@@ -235,7 +211,7 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
             $referent->setLastName($row['referent_lastname']);
             $referent->setAreaLabel($row['area_name']);
             $referent->setGender(
-              'M' === $row['referent_sex'] ? Genders::MALE : Genders::FEMALE
+                'M' === $row['referent_sex'] ? Genders::MALE : Genders::FEMALE
             );
             $areaCodes = [$row['area_code']];
 
@@ -254,6 +230,37 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
 
             $this->em->persist($referent);
         }
+    }
+
+    private function persistMedias(): array
+    {
+        $medias = [];
+        foreach (self::MEDIAS_INFO as $item) {
+            if ($this->mediaRepository->findOneBy(['name' => $item['name']])) {
+                continue;
+            }
+            $mediaFile = new File(
+                sprintf(
+                    '%s/app/data/dist/%s',
+                    $this->projectDir,
+                    $item['path']
+                )
+            );
+            $this->storage->put(
+                'images/'.$item['path'],
+                file_get_contents($mediaFile->getPathname())
+            );
+            $media = $this->mediaFactory->createFromFile(
+                $item['name'],
+                $item['path'],
+                $mediaFile
+            );
+            $this->em->persist($media);
+            $medias[$item['sex']][] = $media;
+        }
+        $this->em->flush();
+
+        return $medias;
     }
 
     /** @required */

@@ -104,7 +104,7 @@ class Administrator implements UserInterface, TwoFactorInterface
         return $this->emailAddress;
     }
 
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }

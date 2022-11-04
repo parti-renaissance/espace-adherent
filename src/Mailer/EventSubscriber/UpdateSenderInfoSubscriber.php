@@ -16,7 +16,7 @@ class UpdateSenderInfoSubscriber implements EventSubscriberInterface
         $this->mapper = $mapper;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             MailerEvents::BEFORE_EMAIL_BUILD => 'updateSenderInfo',

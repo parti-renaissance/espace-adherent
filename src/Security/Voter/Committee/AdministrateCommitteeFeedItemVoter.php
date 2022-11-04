@@ -9,7 +9,7 @@ use App\Security\Voter\AbstractAdherentVoter;
 
 class AdministrateCommitteeFeedItemVoter extends AbstractAdherentVoter
 {
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return CommitteePermissions::ADMIN_FEED === $attribute
             && $subject instanceof CommitteeFeedItem;

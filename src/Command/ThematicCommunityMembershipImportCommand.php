@@ -87,7 +87,7 @@ class ThematicCommunityMembershipImportCommand extends Command
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filename = $input->getArgument('file');
 

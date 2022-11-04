@@ -56,7 +56,7 @@ class ImportExecutiveOfficeMembersCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $this->em->beginTransaction();

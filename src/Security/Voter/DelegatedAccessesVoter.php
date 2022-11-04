@@ -29,9 +29,9 @@ class DelegatedAccessesVoter extends AbstractAdherentVoter
         $this->session = $session;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
-        return 0 === strpos($attribute, 'HAS_DELEGATED_ACCESS_');
+        return str_starts_with($attribute, 'HAS_DELEGATED_ACCESS_');
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool

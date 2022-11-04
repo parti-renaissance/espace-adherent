@@ -26,7 +26,7 @@ class CommitteeCandidacySendEmailsListener implements EventSubscriberInterface
         $this->urlGenerator = $urlGenerator;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::CANDIDACY_CREATED => 'onCandidacyCreated',

@@ -30,7 +30,7 @@ class ListTotalResultType extends AbstractType implements DataTransformerInterfa
         ;
     }
 
-    public function transform($value)
+    public function transform($value): mixed
     {
         if ($value instanceof ListTotalResult) {
             return [
@@ -43,7 +43,7 @@ class ListTotalResultType extends AbstractType implements DataTransformerInterfa
         return [];
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if (isset($value['id'])) {
             $object = $this->em->getReference(ListTotalResult::class, $value['id']);

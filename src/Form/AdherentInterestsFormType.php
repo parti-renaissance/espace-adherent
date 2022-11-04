@@ -34,7 +34,7 @@ class AdherentInterestsFormType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'app_adherent_pin_interests';
     }

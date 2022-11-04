@@ -36,7 +36,7 @@ class UnpublishLocalPollCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $total = $this->getPassedLocalPollsCount();
         if (0 === $total) {

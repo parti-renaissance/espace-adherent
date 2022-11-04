@@ -12,7 +12,7 @@ class CandidatureVoter extends Voter
 {
     public const PERMISSION = 'ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE';
 
-    protected function voteOnAttribute($attribute, $adherent, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $adherent, TokenInterface $token): bool
     {
         /** @var Adherent $adherent */
         if (!$adherent->hasTerritorialCouncilMembership()) {
@@ -45,7 +45,7 @@ class CandidatureVoter extends Voter
         return true;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof Adherent;
     }

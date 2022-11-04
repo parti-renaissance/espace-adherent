@@ -17,12 +17,12 @@ class ReportVoter extends Voter
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return ReportPermissions::REPORT === $attribute;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         if ($token->getUser() instanceof Administrator) {
             return false;

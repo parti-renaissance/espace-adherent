@@ -59,7 +59,7 @@ class ImportConsularDistrictCommand extends Command
         $this->countries = Countries::getNames('FR_fr');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->storage->has($file = $input->getArgument('file'))) {
             throw new \InvalidArgumentException('File does not exist');

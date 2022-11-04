@@ -18,7 +18,7 @@ class PostWriteMyTeamMemberListener implements EventSubscriberInterface
         $this->delegatedAccessManager = $delegatedAccessManager;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::VIEW => ['updateDelegatedAccess', EventPriorities::POST_WRITE],

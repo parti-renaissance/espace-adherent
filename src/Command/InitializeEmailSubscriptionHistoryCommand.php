@@ -45,7 +45,7 @@ class InitializeEmailSubscriptionHistoryCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($this->isAlreadyInitialize()) {
             $this->io->error('Cannot initialize email subscription history. It already exists.');
@@ -56,11 +56,11 @@ class InitializeEmailSubscriptionHistoryCommand extends Command
         $this->io->title('Starting email subscription history initialization.');
 
         $historyQuery = <<<'SQL'
-INSERT INTO adherent_email_subscription_histories (adherent_uuid, subscribed_email_type, action, date) 
+INSERT INTO adherent_email_subscription_histories (adherent_uuid, subscribed_email_type, action, date)
 VALUES (:adherent_uuid, :subscribed_email_type, :action, :date)
 SQL;
         $historyVsTagQuery = <<<'SQL'
-INSERT INTO adherent_email_subscription_history_referent_tag (email_subscription_history_id, referent_tag_id) 
+INSERT INTO adherent_email_subscription_history_referent_tag (email_subscription_history_id, referent_tag_id)
 VALUES (:email_subscription_history_id, :referent_tag_id)
 SQL;
 

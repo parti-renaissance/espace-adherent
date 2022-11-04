@@ -27,7 +27,7 @@ class SessionModalActivatorListener implements EventSubscriberInterface
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',

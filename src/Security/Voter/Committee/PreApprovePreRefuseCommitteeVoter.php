@@ -23,7 +23,7 @@ class PreApprovePreRefuseCommitteeVoter extends AbstractAdherentVoter
         $this->session = $session;
     }
 
-    protected function supports($attribute, $committee)
+    protected function supports($attribute, $committee): bool
     {
         return \in_array($attribute, [CommitteePermissions::PRE_APPROVE, CommitteePermissions::PRE_REFUSE], true)
             && $committee instanceof Committee;

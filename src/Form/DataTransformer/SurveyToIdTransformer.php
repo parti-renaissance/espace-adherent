@@ -16,12 +16,12 @@ class SurveyToIdTransformer implements DataTransformerInterface
         $this->surveyRepository = $surveyRepository;
     }
 
-    public function transform($survey)
+    public function transform($survey): mixed
     {
         return $survey instanceof Survey ? $survey->getId() : null;
     }
 
-    public function reverseTransform($surveyId)
+    public function reverseTransform($surveyId): mixed
     {
         $survey = $this->surveyRepository->findOneBy(['id' => $surveyId]);
 

@@ -17,12 +17,12 @@ class MembershipRegistrationVoter extends Voter
         $this->membershipRegistrationProcess = $membershipRegistrationProcess;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return self::REGISTRATION_IN_PROGRESS === $attribute;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         return $this->membershipRegistrationProcess->isStarted();
     }

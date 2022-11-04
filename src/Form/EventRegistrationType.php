@@ -49,7 +49,7 @@ class EventRegistrationType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'event_registration';
     }

@@ -26,7 +26,7 @@ class DownloadOfficialReportVoter extends AbstractAdherentVoter
         return $isGranted;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof OfficialReport;
     }

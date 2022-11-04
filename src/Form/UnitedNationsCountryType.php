@@ -29,7 +29,7 @@ class UnitedNationsCountryType extends AbstractType
         $resolver->setAllowedTypes('locale', 'string');
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return ChoiceType::class;
     }

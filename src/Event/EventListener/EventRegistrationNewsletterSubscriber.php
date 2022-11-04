@@ -32,7 +32,7 @@ class EventRegistrationNewsletterSubscriber implements EventSubscriberInterface
         $this->validator = $validator;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [Events::EVENT_REGISTRATION_CREATED => 'createNewsletter'];
     }

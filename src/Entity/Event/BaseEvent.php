@@ -567,11 +567,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         return $this->organizer ? $this->organizer->getFirstName() : '';
     }
 
-    public function getCreatedAt(): \DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
     public function getParticipantsCount(): int
     {
         return $this->participantsCount;

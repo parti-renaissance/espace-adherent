@@ -25,7 +25,7 @@ class AdvancedMessageFilterType extends AbstractType
         $this->includeExcludeFilterRoleListener = $includeExcludeFilterRoleListener;
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return SimpleMessageFilterType::class;
     }

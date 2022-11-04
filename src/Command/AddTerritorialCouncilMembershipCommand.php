@@ -55,7 +55,7 @@ class AddTerritorialCouncilMembershipCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io->title('Starting adding Territorial Council member info to adherents.');
 

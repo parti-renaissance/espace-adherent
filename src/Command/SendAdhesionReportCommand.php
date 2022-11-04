@@ -52,7 +52,7 @@ class SendAdhesionReportCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (($interval = (int) $input->getOption('interval')) < 1) {
             throw new \InvalidArgumentException('Interval should be a positive number');

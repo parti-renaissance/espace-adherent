@@ -17,7 +17,7 @@ class UpdateMailchimpContactListener implements EventSubscriberInterface
         $this->bus = $bus;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::ADHERENT_CERTIFIED => 'onAdherentCertifiedChange',

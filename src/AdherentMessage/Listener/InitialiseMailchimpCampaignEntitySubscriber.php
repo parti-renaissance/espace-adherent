@@ -17,7 +17,7 @@ class InitialiseMailchimpCampaignEntitySubscriber implements EventSubscriberInte
         $this->handlers = $handlers;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::MESSAGE_PRE_CREATE => ['initialiseMailchimpCampaign'],
