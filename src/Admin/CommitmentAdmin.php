@@ -2,25 +2,15 @@
 
 namespace App\Admin;
 
-use App\Entity\Commitment;
+use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
-use Symfony\Component\Form\Event\PreSetDataEvent;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\FormEvents;
 
 class CommitmentAdmin extends AbstractAdmin
 {
-    protected function configureDefaultFilterValues(array &$filterValues)
-    {
-        $filterValues = array_merge($filterValues, [
-            '_sort_order' => 'ASC',
-            '_sort_by' => 'position',
-        ]);
-    }
+    use SortableAdminTrait;
 
     protected function configureListFields(ListMapper $list)
     {
@@ -34,8 +24,7 @@ class CommitmentAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                     'move' => [
-                        'template' => '@PixSortableBehavior/Default/_sort_drag_drop.html.twig',
-                        'enable_top_bottom_buttons' => true,
+                        'template' => '@RunroomSortableBehavior/sort.html.twig',
                     ],
                 ],
             ])
@@ -47,11 +36,6 @@ class CommitmentAdmin extends AbstractAdmin
         $form
             ->with('Général', ['class' => 'col-md-6'])
                 ->add('title', null, ['label' => 'Titre'])
-                ->add('position', IntegerType::class, [
-                    'attr' => ['min' => 0],
-                    'label' => 'Position',
-                    'help' => 'Plus la position est élevée plus le block descendra sur la page.',
-                ])
                 ->add('shortDescription', null, ['label' => 'Description courte'])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description complète',
@@ -68,24 +52,5 @@ class CommitmentAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
-
-        // Increase the position according to the total number of commitments in DB
-        $form->getFormBuilder()->addEventListener(FormEvents::PRE_SET_DATA, function (PreSetDataEvent $event) {
-            /** @var Commitment $commitment */
-            if ((!$commitment = $event->getData()) || $commitment->getId()) {
-                return;
-            }
-
-            if (0 === $commitment->position) {
-                $queryBuilder = $this->getModelManager()->createQuery(Commitment::class)->select('COUNT(1)');
-                $commitment->position = (1 + current(current($this->getModelManager()->executeQuery($queryBuilder))));
-            }
-        });
-    }
-
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection->remove('show');
-        $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
     }
 }

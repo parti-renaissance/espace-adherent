@@ -5,19 +5,20 @@ namespace App\Admin;
 use App\Entity\Mooc\BaseMoocElement;
 use App\Entity\Mooc\Mooc;
 use Doctrine\ORM\QueryBuilder;
+use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\Form\Type\DatePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MoocChapterAdmin extends AbstractAdmin
 {
+    use SortableAdminTrait;
+
     public function createQuery($context = 'list')
     {
         /** @var QueryBuilder $proxyQuery */
@@ -50,13 +51,6 @@ class MoocChapterAdmin extends AbstractAdmin
                     ->add('mooc', EntityType::class, [
                         'class' => Mooc::class,
                         'placeholder' => 'Sélectionner un Mooc',
-                    ])
-                    ->add('position', IntegerType::class, [
-                        'label' => 'Ordre d\'affichage',
-                        'scale' => 0,
-                        'attr' => [
-                            'min' => 0,
-                        ],
                     ])
                 ->end()
         ;
@@ -116,19 +110,12 @@ class MoocChapterAdmin extends AbstractAdmin
             ->add('_action', null, [
                 'actions' => [
                     'move' => [
-                        'template' => '@PixSortableBehavior/Default/_sort_drag_drop.html.twig',
-                        'enable_top_bottom_buttons' => true,
+                        'template' => '@RunroomSortableBehavior/sort.html.twig',
                     ],
                     'edit' => [],
                     'delete' => [],
                 ],
             ])
         ;
-    }
-
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection->remove('show');
-        $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
     }
 }

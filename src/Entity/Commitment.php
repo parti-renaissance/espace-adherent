@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,6 +17,7 @@ class Commitment implements ImageOwnerInterface
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use ImageTrait;
+    use Sortable;
 
     /**
      * @ORM\Column
@@ -37,11 +39,6 @@ class Commitment implements ImageOwnerInterface
      * @Assert\NotBlank
      */
     public ?string $description = null;
-
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
-     */
-    public int $position = 0;
 
     /**
      * @var UploadedFile|null

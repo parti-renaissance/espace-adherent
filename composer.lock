@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc6d8def94f6af831af82a422ce30aa6",
+    "content-hash": "3b3888e73089a455fb0e23b364b01ed0",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -9233,63 +9233,6 @@
             "time": "2022-10-21T09:57:39+00:00"
         },
         {
-            "name": "pixassociates/sortable-behavior-bundle",
-            "version": "v1.5",
-            "target-dir": "Pix/SortableBehaviorBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/pix-digital/pixSortableBehaviorBundle.git",
-                "reference": "bcb223f26b235647dc57bb5a56c64d331c9a4e5f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/pix-digital/pixSortableBehaviorBundle/zipball/bcb223f26b235647dc57bb5a56c64d331c9a4e5f",
-                "reference": "bcb223f26b235647dc57bb5a56c64d331c9a4e5f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "symfony/form": ">=2.1",
-                "symfony/framework-bundle": ">=2.1"
-            },
-            "require-dev": {
-                "gedmo/doctrine-extensions": ">=2.2"
-            },
-            "suggest": {
-                "sonata-project/admin-bundle": "Can be easily integrated with Sonata Admin bundle",
-                "stof/doctrine-extensions-bundle": "1.1.*@dev"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Pix\\SortableBehaviorBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Ricci",
-                    "email": "nr@pix-digital.com"
-                }
-            ],
-            "description": "Provides a way to sort your admin listing",
-            "homepage": "https://github.com/pix-digital/pixSortableBehaviorBundle",
-            "keywords": [
-                "admin",
-                "sonata",
-                "sortable"
-            ],
-            "time": "2018-03-26T15:56:52+00:00"
-        },
-        {
             "name": "predis/predis",
             "version": "v1.1.9",
             "source": {
@@ -10171,6 +10114,88 @@
                 }
             ],
             "time": "2022-10-12T17:22:51+00:00"
+        },
+        {
+            "name": "runroom-packages/sortable-behavior-bundle",
+            "version": "0.16.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Runroom/RunroomSortableBehaviorBundle.git",
+                "reference": "a6f1bd6cb26b6cdcfaccd47b62b4c1ac5b4b04d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Runroom/RunroomSortableBehaviorBundle/zipball/a6f1bd6cb26b6cdcfaccd47b62b4c1ac5b4b04d8",
+                "reference": "a6f1bd6cb26b6cdcfaccd47b62b4c1ac5b4b04d8",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": "^3.1",
+                "doctrine/doctrine-bundle": "^2.3",
+                "doctrine/orm": "^2.8",
+                "php": "^7.4 || ^8.0",
+                "symfony/config": "^4.4 || ^5.4 || ^6.0",
+                "symfony/dependency-injection": "^4.4 || ^5.4 || ^6.0",
+                "symfony/http-foundation": "^4.4.7 || ^5.4 || ^6.0",
+                "symfony/http-kernel": "^4.4.13 || ^5.4 || ^6.0",
+                "symfony/property-access": "^4.4 || ^5.4 || ^6.0",
+                "symfony/translation": "^4.4 || ^5.4 || ^6.0",
+                "twig/twig": "^2.12 || ^3.0"
+            },
+            "conflict": {
+                "gedmo/doctrine-extensions": "<3.0",
+                "sonata-project/admin-bundle": "<3.103"
+            },
+            "require-dev": {
+                "gedmo/doctrine-extensions": "^3.0",
+                "knplabs/knp-menu-bundle": "^3.1",
+                "matthiasnoback/symfony-config-test": "^4.2",
+                "matthiasnoback/symfony-dependency-injection-test": "^4.1",
+                "phpunit/phpunit": "^9.5",
+                "psr/container": "^1.1 || ^2.0",
+                "runroom-packages/testing": "^0.16",
+                "sonata-project/admin-bundle": "^3.103 || ^4.9",
+                "sonata-project/doctrine-orm-admin-bundle": "^3.34 || ^4.0",
+                "symfony/browser-kit": "^5.4 || ^6.0",
+                "symfony/framework-bundle": "^4.4 || ^5.4 || ^6.0",
+                "symfony/phpunit-bridge": "^6.0",
+                "symfony/security-bundle": "^4.4 || ^5.4 || ^6.0",
+                "symfony/twig-bundle": "^4.4 || ^5.4 || ^6.0",
+                "zenstruck/foundry": "^1.13.2"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.16-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Runroom\\SortableBehaviorBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Runroom",
+                    "email": "software@runroom.com",
+                    "homepage": "https://www.runroom.com"
+                }
+            ],
+            "description": "Provides a way to sort your admin listing",
+            "homepage": "https://github.com/runroom/RunroomSortableBehaviorBundle",
+            "keywords": [
+                "admin",
+                "sonata",
+                "sortable"
+            ],
+            "support": {
+                "source": "https://github.com/Runroom/RunroomSortableBehaviorBundle/tree/0.16.0"
+            },
+            "time": "2022-09-12T13:18:03+00:00"
         },
         {
             "name": "sabre/dav",

@@ -8,9 +8,9 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ImageTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -37,6 +37,7 @@ class ResourceLink implements ExposedImageOwnerInterface
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use ImageTrait;
+    use Sortable;
 
     /**
      * @ORM\Column
@@ -65,12 +66,6 @@ class ResourceLink implements ExposedImageOwnerInterface
      * )
      */
     protected $image;
-
-    /**
-     * @ORM\Column(type="smallint")
-     * @Gedmo\SortablePosition
-     */
-    private ?int $position = null;
 
     public function __construct(UuidInterface $uuid = null, string $label = null, string $url = null)
     {
@@ -102,16 +97,6 @@ class ResourceLink implements ExposedImageOwnerInterface
     public function setUrl(?string $url): void
     {
         $this->url = $url;
-    }
-
-    public function getPosition(): ?int
-    {
-        return $this->position;
-    }
-
-    public function setPosition(int $position): void
-    {
-        $this->position = $position;
     }
 
     public function getImagePath(): string
