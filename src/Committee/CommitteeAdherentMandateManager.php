@@ -56,8 +56,8 @@ class CommitteeAdherentMandateManager
             $this->throwException(
                 'adherent_mandate.committee.adherent_with_active_mandate',
                 [
-                    '{{ email }}' => $adherent->getEmailAddress(),
-                    '{{ committee }}' => $activeMandate->getCommittee(),
+                    'email' => $adherent->getEmailAddress(),
+                    'committee' => $activeMandate->getCommittee(),
                 ]
             );
         }
@@ -66,8 +66,8 @@ class CommitteeAdherentMandateManager
             $this->throwException(
                 'adherent_mandate.adherent_has_territorial_council_membership',
                 [
-                    '{{ email }}' => $adherent->getEmailAddress(),
-                    '{{ territorialCouncil }}' => $committee,
+                    'email' => $adherent->getEmailAddress(),
+                    'territorialCouncil' => $committee,
                 ]
             );
         }
@@ -77,8 +77,8 @@ class CommitteeAdherentMandateManager
             $this->throwException(
                 'adherent_mandate.committee.committee_has_already_active_mandate',
                 [
-                    '{{ committee }}' => $committee,
-                    '{{ gender }}' => $adherent->getGender(),
+                    'committee' => $committee,
+                    'gender' => $adherent->getGender(),
                 ]
             );
         }
@@ -196,8 +196,8 @@ class CommitteeAdherentMandateManager
             $this->throwException(
                 'adherent_mandate.committee.not_valid_gender',
                 [
-                    '{{ email }}' => $adherent->getEmailAddress(),
-                    '{{ gender }}' => $adherent->getGender(),
+                    'email' => $adherent->getEmailAddress(),
+                    'gender' => $adherent->getGender(),
                 ]
             );
         }

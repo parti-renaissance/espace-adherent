@@ -27,9 +27,9 @@
         <div class="datagrid__pre-table b__nudge--bottom-larger">
             <h3>
                 {% if constant('PROCESSED', filters) == filters.status %}
-                    {{ 'assessor.processed.choices'|transchoice(total_count) }}
+                    {{ 'assessor.processed.choices'|trans({ count: total_count }) }}
                 {% else %}
-                    {{ 'assessor.unprocessed.choices'|transchoice(total_count) }}
+                    {{ 'assessor.unprocessed.choices'|trans({ count: total_count }) }}
                 {% endif %}
             </h3>
         </div>

@@ -16,7 +16,7 @@
         <div class="datagrid__pre-table b__nudge--bottom-larger assessor_cities_total_count">
             <h3>
                 {% if constant('ASSOCIATED', filters) == filters.status %}
-                    {{ 'cities.associated.choices'|transchoice(total_count) }}
+                    {{ 'cities.associated.choices'|trans({ count: total_count }) }}
                 {% endif %}
             </h3>
         </div>

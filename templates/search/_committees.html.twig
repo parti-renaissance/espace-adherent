@@ -11,7 +11,7 @@
             <span class="btn btn--blue">En savoir plus</span>
             <div class="text--body icon--with-text l__row--center">
                 {{ include('components/participants.html.twig') }}
-                {{ 'committee.members_count'|transchoice(committee.membersCount) }}
+                {{ 'committee.members_count'|trans({ count: committee.membersCount }) }}
             </div>
         </div>
     </a>

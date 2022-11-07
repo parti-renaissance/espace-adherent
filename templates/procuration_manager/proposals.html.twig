@@ -25,11 +25,11 @@
     {% else %}
         <div class="alert alert--tips b__nudge--bottom-60 procuration_proposals_total_count">
             {% if constant('UNASSOCIATED', filters) == filters.status %}
-                {{ '{1} Vous avez une proposition de mandataire disponible.|[2, Inf[ Vous avez %count% propositions de mandataires disponibles.'|transchoice(total_count) }}
+                {{ 'procuration_manager.unassociated.proposals'|trans({ count: total_count }) }}
             {% elseif constant('ASSOCIATED', filters) == filters.status %}
-                {{ '{1} Vous avez une proposition de mandataire associée.|[2, Inf[ Vous avez %count% propositions de mandataires associées.'|transchoice(total_count) }}
+                {{ 'procuration_manager.associated.proposals'|trans({ count: total_count }) }}
             {% else %}
-                {{ '{1} Vous avez une proposition de mandataire désactivée.|[2, Inf[ Vous avez %count% propositions de mandataires désactivées.'|transchoice(total_count) }}
+                {{ 'procuration_manager.deactivated.proposals'|trans({ count: total_count }) }}
             {% endif %}
         </div>
     {% endif %}

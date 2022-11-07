@@ -23,9 +23,9 @@
     {% elseif constant('DISABLED', filters) != filters.status %}
         <div class="alert alert--tips b__nudge--bottom-60 procuration_requests_total_count">
             {% if constant('PROCESSED', filters) == filters.status %}
-                {{ '{1} Vous avez une demande de procuration traitée.|[2, Inf[ Vous avez %count% demandes de procuration traitées.'|transchoice(total_count) }}
+                {{ 'procuration_manager.processed.requests'|trans({ count: total_count }) }}
             {% else %}
-                {{ '{1} Vous avez une demande de procuration à traiter.|[2, Inf[ Vous avez %count% demandes de procuration à traiter.'|transchoice(total_count) }}
+                {{ 'procuration_manager.unprocessed.requests'|trans({ count: total_count }) }}
             {% endif %}
         </div>
     {% else %}

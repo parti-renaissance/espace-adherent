@@ -3,7 +3,7 @@
 {% block committee_content %}
     {% if pending_count is defined and pending_count > 0 %}
         <div class="committee__info">
-            {{ 'committee.pending.count'|transchoice(pending_count) }}
+            {{ 'committee.pending.count'|trans({ count: pending_count }) }}
             <a class="btn btn--orange--light" href="{{ path("app_#{space_type}_committees_requests") }}">Voir</a>
         </div>
     {% endif %}

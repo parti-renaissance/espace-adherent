@@ -21,7 +21,7 @@
                 <h2>Tous les résultats ({{ results.count }})</h2>
 
                 <a href="{{ path('app_board_member_message_search') ~ filter }}" class="newbtn newbtn--light">
-                    {{ 'board_member.message.send_to_members'|transchoice(results.count) }}
+                    {{ 'board_member.message.send_to_members'|trans({ count: results.count }) }}
                 </a>
             </div>
 

@@ -14,7 +14,7 @@
                 </li>
                 <li>
                     {{ include('components/users.html.twig') }}
-                    {{ 'common.members_count'|transchoice(political_committee.memberships.count) }}
+                    {{ 'common.members_count'|trans({ count: political_committee.memberships.count }) }}
                 </li>
             </ul>
         </div>

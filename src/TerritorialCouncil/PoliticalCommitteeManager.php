@@ -188,8 +188,8 @@ class PoliticalCommitteeManager
             $this->throwException(
                 'political_committee.membership.adherent_has_already',
                 [
-                    '{{ email }}' => $adherent->getEmailAddress(),
-                    '{{ politicalCommittee }}' => $adherent->getPoliticalCommitteeMembership()->getPoliticalCommittee()->getName(),
+                    'email' => $adherent->getEmailAddress(),
+                    'politicalCommittee' => $adherent->getPoliticalCommitteeMembership()->getPoliticalCommittee()->getName(),
                 ]
             );
         }
@@ -200,8 +200,8 @@ class PoliticalCommitteeManager
             $this->throwException(
                 'political_committee.membership.has_max_number_of_mayor_and_leader',
                 [
-                    '{{ max }}' => self::MAX_MAYOR_AND_LEADER,
-                    '{{ politicalCommittee }}' => $territorialCouncil->getPoliticalCommittee()->getName(),
+                    'max' => self::MAX_MAYOR_AND_LEADER,
+                    'politicalCommittee' => $territorialCouncil->getPoliticalCommittee()->getName(),
                 ]
             );
         }
@@ -238,8 +238,8 @@ class PoliticalCommitteeManager
             $this->throwException(
                 'political_committee.membership.adherent_has_no_membership',
                 [
-                    '{{ email }}' => $adherent->getEmailAddress(),
-                    '{{ territorialCouncil }}' => $territorialCouncil->getNameCodes(),
+                    'email' => $adherent->getEmailAddress(),
+                    'territorialCouncil' => $territorialCouncil->getNameCodes(),
                 ]
             );
         }
@@ -315,8 +315,8 @@ class PoliticalCommitteeManager
             $this->throwException(
                 'territorial_council.adherent_has_no_membership',
                 [
-                    '{{ email }}' => $adherent->getEmailAddress(),
-                    '{{ territorialCouncil }}' => $territorialCouncil->getNameCodes(),
+                    'email' => $adherent->getEmailAddress(),
+                    'territorialCouncil' => $territorialCouncil->getNameCodes(),
                 ]
             );
         }
