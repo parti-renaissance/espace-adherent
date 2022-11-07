@@ -22,7 +22,7 @@
                     <strong>Prénom :</strong> {{ app.user.firstName }}<br />
                     <strong>Date de naissance :</strong> {{ app.user.birthDate|date('d/m/Y') }} ({{ app.user.birthdate|format_datetime('none', 'none', 'd MMMM YYYY') }} - {{ app.user.age }} ans)
                 </p>
-                <a class="link--blue--dark link--no-decor text--body" href="{{ path('app_user_edit') }}">
+                <a class="link--blue--dark link--no-decor text--body" href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}">
                     Éditer les informations
                 </a>
             </div>
