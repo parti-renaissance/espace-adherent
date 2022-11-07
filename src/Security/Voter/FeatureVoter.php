@@ -22,7 +22,7 @@ class FeatureVoter extends AbstractAdherentVoter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return self::PERMISSION === $attribute && $this->requestStack->getMasterRequest();
+        return self::PERMISSION === $attribute && $this->requestStack->getMainRequest();
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
@@ -31,7 +31,7 @@ class FeatureVoter extends AbstractAdherentVoter
 
         try {
             return $this->authorizationChecker->isFeatureGranted(
-                $this->requestStack->getMasterRequest(),
+                $this->requestStack->getMainRequest(),
                 $adherent,
                 $features
             );

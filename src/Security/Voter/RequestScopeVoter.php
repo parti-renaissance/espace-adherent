@@ -37,7 +37,7 @@ class RequestScopeVoter extends Voter
     {
         return
             self::PERMISSION === $attribute
-            && $this->requestStack->getMasterRequest()
+            && $this->requestStack->getMainRequest()
         ;
     }
 }

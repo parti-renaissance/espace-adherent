@@ -35,7 +35,7 @@ class UserProvider extends EntityUserProvider
 
     public function loadUserByUsername($username)
     {
-        $signature = LoginAttemptSignature::createFromRequest($this->requestStack->getMasterRequest())
+        $signature = LoginAttemptSignature::createFromRequest($this->requestStack->getMainRequest())
             ->getSignature()
         ;
 
