@@ -4,17 +4,18 @@ namespace App\Admin\Jecoute;
 
 use App\Admin\AbstractAdmin;
 use Doctrine\ORM\QueryBuilder;
+use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class ResourceLinkAdmin extends AbstractAdmin
 {
+    use SortableAdminTrait;
+
     protected $baseRoutePattern = 'app/jecoute-resource-link';
     protected $baseRouteName = 'admin_app_jecoute_resource_link';
 
@@ -25,12 +26,6 @@ class ResourceLinkAdmin extends AbstractAdmin
         $proxyQuery->addOrderBy('o.position', 'ASC');
 
         return $proxyQuery;
-    }
-
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection->remove('show');
-        $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -67,8 +62,7 @@ class ResourceLinkAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'actions' => [
                     'move' => [
-                        'template' => '@PixSortableBehavior/Default/_sort_drag_drop.html.twig',
-                        'enable_top_bottom_buttons' => true,
+                        'template' => '@RunroomSortableBehavior/sort.html.twig',
                     ],
                     'edit' => [],
                     'delete' => [],
@@ -86,14 +80,6 @@ class ResourceLinkAdmin extends AbstractAdmin
                 ])
                 ->add('url', UrlType::class, [
                     'label' => 'Url',
-                ])
-                ->add('position', IntegerType::class, [
-                    'label' => 'Ordre d\'affichage',
-                    'required' => false,
-                    'scale' => 0,
-                    'attr' => [
-                        'min' => 0,
-                    ],
                 ])
             ->end()
             ->with('Photo', ['class' => 'col-md-6'])

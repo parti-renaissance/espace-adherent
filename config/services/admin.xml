@@ -18,7 +18,7 @@
 
             <argument />
             <argument>App\Entity\Commitment</argument>
-            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+            <argument/>
         </service>
 
         <service id="app.admin.renaissance_article" class="App\Admin\Article\RenaissanceArticleAdmin">
@@ -546,7 +546,7 @@
 
             <argument />
             <argument>App\Entity\Jecoute\ResourceLink</argument>
-            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+            <argument/>
         </service>
 
         <service id="app.admin.je_mengage.header_block" class="App\Admin\JeMengage\HeaderBlockAdmin">
@@ -902,7 +902,7 @@
 
             <argument />
             <argument>App\Entity\Mooc\Chapter</argument>
-            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+            <argument/>
         </service>
 
         <service id="app.admin.mooc_element" class="App\Admin\MoocElementAdmin">
@@ -910,7 +910,8 @@
 
             <argument />
             <argument>App\Entity\Mooc\BaseMoocElement</argument>
-            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+            <argument/>
+
             <call method="setSubClasses">
                 <argument type="collection">
                     <argument key="Image">App\Entity\Mooc\MoocImageElement</argument>
@@ -1372,7 +1373,7 @@
 
             <argument />
             <argument>App\Entity\ProgrammaticFoundation\Approach</argument>
-            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+            <argument/>
         </service>
 
         <service id="app.admin.approach_sub" class="App\Admin\ProgrammaticFoundation\SubApproachAdmin">
@@ -1380,7 +1381,7 @@
 
             <argument />
             <argument>App\Entity\ProgrammaticFoundation\SubApproach</argument>
-            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+            <argument/>
         </service>
 
         <service id="app.admin.approach_measure" class="App\Admin\ProgrammaticFoundation\MeasureAdmin">
@@ -1388,7 +1389,7 @@
 
             <argument />
             <argument>App\Entity\ProgrammaticFoundation\Measure</argument>
-            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+            <argument/>
         </service>
 
         <service id="app.admin.approach_project" class="App\Admin\ProgrammaticFoundation\ProjectAdmin">

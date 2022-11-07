@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Choice
 {
+    use Sortable;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -41,14 +44,6 @@ class Choice
      * @SymfonySerializer\Groups("survey_list", "survey_read_dc", "survey_write_dc")
      */
     private $content;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="smallint")
-     * @Gedmo\SortablePosition
-     */
-    private $position;
 
     /**
      * @var DataAnswer[]|Collection
@@ -91,16 +86,6 @@ class Choice
     public function setContent(string $content): void
     {
         $this->content = $content;
-    }
-
-    public function getPosition(): ?int
-    {
-        return $this->position;
-    }
-
-    public function setPosition(int $position): void
-    {
-        $this->position = $position;
     }
 
     public function __toString()

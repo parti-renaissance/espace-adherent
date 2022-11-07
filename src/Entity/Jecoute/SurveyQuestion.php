@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
+use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SurveyQuestion implements AuthoredInterface
 {
     use EntityIdentityTrait;
+    use Sortable;
 
     /**
      * @ORM\Column(type="integer")
@@ -47,14 +49,6 @@ class SurveyQuestion implements AuthoredInterface
      * @SymfonySerializer\Groups("survey_write_dc")
      */
     private $question;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="smallint")
-     * @Gedmo\SortablePosition
-     */
-    private $position;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Jecoute\DataAnswer", mappedBy="surveyQuestion")
@@ -87,16 +81,6 @@ class SurveyQuestion implements AuthoredInterface
     public function getAuthor(): ?Adherent
     {
         return $this->getSurvey()->getAuthor();
-    }
-
-    public function getPosition(): ?int
-    {
-        return $this->position;
-    }
-
-    public function setPosition(int $position): void
-    {
-        $this->position = $position;
     }
 
     public function getSurvey(): ?Survey

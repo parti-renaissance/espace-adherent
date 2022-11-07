@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,6 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 abstract class BaseMoocElement
 {
     use EntityTimestampableTrait;
+    use Sortable;
 
     /**
      * @ORM\Id
@@ -53,14 +55,6 @@ abstract class BaseMoocElement
      * @Gedmo\Slug(fields={"title"}, unique=true)
      */
     protected $slug;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="smallint")
-     * @Gedmo\SortablePosition
-     */
-    protected $position;
 
     /**
      * @var string|null
@@ -179,16 +173,6 @@ abstract class BaseMoocElement
     public function setSlug(?string $slug): void
     {
         $this->slug = $slug;
-    }
-
-    public function getPosition(): ?int
-    {
-        return $this->position;
-    }
-
-    public function setPosition(int $position): void
-    {
-        $this->position = $position;
     }
 
     public function getChapter(): ?Chapter

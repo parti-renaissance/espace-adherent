@@ -11,20 +11,21 @@ use App\Form\AttachmentLinkType;
 use App\Form\ImageType;
 use App\Form\PurifiedTextareaType;
 use Doctrine\ORM\QueryBuilder;
+use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterface
 {
+    use SortableAdminTrait;
+
     public function createQuery($context = 'list')
     {
         /** @var QueryBuilder $proxyQuery */
@@ -55,14 +56,6 @@ class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterfac
                     ->add('chapter', EntityType::class, [
                         'class' => Chapter::class,
                         'placeholder' => 'Sélectionner un chapitre',
-                    ])
-                    ->add('position', IntegerType::class, [
-                        'label' => 'Ordre d\'affichage',
-                        'required' => false,
-                        'scale' => 0,
-                        'attr' => [
-                            'min' => 0,
-                        ],
                     ])
                 ->end()
                 ->with('Boutons de partage', ['class' => 'col-md-6'])
@@ -152,20 +145,13 @@ class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterfac
             ->add('_action', null, [
                 'actions' => [
                     'move' => [
-                        'template' => '@PixSortableBehavior/Default/_sort_drag_drop.html.twig',
-                        'enable_top_bottom_buttons' => true,
+                        'template' => '@RunroomSortableBehavior/sort.html.twig',
                     ],
                     'edit' => [],
                     'delete' => [],
                 ],
             ])
         ;
-    }
-
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection->remove('show');
-        $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
     }
 
     public function getUploadableImagePropertyNames(BaseMoocElement $element = null): array

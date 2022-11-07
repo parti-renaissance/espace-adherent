@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,6 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Chapter
 {
+    use Sortable;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
@@ -49,14 +52,6 @@ class Chapter
      * @Assert\NotBlank
      */
     private $publishedAt;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="smallint")
-     * @Gedmo\SortablePosition
-     */
-    private $position;
 
     /**
      * @var Mooc
@@ -147,16 +142,6 @@ class Chapter
     public function detachMooc(): void
     {
         $this->mooc = null;
-    }
-
-    public function getPosition(): ?int
-    {
-        return $this->position;
-    }
-
-    public function setPosition(int $position): void
-    {
-        $this->position = $position;
     }
 
     /**
