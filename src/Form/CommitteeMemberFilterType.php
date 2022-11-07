@@ -46,7 +46,6 @@ class CommitteeMemberFilterType extends AbstractType
             ])
             ->add('renaissanceMembership', ChoiceType::class, [
                 'required' => false,
-                'expanded' => true,
                 'choices' => RenaissanceMembershipFilterEnum::CHOICES,
                 'placeholder' => 'Tous',
             ])

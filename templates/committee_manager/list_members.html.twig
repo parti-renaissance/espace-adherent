@@ -59,11 +59,6 @@
                                 <label class="filter__label">Statut (E-mail)</label>
                                 {{ form_widget(form.subscribed, {attr: {class: 'filter__radio__tabs inputs--3'}}) }}
                             </div>
-
-                            <div class="filter__row">
-                                <label class="filter__label">Renaissance</label>
-                                {{ form_widget(form.renaissanceMembership, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
-                            </div>
                         </div>
                     </div>
 
@@ -87,6 +82,11 @@
                                     {{ form_widget(form.certified, {attr: {class: 'filter__radio__tabs inputs--3'}}) }}
                                 </div>
                             {% endif %}
+
+                            <div class="filter__row">
+                                <label class="filter__label">Renaissance</label>
+                                {{ form_widget(form.renaissanceMembership, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
+                            </div>
                         </div>
                     </div>
 

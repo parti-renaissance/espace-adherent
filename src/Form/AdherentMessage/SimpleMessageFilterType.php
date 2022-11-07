@@ -32,6 +32,7 @@ class SimpleMessageFilterType extends AbstractType
             ->add('registeredUntil', DatePickerType::class, ['required' => false])
             ->add('renaissanceMembership', ChoiceType::class, [
                 'required' => false,
+                'placeholder' => 'Tous',
                 'choices' => RenaissanceMembershipFilterEnum::CHOICES,
             ])
         ;
