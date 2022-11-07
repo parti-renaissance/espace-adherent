@@ -2,7 +2,7 @@
 
 {% block page_title candidate.fullName %}
 {% block canonical_url url('legislatives_candidate', { slug: candidate.slug }) %}
-{% block meta_description candidate.fullName ~ ' est la ou le candidat(e) de La République En Marche ! dans la ' ~ ('common.ordinal_number_feminine'|trans({ count: candidate.districtNumber })) ~ ' circonscription du département '~ candidate.districtZone.name ~'. Élu(e) député(e }) lors des élections législatives des 11 et 18 juin 2017, elle ou il représente notre mouvement au sein du groupe La République En Marche ! à l\'Assemblée nationale.' %}
+{% block meta_description candidate.fullName ~ ' est la ou le candidat(e) de La République En Marche ! dans la ' ~ ('common.ordinal_number_feminine'|trans({ count: candidate.districtNumber })) ~ ' circonscription du département '~ candidate.districtZone.name ~'. Élu(e) député(e) lors des élections législatives des 11 et 18 juin 2017, elle ou il représente notre mouvement au sein du groupe La République En Marche ! à l\'Assemblée nationale.' %}
 
 {% block content__inner %}
     <div class="l__wrapper">
