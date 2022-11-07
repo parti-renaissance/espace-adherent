@@ -1,0 +1,178 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% form_theme form with ['form_theme_profile.html.twig', 'socials_theme.html.twig'] %}
+
+{% block page_title 'Informations générales' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+
+    {% import 'javascript.js.twig' as js %}
+
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
+    {% endif %}
+
+    {% include 'membership/_profile_script.html.twig' with {genderField: '#adherent_profile_gender', customGenderField: '#adherent_profile_customGender'} %}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runProfileUpdatePage();
+
+            {{ js.address(form.address) }}
+            $('.select2').select2({theme: 'default em-form'});
+        });
+    </script>
+{% endblock %}
+
+{% block content_right_side %}
+<section class="adherent-profile__section">
+    <h1 class="text--medium-large">Général</h1>
+
+    {{ form_start(form, {attr: {class: 'em-form'}}) }}
+        {% if app.user.certified %}
+        <div class="alert alert--tips b__nudge--bottom-large">
+            Votre profil est certifié, vous ne pouvez donc plus modifier votre genre, nom, prénom et date de naissance.
+        </div>
+        {% endif %}
+
+        <div class="em-form__group">
+            {{ form_errors(form) }}
+        </div>
+
+        <div class="em-form__section">
+            <h2 class="section-subtitle">Votre identité</h2>
+            <div class="em-form__row">
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+            </div>
+            <div class="em-form__row">
+                {{ form_row(form.gender) }}
+                {{ form_row(form.customGender, {label: ' ', attr: {placeholder: 'Précisez votre genre'}}) }}
+            </div>
+            <div class="em-form__row">
+                {{ form_row(form.birthdate, {label: 'Date de naissance'}) }}
+                {{ form_row(form.nationality, {label: 'Nationalité'}) }}
+            </div>
+        </div>
+
+        <div class="em-form__section">
+            <h2 class="section-subtitle">Vos coordonnées</h2>
+
+            <p class="text--body text--smallest text--muted text--left visually-hidden" id="address-autocomplete-help-message">
+                Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
+            </p>
+
+            <div class="em-form__row">
+                <div class="em-form__group">
+                    {{ form_label(form.address.address, 'Adresse') }}
+                    <div class="em-form__group b__nudge--none" style="margin: 0;">
+                    {{ form_widget(form.address.address) }}
+                    </div>
+                    {{ form_errors(form.address.address) }}
+                    <div class="address-autocomplete"></div>
+                </div>
+
+                {{ form_row(form.address.postalCode, {label: 'Code postal'}) }}
+            </div>
+            <div class="em-form__row">
+                {{ form_row(form.address.cityName, {label: 'Ville'}) }}
+                {{ form_row(form.address.city) }}
+                {{ form_row(form.address.country, {label: 'Pays'}) }}
+            </div>
+            <div class="em-form__group">
+                {{ form_errors(form.address) }}
+            </div>
+            {{ form_row(form.emailAddress, {half: true, label: 'Adresse e-mail'}) }}
+            <div class="em-form__row">
+                {{ form_row(form.phone.country, {label: 'Numéro de téléphone'}) }}
+                {{ form_row(form.phone.number, {label: ' ', attr: {placeholder: 'Numéro de téléphone'}}) }}
+            </div>
+            <div class="em-form__group">
+                {{ form_errors(form.phone) }}
+            </div>
+        </div>
+
+        <div class="em-form__section">
+            <h2 class="section-subtitle">Vos identifiants réseaux sociaux</h2>
+            <p class="text--body text--muted text--small">
+                Vous pourrez être contacté(e) par vos responsables locaux ou recevoir des informations susceptibles de vous intéresser.
+            </p>
+            <div class="em-form__row">
+                {{ form_row(form.facebookPageUrl, {label: 'Facebook'}) }}
+            </div>
+            <div class="em-form__row">
+                {{ form_row(form.linkedinPageUrl, {label: 'LinkedIn'}) }}
+            </div>
+            <div class="em-form__row">
+                {{ form_row(form.twitterPageUrl, {label: 'Twitter'}) }}
+            </div>
+            <div class="em-form__row">
+                {{ form_row(form.telegramPageUrl, {label: 'Telegram'}) }}
+            </div>
+        </div>
+
+        <div class="em-form__section">
+            <h2 class="section-subtitle">Votre situation professionnelle</h2>
+            <div class="em-form__row">
+                {{ form_row(form.position, {label: 'Statut professionnel'}) }}
+                {{ form_row(form.job, {label: 'Métier'}) }}
+            </div>
+            {{ form_row(form.activityArea, {half: true, label: 'Secteur d\'activité'}) }}
+        </div>
+
+        <div class="em-form__section">
+            <h2 class="section-subtitle">Vos mandats déclarés</h2>
+            <div class="em-form__row">
+                <div class="em-form__group">
+                    {{ form_label(form.mandates, 'adherent.mandate.label') }}
+                    {{ form_widget(form.mandates, {attr: {class: 'select2'}}) }}
+                    {{ form_errors(form.mandates) }}
+
+                    <p class="help__text b__nudge--top-10">Cette information est seulement déclarative et facilitera le lien entre votre compte adhérent et vos mandats.</p>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+        {% if recaptcha_public_key is not empty %}
+            {% for flashMessage in app.flashes("error_recaptcha") %}
+                <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
+            {% endfor %}
+            <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
+        {% elseif app.debug %}
+            <input type="hidden" name="g-recaptcha-response" value="fake" />
+        {% endif %}
+
+        <div class="b__nudge--bottom-60">
+            <h2 class="section-subtitle">Suppression du compte</h2>
+            <div>
+                {% if is_granted('UNREGISTER') and (app.user.isBasicAdherent or app.user.isUser) %}
+                <p class="text--body">
+                    Si vous souhaitez désadhérer et supprimer votre compte En Marche, <a href="{{ path('app_user_terminate_membership') }}" class="text--blue--dark link--no-decor">cliquez-ici</a>.
+                </p>
+
+                {% endif %}
+
+                {% if not is_granted('UNREGISTER') %}
+                    <p class="text--body b__nudge--top-0">
+                        Si vous êtes animateur local, référent, parlementaire, porteur de projet, membre du conseil ou désigné lors d'une élection interne, vous ne pouvez pas supprimer votre compte directement : il vous faut d'abord quitter vos responsabilités. <br><br>
+                        Pour ce faire, vous pouvez écrire votre demande par e-mail à l'adresse suivante : <a href="mailto:territoires@en-marche.fr">territoires@en-marche.fr</a>. <br><br>
+                        Si vous êtes co-animateur local, votre animateur peut retirer votre rôle depuis son espace comité. <br><br>
+                        Si vous êtes candidat à une désignation interne, vous ne pouvez pas désadhérer du mouvement directement, il vous faut attendre la fin de la désignation.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+
+        <button class="btn btn--blue">Enregistrer</button>
+    {{ form_end(form) }}
+</section>
+{% endblock %}

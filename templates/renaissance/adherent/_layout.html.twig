@@ -1,0 +1,29 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block content %}
+    <section class="w-screen h-screen flex flex-col md:flex-row">
+        <div class="flex flex-col justify-center overflow-y-hidden md:justify-between h-1/4 md:h-full w-full md:w-1/3 bg-cover bg-center md:bg-bottom">
+            <div class="ml-3 md:m-3">
+                <ul>
+                    <li>
+                        <a href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}" class="text-dark-blue hover:text-green font-bold text-sm">
+                            Général
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_certification_request_home', { app_domain: renaissance_host }) }}" class="text-dark-blue hover:text-green font-bold text-sm">
+                            Certification
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Right side -->
+        <div class="flex flex-col h-3/4 md:h-full md:w-2/3 bg-white-stale text-black">
+            <div class="overflow-auto flex flex-col flex-grow">
+                {% block content_right_side '' %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

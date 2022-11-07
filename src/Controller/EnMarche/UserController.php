@@ -7,6 +7,7 @@ use App\AdherentCharter\AdherentCharterFactory;
 use App\AdherentCharter\AdherentCharterTypeEnum;
 use App\AdherentProfile\AdherentProfile;
 use App\AdherentProfile\AdherentProfileHandler;
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\Unregistration;
 use App\Form\AdherentChangePasswordType;
@@ -17,6 +18,7 @@ use App\Membership\AdherentChangePasswordHandler;
 use App\Membership\Event\UserEvent;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\UserEvents;
+use App\OAuth\App\AuthAppUrlManager;
 use App\Subscription\SubscriptionHandler;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -40,8 +42,14 @@ class UserController extends AbstractController
     /**
      * @Route("/modifier", name="app_user_edit", methods={"GET", "POST"})
      */
-    public function profileAction(Request $request, AdherentProfileHandler $handler): Response
-    {
+    public function profileAction(
+        Request $request,
+        AdherentProfileHandler $handler,
+        AuthAppUrlManager $appUrlManager,
+        string $app_domain
+    ): Response {
+        $appCode = $appUrlManager->getAppCodeFromRequest($request);
+
         $adherent = $this->getUser();
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);
 
@@ -54,10 +62,17 @@ class UserController extends AbstractController
             $handler->update($adherent, $adherentProfile);
             $this->addFlash('info', 'adherent.update_profile.success');
 
-            return $this->redirectToRoute('app_user_edit');
+            return $this->redirectToRoute('app_user_edit', ['app_domain' => $app_domain]);
         }
 
-        return $this->render('adherent/profile.html.twig', ['form' => $form->createView()]);
+        return $this->render(
+            AppCodeEnum::isRenaissanceApp($appCode)
+                ? 'renaissance/adherent/profile/form.html.twig'
+                : 'adherent/profile.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**

@@ -314,6 +314,24 @@ app_article:
     requirements:
         app_domain: "%app_host%|%renaissance_host%"
 
+app_profile:
+    host: "{app_domain}"
+    type: "annotation"
+    resource: "../src/Controller/EnMarche/UserController.php"
+    defaults:
+        app_domain: "%app_host%"
+    requirements:
+        app_domain: "%app_host%|%renaissance_host%"
+
+app_certification:
+    host: "{app_domain}"
+    type: "annotation"
+    resource: "../src/Controller/EnMarche/CertificationRequestController.php"
+    defaults:
+        app_domain: "%app_host%"
+    requirements:
+        app_domain: "%app_host%|%renaissance_host%"
+
 # This route must be loaded the last to prevent an override
 app_static_page:
     host: "{app_domain}"
