@@ -37,11 +37,11 @@ class AnonymousRuntime implements RuntimeExtensionInterface
         array $params = []
     ): string {
         if (!$callbackRoute) {
-            $callbackRoute = $this->requestStack->getMasterRequest()->attributes->get('_route');
+            $callbackRoute = $this->requestStack->getMainRequest()->attributes->get('_route');
         }
 
         if (!$params) {
-            $params = $this->requestStack->getMasterRequest()->attributes->get('_route_params');
+            $params = $this->requestStack->getMainRequest()->attributes->get('_route_params');
         }
 
         $params[AnonymousFollowerSession::AUTHENTICATION_INTENTION] = $this->urlGenerator->generate($intention);

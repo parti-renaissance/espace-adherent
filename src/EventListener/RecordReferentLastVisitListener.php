@@ -37,7 +37,7 @@ class RecordReferentLastVisitListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         // Stop if not GET or not MasterRequest
-        if (Request::METHOD_GET !== $request->getMethod() || !$event->isMasterRequest()) {
+        if (Request::METHOD_GET !== $request->getMethod() || !$event->isMainRequest()) {
             return;
         }
 

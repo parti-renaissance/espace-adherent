@@ -60,6 +60,6 @@ class ScopeGeneratorResolver
 
     private function getRequest(): Request
     {
-        return $this->requestStack->getMasterRequest();
+        return $this->requestStack->getMainRequest();
     }
 }
