@@ -40,7 +40,7 @@ export default class Carousel {
         this.applyStyle();
         this.onWindowResize();
 
-        if (this.options.navigation) {
+        if (this.options.navigation && this.items.length > this.slidesVisible) {
             this.createNavigation();
         }
 

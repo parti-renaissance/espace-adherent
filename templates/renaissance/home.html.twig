@@ -194,23 +194,25 @@
                     {% set member = executive_office_group|first %}
                     {% set title = ('executive_office.title.'~member.getRole())|trans %}
 
-                    {% if title != 'executive_office.title.'~member.getRole() %}
-                        <p class="text-dark-blue text-lg leading-6 lg:text-2xl lg:leading-9 mb-10">{{ title }}</p>
-                    {% endif %}
+                   <div class="overflow-hidden space-y-10 mb-6 pb-10 lg:mb-12">
+                       {% if title != 'executive_office.title.'~member.getRole() %}
+                           <h4 class="text-dark-blue text-lg leading-6 lg:text-2xl lg:leading-9">{{ title }}</h4>
+                       {% endif %}
 
-                    <div class="flex overflow-x-auto flex-nowrap mx-auto gap-x-4 gap-y-6 lg:gap-x-7 lg:gap-y-10 mb-6 lg:mb-12 pb-10">
-                        {% for member in executive_office_group %}
-                            <div class="flex-none first:ml-auto last:mr-auto">
-                                <div class="flex flex-col">
-                                    <p>
-                                        <img src="{{ path('asset_url', {path: member.imagePath}) }}" class="mx-auto mb-10 transition ease-in-out rounded md:mb-5 hover:scale-105" style="height:350px;" alt="{{ member.fullName }}"/>
-                                    </p>
-                                    <p class="text-xs font-medium leading-5 text-center text-dark-gray md:text-sm">{{ member.fullName }}</p>
-                                    <p class="text-center font-normal text-xs leading-4 md:text-sm max-w-fit self-center">{{ member.job }}</p>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
+                       <div class="flex space-x-4 carousel-widget" data-carousel-slides-visible="5">
+                           {% for member in executive_office_group %}
+                               <div class="flex-none">
+                                   <div class="flex flex-col">
+                                       <div class="mb-10 lg:mb-5">
+                                           <img src="{{ path('asset_url', {path: member.imagePath}) }}" class="object-cover transition ease-in-out rounded hover:scale-105" style="height:350px;" alt="{{ member.fullName }}"/>
+                                       </div>
+                                       <p class="text-xs font-medium leading-5 text-center text-dark-gray md:text-sm">{{ member.fullName }}</p>
+                                       <p class="text-center text-xs leading-4 md:text-sm max-w-fit self-center">{{ member.job }}</p>
+                                   </div>
+                               </div>
+                           {% endfor %}
+                       </div>
+                   </div>
                 {% endif %}
             {% endfor %}
         </div>
