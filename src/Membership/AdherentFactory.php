@@ -137,7 +137,7 @@ class AdherentFactory
     public function createFromRenaissanceAdherentRequest(AdherentRequest $adherentRequest): Adherent
     {
         $adherent = Adherent::create(
-            Adherent::createUuid($adherentRequest->email),
+            Uuid::uuid4(),
             $adherentRequest->email,
             $adherentRequest->password,
             null,

@@ -90,7 +90,6 @@ class UniqueMembershipValidator extends ConstraintValidator
             return ($adherent = $this->adherentRepository->findOneByUuid($token->getAdherentUuid())) ? $adherent->getUuid() : null;
         }
 
-        return ($adherent = $this->adherentRepository->findByUuid(Adherent::createUuid($emailAddress))) ?
-            $adherent->getUuid() : null;
+        return null;
     }
 }
