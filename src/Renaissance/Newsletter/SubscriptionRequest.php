@@ -44,11 +44,10 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
      */
     public ?bool $cguAccepted = null;
 
-    public static function createFromRecaptcha(?string $recaptchaResponse, ?string $recaptchaSiteKey): self
+    public static function createFromRecaptcha(?string $recaptchaResponse): self
     {
         $object = new self();
         $object->recaptcha = $recaptchaResponse;
-        $object->recaptchaSiteKey = $recaptchaSiteKey;
 
         return $object;
     }

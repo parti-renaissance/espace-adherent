@@ -16,7 +16,6 @@ class AdhesionController extends AbstractAdhesionController
     {
         $command = $this->getCommand($request);
         $command->setRecaptcha($request->request->get('frc-captcha-solution'));
-        $command->setRecaptchaSiteKey($request->request->get('recaptcha_site_key'));
 
         if (!$this->processor->canFillPersonalInfo($command)) {
             return $this->redirectToRoute('app_renaissance_homepage');

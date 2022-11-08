@@ -19,7 +19,7 @@ class NewsletterControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/');
 
         $this->client->submit($crawler->filter('form[name="newsletter_subscription"]')->form([
-            'g-recaptcha-response' => 'fake',
+            'frc-captcha-solution' => 'fake',
             'newsletter_subscription' => [
                 'firstName' => 'Jules',
             ],
@@ -30,7 +30,7 @@ class NewsletterControllerTest extends WebTestCase
         self::assertStringContainsString('Cette valeur ne doit pas être vide.', $crawler->filter('#newsletter-form-error')->text());
 
         $this->client->submit($crawler->filter('form[name="newsletter_subscription"]')->form([
-            'g-recaptcha-response' => 'fake',
+            'frc-captcha-solution' => 'fake',
             'newsletter_subscription' => [
                 'firstName' => 'Jules',
                 'email' => 'jules@en-marche-dev.fr',

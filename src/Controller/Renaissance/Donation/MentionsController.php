@@ -21,7 +21,6 @@ class MentionsController extends AbstractDonationController
     ): Response {
         $command = $this->getCommand();
         $command->setRecaptcha($request->request->get('frc-captcha-solution'));
-        $command->setRecaptchaSiteKey($request->request->get('recaptcha_site_key'));
 
         if (!$this->processor->canAcceptTermsAndConditions($command)) {
             return $this->redirectToRoute('app_renaissance_donation_informations');

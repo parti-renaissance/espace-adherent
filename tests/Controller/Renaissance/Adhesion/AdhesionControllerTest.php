@@ -44,7 +44,6 @@ class AdhesionControllerTest extends WebTestCase
 
         $this->client->submit($crawler->filter('form[name="app_renaissance_membership"]')->form([
             'frc-captcha-solution' => 'fake',
-            'recaptcha_site_key' => 'fake_key',
             'app_renaissance_membership' => [
                 'firstName' => 'John',
                 'lastName' => 'SMITH',
