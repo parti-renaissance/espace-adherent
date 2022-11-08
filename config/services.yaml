@@ -189,9 +189,18 @@ services:
         arguments:
             $urlGenerators: !tagged_iterator {tag: 'app.auth_app.url_generator', default_index_method: 'getAppCode'}
 
+    ssl.key.private:
+        class: League\OAuth2\Server\CryptKey
+        arguments:
+            $keyPath: '%env(SSL_PRIVATE_KEY)%'
+    ssl.key.public:
+        class: League\OAuth2\Server\CryptKey
+        arguments:
+            $keyPath: '%env(SSL_PUBLIC_KEY)%'
+
     App\OAuth\AuthorizationServerFactory:
         arguments:
-            $privateKey: '%env(SSL_PRIVATE_KEY)%'
+            $privateKey: '@ssl.key.private'
             $encryptionKey: '%env(SSL_ENCRYPTION_KEY)%'
             $accessTokenTtlInterval: '%env(ACCESS_TOKEN_TTL_INTERVAL)%'
             $refreshTokenTtlInterval: '%env(REFRESH_TOKEN_TTL_INTERVAL)%'
@@ -309,7 +318,7 @@ services:
 
     League\OAuth2\Server\ResourceServer:
         arguments:
-            $publicKey: '%env(SSL_PUBLIC_KEY)%'
+            $publicKey: '@ssl.key.public'
 
     Symfony\Component\Security\Http\Logout\LogoutUrlGenerator: '@security.logout_url_generator'
 

@@ -44,3 +44,15 @@ services:
 
     kreait_firebase.jemarche_app.dynamic_links: '@Tests\App\Test\Firebase\DummyDynamicLinks'
     kreait_firebase.jemarche_app.messaging: '@Tests\App\Test\Firebase\DummyMessaging'
+
+    ssl.key.private:
+        class: League\OAuth2\Server\CryptKey
+        arguments:
+            $keyPath: '%env(SSL_PRIVATE_KEY)%'
+            $keyPermissionsCheck: false
+
+    ssl.key.public:
+        class: League\OAuth2\Server\CryptKey
+        arguments:
+            $keyPath: '%env(SSL_PUBLIC_KEY)%'
+            $keyPermissionsCheck: false
