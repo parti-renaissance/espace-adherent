@@ -7,6 +7,7 @@ use App\Entity\Article;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Object\Metadata;
 use Sonata\Form\Type\DatePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -59,9 +60,10 @@ abstract class AbstractArticleAdmin extends AbstractAdmin
                 'label' => 'Mots clés de recherche',
                 'required' => false,
             ])
-            ->add('media', null, [
+            ->add('media', ModelType::class, [
                 'label' => 'Image principale',
                 'required' => false,
+                'btn_add' => 'Créer',
             ])
             ->add('displayMedia', CheckboxType::class, [
                 'label' => 'Afficher l\'image principale dans l\'article',
