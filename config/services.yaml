@@ -32,6 +32,7 @@ parameters:
     api_path_prefix:                      "%env(API_PATH_PREFIX)%"
     router.request_context.scheme:        "%env(APP_SCHEME)%"
     router.request_context.host:          "%app_host%"
+    ssl_key_permissions_check:            "%env(bool:SSL_KEY_PERMISSIONS_CHECK)%"
     image_max_length:                     450px
     webhook.email_subscriptions_secret:   "%env(APP_EMAIL_SUBSCRIPTIONS_WEBHOOK_SECRET)%"
     adherent_message_referent_limit:      1000
@@ -186,9 +187,21 @@ services:
         arguments:
             $urlGenerators: !tagged_iterator {tag: 'app.auth_app.url_generator', default_index_method: 'getAppCode'}
 
+    app.ssl_private_key:
+        class: League\OAuth2\Server\CryptKey
+        arguments:
+            $keyPath: '%env(SSL_PRIVATE_KEY)%'
+            $keyPermissionsCheck: '%ssl_key_permissions_check%'
+
+    app.ssl_public_key:
+        class: League\OAuth2\Server\CryptKey
+        arguments:
+            $keyPath: '%env(SSL_PUBLIC_KEY)%'
+            $keyPermissionsCheck: '%ssl_key_permissions_check%'
+
     App\OAuth\AuthorizationServerFactory:
         arguments:
-            $privateKey: '%env(SSL_PRIVATE_KEY)%'
+            $privateKey: '@app.ssl_private_key'
             $encryptionKey: '%env(SSL_ENCRYPTION_KEY)%'
             $accessTokenTtlInterval: '%env(ACCESS_TOKEN_TTL_INTERVAL)%'
             $refreshTokenTtlInterval: '%env(REFRESH_TOKEN_TTL_INTERVAL)%'
@@ -306,7 +319,7 @@ services:
 
     League\OAuth2\Server\ResourceServer:
         arguments:
-            $publicKey: '%env(SSL_PUBLIC_KEY)%'
+            $publicKey: '@app.ssl_public_key'
 
     Symfony\Component\Security\Http\Logout\LogoutUrlGenerator: '@security.logout_url_generator'
 
