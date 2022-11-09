@@ -6,6 +6,7 @@ use App\OAuth\Grant\ClientCredentialsGrant;
 use App\OAuth\Grant\PasswordGrant;
 use App\Repository\DeviceRepository;
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\GrantTypeInterface;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
@@ -39,7 +40,7 @@ class AuthorizationServerFactory
         ClientRepositoryInterface $clientRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
         ScopeRepositoryInterface $scopeRepository,
-        string $privateKey,
+        CryptKey $privateKey,
         string $encryptionKey,
         string $accessTokenTtlInterval,
         string $refreshTokenTtlInterval,
