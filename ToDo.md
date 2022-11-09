@@ -1,5 +1,5 @@
 ## Navigation
-- Rajouter les bons liens au niveau du logo (pour retourner sur la page adherente), et sur le bouton `Routerner sur le site` ce lien doit ramener sur la page d'accueil du site de renaissance
+- [OK] Rajouter les bons liens au niveau du logo (pour retourner sur la page adherente), et sur le bouton `Routerner sur le site` ce lien doit ramener sur la page d'accueil du site de renaissance
 - Creer un component twig pour l'affichage repetitf des menus (General, certification, etc)
 
 ## Global
