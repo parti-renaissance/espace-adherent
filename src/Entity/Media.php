@@ -101,6 +101,8 @@ class Media
      * @var UploadedFile|null
      *
      * @Assert\File(
+     *     maxSize="5M",
+     *     binaryFormat=false,
      *     mimeTypes={
      *         "image/jpeg",
      *         "image/gif",
@@ -286,33 +288,23 @@ class Media
         return $this->file;
     }
 
-    /**
-     * @return Media
-     */
     public function setFile(File $file = null): self
     {
-        if (!$file) {
+        if (!$file || !$file->getPathname()) {
             return $this;
         }
 
-        $infos = getimagesize($file->getPathname());
+        $this->width = 0;
+        $this->height = 0;
+        $this->mimeType = $file->getMimeType();
+        $this->size = $file->getSize();
+        $this->file = $file;
 
-        if (!\count($infos)) {
-            return $this;
-        }
-
-        if (false !== strpos($file->getMimeType(), 'video')) {
-            $this->width = 0;
-            $this->height = 0;
-            $this->mimeType = $file->getMimeType();
-        } else {
+        if ($infos = getimagesize($file->getPathname())) {
             $this->width = $infos[0];
             $this->height = $infos[1];
             $this->mimeType = $infos['mime'];
         }
-
-        $this->file = $file;
-        $this->size = $file->getSize();
 
         return $this;
     }
