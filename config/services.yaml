@@ -32,7 +32,6 @@ parameters:
     api_path_prefix:                      "%env(API_PATH_PREFIX)%"
     router.request_context.scheme:        "%env(APP_SCHEME)%"
     router.request_context.host:          "%app_host%"
-    ssl_key_permissions_check:            "%env(bool:SSL_KEY_PERMISSIONS_CHECK)%"
     image_max_length:                     450px
     webhook.email_subscriptions_secret:   "%env(APP_EMAIL_SUBSCRIPTIONS_WEBHOOK_SECRET)%"
     adherent_message_referent_limit:      1000
@@ -191,13 +190,13 @@ services:
         class: League\OAuth2\Server\CryptKey
         arguments:
             $keyPath: '%env(SSL_PRIVATE_KEY)%'
-            $keyPermissionsCheck: '%ssl_key_permissions_check%'
+            $keyPermissionsCheck: '%env(bool:SSL_KEY_PERMISSIONS_CHECK)%'
 
     app.ssl_public_key:
         class: League\OAuth2\Server\CryptKey
         arguments:
             $keyPath: '%env(SSL_PUBLIC_KEY)%'
-            $keyPermissionsCheck: '%ssl_key_permissions_check%'
+            $keyPermissionsCheck: '%env(bool:SSL_KEY_PERMISSIONS_CHECK)%'
 
     App\OAuth\AuthorizationServerFactory:
         arguments:
