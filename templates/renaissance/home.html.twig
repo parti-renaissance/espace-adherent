@@ -13,6 +13,9 @@
 
             <div class="flex flex-nowrap gap-x-2">
                 {% if app.user %}
+                    <a class="button button-white" href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}">
+                        Mon profil
+                    </a>
                     <a class="button button-white" href="{{ path('logout', { app_domain: renaissance_host }) }}">
                         Me déconnecter
                     </a>
