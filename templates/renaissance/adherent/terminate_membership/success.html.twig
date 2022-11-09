@@ -1,0 +1,34 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% block page_title 'Désadhésion' %}
+
+{% block content_right_side %}
+
+<div>
+    <div id="is_not_adherent" class="content">
+        <header>
+            <h1 class="space--60-0 l__wrapper--slim text--center text--large">
+                Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.
+            </h1>
+            <hr class="l__wrapper"/>
+        </header>
+        <section class="l__wrapper--600 text--body">
+            <p>
+                Nous sommes tristes de vous voir partir. Vous serez
+                toujours les bienvenus si vous souhaitez nous rejoindre.
+            </p>
+
+            <p>
+                Nous sommes preneurs de vos suggestions pour nous
+                améliorer. N’hésitez pas à nous contacter
+                au <a href="tel:01 86 95 02 86">01 86 95 02 86 ou</a> par e-mail à l’adresse
+                <a href="mailto:contact@en-marche.fr">contact@en-marche.fr</a>.
+            </p>
+        </section>
+        <section class="text--center space--60-0">
+            <img class="l__wrapper--medium" src="{{ asset('images/a-bientot.jpg') }}"/>
+        </section>
+    </div>
+</div>
+
+{% endblock %}

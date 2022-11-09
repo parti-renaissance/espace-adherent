@@ -80,20 +80,31 @@ class UserController extends AbstractController
      *
      * @Route("/changer-mot-de-passe", name="app_user_change_password", methods={"GET", "POST"})
      */
-    public function changePasswordAction(Request $request, AdherentChangePasswordHandler $handler): Response
-    {
+    public function changePasswordAction(
+        Request $request,
+        AdherentChangePasswordHandler $handler,
+        AuthAppUrlManager $appUrlManager,
+        string $app_domain
+    ): Response {
+        $appCode = $appUrlManager->getAppCodeFromRequest($request);
+
         $form = $this->createForm(AdherentChangePasswordType::class);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $handler->changePassword($this->getUser(), $form->get('password')->getData());
             $this->addFlash('info', 'adherent.update_password.success');
 
-            return $this->redirectToRoute('app_user_change_password');
+            return $this->redirectToRoute('app_user_change_password', ['app_domain' => $app_domain]);
         }
 
-        return $this->render('adherent/change_password.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            AppCodeEnum::isRenaissanceApp($appCode)
+                ? 'renaissance/adherent/change_password/form.html.twig'
+                : 'adherent/change_password.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -138,8 +149,11 @@ class UserController extends AbstractController
     public function terminateMembershipAction(
         Request $request,
         MembershipRequestHandler $handler,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        AuthAppUrlManager $appUrlManager
     ): Response {
+        $appCode = $appUrlManager->getAppCodeFromRequest($request);
+
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
         $unregistrationCommand = new UnregistrationCommand();
@@ -158,16 +172,26 @@ class UserController extends AbstractController
             $tokenStorage->setToken(null);
             $request->getSession()->invalidate();
 
-            return $this->render(sprintf('%s/terminate_membership.html.twig', $viewFolder), [
-                'unregistered' => true,
-                'form' => $form->createView(),
-            ]);
+            return $this->render(
+                AppCodeEnum::isRenaissanceApp($appCode)
+                    ? 'renaissance/adherent/terminate_membership/success.html.twig'
+                    : sprintf('%s/terminate_membership.html.twig', $viewFolder),
+                [
+                    'unregistered' => true,
+                    'form' => $form->createView(),
+                ]
+            );
         }
 
-        return $this->render(sprintf('%s/terminate_membership.html.twig', $viewFolder), [
-            'unregistered' => false,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            AppCodeEnum::isRenaissanceApp($appCode)
+                ? 'renaissance/adherent/terminate_membership/form.html.twig'
+                : sprintf('%s/terminate_membership.html.twig', $viewFolder),
+            [
+                'unregistered' => false,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
