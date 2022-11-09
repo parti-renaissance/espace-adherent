@@ -9,19 +9,19 @@
 {%- endblock form_row -%}
 
 {% block form_label -%}
-    {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' em-form__label')|trim}) -%}
+    {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' block text-sm font-medium text-gray-700 uppercase tracking-wider')|trim}) -%}
     {{- parent() -}}
 {%- endblock form_label %}
 
 {% block choice_widget_collapsed -%}
-    {% set attr = attr|merge({class: (attr.class|default('') ~ ' em-form__field')|trim}) %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-re-blue-500 focus:ring-re-blue-500 sm:text-sm')|trim}) %}
     {{- parent() -}}
 {%- endblock %}
 
 {%- block choice_widget_expanded -%}
     {%- for child in form %}
         <div class="form__{{ multiple ? 'checkbox' : 'radio' }}">
-            {{- form_widget(child) -}}
+            {{- form_widget(child, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500' } }) -}}
             {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
         </div>
     {% endfor -%}
@@ -29,7 +29,7 @@
 
 {% block form_widget_simple -%}
     {% if type is not defined or type not in ['file', 'hidden'] %}
-        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' em-form__field')|trim}) -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-re-blue-500 focus:ring-re-blue-500 sm:text-sm placeholder:text-gray-400 text-gray-900 disabled:bg-gray-100/80 disabled:opacity-80')|trim}) -%}
     {% endif %}
     {{- parent() -}}
     {{- block('character_count') -}}
@@ -47,16 +47,16 @@
         <span id="{{ id }}_counter" class="character-count">0/{{ maxlength }}</span>
 
         <script type="text/javascript">
-            $(document).ready(function() {
-                const $field = $('#{{ id }}');
-                const $counter = $('#{{ id }}_counter');
-                $counter.html($field.val().length  + '/{{ maxlength }}');
-                $field.keyup(function(event) {
-                    const $text_length = $field.val().length;
-                    $counter.html($text_length  + '/{{ maxlength }}');
-                })
-                    .trigger('keyup');
-            });
+          $(document).ready(function() {
+            const $field = $('#{{ id }}');
+            const $counter = $('#{{ id }}_counter');
+            $counter.html($field.val().length  + '/{{ maxlength }}');
+            $field.keyup(function(event) {
+              const $text_length = $field.val().length;
+              $counter.html($text_length  + '/{{ maxlength }}');
+            })
+              .trigger('keyup');
+          });
         </script>
     {% endif %}
 {%- endblock character_count %}
@@ -64,7 +64,7 @@
 {% block form_errors -%}
     {% if errors|length %}
         {%- for error in errors -%}
-            <p class="em-form--error">
+            <p class="mt-1.5 text-sm text-red-600">
                 {%- if error_raw -%}
                     {{- error.message|raw -}}
                 {%- else -%}
