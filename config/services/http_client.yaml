@@ -60,4 +60,4 @@ services:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
         arguments:
-            - {base_uri: 'https://api.friendlycaptcha.com', timeout: 10}
+            - {base_uri: 'https://eu-api.friendlycaptcha.eu', timeout: 10}

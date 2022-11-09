@@ -9,7 +9,7 @@
 {% set back_btn_target = path('app_renaissance_donation_informations') %}
 
 {% block final_javascripts %}
-    <script src="https://www.google.com/recaptcha/enterprise.js"></script>
+    <script type="module" src="{{ asset('js/friendly-challenge.widget.module.min.js') }}" async defer></script>
 {% endblock %}
 
 {% block donation_content %}
@@ -51,15 +51,7 @@
             </div>
 
             <div class="w-full">
-                <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
-                {% if recaptcha_public_key is not empty %}
-                    {% for flashMessage in app.flashes("error_recaptcha") %}
-                        <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
-                    {% endfor %}
-                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 30px auto 10px auto;"></div>
-                {% elseif app.debug %}
-                    <input type="hidden" name="g-recaptcha-response" value="fake" />
-                {% endif %}
+                {% include 'renaissance/partials/friendly-captcha.html.twig' %}
             </div>
 
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {

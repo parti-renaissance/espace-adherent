@@ -322,12 +322,9 @@
                         </label>
                     </div>
 
-                    <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
-                    {% if recaptcha_public_key is not empty %}
-                        <div class="g-recaptcha mb-4" data-sitekey="{{ recaptcha_public_key }}"></div>
-                    {% elseif app.debug %}
-                        <input type="hidden" name="g-recaptcha-response" value="fake" />
-                    {% endif %}
+                    <div class="mb-4">
+                        {% include 'renaissance/partials/friendly-captcha.html.twig' %}
+                    </div>
 
                     <button type="submit" class="button button-white button-full">
                         M'inscrire
@@ -451,7 +448,7 @@
 {% endblock %}
 
 {% block final_javascripts %}
-    <script src="https://www.google.com/recaptcha/enterprise.js"></script>
+    <script type="module" src="{{ asset('js/friendly-challenge.widget.module.min.js') }}" async defer></script>
 
     <script type="text/javascript">
         Bootstrap.onLoad(function () {

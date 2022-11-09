@@ -1,0 +1,11 @@
+<input type="hidden" name="frc-captcha-solution" value="" />
+
+{% if friendly_captcha_site_key is not empty %}
+    <div class="frc-captcha"
+         data-sitekey="{{ friendly_captcha_site_key }}"
+         data-puzzle-endpoint="https://eu-api.friendlycaptcha.eu/api/v1/puzzle"
+         data-lang="fr"
+    ></div>
+{% elseif app.debug %}
+    <input type="hidden" name="frc-captcha-solution" value="fake" />
+{% endif %}

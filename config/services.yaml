@@ -298,8 +298,7 @@ services:
             $defaultSiteKey: '%env(FRIENDLY_CAPTCHA_DEFAULT_SITE_KEY)%'
 
     App\Validator\RecaptchaValidator:
-        arguments:
-            $apiClients: !tagged_iterator 'app.recaptcha_api_client'
+        arguments: [!tagged_iterator 'app.recaptcha_api_client']
 
     App\Procuration\ProcurationProxyMessageFactory:
         arguments:

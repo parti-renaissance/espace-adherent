@@ -15,7 +15,7 @@ use App\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertRecaptcha(groups={"fill_personal_info"})
+ * @AssertRecaptcha(api="friendly_captcha", groups={"fill_personal_info"})
  * @MaxFiscalYearDonation(groups={"membership_request_amount"})
  */
 class RenaissanceMembershipRequest extends AbstractMembershipRequest implements RecaptchaChallengeInterface, DonationRequestInterface

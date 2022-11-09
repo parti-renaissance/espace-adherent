@@ -3,7 +3,7 @@
 {% form_theme form 'renaissance/form_theme.html.twig' %}
 
 {% block final_javascripts %}
-    <script src="https://www.google.com/recaptcha/enterprise.js"></script>
+    <script type="module" src="{{ asset('js/friendly-challenge.widget.module.min.js') }}" async defer></script>
 
     {% if google_maps_api_key %}
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places" async></script>
@@ -70,17 +70,7 @@
                 {{ form_row(form.address, { label: 'Adresse postale' }) }}
             </div>
 
-            <div>
-                <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
-                {% if recaptcha_public_key is not empty %}
-                    {% for flashMessage in app.flashes("error_recaptcha") %}
-                        <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
-                    {% endfor %}
-                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin:0 auto;"></div>
-                {% elseif app.debug %}
-                    <input type="hidden" name="g-recaptcha-response" value="fake" />
-                {% endif %}
-            </div>
+            {% include 'renaissance/partials/friendly-captcha.html.twig' %}
 
             <div class="mt-12 flex flex-col">
                 <button type="submit" class="button button-light-blue button-full">Étape suivante</button>

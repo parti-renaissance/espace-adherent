@@ -9,7 +9,7 @@ use App\Validator\UniqueRenaissanceNewsletter;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertRecaptcha
+ * @AssertRecaptcha(api="friendly_captcha")
  * @UniqueRenaissanceNewsletter
  */
 class SubscriptionRequest implements RecaptchaChallengeInterface

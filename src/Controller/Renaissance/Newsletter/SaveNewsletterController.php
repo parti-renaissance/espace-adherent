@@ -19,7 +19,7 @@ class SaveNewsletterController extends AbstractController
 {
     public function __invoke(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $subscription = SubscriptionRequest::createFromRecaptcha($request->request->get('g-recaptcha-response'));
+        $subscription = SubscriptionRequest::createFromRecaptcha($request->request->get('frc-captcha-solution'));
 
         $form = $this
             ->createForm(NewsletterSubscriptionType::class, $subscription)
