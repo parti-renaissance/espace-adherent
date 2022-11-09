@@ -45,7 +45,7 @@ class ImageContent
 
     public function getBinaryContent(): string
     {
-        if (false !== strpos($this->content, 'base64,')) {
+        if (str_contains($this->content, 'base64,')) {
             return base64_decode(explode('base64,', $this->content, 2)[1]);
         }
 

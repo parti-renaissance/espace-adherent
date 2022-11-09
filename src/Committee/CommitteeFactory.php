@@ -57,7 +57,7 @@ class CommitteeFactory
             $data['created_at'] ?? 'now'
         );
 
-        $committee->setNameLocked(isset($data['name_locked']) ? $data['name_locked'] : false);
+        $committee->setNameLocked($data['name_locked'] ?? false);
         $committee->setSocialNetworks(
             $data['facebook_page_url'] ?? null,
             $data['twitter_nickname'] ?? null

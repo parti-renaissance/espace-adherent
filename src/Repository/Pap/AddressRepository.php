@@ -38,23 +38,23 @@ class AddressRepository extends ServiceEntityRepository
         }, array_keys($activeCampaigns)));
 
         $sql = <<<SQL
-SELECT address.id
-FROM pap_address AS address
-INNER JOIN pap_building AS building ON building.address_id = address.id AND building.current_campaign_id IN ($activeCampaignsCondition)
-WHERE 
-    address.offset_x BETWEEN :offset_x_1 AND :offset_x_2
-    AND address.offset_y BETWEEN :offset_y_1 AND :offset_y_2
-ORDER BY 
-    (6371 * 
-         ACOS(
-           COS(RADIANS(:latitude)) 
-         * COS(RADIANS(address.latitude)) 
-         * COS(RADIANS(address.longitude) - RADIANS(:longitude)) 
-         + SIN(RADIANS(:latitude)) 
-         * SIN(RADIANS(address.latitude))
-     ))
-LIMIT :limit
-SQL;
+            SELECT address.id
+            FROM pap_address AS address
+            INNER JOIN pap_building AS building ON building.address_id = address.id AND building.current_campaign_id IN ($activeCampaignsCondition)
+            WHERE 
+                address.offset_x BETWEEN :offset_x_1 AND :offset_x_2
+                AND address.offset_y BETWEEN :offset_y_1 AND :offset_y_2
+            ORDER BY 
+                (6371 * 
+                     ACOS(
+                       COS(RADIANS(:latitude)) 
+                     * COS(RADIANS(address.latitude)) 
+                     * COS(RADIANS(address.longitude) - RADIANS(:longitude)) 
+                     + SIN(RADIANS(:latitude)) 
+                     * SIN(RADIANS(address.latitude))
+                 ))
+            LIMIT :limit
+            SQL;
         $offsetX1 = floor(($longitude + 180 - $longitudeDelta) / 360 * 131072) - $correction;
         $offsetX2 = floor(($longitude + 180 + $longitudeDelta) / 360 * 131072) + $correction;
         $offsetY1 = floor((1.0 - log(tan(deg2rad($latitude + $latitudeDelta)) + 1.0 / cos(deg2rad($latitude + $latitudeDelta))) / pi()) / 2.0 * 131072) - $correction;
@@ -106,13 +106,13 @@ SQL;
     public function associatedCampaign(Campaign $campaign): void
     {
         $sql = <<<SQL
-UPDATE pap_address AS address
-INNER JOIN pap_building AS building ON building.address_id = address.id
-LEFT JOIN pap_campaign AS current_campaign ON current_campaign.id = building.current_campaign_id 
-SET building.current_campaign_id = :campaign_id
-WHERE (current_campaign.id IS NULL OR current_campaign.finish_at < :start_date)
-__VOTE_PLACE_CONDITION__
-SQL;
+            UPDATE pap_address AS address
+            INNER JOIN pap_building AS building ON building.address_id = address.id
+            LEFT JOIN pap_campaign AS current_campaign ON current_campaign.id = building.current_campaign_id 
+            SET building.current_campaign_id = :campaign_id
+            WHERE (current_campaign.id IS NULL OR current_campaign.finish_at < :start_date)
+            __VOTE_PLACE_CONDITION__
+            SQL;
         $conditions = [];
 
         $params = [
@@ -147,17 +147,17 @@ SQL;
 
         // insert building statistics for new campaign
         $sql = <<<SQL
-INSERT IGNORE INTO pap_building_statistics (building_id, campaign_id, status, uuid, created_at, updated_at)
-SELECT
-    building.id,
-    building.current_campaign_id,
-    :todo_status,
-    UUID(),
-    NOW(),
-    NOW()
-FROM pap_building AS building 
-WHERE building.current_campaign_id = :campaign_id
-SQL;
+            INSERT IGNORE INTO pap_building_statistics (building_id, campaign_id, status, uuid, created_at, updated_at)
+            SELECT
+                building.id,
+                building.current_campaign_id,
+                :todo_status,
+                UUID(),
+                NOW(),
+                NOW()
+            FROM pap_building AS building 
+            WHERE building.current_campaign_id = :campaign_id
+            SQL;
 
         $connection->prepare($sql)->executeStatement([
             'campaign_id' => $campaign->getId(),
@@ -167,12 +167,12 @@ SQL;
         // unlink campaign from buildings that not in campaign's vote places
         if (isset($votePlaceIds)) {
             $connection->prepare(<<<SQL
-UPDATE pap_address AS address
-INNER JOIN pap_building AS building ON building.address_id = address.id
-SET building.current_campaign_id = NULL
-WHERE building.current_campaign_id = :campaign_id 
-  AND address.vote_place_id NOT IN ($votePlaceIds)
-SQL)->executeStatement([
+                UPDATE pap_address AS address
+                INNER JOIN pap_building AS building ON building.address_id = address.id
+                SET building.current_campaign_id = NULL
+                WHERE building.current_campaign_id = :campaign_id 
+                  AND address.vote_place_id NOT IN ($votePlaceIds)
+                SQL)->executeStatement([
                 'campaign_id' => $campaign->getId(),
             ]);
         }

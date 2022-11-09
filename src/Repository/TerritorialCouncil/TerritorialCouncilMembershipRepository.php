@@ -193,7 +193,7 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
             $this->bindReferentTagsCondition($qb, $filter->getReferentTags());
         }
 
-        if (false !== strpos($filter->getSort(), '.')) {
+        if (str_contains($filter->getSort(), '.')) {
             $sort = $filter->getSort();
         } else {
             $sort = 'tcm.'.$filter->getSort();

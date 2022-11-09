@@ -91,10 +91,10 @@ class LoadFormationData extends Fixture
         $path = new Path();
         $path->setTitle($title);
         $path->setDescription(<<<EOT
-    Découvrez maintenant votre parcours personnalisé.
-    Les modules sont numérotés pour vous permettre de
-    compléter / renforcer vos compétences par ordre de priorité.
-EOT
+            Découvrez maintenant votre parcours personnalisé.
+            Les modules sont numérotés pour vous permettre de
+            compléter / renforcer vos compétences par ordre de priorité.
+            EOT
         );
 
         return $path;

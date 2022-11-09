@@ -20,7 +20,7 @@ class LoadMoocVideoData extends Fixture
             'Bonsoir, voici un email de partage !',
             'Voici le contenu de l\'email de partage. Merci.',
             'ktHEfEDhscU',
-            MutableDateTime::createFromTime(00, 02, 10)
+            MutableDateTime::createFromTime(0, 2, 10)
         );
 
         $video1->addLink(
@@ -41,7 +41,7 @@ class LoadMoocVideoData extends Fixture
             'Bonsoir, voici un email de partage !',
             'Voici le contenu de l\'email de partage. Merci.',
             'ktHEfEDhscU',
-            MutableDateTime::createFromTime(01, 30, 00)
+            MutableDateTime::createFromTime(1, 30, 0)
         );
         $manager->persist($video2);
         $this->addReference('mooc-video-2', $video2);
@@ -54,7 +54,7 @@ class LoadMoocVideoData extends Fixture
             'Bonsoir, voici un email de partage !',
             'Voici le contenu de l\'email de partage. Merci.',
             'ktHEfEDhscU',
-            MutableDateTime::createFromTime(00, 30, 15)
+            MutableDateTime::createFromTime(0, 30, 15)
         );
 
         $manager->persist($video3);

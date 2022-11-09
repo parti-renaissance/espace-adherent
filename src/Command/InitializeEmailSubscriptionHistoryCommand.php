@@ -56,13 +56,13 @@ class InitializeEmailSubscriptionHistoryCommand extends Command
         $this->io->title('Starting email subscription history initialization.');
 
         $historyQuery = <<<'SQL'
-INSERT INTO adherent_email_subscription_histories (adherent_uuid, subscribed_email_type, action, date)
-VALUES (:adherent_uuid, :subscribed_email_type, :action, :date)
-SQL;
+            INSERT INTO adherent_email_subscription_histories (adherent_uuid, subscribed_email_type, action, date)
+            VALUES (:adherent_uuid, :subscribed_email_type, :action, :date)
+            SQL;
         $historyVsTagQuery = <<<'SQL'
-INSERT INTO adherent_email_subscription_history_referent_tag (email_subscription_history_id, referent_tag_id)
-VALUES (:email_subscription_history_id, :referent_tag_id)
-SQL;
+            INSERT INTO adherent_email_subscription_history_referent_tag (email_subscription_history_id, referent_tag_id)
+            VALUES (:email_subscription_history_id, :referent_tag_id)
+            SQL;
 
         $connection = $this->em->getConnection();
         $connection->getConfiguration()->setSQLLogger(null); // Like this we are sure nothing is logged. Memory usage stays stable and it speeds things up.

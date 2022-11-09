@@ -45,7 +45,7 @@ class ManageAssessorVoter extends AbstractAdherentVoter
             }
         }
 
-        if (false !== strpos(implode(',', $managedCodes), 'CIRCO_')) {
+        if (str_contains(implode(',', $managedCodes), 'CIRCO_')) {
             $votePlaceCodes = array_filter($assessorRequest->getVotePlaceWishes()->map(function (VotePlace $votePlace) {
                 return $votePlace->zone ? 'CIRCO_'.$votePlace->zone->getCode() : null;
             })->toArray());

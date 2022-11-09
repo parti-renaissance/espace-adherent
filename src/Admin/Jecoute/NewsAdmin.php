@@ -98,9 +98,9 @@ class NewsAdmin extends AbstractAdmin
                     ],
                     'with_character_count' => true,
                     'help' => <<<HELP
-Veuillez restreindre le contenu au format <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown.</a><br />
-10 000 caractères maximum.
-HELP
+                        Veuillez restreindre le contenu au format <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown.</a><br />
+                        10 000 caractères maximum.
+                        HELP
                     ,
                 ])
                 ->add('externalLink', UrlType::class, [

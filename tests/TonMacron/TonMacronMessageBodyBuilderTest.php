@@ -16,17 +16,17 @@ class TonMacronMessageBodyBuilderTest extends TestCase
     public function testBuildMessageBody()
     {
         $introductionText = <<<'EOF'
-<p>
-Bonjour %friend_first_name%,
-<br/>
-Comme tu le sais, les élections présidentielles auront lieu le 23 avril et 7 mai prochains.
-</p>
-EOF;
+            <p>
+            Bonjour %friend_first_name%,
+            <br/>
+            Comme tu le sais, les élections présidentielles auront lieu le 23 avril et 7 mai prochains.
+            </p>
+            EOF;
         $conclusionText = <<<'EOF'
-<p>
-Dis-moi ce que tu en penses. Tu trouveras tous les détails de ces propositions ici.
-</p>
-EOF;
+            <p>
+            Dis-moi ce que tu en penses. Tu trouveras tous les détails de ces propositions ici.
+            </p>
+            EOF;
 
         $this
             ->repository

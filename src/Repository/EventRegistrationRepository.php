@@ -291,7 +291,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->andWhere('event.committee IS NOT NULL')
             ->setParameter('tags', $referent->getManagedArea()->getTags())
             ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
-            ->setParameter('from', (new Chronos("first day of -$months months"))->setTime(0, 0, 0, 000))
+            ->setParameter('from', (new Chronos("first day of -$months months"))->setTime(0, 0, 0, 0))
             ->groupBy('yearmonth')
         ;
     }

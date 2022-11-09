@@ -20,15 +20,15 @@ class LoadPoliticalCommitteeFeedItemData extends Fixture implements DependentFix
             $coPolParis,
             $referent,
             <<<EOD
-<p> Lorem <strong>Ipsum</strong></p>
-<ol>
-    <li>dolor augue</li>
-	<li>aliquam</li>
-	<li>rutrum arcu nulla</li>
-</ol>
-<h2><strong>Vivamus nulla ligula,</strong> Suspendisse condimentum vulputate magna.</h2>
-<p>Nulla viverra felis quis ullamcorper porttitor.</p>
-EOD
+                <p> Lorem <strong>Ipsum</strong></p>
+                <ol>
+                    <li>dolor augue</li>
+                	<li>aliquam</li>
+                	<li>rutrum arcu nulla</li>
+                </ol>
+                <h2><strong>Vivamus nulla ligula,</strong> Suspendisse condimentum vulputate magna.</h2>
+                <p>Nulla viverra felis quis ullamcorper porttitor.</p>
+                EOD
         );
         $manager->persist($feedItem);
 

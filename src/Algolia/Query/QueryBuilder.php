@@ -31,11 +31,11 @@ class QueryBuilder
         /** @var ExprInterface $expr */
         $expr = new $className(array_map(function ($value) {
             if (\is_string($value)) {
-                if (false !== strpos($value, ' LIKE ')) {
+                if (str_contains($value, ' LIKE ')) {
                     return new Like([$value]);
                 }
 
-                if (false !== strpos($value, ' = ')) {
+                if (str_contains($value, ' = ')) {
                     return new Eq([$value]);
                 }
             }

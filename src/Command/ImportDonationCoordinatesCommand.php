@@ -41,7 +41,7 @@ class ImportDonationCoordinatesCommand extends Command
 
         $count = 0;
         foreach ($donations as $index => $row) {
-            list($uuid, $latitude, $longitude) = $row;
+            [$uuid, $latitude, $longitude] = $row;
 
             if (empty($uuid)) {
                 throw new \RuntimeException(sprintf('No uuid found for Donation. (line %d)', $index + 1));

@@ -41,7 +41,7 @@ class ColorChoiceType extends AbstractType
     {
         foreach ($view->children as $child) {
             foreach ($child->vars['block_prefixes'] as $idx => $prefix) {
-                if (false !== strpos($prefix, 'entry')) {
+                if (str_contains($prefix, 'entry')) {
                     $child->vars['block_prefixes'][$idx] = 'color_choice_entry';
                     $child->vars['block_prefixes'][] = $prefix;
                 }

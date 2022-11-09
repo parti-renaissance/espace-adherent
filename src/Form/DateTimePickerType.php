@@ -21,7 +21,7 @@ class DateTimePickerType extends AbstractType
             'enableTime' => true,
             'dateFormat' => $options['date_format'],
             'altInput' => isset($options['human_friendly_format']),
-            'altFormat' => isset($options['human_friendly_format']) ? $options['human_friendly_format'] : '',
+            'altFormat' => $options['human_friendly_format'] ?? '',
             'minDate' => isset($options['min_date']) ? $options['min_date']->format($options['date_format']) : null,
             'maxDate' => isset($options['max_date']) ? $options['max_date']->format($options['date_format']) : null,
             'minTime' => $options['min_time'],

@@ -34,7 +34,7 @@ class ActiveLinkClassExtension extends AbstractExtension
     private function match(string $currentRoute, string $expectedRoute): bool
     {
         if ('*' === substr($expectedRoute, -1)) {
-            return false !== strpos($currentRoute, rtrim($expectedRoute, '*'));
+            return str_contains($currentRoute, rtrim($expectedRoute, '*'));
         }
 
         return $currentRoute === $expectedRoute;

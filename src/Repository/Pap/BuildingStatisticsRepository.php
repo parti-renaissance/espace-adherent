@@ -66,7 +66,7 @@ class BuildingStatisticsRepository extends ServiceEntityRepository
                 return (new UnicodeString($part))->camel();
             }, explode('.', $key)));
 
-            $queryBuilder->addOrderBy(false === strpos($key, '.') ? 'stats.'.$key : $key, $value);
+            $queryBuilder->addOrderBy(!str_contains($key, '.') ? 'stats.'.$key : $key, $value);
         }
 
         return $this->configurePaginator($queryBuilder, $page, $limit);

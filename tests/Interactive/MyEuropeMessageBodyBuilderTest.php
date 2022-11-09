@@ -16,16 +16,16 @@ class MyEuropeMessageBodyBuilderTest extends TestCase
     public function testBuildMessageBody()
     {
         $introductionText = <<<'EOF'
-<p>
-%friend_first_name%, ces dernières semaines, nous avons beaucoup parlé du projet de loi de finances, le premier du quinquennat d'Emmanuel Macron.
-</p>
-EOF;
+            <p>
+            %friend_first_name%, ces dernières semaines, nous avons beaucoup parlé du projet de loi de finances, le premier du quinquennat d'Emmanuel Macron.
+            </p>
+            EOF;
 
         $conclusionText = <<<'EOF'
-<p>
-La République En Marche a publié des documents plus précis à ce sujet et je reste pour ma part à ta disposition pour en reparler!
-</p>
-EOF;
+            <p>
+            La République En Marche a publié des documents plus précis à ce sujet et je reste pour ma part à ta disposition pour en reparler!
+            </p>
+            EOF;
 
         $commonText = "Comme 80% des Français, tu vas peut-être bénéficier de la supression progressive de ta taxe d'habitation.";
 

@@ -42,10 +42,10 @@ class HeaderBlockAdmin extends AbstractAdmin
                     'required' => false,
                     'attr' => ['class' => 'simplified-content-editor', 'rows' => 20],
                     'help' => <<<HELP
-Veuillez restreindre le contenu au format <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown.</a><br/>
-Si une date d'échéance est spécifiée, rajoutez la balise <strong>{{ date_echeance }}</strong> dans le texte.<br/>
-Pour indiquer le prénom d'un utilisateur dans le message de bienvenue par exemple, rajouter la balise <strong>{{ prenom }}</strong> dans le texte.
-HELP
+                        Veuillez restreindre le contenu au format <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown.</a><br/>
+                        Si une date d'échéance est spécifiée, rajoutez la balise <strong>{{ date_echeance }}</strong> dans le texte.<br/>
+                        Pour indiquer le prénom d'un utilisateur dans le message de bienvenue par exemple, rajouter la balise <strong>{{ prenom }}</strong> dans le texte.
+                        HELP
 ,
                 ])
                 ->add('deadlineDate', null, [

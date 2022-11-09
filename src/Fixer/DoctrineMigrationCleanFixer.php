@@ -23,8 +23,8 @@ final class DoctrineMigrationCleanFixer extends AbstractFixer
             'Remove declare(strict_types=1), auto-generated comments, and abortIf calls from doctrine migration generated files.',
             [
                 new CodeSample(
-                    '<?php 
-                    
+                    '<?php
+
 declare(strict_types=1);
 
 namespace DoctrineMigrations;
@@ -80,7 +80,7 @@ final class Version20190306110954 extends AbstractMigration
             }
 
             if ($token->isGivenKind(\T_DOC_COMMENT)
-                && false !== strpos($token->getContent(), 'Auto-generated Migration: Please modify to your needs!')
+                && str_contains($token->getContent(), 'Auto-generated Migration: Please modify to your needs!')
             ) {
                 $tokens->clearRange(
                     $index,
@@ -89,7 +89,7 @@ final class Version20190306110954 extends AbstractMigration
             }
 
             if ($token->isGivenKind(\T_COMMENT)
-                && false !== strpos($token->getContent(), 'auto-generated')
+                && str_contains($token->getContent(), 'auto-generated')
             ) {
                 $tokens->clearRange(
                     $index,

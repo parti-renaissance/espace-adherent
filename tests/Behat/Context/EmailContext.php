@@ -75,8 +75,8 @@ class EmailContext extends RawMinkContext
         $link = null;
 
         $vars = array_merge(
-            isset($this->currentEmailPayload['message']['merge_vars'][0]['vars']) ? $this->currentEmailPayload['message']['merge_vars'][0]['vars'] : [],
-            isset($this->currentEmailPayload['message']['global_merge_vars']) ? $this->currentEmailPayload['message']['global_merge_vars'] : []
+            $this->currentEmailPayload['message']['merge_vars'][0]['vars'] ?? [],
+            $this->currentEmailPayload['message']['global_merge_vars'] ?? []
         );
 
         foreach ($vars as $var) {

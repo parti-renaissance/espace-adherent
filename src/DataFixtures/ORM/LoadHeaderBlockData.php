@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class LoadHeaderBlockData extends Fixture
 {
     private const MARKDOWN_CONTENT = <<<MARKDOWN
-Bienvenue {{ prenom }},
-Il reste {{ date_echeance }} jours avant le 1er tour des élections présidentielles !
-MARKDOWN;
+        Bienvenue {{ prenom }},
+        Il reste {{ date_echeance }} jours avant le 1er tour des élections présidentielles !
+        MARKDOWN;
     private const PREFIX = 'Je m\'engage avec';
 
     private ImageManagerInterface $imageManager;

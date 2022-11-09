@@ -35,7 +35,7 @@ class CroppedImageType extends AbstractType
             $data = $event->getData();
 
             if (!empty($data['croppedImage'])) {
-                if (false !== strpos($data['croppedImage'], 'base64,')) {
+                if (str_contains($data['croppedImage'], 'base64,')) {
                     $imageData = explode('base64,', $data['croppedImage'], 2);
                     $content = $imageData[1];
                     $tmpFile = tempnam(sys_get_temp_dir(), uniqid());

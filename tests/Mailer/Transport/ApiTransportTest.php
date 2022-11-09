@@ -31,15 +31,15 @@ class ApiTransportTest extends TestCase
         $email = $this->createDummyEmail();
 
         $body = <<<'EOF'
-{
-    "Sent": [
-        {
-            "Email": "john.smith@example.tld",
-            "MessageID": 111111111111111
-        }
-    ]
-}
-EOF;
+            {
+                "Sent": [
+                    {
+                        "Email": "john.smith@example.tld",
+                        "MessageID": 111111111111111
+                    }
+                ]
+            }
+            EOF;
 
         $httpClient = new MockHttpClient([new MockResponse($body)], 'http://null');
 

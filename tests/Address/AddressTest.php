@@ -34,7 +34,7 @@ class AddressTest extends AbstractKernelTestCase
         $address->setAddress('6 rue Neyret');
         $address->setCity('69001-69381');
 
-        list($postalCode, $inseeCode) = explode('-', $address->getCity());
+        [, $inseeCode] = explode('-', $address->getCity());
         $city = $this->getFranceCities()->getCityByInseeCode($inseeCode);
         $address->setCityName($city ? $city->getName() : null);
 
