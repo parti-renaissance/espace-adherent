@@ -7,7 +7,6 @@ use App\AdherentProfile\AdherentProfile;
 use App\Entity\ActivityAreaEnum;
 use App\Entity\JobEnum;
 use App\Membership\MandatesEnum;
-use App\ValueObject\Genders;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -44,11 +43,8 @@ class AdherentProfileType extends AbstractType
                 'required' => false,
                 'placeholder' => 'common.i.am',
             ])
-            ->add('gender', GenderType::class, [
+            ->add('gender', $options['is_renaissance'] ? CivilityType::class : GenderType::class, [
                 'disabled' => $options['disabled_form'],
-                'choices' => $options['is_renaissance']
-                    ? Genders::CHOICES_NO_OTHER
-                    : Genders::CHOICES,
             ])
         ;
 
