@@ -266,12 +266,11 @@ class AdherentControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
 
         $disabledFields = $crawler->filter('form[name="adherent_profile"] input[disabled="disabled"], form[name="adherent_profile"] select[disabled="disabled"]');
-        self::assertCount(5, $disabledFields);
+        self::assertCount(4, $disabledFields);
         self::assertEquals('adherent_profile[firstName]', $disabledFields->eq(0)->attr('name'));
         self::assertEquals('adherent_profile[lastName]', $disabledFields->eq(1)->attr('name'));
         self::assertEquals('adherent_profile[birthdate]', $disabledFields->eq(2)->attr('name'));
         self::assertEquals('adherent_profile[gender]', $disabledFields->eq(3)->attr('name'));
-        self::assertEquals('adherent_profile[customGender]', $disabledFields->eq(4)->attr('name'));
     }
 
     public function testAdherentChangePassword(): void
