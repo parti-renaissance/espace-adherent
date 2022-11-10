@@ -54,7 +54,10 @@ class UserController extends AbstractController
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);
 
         $form = $this
-            ->createForm(AdherentProfileType::class, $adherentProfile, ['disabled_form' => $adherent->isCertified()])
+            ->createForm(AdherentProfileType::class, $adherentProfile, [
+                'disabled_form' => $adherent->isCertified(),
+                'is_renaissance' => AppCodeEnum::isRenaissanceApp($appCode),
+            ])
             ->handleRequest($request)
         ;
 
