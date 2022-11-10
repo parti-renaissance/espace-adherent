@@ -53,12 +53,12 @@ class EmailPersisterEventSubscriberTest extends TestCase
     public function testOnMailerDeliverySuccessWithEmptyMessageCollection()
     {
         $responsePayload = <<<'EOF'
-{
-    "Sent": [
-        {"Email": "dummy@example.tld", "MessageID": 111111111111111}
-    ]
-}
-EOF;
+            {
+                "Sent": [
+                    {"Email": "dummy@example.tld", "MessageID": 111111111111111}
+                ]
+            }
+            EOF;
 
         $message = DummyMessage::create();
         $email = DummyEmailTemplate::createWithMessage($message, 'noreply@en-marche.fr');
@@ -76,13 +76,13 @@ EOF;
         $message->addRecipient('vincent777h@example.tld', 'Vincent Durand');
 
         $responsePayload = <<<'EOF'
-{
-    "Sent": [
-        {"Email": "dummy@example.tld", "MessageID": 111111111111111},
-        {"Email": "vincent777h@example.tld", "MessageID": 222222222222222}
-    ]
-}
-EOF;
+            {
+                "Sent": [
+                    {"Email": "dummy@example.tld", "MessageID": 111111111111111},
+                    {"Email": "vincent777h@example.tld", "MessageID": 222222222222222}
+                ]
+            }
+            EOF;
 
         $email = DummyEmailTemplate::createWithMessage($message, 'noreply@en-marche.fr');
         $email->delivered($responsePayload, $requestPayload = $email->getHttpRequestPayload());

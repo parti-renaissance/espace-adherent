@@ -361,22 +361,22 @@ class EventManagerControllerTest extends WebTestCase
         $finishAt = preg_quote($event->getLocalFinishAt()->format('Ymd\THis'), '/');
         $uuid = preg_quote($uuid, '/');
         $icalRegex = <<<CONTENT
-BEGIN\:VCALENDAR
-VERSION\:2\.0
-PRODID\:\-\/\/Sabre\/\/Sabre VObject 4\.[0-9]+\.[0-9]+\/\/EN
-CALSCALE\:GREGORIAN
-ORGANIZER\:Pierre KIROULE
-BEGIN\:VEVENT
-UID\:$uuid
-DTSTAMP\:\\d{8}T\\d{6}Z
-SUMMARY\:Meeting de New York City
-DESCRIPTION\:Ouvert aux français de New York\.
-DTSTART;TZID=America\/New_York\:$beginAt
-DTEND;TZID=America\/New_York\:$finishAt
-LOCATION\:226 W 52nd St\\\\, 10019 New York\\\\, \États\-Unis
-END\:VEVENT
-END\:VCALENDAR
-CONTENT;
+            BEGIN\:VCALENDAR
+            VERSION\:2\.0
+            PRODID\:\-\/\/Sabre\/\/Sabre VObject 4\.[0-9]+\.[0-9]+\/\/EN
+            CALSCALE\:GREGORIAN
+            ORGANIZER\:Pierre KIROULE
+            BEGIN\:VEVENT
+            UID\:$uuid
+            DTSTAMP\:\\d{8}T\\d{6}Z
+            SUMMARY\:Meeting de New York City
+            DESCRIPTION\:Ouvert aux français de New York\.
+            DTSTART;TZID=America\/New_York\:$beginAt
+            DTEND;TZID=America\/New_York\:$finishAt
+            LOCATION\:226 W 52nd St\\\\, 10019 New York\\\\, \États\-Unis
+            END\:VEVENT
+            END\:VCALENDAR
+            CONTENT;
         $icalRegex = str_replace("\n", "\r\n", $icalRegex); // Returned content contains CRLF
 
         $this->assertMatchesRegularExpression(sprintf('/%s/', $icalRegex), $response->getContent());

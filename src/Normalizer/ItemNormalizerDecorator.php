@@ -393,7 +393,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
     protected function validateType(string $attribute, Type $type, $value, string $format = null)
     {
         $builtinType = $type->getBuiltinType();
-        if (Type::BUILTIN_TYPE_FLOAT === $builtinType && null !== $format && false !== strpos($format, 'json')) {
+        if (Type::BUILTIN_TYPE_FLOAT === $builtinType && null !== $format && str_contains($format, 'json')) {
             $isValid = \is_float($value) || \is_int($value);
         } else {
             $isValid = \call_user_func('is_'.$builtinType, $value);

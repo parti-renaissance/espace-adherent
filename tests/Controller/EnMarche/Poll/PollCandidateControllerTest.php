@@ -52,7 +52,7 @@ class PollCandidateControllerTest extends WebTestCase
 
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertStatusCode(
-            false !== strpos($path, 'publier') ? Response::HTTP_FOUND : Response::HTTP_OK,
+            str_contains($path, 'publier') ? Response::HTTP_FOUND : Response::HTTP_OK,
             $this->client
         );
     }
@@ -69,7 +69,7 @@ class PollCandidateControllerTest extends WebTestCase
 
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertStatusCode(
-            false !== strpos($path, 'publier') ? Response::HTTP_FOUND : Response::HTTP_OK,
+            str_contains($path, 'publier') ? Response::HTTP_FOUND : Response::HTTP_OK,
             $this->client
         );
     }

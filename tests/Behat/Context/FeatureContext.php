@@ -99,8 +99,8 @@ class FeatureContext extends RawMinkContext
     public function iScrollElementIntoView($cssSelector): void
     {
         $js = <<<JS
-document.querySelector("$cssSelector").scrollIntoView();
-JS;
+            document.querySelector("$cssSelector").scrollIntoView();
+            JS;
 
         $this->getSession()->executeScript($js);
     }

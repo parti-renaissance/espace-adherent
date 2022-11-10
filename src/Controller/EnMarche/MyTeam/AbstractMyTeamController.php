@@ -44,7 +44,7 @@ abstract class AbstractMyTeamController extends AbstractController
         EntityManagerInterface $entityManager,
         DelegatedAccess $delegatedAccess = null
     ): Response {
-        $delegatedAccess = $delegatedAccess ?? new DelegatedAccess();
+        $delegatedAccess ??= new DelegatedAccess();
         $delegatedAccess->setDelegator($this->getUser());
         $delegatedAccess->setType($this->getSpaceType());
 

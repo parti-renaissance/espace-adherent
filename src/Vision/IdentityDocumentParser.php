@@ -53,7 +53,7 @@ class IdentityDocumentParser
         } elseif ($imageAnnotations->isFrenchPassport()) {
             $payload = $this->normalize($imageAnnotations->getText());
 
-            return false !== strpos($payload, $this->normalize($firstName));
+            return str_contains($payload, $this->normalize($firstName));
         }
 
         throw new \InvalidArgumentException(sprintf('Instance of "%s" is not a handled identity document type.', ImageAnnotations::class));
@@ -75,7 +75,7 @@ class IdentityDocumentParser
         } elseif ($imageAnnotations->isFrenchPassport()) {
             $payload = $this->normalize($imageAnnotations->getText());
 
-            return false !== strpos($payload, $this->normalize($lastName));
+            return str_contains($payload, $this->normalize($lastName));
         }
 
         throw new \InvalidArgumentException(sprintf('Instance of "%s" is not a handled identity document type.', ImageAnnotations::class));

@@ -565,15 +565,15 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             $phone = PhoneNumberUtils::create($phone);
         }
 
-        if ($city && false !== strpos($city, '-')) {
-            list(, $cityInseeCode) = explode('-', $city);
+        if ($city && str_contains($city, '-')) {
+            [, $cityInseeCode] = explode('-', $city);
             $foundedCity = $this->franceCities->getCityByInseeCode($cityInseeCode);
 
             $cityName = $foundedCity ? $foundedCity->getName() : null;
         }
 
-        if ($voteCity && false !== strpos($voteCity, '-')) {
-            list(, $voteCityInseeCode) = explode('-', $voteCity);
+        if ($voteCity && str_contains($voteCity, '-')) {
+            [, $voteCityInseeCode] = explode('-', $voteCity);
             $foundedVoteCity = $this->franceCities->getCityByInseeCode($voteCityInseeCode);
 
             $voteCityName = $foundedVoteCity ? $foundedVoteCity->getName() : null;
@@ -635,15 +635,15 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             $phone = PhoneNumberUtils::create($phone);
         }
 
-        if ($city && false !== strpos($city, '-')) {
-            list(, $cityInseeCode) = explode('-', $city);
+        if ($city && str_contains($city, '-')) {
+            [, $cityInseeCode] = explode('-', $city);
             $foundedCity = $this->franceCities->getCityByInseeCode($cityInseeCode);
 
             $cityName = $foundedCity ? $foundedCity->getName() : null;
         }
 
-        if ($voteCity && false !== strpos($voteCity, '-')) {
-            list(, $voteCityInseeCode) = explode('-', $voteCity);
+        if ($voteCity && str_contains($voteCity, '-')) {
+            [, $voteCityInseeCode] = explode('-', $voteCity);
             $foundedVoteCity = $this->franceCities->getCityByInseeCode($voteCityInseeCode);
 
             $voteCityName = $foundedVoteCity ? $foundedVoteCity->getName() : null;

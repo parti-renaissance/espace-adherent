@@ -560,8 +560,8 @@ class ProcurationRequest implements RecaptchaChallengeInterface
     {
         $this->voteCity = $cityCode;
 
-        if ($cityCode && false !== strpos($cityCode, '-')) {
-            list($postalCode, $inseeCode) = explode('-', $cityCode);
+        if ($cityCode && str_contains($cityCode, '-')) {
+            [$postalCode, $inseeCode] = explode('-', $cityCode);
             $inseeCode = str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
 
             $this->voteCity = "$postalCode-$inseeCode";

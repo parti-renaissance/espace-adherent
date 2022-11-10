@@ -164,7 +164,7 @@ class ImportReferentNominationCommand extends Command
         foreach ($rows as $row) {
             if ('75' === substr($row['area_code'], 0, 2)) {
                 $parisDistrictZip = [$row['area_code']];
-                if (false !== strpos($row['area_code'], ',')) {
+                if (str_contains($row['area_code'], ',')) {
                     $parisDistrictZip = explode(',', $row['area_code']);
                 }
 
@@ -215,7 +215,7 @@ class ImportReferentNominationCommand extends Command
             );
             $areaCodes = [$row['area_code']];
 
-            if (false !== strpos($row['area_code'], ',')) {
+            if (str_contains($row['area_code'], ',')) {
                 $areaCodes = explode(',', $row['area_code']);
             }
 

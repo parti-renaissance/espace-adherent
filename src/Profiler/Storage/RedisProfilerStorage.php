@@ -58,12 +58,12 @@ class RedisProfilerStorage implements ProfilerStorageInterface
             }
 
             $values = explode("\t", $item, 7);
-            list($itemToken, $itemIp, $itemMethod, $itemUrl, $itemTime, $itemParent) = $values;
-            $statusCode = isset($values[6]) ? $values[6] : null;
+            [$itemToken, $itemIp, $itemMethod, $itemUrl, $itemTime, $itemParent] = $values;
+            $statusCode = $values[6] ?? null;
 
             $itemTime = (int) $itemTime;
 
-            if ($ip && false === strpos($itemIp, $ip) || $url && false === strpos($itemUrl, $url) || $method && false === strpos($itemMethod, $method)) {
+            if ($ip && !str_contains($itemIp, $ip) || $url && !str_contains($itemUrl, $url) || $method && !str_contains($itemMethod, $method)) {
                 continue;
             }
 

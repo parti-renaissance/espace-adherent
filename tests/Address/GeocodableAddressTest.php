@@ -23,7 +23,7 @@ class GeocodableAddressTest extends AbstractKernelTestCase
         $address->setPostalCode($postalCode);
         $address->setCity('94110-94003');
 
-        list(, $inseeCode) = explode('-', $address->getCity());
+        [, $inseeCode] = explode('-', $address->getCity());
         $city = $this->getFranceCities()->getCityByInseeCode($inseeCode);
         $address->setCityName($city ? $city->getName() : null);
 

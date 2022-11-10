@@ -21,14 +21,14 @@ final class MethodToRouteAnnotationFixer extends AbstractFixer
             'Replace @Method annotation by @Route(..., methods={})',
             [
                 new CodeSample(
-                    '<?php 
+                    '<?php
 /**
  * @Route("/hello-world", name="hello_world")
  * @Method("GET")
  */
 public function helloWorldAction(){
 //...
-}                          
+}
 '
                 ),
             ]
@@ -58,8 +58,8 @@ public function helloWorldAction(){
             }
 
             if ($token->isGivenKind(\T_DOC_COMMENT)
-                && false !== strpos($token->getContent(), '@Route')
-                && false !== strpos($token->getContent(), '@Method')
+                && str_contains($token->getContent(), '@Route')
+                && str_contains($token->getContent(), '@Method')
             ) {
                 $token->setContent($this->replaceMethodToRouteAnnotation($token->getContent()));
             }

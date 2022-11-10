@@ -321,7 +321,7 @@ class Manager implements LoggerAwareInterface
 
     public function createStaticSegment(string $name, string $listId = null): ?int
     {
-        $listId = $listId ?? $this->mailchimpObjectIdMapping->getMainListId();
+        $listId ??= $this->mailchimpObjectIdMapping->getMainListId();
         $response = $this->driver->createStaticSegment($name, $listId);
         $responseData = $response->toArray();
 
@@ -344,7 +344,7 @@ class Manager implements LoggerAwareInterface
     ): bool {
         /** @var SegmentRequestBuilder $requestBuilder */
         $requestBuilder = $this->requestBuildersLocator->get(SegmentRequestBuilder::class);
-        $listId = $listId ?? $this->mailchimpObjectIdMapping->getMainListId();
+        $listId ??= $this->mailchimpObjectIdMapping->getMainListId();
 
         if ($segmentId) {
             $response = $this->driver->updateDynamicSegment($segmentId, $listId, $requestBuilder->createEditSegmentRequestFromDynamicSegment($segment));

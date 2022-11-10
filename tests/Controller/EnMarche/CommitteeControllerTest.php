@@ -468,7 +468,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     private function seeMembersCount(Crawler $crawler, string $membersCount): bool
     {
-        return false !== strpos(
+        return str_contains(
             $crawler->filter('.committee__infos')->text(),
             $membersCount.' adhérent'.($membersCount > 1 ? 's' : '')
         );
@@ -523,7 +523,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
     {
         /** @var \DOMElement $host */
         foreach ($crawler->filter('.committee__card .committee-host') as $host) {
-            if (false !== strpos($host->textContent, 'Contacter')) {
+            if (str_contains($host->textContent, 'Contacter')) {
                 continue;
             }
 

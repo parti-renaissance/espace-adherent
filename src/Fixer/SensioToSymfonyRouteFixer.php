@@ -21,12 +21,12 @@ final class SensioToSymfonyRouteFixer extends AbstractFixer
             'Replace Sensio\Bundle\FrameworkExtraBundle\Configuration\Route by Symfony\Component\Routing\Annotation\Route',
             [
                 new CodeSample(
-                    '<?php 
+                    '<?php
 
 namespace App\Controller;
 
 - use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-+ use Symfony\Component\Routing\Annotation\Route;                       
++ use Symfony\Component\Routing\Annotation\Route;
 '
                 ),
             ]
@@ -105,6 +105,6 @@ namespace App\Controller;
 
     private function hasServiceOption(string $content): bool
     {
-        return false !== strpos($content, '@Route') && false !== strpos($content, 'service');
+        return str_contains($content, '@Route') && str_contains($content, 'service');
     }
 }

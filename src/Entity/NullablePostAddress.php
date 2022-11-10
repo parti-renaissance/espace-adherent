@@ -110,7 +110,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         float $latitude = null,
         float $longitude = null
     ): self {
-        list($postalCode, $inseeCode) = explode('-', $cityCode);
+        [$postalCode, $inseeCode] = explode('-', $cityCode);
 
         $address = new self(
             self::FRANCE,
@@ -196,7 +196,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
     {
         $inseeCode = null;
         if ($this->city && 5 === strpos($this->city, '-')) {
-            list(, $inseeCode) = explode('-', $this->city);
+            [, $inseeCode] = explode('-', $this->city);
         }
 
         return $inseeCode;

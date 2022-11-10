@@ -171,9 +171,9 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
             Uuid::fromString(self::CAMPAIGN_6_UUID),
             'Campagne permanente',
             <<<BRIEF
-# Campagne permanente !
-**Campagne** pour passer des appels à ses contacts
-BRIEF,
+                # Campagne permanente !
+                **Campagne** pour passer des appels à ses contacts
+                BRIEF,
             null, // Team
             null, // Audience
             $nationalSurvey2,

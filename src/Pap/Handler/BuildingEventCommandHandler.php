@@ -47,7 +47,7 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
 
                     break;
                 case BuildingEventTypeEnum::FLOOR:
-                    list($name, $number) = explode('-', $buildingEvent->getIdentifier());
+                    [$name, $number] = explode('-', $buildingEvent->getIdentifier());
                     $buildingBlock = $building->getBuildingBlockByName($name);
                     if (!$buildingBlock) {
                         throw new \RuntimeException(sprintf('BuildingBlock with name "%s" is not found in the Building with uuid "%s"', $name, $building->getUuid()));

@@ -24,8 +24,8 @@ class CityNameDataTransformer implements DataTransformerInterface
     public function reverseTransform($value): mixed
     {
         if (method_exists($value, 'setCityName') && method_exists($value, 'getCity')) {
-            if ($value->getCity() && false !== strpos($value->getCity(), '-')) {
-                list(, $inseeCode) = explode('-', $value->getCity());
+            if ($value->getCity() && str_contains($value->getCity(), '-')) {
+                [, $inseeCode] = explode('-', $value->getCity());
                 $city = $this->franceCities->getCityByInseeCode($inseeCode);
 
                 $value->setCityName($city ? $city->getName() : null);
@@ -33,8 +33,8 @@ class CityNameDataTransformer implements DataTransformerInterface
         }
 
         if ($value instanceof ProcurationProxy || $value instanceof ProcurationRequest) {
-            if ($value->getVoteCity() && false !== strpos($value->getVoteCity(), '-')) {
-                list(, $voteCityInseeCode) = explode('-', $value->getVoteCity());
+            if ($value->getVoteCity() && str_contains($value->getVoteCity(), '-')) {
+                [, $voteCityInseeCode] = explode('-', $value->getVoteCity());
                 $VoteCity = $this->franceCities->getCityByInseeCode($voteCityInseeCode);
 
                 $value->setVoteCityName($VoteCity ? $VoteCity->getName() : null);

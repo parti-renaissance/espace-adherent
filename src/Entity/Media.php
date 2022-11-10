@@ -311,7 +311,7 @@ class Media
 
     public function isVideo(): bool
     {
-        return false !== strpos($this->mimeType, 'video');
+        return str_contains($this->mimeType, 'video');
     }
 
     public function getPathWithDirectory(): string

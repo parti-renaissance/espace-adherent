@@ -116,12 +116,12 @@ class ImportElectionMinistryResultFromXMLCommand extends Command
         $cityName = $cityAttr['value'][1]['value'];
         $inseeCode = $dptCode.$cityCode;
 
-        if (false !== strpos($inseeCode, 'SR')) {
-            if (false !== strpos($inseeCode, '69123SR')) {
+        if (str_contains($inseeCode, 'SR')) {
+            if (str_contains($inseeCode, '69123SR')) {
                 $inseeCode = 69380 + substr($inseeCode, -2);
-            } elseif (false !== strpos($inseeCode, '75056SR')) {
+            } elseif (str_contains($inseeCode, '75056SR')) {
                 $inseeCode = 75100 + substr($inseeCode, -2);
-            } elseif (false !== strpos($inseeCode, '13055SR')) {
+            } elseif (str_contains($inseeCode, '13055SR')) {
                 $inseeCode = 13200 + substr($inseeCode, -2);
             }
         }

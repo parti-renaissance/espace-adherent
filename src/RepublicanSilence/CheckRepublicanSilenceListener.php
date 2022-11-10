@@ -131,7 +131,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
                 return $type;
             }
 
-            if ('*' === substr($routeName, -1) && false !== strpos($currentRoute, rtrim($routeName, '*'))) {
+            if ('*' === substr($routeName, -1) && str_contains($currentRoute, rtrim($routeName, '*'))) {
                 return $type;
             }
         }

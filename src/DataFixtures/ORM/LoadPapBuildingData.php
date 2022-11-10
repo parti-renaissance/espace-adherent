@@ -216,7 +216,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         Adherent $createdBy = null,
         \DateTime $createdAt = null
     ): void {
-        $createdAt = $createdAt ?? new \DateTime();
+        $createdAt ??= new \DateTime();
 
         $buildingBlock = new BuildingBlock($name, $building, Uuid::fromString($uuid));
         $buildingBlock->setCreatedByAdherent($createdBy ?? $this->getReference('adherent-20'));

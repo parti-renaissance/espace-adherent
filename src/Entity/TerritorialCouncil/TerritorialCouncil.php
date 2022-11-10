@@ -223,7 +223,7 @@ class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterf
     public function isFof(): bool
     {
         foreach ($this->referentTags as $tag) {
-            if ($tag->isDistrictTag() && false !== strpos($tag->getCode(), 'CIRCO_FDE')) {
+            if ($tag->isDistrictTag() && str_contains($tag->getCode(), 'CIRCO_FDE')) {
                 return true;
             }
         }

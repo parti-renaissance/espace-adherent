@@ -22,17 +22,17 @@ class VotePlaceRepository extends ServiceEntityRepository
     public function findNear(float $latitude, float $longitude, int $limit = 300): array
     {
         $sql = <<<SQL
-            SELECT 
+            SELECT
                vp.uuid,
                vp.latitude,
                vp.longitude,
                COUNT(ad.id) AS addresses,
-               (6371 * 
+               (6371 *
                     ACOS(
-                    COS(RADIANS(:latitude)) 
-                    * COS(RADIANS(vp.latitude)) 
-                    * COS(RADIANS(vp.longitude) - RADIANS(:longitude)) 
-                    + SIN(RADIANS(:latitude)) 
+                    COS(RADIANS(:latitude))
+                    * COS(RADIANS(vp.latitude))
+                    * COS(RADIANS(vp.longitude) - RADIANS(:longitude))
+                    + SIN(RADIANS(:latitude))
                     * SIN(RADIANS(vp.latitude))
                    )
                ) AS distance
@@ -41,7 +41,7 @@ class VotePlaceRepository extends ServiceEntityRepository
             GROUP BY vp.id
             ORDER BY distance ASC
             LIMIT :limit
-SQL;
+            SQL;
 
         $stmt = $this
             ->getEntityManager()

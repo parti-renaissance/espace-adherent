@@ -10,6 +10,7 @@ $finder = PhpCsFixer\Finder::create()
 
 return (new PhpCsFixer\Config())
     ->setRules([
+        '@PHP81Migration' => true,
         '@Symfony' => true,
         '@DoctrineAnnotation' => true,
         'phpdoc_summary' => false,

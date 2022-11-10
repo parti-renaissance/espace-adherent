@@ -452,12 +452,11 @@ class AdherentAdmin extends AbstractAdmin
                     ->add('municipalChiefManagedArea', MunicipalChiefManagedAreaType::class, [
                         'label' => 'Candidat Municipales 2020 🇫🇷',
                         'help' => <<<HELP
-            Laisser vide si l'adhérent n'est pas chef municipal. 
-            Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC). <br/> 
-            Utiliser <strong>75100</strong> pour la ville de Paris, 
-            <strong>13200</strong> - Marseille, <strong>69380</strong> - Lyon
-    HELP
-                        ,
+                            Laisser vide si l'adhérent n'est pas chef municipal.
+                            Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC). <br/>
+                            Utiliser <strong>75100</strong> pour la ville de Paris,
+                            <strong>13200</strong> - Marseille, <strong>69380</strong> - Lyon
+                            HELP,
                     ])
                     ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
                         'label' => 'Candidat Sénatoriales 2020',
@@ -469,18 +468,18 @@ class AdherentAdmin extends AbstractAdmin
                         'label' => 'coordinator.label.codes',
                         'required' => false,
                         'help' => <<<HELP
-Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
-Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
-HELP
+                            Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
+                            Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
+                            HELP
                         ,
                     ])
                     ->add('assessorManagedAreaCodesAsString', TextType::class, [
                         'label' => 'assessors_manager',
                         'required' => false,
                         'help' => <<<HELP
-Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
-Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
-HELP
+                            Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
+                            Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
+                            HELP
 ,
                     ])
                     ->add('electionResultsReporter', null, [

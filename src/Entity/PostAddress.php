@@ -306,7 +306,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     {
         $inseeCode = null;
         if ($this->city && 5 === strpos($this->city, '-')) {
-            list(, $inseeCode) = explode('-', $this->city);
+            [, $inseeCode] = explode('-', $this->city);
         }
 
         return $inseeCode;

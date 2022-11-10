@@ -136,7 +136,7 @@ class ImportVotePlacesCommand extends Command
 
     private function formatPostalCode(string $postalCode): ?string
     {
-        if (false !== strpos($postalCode, '/')) {
+        if (str_contains($postalCode, '/')) {
             return str_replace('/', ',', $postalCode);
         }
 
