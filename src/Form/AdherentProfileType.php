@@ -45,6 +45,7 @@ class AdherentProfileType extends AbstractType
             ])
             ->add('gender', $options['is_renaissance'] ? CivilityType::class : GenderType::class, [
                 'disabled' => $options['disabled_form'],
+                'expanded' => false,
             ])
         ;
 
