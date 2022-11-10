@@ -31,6 +31,11 @@ final class Genders
         'common.gender.other' => self::OTHER,
     ];
 
+    public const CHOICES_NO_OTHER = [
+        'common.gender.woman' => self::FEMALE,
+        'common.gender.man' => self::MALE,
+    ];
+
     public const CHOICES_LABELS = [
         self::FEMALE => 'Femme',
         self::MALE => 'Homme',

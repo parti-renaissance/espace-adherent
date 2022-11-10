@@ -20,8 +20,6 @@
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
     {% endif %}
 
-    {% include 'membership/_profile_script.html.twig' with {genderField: '#adherent_profile_gender', customGenderField: '#adherent_profile_customGender'} %}
-
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runProfileUpdatePage();
@@ -49,7 +47,7 @@
                                         </svg>
                                     </div>
                                     <div class="ml-3 flex-1 md:flex md:justify-between">
-                                        <p class="text-sm text-sky-700">Votre profil est certifié, vous ne pouvez donc plus modifier votre genre, nom, prénom et date de naissance.</p>
+                                        <p class="text-sm text-sky-700">Votre profil est certifié, vous ne pouvez donc plus modifier votre civilité, nom, prénom et date de naissance.</p>
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +62,6 @@
                         <div>
                             <div>
                                 <h3 class="text-lg font-medium leading-6 text-gray-900 uppercase tracking-wider">Votre identité</h3>
-                                <p class="mt-1 text-sm text-gray-500">Toutes vos informations personnelles.</p>
                             </div>
                             <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-6">
                                 <div class="md:col-span-3">
@@ -80,8 +77,7 @@
                                     {{ form_row(form.nationality, {label: 'Nationalité'}) }}
                                 </div>
                                 <div class="md:col-span-2">
-                                    {{ form_row(form.gender) }}
-                                    {{ form_row(form.customGender, {label: ' ', attr: {placeholder: 'Précisez votre genre'}}) }}
+                                    {{ form_row(form.gender, {label: 'Civilité'}) }}
                                 </div>
                                 <div class="md:col-span-2">
                                     {{ form_row(form.emailAddress, {half: true, label: 'Adresse e-mail'}) }}
@@ -96,7 +92,6 @@
                         <div class="pt-8">
                             <div>
                                 <h3 class="text-lg font-medium leading-6 text-gray-900 uppercase tracking-wider">Vos coordonnées</h3>
-                                <p class="mt-1 text-sm text-gray-500">Renseignez votre localisation à laquelle nous pouvons vous trouver.</p>
                             </div>
                             <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-6">
                                 <div class="md:col-span-4">

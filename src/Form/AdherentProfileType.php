@@ -7,6 +7,7 @@ use App\AdherentProfile\AdherentProfile;
 use App\Entity\ActivityAreaEnum;
 use App\Entity\JobEnum;
 use App\Membership\MandatesEnum;
+use App\ValueObject\Genders;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -45,11 +46,22 @@ class AdherentProfileType extends AbstractType
             ])
             ->add('gender', GenderType::class, [
                 'disabled' => $options['disabled_form'],
+                'choices' => $options['is_renaissance']
+                    ? Genders::CHOICES_NO_OTHER
+                    : Genders::CHOICES,
             ])
-            ->add('customGender', TextType::class, [
-                'required' => false,
-                'disabled' => $options['disabled_form'],
-            ])
+        ;
+
+        if (!$options['is_renaissance']) {
+            $builder
+                ->add('customGender', TextType::class, [
+                    'required' => false,
+                    'disabled' => $options['disabled_form'],
+                ])
+            ;
+        }
+
+        $builder
             ->add('birthdate', DatePickerType::class, [
                 'disabled' => $options['disabled_form'],
                 'max_date' => new \DateTime('-15 years'),
@@ -109,6 +121,10 @@ class AdherentProfileType extends AbstractType
         $resolver->setDefined('disabled_form');
         $resolver->setAllowedTypes('disabled_form', 'bool');
         $resolver->setDefault('disabled_form', false);
+
+        $resolver->setDefined('is_renaissance');
+        $resolver->setAllowedTypes('is_renaissance', 'bool');
+        $resolver->setDefault('is_renaissance', false);
 
         $resolver->setDefaults([
             'data_class' => AdherentProfile::class,
