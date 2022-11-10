@@ -295,7 +295,7 @@ class AdherentControllerTest extends WebTestCase
             ],
         ]);
 
-        $errors = $crawler->filter('.em-form--error');
+        $errors = $crawler->filter('.re-form-error');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         self::assertSame(2, $errors->count());
