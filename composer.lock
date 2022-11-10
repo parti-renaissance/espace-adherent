@@ -13245,16 +13245,16 @@
         },
         {
             "name": "symfony/doctrine-bridge",
-            "version": "v4.4.46",
+            "version": "v4.4.48",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/doctrine-bridge.git",
-                "reference": "49a19ea3ce2508077fb9a2bf9adfbed3485aada6"
+                "reference": "8dbbec53714eb512321380d582b45ff7e074a5d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/49a19ea3ce2508077fb9a2bf9adfbed3485aada6",
-                "reference": "49a19ea3ce2508077fb9a2bf9adfbed3485aada6",
+                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/8dbbec53714eb512321380d582b45ff7e074a5d6",
+                "reference": "8dbbec53714eb512321380d582b45ff7e074a5d6",
                 "shasum": ""
             },
             "require": {
@@ -13335,7 +13335,7 @@
             "description": "Provides integration for Doctrine with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/doctrine-bridge/tree/v4.4.46"
+                "source": "https://github.com/symfony/doctrine-bridge/tree/v4.4.48"
             },
             "funding": [
                 {
@@ -13351,7 +13351,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-09-06T11:08:20+00:00"
+            "time": "2022-10-14T11:24:01+00:00"
         },
         {
             "name": "symfony/dom-crawler",
