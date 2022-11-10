@@ -84,7 +84,7 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-20.04
-    needs: [ build ]
+    needs: [build]
 
     steps:
       - uses: actions/checkout@v3
@@ -104,14 +104,18 @@ jobs:
       - name: Cache PHP CS Fixer
         uses: actions/cache@v3
         with:
-          path: .php-cs-fixer.dist.php
-          key: cache-${{ env.CACHE_KEY }}-phpcsfixer
+          path: var/.php_cs.cache
+          key: cache-${{ env.CACHE_KEY }}-phpcsfixer-${{ github.sha }}
+          restore-keys: |
+              cache-${{ env.CACHE_KEY }}-phpcsfixer-
 
       - name: Cache PHPStan
         uses: actions/cache@v3
         with:
           path: var/phpstan-tmp/
-          key: cache-${{ env.CACHE_KEY }}-phpstan
+          key: cache-${{ env.CACHE_KEY }}-phpstan-${{ github.sha }}
+          restore-keys: |
+              cache-${{ env.CACHE_KEY }}-phpstan-
 
       - uses: ./.github/actions/setup-composer
       - uses: ./.github/actions/setup-yarn
