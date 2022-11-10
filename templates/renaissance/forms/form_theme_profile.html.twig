@@ -64,7 +64,7 @@
 {% block form_errors -%}
     {% if errors|length %}
         {%- for error in errors -%}
-            <p class="mt-1.5 text-sm text-red-600">
+            <p class="mt-1.5 text-sm text-red-600 re-form-error">
                 {%- if error_raw -%}
                     {{- error.message|raw -}}
                 {%- else -%}

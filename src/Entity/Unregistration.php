@@ -66,7 +66,7 @@ class Unregistration
     private $postalCode;
 
     /**
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="json_array", nullable=true)
      * @Assert\NotBlank(message="adherent.unregistration.reasons")
      */
     private $reasons = [];

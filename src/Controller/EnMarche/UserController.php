@@ -163,6 +163,7 @@ class UserController extends AbstractController
         $form = $this->createForm(UnregistrationType::class, $unregistrationCommand, [
             'csrf_token_id' => self::UNREGISTER_TOKEN,
             'reasons' => array_combine($reasons, $reasons),
+            'is_renaissance' => AppCodeEnum::isRenaissanceApp($appCode),
         ]);
 
         $form->handleRequest($request);

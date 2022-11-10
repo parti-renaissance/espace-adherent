@@ -1,0 +1,34 @@
+{% set isInformationRoute = is_active_route(app.request, [
+    'app_user_edit',
+    'app_certification_request_*',
+    'app_user_change_password',
+    'app_adherent_pin_interests',
+    'app_user_set_email_notifications',
+    'app_adherent_commitment',
+] ) %}
+
+<div>
+    <h5 class="inline-flex items-center mb-4 text-sm leading-5 font-medium uppercase tracking-wider lg:mb-3{{ isInformationRoute ? ' text-re-blue-500' : 'text-gray-600' }}">
+        <svg class="w-5 h-5 mr-2{{ isInformationRoute ? ' text-re-blue-400' : 'text-gray-400' }}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+        </svg>
+        Informations
+    </h5>
+    <ul class="ml-2 space-y-4 lg:space-y-2 border-l border-gray-200">
+        <li>
+            <a href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, ['app_user_edit', 'app_user_terminate_membership'], { app_domain: renaissance_host }) ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+                Général
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_user_change_password', { app_domain: renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_user_change_password', { app_domain: renaissance_host }) ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+                Mot de passe
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_certification_request_home', { app_domain: renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_certification_request_home', { app_domain: renaissance_host }) ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+                Certification
+            </a>
+        </li>
+    </ul>
+</div>
