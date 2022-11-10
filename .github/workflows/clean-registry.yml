@@ -10,7 +10,7 @@ jobs:
   clean:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/auth@v0
+      - uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
 
