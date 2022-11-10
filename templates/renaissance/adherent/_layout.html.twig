@@ -1,14 +1,6 @@
 {% extends 'base_renaissance.html.twig' %}
 
 {% block content %}
-    {% set isInformationRoute = is_active_route(app.request, [
-        'app_user_edit',
-        'app_certification_request_*',
-        'app_user_change_password',
-        'app_adherent_pin_interests',
-        'app_user_set_email_notifications',
-        'app_adherent_commitment',
-    ] ) %}
 
     <div x-data="{ show: false }" @keydown.window.escape="show = false;" class="adherent-account relative flex min-h-screen flex-col bg-gray-50">
         <!-- Navbar -->
@@ -102,11 +94,11 @@
                                     <p class="truncate text-sm font-medium text-gray-900" role="none">{{ app.user.emailAddress }}</p>
                                 </div>
                                 <div class="py-1" role="none">
-                                    <a href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Mon Compte</a>
-                                    <a href="{{ path('app_certification_request_home', { app_domain: renaissance_host }) }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Ma Certification</a>
+                                    <a href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Mon compte</a>
+                                    <a href="{{ path('app_certification_request_home', { app_domain: renaissance_host }) }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Certification</a>
                                 </div>
                                 <div class="py-1" role="none">
-                                    <a href="{{ path('logout', { app_domain: renaissance_host }) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Se deconnecter</a>
+                                    <a href="{{ path('logout', { app_domain: renaissance_host }) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Se déconnecter</a>
                                 </div>
                             </div>
                         </div>

@@ -54,7 +54,7 @@ class SecurityControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame($fullName, trim($crawler->filter('h6')->first()->text()));
 
-        $this->client->click($crawler->selectLink('Déconnexion')->link());
+        $this->client->click($crawler->selectLink('Se déconnecter')->link());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client);
 

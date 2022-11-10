@@ -1,3 +1,12 @@
+{% set isInformationRoute = is_active_route(app.request, [
+    'app_user_edit',
+    'app_certification_request_*',
+    'app_user_change_password',
+    'app_adherent_pin_interests',
+    'app_user_set_email_notifications',
+    'app_adherent_commitment',
+] ) %}
+
 <div>
     <h5 class="inline-flex items-center mb-4 text-sm leading-5 font-medium uppercase tracking-wider lg:mb-3{{ isInformationRoute ? ' text-re-blue-500' : 'text-gray-600' }}">
         <svg class="w-5 h-5 mr-2{{ isInformationRoute ? ' text-re-blue-400' : 'text-gray-400' }}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -19,11 +28,6 @@
         <li>
             <a href="{{ path('app_certification_request_home', { app_domain: renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_certification_request_home', { app_domain: renaissance_host }) ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
                 Certification
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('logout', { app_domain: renaissance_host }) }}" class="block border-l pl-4 -ml-px">
-                Déconnexion
             </a>
         </li>
     </ul>
