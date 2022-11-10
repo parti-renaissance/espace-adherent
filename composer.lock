@@ -10762,19 +10762,21 @@
         },
         {
             "name": "scienta/doctrine-json-functions",
-            "version": "4.4.0",
+            "version": "4.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ScientaNL/DoctrineJsonFunctions.git",
-                "reference": "64c3f8875a46d4f33f807a2d3260335c2f5f2eea"
+                "reference": "138a017a92d9f0dfd22e221584b66517f005c222"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ScientaNL/DoctrineJsonFunctions/zipball/64c3f8875a46d4f33f807a2d3260335c2f5f2eea",
-                "reference": "64c3f8875a46d4f33f807a2d3260335c2f5f2eea",
+                "url": "https://api.github.com/repos/ScientaNL/DoctrineJsonFunctions/zipball/138a017a92d9f0dfd22e221584b66517f005c222",
+                "reference": "138a017a92d9f0dfd22e221584b66517f005c222",
                 "shasum": ""
             },
             "require": {
+                "doctrine/dbal": "2.*",
+                "doctrine/orm": "2.*",
                 "ext-pdo": "*",
                 "php": "^7.1 || ^8.0"
             },
@@ -10822,9 +10824,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ScientaNL/DoctrineJsonFunctions/issues",
-                "source": "https://github.com/ScientaNL/DoctrineJsonFunctions/tree/4.4.0"
+                "source": "https://github.com/ScientaNL/DoctrineJsonFunctions/tree/4.5.0"
             },
-            "time": "2021-09-17T11:20:14+00:00"
+            "time": "2022-01-12T09:54:17+00:00"
         },
         {
             "name": "sendinblue/api-v3-sdk",
