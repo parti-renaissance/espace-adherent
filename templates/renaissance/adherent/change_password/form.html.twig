@@ -1,0 +1,30 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% form_theme form 'renaissance/forms/form_theme_profile.html.twig' %}
+
+{% block page_title 'Mot de passe' %}
+
+{% block content_right_side %}
+    <section class="space-y-4 md:space-y-6">
+        <h1 class="text-3xl font-bold leading-10 text-gray-900">Mot de passe</h1>
+
+        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+            <div>
+                <h3 class="text-lg font-medium leading-6 text-gray-900 uppercase tracking-wider">Sécurité</h3>
+                <p class="mt-1 text-base leading-6 text-gray-500">Vous devez renseigner votre mot de passe actuel pour changer de mot de passe.</p>
+            </div>
+            {{ form_start(form, {attr: {class: 'mt-6'}}) }}
+                <div class="w-full max-w-2xl space-y-6">
+                    {{ form_row(form.old_password, {half: true, label: 'Mot de passe actuel', attr: {placeholder: '******'}}) }}
+                    {{ form_row(form.password.first, {half: true, label: 'Nouveau mot de passe', attr: {placeholder: '******'}}) }}
+                    {{ form_row(form.password.second, {half: true, label: 'Confirmer Nouveau mot de passe', attr: {placeholder: '******'}}) }}
+                </div>
+
+                <div class="mt-10">
+                    {{ form_widget(form.submit, {label: 'Enregistrer', attr: {class: 'button button-blue'}}) }}
+                </div>
+
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}

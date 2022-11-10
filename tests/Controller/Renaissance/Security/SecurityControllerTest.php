@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\App\Controller\EnMarche\Security;
+namespace Tests\App\Controller\Renaissance\Security;
 
+use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\Message\AdherentResetPasswordMessage;
@@ -18,7 +19,7 @@ use Tests\App\Controller\ControllerTestTrait;
  * @group functional
  * @group security
  */
-class RenaissanceSecurityControllerTest extends WebTestCase
+class SecurityControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
@@ -27,6 +28,98 @@ class RenaissanceSecurityControllerTest extends WebTestCase
 
     /* @var EmailRepository */
     private $emailRepository;
+
+    /**
+     * @dataProvider getAdherentEmails
+     */
+    public function testAuthenticationIsSuccessful(string $email, string $fullName): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(0, $crawler->filter('#auth-error'));
+
+        $this->client->submit($crawler->selectButton('Connexion')->form([
+            '_login_email' => $email,
+            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
+        ]));
+
+        $adherent = $this->adherentRepository->findOneByEmail($email);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/parametres/mon-compte/modifier', $this->client);
+        $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
+
+        $crawler = $this->client->followRedirect();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame($fullName, trim($crawler->filter('h6')->first()->text()));
+
+        $this->client->click($crawler->selectLink('Se déconnecter')->link());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client);
+
+        $crawler = $this->client->followRedirect();
+        $this->assertSame(0, $crawler->selectLink($fullName)->count());
+    }
+
+    public function getAdherentEmails(): array
+    {
+        return [
+            ['carl999@example.fr', 'Carl Mirabeau'],
+            ['renaissance-user-1@en-marche-dev.fr', 'Laure Fenix'],
+        ];
+    }
+
+    /**
+     * @dataProvider provideInvalidCredentials
+     */
+    public function testLoginCheckFails(string $username, string $password, string $messageExpected): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(0, $crawler->filter('#auth-error'));
+
+        $this->client->submit($crawler->selectButton('Connexion')->form([
+            '_login_email' => $username,
+            '_login_password' => $password,
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(1, $error = $crawler->filter('.text-red-400'));
+        $this->assertSame($messageExpected, trim($error->text()));
+    }
+
+    public function provideInvalidCredentials(): array
+    {
+        return [
+            'Unregistered adherent account' => [
+                'foobar@foo.tld',
+                'foo-bar-pass',
+                'L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.',
+            ],
+            'Registered enabled adherent' => [
+                'carl999@example.fr',
+                'foo-bar-pass',
+                'L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.',
+            ],
+            'Registered not validated account' => [
+                'michelle.dufour@example.ch',
+                'secret!12345',
+                'Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau.',
+            ],
+            'Registered disabled account' => [
+                'simple-user-disabled@example.ch',
+                'secret!12345',
+                'Votre compte a été désactivé par un administrateur.',
+            ],
+        ];
+    }
 
     public function testRetrieveForgotPasswordAction(): void
     {

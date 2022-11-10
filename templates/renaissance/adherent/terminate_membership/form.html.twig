@@ -1,0 +1,33 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% block page_title 'Désadhésion' %}
+
+{% block content_right_side %}
+    <section class="space-y-4 md:space-y-6" id="certification">
+        <h1 class="text-3xl font-bold leading-10 text-gray-900">Suppression du compte</h1>
+
+        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+
+            {{ form_start(form) }}
+
+                {{ form_errors(form) }}
+
+                <div>
+                    <p class="mt-4 text-base leading-6 text-gray-500">
+                        Si vous ne souhaitez plus être adhérent, vous pouvez finaliser la suppression de votre adhésion en cliquant ci-dessous.
+                    </p>
+                </div>
+                <div class="mt-8">
+                    <div class="bg-gray-50 rounded-lg max-w-2xl px-4 py-5 sm:p-6">
+                        <div class="mt-5">
+                            <button type="submit" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 uppercase tracking-wider font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-re-blue-500 focus:ring-offset-2 sm:text-sm">
+                                Je confirme la suppression de mon adhésion
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}

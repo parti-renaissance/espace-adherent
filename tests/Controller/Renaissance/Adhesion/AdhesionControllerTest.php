@@ -20,7 +20,6 @@ use Tests\App\Test\Payment\PayboxProvider;
 
 /**
  * @group functional
- * @group debug
  */
 class AdhesionControllerTest extends WebTestCase
 {

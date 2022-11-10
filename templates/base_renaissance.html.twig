@@ -51,7 +51,7 @@
                     <div class="p-4 text-sm text-blue-700 bg-blue-100 dark:bg-blue-200 dark:text-blue-800" role="alert">
                 {% endif %}
                     {% for message in messages %}
-                        <div>{{ message|trans }}</div>
+                        <div class="flash--{{ label }}">{{ message|trans }}</div>
                     {% endfor %}
                 </div>
             {% endif %}

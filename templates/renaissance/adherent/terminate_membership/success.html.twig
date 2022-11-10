@@ -1,0 +1,14 @@
+{% extends 'renaissance/double_columns_layout.html.twig' %}
+
+{% block page_title 'Désadhésion' %}
+
+{% block content_right_side %}
+
+    <h1>
+        Votre adhésion et votre compte Renaissance ont bien été supprimés et vos données personnelles effacées de notre base.
+    </h1>
+    <p>
+        Si vous le souhaitez, vous pouvez réadherer en suivant <a href="{{ path('app_renaissance_adhesion') }}">ce lien</a>.
+    </p>
+
+{% endblock %}

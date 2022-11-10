@@ -2,11 +2,13 @@ import 'utils/dom';
 import 'utils/sharer';
 import 'utils/css';
 
+import Alpine from 'alpinejs';
 import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
 
 import './style/main.scss';
 
+window.Alpine = Alpine;
 window.Bootstrap = class {
     static boot(release, sentryDsn, environment, user) {
         let app = false;
@@ -31,6 +33,8 @@ window.Bootstrap = class {
                 }
 
                 listeners.forEach((listener) => Main.addListener(listener));
+
+                Alpine.start();
 
                 Main.run({
                     sentryDsn,

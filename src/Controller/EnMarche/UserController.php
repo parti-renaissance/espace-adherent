@@ -7,6 +7,7 @@ use App\AdherentCharter\AdherentCharterFactory;
 use App\AdherentCharter\AdherentCharterTypeEnum;
 use App\AdherentProfile\AdherentProfile;
 use App\AdherentProfile\AdherentProfileHandler;
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\Unregistration;
 use App\Form\AdherentChangePasswordType;
@@ -17,6 +18,7 @@ use App\Membership\AdherentChangePasswordHandler;
 use App\Membership\Event\UserEvent;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\UserEvents;
+use App\OAuth\App\AuthAppUrlManager;
 use App\Subscription\SubscriptionHandler;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -40,8 +42,14 @@ class UserController extends AbstractController
     /**
      * @Route("/modifier", name="app_user_edit", methods={"GET", "POST"})
      */
-    public function profileAction(Request $request, AdherentProfileHandler $handler): Response
-    {
+    public function profileAction(
+        Request $request,
+        AdherentProfileHandler $handler,
+        AuthAppUrlManager $appUrlManager,
+        string $app_domain
+    ): Response {
+        $appCode = $appUrlManager->getAppCodeFromRequest($request);
+
         $adherent = $this->getUser();
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);
 
@@ -54,10 +62,17 @@ class UserController extends AbstractController
             $handler->update($adherent, $adherentProfile);
             $this->addFlash('info', 'adherent.update_profile.success');
 
-            return $this->redirectToRoute('app_user_edit');
+            return $this->redirectToRoute('app_user_edit', ['app_domain' => $app_domain]);
         }
 
-        return $this->render('adherent/profile.html.twig', ['form' => $form->createView()]);
+        return $this->render(
+            AppCodeEnum::isRenaissanceApp($appCode)
+                ? 'renaissance/adherent/profile/form.html.twig'
+                : 'adherent/profile.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -65,20 +80,31 @@ class UserController extends AbstractController
      *
      * @Route("/changer-mot-de-passe", name="app_user_change_password", methods={"GET", "POST"})
      */
-    public function changePasswordAction(Request $request, AdherentChangePasswordHandler $handler): Response
-    {
+    public function changePasswordAction(
+        Request $request,
+        AdherentChangePasswordHandler $handler,
+        AuthAppUrlManager $appUrlManager,
+        string $app_domain
+    ): Response {
+        $appCode = $appUrlManager->getAppCodeFromRequest($request);
+
         $form = $this->createForm(AdherentChangePasswordType::class);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $handler->changePassword($this->getUser(), $form->get('password')->getData());
             $this->addFlash('info', 'adherent.update_password.success');
 
-            return $this->redirectToRoute('app_user_change_password');
+            return $this->redirectToRoute('app_user_change_password', ['app_domain' => $app_domain]);
         }
 
-        return $this->render('adherent/change_password.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            AppCodeEnum::isRenaissanceApp($appCode)
+                ? 'renaissance/adherent/change_password/form.html.twig'
+                : 'adherent/change_password.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -123,8 +149,11 @@ class UserController extends AbstractController
     public function terminateMembershipAction(
         Request $request,
         MembershipRequestHandler $handler,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        AuthAppUrlManager $appUrlManager
     ): Response {
+        $appCode = $appUrlManager->getAppCodeFromRequest($request);
+
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
         $unregistrationCommand = new UnregistrationCommand();
@@ -134,6 +163,7 @@ class UserController extends AbstractController
         $form = $this->createForm(UnregistrationType::class, $unregistrationCommand, [
             'csrf_token_id' => self::UNREGISTER_TOKEN,
             'reasons' => array_combine($reasons, $reasons),
+            'is_renaissance' => AppCodeEnum::isRenaissanceApp($appCode),
         ]);
 
         $form->handleRequest($request);
@@ -143,16 +173,26 @@ class UserController extends AbstractController
             $tokenStorage->setToken(null);
             $request->getSession()->invalidate();
 
-            return $this->render(sprintf('%s/terminate_membership.html.twig', $viewFolder), [
-                'unregistered' => true,
-                'form' => $form->createView(),
-            ]);
+            return $this->render(
+                AppCodeEnum::isRenaissanceApp($appCode)
+                    ? 'renaissance/adherent/terminate_membership/success.html.twig'
+                    : sprintf('%s/terminate_membership.html.twig', $viewFolder),
+                [
+                    'unregistered' => true,
+                    'form' => $form->createView(),
+                ]
+            );
         }
 
-        return $this->render(sprintf('%s/terminate_membership.html.twig', $viewFolder), [
-            'unregistered' => false,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            AppCodeEnum::isRenaissanceApp($appCode)
+                ? 'renaissance/adherent/terminate_membership/form.html.twig'
+                : sprintf('%s/terminate_membership.html.twig', $viewFolder),
+            [
+                'unregistered' => false,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
