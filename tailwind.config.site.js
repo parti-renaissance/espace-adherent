@@ -3,10 +3,6 @@ const colors = require('tailwindcss/colors');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: [
-        'templates/**/*.html.twig',
-        'assets/**/*.js',
-    ],
     safelist: [
         'form-group',
         'form-control',

@@ -418,7 +418,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringContainsString(
-            'Si vous souhaitez désadhérer et supprimer votre compte Renaissance, cliquez-ici.',
+            'Cliquez ci-dessous si vous souhaitez supprimer votre compte.',
             $crawler->text()
         );
 

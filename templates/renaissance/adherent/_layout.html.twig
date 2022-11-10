@@ -56,9 +56,9 @@
                             </a>
                         </div>
                         <!-- Profile dropdown -->
-                        <div x-data="{ open: false }" @keydown.escape.stop="open = false;" @click.away="open = false" class="relative shrink-0" x-cloak>
+                        <div x-data="{ open: false }" @keydown.escape.stop="open = false;" @click.away="open = false" class="relative shrink-0">
                             <div>
-                                <button @click="open =! open" type="button" class="flex items-center text-re-blue-100 hover:text-white focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true" x-bind:aria-expanded="open.toString()">
+                                <button @click="open =! open" type="button" class="flex items-center py-2 px-3 bg-re-blue-700 hover:bg-re-blue-800 rounded-md  text-re-blue-100 hover:text-white focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true" x-bind:aria-expanded="open.toString()">
                                     <span class="sr-only">Menu utilisateur</span>
                                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
@@ -73,7 +73,7 @@
                                     </span>
                                 </button>
                             </div>
-                            <div x-show="open"
+                            <div x-cloak x-show="open"
                                  x-transition:enter="transition ease-out duration-100"
                                  x-transition:enter-start="transform opacity-0 scale-95"
                                  x-transition:enter-end="transform opacity-100 scale-100"
