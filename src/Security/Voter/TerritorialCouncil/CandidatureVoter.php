@@ -11,9 +11,8 @@ class CandidatureVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE';
 
-    protected function doVoteOnAttribute($attribute, $adherent, $subject): bool
+    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        /** @var Adherent $adherent */
         if (!$adherent->hasTerritorialCouncilMembership()) {
             return false;
         }

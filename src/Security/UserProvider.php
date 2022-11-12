@@ -9,9 +9,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class UserProvider extends EntityUserProvider
+class UserProvider extends EntityUserProvider implements UserProviderInterface
 {
     private $failedLoginAttemptRepository;
     private $requestStack;
@@ -33,16 +35,14 @@ class UserProvider extends EntityUserProvider
         $this->logger = $logger;
     }
 
-    public function loadUserByUsername($username)
+    public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        $signature = LoginAttemptSignature::createFromRequest($this->requestStack->getMainRequest())
-            ->getSignature()
-        ;
+        $signature = LoginAttemptSignature::createFromRequest($this->requestStack->getMainRequest())->getSignature();
 
         if (!$this->failedLoginAttemptRepository->canLogin($signature)) {
-            $this->logger->warning(sprintf('Max login attempts reached for "%s"', $username), [
+            $this->logger->warning(sprintf('Max login attempts reached for "%s"', $identifier), [
                 'attempts' => $this->failedLoginAttemptRepository->countAttempts($signature),
-                'username' => $username,
+                'username' => $identifier,
                 'signature' => $signature,
             ]);
 
@@ -50,11 +50,11 @@ class UserProvider extends EntityUserProvider
         }
 
         try {
-            return parent::loadUserByUsername($username);
-        } catch (UsernameNotFoundException $e) {
+            return parent::loadUserByIdentifier($identifier);
+        } catch (UserNotFoundException $e) {
             // security.hide_user_not_found option is disabled in order to customize the error message
             // So we must handle that logic ourself
-            throw new BadCredentialsException(sprintf('Username %s not found.', $username), 0, $e);
+            throw new BadCredentialsException(sprintf('Username %s not found.', $identifier), 0, $e);
         }
     }
 }
