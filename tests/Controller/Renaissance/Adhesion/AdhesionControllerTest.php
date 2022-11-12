@@ -11,7 +11,7 @@ use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountActivationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage;
 use App\Repository\AdherentRepository;
 use App\Repository\DonationRepository;
-use Goutte\Client as PayboxClient;
+use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
@@ -29,7 +29,7 @@ class AdhesionControllerTest extends WebTestCase
 
     private ?AdherentRepository $adherentRepository = null;
     private ?DonationRepository $donationRepository = null;
-    private ?PayboxClient $payboxClient = null;
+    private ?HttpBrowser $payboxClient = null;
     private ?PayboxProvider $payboxProvider = null;
 
     public function testRenaissanceMembershipRequest(): void
@@ -218,7 +218,7 @@ class AdhesionControllerTest extends WebTestCase
         $this->client->setServerParameter('HTTP_HOST', $this->getParameter('renaissance_host'));
         $this->adherentRepository = $this->getAdherentRepository();
         $this->donationRepository = $this->getDonationRepository();
-        $this->payboxClient = new PayboxClient();
+        $this->payboxClient = new HttpBrowser();
         $this->payboxProvider = $this->get(PayboxProvider::class);
     }
 

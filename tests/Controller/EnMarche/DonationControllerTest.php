@@ -11,7 +11,7 @@ use App\Repository\DonationRepository;
 use App\Repository\DonatorIdentifierRepository;
 use App\Repository\DonatorRepository;
 use App\Repository\TransactionRepository;
-use Goutte\Client as PayboxClient;
+use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +29,7 @@ class DonationControllerTest extends WebTestCase
 
     private const PAYBOX_PREPROD_URL = 'https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi';
 
-    /* @var PayboxClient */
+    /* @var HttpBrowser */
     private $payboxClient;
 
     /* @var DonationRepository */
@@ -485,7 +485,7 @@ class DonationControllerTest extends WebTestCase
         $this->getRepository(Transaction::class)->createQueryBuilder('t')->delete()->getQuery()->execute();
         $this->getDonationRepository()->createQueryBuilder('d')->delete()->getQuery()->execute();
 
-        $this->payboxClient = new PayboxClient();
+        $this->payboxClient = new HttpBrowser();
         $this->donationRepository = $this->getDonationRepository();
         $this->donatorRepository = $this->getDonatorRepository();
         $this->donatorIdentifierRepository = $this->getDonatorIdentifierRepository();
