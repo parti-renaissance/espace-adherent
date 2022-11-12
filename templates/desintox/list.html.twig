@@ -9,6 +9,7 @@
 {% block open_graph_image (homepage_url ~ static_asset('pages-sharers/desintox.png', {'q': 70}))|raw %}
 
 {% block stylesheets %}
+    <link href="{{ asset('css/emoji.min.css') }}" rel="stylesheet">
     <style type="text/css">
         body {
             background-color: #E5E5E5;
@@ -17,12 +18,6 @@
             background-color: #fff;
         }
     </style>
-{% endblock %}
-
-{% block base_stylesheets %}
-    {{ parent() }}
-
-    <link href="{{ asset('css/emoji.min.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}

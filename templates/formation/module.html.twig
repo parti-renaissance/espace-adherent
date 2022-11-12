@@ -6,9 +6,7 @@
 
 {% block canonical_url url('app_formation_module', { 'slug': module.slug }) %}
 
-{% block base_stylesheets %}
-    {{ parent() }}
-
+{% block stylesheets %}
     <link href="{{ asset('css/emoji.min.css') }}" rel="stylesheet">
 {% endblock %}
 

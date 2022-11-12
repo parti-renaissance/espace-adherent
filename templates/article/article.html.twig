@@ -8,9 +8,7 @@
 {% block meta_description article.description %}
 {% block meta_twitter_description article.twitterDescription ?: article.description %}
 
-{% block base_stylesheets %}
-    {{ parent() }}
-
+{% block stylesheets %}
     <link href="{{ asset('css/emoji.min.css') }}" rel="stylesheet">
 {% endblock %}
 

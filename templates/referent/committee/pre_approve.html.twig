@@ -1,8 +1,11 @@
 {% extends base_template %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('js/jquery/ui/jquery-ui-1.10.4.min.css') }}" />
+{% endblock %}
+
 {% block head_javascripts %}
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+    <script type="text/javascript" src={{ asset('js/jquery/jquery-2.2.4.min.js') }}></script>
 {% endblock %}
 
 {% block javascripts %}

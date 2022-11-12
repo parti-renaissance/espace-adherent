@@ -13,8 +13,8 @@
 
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    <script type="text/javascript" src={{ asset('js/jquery/jquery-2.2.4.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('js/jquery/ui/jquery-ui-1.10.4.min.js') }}></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.ckeditor(form.vars.id ~ '_content', null, constant('App\\Entity\\UserDocument::TYPE_TERRITORIAL_COUNCIL_FEED'), 5000, true) }}

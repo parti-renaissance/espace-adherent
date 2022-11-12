@@ -41,8 +41,8 @@
 {% endblock %}
 
 {% block final_javascripts %}
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    <script type="text/javascript" src={{ asset('js/jquery/jquery-2.2.4.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('js/jquery/ui/jquery-ui-1.10.4.min.js') }}></script>
 
     {% if js is not defined %}
         {% import 'javascript.js.twig' as js %}
