@@ -6,7 +6,7 @@ use App\Csv\CsvResponseFactory;
 use App\Repository\AdherentRepository;
 use League\Csv\CharsetConverter;
 use League\Csv\Writer;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/crm-paris")
  *
- * @Security("is_granted('ROLE_OAUTH_SCOPE_CRM_PARIS')")
+ * @IsGranted("ROLE_OAUTH_SCOPE_CRM_PARIS")
  */
 class CrmParisController extends AbstractController
 {

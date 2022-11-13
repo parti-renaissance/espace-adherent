@@ -6,7 +6,7 @@ use App\Entity\ProcurationRequest;
 use App\Procuration\ProcurationManager;
 use App\Procuration\ProcurationRequestSerializer;
 use App\Repository\ProcurationRequestRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/procuration")
- * @Security("is_granted('ROLE_ADMIN_PROCURATIONS')")
+ * @IsGranted("ROLE_ADMIN_PROCURATIONS")
  */
 class AdminProcurationController extends AbstractController
 {

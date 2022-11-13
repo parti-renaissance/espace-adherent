@@ -7,7 +7,7 @@ use App\Entity\TerritorialCouncil\Election;
 use App\Form\TerritorialCouncil\SearchAvailableMembershipType;
 use App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository;
 use App\TerritorialCouncil\Candidacy\SearchAvailableMembershipFilter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route("/territorial-council/candidacy/available-memberships", name="api_territorial_council_candidacy_available_memberships_get", methods={"GET"})
  *
- * @Security("is_granted('ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE', user)")
+ * @IsGranted("ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE")
  */
 class TerritorialCouncilCandidacyController extends AbstractController
 {

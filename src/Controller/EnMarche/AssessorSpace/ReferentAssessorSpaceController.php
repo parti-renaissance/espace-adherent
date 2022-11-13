@@ -9,14 +9,14 @@ use App\Entity\Adherent;
 use App\Entity\Election;
 use App\Form\Assessor\ReferentVotePlaceFilterType;
 use Doctrine\ORM\Query;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(path="/espace-referent/assesseurs", name="app_assessors_referent")
  *
- * @Security("is_granted('ROLE_REFERENT')")
+ * @IsGranted("ROLE_REFERENT")
  */
 class ReferentAssessorSpaceController extends AbstractAssessorSpaceController
 {

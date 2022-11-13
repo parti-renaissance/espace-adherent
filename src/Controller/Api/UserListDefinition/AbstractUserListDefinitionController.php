@@ -3,7 +3,7 @@
 namespace App\Controller\Api\UserListDefinition;
 
 use App\UserListDefinition\UserListDefinitionManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +43,7 @@ abstract class AbstractUserListDefinitionController extends AbstractController
      *     methods={"POST"}
      * )
      *
-     * @Security("is_granted('ABLE_TO_MANAGE_USER_LIST_DEFINITION_TYPE', type)")
+     * @IsGranted("ABLE_TO_MANAGE_USER_LIST_DEFINITION_TYPE", subject="type")
      */
     public function getUserListDefinitionMembersForType(
         Request $request,

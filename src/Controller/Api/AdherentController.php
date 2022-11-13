@@ -5,7 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\Adherent;
 use App\Security\Voter\ManagedUserVoter;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class AdherentController extends AbstractController
      *     name="api_adherent_anonymize_me",
      *     methods={"PUT"}
      * )
-     * @Security("is_granted('ROLE_ADHERENT')")
+     * @IsGranted("ROLE_ADHERENT")
      */
     public function anonymizeAction(
         Request $request,

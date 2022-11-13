@@ -16,6 +16,7 @@ use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Form\AdherentMessage\AdherentMessageType;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -101,7 +102,7 @@ abstract class AbstractMessageController extends AbstractController
     /**
      * @Route("/{uuid}/modifier", name="update", methods={"GET", "POST"})
      *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
     public function updateMessageAction(
         Request $request,
@@ -137,7 +138,7 @@ abstract class AbstractMessageController extends AbstractController
     /**
      * @Route("/{uuid}/visualiser", name="preview", methods={"GET"})
      *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
     public function previewMessageAction(AbstractAdherentMessage $message): Response
     {
@@ -153,7 +154,7 @@ abstract class AbstractMessageController extends AbstractController
     /**
      * @Route("/{uuid}/supprimer", name="delete", methods={"GET"})
      *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
     public function deleteMessageAction(AbstractAdherentMessage $message, ObjectManager $manager): Response
     {
@@ -170,7 +171,7 @@ abstract class AbstractMessageController extends AbstractController
     /**
      * @Route("/{uuid}/filtrer", name="filter", methods={"GET", "POST"})
      *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
     public function filterMessageAction(
         Request $request,
@@ -269,7 +270,7 @@ abstract class AbstractMessageController extends AbstractController
     /**
      * @Route("/{uuid}/tester", name="test", methods={"GET"})
      *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     * @IsGranted("IS_AUTHOR_OF", subject="message")
      *
      * @param Adherent $user
      */

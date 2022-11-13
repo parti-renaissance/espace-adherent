@@ -9,6 +9,7 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Repository\CommitteeMembershipRepository;
 use App\Security\Voter\Committee\CommitteeElectionVoter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -65,7 +66,7 @@ class CommitteesController extends AbstractController
     /**
      * @Route("/committee/{slug}/candidacy/available-memberships", name="api_committee_candidacy_available_memberships_get", methods={"GET"})
      *
-     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
+     * @IsGranted("MEMBER_OF_COMMITTEE", subject="committee")
      *
      * @param Adherent $adherent
      */

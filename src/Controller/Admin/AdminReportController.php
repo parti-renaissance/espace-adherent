@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Report\Report;
 use App\Report\ReportManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ class AdminReportController extends AbstractController
 {
     /**
      * @Route("/{id}/resolve", name="app_admin_report_resolve", methods={"GET"})
-     * @Security("has_role('ROLE_APP_ADMIN_REPORT_APPROVE')")
+     * @IsGranted("ROLE_APP_ADMIN_REPORT_APPROVE")
      */
     public function resolveAction(Request $request, Report $report, ReportManager $reportManager): Response
     {

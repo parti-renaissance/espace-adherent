@@ -2,13 +2,13 @@
 
 namespace App\Controller\EnMarche\Election;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Security("is_granted('ROLE_MUNICIPAL_MANAGER')")
+ * @IsGranted("ROLE_MUNICIPAL_MANAGER")
  */
 class MunicipalManagerCityController extends AbstractController
 {

@@ -6,7 +6,7 @@ use App\Entity\TerritorialCouncil\OfficialReport;
 use App\Form\TerritorialCouncil\OfficialReportType;
 use App\Repository\TerritorialCouncil\OfficialReportRepository;
 use App\TerritorialCouncil\OfficialReportManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/espace-referent/instances/proces-verbaux", name="app_instances_official_report_referent_")
  *
- * @Security("is_granted('ROLE_REFERENT')")
+ * @IsGranted("ROLE_REFERENT")
  */
 class OfficialReportManagerController extends AbstractController
 {
@@ -66,7 +66,7 @@ class OfficialReportManagerController extends AbstractController
 
     /**
      * @Route("/{uuid}/modifier", name="update", methods={"GET", "POST"})
-     * @Security("is_granted('CAN_EDIT_OFFICIAL_REPORT', officialReport)")
+     * @IsGranted("CAN_EDIT_OFFICIAL_REPORT", subject="officialReport")
      */
     public function updateAction(
         Request $request,

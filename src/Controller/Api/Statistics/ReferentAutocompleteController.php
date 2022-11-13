@@ -4,7 +4,7 @@ namespace App\Controller\Api\Statistics;
 
 use App\Repository\CommitteeRepository;
 use App\Repository\EventRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/statistics/search/autocomplete", name="api_statistics_referent_space_search_autocomplete", methods={"GET"})
  *
- * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")
+ * @IsGranted("ROLE_OAUTH_SCOPE_READ:STATS")
  */
 class ReferentAutocompleteController extends AbstractStatisticsController
 {

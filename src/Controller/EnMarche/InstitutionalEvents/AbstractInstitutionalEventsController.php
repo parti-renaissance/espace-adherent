@@ -9,7 +9,7 @@ use App\Form\InstitutionalEventCommandType;
 use App\InstitutionalEvent\InstitutionalEventCommand;
 use App\InstitutionalEvent\InstitutionalEventCommandHandler;
 use App\Repository\InstitutionalEventRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,7 +70,7 @@ abstract class AbstractInstitutionalEventsController extends AbstractController
      *     methods={"GET", "POST"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', institutionalEvent)")
+     * @IsGranted("IS_AUTHOR_OF", subject="institutionalEvent")
      */
     public function institutionalEventsEditAction(
         Request $request,
@@ -113,7 +113,7 @@ abstract class AbstractInstitutionalEventsController extends AbstractController
      *     methods={"GET"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', institutionalEvent)")
+     * @IsGranted("IS_AUTHOR_OF", subject="institutionalEvent")
      */
     public function institutionalEventsDeleteAction(
         InstitutionalEvent $institutionalEvent,

@@ -12,7 +12,7 @@ use App\Scope\Exception\InvalidScopeException;
 use App\Scope\Exception\ScopeExceptionInterface;
 use App\Scope\Exception\ScopeQueryParamMissingException;
 use App\Scope\FeatureEnum;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 /**
  * @Route("/v3/adherents", name="app_adherents_list_get", methods={"GET"})
  *
- * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+ * @IsGranted("IS_AUTHENTICATED_FULLY")
  */
 class AdherentListController extends AbstractController
 {

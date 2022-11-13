@@ -7,6 +7,7 @@ use App\Entity\Coalition\Cause;
 use App\Image\ImageUploadHelper;
 use App\Normalizer\ImageOwnerExposedNormalizer;
 use App\Repository\Coalition\CauseRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,7 +32,7 @@ class CauseController extends AbstractController
 
     /**
      * @Route("/v3/causes/followed", name="api_causes_followed", methods={"POST"})
-     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
+     * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      */
     public function followed(Request $request, UserInterface $user, CauseRepository $causeRepository): JsonResponse
     {

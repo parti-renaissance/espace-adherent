@@ -20,6 +20,7 @@ use App\Repository\AdherentRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Serializer\XlsxEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -32,7 +33,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/comites/{slug}")
- * @Security("is_granted('HOST_COMMITTEE', committee)")
+ * @IsGranted("HOST_COMMITTEE", subject="committee")
  */
 class CommitteeManagerController extends AbstractController
 {
@@ -224,7 +225,7 @@ class CommitteeManagerController extends AbstractController
 
     /**
      * @Route("/retirer-suppleant/{member_uuid}", name="app_committee_demote_host", methods={"GET", "POST"})
-     * @Security("is_granted('SUPERVISE_COMMITTEE', committee)")
+     * @IsGranted("SUPERVISE_COMMITTEE", subject="committee")
      * @Entity("member", expr="repository.findByUuid(member_uuid)")
      */
     public function demoteHostAction(Request $request, Committee $committee, Adherent $member): Response

@@ -8,7 +8,7 @@ use App\Election\VoteListNuanceEnum;
 use App\Entity\Election\CityCard;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\QueryBuilder;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\ArraySourceIterator;
@@ -51,7 +51,7 @@ class AdminExportCityCardController extends AbstractController
     /**
      * @Route("/app/election-citycard/export-all.{_format}", name="admin_city_card_export_all", methods={"GET"}, defaults={"_format": "xls"}, requirements={"_format": "csv|xls"})
      *
-     * @Security("is_granted('ROLE_ADMIN_ELECTION_CITY_CARD')")
+     * @IsGranted("ROLE_ADMIN_ELECTION_CITY_CARD")
      */
     public function exportCityCardsAction(Request $request, string $_format): Response
     {
@@ -153,7 +153,7 @@ class AdminExportCityCardController extends AbstractController
     /**
      * @Route("/app/election-citycard/export-lists.{_format}", name="admin_city_card_export_lists", methods={"GET"}, defaults={"_format": "xls"}, requirements={"_format": "csv|xls"})
      *
-     * @Security("is_granted('ROLE_ADMIN_ELECTION_CITY_CARD')")
+     * @IsGranted("ROLE_ADMIN_ELECTION_CITY_CARD")
      */
     public function exportVoteResultListsAction(Request $request, string $_format): Response
     {

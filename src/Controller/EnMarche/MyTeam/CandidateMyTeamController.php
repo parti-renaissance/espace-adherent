@@ -5,13 +5,13 @@ namespace App\Controller\EnMarche\MyTeam;
 use App\Entity\Adherent;
 use App\Repository\CommitteeRepository;
 use App\Repository\ReferentTagRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(path="/espace-candidat/mon-equipe", name="app_candidate_my_team_", methods={"GET"})
  *
- * @Security("is_granted('ROLE_CANDIDATE')")
+ * @IsGranted("ROLE_CANDIDATE")
  */
 class CandidateMyTeamController extends AbstractMyTeamController
 {

@@ -4,15 +4,14 @@ namespace App\Security\Voter\TerritorialCouncil;
 
 use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
+use App\Security\Voter\AbstractAdherentVoter;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class CandidatureVoter extends Voter
+class CandidatureVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE';
 
-    protected function voteOnAttribute($attribute, $adherent, TokenInterface $token): bool
+    protected function doVoteOnAttribute($attribute, $adherent, $subject): bool
     {
         /** @var Adherent $adherent */
         if (!$adherent->hasTerritorialCouncilMembership()) {
@@ -47,6 +46,6 @@ class CandidatureVoter extends Voter
 
     protected function supports($attribute, $subject): bool
     {
-        return self::PERMISSION === $attribute && $subject instanceof Adherent;
+        return self::PERMISSION === $attribute;
     }
 }

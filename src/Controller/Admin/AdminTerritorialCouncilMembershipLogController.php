@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,7 @@ class AdminTerritorialCouncilMembershipLogController extends AbstractController
 
     /**
      * @Route("/{membershipLog}/{status}", name="app_admin_territorial_council_membership_log_resolve", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN_TERRITORIAL_COUNCIL_MEMBERSHIP_LOG')")
+     * @IsGranted("ROLE_ADMIN_TERRITORIAL_COUNCIL_MEMBERSHIP_LOG")
      */
     public function changeResolvedAction(
         Request $request,

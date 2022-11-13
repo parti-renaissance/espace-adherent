@@ -7,14 +7,14 @@ use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\Adherent;
 use App\Entity\UserListDefinitionEnum;
 use App\Form\ElectedRepresentative\ElectedRepresentativeFilterType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-la-republique-ensemble", name="app_lre_elected_representatives_")
- * @Security("is_granted('ROLE_LRE')")
+ * @IsGranted("ROLE_LRE")
  */
 class LreElectedRepresentativeController extends AbstractElectedRepresentativeController
 {

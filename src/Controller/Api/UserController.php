@@ -16,7 +16,7 @@ use App\OAuth\OAuthTokenGenerator;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Nyholm\Psr7\Response as PsrResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +53,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Security("is_granted('ROLE_ADHERENT')")
+     * @IsGranted("ROLE_ADHERENT")
      * @Route("/users/me", name="app_api_user_show_me", methods={"GET"})
      */
     public function showMe(SerializerInterface $serializer): JsonResponse

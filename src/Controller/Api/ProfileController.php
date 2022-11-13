@@ -8,6 +8,7 @@ use App\AdherentProfile\AdherentProfileHandler;
 use App\Entity\Adherent;
 use App\Membership\MembershipRequestHandler;
 use App\OAuth\TokenRevocationAuthority;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,7 +40,7 @@ class ProfileController extends AbstractController
     /**
      * @Route("/me", name="_show", methods={"GET"})
      *
-     * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:PROFILE')")
+     * @IsGranted("ROLE_OAUTH_SCOPE_READ:PROFILE")
      */
     public function show(SerializerInterface $serializer, UserInterface $user): JsonResponse
     {
@@ -98,7 +99,7 @@ class ProfileController extends AbstractController
     /**
      * @Route("/configuration", name="_configuration", methods={"GET"})
      *
-     * @Security("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')")
+     * @IsGranted("ROLE_OAUTH_SCOPE_WRITE:PROFILE")
      */
     public function configuration(AdherentProfileConfiguration $adherentProfileConfiguration): JsonResponse
     {
@@ -107,7 +108,7 @@ class ProfileController extends AbstractController
 
     /**
      * @Route("/unregister", name="_unregister", methods={"POST"})
-     * @Security("is_granted('UNREGISTER')")
+     * @IsGranted("UNREGISTER")
      */
     public function terminateMembershipAction(
         MembershipRequestHandler $handler,

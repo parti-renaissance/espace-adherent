@@ -18,7 +18,7 @@ use App\Security\Voter\TerritorialCouncil\ManageTerritorialCouncilVoter;
 use App\TerritorialCouncil\ElectionPoll\Manager;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +28,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route("/conseil-territorial", name="app_territorial_council_")
  *
- * @Security("is_granted('ROLE_ADHERENT')")
+ * @IsGranted("ROLE_ADHERENT")
  */
 class TerritorialCouncilController extends AbstractController
 {
@@ -216,7 +216,7 @@ class TerritorialCouncilController extends AbstractController
 
     /**
      * @Route("/messages/{id}/modifier", name="edit_feed_item", methods={"GET", "POST"})
-     * @Security("is_granted('CAN_MANAGE_FEED_ITEM', feedItem)")
+     * @IsGranted("CAN_MANAGE_FEED_ITEM", subject="feedItem")
      */
     public function feedItemEditAction(Request $request, TerritorialCouncilFeedItem $feedItem): Response
     {
@@ -240,7 +240,7 @@ class TerritorialCouncilController extends AbstractController
 
     /**
      * @Route("/messages/{id}/supprimer", name="delete_feed_item", methods={"DELETE"})
-     * @Security("is_granted('CAN_MANAGE_FEED_ITEM', feedItem)")
+     * @IsGranted("CAN_MANAGE_FEED_ITEM", subject="feedItem")
      */
     public function deleteFeedItemAction(
         EntityManagerInterface $em,

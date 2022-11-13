@@ -7,6 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Exporter\EventRegistrationExporter;
 use App\Repository\Event\BaseEventRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,7 +31,7 @@ class EventsController extends AbstractController
 
     /**
      * @Route("/v3/events/registered", name="api_events_registered", methods={"POST"})
-     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
+     * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      */
     public function followed(Request $request, UserInterface $user, BaseEventRepository $eventRepository): JsonResponse
     {

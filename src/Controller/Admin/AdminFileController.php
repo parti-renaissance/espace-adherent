@@ -6,7 +6,7 @@ use App\Entity\Filesystem\File;
 use App\Repository\Filesystem\FileRepository;
 use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FilesystemInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/filesystem", name="app_admin_files_", methods={"GET"})
  *
- * @Security("is_granted('ROLE_ADMIN_FILES')")
+ * @IsGranted("ROLE_ADMIN_FILES")
  */
 class AdminFileController extends AbstractController
 {

@@ -26,6 +26,7 @@ use App\Security\AuthenticationUtils;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -262,7 +263,7 @@ class MembershipController extends AbstractController
      * This action enables a new user to pin his/her interests during the registration process.
      *
      * @Route("/inscription/centre-interets", name="app_membership_pin_interests", methods={"GET", "POST"})
-     * @Security("is_granted('MEMBERSHIP_REGISTRATION_IN_PROGRESS')")
+     * @IsGranted("MEMBERSHIP_REGISTRATION_IN_PROGRESS")
      */
     public function pinInterestsAction(
         Request $request,
@@ -295,7 +296,7 @@ class MembershipController extends AbstractController
      * This action enables a user to follow some committees during the registration process.
      *
      * @Route("/inscription/choisir-des-comites", name="app_membership_choose_committees_around_adherent", methods={"GET", "POST"})
-     * @Security("is_granted('MEMBERSHIP_REGISTRATION_IN_PROGRESS')")
+     * @IsGranted("MEMBERSHIP_REGISTRATION_IN_PROGRESS")
      */
     public function chooseCommitteesAction(
         Request $request,
@@ -344,7 +345,7 @@ class MembershipController extends AbstractController
      * This action enables a user to donate during the registration process.
      *
      * @Route("/inscription/don", name="app_membership_donation", methods={"GET"})
-     * @Security("is_granted('MEMBERSHIP_REGISTRATION_IN_PROGRESS')")
+     * @IsGranted("MEMBERSHIP_REGISTRATION_IN_PROGRESS")
      */
     public function donationAction(
         AdherentRepository $adherentRepository,

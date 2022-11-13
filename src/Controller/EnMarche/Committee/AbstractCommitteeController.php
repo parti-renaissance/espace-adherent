@@ -20,7 +20,7 @@ use App\Repository\CommitteeCandidacyRepository;
 use App\Repository\CommitteeElectionRepository;
 use App\Repository\CommitteeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,7 +87,7 @@ abstract class AbstractCommitteeController extends AbstractController
     /**
      * @Route("/creer", name="create_committee", methods={"GET", "POST"})
      *
-     * @Security("is_granted('CREATE_COMMITTEE')")
+     * @IsGranted("CREATE_COMMITTEE")
      */
     public function createCommitteeAction(Request $request, CommitteeCreationCommandHandler $commandHandler): Response
     {
@@ -212,7 +212,7 @@ abstract class AbstractCommitteeController extends AbstractController
 
     /**
      * @Route("/{slug}/pre-approuver", name="pre_approve", methods={"GET|POST"})
-     * @Security("is_granted('PRE_APPROVE_COMMITTEE', committee)")
+     * @IsGranted("PRE_APPROVE_COMMITTEE", subject="committee")
      */
     public function preAcceptAction(
         Request $request,
@@ -244,7 +244,7 @@ abstract class AbstractCommitteeController extends AbstractController
 
     /**
      * @Route("/{slug}/pre-refuser", name="pre_refuse", methods={"GET|POST"})
-     * @Security("is_granted('PRE_REFUSE_COMMITTEE', committee)")
+     * @IsGranted("PRE_REFUSE_COMMITTEE", subject="committee")
      */
     public function preRefuseAction(Committee $committee, EntityManagerInterface $manager): Response
     {

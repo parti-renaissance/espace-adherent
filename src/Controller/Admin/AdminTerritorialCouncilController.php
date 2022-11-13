@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\TerritorialCouncil\Exception\PoliticalCommitteeMembershipException;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +27,7 @@ class AdminTerritorialCouncilController extends AbstractController
 
     /**
      * @Route("/{territorialCouncil}/members/{adherent}/{action}-membership", name="app_admin_territorial_council_change_political_committee_membership", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN_TERRITORIAL_COUNCIL')")
+     * @IsGranted("ROLE_ADMIN_TERRITORIAL_COUNCIL")
      */
     public function changePoliticalCommitteeMembershipAction(
         Request $request,

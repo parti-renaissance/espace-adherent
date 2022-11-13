@@ -6,7 +6,7 @@ use App\Repository\TonMacronChoiceRepository;
 use App\Repository\TonMacronFriendInvitationRepository;
 use App\TonMacron\TonMacronSerializer;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class AdminTonMacronController extends AbstractController
 
     /**
      * @Route("/export/choices", name="app_admin_tonmacron_export_choices", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN_TON_MACRON')")
+     * @IsGranted("ROLE_ADMIN_TON_MACRON")
      */
     public function exportChoicesAction(
         TonMacronSerializer $serializer,
@@ -37,7 +37,7 @@ class AdminTonMacronController extends AbstractController
 
     /**
      * @Route("/export/invitations", name="app_admin_tonmacron_export_invitations", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN_TON_MACRON')")
+     * @IsGranted("ROLE_ADMIN_TON_MACRON")
      */
     public function exportInvitationsAction(TonMacronFriendInvitationRepository $repository): Response
     {
@@ -61,7 +61,7 @@ class AdminTonMacronController extends AbstractController
 
     /**
      * @Route("/export/invitations/partial", name="app_admin_tonmacron_export_invitations_partial", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN_TON_MACRON')")
+     * @IsGranted("ROLE_ADMIN_TON_MACRON")
      */
     public function exportInvitationsPartialAction(
         Request $request,

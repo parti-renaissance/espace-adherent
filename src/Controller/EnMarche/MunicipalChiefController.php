@@ -12,7 +12,7 @@ use App\Repository\AdherentRepository;
 use App\Repository\MunicipalEventRepository;
 use App\Security\Voter\MunicipalChiefVoter;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route(path="/espace-municipales-2020", name="app_municipal_chief")
  *
- * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
+ * @IsGranted("ROLE_MUNICIPAL_CHIEF")
  */
 class MunicipalChiefController extends AbstractController
 {

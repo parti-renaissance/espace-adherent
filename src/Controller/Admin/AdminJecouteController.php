@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Jecoute\Survey;
 use App\Exporter\SurveyExporter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ class AdminJecouteController
     /**
      * @Route("/survey/{id}/export", name="admin_app_jecoute_surveys_export", requirements={"type": "local|national"})
      *
-     * @Security("is_granted('ROLE_ADMIN_JECOUTE')")
+     * @IsGranted("ROLE_ADMIN_JECOUTE")
      */
     public function nationalSurveyExportAction(
         Request $request,

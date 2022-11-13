@@ -4,7 +4,7 @@ namespace App\Controller\Api\Coalition;
 
 use App\Entity\Coalition\Coalition;
 use App\Repository\Coalition\CoalitionRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +14,7 @@ class CoalitionController extends AbstractController
 {
     /**
      * @Route("/v3/coalitions/followed", name="api_coalitions_followed", methods={"GET"})
-     * @Security("is_granted('ROLE_USER')")
+     * @IsGranted("ROLE_USER")
      */
     public function followed(UserInterface $user, CoalitionRepository $coalitionRepository): JsonResponse
     {

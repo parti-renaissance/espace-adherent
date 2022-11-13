@@ -4,7 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\InternalApiApplication;
 use App\Scope\GeneralScopeGenerator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 /**
  * @Route("/v3/internal/{uuid}/{path}", name="api_internal_api_application", requirements={"path": ".+", "uuid": "%pattern_uuid%"})
  *
- * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
+ * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
  */
 class InternalApiProxyController extends AbstractController
 {

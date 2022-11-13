@@ -7,7 +7,7 @@ use App\Entity\Algolia\AlgoliaJeMengageTimelineFeed;
 use App\Intl\FranceCitiesBundle;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use App\OAuth\Model\DeviceApiUser;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *     methods={"GET"}
  * )
  *
- * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')")
+ * @IsGranted("ROLE_OAUTH_SCOPE_JEMARCHE_APP")
  */
 class GetTimelineFeedsController extends AbstractController
 {

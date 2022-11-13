@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Form\Renaissance\Adhesion\CompleteProfileType;
 use App\Membership\MembershipRegistrationProcess;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *     methods={"GET|POST"}
  * )
  *
- * @Security("is_granted('ROLE_ADHERENT')")
+ * @IsGranted("ROLE_ADHERENT")
  */
 class CompleteProfileController extends AbstractController
 {

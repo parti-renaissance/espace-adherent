@@ -19,6 +19,7 @@ use App\Repository\Jecoute\NationalSurveyRepository;
 use App\Repository\Jecoute\SuggestedQuestionRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -106,7 +107,7 @@ abstract class AbstractJecouteController extends AbstractController
      *     methods={"GET|POST"}
      * )
      *
-     * @Security("is_granted('CAN_EDIT_SURVEY', survey)")
+     * @IsGranted("CAN_EDIT_SURVEY", subject="survey")
      */
     public function jecouteSurveyEditAction(
         Request $request,

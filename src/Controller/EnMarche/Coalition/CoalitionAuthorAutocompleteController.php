@@ -4,7 +4,7 @@ namespace App\Controller\EnMarche\Coalition;
 
 use App\Entity\Adherent;
 use App\Repository\AdherentRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *     methods={"GET"}
  * )
  *
- * @Security("is_granted('ROLE_COALITION_MODERATOR')")
+ * @IsGranted("ROLE_COALITION_MODERATOR")
  */
 class CoalitionAuthorAutocompleteController extends AbstractController
 {

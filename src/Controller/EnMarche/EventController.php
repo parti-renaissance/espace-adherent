@@ -17,7 +17,7 @@ use App\Repository\EventRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\Serializer\Encoder\ICalEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @Route("/evenements/{slug}", name="app_committee_event")
  * @Entity("event", expr="repository.findOnePublishedBySlug(slug)")
- * @Security("is_granted('CAN_ACCESS_EVENT', event)")
+ * @IsGranted("CAN_ACCESS_EVENT", subject="event")
  */
 class EventController extends AbstractController
 {
@@ -75,7 +75,7 @@ class EventController extends AbstractController
      * @Route("/inscription-adherent", name="_attend_adherent", methods={"GET"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      *
-     * @Security("is_granted('ROLE_ADHERENT')")
+     * @IsGranted("ROLE_ADHERENT")
      */
     public function attendAdherentAction(
         BaseEvent $event,

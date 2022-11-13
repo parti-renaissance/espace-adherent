@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Adherent\Unregistration\UnregistrationSerializer;
 use App\Repository\UnregistrationRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ class AdminUnregistrationController extends AbstractController
 
     /**
      * @Route("/export", name="app_admin_unregistration_export", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN_UNREGISTRATIONS')")
+     * @IsGranted("ROLE_ADMIN_UNREGISTRATIONS")
      */
     public function exportUnregistrationsAction(UnregistrationRepository $repository): Response
     {
@@ -39,7 +39,7 @@ class AdminUnregistrationController extends AbstractController
 
     /**
      * @Route("/export/partial", name="app_admin_unregistration_export_partial", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN_UNREGISTRATIONS')")
+     * @IsGranted("ROLE_ADMIN_UNREGISTRATIONS")
      */
     public function exportUnregistrationsPartialAction(
         Request $request,

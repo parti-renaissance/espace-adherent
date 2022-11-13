@@ -16,8 +16,8 @@ use App\Form\ConfirmActionType;
 use App\Repository\AssessorRequestRepository;
 use App\Repository\Election\VotePlaceRepository;
 use App\Serializer\XlsxEncoder;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-responsable-assesseur")
- * @Security("is_granted('ROLE_ASSESSOR_MANAGER')")
+ * @IsGranted("ROLE_ASSESSOR_MANAGER")
  */
 class AssessorManagerController extends AbstractController
 {
@@ -80,7 +80,7 @@ class AssessorManagerController extends AbstractController
      *     name="app_assessor_manager_request",
      *     methods={"GET"}
      * )
-     * @Security("is_granted('MANAGE_ASSESSOR', assessorRequest)")
+     * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
      */
     public function assessorRequestAction(
         AssessorRequest $assessorRequest,
@@ -110,7 +110,7 @@ class AssessorManagerController extends AbstractController
      * )
      * @ParamConverter("assessorRequest", class="App\Entity\AssessorRequest", options={"mapping": {"uuid": "uuid"}})
      * @ParamConverter("votePlace", class="App\Entity\Election\VotePlace", options={"id": "votePlaceId"})
-     * @Security("is_granted('MANAGE_ASSESSOR', assessorRequest)")
+     * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
      */
     public function assessorRequestAssociateAction(
         Request $request,
@@ -151,7 +151,7 @@ class AssessorManagerController extends AbstractController
      *     name="app_assessor_manager_request_deassociate",
      *     methods={"GET", "POST"}
      * )
-     * @Security("is_granted('MANAGE_ASSESSOR', assessorRequest)")
+     * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
      */
     public function assessorRequestDessociateAction(
         Request $request,
@@ -189,7 +189,7 @@ class AssessorManagerController extends AbstractController
      *     name="app_assessor_manager_request_transform",
      *     methods={"GET"}
      * )
-     * @Security("is_granted('MANAGE_ASSESSOR', assessorRequest)")
+     * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
      */
     public function assessorRequestTransformAction(
         AssessorRequest $assessorRequest,

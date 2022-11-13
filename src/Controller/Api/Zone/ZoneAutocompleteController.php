@@ -10,7 +10,7 @@ use App\Repository\Geo\ZoneRepository;
 use App\Scope\AuthorizationChecker;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route("/v3/zone/autocomplete", name="api_v3_zone_autocomplete_for_scope", methods={"GET"})
  *
- * @Security("is_granted('REQUEST_SCOPE_GRANTED')")
+ * @IsGranted("REQUEST_SCOPE_GRANTED")
  */
 class ZoneAutocompleteController extends AbstractController
 {

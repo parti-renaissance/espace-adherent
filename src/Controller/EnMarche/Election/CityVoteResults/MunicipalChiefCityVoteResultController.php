@@ -2,13 +2,13 @@
 
 namespace App\Controller\EnMarche\Election\CityVoteResults;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-municipales-2020", name="app_municipal_chief")
  *
- * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
+ * @IsGranted("ROLE_MUNICIPAL_CHIEF")
  */
 class MunicipalChiefCityVoteResultController extends AbstractCityVoteResultController
 {

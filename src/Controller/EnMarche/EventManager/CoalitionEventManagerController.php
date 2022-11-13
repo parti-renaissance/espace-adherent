@@ -11,7 +11,7 @@ use App\Event\EventManagerSpaceEnum;
 use App\Form\Coalition\CoalitionEventType;
 use App\Repository\CauseEventRepository;
 use App\Repository\CoalitionEventRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/espace-coalition", name="app_coalition_moderator_event_manager")
  *
- * @Security("is_granted('ROLE_COALITION_MODERATOR')")
+ * @IsGranted("ROLE_COALITION_MODERATOR")
  */
 class CoalitionEventManagerController extends AbstractEventManagerController
 {

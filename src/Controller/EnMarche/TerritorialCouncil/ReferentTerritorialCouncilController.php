@@ -9,7 +9,7 @@ use App\Form\TerritorialCouncil\MemberFilterType;
 use App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository;
 use App\Subscription\SubscriptionTypeEnum;
 use App\TerritorialCouncil\Filter\MembersListFilter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/espace-referent/instances", name="app_territorial_council_referent_")
  *
- * @Security("is_granted('ROLE_REFERENT')")
+ * @IsGranted("ROLE_REFERENT")
  */
 class ReferentTerritorialCouncilController extends AbstractController
 {

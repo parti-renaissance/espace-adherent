@@ -9,14 +9,14 @@ use App\Entity\Adherent;
 use App\Entity\Election;
 use App\Form\Assessor\DefaultVotePlaceFilterType;
 use Doctrine\ORM\Query;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(path="/espace-responsable-communal/assesseurs", name="app_assessors_municipal_manager")
  *
- * @Security("is_granted('ROLE_MUNICIPAL_MANAGER')")
+ * @IsGranted("ROLE_MUNICIPAL_MANAGER")
  */
 class MunicipalManagerAssessorSpaceController extends AbstractAssessorSpaceController
 {

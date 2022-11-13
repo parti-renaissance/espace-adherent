@@ -6,7 +6,7 @@ use App\Form\TerritorialCouncil\ConvocationType;
 use App\Repository\TerritorialCouncil\ConvocationRepository;
 use App\TerritorialCouncil\Convocation\ConvocationObject;
 use App\TerritorialCouncil\Convocation\Manager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route(path="/espace-referent/instances/convocations", name="app_instances_convocation_referent")
  *
- * @Security("is_granted('ROLE_REFERENT')")
+ * @IsGranted("ROLE_REFERENT")
  */
 class ConvocationManagerController extends AbstractController
 {

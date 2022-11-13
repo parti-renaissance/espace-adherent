@@ -7,7 +7,7 @@ use App\Entity\Filesystem\File;
 use App\Repository\Filesystem\FileRepository;
 use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FilesystemInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +27,7 @@ abstract class AbstractFilesController extends AbstractController
 
     /**
      * @Route("/documents/{uuid}", name="download", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
-     * @Security("is_granted('CAN_DOWNLOAD_FILE', file)")
+     * @IsGranted("CAN_DOWNLOAD_FILE", subject="file")
      */
     public function downloadAction(File $file, FilesystemInterface $storage): Response
     {
