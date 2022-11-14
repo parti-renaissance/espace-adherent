@@ -65,8 +65,46 @@ class SecurityControllerTest extends WebTestCase
     public function getAdherentEmails(): array
     {
         return [
-            ['carl999@example.fr', 'Carl Mirabeau'],
             ['renaissance-user-1@en-marche-dev.fr', 'Laure Fenix'],
+        ];
+    }
+
+    /**
+     * @dataProvider getNonREAdherentEmails
+     */
+    public function testAuthenticationIsSuccessfulForNonREAdherents(string $email, string $fullName): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(0, $crawler->filter('#auth-error'));
+
+        $this->client->submit($crawler->selectButton('Connexion')->form([
+            '_login_email' => $email,
+            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
+        ]));
+
+        $adherent = $this->adherentRepository->findOneByEmail($email);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client);
+        $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
+
+        $crawler = $this->client->followRedirect();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->click($crawler->selectLink('Me déconnecter')->link());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client);
+
+        $crawler = $this->client->followRedirect();
+        $this->assertSame(0, $crawler->selectLink($fullName)->count());
+    }
+
+    public function getNonREAdherentEmails(): array
+    {
+        return [
+            ['carl999@example.fr', 'Carl Mirabeau'],
         ];
     }
 

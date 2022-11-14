@@ -123,8 +123,10 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         /** @var Adherent $adherent */
-        if ($token->getUser() && $this->currentAppCode) {
-            return new RedirectResponse($this->appUrlManager->getUrlGenerator($this->currentAppCode)->generateForLoginSuccess());
+        $user = $token->getUser();
+
+        if ($user && $this->currentAppCode) {
+            return new RedirectResponse($this->appUrlManager->getUrlGenerator($this->currentAppCode)->generateForLoginSuccess($user));
         }
 
         return new RedirectResponse($this->urlGenerator->generate('app_search_events'));
