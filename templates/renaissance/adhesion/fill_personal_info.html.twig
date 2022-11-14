@@ -16,8 +16,9 @@
 
 {% block adhesion_content %}
     <section class="lg:max-w-lg lg:mx-auto space-y-12">
-        <h1 class="flex items-center justify-center uppercase text-center font-din text-3xl text-light-blue-500 mb-12">
-            J'adhère à <img src="{{ asset('/images/renaissance/logo.svg') }}" class="ml-2.5 h-6 w-auto re-logo-light-blue" alt="logo"/>
+        <h1 class="flex flex-col items-center justify-center uppercase text-center font-din text-3xl text-light-blue-500 mb-12 md:flex-row">
+            J'adhère à
+            {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'mt-2.5 h-5 w-auto text-re-blue-500 md:mt-0 md:ml-3 md:h-6' } %}
         </h1>
 
         <div class="rounded-md bg-blue-50/30 p-4">

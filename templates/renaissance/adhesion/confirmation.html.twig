@@ -5,13 +5,13 @@
 
 {% block content_left_side %}
     {% include 'renaissance/partials/left-side-content.html.twig' with {
-        re_logo_class: 're-logo-green',
+        re_logo_class: 'h-20 w-20 re-logo-green',
         text_color_class: 'text-green',
     } %}
 {% endblock %}
 
 {% block adhesion_content %}
-    <p>
+    <p class="text-lg max-w-3xl text-gray-600 mx-auto">
         Confirmez votre e-mail en cliquant sur le lien dans l'e-mail que vous allez recevoir.
     </p>
 {% endblock %}

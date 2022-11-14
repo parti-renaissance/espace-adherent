@@ -8,41 +8,114 @@
     {% set home_block_banner = blocks['Bannière principale accueil'] %}
 
     <section class="flex flex-col justify-between h-screen pb-12 bg-bottom bg-cover md:pb-15" style="background-image: url('{{ media_asset(home_block_banner.media) }}')">
-        <div class="flex justify-between items-center w-full border-b border-b-white/10 px-4 py-5 md:px-7 md:py-6">
-            <a href="{{ path('app_renaissance_homepage') }}"><img src="{{ asset('/images/renaissance/logo.svg') }}" alt="logo"/></a>
+        <nav x-data="{ open: false }" @keydown.escape="open = false" class="relative flex justify-between items-center w-full backdrop-blur border-b border-b-white/10 px-4 py-5 md:px-7 md:py-6">
+            <a href="{{ path('app_renaissance_homepage') }}">
+                {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-4 w-auto text-white lg:h-5' } %}
+            </a>
 
-            <div class="flex flex-nowrap gap-x-2">
-                {% if app.user %}
-                    <a class="button button-white" href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}">
-                        Mon profil
-                    </a>
-                    <a class="button button-white" href="{{ path('logout', { app_domain: renaissance_host }) }}">
-                        Me déconnecter
-                    </a>
-                {% else %}
-                    <a class="button button-blue-lighter" href="{{ path('app_renaissance_login') }}">
-                        Me connecter
-                    </a>
-                {% endif %}
+            <div class="relative">
+                <div class="-my-2 -mr-2 md:hidden">
+                    <button type="button" class="inline-flex items-center justify-center rounded-md border-2 border-white bg-transparent p-2 text-white hover:bg-white/20 focus:outline-none" @click="open =! open" @mousedown="if (open) $event.preventDefault()" aria-expanded="false" :aria-expanded="open.toString()">
+                        <span class="sr-only">Menu</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="hidden md:flex flex-nowrap space-x-2">
+                    {% if app.user %}
+                        <a class="button button-white" href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}">
+                            Mon profil
+                        </a>
+                        <a class="button button-white" href="{{ path('logout', { app_domain: renaissance_host }) }}">
+                            Me déconnecter
+                        </a>
+                    {% else %}
+                        <a class="button button-blue-lighter" href="{{ path('app_renaissance_login') }}">
+                            Me connecter
+                        </a>
+                    {% endif %}
 
-                {% if not app.user or not app.user.isRenaissanceUser() %}
-                    <a href="{{ path('app_renaissance_adhesion') }}" class="button button-blue">
-                        {{ app.user ? '(Re)' }} Adhérer
-                    </a>
-                {% elseif app.user.hasActiveMembership() %}
-                    <a href="{{ path('app_renaissance_donation') }}" class="button button-green">
-                        Je donne
-                    </a>
-                {% else %}
-                    <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="button button-green">
-                        Je termine mon adhésion
-                    </a>
-                {% endif %}
+                    {% if not app.user or not app.user.isRenaissanceUser() %}
+                        <a href="{{ path('app_renaissance_adhesion') }}" class="button button-blue">
+                            {{ app.user ? '(Re)' }} Adhérer
+                        </a>
+                    {% elseif app.user.hasActiveMembership() %}
+                        <a href="{{ path('app_renaissance_donation') }}" class="button button-green">
+                            Je donne
+                        </a>
+                    {% else %}
+                        <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="button button-green">
+                            Je termine mon adhésion
+                        </a>
+                    {% endif %}
+                </div>
             </div>
-        </div>
+
+            <div x-cloak x-show="open"
+                 x-transition:enter="duration-200 ease-out"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="duration-100 ease-in"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95"
+                 class="absolute inset-x-0 top-0 z-10 origin-top-right transform p-2 transition md:hidden"
+                 x-ref="panel" @click.away="open = false">
+                <div class="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                    <div class="px-5 pt-5 pb-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-5 w-auto text-re-blue-500' } %}
+                            </div>
+                            <div class="-mr-2">
+                                <button type="button" class="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" @click="open =! open">
+                                    <span class="sr-only">Fermer le menu</span>
+                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <nav class="grid gap-y-8">
+                                {% if app.user %}
+                                    <a class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50" href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}">
+                                        <span class="text-base font-medium text-gray-900">Mon profil</span>
+                                    </a>
+                                    <a class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50" href="{{ path('logout', { app_domain: renaissance_host }) }}">
+                                        <span class="text-base font-medium text-gray-900">Me déconnecter</span>
+                                    </a>
+                                {% else %}
+                                    <a class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50" href="{{ path('app_renaissance_login') }}">
+                                        <span class="text-base font-medium text-gray-900">Me connecter</span>
+                                    </a>
+                                {% endif %}
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="space-y-6 py-6 px-5">
+                        <div>
+                            {% if not app.user or not app.user.isRenaissanceUser() %}
+                                <a href="{{ path('app_renaissance_adhesion') }}" class="flex w-full items-center justify-center rounded-md border border-transparent bg-re-blue-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-re-blue-700">
+                                    {{ app.user ? '(Re)' }} Adhérer
+                                </a>
+                            {% elseif app.user.hasActiveMembership() %}
+                                <a href="{{ path('app_renaissance_donation') }}" class="flex w-full items-center justify-center rounded-md border border-transparent bg-re-green-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-re-green-700">
+                                    Je donne
+                                </a>
+                            {% else %}
+                                <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
+                                    Je termine mon adhésion
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
         <div class="xl:container px-4 mb-2.5">
-            <p class="text-white font-bold text-3xl md:text-7xl md:leading-tight mb-12">
+            <p class="text-white font-bold text-4xl md:text-7xl md:leading-tight mb-12">
                 {{ home_block_banner.title }}
             </p>
 
@@ -116,19 +189,19 @@
                     <img src="{{ asset('images/renaissance/nos-valeurs.jpg') }}" class="w-full rounded-lg" alt="nos-valeurs"/>
                 </div>
             </div>
-            <div class="columns-2 md:columns-3 lg:columns-4 gap-4 lg:gap-10">
+            <div class="mt-8 columns-2 md:columns-3 lg:columns-4 gap-4 lg:gap-10 lg:mt-10">
                 {% for commitment in commitments %}
                     {% set slug = commitment.title|slug %}
                     <div
                         id="valeur-{{ slug }}"
-                        class="{{ not loop.first ? 'mt-8 ' }} h-fit bg-white active:bg-yellow px-4 py-5 cursor-pointer rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 slide-over--trigger break-inside-avoid"
+                        class="{{ not loop.first ? 'mt-8 ' }} h-fit group bg-white border border-gray-100 active:bg-yellow px-4 py-5 cursor-pointer rounded-md p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 hover:border-transparent duration-200 slide-over--trigger break-inside-avoid"
                         data-commitment-title="{{ commitment.title|e('html_attr') }}"
                         data-commitment-slug="{{ slug }}"
                         data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath()}) }}"
                         data-commitment-description="{{ commitment.description|e('html_attr') }}"
                     >
-                        <h3 class="text-light-blue font-medium text-xs lg:text-base mb-2.5">{{ commitment.title }}</h3>
-                        <div class="text-xs font-normal text-medium-gray lg:text-base">{{ commitment.shortDescription }}</div>
+                        <h3 class="text-re-blue-400 font-medium text-base lg:text-lg mb-2.5 group-hover:text-white">{{ commitment.title }}</h3>
+                        <p class="text-sm text-gray-500 lg:text-base lg:leading-6 group-hover:text-yellow-100">{{ commitment.shortDescription }}</p>
                     </div>
                 {% endfor %}
             </div>
@@ -225,7 +298,7 @@
         <div class="mx-auto max-w-7xl">
             <div class="md:flex md:gap-12 lg:gap-38 mb-12 lg:mb-25">
                 <div class="md:w-2/5 lg:1/3">
-                    <h2 class="text-dark-blue font-bold text-2xl lg:text-4xl mb-6 lg:mb-7">
+                    <h2 class="text-dark-blue font-bold text-3xl lg:text-4xl mb-6 lg:mb-7">
                         Le parti le plus <span class="stabilo stabilo-yellow">décentralisé</span> de France
                     </h2>
                     <p class="text-dark-blue font-normal text-lg leading-6 lg:text-2xl lg:leading-9 mb-12 lg:mb-0">
@@ -236,7 +309,7 @@
                     <img src="{{ asset('images/renaissance/d2d.jpg') }}" class="w-full rounded-lg" alt="d2d"/>
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10">
                 <div class="mb-6 lg:mb-25">
                     <div class="divide-y border-gray-border border w-full mb-6 lg:mb-10"></div>
                     <p class="text-light-blue font-bold text-base mb-2.5">
@@ -308,7 +381,7 @@
                     {{ form_row(newsletter_form.email, { label: 'E-mail' }) }}
 
                     <div class="text-white">
-                        {{ form_widget(newsletter_form.conditions) }}
+                        {{ form_widget(newsletter_form.conditions, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500' } }) }}
                         <label for="{{ newsletter_form.conditions.vars.id }}">
                         <span>
                             J’accepte de recevoir la newsletter de Renaissance
@@ -317,7 +390,7 @@
                     </div>
 
                     <div class="mb-3 text-white">
-                        {{ form_widget(newsletter_form.cguAccepted) }}
+                        {{ form_widget(newsletter_form.cguAccepted, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500' } }) }}
                         <label for="{{ newsletter_form.cguAccepted.vars.id }}">
                             <span>
                                 J’accepte les <a class="font-bold underline" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}" target="_blank">CGU du site</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'Politique-de-protection-des-donnees', app_domain: renaissance_host}) }}" class="font-bold underline" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations accessibles <a class="font-bold underline" href="{{ path('app_static_page', {slug: 'mentions-informations-newsletter', app_domain: renaissance_host}) }}" target="_blank">ici</a>
@@ -325,7 +398,7 @@
                         </label>
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-4 w-full">
                         {% include 'renaissance/partials/friendly-captcha.html.twig' %}
                     </div>
 

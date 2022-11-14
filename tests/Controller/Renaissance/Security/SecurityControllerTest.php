@@ -142,7 +142,7 @@ class SecurityControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
-        $this->assertCount(1, $error = $crawler->filter('.text-red'));
+        $this->assertCount(1, $error = $crawler->filter('.text-red-500'));
         $this->assertStringContainsString('Cette valeur ne doit pas être vide.', $error->text(), 'An empty email should be erroneous.');
     }
 
