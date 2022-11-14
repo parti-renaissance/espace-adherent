@@ -8,7 +8,7 @@
     {% if google_maps_api_key %}
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
     {% endif %}
-    <script src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script src={{ asset('js/jquery/jquery-2.2.4.min.js') }}></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runProcurationRequest('#{{ procuration_form.country.vars.id }}', '#{{ procuration_form.state.vars.id }}');
