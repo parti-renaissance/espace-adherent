@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Statistics;
 
-use App\Entity\Adherent;
 use App\History\CommitteeMembershipHistoryHandler;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Membership\AdherentManager;
 use App\Repository\AdherentRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,10 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")
  */
-class AdherentsController extends AbstractController
+class AdherentsController extends AbstractStatisticsController
 {
     /**
-     * @Route("/count", name="app_adherents_count", methods={"GET"})
+     * @Route("/count", name="app_statistics_adherents_count", methods={"GET"})
      */
     public function adherentsCountAction(AdherentRepository $adherentRepository): Response
     {
@@ -32,17 +30,16 @@ class AdherentsController extends AbstractController
     }
 
     /**
-     * @Route("/count-by-referent-area", name="app_adherents_count_for_referent_managed_area", methods={"GET"})
-     * @Entity("referent", expr="repository.findReferent(referent)", converter="querystring")
+     * @Route("/count-by-referent-area", name="app_statistics_adherents_count_for_referent_managed_area", methods={"GET"})
      */
     public function adherentsCountForReferentManagedAreaAction(
-        Adherent $referent,
-        AdherentRepository $adherentRepository,
+        Request $request,
         EmailSubscriptionHistoryHandler $historyHandler,
         AdherentManager $adherentManager,
         CommitteeMembershipHistoryHandler $committeeMembershipHistoryHandler
     ): Response {
-        $count = $adherentRepository->countByGenderManagedBy($referent);
+        $referent = $this->findReferent($request);
+        $count = $this->adherentRepository->countByGenderManagedBy($referent);
 
         return new JsonResponse(
             array_merge(

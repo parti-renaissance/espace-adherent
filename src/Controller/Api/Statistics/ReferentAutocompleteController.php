@@ -1,13 +1,10 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Statistics;
 
-use App\Entity\Adherent;
 use App\Repository\CommitteeRepository;
 use App\Repository\EventRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,10 +12,11 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/statistics")
+ * @Route("/statistics/search/autocomplete", name="api_statistics_referent_space_search_autocomplete", methods={"GET"})
+ *
  * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")
  */
-class ReferentController extends AbstractController
+class ReferentAutocompleteController extends AbstractStatisticsController
 {
     private const AUTOCOMPLETE_TYPE_CITY = 'city';
     private const AUTOCOMPLETE_TYPE_COMMITTEE = 'committee';
@@ -30,17 +28,13 @@ class ReferentController extends AbstractController
         self::AUTOCOMPLETE_TYPE_COUNTRY,
     ];
 
-    /**
-     * @Route("/search/autocomplete", name="api_referent_space_search_autocomplete", methods={"GET"})
-     *
-     * @Entity("referent", expr="repository.findReferent(referent)", converter="querystring")
-     */
-    public function searchAutocompleteAction(
-        Adherent $referent,
+    public function __invoke(
         Request $request,
         CommitteeRepository $committeeRepository,
         EventRepository $eventRepository
     ): Response {
+        $referent = $this->findReferent($request);
+
         // parameter `type` should have a value different from an empty string, but parameter `value` can be an empty string
         if (!($type = $request->query->get('type')) || !$request->query->has('value')) {
             throw new BadRequestHttpException('The parameters "type" and "value" are required.');
