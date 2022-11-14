@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\App\Controller\EnMarche;
+namespace Tests\App\Controller\Renaissance;
 
 use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
 use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\Entity\Adherent;
-use App\Entity\Unregistration;
+use App\Membership\MembershipSourceEnum;
 use App\SendInBlue\Client;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
@@ -27,7 +27,7 @@ class UnregistrationControllerTest extends WebTestCase
         /** @var RemoveAdherentAndRelatedDataCommandHandler $handler */
         $handler = $this->client->getContainer()->get('test.'.RemoveAdherentAndRelatedDataCommandHandler::class);
 
-        foreach ($this->getAdherentRepository()->findBy(['source' => null]) as $adherent) {
+        foreach ($this->getAdherentRepository()->findBy(['source' => MembershipSourceEnum::RENAISSANCE]) as $adherent) {
             $this->getEntityManager(Adherent::class)->detach($adherent);
 
             $this->authenticateAsAdherent($this->client, $email = $adherent->getEmailAddress());
@@ -43,23 +43,7 @@ class UnregistrationControllerTest extends WebTestCase
 
             self::assertEmpty($this->getSendInBlueClient()->getDeleteSchedule());
 
-            $reasons = Unregistration::REASONS_LIST_ADHERENT;
-            $reasonsValues = array_values($reasons);
-            $chosenReasons = [
-                3 => $reasonsValues[3],
-                4 => $reasonsValues[4],
-            ];
-
-            $crawler = $this->client->submit(
-                $crawler->selectButton('Je confirme la suppression de mon')->form(
-                    [
-                        'unregistration' => [
-                            'reasons' => $chosenReasons,
-                            'comment' => 'Je me désinscris',
-                        ],
-                    ]
-                )
-            );
+            $crawler = $this->client->submit($crawler->selectButton('Je confirme la suppression de mon adhésion')->form());
 
             $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
@@ -67,22 +51,27 @@ class UnregistrationControllerTest extends WebTestCase
             self::assertCount(1, $sendInBlueDeletes);
             self::assertContains($email, $sendInBlueDeletes);
 
-            self::assertCount(0, $crawler->filter('.form__errors > li'));
-            self::assertSame(
-                $adherent->isUser(
-                ) ? 'Votre compte En Marche a bien été supprimé et vos données personnelles effacées de notre base.' :
-                    'Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.',
-                trim($crawler->filter('#is_not_adherent h1')->eq(0)->text())
+            self::assertCount(0, $crawler->filter('.re-form-error'));
+            self::assertStringContainsString(
+                'Votre adhésion et votre compte Renaissance ont bien été supprimés, vos données personnelles ont été effacées de notre base.',
+                $this->client->getResponse()->getContent()
             );
 
             $handler(new RemoveAdherentAndRelatedDataCommand($adherent->getUuid()));
         }
 
-        self::assertSame(31, $countForbidden);
+        self::assertSame(0, $countForbidden);
     }
 
     private function getSendInBlueClient(): DummyClient
     {
         return $this->client->getContainer()->get(Client::class);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->client->setServerParameter('HTTP_HOST', self::$container->getParameter('renaissance_host'));
     }
 }
