@@ -35,6 +35,18 @@
         }
     }
 
+    .form-checkbox {
+        @apply h-4 w-4 rounded border-gray-300;
+
+        &-green {
+            @apply text-re-green-600 focus:ring-re-green-500
+        }
+
+        &-blue {
+            @apply text-re-blue-600 focus:ring-re-blue-500
+        }
+    }
+
     .form-group {
         @apply flex flex-col gap-x-4 bg-gray w-full rounded-lg border-2 border-gray/20 focus-within:border-dark-blue px-4 py-3 mb-4;
 

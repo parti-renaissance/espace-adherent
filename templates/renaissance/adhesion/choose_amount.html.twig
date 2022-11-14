@@ -15,7 +15,7 @@
 
 {% block content_left_side %}
     {% include 'renaissance/partials/left-side-content.html.twig' with {
-        re_logo_class: 're-logo-green',
+        re_logo_class: 'h-20 w-20 re-logo-green',
         text_color_class: 'text-green',
     } %}
 {% endblock %}
@@ -49,27 +49,33 @@
             </div>
 
             <div class="my-10 mention-checkbox-container">
-                {{ form_row(form.isPhysicalPerson, {label: 'Je certifie sur l\'honneur être une personne physique et que le règlement de ma cotisation ne provient pas du compte d\'une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel'}) }}
+                {{ form_errors(form.isPhysicalPerson) }}
+                <div class="form__checkbox">
+                    {{ form_widget(form.isPhysicalPerson, { attr: { class: 'form-checkbox form-checkbox-green' }}) }}
+                    <label for="{{ form.isPhysicalPerson.vars.id }}" class="required">
+                        Je certifie sur l\'honneur être une personne physique et que le règlement de ma cotisation ne provient pas du compte d\'une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel
+                    </label>
+                </div>
 
                 {{ form_errors(form.conditions) }}
                 <div class="form__checkbox">
-                    {{ form_widget(form.conditions) }}
-                    <label for="{{ form.conditions.vars.id }}">
+                    {{ form_widget(form.conditions, { attr: { class: 'form-checkbox form-checkbox-green' }}) }}
+                    <label for="{{ form.conditions.vars.id }}" class="required">
                         Oui, j'adhère <a class="underline font-bold" href="{{ path('asset_url', {path: 'statuts-renaissance.pdf', mime_type: 'application/pdf', app_domain: renaissance_host}) }}" target="_blank">aux statuts</a> et <a class="underline font-bold" href="{{ path('asset_url', {path: 'corpus-des-valeurs-parti-renaissance.pdf', mime_type: 'application/pdf', app_domain: renaissance_host}) }}" target="_blank">au Corpus des Valeurs de Renaissance</a>
                     </label>
                 </div>
 
                 {{ form_errors(form.cguAccepted) }}
                 <div class="form__checkbox">
-                    {{ form_widget(form.cguAccepted) }}
-                    <label for="{{ form.cguAccepted.vars.id }}">
+                    {{ form_widget(form.cguAccepted, { attr: { class: 'form-checkbox form-checkbox-green' }}) }}
+                    <label for="{{ form.cguAccepted.vars.id }}" class="required">
                         J’accepte les <a class="underline font-bold" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}" target="_blank">CGU du site Renaissance</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'politique-de-protection-des-donnees', app_domain: renaissance_host}) }}" class="underline font-bold" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations relatives au traitement de mes données ci-dessous
                     </label>
                 </div>
 
                 {{ form_errors(form.allowEmailNotifications) }}
                 <div class="form__checkbox">
-                    {{ form_widget(form.allowEmailNotifications) }}
+                    {{ form_widget(form.allowEmailNotifications, { attr: { class: 'form-checkbox form-checkbox-green' }}) }}
                     <label for="{{ form.allowEmailNotifications.vars.id }}">
                         Je souhaite recevoir les informations sur l'actualité de Renaissance et ses communications politiques par e-mai ({{ 'common.optional'|trans }})
                     </label>
@@ -77,7 +83,7 @@
 
                 {{ form_errors(form.allowMobileNotifications) }}
                 <div class="form__checkbox">
-                    {{ form_widget(form.allowMobileNotifications) }}
+                    {{ form_widget(form.allowMobileNotifications, { attr: { class: 'form-checkbox form-checkbox-green' }}) }}
                     <label for="{{ form.allowMobileNotifications.vars.id }}">
                         Je souhaite recevoir des informations sur les actions militantes du parti par téléphone ({{ 'common.optional'|trans }})
                     </label>
