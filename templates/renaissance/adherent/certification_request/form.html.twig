@@ -150,7 +150,6 @@
         $('.em-form__file--area').bind('change', (event) => {
             const $input = $(event.currentTarget);
             const selectedFileName = $input.val();
-            console.log(selectedFileName);
 
             if (0 < $input.length && 0 < selectedFileName.length) {
                 const file = $input[0].files[0];
@@ -164,7 +163,7 @@
 
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     var embed = `<embed type="${file.type}"
                         src="${e.target.result}"
                         style="max-height: 400px">`;
@@ -177,7 +176,7 @@
             }
         });
 
-        $('#document-remover').on('click', function(e) {
+        $('#document-remover').on('click', function (e) {
             e.preventDefault();
             $('#preview-container').hide();
             $('#preview').html('');
