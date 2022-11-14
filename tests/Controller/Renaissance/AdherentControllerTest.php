@@ -402,12 +402,8 @@ class AdherentControllerTest extends WebTestCase
     /**
      * @dataProvider provideAdherentCredentials
      */
-    public function testAdherentTerminatesMembership(
-        string $userEmail,
-        string $uuid,
-        string $committee,
-        int $nbFollowers
-    ): void {
+    public function testAdherentTerminatesMembership(string $userEmail, string $uuid): void
+    {
         /** @var Adherent $adherent */
         $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail($userEmail);
         $referentTagsBeforeUnregistration = $adherentBeforeUnregistration->getReferentTags()->toArray(); // It triggers the real SQL query instead of lazy-load
@@ -418,7 +414,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringContainsString(
-            'Si vous souhaitez désadhérer et supprimer votre compte Renaissance, cliquez-ici.',
+            'Cliquez ci-dessous si vous souhaitez supprimer votre compte.',
             $crawler->text()
         );
 
@@ -434,7 +430,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(0, $errors->count());
-        $this->assertSame('Votre adhésion et votre compte Renaissance ont bien été supprimés et vos données personnelles effacées de notre base.', trim($crawler->filter('h1')->eq(0)->text()));
+        $this->assertStringContainsString('Votre adhésion et votre compte Renaissance ont bien été supprimés, vos données personnelles ont été effacées de notre base.', $this->client->getResponse()->getContent());
 
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, $userEmail));
 
@@ -465,8 +461,7 @@ class AdherentControllerTest extends WebTestCase
     public function provideAdherentCredentials(): array
     {
         return [
-            'adherent 1' => ['michel.vasseur@example.ch', LoadAdherentData::ADHERENT_13_UUID, 'en-marche-suisse', 3],
-            'adherent 2' => ['cedric.lebon@en-marche-dev.fr', LoadAdherentData::ADHERENT_19_UUID, 'en-marche-comite-de-evry', 6],
+            'adherent 1' => ['renaissance-user-1@en-marche-dev.fr', LoadAdherentData::RENAISSANCE_USER_1_UUID],
         ];
     }
 
