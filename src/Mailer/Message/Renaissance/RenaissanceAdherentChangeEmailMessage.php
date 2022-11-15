@@ -3,10 +3,9 @@
 namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Adherent;
-use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
-final class RenaissanceAdherentChangeEmailMessage extends Message
+final class RenaissanceAdherentChangeEmailMessage extends AbstractRenaissanceMessage
 {
     public static function createFromAdherent(Adherent $adherent, string $newEmail, string $confirmationLink): self
     {
