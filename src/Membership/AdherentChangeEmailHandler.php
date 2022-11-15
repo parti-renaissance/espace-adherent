@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentChangeEmailToken;
 use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentChangeEmailMessage;
+use App\Mailer\Message\Renaissance\RenaissanceAdherentChangeEmailMessage;
 use App\Membership\Event\UserEmailEvent;
 use App\Membership\Event\UserEvent;
 use App\Repository\AdherentChangeEmailTokenRepository;
@@ -15,24 +16,27 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentChangeEmailHandler
 {
-    private $mailer;
-    private $manager;
-    private $repository;
-    private $urlGenerator;
-    private $dispatcher;
+    private MailerService $mailer;
+    private ObjectManager $manager;
+    private AdherentChangeEmailTokenRepository $repository;
+    private UrlGeneratorInterface $urlGenerator;
+    private EventDispatcherInterface $dispatcher;
+    private string $renaissanceHost;
 
     public function __construct(
         MailerService $transactionalMailer,
         ObjectManager $manager,
         AdherentChangeEmailTokenRepository $repository,
         UrlGeneratorInterface $urlGenerator,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        string $renaissanceHost
     ) {
         $this->mailer = $transactionalMailer;
         $this->manager = $manager;
         $this->repository = $repository;
         $this->urlGenerator = $urlGenerator;
         $this->dispatcher = $dispatcher;
+        $this->renaissanceHost = $renaissanceHost;
     }
 
     public function handleRequest(Adherent $adherent, string $newEmailAddress): void
@@ -63,17 +67,26 @@ class AdherentChangeEmailHandler
 
     public function sendValidationEmail(Adherent $adherent, AdherentChangeEmailToken $token): void
     {
-        $this->mailer->sendMessage(AdherentChangeEmailMessage::createFromAdherent(
-            $adherent,
-            $token->getEmail(),
-            $this->urlGenerator->generate(
-                'user_validate_new_email',
-                [
-                    'adherent_uuid' => $adherent->getUuidAsString(),
-                    'change_email_token' => $token->getValue(),
-                ],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            )
-        ));
+        $confirmationLink = $this->createConfirmationLink($adherent, $token);
+
+        $this->mailer->sendMessage(
+            $adherent->isRenaissanceUser()
+                ? RenaissanceAdherentChangeEmailMessage::createFromAdherent($adherent, $token->getEmail(), $confirmationLink)
+                : AdherentChangeEmailMessage::createFromAdherent($adherent, $token->getEmail(), $confirmationLink)
+        );
+    }
+
+    private function createConfirmationLink(Adherent $adherent, AdherentChangeEmailToken $token): string
+    {
+        $params = [
+            'adherent_uuid' => $adherent->getUuidAsString(),
+            'change_email_token' => $token->getValue(),
+        ];
+
+        if ($adherent->isRenaissanceUser()) {
+            $params['app_domain'] = $this->renaissanceHost;
+        }
+
+        return $this->urlGenerator->generate('user_validate_new_email', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }

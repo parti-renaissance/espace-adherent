@@ -215,6 +215,6 @@ class SecurityController extends AbstractController
             $this->addFlash('info', 'adherent.change_email.expired_key');
         }
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute($adherent->isRenaissanceUser() ? 'app_renaissance_homepage' : 'homepage');
     }
 }
