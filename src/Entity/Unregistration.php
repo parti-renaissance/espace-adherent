@@ -59,6 +59,11 @@ class Unregistration
     private $uuid;
 
     /**
+     * @ORM\Column(type="uuid")
+     */
+    public ?UuidInterface $adherentUuid = null;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
@@ -69,7 +74,7 @@ class Unregistration
      * @ORM\Column(type="json_array", nullable=true)
      * @Assert\NotBlank(message="adherent.unregistration.reasons")
      */
-    private $reasons = [];
+    private $reasons;
 
     /**
      * @var string
@@ -93,7 +98,7 @@ class Unregistration
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $isAdherent = false;
+    private $isAdherent;
 
     /**
      * @var Collection|ReferentTag[]
@@ -111,6 +116,7 @@ class Unregistration
 
     public function __construct(
         UuidInterface $uuid,
+        UuidInterface $adherentUuid,
         array $reasons,
         ?string $comment,
         \DateTime $registeredAt,
@@ -120,6 +126,7 @@ class Unregistration
         Administrator $admin = null
     ) {
         $this->uuid = $uuid;
+        $this->adherentUuid = $adherentUuid;
         $this->postalCode = $postalCode;
         $this->reasons = $reasons;
         $this->comment = $comment;
@@ -136,6 +143,7 @@ class Unregistration
     ): self {
         return new self(
             $adherent->getUuid(),
+            Adherent::createUuid($adherent->getEmailAddress()),
             ['autre'],
             $comment,
             $adherent->getRegisteredAt(),

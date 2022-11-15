@@ -137,6 +137,43 @@ class AdherentAdminTest extends AbstractWebCaseTest
         $this->client->submit($crawler->selectButton('Confirmer')->form());
 
         $this->assertStringContainsString(sprintf('L\'adhérent <b>%s</b> a bien été exclu', $adherent->getFullName()), $this->client->getResponse()->getContent());
+
+        $crawler = $this->client->request('GET', '/adhesion');
+
+        $crawler = $this->client->submit(
+            $crawler->selectButton('Je rejoins La République En Marche')->form(),
+            [
+                'g-recaptcha-response' => 'fake',
+                'adherent_registration' => [
+                    'firstName' => 'Test',
+                    'lastName' => 'A',
+                    'nationality' => 'FR',
+                    'emailAddress' => [
+                        'first' => 'cedric.lebon@en-marche-dev.fr',
+                        'second' => 'cedric.lebon@en-marche-dev.fr',
+                    ],
+                    'password' => '12345678',
+                    'address' => [
+                        'address' => '1 rue des alouettes',
+                        'postalCode' => '94320',
+                        'cityName' => 'Thiais',
+                        'city' => '94320-94073',
+                        'country' => 'FR',
+                    ],
+                    'birthdate' => [
+                        'day' => 1,
+                        'month' => 1,
+                        'year' => 1989,
+                    ],
+                    'gender' => 'male',
+                    'conditions' => true,
+                    'allowEmailNotifications' => true,
+                    'allowMobileNotifications' => true,
+                ],
+            ]
+        );
+
+        $this->assertStringContainsString('Oups, quelque chose s\'est mal passé', $crawler->filter('#adherent_registration_emailAddress_first_errors')->text());
     }
 
     public function testAnAdminWithoutRoleCannotUpdateCustomInstanceQuality()

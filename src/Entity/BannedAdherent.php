@@ -40,6 +40,6 @@ class BannedAdherent
 
     public static function createFromAdherent(Adherent $adherent): self
     {
-        return new self($adherent->getUuid());
+        return new self(Adherent::createUuid($adherent->getEmailAddress()));
     }
 }
