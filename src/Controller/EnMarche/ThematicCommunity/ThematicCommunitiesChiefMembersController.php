@@ -5,7 +5,7 @@ namespace App\Controller\EnMarche\ThematicCommunity;
 use App\Form\ThematicCommunityMembershipFilterType;
 use App\Repository\ThematicCommunity\ThematicCommunityMembershipRepository;
 use App\ThematicCommunity\ThematicCommunityMembershipFilter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/communautes-thematiques", name="app_thematic_community_")
- * @Security("is_granted('ROLE_THEMATIC_COMMUNITY_CHIEF')")
+ * @IsGranted("ROLE_THEMATIC_COMMUNITY_CHIEF")
  */
 class ThematicCommunitiesChiefMembersController extends AbstractController
 {

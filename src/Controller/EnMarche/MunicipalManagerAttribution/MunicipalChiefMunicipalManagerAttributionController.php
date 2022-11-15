@@ -5,13 +5,13 @@ namespace App\Controller\EnMarche\MunicipalManagerAttribution;
 use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\MunicipalManager\Filter\AssociationCityFilter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(path="/espace-municipales-2020", name="app_municipal_manager_municipal_chief")
  *
- * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
+ * @IsGranted("ROLE_MUNICIPAL_CHIEF")
  */
 class MunicipalChiefMunicipalManagerAttributionController extends AbstractMunicipalManagerAttributionController
 {

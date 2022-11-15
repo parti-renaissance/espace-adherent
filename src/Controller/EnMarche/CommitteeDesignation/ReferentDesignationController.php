@@ -11,6 +11,7 @@ use App\Mailer\Message\VotingPlatformPartialElectionIsOpenMessage;
 use App\VotingPlatform\Command\NotifyPartialElectionVoterCommand;
 use App\VotingPlatform\Designation\CreatePartialDesignationCommand;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +32,7 @@ class ReferentDesignationController extends AbstractDesignationController
     /**
      * @Route("/creer-une-partielle", name="_create_partial", methods={"GET", "POST"})
      *
-     * @Security("is_granted('MANAGE_ZONEABLE_ITEM__REFERENT', committee)")
+     * @IsGranted("MANAGE_ZONEABLE_ITEM__REFERENT", subject="committee")
      */
     public function createPartialAction(
         Request $request,

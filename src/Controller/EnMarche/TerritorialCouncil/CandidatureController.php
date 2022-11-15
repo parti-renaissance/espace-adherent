@@ -11,6 +11,7 @@ use App\Form\VotingPlatform\Candidacy\TerritorialCouncilCandidacyType;
 use App\TerritorialCouncil\CandidacyManager;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route("/conseil-territorial/candidature", name="app_territorial_council_candidature")
  *
- * @Security("is_granted('ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE', user)")
+ * @IsGranted("ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE")
  */
 class CandidatureController extends AbstractController
 {

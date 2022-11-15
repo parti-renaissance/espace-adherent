@@ -7,7 +7,7 @@ use App\UserDocument\UserDocumentManager;
 use Gedmo\Sluggable\Util\Urlizer;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use League\Flysystem\FileNotFoundException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +22,7 @@ class UploadDocumentController extends AbstractController
     /**
      * @Route("/upload/{type}", name="app_filebrowser_upload", methods={"POST"})
      *
-     * @Security("is_granted('FILE_UPLOAD', type)")
+     * @IsGranted("FILE_UPLOAD", subject="type")
      */
     public function filebrowserUploadAction(
         string $type,
@@ -61,7 +61,7 @@ class UploadDocumentController extends AbstractController
     /**
      * @Route("/api/v3/upload/{type}", name="api_filebrowser_upload_v3", methods={"POST"})
      *
-     * @Security("is_granted('FILE_UPLOAD', type)")
+     * @IsGranted("FILE_UPLOAD", subject="type")
      */
     public function filebrowserUploadForApi(string $type, Request $request, UserDocumentManager $manager): Response
     {
@@ -93,7 +93,7 @@ class UploadDocumentController extends AbstractController
 
     /**
      * @Route("/ck-upload/{type}", name="app_filebrowser_upload_ckeditor5", methods={"POST"})
-     * @Security("is_granted('FILE_UPLOAD', type)")
+     * @IsGranted("FILE_UPLOAD", subject="type")
      */
     public function ckFileUploadAction(string $type, Request $request, UserDocumentManager $manager): Response
     {

@@ -7,7 +7,7 @@ use App\Report\ReportCommand;
 use App\Report\ReportCreationCommandHandler;
 use App\Report\ReportManager;
 use App\Report\ReportType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +35,7 @@ class ReportController extends AbstractController
      *     },
      *     methods={"GET", "POST"}
      * )
-     * @Security("is_granted('REPORT')")
+     * @IsGranted("REPORT")
      */
     public function reportAction(
         Request $request,

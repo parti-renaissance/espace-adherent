@@ -6,14 +6,14 @@ use App\Election\ElectionManager;
 use App\Entity\City;
 use App\Form\Election\MinistryVoteResultType;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Security("is_granted('ROLE_ELECTION_RESULTS_REPORTER')")
+ * @IsGranted("ROLE_ELECTION_RESULTS_REPORTER")
  */
 class MinistryVoteResultController extends AbstractController
 {

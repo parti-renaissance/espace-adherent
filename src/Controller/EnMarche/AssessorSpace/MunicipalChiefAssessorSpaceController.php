@@ -12,14 +12,14 @@ use App\Intl\FranceCitiesBundle;
 use App\Repository\Election\VotePlaceResultRepository;
 use App\Repository\VotePlaceRepository;
 use Doctrine\ORM\Query;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(path="/espace-municipales-2020/assesseurs", name="app_assessors_municipal_chief")
  *
- * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
+ * @IsGranted("ROLE_MUNICIPAL_CHIEF")
  */
 class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceController
 {

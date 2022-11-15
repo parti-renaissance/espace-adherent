@@ -2,7 +2,7 @@
 
 namespace App\Controller\EnMarche;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/changement-des-statuts", name="app_vote_statuses")
  *
- * @Security("is_granted('ROLE_STATUSES_VOTER')")
+ * @IsGranted("ROLE_STATUSES_VOTER")
  */
 class VoteStatusesController extends AbstractController
 {

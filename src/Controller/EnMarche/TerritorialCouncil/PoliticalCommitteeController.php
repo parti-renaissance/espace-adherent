@@ -13,7 +13,7 @@ use App\Repository\TerritorialCouncil\OfficialReportRepository;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route("/comite-politique", name="app_political_committee_")
  *
- * @Security("is_granted('POLITICAL_COMMITTEE_MEMBER')")
+ * @IsGranted("POLITICAL_COMMITTEE_MEMBER")
  */
 class PoliticalCommitteeController extends AbstractController
 {
@@ -70,7 +70,7 @@ class PoliticalCommitteeController extends AbstractController
 
     /**
      * @Route("/messages/{id}/modifier", name="edit_feed_item", methods={"GET", "POST"})
-     * @Security("is_granted('CAN_MANAGE_FEED_ITEM', feedItem)")
+     * @IsGranted("CAN_MANAGE_FEED_ITEM", subject="feedItem")
      */
     public function feedItemEditAction(
         EntityManagerInterface $manager,
@@ -97,7 +97,7 @@ class PoliticalCommitteeController extends AbstractController
 
     /**
      * @Route("/messages/{id}/supprimer", name="delete_feed_item", methods={"DELETE"})
-     * @Security("is_granted('CAN_MANAGE_FEED_ITEM', feedItem)")
+     * @IsGranted("CAN_MANAGE_FEED_ITEM", subject="feedItem")
      */
     public function deleteFeedItemAction(
         EntityManagerInterface $em,
@@ -127,7 +127,7 @@ class PoliticalCommitteeController extends AbstractController
 
     /**
      * @Route("/proces-verbaux/{uuid}", name="official_report_download", methods={"GET"})
-     * @Security("is_granted('CAN_DOWNLOAD_OFFICIAL_REPORT', officialReport)")
+     * @IsGranted("CAN_DOWNLOAD_OFFICIAL_REPORT", subject="officialReport")
      */
     public function downloadReportAction(OfficialReport $officialReport, FilesystemInterface $storage): Response
     {

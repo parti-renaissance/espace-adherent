@@ -7,13 +7,13 @@ use App\Entity\Adherent;
 use App\Entity\Event\MunicipalEvent;
 use App\Event\EventManagerSpaceEnum;
 use App\Repository\MunicipalEventRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(path="/espace-municipales-2020", name="app_municipal_chief_event_manager")
  *
- * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
+ * @IsGranted("ROLE_MUNICIPAL_CHIEF")
  */
 class MunicipalChiefEventManagerController extends AbstractEventManagerController
 {

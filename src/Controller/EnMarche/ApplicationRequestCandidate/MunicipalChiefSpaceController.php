@@ -9,7 +9,7 @@ use App\ApplicationRequest\Filter\ListFilter;
 use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Form\ApplicationRequest\ApplicationRequestListFilterType;
 use App\Security\Voter\MunicipalChiefVoter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/espace-municipales-2020/", name="app_municipal_chief")
  *
- * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
+ * @IsGranted("ROLE_MUNICIPAL_CHIEF")
  */
 class MunicipalChiefSpaceController extends AbstractApplicationRequestController
 {

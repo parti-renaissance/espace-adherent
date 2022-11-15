@@ -6,7 +6,7 @@ use App\Interactive\MyEuropeSerializer;
 use App\Repository\MyEuropeChoiceRepository;
 use App\Repository\MyEuropeInvitationRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/myeurope")
- * @Security("has_role('ROLE_ADMIN_MY_EUROPE')")
+ * @IsGranted("ROLE_ADMIN_MY_EUROPE")
  */
 class AdminMyEuropeController extends AbstractController
 {

@@ -6,14 +6,14 @@ use App\Entity\Formation\Module;
 use App\Entity\Page;
 use App\Repository\Formation\PathRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-formation", name="app_formation_")
- * @Security("is_granted('ROLE_FORMATION_SPACE')")
+ * @IsGranted("ROLE_FORMATION_SPACE")
  */
 class FormationController extends AbstractController
 {

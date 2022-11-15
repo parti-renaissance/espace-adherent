@@ -5,13 +5,13 @@ namespace App\Controller\EnMarche\MunicipalManagerAttribution;
 use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\MunicipalManager\Filter\AssociationCityFilter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(path="/espace-referent", name="app_municipal_manager_referent")
  *
- * @Security("is_granted('ROLE_REFERENT')")
+ * @IsGranted("ROLE_REFERENT")
  */
 class ReferentMunicipalManagerAttributionController extends AbstractMunicipalManagerAttributionController
 {

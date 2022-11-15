@@ -11,7 +11,7 @@ use App\Form\Coalition\CauseType;
 use App\Mailchimp\Synchronisation\Command\CoalitionMemberChangeCommand;
 use App\Repository\Coalition\CauseRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/espace-coalition/causes", name="app_coalition_")
  *
- * @Security("is_granted('ROLE_COALITION_MODERATOR')")
+ * @IsGranted("ROLE_COALITION_MODERATOR")
  */
 class CausesController extends AbstractController
 {

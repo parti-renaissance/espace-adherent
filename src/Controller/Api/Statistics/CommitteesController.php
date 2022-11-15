@@ -2,11 +2,10 @@
 
 namespace App\Controller\Api\Statistics;
 
-use App\Entity\Committee;
 use App\History\CommitteeMembershipHistoryHandler;
 use App\Repository\CommitteeRepository;
 use App\Statistics\StatisticsParametersFilter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/statistics/committees")
  *
- * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")
+ * @IsGranted("ROLE_OAUTH_SCOPE_READ:STATS")
  */
 class CommitteesController extends AbstractStatisticsController
 {

@@ -4,14 +4,14 @@ namespace App\Controller\Api\Event;
 
 use App\Entity\Event\BaseEvent;
 use App\Event\EventCanceledHandler;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * @Security("is_granted('CAN_MANAGE_EVENT', event)")
+ * @IsGranted("CAN_MANAGE_EVENT", subject="event")
  */
 class CancelEventController extends AbstractController
 {

@@ -11,8 +11,8 @@ use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Form\Renaissance\Adhesion\PrePaymentType;
 use Ramsey\Uuid\Uuid;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,7 +25,7 @@ class PaymentController extends AbstractAdhesionController
     /**
      * @Route(path="/adhesion/pre-paiement", name="app_renaissance_adhesion_pre_payment", methods={"GET"})
      *
-     * @Security("is_granted('ROLE_ADHERENT')")
+     * @IsGranted("ROLE_ADHERENT")
      */
     public function prePaymentAction(
         Request $request,

@@ -4,13 +4,13 @@ namespace App\Controller\EnMarche\Jecoute;
 
 use App\Entity\Adherent;
 use App\Jecoute\JecouteSpaceEnum;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-responsable-des-questionnaires", name="app_jecoute_manager_")
  *
- * @Security("is_granted('ROLE_JECOUTE_MANAGER')")
+ * @IsGranted("ROLE_JECOUTE_MANAGER")
  */
 class JecouteManagerController extends AbstractJecouteController
 {

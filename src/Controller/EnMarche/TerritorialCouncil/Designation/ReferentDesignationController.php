@@ -9,6 +9,7 @@ use App\Form\TerritorialCouncil\EditDesignationType;
 use App\Repository\TerritorialCouncil\ElectionRepository;
 use App\TerritorialCouncil\Designation\UpdateDesignationHandler;
 use App\TerritorialCouncil\Designation\UpdateDesignationRequest;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route(path="/espace-referent/instances", name="app_territorial_council_referent_designations", methods={"GET"})
  *
- * @Security("is_granted('ROLE_REFERENT')")
+ * @IsGranted("ROLE_REFERENT")
  */
 class ReferentDesignationController extends AbstractController
 {

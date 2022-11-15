@@ -19,6 +19,7 @@ use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -115,7 +116,7 @@ class CommitteeMessageController extends AbstractController
     /**
      * @Route("/{uuid}/modifier", requirements={"uuid": "%pattern_uuid%"}, name="update", methods={"GET", "POST"})
      *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
     public function updateMessageAction(
         Request $request,
@@ -156,7 +157,7 @@ class CommitteeMessageController extends AbstractController
     /**
      * @Route("/{uuid}/filtrer", name="filter", methods={"GET", "POST"})
      *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
     public function filterMessageAction(
         Request $request,
@@ -209,7 +210,7 @@ class CommitteeMessageController extends AbstractController
     /**
      * @Route("/{uuid}/visualiser", name="preview", methods={"GET"})
      *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
     public function previewMessageAction(CommitteeAdherentMessage $message, Committee $committee): Response
     {
@@ -223,7 +224,7 @@ class CommitteeMessageController extends AbstractController
     /**
      * @Route("/{uuid}/supprimer", name="delete", methods={"GET"})
      *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
     public function deleteMessageAction(
         CommitteeAdherentMessage $message,
@@ -241,7 +242,7 @@ class CommitteeMessageController extends AbstractController
     /**
      * @Route("/{uuid}/send", name="send", methods={"GET"})
      *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
     public function sendMessageAction(
         CommitteeAdherentMessage $message,
@@ -307,7 +308,7 @@ class CommitteeMessageController extends AbstractController
     /**
      * @Route("/{uuid}/tester", name="test", methods={"GET"})
      *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
     public function sendTestMessageAction(
         CommitteeAdherentMessage $message,

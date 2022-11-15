@@ -7,14 +7,14 @@ use App\ApplicationRequest\ApplicationRequestRepository;
 use App\ApplicationRequest\ApplicationRequestTypeEnum;
 use App\ApplicationRequest\Filter\ListFilter;
 use App\Entity\ApplicationRequest\ApplicationRequest;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(path="/espace-referent/", name="app_referent")
  *
- * @Security("is_granted('ROLE_REFERENT')")
+ * @IsGranted("ROLE_REFERENT")
  */
 class ReferentSpaceController extends AbstractApplicationRequestController
 {

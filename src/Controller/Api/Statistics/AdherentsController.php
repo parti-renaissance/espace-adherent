@@ -6,7 +6,7 @@ use App\History\CommitteeMembershipHistoryHandler;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Membership\AdherentManager;
 use App\Repository\AdherentRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/statistics/adherents")
  *
- * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")
+ * @IsGranted("ROLE_OAUTH_SCOPE_READ:STATS")
  */
 class AdherentsController extends AbstractStatisticsController
 {

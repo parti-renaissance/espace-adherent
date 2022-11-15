@@ -15,6 +15,7 @@ use App\Repository\CommitteeCandidacyRepository;
 use App\Security\Voter\Committee\CommitteeElectionVoter;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,7 +29,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route("/comites/{slug}/candidature", name="app_committee_candidature")
  *
- * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
+ * @IsGranted("MEMBER_OF_COMMITTEE", subject="committee")
  */
 class CandidatureController extends AbstractController
 {

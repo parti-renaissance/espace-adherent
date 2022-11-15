@@ -14,7 +14,7 @@ use App\Event\EventCommand;
 use App\Event\EventCommandHandler;
 use App\Event\EventManagerSpaceEnum;
 use App\Form\EventCommandType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,7 +91,7 @@ abstract class AbstractEventManagerController extends AbstractController
 
     /**
      * @Route("/evenements/{slug}/modifier", name="_edit", methods={"GET", "POST"})
-     * @Security("is_granted('HOST_EVENT', event)")
+     * @IsGranted("HOST_EVENT", subject="event")
      */
     public function editAction(Request $request, BaseEvent $event, EventCommandHandler $handler): Response
     {
@@ -120,7 +120,7 @@ abstract class AbstractEventManagerController extends AbstractController
 
     /**
      * @Route("/evenements/{slug}/annuler", name="_cancel", methods={"GET"})
-     * @Security("is_granted('HOST_EVENT', event)")
+     * @IsGranted("HOST_EVENT", subject="event")
      */
     public function cancelAction(BaseEvent $event, EventCanceledHandler $eventCanceledHandler): Response
     {

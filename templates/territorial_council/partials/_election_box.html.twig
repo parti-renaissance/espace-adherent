@@ -10,7 +10,7 @@
     {% set update_invitation_button_label = 'Modifier ma demande de trinôme' %}
 {% endif %}
 
-{% set able_to_candidate = is_granted('ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE', app.user) %}
+{% set able_to_candidate = is_granted('ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE') %}
 
 <section class="instance__elections-box b__nudge--bottom-larger">
     <div class="l__row">

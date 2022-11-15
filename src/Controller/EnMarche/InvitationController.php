@@ -8,7 +8,7 @@ use App\Entity\Invite;
 use App\Form\InvitationType;
 use App\Form\SimpleInvitationType;
 use App\Invitation\InvitationRequestHandler;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +53,7 @@ class InvitationController extends AbstractController
      * @Route("/espace-candidat-legislative/invitation", name="app_legislative_candidate_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "legislative_candidate"})
      * @Route("/espace-candidat/invitation", name="app_candidate_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "candidate"})
      *
-     * @Security("is_granted('ROLE_ADHERENT')")
+     * @IsGranted("ROLE_ADHERENT")
      */
     public function connectedAdherentInviteAction(
         Request $request,

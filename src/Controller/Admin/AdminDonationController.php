@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Donation;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/donation")
  *
- * @Security("has_role('ROLE_ADMIN_FINANCE')")
+ * @IsGranted("ROLE_ADMIN_FINANCE")
  */
 class AdminDonationController extends AbstractController
 {

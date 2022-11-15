@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\QrCode;
 use App\QrCode\QrCodeEntityHandler;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *     defaults={"_format": "png"},
  *     requirements={"_format": "png|svg"}
  * )
- * @Security("is_granted('ROLE_ADMIN_QR_CODES')")
+ * @IsGranted("ROLE_ADMIN_QR_CODES")
  */
 class AdminQrCodeGeneratorController
 {

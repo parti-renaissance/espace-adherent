@@ -3,7 +3,7 @@
 namespace App\Controller\EnMarche;
 
 use App\Controller\CanaryControllerTrait;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/mon-vote", name="app_adherent_my_vote", methods={"GET"})
  *
- * @Security("is_granted('ROLE_ADHERENT')")
+ * @IsGranted("ROLE_ADHERENT")
  */
 class MyVoteController extends AbstractController
 {
