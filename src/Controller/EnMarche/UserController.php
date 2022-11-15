@@ -55,7 +55,7 @@ class UserController extends AbstractController
         $adherent = $this->getUser();
 
         if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('app_renaissance_profile');
+            return $this->render('adherent/renaissance_profile.html.twig');
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
@@ -107,7 +107,7 @@ class UserController extends AbstractController
         $adherent = $this->getUser();
 
         if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('app_renaissance_profile');
+            return $this->render('adherent/renaissance_profile.html.twig');
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
@@ -185,7 +185,7 @@ class UserController extends AbstractController
         $adherent = $this->getUser();
 
         if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('app_renaissance_profile');
+            return $this->render('adherent/renaissance_profile.html.twig');
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {

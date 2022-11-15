@@ -30,7 +30,7 @@ class CertificationRequestController extends AbstractController
         $adherent = $this->getUser();
 
         if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('app_renaissance_profile');
+            return $this->render('adherent/renaissance_profile.html.twig');
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
@@ -59,7 +59,7 @@ class CertificationRequestController extends AbstractController
         $adherent = $this->getUser();
 
         if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('app_renaissance_profile');
+            return $this->render('adherent/renaissance_profile.html.twig');
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
@@ -86,7 +86,7 @@ class CertificationRequestController extends AbstractController
         }
 
         return $this->render(
-            AppCodeEnum::isRenaissanceApp($appCode)
+            $isRenaissanceApp
                 ? 'renaissance/adherent/certification_request/form.html.twig'
                 : 'certification_request/form.html.twig',
             [
