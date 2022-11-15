@@ -55,6 +55,7 @@
 {#                            </div>#}
 {#                        </div>#}
                     </div>
+                    {% block adherent_profile_menu %}
                     <nav class="adherent-profile__menu adherent-profile__menu--desktop accordion-container">
                         {% set isInformationRoute = is_active_route(app.request, [
                             'app_user_edit',
@@ -121,9 +122,10 @@
                         <li class="space--10-0"><a href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank" class="text--body text--small link--no-decor">Aide</a></li>
                         <li class="space--10-0"><a href="{{ path('logout') }}" class="text--body text--small link--no-decor">Déconnexion</a></li>
                     </ul>
+                    {% endblock %}
                 </aside>
                 <div class="adherent-profile__content">
-                    {% block adherent_profile_content %}{% endblock %}
+                    {% block adherent_profile_content '' %}
                 </div>
             </div>
         </div>

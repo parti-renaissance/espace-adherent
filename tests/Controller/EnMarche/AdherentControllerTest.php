@@ -118,15 +118,18 @@ class AdherentControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, $profilePage);
+        $crawler = $this->client->request(Request::METHOD_GET, $profilePage);
 
-        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertStringContainsString(
+            'Rendez vous sur test.renaissance.code pour modifier votre profil!',
+            $crawler->filter('.adherent-profile__section')->text()
+        );
     }
 
     public function provideProfilePage(): \Generator
     {
         yield 'Mes informations personnelles' => ['/parametres/mon-compte/modifier'];
-        yield 'Mes dons' => ['/parametres/mes-activites#donations'];
         yield 'Mes centres d\'intérêt' => ['/espace-adherent/mon-compte/centres-d-interet'];
         yield 'Notifications' => ['/parametres/mon-compte/preferences-des-emails'];
         yield 'Mot de passe' => ['/parametres/mon-compte/changer-mot-de-passe'];

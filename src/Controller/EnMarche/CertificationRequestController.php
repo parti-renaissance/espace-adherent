@@ -8,15 +8,14 @@ use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Form\CertificationRequestType;
 use App\OAuth\App\AuthAppUrlManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/espace-adherent/mon-compte/certification", name="app_certification_request_")
- * @IsGranted("ADHERENT_PROFILE")
  */
 class CertificationRequestController extends AbstractController
 {
@@ -26,6 +25,18 @@ class CertificationRequestController extends AbstractController
     public function homeAction(Request $request, AuthAppUrlManager $appUrlManager): Response
     {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
+        $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
+
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
+        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
+            return $this->render('adherent/renaissance_profile.html.twig');
+        }
+
+        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
+            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
 
         return $this->render(AppCodeEnum::isRenaissanceApp($appCode)
             ? 'renaissance/adherent/certification_request/home.html.twig'
@@ -43,9 +54,18 @@ class CertificationRequestController extends AbstractController
         string $app_domain
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
+        $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
 
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
+
+        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
+            return $this->render('adherent/renaissance_profile.html.twig');
+        }
+
+        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
+            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
 
         if (!$this->isGranted(CertificationPermissions::REQUEST)) {
             return $this->redirectToRoute('app_certification_request_home', ['app_domain' => $app_domain]);
@@ -67,7 +87,7 @@ class CertificationRequestController extends AbstractController
         }
 
         return $this->render(
-            AppCodeEnum::isRenaissanceApp($appCode)
+            $isRenaissanceApp
                 ? 'renaissance/adherent/certification_request/form.html.twig'
                 : 'certification_request/form.html.twig',
             [

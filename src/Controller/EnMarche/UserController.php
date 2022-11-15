@@ -28,13 +28,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/parametres/mon-compte")
- * @IsGranted("ADHERENT_PROFILE")
  */
 class UserController extends AbstractController
 {
@@ -50,14 +50,25 @@ class UserController extends AbstractController
         string $app_domain
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
+        $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
 
+        /** @var Adherent $adherent */
         $adherent = $this->getUser();
+
+        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
+            return $this->render('adherent/renaissance_profile.html.twig');
+        }
+
+        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
+            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
+
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);
 
         $form = $this
             ->createForm(AdherentProfileType::class, $adherentProfile, [
                 'disabled_form' => $adherent->isCertified(),
-                'is_renaissance' => AppCodeEnum::isRenaissanceApp($appCode),
+                'is_renaissance' => $isRenaissanceApp,
             ])
             ->handleRequest($request)
         ;
@@ -70,7 +81,7 @@ class UserController extends AbstractController
         }
 
         return $this->render(
-            AppCodeEnum::isRenaissanceApp($appCode)
+            $isRenaissanceApp
                 ? 'renaissance/adherent/profile/form.html.twig'
                 : 'adherent/profile.html.twig',
             [
@@ -91,18 +102,30 @@ class UserController extends AbstractController
         string $app_domain
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
+        $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
+
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
+        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
+            return $this->render('adherent/renaissance_profile.html.twig');
+        }
+
+        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
+            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
 
         $form = $this->createForm(AdherentChangePasswordType::class);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $handler->changePassword($this->getUser(), $form->get('password')->getData());
+            $handler->changePassword($adherent, $form->get('password')->getData());
             $this->addFlash('info', 'adherent.update_password.success');
 
             return $this->redirectToRoute('app_user_change_password', ['app_domain' => $app_domain]);
         }
 
         return $this->render(
-            AppCodeEnum::isRenaissanceApp($appCode)
+            $isRenaissanceApp
                 ? 'renaissance/adherent/change_password/form.html.twig'
                 : 'adherent/change_password.html.twig',
             [
@@ -119,10 +142,23 @@ class UserController extends AbstractController
     public function setEmailNotificationsAction(
         Request $request,
         EventDispatcherInterface $dispatcher,
-        SubscriptionHandler $subscriptionHandler
+        SubscriptionHandler $subscriptionHandler,
+        AuthAppUrlManager $appUrlManager
     ): Response {
+        $appCode = $appUrlManager->getAppCodeFromRequest($request);
+        $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
+
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
+
+        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
+            return $this->render('adherent/renaissance_profile.html.twig');
+        }
+
+        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
+            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
+
         $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
 
         $dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
@@ -157,9 +193,19 @@ class UserController extends AbstractController
         AuthAppUrlManager $appUrlManager
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
+        $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
 
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
+
+        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
+            return $this->render('adherent/renaissance_profile.html.twig');
+        }
+
+        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
+            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
+
         $unregistrationCommand = new UnregistrationCommand();
         $viewFolder = $adherent->isUser() ? 'user' : 'adherent';
         $reasons = $adherent->isUser() ? Unregistration::REASONS_LIST_USER : Unregistration::REASONS_LIST_ADHERENT;
@@ -167,7 +213,7 @@ class UserController extends AbstractController
         $form = $this->createForm(UnregistrationType::class, $unregistrationCommand, [
             'csrf_token_id' => self::UNREGISTER_TOKEN,
             'reasons' => array_combine($reasons, $reasons),
-            'is_renaissance' => AppCodeEnum::isRenaissanceApp($appCode),
+            'is_renaissance' => $isRenaissanceApp,
         ]);
 
         $form->handleRequest($request);
@@ -178,7 +224,7 @@ class UserController extends AbstractController
             $request->getSession()->invalidate();
 
             return $this->render(
-                AppCodeEnum::isRenaissanceApp($appCode)
+                $isRenaissanceApp
                     ? 'renaissance/adherent/terminate_membership/success.html.twig'
                     : sprintf('%s/terminate_membership.html.twig', $viewFolder),
                 [
@@ -189,7 +235,7 @@ class UserController extends AbstractController
         }
 
         return $this->render(
-            AppCodeEnum::isRenaissanceApp($appCode)
+            $isRenaissanceApp
                 ? 'renaissance/adherent/terminate_membership/form.html.twig'
                 : sprintf('%s/terminate_membership.html.twig', $viewFolder),
             [

@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche;
 
+use App\AppCodeEnum;
 use App\Committee\CommitteeCreationCommand;
 use App\Committee\CommitteeCreationCommandHandler;
 use App\Committee\CommitteeManager;
@@ -21,11 +22,11 @@ use App\Form\CreateCommitteeCommandType;
 use App\Geocoder\Exception\GeocodingException;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
+use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\AdherentRepository;
 use App\Search\SearchParametersFilter;
 use App\Search\SearchResultsProvidersManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -79,15 +80,29 @@ class AdherentController extends AbstractController
      * This action enables an adherent to pin his/her interests.
      *
      * @Route("/mon-compte/centres-d-interet", name="app_adherent_pin_interests", methods={"GET", "POST"})
-     * @IsGranted("ADHERENT_PROFILE")
      */
     public function pinInterestsAction(
         EntityManagerInterface $manager,
         Request $request,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        AuthAppUrlManager $appUrlManager
     ): Response {
+        $appCode = $appUrlManager->getAppCodeFromRequest($request);
+        $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
+
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
+        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
+            return $this->render('adherent/renaissance_profile.html.twig');
+        }
+
+        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
+            return $this->redirectToRoute('homepage');
+        }
+
         $form = $this
-            ->createForm(AdherentInterestsFormType::class, $adherent = $this->getUser())
+            ->createForm(AdherentInterestsFormType::class, $adherent)
             ->handleRequest($request)
         ;
 
