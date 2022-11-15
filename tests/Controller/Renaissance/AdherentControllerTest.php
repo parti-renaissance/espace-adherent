@@ -24,7 +24,6 @@ use Tests\App\Test\SendInBlue\DummyClient;
 /**
  * @group functional
  * @group adherent
- * @group debug
  */
 class AdherentControllerTest extends WebTestCase
 {

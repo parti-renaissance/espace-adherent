@@ -30,8 +30,7 @@ class SecurityControllerTest extends WebTestCase
     private $emailRepository;
 
     /**
-     * @dataProvider getAdherentEmails
-     * @group debug
+     * @dataProvider getAdherentEmailss
      */
     public function testAuthenticationIsSuccessful(string $email, string $fullName, bool $isRenaissanceUser): void
     {
