@@ -89,7 +89,7 @@
         "sendinblue/api-v3-sdk": "^8.1",
         "sensio/framework-extra-bundle": "^6.0",
         "sentry/sentry-symfony": "^4.2",
-        "snc/redis-bundle": "^3.2",
+        "snc/redis-bundle": "^4.3",
         "sonata-project/admin-bundle": "^3.49",
         "sonata-project/doctrine-orm-admin-bundle": "^3.0",
         "sonata-project/exporter": "2.7.0",

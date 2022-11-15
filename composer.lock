@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb51b1b748f5a06d98fddbcc498628e0",
+    "content-hash": "4d2374dd217e0f4249aa13844d3fc20e",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -11237,42 +11237,50 @@
         },
         {
             "name": "snc/redis-bundle",
-            "version": "3.5.2",
+            "version": "4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/snc/SncRedisBundle.git",
-                "reference": "2ab0f17a10a3fb1bb9a5446e36267d10f468f100"
+                "reference": "5797249b34fce59880227221c99606132676d920"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/snc/SncRedisBundle/zipball/2ab0f17a10a3fb1bb9a5446e36267d10f468f100",
-                "reference": "2ab0f17a10a3fb1bb9a5446e36267d10f468f100",
+                "url": "https://api.github.com/repos/snc/SncRedisBundle/zipball/5797249b34fce59880227221c99606132676d920",
+                "reference": "5797249b34fce59880227221c99606132676d920",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2 || ^8.0",
-                "symfony/framework-bundle": "^3.4.23 || ^4.2.4 || ^5.0 || ^6.0",
-                "symfony/http-foundation": "^3.4 || ^4.2 || ^5.0 || ^6.0",
-                "symfony/yaml": "^3.4 || ^4.2 || ^5.0 || ^6.0"
+                "php": "^7.4 || ^8.0",
+                "symfony/framework-bundle": "^4.4 || ^5.3 || ^6.0",
+                "symfony/http-foundation": "^4.4 || ^5.3 || ^6.0",
+                "symfony/service-contracts": ">=1.0",
+                "symfony/var-dumper": "^4.4 || ^5.3 || ^6.0"
+            },
+            "conflict": {
+                "ext-redis": "<5.3",
+                "predis/predis": "<1.1 || >=2.0"
             },
             "require-dev": {
-                "doctrine/cache": "^1.4|^2.0",
-                "doctrine/doctrine-bundle": "^1.11.2 || ^2.0",
-                "doctrine/orm": "^2.7.5",
+                "doctrine/annotations": "^1.13",
+                "doctrine/coding-standard": "^10.0",
                 "ext-pdo_sqlite": "*",
+                "ext-redis": "*",
+                "friendsofphp/proxy-manager-lts": "^1.0.6",
+                "monolog/monolog": "*",
                 "phpunit/phpunit": "^8.5 || ^9.5",
-                "predis/predis": "^1.1",
-                "swiftmailer/swiftmailer": "^6.0",
-                "symfony/browser-kit": "^3.4 || ^4.2 || ^5.0 || ^6.0",
-                "symfony/cache": "^3.4 || ^4.2 || ^5.0 || ^6.0",
-                "symfony/console": "^3.4 || ^4.2 || ^5.0 || ^6.0",
-                "symfony/dom-crawler": "^3.4 || ^4.2 || ^5.0 || ^6.0",
-                "symfony/filesystem": "^3.4 || ^4.2 || ^5.0 || ^6.0",
-                "symfony/phpunit-bridge": "^4.4.8",
+                "predis/predis": ">=1.1",
+                "symfony/browser-kit": "^4.4 || ^5.3 || ^6.0",
+                "symfony/cache": "^4.4 || ^5.3 || ^6.0",
+                "symfony/console": "^4.4 || ^5.3 || ^6.0",
+                "symfony/dom-crawler": "^4.4 || ^5.3 || ^6.0",
+                "symfony/filesystem": "^4.4 || ^5.3 || ^6.0",
+                "symfony/phpunit-bridge": "^6.0",
                 "symfony/profiler-pack": "^1.0",
-                "symfony/stopwatch": "^3.4 || ^4.2 || ^5.0 || ^6.0",
-                "symfony/swiftmailer-bundle": "^2.0 || ^3.0",
-                "symfony/twig-bundle": "^3.4 || ^4.2 || ^5.0 || ^6.0"
+                "symfony/proxy-manager-bridge": "^4.4 || ^5.3 || ^6.0",
+                "symfony/stopwatch": "^4.4 || ^5.3 || ^6.0",
+                "symfony/twig-bundle": "^4.4 || ^5.3 || ^6.0",
+                "symfony/yaml": "^4.4 || ^5.3 || ^6.0",
+                "vimeo/psalm": "^4.13"
             },
             "suggest": {
                 "monolog/monolog": "If you want to use the monolog redis handler.",
@@ -11288,11 +11296,8 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Snc\\RedisBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
+                    "Snc\\RedisBundle\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -11317,9 +11322,9 @@
             ],
             "support": {
                 "issues": "https://github.com/snc/SncRedisBundle/issues",
-                "source": "https://github.com/snc/SncRedisBundle/tree/3.5.2"
+                "source": "https://github.com/snc/SncRedisBundle/tree/4.3.2"
             },
-            "time": "2021-11-03T16:33:30+00:00"
+            "time": "2022-11-10T19:02:11+00:00"
         },
         {
             "name": "sonata-project/admin-bundle",
@@ -15191,16 +15196,16 @@
         },
         {
             "name": "symfony/polyfill-intl-idn",
-            "version": "v1.26.0",
+            "version": "v1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-idn.git",
-                "reference": "59a8d271f00dd0e4c2e518104cc7963f655a1aa8"
+                "reference": "639084e360537a19f9ee352433b84ce831f3d2da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/59a8d271f00dd0e4c2e518104cc7963f655a1aa8",
-                "reference": "59a8d271f00dd0e4c2e518104cc7963f655a1aa8",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/639084e360537a19f9ee352433b84ce831f3d2da",
+                "reference": "639084e360537a19f9ee352433b84ce831f3d2da",
                 "shasum": ""
             },
             "require": {
@@ -15214,7 +15219,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.26-dev"
+                    "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -15258,7 +15263,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.26.0"
+                "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.27.0"
             },
             "funding": [
                 {
@@ -15274,20 +15279,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-24T11:49:31+00:00"
+            "time": "2022-11-03T14:55:06+00:00"
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
-            "version": "v1.26.0",
+            "version": "v1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
-                "reference": "219aa369ceff116e673852dce47c3a41794c14bd"
+                "reference": "19bd1e4fcd5b91116f14d8533c57831ed00571b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/219aa369ceff116e673852dce47c3a41794c14bd",
-                "reference": "219aa369ceff116e673852dce47c3a41794c14bd",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/19bd1e4fcd5b91116f14d8533c57831ed00571b6",
+                "reference": "19bd1e4fcd5b91116f14d8533c57831ed00571b6",
                 "shasum": ""
             },
             "require": {
@@ -15299,7 +15304,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.26-dev"
+                    "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -15342,7 +15347,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.26.0"
+                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.27.0"
             },
             "funding": [
                 {
@@ -15358,7 +15363,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-24T11:49:31+00:00"
+            "time": "2022-11-03T14:55:06+00:00"
         },
         {
             "name": "symfony/process",
