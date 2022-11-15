@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -59,7 +60,7 @@ class UserController extends AbstractController
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('homepage');
+            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);
@@ -111,7 +112,7 @@ class UserController extends AbstractController
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('homepage');
+            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         $form = $this->createForm(AdherentChangePasswordType::class);
@@ -141,10 +142,23 @@ class UserController extends AbstractController
     public function setEmailNotificationsAction(
         Request $request,
         EventDispatcherInterface $dispatcher,
-        SubscriptionHandler $subscriptionHandler
+        SubscriptionHandler $subscriptionHandler,
+        AuthAppUrlManager $appUrlManager
     ): Response {
+        $appCode = $appUrlManager->getAppCodeFromRequest($request);
+        $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
+
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
+
+        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
+            return $this->render('adherent/renaissance_profile.html.twig');
+        }
+
+        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
+            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
+
         $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
 
         $dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
@@ -189,7 +203,7 @@ class UserController extends AbstractController
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('homepage');
+            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         $unregistrationCommand = new UnregistrationCommand();
