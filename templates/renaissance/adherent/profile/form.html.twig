@@ -94,19 +94,12 @@
                                 <h3 class="text-lg font-medium leading-6 text-gray-900 uppercase tracking-wider">Vos coordonnées</h3>
                             </div>
                             <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-6">
-                                <div class="md:col-span-4">
-                                    {{ form_row(form.address.country, {label: 'Pays'}) }}
-                                </div>
                                 <div class="md:col-span-6 hidden">
                                     <p class="text" id="address-autocomplete-help-message">
                                         Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
                                     </p>
                                 </div>
-                                <div class="md:col-span-2">
-                                    {{ form_row(form.address.cityName, {label: 'Ville'}) }}
-                                    {{ form_row(form.address.city) }}
-                                </div>
-                                <div class="md:col-span-2">
+                                <div class="md:col-span-3">
                                     {{ form_label(form.address.address, 'Adresse') }}
                                     <div class="em-form__group b__nudge--none" style="margin: 0;">
                                         {{ form_widget(form.address.address) }}
@@ -114,8 +107,15 @@
                                     {{ form_errors(form.address.address) }}
                                     <div class="address-autocomplete"></div>
                                 </div>
-                                <div class="md:col-span-2">
+                                <div class="md:col-span-3">
                                     {{ form_row(form.address.postalCode, {label: 'Code postal'}) }}
+                                </div>
+                                <div class="md:col-span-2">
+                                    {{ form_row(form.address.cityName, {label: 'Ville'}) }}
+                                    {{ form_row(form.address.city) }}
+                                </div>
+                                <div class="md:col-span-4">
+                                    {{ form_row(form.address.country, {label: 'Pays'}) }}
                                 </div>
                                 <div class="md:col-span-6">
                                     {{ form_errors(form.address) }}
@@ -131,10 +131,10 @@
                                     {{ form_row(form.position, {label: 'Statut professionnel'}) }}
                                 </div>
                                 <div class="md:col-span-3">
-                                    {{ form_row(form.job, {label: 'Métier'}) }}
-                                </div>
-                                <div class="md:col-span-3">
                                     {{ form_row(form.activityArea, {half: true, label: 'Secteur d\'activité'}) }}
+                                </div>
+                                <div class="md:col-span-6">
+                                    {{ form_row(form.job, {label: 'Métier'}) }}
                                 </div>
                             </div>
                         </div>

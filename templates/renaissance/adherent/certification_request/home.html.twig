@@ -9,7 +9,7 @@
         <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
             <div>
                 <h3 class="text-lg font-medium leading-6 text-gray-900 uppercase tracking-wider">Votre profil certifié</h3>
-                <p class="mt-4 text-base leading-6 text-gray-500">Cela vous permet de voter pour les élections internes des nouveaux statuts si vous avez au moins 3 mois d'ancienneté à LaREM.</p>
+                <p class="mt-4 text-base leading-6 text-gray-500">Certifier votre profil permet de voter pour les élections internes de Renaissance.</p>
             </div>
             <div class="mt-8">
                 {% if app.user.isCertified %}
@@ -24,32 +24,39 @@
                     </div>
 
                 {% elseif app.user.certificationRequests.hasBlockedCertificationRequest %}
-                    <img src="{{ asset('images/icons/certification/blocked.svg') }}" alt="certif-img"/>
-                    <div class="title b__nudge--bottom">Demande de certification bloquée</div>
-                    <p>Vous ne pouvez pas refaire de nouvelle demande pour l'instant.</p>
+                    <div class="bg-gray-50 rounded-lg max-w-2xl px-4 py-5 sm:p-6">
+                        <img src="{{ asset('images/icons/certification/blocked.svg') }}" alt="certif-img"/>
+                        <h4 class="mt-3 text-lg font-medium leading-6 text-gray-900">Demande de certification bloquée</h4>
+                        <p class="mt-2 max-w-xl text-sm text-gray-500">Vous ne pouvez pas refaire de nouvelle demande pour l'instant.</p>
+                    </div>
 
                 {% elseif app.user.certificationRequests.hasPendingCertificationRequest %}
-                    <img src="{{ asset('/images/icons/certification/on-waiting.svg') }}" alt="certif-img"/>
-                    <div class="title b__nudge--bottom">Demande de certification en attente</div>
-                    <p>Votre demande est en attente d'approbation par nos équipes.</p>
+                    <div class="bg-gray-50 rounded-lg max-w-2xl px-4 py-5 sm:p-6">
+                        <img src="{{ asset('/images/icons/certification/on-waiting.svg') }}" alt="certif-img"/>
+                        <h4 class="mt-3 text-lg font-medium leading-6 text-gray-900">Demande de certification en attente</h4>
+                        <p class="mt-2 max-w-xl text-sm text-gray-500">Votre demande est en attente d'approbation par nos équipes.</p>
+                    </div>
 
                 {% elseif app.user.certificationRequests.hasRefusedCertificationRequest %}
                     {% set refusedCertificationRequest = app.user.certificationRequests.getRefusedCertificationRequests.first %}
-
-                    <img src="{{ asset('/images/icons/certification/blocked.svg') }}" alt="certif-img"/>
-                    <div class="title b__nudge--bottom">Demande de certification refusée</div>
-                    <p>Votre demande de certification a été refusée.<br />
-                    {% if refusedCertificationRequest.refusalReason %}
-                        <p>
-                            Raison:
-                            {% if refusedCertificationRequest.isRefusedWithOtherReason %}
-                                {{ refusedCertificationRequest.customRefusalReason }}
-                            {% else %}
-                                {{ refusedCertificationRequest.refusalReasonKey|trans }}
+                    <div class="bg-gray-50 rounded-lg max-w-2xl px-4 py-5 sm:p-6">
+                        <img src="{{ asset('/images/icons/certification/blocked.svg') }}" alt="certif-img"/>
+                        <h4 class="mt-3 text-lg font-medium leading-6 text-gray-900">Demande de certification refusée</h4>
+                        <div class="mt-2 max-w-xl text-sm text-gray-500">
+                            <p>Votre demande de certification a été refusée.</p>
+                            {% if refusedCertificationRequest.refusalReason %}
+                                <p class="mt-4 text-sm leading-5 text-gray-600 font-medium">
+                                    Raison:
+                                    {% if refusedCertificationRequest.isRefusedWithOtherReason %}
+                                        {{ refusedCertificationRequest.customRefusalReason }}
+                                    {% else %}
+                                        {{ refusedCertificationRequest.refusalReasonKey|trans }}
+                                    {% endif %}
+                                </p>
                             {% endif %}
-                        </p>
-                    {% endif %}
-                    Vous pouvez <a class="link--blue--dark link--no-decor" href="{{ path('app_certification_request_form', { app_domain: renaissance_host }) }}">réessayer</a>.</p>
+                            Vous pouvez <a class="text-re-blue-500 font-medium hover:text-re-blue-600 hover:underline" href="{{ path('app_certification_request_form', { app_domain: renaissance_host }) }}">réessayer</a>.
+                        </div>
+                    </div>
 
                 {% else %}
                     <div class="bg-gray-50 rounded-lg max-w-2xl px-4 py-5 sm:p-6">
