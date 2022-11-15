@@ -13,6 +13,7 @@ class UnregistrationFactory
     ): Unregistration {
         return new Unregistration(
             $adherent->getUuid(),
+            Adherent::createUuid($adherent->getEmailAddress()),
             $command->getReasons(),
             $command->getComment(),
             $adherent->getRegisteredAt(),
