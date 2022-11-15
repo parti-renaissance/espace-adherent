@@ -97,26 +97,40 @@ class AdherentControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
-    public function provideProfilePage(): \Generator
-    {
-        yield 'Mon compte' => ['/parametres/mon-compte'];
-        yield 'Mes informations personnelles' => ['/parametres/mon-compte/modifier'];
-        yield 'Mes dons' => ['/parametres/mon-compte/mes-dons'];
-        yield 'Mes centres d\'intérêt' => ['/espace-adherent/mon-compte/centres-d-interet'];
-        yield 'Modifier mon profil' => ['/espace-adherent/mon-profil'];
-        yield 'Notifications' => ['/parametres/mon-compte/preferences-des-emails'];
-        yield 'Mot de passe' => ['/parametres/mon-compte/changer-mot-de-passe'];
-    }
-
-    public function testProfileActionIsAccessibleForAdherent(): void
+    /**
+     * @dataProvider provideProfilePage
+     */
+    public function testProfileActionIsAccessibleForAdherent(string $profilePage): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+        $crawler = $this->client->request(Request::METHOD_GET, $profilePage);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Carl Mirabeau', $crawler->filter('.adherent-profile__id .name')->text());
         $this->assertStringContainsString('Adhérent depuis le16 novembre 2016 à 20:45', $crawler->filter('.adherent-profile__id .adhesion-date')->text());
+    }
+
+    /**
+     * @dataProvider provideProfilePage
+     */
+    public function testProfileActionIsNotAccessibleForREAdherent(string $profilePage): void
+    {
+        $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
+
+        $this->client->request(Request::METHOD_GET, $profilePage);
+
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+    }
+
+    public function provideProfilePage(): \Generator
+    {
+        yield 'Mes informations personnelles' => ['/parametres/mon-compte/modifier'];
+        yield 'Mes dons' => ['/parametres/mes-activites#donations'];
+        yield 'Mes centres d\'intérêt' => ['/espace-adherent/mon-compte/centres-d-interet'];
+        yield 'Notifications' => ['/parametres/mon-compte/preferences-des-emails'];
+        yield 'Mot de passe' => ['/parametres/mon-compte/changer-mot-de-passe'];
+        yield 'Certification' => ['/espace-adherent/mon-compte/certification'];
     }
 
     public function testProfileActionIsAccessibleForInactiveAdherent(): void

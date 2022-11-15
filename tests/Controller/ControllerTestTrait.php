@@ -4,6 +4,7 @@ namespace Tests\App\Controller;
 
 use App\Entity\Adherent;
 use App\Entity\Event\InstitutionalEventCategory;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Messenger\MessageRecorder\MessageRecorderInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -210,6 +211,20 @@ trait ControllerTestTrait
 
         self::assertInstanceOf(ReferentTag::class, $referentTag);
         self::assertSame($referentTag->getCode(), $code);
+    }
+
+    private static function assertAdherentHasZone(Adherent $adherent, string $code): void
+    {
+        $zone = $adherent
+            ->getZones()
+            ->filter(function (Zone $zone) use ($code) {
+                return $code === $zone->getCode();
+            })
+            ->first()
+        ;
+
+        self::assertInstanceOf(Zone::class, $zone);
+        self::assertSame($zone->getCode(), $code);
     }
 
     protected function getMessageRecorder(): MessageRecorderInterface

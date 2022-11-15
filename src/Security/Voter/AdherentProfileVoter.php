@@ -7,9 +7,9 @@ use App\Entity\Adherent;
 use App\OAuth\App\AuthAppUrlManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class AdherentCurrentAppVoter extends AbstractAdherentVoter
+class AdherentProfileVoter extends AbstractAdherentVoter
 {
-    public const PERMISSION_CURRENT_APP = 'ADHERENT_CURRENT_APP';
+    public const PERMISSION_ADHERENT_PROFILE = 'ADHERENT_PROFILE';
 
     private RequestStack $requestStack;
     private AuthAppUrlManager $authAppUrlManager;
@@ -22,7 +22,7 @@ class AdherentCurrentAppVoter extends AbstractAdherentVoter
 
     protected function supports($attribute, $subject): bool
     {
-        return self::PERMISSION_CURRENT_APP === $attribute && null === $subject;
+        return self::PERMISSION_ADHERENT_PROFILE === $attribute && null === $subject;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
