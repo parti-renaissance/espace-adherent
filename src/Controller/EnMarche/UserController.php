@@ -34,6 +34,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/parametres/mon-compte")
+ * @IsGranted("ADHERENT_PROFILE")
  */
 class UserController extends AbstractController
 {

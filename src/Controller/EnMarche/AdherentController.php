@@ -25,6 +25,7 @@ use App\Repository\AdherentRepository;
 use App\Search\SearchParametersFilter;
 use App\Search\SearchResultsProvidersManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,6 +79,7 @@ class AdherentController extends AbstractController
      * This action enables an adherent to pin his/her interests.
      *
      * @Route("/mon-compte/centres-d-interet", name="app_adherent_pin_interests", methods={"GET", "POST"})
+     * @IsGranted("ADHERENT_PROFILE")
      */
     public function pinInterestsAction(
         EntityManagerInterface $manager,

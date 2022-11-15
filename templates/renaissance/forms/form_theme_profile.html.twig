@@ -74,3 +74,18 @@
         {%- endfor -%}
     {% endif %}
 {%- endblock form_errors %}
+
+{% block _adherent_profile_mandates_widget %}
+    {%- for row in form|batch(2) %}
+        <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-6">
+            {%- for child in row %}
+                <div class="md:col-span-3">
+                    <div class="form__{{ multiple ? 'checkbox' : 'radio' }}">
+                        {{- form_widget(child, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500' } }) -}}
+                        {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
+                    </div>
+                </div>
+            {% endfor -%}
+        </div>
+    {% endfor %}
+{% endblock %}

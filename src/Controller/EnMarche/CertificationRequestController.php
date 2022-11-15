@@ -8,6 +8,7 @@ use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Form\CertificationRequestType;
 use App\OAuth\App\AuthAppUrlManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-adherent/mon-compte/certification", name="app_certification_request_")
+ * @IsGranted("ADHERENT_PROFILE")
  */
 class CertificationRequestController extends AbstractController
 {

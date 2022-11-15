@@ -30,9 +30,13 @@ class UrlGenerator extends AbstractAppUrlGenerator
         return $this->urlGenerator->generate('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    public function generateForLoginSuccess(): string
+    public function generateForLoginSuccess(Adherent $adherent): string
     {
-        return $this->urlGenerator->generate('app_user_edit', ['app_domain' => $this->appHost]);
+        if ($adherent->isRenaissanceUser()) {
+            return $this->urlGenerator->generate('app_user_edit', ['app_domain' => $this->appHost]);
+        }
+
+        return $this->generateHomepageLink();
     }
 
     public function generateSuccessResetPasswordLink(Request $request): string

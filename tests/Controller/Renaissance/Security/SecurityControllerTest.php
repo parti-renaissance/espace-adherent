@@ -32,7 +32,7 @@ class SecurityControllerTest extends WebTestCase
     /**
      * @dataProvider getAdherentEmails
      */
-    public function testAuthenticationIsSuccessful(string $email, string $fullName): void
+    public function testAuthenticationIsSuccessful(string $email, string $fullName, bool $isRenaissanceUser): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
@@ -47,14 +47,22 @@ class SecurityControllerTest extends WebTestCase
         $adherent = $this->adherentRepository->findOneByEmail($email);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/parametres/mon-compte/modifier', $this->client);
+        $this->assertClientIsRedirectedTo(
+            $isRenaissanceUser
+                ? '/parametres/mon-compte/modifier'
+                : 'http://test.renaissance.code/',
+            $this->client
+        );
         $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
 
         $crawler = $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame($fullName, trim($crawler->filter('h6')->first()->text()));
 
-        $this->client->click($crawler->selectLink('Se déconnecter')->link());
+        if ($isRenaissanceUser) {
+            $this->assertSame($fullName, trim($crawler->filter('h6')->first()->text()));
+        }
+
+        $this->client->click($crawler->selectLink('Me déconnecter')->link());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client);
 
@@ -65,8 +73,8 @@ class SecurityControllerTest extends WebTestCase
     public function getAdherentEmails(): array
     {
         return [
-            ['carl999@example.fr', 'Carl Mirabeau'],
-            ['renaissance-user-1@en-marche-dev.fr', 'Laure Fenix'],
+            ['renaissance-user-1@en-marche-dev.fr', 'Laure Fenix', true],
+            ['carl999@example.fr', 'Carl Mirabeau', false],
         ];
     }
 

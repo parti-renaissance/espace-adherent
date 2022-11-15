@@ -184,15 +184,6 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/valider-changement-email/{adherent_uuid}/{change_email_token}",
-     *     name="user_validate_new_email",
-     *     requirements={
-     *         "adherent_uuid": "%pattern_uuid%",
-     *         "change_email_token": "%pattern_sha1%"
-     *     },
-     *     methods={"GET"}
-     * )
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
      * @Entity("token", expr="repository.findByToken(change_email_token)")
      */
@@ -215,6 +206,6 @@ class SecurityController extends AbstractController
             $this->addFlash('info', 'adherent.change_email.expired_key');
         }
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute($adherent->isRenaissanceUser() ? 'app_renaissance_homepage' : 'homepage');
     }
 }

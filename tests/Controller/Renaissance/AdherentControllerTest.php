@@ -43,58 +43,44 @@ class AdherentControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
+    /**
+     * @dataProvider provideProfilePage
+     */
+    public function testProfileActionIsAccessibleForAdherent(string $profilePage): void
+    {
+        $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, $profilePage);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('Laure Fenix', trim($crawler->filter('h6')->text()));
+        $this->assertStringContainsString('Adhérente depuis le 25 janvier 2017', $crawler->filter('#adherent-since')->text());
+    }
+
+    /**
+     * @dataProvider provideProfilePage
+     */
+    public function testProfileActionIsNotAccessibleForEMAdherent(string $profilePage): void
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+
+        $this->client->request(Request::METHOD_GET, $profilePage);
+
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+    }
+
     public function provideProfilePage(): \Generator
     {
         yield 'Mes informations personnelles' => ['/parametres/mon-compte/modifier'];
         yield 'Mot de passe' => ['/parametres/mon-compte/changer-mot-de-passe'];
-        yield 'Certification' => ['/parametres/mon-compte/certification'];
-    }
-
-    public function testProfileActionIsAccessibleForAdherent(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Carl Mirabeau', trim($crawler->filter('h6')->text()));
-        $this->assertStringContainsString('Adhérent depuis le 16 novembre 2016', $crawler->filter('#adherent-since')->text());
-    }
-
-    public function testProfileActionIsAccessibleForInactiveAdherent(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'thomas.leclerc@example.ch');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Thomas Leclerc', trim($crawler->filter('h6')->text()));
-        $this->assertStringContainsString('Non adhérent.', $crawler->filter('#adherent-since')->text());
-    }
-
-    public function testProfileActionIsNotAccessibleForDisabledAdherent(): void
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => 'michelle.dufour@example.ch',
-            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
-        ]));
-
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertStringContainsString('Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau.', $crawler->filter('.text-red-400')->text());
+        yield 'Certification' => ['/espace-adherent/mon-compte/certification'];
     }
 
     public function testEditAdherentProfile(): void
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+        $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
 
-        $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('renaissance-user-1@en-marche-dev.fr');
         $oldLatitude = $adherent->getLatitude();
         $oldLongitude = $adherent->getLongitude();
         $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '06');
@@ -102,7 +88,7 @@ class AdherentControllerTest extends WebTestCase
         $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '77');
         $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '77');
 
-        $this->assertCount(6, $histories77Subscriptions);
+        $this->assertCount(0, $histories77Subscriptions);
         $this->assertCount(0, $histories77Unsubscriptions);
         $this->assertCount(0, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
@@ -112,18 +98,18 @@ class AdherentControllerTest extends WebTestCase
         $inputPattern = 'input[name="adherent_profile[%s]"]';
         $optionPattern = 'select[name="adherent_profile[%s]"] option[selected="selected"]';
 
-        self::assertSame('male', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
-        self::assertSame('Carl', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
-        self::assertSame('Mirabeau', $crawler->filter(sprintf($inputPattern, 'lastName'))->attr('value'));
-        self::assertSame('826 avenue du lys', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
-        self::assertSame('77190', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
-        self::assertSame('77190-77152', $crawler->filter(sprintf($inputPattern, 'address][city'))->attr('value'));
+        self::assertSame('female', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
+        self::assertSame('Laure', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
+        self::assertSame('Fenix', $crawler->filter(sprintf($inputPattern, 'lastName'))->attr('value'));
+        self::assertSame('2 avenue Jean Jaurès', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
+        self::assertSame('77000', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
+        self::assertSame('77000-77288', $crawler->filter(sprintf($inputPattern, 'address][city'))->attr('value'));
         self::assertSame('France', $crawler->filter(sprintf($optionPattern, 'address][country'))->text());
-        self::assertSame('01 11 22 33 44', $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
-        self::assertSame('Retraité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
-        self::assertSame('1950-07-08', $crawler->filter(sprintf($inputPattern, 'birthdate'))->attr('value'));
-        self::assertCount(2, $adherent->getReferentTags());
-        self::assertAdherentHasReferentTag($adherent, '77');
+        self::assertSame(null, $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
+        self::assertSame('En activité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
+        self::assertSame('1942-01-10', $crawler->filter(sprintf($inputPattern, 'birthdate'))->attr('value'));
+        self::assertCount(1, $adherent->getReferentTags());
+        self::assertAdherentHasZone($adherent, '77');
 
         // Submit the profile form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
@@ -165,7 +151,7 @@ class AdherentControllerTest extends WebTestCase
         // Submit the profile form with too long input
         $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
             'adherent_profile' => [
-                'emailAddress' => 'carl999@example.fr',
+                'emailAddress' => 'renaissance-user-1@en-marche-dev.fr',
                 'gender' => 'female',
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
@@ -191,6 +177,7 @@ class AdherentControllerTest extends WebTestCase
         self::assertEmpty($this->getSendInBlueClient()->getUpdateSchedule());
 
         $errors = $crawler->filter('.re-form-error');
+
         self::assertSame(5, $errors->count());
         self::assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(0)->text());
         self::assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(1)->text());
@@ -224,7 +211,7 @@ class AdherentControllerTest extends WebTestCase
 
         $sendInBlueUpdates = $this->getSendInBlueClient()->getUpdateSchedule();
         self::assertCount(1, $sendInBlueUpdates);
-        self::assertSame('carl999@example.fr', $sendInBlueUpdates[0]['email']);
+        self::assertSame('renaissance-user-1@en-marche-dev.fr', $sendInBlueUpdates[0]['email']);
 
         $crawler = $this->client->followRedirect();
 
@@ -232,7 +219,7 @@ class AdherentControllerTest extends WebTestCase
 
         // We need to reload the manager reference to get the updated data
         /** @var Adherent $adherent */
-        $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findOneByEmail('carl999@example.fr');
+        $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findOneByEmail('renaissance-user-1@en-marche-dev.fr');
 
         self::assertSame('female', $adherent->getGender());
         self::assertSame('Jean Dupont', $adherent->getFullName());
@@ -254,16 +241,18 @@ class AdherentControllerTest extends WebTestCase
         $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '77');
         $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '77');
 
-        $this->assertCount(6, $histories77Subscriptions);
-        $this->assertCount(6, $histories77Unsubscriptions);
-        $this->assertCount(6, $histories06Subscriptions);
+        $this->assertCount(0, $histories77Subscriptions);
+        $this->assertCount(0, $histories77Unsubscriptions);
+        $this->assertCount(0, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
     }
 
     public function testCertifiedAdherentCanNotEditFields(): void
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $this->authenticateAsAdherent($this->client, 'renaissance-user-2@en-marche-dev.fr');
+
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $disabledFields = $crawler->filter('form[name="adherent_profile"] input[disabled="disabled"], form[name="adherent_profile"] select[disabled="disabled"]');
         self::assertCount(4, $disabledFields);
@@ -275,9 +264,10 @@ class AdherentControllerTest extends WebTestCase
 
     public function testAdherentChangePassword(): void
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+        $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/changer-mot-de-passe');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertCount(1, $crawler->filter('input[name="adherent_change_password[old_password]"]'));
         $this->assertCount(1, $crawler->filter('input[name="adherent_change_password[password][first]"]'));
@@ -350,27 +340,6 @@ class AdherentControllerTest extends WebTestCase
     }
 
     /**
-     * @return EmailSubscriptionHistory[]
-     */
-    public function findAllEmailSubscriptionHistoryByAdherentAndType(
-        Adherent $adherent,
-        string $subscriptionType
-    ): array {
-        return $this
-            ->getEmailSubscriptionHistoryRepository()
-            ->createQueryBuilder('history')
-            ->join('history.subscriptionType', 'subscriptionType')
-            ->where('history.adherentUuid = :adherentUuid')
-            ->andWhere('subscriptionType.code = :type')
-            ->orderBy('history.date ', 'DESC')
-            ->setParameter('adherentUuid', $adherent->getUuid())
-            ->setParameter('type', $subscriptionType)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    /**
      * @dataProvider dataProviderCannotTerminateMembership
      */
     public function testCannotTerminateMembership(string $email): void
@@ -392,11 +361,7 @@ class AdherentControllerTest extends WebTestCase
 
     public function dataProviderCannotTerminateMembership(): \Generator
     {
-        yield 'Host' => ['gisele-berthoux@caramail.com'];
-        yield 'Referent' => ['referent@en-marche-dev.fr'];
-        yield 'BoardMember' => ['carl999@example.fr'];
-        yield 'CommitteeCandidate' => ['adherent-female-a@en-marche-dev.fr'];
-        yield 'TerritorialCouncilCandidate' => ['senatorial-candidate@en-marche-dev.fr'];
+        yield 'Referent' => ['renaissance-user-3@en-marche-dev.fr'];
     }
 
     /**

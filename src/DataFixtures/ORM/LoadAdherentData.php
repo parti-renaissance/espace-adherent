@@ -72,6 +72,9 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public const COALITIONS_USER_1_UUID = '7dd297ad-a84c-4bbd-9fd2-d1152ebc3044';
 
     public const RENAISSANCE_USER_1_UUID = '88c92d85-4e55-4e47-b1ce-b625b7de3871';
+    public const RENAISSANCE_USER_2_UUID = 'd0a0935f-da7c-4caa-b582-a8c2376e5158';
+    public const RENAISSANCE_USER_3_UUID = '859b1528-9451-41d7-bc9e-7c95e23c5113';
+    public const RENAISSANCE_USER_4_UUID = 'ac4fae84-17e6-43c3-a901-a4dea34c2d5e';
 
     public const MUNICIPAL_CHIEF_1_UUID = '15d9154e-22d0-45f4-9b82-7f383342a3b8';
     public const MUNICIPAL_CHIEF_2_UUID = 'bdc66cc7-ddf0-4406-b76a-447acb1594ab';
@@ -1134,9 +1137,55 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'is_adherent' => true,
         ]));
         $adherent->activate(AdherentActivationToken::generate($adherent));
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
         $adherent->donatedForMembership();
         $this->addReference('renaissance-user-1', $adherent);
+
+        $manager->persist($adherent = $this->adherentFactory->createFromArray([
+            'uuid' => self::RENAISSANCE_USER_2_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'renaissance-user-2@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'John',
+            'last_name' => 'Smith',
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1952-02-12',
+            'registered_at' => '2018-03-22 18:23:45',
+            'is_adherent' => true,
+        ]));
+        $adherent->activate(AdherentActivationToken::generate($adherent));
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent->donatedForMembership();
+        $adherent->certify();
+        $this->addReference('renaissance-user-2', $adherent);
+
+        $manager->persist($adherent = $this->adherentFactory->createFromArray([
+            'uuid' => self::RENAISSANCE_USER_3_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'renaissance-user-3@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Jack',
+            'last_name' => 'Smith',
+            'address' => $this->createPostAddress('3 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1954-02-12',
+            'registered_at' => '2019-03-22 18:23:45',
+            'is_adherent' => true,
+        ]));
+        $adherent->activate(AdherentActivationToken::generate($adherent));
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent->donatedForMembership();
+        $adherent->certify();
+        $adherent->setReferent(
+            [
+                $this->getReference('referent_tag_06'),
+            ]
+        );
+        $this->addReference('renaissance-user-3', $adherent);
 
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);

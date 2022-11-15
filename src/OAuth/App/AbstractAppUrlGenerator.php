@@ -2,6 +2,7 @@
 
 namespace App\OAuth\App;
 
+use App\Entity\Adherent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -19,7 +20,7 @@ abstract class AbstractAppUrlGenerator implements AuthAppUrlGeneratorInterface
         return null;
     }
 
-    public function generateForLoginSuccess(): string
+    public function generateForLoginSuccess(Adherent $adherent): string
     {
         return $this->generateHomepageLink();
     }

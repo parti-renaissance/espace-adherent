@@ -289,6 +289,18 @@ app_renaissance_forgot_password:
     defaults:
         app: renaissance
 
+user_validate_new_email:
+    host: "{app_domain}"
+    path: "/valider-changement-email/{adherent_uuid}/{change_email_token}"
+    controller: App\Controller\EnMarche\Security\SecurityController::activateNewEmailAction
+    methods: GET
+    defaults:
+        app_domain: "%app_host%"
+    requirements:
+        app_domain: "%app_host%|%renaissance_host%"
+        "adherent_uuid": "%pattern_uuid%"
+        "change_email_token": "%pattern_sha1%"
+
 renaissance_qr_code:
     host: "%renaissance_qrcode_host%"
     path: "/{uuid}"
