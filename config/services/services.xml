@@ -80,13 +80,6 @@
             <tag name="messenger.message_handler" />
         </service>
 
-        <!-- ParamConverter -->
-        <service id="App\ParamConverter\DoctrineQueryStringParamConverter">
-            <tag name="request.param_converter" converter="querystring" priority="false" />
-            <argument type="service" id="doctrine" on-invalid="ignore" />
-            <argument type="service" id="sensio_framework_extra.converter.doctrine.orm.expression_language" on-invalid="null" />
-        </service>
-
         <!-- DoctrineExtension -->
         <service id="App\Api\Doctrine\VisibleStatusesExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
