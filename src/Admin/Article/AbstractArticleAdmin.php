@@ -4,6 +4,7 @@ namespace App\Admin\Article;
 
 use App\Admin\AbstractAdmin;
 use App\Entity\Article;
+use App\Form\Admin\UnlayerContentType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -11,6 +12,7 @@ use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Object\Metadata;
 use Sonata\Form\Type\DatePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -45,56 +47,57 @@ abstract class AbstractArticleAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Méta-données', ['class' => 'col-md-8'])
-            ->add('title', TextType::class, [
-                'label' => 'Titre',
-            ])
-            ->add('description', TextareaType::class, [
-                'label' => 'Description',
-            ])
-            ->add('twitterDescription', TextareaType::class, [
-                'label' => 'Description pour Twitter',
-                'required' => false,
-            ])
-            ->add('keywords', null, [
-                'label' => 'Mots clés de recherche',
-                'required' => false,
-            ])
-            ->add('media', ModelType::class, [
-                'label' => 'Image principale',
-                'required' => false,
-                'btn_add' => 'Créer',
-            ])
-            ->add('displayMedia', CheckboxType::class, [
-                'label' => 'Afficher l\'image principale dans l\'article',
-                'required' => false,
-            ])
-            ->add('themes', null, [
-                'label' => 'Thèmes',
-            ])
+            ->tab('Contenu')
+                ->with('')
+                    ->add('jsonContent', HiddenType::class)
+                    ->add('content', UnlayerContentType::class, ['label' => false])
+                ->end()
             ->end()
-            ->with('Publication', ['class' => 'col-md-4'])
-            ->add('published', CheckboxType::class, [
-                'label' => 'Publier l\'article',
-                'required' => false,
-            ])
-            ->add('publishedAt', DatePickerType::class, [
-                'label' => 'Date de publication',
-            ])
-            ->add('slug', null, [
-                'label' => 'URL de publication',
-                'help' => 'Ne spécifier que la fin : http://en-marche.fr/articles/[votre-valeur]<br />Doit être unique',
-            ])
-            ->add('category', null, [
-                'label' => 'Catégorie de publication',
-            ])
-            ->end()
-            ->with('Contenu', ['class' => 'col-md-12'])
-            ->add('content', TextareaType::class, [
-                'label' => 'Contenu',
-                'required' => false,
-                'attr' => ['class' => 'content-editor', 'rows' => 20],
-            ])
+            ->tab('Méta-données')
+                ->with('Méta-données', ['class' => 'col-md-8'])
+                    ->add('title', TextType::class, [
+                        'label' => 'Titre',
+                    ])
+                    ->add('description', TextareaType::class, [
+                        'label' => 'Description',
+                    ])
+                    ->add('twitterDescription', TextareaType::class, [
+                        'label' => 'Description pour Twitter',
+                        'required' => false,
+                    ])
+                    ->add('keywords', null, [
+                        'label' => 'Mots clés de recherche',
+                        'required' => false,
+                    ])
+                    ->add('media', ModelType::class, [
+                        'label' => 'Image principale',
+                        'required' => false,
+                        'btn_add' => 'Créer',
+                    ])
+                    ->add('displayMedia', CheckboxType::class, [
+                        'label' => 'Afficher l\'image principale dans l\'article',
+                        'required' => false,
+                    ])
+                    ->add('themes', null, [
+                        'label' => 'Thèmes',
+                    ])
+                ->end()
+                ->with('Publication', ['class' => 'col-md-4'])
+                    ->add('published', CheckboxType::class, [
+                        'label' => 'Publier l\'article',
+                        'required' => false,
+                    ])
+                    ->add('publishedAt', DatePickerType::class, [
+                        'label' => 'Date de publication',
+                    ])
+                    ->add('slug', null, [
+                        'label' => 'URL de publication',
+                        'help' => 'Ne spécifier que la fin : http://en-marche.fr/articles/[votre-valeur]<br />Doit être unique',
+                    ])
+                    ->add('category', null, [
+                        'label' => 'Catégorie de publication',
+                    ])
+                ->end()
             ->end()
         ;
     }

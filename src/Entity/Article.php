@@ -124,6 +124,13 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      */
     private $slug;
 
+    /**
+     * JSON representation of message content (using by Unlayer JS lib)
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    public ?string $jsonContent = null;
+
     public function __construct()
     {
         $this->publishedAt = new \DateTime();

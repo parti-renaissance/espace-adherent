@@ -16,7 +16,7 @@ class ArticleAdminTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    public function testCreateCategoryFail(): void
+    public function testCreateArticleFail(): void
     {
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
 
