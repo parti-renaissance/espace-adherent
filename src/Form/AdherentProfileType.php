@@ -109,6 +109,7 @@ class AdherentProfileType extends AbstractType
                 'choices' => MandatesEnum::CHOICES,
                 'required' => false,
                 'multiple' => true,
+                'expanded' => $options['is_renaissance'],
             ])
         ;
     }
