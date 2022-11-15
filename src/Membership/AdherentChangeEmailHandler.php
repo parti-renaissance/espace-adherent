@@ -78,15 +78,15 @@ class AdherentChangeEmailHandler
 
     private function createConfirmationLink(Adherent $adherent, AdherentChangeEmailToken $token): string
     {
-        $params = [
-            'adherent_uuid' => $adherent->getUuidAsString(),
-            'change_email_token' => $token->getValue(),
-        ];
-
-        if ($adherent->isRenaissanceUser()) {
-            $params['app_domain'] = $this->renaissanceHost;
-        }
-
-        return $this->urlGenerator->generate('user_validate_new_email', $params, UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->urlGenerator->generate(
+            $adherent->isRenaissanceUser()
+                ? 'app_renaissance_user_validate_new_email'
+                : 'user_validate_new_email',
+            [
+                'adherent_uuid' => $adherent->getUuidAsString(),
+                'change_email_token' => $token->getValue(),
+            ],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 }

@@ -188,8 +188,25 @@ class SecurityController extends AbstractController
      *     path="/valider-changement-email/{adherent_uuid}/{change_email_token}",
      *     name="user_validate_new_email",
      *     requirements={
+     *         "app_domain": "%app_host%",
      *         "adherent_uuid": "%pattern_uuid%",
      *         "change_email_token": "%pattern_sha1%"
+     *     },
+     *     defaults={
+     *         "app_domain": "%app_host%"
+     *     },
+     *     methods={"GET"}
+     * )
+     * @Route(
+     *     path="/valider-changement-email/{adherent_uuid}/{change_email_token}",
+     *     name="app_renaissance_user_validate_new_email",
+     *     requirements={
+     *         "app_domain": "%renaissance_host%",
+     *         "adherent_uuid": "%pattern_uuid%",
+     *         "change_email_token": "%pattern_sha1%"
+     *     },
+     *     defaults={
+     *         "app_domain": "%renaissance_host%"
      *     },
      *     methods={"GET"}
      * )
