@@ -3,10 +3,10 @@
 namespace App\Mailer\Message\Renaissance\Certification;
 
 use App\Entity\CertificationRequest;
-use App\Mailer\Message\Message;
+use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
 use Ramsey\Uuid\Uuid;
 
-final class RenaissanceCertificationRequestRefusedMessage extends Message
+final class RenaissanceCertificationRequestRefusedMessage extends AbstractRenaissanceMessage
 {
     public static function create(
         CertificationRequest $certificationRequest,
