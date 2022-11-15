@@ -26,7 +26,7 @@
             </a>
         </li>
         <li>
-            <a href="{{ path('app_certification_request_home', { app_domain: renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_certification_request_home', { app_domain: renaissance_host }) ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+            <a href="{{ path('app_certification_request_home', { app_domain: renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_certification_request_*', { app_domain: renaissance_host }) ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
                 Certification
             </a>
         </li>
