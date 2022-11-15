@@ -499,7 +499,7 @@
     {{ form_widget(form) }}
 
     <div>
-        <script type="application/javascript">
+        <script type="text/javascript">
             function toggleCheckRefTags(checked) {
                 var options = $('#{{ form.vars.id }} > option');
 
@@ -689,4 +689,60 @@
     {{ block('form_row') }}
 
     <a href="{{ form.vars.sonata_admin.admin.generateObjectUrl('send_resubscribe_email', object) }}" class="btn btn-primary">Envoyer un email de réabonnement</a>
+{% endblock %}
+
+{% block unlayer_content_widget %}
+    {{ form_row(form) }}
+
+    <div id="unlayer-{{ form.vars.id }}" style="height: 900px;"></div>
+
+    <script src="https://editor.unlayer.com/embed.js"></script>
+
+    <script type="text/javascript">
+        var form = document.querySelector('.sonata-ba-form form');
+        var contentElement = document.querySelector('#{{ form.vars.id }}');
+        var jsonContentElement = document.querySelector('input[name*="jsonContent"]');
+
+        unlayer.init({
+            id: "unlayer-{{ form.vars.id }}",
+            projectId: {{ unlayer_project_id }},
+            locale: 'fr-FR',
+            appearance: {
+                theme: 'dark',
+            },
+        });
+
+        var loadDefaultTemplate = true;
+
+        if (jsonContentElement.value) {
+            var design = JSON.parse(jsonContentElement.value);
+            if (design) {
+                loadDefaultTemplate = false;
+                unlayer.loadDesign(design)
+            }
+        }
+
+        if (loadDefaultTemplate) {
+            unlayer.loadTemplate(loadTemplate);
+        }
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            unlayer.exportHtml(
+                function (data) {
+                    jsonContentElement.value = JSON.stringify(data.design);
+                    contentElement.value = data.html.substring(
+                        data.html.indexOf('<style'),
+                        data.html.indexOf('</style>') + 8
+                    ) + data.html.substring(
+                        data.html.indexOf('<body>') + 6,
+                        data.html.indexOf('</body>')
+                    )
+                    event.target.submit();
+                },
+                { minify: true }
+            );
+        })
+    </script>
 {% endblock %}
