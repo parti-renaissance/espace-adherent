@@ -184,26 +184,6 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     host="%app_host%",
-     *     path="/valider-changement-email/{adherent_uuid}/{change_email_token}",
-     *     name="user_validate_new_email",
-     *     requirements={
-     *         "adherent_uuid": "%pattern_uuid%",
-     *         "change_email_token": "%pattern_sha1%"
-     *     },
-     *     methods={"GET"}
-     * )
-     * @Route(
-     *     host="%renaissance_host%",
-     *     path="/valider-changement-email/{adherent_uuid}/{change_email_token}",
-     *     name="app_renaissance_user_validate_new_email",
-     *     requirements={
-     *         "adherent_uuid": "%pattern_uuid%",
-     *         "change_email_token": "%pattern_sha1%"
-     *     },
-     *     methods={"GET"}
-     * )
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
      * @Entity("token", expr="repository.findByToken(change_email_token)")
      */
