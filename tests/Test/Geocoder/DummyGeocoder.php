@@ -125,6 +125,14 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.5278939,
             'longitude' => 2.6484923,
         ],
+        '2 avenue jean jaurès, 77000 melun, fr' => [
+            'latitude' => 48.5279449,
+            'longitude' => 2.6484386,
+        ],
+        '3 avenue jean jaurès, 77000 melun, fr' => [
+            'latitude' => 48.5279282,
+            'longitude' => 2.6484148,
+        ],
         'melun, france' => [
             'latitude' => 48.5278939,
             'longitude' => 2.6484923,
