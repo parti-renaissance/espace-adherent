@@ -1,7 +1,6 @@
 import amountChooser from './listeners/amount-chooser'
 import addressAutocomplete from './listeners/address-autocomplete'
 import carousel from './listeners/carousel'
-import glider from './listeners/glider'
 
 class Main {
     constructor() {
@@ -9,7 +8,6 @@ class Main {
             amountChooser,
             addressAutocomplete,
             carousel,
-            glider,
         ];
     }
 
