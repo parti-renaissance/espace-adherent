@@ -191,35 +191,5 @@
                 </div>
             {{ form_end(form) }}
         </div>
-
-        <div class="bg-white shadow rounded-lg px-4 py-5 md:p-6 border-2 border-red-400">
-            <h3 class="text-lg font-medium leading-6 text-red-600 uppercase tracking-wider">Suppression du compte</h3>
-            {% if is_granted('UNREGISTER') and (app.user.isBasicAdherent or app.user.isUser) %}
-                <div class="mt-2 max-w-xl text-gray-500">
-                    <p>
-                        Cliquez ci-dessous si vous souhaitez supprimer votre compte.
-                    </p>
-                    <div class="mt-5">
-                        <a href="{{ path('app_user_terminate_membership', { app_domain: renaissance_host }) }}" class="inline-flex items-center justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 font-medium text-red-700 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:text-sm">
-                            Supprimer mon compte
-                        </a>
-                    </div>
-                </div>
-
-            {% endif %}
-            {% if not is_granted('UNREGISTER') %}
-                <div class="mt-2 space-y-2 max-w-3xl text-base leading-6 text-gray-500 lg:max-w-none">
-                    <p>
-                        Si vous êtes animateur local, référent, parlementaire, porteur de projet, membre du conseil ou désigné lors d'une élection interne, vous ne pouvez pas supprimer votre compte directement :
-                        il vous faut d'abord quitter vos responsabilités.
-                    </p>
-                    <p>Pour ce faire, vous pouvez écrire votre demande par e-mail à l'adresse suivante : <a href="mailto:territoires@en-marche.fr" class="text-re-blue-500 underline">territoires@en-marche.fr</a>.</p>
-                    <p>
-                        Si vous êtes co-animateur local, votre animateur peut retirer votre rôle depuis son espace comité. <br />
-                        Si vous êtes candidat à une désignation interne, vous ne pouvez pas désadhérer du mouvement directement, il vous faut attendre la fin de la désignation.
-                    </p>
-                </div>
-            {% endif %}
-        </div>
     </section>
 {% endblock %}

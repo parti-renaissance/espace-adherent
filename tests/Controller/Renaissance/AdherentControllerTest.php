@@ -410,23 +410,14 @@ class AdherentControllerTest extends WebTestCase
 
         $this->authenticateAsAdherent($this->client, $userEmail);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertStringContainsString(
-            'Cliquez ci-dessous si vous souhaitez supprimer votre compte.',
-            $crawler->text()
-        );
-
-        $crawler = $this->client->click($crawler->selectLink('Supprimer mon compte')->link());
-        $this->assertEquals('http://'.$this->getParameter('renaissance_host').'/parametres/mon-compte/desadherer', $this->client->getRequest()->getUri());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/desadherer');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $crawler = $this->client->submit($crawler->selectButton('Je confirme la suppression de mon adhésion')->form());
 
         $this->assertEquals('http://'.$this->getParameter('renaissance_host').'/parametres/mon-compte/desadherer', $this->client->getRequest()->getUri());
 
-        $errors = $crawler->filter('.form__errors > li');
+        $errors = $crawler->filter('.re-form-error');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(0, $errors->count());
