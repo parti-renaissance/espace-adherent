@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolverInterface;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -49,7 +50,9 @@ class SecurityListener implements EventSubscriberInterface
             return;
         }
 
-        if (null === $this->tokenStorage->getToken()) {
+        $token = $this->tokenStorage->getToken();
+
+        if (null === $this->tokenStorage->getToken() || $token instanceof AnonymousToken) {
             throw new AccessDeniedException('No user token or you forgot to put your controller behind a firewall while using a @Security tag.');
         }
 
