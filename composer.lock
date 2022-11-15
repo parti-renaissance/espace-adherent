@@ -18269,20 +18269,20 @@
     "packages-dev": [
         {
             "name": "aeon-php/calendar",
-            "version": "1.0.1",
+            "version": "1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aeon-php/calendar.git",
-                "reference": "5899c465ac30e8bf9d7dd324d1d711bccef694f1"
+                "reference": "49e3167815ca6af1f4215eed0719c3d83d749571"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aeon-php/calendar/zipball/5899c465ac30e8bf9d7dd324d1d711bccef694f1",
-                "reference": "5899c465ac30e8bf9d7dd324d1d711bccef694f1",
+                "url": "https://api.github.com/repos/aeon-php/calendar/zipball/49e3167815ca6af1f4215eed0719c3d83d749571",
+                "reference": "49e3167815ca6af1f4215eed0719c3d83d749571",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.4.2 || ^8.0"
+                "php": "^7.4.2 || ~8.0 || ~8.1.10"
             },
             "require-dev": {
                 "ext-bcmath": "*"
@@ -18312,15 +18312,9 @@
             ],
             "support": {
                 "issues": "https://github.com/aeon-php/calendar/issues",
-                "source": "https://github.com/aeon-php/calendar/tree/1.0.1"
+                "source": "https://github.com/aeon-php/calendar/tree/1.0.7"
             },
-            "funding": [
-                {
-                    "url": "https://github.com/norberttech",
-                    "type": "github"
-                }
-            ],
-            "time": "2021-06-25T17:04:43+00:00"
+            "time": "2022-09-10T13:11:14+00:00"
         },
         {
             "name": "behat/behat",
@@ -18649,16 +18643,16 @@
         },
         {
             "name": "coduo/php-matcher",
-            "version": "6.0.7",
+            "version": "6.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/coduo/php-matcher.git",
-                "reference": "2670220331a9ea5e57b09a0f2abe442dad9702f6"
+                "reference": "e782a9ee7f97bbc4f751324591ec619b5822f721"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/coduo/php-matcher/zipball/2670220331a9ea5e57b09a0f2abe442dad9702f6",
-                "reference": "2670220331a9ea5e57b09a0f2abe442dad9702f6",
+                "url": "https://api.github.com/repos/coduo/php-matcher/zipball/e782a9ee7f97bbc4f751324591ec619b5822f721",
+                "reference": "e782a9ee7f97bbc4f751324591ec619b5822f721",
                 "shasum": ""
             },
             "require": {
@@ -18668,7 +18662,7 @@
                 "ext-filter": "*",
                 "ext-json": "*",
                 "ext-simplexml": "*",
-                "php": ">=7.4"
+                "php": "^7.4.2 || ~8.0 || ~8.1"
             },
             "require-dev": {
                 "openlss/lib-array2xml": "^1.0",
@@ -18707,9 +18701,9 @@
             ],
             "support": {
                 "issues": "https://github.com/coduo/php-matcher/issues",
-                "source": "https://github.com/coduo/php-matcher/tree/6.0.7"
+                "source": "https://github.com/coduo/php-matcher/tree/6.0.9"
             },
-            "time": "2021-06-20T14:32:04+00:00"
+            "time": "2022-10-04T08:14:53+00:00"
         },
         {
             "name": "coduo/php-to-string",
