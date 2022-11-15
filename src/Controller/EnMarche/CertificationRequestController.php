@@ -8,7 +8,6 @@ use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Form\CertificationRequestType;
 use App\OAuth\App\AuthAppUrlManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-adherent/mon-compte/certification", name="app_certification_request_")
- * @IsGranted("ADHERENT_PROFILE")
  */
 class CertificationRequestController extends AbstractController
 {
@@ -26,6 +24,18 @@ class CertificationRequestController extends AbstractController
     public function homeAction(Request $request, AuthAppUrlManager $appUrlManager): Response
     {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
+        $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
+
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
+        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
+            return $this->redirectToRoute('app_renaissance_profile');
+        }
+
+        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
+            return $this->redirectToRoute('homepage');
+        }
 
         return $this->render(AppCodeEnum::isRenaissanceApp($appCode)
             ? 'renaissance/adherent/certification_request/home.html.twig'
@@ -43,9 +53,18 @@ class CertificationRequestController extends AbstractController
         string $app_domain
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
+        $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
 
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
+
+        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
+            return $this->redirectToRoute('app_renaissance_profile');
+        }
+
+        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
+            return $this->redirectToRoute('homepage');
+        }
 
         if (!$this->isGranted(CertificationPermissions::REQUEST)) {
             return $this->redirectToRoute('app_certification_request_home', ['app_domain' => $app_domain]);

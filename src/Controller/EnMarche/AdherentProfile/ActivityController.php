@@ -6,7 +6,6 @@ use App\Donation\DonationManager;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\DonationRepository;
 use App\Repository\EventRegistrationRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +14,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/parametres/mes-activites", name="app_adherent_profile_activity", methods={"GET"})
- * @IsGranted("ADHERENT_PROFILE")
  */
 class ActivityController extends AbstractController
 {
