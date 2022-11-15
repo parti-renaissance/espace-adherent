@@ -3073,6 +3073,11 @@ get-symbol-description@^1.0.0:
     call-bind "^1.0.2"
     get-intrinsic "^1.1.1"
 
+glider-js@^1.7.8:
+  version "1.7.8"
+  resolved "https://registry.yarnpkg.com/glider-js/-/glider-js-1.7.8.tgz#b9a50bf86d23ec42b58539a8d80400efd710c92a"
+  integrity sha512-env4+yfoNYaeHJmEBGygjcZDpZ5LRUjGhCB6Ag+XNQfvuLVD5PhCYQShBVCAd5On7XfknM57O+V2Fwfcsii3Dw==
+
 glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"

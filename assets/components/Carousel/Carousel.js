@@ -50,11 +50,11 @@ export default class Carousel {
     }
 
     get slidesToScroll() {
-        return this.isMobile ? 1 : this.options.slidesToScroll;
+        return this.isMobile ? 1 : parseInt(this.options.slidesToScroll);
     }
 
     get slidesVisible() {
-        return this.isMobile ? 1 : this.options.slidesVisible;
+        return this.isMobile ? 1 : parseInt(this.options.slidesVisible);
     }
 
     onWindowResize() {
@@ -118,7 +118,7 @@ export default class Carousel {
      * @param {number} index
      */
     goToSlide(index) {
-        if (0 > index) {
+        if (index < 0) {
             index = this.items.length - this.slidesVisible;
         } else if (index >= this.items.length || (this.items[this.currentSlide + this.slidesVisible] === undefined && index > this.currentSlide)) {
             index = 0;

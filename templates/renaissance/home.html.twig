@@ -8,7 +8,7 @@
     {% set home_block_banner = blocks['Bannière principale accueil'] %}
 
     <section class="flex flex-col justify-between h-screen pb-12 bg-bottom bg-cover md:pb-15" style="background-image: url('{{ media_asset(home_block_banner.media) }}')">
-        <nav x-data="{ open: false }" @keydown.escape="open = false" class="relative flex justify-between items-center w-full backdrop-blur border-b border-b-white/10 px-4 py-5 md:px-7 md:py-6">
+        <nav x-data="{ open: false }" @keydown.escape="open = false" class="relative flex justify-between items-center w-full border-b border-b-white/10 px-4 py-5 md:px-7 md:py-6">
             <a href="{{ path('app_renaissance_homepage') }}">
                 {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-4 w-auto text-white lg:h-5' } %}
             </a>
@@ -278,7 +278,7 @@
                            <h4 class="text-dark-blue text-lg leading-6 lg:text-2xl lg:leading-9">{{ title }}</h4>
                        {% endif %}
 
-                       <div class="flex space-x-4 carousel-widget" data-carousel-slides-visible="5">
+                       <div class="flex space-x-4 carousel-widget" data-carousel-slides-visible="4">
                            {% for member in executive_office_group %}
                                <div class="flex-none">
                                    <div class="flex flex-col">
@@ -412,6 +412,7 @@
             </div>
         </div>
     </section>
+
     <!-- Footer -->
     <section class="bg-dark-blue pt-25 md:pt-36">
         <div class="max-w-7xl md:mx-auto mb-12">
