@@ -40,7 +40,7 @@ export default class Carousel {
         this.applyStyle();
         this.onWindowResize();
 
-        if (this.options.navigation && this.items.length > this.slidesVisible) {
+        if (this.options.navigation && this.items.length > this.slidesVisible || this.isMobile) {
             this.createNavigation();
         }
 
@@ -68,9 +68,15 @@ export default class Carousel {
 
     applyStyle() {
         let ratio = this.items.length / this.slidesVisible;
-        this.carouselInner.style.width = `${ratio * 100}%`;
+
         this.carouselInner.style.display = 'flex';
         this.carouselInner.style.alignItems = 'center';
+        this.carouselInner.style.width = `${ratio * 100}%`;
+
+        if (this.items.length < this.slidesVisible && !this.isMobile) {
+            this.carouselInner.style.margin = '0 auto';
+        }
+
         this.items.forEach((item) => item.style.width = `${100 / this.slidesVisible / ratio}%`);
     }
 

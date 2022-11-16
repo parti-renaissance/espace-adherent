@@ -121,6 +121,10 @@
         &-inner {
             &__item {
                 padding: 0 20px;
+
+                 @media (max-width: 800px) {
+                     padding: 0;
+                 }
             }
         }
 
