@@ -146,7 +146,7 @@
                 <tr>
                     <th width="200px">Prénom nom</th>
                     <th width="50px">Âge</th>
-                    {% if is_supervisor %}
+                    {% if is_supervisor_or_provisional %}
                         <th width="140px">Téléphone</th>
                     {% endif %}
                     <th width="50px">CP</th>
@@ -187,7 +187,7 @@
                             {% endif %}
                         </td>
                         <td class="member-age">{{ member.age|default('~') }}</td>
-                        {% if is_supervisor %}
+                        {% if is_supervisor_or_provisional %}
                             <td class="member-phone">
                                 {% if member.phone %}
                                     <a href="tel:{{ member.phone|phone_number_format }}">
