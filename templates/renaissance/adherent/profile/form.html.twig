@@ -176,5 +176,44 @@
                 </div>
             {{ form_end(form) }}
         </div>
+
+        <div x-data="{ isOpen: false }" class="bg-white shadow rounded-lg px-4 py-5 md:p-6 border-2 border-red-400">
+            <button type="button" class="flex w-full items-start justify-between text-left text-gray-400" aria-controls="faq-0" @click="isOpen = !isOpen" aria-expanded="false" x-bind:aria-expanded="isOpen.toString()">
+                <span class="text-lg font-medium leading-6 text-red-600 uppercase tracking-wider">Suppression du compte</span>
+                <span class="ml-6 flex h-7 items-center">
+                <svg class="h-6 w-6 transform rotate-0" :class="{ '-rotate-180': isOpen, 'rotate-0': !(isOpen) }" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+                </svg>
+            </span>
+            </button>
+            <div x-cloak x-show="isOpen">
+                {% if is_granted('UNREGISTER') and (app.user.isBasicAdherent or app.user.isUser) %}
+                    <div class="mt-2 max-w-xl text-gray-500">
+                        <p>
+                            Cliquez ci-dessous si vous souhaitez supprimer votre compte.
+                        </p>
+                        <div class="mt-5">
+                            <a href="{{ path('app_user_terminate_membership', { app_domain: renaissance_host }) }}" class="inline-flex items-center justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 font-medium text-red-700 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:text-sm">
+                                Supprimer mon compte
+                            </a>
+                        </div>
+                    </div>
+
+                {% endif %}
+                {% if not is_granted('UNREGISTER') %}
+                    <div class="mt-2 space-y-2 max-w-3xl text-base leading-6 text-gray-500 lg:max-w-none">
+                        <p>
+                            Si vous êtes animateur local, référent, parlementaire, porteur de projet, membre du conseil ou désigné lors d'une élection interne, vous ne pouvez pas supprimer votre compte directement :
+                            il vous faut d'abord quitter vos responsabilités.
+                        </p>
+                        <p>Pour ce faire, vous pouvez écrire votre demande par e-mail à l'adresse suivante : <a href="mailto:territoires@parti-renaissance.fr" class="text-re-blue-500 underline">territoires@parti-renaissance.fr"</a>.</p>
+                        <p>
+                            Si vous êtes co-animateur local, votre animateur peut retirer votre rôle depuis son espace comité. <br />
+                            Si vous êtes candidat à une désignation interne, vous ne pouvez pas désadhérer du mouvement directement, il vous faut attendre la fin de la désignation.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </section>
 {% endblock %}
