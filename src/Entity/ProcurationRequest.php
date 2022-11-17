@@ -204,7 +204,7 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      * @ORM\Column(type="phone_number", nullable=true)
      *
      * @Assert\NotBlank(message="common.phone_number.required", groups={"profile"})
-     * @AssertPhoneNumber(groups={"profile"})
+     * @AssertPhoneNumber(options={"groups": {"profile"}})
      */
     private $phone;
 
