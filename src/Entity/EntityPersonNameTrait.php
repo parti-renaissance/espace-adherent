@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityPersonNameTrait
 {
@@ -39,8 +40,17 @@ trait EntityPersonNameTrait
      *     "my_team_read_list",
      *     "scope",
      * })
+     *
+     * @Assert\Length(
+     *     min=2,
+     *     max=50,
+     *     allowEmptyString=false,
+     *     minMessage="common.first_name.min_length",
+     *     maxMessage="common.first_name.max_length",
+     *     groups={"admin_adherent_renaissance_create"}
+     * )
      */
-    private $firstName = '';
+    private string $firstName = '';
 
     /**
      * @ORM\Column(length=50)
@@ -73,8 +83,17 @@ trait EntityPersonNameTrait
      *     "my_team_read_list",
      *     "scope",
      * })
+     *
+     * @Assert\Length(
+     *     min=1,
+     *     max=50,
+     *     allowEmptyString=false,
+     *     minMessage="common.last_name.min_length",
+     *     maxMessage="common.last_name.max_length",
+     *     groups={"admin_adherent_renaissance_create"}
+     * )
      */
-    private $lastName = '';
+    private string $lastName = '';
 
     public function __toString(): string
     {
@@ -99,12 +118,12 @@ trait EntityPersonNameTrait
 
     public function getFirstName(): string
     {
-        return (string) $this->firstName;
+        return $this->firstName;
     }
 
     public function getLastName(): string
     {
-        return (string) $this->lastName;
+        return $this->lastName;
     }
 
     /**

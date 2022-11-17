@@ -15,7 +15,7 @@ trait EntityPostAddressTrait
      *
      * @var PostAddress
      *
-     * @Assert\Valid(groups={"contact_update"})
+     * @Assert\Valid(groups={"contact_update", "admin_adherent_renaissance_create"})
      *
      * @SymfonySerializer\Groups({"contact_update"})
      */

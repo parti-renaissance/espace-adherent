@@ -1,0 +1,62 @@
+{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block title %}
+    Création de compte Renaissance
+{% endblock %}
+
+{% block show %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form) }}
+            <div class="box box-success">
+                <div class="box-header">
+                    <h4 class="box-title">Création de compte Renaissance</h4>
+                </div>
+                <div class="box-body">
+                    {{ form_row(form.gender, { label: false }) }}
+                    {{ form_row(form.firstName, { label: 'Prénom' }) }}
+                    {{ form_row(form.lastName, { label: 'Nom' }) }}
+                    {{ form_row(form.nationality, { label: 'Nationalité' }) }}
+
+                    {{ form_row(form.postAddress.address, { label: 'Adresse postale' }) }}
+                    {{ form_row(form.postAddress.postalCode, { label: 'Code postal' }) }}
+                    {{ form_row(form.postAddress.cityName, { label: 'Ville' }) }}
+                    {{ form_row(form.postAddress.country, { label: 'Pays', placeholder: false }) }}
+
+                    {{ form_row(form.emailAddress, { label: 'E-mail' }) }}
+
+                    <div class="box box-solid">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <a href="{{ admin.generateUrl('create_renaissance') }}" class="btn btn-block btn-danger">
+                                        Recommencer
+                                    </a>
+                                </div>
+                                <div class="col-md-3 col-md-offset-6">
+                                    <button type="submit" class="btn btn-block btn-success">
+                                        Enregistrer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+        });
+    </script>
+{% endblock %}

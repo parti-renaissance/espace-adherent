@@ -50,7 +50,7 @@ class AddressType extends AbstractType
                 ->add('country', UnitedNationsCountryType::class, [
                     'disabled' => $options['disable_fields'],
                     'placeholder' => 'Sélectionner un pays',
-                    'preferred_choices' => ['FR'],
+                    'preferred_choices' => [Address::FRANCE],
                 ])
                 ->add('postalCode', TextType::class, [
                     'error_bubbling' => $options['child_error_bubbling'],

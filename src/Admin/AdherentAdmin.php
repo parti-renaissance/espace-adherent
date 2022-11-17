@@ -90,6 +90,7 @@ class AdherentAdmin extends AbstractAdmin
         'certify' => 'CERTIFY',
         'uncertify' => 'UNCERTIFY',
         'extract' => 'EXTRACT',
+        'create_renaissance' => 'CREATE_RENAISSANCE',
     ];
 
     private $dispatcher;
@@ -135,6 +136,7 @@ class AdherentAdmin extends AbstractAdmin
             ->add('uncertify', $this->getRouterIdParameter().'/uncertify')
             ->add('extract', 'extract')
             ->add('send_resubscribe_email', $this->getRouterIdParameter().'/send-resubscribe-email')
+            ->add('create_renaissance', 'create-renaissance')
             ->remove('create')
             ->remove('delete')
         ;
@@ -167,6 +169,7 @@ class AdherentAdmin extends AbstractAdmin
         }
 
         $actions['extract'] = ['template' => 'admin/adherent/extract/extract_button.html.twig'];
+        $actions['create_renaissance'] = ['template' => 'admin/adherent/renaissance/create_button.html.twig'];
 
         return $actions;
     }

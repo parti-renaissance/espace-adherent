@@ -11,7 +11,9 @@ use App\Adherent\Command\SendResubscribeEmailCommand;
 use App\Entity\Adherent;
 use App\Entity\AdherentEmailSubscribeToken;
 use App\Form\Admin\Extract\AdherentExtractType;
+use App\Form\Admin\Membership\CreateType;
 use App\Form\ConfirmActionType;
+use App\Membership\AdminMembershipHandler;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -181,6 +183,32 @@ class AdminAdherentCRUDController extends CRUDController
             'message' => 'Êtes-vous sûr de vouloir envoyer un e-mail de réabonnement à <strong>'.$adherent->getFullName().'</strong> ?',
             'object' => $adherent,
             'cancel_action' => 'edit',
+        ]);
+    }
+
+    public function createRenaissanceAction(Request $request, AdminMembershipHandler $adminMembershipHandler): Response
+    {
+        $this->admin->checkAccess('create');
+
+        $adherent = $adminMembershipHandler->createNewAdherent();
+
+        $form = $this
+            ->createForm(CreateType::class, $adherent)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $adminMembershipHandler->handleCreate($adherent);
+
+            $this->addFlash('sonata_flash_success', 'Compte créé avec succès.');
+
+            return $this->redirect($this->admin->generateUrl('create_renaissance'));
+        }
+
+        return $this->renderWithExtraParams('admin/adherent/renaissance/create.html.twig', [
+            'form' => $form->createView(),
+            'object' => $adherent,
+            'action' => 'create_renaissance',
         ]);
     }
 }

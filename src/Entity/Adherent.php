@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Address\Address;
 use App\Adherent\LastLoginGroupEnum;
 use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
@@ -99,7 +100,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
- * @UniqueMembership(groups={"Admin"})
+ * @UniqueMembership(groups={"Admin", "admin_adherent_renaissance_create"})
  *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
  */
@@ -132,7 +133,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $nicknameUsed;
+    private bool $nicknameUsed = false;
 
     /**
      * @ORM\Column(nullable=true)
@@ -158,15 +159,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *     "survey_replies_list",
      *     "adherent_change_diff",
      * })
-     * @Assert\NotBlank(message="common.gender.not_blank", groups={"adhesion_complete_profile"})
+     * @Assert\NotBlank(message="common.gender.not_blank", groups={"adhesion_complete_profile", "admin_adherent_renaissance_create"})
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true,
-     *     groups={"adhesion_complete_profile"}
+     *     groups={"adhesion_complete_profile", "admin_adherent_renaissance_create"}
      * )
      */
-    private $gender;
+    private ?string $gender = null;
 
     /**
      * @ORM\Column(length=80, nullable=true)
@@ -179,8 +180,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(unique=true)
      *
      * @Groups({"user_profile", "profile_read", "adherent_change_diff"})
+     *
+     * @Assert\NotBlank(groups={"admin_adherent_renaissance_create"})
+     * @Assert\Email(message="common.email.invalid", groups={"admin_adherent_renaissance_create"})
+     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"admin_adherent_renaissance_create"})
      */
-    private $emailAddress;
+    private ?string $emailAddress = null;
 
     /**
      * @ORM\Column(type="phone_number", nullable=true)
@@ -218,7 +223,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @Groups({"adherent_change_diff"})
      */
-    private $status;
+    private string $status = self::DISABLED;
 
     /**
      * @ORM\Column(type="datetime")
@@ -870,6 +875,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->instanceQualities = new ArrayCollection();
         $this->teamMemberships = new ArrayCollection();
         $this->zoneBasedRoles = new ArrayCollection();
+        $this->referentTags = new ArrayCollection();
     }
 
     public static function createLight(
@@ -890,9 +896,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->postAddress = $postAddress;
         $adherent->emailAddress = $emailAddress;
         $adherent->password = $password;
-        $adherent->referentTags = new ArrayCollection();
         $adherent->status = $status;
-        $adherent->nicknameUsed = false;
         $adherent->registeredAt = new \DateTime('now');
         $adherent->source = $source;
         $adherent->coalitionSubscription = $coalitionSubscription;
@@ -943,6 +947,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->mandates = $mandates;
         $adherent->nationality = $nationality;
         $adherent->customGender = $customGender;
+
+        return $adherent;
+    }
+
+    public static function createBlank(): self
+    {
+        $adherent = new self();
+
+        $adherent->uuid = Uuid::uuid4();
+        $adherent->postAddress = PostAddress::createEmptyAddress();
+        $adherent->registeredAt = new \DateTime('now');
 
         return $adherent;
     }
@@ -1235,7 +1250,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
     }
 
-    public function getEmailAddress(): string
+    public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
     }

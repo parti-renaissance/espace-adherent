@@ -7,6 +7,8 @@ use App\Address\GeocodableAddress;
 use App\Geocoder\Coordinates;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoPointInterface;
+use App\Validator\Address as AssertValidAddress;
+use App\Validator\GeocodableAddress as AssertGeocodableAddress;
 use App\Validator\UnitedNationsCountry;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Countries;
@@ -15,6 +17,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Embeddable
+ *
+ * @AssertValidAddress(groups={"admin_adherent_renaissance_create"})
+ * @AssertGeocodableAddress(groups={"admin_adherent_renaissance_create"})
  */
 class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInterface
 {
@@ -23,11 +28,9 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     /**
      * The address street.
      *
-     * @var string|null
-     *
      * @ORM\Column(length=150, nullable=true)
      *
-     * @Assert\Length(max=150, groups={"contact_update"})
+     * @Assert\Length(max=150, groups={"contact_update", "admin_adherent_renaissance_create"})
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
@@ -36,12 +39,10 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "contact_update"
      * })
      */
-    private $address;
+    private ?string $address;
 
     /**
      * The address zip code.
-     *
-     * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
      *
@@ -54,12 +55,10 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "contact_update"
      * })
      */
-    private $postalCode;
+    private ?string $postalCode;
 
     /**
      * The address city code (postal code + INSEE code).
-     *
-     * @var string|null
      *
      * @ORM\Column(length=15, nullable=true, name="city_insee")
      *
@@ -71,12 +70,10 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "contact_update"
      * })
      */
-    private $city;
+    private ?string $city = null;
 
     /**
      * The address city name.
-     *
-     * @var string|null
      *
      * @ORM\Column(nullable=true)
      *
@@ -89,7 +86,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "contact_update"
      * })
      */
-    private $cityName;
+    private ?string $cityName;
 
     /**
      * The address country code (ISO2).
@@ -107,7 +104,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "contact_update"
      * })
      */
-    private $country;
+    private ?string $country;
 
     /**
      * @ORM\Column(nullable=true)
