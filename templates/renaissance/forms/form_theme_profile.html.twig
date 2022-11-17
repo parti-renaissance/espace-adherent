@@ -89,12 +89,8 @@
 {% endblock %}
 
 {% block _adherent_email_subscription_subscriptionTypes_entry_row %}
-    <div class="mt-6 grid md:grid-cols-2 gap-4">
-        <div>
-            <div class="flex items-center space-x-2 checkbox">
-                {{- form_widget(form, { attr: { class: 'superclass-de-ouf' } }) -}}
-                {{- form_label(form) -}}
-            </div>
-        </div>
+    <div class="flex items-center space-x-2 checkbox">
+        {{- form_widget(form, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500' } }) -}}
+        {{- form_label(form) -}}
     </div>
 {% endblock %}

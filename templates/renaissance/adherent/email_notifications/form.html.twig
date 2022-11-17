@@ -31,13 +31,17 @@
                                     <h2 class="text-lg font-medium text-gray-900">{{ group_choices.label|trans }}</h2>
                                 {% endif %}
 
-                                <div class="mt-4 space-y-2">
+                                <div class="mt-4 space-y-3">
                                     {% for key, choice_view in group_choices %}
-                                        {{ form_row(form.subscriptionTypes.children[key]) }}
+                                        <div>
+                                            {{ form_row(form.subscriptionTypes.children[key]) }}
 
-                                        {% if help_messages[choice_view.data.code] is defined %}
-                                            <p class="mt-1 text-base text-gray-500">{{ help_messages[choice_view.data.code]|raw }}</p>
-                                        {% endif %}
+                                            {% if help_messages[choice_view.data.code] is defined %}
+                                                <div class="pl-6 mt-1 text-sm leading-5 text-gray-500">
+                                                    <p>{{ help_messages[choice_view.data.code]|raw }}</p>
+                                                </div>
+                                            {% endif %}
+                                        </div>
                                     {% endfor %}
                                 </div>
                             {% endif %}
