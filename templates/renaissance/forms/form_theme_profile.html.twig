@@ -1,7 +1,7 @@
 {% use "form_div_layout.html.twig" %}
 
 {%- block form_row -%}
-    <div class="em-form__group{% if half is defined and half %} half{% endif %} {{ attr.class|default('') }}">
+    <div class="form__group{% if half is defined and half %} half{% endif %} {{ attr.class|default('') }}">
         {{- form_label(form) -}}
         {{- form_widget(form, { attr: attr }) -}}
         {{- form_errors(form) -}}
@@ -36,7 +36,7 @@
 {%- endblock form_widget_simple %}
 
 {% block textarea_widget -%}
-    {% set attr = attr|merge({class: (attr.class|default('') ~ ' em-form__field')|trim}) %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form__field')|trim}) %}
     {{- parent() -}}
     {{- block('character_count') -}}
 {%- endblock textarea_widget %}

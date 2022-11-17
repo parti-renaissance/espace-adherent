@@ -8,43 +8,47 @@
     <section class="space-y-4 md:space-y-6">
         <h1 class="text-3xl font-bold leading-10 text-gray-900">Communication</h1>
 
-        {% if not app.user.isEmailSubscribed() %}
-            <div class="alert alert--tips l__row l__row--h-stretch b__nudge--bottom-50">
-                <div class="l__col">Vous êtes désabonné</div>
-                <div class="l__col"><a href="#" class="btn btn--blue" id="resubscribe-trigger">Me réabonner</a></div>
-            </div>
-        {% endif %}
+        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+            {% if not app.user.isEmailSubscribed() %}
+                <div class="alert alert--tips l__row l__row--h-stretch b__nudge--bottom-50">
+                    <div class="l__col">Vous êtes désabonné</div>
+                    <div class="l__col"><a href="#" class="btn btn--blue" id="resubscribe-trigger">Me réabonner</a></div>
+                </div>
+            {% endif %}
 
-        {{ form_start(form, { attr: { class: 'em-form' } }) }}
-        {{ form_errors(form) }}
+            {{ form_start(form, { attr: { class: 're-form' } }) }}
+                {{ form_errors(form) }}
 
-        {% set help_messages = {
-            (constant('App\\Subscription\\SubscriptionTypeEnum::REFERENT_EMAIL')): 'Les référents territoriaux sont les représentants du mouvement dans les zones géographiques qui leur sont attribuées. Ils y ont la charge de l\'animation du mouvement au niveau local, de la coordination des comités locaux et du lien avec les instances nationales. Découvrez le/la vôtre en cliquant <a href="' ~ path('our_referents_homepage') ~ '" target="_blank" rel="noopener noreferrer">ici</a>.'
-        } %}
+                {% set help_messages = {
+                    (constant('App\\Subscription\\SubscriptionTypeEnum::REFERENT_EMAIL')): 'Les référents territoriaux sont les représentants du mouvement dans les zones géographiques qui leur sont attribuées. Ils y ont la charge de l\'animation du mouvement au niveau local, de la coordination des comités locaux et du lien avec les instances nationales. Découvrez le/la vôtre en cliquant <a href="' ~ path('our_referents_homepage') ~ '" target="_blank" rel="noopener noreferrer">ici</a>.'
+                } %}
 
-        {% for group_choices in form.subscriptionTypes.vars.choices %}
-            <section class="em-form__section">
-                {% if group_choices.choices is defined %}
-                    {% if group_choices.label %}
-                        <h2 class="section-subtitle">{{ group_choices.label|trans }}</h2>
-                    {% endif %}
+                <div class="divide-y divide-gray-200">
+                    {% for group_choices in form.subscriptionTypes.vars.choices %}
+                        <section class="pt-8 mb-6 first:pt-0">
+                            {% if group_choices.choices is defined %}
+                                {% if group_choices.label %}
+                                    <h2 class="text-lg font-medium text-gray-900">{{ group_choices.label|trans }}</h2>
+                                {% endif %}
 
-                    <div class="em-form__group">
-                        {% for key, choice_view in group_choices %}
-                            {{ form_row(form.subscriptionTypes.children[key]) }}
+                                <div class="mt-4 space-y-2">
+                                    {% for key, choice_view in group_choices %}
+                                        {{ form_row(form.subscriptionTypes.children[key]) }}
 
-                            {% if help_messages[choice_view.data.code] is defined %}
-                                <p class="text--small text--muted">{{ help_messages[choice_view.data.code]|raw }}</p>
+                                        {% if help_messages[choice_view.data.code] is defined %}
+                                            <p class="mt-1 text-base text-gray-500">{{ help_messages[choice_view.data.code]|raw }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
                             {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </section>
-        {% endfor %}
+                        </section>
+                    {% endfor %}
+                </div>
 
-        <div class="b__nudge--top">
-            {{ form_widget(form.submit, { attr: { class: 'btn--blue' } }) }}
+                <div class="mt-10">
+                    {{ form_widget(form.submit, { attr: { class: 'button button-blue' } }) }}
+                </div>
+            {{ form_end(form) }}
         </div>
-        {{ form_end(form) }}
     </section>
 {% endblock %}
