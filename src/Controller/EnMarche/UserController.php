@@ -143,7 +143,8 @@ class UserController extends AbstractController
         Request $request,
         EventDispatcherInterface $dispatcher,
         SubscriptionHandler $subscriptionHandler,
-        AuthAppUrlManager $appUrlManager
+        AuthAppUrlManager $appUrlManager,
+        string $app_domain
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
         $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
@@ -176,10 +177,15 @@ class UserController extends AbstractController
 
             $this->addFlash('info', 'adherent.set_emails_notifications.success');
 
-            return $this->redirectToRoute('app_user_set_email_notifications');
+            return $this->redirectToRoute('app_user_set_email_notifications', ['app_domain' => $app_domain]);
         }
 
-        return $this->render('user/set_email_notifications.html.twig', ['form' => $form->createView()]);
+        return $this->render(
+            $isRenaissanceApp
+                ? 'renaissance/adherent/email_notifications/form.html.twig'
+                : 'user/set_email_notifications.html.twig',
+            ['form' => $form->createView()]
+        );
     }
 
     /**
