@@ -131,28 +131,66 @@ class AssessorControllerTest extends WebTestCase
     }
 
     /**
-     * @dataProvider provideFormError
+     * @dataProvider provideFormValidation
      */
-    public function testAssessorRequestFormErrors(array $testedValue)
+    public function testAssessorRequestFormValidation(array $submittedValues, array $expectedErrors): void
     {
-        $this->expectException(\InvalidArgumentException::class);
         $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_REQUEST_PATH);
 
-        $this->client->submit($crawler->filter('form[name="assessor_request"]')->form([
-            'assessor_request' => [
-                $testedValue,
-            ],
-        ]));
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $form = $crawler->selectButton('Continuer')->form();
+        $form->disableValidation();
+        $form->setValues(['assessor_request' => $submittedValues]);
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        foreach ($expectedErrors as $path => $messages) {
+            $errorsDiv = $crawler->filter(sprintf('#assessor_request_%s_errors', $path));
+
+            $this->assertCount(1, $errorsDiv);
+
+            $errors = $errorsDiv->filter('.form__error');
+
+            $this->assertCount(\count($messages), $errors);
+
+            foreach ($messages as $index => $message) {
+                $this->assertSame($message, $errors->eq($index)->text());
+            }
+        }
     }
 
-    public function provideFormError(): \Generator
+    public function provideFormValidation(): \Generator
     {
-        yield 'Test wrong gender' => [['gender' => 'orc']];
-        yield 'Test wrong phone number' => ['phone' => ['country' => 'TO']];
-        yield 'Test wrong birthdate' => ['birthdate' => [
-            'year' => (new \DateTime())->format('Y'),
-            'month' => '01',
-            'day' => '01',
-        ]];
+        yield 'Invalid French phone number' => [
+            ['phone' => ['country' => 'FR', 'number' => '02']],
+            ['phone' => ['Cette valeur n\'est pas un numéro de téléphone valide.']],
+        ];
+        yield 'Invalid phone country' => [
+            ['phone' => ['country' => 'AA', 'number' => '123456789']],
+            ['phone' => ['Cette valeur n\'est pas valide.']],
+        ];
+        yield 'Unknown gender value' => [
+            ['gender' => 'orc'],
+            ['gender' => ['Cette valeur n\'est pas valide.']],
+        ];
+        yield 'Too young to be assessor' => [
+            ['birthdate' => ['year' => (new \DateTime())->format('Y'), 'month' => '1', 'day' => '1']],
+            ['birthdate' => ['Vous devez être âgé d\'au moins 18 ans pour être assesseur.'],
+        ], ];
+        yield 'Invalid birthdate year' => [
+            ['birthdate' => ['year' => 'abc', 'month' => '1', 'day' => '1']],
+            ['birthdate' => ['Cette valeur n\'est pas valide.']],
+        ];
+        yield 'Invalid birthdate month' => [
+            ['birthdate' => ['year' => '2000', 'month' => '13', 'day' => '1']],
+            ['birthdate' => ['Cette valeur n\'est pas valide.']],
+        ];
+        yield 'Invalid birthdate day' => [
+            ['birthdate' => ['year' => '2000', 'month' => '1', 'day' => '32']],
+            ['birthdate' => ['Cette valeur n\'est pas valide.']],
+        ];
     }
 }
