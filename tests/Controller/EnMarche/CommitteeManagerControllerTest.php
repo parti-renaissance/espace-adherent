@@ -473,7 +473,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertTrue($this->seeMembersList($crawler, 7));
         self::assertSame('Francis B.', trim($crawler->filter('.member-name')->eq(0)->text()));
         self::assertCount(0, $crawler->filter('.member-name img.b__nudge--left-nano'));
-        self::assertCount(0, $crawler->filter('.member-phone'));
+        self::assertCount(6, $crawler->filter('.member-phone'));
         self::assertSame('77000', $crawler->filter('.member-postal-code')->eq(0)->text());
         self::assertSame('Melun', $crawler->filter('.member-city-name')->eq(0)->text());
         self::assertCount(6, $crawler->filter('.member-status .em-tooltip'));
