@@ -25,38 +25,45 @@
 
             {{ form_errors(form) }}
 
-            {{ form_row(form.gender, { label: 'Civilité' }) }}
-            {{ form_row(form.nationality, { label: 'Nationalité' }) }}
+            <div class="space-y-5">
+                <div>
+                    {{ form_row(form.gender, { label: 'Civilité' }) }}
+                </div>
+
+                <div>
+                    {{ form_row(form.nationality, { label: 'Nationalité' }) }}
+                </div>
+            </div>
 
             <div class="mt-10 max-w-xl mx-auto mention-checkbox-container">
                 <div class="form__checkbox">
                     {{ form_errors(form.frenchTaxResidentConfirmation) }}
-                    {{ form_widget(form.frenchTaxResidentConfirmation) }}
-                    <label for="{{ form.frenchTaxResidentConfirmation.vars.id }}" class="require">
+                    {{ form_widget(form.frenchTaxResidentConfirmation, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-red-500 focus:ring-red-500' } }) }}
+                    <label for="{{ form.frenchTaxResidentConfirmation.vars.id }}" class="text-base text-gray-700 font-medium required">
                         Je certifie résider fiscalement en France
                     </label>
                 </div>
 
                 {{ form_errors(form.exclusiveMembership) }}
                 <div class="form__checkbox">
-                    {{ form_widget(form.exclusiveMembership) }}
-                    <label for="{{ form.exclusiveMembership.vars.id }}">
+                    {{ form_widget(form.exclusiveMembership, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-red-500 focus:ring-red-500' } }) }}
+                    <label for="{{ form.exclusiveMembership.vars.id }}" class="text-base text-gray-700 font-medium">
                         Je certifie sur l'honneur que je n'appartiens à aucun autre parti politique
                     </label>
                 </div>
 
                 {{ form_errors(form.territoireProgresMembership) }}
                 <div class="form__checkbox">
-                    {{ form_widget(form.territoireProgresMembership) }}
-                    <label for="{{ form.territoireProgresMembership.vars.id }}">
+                    {{ form_widget(form.territoireProgresMembership, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-red-500 focus:ring-red-500' } }) }}
+                    <label for="{{ form.territoireProgresMembership.vars.id }}" class="text-base text-gray-700 font-medium">
                         Je suis membre de « Territoires de Progrès » et je peux bénéficier à ce titre de la double adhésion prévue dans les dispositions transitoires des statuts de Renaissance.
                     </label>
                 </div>
 
                 {{ form_errors(form.agirMembership) }}
                 <div class="form__checkbox">
-                    {{ form_widget(form.agirMembership) }}
-                    <label for="{{ form.agirMembership.vars.id }}">
+                    {{ form_widget(form.agirMembership, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-red-500 focus:ring-red-500' } }) }}
+                    <label for="{{ form.agirMembership.vars.id }}" class="text-base text-gray-700 font-medium">
                         Je suis membre d'« Agir, la droite constructive » et je peux bénéficier à ce titre de la double adhésion prévue dans les dispositions transitoires des statuts de Renaissance.
                     </label>
                 </div>
