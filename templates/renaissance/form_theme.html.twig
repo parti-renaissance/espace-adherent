@@ -95,6 +95,21 @@
     {% endfor -%}
 {% endblock %}
 
+{% block _app_renaissance_membership_gender_row %}
+    {{- form_label(form, null, {label_attr: { class: 'text-sm uppercase tracking-wider text-re-blue-500 font-medium' }}) -}}
+    {{ form_errors(form) }}
+    <div class="mt-1 isolate flex rounded-md w-full max-w-xs">
+        {%- for child in form %}
+            <div class="civility-choice relative inline-flex w-full items-center justify-center first:rounded-l-md last:rounded-r-md last:-ml-px border border-re-blue-100 overflow-hidden">
+                {{- form_widget(child, {attr: {class: 'sr-only'}}) -}}
+                <label for="{{ child.vars.id }}" class="cursor-pointer block text-center w-full bg-gray px-4 py-2.5 text-sm font-medium text-re-blue-700 hover:bg-re-blue-50 uppercase tracking-wider">
+                    {{ child.vars.label|trans }}
+                </label>
+            </div>
+        {% endfor -%}
+    </div>
+{% endblock %}
+
 {% block autocomplete_input_row %}
     {% set attr = attr|merge({ class: (attr.class|default('') ~ ' address-autocomplete')|trim }) %}
     {{ block('form_widget') }}

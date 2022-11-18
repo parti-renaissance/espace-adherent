@@ -54,12 +54,12 @@
             font-size: small;
             font-weight: 500;
             text-transform: uppercase;
-            color: #1254D8;
+            color: theme('colors.re.blue.500');
         }
 
         &:focus-within {
             label {
-                color: #00205F;
+                color: theme('colors.dark-blue');
             }
         }
     }
@@ -85,6 +85,13 @@
             &__input {
                 @apply rounded border focus:ring-0 border-green focus:border-green w-full bg-white text-green font-medium text-sm placeholder:text-green placeholder:font-medium p-5 mb-4;
             }
+        }
+    }
+
+    .civility-choice {
+        input[type=radio]:checked + label,
+        input[type=radio]:focus + label {
+            @apply bg-re-blue-100;
         }
     }
 
