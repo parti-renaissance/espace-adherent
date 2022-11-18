@@ -177,7 +177,7 @@
             {{ form_end(form) }}
         </div>
 
-        <div x-data="{ isOpen: false }" class="bg-white shadow rounded-lg px-4 py-5 md:p-6 border-2 border-red-400">
+        <div x-data="{ isOpen: false }" class="bg-white shadow rounded-lg px-4 py-5 md:p-6">
             <button type="button" class="flex w-full items-start justify-between text-left text-gray-400" aria-controls="faq-0" @click="isOpen = !isOpen" aria-expanded="false" x-bind:aria-expanded="isOpen.toString()">
                 <span class="text-lg font-medium leading-6 text-red-600 uppercase tracking-wider">Suppression du compte</span>
                 <span class="ml-6 flex h-7 items-center">
