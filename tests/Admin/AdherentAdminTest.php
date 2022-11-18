@@ -283,6 +283,305 @@ class AdherentAdminTest extends AbstractWebCaseTest
         $this->assertCount(current($myTeams)->getMembers()->count(), $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $adherent]));
     }
 
+    /**
+     * @dataProvider provideCreateRenaissanceAdherent
+     */
+    public function testCreateRenaissanceAdherent(array $submittedValues): void
+    {
+        self::assertNull($this->adherentRepository->findOneByEmail($submittedValues['email']));
+
+        $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/app/adherent/create-renaissance');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->client->submit($crawler->selectButton('Enregistrer')->form([
+            'adherent_create' => $submittedValues,
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/admin/app/adherent/create-renaissance', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        self::assertStringContainsString(
+            'Le compte adhérent Renaissance a bien été créé.',
+            $crawler->filter('.alert-success')->text()
+        );
+
+        $adherent = $this->adherentRepository->findOneByEmail($submittedValues['email']);
+
+        self::assertInstanceOf(Adherent::class, $adherent);
+        self::assertSame('DISABLED', $adherent->getStatus());
+        self::assertSame($submittedValues['gender'], $adherent->getGender());
+        self::assertSame($submittedValues['firstName'], $adherent->getFirstName());
+        self::assertSame($submittedValues['lastName'], $adherent->getLastName());
+        self::assertSame($submittedValues['nationality'], $adherent->getNationality());
+        self::assertSame($submittedValues['address']['address'], $adherent->getAddress());
+        self::assertSame($submittedValues['address']['postalCode'], $adherent->getPostalCode());
+        self::assertSame($submittedValues['address']['cityName'], $adherent->getCityName());
+        self::assertSame('77000-77288', $adherent->getCity());
+        self::assertSame($submittedValues['address']['country'], $adherent->getCountry());
+        self::assertSame(null, $adherent->getLatitude());
+        self::assertSame(null, $adherent->getLongitude());
+        self::assertSame($submittedValues['email'], $adherent->getEmailAddress());
+        self::assertEquals(new \DateTime('-20 years, january 1st'), $adherent->getBirthdate());
+    }
+
+    public function provideCreateRenaissanceAdherent(): \Generator
+    {
+        yield [
+            [
+                'gender' => 'male',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'nationality' => 'FR',
+                'address' => [
+                    'address' => '3 avenue Jean Jaurès',
+                    'city' => null,
+                    'cityName' => 'Melun',
+                    'postalCode' => '77000',
+                    'country' => 'FR',
+                ],
+                'email' => 'new-re-user@en-marche-dev.code',
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '0123456789',
+                ],
+                'birthdate' => [
+                    'year' => (new \DateTime('-20 years'))->format('Y'),
+                    'month' => 1,
+                    'day' => 1,
+                ],
+                'membershipType' => 'exclusive',
+                'cotisationAmountChoice' => 'amount_30',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideCreateRenaissanceAdherentValidation
+     */
+    public function testCreateRenaissanceAdherentValidation(array $submittedValues, array $expectedErrors): void
+    {
+        $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/app/adherent/create-renaissance');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $form = $crawler->selectButton('Enregistrer')->form();
+        $form->disableValidation();
+        $form->setValues(['adherent_create' => $submittedValues]);
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        foreach ($expectedErrors as $path => $messages) {
+            $errorsDiv = $crawler->filter(sprintf('#sonata-ba-field-container-adherent_create_%s', $path));
+
+            self::assertCount(1, $errorsDiv);
+
+            $errors = $errorsDiv->filter('.sonata-ba-field-error-messages li');
+
+            self::assertCount(\count($messages), $errors);
+
+            foreach ($messages as $index => $message) {
+                self::assertSame($message, trim($errors->eq($index)->text()));
+            }
+        }
+    }
+
+    public function provideCreateRenaissanceAdherentValidation(): \Generator
+    {
+        yield 'No gender' => [
+            ['gender' => null],
+            ['gender' => ['Veuillez renseigner un genre.']],
+        ];
+        yield 'Invalid gender' => [
+            ['gender' => 'orc'],
+            ['gender' => ['Ce sexe n\'est pas valide.']],
+        ];
+        yield 'No first name' => [
+            ['firstName' => null],
+            ['firstName' => ['Le prénom doit comporter au moins 2 caractères.']],
+        ];
+        yield 'Too short first name' => [
+            ['firstName' => 'A'],
+            ['firstName' => ['Le prénom doit comporter au moins 2 caractères.']],
+        ];
+        yield 'Too long first name' => [
+            ['firstName' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'],
+            ['firstName' => ['Le prénom ne peut pas dépasser 50 caractères.']],
+        ];
+        yield 'No last name' => [
+            ['lastName' => null],
+            ['lastName' => ['Le nom doit comporter au moins 1 caractères.']],
+        ];
+        yield 'Too long last name' => [
+            ['lastName' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'],
+            ['lastName' => ['Le nom ne peut pas dépasser 50 caractères.']],
+        ];
+        yield 'No nationality' => [
+            ['nationality' => null],
+            ['nationality' => ['La nationalité est requise.']],
+        ];
+        yield 'Invalid nationality' => [
+            ['nationality' => 'ABC'],
+            ['nationality' => ['Cette nationalité n\'est pas valide.']],
+        ];
+        yield 'Empty address' => [
+            [
+                'address' => [
+                    'address' => null,
+                    'city' => null,
+                    'cityName' => null,
+                    'postalCode' => null,
+                    'country' => null,
+                ],
+            ],
+            ['address' => ['L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.']],
+        ];
+        yield 'No address' => [
+            [
+                'address' => [
+                    'address' => null,
+                    'city' => null,
+                    'cityName' => 'Nice',
+                    'postalCode' => '06000',
+                    'country' => 'FR',
+                ],
+            ],
+            ['address' => ['L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.']],
+        ];
+        yield 'No postal code' => [
+            [
+                'address' => [
+                    'address' => '3 avenue Jean Jaurès',
+                    'city' => null,
+                    'cityName' => 'Melun',
+                    'postalCode' => null,
+                    'country' => 'FR',
+                ],
+            ],
+            ['address' => ['L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.']],
+        ];
+        yield 'Invalid postal code' => [
+            [
+                'address' => [
+                    'address' => '3 avenue Jean Jaurès',
+                    'city' => null,
+                    'cityName' => 'Melun',
+                    'postalCode' => '77abc',
+                    'country' => 'FR',
+                ],
+            ],
+            [
+                'address' => [
+                    'L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.',
+                    'Cette valeur n\'est pas un code postal français valide.',
+                ],
+            ],
+        ];
+        yield 'No country' => [
+            [
+                'address' => [
+                    'address' => '3 avenue Jean Jaurès',
+                    'city' => null,
+                    'cityName' => 'Melun',
+                    'postalCode' => '77000',
+                    'country' => null,
+                ],
+            ],
+            [
+                'address' => [
+                    'L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.',
+                ],
+            ],
+        ];
+        yield 'Invalid country' => [
+            [
+                'address' => [
+                    'address' => '3 avenue Jean Jaurès',
+                    'city' => null,
+                    'cityName' => 'Melun',
+                    'postalCode' => '77000',
+                    'country' => 'ABC',
+                ],
+            ],
+            [
+                'address' => [
+                    'L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.',
+                    'Ce pays n\'est pas valide.',
+                ],
+            ],
+        ];
+        yield 'No email address' => [
+            ['email' => null],
+            ['email' => ['Veuillez renseigner une adresse e-mail.']],
+        ];
+        yield 'Invalid email address' => [
+            ['email' => 'abc'],
+            ['email' => ['Ceci n\'est pas une adresse e-mail valide.']],
+        ];
+        yield 'Too long email address' => [
+            ['email' => 'loremipsumdolorsitametconsecteturadipiscingelitloremipsumdolorsitametconsecteturadipiscingelitloremipsumdolorsitametconsecteturadipiscingelit@loremipsumdolorsitametconsecteturadipiscingelitloremipsumdolorsitametconsecteturadipiscingelitloremipsumdolorsitametconsecteturadipiscingelit.dev'],
+            ['email' => ['L\'adresse e-mail est trop longue, 255 caractères maximum.']],
+        ];
+        yield 'No phone country' => [
+            ['phone' => ['country' => null, 'number' => '0612345678']],
+            ['phone' => ['Cette valeur n\'est pas un numéro de téléphone valide.']],
+        ];
+        yield 'Invalid phone country' => [
+            ['phone' => ['country' => 'ABC', 'number' => '0612345678']],
+            ['phone' => ['Ce pays n\'est pas valide.']],
+        ];
+        yield 'Invalid phone number' => [
+            ['phone' => ['country' => 'FR', 'number' => '02']],
+            ['phone' => ['Cette valeur n\'est pas un numéro de téléphone valide.']],
+        ];
+        yield 'Empty birthdate' => [
+            ['birthdate' => ['year' => null, 'month' => null, 'day' => null]],
+            ['birthdate' => ['Veuillez spécifier une date de naissance.']],
+        ];
+        yield 'Invalid birthdate year' => [
+            ['birthdate' => ['year' => '3000', 'month' => '2', 'day' => '2']],
+            ['birthdate' => ['Cette valeur n\'est pas valide.']],
+        ];
+        yield 'Invalid birthdate month' => [
+            ['birthdate' => ['year' => '2000', 'month' => '13', 'day' => '2']],
+            ['birthdate' => ['Cette valeur n\'est pas valide.']],
+        ];
+        yield 'Invalid birthdate day' => [
+            ['birthdate' => ['year' => '2000', 'month' => '2', 'day' => '32']],
+            ['birthdate' => ['Cette valeur n\'est pas valide.']],
+        ];
+        yield 'Too young for adhesion' => [
+            ['birthdate' => ['year' => (new \DateTime('-5 years'))->format('Y'), 'month' => '2', 'day' => '2']],
+            ['birthdate' => ['Cette valeur n\'est pas valide.']],
+        ];
+        yield 'No membership type' => [
+            ['membershipType' => ''],
+            ['membershipType' => ['Veuillez spécifier au moins un type d\'adhésion.']],
+        ];
+        yield 'Invalid membership type' => [
+            ['membershipType' => 'invalid'],
+            ['membershipType' => ['Ce type d\'adhésion n\'est pas valide.']],
+        ];
+        yield 'No cotisation amount choice' => [
+            ['cotisationAmountChoice' => null],
+            ['cotisationAmountChoice' => ['Veuillez spécifier un montant de cotisation.']],
+        ];
+        yield 'Invalid cotisation amount choice' => [
+            ['cotisationAmountChoice' => 'invalid'],
+            ['cotisationAmountChoice' => ['Ce montant de cotisation est invalide.']],
+        ];
+    }
+
     protected function setUp(): void
     {
         parent::setUp();

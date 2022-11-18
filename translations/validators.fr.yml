@@ -19,6 +19,7 @@ common.first_name.max_length: Votre prénom ne peut pas dépasser {{ limit }} ca
 common.last_name.min_length: Votre nom doit comporter au moins {{ limit }} caractères.
 common.last_name.max_length: Votre nom ne peut pas dépasser {{ limit }} caractères.
 
+common.email.not_blank: Veuillez renseigner une adresse e-mail.
 common.email.invalid: Ceci n'est pas une adresse e-mail valide.
 common.email.max_length: L'adresse e-mail est trop longue, {{ limit }} caractères maximum.
 common.email.repeated: Les adresses email ne correspondent pas.
@@ -619,3 +620,24 @@ header_block.name.max_length: Le nom d'une en-tête ne doit pas dépasser {{ lim
 header_block.prefix.max_length: Le préfixe d'une en-tête ne doit pas dépasser {{ limit }} caractères.
 header_block.prefixe.not_blank: Veuillez renseigner un préfixe pour cette en-tête.
 header_block.slogen.max_length: Le slogan d'une en-tête ne doit pas dépasser {{ limit }} caractères.
+
+#
+# Admin validations
+#
+
+admin.common.first_name.min_length: Le prénom doit comporter au moins {{ limit }} caractères.
+admin.common.first_name.max_length: Le prénom ne peut pas dépasser {{ limit }} caractères.
+
+admin.common.last_name.min_length: Le nom doit comporter au moins {{ limit }} caractères.
+admin.common.last_name.max_length: Le nom ne peut pas dépasser {{ limit }} caractères.
+
+admin.common.address.not_geocodable: L'adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.
+
+admin.common.birthdate.not_blank: Veuillez spécifier une date de naissance.
+admin.common.birthdate.minimum_required_age: L'âge minimum requis pour adhérer est de 15ans.
+
+admin.adherent.renaissance.membership_type.not_blank: Veuillez spécifier au moins un type d'adhésion.
+admin.adherent.renaissance.membership_type.invalid_choice: Ce type d'adhésion n'est pas valide.
+
+admin.membership.cotisation_amount_choice.not_blank: Veuillez spécifier un montant de cotisation.
+admin.membership.cotisation_amount_choice.invalid_choice: Ce montant de cotisation est invalide.

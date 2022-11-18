@@ -1,0 +1,162 @@
+{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block title '| Création de compte adhérent Renaissance' %}
+
+{% block navbar_title 'Création de compte adhérent Renaissance' %}
+
+{% block show %}
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h4 class="box-title">Informations générales</h4>
+                </div>
+                <div class="box-body">
+
+                    <div class="form-group {% if not form.gender.vars.valid %} has-error{% endif %}" id="sonata-ba-field-container-{{ form.gender.vars.id }}">
+                        <div class="row">
+                            {% for choice in form.gender %}
+                                <div class="col-md-4">
+                                    {{ form_widget(choice) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        {% if not form.gender.vars.valid %}
+                            <div class="help-block sonata-ba-field-error-messages">
+                                {{ form_errors(form.gender) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.firstName, { label: 'Prénom' }) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.lastName, { label: 'Nom' }) }}
+                        </div>
+                    </div>
+
+                    {{ form_row(form.nationality, { label: 'Nationalité' }) }}
+
+                    <div class="form-group {% if not form.address.vars.valid %} has-error{% endif %}" id="sonata-ba-field-container-{{ form.address.vars.id }}">
+                        {% if not form.address.vars.valid %}
+                            <div class="help-block sonata-ba-field-error-messages">
+                                {{ form_errors(form.address) }}
+                            </div>
+                        {% endif %}
+
+                        {{ form_row(form.address.address, { label: 'Adresse postale' }) }}
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                {{ form_row(form.address.postalCode, { label: 'Code postal' }) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form_row(form.address.cityName, { label: 'Ville' }) }}
+                                {{ form_row(form.address.city) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form_row(form.address.country, { label: 'Pays', placeholder: false }) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-5">
+                            {{ form_row(form.email, { label: 'E-mail' }) }}
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="form-group {% if not form.phone.vars.valid %} has-error{% endif %}" id="sonata-ba-field-container-{{ form.phone.vars.id }}">
+                                {{ form_label(form.phone, 'Téléphone') }}
+
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        {{ form_widget(form.phone.country) }}
+                                    </div>
+                                    <div class="col-xs-6">
+                                        {{ form_widget(form.phone.number) }}
+                                    </div>
+                                </div>
+
+                                {% if not form.phone.vars.valid %}
+                                    <div class="help-block sonata-ba-field-error-messages">
+                                        {{ form_errors(form.phone) }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+
+                    {{ form_row(form.birthdate, { label: 'Né(e) le' }) }}
+
+                    {{ form_row(form.membershipType, { label: false }) }}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h4 class="box-title">Cotisation</h4>
+                </div>
+                <div class="box-body">
+                    {{ form_row(form.cotisationAmountChoice, { label: 'Montant' }) }}
+                    <div class="row">
+                        <div class="col-lg-4">
+                            {{ form_row(form.cotisationCustomAmount, { label: false }) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-solid">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="{{ admin.generateUrl('create_renaissance') }}" class="btn btn-block btn-danger">
+                        Recommencer
+                    </a>
+                </div>
+                <div class="col-md-3 col-md-offset-6">
+                    <button type="submit" class="btn btn-block btn-success">
+                        Enregistrer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var cotisationCustomAmountBlock = $('#sonata-ba-field-container-{{ form.cotisationCustomAmount.vars.id }}');
+
+            $('input[type=radio][name="{{ form.cotisationAmountChoice.vars.full_name }}"]').change(function() {
+                if (!$(this).is(':checked')) {
+                    return;
+                }
+
+                if ('{{ constant('App\\Renaissance\\Membership\\Admin\\CotisationAmountChoiceEnum::AMOUNT_OTHER')}}' == $(this).val()) {
+                    cotisationCustomAmountBlock.show();
+                } else {
+                    cotisationCustomAmountBlock.hide();
+                    cotisationCustomAmountBlock.find('input').val('');
+                }
+            }).change();
+        });
+    </script>
+{% endblock %}

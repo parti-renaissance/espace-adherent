@@ -132,7 +132,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $nicknameUsed;
+    private bool $nicknameUsed = false;
 
     /**
      * @ORM\Column(nullable=true)
@@ -218,7 +218,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @Groups({"adherent_change_diff"})
      */
-    private $status;
+    private string $status = self::DISABLED;
 
     /**
      * @ORM\Column(type="datetime")
@@ -870,6 +870,38 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->instanceQualities = new ArrayCollection();
         $this->teamMemberships = new ArrayCollection();
         $this->zoneBasedRoles = new ArrayCollection();
+    }
+
+    public static function createBlank(
+        string $gender,
+        string $firstName,
+        string $lastName,
+        string $nationality,
+        PostAddress $postAddress,
+        string $email,
+        ?PhoneNumber $phone,
+        ?\DateTimeInterface $birthdate,
+        bool $exclusiveMembership = false,
+        bool $territoiresProgresMembership = false,
+        bool $agirMembership = false
+    ): self {
+        $adherent = new self();
+
+        $adherent->uuid = Uuid::uuid4();
+        $adherent->gender = $gender;
+        $adherent->firstName = $firstName;
+        $adherent->lastName = $lastName;
+        $adherent->nationality = $nationality;
+        $adherent->postAddress = $postAddress;
+        $adherent->emailAddress = $email;
+        $adherent->phone = $phone;
+        $adherent->birthdate = $birthdate;
+        $adherent->exclusiveMembership = $exclusiveMembership;
+        $adherent->territoireProgresMembership = $territoiresProgresMembership;
+        $adherent->agirMembership = $agirMembership;
+        $adherent->registeredAt = new \DateTime('now');
+
+        return $adherent;
     }
 
     public static function createLight(
