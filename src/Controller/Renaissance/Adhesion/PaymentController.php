@@ -16,7 +16,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class PaymentController extends AbstractAdhesionController
 {
@@ -27,12 +26,10 @@ class PaymentController extends AbstractAdhesionController
      *
      * @IsGranted("ROLE_ADHERENT")
      */
-    public function prePaymentAction(
-        Request $request,
-        UserInterface $adherent,
-        DonationRequestHandler $donationRequestHandler
-    ): Response {
+    public function prePaymentAction(Request $request, DonationRequestHandler $donationRequestHandler): Response
+    {
         /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         if ($adherent->getLastMembershipDonation()) {
             return $this->redirectToRoute('app_renaissance_adhesion_additional_informations');
         }

@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/territorial-council/candidacy/available-memberships", name="api_territorial_council_candidacy_available_memberships_get", methods={"GET"})
@@ -22,14 +21,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class TerritorialCouncilCandidacyController extends AbstractController
 {
-    /**
-     * @param Adherent $adherent
-     */
-    public function __invoke(
-        Request $request,
-        UserInterface $adherent,
-        TerritorialCouncilMembershipRepository $repository
-    ): Response {
+    public function __invoke(Request $request, TerritorialCouncilMembershipRepository $repository): Response
+    {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 

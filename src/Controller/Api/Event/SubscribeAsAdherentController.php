@@ -13,7 +13,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -36,11 +35,10 @@ class SubscribeAsAdherentController extends AbstractController
         $this->dispatcher = $dispatcher;
     }
 
-    /**
-     * @param UserInterface|Adherent $adherent
-     */
-    public function __invoke(Request $request, BaseEvent $event, UserInterface $adherent): Response
+    public function __invoke(Request $request, BaseEvent $event): Response
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         if ($event->isCancelled()) {
             throw $this->createNotFoundException('Event is cancelled');
         }

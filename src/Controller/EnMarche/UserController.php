@@ -30,7 +30,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -252,11 +251,11 @@ class UserController extends AbstractController
      *     methods={"PUT"}
      * )
      */
-    public function chartAcceptationAction(
-        Request $request,
-        ObjectManager $manager,
-        UserInterface $adherent
-    ): JsonResponse {
+    public function chartAcceptationAction(Request $request, ObjectManager $manager, ): JsonResponse
+    {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         $charterType = $request->request->all()['charterType'] ?? null;
 
         if (!AdherentCharterTypeEnum::isValid($charterType)) {

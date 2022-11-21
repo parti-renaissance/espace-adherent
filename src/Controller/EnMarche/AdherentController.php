@@ -32,7 +32,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -151,8 +150,11 @@ class AdherentController extends AbstractController
     /**
      * @Route("/mes-comites", name="app_adherent_committees", methods={"GET"})
      */
-    public function committeesAction(CommitteeManager $manager, UserInterface $adherent): Response
+    public function committeesAction(CommitteeManager $manager): Response
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         return $this->render('adherent/my_activity_committees.html.twig', [
             'committeeMemberships' => $manager->getCommitteeMembershipsForAdherent($adherent),
         ]);

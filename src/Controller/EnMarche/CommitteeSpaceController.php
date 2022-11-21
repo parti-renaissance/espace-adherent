@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/espace-comite", name="app_committee_space_dashboard")
@@ -17,11 +16,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class CommitteeSpaceController extends AbstractController
 {
-    /**
-     * @param UserInterface|Adherent $adherent
-     */
-    public function __invoke(UserInterface $adherent, CommitteeRepository $repository): Response
+    public function __invoke(CommitteeRepository $repository): Response
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         return $this->render('committee_manager/dashboard.html.twig', [
             'committees' => $repository->findCommitteesForHost($adherent),
         ]);

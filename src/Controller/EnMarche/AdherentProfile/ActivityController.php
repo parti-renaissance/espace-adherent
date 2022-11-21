@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\AdherentProfile;
 
 use App\Donation\DonationManager;
+use App\Entity\Adherent;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\DonationRepository;
 use App\Repository\EventRegistrationRepository;
@@ -10,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/parametres/mes-activites", name="app_adherent_profile_activity", methods={"GET"})
@@ -21,12 +21,13 @@ class ActivityController extends AbstractController
 
     public function __invoke(
         Request $request,
-        UserInterface $user,
         CommitteeMembershipRepository $membershipRepository,
         DonationRepository $donationRepository,
         DonationManager $donationManager,
         EventRegistrationRepository $eventRegistrationRepository
     ): Response {
+        /** @var Adherent $user */
+        $user = $this->getUser();
         $page = $request->query->getInt('page', 1);
         $type = $request->query->get('type');
 

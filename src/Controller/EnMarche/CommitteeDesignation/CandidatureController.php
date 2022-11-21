@@ -24,7 +24,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/comites/{slug}/candidature", name="app_committee_candidature")
@@ -42,11 +41,11 @@ class CandidatureController extends AbstractController
 
     /**
      * @Route("", name="_edit", methods={"GET", "POST"})
-     *
-     * @param UserInterface|Adherent $adherent
      */
-    public function candidateAction(UserInterface $adherent, Committee $committee, Request $request): Response
+    public function candidateAction(Committee $committee, Request $request): Response
     {
+        $adherent = $this->getUser();
+
         if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
             $this->addFlash('error', 'Vous ne pouvez pas candidater ou modifier votre candidature pour cette désignation.');
 
@@ -132,11 +131,12 @@ class CandidatureController extends AbstractController
 
     /**
      * @Route("/choix-de-binome", name="_select_pair_candidate", methods={"GET", "POST"})
-     *
-     * @param Adherent $adherent
      */
-    public function selectPairCandidateAction(Committee $committee, Request $request, UserInterface $adherent): Response
+    public function selectPairCandidateAction(Committee $committee, Request $request): Response
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
@@ -183,11 +183,12 @@ class CandidatureController extends AbstractController
 
     /**
      * @Route("/choix-de-binome/fini", name="_select_pair_candidate_finish", methods={"GET"})
-     *
-     * @param Adherent $adherent
      */
-    public function finishInvitationStepAction(Committee $committee, UserInterface $adherent): Response
+    public function finishInvitationStepAction(Committee $committee): Response
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
@@ -204,14 +205,14 @@ class CandidatureController extends AbstractController
 
     /**
      * @Route("/mes-invitations", name="_invitation_list", methods={"GET"})
-     *
-     * @param Adherent $adherent
      */
     public function invitationListAction(
         Committee $committee,
-        UserInterface $adherent,
         CommitteeCandidacyInvitationRepository $repository
     ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
@@ -236,15 +237,15 @@ class CandidatureController extends AbstractController
      * @ParamConverter("votePlace", class="App\Entity\CommitteeCandidacyInvitation", options={"mapping": {"uuid": "uuid"}})
      *
      * @Security("invitation.getMembership() == user.getMembershipFor(committee)")
-     *
-     * @param Adherent $adherent
      */
     public function acceptInvitationAction(
         Committee $committee,
         Request $request,
-        CommitteeCandidacyInvitation $invitation,
-        UserInterface $adherent
+        CommitteeCandidacyInvitation $invitation
     ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }

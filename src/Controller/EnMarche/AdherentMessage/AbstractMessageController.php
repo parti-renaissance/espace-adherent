@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractMessageController extends AbstractController
 {
@@ -271,15 +270,13 @@ abstract class AbstractMessageController extends AbstractController
      * @Route("/{uuid}/tester", name="test", methods={"GET"})
      *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
-     *
-     * @param Adherent $user
      */
-    public function sendTestMessageAction(
-        UserInterface $user,
-        AbstractAdherentMessage $message,
-        AdherentMessageManager $manager
-    ): Response {
+    public function sendTestMessageAction(AbstractAdherentMessage $message, AdherentMessageManager $manager): Response
+    {
         $this->checkAccess();
+
+        /** @var Adherent $user */
+        $user = $this->getUser();
 
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not yet ready to test sending.');

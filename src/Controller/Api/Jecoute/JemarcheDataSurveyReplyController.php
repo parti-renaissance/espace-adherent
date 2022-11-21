@@ -31,12 +31,11 @@ class JemarcheDataSurveyReplyController extends AbstractReplyController
     public function __invoke(
         Request $request,
         JemarcheDataSurvey $jemarcheDataSurvey,
-        UserInterface $user,
         EventDispatcherInterface $dispatcher,
         MessageBusInterface $bus
     ): Response {
         $this->jemarcheDataSurvey = $jemarcheDataSurvey;
-        $this->user = $user;
+        $this->user = $this->getUser();
         $this->dispatcher = $dispatcher;
         $this->bus = $bus;
 

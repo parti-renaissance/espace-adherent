@@ -23,7 +23,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/conseil-territorial", name="app_territorial_council_")
@@ -47,9 +46,12 @@ class TerritorialCouncilController extends AbstractController
      * @Route("/faq", name="faq", methods={"GET"})
      * @Route("/{uuid}/faq", name="selected_faq", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
      */
-    public function faqAction(UserInterface $adherent, TerritorialCouncil $territorialCouncil = null): Response
+    public function faqAction(TerritorialCouncil $territorialCouncil = null): Response
     {
         $this->checkAccess($territorialCouncil);
+
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
 
         if (!$withSelectedCouncil = null !== $territorialCouncil) {
             $membership = $adherent->getTerritorialCouncilMembership();
@@ -67,11 +69,14 @@ class TerritorialCouncilController extends AbstractController
      * @Route("/membres", name="members", methods={"GET"})
      * @Route("/{uuid}/membres", name="selected_members", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
      */
-    public function listMembersAction(UserInterface $adherent, TerritorialCouncil $territorialCouncil = null): Response
+    public function listMembersAction(TerritorialCouncil $territorialCouncil = null): Response
     {
         $this->disableInProduction();
 
         $this->checkAccess($territorialCouncil);
+
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
 
         if (!$withSelectedCouncil = null !== $territorialCouncil) {
             $membership = $adherent->getTerritorialCouncilMembership();
@@ -88,11 +93,8 @@ class TerritorialCouncilController extends AbstractController
     /**
      * @Route("/liste-candidature", name="candidacy_list", methods={"GET"})
      * @Route("/{uuid}/liste-candidature", name="selected_candidacy_list", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
-     *
-     * @param Adherent $adherent
      */
     public function candidacyListAction(
-        UserInterface $adherent,
         CandidacyRepository $repository,
         TerritorialCouncil $territorialCouncil = null
     ): Response {
@@ -120,16 +122,13 @@ class TerritorialCouncilController extends AbstractController
 
     /**
      * @Route("/{uuid}/sondage", name="election_poll_save_vote", methods={"POST"}, requirements={"uuid": "%pattern_uuid%"})
-     *
-     * @param Adherent $adherent
      */
-    public function electionPollAction(
-        Request $request,
-        Poll $electionPoll,
-        UserInterface $adherent,
-        Manager $voteManager
-    ): Response {
+    public function electionPollAction(Request $request, Poll $electionPoll, Manager $voteManager): Response
+    {
         $this->checkAccess();
+
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
 
         if (!$electionPoll->getElection()->isCandidacyPeriodActive()) {
             return $this->redirectToRoute('app_territorial_council_index');
@@ -157,12 +156,13 @@ class TerritorialCouncilController extends AbstractController
     /**
      * @Route("/accueil", name="homepage", methods={"GET"})
      * @Route("/accueil/{uuid}", name="selected_homepage", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
-     *
-     * @param Adherent $adherent
      */
-    public function homepageAction(UserInterface $adherent, TerritorialCouncil $territorialCouncil = null): Response
+    public function homepageAction(TerritorialCouncil $territorialCouncil = null): Response
     {
         $this->checkAccess($territorialCouncil);
+
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
 
         if (!$withSelectedCouncil = null !== $territorialCouncil) {
             $membership = $adherent->getTerritorialCouncilMembership();
@@ -182,11 +182,13 @@ class TerritorialCouncilController extends AbstractController
      */
     public function feedItemsAction(
         Request $request,
-        UserInterface $adherent,
         TerritorialCouncilFeedItemRepository $feedItemRepository,
         TerritorialCouncil $territorialCouncil = null
     ): Response {
         $this->checkAccess($territorialCouncil);
+
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
 
         if (!$withSelectedCouncil = null !== $territorialCouncil) {
             $membership = $adherent->getTerritorialCouncilMembership();

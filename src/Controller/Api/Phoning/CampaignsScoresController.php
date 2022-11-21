@@ -2,13 +2,17 @@
 
 namespace App\Controller\Api\Phoning;
 
+use App\Controller\EnMarche\VotingPlatform\AbstractController;
+use App\Entity\Adherent;
 use App\Repository\Phoning\CampaignRepository;
-use Symfony\Component\Security\Core\User\UserInterface;
 
-class CampaignsScoresController
+class CampaignsScoresController extends AbstractController
 {
-    public function __invoke(CampaignRepository $campaignRepository, UserInterface $adherent): array
+    public function __invoke(CampaignRepository $campaignRepository): array
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         return $campaignRepository->findForAdherent($adherent);
     }
 }

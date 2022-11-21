@@ -5,6 +5,7 @@ namespace App\Controller\EnMarche\TerritorialCouncil;
 use App\Controller\CanaryControllerTrait;
 use App\Controller\EnMarche\FeedItemControllerTrait;
 use App\Controller\EntityControllerTrait;
+use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\OfficialReport;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeFeedItem;
 use App\FeedItem\FeedItemTypeEnum;
@@ -19,7 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/comite-politique", name="app_political_committee_")
@@ -44,9 +44,10 @@ class PoliticalCommitteeController extends AbstractController
      */
     public function feedItemsAction(
         Request $request,
-        UserInterface $adherent,
         PoliticalCommitteeFeedItemRepository $feedItemRepository
     ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         $page = $request->query->getInt('page', 1);
 
         $membership = $adherent->getPoliticalCommitteeMembership();
@@ -112,10 +113,10 @@ class PoliticalCommitteeController extends AbstractController
     /**
      * @Route("/proces-verbaux", name="official_report_list", methods={"GET"})
      */
-    public function listOfficialReportsAction(
-        UserInterface $adherent,
-        OfficialReportRepository $reportRepository
-    ): Response {
+    public function listOfficialReportsAction(OfficialReportRepository $reportRepository): Response
+    {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         $reports = $reportRepository->getReportsForPoliticalCommittee(
             $adherent->getPoliticalCommitteeMembership()->getPoliticalCommittee()
         );

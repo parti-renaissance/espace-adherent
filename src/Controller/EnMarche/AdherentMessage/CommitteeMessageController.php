@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route(path="/espace-animateur/{committee_slug}/messagerie", name="app_message_committee_")
@@ -40,15 +39,15 @@ class CommitteeMessageController extends AbstractController
 {
     /**
      * @Route(name="list", methods={"GET"})
-     *
-     * @param Adherent|UserInterface $adherent
      */
     public function messageListAction(
         Request $request,
-        UserInterface $adherent,
         AdherentMessageRepository $repository,
         Committee $committee
     ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         $status = $request->query->get('status');
 
         if ($status && !AdherentMessageStatusEnum::isValid($status)) {
@@ -71,15 +70,15 @@ class CommitteeMessageController extends AbstractController
 
     /**
      * @Route("/creer", name="create", methods={"GET", "POST"})
-     *
-     * @param Adherent|UserInterface $adherent
      */
     public function createMessageAction(
         Request $request,
-        UserInterface $adherent,
         Committee $committee,
         AdherentMessageManager $manager
     ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         $form = $this
             ->createForm(AdherentMessageType::class)
             ->handleRequest($request)
@@ -164,9 +163,11 @@ class CommitteeMessageController extends AbstractController
         CommitteeAdherentMessage $message,
         Committee $committee,
         AdherentMessageManager $manager,
-        UserInterface $adherent,
         FilterFormFactory $formFactory
     ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has been already sent.');
         }

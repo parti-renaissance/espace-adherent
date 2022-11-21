@@ -7,7 +7,6 @@ use App\Repository\JeMengage\HeaderBlockRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -16,15 +15,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class GetHeaderBlockContentController extends AbstractController
 {
-    /**
-     * @param Adherent $user
-     */
     public function __invoke(
         string $slug,
         HeaderBlockRepository $headerBlockRepository,
-        NormalizerInterface $normalizer,
-        ?UserInterface $user = null
+        NormalizerInterface $normalizer
     ): JsonResponse {
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
         if (!$headerBlock = $headerBlockRepository->findOneBySlug($slug)) {
             throw $this->createNotFoundException();
         }

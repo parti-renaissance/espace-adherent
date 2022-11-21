@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Coalition;
 
 use App\Api\DTO\ImageContent;
+use App\Entity\Adherent;
 use App\Entity\Coalition\Cause;
 use App\Image\ImageUploadHelper;
 use App\Normalizer\ImageOwnerExposedNormalizer;
@@ -15,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -34,8 +34,10 @@ class CauseController extends AbstractController
      * @Route("/v3/causes/followed", name="api_causes_followed", methods={"POST"})
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      */
-    public function followed(Request $request, UserInterface $user, CauseRepository $causeRepository): JsonResponse
+    public function followed(Request $request, CauseRepository $causeRepository): JsonResponse
     {
+        /** @var Adherent $user */
+        $user = $this->getUser();
         $body = json_decode($request->getContent(), true);
         $uuids = $body['uuids'] ?? null;
 

@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -47,9 +46,10 @@ class AdherentListController extends AbstractController
         $this->denormalizer = $denormalizer;
     }
 
-    /** @param UserInterface|Adherent $user */
-    public function __invoke(Request $request, UserInterface $user): Response
+    public function __invoke(Request $request): Response
     {
+        /** @var Adherent $user */
+        $user = $this->getUser();
         try {
             $this->authorizationChecker->isFeatureGranted($request, $user, [FeatureEnum::CONTACTS]);
         } catch (InvalidScopeException|ScopeQueryParamMissingException $e) {

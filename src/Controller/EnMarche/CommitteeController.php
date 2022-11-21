@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
@@ -202,16 +201,16 @@ class CommitteeController extends AbstractController
      * @Route("/ne-plus-voter", defaults={"enable": false}, name="app_committee_unvote", condition="request.isXmlHttpRequest()", methods={"POST"})
      *
      * @Security("is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') and is_granted('COMMITTEE_IS_NOT_LOCKED', committee)")
-     *
-     * @param Adherent|UserInterface $adherent
      */
     public function toggleCommitteeVoteAction(
         bool $enable,
-        UserInterface $adherent,
         Request $request,
         Committee $committee,
         MessageBusInterface $bus
     ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         if (!$this->isCsrfTokenValid('committee.vote', $request->request->get('token'))) {
             return $this->json([
                 'status' => 'NOK',

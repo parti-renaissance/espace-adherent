@@ -17,7 +17,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/conseil-territorial/candidature", name="app_territorial_council_candidature")
@@ -35,11 +34,11 @@ class CandidatureController extends AbstractController
 
     /**
      * @Route("", name="_edit", methods={"POST", "GET"})
-     *
-     * @param Adherent|UserInterface $adherent
      */
-    public function editCandidatureAction(Request $request, UserInterface $adherent): Response
+    public function editCandidatureAction(Request $request): Response
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -100,11 +99,11 @@ class CandidatureController extends AbstractController
 
     /**
      * @Route("/retirer", name="_remove", methods={"GET"})
-     *
-     * @param Adherent $adherent
      */
-    public function removeCandidacyAction(UserInterface $adherent): Response
+    public function removeCandidacyAction(): Response
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -128,11 +127,11 @@ class CandidatureController extends AbstractController
 
     /**
      * @Route("/invitation", name="_select_pair_candidate", methods={"GET", "POST"})
-     *
-     * @param Adherent $adherent
      */
-    public function selectPairCandidateAction(Request $request, UserInterface $adherent): Response
+    public function selectPairCandidateAction(Request $request): Response
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -194,11 +193,11 @@ class CandidatureController extends AbstractController
 
     /**
      * @Route("/fini", name="_select_pair_candidate_finish", methods={"GET"})
-     *
-     * @param Adherent $adherent
      */
-    public function finishInvitationStepAction(UserInterface $adherent): Response
+    public function finishInvitationStepAction(): Response
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -221,14 +220,12 @@ class CandidatureController extends AbstractController
      * @Route("/mes-invitations/{uuid}/accepter", name="_invitation_accept", methods={"GET", "POST"})
      *
      * @Security("invitation.getMembership() == user.getTerritorialCouncilMembership()")
-     *
-     * @param Adherent $adherent
      */
-    public function acceptInvitationAction(
-        Request $request,
-        CandidacyInvitation $invitation,
-        UserInterface $adherent
-    ): Response {
+    public function acceptInvitationAction(Request $request, CandidacyInvitation $invitation): Response
+    {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -278,11 +275,11 @@ class CandidatureController extends AbstractController
      * @Route("/mes-invitations/{uuid}/decliner", name="_invitation_decline", methods={"GET"})
      *
      * @Security("invitation.getMembership() == user.getTerritorialCouncilMembership()")
-     *
-     * @param Adherent $adherent
      */
-    public function declineInvitationAction(CandidacyInvitation $invitation, UserInterface $adherent): Response
+    public function declineInvitationAction(CandidacyInvitation $invitation): Response
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 

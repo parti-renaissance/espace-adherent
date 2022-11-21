@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class CommitteesController extends AbstractController
 {
@@ -67,16 +66,16 @@ class CommitteesController extends AbstractController
      * @Route("/committee/{slug}/candidacy/available-memberships", name="api_committee_candidacy_available_memberships_get", methods={"GET"})
      *
      * @IsGranted("MEMBER_OF_COMMITTEE", subject="committee")
-     *
-     * @param Adherent $adherent
      */
     public function getAvailableMembershipsAction(
         Committee $committee,
         Request $request,
-        UserInterface $adherent,
         CandidacyManager $candidacyManager,
         CommitteeMembershipRepository $repository
     ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
             throw $this->createAccessDeniedException('No election is started');
         }
@@ -107,10 +106,11 @@ class CommitteesController extends AbstractController
      *
      * @see Committee
      */
-    public function myCommitteesAction(
-        CommitteeMembershipRepository $committeeMembershipRepository,
-        UserInterface $user
-    ): array {
+    public function myCommitteesAction(CommitteeMembershipRepository $committeeMembershipRepository): array
+    {
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
         return array_map(function (CommitteeMembership $committeeMembership) {
             return $committeeMembership->getCommittee();
         }, $committeeMembershipRepository->findMembershipsForActiveCommittees($user)->toArray());

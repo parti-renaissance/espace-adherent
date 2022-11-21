@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -32,8 +31,11 @@ class UserController extends AbstractController
     /**
      * @Route("/me", name="app_api_user_show_me_for_oauth", methods={"GET"})
      */
-    public function oauthShowMe(SerializerInterface $serializer, UserInterface $user)
+    public function oauthShowMe(SerializerInterface $serializer)
     {
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
         if ($user instanceof ClientApiUser) {
             return OAuthServerException::accessDenied('API user does not have access to this route')
                 ->generateHttpResponse(new PsrResponse())

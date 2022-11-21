@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractNewsController extends AbstractController
 {
@@ -48,13 +47,10 @@ abstract class AbstractNewsController extends AbstractController
      *     methods={"GET|POST"},
      * )
      */
-    public function jecouteNewsCreateAction(
-        Request $request,
-        ObjectManager $manager,
-        NewsHandler $handler,
-        UserInterface $user
-    ): Response {
+    public function jecouteNewsCreateAction(Request $request, ObjectManager $manager, NewsHandler $handler): Response
+    {
         /** @var Adherent $user */
+        $user = $this->getUser();
         $news = new News();
         $zones = $this->getZones($this->getMainUser($request->getSession()));
         if (1 === \count($zones)) {

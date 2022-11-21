@@ -25,7 +25,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractJecouteController extends AbstractController
 {
@@ -67,12 +66,13 @@ abstract class AbstractJecouteController extends AbstractController
     public function jecouteSurveyCreateAction(
         Request $request,
         ObjectManager $manager,
-        SuggestedQuestionRepository $suggestedQuestionRepository,
-        UserInterface $user
+        SuggestedQuestionRepository $suggestedQuestionRepository
     ): Response {
         $this->checkCreateAccess();
 
         /** @var Adherent $user */
+        $user = $this->getUser();
+
         $localSurvey = LocalSurvey::create($user);
         $zones = $this->getZones($this->getMainUser($request->getSession()));
         if (1 === \count($zones)) {

@@ -3,6 +3,7 @@
 namespace App\Controller\Api\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageManager;
+use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AdherentMessage\CoalitionsMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
@@ -13,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -41,10 +41,12 @@ class UpdateAdherentMessageFilterController extends AbstractController
 
     public function __invoke(
         Request $request,
-        UserInterface $adherent,
         AbstractAdherentMessage $data,
         ScopeGeneratorResolver $scopeGeneratorResolver
     ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         if ($data->isSent()) {
             throw new BadRequestHttpException('This message has been already sent. You cannot update it.');
         }

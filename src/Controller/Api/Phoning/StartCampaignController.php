@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Phoning;
 
+use App\Entity\Adherent;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
 use App\Repository\AdherentRepository;
@@ -11,7 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route(
@@ -25,10 +25,11 @@ class StartCampaignController extends AbstractController
 {
     public function __invoke(
         Campaign $campaign,
-        UserInterface $connectedAdherent,
         AdherentRepository $adherentRepository,
         EntityManagerInterface $entityManager
     ): JsonResponse {
+        /** @var Adherent $connectedAdherent */
+        $connectedAdherent = $this->getUser();
         if (!$campaign->isPermanent()) {
             $this->denyAccessUnlessGranted(PhoningCampaignVoter::PERMISSION, $campaign);
         }

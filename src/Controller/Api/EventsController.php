@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class EventsController extends AbstractController
 {
@@ -33,8 +32,10 @@ class EventsController extends AbstractController
      * @Route("/v3/events/registered", name="api_events_registered", methods={"POST"})
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      */
-    public function followed(Request $request, UserInterface $user, BaseEventRepository $eventRepository): JsonResponse
+    public function followed(Request $request, BaseEventRepository $eventRepository): JsonResponse
     {
+        /** @var Adherent $user */
+        $user = $this->getUser();
         $body = json_decode($request->getContent(), true);
         $uuids = $body['uuids'] ?? null;
 

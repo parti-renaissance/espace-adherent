@@ -3,11 +3,11 @@
 namespace App\Controller\Api\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageManager;
+use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Security("is_granted('ROLE_MESSAGE_REDACTOR') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")
@@ -21,8 +21,10 @@ class SendTestAdherentMessageController extends AbstractController
         $this->manager = $manager;
     }
 
-    public function __invoke(UserInterface $user, AbstractAdherentMessage $message)
+    public function __invoke(AbstractAdherentMessage $message)
     {
+        /** @var Adherent $user */
+        $user = $this->getUser();
         if ($this->manager->sendTest($message, $user)) {
             return $this->json('OK');
         }

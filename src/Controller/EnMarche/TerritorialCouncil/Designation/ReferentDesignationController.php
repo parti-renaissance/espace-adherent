@@ -15,7 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route(path="/espace-referent/instances", name="app_territorial_council_referent_designations", methods={"GET"})
@@ -33,11 +32,12 @@ class ReferentDesignationController extends AbstractController
 
     /**
      * @Route("/designations", name="_list", methods={"GET"})
-     *
-     * @param Adherent $adherent
      */
-    public function listAction(UserInterface $adherent): Response
+    public function listAction(): Response
     {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         return $this->render('territorial_council_designation/list.html.twig', [
             'elections' => $this->electionRepository->findAllForReferentTags(
                 $this->getFilteredReferentTags($adherent->getManagedArea()->getTags()->toArray())

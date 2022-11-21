@@ -3,6 +3,7 @@
 namespace App\Controller\Api\JeMengage;
 
 use App\Algolia\SearchService;
+use App\Entity\Adherent;
 use App\Entity\Algolia\AlgoliaJeMengageTimelineFeed;
 use App\Intl\FranceCitiesBundle;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
@@ -13,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route(
@@ -26,8 +26,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class GetTimelineFeedsController extends AbstractController
 {
-    public function __invoke(UserInterface $user, Request $request, SearchService $searchService): JsonResponse
+    public function __invoke(Request $request, SearchService $searchService): JsonResponse
     {
+        /** @var Adherent $user */
+        $user = $this->getUser();
         if (($page = $request->query->getInt('page')) < 0) {
             $page = 0;
         }
