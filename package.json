@@ -46,7 +46,7 @@
     "js-base64": "^3.7.2",
     "js-cookie": "^3.0.1",
     "lodash": "^4.17.21",
-    "mini-css-extract-plugin": "^2.6.1",
+    "mini-css-extract-plugin": "^2.7.0",
     "moment": "^2.29.4",
     "postcss": "^8.4.19",
     "postcss-loader": "^7.0.1",
