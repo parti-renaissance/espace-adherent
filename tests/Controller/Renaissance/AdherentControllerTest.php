@@ -9,7 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\Reporting\EmailSubscriptionHistory;
 use App\Entity\SubscriptionType;
 use App\Entity\Unregistration;
-use App\Mailer\Message\AdherentTerminateMembershipMessage;
+use App\Mailer\Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage;
 use App\Repository\EmailRepository;
 use App\Repository\UnregistrationRepository;
 use App\SendInBlue\Client;
@@ -389,7 +389,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame(0, $errors->count());
         $this->assertStringContainsString('Votre adhésion et votre compte Renaissance ont bien été supprimés, vos données personnelles ont été effacées de notre base.', $this->client->getResponse()->getContent());
 
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, $userEmail));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(RenaissanceAdherentTerminateMembershipMessage::class, $userEmail));
 
         $this->client->getContainer()->get('test.'.RemoveAdherentAndRelatedDataCommandHandler::class)(
             new RemoveAdherentAndRelatedDataCommand(Uuid::fromString($uuid))
