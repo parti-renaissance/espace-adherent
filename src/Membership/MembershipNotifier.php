@@ -75,7 +75,10 @@ class MembershipNotifier
 
     public function sendUnregistrationMessage(Adherent $adherent): void
     {
-        $this->mailer->sendMessage(Message\AdherentTerminateMembershipMessage::createFromAdherent($adherent));
+        MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
+            ? $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage::createFromAdherent($adherent))
+            : $this->mailer->sendMessage(Message\AdherentTerminateMembershipMessage::createFromAdherent($adherent))
+        ;
     }
 
     private function generateMembershipActivationUrl(Adherent $adherent, AdherentActivationToken $token): string
