@@ -4,6 +4,7 @@ namespace Tests\App\Admin;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
+use App\Entity\Donator;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\MyTeam;
 use Symfony\Component\HttpFoundation\Request;
@@ -289,6 +290,11 @@ class AdherentAdminTest extends AbstractWebCaseTest
     public function testCreateRenaissanceAdherent(array $submittedValues): void
     {
         self::assertNull($this->adherentRepository->findOneByEmail($submittedValues['email']));
+        self::assertNull($this->getDonatorRepository()->findOneForMatching(
+            $submittedValues['email'],
+            $submittedValues['firstName'],
+            $submittedValues['lastName'])
+        );
 
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
 
@@ -329,6 +335,13 @@ class AdherentAdminTest extends AbstractWebCaseTest
         self::assertSame(null, $adherent->getLongitude());
         self::assertSame($submittedValues['email'], $adherent->getEmailAddress());
         self::assertEquals(new \DateTime('-20 years, january 1st'), $adherent->getBirthdate());
+
+        $donator = $this->getDonatorRepository()->findOneForMatching($submittedValues['email'], $submittedValues['firstName'], $submittedValues['lastName']);
+
+        self::assertInstanceOf(Donator::class, $donator);
+        self::assertSame($submittedValues['gender'], $donator->getGender());
+        self::assertSame($submittedValues['firstName'], $donator->getFirstName());
+        self::assertSame($submittedValues['lastName'], $donator->getLastName());
     }
 
     public function provideCreateRenaissanceAdherent(): \Generator

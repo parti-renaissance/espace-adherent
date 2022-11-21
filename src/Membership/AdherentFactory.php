@@ -165,7 +165,7 @@ class AdherentFactory
 
     public function createFromAdminAdherentCreateCommand(AdherentCreateCommand $command): Adherent
     {
-        return Adherent::createBlank(
+        $adherent = Adherent::createBlank(
             $command->gender,
             $command->firstName,
             $command->lastName,
@@ -178,6 +178,10 @@ class AdherentFactory
             $command->isTerritoiresProgresMembership(),
             $command->isAgirMembership()
         );
+
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+
+        return $adherent;
     }
 
     public function createFromArray(array $data): Adherent
