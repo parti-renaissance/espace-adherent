@@ -100,6 +100,9 @@ class TerritorialCouncilController extends AbstractController
     ): Response {
         $this->checkAccess($territorialCouncil);
 
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         if (!$withSelectedCouncil = null !== $territorialCouncil) {
             $membership = $adherent->getTerritorialCouncilMembership();
             $territorialCouncil = $membership->getTerritorialCouncil();
