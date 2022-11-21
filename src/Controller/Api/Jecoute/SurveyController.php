@@ -36,7 +36,7 @@ class SurveyController extends AbstractController
         SerializerInterface $serializer
     ): Response {
         $postalCode = null;
-        /** @var Adherent $user */
+        /** @var Adherent|DeviceApiUser $user */
         $user = $this->getUser();
 
         if ($user instanceof DeviceApiUser) {
@@ -80,7 +80,7 @@ class SurveyController extends AbstractController
         JemarcheDataSurveyAnswerHandler $dataSurveyHandler,
         FormFactoryInterface $formFactory
     ): JsonResponse {
-        /** @var Adherent $user */
+        /** @var Adherent|DeviceApiUser $user */
         $user = $this->getUser();
 
         $data = json_decode($request->getContent(), true);

@@ -28,7 +28,7 @@ class GetTimelineFeedsController extends AbstractController
 {
     public function __invoke(Request $request, SearchService $searchService): JsonResponse
     {
-        /** @var Adherent $user */
+        /** @var Adherent|DeviceApiUser $user */
         $user = $this->getUser();
         if (($page = $request->query->getInt('page')) < 0) {
             $page = 0;

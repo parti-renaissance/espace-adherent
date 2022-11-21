@@ -33,7 +33,7 @@ class UserController extends AbstractController
      */
     public function oauthShowMe(SerializerInterface $serializer)
     {
-        /** @var Adherent $user */
+        /** @var Adherent|DeviceApiUser $user */
         $user = $this->getUser();
 
         if ($user instanceof ClientApiUser) {
