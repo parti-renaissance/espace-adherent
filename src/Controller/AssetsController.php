@@ -32,6 +32,7 @@ class AssetsController extends AbstractController
     private const EXTENSIONS_TYPES = [
         'gif' => 'image/gif',
         'svg' => 'image/svg+xml',
+        'pdf' => 'application/pdf',
     ];
 
     private $manager;

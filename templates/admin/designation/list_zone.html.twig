@@ -2,12 +2,17 @@
 
 {% block field %}
     {% if object.isCommitteeType() %}
-        {{ object.zones|join(', ') }}
+        {{ object.getGlobalZones()|join(', ') }}
     {% elseif object.isCopolType() %}
         {% if object.referentTags|length > 1 %}
             1+
         {% else %}
             {{ object.referentTags|map(tag => tag.code)|join(', ') }}
+        {% endif %}
+    {% elseif object.isLocalElectionType() %}
+        {{ object.getZones()|first }}
+        {% if object.getZones()|length > 1 %}
+            (+ {{ object.getZones()|length - 1 }})
         {% endif %}
     {% endif %}
 {% endblock %}

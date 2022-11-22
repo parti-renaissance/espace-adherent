@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\VotingPlatform\Designation\DesignationStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityDesignationTrait
 {
@@ -12,10 +13,12 @@ trait EntityDesignationTrait
      * @var Designation
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation", cascade={"persist"}, fetch="EAGER")
+     *
+     * @Assert\NotBlank(groups={"Admin"})
      */
     protected $designation;
 
-    public function getDesignation(): Designation
+    public function getDesignation(): ?Designation
     {
         return $this->designation;
     }
@@ -25,7 +28,7 @@ trait EntityDesignationTrait
         $this->designation = $designation;
     }
 
-    public function getCandidacyPeriodStartDate(): \DateTime
+    public function getCandidacyPeriodStartDate(): ?\DateTime
     {
         return $this->designation->getCandidacyStartDate();
     }
@@ -142,7 +145,11 @@ trait EntityDesignationTrait
 
     public function getStatus(): string
     {
-        if (!$this->isCandidacyPeriodStarted()) {
+        if (!$this->designation) {
+            return DesignationStatusEnum::NOT_STARTED;
+        }
+
+        if ($this->designation->isCandidacyPeriodEnabled() && !$this->isCandidacyPeriodStarted()) {
             return DesignationStatusEnum::NOT_STARTED;
         }
 

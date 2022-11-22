@@ -62,7 +62,7 @@ class Candidacy extends BaseCandidacy
         return self::TYPE_NATIONAL_COUNCIL;
     }
 
-    public function getAdherent(): Adherent
+    public function getAdherent(): ?Adherent
     {
         return $this->adherent;
     }

@@ -4,6 +4,8 @@ namespace App\Entity\VotingPlatform\Designation;
 
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\EntityZoneTrait;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\VotingPlatform\Designation\CreatePartialDesignationCommand;
@@ -22,6 +24,7 @@ class Designation
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+    use EntityZoneTrait;
 
     public const DENOMINATION_DESIGNATION = 'désignation';
     public const DENOMINATION_ELECTION = 'élection';
@@ -42,6 +45,8 @@ class Designation
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     *
+     * @Assert\NotBlank(groups={"Admin"})
      */
     private $label;
 
@@ -59,7 +64,7 @@ class Designation
      *
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private $zones;
+    private $globalZones;
 
     /**
      * @var ReferentTag[]|Collection
@@ -71,7 +76,7 @@ class Designation
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
      * @Assert\NotBlank
      */
@@ -186,6 +191,7 @@ class Designation
         $this->uuid = $uuid ?? Uuid::uuid4();
 
         $this->referentTags = new ArrayCollection();
+        $this->zones = new ArrayCollection();
     }
 
     public function getLabel(): ?string
@@ -210,16 +216,20 @@ class Designation
         if ($this->isPollType()) {
             $this->limited = true;
         }
+
+        if ($this->isLocalElectionType()) {
+            $this->denomination = self::DENOMINATION_ELECTION;
+        }
     }
 
-    public function getZones(): ?array
+    public function getGlobalZones(): ?array
     {
-        return $this->zones;
+        return $this->globalZones;
     }
 
-    public function setZones(?array $zones): void
+    public function setGlobalZones(?array $globalZones): void
     {
-        $this->zones = $zones;
+        $this->globalZones = $globalZones;
     }
 
     /**
@@ -428,8 +438,9 @@ class Designation
         }
 
         return
-            ($this->isCommitteeType() && !empty($this->zones))
+            ($this->isCommitteeType() && !empty($this->globalZones))
             || ($this->isCopolType() && !$this->referentTags->isEmpty())
+            || ($this->isLocalElectionType() && !$this->zones->isEmpty())
         ;
     }
 
@@ -519,6 +530,11 @@ class Designation
     public function isPollType(): bool
     {
         return DesignationTypeEnum::POLL === $this->type;
+    }
+
+    public function isLocalElectionType(): bool
+    {
+        return DesignationTypeEnum::LOCAL_ELECTION === $this->type;
     }
 
     public function isExecutiveOfficeType(): bool
@@ -625,5 +641,10 @@ class Designation
     public function isVotePeriodStarted(): bool
     {
         return $this->getVoteStartDate() && $this->getVoteStartDate() <= (new \DateTime());
+    }
+
+    public function isCandidacyPeriodEnabled(): bool
+    {
+        return DesignationTypeEnum::LOCAL_ELECTION !== $this->type;
     }
 }

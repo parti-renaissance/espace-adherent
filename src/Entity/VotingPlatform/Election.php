@@ -132,7 +132,7 @@ class Election
 
     public function getElectionEntityName(): ?string
     {
-        return $this->electionEntity ? $this->electionEntity->getName() : null;
+        return $this->electionEntity?->getName();
     }
 
     public function setElectionEntity(ElectionEntity $electionEntity): void
@@ -143,7 +143,7 @@ class Election
 
     public function getRealVoteEndDate(): \DateTime
     {
-        return $this->secondRoundEndDate ? $this->secondRoundEndDate : $this->getDesignationRealVoteEndDate();
+        return $this->secondRoundEndDate ?: $this->getDesignationRealVoteEndDate();
     }
 
     public function isVotePeriodActive(): bool

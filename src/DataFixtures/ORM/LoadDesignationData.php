@@ -3,8 +3,8 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\VotingPlatform\Designation\DesignationGlobalZoneEnum;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
-use App\VotingPlatform\Designation\DesignationZoneEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -15,7 +15,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
     {
         // Committee designation with started CANDIDATURE period in France
         $designation = new Designation('Désignation avec les candidatures ouvertes');
-        $designation->setZones([DesignationZoneEnum::FRANCE]);
+        $designation->setGlobalZones([DesignationGlobalZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
         $designation->setCandidacyEndDate(new \DateTime('+1 week'));
@@ -27,7 +27,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
 
         // Committee designation with started VOTE period
         $designation = new Designation('Désignation avec les votes ouverts');
-        $designation->setZones([DesignationZoneEnum::FRANCE]);
+        $designation->setGlobalZones([DesignationGlobalZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
         $designation->setCandidacyEndDate(new \DateTime('-2 hours'));
@@ -39,7 +39,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
 
         // Committee designation with started RESULT period
         $designation = new Designation('Désignation avec les résultats disponibles');
-        $designation->setZones([DesignationZoneEnum::FRANCE]);
+        $designation->setGlobalZones([DesignationGlobalZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
         $designation->setCandidacyEndDate(new \DateTime('-1 week'));
@@ -51,7 +51,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
 
         // Archived Committee designation
         $designation = new Designation('Désignation archivée');
-        $designation->setZones([DesignationZoneEnum::FRANCE]);
+        $designation->setGlobalZones([DesignationGlobalZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-6 months'));
         $designation->setCandidacyEndDate(new \DateTime('-5 months'));
@@ -63,7 +63,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
 
         // Committee designation with started CANDIDATURE period in FDE
         $designation = new Designation('Désignation "Comités-Animateurs" ouverte');
-        $designation->setZones([DesignationZoneEnum::FDE]);
+        $designation->setGlobalZones([DesignationGlobalZoneEnum::FDE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
         $designation->setCandidacyStartDate(new \DateTime('-1 day'));
         $designation->setCandidacyEndDate(new \DateTime('+5 days'));
@@ -97,7 +97,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
 
         // SUPERVISOR designation with started VOTE period
         $designation = new Designation('Désignation "Comités-Animateurs" vote ouvert');
-        $designation->setZones([DesignationZoneEnum::FDE]);
+        $designation->setGlobalZones([DesignationGlobalZoneEnum::FDE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
         $designation->setCandidacyStartDate(new \DateTime('-10 days'));
         $designation->setCandidacyEndDate(new \DateTime('-2 days'));
@@ -110,7 +110,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
 
         // SUPERVISOR designation with result period
         $designation = new Designation('Désignation "Comités-Animateurs" resultats affichés');
-        $designation->setZones([DesignationZoneEnum::FDE]);
+        $designation->setGlobalZones([DesignationGlobalZoneEnum::FDE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
         $designation->setCandidacyStartDate(new \DateTime('-15 days'));
         $designation->setCandidacyEndDate(new \DateTime('-10 days'));

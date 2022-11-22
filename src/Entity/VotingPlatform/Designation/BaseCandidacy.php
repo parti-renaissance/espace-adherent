@@ -116,12 +116,12 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
         return $this->uuid;
     }
 
-    public function getGender(): string
+    public function getGender(): ?string
     {
         return $this->gender;
     }
 
-    public function setGender(string $gender): void
+    public function setGender(?string $gender): void
     {
         $this->gender = $gender;
     }
@@ -154,12 +154,12 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
         ;
     }
 
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->getAdherent()->getFirstName();
     }
 
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->getAdherent()->getLastName();
     }

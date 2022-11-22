@@ -3,27 +3,41 @@
 namespace App\Admin\VotingPlatform;
 
 use App\Admin\AbstractAdmin;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Form\Admin\DesignationGlobalZoneType;
 use App\Form\Admin\DesignationTypeType;
-use App\Form\Admin\DesignationZoneType;
 use App\Form\Admin\VotingPlatform\DesignationNotificationType;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
+use Doctrine\ORM\QueryBuilder;
+use Sonata\AdminBundle\Admin\AbstractAdmin as SonataAbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 /**
  * @param Designation
  */
 class DesignationAdmin extends AbstractAdmin
 {
+    public const FORM_TYPE_LOCAL_ELECTION = 'form_type_local_election';
+
     protected function configureFormFields(FormMapper $form)
     {
+        /** @var Designation $subject */
+        $subject = $this->getSubject();
+
+        $formType = $form->getFormBuilder()->getOption('form_type');
+
         $form
             ->tab('Général 📜')
                 ->with('Général 📜', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-primary'])
@@ -36,6 +50,7 @@ class DesignationAdmin extends AbstractAdmin
                     ])
                     ->add('denomination', ChoiceType::class, [
                         'label' => 'Dénomination',
+                        'disabled' => $subject->isLocalElectionType(),
                         'choices' => [
                             Designation::DENOMINATION_DESIGNATION => Designation::DENOMINATION_DESIGNATION,
                             Designation::DENOMINATION_ELECTION => Designation::DENOMINATION_ELECTION,
@@ -43,9 +58,9 @@ class DesignationAdmin extends AbstractAdmin
                     ])
                 ->end()
                 ->with('Zone 🌍', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-primary'])
-                    ->add('zones', DesignationZoneType::class, [
+                    ->add('globalZones', DesignationGlobalZoneType::class, [
                         'required' => false,
-                        'label' => 'Zone',
+                        'label' => 'Zones globales',
                         'multiple' => true,
                         'help' => 'pour les élections de types: "Comités-Adhérents" ou "Comités-Animateurs"',
                     ])
@@ -58,6 +73,16 @@ class DesignationAdmin extends AbstractAdmin
                         'attr' => [
                             'data-sonata-select2' => 'false',
                         ],
+                    ])
+                    ->add('zones', ModelAutocompleteType::class, [
+                        'callback' => [$this, 'prepareZoneAutocompleteCallback'],
+                        'property' => [
+                            'name',
+                            'code',
+                        ],
+                        'label' => 'Zones locales',
+                        'multiple' => true,
+                        'help' => 'Obligatoire pour les élections locales',
                     ])
                 ->end()
                 ->with('Candidature 🎎', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-default'])
@@ -139,17 +164,36 @@ class DesignationAdmin extends AbstractAdmin
                 ->end()
             ->end()
         ;
+
+        $form->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $formEvent) {
+            $designationData = $formEvent->getData();
+
+            if (DesignationTypeEnum::LOCAL_ELECTION === ($designationData['type'] ?? null)) {
+                $designationData['denomination'] = Designation::DENOMINATION_ELECTION;
+                $formEvent->setData($designationData);
+            }
+        });
+
+        if ($formType && ($mainFields = $this->getMainFieldsForFormType($formType))) {
+            foreach ($form->keys() as $key) {
+                if (!\in_array($key, $mainFields)) {
+                    $form->remove($key);
+                }
+            }
+        }
     }
 
     public function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter
+            ->add('label')
             ->add('type', null, [
                 'field_type' => DesignationTypeType::class,
                 'show_filter' => true,
             ])
-            ->add('zones', null, [
-                'field_type' => DesignationZoneType::class,
+            ->add('globalZones', null, [
+                'field_type' => DesignationGlobalZoneType::class,
+                'label' => 'Zones globales',
                 'show_filter' => true,
             ])
         ;
@@ -161,7 +205,7 @@ class DesignationAdmin extends AbstractAdmin
             ->add('id', null, ['label' => '#'])
             ->add('label')
             ->add('type', 'trans', ['format' => 'voting_platform.designation.type_%s'])
-            ->add('zones', 'array', ['template' => 'admin/designation/list_zone.html.twig'])
+            ->add('zones', 'array', ['label' => 'Zones', 'virtual_field' => true, 'template' => 'admin/designation/list_zone.html.twig'])
             ->add('candidacyStartDate', null, ['label' => 'Ouverture des candidatures'])
             ->add('candidacyEndDate', null, ['label' => 'Clôture des candidatures'])
             ->add('voteStartDate', null, ['label' => 'Ouverture du vote'])
@@ -177,5 +221,40 @@ class DesignationAdmin extends AbstractAdmin
     public function toString($object)
     {
         return 'Désignation';
+    }
+
+    public static function prepareZoneAutocompleteCallback(
+        SonataAbstractAdmin $admin,
+        array $properties,
+        string $value
+    ): void {
+        /** @var QueryBuilder $qb */
+        $qb = $admin->getDatagrid()->getQuery();
+        $alias = $qb->getRootAliases()[0];
+
+        $orx = $qb->expr()->orX();
+        foreach ($properties as $property) {
+            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
+            $qb->setParameter('property_'.$property, '%'.$value.'%');
+        }
+        $qb
+            ->orWhere($orx)
+            ->andWhere(sprintf('%1$s.type IN(:types) AND %1$s.active = 1', $alias))
+            ->setParameter('types', [Zone::DEPARTMENT])
+        ;
+    }
+
+    private function getMainFieldsForFormType(string $formType): array
+    {
+        if (self::FORM_TYPE_LOCAL_ELECTION === $formType) {
+            return [
+                'label',
+                'zones',
+                'voteStartDate',
+                'voteEndDate',
+            ];
+        }
+
+        return [];
     }
 }

@@ -18,9 +18,9 @@ interface CandidacyInterface extends ImageOwnerInterface
 
     public function getUuid(): UuidInterface;
 
-    public function getGender(): string;
+    public function getGender(): ?string;
 
-    public function setGender(string $gender): void;
+    public function setGender(?string $gender): void;
 
     public function getCivility(): string;
 
@@ -32,11 +32,11 @@ interface CandidacyInterface extends ImageOwnerInterface
 
     public function getType(): string;
 
-    public function getAdherent(): Adherent;
+    public function getAdherent(): ?Adherent;
 
-    public function getFirstName(): string;
+    public function getFirstName(): ?string;
 
-    public function getLastName(): string;
+    public function getLastName(): ?string;
 
     public function getStatus(): string;
 

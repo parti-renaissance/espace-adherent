@@ -24,7 +24,7 @@ use App\Geocoder\Coordinates;
 use App\Intl\FranceCitiesBundle;
 use App\Search\SearchParametersFilter;
 use App\ValueObject\Genders;
-use App\VotingPlatform\Designation\DesignationZoneEnum;
+use App\VotingPlatform\Designation\DesignationGlobalZoneEnum;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -746,23 +746,23 @@ class CommitteeRepository extends ServiceEntityRepository
             ->groupBy('c')
         ;
 
-        if (DesignationZoneEnum::toArray() !== array_intersect(DesignationZoneEnum::toArray(), $designation->getZones())) {
+        if (DesignationGlobalZoneEnum::toArray() !== array_intersect(DesignationGlobalZoneEnum::toArray(), $designation->getGlobalZones())) {
             $zoneCondition = new Orx();
 
             // Outre-Mer condition
-            if (\in_array(DesignationZoneEnum::OUTRE_MER, $designation->getZones(), true) || \in_array(DesignationZoneEnum::FRANCE, $designation->getZones(), true)) {
+            if (\in_array(DesignationGlobalZoneEnum::OUTRE_MER, $designation->getGlobalZones(), true) || \in_array(DesignationGlobalZoneEnum::FRANCE, $designation->getGlobalZones(), true)) {
                 $zoneCondition->add(sprintf(
                     'c.postAddress.country = :fr AND SUBSTRING(c.postAddress.postalCode, 1, 3) %s (:outremer_codes)',
-                    \in_array(DesignationZoneEnum::OUTRE_MER, $designation->getZones(), true) ? 'IN' : 'NOT IN'
+                    \in_array(DesignationGlobalZoneEnum::OUTRE_MER, $designation->getGlobalZones(), true) ? 'IN' : 'NOT IN'
                 ));
                 $qb->setParameter('outremer_codes', array_keys(FranceCitiesBundle::DOMTOM_INSEE_CODE));
             }
 
             // France vs FDE
-            if ([DesignationZoneEnum::FRANCE, DesignationZoneEnum::FDE] !== array_intersect([DesignationZoneEnum::FRANCE, DesignationZoneEnum::FDE], $designation->getZones())) {
+            if ([DesignationGlobalZoneEnum::FRANCE, DesignationGlobalZoneEnum::FDE] !== array_intersect([DesignationGlobalZoneEnum::FRANCE, DesignationGlobalZoneEnum::FDE], $designation->getGlobalZones())) {
                 $zoneCondition->add(sprintf(
                     'c.postAddress.country %s :fr',
-                    \in_array(DesignationZoneEnum::FRANCE, $designation->getZones(), true) ? '=' : '!='
+                    \in_array(DesignationGlobalZoneEnum::FRANCE, $designation->getGlobalZones(), true) ? '=' : '!='
                 ));
             }
 

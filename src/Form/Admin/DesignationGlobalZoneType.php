@@ -2,12 +2,12 @@
 
 namespace App\Form\Admin;
 
-use App\VotingPlatform\Designation\DesignationZoneEnum;
+use App\VotingPlatform\Designation\DesignationGlobalZoneEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DesignationZoneType extends AbstractType
+class DesignationGlobalZoneType extends AbstractType
 {
     public function getParent(): ?string
     {
@@ -17,7 +17,7 @@ class DesignationZoneType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => array_combine(DesignationZoneEnum::toArray(), DesignationZoneEnum::toArray()),
+            'choices' => array_combine(DesignationGlobalZoneEnum::toArray(), DesignationGlobalZoneEnum::toArray()),
             'choice_label' => static function (string $type) {
                 return 'voting_platform.designation.zone_'.strtolower($type);
             },
