@@ -35,6 +35,12 @@
                                     {% for key, choice_view in group_choices %}
                                         <div>
                                             {{ form_row(form.subscriptionTypes.children[key]) }}
+
+                                            {% if help_messages[choice_view.data.code] is defined %}
+                                                <div class="pl-6 mt-1 text-sm leading-5 text-gray-500">
+                                                    <p>{{ help_messages[choice_view.data.code]|raw }}</p>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     {% endfor %}
                                 </div>
