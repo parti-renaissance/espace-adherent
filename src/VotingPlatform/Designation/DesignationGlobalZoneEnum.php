@@ -4,7 +4,7 @@ namespace App\VotingPlatform\Designation;
 
 use MyCLabs\Enum\Enum;
 
-final class DesignationZoneEnum extends Enum
+final class DesignationGlobalZoneEnum extends Enum
 {
     public const FRANCE = 'FR';
     public const FDE = 'FDE';

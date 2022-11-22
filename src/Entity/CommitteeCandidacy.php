@@ -107,7 +107,7 @@ class CommitteeCandidacy extends BaseCandidacy
         return $this->type;
     }
 
-    public function getAdherent(): Adherent
+    public function getAdherent(): ?Adherent
     {
         return $this->committeeMembership->getAdherent();
     }

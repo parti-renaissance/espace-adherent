@@ -43,6 +43,12 @@ abstract class BaseCandidaciesGroup implements \Countable
         }
     }
 
+    public function removeCandidacy(CandidacyInterface $candidacy): void
+    {
+        $this->candidacies->removeElement($candidacy);
+        $candidacy->setCandidaciesGroup(null);
+    }
+
     /**
      * @return CandidacyInterface[]
      */
