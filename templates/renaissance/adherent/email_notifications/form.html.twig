@@ -1,0 +1,58 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% form_theme form 'renaissance/forms/form_theme_profile.html.twig' %}
+
+{% block page_title 'Communication' %}
+
+{% block content_right_side %}
+    <section class="space-y-4 md:space-y-6">
+        <h1 class="text-3xl font-bold leading-10 text-gray-900">Communication</h1>
+
+        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+            {% if not app.user.isEmailSubscribed() %}
+                <div class="alert alert--tips l__row l__row--h-stretch b__nudge--bottom-50">
+                    <div class="l__col">Vous êtes désabonné</div>
+                    <div class="l__col"><a href="#" class="btn btn--blue" id="resubscribe-trigger">Me réabonner</a></div>
+                </div>
+            {% endif %}
+
+            {{ form_start(form, { attr: { class: 're-form' } }) }}
+                {{ form_errors(form) }}
+
+                {% set help_messages = {
+                    (constant('App\\Subscription\\SubscriptionTypeEnum::REFERENT_EMAIL')): 'Les référents territoriaux sont les représentants du mouvement dans les zones géographiques qui leur sont attribuées. Ils y ont la charge de l\'animation du mouvement au niveau local, de la coordination des comités locaux et du lien avec les instances nationales. Découvrez le/la vôtre en cliquant <a href="' ~ path('our_referents_homepage') ~ '" target="_blank" rel="noopener noreferrer">ici</a>.'
+                } %}
+
+                <div class="divide-y divide-gray-200">
+                    {% for group_choices in form.subscriptionTypes.vars.choices %}
+                        <section class="pt-8 mb-6 first:pt-0">
+                            {% if group_choices.choices is defined %}
+                                {% if group_choices.label %}
+                                    <h2 class="text-lg font-medium text-gray-900">{{ group_choices.label|trans }}</h2>
+                                {% endif %}
+
+                                <div class="mt-4 space-y-3">
+                                    {% for key, choice_view in group_choices %}
+                                        <div>
+                                            {{ form_row(form.subscriptionTypes.children[key]) }}
+
+                                            {% if help_messages[choice_view.data.code] is defined %}
+                                                <div class="pl-6 mt-1 text-sm leading-5 text-gray-500">
+                                                    <p>{{ help_messages[choice_view.data.code]|raw }}</p>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </section>
+                    {% endfor %}
+                </div>
+
+                <div class="mt-10">
+                    {{ form_widget(form.submit, { attr: { class: 'button button-blue' } }) }}
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}

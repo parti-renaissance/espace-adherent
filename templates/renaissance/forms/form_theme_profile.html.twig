@@ -1,7 +1,7 @@
 {% use "form_div_layout.html.twig" %}
 
 {%- block form_row -%}
-    <div class="em-form__group{% if half is defined and half %} half{% endif %} {{ attr.class|default('') }}">
+    <div class="form__group{% if half is defined and half %} half{% endif %} {{ attr.class|default('') }}">
         {{- form_label(form) -}}
         {{- form_widget(form, { attr: attr }) -}}
         {{- form_errors(form) -}}
@@ -36,7 +36,7 @@
 {%- endblock form_widget_simple %}
 
 {% block textarea_widget -%}
-    {% set attr = attr|merge({class: (attr.class|default('') ~ ' em-form__field')|trim}) %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form__field')|trim}) %}
     {{- parent() -}}
     {{- block('character_count') -}}
 {%- endblock textarea_widget %}
@@ -85,5 +85,12 @@
                 </div>
             </div>
         {% endfor -%}
+    </div>
+{% endblock %}
+
+{% block _adherent_email_subscription_subscriptionTypes_entry_row %}
+    <div class="flex items-center space-x-2 checkbox">
+        {{- form_widget(form, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500' } }) -}}
+        {{- form_label(form) -}}
     </div>
 {% endblock %}
