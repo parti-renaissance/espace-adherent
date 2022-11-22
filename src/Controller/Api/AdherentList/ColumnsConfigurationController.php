@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\AdherentList;
 
+use App\Entity\Adherent;
 use App\ManagedUsers\ColumnsConfigurator;
 use App\Scope\AuthorizationChecker;
 use App\Scope\Exception\InvalidScopeException;
@@ -14,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/v3/adherents/columns", name="app_adherents_list_get_columns", methods={"GET"})
@@ -32,8 +32,10 @@ class ColumnsConfigurationController extends AbstractController
         $this->columnsConfigurator = $columnsConfigurator;
     }
 
-    public function __invoke(Request $request, UserInterface $user): Response
+    public function __invoke(Request $request): Response
     {
+        /** @var Adherent $user */
+        $user = $this->getUser();
         try {
             $this->authorizationChecker->isFeatureGranted($request, $user, [FeatureEnum::CONTACTS]);
         } catch (InvalidScopeException|ScopeQueryParamMissingException $e) {

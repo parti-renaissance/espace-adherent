@@ -16,7 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractPollController extends AbstractController
 {
@@ -48,9 +47,10 @@ abstract class AbstractPollController extends AbstractController
      *     methods={"GET|POST"},
      * )
      */
-    public function createLocalPoll(Request $request, UserInterface $user, PollManager $pollManager): Response
+    public function createLocalPoll(Request $request, PollManager $pollManager): Response
     {
         /** @var Adherent $user */
+        $user = $this->getUser();
         $localPoll = new LocalPoll($user);
         $zones = $this->getZones($this->getMainUser($request->getSession()));
         if (1 === \count($zones)) {

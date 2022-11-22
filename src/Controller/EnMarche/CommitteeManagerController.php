@@ -27,7 +27,6 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -117,7 +116,6 @@ class CommitteeManagerController extends AbstractController
      * @Security("committee.isApproved()")
      */
     public function listMembersAction(
-        UserInterface $adherent,
         Request $request,
         Committee $committee,
         CommitteeMembershipRepository $repository,
@@ -125,6 +123,7 @@ class CommitteeManagerController extends AbstractController
         SerializerInterface $serializer
     ): Response {
         /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         $form = $this
             ->createForm(CommitteeMemberFilterType::class, $filter = new ListFilterObject(), [
                 'method' => 'GET',

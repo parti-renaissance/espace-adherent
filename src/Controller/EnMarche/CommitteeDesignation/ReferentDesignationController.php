@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\CommitteeDesignation;
 
+use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use App\Entity\VotingPlatform\Designation\Designation;
@@ -18,7 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route(path="/espace-referent/comites/{committee_slug}/designations", name="app_referent_designations")
@@ -37,10 +37,11 @@ class ReferentDesignationController extends AbstractDesignationController
     public function createPartialAction(
         Request $request,
         Committee $committee,
-        UserInterface $adherent,
         MailerService $transactionalMailer,
         EntityManagerInterface $entityManager
     ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         $type = $request->query->get('type');
 
         if (empty($type)) {

@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\ThematicCommunity;
 
 use App\Controller\CanaryControllerTrait;
+use App\Entity\Adherent;
 use App\Entity\ThematicCommunity\AdherentMembership;
 use App\Entity\ThematicCommunity\Contact;
 use App\Entity\ThematicCommunity\ContactMembership;
@@ -20,7 +21,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/communautes-thematiques", name="app_thematic_community_")
@@ -42,10 +42,12 @@ class ThematicCommunityController extends AbstractController
      */
     public function indexAction(
         ThematicCommunityRepository $thematicCommunityRepository,
-        ThematicCommunityMembershipRepository $membershipRepository,
-        UserInterface $user = null
+        ThematicCommunityMembershipRepository $membershipRepository
     ): Response {
         $this->disableInProduction();
+
+        /** @var Adherent $user */
+        $user = $this->getUser();
 
         $joinedCommunities = [];
         if ($user) {
@@ -69,7 +71,6 @@ class ThematicCommunityController extends AbstractController
         Request $request,
         ThematicCommunity $thematicCommunity,
         ThematicCommunityMembershipRepository $communityMembershipRepository,
-        UserInterface $user = null,
         AnonymousFollowerSession $anonymousFollowerSession
     ): Response {
         $this->disableInProduction();
@@ -80,6 +81,9 @@ class ThematicCommunityController extends AbstractController
         ) {
             return $authentication;
         }
+
+        /** @var Adherent $user */
+        $user = $this->getUser();
 
         if ($user) {
             if ($joinedMembership = $communityMembershipRepository->findOneBy(['adherent' => $user, 'community' => $thematicCommunity])) {

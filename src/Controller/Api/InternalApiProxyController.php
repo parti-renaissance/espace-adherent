@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Adherent;
 use App\Entity\InternalApiApplication;
 use App\Scope\GeneralScopeGenerator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -10,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -40,9 +40,11 @@ class InternalApiProxyController extends AbstractController
         InternalApiApplication $internalApiApplication,
         string $path,
         HttpClientInterface $internalApiProxyClient,
-        UserInterface $user,
         SerializerInterface $serializer
     ): Response {
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
         $subRequestOption = [
             'headers' => array_merge($this->getFilteredRequestHeaders($request), [
                 'X-User-UUID' => $user->getUuid()->toString(),

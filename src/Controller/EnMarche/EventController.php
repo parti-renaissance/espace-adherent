@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche;
 
+use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Event\EventInvitation;
@@ -25,7 +26,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -79,10 +79,11 @@ class EventController extends AbstractController
      */
     public function attendAdherentAction(
         BaseEvent $event,
-        UserInterface $adherent,
         ValidatorInterface $validator,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler
     ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         if ($event->isFinished()) {
             throw $this->createNotFoundException(sprintf('Event "%s" is finished and does not accept registrations anymore', $event->getUuid()));
         }
@@ -118,11 +119,12 @@ class EventController extends AbstractController
     public function attendAction(
         Request $request,
         BaseEvent $event,
-        ?UserInterface $adherent,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
         AnonymousFollowerSession $anonymousFollowerSession
     ): Response {
-        if ($adherent) {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+        if ($adherent instanceof Adherent) {
             return $this->redirectToRoute('app_committee_event_attend_adherent', ['slug' => $event->getSlug()]);
         }
 

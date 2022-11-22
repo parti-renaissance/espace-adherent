@@ -4,6 +4,7 @@ namespace App\Controller\Api\Zone;
 
 use App\AdherentSpace\AdherentSpaceEnum;
 use App\Controller\EnMarche\AccessDelegatorTrait;
+use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\Geo\ZoneRepository;
@@ -15,7 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/v3/zone/autocomplete", name="api_v3_zone_autocomplete_for_scope", methods={"GET"})
@@ -31,12 +31,14 @@ class ZoneAutocompleteController extends AbstractController
 
     public function __invoke(
         Request $request,
-        UserInterface $user,
         AuthorizationChecker $authorizationChecker,
         ZoneRepository $repository,
         ManagedZoneProvider $managedZoneProvider,
         ScopeGeneratorResolver $scopeGeneratorResolver
     ): Response {
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
         $term = (string) $request->query->get(self::QUERY_SEARCH_PARAM);
         $zoneTypes = Zone::TYPES;
         $managedZones = [];

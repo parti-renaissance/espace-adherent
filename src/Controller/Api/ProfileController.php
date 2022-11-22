@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -42,8 +41,11 @@ class ProfileController extends AbstractController
      *
      * @IsGranted("ROLE_OAUTH_SCOPE_READ:PROFILE")
      */
-    public function show(SerializerInterface $serializer, UserInterface $user): JsonResponse
+    public function show(SerializerInterface $serializer): JsonResponse
     {
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
         return JsonResponse::fromJsonString(
             $serializer->serialize($user, 'json', [
                 AbstractObjectNormalizer::GROUPS => self::READ_PROFILE_SERIALIZATION_GROUPS,
@@ -112,9 +114,11 @@ class ProfileController extends AbstractController
      */
     public function terminateMembershipAction(
         MembershipRequestHandler $handler,
-        TokenRevocationAuthority $tokenRevocationAuthority,
-        UserInterface $user
+        TokenRevocationAuthority $tokenRevocationAuthority
     ): Response {
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
         $handler->terminateMembership($user, null, false, 'Compte supprimé par l\'adhérent');
         $tokenRevocationAuthority->revokeUserTokens($user);
 

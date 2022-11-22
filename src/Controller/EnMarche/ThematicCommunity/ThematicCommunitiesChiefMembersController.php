@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\ThematicCommunity;
 
+use App\Entity\Adherent;
 use App\Form\ThematicCommunityMembershipFilterType;
 use App\Repository\ThematicCommunity\ThematicCommunityMembershipRepository;
 use App\ThematicCommunity\ThematicCommunityMembershipFilter;
@@ -9,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/communautes-thematiques", name="app_thematic_community_")
@@ -20,11 +20,10 @@ class ThematicCommunitiesChiefMembersController extends AbstractController
     /**
      * @Route("/membres", name="members_list")
      */
-    public function members(
-        Request $request,
-        UserInterface $user,
-        ThematicCommunityMembershipRepository $membershipRepository
-    ) {
+    public function members(Request $request, ThematicCommunityMembershipRepository $membershipRepository)
+    {
+        /** @var Adherent $user */
+        $user = $this->getUser();
         $handledCommunities = $user->getHandledThematicCommunities()->toArray();
 
         $form = $this->createForm(ThematicCommunityMembershipFilterType::class, $filter = new ThematicCommunityMembershipFilter($handledCommunities), [

@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -34,10 +33,11 @@ class SurveyController extends AbstractController
         LocalSurveyRepository $localSurveyRepository,
         NationalSurveyRepository $nationalSurveyRepository,
         ZoneRepository $zoneRepository,
-        SerializerInterface $serializer,
-        UserInterface $user
+        SerializerInterface $serializer
     ): Response {
         $postalCode = null;
+        /** @var Adherent|DeviceApiUser $user */
+        $user = $this->getUser();
 
         if ($user instanceof DeviceApiUser) {
             if (!$postalCode = $request->get('postalCode')) {
@@ -78,9 +78,11 @@ class SurveyController extends AbstractController
     public function surveyReplyAction(
         Request $request,
         JemarcheDataSurveyAnswerHandler $dataSurveyHandler,
-        FormFactoryInterface $formFactory,
-        UserInterface $user
+        FormFactoryInterface $formFactory
     ): JsonResponse {
+        /** @var Adherent|DeviceApiUser $user */
+        $user = $this->getUser();
+
         $data = json_decode($request->getContent(), true);
         $form = $formFactory->create(JemarcheDataSurveyFormType::class, null, [
             'csrf_protection' => false,

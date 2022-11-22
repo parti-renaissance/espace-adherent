@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route(path="/espace-municipales-2020", name="app_municipal_chief")
@@ -34,10 +33,10 @@ class MunicipalChiefController extends AbstractController
         MunicipalEventRepository $eventRepository,
         ApplicationRequestRepository $candidateRepository,
         AdherentMessageRepository $messageRepository,
-        StatisticsAggregator $aggregator,
-        UserInterface $adherent
+        StatisticsAggregator $aggregator
     ): Response {
         /** @var Adherent $adherent */
+        $adherent = $this->getUser();
         $codes = (array) $adherent->getMunicipalChiefManagedArea()->getInseeCode();
 
         return $this->render('municipal_chief/home.html.twig', [
@@ -114,15 +113,14 @@ class MunicipalChiefController extends AbstractController
     /**
      * @Route(path="/adherents", name="_adherents_list", methods={"GET"})
      */
-    public function adherentsListAction(
-        Request $request,
-        UserInterface $municipalChief,
-        AdherentRepository $adherentRepository
-    ): Response {
-        /** @var Adherent $municipalChief */
+    public function adherentsListAction(Request $request, AdherentRepository $adherentRepository): Response
+    {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
         return $this->render('municipal_chief/adherent/list.html.twig', [
             'results' => $adherentRepository->findPaginatedForInseeCodes(
-                (array) $municipalChief->getMunicipalChiefManagedArea()->getInseeCode(),
+                (array) $adherent->getMunicipalChiefManagedArea()->getInseeCode(),
                 $request->query->getInt('page')
             ),
         ]);

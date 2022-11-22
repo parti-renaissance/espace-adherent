@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/v3/adherents/filters", name="app_adherents_filters_get", methods={"GET"})
@@ -27,7 +26,7 @@ class GetFilterCollectionController extends AbstractController
         $this->builder = $builder;
     }
 
-    public function __invoke(Request $request, UserInterface $user): Response
+    public function __invoke(Request $request): Response
     {
         return $this->json(
             $this->builder->generate(
