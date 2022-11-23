@@ -4275,16 +4275,16 @@
         },
         {
             "name": "google/cloud-vision",
-            "version": "v1.5.7",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-vision.git",
-                "reference": "4aff2237fa218074f45b1e12773f575408ab064e"
+                "reference": "ec2fd5bf522920f8db42b931d70173e6d057545d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-vision/zipball/4aff2237fa218074f45b1e12773f575408ab064e",
-                "reference": "4aff2237fa218074f45b1e12773f575408ab064e",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-vision/zipball/ec2fd5bf522920f8db42b931d70173e6d057545d",
+                "reference": "ec2fd5bf522920f8db42b931d70173e6d057545d",
                 "shasum": ""
             },
             "require": {
@@ -4295,6 +4295,7 @@
                 "erusev/parsedown": "^1.6",
                 "google/cloud-storage": "^1.12",
                 "phpdocumentor/reflection": "^3.0||^4.0",
+                "phpspec/prophecy": "^1.10.3",
                 "phpunit/phpunit": "^4.8|^5.0|^8.0",
                 "squizlabs/php_codesniffer": "2.*",
                 "yoast/phpunit-polyfills": "^1.0"
@@ -4325,26 +4326,26 @@
             ],
             "description": "Cloud Vision Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-vision/tree/v1.5.7"
+                "source": "https://github.com/googleapis/google-cloud-php-vision/tree/v1.6.0"
             },
-            "time": "2022-06-02T21:53:43+00:00"
+            "time": "2022-11-01T20:21:07+00:00"
         },
         {
             "name": "google/common-protos",
-            "version": "2.1.0",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/common-protos-php.git",
-                "reference": "4bad82f73a10f8ea4e6d078da93406a16c996044"
+                "reference": "5634c15f2ac5dbf2e3fd5ff7400d77661ab1b0d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/4bad82f73a10f8ea4e6d078da93406a16c996044",
-                "reference": "4bad82f73a10f8ea4e6d078da93406a16c996044",
+                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/5634c15f2ac5dbf2e3fd5ff7400d77661ab1b0d4",
+                "reference": "5634c15f2ac5dbf2e3fd5ff7400d77661ab1b0d4",
                 "shasum": ""
             },
             "require": {
-                "google/protobuf": "^3.6.1, !=3.20.0"
+                "google/protobuf": "^3.6.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "^4.8.36||^8.5",
@@ -4353,8 +4354,17 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Google\\": "src",
-                    "GPBMetadata\\Google\\": "metadata"
+                    "Google\\Api\\": "src/Api",
+                    "Google\\Iam\\": "src/Iam",
+                    "Google\\Rpc\\": "src/Rpc",
+                    "Google\\Type\\": "src/Type",
+                    "Google\\Cloud\\": "src/Cloud",
+                    "GPBMetadata\\Google\\Api\\": "metadata/Api",
+                    "GPBMetadata\\Google\\Iam\\": "metadata/Iam",
+                    "GPBMetadata\\Google\\Rpc\\": "metadata/Rpc",
+                    "GPBMetadata\\Google\\Type\\": "metadata/Type",
+                    "GPBMetadata\\Google\\Cloud\\": "metadata/Cloud",
+                    "GPBMetadata\\Google\\Logging\\": "metadata/Logging"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4368,9 +4378,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/common-protos-php/issues",
-                "source": "https://github.com/googleapis/common-protos-php/tree/2.1.0"
+                "source": "https://github.com/googleapis/common-protos-php/tree/v3.1.0"
             },
-            "time": "2022-05-13T21:07:15+00:00"
+            "time": "2022-10-05T23:22:51+00:00"
         },
         {
             "name": "google/crc32",
@@ -4420,34 +4430,37 @@
         },
         {
             "name": "google/gax",
-            "version": "v1.13.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "1403cdf2406ef9af113d8563a43ccb0f7d7c7544"
+                "reference": "bb8d95187dcfebe04a40d2de916951fa4942fc35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/1403cdf2406ef9af113d8563a43ccb0f7d7c7544",
-                "reference": "1403cdf2406ef9af113d8563a43ccb0f7d7c7544",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/bb8d95187dcfebe04a40d2de916951fa4942fc35",
+                "reference": "bb8d95187dcfebe04a40d2de916951fa4942fc35",
                 "shasum": ""
             },
             "require": {
                 "google/auth": "^1.18.0",
-                "google/common-protos": "^1.0||^2.0",
+                "google/common-protos": "^1.3.1||^2.0||^3.0",
                 "google/grpc-gcp": "^0.2",
-                "google/protobuf": "^3.12.2",
+                "google/longrunning": "^0.2",
+                "google/protobuf": "^3.21.4",
                 "grpc/grpc": "^1.13",
                 "guzzlehttp/promises": "^1.3",
                 "guzzlehttp/psr7": "^1.7.0||^2",
-                "php": ">=5.6"
+                "php": ">=7.0"
             },
             "conflict": {
                 "ext-protobuf": "<3.7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.36",
-                "squizlabs/php_codesniffer": "3.*"
+                "phpspec/prophecy": "^1.10",
+                "phpunit/phpunit": "^5.5||^8.5",
+                "squizlabs/php_codesniffer": "3.*",
+                "yoast/phpunit-polyfills": "^1.0"
             },
             "type": "library",
             "autoload": {
@@ -4467,22 +4480,22 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/gax-php/issues",
-                "source": "https://github.com/googleapis/gax-php/tree/v1.13.0"
+                "source": "https://github.com/googleapis/gax-php/tree/v1.17.0"
             },
-            "time": "2022-06-19T23:40:58+00:00"
+            "time": "2022-09-12T15:22:54+00:00"
         },
         {
             "name": "google/grpc-gcp",
-            "version": "v0.2.0",
+            "version": "v0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GoogleCloudPlatform/grpc-gcp-php.git",
-                "reference": "2465c2273e11ada1e95155aa1e209f3b8f03c314"
+                "reference": "899d0112812a812df7692617a59f4076f0d01719"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GoogleCloudPlatform/grpc-gcp-php/zipball/2465c2273e11ada1e95155aa1e209f3b8f03c314",
-                "reference": "2465c2273e11ada1e95155aa1e209f3b8f03c314",
+                "url": "https://api.github.com/repos/GoogleCloudPlatform/grpc-gcp-php/zipball/899d0112812a812df7692617a59f4076f0d01719",
+                "reference": "899d0112812a812df7692617a59f4076f0d01719",
                 "shasum": ""
             },
             "require": {
@@ -4512,22 +4525,66 @@
             "description": "gRPC GCP library for channel management",
             "support": {
                 "issues": "https://github.com/GoogleCloudPlatform/grpc-gcp-php/issues",
-                "source": "https://github.com/GoogleCloudPlatform/grpc-gcp-php/tree/v0.2.0"
+                "source": "https://github.com/GoogleCloudPlatform/grpc-gcp-php/tree/v0.2.1"
             },
-            "time": "2021-09-27T22:57:18+00:00"
+            "time": "2022-10-11T15:54:47+00:00"
         },
         {
-            "name": "google/protobuf",
-            "version": "v3.21.2",
+            "name": "google/longrunning",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "374edda06747bb1d6899d11af646ccab38646e65"
+                "url": "https://github.com/googleapis/php-longrunning.git",
+                "reference": "5b7500eede9d6b18ef038bef0b5449cbf085e1d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/374edda06747bb1d6899d11af646ccab38646e65",
-                "reference": "374edda06747bb1d6899d11af646ccab38646e65",
+                "url": "https://api.github.com/repos/googleapis/php-longrunning/zipball/5b7500eede9d6b18ef038bef0b5449cbf085e1d6",
+                "reference": "5b7500eede9d6b18ef038bef0b5449cbf085e1d6",
+                "shasum": ""
+            },
+            "require-dev": {
+                "google/gax": "^1.13.0",
+                "phpunit/phpunit": "^4.8|^5.0|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "component": {
+                    "id": "longrunning",
+                    "path": "LongRunning",
+                    "entry": null,
+                    "target": "googleapis/php-longrunning"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Google\\LongRunning\\": "src/LongRunning",
+                    "Google\\ApiCore\\LongRunning\\": "src/ApiCore/LongRunning",
+                    "GPBMetadata\\Google\\Longrunning\\": "metadata/Longrunning"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Google LongRunning Client for PHP",
+            "support": {
+                "source": "https://github.com/googleapis/php-longrunning/tree/v0.2.0"
+            },
+            "time": "2022-08-05T00:41:21+00:00"
+        },
+        {
+            "name": "google/protobuf",
+            "version": "v3.21.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/protocolbuffers/protobuf-php.git",
+                "reference": "1bf02c57f260c5eea5e75a35c1a943fe943a188a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/1bf02c57f260c5eea5e75a35c1a943fe943a188a",
+                "reference": "1bf02c57f260c5eea5e75a35c1a943fe943a188a",
                 "shasum": ""
             },
             "require": {
@@ -4556,10 +4613,9 @@
                 "proto"
             ],
             "support": {
-                "issues": "https://github.com/protocolbuffers/protobuf-php/issues",
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.21.2"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.21.9"
             },
-            "time": "2022-06-24T21:52:31+00:00"
+            "time": "2022-10-26T20:30:45+00:00"
         },
         {
             "name": "grpc/grpc",
