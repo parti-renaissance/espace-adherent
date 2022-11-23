@@ -10,6 +10,7 @@ use App\Membership\MembershipRequest\CoalitionMembershipRequest;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
+use App\Renaissance\Membership\Admin\AdherentCreateCommand;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -158,6 +159,27 @@ class AdherentFactory
 
         $adherent->utmSource = $adherentRequest->utmSource;
         $adherent->utmCampaign = $adherentRequest->utmCampaign;
+
+        return $adherent;
+    }
+
+    public function createFromAdminAdherentCreateCommand(AdherentCreateCommand $command): Adherent
+    {
+        $adherent = Adherent::createBlank(
+            $command->gender,
+            $command->firstName,
+            $command->lastName,
+            $command->nationality,
+            $this->addressFactory->createFromAddress($command->address),
+            $command->email,
+            $command->phone,
+            $command->birthdate,
+            $command->isExclusiveMembership(),
+            $command->isTerritoiresProgresMembership(),
+            $command->isAgirMembership()
+        );
+
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
 
         return $adherent;
     }

@@ -137,11 +137,12 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
 
     public static function createFromAdherent(
         Adherent $adherent,
-        string $clientIp,
+        string $clientIp = null,
         float $amount = self::DEFAULT_AMOUNT,
-        int $duration = PayboxPaymentSubscription::NONE
+        int $duration = PayboxPaymentSubscription::NONE,
+        string $type = Donation::TYPE_CB
     ): self {
-        $dto = new self($clientIp, $amount, $duration);
+        $dto = new self($clientIp, $amount, $duration, $type);
         $dto->gender = $adherent->getGender();
         $dto->firstName = $adherent->getFirstName();
         $dto->lastName = $adherent->getLastName();

@@ -206,6 +206,14 @@ renaissance.membership.adherent: Adhérent RE seulement
 renaissance.membership.sympathizer: Sympathisant RE seulement
 renaissance.membership.none: Ni adhérent RE ni sympathisant RE
 
+membership.type.exclusive: Certifie n'appartenir à aucun autre parti politique
+membership.type.territoires_progres: Membre de « Territoires de Progrès »
+membership.type.agir: Membre d' « Agir, la droite constructive »
+
+cotistation.amount_choice.amount_10: 10€
+cotistation.amount_choice.amount_30: 30€
+cotistation.amount_choice.amount_other: Montant spécifique
+
 #
 # Dashboard
 #

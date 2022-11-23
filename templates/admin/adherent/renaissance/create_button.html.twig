@@ -1,0 +1,7 @@
+{% if is_granted('ROLE_APP_ADMIN_ADHERENT_CREATE_RENAISSANCE') %}
+<li>
+    <a href="{{ path('admin_app_adherent_create_renaissance') }}" class="sonata-action-element" title="Créer un adhérent Renaissance">
+        <i class="fa fa-user"></i> Créer un adhérent RE
+    </a>
+</li>
+{% endif %}

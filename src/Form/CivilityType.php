@@ -15,6 +15,7 @@ class CivilityType extends AbstractType
             'choices' => Genders::CIVILITY_CHOICES,
             'translation_domain' => 'messages',
             'expanded' => true,
+            'invalid_message' => 'common.gender.invalid_choice',
         ]);
     }
 

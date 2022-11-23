@@ -13,6 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @AssertValidAddress(groups={"Default", "fill_personal_info"})
  * @AssertGeocodableAddress(groups={"Default", "fill_personal_info"})
+ * @AssertGeocodableAddress(
+ *     message="admin.common.address.not_geocodable",
+ *     groups={"admin_adherent_renaissance_create"}
+ * )
  */
 class Address implements AddressInterface, GeocodableInterface
 {
@@ -33,7 +37,7 @@ class Address implements AddressInterface, GeocodableInterface
      *     groups={"Default", "Registration", "Update", "fill_personal_info"}
      * )
      * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update", "fill_personal_info"})
-     * @FrenchZipCode(groups={"Default", "Registration", "Update", "fill_personal_info"})
+     * @FrenchZipCode(groups={"Default", "Registration", "Update", "fill_personal_info", "admin_adherent_renaissance_create"})
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
