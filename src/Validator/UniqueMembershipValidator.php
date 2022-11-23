@@ -60,7 +60,7 @@ class UniqueMembershipValidator extends ConstraintValidator
                 ->context
                 ->buildViolation($constraint->message)
                 ->setParameter('{{ email }}', $email)
-                ->atPath('emailAddress')
+                ->atPath($constraint->path)
                 ->addViolation()
             ;
         }

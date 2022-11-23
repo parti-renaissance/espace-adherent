@@ -541,6 +541,10 @@ class AdherentAdminTest extends AbstractWebCaseTest
             ['email' => 'abc'],
             ['email' => ['Ceci n\'est pas une adresse e-mail valide.']],
         ];
+        yield 'Existing email address' => [
+            ['email' => 'renaissance-user-1@en-marche-dev.fr'],
+            ['email' => ['Cette adresse e-mail existe déjà.']],
+        ];
         yield 'Too long email address' => [
             ['email' => 'loremipsumdolorsitametconsecteturadipiscingelitloremipsumdolorsitametconsecteturadipiscingelitloremipsumdolorsitametconsecteturadipiscingelit@loremipsumdolorsitametconsecteturadipiscingelitloremipsumdolorsitametconsecteturadipiscingelitloremipsumdolorsitametconsecteturadipiscingelit.dev'],
             ['email' => ['L\'adresse e-mail est trop longue, 255 caractères maximum.']],

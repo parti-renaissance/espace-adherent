@@ -7,6 +7,7 @@ use App\Donation\DonationRequestHandler;
 use App\Donation\PayboxPaymentSubscription;
 use App\Entity\Donation;
 use App\Membership\AdherentFactory;
+use App\Membership\MembershipSourceEnum;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AdherentCreateCommandHandler
@@ -20,7 +21,10 @@ class AdherentCreateCommandHandler
 
     public function createCommand(): AdherentCreateCommand
     {
-        return new AdherentCreateCommand();
+        $command = new AdherentCreateCommand();
+        $command->source = MembershipSourceEnum::RENAISSANCE;
+
+        return $command;
     }
 
     public function handle(AdherentCreateCommand $command): void

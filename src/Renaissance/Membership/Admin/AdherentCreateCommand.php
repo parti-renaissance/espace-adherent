@@ -3,6 +3,7 @@
 namespace App\Renaissance\Membership\Admin;
 
 use App\Address\Address;
+use App\Membership\MembershipRequest\MembershipInterface;
 use App\Validator\BannedAdherent;
 use App\Validator\UniqueMembership as AssertUniqueMembership;
 use libphonenumber\PhoneNumber;
@@ -10,9 +11,9 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertUniqueMembership
+ * @AssertUniqueMembership(path="email", groups={"admin_adherent_renaissance_create"})
  */
-class AdherentCreateCommand
+class AdherentCreateCommand implements MembershipInterface
 {
     /**
      * @Assert\NotBlank(
@@ -143,6 +144,8 @@ class AdherentCreateCommand
      */
     public ?float $cotisationCustomAmount = null;
 
+    public ?string $source = null;
+
     public function isExclusiveMembership(): bool
     {
         return MembershipTypeEnum::EXCLUSIVE === $this->membershipType;
@@ -165,5 +168,15 @@ class AdherentCreateCommand
             CotisationAmountChoiceEnum::AMOUNT_30 => 30,
             CotisationAmountChoiceEnum::AMOUNT_OTHER => $this->cotisationCustomAmount,
         };
+    }
+
+    public function getEmailAddress(): ?string
+    {
+        return $this->email;
+    }
+
+    public function getSource(): ?string
+    {
+        return $this->source;
     }
 }

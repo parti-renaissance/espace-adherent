@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraint;
 class UniqueMembership extends Constraint
 {
     public $message = 'adherent.email_address.not_unique';
+    public $path = 'emailAddress';
 
     public function getTargets()
     {
