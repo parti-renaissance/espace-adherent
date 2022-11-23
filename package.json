@@ -29,7 +29,7 @@
     "clipboard": "^2.0.11",
     "copy-webpack-plugin": "^11.0.0",
     "core-js": "^3.26.0",
-    "cropperjs": "^1.5.12",
+    "cropperjs": "^1.5.13",
     "css-loader": "^6.7.2",
     "css-minimizer-webpack-plugin": "^4.2.2",
     "eslint": "^8.27.0",
