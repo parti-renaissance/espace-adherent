@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Address\NullableAddress;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,7 +25,7 @@ class NullableAddressType extends AbstractType
             ->add('cityName', TextType::class, [
                 'required' => false,
             ])
-            ->add('country', UnitedNationsCountryType::class, [
+            ->add('country', CountryType::class, [
                 'required' => false,
             ])
         ;

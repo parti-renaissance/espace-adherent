@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
+use App\Address\Address;
 use App\Entity\Election\VotePlaceResult;
-use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -93,9 +93,9 @@ class VotePlace
      * @ORM\Column(length=2)
      *
      * @Assert\NotBlank
-     * @AssertUnitedNationsCountry(message="common.country.invalid")
+     * @Assert\Country(message="common.country.invalid")
      */
-    private $country = 'FR';
+    private $country = Address::FRANCE;
 
     /**
      * @var bool
@@ -131,7 +131,7 @@ class VotePlace
         ?string $postalCode,
         ?string $city,
         string $address,
-        string $country = 'FR'
+        string $country = Address::FRANCE
     ): self {
         $votePlace = new self();
 

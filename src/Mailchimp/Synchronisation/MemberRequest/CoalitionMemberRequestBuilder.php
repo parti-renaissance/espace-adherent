@@ -2,9 +2,9 @@
 
 namespace App\Mailchimp\Synchronisation\MemberRequest;
 
+use App\Address\Address;
 use App\Coalition\CoalitionMemberValueObject;
 use App\Entity\Coalition\Coalition;
-use App\Entity\PostAddress;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
@@ -93,7 +93,7 @@ class CoalitionMemberRequestBuilder extends AbstractMemberRequestBuilder
             ->setGender($contact->getGender())
             ->setZone($contact->isAdherent()
                 ? (($postAddress = $contact->getPostAddress())
-                    ? (PostAddress::FRANCE === $postAddress->getCountry()
+                    ? (Address::FRANCE === $postAddress->getCountry()
                         ? sprintf('%s %s', $postAddress->getPostalCode(), $postAddress->getCityName())
                         : sprintf('%s %s', $postAddress->getCountry(), $postAddress->getCountryName()))
                     : null)

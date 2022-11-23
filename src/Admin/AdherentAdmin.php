@@ -35,10 +35,8 @@ use App\Form\EventListener\BoardMemberListener;
 use App\Form\EventListener\CoalitionModeratorRoleListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
-use App\Form\UnitedNationsCountryType;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Instance\InstanceQualityScopeEnum;
-use App\Intl\UnitedNationsBundle;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\AdherentEvents;
 use App\Membership\Event\AdherentProfileWasUpdatedEvent;
@@ -78,6 +76,7 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -287,7 +286,7 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('postAddress.cityName', null, [
                     'label' => 'Ville',
                 ])
-                ->add('postAddress.country', UnitedNationsCountryType::class, [
+                ->add('postAddress.country', CountryType::class, [
                     'label' => 'Pays',
                 ])
                 ->add('postAddress.latitude', null, [
@@ -554,7 +553,7 @@ class AdherentAdmin extends AbstractAdmin
                     ->add('postAddress.cityName', TextType::class, [
                         'label' => 'Ville',
                     ])
-                    ->add('postAddress.country', UnitedNationsCountryType::class, [
+                    ->add('postAddress.country', CountryType::class, [
                         'label' => 'Pays',
                     ])
                     ->add('postAddress.latitude', TextType::class, [
@@ -743,10 +742,7 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('country', CallbackFilter::class, [
                 'label' => 'Pays',
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => array_flip(UnitedNationsBundle::getCountries()),
-                ],
+                'field_type' => CountryType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;

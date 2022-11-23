@@ -5,7 +5,6 @@ namespace App\Admin;
 use App\Entity\Event\InstitutionalEvent;
 use App\Events;
 use App\Form\InstitutionalEventCategoryType;
-use App\Form\UnitedNationsCountryType;
 use App\InstitutionalEvent\InstitutionalEventEvent;
 use App\Referent\ReferentTagManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -19,6 +18,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -157,7 +157,7 @@ class InstitutionalEventAdmin extends AbstractAdmin
                 ->add('postAddress.cityName', TextType::class, [
                     'label' => 'Ville',
                 ])
-                ->add('postAddress.country', UnitedNationsCountryType::class, [
+                ->add('postAddress.country', CountryType::class, [
                     'label' => 'Pays',
                 ])
                 ->add('postAddress.latitude', TextType::class, [

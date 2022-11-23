@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Address\Address;
 use App\Address\AddressInterface;
 use App\Address\GeocodableAddress;
 use App\Geocoder\Coordinates;
@@ -15,8 +16,6 @@ use Symfony\Component\Intl\Countries;
  */
 class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoPointInterface
 {
-    private const FRANCE = 'FR';
-
     /**
      * The address street.
      *
@@ -113,7 +112,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         [$postalCode, $inseeCode] = explode('-', $cityCode);
 
         $address = new self(
-            self::FRANCE,
+            Address::FRANCE,
             $postalCode,
             $cityName,
             $street,
@@ -235,7 +234,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
 
     private function isFrenchAddress(): bool
     {
-        return 'FR' === mb_strtoupper($this->country) && $this->city;
+        return Address::FRANCE === mb_strtoupper($this->country) && $this->city;
     }
 
     public function getRegion(): ?string

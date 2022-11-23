@@ -14,7 +14,6 @@ use App\Event\CommitteeEventEvent;
 use App\Event\EventEvent;
 use App\Events;
 use App\Form\EventCategoryType;
-use App\Form\UnitedNationsCountryType;
 use App\Referent\ReferentTagManager;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Query\Expr\Join;
@@ -30,6 +29,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -226,7 +226,7 @@ class EventAdmin extends AbstractAdmin
                 ->add('postAddress.cityName', TextType::class, [
                     'label' => 'Ville',
                 ])
-                ->add('postAddress.country', UnitedNationsCountryType::class, [
+                ->add('postAddress.country', CountryType::class, [
                     'label' => 'Pays',
                 ])
                 ->add('postAddress.latitude', TextType::class, [

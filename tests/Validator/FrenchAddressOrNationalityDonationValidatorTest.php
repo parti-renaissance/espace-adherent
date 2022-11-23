@@ -2,8 +2,8 @@
 
 namespace Tests\App\Validator;
 
+use App\Address\Address;
 use App\Donation\DonationRequest;
-use App\Utils\AreaUtils;
 use App\Validator\FrenchAddressOrNationalityDonation;
 use App\Validator\FrenchAddressOrNationalityDonationValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
@@ -74,8 +74,8 @@ class FrenchAddressOrNationalityDonationValidatorTest extends ConstraintValidato
     }
 
     private function createDonationRequest(
-        ?string $nationality = AreaUtils::CODE_FRANCE,
-        ?string $country = AreaUtils::CODE_FRANCE
+        ?string $nationality = Address::FRANCE,
+        ?string $country = Address::FRANCE
     ): DonationRequest {
         $donationRequest = new DonationRequest('123.0.0.1');
 

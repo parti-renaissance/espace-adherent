@@ -2,6 +2,7 @@
 
 namespace App\Command\Geo;
 
+use App\Address\Address;
 use App\Command\Geo\Helper\Persister;
 use App\Command\Geo\Helper\Summary;
 use App\Entity\Geo\City;
@@ -25,7 +26,6 @@ final class UpdateFranceCommand extends Command
 
     private const API_PATH = '/communes?fields=code,nom,codesPostaux,population,departement,region';
 
-    private const FRANCE_CODE = 'FR';
     private const FRANCE_NAME = 'France';
 
     private const OVERSEA_REGION_CODE = 'ROM';
@@ -144,7 +144,7 @@ final class UpdateFranceCommand extends Command
     private function processEntry(array $entry): void
     {
         /* @var Country|null $region */
-        $france = $this->retrieveEntity(Country::class, self::FRANCE_CODE);
+        $france = $this->retrieveEntity(Country::class, Address::FRANCE);
 
         /* @var Region|null $region */
         $region = null;
@@ -228,8 +228,8 @@ final class UpdateFranceCommand extends Command
         //
 
         /* @var Country|null $france */
-        $france = $this->retrieveEntity(Country::class, self::FRANCE_CODE, static function () {
-            return new Country(self::FRANCE_CODE, self::FRANCE_NAME);
+        $france = $this->retrieveEntity(Country::class, Address::FRANCE, static function () {
+            return new Country(Address::FRANCE, self::FRANCE_NAME);
         });
         $france->activate();
 

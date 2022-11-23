@@ -2,6 +2,7 @@
 
 namespace App\Doctrine\Hydrators;
 
+use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Event\CommitteeEvent;
@@ -28,20 +29,20 @@ class EventHydrator extends AbstractHydrator
             return false;
         }
 
-        if ('FR' === $row['event_address_country']) {
+        if (Address::FRANCE === $row['event_address_country']) {
             $addressEvent = $this->createFrenchAddress($row['event_address_address'], $row['event_address_city_insee'], $row['event_address_city_name'], $row['event_address_latitude'], $row['event_address_longitude']);
         } else {
             $addressEvent = $this->createForeignAddress($row['event_address_country'], $row['event_address_postal_code'], $row['event_address_city_name'], $row['event_address_address'], $row['event_address_latitude'], $row['event_address_longitude']);
         }
 
         $addressCommittee = null;
-        if ('FR' === $row['committee_address_country']) {
+        if (Address::FRANCE === $row['committee_address_country']) {
             $addressCommittee = $this->createFrenchAddress($row['committee_address_address'], $row['committee_address_city_insee'], $row['committee_address_city_name'], $row['committee_address_latitude'], $row['committee_address_longitude']);
         } elseif ($row['committee_address_country']) {
             $addressCommittee = $this->createForeignAddress($row['committee_address_country'], $row['committee_address_postal_code'], $row['committee_address_city_name'], $row['committee_address_address'], $row['committee_address_latitude'], $row['committee_address_longitude']);
         }
 
-        if ('FR' === $row['adherent_address_country']) {
+        if (Address::FRANCE === $row['adherent_address_country']) {
             $addressAdherent = $this->createFrenchAddress($row['adherent_address_address'], $row['adherent_address_city_insee'], $row['adherent_address_city_name'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
         } else {
             $addressAdherent = $this->createForeignAddress($row['adherent_address_country'], $row['adherent_address_postal_code'], $row['adherent_address_city_name'], $row['adherent_address_address'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);

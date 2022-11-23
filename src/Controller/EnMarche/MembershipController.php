@@ -14,7 +14,6 @@ use App\Form\BecomeAdherentType;
 use App\Form\CommitteeAroundAdherentType;
 use App\Form\UserRegistrationType;
 use App\Geocoder\CoordinatesFactory;
-use App\Intl\UnitedNationsBundle;
 use App\Membership\AdherentAccountActivationHandler;
 use App\Membership\MembershipNotifier;
 use App\Membership\MembershipRegistrationProcess;
@@ -91,7 +90,6 @@ class MembershipController extends AbstractController
         return $this->render('membership/register.html.twig', [
             'membership' => $membership,
             'form' => $form->createView(),
-            'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
         ]);
     }
 
@@ -136,7 +134,6 @@ class MembershipController extends AbstractController
         return $this->render('membership/join.html.twig', [
             'membership' => $membership,
             'form' => $form->createView(),
-            'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
             'nb_adherent' => $repository->countAdherents(),
         ]);
     }
@@ -181,7 +178,6 @@ class MembershipController extends AbstractController
         return $this->render('membership/join.html.twig', [
             'membership' => $membership,
             'form' => $form->createView(),
-            'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
             'nb_adherent' => $repository->countAdherents(),
         ]);
     }

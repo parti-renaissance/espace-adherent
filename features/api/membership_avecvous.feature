@@ -739,12 +739,12 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "post_address.country: Cette valeur n'est pas un pays valide.",
+      "detail": "post_address.country: Ce pays n'est pas valide.",
       "violations": [
         {
-          "code": null,
+          "code": "@uuid@",
           "propertyPath": "post_address.country",
-          "message": "Cette valeur n'est pas un pays valide."
+          "message": "Ce pays n'est pas valide."
         }
       ]
     }

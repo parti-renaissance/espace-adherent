@@ -2,6 +2,7 @@
 
 namespace App\Scope\Generator;
 
+use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Repository\Geo\ZoneRepository;
@@ -33,7 +34,7 @@ class NationalCommunicationScopeGenerator extends AbstractScopeGenerator
     {
         return [$this->zoneRepository->findOneBy([
             'type' => Zone::COUNTRY,
-            'code' => 'FR',
+            'code' => Address::FRANCE,
         ])];
     }
 }

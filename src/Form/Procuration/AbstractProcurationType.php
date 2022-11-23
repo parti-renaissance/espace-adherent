@@ -3,11 +3,11 @@
 namespace App\Form\Procuration;
 
 use App\Form\GenderType;
-use App\Form\UnitedNationsCountryType;
 use App\Procuration\ElectionContext;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,7 +33,7 @@ abstract class AbstractProcurationType extends AbstractType
             ->add('gender', GenderType::class)
             ->add('lastName', TextType::class)
             ->add('firstNames', TextType::class)
-            ->add('country', UnitedNationsCountryType::class)
+            ->add('country', CountryType::class)
             ->add('postalCode', TextType::class, [
                 'required' => false,
             ])
