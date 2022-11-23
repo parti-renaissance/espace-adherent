@@ -34,7 +34,6 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -104,8 +103,6 @@ class ConfigureCommand extends Command
                 $this->configureExecutiveOffice($designation);
             } elseif ($designation->isPollType()) {
                 $this->configurePoll($designation);
-            } else {
-                throw new RuntimeException(sprintf('Unhandled designation type "%s"', $designation->getType()));
             }
         }
 
