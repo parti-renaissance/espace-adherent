@@ -8,25 +8,14 @@ use App\Donation\PayboxPaymentSubscription;
 use App\Entity\Donation;
 use App\Membership\AdherentFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AdherentCreateCommandHandler
 {
-    private AdherentFactory $adherentFactory;
-    private DonationRequestHandler $donationRequestHandler;
-    private EntityManagerInterface $entityManager;
-    private EventDispatcherInterface $dispatcher;
-
     public function __construct(
-        AdherentFactory $adherentFactory,
-        DonationRequestHandler $donationRequestHandler,
-        EntityManagerInterface $entityManager,
-        EventDispatcherInterface $dispatcher
+        private readonly AdherentFactory $adherentFactory,
+        private readonly DonationRequestHandler $donationRequestHandler,
+        private readonly EntityManagerInterface $entityManager
     ) {
-        $this->adherentFactory = $adherentFactory;
-        $this->donationRequestHandler = $donationRequestHandler;
-        $this->entityManager = $entityManager;
-        $this->dispatcher = $dispatcher;
     }
 
     public function createCommand(): AdherentCreateCommand
