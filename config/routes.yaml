@@ -234,9 +234,14 @@ app_redirect_inscription:
         permanent: true
 
 app_voting_platform:
+    host: "{app_domain}"
     resource: "../src/Controller/EnMarche/VotingPlatform"
     type:     "annotation"
     prefix:   "/elections/{uuid}"
+    defaults:
+        app_domain: "%app_host%"
+    requirements:
+        app_domain: "%app_host%|%renaissance_host%"
 
 app_procuration:
     host: "%procuration_host%"

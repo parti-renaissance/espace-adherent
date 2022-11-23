@@ -1,0 +1,52 @@
+{% import 'renaissance/voting_platform/_macros.html.twig' as helper %}
+
+<div class="box__content">
+    {% if candidate_group %}
+        <h2 class="b__nudge--right-large">{{ candidate_group.getLabel() }}</h2>
+
+        {% set candidates = candidate_group.getCandidates() %}
+
+        <ul class="candidate-names">
+            {% for candidate in candidates %}
+                <li class="text--body">
+                    <div class="l__row">
+                        <span class="candidate-photo avatar-initials avatar--small avatar--style-01">
+                            {{ helper.display_candidate_photo(candidate) }}
+                        </span>
+                        <span class="b__nudge--left">{{ candidate.fullName }}</span>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="candidate-footer">
+            <div class="candidate-biography text--right">
+                <a href="#" class="text--body link--no-decor text--blue--dark b__nudge--none em-modal--trigger"
+                   data-content-element="#candidate-biography-content-{{ candidate_group.uuid }}"
+                >Voir la liste en détail</a>
+
+                <div id="candidate-biography-content-{{ candidate_group.uuid }}" class="hidden">
+                    <div class="candidacies-list-content">
+                        <h2 class="text--medium-large b__nudge--bottom-large">{{ candidate_group.getLabel() }}</h2>
+
+                        {% for candidate in candidates %}
+                            <div class="l__row b__nudge--bottom-medium b__nudge--left">
+                                <div class="candidate-photo avatar-initials avatar--medium b__nudge--right">
+                                    <img src="{{ path('asset_url', {path: candidate.imagePath}) }}" alt="photo" />
+                                </div>
+
+                                <div class="l__row l__row--h-stretch l__col--full font-roboto text--bold">
+                                    <div>{{ candidate.adherent.fullName }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <p class="text--body text--dark b__nudge--top-50">{{ candidates|first.faithStatement|nl2br }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h3 class="candidate-pool text--medium b__nudge--right-extra-large b__nudge--bottom-tiny">Bulletin blanc</h3>
+    {% endif %}
+</div>

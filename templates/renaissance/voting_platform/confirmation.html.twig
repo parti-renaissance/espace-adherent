@@ -1,0 +1,24 @@
+{% extends base_layout %}
+
+{% block page_title 'Confirmation' %}
+
+{% block voting_platform_header %}
+    <div class="l__wrapper--slim">
+        <div class="confirmation-header text--center">
+            <h1 class="text--larger b__nudge--bottom-large">Mon bulletin de vote</h1>
+            <p class="text--body text--default-large text--dark">Confirmez-vous votre bulletin ?</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block voting_platform_content %}
+    <div class="l__wrapper{{ vote_command.isMajorityVote ? '--medium' : '--narrow' }}">
+        {% include 'renaissance/voting_platform/confirmation/' ~ (vote_command.isMajorityVote ? '_majority_vote') ~ '_confirmation_block.html.twig' %}
+    </div>
+
+    {{ form_start(form) }}
+        <div class="l__wrapper--slim">
+            {{ form_widget(form.allow, { label: 'Confirmer mon vote', attr: { class: 'btn btn--blue btn--large-and-full', disabled: not workflow_can(vote_command, 'to_finish') ? 'disabled' : false } }) }}
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,7 @@
+{% macro display_candidate_photo(candidate) %}
+    {% if candidate.hasPhoto %}
+        <img src="{{ path('asset_url', {path: candidate.imagePath}) }}" alt="photo" />
+    {% else %}
+        {{ candidate.initials }}
+    {% endif %}
+{% endmacro %}

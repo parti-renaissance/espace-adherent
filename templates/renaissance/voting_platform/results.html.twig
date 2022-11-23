@@ -1,0 +1,112 @@
+{% extends base_layout %}
+
+{% set election = election_round.election %}
+
+{% set election_result = election.electionResult %}
+{% set election_round_result = election_result.getElectionRoundResult(election_round) %}
+
+{% set election_rounds = election.electionRounds %}
+{% set my_vote = get_my_vote_for_election(app.user, election_round) %}
+
+{% block page_title 'Résultats de ' ~ designation.getDenomination(true) %}
+
+{% block voting_platform_header %}
+    <div class="l__wrapper{{ not designation.isMajorityType ? '--medium' }}">
+        <div class="has-voted-header b__nudge--bottom-50">
+            <h1 class="text--larger">Résultats de {{ designation.getDenomination(true) }}</h1>
+        </div>
+
+        {% if election_rounds|length > 1 and not election.isSecondRoundVotePeriodActive %}
+            <section>
+                <div class="datagrid__table__tabs">
+                    <div class="datagrid__table__tabs__items">
+                        {% for round in election_rounds %}
+                            <h3>
+                                <a class="{{ round.equals(election_round) ? 'active' }}"
+                                   href="{{ path('app_voting_platform_results', {uuid: election.uuid, election_round_uuid: round.uuid, app_domain: renaissance_host}) }}">
+                                    Tour {{ (loop.index == election_rounds|length == 2) ? 'bis' : loop.index }}
+                                </a>
+                            </h3>
+                            {% if not loop.last %}
+                                <span class="separator"></span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block header_actions '' %}
+{% block voting_platform_ornametns '' %}
+
+{% block voting_platform_content %}
+    <div class="voting-platform__results election-results">
+        <div>
+            <div class="l__wrapper{{ not designation.isMajorityType ? '--medium' }}">
+                <nav class="tabs-nav border-on results__menu b__nudge--bottom-larger">
+                    <ul>
+                        {% for pool_result in election_round_result.getElectionPoolResults() %}
+                            <li {{ loop.index == 1 ? 'class="active"' }}>
+                                <a href="#" class="tabs-nav__item results-tab--toggle">{{ block('voting_platform_result_tab_pool_title') }}</a>
+                            </li>
+                        {% endfor %}
+
+                        <li>
+                            <a href="#" class="tabs-nav__item results-tab--toggle">
+                                {{ block('voting_platform_result_tab_votes_list_title') }}
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="l__wrapper{{ not designation.isMajorityType ? '--medium' }}">
+                <div class="candidate-tabs--container">
+                    {% for pool_result in election_round_result.getElectionPoolResults %}
+                        <div class="candidate-tab candidate-tab--{{ loop.index }}" {{ loop.index > 1 ? 'style="display: none;"' }}>
+                            <div class="tab--container">
+                                {% include 'voting_platform/results/' ~ (designation.isMajorityType ? '_majority_vote') ~ '_candidates_list.html.twig' %}
+
+                                {% include 'renaissance/voting_platform/results/_stats_block.html.twig' %}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <div class="candidate-tab candidate-tab--{{ election_round_result.getElectionPoolResults|length + 1 }}" style="display: none;">
+                        <div class="tab--container">
+                            {% include 'renaissance/voting_platform/results/' ~ (designation.isMajorityType ? '_majority_vote') ~ (designation.isPollType ? '_poll') ~ '_bulletins_list.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        findAll(dom('.results__menu'), 'a.results-tab--toggle').forEach(function(link, index) {
+            on(link, 'click', function (event) {
+                event.preventDefault();
+                toggleVoteTab(index);
+
+                removeClass(dom('.results__menu li.active'), 'active');
+                addClass(link.parentNode, 'active');
+            });
+        });
+
+        function toggleVoteTab(id) {
+            findAll(document, '.candidate-tabs--container > div').forEach(function(tab, index) {
+                if (index === id) {
+                    show(tab);
+                } else {
+                    hide(tab);
+                }
+            });
+        }
+    </script>
+{% endblock %}

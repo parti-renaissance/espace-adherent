@@ -1,0 +1,5 @@
+<div class="candidates-block">
+    {% for candidate_group_result in pool_result.candidateGroupResultsSorted %}
+        {% include 'renaissance/voting_platform/results/' ~ (designation.isPollType ? '_poll') ~ '_candidate_box.html.twig' %}
+    {% endfor %}
+</div>

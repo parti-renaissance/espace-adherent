@@ -1,0 +1,5 @@
+{% extends 'renaissance/voting_platform/_layout_committee_base.html.twig' %}
+
+{% block vote_step_pool_title %}
+    Étape {{ pool_index + 1 }} : Sélectionnez {{ pool.code|lower == 'female' ? 'une candidate Femme' : 'un candidat Homme' }}
+{% endblock %}

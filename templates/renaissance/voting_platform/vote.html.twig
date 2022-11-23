@@ -1,0 +1,34 @@
+{% extends base_layout %}
+
+{% block page_title 'Vote élection' %}
+
+{% block voting_platform_content %}
+    <div class="election-vote b__nudge--bottom-60 l__wrapper{{ not designation.isExecutiveOfficeType ? (designation.isMajorityType ? '--medium' : '--slim') : null }}">
+        {% set vote_step_pool_title = block('vote_step_pool_title') %}
+
+        {% if vote_step_pool_title %}
+            <h2 class="text--body text--black text--default-large b__nudge--bottom-larger l__wrapper--slim">{{ vote_step_pool_title|raw }}</h2>
+        {% endif %}
+
+        {{ form_start(form) }}
+
+            {{ form_errors(form.poolChoice) }}
+
+            <div class="election-vote__boxes">
+                {% for choice in form.poolChoice %}
+                    {% include 'renaissance/voting_platform/vote_step/' ~ (designation.isMajorityType ? '_majority_vote') ~ (designation.isPollType ? '_poll') ~ '_candidate_box.html.twig' with {
+                        candidate_group: candidate_groups|filter(group => (designation.isMajorityType ? choice.vars.name : choice.vars.value) == group.uuid.toString)|first,
+                        form: choice
+                    } %}
+                {% endfor %}
+            </div>
+
+            <div class="l__wrapper--slim">
+                {{ form_row(form.confirm, {label: 'Confirmer', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-large'}}) }}
+                <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid, back: true, app_domain: renaissance_host}) }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
+                    ⟵ Retour
+                </a>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

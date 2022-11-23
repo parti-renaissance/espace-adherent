@@ -1,0 +1,32 @@
+{% import 'renaissance/voting_platform/_macros.html.twig' as helper %}
+
+{% set candidate_group = candidate_group_result.candidateGroup %}
+
+<div class="candidate__box {{ candidate_group.elected ? 'elected' }} l__row  b__nudge--bottom-medium">
+    <div class="box__content">
+        <div class="l__row l__row--h-stretch">
+            <h3 class="text--medium pool-name">
+                {{ cms_block(pool_result.electionPool.code) }}
+            </h3>
+            <div class="text--body text--right text--dark">{{ candidate_group_result.total }} bulletin{{ candidate_group_result.total > 1 ? 's' }}</div>
+        </div>
+
+        <ul class="candidate-names">
+            {% for candidate in candidate_group.getCandidatesSorted() %}
+                <li class="text--body">
+                    <strong>{{ candidate.fullName }}</strong>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="candidate-footer l__row">
+            <div class="l__row progress-bar">
+                {% set votes_rate = candidate_group_result.rate %}
+                <div class="progress-bar__gauge">
+                    <div class="slider" style="width: {{ votes_rate }}%"></div>
+                </div>
+                <div class="progress-bar__value text--right text--body">{{ votes_rate|number_format(0) }}%</div>
+            </div>
+        </div>
+    </div>
+</div>
