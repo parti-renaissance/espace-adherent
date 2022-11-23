@@ -60,8 +60,6 @@ class InitializeElectionsCommand extends Command
                 $this->configureTerritorialCouncilElections($designation);
             } elseif ($designation->isExecutiveOfficeType()) {
                 $this->configureNationalCouncilElections($designation);
-            } else {
-                $this->io->error(sprintf('Unhandled designation type "%s"', $designation->getType()));
             }
         }
 
