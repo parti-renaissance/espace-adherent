@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
+use App\Address\Address;
 use App\Adherent\AdherentRoleEnum;
 use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;
@@ -700,7 +701,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             SQL;
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->bindValue('country_code_france', AreaUtils::CODE_FRANCE);
+        $stmt->bindValue('country_code_france', Address::FRANCE);
         $stmt->bindValue('prefix_postalcode_paris', AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS.'%');
         $stmt->bindValue('candidate_email_subscription_code', SubscriptionTypeEnum::CANDIDATE_EMAIL);
         $stmt->bindValue('sms_mms_subscription_code', SubscriptionTypeEnum::MILITANT_ACTION_SMS);

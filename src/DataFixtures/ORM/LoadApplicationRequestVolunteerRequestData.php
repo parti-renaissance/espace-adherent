@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Address\Address;
 use App\Entity\ApplicationRequest\VolunteerRequest;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -73,7 +74,7 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture implements Depe
 
         $volunteerRequest4->setAdherent($this->getReference('adherent-14'));
 
-        $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', 'FR');
+        $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', Address::FRANCE);
 
         foreach ([$volunteerRequest1, $volunteerRequest2, $volunteerRequest3, $volunteerRequest4] as $i => $volunteerRequest) {
             $volunteerRequest->setPostalCode('90265');

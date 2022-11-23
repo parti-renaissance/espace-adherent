@@ -10,8 +10,6 @@ use App\Entity\ThematicCommunity\ThematicCommunityMembership;
 use App\Entity\ThematicCommunity\ThematicCommunityToUserListDefinitionEnum;
 use App\Entity\UserListDefinition;
 use App\Form\GenderType;
-use App\Form\UnitedNationsCountryType;
-use App\Intl\UnitedNationsBundle;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -28,6 +26,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -138,7 +137,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                     'label' => 'Ville',
                     'disabled' => !$isContactMembership,
                 ])
-                ->add('postAddress.country', UnitedNationsCountryType::class, [
+                ->add('postAddress.country', CountryType::class, [
                     'label' => 'Pays',
                     'disabled' => !$isContactMembership,
                 ])
@@ -377,10 +376,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
             ->add('country', CallbackFilter::class, [
                 'label' => 'Pays',
                 'show_filter' => true,
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => array_flip(UnitedNationsBundle::getCountries()),
-                ],
+                'field_type' => CountryType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;

@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
+use App\Address\Address;
 use App\Entity\Geo\Zone;
 use App\Procuration\ProcurationDisableReasonEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
-use App\Utils\AreaUtils;
 use App\Validator\Recaptcha as AssertRecaptcha;
-use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use App\Validator\ZoneType as AssertZoneType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -150,7 +149,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      *
      * @Assert\Length(max=15, groups={"front"})
      * @Assert\Expression(
-     *     "this.getCountry() != constant('App\\Utils\\AreaUtils::CODE_FRANCE') or value != null",
+     *     "this.getCountry() != constant('App\\Address\\Address::FRANCE') or value != null",
      *     message="procuration.postal_code.not_empty",
      *     groups={"front"}
      * )
@@ -182,7 +181,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      *
      * @Assert\Length(max=255, groups={"front"})
      * @Assert\Expression(
-     *     "not (this.getCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value != null)",
+     *     "not (this.getCountry() == constant('App\\Address\\Address::FRANCE') and value != null)",
      *     message="procuration.state.not_empty",
      *     groups={"front"}
      * )
@@ -195,9 +194,9 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      * @ORM\Column(length=2)
      *
      * @Assert\NotBlank(groups={"front"})
-     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"front"})
+     * @Assert\Country(message="common.country.invalid", groups={"front"})
      */
-    private $country = AreaUtils::CODE_FRANCE;
+    private $country = Address::FRANCE;
 
     /**
      * @var PhoneNumber
@@ -243,7 +242,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      *
      * @Assert\Length(max=15, groups={"front"})
      * @Assert\Expression(
-     *     "(this.getVoteCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getVoteCountry() != constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
+     *     "(this.getVoteCountry() == constant('App\\Address\\Address::FRANCE') and value != null) or (this.getVoteCountry() != constant('App\\Address\\Address::FRANCE') and value == null)",
      *     message="procuration.postal_code.not_empty",
      *     groups={"front"}
      * )
@@ -274,9 +273,9 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      * @ORM\Column(length=2)
      *
      * @Assert\NotBlank(groups={"front"})
-     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"front"})
+     * @Assert\Country(message="common.country.invalid", groups={"front"})
      */
-    private $voteCountry = AreaUtils::CODE_FRANCE;
+    private $voteCountry = Address::FRANCE;
 
     /**
      * @var string
@@ -318,7 +317,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      *     groups={"front", "Default"}
      * )
      * @Assert\Expression(
-     *     "(this.getVoteCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value <= 2) or (this.getVoteCountry() != constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value <= 3)",
+     *     "(this.getVoteCountry() == constant('App\\Address\\Address::FRANCE') and value <= 2) or (this.getVoteCountry() != constant('App\\Address\\Address::FRANCE') and value <= 3)",
      *     message="procuration.vote_country.conditions",
      *     groups={"front", "Default"}
      * )
@@ -816,7 +815,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
 
     private function getForeignRequestsLimit(): int
     {
-        return AreaUtils::CODE_FRANCE === $this->getVoteCountry()
+        return Address::FRANCE === $this->getVoteCountry()
             ? self::MAX_FOREIGN_REQUESTS_FROM_FRANCE
             : self::MAX_FOREIGN_REQUESTS_FROM_FOREIGN_COUNTRY;
     }

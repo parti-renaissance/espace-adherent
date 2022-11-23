@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use App\Address\Address;
 use App\Assessor\AssessorRequestElectionRoundsEnum;
 use App\Entity\Election\VotePlace as ElectionVotePlace;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
-use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -133,9 +133,9 @@ class AssessorRequest implements RecaptchaChallengeInterface
      * @ORM\Column(length=2, options={"default": "FR"})
      *
      * @Assert\NotBlank(message="common.country.not_blank")
-     * @AssertUnitedNationsCountry(message="common.country.invalid")
+     * @Assert\Country(message="common.country.invalid")
      */
-    private $country = 'FR';
+    private $country = Address::FRANCE;
 
     /**
      * @var string
@@ -222,9 +222,9 @@ class AssessorRequest implements RecaptchaChallengeInterface
      * @ORM\Column(length=2)
      *
      * @Assert\NotBlank
-     * @AssertUnitedNationsCountry(message="common.country.invalid")
+     * @Assert\Country(message="common.country.invalid")
      */
-    private $assessorCountry = 'FR';
+    private $assessorCountry = Address::FRANCE;
 
     /**
      * @var string
@@ -323,12 +323,12 @@ class AssessorRequest implements RecaptchaChallengeInterface
         string $voterNumber,
         ?string $assessorCity,
         ?string $assessorPostalCode,
-        string $country = 'FR',
+        string $country = Address::FRANCE,
         string $office = AssessorOfficeEnum::HOLDER,
         array $electionRounds = AssessorRequestElectionRoundsEnum::ALL,
         bool $enabled = true,
         bool $reachable = false,
-        string $assessorCountry = 'FR',
+        string $assessorCountry = Address::FRANCE,
         ?array $votePlaceWishes = []
     ): self {
         $assessorRequest = new self();
@@ -643,7 +643,7 @@ class AssessorRequest implements RecaptchaChallengeInterface
 
     public function isFrenchAssessorRequest(): bool
     {
-        return 'FR' === $this->getAssessorCountry();
+        return Address::FRANCE === $this->getAssessorCountry();
     }
 
     public function getOfficeName(): ?string

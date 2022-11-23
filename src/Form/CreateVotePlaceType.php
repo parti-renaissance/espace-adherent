@@ -7,6 +7,7 @@ use App\Entity\VotePlace;
 use App\FranceCities\FranceCities;
 use App\Repository\VotePlaceRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -32,7 +33,7 @@ class CreateVotePlaceType extends AbstractType
             ->add('address', TextType::class)
             ->add('city', TextType::class)
             ->add('postalCode', TextType::class)
-            ->add('country', UnitedNationsCountryType::class, [
+            ->add('country', CountryType::class, [
                 'placeholder' => 'Sélectionnez un pays',
                 'preferred_choices' => [Address::FRANCE],
             ])

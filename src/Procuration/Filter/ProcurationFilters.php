@@ -4,9 +4,9 @@ namespace App\Procuration\Filter;
 
 use App\Entity\ProcurationProxy;
 use App\Exception\ProcurationException;
-use App\Intl\UnitedNationsBundle;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Intl\Countries;
 
 abstract class ProcurationFilters
 {
@@ -142,7 +142,7 @@ abstract class ProcurationFilters
 
     public function getCountries(): array
     {
-        return UnitedNationsBundle::getCountries();
+        return Countries::getNames();
     }
 
     public function hasData(): bool

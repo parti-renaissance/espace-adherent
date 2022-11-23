@@ -2,12 +2,11 @@
 
 namespace App\Entity;
 
+use App\Address\Address;
 use App\Procuration\ProcurationDisableReasonEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
-use App\Utils\AreaUtils;
 use App\Validator\Recaptcha as AssertRecaptcha;
-use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -149,7 +148,7 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      *
      * @Assert\Length(max=15, groups={"profile"})
      * @Assert\Expression(
-     *     "this.getCountry() != constant('App\\Utils\\AreaUtils::CODE_FRANCE') or value != null",
+     *     "this.getCountry() != constant('App\\Address\\Address::FRANCE') or value != null",
      *     message="procuration.postal_code.not_empty",
      *     groups={"profile"}
      * )
@@ -181,7 +180,7 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      *
      * @Assert\Length(max=255, groups={"profile"})
      * @Assert\Expression(
-     *     "not (this.getCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value != null)",
+     *     "not (this.getCountry() == constant('App\\Address\\Address::FRANCE') and value != null)",
      *     message="procuration.state.not_empty",
      *     groups={"profile"}
      * )
@@ -194,9 +193,9 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      * @ORM\Column(length=2)
      *
      * @Assert\NotBlank(groups={"profile"})
-     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"profile"})
+     * @Assert\Country(message="common.country.invalid", groups={"profile"})
      */
-    private $country = AreaUtils::CODE_FRANCE;
+    private $country = Address::FRANCE;
 
     /**
      * @var PhoneNumber
@@ -252,7 +251,7 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      *
      * @Assert\Length(max=15, groups={"vote"})
      * @Assert\Expression(
-     *     "(this.getVoteCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getVoteCountry() != constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
+     *     "(this.getVoteCountry() == constant('App\\Address\\Address::FRANCE') and value != null) or (this.getVoteCountry() != constant('App\\Address\\Address::FRANCE') and value == null)",
      *     message="procuration.postal_code.not_empty",
      *     groups={"vote"}
      * )
@@ -283,9 +282,9 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      * @ORM\Column(length=2)
      *
      * @Assert\NotBlank(groups={"vote"})
-     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"vote"})
+     * @Assert\Country(message="common.country.invalid", groups={"vote"})
      */
-    private $voteCountry = AreaUtils::CODE_FRANCE;
+    private $voteCountry = Address::FRANCE;
 
     /**
      * @var string

@@ -146,13 +146,4 @@ class ImportVotePlacesCommand extends Command
 
         return null;
     }
-
-    private function formatCountry(string $country): string
-    {
-        if (is_numeric($country) || '2A' === $country || '2B' === $country) {
-            return 'FR';
-        }
-
-        return $country;
-    }
 }

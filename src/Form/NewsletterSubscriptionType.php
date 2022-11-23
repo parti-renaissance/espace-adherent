@@ -2,10 +2,12 @@
 
 namespace App\Form;
 
+use App\Address\Address;
 use App\Entity\NewsletterSubscription;
 use App\Repository\NewsletterSubscriptionRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,9 +31,9 @@ class NewsletterSubscriptionType extends AbstractType
             ->add('postalCode', TextType::class, [
                 'required' => false,
             ])
-            ->add('country', UnitedNationsCountryType::class, [
+            ->add('country', CountryType::class, [
                 'required' => false,
-                'preferred_choices' => ['FR'],
+                'preferred_choices' => [Address::FRANCE],
             ])
             ->add('personalDataCollection', AcceptPersonalDataCollectType::class, [
                 'mapped' => true,

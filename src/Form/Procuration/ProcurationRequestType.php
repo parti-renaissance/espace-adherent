@@ -4,9 +4,9 @@ namespace App\Form\Procuration;
 
 use App\Entity\ProcurationRequest;
 use App\Form\DataTransformer\CityNameDataTransformer;
-use App\Form\UnitedNationsCountryType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -49,7 +49,7 @@ class ProcurationRequestType extends AbstractProcurationType
         switch ($options['step_uri']) {
             case ProcurationRequest::STEP_URI_VOTE:
                 $builder
-                    ->add('voteCountry', UnitedNationsCountryType::class)
+                    ->add('voteCountry', CountryType::class)
                     ->add('votePostalCode', TextType::class, [
                         'required' => false,
                     ])

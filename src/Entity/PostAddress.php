@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use App\Address\Address;
 use App\Address\AddressInterface;
 use App\Address\GeocodableAddress;
 use App\Geocoder\Coordinates;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoPointInterface;
-use App\Validator\UnitedNationsCountry;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
@@ -18,8 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInterface
 {
-    public const FRANCE = 'FR';
-
     /**
      * The address street.
      *
@@ -98,7 +96,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=2, nullable=true)
      *
-     * @UnitedNationsCountry(groups={"contact_update"})
+     * @Assert\Country(groups={"contact_update"})
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
@@ -158,7 +156,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
 
     public static function createEmptyAddress(): self
     {
-        return new self(self::FRANCE);
+        return new self(Address::FRANCE);
     }
 
     public static function createCountryAddress(string $country): self
@@ -177,7 +175,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         [$postalCode, $inseeCode] = explode('-', $cityCode);
 
         $address = new self(
-            self::FRANCE,
+            Address::FRANCE,
             $postalCode,
             $cityName,
             $street,
@@ -345,7 +343,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
 
     private function isFrenchAddress(): bool
     {
-        return 'FR' === mb_strtoupper($this->country) && $this->city;
+        return Address::FRANCE === mb_strtoupper($this->country) && $this->city;
     }
 
     public function hasCoordinates(): bool

@@ -8,6 +8,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Address\Address;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
 use App\Api\Filter\EventScopeFilter;
@@ -823,7 +824,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
 
     public function isIndexable(): bool
     {
-        return $this->isPublished() && $this->isGeocoded() && 'FR' === $this->getCountry();
+        return $this->isPublished() && $this->isGeocoded() && Address::FRANCE === $this->getCountry();
     }
 
     public function getIndexOptions(): array

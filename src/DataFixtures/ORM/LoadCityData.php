@@ -2,10 +2,10 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Address\Address;
 use App\Entity\City;
 use App\Entity\Department;
 use App\Entity\Region;
-use App\Utils\AreaUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -85,7 +85,7 @@ class LoadCityData extends Fixture
     public function load(ObjectManager $manager): void
     {
         foreach (self::REGIONS as $code => $name) {
-            $region = new Region($name, $code, AreaUtils::CODE_FRANCE);
+            $region = new Region($name, $code, Address::FRANCE);
 
             $manager->persist($region);
             $this->setReference("region-$code", $region);

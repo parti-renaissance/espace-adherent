@@ -2,11 +2,11 @@
 
 namespace App\Exporter;
 
+use App\Address\Address;
 use App\Coalition\CoalitionUrlGenerator;
 use App\Coalition\Filter\CauseFilter;
 use App\Entity\Adherent;
 use App\Entity\Coalition\Cause;
-use App\Entity\PostAddress;
 use App\Repository\Coalition\CauseRepository;
 use App\Repository\Geo\CityRepository;
 use Sonata\Exporter\Exporter as SonataExporter;
@@ -83,7 +83,7 @@ class CausesExporter
             return $adherent->getPostalCode();
         }
 
-        if (PostAddress::FRANCE !== $adherent->getCountry()) {
+        if (Address::FRANCE !== $adherent->getCountry()) {
             return $adherent->getCountry();
         }
 

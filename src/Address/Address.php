@@ -6,7 +6,6 @@ use App\Geocoder\GeocodableInterface;
 use App\Validator\Address as AssertValidAddress;
 use App\Validator\FrenchZipCode;
 use App\Validator\GeocodableAddress as AssertGeocodableAddress;
-use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -60,7 +59,7 @@ class Address implements AddressInterface, GeocodableInterface
 
     /**
      * @Assert\NotBlank(message="common.country.not_blank", groups={"Default", "Registration", "Update", "fill_personal_info"})
-     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"Default", "Registration", "Update", "fill_personal_info"})
+     * @Assert\Country(message="common.country.invalid", groups={"Default", "Registration", "Update", "fill_personal_info"})
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
@@ -136,7 +135,7 @@ class Address implements AddressInterface, GeocodableInterface
 
     public function isFrenchAddress(): bool
     {
-        return 'FR' === $this->country && $this->city;
+        return self::FRANCE === $this->country && $this->city;
     }
 
     public static function createFromAddress(AddressInterface $other): self
