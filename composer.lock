@@ -5486,52 +5486,55 @@
         },
         {
             "name": "knplabs/doctrine-behaviors",
-            "version": "2.1.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/DoctrineBehaviors.git",
-                "reference": "a788a8f16e3c7126b64dd5ab0ec07eec8d075a14"
+                "reference": "35ba29cefdfa18778f5273e1dc7c156f43d92340"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/DoctrineBehaviors/zipball/a788a8f16e3c7126b64dd5ab0ec07eec8d075a14",
-                "reference": "a788a8f16e3c7126b64dd5ab0ec07eec8d075a14",
+                "url": "https://api.github.com/repos/KnpLabs/DoctrineBehaviors/zipball/35ba29cefdfa18778f5273e1dc7c156f43d92340",
+                "reference": "35ba29cefdfa18778f5273e1dc7c156f43d92340",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": "^2.7|^3.0",
+                "doctrine/common": "^3.0",
                 "doctrine/dbal": "^2.9",
-                "doctrine/orm": "^2.7",
-                "doctrine/persistence": "^1.3.4|^2.0",
-                "nette/utils": "^3.0",
-                "php": "^7.2|^8.0",
-                "ramsey/uuid": "^3.9|^4.0",
-                "symfony/cache": "^4.4|^5.1",
-                "symfony/dependency-injection": "^4.4|^5.1",
-                "symfony/framework-bundle": "^4.4|^5.1",
-                "symfony/http-kernel": "^4.4|^5.1",
-                "symfony/polyfill-php80": "^1.18",
-                "symfony/security-core": "^4.4|^5.1",
-                "symfony/string": "^5.0",
-                "symfony/translation-contracts": "^2.1"
+                "doctrine/orm": "^2.8",
+                "doctrine/persistence": "^2.0",
+                "nette/utils": "^3.2",
+                "php": ">=8.0",
+                "ramsey/uuid": "^4.0",
+                "symfony/cache": "^4.4|^5.2",
+                "symfony/dependency-injection": "^4.4|^5.2",
+                "symfony/framework-bundle": "^4.4|^5.2",
+                "symfony/http-kernel": "^4.4|^5.2",
+                "symfony/polyfill-php80": "^1.22",
+                "symfony/security-core": "^4.4|^5.2",
+                "symfony/string": "^5.2",
+                "symfony/translation-contracts": "^2.3"
             },
             "require-dev": {
-                "doctrine/annotations": "^1.8",
-                "doctrine/doctrine-bundle": "^2.0",
+                "doctrine/annotations": "^1.12",
+                "doctrine/doctrine-bundle": "^2.2",
                 "ext-pdo_mysql": "*",
                 "ext-pdo_pgsql": "*",
                 "ext-pdo_sqlite": "*",
-                "php-parallel-lint/php-parallel-lint": "^1.2",
-                "phpstan/phpstan": "^0.12.80",
-                "phpstan/phpstan-doctrine": "^0.12.33",
-                "phpstan/phpstan-phpunit": "^0.12.18",
-                "phpunit/phpunit": "^8.5|^9.2",
+                "php-parallel-lint/php-parallel-lint": "^1.3",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "^0.12.84",
+                "phpstan/phpstan-doctrine": "^0.12.42",
+                "phpstan/phpstan-phpunit": "^0.12",
+                "phpunit/phpunit": "^9.5",
                 "psr/log": "^1.1",
-                "rector/rector-prefixed": "^0.9",
-                "symplify/easy-coding-standard": "^9.2.6",
-                "symplify/package-builder": "^9.2.6",
-                "symplify/phpstan-extensions": "^9.2.6",
-                "symplify/phpstan-rules": "^9.2.6"
+                "rector/rector": "^0.11.45",
+                "symplify/amnesia": "^9.4",
+                "symplify/config-transformer": "^9.4",
+                "symplify/easy-coding-standard": "^9.4",
+                "symplify/package-builder": "^9.4",
+                "symplify/phpstan-extensions": "^9.4",
+                "symplify/phpstan-rules": "^9.4"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -5564,9 +5567,9 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/DoctrineBehaviors/issues",
-                "source": "https://github.com/KnpLabs/DoctrineBehaviors/tree/2.1.0"
+                "source": "https://github.com/KnpLabs/DoctrineBehaviors/tree/2.3.0"
             },
-            "time": "2021-03-08T21:34:43+00:00"
+            "time": "2021-08-09T08:28:16+00:00"
         },
         {
             "name": "knplabs/knp-menu",
@@ -8107,27 +8110,27 @@
         },
         {
             "name": "nette/utils",
-            "version": "v3.2.5",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "9cd80396ca58d7969ab44fc7afcf03624dfa526e"
+                "reference": "02a54c4c872b99e4ec05c4aec54b5a06eb0f6368"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/9cd80396ca58d7969ab44fc7afcf03624dfa526e",
-                "reference": "9cd80396ca58d7969ab44fc7afcf03624dfa526e",
+                "url": "https://api.github.com/repos/nette/utils/zipball/02a54c4c872b99e4ec05c4aec54b5a06eb0f6368",
+                "reference": "02a54c4c872b99e4ec05c4aec54b5a06eb0f6368",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2 <8.2"
+                "php": ">=7.2 <8.3"
             },
             "conflict": {
                 "nette/di": "<3.0.6"
             },
             "require-dev": {
                 "nette/tester": "~2.0",
-                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan": "^1.0",
                 "tracy/tracy": "^2.3"
             },
             "suggest": {
@@ -8186,9 +8189,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v3.2.5"
+                "source": "https://github.com/nette/utils/tree/v3.2.8"
             },
-            "time": "2021-09-20T10:50:11+00:00"
+            "time": "2022-09-12T23:36:20+00:00"
         },
         {
             "name": "ninsuo/symfony-collection",
