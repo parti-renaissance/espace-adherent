@@ -775,6 +775,13 @@
             }
         }
     }
+
+    &__re-logo {
+        width: auto;
+        height: 1.25rem;
+        filter: invert(32%) sepia(53%) saturate(2638%) hue-rotate(176deg) brightness(103%) contrast(89%);
+    }
+
 }
 
 .candidate__box {
