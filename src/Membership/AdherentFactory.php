@@ -179,7 +179,7 @@ class AdherentFactory
             $command->isAgirMembership()
         );
 
-        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent->setSource($command->source);
 
         return $adherent;
     }

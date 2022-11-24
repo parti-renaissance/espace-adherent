@@ -7,6 +7,7 @@ use App\Donation\DonationRequestHandler;
 use App\Donation\PayboxPaymentSubscription;
 use App\Entity\Donation;
 use App\Membership\AdherentFactory;
+use App\Membership\MembershipSourceEnum;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AdherentCreateCommandHandler
@@ -20,7 +21,7 @@ class AdherentCreateCommandHandler
 
     public function createCommand(): AdherentCreateCommand
     {
-        return new AdherentCreateCommand();
+        return new AdherentCreateCommand(MembershipSourceEnum::RENAISSANCE);
     }
 
     public function handle(AdherentCreateCommand $command): void
@@ -40,6 +41,7 @@ class AdherentCreateCommandHandler
         $donationRequest->forMembership();
 
         $donation = $this->donationRequestHandler->handle($donationRequest, $adherent);
+        $donation->markAsFinished();
         $donation->markAsLastSuccessfulDonation();
 
         $this->entityManager->flush();
