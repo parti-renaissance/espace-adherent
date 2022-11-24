@@ -8,6 +8,7 @@ use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\MyTeam;
+use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountCreatedMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest;
@@ -357,6 +358,9 @@ class AdherentAdminTest extends AbstractWebCaseTest
 
         self::assertInstanceOf(\DateTime::class, $adherent->getLastMembershipDonation());
         self::assertTrue($adherent->isRenaissanceAdherent());
+
+        $this->assertCountMails(1, RenaissanceAdherentAccountCreatedMessage::class);
+        $this->assertMail(RenaissanceAdherentAccountCreatedMessage::class, $submittedValues['email'], ['template_name' => 'renaissance-adherent-account-created']);
     }
 
     public function provideCreateRenaissanceAdherent(): \Generator

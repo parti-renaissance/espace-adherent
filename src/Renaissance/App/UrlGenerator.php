@@ -41,6 +41,10 @@ class UrlGenerator extends AbstractAppUrlGenerator
 
     public function generateSuccessResetPasswordLink(Request $request): string
     {
+        if ($request->query->has('is_creation')) {
+            return $this->urlGenerator->generate('app_renaissance_adherent_creation_confirmation');
+        }
+
         return static::generateHomepageLink();
     }
 

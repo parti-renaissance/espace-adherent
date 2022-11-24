@@ -901,6 +901,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->territoireProgresMembership = $territoiresProgresMembership;
         $adherent->agirMembership = $agirMembership;
         $adherent->registeredAt = new \DateTime('now');
+        $adherent->referentTags = new ArrayCollection();
 
         $adherent->password = Uuid::uuid4();
 
