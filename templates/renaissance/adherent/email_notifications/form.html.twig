@@ -19,9 +19,7 @@
             {{ form_start(form, { attr: { class: 're-form' } }) }}
                 {{ form_errors(form) }}
 
-                {% set help_messages = {
-                    (constant('App\\Subscription\\SubscriptionTypeEnum::REFERENT_EMAIL')): 'Les référents territoriaux sont les représentants du mouvement dans les zones géographiques qui leur sont attribuées. Ils y ont la charge de l\'animation du mouvement au niveau local, de la coordination des comités locaux et du lien avec les instances nationales. Découvrez le/la vôtre en cliquant <a href="' ~ path('our_referents_homepage') ~ '" target="_blank" rel="noopener noreferrer">ici</a>.'
-                } %}
+                {% set help_messages = {} %}
 
                 <div class="divide-y divide-gray-200">
                     {% for group_choices in form.subscriptionTypes.vars.choices %}
