@@ -871,6 +871,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->instanceQualities = new ArrayCollection();
         $this->teamMemberships = new ArrayCollection();
         $this->zoneBasedRoles = new ArrayCollection();
+        $this->referentTags = new ArrayCollection();
     }
 
     public static function createBlank(
@@ -901,7 +902,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->territoireProgresMembership = $territoiresProgresMembership;
         $adherent->agirMembership = $agirMembership;
         $adherent->registeredAt = new \DateTime('now');
-        $adherent->referentTags = new ArrayCollection();
 
         $adherent->password = Uuid::uuid4();
 
@@ -926,7 +926,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->postAddress = $postAddress;
         $adherent->emailAddress = $emailAddress;
         $adherent->password = $password;
-        $adherent->referentTags = new ArrayCollection();
         $adherent->status = $status;
         $adherent->nicknameUsed = false;
         $adherent->registeredAt = new \DateTime('now');
