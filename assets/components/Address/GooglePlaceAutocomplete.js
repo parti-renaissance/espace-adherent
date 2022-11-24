@@ -1,5 +1,5 @@
 export default class GooglePlaceAutocomplete {
-    constructor({element, addressForm}) {
+    constructor({ element, addressForm }) {
         this._input = element;
         this._addressForm = addressForm;
     }
@@ -24,7 +24,7 @@ export default class GooglePlaceAutocomplete {
         if (this._addressForm) {
             this._autocomplete.addListener('place_changed', () => {
                 this._addressForm.updateWithPlace(this._autocomplete.getPlace());
-            })
+            });
         }
     }
 }
