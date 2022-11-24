@@ -47,7 +47,8 @@ class AdherentResetPasswordHandler
         Adherent $adherent,
         AdherentResetPasswordToken $token,
         string $newPassword,
-        ?string $appCode = null
+        ?string $appCode = null,
+        bool $isCreation = false
     ): void {
         $newEncodedPassword = $this->encoderFactory
             ->getEncoder(Adherent::class)
@@ -68,7 +69,7 @@ class AdherentResetPasswordHandler
 
         $this->manager->flush();
 
-        if (MembershipSourceEnum::RENAISSANCE === $appCode) {
+        if (MembershipSourceEnum::RENAISSANCE === $appCode && !$isCreation) {
             $this->mailer->sendMessage(RenaissanceResetPasswordConfirmationMessage::createFromAdherent($adherent));
         } elseif (null === $adherent->getSource()) {
             $this->mailer->sendMessage(AdherentResetPasswordConfirmationMessage::createFromAdherent($adherent));

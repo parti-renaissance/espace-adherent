@@ -150,7 +150,13 @@ class SecurityController extends AbstractController
             $newPassword = $form->get('password')->getData();
 
             try {
-                $handler->reset($adherent, $resetPasswordToken, $newPassword, $appUrlGenerator->getAppCode());
+                $handler->reset(
+                    $adherent,
+                    $resetPasswordToken,
+                    $newPassword,
+                    $appUrlGenerator->getAppCode(),
+                    $request->query->has('is_creation')
+                );
                 $this->addFlash('info', 'adherent.reset_password.success');
 
                 return $this->redirect($appUrlGenerator->generateSuccessResetPasswordLink($request));
