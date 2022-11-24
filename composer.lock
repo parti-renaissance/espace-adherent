@@ -8,36 +8,36 @@
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
-            "version": "0.3.3",
+            "version": "0.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/a2lix/AutoFormBundle.git",
-                "reference": "ff1c9f3d1bee6143b0376e07a0770c11aea2bc5b"
+                "reference": "50b8952d8504431780d56e873549686474b8773c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/AutoFormBundle/zipball/ff1c9f3d1bee6143b0376e07a0770c11aea2bc5b",
-                "reference": "ff1c9f3d1bee6143b0376e07a0770c11aea2bc5b",
+                "url": "https://api.github.com/repos/a2lix/AutoFormBundle/zipball/50b8952d8504431780d56e873549686474b8773c",
+                "reference": "50b8952d8504431780d56e873549686474b8773c",
                 "shasum": ""
             },
             "require": {
-                "doctrine/persistence": "^1.3|^2.0",
+                "doctrine/persistence": "^1.3|^2.0|^3.0",
                 "php": ">=7.2.5",
-                "symfony/config": "^3.4.30|^4.3|^5.0",
-                "symfony/dependency-injection": "^3.4.30|^4.3|^5.0",
-                "symfony/doctrine-bridge": "^3.4.30|^4.3|^5.0",
-                "symfony/form": "^3.4.30|^4.3|^5.0",
-                "symfony/http-kernel": "^3.4.30|^4.3|^5.0"
+                "symfony/config": "^3.4.30|^4.3|^5.0|^6.0",
+                "symfony/dependency-injection": "^3.4.30|^4.3|^5.0|^6.0",
+                "symfony/doctrine-bridge": "^3.4.30|^4.3|^5.0|^6.0",
+                "symfony/form": "^3.4.30|^4.3|^5.0|^6.0",
+                "symfony/http-kernel": "^3.4.30|^4.3|^5.0|^6.0"
             },
             "require-dev": {
                 "doctrine/orm": "^2.7",
-                "edgedesign/phpqa": "^1.23.3",
-                "friendsofphp/php-cs-fixer": "^2.15",
-                "phpstan/phpstan": "^0.12",
-                "sensiolabs/security-checker": "^6.0",
-                "symfony/phpunit-bridge": "^4.3|^5.0",
-                "symfony/validator": "^3.4.30|^4.3|^5.0",
-                "vimeo/psalm": "^3.6"
+                "edgedesign/phpqa": "^1.25",
+                "friendsofphp/php-cs-fixer": "^3.4.0",
+                "phpstan/phpstan": "^1.2.0",
+                "symfony/cache": "^5.4",
+                "symfony/phpunit-bridge": "^6.0",
+                "symfony/validator": "^3.4.30|^4.3|^5.0|^6.0",
+                "vimeo/psalm": "^4.15"
             },
             "suggest": {
                 "a2lix/translation-form-bundle": "For translation form"
@@ -80,47 +80,47 @@
             ],
             "support": {
                 "issues": "https://github.com/a2lix/AutoFormBundle/issues",
-                "source": "https://github.com/a2lix/AutoFormBundle/tree/0.3.3"
+                "source": "https://github.com/a2lix/AutoFormBundle/tree/0.4.4"
             },
-            "time": "2020-10-27T11:27:31+00:00"
+            "time": "2022-11-24T12:09:27+00:00"
         },
         {
             "name": "a2lix/translation-form-bundle",
-            "version": "3.0.7",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/a2lix/TranslationFormBundle.git",
-                "reference": "4a5f7c32209cef85cb33f63ca1d0b7169ebc484c"
+                "reference": "ca3bf7bf8d5b68d6fe723632443195b63dc6326e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/4a5f7c32209cef85cb33f63ca1d0b7169ebc484c",
-                "reference": "4a5f7c32209cef85cb33f63ca1d0b7169ebc484c",
+                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/ca3bf7bf8d5b68d6fe723632443195b63dc6326e",
+                "reference": "ca3bf7bf8d5b68d6fe723632443195b63dc6326e",
                 "shasum": ""
             },
             "require": {
-                "a2lix/auto-form-bundle": "^0.2|^0.3",
+                "a2lix/auto-form-bundle": "^0.2|^0.3|^0.4",
                 "php": ">=7.2",
-                "symfony/config": "^3.4.30|^4.3|^5.0",
-                "symfony/dependency-injection": "^3.4.30|^4.3|^5.0",
-                "symfony/doctrine-bridge": "^3.4.30|^4.3|^5.0",
-                "symfony/event-dispatcher": "^3.4.30|^4.3|^5.0",
-                "symfony/form": "^3.4.30|^4.3|^5.0",
-                "symfony/http-foundation": "^3.4.30|^4.3|^5.0",
-                "symfony/http-kernel": "^3.4.30|^4.3|^5.0",
-                "symfony/options-resolver": "^3.4.30|^4.3|^5.0"
+                "symfony/config": "^3.4.30|^4.3|^5.0|^6.0",
+                "symfony/dependency-injection": "^3.4.30|^4.3|^5.0|^6.0",
+                "symfony/doctrine-bridge": "^3.4.30|^4.3|^5.0|^6.0",
+                "symfony/event-dispatcher": "^3.4.30|^4.3|^5.0|^6.0",
+                "symfony/form": "^3.4.30|^4.3|^5.0|^6.0",
+                "symfony/http-foundation": "^3.4.30|^4.3|^5.0|^6.0",
+                "symfony/http-kernel": "^3.4.30|^4.3|^5.0|^6.0",
+                "symfony/options-resolver": "^3.4.30|^4.3|^5.0|^6.0"
             },
             "require-dev": {
                 "doctrine/orm": "^2.7",
-                "edgedesign/phpqa": "^1.23",
-                "friendsofphp/php-cs-fixer": "^2.15",
-                "knplabs/doctrine-behaviors": "^1.6",
-                "matthiasnoback/symfony-dependency-injection-test": "^4.0",
-                "phpstan/phpstan": "^0.11.19",
-                "sensiolabs/security-checker": "^6.0",
-                "symfony/phpunit-bridge": "^4.3|^5.0",
-                "symfony/validator": "^3.4.30|^4.3|^5.0",
-                "vimeo/psalm": "^3.6"
+                "edgedesign/phpqa": "^1.25",
+                "friendsofphp/php-cs-fixer": "^3.4.0",
+                "knplabs/doctrine-behaviors": "^2.0",
+                "matthiasnoback/symfony-dependency-injection-test": "^4.3",
+                "phpstan/phpstan": "^1.2.0",
+                "symfony/cache": "^5.4",
+                "symfony/phpunit-bridge": "^6.0",
+                "symfony/validator": "^3.4.30|^4.3|^5.0|^6.0",
+                "vimeo/psalm": "^4.15"
             },
             "suggest": {
                 "knplabs/doctrine-behaviors": "For Knp strategy",
@@ -151,7 +151,7 @@
                     "homepage": "https://github.com/a2lix/TranslationFormBundle/contributors"
                 }
             ],
-            "description": "Translate your doctrine objects easily with some helps",
+            "description": "Translate your doctrine objects easily with some helpers",
             "homepage": "https://github.com/a2lix/TranslationFormBundle",
             "keywords": [
                 "doctrine2",
@@ -166,9 +166,9 @@
             ],
             "support": {
                 "issues": "https://github.com/a2lix/TranslationFormBundle/issues",
-                "source": "https://github.com/a2lix/TranslationFormBundle/tree/master"
+                "source": "https://github.com/a2lix/TranslationFormBundle/tree/3.2.1"
             },
-            "time": "2020-04-03T08:57:40+00:00"
+            "time": "2022-01-26T09:02:44+00:00"
         },
         {
             "name": "algolia/algoliasearch-client-php",
@@ -14042,16 +14042,16 @@
         },
         {
             "name": "symfony/form",
-            "version": "v4.4.46",
+            "version": "v4.4.48",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/form.git",
-                "reference": "e3f321b14e46f1f92aa6571dba375f4ac3f63656"
+                "reference": "e1d137b13e0ec2cb5c5e38debca7a510c6f858c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/form/zipball/e3f321b14e46f1f92aa6571dba375f4ac3f63656",
-                "reference": "e3f321b14e46f1f92aa6571dba375f4ac3f63656",
+                "url": "https://api.github.com/repos/symfony/form/zipball/e1d137b13e0ec2cb5c5e38debca7a510c6f858c6",
+                "reference": "e1d137b13e0ec2cb5c5e38debca7a510c6f858c6",
                 "shasum": ""
             },
             "require": {
@@ -14120,7 +14120,7 @@
             "description": "Allows to easily create, process and reuse HTML forms",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/form/tree/v4.4.46"
+                "source": "https://github.com/symfony/form/tree/v4.4.48"
             },
             "funding": [
                 {
@@ -14136,7 +14136,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-30T11:56:56+00:00"
+            "time": "2022-10-22T05:50:33+00:00"
         },
         {
             "name": "symfony/framework-bundle",
