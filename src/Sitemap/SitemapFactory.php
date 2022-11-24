@@ -64,7 +64,7 @@ class SitemapFactory
             $pagesCount = ceil($totalCount / self::PER_PAGE);
 
             for ($i = 1; $i <= $pagesCount; ++$i) {
-                $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => self::TYPE_COMMITTEES, 'page' => $i]), null);
+                $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => self::TYPE_COMMITTEES, 'page' => $i]));
             }
 
             // Events
@@ -327,7 +327,7 @@ class SitemapFactory
 
         foreach ($committees as $committee) {
             $sitemap->add(
-                $this->generateUrl('app_committee_show', $committee),
+                $this->generateUrl('app_committee_show', ['slug' => $committee['slug']]),
                 null,
                 ChangeFrequency::WEEKLY,
                 0.6

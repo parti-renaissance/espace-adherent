@@ -52,21 +52,21 @@ class ThematicCommunitiesChiefMembersControllerTest extends WebTestCase
         $this->assertStringNotContainsString('Peter John', $crawler->filter('table tbody')->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Appliquer')->form([
-            'f[gender]' => null,
+            'f[gender]' => '',
             'f[ageMin]' => null,
             'f[emailSubscription]' => true,
         ]));
         $this->assertCount(0, $crawler->filter('table tbody tr.referent__item'));
 
         $crawler = $this->client->submit($crawler->selectButton('Appliquer')->form([
-            'f[emailSubscription]' => null,
+            'f[emailSubscription]' => '',
             'f[smsSubscription]' => true,
         ]));
         $this->assertCount(1, $crawler->filter('table tbody tr.referent__item'));
         $this->assertStringContainsString('Berthoux Gisele', $crawler->filter('table tbody tr.referent__item td')->first()->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Appliquer')->form([
-            'f[smsSubscription]' => null,
+            'f[smsSubscription]' => '',
             'f[thematicCommunities]' => [1], // Santé
         ]));
         $this->assertCount(2, $crawler->filter('table tbody tr.referent__item'));

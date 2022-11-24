@@ -8,7 +8,7 @@ use App\Scope\ScopeEnum;
 use League\OAuth2\Server\CryptKey;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractApiCaseTest;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -16,7 +16,7 @@ use Tests\App\Controller\ControllerTestTrait;
  * @group functional
  * @group api
  */
-class InternalApiProxyControllerTest extends WebTestCase
+class InternalApiProxyControllerTest extends AbstractApiCaseTest
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;
@@ -139,7 +139,7 @@ class InternalApiProxyControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->privateCryptKey = new CryptKey($this->getParameter('ssl_private_key'));
+        $this->privateCryptKey = new CryptKey($this->getParameter('ssl_private_key'), null, false);
     }
 
     protected function tearDown(): void

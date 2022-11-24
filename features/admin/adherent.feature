@@ -12,7 +12,6 @@ Feature: Manage adherent from admin panel
 
   Scenario: A user update must trigger an event in RabbitMQ
     Given I am on "/admin/app/adherent/list"
-    And I follow "SCHMIDT"
-    And I clean the "api_sync" queue
+    And I follow "Denise Durand"
     When I press "Mettre à jour"
     Then the response status code should be 200

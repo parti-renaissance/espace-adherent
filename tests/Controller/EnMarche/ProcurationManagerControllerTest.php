@@ -112,10 +112,10 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertSame('jeanmichel.amoitié@example.es', trim($crawler->filter('#request-email')->text()));
         $this->assertSame('+44 7911 123457', trim($crawler->filter('#request-phone')->text()));
         $this->assertSame('20/12/1989', trim($crawler->filter('#request-birthdate')->text()));
-        $this->assertSame('GV6H  GB', trim($crawler->filter('#request-vote-city')->text()));
+        $this->assertSame('GV6H GB', trim($crawler->filter('#request-vote-city')->text()));
         $this->assertSame('Camden', trim($crawler->filter('#request-vote-office')->text()));
         $this->assertSame('4Q Covent Garden', trim($crawler->filter('#request-address')->text()));
-        $this->assertSame('GV6H  GB', trim($crawler->filter('#request-city')->text()));
+        $this->assertSame('GV6H GB', trim($crawler->filter('#request-city')->text()));
 
         // I see request potential proxies
         $proxies = $crawler->filter('.datagrid__table tbody tr');
@@ -137,10 +137,10 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertSame('jeanmarc.gastro@example.es', trim($crawler->filter('#proxy-email')->text()));
         $this->assertSame('+44 7911 123465', trim($crawler->filter('#proxy-phone')->text()));
         $this->assertSame('21/12/1989', trim($crawler->filter('#proxy-birthdate')->text()));
-        $this->assertSame('GV6H  GB', trim($crawler->filter('#proxy-vote-city')->text()));
+        $this->assertSame('GV6H GB', trim($crawler->filter('#proxy-vote-city')->text()));
         $this->assertSame('Camden', trim($crawler->filter('#proxy-vote-office')->text()));
         $this->assertSame('4Q Covent Garden', trim($crawler->filter('#proxy-address')->text()));
-        $this->assertSame('GV6H  GB', trim($crawler->filter('#proxy-city')->text()));
+        $this->assertSame('GV6H GB', trim($crawler->filter('#proxy-city')->text()));
 
         $this->client->submit($crawler->filter('form[name=app_associate]')->form());
 
@@ -213,9 +213,9 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertCount(5, $crawler->filter('.datagrid__table-manager tbody tr'));
 
         $formValues = [
-            ProcurationRequestFilters::PARAMETER_COUNTRY => null,
+            ProcurationRequestFilters::PARAMETER_COUNTRY => '',
             ProcurationRequestFilters::PARAMETER_CITY => null,
-            ProcurationRequestFilters::PARAMETER_ELECTION_ROUND => null,
+            ProcurationRequestFilters::PARAMETER_ELECTION_ROUND => '',
         ];
 
         $form = $crawler->selectButton('Filtrer')->form();
@@ -300,9 +300,9 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertCount(3, $crawler->filter('.datagrid__table-manager tbody tr'));
 
         $formValues = [
-            ProcurationProxyProposalFilters::PARAMETER_COUNTRY => null,
+            ProcurationProxyProposalFilters::PARAMETER_COUNTRY => '',
             ProcurationProxyProposalFilters::PARAMETER_CITY => null,
-            ProcurationProxyProposalFilters::PARAMETER_ELECTION_ROUND => null,
+            ProcurationProxyProposalFilters::PARAMETER_ELECTION_ROUND => '',
             ProcurationProxyProposalFilters::PARAMETER_LAST_NAME => null,
         ];
 

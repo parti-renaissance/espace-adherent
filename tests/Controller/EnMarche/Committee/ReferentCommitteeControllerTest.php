@@ -103,8 +103,7 @@ class ReferentCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->seeFlashMessage($crawler, 'Votre comité a été créé avec succès.
-Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soit pleinement opérationnel.');
+        $this->seeFlashMessage($crawler, 'Votre comité a été créé avec succès. Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soit pleinement opérationnel.');
     }
 
     public function testReferentCannotCreateCommitteeOnTheSameAddress()

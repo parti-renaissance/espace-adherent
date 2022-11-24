@@ -4,11 +4,11 @@ namespace Tests\App\Controller\Api;
 
 use App\DataFixtures\ORM\LoadClientData;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractApiCaseTest;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-class CrmParisControllerTest extends WebTestCase
+class CrmParisControllerTest extends AbstractApiCaseTest
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

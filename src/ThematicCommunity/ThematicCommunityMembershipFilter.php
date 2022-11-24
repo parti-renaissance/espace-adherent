@@ -363,7 +363,7 @@ class ThematicCommunityMembershipFilter
             'joinedSince' => $this->joinedSince ? $this->joinedSince->format('Y-m-d') : null,
             'joinedUntil' => $this->joinedUntil ? $this->joinedUntil->format('Y-m-d') : null,
             'motivations' => $this->motivations,
-            'categories' => $this->categories,
+            'categories' => $this->categories->toArray(),
             'expert' => $this->expert,
             'withJob' => $this->withJob,
             'job' => $this->job,

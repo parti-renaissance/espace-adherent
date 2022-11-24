@@ -47,7 +47,7 @@ abstract class AbstractInManagedZoneValidator extends ConstraintValidator
             if (!$this->managedZoneProvider->zoneBelongsToSome($zone, $managedZonesIds)) {
                 $this->context
                     ->buildViolation($constraint->message)
-                    ->atPath($constraint->path ?? null)
+                    ->atPath($constraint->path ?? '')
                     ->addViolation()
                 ;
 

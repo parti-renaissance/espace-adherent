@@ -8,7 +8,7 @@ use App\OAuth\Model\GrantTypeEnum;
 use App\Scope\ScopeEnum;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest;
+use Tests\App\AbstractApiCaseTest;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
@@ -17,7 +17,7 @@ use Tests\App\Test\Helper\PHPUnitHelper;
  * @group functional
  * @group api
  */
-class AdherentListControllerTest extends AbstractWebCaseTest
+class AdherentListControllerTest extends AbstractApiCaseTest
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

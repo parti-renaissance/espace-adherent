@@ -153,7 +153,7 @@ class AdhesionControllerTest extends WebTestCase
 
         $crawler = $this->payboxClient->submit($formNode->form());
 
-        if (Response::HTTP_OK !== $status = $this->payboxClient->getInternalResponse()->getStatus()) {
+        if (Response::HTTP_OK !== $status = $this->payboxClient->getInternalResponse()->getStatusCode()) {
             $this->markTestSkipped(sprintf('Paybox preproduction server has responded with %d.', $status));
         }
 
