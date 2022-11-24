@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Address\Address;
 use App\Entity\ApplicationRequest\RunningMateRequest;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -75,14 +74,14 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture implements De
             $municipal1->getMunicipalChiefManagedArea()->getInseeCode(),
         ]);
 
-        $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', Address::FRANCE);
+        $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', 'FR');
 
         foreach ([$runningMateRequest1, $runningMateRequest2, $runningMateRequest3, $runningMateRequest4] as $i => $runningMateRequest) {
             /** @var RunningMateRequest $runningMateRequest */
             $runningMateRequest->setPostalCode($faker->postcode());
             $runningMateRequest->setCityName($faker->city());
             $runningMateRequest->setCity('75012-75112');
-            $runningMateRequest->setCountry(Address::FRANCE);
+            $runningMateRequest->setCountry('FR');
             $runningMateRequest->setAddress($faker->streetAddress());
             $runningMateRequest->setPhone($phone);
             $runningMateRequest->setProfession($faker->jobTitle());

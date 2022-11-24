@@ -2,13 +2,13 @@
 
 namespace App\Entity\ApplicationRequest;
 
-use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityReferentTagTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\ReferentTaggableEntity;
 use App\Intl\FranceCitiesBundle;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -138,9 +138,9 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      * @ORM\Column(length=2)
      *
      * @Assert\NotBlank
-     * @Assert\Country(message="common.country.invalid")
+     * @AssertUnitedNationsCountry(message="common.country.invalid")
      */
-    protected $country = Address::FRANCE;
+    protected $country = 'FR';
 
     /**
      * @var PhoneNumber|null

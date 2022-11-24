@@ -9,6 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\DonationTag;
 use App\Entity\PostAddress;
+use App\Form\UnitedNationsCountryType;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -128,7 +129,7 @@ class DonationAdmin extends AbstractAdmin
                 ->add('code', null, [
                     'label' => 'Code don',
                 ])
-                ->add('nationality', CountryType::class, [
+                ->add('nationality', UnitedNationsCountryType::class, [
                     'label' => 'Nationalité',
                 ])
                 ->add('donatedAt', null, [

@@ -3,10 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ReferentTag;
+use App\Intl\UnitedNationsBundle;
 use App\Repository\ReferentTagRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Intl\Countries;
 
 class LoadReferentTagData extends Fixture
 {
@@ -45,7 +45,7 @@ class LoadReferentTagData extends Fixture
             }
         }
 
-        foreach (Countries::getNames('fr') as $countryCode => $countryName) {
+        foreach (UnitedNationsBundle::getCountries() as $countryCode => $countryName) {
             $this->createReferentTag($manager, $countryName, $countryCode, ReferentTag::TYPE_COUNTRY);
         }
 

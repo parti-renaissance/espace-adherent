@@ -2,7 +2,6 @@
 
 namespace App\Mailchimp\Synchronisation;
 
-use App\Address\Address;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
 use App\Entity\ApplicationRequest\ApplicationRequest;
@@ -10,6 +9,7 @@ use App\Entity\ApplicationRequest\VolunteerRequest;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\JemarcheDataSurvey;
+use App\Entity\PostAddress;
 use App\Entity\SubscriptionType;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\MailchimpSegment\MailchimpSegmentTagEnum;
@@ -598,7 +598,7 @@ class RequestBuilder implements LoggerAwareInterface
     {
         $tags = $adherent->getReferentTagCodes();
 
-        if (Address::FRANCE !== $adherent->getCountry()) {
+        if (PostAddress::FRANCE !== $adherent->getCountry()) {
             $tags[] = ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG;
         }
 
@@ -625,7 +625,7 @@ class RequestBuilder implements LoggerAwareInterface
     {
         $tags = [];
 
-        if (Address::FRANCE === $adherent->getCountry()) {
+        if (PostAddress::FRANCE === $adherent->getCountry()) {
             $tags[] = ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG;
         }
 

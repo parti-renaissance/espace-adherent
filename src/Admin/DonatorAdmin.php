@@ -11,6 +11,7 @@ use App\Entity\DonatorTag;
 use App\Entity\Transaction;
 use App\Form\Admin\DonatorKinshipType;
 use App\Form\GenderType;
+use App\Form\UnitedNationsCountryType;
 use App\Repository\DonationRepository;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
@@ -106,7 +107,7 @@ class DonatorAdmin extends AbstractAdmin
                 ->add('city', null, [
                     'label' => 'Ville',
                 ])
-                ->add('country', CountryType::class, [
+                ->add('country', UnitedNationsCountryType::class, [
                     'label' => 'Pays',
                 ])
             ->end()

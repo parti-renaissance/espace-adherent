@@ -2,8 +2,8 @@
 
 namespace App\Admin;
 
-use App\Address\Address;
 use App\Form\GenderType;
+use App\Form\UnitedNationsCountryType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -14,7 +14,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ProcurationRequestAdmin extends AbstractAdmin
@@ -53,7 +52,7 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ->add('birthdate', DatePickerType::class, [
                     'label' => 'Date de naissance',
                 ])
-                ->add('country', CountryType::class, [
+                ->add('country', UnitedNationsCountryType::class, [
                     'label' => 'Pays',
                 ])
                 ->add('postalCode', null, [
@@ -67,7 +66,7 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Lieu de vote', ['class' => 'col-md-6'])
-                ->add('voteCountry', CountryType::class, [
+                ->add('voteCountry', UnitedNationsCountryType::class, [
                     'label' => 'Pays',
                 ])
                 ->add('votePostalCode', null, [
@@ -135,8 +134,12 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ])
         ;
 
-        if (Address::FRANCE != $this->getSubject()->getCountry()) {
-            $showMapper->add('stage', null, ['label' => 'État/Province']);
+        if ('FR' != $this->getSubject()->getCountry()) {
+            $showMapper
+                 ->add('stage', null, [
+                     'label' => 'État/Province',
+                 ])
+             ;
         }
 
         $showMapper->end();

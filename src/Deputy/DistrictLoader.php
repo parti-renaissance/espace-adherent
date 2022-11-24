@@ -2,7 +2,6 @@
 
 namespace App\Deputy;
 
-use App\Address\Address;
 use App\Entity\District;
 use App\Entity\GeoData;
 use App\Geo\GeometryFactory;
@@ -70,23 +69,23 @@ class DistrictLoader
 
     private function createOrUpdateDistrict(array $district): District
     {
-        if (Address::FRANCE === $district['code_pays']) {
-            $codeDepartment = $district['code_dpt'];
+        if (District::FRANCE === $district['code_pays']) {
+            $codeDepartement = $district['code_dpt'];
             $number = (int) $district['num_circo'];
 
-            $geoDistricts = array_filter($this->geoDistricts, function ($geoDistrict) use ($codeDepartment, $number) {
-                return $geoDistrict['fields']['departement'] === $codeDepartment && (int) $geoDistrict['fields']['circonscription'] === $number;
+            $geoDistricts = array_filter($this->geoDistricts, function ($geoDistrict) use ($codeDepartement, $number) {
+                return $geoDistrict['fields']['departement'] === $codeDepartement && (int) $geoDistrict['fields']['circonscription'] === $number;
             });
 
             if (0 === \count($geoDistricts)) {
-                throw new \RuntimeException("Districts GeoJSON file doesn't contain district with number '$number' and department code '$codeDepartment'");
+                throw new \RuntimeException("Districts GeoJSON file doesn't contain district with number '$number' and department code '$codeDepartement'");
             }
             $key = key($geoDistricts);
             unset($this->geoDistricts[$key]);
             $geoDistrict = array_shift($geoDistricts);
 
             $geoData = new GeoData(GeometryFactory::createGeometryFromGeoJson($geoDistrict['fields']['geo_shape']));
-            $countries = [Address::FRANCE];
+            $countries = [District::FRANCE];
         } else {
             $countries = explode(',', str_replace(' ', '', $district['code_pays']));
             $geoCountries = array_filter($this->geoCountries, function ($country) use ($countries) {

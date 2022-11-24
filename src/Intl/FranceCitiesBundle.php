@@ -2,8 +2,6 @@
 
 namespace App\Intl;
 
-use App\Address\Address;
-
 class FranceCitiesBundle
 {
     public const DOMTOM_INSEE_CODE = [
@@ -168,7 +166,7 @@ class FranceCitiesBundle
             }
         }
 
-        return Address::FRANCE;
+        return 'FR';
     }
 
     /**

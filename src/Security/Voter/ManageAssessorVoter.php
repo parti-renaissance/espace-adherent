@@ -2,7 +2,6 @@
 
 namespace App\Security\Voter;
 
-use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\AssessorRequest;
 use App\Entity\Election\VotePlace;
@@ -35,7 +34,7 @@ class ManageAssessorVoter extends AbstractAdherentVoter
             return true;
         }
 
-        if (Address::FRANCE === $assessorRequest->getAssessorCountry()) {
+        if ('FR' === $assessorRequest->getAssessorCountry()) {
             $dpt = substr($assessorRequest->getAssessorPostalCode(), 0, 2);
             if (\in_array($dpt, [97, 98])) {
                 $dpt = substr($assessorRequest->getAssessorPostalCode(), 0, 3);

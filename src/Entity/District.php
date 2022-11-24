@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Address\Address;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,6 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class District
 {
+    public const FRANCE = 'FR';
+
     /**
      * @var int|null
      *
@@ -124,7 +125,7 @@ class District
 
     public function isFrenchDistrict(): bool
     {
-        return Address::FRANCE === $this->getCountriesAsString();
+        return self::FRANCE === $this->getCountriesAsString();
     }
 
     public function getCode(): string

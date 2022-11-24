@@ -2,7 +2,6 @@
 
 namespace App\Repository\Jecoute;
 
-use App\Address\Address;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Region;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -22,12 +21,12 @@ class RegionRepository extends ServiceEntityRepository
         return $qb
             ->select('campaign')
             ->addSelect('
-            CASE
+            CASE 
                 WHEN zone.type = :zone_country THEN 1
                 WHEN zone.type = :zone_region THEN 2
                 WHEN zone.type = :zone_department THEN 3
                 ELSE 4
-            END AS HIDDEN priority
+            END AS HIDDEN priority 
             ')
             ->leftJoin('campaign.zone', 'zone')
             ->where($qb->expr()->orX(
@@ -39,7 +38,7 @@ class RegionRepository extends ServiceEntityRepository
             ->andWhere('campaign.enabled = :enabled')
             ->addOrderBy('priority', 'asc')
             ->setParameters([
-                'code_france' => Address::FRANCE,
+                'code_france' => 'FR',
                 'region' => $region,
                 'department' => $department,
                 'postal_code' => $postalCode,
@@ -65,7 +64,7 @@ class RegionRepository extends ServiceEntityRepository
             ->andWhere('zone.code = :code_france')
             ->setParameters([
                 'zone_country' => Zone::COUNTRY,
-                'code_france' => Address::FRANCE,
+                'code_france' => 'FR',
             ])
             ->getQuery()
             ->getSingleScalarResult()

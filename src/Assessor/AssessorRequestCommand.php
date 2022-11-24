@@ -2,12 +2,12 @@
 
 namespace App\Assessor;
 
-use App\Address\Address;
 use App\Entity\AssessorOfficeEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Assessor\AssessorDepartment;
 use App\Validator\Recaptcha as AssertRecaptcha;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use App\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
@@ -94,9 +94,9 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
 
     /**
      * @Assert\NotBlank(groups={"fill_personal_info"})
-     * @Assert\Country(message="common.country.invalid", groups={"fill_personal_info"})
+     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"fill_personal_info"})
      */
-    private $country = Address::FRANCE;
+    private $country = 'FR';
 
     /**
      * @Assert\NotBlank(message="assessor.vote_city.not_blank", groups={"fill_personal_info"})
@@ -150,9 +150,9 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
 
     /**
      * @Assert\NotBlank(groups={"fill_assessor_info"})
-     * @Assert\Country(message="common.country.invalid", groups={"fill_assessor_info"})
+     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"fill_assessor_info"})
      */
-    private $assessorCountry = Address::FRANCE;
+    private $assessorCountry = 'FR';
 
     /**
      * @Assert\NotBlank(message="assessor.office.invalid_choice", groups={"fill_assessor_info"})
@@ -418,7 +418,7 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
 
     public function isFrenchAssessorRequest(): bool
     {
-        return Address::FRANCE === $this->getAssessorCountry();
+        return 'FR' === $this->getAssessorCountry();
     }
 
     public function isReachable(): bool

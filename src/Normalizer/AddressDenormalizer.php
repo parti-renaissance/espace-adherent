@@ -2,8 +2,8 @@
 
 namespace App\Normalizer;
 
-use App\Address\Address;
 use App\Address\AddressInterface;
+use App\Entity\PostAddress;
 use App\FranceCities\FranceCities;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -48,7 +48,7 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
             && \array_key_exists('postal_code', $data)
             && !\array_key_exists('country', $data)
         ) {
-            $data['country'] = Address::FRANCE;
+            $data['country'] = PostAddress::FRANCE;
         }
 
         return $this->denormalizer->denormalize($data, $class, $format, $context);

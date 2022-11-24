@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Address\Address;
 use App\Assessor\AssessorRequestCommand;
 use App\Assessor\AssessorRequestElectionRoundsEnum;
 use App\Assessor\AssessorRequestEnum;
@@ -15,7 +14,6 @@ use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -47,7 +45,7 @@ class AssessorRequestType extends AbstractType
                     ->add('address', TextType::class)
                     ->add('postalCode', TextType::class)
                     ->add('city', TextType::class)
-                    ->add('country', CountryType::class, [
+                    ->add('country', UnitedNationsCountryType::class, [
                         'disabled' => true,
                     ])
                     ->add('voteCity', TextType::class)
@@ -82,7 +80,7 @@ class AssessorRequestType extends AbstractType
                     ->add('assessorCity', ChoiceType::class, [
                         'required' => false,
                     ])
-                    ->add('assessorCountry', CountryType::class)
+                    ->add('assessorCountry', UnitedNationsCountryType::class)
                     ->add('office', ChoiceType::class, [
                         'choices' => AssessorOfficeEnum::CHOICES,
                     ])
@@ -152,7 +150,7 @@ class AssessorRequestType extends AbstractType
             $assessorCity = $command['assessorCity'];
         }
 
-        if ((!empty($assessorPostalCode) && !empty($assessorCity) && Address::FRANCE === $assessorCountry) || Address::FRANCE !== $assessorCountry) {
+        if ((!empty($assessorPostalCode) && !empty($assessorCity) && 'FR' === $assessorCountry) || 'FR' !== $assessorCountry) {
             $formEvent->getForm()
                 ->add('votePlaceWishes', ChoiceType::class, [
                     'choice_loader' => new CallbackChoiceLoader(function () use ($assessorCountry, $assessorPostalCode, $assessorCity) {

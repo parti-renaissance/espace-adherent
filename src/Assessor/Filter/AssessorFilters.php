@@ -3,9 +3,9 @@
 namespace App\Assessor\Filter;
 
 use App\Exception\AssessorException;
+use App\Intl\UnitedNationsBundle;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Intl\Countries;
 
 abstract class AssessorFilters
 {
@@ -118,16 +118,16 @@ abstract class AssessorFilters
             return;
         }
 
-        if (!Countries::exists($country)) {
+        if (!\in_array($country, array_keys(UnitedNationsBundle::getCountries()), true)) {
             throw new AssessorException(sprintf('Invalid country filter value given ("%s").', $country));
         }
 
         $this->country = $country;
     }
 
-    public function getCountries(): array
+    public function getCountries()
     {
-        return Countries::getNames();
+        return UnitedNationsBundle::getCountries();
     }
 
     public function hasData(): bool

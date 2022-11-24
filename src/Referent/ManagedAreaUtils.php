@@ -2,7 +2,6 @@
 
 namespace App\Referent;
 
-use App\Address\Address;
 use App\Entity\EntityPostAddressInterface;
 use App\Utils\AreaUtils;
 
@@ -22,7 +21,7 @@ class ManagedAreaUtils extends AreaUtils
 
     public static function getLocalCode(EntityPostAddressInterface $entity): string
     {
-        if (Address::FRANCE === $entity->getCountry()) {
+        if (self::CODE_FRANCE === $entity->getCountry()) {
             return static::getCodeFromPostalCode($entity->getPostalCode());
         }
 

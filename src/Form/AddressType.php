@@ -7,7 +7,6 @@ use App\Form\DataTransformer\CityNameDataTransformer;
 use App\FranceCities\FranceCities;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -48,7 +47,7 @@ class AddressType extends AbstractType
                     'required' => false,
                     'disabled' => $options['disable_fields'],
                 ])
-                ->add('country', CountryType::class, [
+                ->add('country', UnitedNationsCountryType::class, [
                     'disabled' => $options['disable_fields'],
                     'placeholder' => 'Sélectionner un pays',
                     'preferred_choices' => [Address::FRANCE],

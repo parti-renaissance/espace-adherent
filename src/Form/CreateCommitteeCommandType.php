@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Address\Address;
 use App\Committee\CommitteeCreationCommand;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
@@ -17,8 +16,8 @@ class CreateCommitteeCommandType extends AbstractType
         $builder
             ->add('phone', PhoneNumberType::class, [
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'default_region' => Address::FRANCE,
-                'preferred_country_choices' => [Address::FRANCE],
+                'default_region' => 'FR',
+                'preferred_country_choices' => ['FR'],
             ])
             ->add('acceptConfidentialityTerms', CheckboxType::class, [
                 'required' => false,

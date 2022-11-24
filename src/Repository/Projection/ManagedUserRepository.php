@@ -3,7 +3,6 @@
 namespace App\Repository\Projection;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
-use App\Address\Address;
 use App\Entity\Projection\ManagedUser;
 use App\FranceCities\FranceCities;
 use App\ManagedUsers\ManagedUsersFilter;
@@ -192,7 +191,7 @@ class ManagedUserRepository extends ServiceEntityRepository
                     'u.country = :country_france'
                 );
                 $qb->setParameter('city_postalCode_'.$key, $postalCode);
-                $qb->setParameter('country_france', Address::FRANCE);
+                $qb->setParameter('country_france', 'FR');
 
                 $citiesExpression->add($cityExpression);
             }

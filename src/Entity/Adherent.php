@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Address\Address;
 use App\Adherent\LastLoginGroupEnum;
 use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
@@ -1302,12 +1301,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isForeignResident(): bool
     {
-        return Address::FRANCE !== strtoupper($this->getCountry());
+        return AreaUtils::CODE_FRANCE !== strtoupper($this->getCountry());
     }
 
     public function isParisResident(): bool
     {
-        return Address::FRANCE === strtoupper($this->getCountry()) && AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS === substr($this->getPostalCode(), 0, 2);
+        return AreaUtils::CODE_FRANCE === strtoupper($this->getCountry()) && AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS === substr($this->getPostalCode(), 0, 2);
     }
 
     public function isFemale(): bool
@@ -3333,6 +3332,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isFrench(): bool
     {
-        return Address::FRANCE === $this->nationality;
+        return AreaUtils::CODE_FRANCE === $this->nationality;
     }
 }

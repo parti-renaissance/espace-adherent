@@ -2,7 +2,6 @@
 
 namespace App\Utils;
 
-use App\Address\Address;
 use App\Entity\EntityPostAddressInterface;
 use App\Intl\FranceCitiesBundle;
 
@@ -14,6 +13,7 @@ class AreaUtils
     public const CODE_NOUVEAU_RHONE = '69D';
     public const CODE_METROPOLIS_MONTPELLIER = '34M';
     public const CODE_METROPOLIS_LYON = '69M';
+    public const CODE_FRANCE = 'FR';
     public const CODE_MONACO = 'MC';
     public const CODE_SAINT_BARTHELEMY = '97133';
     public const CODE_SAINT_MARTIN = '97150';
@@ -178,7 +178,7 @@ class AreaUtils
 
     public static function getMetropolisCode(EntityPostAddressInterface $entity): ?string
     {
-        if (Address::FRANCE === $entity->getCountry()) {
+        if (self::CODE_FRANCE === $entity->getCountry()) {
             foreach (self::METROPOLIS as $codeM => $codes) {
                 if (\in_array($entity->getInseeCode(), $codes, true)) {
                     return $codeM;
@@ -191,7 +191,7 @@ class AreaUtils
 
     public static function get69DCode(EntityPostAddressInterface $entity): ?string
     {
-        return (Address::FRANCE === $entity->getCountry()
+        return (self::CODE_FRANCE === $entity->getCountry()
                 && self::CODE_RHONE === substr($entity->getPostalCode(), 0, 2)
                 && !\in_array($entity->getInseeCode(), self::METROPOLIS[self::CODE_METROPOLIS_LYON]))
             ? self::CODE_NOUVEAU_RHONE
@@ -215,7 +215,7 @@ class AreaUtils
 
     public static function getZone(EntityPostAddressInterface $entity): ?string
     {
-        if (Address::FRANCE === $entity->getCountry()) {
+        if (self::CODE_FRANCE === $entity->getCountry()) {
             // for cities in the department starting by 0, the code contains only 4 figures
             // but a zone in this case should start with 0
             $inseeCode = $entity->getInseeCode();

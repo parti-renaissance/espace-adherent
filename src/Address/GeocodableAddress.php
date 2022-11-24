@@ -41,7 +41,7 @@ final class GeocodableAddress
         }
 
         $countryCode = $this->countryCode;
-        if (Address::FRANCE === $countryCode) {
+        if ('FR' === $countryCode) {
             $countryCode = FranceCitiesBundle::getCountryISOCode($this->postalCode);
         }
         $address[] = $countryCode;

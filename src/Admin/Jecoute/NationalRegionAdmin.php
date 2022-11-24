@@ -2,7 +2,6 @@
 
 namespace App\Admin\Jecoute;
 
-use App\Address\Address;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Region;
 use App\Repository\Geo\ZoneRepository;
@@ -65,7 +64,7 @@ class NationalRegionAdmin extends AbstractRegionAdmin
 
         $region->setZone($this->zoneRepository->findOneBy([
             'type' => Zone::COUNTRY,
-            'code' => Address::FRANCE,
+            'code' => 'FR',
         ]));
     }
 

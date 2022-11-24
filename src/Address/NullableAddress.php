@@ -5,6 +5,7 @@ namespace App\Address;
 use App\Geocoder\GeocodableInterface;
 use App\Validator\Address as AssertValidAddress;
 use App\Validator\GeocodableAddress as AssertGeocodableAddress;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -13,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class NullableAddress implements AddressInterface, GeocodableInterface
 {
+    public const FRANCE = 'FR';
+
     /**
      * @Assert\Length(max=150, maxMessage="common.address.max_length")
      */
@@ -36,7 +39,7 @@ class NullableAddress implements AddressInterface, GeocodableInterface
 
     /**
      * @Assert\NotBlank
-     * @Assert\Country(message="common.country.invalid")
+     * @AssertUnitedNationsCountry(message="common.country.invalid")
      */
     private $country;
 
@@ -47,7 +50,7 @@ class NullableAddress implements AddressInterface, GeocodableInterface
 
     public function __construct()
     {
-        $this->country = Address::FRANCE;
+        $this->country = self::FRANCE;
     }
 
     public function getAddress(): ?string
@@ -113,7 +116,7 @@ class NullableAddress implements AddressInterface, GeocodableInterface
 
     public function isFrenchAddress(): bool
     {
-        return Address::FRANCE === $this->country && $this->city;
+        return 'FR' === $this->country && $this->city;
     }
 
     public static function createFromAddress(AddressInterface $other): self

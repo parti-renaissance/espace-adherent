@@ -9,6 +9,8 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Events;
+use App\Form\UnitedNationsCountryType;
+use App\Intl\UnitedNationsBundle;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -21,7 +23,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -149,7 +150,7 @@ class CommitteeAdmin extends AbstractAdmin
                 ->add('postAddress.cityName', TextType::class, [
                     'label' => 'Ville',
                 ])
-                ->add('postAddress.country', CountryType::class, [
+                ->add('postAddress.country', UnitedNationsCountryType::class, [
                     'label' => 'Pays',
                 ])
                 ->add('postAddress.latitude', TextType::class, [
@@ -205,7 +206,7 @@ class CommitteeAdmin extends AbstractAdmin
                 ->add('postAddress.cityName', TextType::class, [
                     'label' => 'Ville',
                 ])
-                ->add('postAddress.country', CountryType::class, [
+                ->add('postAddress.country', UnitedNationsCountryType::class, [
                     'label' => 'Pays',
                 ])
             ->end()
@@ -330,7 +331,10 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('country', CallbackFilter::class, [
                 'label' => 'Pays',
                 'show_filter' => true,
-                'field_type' => CountryType::class,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => array_flip(UnitedNationsBundle::getCountries()),
+                ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;

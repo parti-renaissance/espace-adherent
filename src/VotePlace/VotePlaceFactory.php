@@ -2,7 +2,6 @@
 
 namespace App\VotePlace;
 
-use App\Address\Address;
 use App\Entity\VotePlace;
 
 class VotePlaceFactory
@@ -15,7 +14,7 @@ class VotePlaceFactory
             $data['postalCode'] ?? null,
             $data['city'] ?? null,
             $data['address'],
-            $data['country'] ?? Address::FRANCE
+            $data['country'] ?? 'FR'
         );
 
         return $votePlace;
