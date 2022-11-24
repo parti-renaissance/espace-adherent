@@ -1,0 +1,17 @@
+{% extends 'renaissance/double_columns_layout.html.twig' %}
+
+{% block title 'Connectez-vous avec vos identifiants' %}
+
+{% block content_left_side %}
+    {% include 'renaissance/partials/left-side-content.html.twig' %}
+{% endblock %}
+
+{% block content_right_side %}
+    <section class="flex flex-grow items-center justify-center p-5">
+        <div class="w-96">
+            Bienvenue!
+            <br>
+            Vous pouvez maintenant vous connecter en <a href="{{ path('app_renaissance_login') }}">cliquant ici</a>.
+        </div>
+    </section>
+{% endblock %}

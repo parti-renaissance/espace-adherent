@@ -8,6 +8,7 @@ use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\MyTeam;
+use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountCreatedMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest;
@@ -333,8 +334,8 @@ class AdherentAdminTest extends AbstractWebCaseTest
         self::assertSame($submittedValues['address']['cityName'], $adherent->getCityName());
         self::assertSame('77000-77288', $adherent->getCity());
         self::assertSame($submittedValues['address']['country'], $adherent->getCountry());
-        self::assertSame(null, $adherent->getLatitude());
-        self::assertSame(null, $adherent->getLongitude());
+        self::assertIsNumeric($adherent->getLatitude());
+        self::assertIsNumeric($adherent->getLongitude());
         self::assertSame($submittedValues['email'], $adherent->getEmailAddress());
         self::assertEquals(new \DateTime('-20 years, january 1st'), $adherent->getBirthdate());
         self::assertSame('exclusive' === $submittedValues['membershipType'], $adherent->isExclusiveMembership());
@@ -357,6 +358,9 @@ class AdherentAdminTest extends AbstractWebCaseTest
 
         self::assertInstanceOf(\DateTime::class, $adherent->getLastMembershipDonation());
         self::assertTrue($adherent->isRenaissanceAdherent());
+
+        $this->assertCountMails(1, RenaissanceAdherentAccountCreatedMessage::class);
+        $this->assertMail(RenaissanceAdherentAccountCreatedMessage::class, $submittedValues['email'], ['template_name' => 'renaissance-adherent-account-created']);
     }
 
     public function provideCreateRenaissanceAdherent(): \Generator
