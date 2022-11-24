@@ -4,6 +4,7 @@ namespace Tests\App\Admin;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
+use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\MyTeam;
@@ -287,7 +288,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
     /**
      * @dataProvider provideCreateRenaissanceAdherent
      */
-    public function testCreateRenaissanceAdherent(array $submittedValues): void
+    public function testCreateRenaissanceAdherent(array $submittedValues, float $expectedAmount): void
     {
         self::assertNull($this->adherentRepository->findOneByEmail($submittedValues['email']));
         self::assertNull($this->getDonatorRepository()->findOneForMatching(
@@ -322,6 +323,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
 
         self::assertInstanceOf(Adherent::class, $adherent);
         self::assertSame('DISABLED', $adherent->getStatus());
+        self::assertSame('renaissance', $adherent->getSource());
         self::assertSame($submittedValues['gender'], $adherent->getGender());
         self::assertSame($submittedValues['firstName'], $adherent->getFirstName());
         self::assertSame($submittedValues['lastName'], $adherent->getLastName());
@@ -335,6 +337,9 @@ class AdherentAdminTest extends AbstractWebCaseTest
         self::assertSame(null, $adherent->getLongitude());
         self::assertSame($submittedValues['email'], $adherent->getEmailAddress());
         self::assertEquals(new \DateTime('-20 years, january 1st'), $adherent->getBirthdate());
+        self::assertSame('exclusive' === $submittedValues['membershipType'], $adherent->isExclusiveMembership());
+        self::assertSame('agir' === $submittedValues['membershipType'], $adherent->isAgirMembership());
+        self::assertSame('territoires_progres' === $submittedValues['membershipType'], $adherent->isTerritoireProgresMembership());
 
         $donator = $this->getDonatorRepository()->findOneForMatching($submittedValues['email'], $submittedValues['firstName'], $submittedValues['lastName']);
 
@@ -342,6 +347,16 @@ class AdherentAdminTest extends AbstractWebCaseTest
         self::assertSame($submittedValues['gender'], $donator->getGender());
         self::assertSame($submittedValues['firstName'], $donator->getFirstName());
         self::assertSame($submittedValues['lastName'], $donator->getLastName());
+
+        $donation = $donator->getLastSuccessfulDonation();
+
+        self::assertInstanceOf(Donation::class, $donation);
+        self::assertEquals($expectedAmount, $donation->getAmountInEuros());
+        self::assertSame('check', $donation->getType());
+        self::assertSame('finished', $donation->getStatus());
+
+        self::assertInstanceOf(\DateTime::class, $adherent->getLastMembershipDonation());
+        self::assertTrue($adherent->isRenaissanceAdherent());
     }
 
     public function provideCreateRenaissanceAdherent(): \Generator
@@ -372,6 +387,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
                 'membershipType' => 'exclusive',
                 'cotisationAmountChoice' => 'amount_30',
             ],
+            30,
         ];
     }
 

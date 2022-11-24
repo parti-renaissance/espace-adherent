@@ -144,7 +144,9 @@ class AdherentCreateCommand implements MembershipInterface
      */
     public ?float $cotisationCustomAmount = null;
 
-    public ?string $source = null;
+    public function __construct(public ?string $source = null)
+    {
+    }
 
     public function isExclusiveMembership(): bool
     {

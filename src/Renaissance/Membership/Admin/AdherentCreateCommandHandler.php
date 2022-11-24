@@ -21,10 +21,7 @@ class AdherentCreateCommandHandler
 
     public function createCommand(): AdherentCreateCommand
     {
-        $command = new AdherentCreateCommand();
-        $command->source = MembershipSourceEnum::RENAISSANCE;
-
-        return $command;
+        return new AdherentCreateCommand(MembershipSourceEnum::RENAISSANCE);
     }
 
     public function handle(AdherentCreateCommand $command): void
@@ -44,6 +41,7 @@ class AdherentCreateCommandHandler
         $donationRequest->forMembership();
 
         $donation = $this->donationRequestHandler->handle($donationRequest, $adherent);
+        $donation->markAsFinished();
         $donation->markAsLastSuccessfulDonation();
 
         $this->entityManager->flush();
