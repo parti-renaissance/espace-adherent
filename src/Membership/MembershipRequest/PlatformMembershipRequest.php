@@ -42,12 +42,11 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
     public $customGender;
 
     /**
-     * @var string
-     *
+     * @Assert\NotBlank(groups={"Registration", "Update"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
-     *     allowEmptyString=false,
+     *     allowEmptyString=true,
      *     minMessage="common.first_name.min_length",
      *     maxMessage="common.first_name.max_length",
      *     groups={"Registration", "Update"}
@@ -58,10 +57,11 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
     /**
      * @var string
      *
+     * @Assert\NotBlank(groups={"Registration", "Update"})
      * @Assert\Length(
      *     min=1,
      *     max=50,
-     *     allowEmptyString=false,
+     *     allowEmptyString=true,
      *     minMessage="common.last_name.min_length",
      *     maxMessage="common.last_name.max_length",
      *     groups={"Registration", "Update"}

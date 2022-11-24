@@ -30,10 +30,11 @@ class AdherentCreateCommand implements MembershipInterface
     public ?string $gender = null;
 
     /**
+     * @Assert\NotBlank(groups={"admin_adherent_renaissance_create"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
-     *     allowEmptyString=false,
+     *     allowEmptyString=true,
      *     minMessage="admin.common.first_name.min_length",
      *     maxMessage="admin.common.first_name.max_length",
      *     groups={"admin_adherent_renaissance_create"}
@@ -42,10 +43,11 @@ class AdherentCreateCommand implements MembershipInterface
     public ?string $firstName = null;
 
     /**
+     * @Assert\NotBlank(groups={"admin_adherent_renaissance_create"})
      * @Assert\Length(
      *     min=1,
      *     max=50,
-     *     allowEmptyString=false,
+     *     allowEmptyString=true,
      *     minMessage="admin.common.last_name.min_length",
      *     maxMessage="admin.common.last_name.max_length",
      *     groups={"admin_adherent_renaissance_create"}

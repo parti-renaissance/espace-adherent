@@ -437,7 +437,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
         ];
         yield 'No first name' => [
             ['firstName' => null],
-            ['firstName' => ['Le prénom doit comporter au moins 2 caractères.']],
+            ['firstName' => ['Cette valeur ne doit pas être vide.']],
         ];
         yield 'Too short first name' => [
             ['firstName' => 'A'],
@@ -449,7 +449,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
         ];
         yield 'No last name' => [
             ['lastName' => null],
-            ['lastName' => ['Le nom doit comporter au moins 1 caractères.']],
+            ['lastName' => ['Cette valeur ne doit pas être vide.']],
         ];
         yield 'Too long last name' => [
             ['lastName' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'],

@@ -34,10 +34,10 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
     public ?int $amount = null;
 
     /**
+     * @Assert\NotBlank(groups={"fill_personal_info"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
-     *     allowEmptyString=false,
      *     minMessage="common.first_name.min_length",
      *     maxMessage="common.first_name.max_length",
      *     groups={"fill_personal_info"}
@@ -46,10 +46,10 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
     public ?string $firstName = null;
 
     /**
+     * @Assert\NotBlank(groups={"fill_personal_info"})
      * @Assert\Length(
      *     min=1,
      *     max=50,
-     *     allowEmptyString=false,
      *     minMessage="common.last_name.min_length",
      *     maxMessage="common.last_name.max_length",
      *     groups={"fill_personal_info"}

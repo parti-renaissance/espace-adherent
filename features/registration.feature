@@ -300,8 +300,7 @@ Feature:
     And I should see "Votre mot de passe doit comporter au moins 8 caractères."
     And I should see "Le code postal doit contenir moins de 15 caractères"
     And I should see "Cette valeur n'est pas un code postal français valide."
-    And I should see "Votre prénom doit comporter au moins 2 caractères."
-    And I should see "Votre nom doit comporter au moins 1 caractères."
+    And I should see "Cette valeur ne doit pas être vide."
 
   Scenario: A new user should see personal message to help him to validate his account
     And I am on "/connexion"

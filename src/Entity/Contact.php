@@ -61,7 +61,6 @@ class Contact implements RecaptchaChallengeInterface
      * @Assert\Length(
      *     min=2,
      *     max=50,
-     *     allowEmptyString=false,
      *     minMessage="common.first_name.min_length",
      *     maxMessage="common.first_name.max_length"
      * )
@@ -76,7 +75,6 @@ class Contact implements RecaptchaChallengeInterface
      * @Assert\Length(
      *     min=2,
      *     max=50,
-     *     allowEmptyString=false,
      *     minMessage="common.last_name.min_length",
      *     maxMessage="common.last_name.max_length"
      * )
