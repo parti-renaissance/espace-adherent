@@ -3222,29 +3222,39 @@
         },
         {
             "name": "ezyang/htmlpurifier",
-            "version": "v4.14.0",
+            "version": "v4.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "12ab42bd6e742c70c0a52f7b82477fcd44e64b75"
+                "reference": "523407fb06eb9e5f3d59889b3978d5bfe94299c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/12ab42bd6e742c70c0a52f7b82477fcd44e64b75",
-                "reference": "12ab42bd6e742c70c0a52f7b82477fcd44e64b75",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/523407fb06eb9e5f3d59889b3978d5bfe94299c8",
+                "reference": "523407fb06eb9e5f3d59889b3978d5bfe94299c8",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2"
+                "php": "~5.6.0 || ~7.0.0 || ~7.1.0 || ~7.2.0 || ~7.3.0 || ~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0"
+            },
+            "require-dev": {
+                "cerdic/css-tidy": "^1.7 || ^2.0",
+                "simpletest/simpletest": "dev-master"
+            },
+            "suggest": {
+                "cerdic/css-tidy": "If you want to use the filter 'Filter.ExtractStyleBlocks'.",
+                "ext-bcmath": "Used for unit conversion and imagecrash protection",
+                "ext-iconv": "Converts text to and from non-UTF-8 encodings",
+                "ext-tidy": "Used for pretty-printing HTML"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "HTMLPurifier": "library/"
-                },
                 "files": [
                     "library/HTMLPurifier.composer.php"
                 ],
+                "psr-0": {
+                    "HTMLPurifier": "library/"
+                },
                 "exclude-from-classmap": [
                     "/library/HTMLPurifier/Language/"
                 ]
@@ -3267,9 +3277,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ezyang/htmlpurifier/issues",
-                "source": "https://github.com/ezyang/htmlpurifier/tree/v4.14.0"
+                "source": "https://github.com/ezyang/htmlpurifier/tree/v4.16.0"
             },
-            "time": "2021-12-25T01:21:49+00:00"
+            "time": "2022-09-18T07:06:19+00:00"
         },
         {
             "name": "fig/http-message-util",
@@ -7448,29 +7458,31 @@
         },
         {
             "name": "maennchen/zipstream-php",
-            "version": "2.1.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maennchen/ZipStream-PHP.git",
-                "reference": "c4c5803cc1f93df3d2448478ef79394a5981cc58"
+                "reference": "211e9ba1530ea5260b45d90c9ea252f56ec52729"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maennchen/ZipStream-PHP/zipball/c4c5803cc1f93df3d2448478ef79394a5981cc58",
-                "reference": "c4c5803cc1f93df3d2448478ef79394a5981cc58",
+                "url": "https://api.github.com/repos/maennchen/ZipStream-PHP/zipball/211e9ba1530ea5260b45d90c9ea252f56ec52729",
+                "reference": "211e9ba1530ea5260b45d90c9ea252f56ec52729",
                 "shasum": ""
             },
             "require": {
                 "myclabs/php-enum": "^1.5",
-                "php": ">= 7.1",
+                "php": "^7.4 || ^8.0",
                 "psr/http-message": "^1.0",
                 "symfony/polyfill-mbstring": "^1.0"
             },
             "require-dev": {
                 "ext-zip": "*",
-                "guzzlehttp/guzzle": ">= 6.3",
+                "guzzlehttp/guzzle": "^6.5.3 || ^7.2.0",
                 "mikey179/vfsstream": "^1.6",
-                "phpunit/phpunit": ">= 7.5"
+                "php-coveralls/php-coveralls": "^2.4",
+                "phpunit/phpunit": "^8.5.8 || ^9.4.2",
+                "vimeo/psalm": "^4.1"
             },
             "type": "library",
             "autoload": {
@@ -7507,7 +7519,7 @@
             ],
             "support": {
                 "issues": "https://github.com/maennchen/ZipStream-PHP/issues",
-                "source": "https://github.com/maennchen/ZipStream-PHP/tree/master"
+                "source": "https://github.com/maennchen/ZipStream-PHP/tree/2.2.1"
             },
             "funding": [
                 {
@@ -7515,7 +7527,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2020-05-30T13:11:16+00:00"
+            "time": "2022-05-18T15:52:06+00:00"
         },
         {
             "name": "markbaker/complex",
@@ -9034,16 +9046,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "1.19.0",
+            "version": "1.25.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "a9ab55bfae02eecffb3df669a2e19ba0e2f04bbf"
+                "reference": "a317a09e7def49852400a4b3eca4a4b0790ceeb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/a9ab55bfae02eecffb3df669a2e19ba0e2f04bbf",
-                "reference": "a9ab55bfae02eecffb3df669a2e19ba0e2f04bbf",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/a317a09e7def49852400a4b3eca4a4b0790ceeb5",
+                "reference": "a317a09e7def49852400a4b3eca4a4b0790ceeb5",
                 "shasum": ""
             },
             "require": {
@@ -9060,33 +9072,34 @@
                 "ext-xmlwriter": "*",
                 "ext-zip": "*",
                 "ext-zlib": "*",
-                "ezyang/htmlpurifier": "^4.13",
+                "ezyang/htmlpurifier": "^4.15",
                 "maennchen/zipstream-php": "^2.1",
                 "markbaker/complex": "^3.0",
                 "markbaker/matrix": "^3.0",
-                "php": "^7.2 || ^8.0",
+                "php": "^7.3 || ^8.0",
                 "psr/http-client": "^1.0",
                 "psr/http-factory": "^1.0",
-                "psr/simple-cache": "^1.0"
+                "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
             },
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "dev-master",
-                "dompdf/dompdf": "^1.0",
-                "friendsofphp/php-cs-fixer": "^2.18",
-                "jpgraph/jpgraph": "^4.0",
-                "mpdf/mpdf": "^8.0",
+                "dompdf/dompdf": "^1.0 || ^2.0",
+                "friendsofphp/php-cs-fixer": "^3.2",
+                "mitoteam/jpgraph": "10.2.4",
+                "mpdf/mpdf": "8.1.1",
                 "phpcompatibility/php-compatibility": "^9.3",
-                "phpstan/phpstan": "^0.12.82",
-                "phpstan/phpstan-phpunit": "^0.12.18",
-                "phpunit/phpunit": "^8.5",
-                "squizlabs/php_codesniffer": "^3.5",
-                "tecnickcom/tcpdf": "^6.3"
+                "phpstan/phpstan": "^1.1",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^8.5 || ^9.0",
+                "squizlabs/php_codesniffer": "^3.7",
+                "tecnickcom/tcpdf": "6.5"
             },
             "suggest": {
-                "dompdf/dompdf": "Option for rendering PDF with PDF Writer (doesn't yet support PHP8)",
-                "jpgraph/jpgraph": "Option for rendering charts, or including charts with PDF or HTML Writers",
+                "dompdf/dompdf": "Option for rendering PDF with PDF Writer",
+                "ext-intl": "PHP Internationalization Functions",
+                "mitoteam/jpgraph": "Option for rendering charts, or including charts with PDF or HTML Writers",
                 "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
-                "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer (doesn't yet support PHP8)"
+                "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer"
             },
             "type": "library",
             "autoload": {
@@ -9132,9 +9145,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.19.0"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.25.2"
             },
-            "time": "2021-10-31T15:09:20+00:00"
+            "time": "2022-09-25T17:21:01+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -20012,16 +20025,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.15.1",
+            "version": "v4.15.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "0ef6c55a3f47f89d7a374e6f835197a0b5fcf900"
+                "reference": "f59bbe44bf7d96f24f3e2b4ddc21cd52c1d2adbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/0ef6c55a3f47f89d7a374e6f835197a0b5fcf900",
-                "reference": "0ef6c55a3f47f89d7a374e6f835197a0b5fcf900",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/f59bbe44bf7d96f24f3e2b4ddc21cd52c1d2adbc",
+                "reference": "f59bbe44bf7d96f24f3e2b4ddc21cd52c1d2adbc",
                 "shasum": ""
             },
             "require": {
@@ -20062,9 +20075,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v4.15.1"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v4.15.2"
             },
-            "time": "2022-09-04T07:30:47+00:00"
+            "time": "2022-11-12T15:38:23+00:00"
         },
         {
             "name": "pedrotroller/php-cs-custom-fixer",
