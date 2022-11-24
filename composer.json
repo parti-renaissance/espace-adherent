@@ -138,7 +138,7 @@
         "twig/extra-bundle": "^3.3",
         "twig/intl-extra": "^3.3",
         "twig/string-extra": "^3.3",
-        "twig/twig": "^2.13",
+        "twig/twig": "^3.4",
         "willdurand/geocoder-bundle": "^5.12"
     },
     "require-dev": {
