@@ -334,8 +334,8 @@ class AdherentAdminTest extends AbstractWebCaseTest
         self::assertSame($submittedValues['address']['cityName'], $adherent->getCityName());
         self::assertSame('77000-77288', $adherent->getCity());
         self::assertSame($submittedValues['address']['country'], $adherent->getCountry());
-        self::assertSame(null, $adherent->getLatitude());
-        self::assertSame(null, $adherent->getLongitude());
+        self::assertIsNumeric($adherent->getLatitude());
+        self::assertIsNumeric($adherent->getLongitude());
         self::assertSame($submittedValues['email'], $adherent->getEmailAddress());
         self::assertEquals(new \DateTime('-20 years, january 1st'), $adherent->getBirthdate());
         self::assertSame('exclusive' === $submittedValues['membershipType'], $adherent->isExclusiveMembership());

@@ -11,18 +11,11 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class Notifier
 {
-    private EntityManagerInterface $entityManager;
-    private MailerService $mailer;
-    private AuthAppUrlManager $appUrlManager;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        MailerService $transactionalMailer,
-        AuthAppUrlManager $appUrlManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MailerService $transactionalMailer,
+        private readonly AuthAppUrlManager $appUrlManager
     ) {
-        $this->entityManager = $entityManager;
-        $this->mailer = $transactionalMailer;
-        $this->appUrlManager = $appUrlManager;
     }
 
     public function sendAccountCreatedEmail(Adherent $adherent): void
@@ -36,6 +29,6 @@ class Notifier
         $this->entityManager->persist($token);
         $this->entityManager->flush();
 
-        $this->mailer->sendMessage($message);
+        $this->transactionalMailer->sendMessage($message);
     }
 }
