@@ -58,7 +58,7 @@ class ReferentArea
      * @ORM\Column(length=100)
      *
      * @Assert\NotBlank(groups="Admin")
-     * @Assert\Length(min=2, max=100, groups="Admin")
+     * @Assert\Length(allowEmptyString=true, min=2, max=100, groups="Admin")
      */
     private $name;
 

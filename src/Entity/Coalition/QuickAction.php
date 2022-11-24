@@ -39,7 +39,7 @@ class QuickAction
      * @ORM\Column(length=100)
      *
      * @Assert\NotBlank
-     * @Assert\Length(min=2, max=100)
+     * @Assert\Length(allowEmptyString=true, min=2, max=100)
      *
      * @SymfonySerializer\Groups({"quick_action_read", "cause_update"})
      */

@@ -74,7 +74,6 @@ class Mandate
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      */
     private $beginAt;
 
@@ -83,7 +82,6 @@ class Mandate
      *
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Assert\DateTime
      * @Assert\Expression(
      *     "value === null or value > this.getBeginAt()",
      *     message="La date de fin du mandat doit être postérieure à la date de début."

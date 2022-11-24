@@ -92,7 +92,7 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
      * @var string
      *
      * @Assert\NotBlank(groups="Registration")
-     * @Assert\Length(min=8, minMessage="adherent.plain_password.min_length", groups={"Registration"})
+     * @Assert\Length(allowEmptyString=true, min=8, minMessage="adherent.plain_password.min_length", groups={"Registration"})
      */
     public $password;
 

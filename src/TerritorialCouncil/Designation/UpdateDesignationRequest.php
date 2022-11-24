@@ -38,7 +38,6 @@ class UpdateDesignationRequest
      * @var \DateTime|null
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      */
     private $meetingStartDate;
 
@@ -46,7 +45,6 @@ class UpdateDesignationRequest
      * @var \DateTime|null
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      */
     private $meetingEndDate;
 
@@ -54,7 +52,6 @@ class UpdateDesignationRequest
      * @var \DateTime|null
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      */
     private $voteStartDate;
 
@@ -62,7 +59,6 @@ class UpdateDesignationRequest
      * @var \DateTime|null
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      */
     private $voteEndDate;
 

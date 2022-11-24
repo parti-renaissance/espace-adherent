@@ -38,7 +38,7 @@ class CustomSearchResult implements EntityMediaInterface
      *
      * @ORM\Column
      *
-     * @Assert\Length(min=10, max=255)
+     * @Assert\Length(allowEmptyString=true, min=10, max=255)
      * @Assert\NotBlank
      */
     private $description;

@@ -230,7 +230,6 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      *
      * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list", "survey_replies_list"})
      */
@@ -238,8 +237,6 @@ class CampaignHistory implements DataSurveyAwareInterface
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Assert\DateTime
      *
      * @Groups({"pap_campaign_replies_list", "survey_replies_list"})
      */

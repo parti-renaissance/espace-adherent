@@ -63,7 +63,7 @@ class Axe implements EntityMediaInterface
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank(message="Veuillez renseigner une description.")
-     * @Assert\Length(min=2, minMessage="La description doit faire au moins 2 caractères.")
+     * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      */
     private $description;
 

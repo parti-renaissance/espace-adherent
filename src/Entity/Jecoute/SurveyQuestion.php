@@ -46,7 +46,7 @@ class SurveyQuestion implements AuthoredInterface
      *
      * @Assert\Valid
      *
-     * @SymfonySerializer\Groups("survey_write_dc")
+     * @SymfonySerializer\Groups({"survey_write_dc"})
      */
     private $question;
 

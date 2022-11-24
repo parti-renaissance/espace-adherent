@@ -24,13 +24,13 @@ class CommitteeCommand
 
     /**
      * @Assert\NotBlank
-     * @Assert\Length(min=2, max=50)
+     * @Assert\Length(allowEmptyString=true, min=2, max=50)
      */
     public $name;
 
     /**
      * @Assert\NotBlank
-     * @Assert\Length(min=5, max=140, minMessage="committee.description.min_length", maxMessage="committee.description.max_length")
+     * @Assert\Length(allowEmptyString=true, min=5, max=140, minMessage="committee.description.min_length", maxMessage="committee.description.max_length")
      */
     public $description;
 
@@ -60,7 +60,7 @@ class CommitteeCommand
     public $facebookPageUrl;
 
     /**
-     * @Assert\Length(min=1, max=15)
+     * @Assert\Length(allowEmptyString=true, min=1, max=15)
      * @Assert\Regex("/^@?([a-zA-Z0-9_]){1,15}$/", message="common.twitter_nickname.invalid_format")
      */
     public $twitterNickname;

@@ -209,7 +209,6 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      * @ORM\Column(type="datetime", nullable=true)
      *
      * @Assert\NotBlank(groups={"regular_campaign"})
-     * @Assert\DateTime
      * @Assert\GreaterThanOrEqual(
      *     value="today",
      *     message="pap.campaign.invalid_start_date",
@@ -231,7 +230,6 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      * @ORM\Column(type="datetime", nullable=true)
      *
      * @Assert\NotBlank(groups={"regular_campaign"})
-     * @Assert\DateTime
      * @Assert\Expression("value > this.getBeginAt()", message="pap.campaign.invalid_end_date")
      *
      * @Groups({

@@ -175,7 +175,6 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
      * @ORM\Column(type="datetime", nullable=true)
      *
      * @Assert\NotBlank(groups={"regular_campaign"})
-     * @Assert\DateTime
      *
      * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score", "phoning_campaign_list", "phoning_campaign_write"})
      */

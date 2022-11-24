@@ -203,7 +203,6 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      *
      * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list", "survey_replies_list"})
      */
@@ -214,7 +213,6 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Assert\DateTime
      * @Assert\Expression(
      *     "value === null or value > this.getBeginAt()",
      *     message="phoning.campaign_history.finish_at.invalid"

@@ -106,7 +106,6 @@ class Contact implements RecaptchaChallengeInterface
     /**
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Assert\Date
      * @Assert\Range(
      *     min="-120 years",
      *     max="now"

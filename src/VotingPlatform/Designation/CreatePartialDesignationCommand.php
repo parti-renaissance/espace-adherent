@@ -45,7 +45,6 @@ class CreatePartialDesignationCommand
      * @var \DateTime|null
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      */
     private $voteStartDate;
 
@@ -53,7 +52,6 @@ class CreatePartialDesignationCommand
      * @var \DateTime|null
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      */
     private $voteEndDate;
 

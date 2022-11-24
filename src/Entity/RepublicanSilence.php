@@ -29,7 +29,6 @@ class RepublicanSilence
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      *
      * @Groups({"read_api"})
      */
@@ -41,7 +40,6 @@ class RepublicanSilence
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      * @Assert\Expression("value > this.getBeginAt()", message="committee.event.invalid_date_range")
      *
      * @Groups({"read_api"})

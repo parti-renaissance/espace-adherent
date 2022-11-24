@@ -62,7 +62,7 @@ class Device
      *
      * @ApiProperty(identifier=true)
      *
-     * @SymfonySerializer\Groups("user_profile")
+     * @SymfonySerializer\Groups({"user_profile"})
      */
     protected $deviceUuid;
 

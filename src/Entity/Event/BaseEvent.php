@@ -269,7 +269,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @SymfonySerializer\Groups({"event_read", "event_sync", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
-     * @Assert\Length(min=5, max=100)
+     * @Assert\Length(allowEmptyString=true, min=5, max=100)
      */
     protected $name;
 
@@ -305,7 +305,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @SymfonySerializer\Groups({"event_read", "event_write"})
      *
      * @Assert\NotBlank
-     * @Assert\Length(min=10)
+     * @Assert\Length(allowEmptyString=true, min=10)
      */
     protected $description;
 

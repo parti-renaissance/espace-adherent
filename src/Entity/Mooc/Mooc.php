@@ -74,7 +74,7 @@ class Mooc
     /**
      * @ORM\Column(length=800, nullable=true)
      *
-     * @Assert\Length(min=5, max=800)
+     * @Assert\Length(allowEmptyString=true, min=5, max=800)
      */
     private $content;
 
@@ -84,7 +84,7 @@ class Mooc
      * @ORM\Column(nullable=true)
      *
      * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.youtubeid_syntax")
-     * @Assert\Length(min=2, max=11)
+     * @Assert\Length(allowEmptyString=true, min=2, max=11)
      */
     private $youtubeId;
 
@@ -125,7 +125,7 @@ class Mooc
      * @ORM\Column(length=500)
      *
      * @Assert\NotBlank
-     * @Assert\Length(min=5, max=500)
+     * @Assert\Length(allowEmptyString=true, min=5, max=500)
      */
     protected $shareEmailBody;
 

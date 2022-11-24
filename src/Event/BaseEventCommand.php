@@ -29,13 +29,13 @@ class BaseEventCommand
 
     /**
      * @Assert\NotBlank
-     * @Assert\Length(min=5, max=100)
+     * @Assert\Length(allowEmptyString=true, min=5, max=100)
      */
     private $name;
 
     /**
      * @Assert\NotBlank
-     * @Assert\Length(min=10)
+     * @Assert\Length(allowEmptyString=true, min=10)
      */
     private $description;
 
