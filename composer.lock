@@ -5834,16 +5834,16 @@
         },
         {
             "name": "knplabs/knp-time-bundle",
-            "version": "1.17.0",
+            "version": "v1.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpTimeBundle.git",
-                "reference": "bbb2c841b5e04b1290bee8173cbfa9c325ea3e9d"
+                "reference": "56e4d154bcd14c1b67c0d1defa1e7d00d27430e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpTimeBundle/zipball/bbb2c841b5e04b1290bee8173cbfa9c325ea3e9d",
-                "reference": "bbb2c841b5e04b1290bee8173cbfa9c325ea3e9d",
+                "url": "https://api.github.com/repos/KnpLabs/KnpTimeBundle/zipball/56e4d154bcd14c1b67c0d1defa1e7d00d27430e3",
+                "reference": "56e4d154bcd14c1b67c0d1defa1e7d00d27430e3",
                 "shasum": ""
             },
             "require": {
@@ -5901,9 +5901,9 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/KnpTimeBundle/issues",
-                "source": "https://github.com/KnpLabs/KnpTimeBundle/tree/1.17.0"
+                "source": "https://github.com/KnpLabs/KnpTimeBundle/tree/v1.19.0"
             },
-            "time": "2021-10-28T18:40:18+00:00"
+            "time": "2022-05-10T00:14:22+00:00"
         },
         {
             "name": "kreait/clock",
