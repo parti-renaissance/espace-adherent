@@ -7,7 +7,7 @@ use App\DataFixtures\ORM\LoadClientData;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractApiCaseTest;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -15,7 +15,7 @@ use Tests\App\Controller\ControllerTestTrait;
  * @group functional
  * @group api
  */
-class GetEventParticipantsControllerTest extends WebTestCase
+class GetEventParticipantsControllerTest extends AbstractApiCaseTest
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

@@ -10,7 +10,7 @@ use App\OAuth\Model\GrantTypeEnum;
 use Cake\Chronos\Chronos;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractApiCaseTest;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -18,7 +18,7 @@ use Tests\App\Controller\ControllerTestTrait;
  * @group functional
  * @group api
  */
-class EventsControllerTest extends WebTestCase
+class EventsControllerTest extends AbstractApiCaseTest
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;
@@ -90,6 +90,7 @@ class EventsControllerTest extends WebTestCase
 
         $this->client->request(Request::METHOD_GET, '/api/v3/events?subscribedOnly', [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
+            'HTTP_ACCEPT' => 'application/json',
         ]);
 
         $response = json_decode($this->client->getResponse()->getContent(), true);

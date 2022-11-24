@@ -8,7 +8,7 @@ use App\Entity\Jecoute\Riposte;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest;
+use Tests\App\AbstractApiCaseTest;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -16,7 +16,7 @@ use Tests\App\Controller\ControllerTestTrait;
  * @group functional
  * @group api
  */
-class GetRipostesControllerTest extends AbstractWebCaseTest
+class GetRipostesControllerTest extends AbstractApiCaseTest
 {
     use ApiControllerTestTrait;
     use ControllerTestTrait;

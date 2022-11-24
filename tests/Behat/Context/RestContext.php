@@ -47,7 +47,7 @@ class RestContext extends BehatchRestContext
         /** @var DIContext $diContext */
         $diContext = $scope->getEnvironment()->getContext(DIContext::class);
         $this->entityManager = $diContext->get('doctrine')->getManager();
-        $this->privateCryptKey = new CryptKey($diContext->getParameter('ssl_private_key'));
+        $this->privateCryptKey = new CryptKey($diContext->getParameter('ssl_private_key'), null, false);
         $this->accessToken = null;
     }
 

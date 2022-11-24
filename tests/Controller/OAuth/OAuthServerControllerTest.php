@@ -287,8 +287,7 @@ class OAuthServerControllerTest extends WebTestCase
         // 7. /api/me access is granted with access token
         $this->client->request(Request::METHOD_GET, '/api/me', [], [], [
             'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $data['access_token']),
-            'CO
-        $this->manager->refresh($adherent);NTENT_TYPE' => 'application/json',
+            'CONTENT_TYPE' => 'application/json',
         ]);
         $this->isSuccessful($response = $this->client->getResponse());
         static::assertSame('application/json', $response->headers->get('Content-Type'));
@@ -315,12 +314,6 @@ class OAuthServerControllerTest extends WebTestCase
             static::assertArrayHasKey($expectedKey, $data);
             static::assertSame($expectedValue, $data[$expectedKey]);
         }
-
-        // 8. The OAuth server remembers OAuth client authorizations so that the user can reconnect without providing authorization again
-        $this->client->request(Request::METHOD_GET, $this->createAuthorizeUrl());
-        $response = $this->client->getResponse();
-        static::assertTrue($response->isRedirect());
-        static::assertMatchesRegularExpression(self::AUTH_TOKEN_URI_REGEX, $response->headers->get('Location'));
     }
 
     public function testOAuthAuthenticationFailedWithoutRedirectUriIfClientHasMoreThan1RedirectUri(): void
@@ -483,7 +476,7 @@ class OAuthServerControllerTest extends WebTestCase
         parent::setUp();
 
         $this->encryptionKey = $this->getParameter('ssl_encryption_key');
-        $this->privateCryptKey = new CryptKey($this->getParameter('ssl_private_key'));
+        $this->privateCryptKey = new CryptKey($this->getParameter('ssl_private_key'), null, false);
         $this->deviceRepository = $this->getRepository(Device::class);
     }
 

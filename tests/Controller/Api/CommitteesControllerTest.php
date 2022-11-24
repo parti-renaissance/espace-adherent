@@ -5,7 +5,7 @@ namespace Tests\App\Controller\Api;
 use App\DataFixtures\ORM\LoadCommitteeData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractApiCaseTest;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
@@ -14,7 +14,7 @@ use Tests\App\Test\Helper\PHPUnitHelper;
  * @group functional
  * @group api
  */
-class CommitteesControllerTest extends WebTestCase
+class CommitteesControllerTest extends AbstractApiCaseTest
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

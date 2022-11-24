@@ -15,7 +15,7 @@ use App\Repository\Pap\BuildingEventRepository;
 use App\Repository\Pap\BuildingRepository;
 use App\Repository\Pap\CampaignRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractApiCaseTest;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -23,7 +23,7 @@ use Tests\App\Controller\ControllerTestTrait;
  * @group functional
  * @group api
  */
-class BuildingEventControllerTest extends WebTestCase
+class BuildingEventControllerTest extends AbstractApiCaseTest
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

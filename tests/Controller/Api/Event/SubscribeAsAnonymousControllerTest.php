@@ -7,7 +7,7 @@ use App\DataFixtures\ORM\LoadCoalitionEventData;
 use App\DataFixtures\ORM\LoadCommitteeEventData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractApiCaseTest;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -15,7 +15,7 @@ use Tests\App\Controller\ControllerTestTrait;
  * @group functional
  * @group api
  */
-class SubscribeAsAnonymousControllerTest extends WebTestCase
+class SubscribeAsAnonymousControllerTest extends AbstractApiCaseTest
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

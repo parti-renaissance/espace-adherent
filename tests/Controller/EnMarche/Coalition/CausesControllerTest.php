@@ -159,8 +159,8 @@ class CausesControllerTest extends WebTestCase
             '_token' => $crawler->filter('input[name="cause[_token]"]')->attr('value'),
             'name' => '',
             'description' => '',
-            'coalition' => null,
-            'secondCoalition' => null,
+            'coalition' => '',
+            'secondCoalition' => '',
             // disabled user
             'author' => LoadAdherentData::ADHERENT_1_UUID,
         ]]));

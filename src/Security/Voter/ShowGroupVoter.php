@@ -18,8 +18,6 @@ class ShowGroupVoter extends AbstractAdherentVoter
     /**
      * @param string    $attribute
      * @param BaseGroup $group
-     *
-     * @return bool
      */
     protected function voteOnAttribute($attribute, $group, TokenInterface $token): bool
     {

@@ -6,14 +6,14 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\UserListDefinitionEnum;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractApiCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
 
 /**
  * @group functional
  */
-class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
+class ElectedRepresentativeUserListDefinitionControllerTest extends AbstractApiCaseTest
 {
     use ControllerTestTrait;
 

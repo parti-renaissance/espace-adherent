@@ -54,6 +54,34 @@ Feature:
           "publishedAt":"@string@.isDateTime()"
         },
         {
+          "type":"quiz",
+          "title":"Le test de votre vie",
+          "slug":"le-test-de-votre-vie",
+          "content":"<p>une description</p>",
+          "shareTwitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
+          "shareFacebookText": "Bonsoir, voici un partage avec Facebook",
+          "shareEmailSubject": "Bonsoir, voici un email de partage !",
+          "shareEmailBody": "Voici le contenu de l'email de partage. Merci.",
+          "links":[],
+          "attachments":[],
+          "typeformUrl":"https://developerplatform.typeform.com/to/Xc7NMh"
+        },
+        {
+          "type":"video",
+          "title":"Les produits transformés dans une deuxième vidéo",
+          "slug":"les-produits-transformes-dans-une-deuxieme-video",
+          "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.",
+          "shareTwitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
+          "shareFacebookText": "Bonsoir, voici un partage avec Facebook",
+          "shareEmailSubject": "Bonsoir, voici un email de partage !",
+          "shareEmailBody": "Voici le contenu de l'email de partage. Merci.",
+          "links":[],
+          "attachments":[],
+          "youtubeId":"ktHEfEDhscU",
+          "youtubeThumbnail":"https://img.youtube.com/vi/ktHEfEDhscU/0.jpg",
+          "duration":"01:30:00"
+        },
+        {
           "type":"video",
           "title":"Les produits transformés dans une première vidéo",
           "slug":"les-produits-transformes-dans-une-premiere-video",
@@ -78,34 +106,6 @@ Feature:
           "duration":"00:02:10"
         },
         {
-          "type":"video",
-          "title":"Les produits transformés dans une deuxième vidéo",
-          "slug":"les-produits-transformes-dans-une-deuxieme-video",
-          "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.",
-          "shareTwitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
-          "shareFacebookText": "Bonsoir, voici un partage avec Facebook",
-          "shareEmailSubject": "Bonsoir, voici un email de partage !",
-          "shareEmailBody": "Voici le contenu de l'email de partage. Merci.",
-          "links":[],
-          "attachments":[],
-          "youtubeId":"ktHEfEDhscU",
-          "youtubeThumbnail":"https://img.youtube.com/vi/ktHEfEDhscU/0.jpg",
-          "duration":"01:30:00"
-        },
-        {
-          "type":"quiz",
-          "title":"Le test de votre vie",
-          "slug":"le-test-de-votre-vie",
-          "content":"<p>une description</p>",
-          "shareTwitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
-          "shareFacebookText": "Bonsoir, voici un partage avec Facebook",
-          "shareEmailSubject": "Bonsoir, voici un email de partage !",
-          "shareEmailBody": "Voici le contenu de l'email de partage. Merci.",
-          "links":[],
-          "attachments":[],
-          "typeformUrl":"https://developerplatform.typeform.com/to/Xc7NMh"
-        },
-        {
           "type":"chapter",
           "title":"Semaine 2 : Le coup de fourchette pour défendre la nature",
           "slug":"semaine-2-le-coup-de-fourchette-pour-defendre-la-nature",
@@ -124,6 +124,6 @@ Feature:
     And the XML element "//url[1]/changefreq" should be equal to "monthly"
     And the XML element "//url[1]/priority" should be equal to "0.1"
     And the XML element "//url[2]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique"
-    And the XML element "//url[3]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/les-produits-transformes-dans-une-premiere-video"
+    And the XML element "//url[3]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/le-test-de-votre-vie"
     And the XML element "//url[4]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/les-produits-transformes-dans-une-deuxieme-video"
-    And the XML element "//url[5]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/le-test-de-votre-vie"
+    And the XML element "//url[5]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/les-produits-transformes-dans-une-premiere-video"
