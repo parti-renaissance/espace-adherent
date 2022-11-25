@@ -122,7 +122,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(length=25, unique=true, nullable=true)
      *
-     * @Assert\Length(min=3, max=25, groups={"Default", "anonymize"})
+     * @Assert\Length(allowEmptyString=true, min=3, max=25, groups={"Default", "anonymize"})
      * @Assert\Regex(pattern="/^[a-z0-9 _-]+$/i", message="adherent.nickname.invalid_syntax", groups={"anonymize"})
      * @Assert\Regex(pattern="/^[a-zÀ-ÿ0-9 .!_-]+$/i", message="adherent.nickname.invalid_extended_syntax")
      *
@@ -291,7 +291,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $referentTeamMember;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AdherentZoneBasedRole", mappedBy="adherent", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\AdherentZoneBasedRole", fetch="EAGER", mappedBy="adherent", cascade={"persist"}, orphanRemoval=true)
      *
      * @AssertZoneBasedRoles
      */

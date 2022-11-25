@@ -83,7 +83,7 @@ class ThematicCommunityMembershipType extends AbstractType
                     'min_date' => new \DateTime('-120 years'),
                     'constraints' => [
                         new Constraints\NotBlank(),
-                        new Constraints\Date(),
+                        new Constraints\Type(\DateTime::class),
                     ],
                 ])
                 ->add('position', ActivityPositionType::class, [

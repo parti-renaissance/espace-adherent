@@ -15,7 +15,7 @@ class MoocVideoElement extends BaseMoocElement
      * @ORM\Column(nullable=true)
      *
      * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.youtubeid_syntax")
-     * @Assert\Length(min=2, max=11)
+     * @Assert\Length(allowEmptyString=true, min=2, max=11)
      */
     private $youtubeId;
 

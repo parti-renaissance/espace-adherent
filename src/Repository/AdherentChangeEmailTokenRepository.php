@@ -14,8 +14,12 @@ class AdherentChangeEmailTokenRepository extends AbstractAdherentTokenRepository
         parent::__construct($registry, AdherentChangeEmailToken::class);
     }
 
-    public function findLastUnusedByAdherent(Adherent $adherent): ?AdherentChangeEmailToken
+    public function findLastUnusedByAdherent(?Adherent $adherent): ?AdherentChangeEmailToken
     {
+        if (!$adherent) {
+            return null;
+        }
+
         return $this
             ->createQueryForLastUnused('token')
             ->andWhere('token.adherentUuid = :uuid')

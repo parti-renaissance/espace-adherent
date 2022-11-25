@@ -145,7 +145,7 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
      * @Assert\NotBlank
      * @Assert\Length(max=70)
      *
-     * @SymfonySerializer\Groups(
+     * @SymfonySerializer\Groups({
      *     "survey_list",
      *     "survey_list_dc",
      *     "survey_write_dc",
@@ -155,7 +155,7 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
      *     "phoning_campaign_replies_list",
      *     "pap_campaign_replies_list",
      *     "pap_campaign_history_read_list",
-     * )
+     * })
      */
     private $name;
 
@@ -168,18 +168,18 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
      * @Assert\Count(min="1", minMessage="survey.questions.min_count")
      * @Assert\Valid
      *
-     * @SymfonySerializer\Groups("survey_write_dc")
+     * @SymfonySerializer\Groups({"survey_write_dc"})
      */
     private $questions;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @SymfonySerializer\Groups(
+     * @SymfonySerializer\Groups({
      *     "survey_list_dc",
      *     "survey_read_dc",
      *     "survey_write_dc",
-     * )
+     * })
      */
     private $published;
 
@@ -265,12 +265,12 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
     }
 
     /**
-     * @SymfonySerializer\Groups("survey_list", "survey_list_dc", "survey_read_dc")
+     * @SymfonySerializer\Groups({"survey_list", "survey_list_dc", "survey_read_dc"})
      */
     abstract public function getType(): string;
 
     /**
-     * @SymfonySerializer\Groups("survey_list_dc", "survey_read_dc")
+     * @SymfonySerializer\Groups({"survey_list_dc", "survey_read_dc"})
      */
     public function getCreator(): ?Adherent
     {

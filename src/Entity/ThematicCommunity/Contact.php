@@ -68,7 +68,6 @@ class Contact
      * @ORM\Column(type="date", nullable=true)
      *
      * @Assert\NotBlank
-     * @Assert\Date
      */
     private $birthDate;
 

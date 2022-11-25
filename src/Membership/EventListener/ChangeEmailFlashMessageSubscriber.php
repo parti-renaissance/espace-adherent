@@ -48,7 +48,7 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($token = $this->repository->findLastUnusedByAdherent($this->tokenStorage->getToken()->getUser())) {
+        if ($token = $this->repository->findLastUnusedByAdherent($this->tokenStorage->getToken()?->getUser())) {
             $this->session->getFlashBag()->add('info', $this->message = $this->translator->trans(
                 self::MESSAGE,
                 ['email' => $token->getEmail()]

@@ -81,7 +81,7 @@ class Unregistration
      *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Assert\Length(min=10, max=1000)
+     * @Assert\Length(allowEmptyString=true, min=10, max=1000)
      */
     private $comment;
 

@@ -35,7 +35,7 @@ trait EntityContentTrait
      *
      * @ORM\Column
      *
-     * @Assert\Length(min=10, max=255)
+     * @Assert\Length(allowEmptyString=true, min=10, max=255)
      * @Assert\NotBlank
      *
      * @Groups({"article_read"})
@@ -47,7 +47,7 @@ trait EntityContentTrait
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(min=10, max=255)
+     * @Assert\Length(allowEmptyString=true, min=10, max=255)
      *
      * @Groups({"article_read"})
      */

@@ -54,7 +54,6 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      */
     protected $beginAt;
 
@@ -62,8 +61,6 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Assert\DateTime
      */
     protected $finishAt;
 

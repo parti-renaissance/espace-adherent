@@ -51,7 +51,6 @@ class PoliticalFunction
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      */
     private $beginAt;
 
@@ -60,7 +59,6 @@ class PoliticalFunction
      *
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Assert\DateTime
      * @Assert\Expression(
      *     "value == null or value > this.getBeginAt()",
      *     message="La date de fin doit être postérieure à la date de début."

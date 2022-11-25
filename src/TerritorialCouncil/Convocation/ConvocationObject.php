@@ -45,7 +45,6 @@ class ConvocationObject
      * @var \DateTime|null
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      */
     private $meetingStartDate;
 
@@ -53,7 +52,6 @@ class ConvocationObject
      * @var \DateTime|null
      *
      * @Assert\NotBlank
-     * @Assert\DateTime
      */
     private $meetingEndDate;
 

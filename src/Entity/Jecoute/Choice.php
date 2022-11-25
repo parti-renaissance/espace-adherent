@@ -23,7 +23,7 @@ class Choice
      * @ORM\Id
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups("survey_list", "survey_read_dc")
+     * @SymfonySerializer\Groups({"survey_list", "survey_read_dc"})
      */
     private $id;
 
@@ -41,7 +41,7 @@ class Choice
      * @Assert\NotBlank
      * @Assert\Length(max=80)
      *
-     * @SymfonySerializer\Groups("survey_list", "survey_read_dc", "survey_write_dc")
+     * @SymfonySerializer\Groups({"survey_list", "survey_read_dc", "survey_write_dc"})
      */
     private $content;
 

@@ -59,7 +59,7 @@ class Path
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank(message="path.description.not_blank")
-     * @Assert\Length(min=2, minMessage="path.description.min_length")
+     * @Assert\Length(allowEmptyString=true, min=2, minMessage="path.description.min_length")
      */
     private $description;
 

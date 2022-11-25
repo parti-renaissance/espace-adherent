@@ -86,8 +86,6 @@ class Designation
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Assert\DateTime
      */
     private $candidacyEndDate;
 
@@ -95,8 +93,6 @@ class Designation
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Assert\DateTime
      */
     private $voteStartDate;
 
@@ -104,8 +100,6 @@ class Designation
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Assert\DateTime
      */
     private $voteEndDate;
 

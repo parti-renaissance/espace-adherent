@@ -12,7 +12,7 @@ class AdherentMessageDataObject
      * @var string|null
      *
      * @Assert\NotBlank
-     * @Assert\Length(min="3", max="255")
+     * @Assert\Length(allowEmptyString=true, min="3", max="255")
      */
     private $label;
 
@@ -20,7 +20,7 @@ class AdherentMessageDataObject
      * @var string|null
      *
      * @Assert\NotBlank
-     * @Assert\Length(min="3", max="255")
+     * @Assert\Length(allowEmptyString=true, min="3", max="255")
      */
     private $subject;
 

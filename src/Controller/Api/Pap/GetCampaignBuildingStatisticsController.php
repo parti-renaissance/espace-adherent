@@ -33,7 +33,9 @@ class GetCampaignBuildingStatisticsController extends AbstractController
         }
 
         foreach (array_diff(array_keys($order), self::ALLOWED_SORT_BY) as $key) {
-            unset($order[$key]);
+            if (\array_key_exists($key, $order)) {
+                unset($order[$key]);
+            }
         }
 
         foreach ($order as &$value) {

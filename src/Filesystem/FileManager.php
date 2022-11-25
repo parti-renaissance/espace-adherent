@@ -39,7 +39,7 @@ class FileManager
             $file->setOriginalFilename($uploadedFile->getClientOriginalName());
             $file->setExtension($uploadedFile->getClientOriginalExtension());
             $file->setMimeType($uploadedFile->getMimeType());
-            $file->setSize($uploadedFile->getClientSize());
+            $file->setSize($uploadedFile->getSize());
         }
     }
 

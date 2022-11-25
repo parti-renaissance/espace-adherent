@@ -40,7 +40,7 @@ class Module implements EntityMediaInterface
      * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
-     * @Assert\Length(min=2, minMessage="Le titre doit faire au moins 2 caractères.")
+     * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
      */
     private $title;
 
@@ -59,7 +59,7 @@ class Module implements EntityMediaInterface
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank(message="Veuillez renseigner une description.")
-     * @Assert\Length(min=2, minMessage="La description doit faire au moins 2 caractères.")
+     * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      */
     private $description;
 

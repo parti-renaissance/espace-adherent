@@ -123,7 +123,7 @@ abstract class BaseMoocElement
      * @ORM\Column(length=500)
      *
      * @Assert\NotBlank
-     * @Assert\Length(min=5, max=500)
+     * @Assert\Length(allowEmptyString=true, min=5, max=500)
      */
     protected $shareEmailBody;
 

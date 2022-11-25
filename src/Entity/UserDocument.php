@@ -190,7 +190,7 @@ class UserDocument
             $uploadedFile->getClientMimeType(),
             $uploadedFile->getClientOriginalName(),
             $uploadedFile->getClientOriginalExtension(),
-            $uploadedFile->getClientSize()
+            $uploadedFile->getSize()
         );
     }
 

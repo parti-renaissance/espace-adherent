@@ -20,7 +20,7 @@ class LocalSurvey extends Survey implements EntityScopeVisibilityWithZoneInterfa
      *
      * @Assert\Length(max=255)
      *
-     * @SymfonySerializer\Groups("survey_list", "survey_read_dc")
+     * @SymfonySerializer\Groups({"survey_list", "survey_read_dc"})
      *
      * @deprecated
      */
@@ -40,12 +40,12 @@ class LocalSurvey extends Survey implements EntityScopeVisibilityWithZoneInterfa
      *
      * @Assert\NotBlank
      *
-     * @SymfonySerializer\Groups(
+     * @SymfonySerializer\Groups({
      *     "survey_list",
      *     "survey_list_dc",
      *     "survey_read_dc",
      *     "survey_write_dc",
-     * )
+     * })
      */
     private $zone;
 

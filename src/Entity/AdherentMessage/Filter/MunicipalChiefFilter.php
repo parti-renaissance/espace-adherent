@@ -92,7 +92,7 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter implements Camp
      *
      * @ORM\Column(length=10, nullable=true)
      *
-     * @Assert\Length(min=5, max=5)
+     * @Assert\Length(allowEmptyString=true, min=5, max=5)
      */
     private $postalCode;
 

@@ -46,15 +46,11 @@ class CauseFilter
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @Assert\DateTime
      */
     private $createdAfter;
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @Assert\DateTime
      */
     private $createdBefore;
 

@@ -64,7 +64,7 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
 
     /**
      * @Assert\Expression("this.getAdherentId() or this.password", groups="fill_personal_info")
-     * @Assert\Length(min=8, minMessage="adherent.plain_password.min_length", groups={"fill_personal_info"})
+     * @Assert\Length(allowEmptyString=true, min=8, minMessage="adherent.plain_password.min_length", groups={"fill_personal_info"})
      */
     public ?string $password = null;
 
