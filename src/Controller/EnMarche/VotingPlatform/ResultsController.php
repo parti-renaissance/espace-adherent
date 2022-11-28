@@ -47,7 +47,7 @@ class ResultsController extends AbstractController
             ;
         }
 
-        return $this->renderElectionTemplate('voting_platform/results.html.twig', $election, [
+        return $this->renderElectionTemplate('voting_platform/results.html.twig', $election, $request, [
             'vote_results' => $voteResultRepository->getResultsForRound($electionRound),
             'election_round' => $electionRound,
         ]);

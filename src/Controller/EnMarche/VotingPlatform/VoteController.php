@@ -74,6 +74,7 @@ class VoteController extends AbstractController
         return $this->renderElectionTemplate(
             'voting_platform/vote.html.twig',
             $election,
+            $request,
             [
                 'form' => $form->createView(),
                 'candidate_groups' => $candidateGroups,
