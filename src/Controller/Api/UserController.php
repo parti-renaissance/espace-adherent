@@ -56,7 +56,6 @@ class UserController extends AbstractController
 
     /**
      * @IsGranted("ROLE_ADHERENT")
-     * @Route("/users/me", name="app_api_user_show_me", methods={"GET"})
      */
     public function showMe(SerializerInterface $serializer): JsonResponse
     {
