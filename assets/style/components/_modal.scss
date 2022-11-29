@@ -1,0 +1,115 @@
+.re-modal {
+    display: none;
+    position: fixed;
+    box-sizing: border-box;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    padding: 15px;
+
+    .modal-background {
+        position: fixed;
+        box-sizing: border-box;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        pointer-events: none;
+    }
+
+    .modal-content {
+        box-sizing: border-box;
+        background-color: $white;
+        width: 100%;
+        max-width: 700px;
+        margin: 5vh auto;
+        padding: 30px;
+        position: relative;
+        border-radius: 3px;
+
+        @media (min-width: 650px) {
+            padding: 50px;
+            margin: 15vh auto;
+        }
+
+        &__success {
+            display: block;
+            margin: 0 auto;
+        }
+    }
+
+    &--side {
+        &-right,
+        &-left {
+            .modal-content {
+                position: absolute;
+                border-radius: 0;
+                margin: 0;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+                max-width: 700px;
+                overflow-y: auto;
+
+                @media (min-width: 1000px) {
+                    padding: 100px;
+                }
+            }
+        }
+
+        &-right {
+            .modal-content {
+                right: 0;
+            }
+        }
+
+        &-left {
+            .modal-content {
+                left: 0;
+            }
+        }
+    }
+
+    .close {
+        cursor: pointer;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        right: 15px;
+        top: 15px;
+        opacity: 0.7;
+        padding: 5px;
+        transition: opacity 0.2s;
+
+        @media (min-width: 650px) {
+            right: 30px;
+            top: 30px
+        }
+
+        &:hover {
+            opacity: 1;
+        }
+
+        &:before,
+        &:after {
+            content: ' ';
+            position: absolute;
+            left: calc(50% - 1px);
+            height: 20px;
+            width: 2px;
+            background-color: #7B889BFF;
+        }
+
+        &:before {
+            transform: rotate(45deg);
+        }
+
+        &:after {
+            transform: rotate(-45deg);
+        }
+    }
+}

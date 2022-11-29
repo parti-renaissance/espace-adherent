@@ -9,12 +9,20 @@
         <h1 class="text-3xl font-bold leading-10 text-gray-900">Communication</h1>
 
         <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
-            {% if not app.user.isEmailSubscribed() %}
-                <div class="alert alert--tips l__row l__row--h-stretch b__nudge--bottom-50">
-                    <div class="l__col">Vous êtes désabonné</div>
-                    <div class="l__col"><a href="#" class="btn btn--blue" id="resubscribe-trigger">Me réabonner</a></div>
-                </div>
-            {% endif %}
+            <div class="divide-y divide-gray-200">
+                <section class="pt-8 mb-6 first:pt-0">
+                    {% if not app.user.isEmailSubscribed() %}
+                        <div class="rounded-md bg-orange-50 p-4">
+                            <div class="flex">
+                                <div class="flex-1 inline-flex items-center md:flex md:justify-between">
+                                    <p class="text-lg font-medium text-gray-700">Vous êtes désabonné</p>
+                                    <a href="#" class="button button-blue" id="resubscribe-mc-trigger">Me réabonner</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </section>
+            </div>
 
             {{ form_start(form, { attr: { class: 're-form' } }) }}
                 {{ form_errors(form) }}
@@ -54,3 +62,17 @@
         </div>
     </section>
 {% endblock %}
+
+{% if not app.user.isEmailSubscribed() %}
+    {% block final_javascripts %}
+        <script type="text/javascript">
+            Bootstrap.onLoad(function () {
+                on(dom('#resubscribe-mc-trigger'), 'click', function (event) {
+                    event.preventDefault();
+                    Main.runMailchimpResubscribeEmail({});
+                })
+            });
+        </script>
+    {% endblock %}
+{% endif %}
+
