@@ -16,7 +16,7 @@ const getContent = (status) => {
     if ('success' === status) {
         return <div>
             <img className={'modal-content__success'} src={successImage} alt={'success image'}/>
-            <p>Félicitations, vous êtes réabonné(e) aux communications<br/>de Renaissance.</p>
+            <p className={'text-lg font-medium text-gray-700'}>Félicitations, vous êtes réabonné(e) aux communications<br/>de Renaissance.</p>
         </div>;
     }
 
