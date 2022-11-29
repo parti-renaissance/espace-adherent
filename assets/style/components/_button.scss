@@ -1,9 +1,9 @@
-.button {
+.button, .btn {
     font-weight: 700;
     text-transform: uppercase;
     border-radius: .25rem;
 
-    &-blue {
+    &-blue, &--blue {
         color: $white;
         background: $dark-blue;
 
@@ -73,4 +73,11 @@
         }
     }
 
+    &.btn--large-and-full {
+        display: inline-flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        width: 100%;
+    }
 }

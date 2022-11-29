@@ -1,7 +1,7 @@
 .voting-platform {
     position: relative;
     background-color: $gray--lighter;
-    min-height: calc(100vh - 80px);
+    // min-height: calc(100vh - 80px);
 
     &__header {
         box-sizing: border-box;
@@ -9,12 +9,11 @@
         background-color: $white;
 
         > div {
-            min-height: 80px;
+            // min-height: 80px;
         }
 
         .anonymous {
             span {
-                color: $neutral-grey;
                 text-transform: uppercase;
                 font-size: 14px;
                 line-height: normal;
@@ -24,12 +23,12 @@
     }
 
     &__ornaments {
-        position: relative;
-        z-index: 1;
-        display: none;
-        @media (min-width: $tablet) {
-            display: block;
-        }
+        // position: relative;
+        // z-index: 1;
+        // display: none;
+        //@media (min-width: $tablet) {
+        //    display: block;
+        //}
 
         .ornament {
             position: absolute;
@@ -46,26 +45,26 @@
                 top: 0;
             }
 
-            &--1 {
-                width: 227px;
-                right: 0;
-                top: 0;
+            &--1, &--4 {
+                width: 228px;
+                right: -20px;
+                top: 10%;
             }
         }
     }
 
     &__content {
-        margin: 60px 0;
+        // margin: 60px 0;
         position: relative;
         z-index: 2;
 
         @media (min-width: $tablet) {
-            margin: 140px 0;
+            // margin: 140px 0;
         }
 
         .introduction-header h1 {
-            line-height: normal;
-            max-width: 650px;
+            // line-height: normal;
+            // max-width: 650px;
         }
     }
 
@@ -538,28 +537,6 @@
         &__poll {
             .ballot-paper {
                 margin: inherit;
-            }
-
-            .btn {
-                &.btn--blue {
-                    background-color: $blue--soft-dark;
-                    border-color: $blue--soft-dark;
-
-                    &:hover {
-                        background-color: $white;
-                        color: $blue--soft-dark;
-                    }
-                }
-
-                &.btn--ghosting--blue {
-                    border-color: $blue--soft-dark;
-                    color: $blue--soft-dark;
-
-                    &:hover {
-                        background-color: $blue--soft-dark;
-                        color: $white;
-                    }
-                }
             }
 
             .election-results .candidate__box.elected {
