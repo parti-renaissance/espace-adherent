@@ -82,6 +82,11 @@ class Candidate
      */
     private $additionallyElected = false;
 
+    /**
+     * @ORM\Column(type="smallint", options={"unsigned": true}, nullable=true)
+     */
+    public ?int $position = null;
+
     public function __construct(
         string $firstName,
         string $lastName,
@@ -175,5 +180,15 @@ class Candidate
     public function getAdherent(): Adherent
     {
         return $this->adherent;
+    }
+
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+
+    public function getLastName(): string
+    {
+        return $this->lastName;
     }
 }

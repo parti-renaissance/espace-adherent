@@ -12,6 +12,7 @@ use App\VotingPlatform\Election\VoteCommandStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseAbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 abstract class AbstractController extends BaseAbstractController
 {
@@ -20,7 +21,8 @@ abstract class AbstractController extends BaseAbstractController
         protected readonly VoteCommandStorage $storage,
         protected readonly VoteCommandProcessor $processor,
         protected readonly CandidateGroupRepository $candidateGroupRepository,
-        private readonly AuthAppUrlManager $appUrlManager
+        private readonly AuthAppUrlManager $appUrlManager,
+        private readonly Environment $twig
     ) {
     }
 
@@ -37,8 +39,14 @@ abstract class AbstractController extends BaseAbstractController
     ): Response {
         $appCode = $this->appUrlManager->getAppCodeFromRequest($request);
 
+        $baseTemplate = sprintf('voting_platform/_layout_%s.html.twig', $designationType = $election->getDesignationType());
+
+        if (!$this->twig->getLoader()->exists($baseTemplate)) {
+            $baseTemplate = 'voting_platform/_layout_base.html.twig';
+        }
+
         return $this->render($template, array_merge($params, [
-            'base_layout' => sprintf('voting_platform/_layout_%s.html.twig', $designationType = $election->getDesignationType()),
+            'base_layout' => $baseTemplate,
             'designation_type' => $designationType,
             'election' => $election,
             'is_renaissance_app' => AppCodeEnum::isRenaissanceApp($appCode),

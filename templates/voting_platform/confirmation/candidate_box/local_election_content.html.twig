@@ -1,0 +1,28 @@
+{% import 'voting_platform/_macros.html.twig' as helper %}
+
+<div class="ballot-paper">
+    <div class="ballot-paper__content">
+        <div>
+            {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
+
+            {% if candidate_group %}
+                {% set candidates = candidate_group.getCandidatesSorted(true) %}
+                {% set first = candidates|first %}
+
+                <ul>
+                    <li>
+                        {{ first.getFirstName() }}
+                        <span class="uppercase"> {{ first.getLastName() }}</span>
+                        <span class="candidate-gender">{{ first.isFemale ? 'F' : 'H' }}</span></li>
+                    <li>+ {{ candidates|length - 1 }} candidature{{ candidates|length - 1 > 1 ? 's' }}</li>
+                </ul>
+            {% else %}
+                <h3>Bulletin blanc</h3>
+            {% endif %}
+        </div>
+
+        <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid, s: loop.index}) }}" class="text-blue-400">
+            Modifier mon choix
+        </a>
+    </div>
+</div>

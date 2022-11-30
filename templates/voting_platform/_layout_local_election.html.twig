@@ -1,0 +1,34 @@
+{% extends 'voting_platform/_layout_base.html.twig' %}
+
+{% block banner %}
+    <div class="py-5 pl-5">
+        <a href="{{ path('app_renaissance_local_election_index') }}">
+            ← Retourner
+        </a>
+    </div>
+{% endblock %}
+
+{% block voting_platform_subtitle %}
+    {{ designation.getZones()|join(', ') }}
+{% endblock %}
+
+{% block election_sub_title %}
+    <p class="text-gray-500">
+        Le vote est ouvert du
+        {% if election.isSecondRoundVotePeriodActive %}
+            {{ election.voteEndDate|date('d/m/Y \à H:i') }} au {{ election.secondRoundEndDate|date('d/m/Y \à H:i') }}
+        {% else %}
+            {{ election.voteStartDate|date('d/m/Y \à H:i') }} au {{ election.voteEndDate|date('d/m/Y \à H:i') }}
+        {% endif %}
+    </p>
+{% endblock %}
+
+{% block vote_finish_action_block %}
+    <div class="b__nudge--bottom-large b__nudge--top-large">
+        <a href="{{ path('app_vote_statuses_index') }}" class="btn btn--blue">
+            Retour à l’accueil
+        </a>
+    </div>
+{% endblock %}
+
+{% block voting_platform_result_tab_votes_list_title 'Détails des résultats' %}

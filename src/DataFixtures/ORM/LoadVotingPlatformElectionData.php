@@ -215,6 +215,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         );
         $this->manager->persist($election);
         $this->loadLocalElectionCandidates($election, $this->getReference('local-election-1'));
+        $this->loadVoters($election);
 
         // -------------------------------------------
 
@@ -354,10 +355,12 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     {
         $adherent1 = $this->getReference('assessor-1');
         $adherent2 = $this->getReference('adherent-20');
+        $adherent3 = $this->getReference('adherent-5');
 
         $list = new VotersList($election);
         $list->addVoter($this->voters[$adherent1->getId()] ?? $this->voters[$adherent1->getId()] = new Voter($adherent1));
         $list->addVoter($this->voters[$adherent2->getId()] ?? $this->voters[$adherent2->getId()] = new Voter($adherent2));
+        $list->addVoter($this->voters[$adherent3->getId()] ?? $this->voters[$adherent3->getId()] = new Voter($adherent3));
 
         for ($i = 1; $i <= 9; ++$i) {
             $list->addVoter(new Voter());
@@ -493,11 +496,12 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
             $pool->addCandidateGroup($group = new CandidateGroup());
 
             foreach ($list->getCandidacies() as $candidacy) {
-                $group->addCandidate(new Candidate(
+                $group->addCandidate($candidate = new Candidate(
                     $candidacy->getFirstName(),
                     $candidacy->getLastName(),
                     $candidacy->getGender()
                 ));
+                $candidate->position = $candidacy->getPosition();
             }
         }
     }

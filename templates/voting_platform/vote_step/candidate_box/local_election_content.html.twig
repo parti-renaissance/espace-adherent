@@ -1,0 +1,22 @@
+{% import 'voting_platform/_macros.html.twig' as helper %}
+
+<div>
+    {% if candidate_group %}
+        {% set candidates = candidate_group.getCandidatesSorted(true) %}
+        {% set first = candidates|first %}
+        <ul>
+            <li>
+                {{ first.getFirstName() }}
+                <span class="uppercase"> {{ first.getLastName() }}</span>
+                <span class="candidate-gender">{{ first.isFemale ? 'F' : 'H' }}</span></li>
+            <li>+ {{ candidates|length - 1 }} candidature{{ candidates|length - 1 > 1 ? 's' }}</li>
+        </ul>
+
+        <div class="candidate-footer">
+            <a href="#" class="text-blue-400">Télécharger la profession de foi</a>
+            <a href="#" class="text-blue-400">Voir la liste complète</a>
+        </div>
+    {% else %}
+        <h3 class="candidate-pool">Bulletin blanc</h3>
+    {% endif %}
+</div>

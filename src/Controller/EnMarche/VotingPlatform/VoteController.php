@@ -59,7 +59,7 @@ class VoteController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $voteCommand->updatePoolChoice($currentPool);
 
-            // If all candidates pools are finished (voted) we can redirect to the confirm step
+            // If all candidates pools are finished (voted) we can redirect to the confirmation step
             if (\count($voteCommand->getChoicesByPools()) === \count($pools)) {
                 $this->processor->doConfirm($voteCommand);
 

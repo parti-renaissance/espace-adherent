@@ -17,6 +17,10 @@
         </header>
 
         <div class="xl:container py-15">
+            {% if designation.isActive() %}
+                {% include 'renaissance/local_election/_election_box.html.twig' %}
+            {% endif %}
+
             <div class="mb-10">
                 {{ include('renaissance/local_election/_nav.html.twig') }}
             </div>
@@ -24,4 +28,14 @@
             {% block sub_content '' %}
         </div>
     </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        Bootstrap.onLoad(function() {
+            Main.runCountdownClock('.em-countdown-clock', true);
+        });
+    </script>
 {% endblock %}

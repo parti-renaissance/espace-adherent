@@ -38,6 +38,8 @@ interface CandidacyInterface extends ImageOwnerInterface
 
     public function getLastName(): ?string;
 
+    public function getPosition(): ?int;
+
     public function getStatus(): string;
 
     public function isConfirmed(): bool;

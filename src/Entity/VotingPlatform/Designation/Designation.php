@@ -179,6 +179,11 @@ class Designation
      */
     private $notifications = 15;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isBlankVoteEnabled = true;
+
     public function __construct(string $label = null, UuidInterface $uuid = null)
     {
         $this->label = $label;
@@ -418,7 +423,7 @@ class Designation
     }
 
     /**
-     * @Assert\IsTrue(message="La configuration de la zone est invalide")
+     * @Assert\IsTrue(message="La configuration de la zone est invalide", groups={"Default", "Admin"})
      */
     public function hasValidZone(): bool
     {
@@ -622,9 +627,19 @@ class Designation
         return $designation;
     }
 
-    public function isBlankVoteEnabled(): bool
+    public function isBlankVoteAvailable(): bool
     {
         return !$this->isExecutiveOfficeType();
+    }
+
+    public function isBlankVoteEnabled(): bool
+    {
+        return $this->isBlankVoteAvailable() && $this->isBlankVoteEnabled;
+    }
+
+    public function setIsBlankVoteEnabled(bool $value): void
+    {
+        $this->isBlankVoteEnabled = $value;
     }
 
     public function isSecondRoundEnabled(): bool

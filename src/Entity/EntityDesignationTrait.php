@@ -15,6 +15,7 @@ trait EntityDesignationTrait
      * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation", cascade={"persist"}, fetch="EAGER")
      *
      * @Assert\NotBlank(groups={"Admin"})
+     * @Assert\Valid(groups={"Admin"})
      */
     protected $designation;
 

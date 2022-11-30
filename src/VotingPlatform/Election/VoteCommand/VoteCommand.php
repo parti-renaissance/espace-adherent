@@ -117,6 +117,16 @@ class VoteCommand
             return current($pools);
         }
 
+        $poolIds = array_map(function (ElectionPool $pool) {
+            return $pool->getId();
+        }, $pools);
+
+        foreach ($this->choicesByPools as $poolId => $choice) {
+            if (!\in_array($poolId, $poolIds)) {
+                unset($this->choicesByPools[$poolId]);
+            }
+        }
+
         foreach ($pools as $pool) {
             if (!isset($this->choicesByPools[$pool->getId()])) {
                 return $pool;

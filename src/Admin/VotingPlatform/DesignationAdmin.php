@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\Form\Type\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -35,7 +36,6 @@ class DesignationAdmin extends AbstractAdmin
     {
         /** @var Designation $subject */
         $subject = $this->getSubject();
-
         $formType = $form->getFormBuilder()->getOption('form_type');
 
         $form
@@ -149,6 +149,12 @@ class DesignationAdmin extends AbstractAdmin
                 ->end()
             ->end()
             ->tab('Autre ⚙️')
+                ->with('Vote', ['class' => 'col-md-6'])
+                    ->add('isBlankVoteEnabled', BooleanType::class, [
+                        'label' => 'Le vote blanc activé',
+                        'disabled' => !$subject->isBlankVoteAvailable(),
+                    ])
+                ->end()
                 ->with('Tour bis', ['class' => 'col-md-6'])
                     ->add('additionalRoundDuration', IntegerType::class, [
                         'label' => 'Durée du tour bis',
@@ -253,6 +259,7 @@ class DesignationAdmin extends AbstractAdmin
                 'zones',
                 'voteStartDate',
                 'voteEndDate',
+                'isBlankVoteEnabled',
             ];
         }
 
