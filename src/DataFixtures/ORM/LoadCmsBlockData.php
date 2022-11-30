@@ -42,10 +42,10 @@ class LoadCmsBlockData extends Fixture
         $manager->persist($this->createCmsBlock(
             'rgpd',
             'Affiché en bas du formulaire d\'inscription',
-            'Les données recueillies sur ce formulaire sont traitées par LaREM afin de gérer les informations relatives aux inscriptions aux évènements de LaREM et de permettre à LaREM de vous envoyer des communications politiques. 
-Si vous êtes élu(e) ou ancien(ne) élu(e), nous traitons également vos données dans le cadre de l’animation de notre réseau d’élu(e)s et vos données peuvent être transférer à La République Ensemble ou à l’institut de formation Tous Politiques, conformément à la politique de protection des données des élu(e)s. Toutes les informations sont obligatoires, sauf celles marquées "Optionnel". L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande. 
-Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. 
-Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès. 
+            'Les données recueillies sur ce formulaire sont traitées par LaREM afin de gérer les informations relatives aux inscriptions aux évènements de LaREM et de permettre à LaREM de vous envoyer des communications politiques.
+Si vous êtes élu(e) ou ancien(ne) élu(e), nous traitons également vos données dans le cadre de l’animation de notre réseau d’élu(e)s et vos données peuvent être transférer à La République Ensemble ou à l’institut de formation Tous Politiques, conformément à la politique de protection des données des élu(e)s. Toutes les informations sont obligatoires, sauf celles marquées "Optionnel". L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
+Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données.
+Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
 Vous pouvez consulter notre Politique de protection des données (si vous êtes élu(e)s, la Politique de protection des données des élu(e)s) et exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale : La République En Marche, 68 rue du Rocher, 75008 Paris, France ou électronique suivante : **mes-donnees@en-marche.fr **ou encore en contactant notre DPO à l’adresse : **dpo@en-marche.fr**.'
         ));
 
@@ -167,10 +167,10 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
                         <li>Quand nous l’avons trouvé, nous vous envoyons à tous les deux le même mail avec vos coordonnées respectives.</li>
                         <li>Prenez contact l’un avec l’autre et confirmez la mission entre vous.</li>
                         <li>
-                            Vous, le mandant, devez-vous rendre dans un commissariat ou une gendarmerie (si vous habitez en France) ou dans un consulat de France (si vous résidez à l'étranger) pour établir la procuration. Vous pouvez aussi gagner du temps dans la démarche et faire l’opération en ligne sur https://www.maprocuration.gouv.fr : 
-                            
+                            Vous, le mandant, devez-vous rendre dans un commissariat ou une gendarmerie (si vous habitez en France) ou dans un consulat de France (si vous résidez à l'étranger) pour établir la procuration. Vous pouvez aussi gagner du temps dans la démarche et faire l’opération en ligne sur https://www.maprocuration.gouv.fr :
+
                             Notez que vous devrez quand même vous rendre dans les lieux précédemment cités pour vérifier votre identité et valider la procédure.
-                            
+
                             Notez aussi que vous devrez être en possession de votre numéro d’électeur pour faire la procédure sur le site https://www.maprocuration.gouv.fr ou au commissariat / gendarmerie.
                         </li>
                         <li>N’oubliez pas d’informer votre mandataire quand la procuration est bien acceptée. Donnez lui toutes les indications nécessaires pour son déplacement (adresse du bureau de vote, etc.). Vous n’avez aucun document particulier à lui donner, il votera en votre nom en présentant sa propre pièce d’identité.</li>
@@ -183,9 +183,9 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
             'procuration-request-form-intro',
             'Texte affiché avant le formulaire de demande de procuration',
             <<<'TXT'
-                Nous pouvons vous trouver quelqu’un qui portera votre voix le jour de l’élection. 
-                Remplissez simplement le formulaire. 
-                Attention, la procuration doit ensuite parvenir à votre bureau de vote, ce qui prend plusieurs jours. 
+                Nous pouvons vous trouver quelqu’un qui portera votre voix le jour de l’élection.
+                Remplissez simplement le formulaire.
+                Attention, la procuration doit ensuite parvenir à votre bureau de vote, ce qui prend plusieurs jours.
                 Effectuez donc votre démarche rapidement !
                 TXT
         ));
@@ -264,27 +264,27 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
             <<<'TXT'
                 <h2 class="text--large b__nudge--bottom-larger">Pourquoi faire un don ?</h2>
                 <p class="text--body">
-                    Grâce aux ressources générées par notre représentation dans la vie politique nationale, 
-                    votre générosité fidèle depuis 2017 et grâce à la bonne gestion de notre Mouvement, 
-                    <b>La République en Marche a financé une grande partie de la campagne présidentielle 
-                    et apporte son soutien aux candidats de la Majorité Présidentielle 
+                    Grâce aux ressources générées par notre représentation dans la vie politique nationale,
+                    votre générosité fidèle depuis 2017 et grâce à la bonne gestion de notre Mouvement,
+                    <b>La République en Marche a financé une grande partie de la campagne présidentielle
+                    et apporte son soutien aux candidats de la Majorité Présidentielle
                     pour les élections législatives des 12 et 19 juin.</b>
                 </p>
                 <p class="text--body">
-                    Mais nous avons besoin de compléter cet effort afin de continuer à mener des actions 
-                    à la hauteur de nos ambitions, pour continuer d’atteindre l’ensemble de nos concitoyens, 
-                    notamment ceux qui sont les plus éloignés de la vie politique, 
-                    les écouter et échanger avec eux. Les prochaines échéances sont d’une importance fondamentale 
-                    pour la mise en place des réformes annoncées par le Président de la République. 
+                    Mais nous avons besoin de compléter cet effort afin de continuer à mener des actions
+                    à la hauteur de nos ambitions, pour continuer d’atteindre l’ensemble de nos concitoyens,
+                    notamment ceux qui sont les plus éloignés de la vie politique,
+                    les écouter et échanger avec eux. Les prochaines échéances sont d’une importance fondamentale
+                    pour la mise en place des réformes annoncées par le Président de la République.
                 </p>
                 <p class="text--body">
-                    Chaque don, peu importe le montant, sera une aide précieuse. 
-                    C’est à chaque fois un acte d’engagement, c’est se mobiliser pour la réussite de notre pays auprès 
-                    de notre Président. C’est continuer de faire de la politique autrement en nous donnant les moyens 
-                    de gagner au mois de juin. 
+                    Chaque don, peu importe le montant, sera une aide précieuse.
+                    C’est à chaque fois un acte d’engagement, c’est se mobiliser pour la réussite de notre pays auprès
+                    de notre Président. C’est continuer de faire de la politique autrement en nous donnant les moyens
+                    de gagner au mois de juin.
                 </p>
                 <p class="text--body">
-                    En 2017, vous étiez déjà 100 000 donateurs à soutenir nos actions. 
+                    En 2017, vous étiez déjà 100 000 donateurs à soutenir nos actions.
                     En 2022, nous avons encore besoin de vous tous!
                 </p>
                 TXT
@@ -352,6 +352,11 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
         ));
 
         $manager->persist($this->createCmsBlock('vote-statuses-voting-platform-description', '', <<<TXT
+            <p>Lorem ipsum dolor sit amet. Eum  facilis et nemo dicta et  sint et numquam sapiente eum commodi consequatur ut dolorem natus? Sed similique itaque in  rerum ea alias voluptates ut optio odio nam officiis deleniti aut sapiente voluptates et culpa tenetur. Vel dignissimos provident et eligendi officia in animi distinctio est omnis esse vel cumque doloribus eos cumque nobis. </p><p>Qui saepe nobis et nulla natus aut enim unde est voluptatem expedita aut unde vero quo necessitatibus rerum. Vel cumque autem non corrupti ipsa sit saepe dignissimos ut exercitationem molestiae non dolores alias hic alias molestiae ut optio ipsum. </p><p>In quae accusantium et facere galisum aut repellat voluptatem sit iure autem qui iusto aliquid hic ratione ratione. Ut aspernatur nulla aut dolorum nobis ea vitae quam ad ipsa commodi. A quia voluptas ut itaque officiis sed asperiores distinctio qui quis tenetur aut quia velit et fugiat dicta nam asperiores dolore?</p>
+            TXT
+        ));
+
+        $manager->persist($this->createCmsBlock('departmental-election-sas-home-text', '', <<<TXT
             <p>Lorem ipsum dolor sit amet. Eum  facilis et nemo dicta et  sint et numquam sapiente eum commodi consequatur ut dolorem natus? Sed similique itaque in  rerum ea alias voluptates ut optio odio nam officiis deleniti aut sapiente voluptates et culpa tenetur. Vel dignissimos provident et eligendi officia in animi distinctio est omnis esse vel cumque doloribus eos cumque nobis. </p><p>Qui saepe nobis et nulla natus aut enim unde est voluptatem expedita aut unde vero quo necessitatibus rerum. Vel cumque autem non corrupti ipsa sit saepe dignissimos ut exercitationem molestiae non dolores alias hic alias molestiae ut optio ipsum. </p><p>In quae accusantium et facere galisum aut repellat voluptatem sit iure autem qui iusto aliquid hic ratione ratione. Ut aspernatur nulla aut dolorum nobis ea vitae quam ad ipsa commodi. A quia voluptas ut itaque officiis sed asperiores distinctio qui quis tenetur aut quia velit et fugiat dicta nam asperiores dolore?</p>
             TXT
         ));

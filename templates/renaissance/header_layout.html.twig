@@ -1,0 +1,9 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block content %}
+    <main class="flex flex-col h-screen">
+        {% include 'renaissance/partials/site-header.html.twig' %}
+
+        {% block content_section %}{% endblock %}
+    </main>
+{% endblock %}

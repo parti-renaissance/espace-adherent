@@ -1,0 +1,27 @@
+{% extends 'renaissance/header_layout.html.twig' %}
+
+{% block page_title 'Élection' %}
+
+{% block content_section %}
+    <section>
+        <header class="bg-lighter-blue text-dark-blue">
+            <div class="xl:container py-15">
+                <h1 class="text-2xl">Élection départementale</h1>
+                <p class="flex mt-5">
+                    {{ include('components/location.html.twig') }}
+                    <span class="pl-3">
+                        {{ designation.getZones|join(', ') }}
+                    </span>
+                </p>
+            </div>
+        </header>
+
+        <div class="xl:container py-15">
+            <div class="mb-10">
+                {{ include('renaissance/local_election/_nav.html.twig') }}
+            </div>
+
+            {% block sub_content '' %}
+        </div>
+    </section>
+{% endblock %}

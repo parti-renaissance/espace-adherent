@@ -1,0 +1,24 @@
+{% extends 'renaissance/local_election/_layout.html.twig' %}
+
+{% block sub_content %}
+    {% for group in candidacies_groups %}
+        <section class="border rounded py-10 px-5 mb-5 w-1/2" x-data="{ open: false }">
+            <div class="flex justify-between">
+                <h2>Liste {{ loop.index }}</h2>
+
+                <span class="cursor-pointer" x-on:click="open = true" x-show="!open">Voir</span>
+                <span class="cursor-pointer" x-on:click="open = false" x-show="open">Réduire</span>
+            </div>
+
+            <ul class="ml-5 mt-5 font-bold" x-show="open">
+                {% for candidacy in group.candidacies %}
+                    <li class="mb-3 flex">
+                        <span class="w-10">{{ candidacy.gender == 'male' ? 'M' : 'Mme' }}</span>
+                        <span>{{ candidacy.getFirstName() }}</span>
+                        <span class="ml-3 uppercase">{{ candidacy.getLastName() }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% endfor %}
+{% endblock %}

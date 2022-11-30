@@ -1,0 +1,8 @@
+<ul class="flex">
+    <li class="text-dark-blue hover:text-green {{ is_active_route(app.request, 'app_renaissance_local_election_index') ? 'font-bold' }}">
+        <a href="{{ path("app_renaissance_local_election_index") }}">Accueil</a>
+    </li>
+    <li class="ml-3 text-dark-blue hover:text-green {{ is_active_route(app.request, 'app_renaissance_local_election_lists') ? 'font-bold' }}">
+        <a href="{{ path("app_renaissance_local_election_lists") }}">Listes & candidatures</a>
+    </li>
+</ul>
