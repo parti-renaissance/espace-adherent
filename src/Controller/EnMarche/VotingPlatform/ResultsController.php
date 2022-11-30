@@ -6,6 +6,7 @@ use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Repository\VotingPlatform\VoteResultRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,6 +25,7 @@ class ResultsController extends AbstractController
     public function __invoke(
         VoteResultRepository $voteResultRepository,
         Election $election,
+        Request $request,
         ElectionRound $electionRound = null
     ): Response {
         if (!$election->isResultsDisplayable() || !$election->isResultPeriodActive()) {
