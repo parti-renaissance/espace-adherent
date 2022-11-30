@@ -37,7 +37,7 @@ class ConfirmController extends AbstractController
             return $this->redirectToElectionRoute('app_voting_platform_finish_step', $election);
         }
 
-        return $this->renderElectionTemplate('voting_platform/confirmation.html.twig', $election, [
+        return $this->renderElectionTemplate('voting_platform/confirmation.html.twig', $election, $request, [
             'form' => $form->createView(),
             'vote_command' => $voteCommand,
             'pools' => $election->getCurrentRound()->getElectionPools(),

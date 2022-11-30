@@ -1,0 +1,28 @@
+$pink: #FF4D89;
+$lines-grey: #e1e5ea;
+$gray--lighter: #F6F6F6;
+$neutral-grey: #8c8c8c;
+$pale-grey: #f6f9fc;
+$blue: #2ABAFF;
+$blue--dark: #1D5FD1;
+$blue--light: #9AD7E8;
+$blue--soft-dark: #5BAEDB;
+$green--territory: #208e73;
+
+// Vote majo
+$excellent: #2fa971;
+$very-good: #86d04e;
+$good: #f8c039;
+$fair: #f8971d;
+$insufficient: #e14244;
+
+$mobile: 650px;
+$tablet: 1000px;
+
+@import "layout";
+@import "results";
+@import "candidacy";
+
+.vp-container {
+    display: flex;
+}

@@ -10,6 +10,110 @@
     display: none;
 }
 
+.text--center {
+    text-align: center;
+}
+
+.re-voting {
+    overflow: hidden;
+
+    &.voting-platform__header {
+        @apply bg-re-blue-500 py-5 md:py-6;
+
+        .l__wrapper--wide {
+            @apply mx-auto max-w-[90rem] px-4 md:px-6 lg:px-8 md:flex md:items-center md:justify-between;
+
+            .l__row {
+                @apply flex items-center space-x-4;
+                a {
+                    @apply text-white hover:text-re-blue-200 font-medium duration-200 transition-colors;
+                }
+            }
+        }
+    }
+
+    &.voting-platform {
+        @apply relative bg-gradient-to-b from-re-blue-50 via-blue-50 to-white h-full flex items-center justify-center;
+        min-height: calc(100vh - 72px);
+
+        .voting-platform {
+            &__ornaments {
+                @apply hidden lg:block absolute inset-0;
+
+                .ornament--1, .ornament--2, .ornament--3 {
+                    display: none;
+                }
+            }
+
+            &__content {
+                @apply w-full lg:max-w-3xl lg:mx-auto py-12 md:py-16 lg:py-20 space-y-8 lg:space-y-10;
+
+                .introduction-header,
+                .confirmation-header {
+                    @apply space-y-4 lg:space-y-6;
+
+                    h1 {
+                        @apply text-2xl font-bold text-gray-900 lg:text-5xl font-din;
+                    }
+
+                    p {
+                        @apply text-base text-blue-500 lg:text-lg;
+                    }
+                }
+
+                .election-vote, .text--body {
+                    @apply prose lg:prose-lg prose-blue lg:max-w-none prose-headings:font-din prose-a:no-underline;
+                }
+
+                .b__nudge {
+                    &--top-50 {
+                        @apply mt-10 lg:mt-14;
+                    }
+                    &--top-15 {
+                        @apply mt-3 lg:mt-5;
+                    }
+                    &--bottom-large {
+                        @apply mb-5 lg:mb-8
+                    }
+                    &--top-large {
+                        @apply mt-5 lg:mt-8
+                    }
+                }
+
+                .vp-container {
+                    @apply flex items-center justify-center;
+                    h1 {
+                        @apply text-center text-xl font-bold text-gray-900 lg:text-3xl font-din;
+                    }
+                }
+
+                .text--on-white.space--20 {
+                    @apply inline-block bg-white rounded-md px-5 py-3 text-gray-900 font-medium shadow-sm;
+                }
+            }
+        }
+    }
+
+    .btn {
+        &.btn--blue {
+            @apply transition-colors duration-300 text-white rounded-md hover:bg-re-blue-900 focus:ring-2 focus:ring-offset-2 focus:ring-re-blue-500;
+        }
+        &.btn--ghosting--blue {
+            @apply bg-re-blue-50 font-medium hover:bg-white border border-re-blue-300 no-underline;
+            color: theme('colors.re.blue.500') !important;
+        }
+    }
+
+    .anonymous {
+        @apply text-white;
+    }
+
+    a.link--blue--dark {
+        @apply inline-block font-medium hover:text-re-blue-700;
+        color: theme('colors.re.blue.500') !important;
+    }
+}
+
 @layer components {
     .flex-column-container {
         @apply block md:flex flex-col flex-1 border-t border-white w-10/12 pt-4 md:pt-8 mb-12 md:mb-0;
@@ -19,7 +123,7 @@
         @apply cursor-pointer border-2 border-black/20 hover:border-light-blue-500/20 border-l border-r first:border-l-2 last:border-r-2 text-center font-medium text-sm text-black py-5 active:border-light-blue-500/20 active:text-black first:rounded-tl-lg first:rounded-bl-lg last:rounded-tr-lg last:rounded-br-lg;
     }
 
-    .button {
+    .button, .btn {
         @apply px-5 py-3 md:px-7 md:py-4 text-xs border text-center md:text-base;
 
         &-full {

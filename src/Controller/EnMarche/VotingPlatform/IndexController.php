@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\VotingPlatform;
 
 use App\Entity\VotingPlatform\Election;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class IndexController extends AbstractController
 {
-    public function __invoke(Election $election): Response
+    public function __invoke(Election $election, Request $request): Response
     {
         $voteCommand = $this->storage->getVoteCommand($election);
 
@@ -21,6 +22,6 @@ class IndexController extends AbstractController
 
         $this->processor->doStart($voteCommand);
 
-        return $this->renderElectionTemplate('voting_platform/index.html.twig', $election);
+        return $this->renderElectionTemplate('voting_platform/index.html.twig', $election, $request);
     }
 }
