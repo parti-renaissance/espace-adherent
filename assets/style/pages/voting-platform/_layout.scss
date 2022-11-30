@@ -45,7 +45,7 @@
                 top: 0;
             }
 
-            &--1, &--4 {
+            &--1 {
                 width: 228px;
                 right: -20px;
                 top: 10%;
@@ -564,7 +564,7 @@
                     padding: 0 12px;
                     background: transparent;
                     border: none;
-                    margin: 0 0 24px 0;
+                    margin: 0 0 24px;
 
                     @media (min-width: $mobile) {
                         flex-basis: calc(50%);
@@ -601,7 +601,7 @@
                         width: 100%;
                         border: 1px solid $lines-grey;
                         margin: 0;
-                        padding: 50px 0 10px 0;
+                        padding: 50px 0 10px;
                         text-align: center;
                         position: relative;
                         border-radius: 3px;
@@ -681,7 +681,7 @@
             }
 
             .ballot-paper-container {
-                margin: 0 -12px 50px -12px;;
+                margin: 0 -12px 50px;
                 padding: 0;
                 display: flex;
                 flex-wrap: wrap;
@@ -691,7 +691,7 @@
                 width: 100%;
                 max-width: none;
                 padding: 0 12px;
-                margin: 0 0 24px 0;
+                margin: 0 0 24px;
                 min-height: auto;
                 background-color: transparent;
                 justify-content: flex-start;
