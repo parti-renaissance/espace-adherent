@@ -1,0 +1,41 @@
+{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block title '| import des candidats' %}
+
+{% block navbar_title 'Importation des candidats' %}
+
+{% block show %}
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h4 class="box-title">Importer</h4>
+                </div>
+                <div class="box-body">
+                    {{ form_errors(form) }}
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ form_row(form.file) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-solid">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-block btn-success">
+                        Importer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{ form_end(form) }}
+{% endblock %}

@@ -1580,7 +1580,7 @@
 
             <argument />
             <argument>App\Entity\LocalElection\CandidaciesGroup</argument>
-            <argument />
+            <argument>App\Controller\Admin\AdminCandidaciesGroupCandidateImportController</argument>
         </service>
 
         <service id="app.admin.local_election.candidacy" class="App\Admin\LocalElection\CandidacyAdmin">

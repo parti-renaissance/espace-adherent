@@ -13,12 +13,37 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class CandidaciesGroupAdmin extends AbstractAdmin
 {
+    protected $accessMapping = [
+        'candidate_import' => 'CANDIDATE_IMPORT',
+    ];
+
     private ?FilesystemInterface $storage = null;
+
+    protected function configureRoutes(RouteCollection $collection): void
+    {
+        $collection
+           ->add('candidate_import', $this->getRouterIdParameter().'/candidate-import')
+       ;
+    }
+
+    public function configureActionButtons($action, $object = null): array
+    {
+        $actions = parent::configureActionButtons($action, $object);
+
+        if (\in_array($action, ['edit'], true)) {
+            if ($this->canAccessObject('candidate_import', $object) && $this->hasRoute('candidate_import')) {
+                $actions['candidate_import'] = ['template' => 'admin/local_election/candidate_import_button.html.twig'];
+            }
+        }
+
+        return $actions;
+    }
 
     protected function configureListFields(ListMapper $list): void
     {

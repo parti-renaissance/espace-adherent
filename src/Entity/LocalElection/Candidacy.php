@@ -11,7 +11,7 @@ use Ramsey\Uuid\UuidInterface;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\LocalElection\CandidacyRepository")
  * @ORM\Table(name="local_election_candidacy")
  */
 class Candidacy extends BaseCandidacy
