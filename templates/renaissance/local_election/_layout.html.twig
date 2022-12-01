@@ -3,30 +3,32 @@
 {% block page_title 'Élection' %}
 
 {% block content_section %}
-    <section>
-        <header class="bg-lighter-blue text-dark-blue">
-            <div class="xl:container py-15">
-                <h1 class="text-2xl">Élection départementale</h1>
-                <p class="flex mt-5">
-                    {{ include('components/location.html.twig') }}
-                    <span class="pl-3">
-                        {{ designation.getZones|join(', ') }}
-                    </span>
-                </p>
-            </div>
-        </header>
+    <div class="bg-gray-50" role="banner">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-10 lg:py-16">
+            <h1 class="text-2xl lg:text-4xl font-bold text-gray-900 font-din">Élection départementale</h1>
+            <p class="mt-4 flex items-center space-x-3 text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
 
-        <div class="xl:container py-15">
-            {% if designation.isActive() %}
-                {% include 'renaissance/local_election/_election_box.html.twig' %}
-            {% endif %}
-
-            <div class="mb-10">
-                {{ include('renaissance/local_election/_nav.html.twig') }}
-            </div>
-
-            {% block sub_content '' %}
+                <span class="text-gray-600 text-base leading-5">
+                    {{ designation.getZones|join(', ') }}
+                </span>
+            </p>
         </div>
+    </div>
+
+    <section class="mx-auto max-w-7xl px-4 md:px-6 py-12 md:py-16">
+        {% if designation.isActive() %}
+            {% include 'renaissance/local_election/_election_box.html.twig' %}
+        {% endif %}
+
+        <div class="mt-10 mb-5">
+            {{ include('renaissance/local_election/_nav.html.twig') }}
+        </div>
+
+        {% block sub_content '' %}
     </section>
 {% endblock %}
 

@@ -1,24 +1,57 @@
 {% extends 'renaissance/local_election/_layout.html.twig' %}
 
 {% block sub_content %}
-    {% for group in candidacies_groups %}
-        <section class="border rounded py-10 px-5 mb-5 w-1/2" x-data="{ open: false }">
-            <div class="flex justify-between">
-                <h2>Liste {{ loop.index }}</h2>
-
-                <span class="cursor-pointer" x-on:click="open = true" x-show="!open">Voir</span>
-                <span class="cursor-pointer" x-on:click="open = false" x-show="open">Réduire</span>
-            </div>
-
-            <ul class="ml-5 mt-5 font-bold" x-show="open">
-                {% for candidacy in group.candidacies %}
-                    <li class="mb-3 flex">
-                        <span class="w-10">{{ candidacy.gender == 'male' ? 'M' : 'Mme' }}</span>
-                        <span>{{ candidacy.getFirstName() }}</span>
-                        <span class="ml-3 uppercase">{{ candidacy.getLastName() }}</span>
-                    </li>
-                {% endfor %}
-            </ul>
-        </section>
-    {% endfor %}
+    <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {% for group in candidacies_groups %}
+            <li x-data="{ open: false }" class="relative">
+                <div class="relative flex items-center space-x-4 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-re-blue-500 focus-within:ring-offset-2 hover:border-gray-400">
+                    <div class="shrink-0">
+                        <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center items-center text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="min-w-0 flex items-center justify-between items-center flex-1">
+                        <div class="focus:outline-none group">
+                            <p class="text-sm font-medium text-gray-900">Liste {{ loop.index }}</p>
+                            <p class="truncate text-sm text-gray-500">{{ group.candidacies|length }} membres</p>
+                        </div>
+                        <button @click="open =! open" type="button" class="inline-flex items-center mt-2 text-sm leading-5 text-re-blue-500 group-hover:text-re-blue-400">Afficher</button>
+                    </div>
+                </div>
+                <div x-cloak
+                     x-show="open"
+                     x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="transform opacity-0 scale-95"
+                     x-transition:enter-end="transform opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="transform opacity-100 scale-100"
+                     x-transition:leave-end="transform opacity-0 scale-95"
+                     @keydown.tab="open = false"
+                     @click.away="open = false"
+                     @keydown.enter.prevent="open = false"
+                     @keyup.space.prevent="open = false"
+                     class="absolute -right-10 -top-1/2 transform -translate-y-1/2 z-10 mb-5 w-72 origin-bottom-right rounded-md bg-white shadow-lg ring-1 ring-gray-900 ring-opacity-5"
+                     role="list"
+                     aria-orientation="vertical"
+                     tabindex="-1"
+                >
+                    <div class="py-1 h-96 overflow-hidden overflow-y-scroll">
+                        {% for candidacy in group.candidacies %}
+                            <div class="px-4 py-1.5">
+                                <span class="text-gray-400">{{ candidacy.gender == 'male' ? 'M' : 'Mme' }}</span>
+                                <span class="inline-block ml-0.5 text-gray-700 font-medium">
+                                    {{ candidacy.getFirstName() }} <span class="uppercase">{{ candidacy.getLastName() }}</span>
+                                </span>
+                            </div>
+                        {% endfor %}
+                        <p class="mt-4 border-t border-gray-200 text-right py-3 px-4">
+                            <button type="button" @click="open = false" class="text-sm leading-5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:underline">Fermer la liste</button>
+                        </p>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
