@@ -92,7 +92,7 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertStringContainsString('Smith', $list->eq(1)->text());
         $this->assertStringContainsString('62 avenue des Champs-Élysées, 75008 Paris 8ème, FR', $list->eq(2)->text());
         $this->assertStringContainsString('john@test.com', $list->eq(3)->text());
-        $this->assertStringContainsString('30 €', $list->eq(4)->text());
+        $this->assertStringContainsString("30\u{a0}€", $list->eq(4)->text());
 
         $this->client->submit($crawler->selectButton('Confirmer mon e-mail')->form());
 

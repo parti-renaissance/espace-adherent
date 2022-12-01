@@ -28,6 +28,6 @@ class SurveyQuestionFromIdDenormalizer implements DenormalizerInterface
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
-        return SurveyQuestion::class === $type && \is_integer($data);
+        return SurveyQuestion::class === $type && \is_int($data);
     }
 }

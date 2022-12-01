@@ -10,7 +10,7 @@ class EventRegistrationExporter
     public function export(array $registrations): string
     {
         $handle = fopen('php://memory', 'r+');
-        fputs($handle, \chr(0xEF).\chr(0xBB).\chr(0xBF)); // add BOM to fix UTF-8 in Excel
+        fwrite($handle, \chr(0xEF).\chr(0xBB).\chr(0xBF)); // add BOM to fix UTF-8 in Excel
         fputcsv($handle, ['N° d\'enregistrement', 'Prénom', 'Nom', 'Date d\'inscription']);
 
         foreach ($registrations as $registration) {

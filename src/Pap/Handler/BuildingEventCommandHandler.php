@@ -76,7 +76,7 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
         $campaign = $buildingEvent->getCampaign();
         /** @var CampaignStatisticsInterface $stats */
         if (!$stats = $object->findStatisticsForCampaign($campaign)) {
-            throw new \RuntimeException(sprintf('Statistics not found for entity "%s" with id "%s" for PAP campaign with id "%s"', \get_class($object), $object->getId(), $campaign->getId()));
+            throw new \RuntimeException(sprintf('Statistics not found for entity "%s" with id "%s" for PAP campaign with id "%s"', $object::class, $object->getId(), $campaign->getId()));
         }
 
         $stats->setStatus($status);

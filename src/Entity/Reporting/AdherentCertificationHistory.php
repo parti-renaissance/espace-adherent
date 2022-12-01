@@ -66,7 +66,7 @@ class AdherentCertificationHistory
      */
     private $date;
 
-    private function __construct(Adherent $adherent, ?Administrator $administrator = null, string $action)
+    private function __construct(Adherent $adherent, ?Administrator $administrator, string $action)
     {
         $this->adherent = $adherent;
         $this->administrator = $administrator;

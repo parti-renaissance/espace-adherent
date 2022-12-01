@@ -85,7 +85,7 @@ class Email
             $recipients[] = $recipient->getFullName().' <'.$recipient->getEmailAddress().'>';
         }
 
-        $parts = explode('\\', \get_class($message));
+        $parts = explode('\\', $message::class);
 
         return new self(
             $message->getUuid(),

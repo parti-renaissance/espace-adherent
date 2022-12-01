@@ -27,7 +27,7 @@ class EventCategoryValidator extends ConstraintValidator
         }
 
         if (null === $value->getCategory()
-            && \in_array(\get_class($value), [DefaultEvent::class, CommitteeEvent::class], true)) {
+            && \in_array($value::class, [DefaultEvent::class, CommitteeEvent::class], true)) {
             $this
                 ->context
                 ->buildViolation($constraint->message)

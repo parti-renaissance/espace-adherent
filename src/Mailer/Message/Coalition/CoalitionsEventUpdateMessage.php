@@ -17,7 +17,7 @@ final class CoalitionsEventUpdateMessage extends AbstractCoalitionMessage
 
         $recipient = array_shift($recipients);
         if (!$recipient instanceof EventRegistration) {
-            throw new \RuntimeException(sprintf('First recipient must be an %s instance, %s given', EventRegistration::class, \get_class($recipient)));
+            throw new \RuntimeException(sprintf('First recipient must be an %s instance, %s given', EventRegistration::class, $recipient::class));
         }
 
         $message = new self(

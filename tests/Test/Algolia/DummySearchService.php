@@ -21,11 +21,11 @@ class DummySearchService implements SearchService
     public function index(ObjectManager $objectManager, $searchables, $requestOptions = []): NullResponse
     {
         foreach (\is_array($searchables) ? $searchables : [$searchables] as $object) {
-            if (!isset($this->entitiesToIndex[\get_class($object)])) {
-                $this->entitiesToIndex[\get_class($object)] = 0;
+            if (!isset($this->entitiesToIndex[$object::class])) {
+                $this->entitiesToIndex[$object::class] = 0;
             }
 
-            ++$this->entitiesToIndex[\get_class($object)];
+            ++$this->entitiesToIndex[$object::class];
         }
 
         return new NullResponse();
@@ -34,11 +34,11 @@ class DummySearchService implements SearchService
     public function remove(ObjectManager $objectManager, $searchables, $requestOptions = []): NullResponse
     {
         foreach (\is_array($searchables) ? $searchables : [$searchables] as $object) {
-            if (!isset($this->entitiesToUnIndex[\get_class($object)])) {
-                $this->entitiesToUnIndex[\get_class($object)] = 0;
+            if (!isset($this->entitiesToUnIndex[$object::class])) {
+                $this->entitiesToUnIndex[$object::class] = 0;
             }
 
-            ++$this->entitiesToUnIndex[\get_class($object)];
+            ++$this->entitiesToUnIndex[$object::class];
         }
 
         return new NullResponse();

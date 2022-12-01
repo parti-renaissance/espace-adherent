@@ -39,7 +39,7 @@ class VoteResultBlameableListener implements EventSubscriber
         $uow = $entityManager->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityUpdates() as $listTotalResult) {
-            if (!\in_array(\get_class($listTotalResult), [ListTotalResult::class, MinistryListTotalResult::class], true)) {
+            if (!\in_array($listTotalResult::class, [ListTotalResult::class, MinistryListTotalResult::class], true)) {
                 continue;
             }
 
@@ -70,7 +70,7 @@ class VoteResultBlameableListener implements EventSubscriber
             $voteResult->setUpdatedAt(new \DateTime());
 
             $uow->recomputeSingleEntityChangeSet(
-                $entityManager->getClassMetadata(\get_class($voteResult)),
+                $entityManager->getClassMetadata($voteResult::class),
                 $voteResult
             );
 

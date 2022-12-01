@@ -82,7 +82,7 @@ class MailchimpSyncAllEventsCommand extends Command
 
         do {
             foreach ($paginator->getIterator() as $object) {
-                $this->bus->dispatch(new CreateStaticSegmentCommand($object->getUuid(), \get_class($object)));
+                $this->bus->dispatch(new CreateStaticSegmentCommand($object->getUuid(), $object::class));
 
                 $this->io->progressAdvance();
                 ++$offset;

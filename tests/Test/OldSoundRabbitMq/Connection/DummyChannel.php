@@ -78,7 +78,7 @@ class DummyChannel
         foreach ($this->exchangesQueues[$exchange] as $queue) {
             foreach ($this->queues[$queue] as $bindRoutingKey) {
                 if (
-                    ('*' === substr($bindRoutingKey, -1) && 0 === strpos($routingKey, rtrim($bindRoutingKey, '*')))
+                    ('*' === substr($bindRoutingKey, -1) && str_starts_with($routingKey, rtrim($bindRoutingKey, '*')))
                     || $bindRoutingKey === $routingKey
                 ) {
                     return $queue;

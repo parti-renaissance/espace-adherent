@@ -91,7 +91,7 @@ class UserListDefinitionManager
                         UserListDefinitionPermissions::ABLE_TO_MANAGE_MEMBER,
                         $member
                     )) {
-                        throw new UserListDefinitionMemberException(sprintf('Connected user cannot manage %s member', \get_class($member)));
+                        throw new UserListDefinitionMemberException(sprintf('Connected user cannot manage %s member', $member::class));
                     }
 
                     switch ($status) {

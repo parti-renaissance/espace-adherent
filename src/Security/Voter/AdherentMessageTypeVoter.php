@@ -20,7 +20,7 @@ class AdherentMessageTypeVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if (!$roles = AdherentMessageTypeEnum::ROLES[\get_class($subject)] ?? null) {
+        if (!$roles = AdherentMessageTypeEnum::ROLES[$subject::class] ?? null) {
             return false;
         }
 

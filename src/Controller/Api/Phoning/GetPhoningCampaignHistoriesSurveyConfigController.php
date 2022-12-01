@@ -34,15 +34,13 @@ class GetPhoningCampaignHistoriesSurveyConfigController extends AbstractControll
                             'code' => 'need_email_renewal',
                             'label' => 'Souhaitez-vous vous réabonner à nos emails ?',
                             'type' => 'boolean',
-                        ]] : []
-                    ,
+                        ]] : [],
                     !$adherent->hasSmsSubscriptionType() ?
                         [[
                             'code' => 'need_sms_renewal',
                             'label' => 'Souhaitez-vous vous réabonner à nos SMS ?',
                             'type' => 'boolean',
-                        ]] : []
-                    ,
+                        ]] : [],
                     [
                         [
                             'code' => 'postal_code_checked',

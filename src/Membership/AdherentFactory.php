@@ -44,7 +44,7 @@ class AdherentFactory
             return $this->createFromPlatformMembershipRequest($membershipRequest);
         }
 
-        throw new \LogicException(sprintf('Missing Adherent factory for membership request "%s"', \get_class($membershipRequest)));
+        throw new \LogicException(sprintf('Missing Adherent factory for membership request "%s"', $membershipRequest::class));
     }
 
     private function createFromCoalitionMembershipRequest(CoalitionMembershipRequest $request): Adherent

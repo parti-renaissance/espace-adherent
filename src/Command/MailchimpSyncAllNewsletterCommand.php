@@ -67,7 +67,7 @@ class MailchimpSyncAllNewsletterCommand extends Command
 
         do {
             foreach ($paginator->getIterator() as $newsletter) {
-                $this->bus->dispatch(new MailchimpSyncNewsletterSubscriptionEntityCommand(\get_class($newsletter), $newsletter->getId()));
+                $this->bus->dispatch(new MailchimpSyncNewsletterSubscriptionEntityCommand($newsletter::class, $newsletter->getId()));
 
                 $this->io->progressAdvance();
 

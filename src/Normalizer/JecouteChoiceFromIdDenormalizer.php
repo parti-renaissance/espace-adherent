@@ -28,6 +28,6 @@ class JecouteChoiceFromIdDenormalizer implements DenormalizerInterface
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
-        return Choice::class === $type && \is_integer($data);
+        return Choice::class === $type && \is_int($data);
     }
 }

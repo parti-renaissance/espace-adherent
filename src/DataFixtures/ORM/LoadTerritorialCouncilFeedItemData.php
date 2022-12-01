@@ -20,13 +20,13 @@ class LoadTerritorialCouncilFeedItemData extends Fixture implements DependentFix
             $coTerrParis,
             $referent,
             <<<EOD
-                <p> Lorem <strong>Ipsum</strong></p>
+                <p>\u{a0}Lorem <strong>Ipsum</strong></p>
                 <ol>
                     <li>consectetur adipiscing elit</li>
                 	<li>adipiscing</li>
                 	<li>ultrices finibus</li>
                 </ol>
-                <h2>Le <strong>Phasellus semper</strong> Phasellus semper pulvinar dictum.</h2>
+                <h2>Le\u{a0}<strong>Phasellus semper</strong>\u{a0}Phasellus semper pulvinar dictum.</h2>
                 <p>Integer dui nunc, consectetur et tortor sed, varius consectetur est. In nec risus ac orci fringilla suscipit non sed odio. Ut lacinia justo turpis, non suscipit arcu tristique ut. Donec interdum dignissim felis, eu lobortis ligula ultrices vel. Fusce condimentum nulla vel enim ultricies consequat. Pellentesque urna erat, molestie dignissim leo sed, sodales mollis neque. Curabitur et tortor vel metus facilisis consectetur. Sed vitae sollicitudin felis.</p>
                 EOD
         );

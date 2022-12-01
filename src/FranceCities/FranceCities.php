@@ -69,11 +69,11 @@ class FranceCities
             }
 
             if (!is_numeric($search)) {
-                if (0 !== strpos($this->canonicalizeCityName($city['name']), $search)) {
+                if (!str_starts_with($this->canonicalizeCityName($city['name']), $search)) {
                     continue;
                 }
             } else {
-                if (0 !== strpos(implode(', ', $city['postal_code']), $search)) {
+                if (!str_starts_with(implode(', ', $city['postal_code']), $search)) {
                     continue;
                 }
             }

@@ -35,7 +35,7 @@ class SegmentConditionsBuilder
         $conditions = [];
         if ($segment = $filter->getSegment()) {
             if (!$segment->isSynchronized()) {
-                throw new \RuntimeException(sprintf('The segment with id "%s" of the filter class %s is not syncronized.', $segment->getId(), \get_class($filter)));
+                throw new \RuntimeException(sprintf('The segment with id "%s" of the filter class %s is not syncronized.', $segment->getId(), $filter::class));
             }
 
             $savedSegment = ['saved_segment_id' => $filter->getSegment()->getMailchimpId()];
@@ -48,7 +48,7 @@ class SegmentConditionsBuilder
             }
 
             if (!isset($built)) {
-                throw new \RuntimeException(sprintf('Any builder was found for the filter class: %s', \get_class($filter)));
+                throw new \RuntimeException(sprintf('Any builder was found for the filter class: %s', $filter::class));
             }
         }
 
@@ -79,7 +79,7 @@ class SegmentConditionsBuilder
         }
 
         if (!isset($built)) {
-            throw new \RuntimeException(sprintf('Any builder was found for the filter class: %s', \get_class($filter)));
+            throw new \RuntimeException(sprintf('Any builder was found for the filter class: %s', $filter::class));
         }
 
         return [

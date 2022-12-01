@@ -11,10 +11,14 @@ $finder = PhpCsFixer\Finder::create()
 return (new PhpCsFixer\Config())
     ->setRules([
         '@PHP81Migration' => true,
+        '@PHP80Migration:risky' => true,
         '@Symfony' => true,
         '@DoctrineAnnotation' => true,
         'phpdoc_summary' => false,
         'no_unneeded_final_method' => false,
+        'declare_strict_types' => false,
+        'use_arrow_functions' => false,
+        'void_return' => false,
         'phpdoc_separation' => false,
         'no_superfluous_phpdoc_tags' => true,
         'concat_space' => ['spacing' => 'none'],

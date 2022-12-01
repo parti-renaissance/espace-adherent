@@ -68,7 +68,7 @@ final class Summary
         $byType = [];
 
         foreach ($entities as $entity) {
-            $class = \get_class($entity);
+            $class = $entity::class;
             if (!isset($byType[$class])) {
                 $byType[$class] = [
                     'total' => 0,

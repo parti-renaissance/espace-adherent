@@ -216,7 +216,7 @@ final class UpdateFranceCommand extends Command
         );
 
         foreach ($entities as $entity) {
-            $key = \get_class($entity).'#'.$entity->getCode();
+            $key = $entity::class.'#'.$entity->getCode();
             $this->entities->set($key, $entity);
 
             // Mark it as inactive, if it's present in the API, it becomes back active

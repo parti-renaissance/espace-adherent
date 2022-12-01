@@ -51,7 +51,7 @@ final class UpdateFranceCommandTest extends AbstractCommandCaseTest
         $command = $application->find('app:geo:update-france');
 
         // HTTP Client (Mock)
-        $reflection = new \ReflectionClass(\get_class($command));
+        $reflection = new \ReflectionClass($command::class);
         $property = $reflection->getProperty('apiClient');
         $property->setAccessible(true);
         $property->setValue($command, new MockHttpClient([
@@ -87,7 +87,7 @@ final class UpdateFranceCommandTest extends AbstractCommandCaseTest
         $command = $application->find('app:geo:update-france');
 
         // HTTP Client (Mock)
-        $reflection = new \ReflectionClass(\get_class($command));
+        $reflection = new \ReflectionClass($command::class);
         $property = $reflection->getProperty('apiClient');
         $property->setAccessible(true);
         $property->setValue($command, new MockHttpClient([

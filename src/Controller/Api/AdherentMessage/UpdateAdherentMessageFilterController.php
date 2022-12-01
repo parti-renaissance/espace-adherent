@@ -61,7 +61,7 @@ class UpdateAdherentMessageFilterController extends AbstractController
 
         $filter->reset();
 
-        $this->serializer->deserialize($request->getContent(), \get_class($filter), JsonEncoder::FORMAT, [
+        $this->serializer->deserialize($request->getContent(), $filter::class, JsonEncoder::FORMAT, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $filter,
             AbstractNormalizer::GROUPS => ['adherent_message_update_filter'],
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,

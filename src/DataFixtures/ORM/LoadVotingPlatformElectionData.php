@@ -377,7 +377,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
             $result = new VoteResult($electionRound, VoteResult::generateVoterKey());
 
-            foreach ($pools as $y => $pool) {
+            foreach ($pools as $pool) {
                 $candidateGroups = $pool->getCandidateGroups();
                 $totalGroups = \count($candidateGroups);
 
@@ -386,7 +386,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
                 if (0 === $i % 10) {
                     $choice->setIsBlank(true);
                 } else {
-                    $choice->setCandidateGroup($candidateGroups[$index = rand(1, rand(1, $totalGroups) - 1)]);
+                    $choice->setCandidateGroup($candidateGroups[$index = random_int(0, random_int(1, $totalGroups) - 1)]);
                     !isset($counters[$pool->getId()][$index]) ? $counters[$pool->getId()][$index] = 1 : ++$counters[$pool->getId()][$index];
                 }
 

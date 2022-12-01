@@ -38,7 +38,7 @@ class PostWriteAudienceSegmentListener implements EventSubscriberInterface
         }
 
         if (!$audienceSegment->isSynchronized()) {
-            $this->bus->dispatch(new SynchronizeDynamicSegmentCommand($audienceSegment->getUuid(), \get_class($audienceSegment)));
+            $this->bus->dispatch(new SynchronizeDynamicSegmentCommand($audienceSegment->getUuid(), $audienceSegment::class));
         }
     }
 }
