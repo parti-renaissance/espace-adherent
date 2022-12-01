@@ -12,8 +12,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
@@ -25,19 +25,19 @@ class CandidaciesGroupAdmin extends AbstractAdmin
 
     private ?FilesystemInterface $storage = null;
 
-    protected function configureRoutes(RouteCollection $collection): void
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
            ->add('candidate_import', $this->getRouterIdParameter().'/candidate-import')
        ;
     }
 
-    public function configureActionButtons($action, $object = null): array
+    public function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
-        $actions = parent::configureActionButtons($action, $object);
+        $actions = parent::configureActionButtons($buttonList, $action, $object);
 
         if (\in_array($action, ['edit'], true)) {
-            if ($this->canAccessObject('candidate_import', $object) && $this->hasRoute('candidate_import')) {
+            if ($this->hasAccess('candidate_import', $object) && $this->hasRoute('candidate_import')) {
                 $actions['candidate_import'] = ['template' => 'admin/local_election/candidate_import_button.html.twig'];
             }
         }
