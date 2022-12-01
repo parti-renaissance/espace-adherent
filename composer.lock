@@ -3395,16 +3395,16 @@
         },
         {
             "name": "fusonic/opengraph",
-            "version": "v2.1.0",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fusonic/opengraph.git",
-                "reference": "d58b4ae32085c7d6612c981fb16320adbe41a31b"
+                "reference": "a63b588fbe56c175ae06e158f1513642653ee3c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fusonic/opengraph/zipball/d58b4ae32085c7d6612c981fb16320adbe41a31b",
-                "reference": "d58b4ae32085c7d6612c981fb16320adbe41a31b",
+                "url": "https://api.github.com/repos/fusonic/opengraph/zipball/a63b588fbe56c175ae06e158f1513642653ee3c1",
+                "reference": "a63b588fbe56c175ae06e158f1513642653ee3c1",
                 "shasum": ""
             },
             "require": {
@@ -3413,13 +3413,13 @@
                 "php": "^7.4|^8.0",
                 "psr/http-client": "^1.0",
                 "psr/http-factory": "^1.0",
-                "symfony/css-selector": "^3.0|^4.0|^5.0",
-                "symfony/dom-crawler": "^3.0|^4.0|^5.0"
+                "symfony/css-selector": "^3.0|^4.0|^5.0|^6.0",
+                "symfony/dom-crawler": "^3.0|^4.0|^5.0|^6.0"
             },
             "require-dev": {
                 "nyholm/psr7": "^1.2",
                 "phpunit/phpunit": "^9.0",
-                "symfony/http-client": "^5.0"
+                "symfony/http-client": "^6.0"
             },
             "suggest": {
                 "nyholm/psr7": "^1.2",
@@ -3448,9 +3448,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fusonic/opengraph/issues",
-                "source": "https://github.com/fusonic/opengraph/tree/v2.1.0"
+                "source": "https://github.com/fusonic/opengraph/tree/v2.2.0"
             },
-            "time": "2021-04-16T09:21:49+00:00"
+            "time": "2022-01-20T05:47:36+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
