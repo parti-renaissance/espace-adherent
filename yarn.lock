@@ -4071,10 +4071,10 @@ mimic-fn@^2.1.0:
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
-mini-css-extract-plugin@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-2.7.0.tgz#d7d9ba0c5b596d155e36e2b174082fc7f010dd64"
-  integrity sha512-auqtVo8KhTScMsba7MbijqZTfibbXiBNlPAQbsVt7enQfcDYLdgG57eGxMqwVU3mfeWANY4F1wUg+rMF+ycZgw==
+mini-css-extract-plugin@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-2.7.1.tgz#ec924df783cff32ce6183fceb653028f70128643"
+  integrity sha512-viOoaUFy+Z2w43VsGPbtfwFrr0tKwDctK9dUofG5MBViYhD1noGFUzzDIVw0KPwCGUP+c7zqLxm+acuQs7zLzw==
   dependencies:
     schema-utils "^4.0.0"
 
