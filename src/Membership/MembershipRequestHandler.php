@@ -107,8 +107,10 @@ class MembershipRequestHandler
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
         $adherent->setPapUserRole(true);
 
-        $adherent->utmSource = $adherentRequest->utmSource;
-        $adherent->utmCampaign = $adherentRequest->utmCampaign;
+        if (!$adherent->utmSource) {
+            $adherent->utmSource = $adherentRequest->utmSource;
+            $adherent->utmCampaign = $adherentRequest->utmCampaign;
+        }
 
         $this->manager->persist($adherent);
         $this->referentZoneManager->assignZone($adherent);
