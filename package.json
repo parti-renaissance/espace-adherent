@@ -16,7 +16,7 @@
     "@google/markerclusterer": "^2.0.9",
     "@headlessui/react": "^1.7.4",
     "@mapbox/polylabel": "^1.0.2",
-    "@sentry/browser": "^7.21.1",
+    "@sentry/browser": "^7.22.0",
     "@sentry/tracing": "^7.21.1",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/line-clamp": "^0.4.2",
