@@ -5,7 +5,6 @@ export default class AddressForm {
         this._address = address;
         this._postalCode = postalCode;
         this._cityName = cityName;
-        this._cityNameInitialized = false;
         this._country = country;
     }
 
@@ -25,24 +24,46 @@ export default class AddressForm {
         this._country.value = '';
     }
 
-    updateWithPlace({ address_components: placeData }) {
+    updateWithPlace({ address_components: addressComponents }) {
         this.reset();
 
-        placeData.forEach((data) => {
-            if (data.types.includes('street_number')) {
-                this._address.value += data.long_name;
-            } else if (data.types.includes('route')) {
-                this._address.value += (this._address.value ? ' ' : '') + data.long_name;
-            } else if (data.types.includes('locality') || data.types.includes('administrative_area_level_1')) {
-                if (!this._cityNameInitialized) {
-                    this._cityName.value = data.long_name;
-                    this._cityNameInitialized = data.types.includes('locality');
-                }
-            } else if (data.types.includes('country')) {
-                this._country.value = data.short_name;
-            } else if (data.types.includes('postal_code')) {
-                this._postalCode.value = data.long_name;
+        const placeData = {
+            street_number: null,
+            route: null,
+            locality: null,
+            postal_town: null,
+            sublocality_level_1: null,
+            postal_code: null,
+            postal_code_prefix: null,
+            country: null,
+            administrative_area_level_1: null,
+        };
+
+        addressComponents.forEach((component) => {
+            const type = component.types[0];
+            if (type in placeData) {
+                placeData[type] = component;
             }
         });
+
+        this._address.value = ([
+            (placeData.street_number && placeData.street_number.long_name || ''),
+            (placeData.route && placeData.route.long_name || ''),
+        ].join(' '));
+
+        this._cityName.value = (
+            (placeData.locality && placeData.locality.long_name)
+            || (placeData.sublocality_level_1 && placeData.sublocality_level_1.long_name)
+            || (placeData.postal_town && placeData.postal_town.long_name)
+            || ''
+        );
+
+        this._postalCode.value = (
+            (placeData.postal_code && placeData.postal_code.long_name)
+            || (placeData.postal_code_prefix && placeData.postal_code_prefix.long_name)
+            || ''
+        );
+
+        this._country.value = placeData.country.short_name || 'FR';
     }
 }
