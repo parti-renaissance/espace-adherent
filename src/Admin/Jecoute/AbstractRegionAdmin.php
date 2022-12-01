@@ -8,11 +8,12 @@ use App\Jecoute\RegionColorEnum;
 use App\Jecoute\RegionManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -23,13 +24,6 @@ use Symfony\Component\Security\Core\Security;
 
 abstract class AbstractRegionAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'label',
-    ];
-
     private $regionManager;
     private $security;
 
@@ -46,12 +40,19 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
         $this->security = $security;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'label';
+    }
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('delete');
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         /** @var Region $region */
         $region = $this->getSubject();
@@ -118,7 +119,7 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('subtitle', null, [
@@ -133,7 +134,7 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
             ->add('enabled', null, [
                 'label' => 'Active',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -145,7 +146,7 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
     /**
      * @param Region $region
      */
-    public function prePersist($region)
+    protected function prePersist(object $region): void
     {
         parent::prePersist($region);
 
@@ -160,7 +161,7 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
     /**
      * @param Region $region
      */
-    public function preUpdate($region)
+    protected function preUpdate(object $region): void
     {
         parent::preUpdate($region);
 
@@ -170,7 +171,7 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
     /**
      * @param Region $region
      */
-    public function postRemove($region)
+    protected function postRemove(object $region): void
     {
         parent::postRemove($region);
 

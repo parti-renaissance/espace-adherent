@@ -33,7 +33,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         $this->assertStringContainsString('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString('Conseiller(e) municipal(e) (DIV)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString('Rouen (76540)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertStringContainsString(' G.s (2018) PS (2014 à 2018)', preg_replace('/\s+/', ' ', $crawler->filter('tbody tr.referent__item')->eq(1)->filter('td')->eq(4)->text()));
+        $this->assertStringContainsString('G.s (2018) PS (2014 à 2018)', preg_replace('/\s+/', ' ', $crawler->filter('tbody tr.referent__item')->eq(1)->filter('td')->eq(4)->text()));
         $this->assertStringContainsString('Non', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString('DUFOUR Michelle', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
         $this->assertStringContainsString('Oui', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
@@ -161,7 +161,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         $this->assertStringContainsString('REM', $crawler->filter('.elected-representative-mandates tbody tr')->text());
         $this->assertStringContainsString('Soutien officiel', $crawler->filter('.elected-representative-mandates tbody tr')->text());
         $this->assertStringContainsString('23 juillet 2019', $crawler->filter('.elected-representative-mandates tbody tr')->text());
-        $this->assertStringContainsString(' Autre membre (2019) Président(e) d\'EPCI (2015)', preg_replace('/\s+/', ' ', $crawler->filter('.elected-representative-mandates tbody tr')->eq(0)->filter('td')->eq(5)->text()));
+        $this->assertStringContainsString('Autre membre (2019) Président(e) d\'EPCI (2015)', preg_replace('/\s+/', ' ', $crawler->filter('.elected-representative-mandates tbody tr')->eq(0)->filter('td')->eq(5)->text()));
         $this->assertCount(1, $crawler->filter('.elected-representative-labels tbody tr'));
         $this->assertStringNotContainsString('Aucune', $crawler->filter('.elected-representative-labels tbody tr')->text());
         $this->assertCount(0, $crawler->filter('.sponsorships tbody tr'));

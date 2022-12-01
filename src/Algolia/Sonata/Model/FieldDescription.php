@@ -2,7 +2,7 @@
 
 namespace App\Algolia\Sonata\Model;
 
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Sonata\AdminBundle\FieldDescription\BaseFieldDescription;
 
 class FieldDescription extends BaseFieldDescription
 {
@@ -24,7 +24,7 @@ class FieldDescription extends BaseFieldDescription
         return $key ? $this->_getValue($keys, $row[$key]) : $row;
     }
 
-    public function setAssociationMapping($associationMapping)
+    public function setAssociationMapping(array $associationMapping): void
     {
     }
 
@@ -32,15 +32,30 @@ class FieldDescription extends BaseFieldDescription
     {
     }
 
-    public function setFieldMapping($fieldMapping)
+    public function setFieldMapping(array $fieldMapping): void
     {
     }
 
-    public function setParentAssociationMappings(array $parentAssociationMappings)
+    public function setParentAssociationMappings(array $parentAssociationMappings): void
     {
     }
 
-    public function isIdentifier()
+    public function isIdentifier(): bool
+    {
+        return false;
+    }
+
+    public function getTargetModel(): ?string
+    {
+        return null;
+    }
+
+    public function describesSingleValuedAssociation(): bool
+    {
+        return false;
+    }
+
+    public function describesCollectionValuedAssociation(): bool
     {
         return false;
     }

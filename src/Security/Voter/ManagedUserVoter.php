@@ -22,7 +22,7 @@ class ManagedUserVoter extends AbstractAdherentVoter
         $this->zoneRepository = $zoneRepository;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::IS_MANAGED_USER === $attribute && $subject instanceof Adherent;
     }

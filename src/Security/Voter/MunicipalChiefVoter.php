@@ -10,7 +10,7 @@ class MunicipalChiefVoter extends AbstractAdherentVoter
 {
     public const ROLE = 'MUNICIPAL_CHIEF_OF';
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::ROLE === $attribute && $subject instanceof ApplicationRequest;
     }

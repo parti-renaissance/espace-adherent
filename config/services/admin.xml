@@ -7,6 +7,18 @@
 
         <service id="App\Admin\AdministratorFactory" />
 
+        <service id="Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter" alias="sonata.admin.orm.filter.type.callback" />
+
+        <prototype namespace="App\Admin\Filter\" resource="../../src/Admin/Filter">
+            <tag name="sonata.admin.filter.type" />
+        </prototype>
+
+        <service id="App\Admin\Exporter\IteratorCallbackDataSource" />
+
+        <service id="App\Admin\Exporter\DataSourceDecorator" decorates="sonata.admin.data_source.orm">
+            <argument type="service" id="App\Admin\Exporter\DataSourceDecorator.inner" />
+        </service>
+
         <!--
         ######################################################
         # RE site web
@@ -27,6 +39,11 @@
             <argument />
             <argument>App\Entity\Article</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>outer_list_rows_mosaic</argument>
+                <argument>admin/media/mosaic.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.renaissance_home_block" class="App\Admin\HomeBlock\RenaissanceHomeBlockAdmin">
@@ -35,6 +52,11 @@
             <argument />
             <argument>App\Entity\HomeBlock</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>outer_list_rows_mosaic</argument>
+                <argument>admin/media/mosaic.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.renaissance_biography_executive_office_member" class="App\Admin\ExecutiveOfficeMember\RenaissanceExecutiveOfficeMemberAdmin">
@@ -61,9 +83,12 @@
             <call method="setStorage">
                 <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
-
             <call method="setGlide">
                 <argument type="service" id="League\Glide\Server" />
+            </call>
+            <call method="setTemplate">
+                <argument>outer_list_rows_mosaic</argument>
+                <argument>admin/media/mosaic.html.twig</argument>
             </call>
         </service>
 
@@ -73,6 +98,11 @@
             <argument />
             <argument>App\Entity\Article</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>outer_list_rows_mosaic</argument>
+                <argument>admin/media/mosaic.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.page" class="App\Admin\PageAdmin">
@@ -89,6 +119,11 @@
             <argument />
             <argument>App\Entity\HomeBlock</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>outer_list_rows_mosaic</argument>
+                <argument>admin/media/mosaic.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.cms_block" class="App\Admin\CmsBlockAdmin">
@@ -220,6 +255,10 @@
             <argument />
             <argument>App\Entity\Unregistration</argument>
             <argument />
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/adherent/unregistration_list.html.twig</argument>
+            </call>
         </service>
 
         <!--
@@ -234,9 +273,17 @@
             <argument />
             <argument>App\Entity\Committee</argument>
             <argument>App\Controller\Admin\AdminCommitteeCRUDController</argument>
-            <argument type="service" id="App\Committee\CommitteeManager" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="event_dispatcher"/>
+
+            <call method="setTemplate">
+                <argument>show</argument>
+                <argument>admin/committee/show.html.twig</argument>
+            </call>
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/committee/edit.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.reporting_committee_merge_history" class="App\Admin\CommitteeMergeHistoryAdmin">
@@ -264,6 +311,14 @@
                     <argument>App\Entity\Event\CauseEvent</argument>
                     <argument>App\Entity\Event\CoalitionEvent</argument>
                 </argument>
+            </call>
+            <call method="setTemplate">
+                <argument>show</argument>
+                <argument>admin/event/show.html.twig</argument>
+            </call>
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/event/edit.html.twig</argument>
             </call>
         </service>
 
@@ -443,6 +498,11 @@
             <argument />
             <argument>App\Entity\Jecoute\News</argument>
             <argument>App\Controller\Admin\AdminJecouteNewsCRUDController</argument>
+
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/jecoute/news/edit.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.jecoute.national_region" class="App\Admin\Jecoute\NationalRegionAdmin">
@@ -621,6 +681,7 @@
 
             <call method="addChild">
                 <argument type="service" id="app.admin.territorial_council_membership" />
+                <argument type="string">membership</argument>
             </call>
         </service>
 
@@ -630,6 +691,11 @@
             <argument />
             <argument>App\Entity\TerritorialCouncil\TerritorialCouncilMembership</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/territorial_council/list.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.voting_platform.designation" class="App\Admin\VotingPlatform\DesignationAdmin">
@@ -758,10 +824,6 @@
             <argument />
             <argument>App\Entity\OAuth\Client</argument>
             <argument />
-
-            <call method="setClientManager">
-                <argument type="service" id="App\OAuth\ClientManager" />
-            </call>
         </service>
 
         <service id="app.admin.scope" class="App\Admin\ScopeAdmin">
@@ -1168,6 +1230,10 @@
                 <argument>edit</argument>
                 <argument>admin/election/city_card/edit.html.twig</argument>
             </call>
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/city_card/list.html.twig</argument>
+            </call>
         </service>
         <service id="App\Admin\Election\CityCardAdmin" alias="app.admin.election_city_card" />
 
@@ -1212,6 +1278,11 @@
             <argument />
             <argument>App\Entity\TonMacronChoice</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/ton_macron/choice_list.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.ton_macron_friend_invitation" class="App\Admin\TonMacronFriendInvitationAdmin">
@@ -1220,6 +1291,11 @@
             <argument />
             <argument>App\Entity\TonMacronFriendInvitation</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/ton_macron/invitation_list.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.my_europe_choice" class="App\Admin\MyEuropeChoiceAdmin">
@@ -1228,6 +1304,11 @@
             <argument />
             <argument>App\Entity\MyEuropeChoice</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/interactive/choice_list.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.my_europe_invitation" class="App\Admin\MyEuropeInvitationAdmin">
@@ -1236,6 +1317,11 @@
             <argument />
             <argument>App\Entity\MyEuropeInvitation</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/interactive/invitation_list.html.twig</argument>
+            </call>
         </service>
 
 
@@ -1305,6 +1391,11 @@
             <argument />
             <argument>App\Entity\OrderArticle</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>outer_list_rows_mosaic</argument>
+                <argument>admin/media/mosaic.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.facebook_profile" class="App\Admin\FacebookProfileAdmin">
@@ -1352,6 +1443,11 @@
             <argument />
             <argument>App\Entity\Proposal</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>outer_list_rows_mosaic</argument>
+                <argument>admin/media/mosaic.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.je_marche" class="App\Admin\JeMarcheReportAdmin">

@@ -108,7 +108,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
                 'email' => 'adrienne.kepoura@example.fr',
                 'phone' => '+33 6 12 34 56 78',
                 'birthdate' => '14/05/1973',
-                'votePlaceWishes' => 'Salle Polyvalente De Wazemmes, Rue De L\'Abbé Aerts, 0113                    Restaurant Scolaire - Rue H. Lefebvre, Groupe Scolaire Jean Zay, 0407',
+                'votePlaceWishes' => 'Salle Polyvalente De Wazemmes, Rue De L\'Abbé Aerts, 0113 Restaurant Scolaire - Rue H. Lefebvre, Groupe Scolaire Jean Zay, 0407',
                 'office' => 'Suppléant',
                 'voteCity' => 'Lille',
                 'address' => '4 avenue du peuple Belge',
@@ -138,7 +138,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
                 'email' => 'adrienne.kepoura@example.fr',
                 'phone' => '+33 6 12 34 56 78',
                 'birthdate' => '14/05/1973',
-                'votePlaceWishes' => 'Salle Polyvalente De Wazemmes, Rue De L\'Abbé Aerts, 0113                    Restaurant Scolaire - Rue H. Lefebvre, Groupe Scolaire Jean Zay, 0407',
+                'votePlaceWishes' => 'Salle Polyvalente De Wazemmes, Rue De L\'Abbé Aerts, 0113 Restaurant Scolaire - Rue H. Lefebvre, Groupe Scolaire Jean Zay, 0407',
                 'office' => 'Suppléant',
                 'voteCity' => 'Lille',
                 'address' => '4 avenue du peuple Belge',
@@ -189,7 +189,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
                 'email' => 'adrienne.kepoura@example.fr',
                 'phone' => '+33 6 12 34 56 78',
                 'birthdate' => '14/05/1973',
-                'votePlaceWishes' => 'Salle Polyvalente De Wazemmes, Rue De L\'Abbé Aerts, 0113                    Restaurant Scolaire - Rue H. Lefebvre, Groupe Scolaire Jean Zay, 0407',
+                'votePlaceWishes' => 'Salle Polyvalente De Wazemmes, Rue De L\'Abbé Aerts, 0113 Restaurant Scolaire - Rue H. Lefebvre, Groupe Scolaire Jean Zay, 0407',
                 'office' => 'Suppléant',
                 'voteCity' => 'Lille',
                 'address' => '4 avenue du peuple Belge',
@@ -306,7 +306,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
             AssessorRequestFilters::PARAMETER_LAST_NAME => null,
             AssessorRequestFilters::PARAMETER_VOTE_PLACE => null,
             AssessorRequestFilters::PARAMETER_CITY => null,
-            AssessorRequestFilters::PARAMETER_COUNTRY => null,
+            AssessorRequestFilters::PARAMETER_COUNTRY => '',
         ];
 
         // Test last name filter
@@ -367,7 +367,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
             AssessorRequestFilters::PARAMETER_LAST_NAME => null,
             AssessorRequestFilters::PARAMETER_VOTE_PLACE => null,
             AssessorRequestFilters::PARAMETER_CITY => null,
-            AssessorRequestFilters::PARAMETER_COUNTRY => null,
+            AssessorRequestFilters::PARAMETER_COUNTRY => '',
         ];
 
         // Test last name filter
@@ -428,7 +428,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
             AssessorRequestFilters::PARAMETER_LAST_NAME => null,
             AssessorRequestFilters::PARAMETER_VOTE_PLACE => null,
             AssessorRequestFilters::PARAMETER_CITY => null,
-            AssessorRequestFilters::PARAMETER_COUNTRY => null,
+            AssessorRequestFilters::PARAMETER_COUNTRY => '',
         ];
 
         // Test last name filter
@@ -455,7 +455,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
         $formValues = [
             VotePlaceFilters::PARAMETER_VOTE_PLACE => null,
             VotePlaceFilters::PARAMETER_CITY => null,
-            VotePlaceFilters::PARAMETER_COUNTRY => null,
+            VotePlaceFilters::PARAMETER_COUNTRY => '',
         ];
 
         // Test vote place wishes filter
@@ -508,7 +508,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
         $formValues = [
             VotePlaceFilters::PARAMETER_VOTE_PLACE => null,
             VotePlaceFilters::PARAMETER_CITY => null,
-            VotePlaceFilters::PARAMETER_COUNTRY => null,
+            VotePlaceFilters::PARAMETER_COUNTRY => '',
         ];
 
         // Test vote place wishes filter

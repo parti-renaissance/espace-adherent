@@ -19,7 +19,7 @@ class HostEventVoter extends AbstractAdherentVoter
         $this->session = $session;
     }
 
-    protected function supports($attribute, $event): bool
+    protected function supports(string $attribute, $event): bool
     {
         return EventPermissions::HOST === $attribute && $event instanceof BaseEvent;
     }

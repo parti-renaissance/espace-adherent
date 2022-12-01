@@ -201,6 +201,10 @@ services:
             $keyPath: '%env(SSL_PUBLIC_KEY)%'
             $keyPermissionsCheck: '%env(bool:SSL_KEY_PERMISSIONS_CHECK)%'
 
+    App\OAuth\Repository\OAuthUserRepository:
+        arguments:
+            $userProvider: '@app.security.user_provider'
+
     App\OAuth\AuthorizationServerFactory:
         arguments:
             $privateKey: '@app.ssl_private_key'
@@ -316,7 +320,7 @@ services:
     League\OAuth2\Server\Repositories\ScopeRepositoryInterface: '@App\OAuth\Store\ScopeStore'
 
     League\OAuth2\Server\AuthorizationServer:
-        factory: 'App\OAuth\AuthorizationServerFactory:createServer'
+        factory: ['@App\OAuth\AuthorizationServerFactory', 'createServer']
 
     League\OAuth2\Server\ResourceServer:
         arguments:
@@ -418,3 +422,9 @@ services:
                 App\Mailer\Message\Renaissance\RenaissanceMessageInterface:
                     name: Renaissance
                     email: "%env(RENAISSANCE_SENDER_EMAIL)%"
+
+    App\Security\SimpleCsrfTokenManager: ~
+
+    App\Donation\DonationRequestUtils:
+        arguments:
+            $tokenManager: '@App\Security\SimpleCsrfTokenManager'

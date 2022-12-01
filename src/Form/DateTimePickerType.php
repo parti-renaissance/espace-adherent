@@ -19,7 +19,6 @@ class DateTimePickerType extends AbstractType
         }
         $view->vars['attr']['data-datetimepicker'] = json_encode([
             'enableTime' => true,
-            'dateFormat' => $options['date_format'],
             'altInput' => isset($options['human_friendly_format']),
             'altFormat' => $options['human_friendly_format'] ?? '',
             'minDate' => isset($options['min_date']) ? $options['min_date']->format($options['date_format']) : null,
@@ -42,7 +41,6 @@ class DateTimePickerType extends AbstractType
             'attr' => [
                 'placeholder' => 'common.select_date',
             ],
-            'date_format' => 'Y-m-d H:i',
             'human_friendly_format' => 'j F Y à H:i',
             'min_date' => null,
             'max_date' => null,
@@ -60,7 +58,6 @@ class DateTimePickerType extends AbstractType
             'locale' => null,
             'always_display' => false,
         ]);
-        $resolver->setAllowedTypes('date_format', 'string');
         $resolver->setAllowedTypes('human_friendly_format', ['null', 'string']);
         $resolver->setAllowedTypes('min_date', ['null', \DateTime::class]);
         $resolver->setAllowedTypes('max_date', ['null', \DateTime::class]);

@@ -7,6 +7,8 @@ use Sonata\AdminBundle\Datagrid\PagerInterface;
 
 class Pager extends BasePager implements PagerInterface
 {
+    private ?int $resultsCount = null;
+
     public function computeNbResult()
     {
         $countQuery = clone $this->getQuery();
@@ -19,30 +21,33 @@ class Pager extends BasePager implements PagerInterface
         return $this->getQuery()->execute();
     }
 
-    public function getQuery()
+    public function init(): void
     {
-        return $this->query;
-    }
-
-    public function init()
-    {
-        $this->resetIterator();
-
         $this->getQuery()->setMaxResults($this->getMaxPerPage());
 
-        $this->setNbResults($this->computeNbResult());
+        $this->resultsCount = $this->computeNbResult();
 
-        if (\count($this->getParameters()) > 0) {
-            $this->getQuery()->setParameters($this->getParameters());
-        }
+//        if (\count($this->get()) > 0) {
+//            $this->getQuery()->setParameters($this->getParameters());
+//        }
 
-        if (0 === $this->getPage() || 0 === $this->getMaxPerPage() || 0 === $this->getNbResults()) {
+        if (0 === $this->getPage() || 0 === $this->getMaxPerPage() || 0 === $this->resultsCount) {
             $this->setLastPage(0);
         } else {
-            $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
+            $this->setLastPage(ceil($this->resultsCount / $this->getMaxPerPage()));
 
             $this->getQuery()->setFirstResult($this->getPage() - 1);
             $this->getQuery()->setMaxResults($this->getMaxPerPage());
         }
+    }
+
+    public function getCurrentPageResults(): iterable
+    {
+        return $this->getQuery()->execute();
+    }
+
+    public function countResults(): int
+    {
+        return $this->resultsCount;
     }
 }

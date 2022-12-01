@@ -28,7 +28,7 @@ class AuthorVoter extends AbstractAdherentVoter
         return $subject->getAuthor()->equals($adherent);
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof AuthoredInterface;
     }

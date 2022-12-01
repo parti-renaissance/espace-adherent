@@ -3,25 +3,27 @@
 namespace App\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin as SonataAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
 class AbstractAdmin extends SonataAdmin
 {
-    protected $formOptions = [
-        'validation_groups' => ['Default', 'Admin'],
-    ];
+    protected function configureFormOptions(array &$formOptions): void
+    {
+        $formOptions['validation_groups'] = ['Default', 'Admin'];
+    }
 
     protected function isCreation(): bool
     {
-        return !(bool) $this->getSubject()->getId();
+        return !$this->getSubject()->getId();
     }
 
-    protected function configureBatchActions($actions)
+    protected function configureBatchActions(array $actions): array
     {
         return [];
     }
 
-    protected function configureDefaultSortValues(array &$sortValues)
+    protected function configureDefaultSortValues(array &$sortValues): void
     {
-        $sortValues['_sort_order'] = 'DESC';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 }

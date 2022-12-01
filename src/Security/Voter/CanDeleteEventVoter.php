@@ -23,7 +23,7 @@ class CanDeleteEventVoter extends Voter
         return $this->eventRegistrationRepository->countEventParticipantsWithoutCreator($subject) < 1;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof BaseEvent;
     }

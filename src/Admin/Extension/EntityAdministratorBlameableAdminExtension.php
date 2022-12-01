@@ -20,7 +20,7 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
         $this->security = $security;
     }
 
-    public function configureDatagridFilters(DatagridMapper $datagridMapper)
+    public function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('createdByAdministrator', null, [
@@ -32,7 +32,7 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
         ;
     }
 
-    public function configureListFields(ListMapper $listMapper)
+    public function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('_blame', null, [
@@ -45,7 +45,7 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
         $keys = $listMapper->keys();
         $admin = $listMapper->getAdmin();
 
-        foreach ($admin instanceof ReorderableAdminInterface ? array_merge($admin->getListMapperEndColumns(), ['_action']) : ['_action'] as $column) {
+        foreach ($admin instanceof ReorderableAdminInterface ? array_merge($admin->getListMapperEndColumns(), ['_actions']) : ['_actions'] as $column) {
             if (false !== $actionKey = array_search($column, $keys)) {
                 unset($keys[$actionKey]);
                 $keys[] = $column;
@@ -58,7 +58,7 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
     /**
      * @param EntityAdministratorBlameableInterface $object
      */
-    public function prePersist(AdminInterface $admin, $object)
+    public function prePersist(AdminInterface $admin, object $object): void
     {
         $administrator = $this->getAdministrator();
 
@@ -68,7 +68,7 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
     /**
      * @param EntityAdministratorBlameableInterface $object
      */
-    public function preUpdate(AdminInterface $admin, $object)
+    public function preUpdate(AdminInterface $admin, object $object): void
     {
         $object->setUpdatedByAdministrator($this->getAdministrator());
     }

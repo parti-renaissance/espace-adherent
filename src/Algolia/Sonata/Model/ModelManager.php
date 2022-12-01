@@ -21,31 +21,9 @@ class ModelManager implements ModelManagerInterface
         $this->queryBuilder = $queryBuilder;
     }
 
-    public function createQuery($class, $alias = 'o')
+    public function createQuery(string $class): ProxyQueryInterface
     {
         return new ProxyQuery($this->algolia, $this->queryBuilder, $class);
-    }
-
-    public function getModelIdentifier($class)
-    {
-        return [];
-    }
-
-    public function getDefaultSortValues($class)
-    {
-        return [
-            '_page' => 1,
-            '_per_page' => 25,
-        ];
-    }
-
-    public function getNewFieldDescriptionInstance($class, $name, array $options = [])
-    {
-        $fieldDescription = new FieldDescription();
-        $fieldDescription->setName($name);
-        $fieldDescription->setOptions($options);
-
-        return $fieldDescription;
     }
 
     public function hasMetadata(string $class): bool
@@ -62,32 +40,34 @@ class ModelManager implements ModelManagerInterface
         return ['filter' => $values];
     }
 
-    public function create($object)
+    public function create($object): void
     {
     }
 
-    public function update($object)
+    public function update($object): void
     {
     }
 
-    public function delete($object)
+    public function delete($object): void
     {
     }
 
-    public function findBy($class, array $criteria = [])
+    public function findBy($class, array $criteria = []): array
     {
         return [];
     }
 
-    public function findOneBy($class, array $criteria = [])
+    public function findOneBy($class, array $criteria = []): ?object
     {
+        return null;
     }
 
-    public function find($class, $id)
+    public function find($class, $id): ?object
     {
+        return null;
     }
 
-    public function batchDelete($class, ProxyQueryInterface $queryProxy)
+    public function batchDelete($class, ProxyQueryInterface $queryProxy): void
     {
     }
 
@@ -95,23 +75,24 @@ class ModelManager implements ModelManagerInterface
     {
     }
 
-    public function getIdentifierValues($model)
+    public function getIdentifierValues($model): array
     {
         return [];
     }
 
-    public function getIdentifierFieldNames($class)
+    public function getIdentifierFieldNames($class): array
     {
         return [];
     }
 
-    public function getNormalizedIdentifier($model)
+    public function getNormalizedIdentifier($model): ?string
     {
         return null;
     }
 
-    public function getUrlsafeIdentifier($model)
+    public function getUrlsafeIdentifier($model): ?string
     {
+        return null;
     }
 
     public function getModelInstance($class)
@@ -170,12 +151,21 @@ class ModelManager implements ModelManagerInterface
         return null;
     }
 
-    public function getExportFields($class)
+    public function getExportFields($class): array
     {
         return [];
     }
 
-    public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx)
+    public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx): void
     {
+    }
+
+    public function reverseTransform(object $object, array $array = []): void
+    {
+    }
+
+    public function supportsQuery(object $query): bool
+    {
+        return false;
     }
 }

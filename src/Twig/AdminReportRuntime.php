@@ -26,11 +26,12 @@ class AdminReportRuntime implements RuntimeExtensionInterface
     {
         $routeName = 'show';
         $subject = $report->getSubject();
-        $fieldDescription = $this->reportAdmin->getModelManager()->getNewFieldDescriptionInstance(
+        $fieldDescription = $this->reportAdmin->getFieldDescriptionFactory()->create(
             \get_class($report), 'subject', ['route' => ['name' => $routeName], 'type' => 'string']
         );
+        $fieldDescription->setAdmin($this->reportAdmin);
 
-        $this->builder->fixFieldDescription($this->reportAdmin, $fieldDescription);
+        $this->builder->fixFieldDescription($fieldDescription);
 
         if ($fieldDescription->getAssociationAdmin()
             && $fieldDescription->getAssociationAdmin()->hasRoute($routeName)
@@ -38,7 +39,7 @@ class AdminReportRuntime implements RuntimeExtensionInterface
         ) {
             return $fieldDescription->getAssociationAdmin()->generateObjectUrl(
                 $routeName,
-                $subject, $fieldDescription->getOption('route')['parameters']
+                $subject, $fieldDescription->getOption('route')['parameters'] ?? []
             );
         }
 

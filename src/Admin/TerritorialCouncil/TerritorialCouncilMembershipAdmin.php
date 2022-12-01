@@ -5,9 +5,11 @@ namespace App\Admin\TerritorialCouncil;
 use App\Form\TerritorialCouncil\PoliticalCommitteeQualityChoiceType;
 use App\Form\TerritorialCouncil\TerritorialCouncilQualityChoiceType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Filter\Model\FilterData;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
@@ -16,28 +18,19 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class TerritorialCouncilMembershipAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'id',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected function configureRoutes(RouteCollection $collection)
+        $sortValues[DatagridInterface::SORT_BY] = 'id';
+    }
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept(['list']);
     }
 
-    public function getTemplate($name)
-    {
-        if ('list' === $name) {
-            return 'admin/territorial_council/list.html.twig';
-        }
-
-        return parent::getTemplate($name);
-    }
-
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('territorialCouncil', null, [
@@ -51,15 +44,15 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
                 'field_options' => [
                     'multiple' => true,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $qb
                         ->leftJoin("$alias.qualities", 'quality')
                         ->andWhere('quality.name IN (:names)')
-                        ->setParameter('names', $value['value'])
+                        ->setParameter('names', $value->getValue())
                     ;
 
                     return true;
@@ -72,8 +65,8 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
                 'field_options' => [
                     'multiple' => true,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
@@ -86,7 +79,7 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
                     $qb
                         ->leftJoin('pcMembership.qualities', 'pcQuality')
                         ->andWhere('pcQuality.name IN (:names)')
-                        ->setParameter('names', $value['value'])
+                        ->setParameter('names', $value->getValue())
                     ;
 
                     return true;
@@ -116,8 +109,8 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
                         'global.no' => false,
                     ],
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (null === $value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
@@ -128,7 +121,7 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
                         ;
                     }
 
-                    $condition = true === $value['value'] ? 'NOT' : '';
+                    $condition = true === $value->getValue() ? 'NOT' : '';
                     $qb->andWhere("pcMembership.id IS $condition NULL");
 
                     return true;
@@ -137,7 +130,7 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('adherent', null, [
@@ -149,7 +142,7 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
                 'template' => 'admin/territorial_council/list_membership_qualities.html.twig',
             ])
             ->add('pcqualities', null, [
-                'mapped' => false,
+                'virtual_field' => true,
                 'label' => 'Qualités au CoPol',
                 'template' => 'admin/territorial_council/list_membership_political_committee_qualities.html.twig',
             ])
@@ -157,7 +150,7 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
                 'label' => 'Date',
                 'format' => 'd/m/Y',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/territorial_council/list_membership_actions.html.twig',
             ])

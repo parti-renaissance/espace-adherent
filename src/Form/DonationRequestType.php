@@ -112,7 +112,7 @@ class DonationRequestType extends AbstractType
     public function createInitialDonationRequest(FormEvent $formEvent): void
     {
         if (!$formEvent->getData()) {
-            $user = $this->tokenStorage->getToken()->getUser();
+            $user = $this->tokenStorage->getToken()?->getUser();
 
             if (!$user instanceof Adherent) {
                 $user = null;

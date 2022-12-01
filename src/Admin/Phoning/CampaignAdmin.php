@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
@@ -30,16 +30,14 @@ class CampaignAdmin extends AbstractAdmin
 {
     private AdherentRepository $adherentRepository;
 
-    public function getFormBuilder()
+    protected function configureFormOptions(array &$formOptions): void
     {
         if (!$this->isPermanent()) {
-            $this->formOptions['validation_groups'] = ['Default', 'regular_campaign'];
+            $formOptions['validation_groups'] = ['Default', 'regular_campaign'];
         }
-
-        return parent::getFormBuilder();
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Informations ⚙️')
@@ -120,26 +118,29 @@ class CampaignAdmin extends AbstractAdmin
         }
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('title', null, [
                 'label' => 'Nom',
                 'show_filter' => true,
             ])
-            ->add('team', ModelAutocompleteFilter::class, [
+            ->add('team', ModelFilter::class, [
                 'label' => 'Équipe',
                 'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
-                    'property' => [
-                        'name',
-                    ],
+                    'model_manager' => $this->getModelManager(),
+                    'property' => 'name',
                 ],
             ])
-            ->add('team.members.adherent', ModelAutocompleteFilter::class, [
+            ->add('team.members.adherent', ModelFilter::class, [
                 'label' => 'Appelant',
                 'show_filter' => true,
                 'field_type' => MemberAdherentAutocompleteType::class,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                ],
             ])
             ->add('finishAt', DateRangeFilter::class, [
                 'label' => 'Date de fin',
@@ -148,7 +149,7 @@ class CampaignAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('id', null, [
@@ -180,13 +181,15 @@ class CampaignAdmin extends AbstractAdmin
             ])
             ->add('campaignHistoriesWithDataSurveyCount', null, [
                 'label' => 'Questionnaires remplis',
+                'virtual_field' => true,
                 'template' => 'admin/phoning/campaign/list_campaign_histories_with_data_survey_count.html.twig',
             ])
             ->add('unjoinAndUnsubscribeCount', null, [
                 'label' => 'Désabonnements / Désadhésions',
+                'virtual_field' => true,
                 'template' => 'admin/phoning/campaign/list_campaign_histories_unjoin_unsubscribe_count.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -200,14 +203,14 @@ class CampaignAdmin extends AbstractAdmin
     }
 
     /** @param Campaign $object */
-    public function postPersist($object)
+    protected function postPersist(object $object): void
     {
         $this->updateParticipantsCount($object);
         $this->getModelManager()->update($object);
     }
 
     /** @param Campaign $object */
-    public function preUpdate($object)
+    protected function preUpdate(object $object): void
     {
         $this->updateParticipantsCount($object);
     }

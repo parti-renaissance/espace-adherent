@@ -33,7 +33,7 @@ class AdminAdherentCRUDController extends CRUDController
                 'Il est possible d\'exclure uniquement les adhérents sans aucun rôle (animateur, référent etc.).'
             );
 
-            return $this->redirectTo($adherent);
+            return $this->redirectTo($request, $adherent);
         }
 
         $form = $this
@@ -72,7 +72,7 @@ class AdminAdherentCRUDController extends CRUDController
                 $adherent->getFullName()
             ));
 
-            return $this->redirectTo($adherent);
+            return $this->redirectTo($request, $adherent);
         }
 
         $form = $this
@@ -90,7 +90,7 @@ class AdminAdherentCRUDController extends CRUDController
                 ));
             }
 
-            return $this->redirectTo($adherent);
+            return $this->redirectTo($request, $adherent);
         }
 
         return $this->renderWithExtraParams('admin/adherent/certify.html.twig', [
@@ -114,7 +114,7 @@ class AdminAdherentCRUDController extends CRUDController
                 $adherent->getFullName()
             ));
 
-            return $this->redirectTo($adherent);
+            return $this->redirectTo($request, $adherent);
         }
 
         $form = $this
@@ -132,7 +132,7 @@ class AdminAdherentCRUDController extends CRUDController
                 ));
             }
 
-            return $this->redirectTo($adherent);
+            return $this->redirectTo($request, $adherent);
         }
 
         return $this->renderWithExtraParams('admin/adherent/uncertify.html.twig', [
@@ -168,7 +168,7 @@ class AdminAdherentCRUDController extends CRUDController
     public function sendResubscribeEmailAction(Request $request, Adherent $adherent, MessageBusInterface $bus): Response
     {
         if ($request->isMethod(Request::METHOD_POST)) {
-            $this->validateCsrfToken('admin.adherent.send_email');
+            $this->validateCsrfToken($request, 'admin.adherent.send_email');
 
             $bus->dispatch(new SendResubscribeEmailCommand($adherent, AdherentEmailSubscribeToken::TRIGGER_SOURCE_ADMIN));
 

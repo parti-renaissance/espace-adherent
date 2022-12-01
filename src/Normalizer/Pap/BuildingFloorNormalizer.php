@@ -35,7 +35,7 @@ class BuildingFloorNormalizer implements NormalizerInterface, NormalizerAwareInt
         $data = $this->normalizer->normalize($object, $format, $context);
 
         $campaign = null;
-        $campaignUuid = $this->requestStack->getMasterRequest()->query->get('campaign_uuid');
+        $campaignUuid = $this->requestStack->getMainRequest()->query->get('campaign_uuid');
         if (!empty($context['campaign'])) {
             $campaign = $context['campaign'];
         } else {

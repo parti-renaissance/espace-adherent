@@ -13,27 +13,32 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 
 class LocalElectionAdmin extends AbstractAdmin
 {
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('designation.label')
-            ->add('designation', ModelAutocompleteFilter::class, [
+            ->add('designation', ModelFilter::class, [
                 'show_filter' => true,
                 'label' => 'Désignation',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
                     'property' => 'label',
                     'to_string_callback' => function (Designation $designation) {
                         return $designation->getLabel();
                     },
                 ],
             ])
-            ->add('designation.zones', ModelAutocompleteFilter::class, [
+            ->add('designation.zones', ModelFilter::class, [
                 'show_filter' => true,
                 'label' => 'Zones',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,

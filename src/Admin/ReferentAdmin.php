@@ -6,7 +6,7 @@ use App\Entity\Referent;
 use App\Form\GenderType;
 use App\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use App\ValueObject\Genders;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -21,16 +21,6 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 class ReferentAdmin extends AbstractAdmin
 {
     public $OCItems = [];
-    protected $datagridValues = [
-        '_page' => 1,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'lastName',
-    ];
-    protected $maxPerPage = 100;
-    protected $perPageOptions = [];
-    protected $formOptions = [
-        'validation_groups' => ['Default', 'Admin'],
-    ];
     private $dataTransformer;
     private $organizationalChartItemRepository;
 
@@ -47,7 +37,14 @@ class ReferentAdmin extends AbstractAdmin
         $this->organizationalChartItemRepository = $organizationalChartItemRepository;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $mapper)
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'lastName';
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $mapper): void
     {
         $mapper
             ->add('id', null, [
@@ -75,7 +72,7 @@ class ReferentAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $mapper)
+    protected function configureListFields(ListMapper $mapper): void
     {
         $mapper
             ->addIdentifier('id', null, [
@@ -106,7 +103,7 @@ class ReferentAdmin extends AbstractAdmin
                 'label' => 'Visibilité',
                 'show_filter' => true,
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'export_team_xlsx' => [
@@ -119,7 +116,7 @@ class ReferentAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $mapper)
+    protected function configureFormFields(FormMapper $mapper): void
     {
         $mapper
             ->with('Informations personnelles', ['class' => 'col-md-4'])
@@ -208,7 +205,7 @@ class ReferentAdmin extends AbstractAdmin
         $mapper->get('areas')->addModelTransformer($this->dataTransformer);
     }
 
-    protected function configureShowFields(ShowMapper $mapper)
+    protected function configureShowFields(ShowMapper $mapper): void
     {
         $this->OCItems = $this->organizationalChartItemRepository->getRootNodes();
 
@@ -242,7 +239,7 @@ class ReferentAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Photo de profil', ['class' => 'col-md-5'])
-                ->add('media', null)
+                ->add('media')
             ->end()
             ->with('Pages Web', ['class' => 'col-md-7'])
                 ->add('twitterPageUrl', 'url', [
@@ -253,9 +250,9 @@ class ReferentAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Description', ['class' => 'col-md-12'])
-                ->add('description', null)
+                ->add('description')
             ->end()
-            ->with('Organigrame', ['class' => 'col-md-12'])
+            ->with('Organigramme', ['class' => 'col-md-12'])
                 ->add('referentPersonLinks', null, [
                     'template' => 'admin/referent/organization_chart.html.twig',
                 ])
@@ -263,7 +260,7 @@ class ReferentAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureBatchActions($actions)
+    protected function configureBatchActions(array $actions): array
     {
         $actions['exportTeams'] = [
             'label' => 'Exporter les équipes',

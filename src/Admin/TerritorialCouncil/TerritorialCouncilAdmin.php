@@ -3,26 +3,27 @@
 namespace App\Admin\TerritorialCouncil;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TerritorialCouncilAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'id',
-    ];
-
-    public function createQuery($context = 'list')
+    protected function configureDefaultSortValues(array &$sortValues): void
     {
-        $query = parent::createQuery($context);
+        parent::configureDefaultSortValues($sortValues);
 
+        $sortValues[DatagridInterface::SORT_BY] = 'id';
+    }
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
         $query
             ->leftJoin('o.politicalCommittee', 'politicalCommittee')
             ->leftJoin('politicalCommittee.memberships', 'pcMemberships')
@@ -33,7 +34,7 @@ class TerritorialCouncilAdmin extends AbstractAdmin
         return $query;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
             ->remove('create')
@@ -41,7 +42,7 @@ class TerritorialCouncilAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('id', null, [
@@ -56,9 +57,11 @@ class TerritorialCouncilAdmin extends AbstractAdmin
                 'label' => 'Codes',
                 'show_filter' => true,
             ])
-            ->add('referentTags', ModelAutocompleteFilter::class, [
+            ->add('referentTags', ModelFilter::class, [
                 'label' => 'Referent Tags',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
+                    'model_manager' => $this->getModelManager(),
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
                     'multiple' => true,
@@ -68,7 +71,7 @@ class TerritorialCouncilAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('name', null, [
@@ -85,6 +88,7 @@ class TerritorialCouncilAdmin extends AbstractAdmin
             ])
             ->add('president', null, [
                 'label' => 'Président',
+                'virtual_field' => true,
                 'template' => 'admin/territorial_council/list_president.html.twig',
             ])
             ->add('isActive', null, [
@@ -95,7 +99,7 @@ class TerritorialCouncilAdmin extends AbstractAdmin
                 'label' => 'CoPol actif',
                 'editable' => true,
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -105,7 +109,7 @@ class TerritorialCouncilAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('name', TextType::class, [

@@ -16,7 +16,7 @@ class DataCornerVoterTest extends AbstractAdherentVoterTest
 
     public function provideAnonymousCases(): iterable
     {
-        yield [false, false, DataCornerVoter::DATA_CORNER];
+        yield [false, true, DataCornerVoter::DATA_CORNER];
     }
 
     protected function getVoter(): VoterInterface
@@ -46,7 +46,7 @@ class DataCornerVoterTest extends AbstractAdherentVoterTest
             )
         ;
 
-        $this->assertGrantedForAdherent($isGranted, false, $adherent, DataCornerVoter::DATA_CORNER, $adherent);
+        $this->assertGrantedForAdherent($isGranted, true, $adherent, DataCornerVoter::DATA_CORNER, $adherent);
     }
 
     public function provideAdherent(): iterable

@@ -4,38 +4,30 @@ namespace App\Admin;
 
 use App\Entity\MyEuropeChoice;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class MyEuropeChoiceAdmin extends AbstractAdmin
 {
-    protected $maxPerPage = 200;
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 200,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'contentKey',
-    ];
-
-    public function getTemplate($name)
+    protected function configureDefaultSortValues(array &$sortValues): void
     {
-        if ('list' === $name) {
-            return 'admin/interactive/choice_list.html.twig';
-        }
+        parent::configureDefaultSortValues($sortValues);
 
-        return parent::getTemplate($name);
+        $sortValues[DatagridInterface::SORT_BY] = 'contentKey';
+        $sortValues[DatagridInterface::PER_PAGE] = 200;
     }
 
-    public function getBatchActions()
+    protected function configureBatchActions(array $actions): array
     {
-        $actions = parent::getBatchActions();
+        $actions = parent::configureBatchActions($actions);
         unset($actions['delete']);
 
         return $actions;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('contentKey', null, [
@@ -56,7 +48,7 @@ class MyEuropeChoiceAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('contentKey', null, [
@@ -68,7 +60,7 @@ class MyEuropeChoiceAdmin extends AbstractAdmin
             ->add('content', null, [
                 'label' => 'Message',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/interactive/choice_list_actions.html.twig',
             ])

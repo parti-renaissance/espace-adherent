@@ -7,6 +7,7 @@ use App\Entity\Poll\Poll;
 use App\Form\Admin\Poll\PollChoiceType;
 use App\Poll\PollManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -25,14 +26,16 @@ class NationalPollAdmin extends AbstractAdmin
     /** @var PollManager */
     private $pollManager;
 
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 128,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+        $sortValues[DatagridInterface::PER_PAGE] = 128;
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('question', null, [
@@ -54,7 +57,7 @@ class NationalPollAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id', null, [
@@ -73,7 +76,7 @@ class NationalPollAdmin extends AbstractAdmin
                 'label' => 'Créé par',
                 'template' => 'admin/poll/list_administrator.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'show' => [],
@@ -83,7 +86,7 @@ class NationalPollAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         /** @var Poll $poll */
         $poll = $this->getSubject();
@@ -116,7 +119,7 @@ class NationalPollAdmin extends AbstractAdmin
     /**
      * @param Poll $object
      */
-    public function prePersist($object)
+    protected function prePersist(object $object): void
     {
         /** @var Administrator $administrator */
         $administrator = $this->security->getUser();
@@ -127,7 +130,7 @@ class NationalPollAdmin extends AbstractAdmin
     /**
      * @param Poll $object
      */
-    public function postPersist($object)
+    protected function postPersist(object $object): void
     {
         $this->pollManager->scheduleNotification($object);
     }

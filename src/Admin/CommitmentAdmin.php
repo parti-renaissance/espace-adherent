@@ -12,14 +12,14 @@ class CommitmentAdmin extends AbstractAdmin
 {
     use SortableAdminTrait;
 
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->addIdentifier('title', null, ['label' => 'Titre'])
             ->add('position', null, ['label' => 'Position'])
             ->add('createdAt', null, ['label' => 'Créée le'])
             ->add('updatedAt', null, ['label' => 'Modifiée le'])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
@@ -31,7 +31,7 @@ class CommitmentAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->with('Général', ['class' => 'col-md-6'])

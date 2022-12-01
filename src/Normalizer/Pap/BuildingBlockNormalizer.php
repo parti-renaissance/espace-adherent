@@ -32,7 +32,7 @@ class BuildingBlockNormalizer implements NormalizerInterface, NormalizerAwareInt
         $context[static::ALREADY_CALLED] = true;
         $campaign = null;
 
-        if ($campaignUuid = $this->requestStack->getMasterRequest()->query->get('campaign_uuid')) {
+        if ($campaignUuid = $this->requestStack->getMainRequest()->query->get('campaign_uuid')) {
             if ($campaign = $this->campaignRepository->findOneByUuid($campaignUuid)) {
                 $context['campaign'] = $campaign;
             }

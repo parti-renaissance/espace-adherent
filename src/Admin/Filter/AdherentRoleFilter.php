@@ -11,47 +11,52 @@ use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccessEnum;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-/** @phpstan-ignore-next-line */
-class AdherentRoleFilter extends CallbackFilter
+class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
 {
-    public function getDefaultOptions()
+    protected function getInitialFilterOptions(): array
     {
         return [
-            'label' => 'common.role',
             'field_type' => ChoiceType::class,
-            'field_options' => [],
-            'operator_options' => [],
             'show_filter' => true,
-            'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                /** @var QueryBuilder $qb */
-                if (!$value['value']) {
+            'field_options' => [
+                'choices' => array_merge(AdherentRoleEnum::toArray(), ZoneBasedRoleTypeEnum::ALL),
+                'choice_label' => function (string $value) {
+                    return $value;
+                },
+                'multiple' => true,
+            ],
+            'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                if (!$value->hasValue()) {
                     return false;
                 }
 
+                $value = $value->getValue();
+
+                /** @var QueryBuilder $qb */
                 $where = new Expr\Orx();
 
                 // Referent
-                if (\in_array(AdherentRoleEnum::REFERENT, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::REFERENT, $value, true)) {
                     $where->add(sprintf('%s.managedArea IS NOT NULL', $alias));
                 }
 
                 // Co-Referent
-                if (\in_array(AdherentRoleEnum::COREFERENT, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::COREFERENT, $value, true)) {
                     $qb->leftJoin(sprintf('%s.referentTeamMember', $alias), 'rtm');
                     $where->add('rtm.id IS NOT NULL');
                 }
 
                 // Committee supervisor
-                if ($committeeMandates = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR, AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR], $value['value'])) {
+                if ($committeeMandates = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR, AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR], $value)) {
                     $qb->leftJoin(sprintf('%s.adherentMandates', $alias), 'am');
                     $condition = '';
                     if (1 === \count($committeeMandates)) {
                         $condition = ' AND am.provisional = :provisional';
-                        $qb->setParameter('provisional', \in_array(AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR, $value['value'], true));
+                        $qb->setParameter('provisional', \in_array(AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR, $value, true));
                     }
                     $where->add('am.quality = :supervisor AND am.committee IS NOT NULL AND am.finishAt IS NULL'.$condition);
 
@@ -59,32 +64,32 @@ class AdherentRoleFilter extends CallbackFilter
                 }
 
                 // Committee host
-                if (\in_array(AdherentRoleEnum::COMMITTEE_HOST, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::COMMITTEE_HOST, $value, true)) {
                     $qb->leftJoin(sprintf('%s.memberships', $alias), 'ms');
                     $where->add('ms.privilege = :committee_privilege');
                     $qb->setParameter('committee_privilege', CommitteeMembership::COMMITTEE_HOST);
                 }
 
                 // Senator
-                if (\in_array(AdherentRoleEnum::SENATOR, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::SENATOR, $value, true)) {
                     $qb->leftJoin(sprintf('%s.senatorArea', $alias), 'senatorArea');
                     $where->add('senatorArea IS NOT NULL');
                 }
 
                 // Board Member
-                if (\in_array(AdherentRoleEnum::BOARD_MEMBER, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::BOARD_MEMBER, $value, true)) {
                     $qb->leftJoin(sprintf('%s.boardMember', $alias), 'boardMember');
                     $where->add('boardMember IS NOT NULL');
                 }
 
                 // Procuration Manager
-                if (\in_array(AdherentRoleEnum::PROCURATION_MANAGER, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::PROCURATION_MANAGER, $value, true)) {
                     $qb->leftJoin(sprintf('%s.procurationManagedArea', $alias), 'procurationManagedArea');
                     $where->add('procurationManagedArea IS NOT NULL AND procurationManagedArea.codes IS NOT NULL');
                 }
 
                 // Cause author
-                if (\in_array(AdherentRoleEnum::CAUSE_AUTHOR, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::CAUSE_AUTHOR, $value, true)) {
                     $qb
                         ->leftJoin(sprintf('%s.causes', $alias), 'cause', Expr\Join::WITH, 'cause.status = :cause_approved')
                         ->setParameter('cause_approved', Cause::STATUS_APPROVED)
@@ -93,83 +98,83 @@ class AdherentRoleFilter extends CallbackFilter
                 }
 
                 // Assessor Manager
-                if (\in_array(AdherentRoleEnum::ASSESSOR_MANAGER, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::ASSESSOR_MANAGER, $value, true)) {
                     $qb->leftJoin(sprintf('%s.assessorManagedArea', $alias), 'assessorManagedArea');
                     $where->add('assessorManagedArea IS NOT NULL AND assessorManagedArea.codes IS NOT NULL');
                 }
 
                 // Assessor
-                if (\in_array(AdherentRoleEnum::ASSESSOR, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::ASSESSOR, $value, true)) {
                     $qb->leftJoin(sprintf('%s.assessorRole', $alias), 'assessorRole');
                     $where->add('assessorRole IS NOT NULL AND assessorRole.votePlace IS NOT NULL');
                 }
 
                 // Municipal Manager
-                if (\in_array(AdherentRoleEnum::MUNICIPAL_MANAGER, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::MUNICIPAL_MANAGER, $value, true)) {
                     $qb->leftJoin(sprintf('%s.municipalManagerRole', $alias), 'municipalManagerRole');
                     $where->add('municipalManagerRole IS NOT NULL');
                 }
 
                 // Municipal Manager Supervisor
-                if (\in_array(AdherentRoleEnum::MUNICIPAL_MANAGER_SUPERVISOR, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::MUNICIPAL_MANAGER_SUPERVISOR, $value, true)) {
                     $qb->leftJoin(sprintf('%s.municipalManagerSupervisorRole', $alias), 'municipalManagerSupervisorRole');
                     $where->add('municipalManagerSupervisorRole IS NOT NULL');
                 }
 
                 // Election results reporter
-                if (\in_array(AdherentRoleEnum::ELECTION_RESULTS_REPORTER, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::ELECTION_RESULTS_REPORTER, $value, true)) {
                     $where->add(sprintf('%s.electionResultsReporter = :election_result_reporter', $alias));
                     $qb->setParameter('election_result_reporter', true);
                 }
 
                 // J'écoute Manager
-                if (\in_array(AdherentRoleEnum::JECOUTE_MANAGER, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::JECOUTE_MANAGER, $value, true)) {
                     $qb->leftJoin(sprintf('%s.jecouteManagedArea', $alias), 'jecouteManagedArea');
                     $where->add('jecouteManagedArea IS NOT NULL AND jecouteManagedArea.zone IS NOT NULL');
                 }
 
                 // User
-                if (\in_array(AdherentRoleEnum::USER, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::USER, $value, true)) {
                     $where->add(sprintf('%s.adherent = 0', $alias));
                 }
 
                 // Municipal chief
-                if (\in_array(AdherentRoleEnum::MUNICIPAL_CHIEF, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::MUNICIPAL_CHIEF, $value, true)) {
                     $qb->leftJoin(sprintf('%s.municipalChiefManagedArea', $alias), 'municipalChiefManagedArea');
                     $where->add('municipalChiefManagedArea IS NOT NULL');
                 }
 
                 // Print privilege
-                if (\in_array(AdherentRoleEnum::PRINT_PRIVILEGE, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::PRINT_PRIVILEGE, $value, true)) {
                     $where->add("$alias.printPrivilege = :printPrivilege");
                     $qb->setParameter('printPrivilege', true);
                 }
 
                 // National Role
-                if (\in_array(AdherentRoleEnum::ROLE_NATIONAL, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::ROLE_NATIONAL, $value, true)) {
                     $where->add("$alias.nationalRole = :nationalRole");
                     $qb->setParameter('nationalRole', true);
                 }
 
                 // National Communication Role
-                if (\in_array(AdherentRoleEnum::ROLE_NATIONAL_COMMUNICATION, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::ROLE_NATIONAL_COMMUNICATION, $value, true)) {
                     $where->add("$alias.nationalCommunicationRole = true");
                 }
 
                 // Phoning national Role
-                if (\in_array(AdherentRoleEnum::ROLE_PHONING_MANAGER, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::ROLE_PHONING_MANAGER, $value, true)) {
                     $where->add("$alias.phoningManagerRole = :phoningManagerRole");
                     $qb->setParameter('phoningManagerRole', true);
                 }
 
                 // PAP national Role
-                if (\in_array(AdherentRoleEnum::ROLE_PAP_NATIONAL_MANAGER, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::ROLE_PAP_NATIONAL_MANAGER, $value, true)) {
                     $where->add("$alias.papNationalManagerRole = :papNationalManagerRole");
                     $qb->setParameter('papNationalManagerRole', true);
                 }
 
                 // PAP user Role
-                if (\in_array(AdherentRoleEnum::ROLE_PAP_USER, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::ROLE_PAP_USER, $value, true)) {
                     $where->add("$alias.papUserRole = :papUserRole");
                     $qb->setParameter('papUserRole', true);
                 }
@@ -180,7 +185,7 @@ class AdherentRoleFilter extends CallbackFilter
                         AdherentRoleEnum::DELEGATED_DEPUTY,
                         AdherentRoleEnum::DELEGATED_SENATOR,
                     ],
-                    $value['value']
+                    $value
                 )) {
                     $qb->leftJoin(sprintf('%s.receivedDelegatedAccesses', $alias), 'rda');
                     $where->add('rda.type IN (:delegated_types)');
@@ -190,7 +195,7 @@ class AdherentRoleFilter extends CallbackFilter
                 }
 
                 // Legislative candidate | Correspondent | Deputy
-                if ($zoneBasedRoles = array_intersect(ZoneBasedRoleTypeEnum::ALL, $value['value'])) {
+                if ($zoneBasedRoles = array_intersect(ZoneBasedRoleTypeEnum::ALL, $value)) {
                     $qb
                         ->leftJoin(sprintf('%s.zoneBasedRoles', $alias), 'zone_based_role')
                         ->setParameter('zone_based_roles', $zoneBasedRoles)
@@ -199,17 +204,17 @@ class AdherentRoleFilter extends CallbackFilter
                 }
 
                 // LRE
-                if (\in_array(AdherentRoleEnum::LRE, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::LRE, $value, true)) {
                     $qb->leftJoin(sprintf('%s.lreArea', $alias), 'lre');
                     $where->add('lre IS NOT NULL');
                 }
 
-                if (\in_array(AdherentRoleEnum::SENATORIAL_CANDIDATE, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::SENATORIAL_CANDIDATE, $value, true)) {
                     $qb->leftJoin(sprintf('%s.senatorialCandidateManagedArea', $alias), 'senatorialCandidateManagedArea');
                     $where->add('senatorialCandidateManagedArea IS NOT NULL');
                 }
 
-                if ($candidateRoles = array_intersect(AdherentRoleEnum::getCandidates(), $value['value'])) {
+                if ($candidateRoles = array_intersect(AdherentRoleEnum::getCandidates(), $value)) {
                     $qb
                         ->leftJoin(sprintf('%s.candidateManagedArea', $alias), 'candidateManagedArea')
                         ->leftJoin('candidateManagedArea.zone', 'candidate_zone')
@@ -228,12 +233,12 @@ class AdherentRoleFilter extends CallbackFilter
                     $where->add('candidate_zone.type IN (:candidate_zone_types)');
                 }
 
-                if ($delegatedCandidateRoles = array_intersect(AdherentRoleEnum::getDelegatedCandidates(), $value['value'])) {
+                if ($delegatedCandidateRoles = array_intersect(AdherentRoleEnum::getDelegatedCandidates(), $value)) {
                     if (array_intersect([
                         AdherentRoleEnum::DELEGATED_CANDIDATE_REGIONAL_HEADED,
                         AdherentRoleEnum::DELEGATED_CANDIDATE_REGIONAL_LEADER,
                         AdherentRoleEnum::DELEGATED_CANDIDATE_DEPARTMENTAL,
-                    ], $value['value'])) {
+                    ], $value)) {
                         if (!\in_array('rda', $qb->getAllAliases(), true)) {
                             $qb->leftJoin(sprintf('%s.receivedDelegatedAccesses', $alias), 'rda');
                         }
@@ -261,13 +266,13 @@ class AdherentRoleFilter extends CallbackFilter
                 }
 
                 // thematic community chief
-                if (\in_array(AdherentRoleEnum::THEMATIC_COMMUNITY_CHIEF, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::THEMATIC_COMMUNITY_CHIEF, $value, true)) {
                     $qb->leftJoin(sprintf('%s.handledThematicCommunities', $alias), 'tc');
                     $where->add('tc IS NOT NULL');
                 }
 
                 // Coalition moderator
-                if (\in_array(AdherentRoleEnum::COALITION_MODERATOR, $value['value'], true)) {
+                if (\in_array(AdherentRoleEnum::COALITION_MODERATOR, $value, true)) {
                     $qb->leftJoin(sprintf('%s.coalitionModeratorRole', $alias), 'coalitionModerator');
                     $where->add('coalitionModerator IS NOT NULL');
                 }
@@ -279,16 +284,5 @@ class AdherentRoleFilter extends CallbackFilter
                 return true;
             },
         ];
-    }
-
-    public function getFieldOptions()
-    {
-        return array_merge(parent::getFieldOptions(), [
-            'choices' => array_merge(AdherentRoleEnum::toArray(), ZoneBasedRoleTypeEnum::ALL),
-            'choice_label' => function (string $value) {
-                return $value;
-            },
-            'multiple' => true,
-        ]);
     }
 }

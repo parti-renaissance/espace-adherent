@@ -2,41 +2,51 @@
 
 namespace App\Admin;
 
+use App\Admin\Exporter\IterableCallbackDataSourceTrait;
+use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Entity\CertificationRequest;
 use App\Entity\Geo\Region;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Query\Expr;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Filter\Model\FilterData;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CertificationRequestAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 128,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
+    use IterableCallbackDataSourceTrait;
 
-    protected $accessMapping = [
-        'approve' => 'APPROVE',
-        'refuse' => 'REFUSE',
-        'block' => 'BLOCK',
-        'document' => 'DOCUMENT',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    public function configureRoutes(RouteCollection $collection)
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+        $sortValues[DatagridInterface::PER_PAGE] = 128;
+    }
+
+    protected function getAccessMapping(): array
+    {
+        return [
+            'approve' => 'APPROVE',
+            'refuse' => 'REFUSE',
+            'block' => 'BLOCK',
+            'document' => 'DOCUMENT',
+        ];
+    }
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
             ->clearExcept(['list', 'show', 'export'])
@@ -50,24 +60,24 @@ class CertificationRequestAdmin extends AbstractAdmin
     /**
      * @param CertificationRequest|null $object
      */
-    public function configureActionButtons($action, $object = null)
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
         if (\in_array($action, ['approve', 'refuse', 'block'], true)) {
-            $actions = parent::configureActionButtons('show', $object);
+            $actions = parent::configureActionButtons($buttonList, 'show', $object);
         } else {
-            $actions = parent::configureActionButtons($action, $object);
+            $actions = parent::configureActionButtons($buttonList, $action, $object);
         }
 
         if ('show' === $action) {
-            if ($this->canAccessObject('approve', $object) && $this->hasRoute('approve')) {
+            if ($this->hasAccess('approve', $object) && $this->hasRoute('approve')) {
                 $actions['approve'] = ['template' => 'admin/certification_request/action_button_approve.html.twig'];
             }
 
-            if ($this->canAccessObject('refuse', $object) && $this->hasRoute('refuse')) {
+            if ($this->hasAccess('refuse', $object) && $this->hasRoute('refuse')) {
                 $actions['refuse'] = ['template' => 'admin/certification_request/action_button_refuse.html.twig'];
             }
 
-            if ($this->canAccessObject('block', $object) && $this->hasRoute('block')) {
+            if ($this->hasAccess('block', $object) && $this->hasRoute('block')) {
                 $actions['block'] = ['template' => 'admin/certification_request/action_button_block.html.twig'];
             }
         }
@@ -75,7 +85,7 @@ class CertificationRequestAdmin extends AbstractAdmin
         return $actions;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('adherent.firstName', null, [
@@ -98,13 +108,13 @@ class CertificationRequestAdmin extends AbstractAdmin
                 'field_options' => [
                     'class' => Region::class,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!isset($value['value']) || null === $value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     /** @var Region $region */
-                    $region = $value['value'];
+                    $region = $value->getValue();
                     $qb->innerJoin("$alias.adherent", 'adherent');
 
                     $postalCodeCondition = new Expr\Orx();
@@ -162,9 +172,9 @@ class CertificationRequestAdmin extends AbstractAdmin
                         'global.no' => false,
                     ],
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!isset($value['value']) || null === $value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb
@@ -172,7 +182,7 @@ class CertificationRequestAdmin extends AbstractAdmin
                         ->setParameter('pending_status', CertificationRequest::STATUS_PENDING)
                     ;
 
-                    switch ($value['value']) {
+                    switch ($value->getValue()) {
                         case true:
                             $qb->andWhere("$alias.processedBy IS NULL");
 
@@ -193,7 +203,7 @@ class CertificationRequestAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id', null, [
@@ -217,7 +227,7 @@ class CertificationRequestAdmin extends AbstractAdmin
             ->add('processedAt', null, [
                 'label' => 'Date de traitement',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'show' => [],
@@ -226,27 +236,25 @@ class CertificationRequestAdmin extends AbstractAdmin
         ;
     }
 
-    public function getDataSourceIterator()
+    protected function configureExportFields(): array
     {
         PhpConfigurator::disableMemoryLimit();
 
-        return new IteratorCallbackSourceIterator(
-            $this->getCertificationRequestIterator(),
-            function (array $certificationRequest) {
-                /** @var CertificationRequest $certificationRequest */
-                $certificationRequest = $certificationRequest[0];
-                $adherent = $certificationRequest->getAdherent();
+        return [IteratorCallbackDataSource::CALLBACK => static function (array $certificationRequest) {
+            /** @var CertificationRequest $certificationRequest */
+            $certificationRequest = $certificationRequest[0];
+            $adherent = $certificationRequest->getAdherent();
 
-                $phone = PhoneNumberUtils::format($adherent->getPhone());
-                $birthDate = $adherent->getBirthdate();
+            $phone = PhoneNumberUtils::format($adherent->getPhone());
+            $birthDate = $adherent->getBirthdate();
 
-                return [
+            return [
                     'id' => $certificationRequest->getId(),
                     'Date' => $certificationRequest->getCreatedAt()->format('Y/m/d H:i:s'),
                     'Status' => $certificationRequest->getStatus(),
                     'Nom' => $adherent->getLastName(),
                     'Prénom' => $adherent->getFirstName(),
-                    'Date de naissance' => $birthDate ? $birthDate->format('Y/m/d H:i:s') : null,
+                    'Date de naissance' => $birthDate?->format('Y/m/d H:i:s'),
                     'Nationalité' => $adherent->getNationality(),
                     'Addresse' => $adherent->getAddress(),
                     'Code postal' => $adherent->getPostalCode(),
@@ -256,28 +264,7 @@ class CertificationRequestAdmin extends AbstractAdmin
                     'Email' => $adherent->getEmailAddress(),
                     'uuid' => $certificationRequest->getUuid(),
                 ];
-            }
-        );
-    }
-
-    private function getCertificationRequestIterator(): \Iterator
-    {
-        $datagrid = $this->getDatagrid();
-        $datagrid->buildPager();
-
-        $query = $datagrid->getQuery();
-        $alias = current($query->getRootAliases());
-
-        $query
-            ->select("DISTINCT $alias")
-            ->innerJoin("$alias.adherent", 'adherent')
-            ->addSelect('adherent')
-            ->leftJoin("$alias.processedBy", 'processed_by')
-            ->addSelect('processed_by')
-        ;
-        $query->setFirstResult(0);
-        $query->setMaxResults(null);
-
-        return $query->getQuery()->iterate();
+        },
+        ];
     }
 }

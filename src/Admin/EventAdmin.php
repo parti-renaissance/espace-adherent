@@ -19,8 +19,10 @@ use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Query\Expr\Join;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
@@ -51,7 +53,7 @@ class EventAdmin extends AbstractAdmin
         $this->referentTagManager = $referentTagManager;
     }
 
-    public function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
             ->remove('create')
@@ -59,20 +61,7 @@ class EventAdmin extends AbstractAdmin
         ;
     }
 
-    public function getTemplate($name)
-    {
-        if ('show' === $name) {
-            return 'admin/event/show.html.twig';
-        }
-
-        if ('edit' === $name) {
-            return 'admin/event/edit.html.twig';
-        }
-
-        return parent::getTemplate($name);
-    }
-
-    protected function configureShowFields(ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->with('Événement', ['class' => 'col-md-7'])
@@ -149,7 +138,7 @@ class EventAdmin extends AbstractAdmin
         ;
     }
 
-    public function preUpdate($object)
+    protected function preUpdate(object $object): void
     {
         $this->dispatcher->dispatch(new EventEvent($object->getOrganizer(), $object), Events::EVENT_PRE_UPDATE);
     }
@@ -157,7 +146,7 @@ class EventAdmin extends AbstractAdmin
     /**
      * @param BaseEvent $object
      */
-    public function postUpdate($object)
+    protected function postUpdate(object $object): void
     {
         $this->referentTagManager->assignReferentLocalTags($object);
 
@@ -170,7 +159,7 @@ class EventAdmin extends AbstractAdmin
         $this->dispatcher->dispatch($event, Events::EVENT_UPDATED);
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Événement', ['class' => 'col-md-7'])
@@ -242,7 +231,7 @@ class EventAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('name', null, [
@@ -252,9 +241,9 @@ class EventAdmin extends AbstractAdmin
                 'label' => 'Catégorie',
                 'show_filter' => true,
                 'field_type' => EventCategoryType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb
@@ -265,7 +254,7 @@ class EventAdmin extends AbstractAdmin
                         ->leftJoin(MunicipalEvent::class, 'municipalEvent', Join::WITH, 'municipalEvent.id = '.$alias.'.id')
                         ->leftJoin(EventCategory::class, 'eventCategory', Join::WITH, 'eventCategory = committeeEvent.category OR eventCategory = defaultEvent.category OR eventCategory = causeEvent.category OR eventCategory = coalitionEvent.category OR eventCategory = municipalEvent.category')
                         ->andWhere('eventCategory IN (:category)')
-                        ->setParameter('category', $value['value'])
+                        ->setParameter('category', $value->getValue())
                     ;
 
                     return true;
@@ -289,9 +278,12 @@ class EventAdmin extends AbstractAdmin
                 'show_filter' => true,
             ])
             ->add('zones', ZoneAutocompleteFilter::class, [
+                'label' => 'Périmètres géographiques',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'admin_code' => $this->getCode(),
+                    'multiple' => true,
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
                     'property' => [
                         'name',
                         'code',
@@ -301,13 +293,13 @@ class EventAdmin extends AbstractAdmin
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
+                    $qb->setParameter('cityName', '%'.strtolower($value->getValue()).'%');
 
                     return true;
                 },
@@ -316,8 +308,8 @@ class EventAdmin extends AbstractAdmin
                 'label' => 'Événements du référent',
                 'show_filter' => true,
                 'field_type' => CheckboxType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
@@ -338,7 +330,7 @@ class EventAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('id', null, [
@@ -383,15 +375,17 @@ class EventAdmin extends AbstractAdmin
             ->add('electoral', null, [
                 'label' => 'Électoral',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/event/list_actions.html.twig',
             ])
         ;
     }
 
-    public function getExportFields()
+    protected function configureExportFields(): array
     {
+        PhpConfigurator::disableMemoryLimit();
+
         return [
             'Date' => 'beginAt',
             'Titre' => 'name',
@@ -404,15 +398,5 @@ class EventAdmin extends AbstractAdmin
             'Date de création' => 'createdAt',
             'Date de modification' => 'updatedAt',
         ];
-    }
-
-    public function getDataSourceIterator()
-    {
-        PhpConfigurator::disableMemoryLimit();
-
-        $dataSourceIterator = parent::getDataSourceIterator();
-        $dataSourceIterator->setDateTimeFormat('d/m/Y');
-
-        return $dataSourceIterator;
     }
 }

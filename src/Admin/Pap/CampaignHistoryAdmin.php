@@ -3,23 +3,25 @@
 namespace App\Admin\Pap;
 
 use App\Admin\AbstractAdmin;
+use App\Entity\Adherent;
 use App\Pap\CampaignHistoryStatusEnum;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CampaignHistoryAdmin extends AbstractAdmin
 {
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept('list');
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('campaign', null, [
@@ -30,24 +32,23 @@ class CampaignHistoryAdmin extends AbstractAdmin
                 'label' => 'Questionnaire',
                 'show_filter' => true,
             ])
-            ->add('questioner', ModelAutocompleteFilter::class, [
+            ->add('questioner', ModelFilter::class, [
                 'label' => 'Militant',
                 'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
+                    'class' => Adherent::class,
                     'property' => [
                         'firstName',
                         'lastName',
                     ],
                 ],
             ])
-            ->add('adherent', ModelAutocompleteFilter::class, [
-                'label' => 'Contacté',
-                'field_options' => [
-                    'property' => [
-                        'firstName',
-                        'lastName',
-                    ],
-                ],
+            ->add('firstName', null, [
+                'label' => 'Prénom',
+            ])
+            ->add('lastName', null, [
+                'label' => 'Nom',
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date',
@@ -63,7 +64,7 @@ class CampaignHistoryAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('campaign', null, [
@@ -83,8 +84,11 @@ class CampaignHistoryAdmin extends AbstractAdmin
             ->add('door', null, [
                 'label' => 'Porte',
             ])
-            ->add('adherent', null, [
-                'label' => 'Contacté',
+            ->add('firstName', null, [
+                'label' => 'Contacté - prénom',
+            ])
+            ->add('lastName', null, [
+                'label' => 'Contacté - nom',
             ])
             ->add('questioner', null, [
                 'label' => 'Militant',

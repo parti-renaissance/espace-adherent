@@ -19,7 +19,7 @@ class AlgoliaIndexedEntityAdminExtension extends AbstractAdminExtension
     /**
      * @param AlgoliaIndexedEntityInterface $object
      */
-    public function postPersist(AdminInterface $admin, $object)
+    public function postPersist(AdminInterface $admin, object $object): void
     {
         $this->algoliaManager->postPersist($object);
     }
@@ -27,7 +27,7 @@ class AlgoliaIndexedEntityAdminExtension extends AbstractAdminExtension
     /**
      * @param AlgoliaIndexedEntityInterface $object
      */
-    public function postUpdate(AdminInterface $admin, $object)
+    public function postUpdate(AdminInterface $admin, object $object): void
     {
         $this->algoliaManager->postUpdate($object);
     }
@@ -35,7 +35,7 @@ class AlgoliaIndexedEntityAdminExtension extends AbstractAdminExtension
     /**
      * @param AlgoliaIndexedEntityInterface $object
      */
-    public function preRemove(AdminInterface $admin, $object)
+    public function preRemove(AdminInterface $admin, object $object): void
     {
         $this->algoliaManager->preRemove($object);
     }

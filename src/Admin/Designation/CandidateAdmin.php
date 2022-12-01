@@ -13,8 +13,10 @@ use App\Form\TerritorialCouncil\TerritorialCouncilQualityChoiceType;
 use App\Repository\CommitteeRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
@@ -24,7 +26,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CandidateAdmin extends AbstractAlgoliaAdmin
 {
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('id', CallbackFilter::class, [
@@ -32,15 +34,17 @@ class CandidateAdmin extends AbstractAlgoliaAdmin
                 'field_type' => TextType::class,
                 'field_options' => [
                 ],
-                'callback' => function (ProxyQuery $qb, ?string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, ?string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb
                         ->andWhere($qb->expr()->in($field, ':ids'))
-                        ->setParameter('ids', explode(',', $value['value']))
+                        ->setParameter('ids', explode(',', $value->getValue()))
                     ;
+
+                    return true;
                 },
             ])
             ->add('designation', ModelFilter::class, [
@@ -128,7 +132,7 @@ class CandidateAdmin extends AbstractAlgoliaAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->add('id', 'text', [
@@ -179,12 +183,8 @@ class CandidateAdmin extends AbstractAlgoliaAdmin
         ;
     }
 
-    public function getFilterParameters()
+    protected function configureDefaultSortValues(array &$sortValues): void
     {
-        $parameters = parent::getFilterParameters();
-
-        unset($parameters['_sort_by'], $parameters['_sort_order']);
-
-        return $parameters;
+        unset($sortValues[DatagridInterface::SORT_BY], $sortValues[DatagridInterface::SORT_ORDER]);
     }
 }

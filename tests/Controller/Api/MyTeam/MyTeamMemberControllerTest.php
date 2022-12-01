@@ -13,7 +13,7 @@ use App\OAuth\Model\Scope;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use App\Repository\MyTeam\MemberRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractApiCaseTest;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -21,7 +21,7 @@ use Tests\App\Controller\ControllerTestTrait;
  * @group functional
  * @group api
  */
-class MyTeamMemberControllerTest extends WebTestCase
+class MyTeamMemberControllerTest extends AbstractApiCaseTest
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

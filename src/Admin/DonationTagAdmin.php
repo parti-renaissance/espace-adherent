@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
@@ -10,14 +11,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DonationTagAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'label',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
 
-    protected function configureFormFields(FormMapper $formMapper)
+        $sortValues[DatagridInterface::SORT_BY] = 'label';
+    }
+
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('label', TextType::class, [
@@ -31,7 +32,7 @@ class DonationTagAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('label', null, [
@@ -40,7 +41,7 @@ class DonationTagAdmin extends AbstractAdmin
             ->add('color', 'color', [
                 'label' => 'Couleur',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],

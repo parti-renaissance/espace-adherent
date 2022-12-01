@@ -2,6 +2,8 @@
 
 namespace App\Admin;
 
+use App\Admin\Exporter\IterableCallbackDataSourceTrait;
+use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Donation\DonatorManager;
 use App\Donation\PayboxPaymentSubscription;
 use App\Entity\Adherent;
@@ -16,15 +18,17 @@ use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
-use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -33,12 +37,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DonatorAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 128,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'id',
-    ];
+    use IterableCallbackDataSourceTrait;
 
     private $donatorManager;
 
@@ -49,9 +48,18 @@ class DonatorAdmin extends AbstractAdmin
         $this->donatorManager = $donatorManager;
     }
 
-    public function configureActionButtons($action, $object = null)
+    protected function configureDefaultSortValues(array &$sortValues): void
     {
-        return array_merge(parent::configureActionButtons($action, $object), [
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'id';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+        $sortValues[DatagridInterface::PER_PAGE] = 128;
+    }
+
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
+    {
+        return array_merge(parent::configureActionButtons($buttonList, $action, $object), [
             'merge' => [
                 'template' => 'admin/donator/merge/merge_button.html.twig',
             ],
@@ -64,23 +72,21 @@ class DonatorAdmin extends AbstractAdmin
         ]);
     }
 
-    public function configureBatchActions($actions)
+    protected function configureBatchActions(array $actions): array
     {
         unset($actions['delete']);
 
         return $actions;
     }
 
-    public function createQuery($context = 'list')
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        $query = parent::createQuery($context);
-
         $query->leftJoin('o.donations', 'donations');
 
         return $query;
     }
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->with('Informations générales', ['class' => 'col-md-6'])
@@ -153,7 +159,7 @@ class DonatorAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('identifier', null, [
@@ -192,12 +198,12 @@ class DonatorAdmin extends AbstractAdmin
                 'label' => 'Code postal (préfixe)',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
-                    $value = array_map('trim', explode(',', strtolower($value['value'])));
+                    $value = array_map('trim', explode(',', strtolower($value->getValue())));
 
                     $postalCodeExpression = $qb->expr()->orX();
                     foreach (array_filter($value) as $key => $code) {
@@ -222,8 +228,8 @@ class DonatorAdmin extends AbstractAdmin
                         return 'global.'.$choice;
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    switch ($value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    switch ($value->getValue()) {
                         case 'yes':
                             $qb->andWhere(sprintf('%s.adherent IS NOT NULL', $alias));
 
@@ -250,8 +256,8 @@ class DonatorAdmin extends AbstractAdmin
                         return 'donation.type.'.$choice;
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    switch ($value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    switch ($value->getValue()) {
                         case 'ponctual':
                             $qb
                                 ->getQueryBuilder()
@@ -318,10 +324,12 @@ class DonatorAdmin extends AbstractAdmin
             ->add('donationDate', CallbackFilter::class, [
                 'label' => 'Date de don',
                 'field_type' => DateRangePickerType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (empty($dates = $value['value'])) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
+
+                    $dates = $value->getValue();
 
                     $start = $dates['start'] ?? null;
                     $end = $dates['end'] ?? null;
@@ -406,7 +414,7 @@ class DonatorAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('identifier', null, [
@@ -440,7 +448,7 @@ class DonatorAdmin extends AbstractAdmin
                 'label' => 'Tags',
                 'template' => 'admin/donator/list_tags.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -449,11 +457,11 @@ class DonatorAdmin extends AbstractAdmin
         ;
     }
 
-    public function getDataSourceIterator()
+    protected function configureExportFields(): array
     {
         PhpConfigurator::disableMemoryLimit();
 
-        return new IteratorCallbackSourceIterator($this->getDonatorIterator(), function (array $donator) {
+        return [IteratorCallbackDataSource::CALLBACK => static function (array $donator) {
             /** @var Donator $donator */
             $donator = $donator[0];
             $referenceDonation = $donator->getReferenceDonation();
@@ -470,10 +478,10 @@ class DonatorAdmin extends AbstractAdmin
                 'Adresse e-mail' => $donator->getEmailAddress(),
                 'Ville du donateur' => $donator->getCity(),
                 'Pays du donateur' => $donator->getCountry(),
-                'Adresse de référence' => $referenceDonation ? $referenceDonation->getAddress() : null,
-                'Code postal de référence' => $referenceDonation ? $referenceDonation->getPostalCode() : null,
-                'Ville de référence' => $referenceDonation ? $referenceDonation->getCityName() : null,
-                'Pays de référence' => $referenceDonation ? $referenceDonation->getCountry() : null,
+                'Adresse de référence' => $referenceDonation?->getAddress(),
+                'Code postal de référence' => $referenceDonation?->getPostalCode(),
+                'Ville de référence' => $referenceDonation?->getCityName(),
+                'Pays de référence' => $referenceDonation?->getCountry(),
                 'Nationalité de référence' => $donator->getReferenceNationality(),
                 'Tags du donateur' => implode(', ', $donator->getTags()->toArray()),
                 'Adhérent' => $adherent instanceof Adherent,
@@ -481,32 +489,13 @@ class DonatorAdmin extends AbstractAdmin
                 'Nombre de dons réussis' => $donator->countSuccessfulDonations(),
                 'Montant total donné' => $donator->getTotalDonated(),
             ];
-        });
-    }
-
-    private function getDonatorIterator(): \Iterator
-    {
-        $datagrid = $this->getDatagrid();
-        $datagrid->buildPager();
-
-        $query = $datagrid->getQuery();
-        $alias = current($query->getRootAliases());
-
-        $query
-            ->select("DISTINCT $alias")
-            ->leftJoin("$alias.adherent", 'adherent')
-            ->addSelect('adherent')
-        ;
-        $query->setFirstResult(0);
-        $query->setMaxResults(null);
-
-        return $query->getQuery()->iterate();
+        }];
     }
 
     /**
      * @param Donator $donator
      */
-    public function prePersist($donator)
+    protected function prePersist(object $donator): void
     {
         parent::prePersist($donator);
 

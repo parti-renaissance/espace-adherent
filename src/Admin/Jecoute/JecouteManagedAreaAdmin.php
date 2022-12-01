@@ -12,7 +12,7 @@ class JecouteManagedAreaAdmin extends AbstractAdmin
 {
     public const SERVICE_ID = 'app.admin.jecoute.jecoute_managed_area_admin';
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form->add('zone', ModelAutocompleteType::class, [
             'callback' => [$this, 'prepareAutocompleteFilterCallback'],

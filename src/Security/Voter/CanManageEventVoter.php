@@ -34,7 +34,7 @@ class CanManageEventVoter extends AbstractAdherentVoter
         return false;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof BaseEvent;
     }

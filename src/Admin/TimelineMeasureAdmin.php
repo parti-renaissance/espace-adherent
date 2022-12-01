@@ -10,6 +10,7 @@ use App\Repository\Timeline\ThemeRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
@@ -20,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TimelineMeasureAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Traductions', ['class' => 'col-md-6'])
@@ -64,22 +65,22 @@ class TimelineMeasureAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('title', CallbackFilter::class, [
                 'label' => 'Titre',
                 'show_filter' => true,
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb
                         ->join("$alias.translations", 'translations')
                         ->andWhere('translations.title LIKE :title')
-                        ->setParameter('title', '%'.$value['value'].'%')
+                        ->setParameter('title', '%'.$value->getValue().'%')
                     ;
 
                     return true;
@@ -88,20 +89,22 @@ class TimelineMeasureAdmin extends AbstractAdmin
             ->add('profiles', null, [
                 'label' => 'Profils',
                 'show_filter' => true,
-            ], null, [
-                'multiple' => true,
-                'query_builder' => function (ProfileRepository $repository) {
-                    return $repository->createTranslatedChoicesQueryBuilder();
-                },
+                'field_options' => [
+                    'multiple' => true,
+                    'query_builder' => function (ProfileRepository $repository) {
+                        return $repository->createTranslatedChoicesQueryBuilder();
+                    },
+                ],
             ])
             ->add('themes', null, [
                 'label' => 'Thèmes',
                 'show_filter' => true,
-            ], null, [
-                'multiple' => true,
-                'query_builder' => function (ThemeRepository $repository) {
-                    return $repository->createTranslatedChoicesQueryBuilder();
-                },
+                'field_options' => [
+                    'multiple' => true,
+                    'query_builder' => function (ThemeRepository $repository) {
+                        return $repository->createTranslatedChoicesQueryBuilder();
+                    },
+                ],
             ])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
@@ -119,7 +122,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('title', null, [
@@ -127,23 +130,23 @@ class TimelineMeasureAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/timeline/measure/list_title.html.twig',
             ])
-            ->add('profiles', TextType::class, [
+            ->add('profiles', null, [
                 'label' => 'Profils',
             ])
-            ->add('themes', TextType::class, [
+            ->add('themes', null, [
                 'label' => 'Thèmes',
             ])
             ->add('updatedAt', null, [
                 'label' => 'Date de modification',
             ])
-            ->add('status', TextType::class, [
+            ->add('status', null, [
                 'label' => 'Statut',
                 'template' => 'admin/timeline/measure/list_status.html.twig',
             ])
             ->add('major', null, [
                 'label' => 'Mise en avant (32)',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -153,7 +156,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
         ;
     }
 
-    public function getExportFields()
+    protected function configureExportFields(): array
     {
         return [
             'ID' => 'id',

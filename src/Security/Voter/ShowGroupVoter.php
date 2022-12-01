@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class ShowGroupVoter extends AbstractAdherentVoter
 {
-    protected function supports($attribute, $group): bool
+    protected function supports(string $attribute, $group): bool
     {
         return CommitteePermissions::SHOW === $attribute && $group instanceof Committee;
     }

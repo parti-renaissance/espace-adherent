@@ -97,7 +97,7 @@ class BoardMemberControllerTest extends WebTestCase
 
         // Age
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form([
-            'g' => null,
+            'g' => '',
             'amin' => 43,
             'amax' => 1 + (int) $resultRow->eq(1)->filter('li')->eq(1)->filter('div')->eq(1)->text(),
         ]));

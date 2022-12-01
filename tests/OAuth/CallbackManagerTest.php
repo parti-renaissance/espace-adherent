@@ -61,7 +61,7 @@ class CallbackManagerTest extends TestCase
         $this->request = new Request();
         $requestStack = $this->createMock(RequestStack::class);
         $requestStack->expects($this->any())
-            ->method('getMasterRequest')
+            ->method('getMainRequest')
             ->willReturnCallback(function () {
                 return $this->request;
             })

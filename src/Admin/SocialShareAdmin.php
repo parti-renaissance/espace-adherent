@@ -5,10 +5,12 @@ namespace App\Admin;
 use App\Entity\SocialShare;
 use App\Twig\AssetRuntime;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Object\Metadata;
+use Sonata\AdminBundle\Object\MetadataInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -22,19 +24,18 @@ class SocialShareAdmin extends AbstractAdmin
      */
     protected $assetRuntime;
 
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+    }
 
     /**
      * @param SocialShare $object
-     *
-     * @return Metadata
      */
-    public function getObjectMetadata($object)
+    public function getObjectMetadata(object $object): MetadataInterface
     {
         return new Metadata($object->getName(), null, $object->getMedia()->getPath());
     }
@@ -42,7 +43,7 @@ class SocialShareAdmin extends AbstractAdmin
     /**
      * @param SocialShare $object
      */
-    public function prePersist($object)
+    protected function prePersist(object $object): void
     {
         // Upload
         $this->storage->put(
@@ -68,7 +69,7 @@ class SocialShareAdmin extends AbstractAdmin
         }
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Média', ['class' => 'col-md-6'])
@@ -117,7 +118,7 @@ class SocialShareAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('name', null, [
@@ -144,7 +145,7 @@ class SocialShareAdmin extends AbstractAdmin
             ->add('updatedAt', null, [
                 'label' => 'Date de dernière mise à jour',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
@@ -154,7 +155,7 @@ class SocialShareAdmin extends AbstractAdmin
         ;
     }
 
-    public function setAssetRuntime(AssetRuntime $assetRuntime)
+    public function setAssetRuntime(AssetRuntime $assetRuntime): void
     {
         $this->assetRuntime = $assetRuntime;
     }

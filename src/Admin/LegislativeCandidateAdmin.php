@@ -5,7 +5,7 @@ namespace App\Admin;
 use App\Entity\LegislativeCandidate;
 use App\Form\GenderType;
 use App\ValueObject\Genders;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -19,19 +19,12 @@ class LegislativeCandidateAdmin extends AbstractAdmin
 {
     use MediaSynchronisedAdminTrait;
 
-    protected $datagridValues = [
-        '_page' => 1,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'position',
-    ];
-    protected $maxPerPage = 100;
-    protected $perPageOptions = [];
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        $sortValues[DatagridInterface::SORT_BY] = 'position';
+    }
 
-    protected $formOptions = [
-        'validation_groups' => ['Default', 'Admin'],
-    ];
-
-    protected function configureDatagridFilters(DatagridMapper $mapper)
+    protected function configureDatagridFilters(DatagridMapper $mapper): void
     {
         $mapper
             ->add('id', null, [
@@ -59,7 +52,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $mapper)
+    protected function configureListFields(ListMapper $mapper): void
     {
         $mapper
             ->addIdentifier('id', null, [
@@ -86,14 +79,14 @@ class LegislativeCandidateAdmin extends AbstractAdmin
                 'label' => 'Résultat',
                 'template' => 'admin/legislative_candidate/list_status.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/legislative_candidate/list_actions.html.twig',
             ])
         ;
     }
 
-    protected function configureFormFields(FormMapper $mapper)
+    protected function configureFormFields(FormMapper $mapper): void
     {
         $mapper
             ->with('Informations personnelles', ['class' => 'col-md-4'])
@@ -202,7 +195,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $mapper)
+    protected function configureShowFields(ShowMapper $mapper): void
     {
         $mapper
             ->with('Informations générales', ['class' => 'col-md-5'])

@@ -2,19 +2,20 @@
 
 namespace App\OAuth\Repository;
 
+use App\Security\UserProvider;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
-use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class OAuthUserRepository implements UserRepositoryInterface
 {
-    private $authenticationManager;
-
-    public function __construct(AuthenticationManagerInterface $authenticationManager)
-    {
-        $this->authenticationManager = $authenticationManager;
+    public function __construct(
+        private readonly UserProvider $userProvider,
+        private readonly UserPasswordHasherInterface $userPasswordHasher
+    ) {
     }
 
     public function getUserEntityByUserCredentials(
@@ -22,12 +23,21 @@ class OAuthUserRepository implements UserRepositoryInterface
         $password,
         $grantType,
         ClientEntityInterface $clientEntity
-    ) {
+    ): ?UserInterface {
         try {
-            return $this->authenticationManager->authenticate(new UsernamePasswordToken($username, $password, 'main'))->getUser();
+            $user = $this->userProvider->loadUserByIdentifier($username);
         } catch (AuthenticationException $e) {
+            return null;
         }
 
-        return null;
+        if (null === $user || !($user instanceof PasswordAuthenticatedUserInterface)) {
+            return null;
+        }
+
+        if (!$this->userPasswordHasher->isPasswordValid($user, $password)) {
+            return null;
+        }
+
+        return $user;
     }
 }

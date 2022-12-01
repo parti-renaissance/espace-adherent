@@ -12,7 +12,7 @@ class PushTokenAuthorVoter extends Voter
 {
     private const PERMISSION = 'IS_AUTHOR_OF_PUSH_TOKEN';
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof PushToken;
     }

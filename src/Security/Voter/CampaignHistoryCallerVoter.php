@@ -15,7 +15,7 @@ class CampaignHistoryCallerVoter extends AbstractAdherentVoter
         return $subject->getCaller() === $adherent;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof CampaignHistory;
     }

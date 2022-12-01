@@ -9,12 +9,12 @@ use Sonata\AdminBundle\Form\Type\AdminType;
 
 class ManageMediaExtension extends AbstractAdminExtension
 {
-    public function prePersist(AdminInterface $admin, $object)
+    public function prePersist(AdminInterface $admin, object $object): void
     {
         $this->manageEmbeddedMediaAdmin($admin, $object);
     }
 
-    public function preUpdate(AdminInterface $admin, $object)
+    public function preUpdate(AdminInterface $admin, object $object): void
     {
         $this->manageEmbeddedMediaAdmin($admin, $object);
     }

@@ -16,7 +16,7 @@ class CanAccessEventVoter extends Voter
         return $token->getUser() instanceof Adherent || !$subject->isPrivate();
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
         return self::PERMISSION === $attribute && $subject instanceof BaseEvent;
     }

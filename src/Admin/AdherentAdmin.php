@@ -3,6 +3,8 @@
 namespace App\Admin;
 
 use App\AdherentProfile\AdherentProfileHandler;
+use App\Admin\Exporter\IterableCallbackDataSourceTrait;
+use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\AdherentRoleFilter;
 use App\Admin\Filter\ReferentTagAutocompleteFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
@@ -15,6 +17,7 @@ use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Instance\InstanceQuality;
+use App\Entity\ReferentTag;
 use App\Entity\SubscriptionType;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
@@ -52,23 +55,22 @@ use App\Utils\PhpConfigurator;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\QueryBuilder;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Psr\Log\LoggerInterface;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelType;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
-use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -84,13 +86,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentAdmin extends AbstractAdmin
 {
-    protected $accessMapping = [
-        'ban' => 'BAN',
-        'certify' => 'CERTIFY',
-        'uncertify' => 'UNCERTIFY',
-        'extract' => 'EXTRACT',
-        'create_renaissance' => 'CREATE_RENAISSANCE',
-    ];
+    use IterableCallbackDataSourceTrait;
 
     private $dispatcher;
     private $emailSubscriptionHistoryManager;
@@ -127,7 +123,25 @@ class AdherentAdmin extends AbstractAdmin
         $this->logger = $logger;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function getAccessMapping(): array
+    {
+        return [
+            'ban' => 'BAN',
+            'certify' => 'CERTIFY',
+            'uncertify' => 'UNCERTIFY',
+            'extract' => 'EXTRACT',
+            'create_renaissance' => 'CREATE_RENAISSANCE',
+        ];
+    }
+
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::PER_PAGE] = 32;
+    }
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
             ->add('ban', $this->getRouterIdParameter().'/ban')
@@ -141,12 +155,12 @@ class AdherentAdmin extends AbstractAdmin
         ;
     }
 
-    public function configureActionButtons($action, $object = null)
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
         if (\in_array($action, ['ban', 'certify', 'uncertify'], true)) {
-            $actions = parent::configureActionButtons('show', $object);
+            $actions = parent::configureActionButtons($buttonList, 'show', $object);
         } else {
-            $actions = parent::configureActionButtons($action, $object);
+            $actions = parent::configureActionButtons($buttonList, $action, $object);
         }
 
         if (\in_array($action, ['edit', 'show', 'ban', 'certify', 'uncertify'], true)) {
@@ -154,15 +168,15 @@ class AdherentAdmin extends AbstractAdmin
         }
 
         if (\in_array($action, ['edit', 'show'], true)) {
-            if ($this->canAccessObject('ban', $object) && $this->hasRoute('ban')) {
+            if ($this->hasAccess('ban', $object) && $this->hasRoute('ban')) {
                 $actions['ban'] = ['template' => 'admin/adherent/action_button_ban.html.twig'];
             }
 
-            if ($this->canAccessObject('certify', $object) && $this->hasRoute('certify')) {
+            if ($this->hasAccess('certify', $object) && $this->hasRoute('certify')) {
                 $actions['certify'] = ['template' => 'admin/adherent/action_button_certify.html.twig'];
             }
 
-            if ($this->canAccessObject('uncertify', $object) && $this->hasRoute('uncertify')) {
+            if ($this->hasAccess('uncertify', $object) && $this->hasRoute('uncertify')) {
                 $actions['uncertify'] = ['template' => 'admin/adherent/action_button_uncertify.html.twig'];
             }
         }
@@ -173,7 +187,7 @@ class AdherentAdmin extends AbstractAdmin
         return $actions;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->with('Informations personnelles', ['class' => 'col-md-6'])
@@ -309,7 +323,7 @@ class AdherentAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->tab('Général')
@@ -645,7 +659,7 @@ class AdherentAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('id', null, [
@@ -681,8 +695,12 @@ class AdherentAdmin extends AbstractAdmin
                         return "global.$choice";
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    switch ($value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    switch ($value->getValue()) {
                         case 'yes':
                             $qb->andWhere("$alias.certifiedAt IS NOT NULL");
 
@@ -717,9 +735,12 @@ class AdherentAdmin extends AbstractAdmin
                 'field_type' => DateRangePickerType::class,
             ])
             ->add('zones', ZoneAutocompleteFilter::class, [
+                'label' => 'Périmètres géographiques',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'admin_code' => $this->getCode(),
+                    'multiple' => true,
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
                     'property' => [
                         'name',
                         'code',
@@ -729,13 +750,13 @@ class AdherentAdmin extends AbstractAdmin
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
                 'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.mb_strtolower($value['value']).'%');
+                    $qb->setParameter('cityName', '%'.mb_strtolower($value->getValue()).'%');
 
                     return true;
                 },
@@ -743,13 +764,13 @@ class AdherentAdmin extends AbstractAdmin
             ->add('country', CallbackFilter::class, [
                 'label' => 'Pays',
                 'field_type' => CountryType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
-                    $qb->setParameter('country', mb_strtolower($value['value']));
+                    $qb->setParameter('country', mb_strtolower($value->getValue()));
 
                     return true;
                 },
@@ -772,17 +793,22 @@ class AdherentAdmin extends AbstractAdmin
                 'mapping_type' => ClassMetadata::MANY_TO_MANY,
             ])
             ->add('canaryTester')
-            ->add('status', null, ['label' => 'Etat du compte'], ChoiceType::class, [
-                'choices' => [
-                    'Activé' => Adherent::ENABLED,
-                    'Désactivé' => Adherent::DISABLED,
+            ->add('status', ChoiceFilter::class, [
+                'label' => 'Etat du compte',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'Activé' => Adherent::ENABLED,
+                        'Désactivé' => Adherent::DISABLED,
+                    ],
                 ],
             ])
             ->add('adherent', null, [
                 'label' => 'Est adhérent ?',
             ])
-            ->add('referentTags', ModelAutocompleteFilter::class, [
+            ->add('referentTags', ModelFilter::class, [
                 'label' => 'Tags souscrits',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
@@ -792,27 +818,21 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('managedArea', ReferentTagAutocompleteFilter::class, [
                 'label' => 'Tags gérés',
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'admin_code' => $this->getCode(),
+                    'class' => ReferentTag::class,
+                    'multiple' => true,
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'property' => 'name',
+                    'req_params' => [
+                        'field' => 'referentTags',
+                    ],
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return false;
-                    }
-
-                    /** @var QueryBuilder $qb */
-                    $qb
-                        ->leftJoin("$alias.$field", 'managed_area')
-                        ->leftJoin('managed_area.tags', 'tags')
-                        ->andWhere('tags IN (:tags)')
-                        ->setParameter('tags', $value['value'])
-                    ;
-
-                    return true;
-                },
             ])
-            ->add('role', AdherentRoleFilter::class)
+            ->add('role', AdherentRoleFilter::class, [
+                'label' => 'common.role',
+            ])
             ->add('mandates', CallbackFilter::class, [
                 'label' => 'Mandat(s) (legacy)',
                 'field_type' => ChoiceType::class,
@@ -820,14 +840,14 @@ class AdherentAdmin extends AbstractAdmin
                     'choices' => MandatesEnum::CHOICES,
                     'multiple' => true,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $where = new Expr\Orx();
 
-                    foreach ($value['value'] as $mandate) {
+                    foreach ($value->getValue() as $mandate) {
                         $where->add("$alias.mandates LIKE :mandate_".$mandate);
                         $qb->setParameter('mandate_'.$mandate, "%$mandate%");
                     }
@@ -845,8 +865,8 @@ class AdherentAdmin extends AbstractAdmin
                     'choices' => MandateTypeEnum::CHOICES,
                     'multiple' => true,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
@@ -857,7 +877,7 @@ class AdherentAdmin extends AbstractAdmin
                         ->andWhere('mandate.onGoing = 1')
                         ->andWhere('mandate.isElected = 1')
                         ->andWhere('mandate.type IN (:types)')
-                        ->setParameter('types', $value['value'])
+                        ->setParameter('types', $value->getValue())
                     ;
 
                     return true;
@@ -881,13 +901,13 @@ class AdherentAdmin extends AbstractAdmin
                     },
                     'multiple' => true,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $mandatesCondition = 'adherentMandate.quality IN (:qualities)';
-                    if (\in_array('TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, $value['value'])) {
+                    if (\in_array('TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, $value->getValue())) {
                         $mandatesCondition = '(adherentMandate.quality IN (:qualities) OR adherentMandate.committee IS NOT NULL)';
                     }
 
@@ -895,7 +915,7 @@ class AdherentAdmin extends AbstractAdmin
                         ->leftJoin("$alias.adherentMandates", 'adherentMandate')
                         ->andWhere('adherentMandate.finishAt IS NULL')
                         ->andWhere($mandatesCondition)
-                        ->setParameter('qualities', $value['value'])
+                        ->setParameter('qualities', $value->getValue())
                     ;
 
                     return true;
@@ -918,22 +938,22 @@ class AdherentAdmin extends AbstractAdmin
                         return 'Qualités personnalisées';
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (null === $value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (null === $value->getValue()) {
                         return false;
                     }
 
                     $qb
                         ->leftJoin("$alias.instanceQualities", 'adherent_instance_quality')
                         ->leftJoin('adherent_instance_quality.instanceQuality', 'instance_quality', Expr\Join::WITH, 'FIND_IN_SET(:national_council_scope, instance_quality.scopes) > 0')
-                        ->andWhere('instance_quality.id '.(0 === $value['value'] ? 'IS NULL' : 'IS NOT NULL'))
+                        ->andWhere('instance_quality.id '.(0 === $value->getValue() ? 'IS NULL' : 'IS NOT NULL'))
                         ->setParameter('national_council_scope', InstanceQualityScopeEnum::NATIONAL_COUNCIL)
                     ;
 
-                    if ($value['value'] instanceof InstanceQuality) {
+                    if ($value->getValue() instanceof InstanceQuality) {
                         $qb
                             ->andWhere('instance_quality = :instance_quality')
-                            ->setParameter('instance_quality', $value['value'])
+                            ->setParameter('instance_quality', $value->getValue())
                         ;
                     }
 
@@ -963,15 +983,15 @@ class AdherentAdmin extends AbstractAdmin
                         $datagrid->setValue($property, null, $value);
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $qb
                         ->andWhere("$alias.committee IN (:committees)")
                         ->andWhere("$alias.enableVote = 1")
-                        ->setParameter('committees', $value['value'])
+                        ->setParameter('committees', $value->getValue())
                     ;
 
                     return true;
@@ -993,14 +1013,14 @@ class AdherentAdmin extends AbstractAdmin
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $qb
                         ->andWhere("$alias.territorialCouncil IN (:tc)")
-                        ->setParameter('tc', $value['value'])
+                        ->setParameter('tc', $value->getValue())
                     ;
 
                     return true;
@@ -1028,14 +1048,14 @@ class AdherentAdmin extends AbstractAdmin
                         $datagrid->setValue($property, null, $value);
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
                         return false;
                     }
 
                     $qb
                         ->andWhere("$alias.politicalCommittee IN (:pc)")
-                        ->setParameter('pc', $value['value'])
+                        ->setParameter('pc', $value->getValue())
                     ;
 
                     return true;
@@ -1056,8 +1076,8 @@ class AdherentAdmin extends AbstractAdmin
                         return "global.$choice";
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    switch ($value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    switch ($value->getValue()) {
                         case 'yes':
                             $qb->andWhere("$alias.lastMembershipDonation IS NOT NULL");
 
@@ -1084,8 +1104,8 @@ class AdherentAdmin extends AbstractAdmin
                 'field_options' => [
                     'choices' => RenaissanceMembershipFilterEnum::CHOICES,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    switch ($value['value']) {
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    switch ($value->getValue()) {
                         case RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE:
                             $qb
                                 ->andWhere("$alias.source = :source_renaissance")
@@ -1122,19 +1142,14 @@ class AdherentAdmin extends AbstractAdmin
         ;
     }
 
-    /**
-     * @param Adherent $subject
-     */
-    public function setSubject($subject)
+    protected function alterObject(object $object): void
     {
         if (null === $this->beforeUpdate) {
-            $this->beforeUpdate = clone $subject;
+            $this->beforeUpdate = clone $object;
         }
-
-        parent::setSubject($subject);
     }
 
-    public function preUpdate($object)
+    protected function preUpdate(object $object): void
     {
         $this->dispatcher->dispatch(new UserEvent($this->beforeUpdate), UserEvents::USER_BEFORE_UPDATE);
     }
@@ -1142,7 +1157,7 @@ class AdherentAdmin extends AbstractAdmin
     /**
      * @param Adherent $object
      */
-    public function postUpdate($object)
+    protected function postUpdate(object $object): void
     {
         $this->adherentProfileHandler->updateReferentTagsAndSubscriptionHistoryIfNeeded($object);
 
@@ -1155,7 +1170,7 @@ class AdherentAdmin extends AbstractAdmin
         $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED_IN_ADMIN);
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('id', null, [
@@ -1214,72 +1229,52 @@ class AdherentAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/adherent/list_mandates.html.twig',
             ])
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/adherent/list_actions.html.twig',
             ])
         ;
     }
 
-    public function getDataSourceIterator()
+    protected function configureExportFields(): array
     {
         PhpConfigurator::disableMemoryLimit();
 
-        return new IteratorCallbackSourceIterator(
-            $this->getAdherentIterator(),
-            function (array $adherent) {
-                /** @var Adherent $adherent */
-                $adherent = $adherent[0];
+        return [IteratorCallbackDataSource::CALLBACK => function (array $adherent) {
+            /** @var Adherent $adherent */
+            $adherent = $adherent[0];
 
-                try {
-                    $phone = PhoneNumberUtils::format($adherent->getPhone());
-                    $birthDate = $adherent->getBirthdate();
-                    $registeredAt = $adherent->getRegisteredAt();
+            try {
+                $phone = PhoneNumberUtils::format($adherent->getPhone());
+                $birthDate = $adherent->getBirthdate();
+                $registeredAt = $adherent->getRegisteredAt();
 
-                    return [
-                        'UUID' => $adherent->getUuid(),
-                        'Email' => $adherent->getEmailAddress(),
-                        'Prénom' => $adherent->getFirstName(),
-                        'Nom' => $adherent->getLastName(),
-                        'Date de naissance' => $birthDate ? $birthDate->format('Y/m/d H:i:s') : null,
-                        'Téléphone' => $phone,
-                        'Inscrit(e) le' => $registeredAt ? $registeredAt->format('Y/m/d H:i:s') : null,
-                        'Sexe' => $adherent->getGender(),
-                        'Adresse' => $adherent->getAddress(),
-                        'Code postal' => $adherent->getPostalCode(),
-                        'Ville' => $adherent->getCityName(),
-                        'Pays' => $adherent->getCountry(),
-                    ];
-                } catch (\Exception $e) {
-                    $this->logger->error(
-                        sprintf('Error exporting Adherent with UUID: %s. (%s)', $adherent->getUuid(), $e->getMessage()),
-                        ['exception' => $e]
-                    );
+                return [
+                    'UUID' => $adherent->getUuid(),
+                    'Email' => $adherent->getEmailAddress(),
+                    'Prénom' => $adherent->getFirstName(),
+                    'Nom' => $adherent->getLastName(),
+                    'Date de naissance' => $birthDate?->format('Y/m/d H:i:s'),
+                    'Téléphone' => $phone,
+                    'Inscrit(e) le' => $registeredAt?->format('Y/m/d H:i:s'),
+                    'Sexe' => $adherent->getGender(),
+                    'Adresse' => $adherent->getAddress(),
+                    'Code postal' => $adherent->getPostalCode(),
+                    'Ville' => $adherent->getCityName(),
+                    'Pays' => $adherent->getCountry(),
+                ];
+            } catch (\Exception $e) {
+                $this->logger->error(
+                    sprintf('Error exporting Adherent with UUID: %s. (%s)', $adherent->getUuid(), $e->getMessage()),
+                    ['exception' => $e]
+                );
 
-                    return [
-                        'UUID' => $adherent->getUuid(),
-                        'Email' => $adherent->getEmailAddress(),
-                    ];
-                }
+                return [
+                    'UUID' => $adherent->getUuid(),
+                    'Email' => $adherent->getEmailAddress(),
+                ];
             }
-        );
-    }
-
-    private function getAdherentIterator(): \Iterator
-    {
-        $datagrid = $this->getDatagrid();
-        $datagrid->buildPager();
-
-        $query = $datagrid->getQuery();
-        $alias = current($query->getRootAliases());
-
-        $query
-            ->select("DISTINCT $alias")
-        ;
-        $query->setFirstResult(0);
-        $query->setMaxResults(null);
-
-        return $query->getQuery()->iterate();
+        }];
     }
 
     /** @required */

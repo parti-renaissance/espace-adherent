@@ -432,7 +432,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
     public function provideCreateRenaissanceAdherentValidation(): \Generator
     {
         yield 'No gender' => [
-            ['gender' => null],
+            ['gender' => ''],
             ['gender' => ['Veuillez renseigner un genre.']],
         ];
         yield 'Invalid gender' => [
@@ -460,7 +460,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
             ['lastName' => ['Le nom ne peut pas dépasser 50 caractères.']],
         ];
         yield 'No nationality' => [
-            ['nationality' => null],
+            ['nationality' => ''],
             ['nationality' => ['La nationalité est requise.']],
         ];
         yield 'Invalid nationality' => [
@@ -474,7 +474,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
                     'city' => null,
                     'cityName' => null,
                     'postalCode' => null,
-                    'country' => null,
+                    'country' => '',
                 ],
             ],
             ['address' => ['L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.']],
@@ -527,7 +527,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
                     'city' => null,
                     'cityName' => 'Melun',
                     'postalCode' => '77000',
-                    'country' => null,
+                    'country' => '',
                 ],
             ],
             [
@@ -570,7 +570,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
             ['email' => ['L\'adresse e-mail est trop longue, 255 caractères maximum.']],
         ];
         yield 'No phone country' => [
-            ['phone' => ['country' => null, 'number' => '0612345678']],
+            ['phone' => ['country' => '', 'number' => '0612345678']],
             ['phone' => ['Cette valeur n\'est pas un numéro de téléphone valide.']],
         ];
         yield 'Invalid phone country' => [
@@ -582,7 +582,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
             ['phone' => ['Cette valeur n\'est pas un numéro de téléphone valide.']],
         ];
         yield 'Empty birthdate' => [
-            ['birthdate' => ['year' => null, 'month' => null, 'day' => null]],
+            ['birthdate' => ['year' => '', 'month' => '', 'day' => '']],
             ['birthdate' => ['Veuillez spécifier une date de naissance.']],
         ];
         yield 'Invalid birthdate year' => [
@@ -610,7 +610,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
             ['membershipType' => ['Ce type d\'adhésion n\'est pas valide.']],
         ];
         yield 'No cotisation amount choice' => [
-            ['cotisationAmountChoice' => null],
+            ['cotisationAmountChoice' => ''],
             ['cotisationAmountChoice' => ['Veuillez spécifier un montant de cotisation.']],
         ];
         yield 'Invalid cotisation amount choice' => [
