@@ -84,6 +84,9 @@ services:
             $invalidEmailHashKey: '%env(INVALID_EMAIL_HASH_KEY)%'
             $campaignMailProducer: '@old_sound_rabbit_mq.mailer_campaign_producer'
             $transactionalMailProducer: '@old_sound_rabbit_mq.mailer_transactional_producer'
+            $payboxMembershipSite: '%env(PAYBOX_MEMBERSHIP_SITE)%'
+            $payboxMembershipIdentifier: '%env(PAYBOX_MEMBERSHIP_IDENTIFIER)%'
+            $payboxMembershipKey: '%env(PAYBOX_MEMBERSHIP_KEY)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
