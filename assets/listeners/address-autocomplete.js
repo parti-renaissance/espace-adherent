@@ -29,6 +29,7 @@ export default () => {
         });
 
         widget.on('changed', () => {
+            // eslint-disable-next-line no-restricted-globals
             find(autocompleteWrapper, 'input').value = addressField.value;
         });
 

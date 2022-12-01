@@ -50,7 +50,6 @@ class AdhesionControllerTest extends WebTestCase
                     'country' => 'FR',
                     'address' => '62 avenue des Champs-Élysées',
                     'postalCode' => '75008',
-                    'city' => '75008-75108',
                     'cityName' => 'Paris 8ème',
                 ],
                 'password' => 'secret!12345',
