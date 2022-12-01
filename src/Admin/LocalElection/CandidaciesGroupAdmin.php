@@ -53,6 +53,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
                             'Si vous ne trouvez pas la bonne élection, veuillez la créer en cliquant <a href="%s">ici</a>',
                             $this->getRouteGenerator()->generate('admin_app_localelection_localelection_create')
                         ),
+                        'btn_add' => false,
                     ])
                 ->end()
                 ->with('Profession de foi', ['box_class' => 'box box-success'])

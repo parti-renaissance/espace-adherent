@@ -108,6 +108,7 @@ class DonationAdmin extends AbstractAdmin
                         'lastName',
                         'emailAddress',
                     ],
+                    'btn_add' => false,
                 ])
                 ->add('type', ChoiceType::class, [
                     'label' => 'Type',

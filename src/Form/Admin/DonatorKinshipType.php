@@ -33,6 +33,7 @@ class DonatorKinshipType extends AbstractType
                 'req_params' => [
                     'field' => 'donator',
                 ],
+                'btn_add' => false,
             ])
             ->add('kinship', TextType::class, [
                 'label' => 'Lien de parenté',

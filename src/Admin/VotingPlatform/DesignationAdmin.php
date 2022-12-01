@@ -83,6 +83,7 @@ class DesignationAdmin extends AbstractAdmin
                         'label' => 'Zones locales',
                         'multiple' => true,
                         'help' => 'Obligatoire pour les élections locales',
+                        'btn_add' => false,
                     ])
                 ->end()
                 ->with('Candidature 🎎', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-default'])

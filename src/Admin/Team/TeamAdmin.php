@@ -33,6 +33,7 @@ class TeamAdmin extends AbstractAdmin
                     'property' => 'name',
                     'required' => false,
                     'help' => 'Laissez vide pour appliquer une visibilité nationale.',
+                    'btn_add' => false,
                 ])
             ->end()
             ->with('Membres 👥', ['class' => 'col-md-6'])
