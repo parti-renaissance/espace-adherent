@@ -15,7 +15,7 @@ class In extends AbstractExpr
                 $value = $value->getId();
             }
 
-            $tmp[] = "${name}:${value}";
+            $tmp[] = "{$name}:{$value}";
         }
 
         return sprintf('(%s)', implode(' OR ', $tmp));

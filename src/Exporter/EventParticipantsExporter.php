@@ -36,7 +36,7 @@ class EventParticipantsExporter
                     $registration = array_shift($data);
                     $row = [];
 
-                    $row['Date d\'inscription'] = ($registration['subscription_date'])->format('Y-m-d H:i:s');
+                    $row['Date d\'inscription'] = $registration['subscription_date']->format('Y-m-d H:i:s');
                     $row['Prénom'] = $registration['first_name'];
                     $row['Nom'] = $registration['last_name'];
                     $row['Code postal'] = $registration['postal_code'];

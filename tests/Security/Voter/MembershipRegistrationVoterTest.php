@@ -29,7 +29,7 @@ class MembershipRegistrationVoterTest extends TestCase
     {
         $this->assertSame(
             $expected,
-            ($this->createVoter($isStarted))->vote($this->token, null, $attributes)
+            $this->createVoter($isStarted)->vote($this->token, null, $attributes)
         );
     }
 

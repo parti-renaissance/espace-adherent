@@ -24,7 +24,7 @@ class LoadReferentTagData extends Fixture
                     $this->createReferentTag($manager, 'Corse', '20');
 
                     break;
-                // 1 tag for each Paris district + 1 tag for Paris
+                    // 1 tag for each Paris district + 1 tag for Paris
                 case '75':
                     foreach (range(1, 20) as $district) {
                         $district = str_pad($district, 2, '0', \STR_PAD_LEFT);
@@ -35,7 +35,7 @@ class LoadReferentTagData extends Fixture
                     $this->createReferentTag($manager, 'Paris', '75', ReferentTag::TYPE_DEPARTMENT);
 
                     break;
-                // does not exist
+                    // does not exist
                 case '96':
                     break;
                 default:

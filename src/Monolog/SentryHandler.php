@@ -4,10 +4,13 @@ namespace App\Monolog;
 
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
+
 use function Sentry\addBreadcrumb;
+
 use Sentry\Breadcrumb;
 use Sentry\Monolog\Handler;
 use Sentry\State\Scope;
+
 use function Sentry\withScope;
 
 class SentryHandler implements HandlerInterface

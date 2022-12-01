@@ -175,6 +175,6 @@ abstract class AbstractPollController extends AbstractController
 
     protected function redirectToPollRoute(string $subName, array $parameters = []): Response
     {
-        return $this->redirectToRoute("app_{$this->getSpaceName()}_polls_${subName}", $parameters);
+        return $this->redirectToRoute("app_{$this->getSpaceName()}_polls_{$subName}", $parameters);
     }
 }

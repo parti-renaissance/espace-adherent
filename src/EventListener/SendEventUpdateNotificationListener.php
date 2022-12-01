@@ -16,7 +16,6 @@ use App\Mailer\Message\EventUpdateMessage;
 use App\Mailer\Message\JeMengage\JeMengageEventUpdateMessage;
 use App\Mailer\Message\Message;
 use App\Repository\EventRegistrationRepository;
-use DateTimeInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -24,9 +23,9 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
 {
     /** @var string */
     private $visioUrl;
-    /** @var DateTimeInterface */
+    /** @var \DateTimeInterface */
     private $eventBeginAt;
-    /** @var DateTimeInterface */
+    /** @var \DateTimeInterface */
     private $eventFinishAt;
     /** @var PostAddress */
     private $postAddress;

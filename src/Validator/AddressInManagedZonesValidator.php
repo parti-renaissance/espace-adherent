@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Address\Address as Address;
+use App\Address\Address;
 use App\Geo\ManagedZoneProvider;
 use App\Geo\ZoneMatcher;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

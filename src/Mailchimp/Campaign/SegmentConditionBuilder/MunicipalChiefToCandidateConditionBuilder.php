@@ -120,7 +120,7 @@ class MunicipalChiefToCandidateConditionBuilder extends AbstractConditionBuilder
                 'condition_type' => 'TextMerge',
                 'op' => 'contains',
                 'field' => MemberRequest::MERGE_FIELD_FAVORITE_CITIES_CODES,
-                'value' => "#${matchedInseeCode}",
+                'value' => "#{$matchedInseeCode}",
             ];
         }
 

@@ -281,7 +281,7 @@ abstract class AbstractJecouteController extends AbstractController
 
     protected function redirectToJecouteRoute(string $subName, array $parameters = []): Response
     {
-        return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_${subName}", $parameters);
+        return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_{$subName}", $parameters);
     }
 
     protected function checkCreateAccess(): void

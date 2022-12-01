@@ -194,6 +194,6 @@ abstract class AbstractNewsController extends AbstractController
 
     protected function redirectToNewsRoute(string $subName, array $parameters = []): Response
     {
-        return $this->redirectToRoute("app_jecoute_news_{$this->getSpaceName()}_${subName}", $parameters);
+        return $this->redirectToRoute("app_jecoute_news_{$this->getSpaceName()}_{$subName}", $parameters);
     }
 }

@@ -25,6 +25,6 @@ class OrderSectionRepository extends ServiceEntityRepository
             ->orderBy('s.position', 'ASC')
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 }

@@ -10,8 +10,6 @@ final class EventContactMembersMessage extends Message
 {
     /**
      * @param EventRegistration[] $recipients
-     *
-     * @return EventContactMembersMessage
      */
     public static function create(array $recipients, Adherent $organizer, string $subject, string $content): self
     {

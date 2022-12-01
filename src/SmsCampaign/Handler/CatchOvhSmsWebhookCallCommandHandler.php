@@ -32,7 +32,7 @@ class CatchOvhSmsWebhookCallCommandHandler implements MessageHandlerInterface
         if (isset($payload['action']) && 'stop' === $payload['action']) {
             if ($this->validate($payload)) {
                 $this->entityManager->persist(new SmsStopHistory(
-                    new \Datetime($payload['date']),
+                    new \DateTime($payload['date']),
                     $payload['id'],
                     $payload['receiver']
                 ));
@@ -54,7 +54,7 @@ class CatchOvhSmsWebhookCallCommandHandler implements MessageHandlerInterface
     private function validate(array $payload): bool
     {
         return 0 === \count($this->entityManager->getRepository(SmsStopHistory::class)->findBy([
-            'eventDate' => new \Datetime($payload['date']),
+            'eventDate' => new \DateTime($payload['date']),
             'campaignExternalId' => $payload['id'],
             'receiver' => $payload['receiver'],
         ]));

@@ -39,13 +39,13 @@ class CoalitionExtension implements QueryItemExtensionInterface, QueryCollection
 
         if (Coalition::class === $resourceClass) {
             $queryBuilder
-                ->andWhere("${alias}.enabled = :true")
+                ->andWhere("{$alias}.enabled = :true")
                 ->setParameter('true', true)
             ;
         } elseif (Cause::class === $resourceClass) {
             $queryBuilder
-                ->innerJoin("${alias}.coalition", 'coalition')
-                ->leftJoin("${alias}.secondCoalition", 'coalition_2')
+                ->innerJoin("{$alias}.coalition", 'coalition')
+                ->leftJoin("{$alias}.secondCoalition", 'coalition_2')
                 ->andWhere('coalition.enabled = :true AND (coalition_2 IS NULL OR coalition_2.enabled = :true)')
                 ->setParameter('true', true)
             ;

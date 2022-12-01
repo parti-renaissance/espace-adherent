@@ -128,12 +128,12 @@ class LoadTerritorialCouncilCandidacyData extends Fixture implements DependentFi
         $candidacy->setIsPublicFaithStatement(true);
 
         $candidacy->setImage(new UploadedFile(
-             $imagePath,
-             'image.jpg',
-             'image/jpeg',
-             null,
-             true
-         ));
+            $imagePath,
+            'image.jpg',
+            'image/jpeg',
+            null,
+            true
+        ));
 
         if ($invited) {
             $candidacy->addInvitation($invitation = new CandidacyInvitation());

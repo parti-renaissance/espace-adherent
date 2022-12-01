@@ -39,7 +39,7 @@ class TeamMemberManagementHandler
                 $newMember = new Member(null, $adherent);
                 $team->addMember($newMember);
 
-                //Add history
+                // Add history
                 $history = TeamMemberHistory::createAdd($team, $adherent, $teamManager);
 
                 $this->entityManager->persist($history);
@@ -58,7 +58,7 @@ class TeamMemberManagementHandler
         if ($team->hasAdherent($adherent)) {
             $team->removeMember($team->getMember($adherent));
 
-            //Add history
+            // Add history
             $history = TeamMemberHistory::createRemove($team, $adherent, $teamManager);
             $this->entityManager->persist($history);
 

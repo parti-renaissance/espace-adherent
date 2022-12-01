@@ -47,8 +47,6 @@ class ConsularDistrict
     private $number;
 
     /**
-     * @var
-     *
      * @ORM\Column(type="json", nullable=true)
      */
     private $points;

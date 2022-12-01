@@ -57,7 +57,7 @@ class ProcurationProxyProposalFilters extends ProcurationFilters
                         'ppElectionRound.foreignRequestAvailable != 0'
                     )
                 )
-             ;
+            ;
         } elseif (self::ASSOCIATED === $status) {
             $qb
                 ->andWhere('ppElectionRound.frenchRequestAvailable = 0')

@@ -146,7 +146,7 @@ abstract class AbstractApplicationRequestController extends AbstractController
 
     protected function redirectToSpaceRoute(string $subName, array $parameters = []): Response
     {
-        return $this->redirectToRoute("app_{$this->getSpaceName()}_${subName}", $parameters);
+        return $this->redirectToRoute("app_{$this->getSpaceName()}_{$subName}", $parameters);
     }
 
     protected function isExtendedFilterForm(): bool

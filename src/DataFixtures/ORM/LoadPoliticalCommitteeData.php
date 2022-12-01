@@ -21,7 +21,7 @@ class LoadPoliticalCommitteeData extends Fixture implements DependentFixtureInte
                     $this->createPoliticalCommittee($manager, 'CoPol de la Corse', '20, 2A, 2B');
 
                     break;
-                // for Paris
+                    // for Paris
                 case '75':
                     foreach (range(1, 20) as $district) {
                         $district = str_pad($district, 2, '0', \STR_PAD_LEFT);
@@ -35,7 +35,7 @@ class LoadPoliticalCommitteeData extends Fixture implements DependentFixtureInte
                 case '77':
                     $this->createPoliticalCommittee($manager, "CoPol du département $department", $department, true);
                     break;
-                // does not exist
+                    // does not exist
                 case '96':
                     break;
                 default:

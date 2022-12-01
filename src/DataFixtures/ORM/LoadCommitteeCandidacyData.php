@@ -150,7 +150,7 @@ class LoadCommitteeCandidacyData extends Fixture implements DependentFixtureInte
             }
 
             $manager->persist($candidacy);
-            $this->setReference(sprintf('committee-candidacy-%s-%d', $election->getDesignationType(), ($i + 1)), $candidacy);
+            $this->setReference(sprintf('committee-candidacy-%s-%d', $election->getDesignationType(), $i + 1), $candidacy);
         }
 
         $manager->flush();

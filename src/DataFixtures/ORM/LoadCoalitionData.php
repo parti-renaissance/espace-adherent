@@ -98,7 +98,7 @@ class LoadCoalitionData extends Fixture implements DependentFixtureInterface
         bool $withImage = false,
         array $followers = []
     ): Coalition {
-        $c = "COALITION_${id}_UUID";
+        $c = "COALITION_{$id}_UUID";
         $uuid = Uuid::fromString(\constant('self::'.$c));
 
         $coalition = new Coalition(

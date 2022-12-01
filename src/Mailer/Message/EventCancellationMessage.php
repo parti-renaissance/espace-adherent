@@ -13,8 +13,6 @@ final class EventCancellationMessage extends Message
      * Creates a new message instance for a list of recipients.
      *
      * @param EventRegistration[] $recipients
-     *
-     * @return EventCancellationMessage
      */
     public static function create(array $recipients, Adherent $host, BaseEvent $event, string $eventsLink): self
     {

@@ -35,10 +35,10 @@ class AssessorRequestNotifier implements EventSubscriberInterface
     public function onRequestAssociated(AssessorRequestEvent $event)
     {
         $this->mailer->sendMessage(
-           AssessorRequestAssociateMessage::create(
-               $event->getAssessorRequest(),
-               $this->translator->trans($event->getAssessorRequest()->getOfficeName())
-           )
+            AssessorRequestAssociateMessage::create(
+                $event->getAssessorRequest(),
+                $this->translator->trans($event->getAssessorRequest()->getOfficeName())
+            )
         );
     }
 

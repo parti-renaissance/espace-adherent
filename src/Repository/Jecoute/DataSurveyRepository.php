@@ -141,12 +141,12 @@ class DataSurveyRepository extends ServiceEntityRepository
 
         if ($zones) {
             $addressIds = array_column($this->createEntityInGeoZonesQueryBuilder(
-                    $zones,
-                    Address::class,
-                    'a2',
-                    'zones',
-                    'z2'
-                )
+                $zones,
+                Address::class,
+                'a2',
+                'zones',
+                'z2'
+            )
                 ->getQuery()
                 ->getArrayResult(), 'id'
             );

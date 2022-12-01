@@ -28,7 +28,7 @@ class BannedAdherent
         return $this->date;
     }
 
-    public function setDate(\Datetime $date): void
+    public function setDate(\DateTime $date): void
     {
         $this->date = $date;
     }

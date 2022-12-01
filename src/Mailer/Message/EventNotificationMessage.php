@@ -12,8 +12,6 @@ final class EventNotificationMessage extends Message
      * Creates a new message instance for a list of recipients.
      *
      * @param Adherent[] $recipients
-     *
-     * @return EventNotificationMessage
      */
     public static function create(
         array $recipients,

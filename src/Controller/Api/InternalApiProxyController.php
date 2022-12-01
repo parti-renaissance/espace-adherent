@@ -63,7 +63,7 @@ class InternalApiProxyController extends AbstractController
         }
 
         if (\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT], true)) {
-            //Body
+            // Body
             $subRequestOption['body'] = $request->getContent();
         }
 

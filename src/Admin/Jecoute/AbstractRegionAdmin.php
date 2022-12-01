@@ -185,7 +185,7 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
         $rootAlias = current($query->getRootAliases());
 
         $query
-            ->innerJoin($rootAlias.('.zone'), 'zone')
+            ->innerJoin($rootAlias.'.zone', 'zone')
             ->andWhere('zone.type IN (:types)')
             ->setParameter('types', $this->getZoneTypes())
         ;

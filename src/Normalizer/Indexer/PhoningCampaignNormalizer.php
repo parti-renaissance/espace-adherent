@@ -65,7 +65,7 @@ class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
                  return $member->getAdherent() ? $member->getAdherent()->getId() : null;
              }, $object->getTeam()->getMembers()->toArray()))))
              : null
-         ;
+        ;
     }
 
     /** @param Campaign $object */

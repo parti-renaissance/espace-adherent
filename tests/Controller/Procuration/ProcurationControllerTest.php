@@ -704,14 +704,14 @@ class ProcurationControllerTest extends WebTestCase
 
     public function testMyRequestRequiresProcessedRequest()
     {
-        $this->client->request(Request::METHOD_GET, '/ma-demande/4/'.(Uuid::uuid4()->toString()));
+        $this->client->request(Request::METHOD_GET, '/ma-demande/4/'.Uuid::uuid4()->toString());
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
     public function testMyRequestRequiresValidToken()
     {
-        $this->client->request(Request::METHOD_GET, '/ma-demande/5/'.(Uuid::uuid4()->toString()));
+        $this->client->request(Request::METHOD_GET, '/ma-demande/5/'.Uuid::uuid4()->toString());
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }

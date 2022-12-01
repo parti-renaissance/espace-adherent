@@ -28,8 +28,8 @@ class LoadUserDocumentData extends Fixture
             UserDocument::TYPE_EVENT,
             'image/jpeg',
             'jpeg_document.jpeg',
-                'jpeg',
-                '2048'
+            'jpeg',
+            '2048'
         );
 
         $manager->persist($userDocumentPng);

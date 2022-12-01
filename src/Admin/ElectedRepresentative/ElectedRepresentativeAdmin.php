@@ -234,7 +234,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                             UserListDefinitionEnum::TYPE_LRE,
                         ])
                         ->orderBy('uld.label', 'ASC')
-                        ;
+                    ;
                 },
             ]);
         }

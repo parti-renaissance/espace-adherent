@@ -150,9 +150,6 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
         return $this->category;
     }
 
-    /**
-     * @return Article
-     */
     public function setCategory(ArticleCategory $category = null): self
     {
         $this->category = $category;

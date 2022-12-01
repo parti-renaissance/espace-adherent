@@ -15,6 +15,7 @@ return (new PhpCsFixer\Config())
         '@DoctrineAnnotation' => true,
         'phpdoc_summary' => false,
         'no_unneeded_final_method' => false,
+        'phpdoc_separation' => false,
         'no_superfluous_phpdoc_tags' => true,
         'concat_space' => ['spacing' => 'none'],
         'multiline_whitespace_before_semicolons' => ['strategy' => 'new_line_for_chained_calls'],

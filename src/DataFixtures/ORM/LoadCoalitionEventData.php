@@ -164,7 +164,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory5,
             'Événement culturel passé',
             'Cet événement est passé',
-             $this->createPostAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
+            $this->createPostAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
             (new Chronos('-20 days'))->format('Y-m-d').' 09:30:00',
             (new Chronos('-20 days'))->format('Y-m-d').' 19:00:00'
         );
@@ -189,7 +189,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory1,
             'Événement Europe 1',
             'Nous allons échanger autour de différents sujets concenant l\'Europe',
-             $this->createPostAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.624205),
+            $this->createPostAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.624205),
             (new Chronos('+11 days'))->format('Y-m-d').' 10:30:00',
             (new Chronos('+11 days'))->format('Y-m-d').' 18:00:00'
         );
@@ -201,7 +201,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory2,
             'Événement international',
             'Nous allons échanger autour de différents sujets internationals',
-             $this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
+            $this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
             (new Chronos('tomorrow'))->format('Y-m-d').' 10:30:00',
             (new Chronos('tomorrow'))->format('Y-m-d').' 18:00:00'
         );
@@ -213,7 +213,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory3,
             'Événement numérique',
             'Nous allons échanger autour de différents sujets numériques',
-             $this->createPostAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.624157, 2.4266),
+            $this->createPostAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.624157, 2.4266),
             (new Chronos('+16 days'))->format('Y-m-d').' 09:30:00',
             (new Chronos('+16 days'))->format('Y-m-d').' 19:00:00'
         );
@@ -225,7 +225,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory6,
             'Événement économique',
             'Nous allons échanger autour de différents sujets économiques',
-             $this->createPostAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
+            $this->createPostAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
             (new Chronos('+17 days'))->format('Y-m-d').' 09:30:00',
             (new Chronos('+17 days'))->format('Y-m-d').' 19:00:00'
         );

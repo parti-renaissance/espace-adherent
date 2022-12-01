@@ -637,13 +637,13 @@ class AdherentAdmin extends AbstractAdmin
         $formMapper
             ->get('procurationManagedAreaCodesAsString')
             ->addModelTransformer(new CallbackTransformer(
-            function ($data) {
-                return $data;
-            },
-            function ($value) {
-                return strtoupper($value);
-            }
-        ))
+                function ($data) {
+                    return $data;
+                },
+                function ($value) {
+                    return strtoupper($value);
+                }
+            ))
         ;
 
         $formMapper

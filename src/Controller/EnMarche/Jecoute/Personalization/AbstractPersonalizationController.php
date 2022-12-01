@@ -107,7 +107,7 @@ abstract class AbstractPersonalizationController extends AbstractController
 
     protected function redirectToRegionRoute(string $subName, array $parameters = []): Response
     {
-        return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_region_${subName}", $parameters);
+        return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_region_{$subName}", $parameters);
     }
 
     private function createPersonnalization(Zone $zone, Adherent $adherent): Region

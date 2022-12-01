@@ -36,8 +36,8 @@ trait GeoFilterTrait
                 // Postal code prefix
                 $codesFilter->add(
                     $qb->expr()->andX(
-                        "${countryColumn} = 'FR'",
-                        $qb->expr()->like("${postalCodeColumn}", ":code_$key")
+                        "{$countryColumn} = 'FR'",
+                        $qb->expr()->like("{$postalCodeColumn}", ":code_$key")
                     )
                 );
 
@@ -78,8 +78,8 @@ trait GeoFilterTrait
                     // Postal code prefix
                     $codesFilter->add(
                         $qb->expr()->andX(
-                            "${countryColumn} = 'FR'",
-                            $qb->expr()->like("${postalCodeColumn}", ":code_$key")
+                            "{$countryColumn} = 'FR'",
+                            $qb->expr()->like("{$postalCodeColumn}", ":code_$key")
                         )
                     );
 
@@ -92,10 +92,10 @@ trait GeoFilterTrait
                 $qb->setParameter("tag_$key", $tag);
             } elseif (2 === mb_strlen($code)) {
                 // Country
-                $codesFilter->add($qb->expr()->eq("${countryColumn}", ":code_$key"));
+                $codesFilter->add($qb->expr()->eq("{$countryColumn}", ":code_$key"));
                 $qb->setParameter("code_$key", $code);
             } elseif (ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG === $code) {
-                $codesFilter->add("${countryColumn} != 'FR'");
+                $codesFilter->add("{$countryColumn} != 'FR'");
             }
         }
 

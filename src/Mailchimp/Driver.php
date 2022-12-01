@@ -231,7 +231,7 @@ class Driver implements LoggerAwareInterface
             return $this->lastResponse = $this->client->request(
                 $method,
                 '/3.0/'.ltrim($uri, '/'),
-                ($body && \in_array($method, ['POST', 'PUT', 'PATCH'], true) ? ['json' => $body] : [])
+                $body && \in_array($method, ['POST', 'PUT', 'PATCH'], true) ? ['json' => $body] : []
             );
         } catch (TransportExceptionInterface $e) {
             $this->logger->error(sprintf('[API] Error: %s', $e->getMessage()), ['exception' => $e]);

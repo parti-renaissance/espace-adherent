@@ -220,7 +220,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
             $pcMembership = $this->politicalCommitteeManager->createMembership(
                 $adherent,
                 $territorialCouncil->getPoliticalCommittee(),
-               $qualityName
+                $qualityName
             );
 
             $this->em->persist($pcMembership);

@@ -36,7 +36,7 @@ class LoadApproachMeasureData extends Fixture implements DependentFixtureInterfa
                 $i + 1,
                 sprintf('Mesure lorem %d', $i + 1),
                 self::CONTENTS[$i % 3],
-                (0 === $i % 3),
+                0 === $i % 3,
                 0 === $i % 10
             );
             $project1 = $this->getReference(sprintf('sub-approach-measure-project-%d', 2 * $i));
