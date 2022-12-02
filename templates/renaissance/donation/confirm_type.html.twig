@@ -10,9 +10,9 @@
 
 {% block donation_content %}
     <section class="lg:max-w-xl lg:mx-auto space-y-12 selection:bg-green selection:text-white">
-        <p class="uppercase text-center text-green font-din text-2xl mb-12 lg:text-3xl">
+        <h2 class="uppercase text-center text-green text-2xl mb-12 lg:text-3xl">
             Je donne <span class="stabilo stabilo-green font-bold text-white">en ligne</span>
-        </p>
+        </h2>
         {{ form_start(form) }}
             <div class="mb-5">
                 <h2 class="text-lg">vous faites un don de : <span class="font-bold"> {{ donation.amount|format_currency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('App\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</span></h2>

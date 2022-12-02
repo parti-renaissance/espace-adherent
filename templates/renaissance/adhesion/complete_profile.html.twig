@@ -12,9 +12,9 @@
 
 {% block adhesion_content %}
     <section>
-        <p class="my-10 uppercase text-center font-din text-xl text-red mb-12">
+        <h2 class="my-10 uppercase text-center font-din text-xl text-red mb-12">
             Votre adresse email est validée !
-        </p>
+        </h2>
 
         {{ form_start(form) }}
             {% if app.user and app.user.certified %}
