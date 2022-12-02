@@ -55,13 +55,13 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
                         $candidacy->setEmail($email);
                     }
 
-                    if (isset($candidate['GENRE'])) {
-                        if (!$this->getFormattedCivility($candidate['GENRE'])) {
+                    if (!empty($candidate['GENRE'])) {
+                        if (!$civility = $this->getFormattedCivility($candidate['GENRE'])) {
                             $this->addFlash('sonata_flash_error', sprintf('Civilité invalide pour le candidat avec l\'adresse email %s. Veuillez vérifier le fichier en entier', $email));
 
                             return $this->redirect($this->admin->generateObjectUrl('candidate_import', $candidaciesGroup));
                         }
-                        $candidacy->setGender($this->getFormattedCivility($candidate['GENRE']));
+                        $candidacy->setGender($civility);
                     }
 
                     if (!empty($candidate['PRENOM'])) {
