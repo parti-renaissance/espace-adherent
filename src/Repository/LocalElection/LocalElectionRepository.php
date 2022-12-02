@@ -3,6 +3,7 @@
 namespace App\Repository\LocalElection;
 
 use App\Entity\LocalElection\LocalElection;
+use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -31,5 +32,10 @@ class LocalElectionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function findByDesignation(Designation $designation): ?LocalElection
+    {
+        return $this->findOneBy(['designation' => $designation]);
     }
 }

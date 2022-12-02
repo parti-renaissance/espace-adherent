@@ -7,6 +7,9 @@ use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Entity\Instance\NationalCouncil\CandidaciesGroup;
+use App\Entity\Instance\NationalCouncil\Election as NationalCouncilElection;
+use App\Entity\LocalElection\LocalElection;
+use App\Entity\TerritorialCouncil\Candidacy as TerritorialCouncilCandidacy;
 use App\Entity\TerritorialCouncil\Election as TerritorialCouncilElection;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Candidate;
@@ -21,15 +24,9 @@ use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
 use App\Repository\AdherentRepository;
-use App\Repository\CommitteeCandidacyRepository;
 use App\Repository\CommitteeElectionRepository;
-use App\Repository\CommitteeMembershipRepository;
-use App\Repository\Instance\NationalCouncil\ElectionRepository as NationalCouncilElectionRepository;
-use App\Repository\TerritorialCouncil\CandidacyRepository as TerritorialCouncilCandidacyRepository;
-use App\Repository\TerritorialCouncil\ElectionRepository as TerritorialCouncilElectionRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
-use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,30 +41,24 @@ class ConfigureCommand extends Command
 {
     protected static $defaultName = 'app:voting-platform:step-2:configure';
 
-    /** @var DesignationRepository */
-    private $designationRepository;
-    /** @var CommitteeElectionRepository */
-    private $committeeElectionRepository;
-    /** @var SymfonyStyle */
-    private $io;
-    /** @var EntityManagerInterface */
-    private $entityManager;
-    /** @var ElectionRepository */
-    private $electionRepository;
-    /** @var CommitteeCandidacyRepository */
-    private $committeeCandidacyRepository;
-    /** @var CommitteeMembershipRepository */
-    private $committeeMembershipRepository;
-    /** @var VoterRepository */
-    private $voterRepository;
-    /** @var EventDispatcherInterface */
-    private $dispatcher;
-    /** @var TerritorialCouncilElectionRepository */
-    private $territorialCouncilElectionRepository;
-    /** @var NationalCouncilElectionRepository */
-    private $nationalCouncilElectionRepository;
-    /** @var TerritorialCouncilCandidacyRepository */
-    private $territorialCouncilCandidacyRepository;
+    private ?SymfonyStyle $io = null;
+
+    private CommitteeElectionRepository $committeeElectionRepository;
+    private ElectionRepository $electionRepository;
+    private DesignationRepository $designationRepository;
+    private AdherentRepository $adherentRepository;
+
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly EventDispatcherInterface $dispatcher,
+        ) {
+        parent::__construct();
+
+        $this->committeeElectionRepository = $this->entityManager->getRepository(CommitteeElection::class);
+        $this->electionRepository = $this->entityManager->getRepository(Election::class);
+        $this->designationRepository = $this->entityManager->getRepository(Designation::class);
+        $this->adherentRepository = $this->entityManager->getRepository(Adherent::class);
+    }
 
     protected function configure()
     {
@@ -103,6 +94,8 @@ class ConfigureCommand extends Command
                 $this->configureExecutiveOffice($designation);
             } elseif ($designation->isPollType()) {
                 $this->configurePoll($designation);
+            } elseif ($designation->isLocalElectionType()) {
+                $this->configureLocalElection($designation);
             }
         }
 
@@ -147,7 +140,7 @@ class ConfigureCommand extends Command
     {
         $offset = 0;
 
-        while ($territorialCouncilElections = $this->territorialCouncilElectionRepository->findAllByDesignation($designation, $offset)) {
+        while ($territorialCouncilElections = $this->entityManager->getRepository(TerritorialCouncilElection::class)->findAllByDesignation($designation, $offset)) {
             foreach ($territorialCouncilElections as $coTerrElection) {
                 $coTerr = $coTerrElection->getTerritorialCouncil();
 
@@ -182,7 +175,7 @@ class ConfigureCommand extends Command
 
     private function configureExecutiveOffice(Designation $designation): void
     {
-        if (!$nationCouncilElection = $this->nationalCouncilElectionRepository->findByDesignation($designation)) {
+        if (!$nationCouncilElection = $this->entityManager->getRepository(NationalCouncilElection::class)->findByDesignation($designation)) {
             return;
         }
 
@@ -194,10 +187,7 @@ class ConfigureCommand extends Command
             return;
         }
 
-        /** @var AdherentRepository $adherentRepository */
-        $adherentRepository = $this->entityManager->getRepository(Adherent::class);
-
-        $adherents = $adherentRepository->findAllWithNationalCouncilQualities();
+        $adherents = $this->adherentRepository->findAllWithNationalCouncilQualities();
 
         if (0 === \count($adherents)) {
             return;
@@ -267,10 +257,58 @@ class ConfigureCommand extends Command
         $this->entityManager->persist($election);
         $this->entityManager->flush();
 
-        /** @var AdherentRepository $adherentRepository */
-        $adherentRepository = $this->entityManager->getRepository(Adherent::class);
+        $this->adherentRepository->associateWithVoterList($designation, $list);
 
-        $adherentRepository->associateWithVoterList($designation, $list);
+        $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+
+        $this->entityManager->clear();
+
+        $this->io->progressAdvance();
+    }
+
+    private function configureLocalElection(Designation $designation): void
+    {
+        if (!$localElection = $this->entityManager->getRepository(LocalElection::class)->findByDesignation($designation)) {
+            return;
+        }
+
+        if ($this->electionRepository->findByDesignation($designation)) {
+            return;
+        }
+
+        $lists = $localElection->getCandidaciesGroups();
+
+        if (0 === \count($lists) || 0 === $localElection->countCandidacies()) {
+            return;
+        }
+
+        $election = $this->createNewElection($designation);
+        $election->getCurrentRound()->addElectionPool($pool = new ElectionPool($designation->getType()));
+        $election->addElectionPool($pool);
+
+        foreach ($lists as $list) {
+            $pool->addCandidateGroup($group = new CandidateGroup());
+
+            if ($list->hasFaithStatementFile()) {
+                $group->mediaFilePath = $list->getFaithStatementFilePath();
+            }
+
+            foreach ($list->getCandidacies() as $candidacy) {
+                $group->addCandidate($candidate = new Candidate(
+                    $candidacy->getFirstName(),
+                    $candidacy->getLastName(),
+                    $candidacy->getGender()
+                ));
+                $candidate->position = $candidacy->getPosition();
+            }
+        }
+
+        $this->entityManager->persist($this->createVoterList(
+            $election,
+            $this->adherentRepository->findForLocalElection($localElection, true),
+        ));
+        $this->entityManager->persist($election);
+        $this->entityManager->flush();
 
         $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
 
@@ -287,7 +325,7 @@ class ConfigureCommand extends Command
         $coTerr = $coTerrElection->getTerritorialCouncil();
 
         // Create candidates groups
-        $candidacies = $this->territorialCouncilCandidacyRepository->findAllConfirmedForElection($coTerrElection);
+        $candidacies = $this->entityManager->getRepository(TerritorialCouncilCandidacy::class)->findAllConfirmedForElection($coTerrElection);
 
         if (DesignationTypeEnum::NATIONAL_COUNCIL === $election->getDesignationType()) {
             $defaultPoolTitle = $election->getDesignationType();
@@ -347,7 +385,7 @@ class ConfigureCommand extends Command
         $committee = $election->getElectionEntity()->getCommittee();
 
         // Create candidates groups
-        $candidacies = $this->committeeCandidacyRepository->findConfirmedByCommittee($committee, $designation = $election->getDesignation());
+        $candidacies = $this->entityManager->getRepository(CommitteeCandidacy::class)->findConfirmedByCommittee($committee, $designation = $election->getDesignation());
         $pools = [];
 
         if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
@@ -408,7 +446,7 @@ class ConfigureCommand extends Command
             }
         }
 
-        $memberships = $this->committeeMembershipRepository->findVotingForElectionMemberships($committee, $designation);
+        $memberships = $this->entityManager->getRepository(CommitteeMembership::class)->findVotingForElectionMemberships($committee, $designation);
 
         $list = $this->createVoterList(
             $election,
@@ -436,7 +474,7 @@ class ConfigureCommand extends Command
         $committee = $committeeElection->getCommittee();
 
         // validate voters
-        if (!$this->committeeMembershipRepository->committeeHasVotersForElection($committee, $designation)) {
+        if (!$this->entityManager->getRepository(CommitteeMembership::class)->committeeHasVotersForElection($committee, $designation)) {
             if ($this->io->isDebug()) {
                 $this->io->warning(sprintf('Committee "%s" does not have any voters', $committee->getSlug()));
             }
@@ -445,7 +483,7 @@ class ConfigureCommand extends Command
         }
 
         // validate candidatures
-        if (!$this->committeeCandidacyRepository->hasConfirmedCandidacies($committee, $designation)) {
+        if (!$this->entityManager->getRepository(CommitteeCandidacy::class)->hasConfirmedCandidacies($committee, $designation)) {
             if ($this->io->isDebug()) {
                 $this->io->warning(sprintf('Committee "%s" does not have at least 1 candidate', $committee->getSlug()));
             }
@@ -471,7 +509,7 @@ class ConfigureCommand extends Command
         $list = new VotersList($election);
 
         foreach ($adherents as $adherent) {
-            $list->addVoter($this->voterRepository->findForAdherent($adherent) ?? new Voter($adherent));
+            $list->addVoter($this->entityManager->getRepository(Voter::class)->findForAdherent($adherent) ?? new Voter($adherent));
         }
 
         return $list;
@@ -491,7 +529,7 @@ class ConfigureCommand extends Command
         }
 
         // validate candidatures
-        $candidacies = $this->territorialCouncilCandidacyRepository->findAllConfirmedForElection($coTerrElection);
+        $candidacies = $this->entityManager->getRepository(TerritorialCouncilCandidacy::class)->findAllConfirmedForElection($coTerrElection);
 
         if (0 === \count($candidacies)) {
             if ($this->io->isDebug()) {
@@ -536,74 +574,5 @@ class ConfigureCommand extends Command
         $candidacy->take();
 
         return $candidate;
-    }
-
-    /** @required */
-    public function setDesignationRepository(DesignationRepository $designationRepository): void
-    {
-        $this->designationRepository = $designationRepository;
-    }
-
-    /** @required */
-    public function setCommitteeElectionRepository(CommitteeElectionRepository $committeeElectionRepository): void
-    {
-        $this->committeeElectionRepository = $committeeElectionRepository;
-    }
-
-    /** @required */
-    public function setEntityManager(EntityManagerInterface $entityManager): void
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /** @required */
-    public function setElectionRepository(ElectionRepository $electionRepository): void
-    {
-        $this->electionRepository = $electionRepository;
-    }
-
-    /** @required */
-    public function setCommitteeCandidacyRepository(CommitteeCandidacyRepository $committeeCandidacyRepository): void
-    {
-        $this->committeeCandidacyRepository = $committeeCandidacyRepository;
-    }
-
-    /** @required */
-    public function setCommitteeMembershipRepository(CommitteeMembershipRepository $committeeMembershipRepository): void
-    {
-        $this->committeeMembershipRepository = $committeeMembershipRepository;
-    }
-
-    /** @required */
-    public function setVoterRepository(VoterRepository $voterRepository): void
-    {
-        $this->voterRepository = $voterRepository;
-    }
-
-    /** @required */
-    public function setDispatcher(EventDispatcherInterface $dispatcher): void
-    {
-        $this->dispatcher = $dispatcher;
-    }
-
-    /** @required */
-    public function setTerritorialCouncilElectionRepository(
-        TerritorialCouncilElectionRepository $territorialCouncilElectionRepository
-    ): void {
-        $this->territorialCouncilElectionRepository = $territorialCouncilElectionRepository;
-    }
-
-    /** @required */
-    public function setTerritorialCouncilCandidacyRepository(
-        TerritorialCouncilCandidacyRepository $territorialCouncilCandidacyRepository
-    ): void {
-        $this->territorialCouncilCandidacyRepository = $territorialCouncilCandidacyRepository;
-    }
-
-    /** @required */
-    public function setNationalCouncilElectionRepository(
-        NationalCouncilElectionRepository $nationalCouncilElectionRepository
-    ): void {
-        $this->nationalCouncilElectionRepository = $nationalCouncilElectionRepository;
     }
 }

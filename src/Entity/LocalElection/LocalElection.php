@@ -59,4 +59,11 @@ class LocalElection extends AbstractElectionEntity
             $this->candidaciesGroups->add($group);
         }
     }
+
+    public function countCandidacies(): int
+    {
+        return array_sum(array_map(function (CandidaciesGroup $candidaciesGroup) {
+            return \count($candidaciesGroup->getCandidacies());
+        }, $this->getCandidaciesGroups()));
+    }
 }

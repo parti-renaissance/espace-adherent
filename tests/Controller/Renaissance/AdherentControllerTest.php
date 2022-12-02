@@ -415,6 +415,21 @@ class AdherentControllerTest extends WebTestCase
         $this->assertEquals($referentTagsBeforeUnregistration, $unregistration->getReferentTags()->toArray());
     }
 
+    public function testBlockedCertificationRequest(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
+
+        $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
+        $this->assertResponseStatusCode(200, $this->client->getResponse());
+        $this->assertStringContainsString('Demande de certification bloquée', $crawler->filter('#certification')->text());
+
+        $this->client->request('GET', '/espace-adherent/mon-compte/certification/demande');
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/certification', $this->client);
+
+        $this->client->followRedirect();
+        $this->assertResponseStatusCode(200, $this->client->getResponse());
+    }
+
     public function provideAdherentCredentials(): array
     {
         return [
