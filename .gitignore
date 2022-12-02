@@ -3,6 +3,7 @@
 /app/data/chez-vous/
 /app/data/timeline/
 /app/data/user_documents/
+/app/data/elections/
 /templates/jquery.collection.html.twig
 /build/
 /var/

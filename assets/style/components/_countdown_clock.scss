@@ -1,0 +1,30 @@
+.em-countdown-clock {
+    span {
+        &.days,
+        &.hours,
+        &.minutes,
+        &.seconds {
+            margin-left: 5px;
+
+            &:after {
+                margin-left: 5px;
+            }
+        }
+
+        &.days:after {
+            content: 'j';
+        }
+
+        &.hours:after {
+            content: 'h';
+        }
+
+        &.minutes:after {
+            content: 'm';
+        }
+
+        &.seconds:after {
+            content: 's';
+        }
+    }
+}

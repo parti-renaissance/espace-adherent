@@ -51,6 +51,12 @@ class Main {
     }) {
         import('pages/mc_resubscribe_email').catch((error) => { throw error; }).then((module) => module.default(this.get('api'), redirectUrl, signupPayload, authenticated, callback))
     }
+
+    runCountdownClock(clockSelector, refreshPage = false) {
+        import('services/utils/countdownClock').catch((error) => { throw error; }).then((module) => {
+            module.default(clockSelector, refreshPage);
+        });
+    }
 }
 
 window.Main = new Main();

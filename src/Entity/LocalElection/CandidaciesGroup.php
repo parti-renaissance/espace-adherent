@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CandidaciesGroup extends BaseCandidaciesGroup
 {
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\LocalElection\LocalElection")
+     * @ORM\ManyToOne(targetEntity="App\Entity\LocalElection\LocalElection", inversedBy="candidaciesGroups")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     public ?LocalElection $election = null;
@@ -45,18 +45,12 @@ class CandidaciesGroup extends BaseCandidaciesGroup
         return (string) $this->election;
     }
 
-    public function addCandidacy(CandidacyInterface $candidacy): void
-    {
-        parent::addCandidacy($candidacy);
-        $candidacy->setElection($this->election);
-    }
-
-    public function hasFaitStatementFile(): bool
+    public function hasFaithStatementFile(): bool
     {
         return null !== $this->faithStatementFileName;
     }
 
-    public function getFaitStatementFilePath(): string
+    public function getFaithStatementFilePath(): string
     {
         return sprintf('elections/profession-de-foi/%s', $this->faithStatementFileName);
     }

@@ -106,4 +106,9 @@ class Candidacy extends BaseCandidacy
     {
         $this->email = $email;
     }
+
+    public function getFullName(): string
+    {
+        return sprintf('%s %s', $this->firstName, $this->lastName);
+    }
 }

@@ -3,7 +3,7 @@
 namespace App\VotingPlatform\Election\Listener;
 
 use App\Repository\VotingPlatform\ElectionRepository;
-use App\Security\Voter\VotingPlatformAccessVoter;
+use App\Security\Voter\VotingPlatform\AbleToVoteVoter;
 use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use App\VotingPlatform\Election\VoteCommandStateEnum;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -51,7 +51,7 @@ class GuardListener implements EventSubscriberInterface
         $command = $event->getSubject();
 
         $this->isGranted = $this->authorizationChecker->isGranted(
-            VotingPlatformAccessVoter::PERMISSION,
+            AbleToVoteVoter::PERMISSION,
             $this->electionRepository->findOneByUuid($command->getElectionUuid())
         );
 

@@ -50,6 +50,11 @@ class CandidateGroup
      */
     private $label;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $mediaFilePath = null;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -80,12 +85,14 @@ class CandidateGroup
     /**
      * @return Candidate[]
      */
-    public function getCandidatesSorted(): array
+    public function getCandidatesSorted(bool $byPosition = false): array
     {
         $candidates = $this->candidates->toArray();
 
-        usort($candidates, function (Candidate $a, Candidate $b) {
-            return $b->isFemale() <=> $a->isFemale();
+        usort($candidates, function (Candidate $a, Candidate $b) use ($byPosition) {
+            return $byPosition ?
+                $a->position <=> $b->position :
+                $b->isFemale() <=> $a->isFemale();
         });
 
         return $candidates;

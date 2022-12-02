@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\CommitteeCandidacy;
+use App\Entity\LocalElection\LocalElection;
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
@@ -63,13 +64,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $this->faker = Factory::create('fr_FR');
         $this->manager = $manager;
 
-        $this->loadCommitteeAdherentElections();
-
-        $manager->flush();
-    }
-
-    private function loadCommitteeAdherentElections(): void
-    {
         // -------------------------------------------
 
         $election = new Election(
@@ -214,6 +208,17 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
         // -------------------------------------------
 
+        $election = new Election(
+            $this->getReference('designation-13'),
+            Uuid::fromString(self::ELECTION_UUID6),
+            [new ElectionRound()]
+        );
+        $this->manager->persist($election);
+        $this->loadLocalElectionCandidates($election, $this->getReference('local-election-1'));
+        $this->loadVoters($election);
+
+        // -------------------------------------------
+
         $this->manager->flush();
     }
 
@@ -350,10 +355,12 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     {
         $adherent1 = $this->getReference('assessor-1');
         $adherent2 = $this->getReference('adherent-20');
+        $adherent3 = $this->getReference('adherent-5');
 
         $list = new VotersList($election);
         $list->addVoter($this->voters[$adherent1->getId()] ?? $this->voters[$adherent1->getId()] = new Voter($adherent1));
         $list->addVoter($this->voters[$adherent2->getId()] ?? $this->voters[$adherent2->getId()] = new Voter($adherent2));
+        $list->addVoter($this->voters[$adherent3->getId()] ?? $this->voters[$adherent3->getId()] = new Voter($adherent3));
 
         for ($i = 1; $i <= 9; ++$i) {
             $list->addVoter(new Voter());
@@ -477,6 +484,32 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         }
     }
 
+    private function loadLocalElectionCandidates(Election $election, LocalElection $localElection): void
+    {
+        $pool = new ElectionPool('');
+        $lists = $localElection->getCandidaciesGroups();
+        $currentRound = $election->getCurrentRound();
+        $currentRound->addElectionPool($pool);
+        $election->addElectionPool($pool);
+
+        foreach ($lists as $list) {
+            $pool->addCandidateGroup($group = new CandidateGroup());
+
+            if ($list->hasFaithStatementFile()) {
+                $group->mediaFilePath = $list->getFaithStatementFilePath();
+            }
+
+            foreach ($list->getCandidacies() as $candidacy) {
+                $group->addCandidate($candidate = new Candidate(
+                    $candidacy->getFirstName(),
+                    $candidacy->getLastName(),
+                    $candidacy->getGender()
+                ));
+                $candidate->position = $candidacy->getPosition();
+            }
+        }
+    }
+
     public function getDependencies()
     {
         return [
@@ -484,6 +517,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
             LoadCommitteeCandidacyData::class,
             LoadDesignationData::class,
             LoadTerritorialCouncilCandidacyData::class,
+            LoadLocalElectionData::class,
         ];
     }
 

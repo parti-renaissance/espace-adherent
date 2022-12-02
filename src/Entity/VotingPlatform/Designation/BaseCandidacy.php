@@ -164,6 +164,11 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
         return $this->getAdherent()->getLastName();
     }
 
+    public function getPosition(): ?int
+    {
+        return null;
+    }
+
     public function getQuality(): ?string
     {
         return null;

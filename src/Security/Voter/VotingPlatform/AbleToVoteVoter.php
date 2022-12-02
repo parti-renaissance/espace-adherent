@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Security\Voter;
+namespace App\Security\Voter\VotingPlatform;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
 use App\Repository\VotingPlatform\VoteRepository;
 use App\Repository\VotingPlatform\VoterRepository;
+use App\Security\Voter\AbstractAdherentVoter;
 
-class VotingPlatformAccessVoter extends AbstractAdherentVoter
+class AbleToVoteVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'ABLE_TO_VOTE';
 

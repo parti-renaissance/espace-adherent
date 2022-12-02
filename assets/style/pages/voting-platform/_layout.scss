@@ -77,22 +77,7 @@
 
     .election-vote {
         &__boxes {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: stretch;
-
             .candidate__box {
-                box-sizing: border-box;
-                flex-basis: calc(50% - 12px);
-                padding: 30px 30px 60px;
-                margin: 24px 0;
-
-                @media (min-width: $mobile) {
-                    padding: 30px;
-                }
-
                 .box__content {
                     position: relative;
 
