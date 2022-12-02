@@ -9,7 +9,6 @@ use App\LocalElection\CandidateImportCommand;
 use App\Repository\LocalElection\CandidacyRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Csv\Exception;
 use League\Csv\Reader;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +24,7 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
         Request $request,
         CandidaciesGroup $candidaciesGroup,
         CandidacyRepository $candidacyRepository
-        ): Response {
+    ): Response {
         $this->admin->checkAccess('candidate_import');
 
         $form = $this
