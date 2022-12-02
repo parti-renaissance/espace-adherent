@@ -45,11 +45,6 @@ class CandidaciesGroup extends BaseCandidaciesGroup
         return (string) $this->election;
     }
 
-    public function addCandidacy(CandidacyInterface $candidacy): void
-    {
-        parent::addCandidacy($candidacy);
-    }
-
     public function hasFaithStatementFile(): bool
     {
         return null !== $this->faithStatementFileName;
