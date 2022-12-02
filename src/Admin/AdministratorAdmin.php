@@ -136,6 +136,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_CMS_BLOCKS',
                     'ROLE_ADMIN_JEMENGAGE_COM',
                     'ROLE_ADMIN_RENAISSANCE',
+                    'ROLE_ADMIN_LOCAL_ELECTION',
                 ],
             ])
             ->add(
