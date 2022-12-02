@@ -5,8 +5,7 @@ namespace App\Admin\LocalElection;
 use App\Admin\AbstractAdmin;
 use App\Entity\Geo\Zone;
 use App\Entity\LocalElection\CandidaciesGroup;
-use League\Flysystem\FilesystemInterface;
-use Ramsey\Uuid\Uuid;
+use App\LocalElection\Manager;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -18,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class CandidaciesGroupAdmin extends AbstractAdmin
 {
-    private ?FilesystemInterface $storage = null;
+    private ?Manager $localElectionManager = null;
 
     protected function configureListFields(ListMapper $list): void
     {
@@ -84,7 +83,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
             ->add('election', ModelFilter::class, [
                 'show_filter' => true,
                 'label' => 'Élection',
-                'filter_type' => ModelAutocompleteType::class,
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
@@ -136,18 +135,12 @@ class CandidaciesGroupAdmin extends AbstractAdmin
 
     private function uploadFaithStatementFile(CandidaciesGroup $candidaciesGroup): void
     {
-        if (!$candidaciesGroup->file) {
-            return;
-        }
-
-        $candidaciesGroup->faithStatementFileName = sprintf('%s.pdf', Uuid::uuid4());
-
-        $this->storage->put($candidaciesGroup->getFaitStatementFilePath(), file_get_contents($candidaciesGroup->file->getPathname()));
+        $this->localElectionManager->uploadFaithStatementFile($candidaciesGroup);
     }
 
     /** @required */
-    public function setStorage(FilesystemInterface $storage): void
+    public function setLocalElectionManager(Manager $localElectionManager): void
     {
-        $this->storage = $storage;
+        $this->localElectionManager = $localElectionManager;
     }
 }

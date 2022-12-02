@@ -82,7 +82,7 @@ class DesignationAdmin extends AbstractAdmin
                         ],
                         'label' => 'Zones locales',
                         'multiple' => true,
-                        'help' => 'Obligatoire pour les élections locales',
+                        'help' => 'Obligatoire pour les élections départementales',
                         'btn_add' => false,
                     ])
                 ->end()
@@ -259,7 +259,6 @@ class DesignationAdmin extends AbstractAdmin
                 'zones',
                 'voteStartDate',
                 'voteEndDate',
-                'isBlankVoteEnabled',
             ];
         }
 

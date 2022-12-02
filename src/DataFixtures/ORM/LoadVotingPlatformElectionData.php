@@ -495,6 +495,10 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         foreach ($lists as $list) {
             $pool->addCandidateGroup($group = new CandidateGroup());
 
+            if ($list->hasFaithStatementFile()) {
+                $group->mediaFilePath = $list->getFaithStatementFilePath();
+            }
+
             foreach ($list->getCandidacies() as $candidacy) {
                 $group->addCandidate($candidate = new Candidate(
                     $candidacy->getFirstName(),

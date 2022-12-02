@@ -32,7 +32,7 @@ final class DesignationTypeEnum extends Enum
         self::NATIONAL_COUNCIL => 'Désignation des membres siégeant au Conseil national',
         self::EXECUTIVE_OFFICE => 'Élection des membres du Bureau Exécutif',
         self::POLL => 'Convocation de la Convention de La République En Marche !',
-        self::LOCAL_ELECTION => 'Élection locale',
+        self::LOCAL_ELECTION => 'Élection départementale',
     ];
 
     public const MAIN_TYPES = [

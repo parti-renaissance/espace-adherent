@@ -50,6 +50,11 @@ class CandidateGroup
      */
     private $label;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $mediaFilePath = null;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();

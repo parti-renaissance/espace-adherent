@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/elections-locales/listes", name="app_renaissance_local_election_lists", methods="GET")
+ * @Route("/elections-locales/listes", name="app_renaissance_departmental_election_lists", methods="GET")
  * @IsGranted("ROLE_ADHERENT")
  */
 class CandidaciesListController extends AbstractController

@@ -50,12 +50,12 @@ class CandidaciesGroup extends BaseCandidaciesGroup
         parent::addCandidacy($candidacy);
     }
 
-    public function hasFaitStatementFile(): bool
+    public function hasFaithStatementFile(): bool
     {
         return null !== $this->faithStatementFileName;
     }
 
-    public function getFaitStatementFilePath(): string
+    public function getFaithStatementFilePath(): string
     {
         return sprintf('elections/profession-de-foi/%s', $this->faithStatementFileName);
     }

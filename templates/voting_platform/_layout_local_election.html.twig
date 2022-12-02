@@ -1,8 +1,10 @@
 {% extends 'voting_platform/_layout_base.html.twig' %}
 
+{% set start_button_label = 'J\'accède au vote' %}
+
 {% block banner %}
     <div class="max-w-8xl mx-auto py-3 px-4 md:px-6">
-        <a href="{{ path('app_renaissance_local_election_index') }}" class="text-base text-gray-500 hover:text-gray-900">
+        <a href="{{ path('app_renaissance_departmental_election_index') }}" class="text-base text-gray-500 hover:text-gray-900">
             ← Retourner
         </a>
     </div>

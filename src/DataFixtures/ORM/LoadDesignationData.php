@@ -158,7 +158,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $manager->persist($designation);
 
         // Local election in dpt 92
-        $designation = new Designation('Élection locale dans le département 92');
+        $designation = new Designation('Élection départementale dans le département 92');
         $designation->setType(DesignationTypeEnum::LOCAL_ELECTION);
         $designation->setVoteStartDate(new \DateTime('-5 minutes'));
         $designation->setVoteEndDate(new \DateTime('+10 days'));

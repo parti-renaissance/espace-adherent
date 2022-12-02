@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/elections-locales", name="app_renaissance_local_election_index", methods="GET")
+ * @Route("/elections-departementales", name="app_renaissance_departmental_election_index", methods="GET")
  * @IsGranted("ROLE_ADHERENT")
  */
 class IndexController extends AbstractController

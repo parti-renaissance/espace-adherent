@@ -90,6 +90,11 @@ class Designation
     private $candidacyEndDate;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    public ?\DateTime $electionCreationDate = null;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
@@ -511,6 +516,11 @@ class Designation
     public function isCommitteeType(): bool
     {
         return \in_array($this->type, [DesignationTypeEnum::COMMITTEE_ADHERENT, DesignationTypeEnum::COMMITTEE_SUPERVISOR], true);
+    }
+
+    public function isCommitteeAdherentType(): bool
+    {
+        return DesignationTypeEnum::COMMITTEE_ADHERENT === $this->type;
     }
 
     public function isCopolType(): bool
