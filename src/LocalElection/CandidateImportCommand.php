@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CandidateImportCommand
 {
     /**
+     * @Assert\NotBlank
      * @Assert\File(
      *     maxSize="5M",
      *     mimeTypes={
@@ -16,15 +17,5 @@ class CandidateImportCommand
      *     }
      * )
      */
-    private ?UploadedFile $file;
-
-    public function getFile(): ?UploadedFile
-    {
-        return $this->file;
-    }
-
-    public function setFile(?UploadedFile $file): void
-    {
-        $this->file = $file;
-    }
+    public ?UploadedFile $file = null;
 }

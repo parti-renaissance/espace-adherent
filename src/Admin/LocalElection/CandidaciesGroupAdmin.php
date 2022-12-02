@@ -19,11 +19,14 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class CandidaciesGroupAdmin extends AbstractAdmin
 {
-    protected $accessMapping = [
-        'candidate_import' => 'CANDIDATE_IMPORT',
-    ];
-
     private ?FilesystemInterface $storage = null;
+
+    protected function getAccessMapping(): array
+    {
+        return [
+            'candidate_import' => 'CANDIDATE_IMPORT',
+        ];
+    }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
@@ -108,7 +111,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
             ->add('election', ModelFilter::class, [
                 'show_filter' => true,
                 'label' => 'Élection',
-                'filter_type' => ModelAutocompleteType::class,
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,

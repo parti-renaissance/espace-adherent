@@ -12,7 +12,12 @@ use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LocalElection\CandidacyRepository")
- * @ORM\Table(name="local_election_candidacy")
+ * @ORM\Table(
+ *     name="local_election_candidacy",
+ *     indexes={
+ *         @ORM\Index(columns={"email"}),
+ *     }
+ * )
  */
 class Candidacy extends BaseCandidacy
 {

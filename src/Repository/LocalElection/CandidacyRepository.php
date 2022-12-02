@@ -17,7 +17,7 @@ class CandidacyRepository extends ServiceEntityRepository
     public function findOneByCandidaciesGroupAndEmail(CandidaciesGroup $candidaciesGroup, string $email): ?Candidacy
     {
         return $this->createQueryBuilder('candidacy')
-            ->leftJoin('candidacy.candidaciesGroup', 'candidacies_group')
+            ->innerJoin('candidacy.candidaciesGroup', 'candidacies_group')
             ->where('candidacy.email = :email AND candidacies_group = :candidacies_group')
             ->setParameters([
                 'email' => $email,
