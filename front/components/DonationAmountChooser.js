@@ -98,7 +98,7 @@ export default class DonationAmountChooser extends React.Component {
                             <div className="infos-taxe-reduction__content">
                                 <div>La réduction fiscale</div>
                                 <p>
-                                    66 % de votre don vient en déduction de votre impôt sur
+                                    66 % de votre don vient en réduction de votre impôt sur
                                     le revenu (dans la limite de 20 % du revenu imposable).
                                     <br /><br />
                                     <strong>Par exemple :</strong> un don de 100 € vous revient

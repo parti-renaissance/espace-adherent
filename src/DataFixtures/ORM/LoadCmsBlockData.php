@@ -313,7 +313,7 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
             <<<'TXT'
                 <h2 class="text--large b__nudge--bottom-larger">La réduction fiscale</h2>
                 <p class="text--body">
-                    66 % de votre don vient en déduction de votre impôt sur le revenu (dans la limite de 20 % du revenu imposable).
+                    66 % de votre don vient en ééduction de votre impôt sur le revenu (dans la limite de 20 % du revenu imposable).
                 </p>
                 <div class="donation-reduction__cols">
                     <p class="text--body donation-reduction__col">
