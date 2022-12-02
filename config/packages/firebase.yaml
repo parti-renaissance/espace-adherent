@@ -2,8 +2,3 @@ kreait_firebase:
     projects:
         jemarche_app:
             default_dynamic_links_domain: '%env(DYNAMIC_LINKS_DOMAIN_URI_PREFIX)%'
-
-services:
-    # Remove these aliases after kreait/firebase-bundle:4.0.0
-    Kreait\Firebase\Contract\Messaging: '@kreait_firebase.jemarche_app.messaging'
-    Kreait\Firebase\Contract\DynamicLinks: '@kreait_firebase.jemarche_app.dynamic_links'
