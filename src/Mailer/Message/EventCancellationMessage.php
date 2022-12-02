@@ -13,8 +13,6 @@ final class EventCancellationMessage extends Message
      * Creates a new message instance for a list of recipients.
      *
      * @param EventRegistration[] $recipients
-     *
-     * @return EventCancellationMessage
      */
     public static function create(array $recipients, Adherent $host, BaseEvent $event, string $eventsLink): self
     {
@@ -24,7 +22,7 @@ final class EventCancellationMessage extends Message
 
         $recipient = array_shift($recipients);
         if (!$recipient instanceof EventRegistration) {
-            throw new \RuntimeException(sprintf('First recipient must be an %s instance, %s given', EventRegistration::class, \get_class($recipient)));
+            throw new \RuntimeException(sprintf('First recipient must be an %s instance, %s given', EventRegistration::class, $recipient::class));
         }
 
         $message = new self(

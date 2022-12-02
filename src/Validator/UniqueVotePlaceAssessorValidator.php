@@ -33,7 +33,7 @@ class UniqueVotePlaceAssessorValidator extends ConstraintValidator
             ) {
                 $this->context
                     ->buildViolation($constraint->message)
-                    ->atPath("[${index}].adherent")
+                    ->atPath("[{$index}].adherent")
                     ->addViolation()
                 ;
 

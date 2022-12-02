@@ -47,7 +47,7 @@ abstract class BaseWithListCollectionResult extends BaseVoteResult
             && !$this->listTotalResults
                 ->filter(static function (ListTotalResult $total) { return $total->getTotal() > 0; })
                 ->isEmpty()
-            ;
+        ;
     }
 
     public function isPartial(): bool
@@ -56,7 +56,7 @@ abstract class BaseWithListCollectionResult extends BaseVoteResult
             || !$this->listTotalResults
                 ->filter(static function (ListTotalResult $total) { return $total->getTotal() > 0; })
                 ->isEmpty()
-            ;
+        ;
     }
 
     /**

@@ -20,7 +20,7 @@ class AdherentSegmentListener
 
     public function postPersist(AdherentSegment $segment): void
     {
-        $this->bus->dispatch(new CreateStaticSegmentCommand($segment->getUuid(), \get_class($segment)));
+        $this->bus->dispatch(new CreateStaticSegmentCommand($segment->getUuid(), $segment::class));
     }
 
     public function preUpdate(AdherentSegment $segment, PreUpdateEventArgs $event): void

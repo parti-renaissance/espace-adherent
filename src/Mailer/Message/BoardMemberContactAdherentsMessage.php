@@ -10,8 +10,6 @@ final class BoardMemberContactAdherentsMessage extends Message
 {
     /**
      * @param Adherent[] $recipients
-     *
-     * @return BoardMemberContactAdherentsMessage
      */
     public static function createFromModel(BoardMemberMessageModel $model, array $recipients): self
     {

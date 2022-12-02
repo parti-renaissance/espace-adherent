@@ -41,7 +41,7 @@ class AddressValidator extends ConstraintValidator
         }
 
         // Invalid postal code
-        if (!is_scalar($address->getPostalCode()) || 0 === \count($this->franceCities->findCitiesByPostalCode($address->getPostalCode()))) {
+        if (!\is_scalar($address->getPostalCode()) || 0 === \count($this->franceCities->findCitiesByPostalCode($address->getPostalCode()))) {
             $this->context->addViolation($constraint->frenchPostalCodeMessage);
 
             return;

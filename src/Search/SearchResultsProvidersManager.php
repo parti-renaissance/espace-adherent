@@ -25,7 +25,7 @@ class SearchResultsProvidersManager
     public function addProvider(SearchResultsProviderInterface $provider): void
     {
         if (isset($this->providers[$provider->getSupportedTypeOfSearch()])) {
-            throw new \RuntimeException(sprintf('This type of search is already supported by another provider. You provided "%s" and "%s" already supports "%s" type of search', \get_class($provider), \get_class($this->providers[$provider->getSupportedTypeOfSearch()]), $provider->getSupportedTypeOfSearch()));
+            throw new \RuntimeException(sprintf('This type of search is already supported by another provider. You provided "%s" and "%s" already supports "%s" type of search', $provider::class, \get_class($this->providers[$provider->getSupportedTypeOfSearch()]), $provider->getSupportedTypeOfSearch()));
         }
 
         $this->providers[$provider->getSupportedTypeOfSearch()] = $provider;

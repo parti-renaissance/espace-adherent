@@ -174,8 +174,8 @@ class AdherentMessageRepository extends ServiceEntityRepository
 
         $queryBuilder
             ->andWhere("$alias.sentAt >= :start_date AND $alias.sentAt <= :end_date")
-            ->setParameter('start_date', ($now->modify('first day of this month')->format('Y-m-d 00:00:00')))
-            ->setParameter('end_date', ($now->modify('last day of this month')->format('Y-m-d 23:59:59')))
+            ->setParameter('start_date', $now->modify('first day of this month')->format('Y-m-d 00:00:00'))
+            ->setParameter('end_date', $now->modify('last day of this month')->format('Y-m-d 23:59:59'))
         ;
 
         return $this;

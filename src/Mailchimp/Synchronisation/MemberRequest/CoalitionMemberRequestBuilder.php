@@ -99,13 +99,13 @@ class CoalitionMemberRequestBuilder extends AbstractMemberRequestBuilder
                     : null)
                 : (($zone = $contact->getZone())
                     ? sprintf('%s %s',
-                $zone->isCountry() ? $zone->getCode() : $zone->getPostalCodeAsString(), $zone->getName())
+                        $zone->isCountry() ? $zone->getCode() : $zone->getPostalCodeAsString(), $zone->getName())
                     : null)
             )
              ->setSource($contact->getSource())
              ->setInterests($this->buildInterestArray($contact))
              ->setActiveTags($this->buildActiveTags($contact))
-         ;
+        ;
     }
 
     protected function buildMergeFields(): array

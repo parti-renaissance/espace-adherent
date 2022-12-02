@@ -17,7 +17,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use ZipArchive;
 
 final class UpdateCommunitiesCommand extends Command
 {
@@ -195,7 +194,7 @@ final class UpdateCommunitiesCommand extends Command
 
         file_put_contents($zipFilename, $response->getContent());
 
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
 
         if (true !== ($code = $zip->open($zipFilename))) {
             throw new \RuntimeException(sprintf('ZipArchive::open() error: %d', $code));

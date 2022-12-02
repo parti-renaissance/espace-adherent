@@ -240,7 +240,7 @@ class ImportDonationsCommand extends Command
                 continue;
             }
 
-            $amount = str_replace([' ', ' ', ','], ['', '', '.'], $amount);
+            $amount = str_replace(["\u{a0}", ' ', ','], ['', '', '.'], $amount);
 
             if (!is_numeric($amount)) {
                 $this->io->text("\"$amount\" is not a valid amount. (line $line)");

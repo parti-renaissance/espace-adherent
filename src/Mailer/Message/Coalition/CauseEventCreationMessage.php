@@ -17,7 +17,7 @@ final class CauseEventCreationMessage extends AbstractCoalitionMessage
 
         $recipient = array_shift($recipients);
         if (!$recipient instanceof CauseFollower) {
-            throw new \RuntimeException(sprintf('First recipient must be an %s instance, %s given', CauseFollower::class, \get_class($recipient)));
+            throw new \RuntimeException(sprintf('First recipient must be an %s instance, %s given', CauseFollower::class, $recipient::class));
         }
 
         $adherent = $recipient->getAdherent();

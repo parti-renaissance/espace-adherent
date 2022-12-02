@@ -41,8 +41,8 @@ class DataCornerVoterTest extends AbstractAdherentVoterTest
         $this->scopeGeneratorMock->expects($this->once())
             ->method('generateScopes')
             ->willReturn(
-                 ($isDeputy ? [new Scope('deputy', 'Député', [], [], [])] : [])
-                 + ($isSenator ? [new Scope('senator', 'Sénateur', [], [], [])] : [])
+                ($isDeputy ? [new Scope('deputy', 'Député', [], [], [])] : [])
+                + ($isSenator ? [new Scope('senator', 'Sénateur', [], [], [])] : [])
             )
         ;
 

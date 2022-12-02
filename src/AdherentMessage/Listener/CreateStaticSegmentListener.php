@@ -35,7 +35,7 @@ class CreateStaticSegmentListener implements EventSubscriberInterface
     private function onUpdate(StaticSegmentInterface $object): void
     {
         if (!$object->getMailchimpId()) {
-            $this->bus->dispatch(new CreateStaticSegmentCommand($object->getUuid(), \get_class($object)));
+            $this->bus->dispatch(new CreateStaticSegmentCommand($object->getUuid(), $object::class));
         }
     }
 }

@@ -197,7 +197,7 @@ abstract class AbstractDesignationController extends AbstractController
         Election $election,
         array $parameters = []
     ): Response {
-        return $this->redirectToRoute("app_{$this->getSpaceType()}_designations_${subName}", array_merge([
+        return $this->redirectToRoute("app_{$this->getSpaceType()}_designations_{$subName}", array_merge([
             'committee_slug' => $committee->getSlug(),
             'uuid' => $election->getUuid()->toString(),
         ], $parameters));

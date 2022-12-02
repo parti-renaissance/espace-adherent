@@ -38,7 +38,7 @@ class MembershipController extends AbstractController
 
         $serializer->deserialize(
             $request->getContent(),
-            \get_class($membershipRequest),
+            $membershipRequest::class,
             JsonEncoder::FORMAT,
             [
                 AbstractNormalizer::OBJECT_TO_POPULATE => $membershipRequest,

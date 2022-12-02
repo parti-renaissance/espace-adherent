@@ -26,7 +26,7 @@ class MunicipalChiefVoter extends AbstractAdherentVoter
             \in_array($inseeCode, $subject->getFavoriteCities(), true)
             || (
                 isset(FranceCitiesBundle::SPECIAL_CITY_ZONES[$inseeCode])
-                && preg_match('/#'.rtrim($inseeCode, '0').'/', implode($subject->getFavoriteCityPrefixedCodes()))
+                && preg_match('/#'.rtrim($inseeCode, '0').'/', implode('', $subject->getFavoriteCityPrefixedCodes()))
             )
         ;
     }

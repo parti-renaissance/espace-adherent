@@ -86,15 +86,17 @@ class MailchimpSyncAllMembershipsCommand extends Command
                 $object = null;
 
                 switch ($type) {
-                    case self::COMMITTEE_TYPE: $object = $membership->getCommittee(); break;
-                    case self::TERRITORIAL_COUNCIL_TYPE: $object = $membership->getTerritorialCouncil(); break;
+                    case self::COMMITTEE_TYPE: $object = $membership->getCommittee();
+                        break;
+                    case self::TERRITORIAL_COUNCIL_TYPE: $object = $membership->getTerritorialCouncil();
+                        break;
                 }
 
                 if ($object) {
                     $this->bus->dispatch(new AddAdherentToStaticSegmentCommand(
                         $membership->getAdherent()->getUuid(),
                         $object->getUuid(),
-                        \get_class($object)
+                        $object::class
                     ));
                 }
 

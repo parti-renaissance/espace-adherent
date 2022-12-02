@@ -58,7 +58,7 @@ class ElectedRepresentativeLabelAdmin extends AbstractAdmin
         $formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
 
-            if ((isset($data['onGoing']) && '1' === $data['onGoing'])) {
+            if (isset($data['onGoing']) && '1' === $data['onGoing']) {
                 unset($data['finishYear']);
                 $event->setData($data);
             }

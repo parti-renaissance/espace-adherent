@@ -51,8 +51,8 @@ class ImportBoardMemberCommand extends Command
         $otherCSVRows = [];
 
         if (null === ($fileNameTypeFormCSV = $input->getOption(
-                'csvtypeformurl'
-            )) && null === ($fileNameOtherCSV = $input->getOption('othercsv'))) {
+            'csvtypeformurl'
+        )) && null === ($fileNameOtherCSV = $input->getOption('othercsv'))) {
             throw new LogicException('Pass at leat one URL of file');
         }
 

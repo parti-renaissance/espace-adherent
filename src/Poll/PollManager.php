@@ -98,7 +98,7 @@ class PollManager
     public function publish(Poll $poll): void
     {
         $poll->setPublished(true);
-        $this->entityManager->getRepository(\get_class($poll))->unpublishExceptOf($poll);
+        $this->entityManager->getRepository($poll::class)->unpublishExceptOf($poll);
 
         $this->entityManager->flush();
 

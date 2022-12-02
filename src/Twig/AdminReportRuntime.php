@@ -27,7 +27,7 @@ class AdminReportRuntime implements RuntimeExtensionInterface
         $routeName = 'show';
         $subject = $report->getSubject();
         $fieldDescription = $this->reportAdmin->getFieldDescriptionFactory()->create(
-            \get_class($report), 'subject', ['route' => ['name' => $routeName], 'type' => 'string']
+            $report::class, 'subject', ['route' => ['name' => $routeName], 'type' => 'string']
         );
         $fieldDescription->setAdmin($this->reportAdmin);
 

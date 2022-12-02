@@ -20,7 +20,7 @@ class UnregistrationRepository extends ServiceEntityRepository
             ->orderBy('i.id', 'ASC')
             ->getQuery()
             ->getSingleScalarResult()
-            ;
+        ;
     }
 
     public function findPaginatedForExport(int $page, int $perPage)
@@ -32,6 +32,6 @@ class UnregistrationRepository extends ServiceEntityRepository
             ->setFirstResult(($page - 1) * $perPage)
             ->setMaxResults($perPage)
             ->getResult()
-            ;
+        ;
     }
 }

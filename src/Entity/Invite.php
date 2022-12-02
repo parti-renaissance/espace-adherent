@@ -142,8 +142,6 @@ class Invite implements RecaptchaChallengeInterface
 
     /**
      * @param string|null $lastName
-     *
-     * @return Invite
      */
     public function setLastName($lastName): self
     {
@@ -162,8 +160,6 @@ class Invite implements RecaptchaChallengeInterface
 
     /**
      * @param string|null $firstName
-     *
-     * @return Invite
      */
     public function setFirstName($firstName): self
     {
@@ -182,8 +178,6 @@ class Invite implements RecaptchaChallengeInterface
 
     /**
      * @param string|null $email
-     *
-     * @return Invite
      */
     public function setEmail($email): self
     {
@@ -202,8 +196,6 @@ class Invite implements RecaptchaChallengeInterface
 
     /**
      * @param string|null $message
-     *
-     * @return Invite
      */
     public function setMessage($message): self
     {

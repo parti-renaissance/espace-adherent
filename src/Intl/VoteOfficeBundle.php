@@ -30,7 +30,7 @@ class VoteOfficeBundle
             'Sarrebruck',
             'Stuttgart',
         ],
-        'MK' => [ // ANCIENNE REPUBLIQUE YOUGOSLAVE DE MACEDOINE
+        'MK' => [ // ANCIENNE REPUBLIQUE YOUGOSLAVE DE MACEDOINE
             'Skopje',
         ],
         'AD' => [ // ANDORRE

@@ -124,7 +124,7 @@ class UpdateDistrictGeoPolygonCommand extends Command
             return [];
         }
 
-        return $this->findPolygons($this->districtsGeoJson, 'REF', ["${dptCode}-${districtCode}"]);
+        return $this->findPolygons($this->districtsGeoJson, 'REF', ["{$dptCode}-{$districtCode}"]);
     }
 
     private function findPolygons(array $data, string $key, array $identifiers): array

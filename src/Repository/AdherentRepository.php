@@ -187,7 +187,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function refreshUser(UserInterface $user)
     {
-        $class = \get_class($user);
+        $class = $user::class;
         $username = $user->getUsername();
 
         if (!$this->supportsClass($class)) {

@@ -56,6 +56,6 @@ class ExposedObjectNormalizer implements NormalizerInterface, NormalizerAwareInt
 
     private function generateCacheKey(ExposedObjectInterface $object): string
     {
-        return sprintf('%s:%s', \get_class($object), $object->getId());
+        return sprintf('%s:%s', $object::class, $object->getId());
     }
 }

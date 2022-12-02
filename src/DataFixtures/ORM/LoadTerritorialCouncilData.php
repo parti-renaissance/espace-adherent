@@ -24,7 +24,7 @@ class LoadTerritorialCouncilData extends Fixture implements DependentFixtureInte
                     $this->createTerritorialCouncil($manager, self::NAME_CORSE, '20, 2A, 2B');
 
                     break;
-                // for Paris
+                    // for Paris
                 case '75':
                     foreach (range(1, 20) as $district) {
                         $district = str_pad($district, 2, '0', \STR_PAD_LEFT);
@@ -35,7 +35,7 @@ class LoadTerritorialCouncilData extends Fixture implements DependentFixtureInte
                     $this->createTerritorialCouncil($manager, 'Conseil territorial de Paris', '75');
 
                     break;
-                // does not exist
+                    // does not exist
                 case '96':
                     break;
                 default:

@@ -257,7 +257,7 @@ class UserController extends AbstractController
      *     methods={"PUT"}
      * )
      */
-    public function chartAcceptationAction(Request $request, ObjectManager $manager, ): JsonResponse
+    public function chartAcceptationAction(Request $request, ObjectManager $manager): JsonResponse
     {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();

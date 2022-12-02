@@ -46,7 +46,7 @@ class ScopeVisibilityVoter extends AbstractAdherentVoter
 
         // Local scope & National subject
         if ($subject->isNationalVisibility()) {
-            if (\in_array(\get_class($subject), [Team::class, Campaign::class], true)) {
+            if (\in_array($subject::class, [Team::class, Campaign::class], true)) {
                 return false;
             }
 

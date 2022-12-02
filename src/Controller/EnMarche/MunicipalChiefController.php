@@ -76,7 +76,7 @@ class MunicipalChiefController extends AbstractController
 
         $this->addFlash('info', 'application_request.taken_successfully');
 
-        return $this->redirectToRoute("app_municipal_chief_candidate_${type}_list");
+        return $this->redirectToRoute("app_municipal_chief_candidate_{$type}_list");
     }
 
     /**
@@ -107,7 +107,7 @@ class MunicipalChiefController extends AbstractController
 
         $myTeamTarget = $httpRequest->query->has('mtt');
 
-        return $this->redirectToRoute('app_municipal_chief_'.($myTeamTarget ? 'my_team' : 'candidate')."_${type}_list");
+        return $this->redirectToRoute('app_municipal_chief_'.($myTeamTarget ? 'my_team' : 'candidate')."_{$type}_list");
     }
 
     /**

@@ -250,7 +250,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         }
 
         if (null === $objectToPopulate = $this->extractObjectToPopulate($class, $context, static::OBJECT_TO_POPULATE)) {
-            $normalizedData = is_scalar($data) ? [$data] : $this->prepareForDenormalization($data);
+            $normalizedData = \is_scalar($data) ? [$data] : $this->prepareForDenormalization($data);
             $class = $this->getClassDiscriminatorResolvedClass($normalizedData, $class);
         }
 

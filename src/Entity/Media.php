@@ -136,8 +136,6 @@ class Media
 
     /**
      * @param string|null $name
-     *
-     * @return Media
      */
     public function setName($name): self
     {
@@ -156,8 +154,6 @@ class Media
 
     /**
      * @param string|null $path
-     *
-     * @return Media
      */
     public function setPath($path): self
     {
@@ -176,8 +172,6 @@ class Media
 
     /**
      * @param int|null $width
-     *
-     * @return Media
      */
     public function setWidth($width): self
     {
@@ -196,8 +190,6 @@ class Media
 
     /**
      * @param int|null $height
-     *
-     * @return Media
      */
     public function setHeight($height): self
     {
@@ -216,8 +208,6 @@ class Media
 
     /**
      * @param int|null $size
-     *
-     * @return Media
      */
     public function setSize($size): self
     {
@@ -236,8 +226,6 @@ class Media
 
     /**
      * @param string|null $mimeType
-     *
-     * @return Media
      */
     public function setMimeType($mimeType): self
     {

@@ -88,7 +88,7 @@ class Notification
 
     public static function create(NotificationInterface $notification): self
     {
-        $parts = explode('\\', \get_class($notification));
+        $parts = explode('\\', $notification::class);
 
         return new self(
             end($parts),

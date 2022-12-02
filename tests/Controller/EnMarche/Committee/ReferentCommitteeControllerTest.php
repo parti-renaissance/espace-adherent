@@ -273,7 +273,7 @@ class ReferentCommitteeControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-           '/espace-referent/comites/une-nouvelle-demande/pre-refuser'
+            '/espace-referent/comites/une-nouvelle-demande/pre-refuser'
         );
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());

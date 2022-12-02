@@ -18,7 +18,7 @@ class BasicMessageSectionBuilder implements ContentSectionBuilderInterface
     public function supports(AdherentMessageInterface $message): bool
     {
         return \in_array(
-            \get_class($message),
+            $message::class,
             [
                 ReferentElectedRepresentativeMessage::class,
                 LreManagerElectedRepresentativeMessage::class,

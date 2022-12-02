@@ -41,7 +41,7 @@ class DonatorManager
 
     public function getNextAccountId(string $currentAccountId): string
     {
-        return str_pad((int) ($currentAccountId) + 1, 6, '0', \STR_PAD_LEFT);
+        return str_pad((int) $currentAccountId + 1, 6, '0', \STR_PAD_LEFT);
     }
 
     public function findLastIdentifier(): DonatorIdentifier

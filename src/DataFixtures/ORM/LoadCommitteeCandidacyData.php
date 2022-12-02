@@ -150,7 +150,7 @@ class LoadCommitteeCandidacyData extends Fixture implements DependentFixtureInte
             }
 
             $manager->persist($candidacy);
-            $this->setReference(sprintf('committee-candidacy-%s-%d', $election->getDesignationType(), ($i + 1)), $candidacy);
+            $this->setReference(sprintf('committee-candidacy-%s-%d', $election->getDesignationType(), $i + 1), $candidacy);
         }
 
         $manager->flush();
@@ -175,7 +175,7 @@ class LoadCommitteeCandidacyData extends Fixture implements DependentFixtureInte
 
         if ($withPhoto) {
             $candidacy->setImage(new UploadedFile(
-                sprintf('%s/../../../app/data/dist/avatar_%s_0%d.jpg', __DIR__, $adherent->isFemale() ? 'femme' : 'homme', rand(1, 2)),
+                sprintf('%s/../../../app/data/dist/avatar_%s_0%d.jpg', __DIR__, $adherent->isFemale() ? 'femme' : 'homme', random_int(1, 2)),
                 'image.jpg',
                 'image/jpeg',
                 null,

@@ -1970,7 +1970,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isMayorOrLeader(): bool
     {
         return $this->politicalCommitteeMembership
-            && ($this->politicalCommitteeMembership->hasOneOfQualities([TerritorialCouncilQualityEnum::MAYOR, TerritorialCouncilQualityEnum::LEADER]));
+            && $this->politicalCommitteeMembership->hasOneOfQualities([TerritorialCouncilQualityEnum::MAYOR, TerritorialCouncilQualityEnum::LEADER]);
     }
 
     public function getManagedAreaMarkerLatitude(): ?string

@@ -7,9 +7,6 @@ use Ramsey\Uuid\Uuid;
 
 final class AdherentContactMessage extends Message
 {
-    /**
-     * @return AdherentContactMessage
-     */
     public static function createFromModel(ContactMessage $contactMessage): self
     {
         return new self(

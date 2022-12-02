@@ -81,9 +81,6 @@ class SearchParametersFilter
         $this->maxResults = self::DEFAULT_MAX_RESULTS;
     }
 
-    /**
-     * @return SearchParametersFilter
-     */
     public function handleRequest(Request $request): self
     {
         $this->setQuery((string) $request->query->get(self::PARAMETER_QUERY));

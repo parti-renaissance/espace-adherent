@@ -20,13 +20,13 @@ class LoadPoliticalCommitteeFeedItemData extends Fixture implements DependentFix
             $coPolParis,
             $referent,
             <<<EOD
-                <p> Lorem <strong>Ipsum</strong></p>
+                <p>\u{a0}Lorem <strong>Ipsum</strong></p>
                 <ol>
                     <li>dolor augue</li>
                 	<li>aliquam</li>
                 	<li>rutrum arcu nulla</li>
                 </ol>
-                <h2><strong>Vivamus nulla ligula,</strong> Suspendisse condimentum vulputate magna.</h2>
+                <h2><strong>Vivamus nulla ligula,</strong>\u{a0}Suspendisse condimentum vulputate magna.</h2>
                 <p>Nulla viverra felis quis ullamcorper porttitor.</p>
                 EOD
         );

@@ -127,7 +127,7 @@ class BaseEventCommand
         $categoryClass = $this->getCategoryClass();
 
         if (!$category instanceof $categoryClass) {
-            throw new \InvalidArgumentException('Expected an instance of "%s" but got "%s".', $categoryClass, \get_class($category));
+            throw new \InvalidArgumentException('Expected an instance of "%s" but got "%s".', $categoryClass, $category::class);
         }
 
         $this->category = $category;

@@ -95,7 +95,7 @@ class CausesController extends AbstractController
                     new CoalitionMemberChangeCommand(
                         $adherent ? $adherent->getEmailAddress() : $follower->getEmailAddress(),
                         $follower->isAdherent()
-                ));
+                    ));
             }
         }
 

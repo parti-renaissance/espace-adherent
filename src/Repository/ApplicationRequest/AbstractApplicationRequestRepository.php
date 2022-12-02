@@ -130,7 +130,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
 
         foreach ($inseeCodes as $key => $code) {
             if (isset(FranceCitiesBundle::SPECIAL_CITY_ZONES[$code])) {
-                $orExpression->add("CONCAT('#', REPLACE(r.favoriteCities, ',', '#')) LIKE :code_${key}");
+                $orExpression->add("CONCAT('#', REPLACE(r.favoriteCities, ',', '#')) LIKE :code_{$key}");
                 $qb->setParameter("code_$key", sprintf('%%#%s%%', rtrim($code, '0')));
             } else {
                 $orExpression->add("FIND_IN_SET(:code_$key, r.favoriteCities) > 0");
@@ -147,42 +147,42 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
 
         if ($filter->getFirstName()) {
             $qb
-                ->andWhere("${alias}.firstName = :first_name")
+                ->andWhere("{$alias}.firstName = :first_name")
                 ->setParameter('first_name', $filter->getFirstName())
             ;
         }
 
         if ($filter->getLastName()) {
             $qb
-                ->andWhere("${alias}.lastName = :last_name")
+                ->andWhere("{$alias}.lastName = :last_name")
                 ->setParameter('last_name', $filter->getLastName())
             ;
         }
 
         if ($filter->getGender()) {
             $qb
-                ->andWhere("${alias}.gender = :gender")
+                ->andWhere("{$alias}.gender = :gender")
                 ->setParameter('gender', $filter->getGender())
             ;
         }
 
         if (null !== $filter->isAdherent()) {
             if ($filter->isAdherent()) {
-                $qb->andWhere("${alias}.adherent IS NOT NULL");
+                $qb->andWhere("{$alias}.adherent IS NOT NULL");
             } else {
-                $qb->andWhere("${alias}.adherent IS NULL");
+                $qb->andWhere("{$alias}.adherent IS NULL");
             }
         }
 
         if ($filter->getIsInMyTeam()) {
             // `No` value, free candidate
             if (2 === $filter->getIsInMyTeam()) {
-                $qb->andWhere("${alias}.takenForCity IS NULL");
+                $qb->andWhere("{$alias}.takenForCity IS NULL");
             } else {
                 // `Yes` or `Taken for another city` values
                 $sign = 1 === $filter->getIsInMyTeam() ? 'IN' : 'NOT IN';
                 $qb
-                    ->andWhere("${alias}.takenForCity ${sign}(:insee_codes)")
+                    ->andWhere("{$alias}.takenForCity {$sign}(:insee_codes)")
                     ->setParameter('insee_codes', $filter->getInseeCodes())
                 ;
             }
@@ -190,7 +190,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
 
         if ($filter->getTag()) {
             $qb
-                ->leftJoin("${alias}.tags", 'tag_for_search')
+                ->leftJoin("{$alias}.tags", 'tag_for_search')
                 ->andWhere('tag_for_search = :tag')
                 ->setParameter('tag', $filter->getTag())
             ;
@@ -198,7 +198,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
 
         if ($filter->getTheme()) {
             $qb
-                ->innerJoin("${alias}.favoriteThemes", 'theme')
+                ->innerJoin("{$alias}.favoriteThemes", 'theme')
                 ->andWhere('theme = :theme')
                 ->setParameter('theme', $filter->getTheme())
             ;

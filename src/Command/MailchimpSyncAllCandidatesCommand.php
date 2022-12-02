@@ -92,7 +92,7 @@ class MailchimpSyncAllCandidatesCommand extends Command
             foreach ($paginator->getIterator() as $candidate) {
                 $this->bus->dispatch(new AddApplicationRequestCandidateCommand(
                     $candidate->getId(),
-                    \get_class($candidate)
+                    $candidate::class
                 ));
 
                 $this->io->progressAdvance();

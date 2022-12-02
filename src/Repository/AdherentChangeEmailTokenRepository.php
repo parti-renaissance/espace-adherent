@@ -61,10 +61,10 @@ class AdherentChangeEmailTokenRepository extends AbstractAdherentTokenRepository
     {
         return $this
             ->createQueryBuilder($alias)
-            ->where("${alias}.usedAt IS NULL AND ${alias}.expiredAt >= :date")
+            ->where("{$alias}.usedAt IS NULL AND {$alias}.expiredAt >= :date")
             ->setParameter('date', new \DateTime())
             ->setMaxResults(1)
-            ->orderBy("${alias}.createdAt", 'DESC')
+            ->orderBy("{$alias}.createdAt", 'DESC')
         ;
     }
 }

@@ -215,7 +215,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
 
-        $crawler = $this->client->click($crawler->selectLink('+ Créer un événement')->link());
+        $crawler = $this->client->click($crawler->selectLink("+\u{a0}Créer\u{a0}un\u{a0}événement")->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $eventCategory = $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']);
@@ -301,7 +301,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
-        $crawler = $this->client->click($crawler->selectLink('+ Créer un événement')->link());
+        $crawler = $this->client->click($crawler->selectLink("+\u{a0}Créer\u{a0}un\u{a0}événement")->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 

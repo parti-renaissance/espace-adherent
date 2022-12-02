@@ -312,7 +312,7 @@ abstract class AbstractMessageController extends AbstractController
 
     protected function redirectToMessageRoute(string $subName, array $parameters = []): Response
     {
-        return $this->redirectToRoute("app_message_{$this->getMessageType()}_${subName}", $parameters);
+        return $this->redirectToRoute("app_message_{$this->getMessageType()}_{$subName}", $parameters);
     }
 
     protected function checkAccess(): void

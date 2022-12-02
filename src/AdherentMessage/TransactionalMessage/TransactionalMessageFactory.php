@@ -11,11 +11,11 @@ class TransactionalMessageFactory
 {
     public static function createFromAdherentMessage(AdherentMessageInterface $message, array $recipients = []): Message
     {
-        switch (\get_class($message)) {
+        switch ($message::class) {
             case ReferentInstancesMessage::class:
                 return RenaissanceReferentToInstancesMembershipMessage::create($message, $recipients);
         }
 
-        throw new \RuntimeException(sprintf('Unknown transactional adherent message "%s"', \get_class($message)));
+        throw new \RuntimeException(sprintf('Unknown transactional adherent message "%s"', $message::class));
     }
 }

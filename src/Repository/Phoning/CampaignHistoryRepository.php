@@ -42,7 +42,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
             ])
             ->getQuery()
             ->getSingleScalarResult()
-            ;
+        ;
     }
 
     public function countPhoningCampaignAdherentsCalled(Campaign $campaign): int
@@ -56,6 +56,6 @@ class CampaignHistoryRepository extends ServiceEntityRepository
             ])
             ->getQuery()
             ->getSingleScalarResult()
-            ;
+        ;
     }
 }

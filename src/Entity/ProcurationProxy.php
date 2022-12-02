@@ -614,7 +614,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
 
         foreach ($rounds as $round) {
             if (!$round instanceof ElectionRound) {
-                throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", but got "%s".', ElectionRound::class, \is_object($round) ? \get_class($round) : \gettype($round)));
+                throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", but got "%s".', ElectionRound::class, \is_object($round) ? $round::class : \gettype($round)));
             }
 
             if ($ppElectionRound = $this->findProcurationProxyElectionRoundBy($round)) {

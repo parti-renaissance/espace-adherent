@@ -57,6 +57,6 @@ class ApplicationRequestChangeSubscriber implements EventSubscriber
 
     private function dispatchMessage(ApplicationRequest $object): void
     {
-        $this->bus->dispatch(new AddApplicationRequestCandidateCommand($object->getId(), \get_class($object)));
+        $this->bus->dispatch(new AddApplicationRequestCandidateCommand($object->getId(), $object::class));
     }
 }

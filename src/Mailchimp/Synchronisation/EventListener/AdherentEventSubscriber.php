@@ -145,13 +145,13 @@ class AdherentEventSubscriber implements EventSubscriberInterface
     private function dispatchAddAdherentToStaticSegmentCommand(Adherent $adherent, StaticSegmentInterface $object): void
     {
         if (!$object->getMailchimpId()) {
-            $this->dispatch(new CreateStaticSegmentCommand($object->getUuid(), \get_class($object)));
+            $this->dispatch(new CreateStaticSegmentCommand($object->getUuid(), $object::class));
         }
 
         $this->dispatch(new AddAdherentToStaticSegmentCommand(
             $adherent->getUuid(),
             $object->getUuid(),
-            \get_class($object)
+            $object::class
         ));
     }
 
@@ -160,13 +160,13 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         StaticSegmentInterface $object
     ): void {
         if (!$object->getMailchimpId()) {
-            $this->dispatch(new CreateStaticSegmentCommand($object->getUuid(), \get_class($object)));
+            $this->dispatch(new CreateStaticSegmentCommand($object->getUuid(), $object::class));
         }
 
         $this->dispatch(new RemoveAdherentFromStaticSegmentCommand(
             $adherent->getUuid(),
             $object->getUuid(),
-            \get_class($object)
+            $object::class
         ));
     }
 

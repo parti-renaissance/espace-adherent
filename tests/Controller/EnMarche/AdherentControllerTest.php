@@ -553,7 +553,7 @@ class AdherentControllerTest extends WebTestCase
         self::assertSame('unsubscribe', $historiesHost[0]->getAction());
         self::assertSame('unsubscribe', $historiesReferents[0]->getAction());
 
-        Chronos::setTestNow('+2 weeks'); // To make sure the date order of the SQL query is correct
+        Chronos::setTestNow('+2 weeks'); // To make sure the date order of the SQL query is correct
         // Re-subscribe to 'subscribed_emails_local_host' and 'subscribed_emails_referents'
         $this->client->submit($crawler->selectButton('adherent_email_subscription[submit]')->form(), [
             'adherent_email_subscription' => [

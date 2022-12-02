@@ -36,7 +36,7 @@ abstract class AbstractMessaging
         } elseif ($notification instanceof MulticastNotificationInterface) {
             $this->sendToDevices($notification);
         } else {
-            throw new \InvalidArgumentException(sprintf('%s" is neither a topic nor a multicast notification.', \get_class($notification)));
+            throw new \InvalidArgumentException(sprintf('%s" is neither a topic nor a multicast notification.', $notification::class));
         }
 
         $notificationEntity->setDelivered();

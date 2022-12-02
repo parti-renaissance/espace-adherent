@@ -56,7 +56,7 @@ class ElectionContext
     {
         foreach ($elections as $election) {
             if (!$election instanceof Election) {
-                throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", but got "%s".', Election::class, \is_object($election) ? \get_class($election) : \gettype($election)));
+                throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", but got "%s".', Election::class, \is_object($election) ? $election::class : \gettype($election)));
             }
         }
 

@@ -72,7 +72,7 @@ class GetCampaignRankingController extends AbstractController
         foreach ($items as $key => $data) {
             $item = [];
             $item['rank'] = ++$key;
-            $item['questioner'] = $data['firstName'].(isset($data['lastName']) ? ' '.strtoupper(($data['lastName'][0])).'.' : '');
+            $item['questioner'] = $data['firstName'].(isset($data['lastName']) ? ' '.strtoupper($data['lastName'][0]).'.' : '');
             $item['nb_visited_doors'] = (int) $data['nb_visited_doors'];
             $item['nb_surveys'] = (int) $data['nb_surveys'];
             $item['current'] = $isAdherent = $adherent->getId() === $data['id'];

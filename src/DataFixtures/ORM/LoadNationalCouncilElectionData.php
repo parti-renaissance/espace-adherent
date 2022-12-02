@@ -58,11 +58,11 @@ class LoadNationalCouncilElectionData extends Fixture implements DependentFixtur
             $candidacy->confirm();
 
             $candidacy->setImage(new UploadedFile(
-                 self::AVATARS[$adherent->getGender()][array_rand(self::AVATARS[$adherent->getGender()])],
-                 'image.jpg',
-                 'image/jpeg',
-                 null,
-                 true
+                self::AVATARS[$adherent->getGender()][array_rand(self::AVATARS[$adherent->getGender()])],
+                'image.jpg',
+                'image/jpeg',
+                null,
+                true
             ));
             $this->imageManager->saveImage($candidacy);
 

@@ -34,7 +34,7 @@ class LoadApproachProjectData extends Fixture implements DependentFixtureInterfa
             );
 
             $project->addTag($this->getReference(sprintf('programmatic-foundation-tag-%d', $i % 6)));
-            $project->addTag($this->getReference(sprintf('programmatic-foundation-tag-%d', (($i + 1) % 6))));
+            $project->addTag($this->getReference(sprintf('programmatic-foundation-tag-%d', ($i + 1) % 6)));
 
             $manager->persist($project);
 

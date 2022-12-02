@@ -39,7 +39,7 @@ class ResourceLinkAdmin extends AbstractAdmin
                  'label' => 'Url',
                  'show_filter' => true,
              ])
-         ;
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper): void

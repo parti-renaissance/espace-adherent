@@ -48,6 +48,6 @@ class ReadMoreExtension extends AbstractExtension
             ),
         ];
 
-        return implode($htmlParts);
+        return implode('', $htmlParts);
     }
 }

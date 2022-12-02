@@ -169,7 +169,7 @@ abstract class AbstractEventManagerController extends AbstractController
 
     protected function redirectToEventManagerRoute(string $subName, array $parameters = []): Response
     {
-        return $this->redirectToRoute("app_{$this->getSpaceType()}_event_manager_${subName}", $parameters);
+        return $this->redirectToRoute("app_{$this->getSpaceType()}_event_manager_{$subName}", $parameters);
     }
 
     protected function getEventClassName(): string
