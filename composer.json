@@ -35,7 +35,7 @@
         "ext-openssl": "*",
         "ext-pdo": "*",
         "ext-zip": "*",
-        "a2lix/translation-form-bundle": "*",
+        "a2lix/translation-form-bundle": "^3.2",
         "algolia/search-bundle": "^5.0",
         "api-platform/core": "^2.7",
         "beberlei/doctrineextensions": "^1.2",
@@ -62,7 +62,7 @@
         "knplabs/doctrine-behaviors": "^2.0.0",
         "knplabs/knp-snappy-bundle": "^1.5",
         "knplabs/knp-time-bundle": "^1.7",
-        "kreait/firebase-bundle": "*",
+        "kreait/firebase-bundle": "^4.1",
         "league/commonmark": "1.6.6",
         "league/csv": "^9.2",
         "league/flysystem": "^1.0",
@@ -106,11 +106,10 @@
         "symfony/expression-language": "^5.4",
         "symfony/filesystem": "^5.4",
         "symfony/finder": "^5.4",
-        "symfony/flex": "*",
+        "symfony/flex": "^2.2",
         "symfony/http-client": "^5.4",
         "symfony/http-foundation": "^5.4",
         "symfony/http-kernel": "^5.4",
-        "symfony/inflector": "^5.4",
         "symfony/intl": "^5.4",
         "symfony/messenger": "^5.4",
         "symfony/mime": "^5.4",
@@ -218,7 +217,7 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/ottaviano/contexts"
+            "url": "https://github.com/EnMarche/contexts"
         },
         {
             "type": "vcs",
@@ -226,6 +225,7 @@
         }
     ],
     "conflict": {
-        "symfony/symfony": "*"
+        "symfony/symfony": "*",
+        "psr/simple-cache": "^3.0"
     }
 }
