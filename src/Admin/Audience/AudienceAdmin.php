@@ -25,6 +25,7 @@ class AudienceAdmin extends AbstractAdmin
                 'name',
                 'code',
             ],
+            'btn_add' => false,
         ]);
     }
 }

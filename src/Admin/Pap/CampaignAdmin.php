@@ -70,6 +70,7 @@ class CampaignAdmin extends AbstractAdmin
                     'required' => false,
                     'multiple' => true,
                     'help' => 'Laissez vide pour appliquer une visibilité nationale.',
+                    'btn_add' => false,
                 ])
             ->end()
         ;

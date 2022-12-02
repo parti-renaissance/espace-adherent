@@ -17,6 +17,7 @@ class JecouteManagedAreaAdmin extends AbstractAdmin
         $form->add('zone', ModelAutocompleteType::class, [
             'callback' => [$this, 'prepareAutocompleteFilterCallback'],
             'property' => 'name',
+            'btn_add' => false,
         ]);
     }
 

@@ -75,6 +75,7 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
 
                         $datagrid->setValue($property[0], null, $value);
                     },
+                    'btn_add' => false,
                 ])
                 ->add('subtitle', TextType::class, [
                     'label' => 'Sous-titre',
