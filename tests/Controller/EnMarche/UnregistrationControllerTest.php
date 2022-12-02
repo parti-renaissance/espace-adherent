@@ -78,7 +78,7 @@ class UnregistrationControllerTest extends WebTestCase
             $handler(new RemoveAdherentAndRelatedDataCommand($adherent->getUuid()));
         }
 
-        self::assertSame(31, $countForbidden);
+        self::assertSame(30, $countForbidden);
     }
 
     private function getSendInBlueClient(): DummyClient

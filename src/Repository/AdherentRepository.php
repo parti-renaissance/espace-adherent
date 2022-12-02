@@ -15,6 +15,7 @@ use App\Entity\City;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\LocalElection\LocalElection;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
 use App\Entity\Phoning\Campaign;
@@ -1292,6 +1293,41 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findForLocalElection(LocalElection $localElection, bool $partial = false): array
+    {
+        $designation = $localElection->getDesignation();
+
+        if (!$electionZones = $designation->getZones()->toArray()) {
+            return [];
+        }
+
+        $queryBuilder = $this->createQueryBuilder('adherent')
+            ->where('adherent.status = :status')
+            ->andWhere('adherent.lastMembershipDonation IS NOT NULL')
+            ->andWhere('adherent.source = :source')
+            ->setParameters([
+                'status' => Adherent::ENABLED,
+                'source' => MembershipSourceEnum::RENAISSANCE,
+            ])
+        ;
+
+        $this->withGeoZones(
+            $electionZones,
+            $queryBuilder,
+            'adherent',
+            Adherent::class,
+            'a2',
+            'zones',
+            'z2'
+        );
+
+        if ($partial) {
+            $queryBuilder->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}');
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 
     public function findFullScoresByCampaign(Campaign $campaign, bool $apiContext = false): array

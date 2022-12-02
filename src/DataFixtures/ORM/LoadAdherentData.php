@@ -227,6 +227,8 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_canton_9209'));
         $adherent5->addCharter(new CandidateCharter());
         $adherent5->addCharter(new CommitteeHostCharter());
+        $adherent5->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent5->donatedForMembership();
         $this->addReference('adherent-5', $adherent5);
 
         $adherent6 = $this->adherentFactory->createFromArray([
