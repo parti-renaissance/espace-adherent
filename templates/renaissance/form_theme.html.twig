@@ -110,7 +110,20 @@
     </div>
 {% endblock %}
 
-{% block autocomplete_input_row %}
-    {% set attr = attr|merge({ class: (attr.class|default('') ~ ' address-autocomplete')|trim }) %}
+{% block autocomplete_address_row %}
+    {{ block('form_errors') }}
+
+    {{ form_row(form.address, { label: 'Adresse postale' }) }}
+    {{ form_row(form.cityName) }}
+    {{ form_row(form.city) }}
+
+    <div class="flex space-x-4">
+        {{ form_row(form.postalCode) }}
+        {{ form_row(form.country) }}
+    </div>
+{% endblock %}
+
+{% block autocomplete_input_widget %}
     {{ block('form_widget') }}
+    <div class="address-autocomplete" data-form="{{ form.vars.name }}"></div>
 {% endblock %}

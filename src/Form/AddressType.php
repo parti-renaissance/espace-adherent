@@ -38,23 +38,26 @@ class AddressType extends AbstractType
             ;
         } else {
             $builder
-                ->add('address', TextType::class)
+                ->add('address', TextType::class, ['label' => 'Adresse'])
                 ->add('city', HiddenType::class, [
                     'required' => false,
                     'error_bubbling' => $options['child_error_bubbling'],
                     'disabled' => $options['disable_fields'],
                 ])
                 ->add('cityName', TextType::class, [
+                    'label' => 'Ville',
                     'required' => false,
                     'disabled' => $options['disable_fields'],
                 ])
                 ->add('country', CountryType::class, [
+                    'label' => 'Pays',
                     'disabled' => $options['disable_fields'],
                     'placeholder' => 'Sélectionner un pays',
                     'preferred_choices' => [Address::FRANCE],
                     'invalid_message' => 'common.country.invalid',
                 ])
                 ->add('postalCode', TextType::class, [
+                    'label' => 'Code postal',
                     'error_bubbling' => $options['child_error_bubbling'],
                     'disabled' => $options['disable_fields'],
                 ])
@@ -62,6 +65,7 @@ class AddressType extends AbstractType
 
             if ($options['set_address_region']) {
                 $builder->add('region', TextType::class, [
+                    'label' => 'Région',
                     'required' => false,
                     'disabled' => $options['disable_fields'],
                 ]);
