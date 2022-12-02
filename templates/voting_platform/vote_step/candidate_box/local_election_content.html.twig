@@ -25,10 +25,7 @@
                 Profession de foi
             </a>
             <button @click="open =! open" type="button" class="inline-flex items-center hover:text-re-blue-400 focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+                {% include 'icons/eye.svg.twig' with { svg_class: 'w-5 h-5 mr-1.5' } %}
                 Liste complète
             </button>
         </div>
@@ -61,9 +58,7 @@
                         <div class="absolute top-0 right-0 hidden pt-4 pr-4 md:block">
                             <button type="button" class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" @click="open = false">
                                 <span class="sr-only">Fermer</span>
-                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                                </svg>
+                                {% include 'icons/x-close.svg.twig' %}
                             </button>
                         </div>
                         <div>
@@ -99,9 +94,7 @@
         </div>
     {% else %}
         <div class="flex items-center space-x-3">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-            </svg>
+            {% include 'icons/archive.svg.twig' with { svg_class: 'w-6 h-6 text-gray-400' } %}
             <h3 class="!my-0 text-lg !font-medium">Bulletin blanc</h3>
         </div>
         <p class="!my-0 text-base text-gray-500 leading-5">Aucune liste sélectionnée</p>
