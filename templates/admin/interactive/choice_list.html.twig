@@ -45,7 +45,7 @@
                                                     {% set sortable = false %}
                                                     {% if field_description.options.sortable is defined and field_description.options.sortable %}
                                                         {% set sortable             = true %}
-                                                        {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
+                                                        {% set sort_parameters      = admin.datagrid.sortparameters(field_description) %}
                                                         {% set current              = admin.datagrid.values._sort_by == field_description or admin.datagrid.values._sort_by.fieldName == sort_parameters.filter._sort_by %}
                                                         {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
                                                         {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
@@ -68,7 +68,7 @@
                                         <tbody>
                                         {% for object in objects %}
                                             <tr>
-                                                {% include admin.getTemplate('inner_list_row') %}
+                                                {% include get_admin_template('inner_list_row', admin.code) %}
                                             </tr>
                                         {% endfor %}
                                         </tbody>
@@ -190,7 +190,7 @@
                                         {% endif %}
 
                                         {% block pager_results %}
-                                            {% include admin.getTemplate('pager_results') %}
+                                            {% include get_admin_template('pager_results', admin.code) %}
                                         {% endblock %}
                                     </div>
                                 {% endif %}
@@ -199,7 +199,7 @@
                             {% block pager_links %}
                                 {% if admin.datagrid.pager.haveToPaginate() %}
                                     <hr/>
-                                    {% include admin.getTemplate('pager_links') %}
+                                    {% include get_admin_template('pager_links', admin.code) %}
                                 {% endif %}
                             {% endblock %}
                         </div>

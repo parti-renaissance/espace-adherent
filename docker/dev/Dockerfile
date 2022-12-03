@@ -54,8 +54,7 @@ RUN apt-get update -q && \
         ghostscript \
         supervisor \
         tzdata \
-        wget \
-        wkhtmltopdf && \
+        wget && \
     # Disable XDEBUG by default
     phpdismod xdebug && \
     # Clean

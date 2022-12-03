@@ -5,9 +5,9 @@ namespace App\Controller\Admin;
 use App\Interactive\MyEuropeSerializer;
 use App\Repository\MyEuropeChoiceRepository;
 use App\Repository\MyEuropeInvitationRepository;
-use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +28,13 @@ class AdminMyEuropeController extends AbstractController
     {
         $exported = $serializer->serializeChoices($repository->findAll());
 
-        return new SnappyResponse($exported, 'my-europe-choices.csv', 'text/csv');
+        $response = new Response($exported);
+        $response->headers->set('Content-Disposition', HeaderUtils::makeDisposition(
+            HeaderUtils::DISPOSITION_ATTACHMENT,
+            'my-europe-choices.csv'
+        ));
+
+        return $response;
     }
 
     /**

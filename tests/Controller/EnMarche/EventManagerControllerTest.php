@@ -221,49 +221,6 @@ class EventManagerControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
     }
 
-    public function testOrganizerCannotPrintRegistrationsWithWrongUuids()
-    {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-
-        $crawler = $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne');
-        $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
-
-        $printUrl = $this->client->getRequest()->getPathInfo().'/imprimer';
-
-        $this->client->request(Request::METHOD_POST, $printUrl, [
-            'token' => $crawler->filter('#members-print-token')->attr('value'),
-            'prints' => json_encode(['wrong_uuid']),
-        ]);
-
-        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
-    }
-
-    public function testOrganizerCanPrintRegistrations()
-    {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-
-        $crawler = $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne');
-        $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
-
-        $token = $crawler->filter('#members-print-token')->attr('value');
-        $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
-
-        $printUrl = $this->client->getRequest()->getPathInfo().'/imprimer';
-
-        $this->client->request(Request::METHOD_POST, $printUrl, [
-            'token' => $token,
-            'prints' => json_encode($uuids),
-        ]);
-
-        $this->isSuccessful($this->client->getResponse());
-        $this->assertTrue(
-            $this->client->getResponse()->headers->contains(
-                'Content-Type',
-                'application/pdf'
-            )
-        );
-    }
-
     public function testOrganizerCanContactRegistrations()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');

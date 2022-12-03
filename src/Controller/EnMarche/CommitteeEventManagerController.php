@@ -2,7 +2,6 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Controller\PrintControllerTrait;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventRegistration;
@@ -17,12 +16,12 @@ use App\Exception\InvalidUuidException;
 use App\Form\ContactMembersType;
 use App\Form\EventCommandType;
 use App\Repository\EventRegistrationRepository;
-use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,15 +32,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CommitteeEventManagerController extends AbstractController
 {
-    use PrintControllerTrait;
-
     private const ACTION_CONTACT = 'contact';
     private const ACTION_EXPORT = 'export';
-    private const ACTION_PRINT = 'print';
+
     private const ACTIONS = [
         self::ACTION_CONTACT,
         self::ACTION_EXPORT,
-        self::ACTION_PRINT,
     ];
 
     private $eventRegistrationRepository;
@@ -139,7 +135,13 @@ class CommitteeEventManagerController extends AbstractController
 
         $exported = $exporter->export($registrations);
 
-        return new SnappyResponse($exported, 'inscrits-a-l-evenement.csv', 'text/csv');
+        $response = new Response($exported);
+        $response->headers->set('Content-Disposition', HeaderUtils::makeDisposition(
+            HeaderUtils::DISPOSITION_ATTACHMENT,
+            'inscrits-a-l-evenement.csv'
+        ));
+
+        return $response;
     }
 
     /**
@@ -187,28 +189,6 @@ class CommitteeEventManagerController extends AbstractController
             'contacts' => $uuids,
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/inscrits/imprimer", name="app_committee_event_print_members", methods={"POST"})
-     */
-    public function printMembersAction(Request $request, BaseEvent $event): Response
-    {
-        $registrations = $this->getRegistrations($request, $event, self::ACTION_PRINT);
-
-        if (!$registrations) {
-            return $this->redirectToRoute('app_committee_event_members', [
-                'slug' => $event->getSlug(),
-            ]);
-        }
-
-        return $this->getPdfResponse(
-            'events/print_members.html.twig',
-            [
-                'registrations' => $registrations,
-            ],
-            'Liste des participants.pdf'
-        );
     }
 
     private function getRegistrations(Request $request, BaseEvent $event, string $action): array
