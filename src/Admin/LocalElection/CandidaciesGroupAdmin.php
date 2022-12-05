@@ -80,6 +80,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
                             'Si vous ne trouvez pas la bonne élection, veuillez la créer en cliquant <a href="%s">ici</a>',
                             $this->getRouteGenerator()->generate('admin_app_localelection_localelection_create')
                         ),
+                        'help_html' => true,
                         'btn_add' => false,
                     ])
                 ->end()
@@ -95,7 +96,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
                     ->add('candidacies', CollectionType::class, [
                         'label' => false,
                         'by_reference' => false,
-                        'btn_add' => (bool) $candidaciesGroup->election,
+                        'btn_add' => $candidaciesGroup->election ? 'Ajouter' : false,
                     ], [
                         'edit' => 'inline',
                         'inline' => 'table',

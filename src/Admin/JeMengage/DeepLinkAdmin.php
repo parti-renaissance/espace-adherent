@@ -26,6 +26,7 @@ class DeepLinkAdmin extends AbstractAdmin
                     'default_protocol' => 'https',
                     'label' => 'Lien 🔗',
                     'help' => 'Domaines autorisés : <strong>avecvous.fr</strong>, <strong>en-marche.fr</strong> et <strong>je-mengage.fr</strong>',
+                    'help_html' => true,
                     'attr' => [
                         'placeholder' => 'https://app.avecvous.fr/liste-evenements',
                     ],

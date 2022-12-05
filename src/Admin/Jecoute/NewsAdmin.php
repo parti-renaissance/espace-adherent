@@ -99,6 +99,7 @@ class NewsAdmin extends AbstractAdmin
                         10 000 caractères maximum.
                         HELP
                     ,
+                    'help_html' => true,
                 ])
                 ->add('externalLink', UrlType::class, [
                     'label' => 'Lien',

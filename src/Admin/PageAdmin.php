@@ -30,6 +30,7 @@ class PageAdmin extends AbstractAdmin
                 ->add('slug', TextType::class, [
                     'label' => 'URL de publication',
                     'help' => 'Ne spécifier que la fin : http://en-marche.fr/[votre-valeur]<br />Doit être unique',
+                    'help_html' => true,
                 ])
                 ->end()
             ;

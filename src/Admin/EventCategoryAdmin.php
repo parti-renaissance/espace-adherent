@@ -29,6 +29,7 @@ class EventCategoryAdmin extends AbstractAdmin
             ->add('slug', null, [
                 'label' => 'Slug',
                 'help' => 'Sera utilisé pour la recherche : https://en-marche.fr/evenements/categorie/[votre-valeur]<br />Doit être unique',
+                'help_html' => true,
             ])
             ->add('status', ChoiceType::class, [
                 'label' => 'Visibilité',

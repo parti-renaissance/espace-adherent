@@ -7,8 +7,10 @@ use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\UuidInterface;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LocalElection\CandidacyRepository")
@@ -32,6 +34,8 @@ class Candidacy extends BaseCandidacy
     /**
      * @var CandidaciesGroup|null
      *
+     * @Gedmo\SortableGroup
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\LocalElection\CandidaciesGroup", inversedBy="candidacies")
      */
     protected $candidaciesGroup;
@@ -41,13 +45,26 @@ class Candidacy extends BaseCandidacy
      */
     private ?Adherent $adherent = null;
 
-    /** @ORM\Column */
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     */
     private ?string $firstName = null;
 
-    /** @ORM\Column */
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     */
     private ?string $lastName = null;
 
-    /** @ORM\Column */
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Email
+     */
     private ?string $email = null;
 
     public function __construct(LocalElection $election = null, string $gender = null, UuidInterface $uuid = null)

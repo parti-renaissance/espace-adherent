@@ -27,6 +27,8 @@ class CandidaciesGroup extends BaseCandidaciesGroup
      *
      * @ORM\OneToMany(targetEntity="App\Entity\LocalElection\Candidacy", mappedBy="candidaciesGroup", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"position": "ASC"})
+     *
+     * @Assert\Valid
      */
     protected $candidacies;
 
@@ -53,5 +55,16 @@ class CandidaciesGroup extends BaseCandidaciesGroup
     public function getFaithStatementFilePath(): string
     {
         return sprintf('elections/profession-de-foi/%s', $this->faithStatementFileName);
+    }
+
+    public function addCandidacy(CandidacyInterface $candidacy): void
+    {
+        if ($this->candidacies->isEmpty()) {
+            $candidacy->setPosition(1);
+        }
+
+        $candidacy->election = $this->election;
+
+        parent::addCandidacy($candidacy);
     }
 }
