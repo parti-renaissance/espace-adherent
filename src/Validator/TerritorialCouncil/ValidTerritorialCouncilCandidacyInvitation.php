@@ -14,7 +14,7 @@ class ValidTerritorialCouncilCandidacyInvitation extends Constraint
     public $messageInvalidQuality = 'territorial_council.candidacy.invitation.invalid_membership_quality';
     public $messageInvalidParity = 'territorial_council.candidacy.invitation.invalid_parity';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

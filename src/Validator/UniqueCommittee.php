@@ -17,7 +17,7 @@ class UniqueCommittee extends Constraint
     public $messageName = 'committee.canonical_name.not_unique';
     public $messageAddress = 'committee.address.not_unique';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

@@ -12,7 +12,7 @@ class FrenchAddressOrNationalityDonation extends Constraint
 {
     public $message = 'donation.french_address_or_nationality_donation';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

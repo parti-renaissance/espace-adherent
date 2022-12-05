@@ -12,7 +12,7 @@ class UniqueVotePlaceAssessor extends Constraint
 {
     public $message = 'assessor.unique_vote_place_association';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

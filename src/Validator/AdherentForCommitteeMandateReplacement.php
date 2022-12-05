@@ -17,7 +17,7 @@ class AdherentForCommitteeMandateReplacement extends Constraint
         return ['errorPath'];
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

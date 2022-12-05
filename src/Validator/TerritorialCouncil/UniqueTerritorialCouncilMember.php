@@ -29,7 +29,7 @@ class UniqueTerritorialCouncilMember extends Constraint
     public $qualities = [];
     public $message = 'territorial_council.member.unique';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

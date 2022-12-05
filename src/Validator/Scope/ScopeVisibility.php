@@ -14,7 +14,7 @@ class ScopeVisibility extends Constraint
     public string $localScopeWithoutZoneMessage = 'scope.zone.local_scope_without_zone';
     public string $localScopeWithUnmanagedZoneMessage = 'scope.zone.local_scope_with_unmanaged_zone';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

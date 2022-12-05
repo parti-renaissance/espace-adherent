@@ -17,7 +17,7 @@ class TerritorialCouncilDesignation extends Constraint
     public $messageAddressEmpty = 'L\'adresse ne doit pas être vide.';
     public $messageUrlEmpty = 'L\'URL de la réunion ne doit pas être vide.';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

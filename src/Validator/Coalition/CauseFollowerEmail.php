@@ -13,7 +13,7 @@ class CauseFollowerEmail extends Constraint
     public $errorPath = 'email_address';
     public $messageAdherentExists = 'cause_follower.adherent.exists';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

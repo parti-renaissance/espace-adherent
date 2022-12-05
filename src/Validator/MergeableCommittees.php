@@ -12,7 +12,7 @@ class MergeableCommittees extends Constraint
     public $sameCommitteeMessage = 'committee.merge.same_committees';
     public $notApprovedMessage = 'committee.merge.not_approved';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

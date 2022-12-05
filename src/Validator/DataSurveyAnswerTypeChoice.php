@@ -16,7 +16,7 @@ class DataSurveyAnswerTypeChoice extends Constraint
 
     public $uniqueChoiceAnswerWithTextFieldMessage = 'survey.answer.unique_choice.with_text_field.invalid';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

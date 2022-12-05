@@ -15,7 +15,7 @@ class UniqueMembership extends Constraint
     public $message = 'adherent.email_address.not_unique';
     public $path = 'emailAddress';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

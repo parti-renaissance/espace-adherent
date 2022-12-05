@@ -12,7 +12,7 @@ class ValidAuthorRoleMessageType extends Constraint
 {
     public $message = 'Le type de message est invalide';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

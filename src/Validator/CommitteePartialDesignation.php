@@ -15,8 +15,8 @@ class CommitteePartialDesignation extends Constraint
     public $errorPoolMessage = 'Le genre est incompatible avec ce comité.';
     public $errorVotersMessage = 'Le comité n\'a aucun membre éligible au vote.';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
-        return Constraint::CLASS_CONSTRAINT;
+        return self::CLASS_CONSTRAINT;
     }
 }

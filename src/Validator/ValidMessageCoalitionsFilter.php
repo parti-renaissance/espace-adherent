@@ -13,7 +13,7 @@ class ValidMessageCoalitionsFilter extends Constraint
     public $invalidAuthor = 'Vous n\'êtes pas l\'auteur de la cause';
     public $invalidCauseStatus = 'La cause n\'est pas publiée';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

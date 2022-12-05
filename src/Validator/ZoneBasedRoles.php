@@ -14,7 +14,7 @@ class ZoneBasedRoles extends Constraint
     public string $emptyZoneMessage = 'adherent.zone_based_role.empty_zone';
     public string $limitZoneMessage = 'adherent.zone_based_role.limit_zone';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::PROPERTY_CONSTRAINT;
     }

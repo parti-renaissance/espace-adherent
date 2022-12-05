@@ -30,7 +30,7 @@ class ManagedZone extends Constraint
         parent::__construct($options);
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return [self::CLASS_CONSTRAINT, self::PROPERTY_CONSTRAINT];
     }
