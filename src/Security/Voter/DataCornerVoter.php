@@ -24,7 +24,7 @@ class DataCornerVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return self::DATA_CORNER === $attribute && $subject instanceof Adherent;
+        return self::DATA_CORNER === $attribute;
     }
 
     /**
@@ -32,6 +32,10 @@ class DataCornerVoter extends Voter
      */
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
+        if (!$subject instanceof Adherent) {
+            return false;
+        }
+
         if (!$codes = $this->scopeRepository->findCodesGrantedForDataCorner()) {
             return false;
         }
