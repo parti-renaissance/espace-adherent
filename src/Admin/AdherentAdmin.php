@@ -467,6 +467,7 @@ class AdherentAdmin extends AbstractAdmin
                 ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
                     ->add('municipalChiefManagedArea', MunicipalChiefManagedAreaType::class, [
                         'label' => 'Candidat Municipales 2020 🇫🇷',
+                        'help_html' => true,
                         'help' => <<<HELP
                             Laisser vide si l'adhérent n'est pas chef municipal.
                             Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC). <br/>
@@ -483,6 +484,7 @@ class AdherentAdmin extends AbstractAdmin
                     ->add('procurationManagedAreaCodesAsString', TextType::class, [
                         'label' => 'coordinator.label.codes',
                         'required' => false,
+                        'help_html' => true,
                         'help' => <<<HELP
                             Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
                             Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
@@ -492,6 +494,7 @@ class AdherentAdmin extends AbstractAdmin
                     ->add('assessorManagedAreaCodesAsString', TextType::class, [
                         'label' => 'assessors_manager',
                         'required' => false,
+                        'help_html' => true,
                         'help' => <<<HELP
                             Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
                             Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.

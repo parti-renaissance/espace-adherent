@@ -78,6 +78,7 @@ class OrderArticleAdmin extends AbstractAdmin
                     'label' => 'URL de publication',
                     'disabled' => !$slugEditable,
                     'help' => $slugEditable ? 'Ne spécifier que la fin : http://en-marche.fr/transformer-la-france/[votre-valeur]<br />Doit être unique' : 'Non modifiable car publié',
+                    'help_html' => true,
                 ])
             ->end()
             ->with('Contenu', ['class' => 'col-md-12'])

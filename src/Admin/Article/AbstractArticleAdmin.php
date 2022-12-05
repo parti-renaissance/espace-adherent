@@ -86,6 +86,7 @@ abstract class AbstractArticleAdmin extends AbstractAdmin
                     ->add('slug', null, [
                         'label' => 'URL de publication',
                         'help' => 'Ne spécifier que la fin : http://en-marche.fr/articles/[votre-valeur]<br />Doit être unique',
+                        'help_html' => true,
                     ])
                     ->add('category', null, [
                         'label' => 'Catégorie de publication',
