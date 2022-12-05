@@ -100,6 +100,7 @@ module.exports = {
     },
     plugins: [
         require('@tailwindcss/forms')({ strategy: 'base' }),
+        require('@tailwindcss/aspect-ratio'),
         require('@tailwindcss/typography'),
     ],
 };
