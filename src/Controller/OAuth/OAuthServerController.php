@@ -53,10 +53,8 @@ class OAuthServerController extends AbstractController
 
             $client = $repository->findClientByUuid(Uuid::fromString($authRequest->getClient()->getIdentifier()));
 
-            if ($client->getRequestedRoles()) {
-                foreach ($client->getRequestedRoles() as $role) {
-                    $this->denyAccessUnlessGranted($role, $user);
-                }
+            foreach ($client->getRequestedRoles() ?? [] as $role) {
+                $this->denyAccessUnlessGranted($role, $user);
             }
 
             $form = $this
