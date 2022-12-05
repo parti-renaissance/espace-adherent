@@ -22,7 +22,7 @@ class GeocodableAddress extends Constraint
         return $this->service;
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

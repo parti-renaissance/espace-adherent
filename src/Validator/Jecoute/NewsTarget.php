@@ -11,7 +11,7 @@ class NewsTarget extends Constraint
 {
     public $undefinedTarget = 'Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation.';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

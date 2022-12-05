@@ -13,7 +13,7 @@ class MeasurePayload extends Constraint
     public $missingKeyForType = 'L\'information "{{ key }}" est manquante pour le type "{{ type }}".';
     public $defineAtLeastOneKeyForType = 'Veuillez renseigner au moins une information parmis ({{ keys }}) pour la mesure "{{ type }}".';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

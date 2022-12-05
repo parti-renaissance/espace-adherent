@@ -17,7 +17,7 @@ class JemarcheDataSurveyConstraint extends Constraint
     public $genderChoiceOtherNotSelectedMessage = 'data.survey.gender_choice_other.not_selected';
     public $genderOtherEmptyMessage = 'data.survey.gender_other.empty';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

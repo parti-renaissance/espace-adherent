@@ -17,7 +17,7 @@ class ZoneType extends Constraint
 
     public array $types = [];
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::PROPERTY_CONSTRAINT;
     }

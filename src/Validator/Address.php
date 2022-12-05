@@ -13,15 +13,11 @@ class Address extends Constraint
 {
     public const INVALID_ADDRESS = 'invalid_city';
 
-    protected static $errorNames = [
-        self::INVALID_ADDRESS => 'INVALID_ADDRESS',
-    ];
-
     public $frenchPostalCodeMessage = 'Cette valeur n\'est pas un code postal français valide.';
     public $frenchCityMessage = 'Cette ville n\'est pas une ville française valide.';
     public $notAssociatedMessage = 'Ce code postal ne correspond pas à cette ville.';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

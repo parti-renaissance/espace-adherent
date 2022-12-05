@@ -12,7 +12,7 @@ class PapCampaignStarted extends Constraint
     public $messageSurvey = 'pap.campaign.not_changeable_survey';
     public $messageVotePlaces = 'pap.campaign.not_changeable_vote_places';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

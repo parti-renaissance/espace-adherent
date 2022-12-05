@@ -12,7 +12,7 @@ class EventRegistration extends Constraint
 {
     public $errorAlreadyExists = 'event.registration.already_exists';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

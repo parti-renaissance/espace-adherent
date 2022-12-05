@@ -14,7 +14,7 @@ class NewsText extends Constraint
     public $messageLength = 'Le texte ne doit pas contenir plus de {{ limit }} caractères.';
     public $messageRequired = 'Le texte est obligatoire.';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

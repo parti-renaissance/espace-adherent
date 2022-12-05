@@ -11,7 +11,7 @@ class AssessorDepartment extends Constraint
 {
     public string $invalidAssessorDepartmentCity = 'Cette commune ne fait pas partie des communes de votre département de résidence';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

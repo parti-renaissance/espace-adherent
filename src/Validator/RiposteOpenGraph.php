@@ -12,7 +12,7 @@ class RiposteOpenGraph extends Constraint
 {
     public $message = 'riposte.open_graph.can_not_fetch';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

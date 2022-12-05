@@ -13,7 +13,7 @@ class MaxMonthDonation extends Constraint
     public $message = 'donation.max_fiscal_month_donation';
     public $maxDonationInCents = 62500; // Amount in cents
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

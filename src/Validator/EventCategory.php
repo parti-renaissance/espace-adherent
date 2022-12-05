@@ -13,7 +13,7 @@ class EventCategory extends Constraint
     public $errorPath = 'category';
     public $message = 'Catégorie est requise.';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

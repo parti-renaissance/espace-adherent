@@ -14,7 +14,7 @@ class ValidTerritorialCouncilCandidacyForCopolInvitation extends Constraint
     public $messageMembershipNotAvailable = 'territorial_council.candidacy.invitation.membership_not_available';
     public $messageInvalidQuality = 'territorial_council.candidacy.invitation.invalid_membership_quality';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

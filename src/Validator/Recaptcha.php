@@ -15,7 +15,7 @@ class Recaptcha extends Constraint
     public string $message = 'common.recaptcha.invalid_message';
     public string $api = RecaptchaApiClient::NAME;
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

@@ -13,7 +13,7 @@ class CustomGender extends Constraint
     public $messageNotBlank = 'common.gender.not_blank';
     public $messageInvalidChoice = 'common.gender.invalid_choice';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
