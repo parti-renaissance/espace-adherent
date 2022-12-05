@@ -5,9 +5,9 @@ namespace App\Controller\Admin;
 use App\Repository\TonMacronChoiceRepository;
 use App\Repository\TonMacronFriendInvitationRepository;
 use App\TonMacron\TonMacronSerializer;
-use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,11 +28,13 @@ class AdminTonMacronController extends AbstractController
         TonMacronSerializer $serializer,
         TonMacronChoiceRepository $repository
     ): Response {
-        return new SnappyResponse(
-            $serializer->serializeChoices($repository->findAll()),
-            'tonmacron-choices.csv',
-            'text/csv'
-        );
+        $response = new Response($serializer->serializeChoices($repository->findAll()));
+        $response->headers->set('Content-Disposition', HeaderUtils::makeDisposition(
+            HeaderUtils::DISPOSITION_ATTACHMENT,
+            'tonmacron-choices.csv'
+        ));
+
+        return $response;
     }
 
     /**

@@ -1,6 +1,0 @@
-{% extends 'base_print.html.twig' %}
-
-{% block content %}
-    <p class="text--bold">Liste des participants</p>
-    {% include 'events/_member_list.html.twig' with { registrations: registrations } only %}
-{% endblock %}

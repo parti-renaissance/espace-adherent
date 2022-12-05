@@ -5,10 +5,10 @@ namespace App\Controller;
 use App\Entity\UserDocument;
 use App\UserDocument\UserDocumentManager;
 use Gedmo\Sluggable\Util\Urlizer;
-use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use League\Flysystem\FileNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -136,14 +136,16 @@ class UploadDocumentController extends AbstractController
             throw $this->createNotFoundException('Document not found', $e);
         }
 
-        return new SnappyResponse(
-            $documentContent,
+        $response = new Response($documentContent);
+        $response->headers->set('Content-Disposition', HeaderUtils::makeDisposition(
+            HeaderUtils::DISPOSITION_ATTACHMENT,
             sprintf(
                 '%s.%s',
                 Urlizer::urlize($document->getFilename()),
                 $document->getExtension()
-            ),
-            $document->getMimeType()
-        );
+            )
+        ));
+
+        return $response;
     }
 }

@@ -7,8 +7,6 @@ export default () => {
     const contactSelection = dom('#members-contact-selection');
     const exportButton = dom('#members-export-button');
     const exportSelection = dom('#members-export-selection');
-    const printButton = dom('#members-print-button');
-    const printSelection = dom('#members-print-selection');
 
     function getMemberCheckboxes() {
         return findAll(document, 'input[name="members[]"]');
@@ -30,7 +28,6 @@ export default () => {
     function toggleButtons(value) {
         if (null != contactButton) contactButton.disabled = !value;
         if (null != exportButton) exportButton.disabled = !value;
-        if (null != printButton) printButton.disabled = !value;
     }
 
     // Toggle each 'selection' checkbox
@@ -97,15 +94,5 @@ export default () => {
     if (null != contactButton) {
         on(contactButton, 'click', contactMembers);
         contactButton.dispatchEvent(new Event('click'));
-    }
-
-    const printMembers = () => {
-        printSelection.value = JSON.stringify(getSelectedMembers());
-    };
-
-    // Bind the print button (build a Json list of members to print)
-    if (null != printButton) {
-        on(printButton, 'click', printMembers);
-        printButton.dispatchEvent(new Event('click'));
     }
 };
