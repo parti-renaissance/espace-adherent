@@ -11,6 +11,7 @@ use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\DonationTag;
 use App\Entity\PostAddress;
+use App\Membership\MembershipSourceEnum;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -541,6 +542,8 @@ class DonationAdmin extends AbstractAdmin
         $this->handleFile($donation);
 
         $this->dispatcher->dispatch(new DonationWasCreatedEvent($donation), DonationEvents::CREATED);
+
+        $this->handleAdherentMembership($donation);
     }
 
     /**
@@ -553,6 +556,8 @@ class DonationAdmin extends AbstractAdmin
         $this->handleFile($donation);
 
         $this->dispatcher->dispatch(new DonationWasUpdatedEvent($donation), DonationEvents::UPDATED);
+
+        $this->handleAdherentMembership($donation);
     }
 
     /**
@@ -578,6 +583,21 @@ class DonationAdmin extends AbstractAdmin
         $donation->setPostAddress(PostAddress::createEmptyAddress());
 
         return $donation;
+    }
+
+    private function handleAdherentMembership(Donation $donation): void
+    {
+        if (
+            $donation->isMembership()
+            && $donation->isFinished()
+            && ($adherent = $donation->getDonator()->getAdherent())
+            && !$adherent->hasActiveMembership()
+        ) {
+            $adherent->donatedForMembership($donation->getDonatedAt());
+            $adherent->join();
+            $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+            $adherent->setPapUserRole(true);
+        }
     }
 
     public function handleFile(Donation $donation): void
