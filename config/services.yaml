@@ -315,6 +315,8 @@ services:
                 site: "%env(PAYBOX_MEMBERSHIP_SITE)%"
                 rank: "%env(PAYBOX_MEMBERSHIP_RANK)%"
                 login: "%env(PAYBOX_MEMBERSHIP_IDENTIFIER)%"
+                currencies:
+                    - '978'
                 hmac:
                     key: "%env(PAYBOX_MEMBERSHIP_KEY)%"
                     algorithm: sha512
