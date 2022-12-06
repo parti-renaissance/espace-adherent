@@ -108,6 +108,14 @@
         @apply text-white;
     }
 
+    .ballot-paper-container {
+        @apply mx-auto flex items-center justify-center flex-wrap gap-6;
+
+        .ballot-paper {
+            @apply p-5 bg-white rounded-md lg:px-8 lg:py-6 shadow-lg;
+        }
+    }
+
     a.link--blue--dark {
         @apply inline-block font-medium hover:text-re-blue-700;
         color: theme('colors.re.blue.500') !important;
