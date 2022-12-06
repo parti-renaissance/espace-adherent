@@ -1,6 +1,6 @@
 {% import 'voting_platform/_macros.html.twig' as helper %}
 
-<div class="ballot-paper">
+<div class="p-5 bg-white rounded-md lg:px-8 lg:py-6 shadow-lg">
     <div class="ballot-paper__content">
         <div>
             {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
@@ -10,11 +10,11 @@
                 {% set first = candidates|first %}
 
                 <ul>
-                    <li class="text-gray-500">
+                    <li class="text-lg text-gray-500 lg:text-xl">
                         {{ first.getFirstName() }}
-                        <span class="uppercase font-medium"> {{ first.getLastName() }}</span>
+                        <span class="uppercase font-medium text-gray-900"> {{ first.getLastName() }}</span>
                     </li>
-                    <li class="text-gray-500">+ {{ candidates|length - 1 }} candidature{{ candidates|length - 1 > 1 ? 's' }}</li>
+                    <li class="text-base text-gray-500 lg:text-lg">+ {{ candidates|length - 1 }} candidature{{ candidates|length - 1 > 1 ? 's' }}</li>
                 </ul>
             {% else %}
                 <h3>Bulletin blanc</h3>
