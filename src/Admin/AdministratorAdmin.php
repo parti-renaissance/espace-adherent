@@ -14,7 +14,6 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class AdministratorAdmin extends AbstractAdmin
@@ -139,29 +138,20 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_LOCAL_ELECTION',
                 ],
             ])
-            ->add(
-                $formMapper->create('password', RepeatedType::class, [
-                    'first_options' => [
-                        'label' => 'Mot de passe',
-                    ],
-                    'second_options' => [
-                        'label' => 'Confirmation',
-                    ],
-                    'type' => PasswordType::class,
-                    'required' => $isCreation,
-                ])
-                ->addModelTransformer(new CallbackTransformer(
-                    function () {
-                        return '';
-                    },
-                    function ($plain) use ($admin) {
-                        return \is_string($plain) && '' !== $plain
-                            ? $this->encoders->getEncoder($admin)->encodePassword($plain, null)
-                            : $admin->getPassword();
-                    }
-                ))
-            )
+            ->add('password', PasswordType::class, [
+                'label' => 'Mot de passe',
+                'required' => $isCreation,
+            ])
         ;
+
+        $formMapper->getFormBuilder()->get('password')->addModelTransformer(new CallbackTransformer(
+            function () { return ''; },
+            function ($plain) use ($admin) {
+                return \is_string($plain) && '' !== $plain
+                ? $this->encoders->getEncoder($admin)->encodePassword($plain, null)
+                : $admin->getPassword();
+            }
+        ));
 
         if (!$isCreation) {
             $formMapper->add('googleAuthenticatorSecret', null, [
