@@ -35,5 +35,10 @@
                 Certification
             </a>
         </li>
+        <li>
+            <a href="{{ path('app_renaissance_adherent_formation_list') }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_renaissance_adherent_formation_list', { app_domain: renaissance_host }) ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+                Formations
+            </a>
+        </li>
     </ul>
 </div>

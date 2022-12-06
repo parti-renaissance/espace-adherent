@@ -1,0 +1,17 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% block page_title 'Formations' %}
+
+{% block content_right_side %}
+    <section class="space-y-4 md:space-y-6">
+        <h1 class="text-3xl font-bold leading-10 text-gray-900">Communication</h1>
+
+        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+            <ul>
+            {% for formation in formations %}
+                <li>{{ formation.title }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </section>
+{% endblock %}

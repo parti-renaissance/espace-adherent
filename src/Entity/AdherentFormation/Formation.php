@@ -1,0 +1,94 @@
+<?php
+
+namespace App\Entity\AdherentFormation;
+
+use App\Entity\PositionTrait;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\AdherentFormation\FormationRepository");
+ * @ORM\Table(name="adherent_formation")
+ *
+ * @UniqueEntity(fields={"title"}, message="adherent_formation.title.unique_entity")
+ * @UniqueEntity(fields={"slug"}, message="adherent_formation.slug.unique_entity")
+ */
+class Formation
+{
+    use PositionTrait;
+
+    /**
+     * @ORM\Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     */
+    private ?int $id = null;
+
+    /**
+     * @ORM\Column(unique=true)
+     *
+     * @Assert\NotBlank(message="Veuillez renseigner un titre.")
+     * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
+     */
+    private ?string $title = null;
+
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank(message="Veuillez renseigner une description.")
+     * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
+     */
+    private ?string $description = null;
+
+    /**
+     * @ORM\OneToOne(
+     *     targetEntity="App\Entity\AdherentFormation\File",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     *
+     * @Assert\Valid
+     */
+    private ?File $file = null;
+
+    public function __toString()
+    {
+        return (string) $this->title;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getFile(): ?File
+    {
+        return $this->file;
+    }
+
+    public function setFile(File $file): void
+    {
+        $this->file = $file;
+    }
+}
