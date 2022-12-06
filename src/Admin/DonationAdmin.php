@@ -540,9 +540,10 @@ class DonationAdmin extends AbstractAdmin
         parent::prePersist($donation);
 
         $this->handleFile($donation);
-        $this->handleAdherentMembership($donation);
 
         $this->dispatcher->dispatch(new DonationWasCreatedEvent($donation), DonationEvents::CREATED);
+
+        $this->handleAdherentMembership($donation);
     }
 
     /**
@@ -553,9 +554,10 @@ class DonationAdmin extends AbstractAdmin
         parent::preUpdate($donation);
 
         $this->handleFile($donation);
-        $this->handleAdherentMembership($donation);
 
         $this->dispatcher->dispatch(new DonationWasUpdatedEvent($donation), DonationEvents::UPDATED);
+
+        $this->handleAdherentMembership($donation);
     }
 
     /**
