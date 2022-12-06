@@ -84,9 +84,6 @@ services:
             $invalidEmailHashKey: '%env(INVALID_EMAIL_HASH_KEY)%'
             $campaignMailProducer: '@old_sound_rabbit_mq.mailer_campaign_producer'
             $transactionalMailProducer: '@old_sound_rabbit_mq.mailer_transactional_producer'
-            $payboxMembershipSite: '%env(PAYBOX_MEMBERSHIP_SITE)%'
-            $payboxMembershipIdentifier: '%env(PAYBOX_MEMBERSHIP_IDENTIFIER)%'
-            $payboxMembershipKey: '%env(PAYBOX_MEMBERSHIP_KEY)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
@@ -309,6 +306,25 @@ services:
 
     Lexik\Bundle\PayboxBundle\Paybox\System\Cancellation\Request: '@lexik_paybox.request_cancellation_handler'
     Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request: '@lexik_paybox.request_handler'
+
+    app.paybox.subscriptions_handler:
+        class: Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request
+        arguments:
+            $parameters:
+                production: false
+                site: "%env(PAYBOX_MEMBERSHIP_SITE)%"
+                rank: "%env(PAYBOX_MEMBERSHIP_RANK)%"
+                login: "%env(PAYBOX_MEMBERSHIP_IDENTIFIER)%"
+                hmac:
+                    key: "%env(PAYBOX_MEMBERSHIP_KEY)%"
+                    algorithm: sha512
+                    signature_name: Sign
+            $servers: '%lexik_paybox.servers%'
+            $factory: '@form.factory'
+
+    App\Donation\PayboxFormFactory:
+        arguments:
+            $membershipRequestHandler: '@app.paybox.subscriptions_handler'
 
     League\OAuth2\Server\AuthorizationValidators\AuthorizationValidatorInterface: '@App\OAuth\AuthorizationValidators\JsonWebTokenValidator'
     League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface: '@App\OAuth\Store\AccessTokenStore'

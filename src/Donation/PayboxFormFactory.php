@@ -11,11 +11,9 @@ class PayboxFormFactory
     public function __construct(
         private readonly string $environment,
         private readonly LexikRequestHandler $requestHandler,
+        private readonly LexikRequestHandler $membershipRequestHandler,
         private readonly UrlGeneratorInterface $router,
-        private readonly DonationRequestUtils $donationRequestUtils,
-        private readonly string $payboxMembershipSite,
-        private readonly string $payboxMembershipIdentifier,
-        private readonly string $payboxMembershipKey
+        private readonly DonationRequestUtils $donationRequestUtils
     ) {
     }
 
@@ -47,9 +45,7 @@ class PayboxFormFactory
         }
 
         if ($donation->isMembership()) {
-            $parameters['PBX_SITE'] = $this->payboxMembershipSite;
-            $parameters['PBX_IDENTIFIANT'] = $this->payboxMembershipIdentifier;
-            $parameters['PBX_HMAC'] = $this->payboxMembershipKey;
+            return $this->membershipRequestHandler->setParameters($parameters);
         }
 
         return $this->requestHandler->setParameters($parameters);
