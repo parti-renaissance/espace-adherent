@@ -187,56 +187,10 @@
         }
     }
 
-    .ballot-paper-container {
-        margin: 50px auto 30px;
-
-        @media (min-width: $tablet) {
-            padding: 0 35px;
-            margin: 50px auto 80px;
-        }
-    }
-
     .ballot-paper {
-        position: relative;
-        width: 100%;
-        max-width: 420px;
-        min-height: 280px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 70px;
-        box-sizing: border-box;
-
-        background-color: $white;
-        box-shadow: 0 30px 40px 0 rgba(0, 0, 0, 0.12);
-
-        &:first-child {
-            margin: 0 auto 30px;
-            z-index: 4;
-
-            @media (min-width: $tablet) {
-                margin-right: auto;
-                margin-left: initial;
-                margin-bottom: 0;
-            }
-        }
-
-        &:nth-child(even) {
-            margin: 0 auto;
-            z-index: 3;
-
-            @media (min-width: $tablet) {
-                margin: -200px initial 50px auto;
-            }
-        }
-
         h3 {
             display: inline-block;
             font-weight: normal;
-        }
-
-        .candidate-gender {
-            margin-left: 4px;
         }
     }
 
