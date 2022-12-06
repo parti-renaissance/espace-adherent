@@ -1,7 +1,6 @@
 {% extends 'base_renaissance.html.twig' %}
 
 {% block content %}
-
     <div x-data="{ show: false }" @keydown.window.escape="show = false;" class="adherent-account relative flex min-h-screen flex-col bg-gray-50">
         <!-- Navbar -->
         <nav class="shrink-0 bg-re-blue-600">
@@ -188,9 +187,7 @@
             <!-- Right side -->
             <div class="lg:min-w-0 lg:flex-1">
                 <div class="lg:pl-8 pointer-events-auto" tabindex="-1">
-
                     {% block content_right_side '' %}
-
                 </div>
             </div>
         </main>
