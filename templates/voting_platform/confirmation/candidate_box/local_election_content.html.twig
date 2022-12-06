@@ -13,13 +13,6 @@
                     <li class="text-gray-500">
                         {{ first.getFirstName() }}
                         <span class="uppercase font-medium"> {{ first.getLastName() }}</span>
-                        <span class="inline-block">
-                            {% if first.isFemale %}
-                                {% include 'icons/female.svg.twig' %}
-                            {% else %}
-                                {% include 'icons/male.svg.twig' %}
-                            {% endif %}
-                        </span>
                     </li>
                     <li class="text-gray-500">+ {{ candidates|length - 1 }} candidature{{ candidates|length - 1 > 1 ? 's' }}</li>
                 </ul>

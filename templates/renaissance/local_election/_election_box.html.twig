@@ -5,9 +5,9 @@
         {{ cms_block('vote-statuses-landing-page-designation-description')|markdown }}
     </div>
 
-    <p class="mt-5 text-base leading-6 text-gray-600">
-        Le vote sera ouvert du <span class="text-gray-900 font-medium">{{ designation.voteStartDate|format_datetime('none', 'none', "dd/MM/y à HH'h'mm") }}</span> au
-        <span class="text-gray-900 font-medium">{{ designation.voteEndDate|format_datetime('none', 'none', "dd/MM/y à HH'h'mm") }}</span>.
+    <p class="mt-5 inline-block text-base leading-6 text-re-blue-600 rounded-md px-4 py-3 border border-dashed border-re-blue-300 bg-re-blue-50">
+        Le vote sera ouvert du <span class="text-re-blue-900 font-medium">{{ designation.voteStartDate|format_datetime('none', 'none', "dd/MM/y à HH'h'mm") }}</span> au
+        <span class="text-re-blue-900 font-medium">{{ designation.voteEndDate|format_datetime('none', 'none', "dd/MM/y à HH'h'mm") }}</span>.
     </p>
 
     <div class="mt-6 border-t border-gray-200 pt-6">
@@ -19,7 +19,7 @@
                 <span class="clock-container text-re-blue-600 font-medium"></span>
             </div>
         {% elseif not voting_platform_election %}
-            <p>Le vote commencera dans quelques instants.</p>
+            <p class="lg:text-lg font-medium text-gray-700 text-center">Le vote commencera dans quelques instants.</p>
         {% else %}
             {% if voting_platform_election.isVotePeriodActive %}
                 {% if is_granted('ABLE_TO_VOTE', voting_platform_election) %}
