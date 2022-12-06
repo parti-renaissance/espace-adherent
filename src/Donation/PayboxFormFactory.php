@@ -8,21 +8,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PayboxFormFactory
 {
-    private $environment;
-    private $requestHandler;
-    private $router;
-    private $donationRequestUtils;
-
     public function __construct(
-        string $environment,
-        LexikRequestHandler $requestHandler,
-        UrlGeneratorInterface $router,
-        DonationRequestUtils $donationRequestUtils
+        private readonly string $environment,
+        private readonly LexikRequestHandler $requestHandler,
+        private readonly LexikRequestHandler $membershipRequestHandler,
+        private readonly UrlGeneratorInterface $router,
+        private readonly DonationRequestUtils $donationRequestUtils
     ) {
-        $this->environment = $environment;
-        $this->requestHandler = $requestHandler;
-        $this->router = $router;
-        $this->donationRequestUtils = $donationRequestUtils;
     }
 
     public function createPayboxFormForDonation(Donation $donation): LexikRequestHandler
@@ -50,6 +42,10 @@ class PayboxFormFactory
 
         if (str_starts_with($this->environment, 'test')) {
             $parameters['PBX_REPONDRE_A'] = 'https://httpbin.org/status/200';
+        }
+
+        if ($donation->isMembership()) {
+            return $this->membershipRequestHandler->setParameters($parameters);
         }
 
         return $this->requestHandler->setParameters($parameters);
