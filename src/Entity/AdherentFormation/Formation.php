@@ -52,6 +52,16 @@ class Formation
      */
     private ?File $file = null;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $visible = false;
+
+    /**
+     * @ORM\Column(type="smallint", options={"unsigned": true})
+     */
+    protected $downloadsCount = 0;
+
     public function __toString()
     {
         return (string) $this->title;
@@ -90,5 +100,25 @@ class Formation
     public function setFile(File $file): void
     {
         $this->file = $file;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->visible;
+    }
+
+    public function setVisible(bool $visible): void
+    {
+        $this->visible = $visible;
+    }
+
+    public function getDownloadsCount(): int
+    {
+        return $this->downloadsCount;
+    }
+
+    public function incrementDownloadsCount(): void
+    {
+        ++$this->downloadsCount;
     }
 }
