@@ -2,7 +2,7 @@
 
 namespace App\Form\Admin;
 
-use App\Entity\Mooc\AttachmentFile;
+use App\Entity\BaseFile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,7 +26,7 @@ class BaseFileType extends AbstractType
 
     public function changeRequiredOptionForFile(FormEvent $formEvent): void
     {
-        /** @var AttachmentFile $file */
+        /** @var BaseFile $file */
         $file = $formEvent->getData();
 
         if ($file && $file->getPath()) {

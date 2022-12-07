@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Entity\AdherentFormation\File;
 use App\Form\Admin\BaseFileType;
 use App\Form\PositionType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -33,6 +34,8 @@ class FormationAdmin extends AbstractAdmin
                 ->add('file', BaseFileType::class, [
                     'label' => false,
                     'attr' => ['accept' => 'application/pdf'],
+                ], [
+                    'data_class' => File::class,
                 ])
             ->end()
         ;
@@ -45,10 +48,6 @@ class FormationAdmin extends AbstractAdmin
                 'label' => 'Titre',
                 'show_filter' => true,
             ])
-            ->add('axe', null, [
-                'label' => 'Axe de formation',
-                'show_filter' => true,
-            ])
         ;
     }
 
@@ -57,6 +56,9 @@ class FormationAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
+            ])
+            ->add('downloadsCount', null, [
+                'label' => 'Téléchargements',
             ])
             ->add('position', null, [
                 'label' => 'Position',
