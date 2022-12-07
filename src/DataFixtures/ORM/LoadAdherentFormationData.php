@@ -2,23 +2,20 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Content\MediaFactory;
 use App\Entity\AdherentFormation\File;
 use App\Entity\AdherentFormation\Formation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
-use League\Flysystem\FilesystemInterface;
+use Faker\Generator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadAdherentFormationData extends Fixture
 {
-    private $faker;
+    private Generator $faker;
 
-    public function __construct(MediaFactory $mediaFactory, FilesystemInterface $storage)
+    public function __construct()
     {
-        $this->mediaFactory = $mediaFactory;
-        $this->storage = $storage;
         $this->faker = Factory::create('fr_FR');
     }
 
