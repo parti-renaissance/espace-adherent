@@ -21,18 +21,18 @@ class LoadAdherentFormationData extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $manager->persist($this->createFormation('Première formation', 'first-formation'));
-        $manager->persist($this->createFormation('Formation sans description', 'second-formation'));
-        $manager->persist($this->createFormation('Formation non visible', 'third-formation', false));
+        $manager->persist($this->createFormation('Première formation'));
+        $manager->persist($this->createFormation('Formation sans description', false));
+        $manager->persist($this->createFormation('Formation non visible', true, false));
 
         $manager->flush();
     }
 
-    private function createFormation(string $title, string $file, bool $visible = true): Formation
+    private function createFormation(string $title, bool $description = true, bool $visible = true): Formation
     {
         $formation = new Formation();
         $formation->setTitle($title);
-        $formation->setDescription($this->faker->text('200'));
+        $formation->setDescription($description ? $this->faker->text('200') : null);
         $formation->setVisible($visible);
         $formation->setFile($this->createFile($title));
 
