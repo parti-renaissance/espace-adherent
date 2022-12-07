@@ -4,19 +4,29 @@
 
 {% block content_right_side %}
     <section class="space-y-4 md:space-y-6">
-        <h1 class="text-3xl font-bold leading-10 text-gray-900">Communication</h1>
+        <h1 class="text-3xl font-bold leading-10 text-gray-900">Formations</h1>
 
-        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-6">
             {% for formation in formations %}
-                <h3>{{ formation.title }}</h3>
+                <div class="bg-gray-50 flex flex-col justify-between border border-gray-200 rounded-md p-3 md:p-4">
+                    <div>
+                        <div class="w-10 h-10 rounded-md text-white bg-re-blue-500 flex items-center justify-center">
+                            {% include 'icons/academic.svg.twig' with { svg_class: 'h-6 w-6' } %}
+                        </div>
+                        <h3 class="mt-4 text-base lg:text-lg font-medium text-slate-900">{{ formation.title }}</h3>
+                    </div>
 
-                {% if formation.description is not empty %}
-                    <p>{{ formation.description }}</p>
-                {% endif %}
+                    {% if formation.description is not empty %}
+                        <p class="mt-2 text-sm leading-5 text-slate-500 line-clamp-4">{{ formation.description }}</p>
+                    {% endif %}
 
-                <a href="{{ path('app_renaissance_adherent_formation_download', { id: formation.id }) }}">Télécharger</a>
-
-                <hr>
+                    <div class="mt-4">
+                        <a class="inline-flex items-center px-3 py-2 rounded-md text-sm leading-5 bg-re-blue-50 text-re-blue-800 hover:bg-re-blue-100" href="{{ path('app_renaissance_adherent_formation_download', { id: formation.id }) }}">
+                            {% include 'icons/download.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+                            Télécharger
+                        </a>
+                    </div>
+                </div>
             {% endfor %}
         </div>
     </section>
