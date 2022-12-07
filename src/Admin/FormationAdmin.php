@@ -26,12 +26,14 @@ class FormationAdmin extends AbstractAdmin
                     'label' => 'description',
                     'required' => false,
                 ])
-                ->add('position', PositionType::class, [
-                    'label' => 'Position sur la page',
-                ])
+            ->end()
+            ->with('Visibilité', ['class' => 'col-md-6'])
                 ->add('visible', CheckboxType::class, [
                     'label' => 'Visible',
                     'required' => false,
+                ])
+                ->add('position', PositionType::class, [
+                    'label' => 'Position sur la page',
                 ])
             ->end()
             ->with('Fichier attaché', ['class' => 'col-md-12'])
