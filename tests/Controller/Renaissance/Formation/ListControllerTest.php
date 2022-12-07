@@ -9,13 +9,12 @@ use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
- * @group debug
  */
 class ListControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    public function testUserCanSeeFormations(): void
+    public function testREAdherentCanSeeFormations(): void
     {
         $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
 
@@ -41,9 +40,7 @@ class ListControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/formations');
-        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-
-        $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client);
+        $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
     protected function setUp(): void
