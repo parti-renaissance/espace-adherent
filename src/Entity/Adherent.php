@@ -1031,10 +1031,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_ADHERENT';
         }
 
-        if ($this->isRenaissanceAdherent()) {
-            $roles[] = 'ROLE_ADHERENT_RENAISSANCE';
-        }
-
         if ($this->isReferent()) {
             $roles[] = 'ROLE_REFERENT';
         }
