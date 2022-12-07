@@ -7,11 +7,17 @@
         <h1 class="text-3xl font-bold leading-10 text-gray-900">Communication</h1>
 
         <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
-            <ul>
             {% for formation in formations %}
-                <li>{{ formation.title }}</li>
+                <h3>{{ formation.title }}</h3>
+
+                {% if formation.description is not empty %}
+                    <p>{{ formation.description }}</p>
+                {% endif %}
+
+                <a href="{{ path('app_renaissance_adherent_formation_download', { id: formation.id }) }}">Télécharger</a>
+
+                <hr>
             {% endfor %}
-            </ul>
         </div>
     </section>
 {% endblock %}

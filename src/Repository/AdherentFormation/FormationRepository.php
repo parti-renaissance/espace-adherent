@@ -12,4 +12,14 @@ class FormationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Formation::class);
     }
+
+    public function findAllVisible(): array
+    {
+        return $this
+            ->createQueryBuilder('formation')
+            ->andWhere('formation.visible = TRUE')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
