@@ -46,6 +46,7 @@ class Formation
      *     orphanRemoval=true
      * )
      *
+     * @Assert\NotBlank
      * @Assert\Valid
      */
     private ?File $file = null;

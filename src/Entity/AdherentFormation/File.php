@@ -21,6 +21,7 @@ class File extends BaseFile
     /**
      * @var UploadedFile|null
      *
+     * @Assert\NotBlank(groups={"adherent_formation_create"})
      * @Assert\File(
      *     maxSize="5M",
      *     mimeTypes={"application/pdf", "application/x-pdf"}

@@ -15,6 +15,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class FormationAdmin extends AbstractAdmin
 {
+    protected function configureFormOptions(array &$formOptions): void
+    {
+        if ($this->isCurrentRoute('create')) {
+            $formOptions['validation_groups'] = ['Default', 'adherent_formation_create'];
+        }
+    }
+
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
@@ -23,7 +30,7 @@ class FormationAdmin extends AbstractAdmin
                     'label' => 'Titre',
                 ])
                 ->add('description', TextareaType::class, [
-                    'label' => 'description',
+                    'label' => 'Description',
                     'required' => false,
                 ])
             ->end()
@@ -39,6 +46,7 @@ class FormationAdmin extends AbstractAdmin
             ->with('Fichier attaché', ['class' => 'col-md-12'])
                 ->add('file', BaseFileType::class, [
                     'label' => false,
+                    'required' => $this->isCurrentRoute('create'),
                     'data_class' => File::class,
                     'can_update_file' => true,
                     'attr' => ['accept' => 'application/pdf'],
