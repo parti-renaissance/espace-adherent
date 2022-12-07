@@ -311,11 +311,11 @@ services:
     Lexik\Bundle\PayboxBundle\Paybox\System\Cancellation\Request: '@lexik_paybox.request_cancellation_handler'
     Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request: '@lexik_paybox.request_handler'
 
-    app.paybox.subscriptions_handler:
+    app.paybox.membership_handler:
         class: Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request
         arguments:
             $parameters:
-                production: false
+                production: '%env(PAYBOX_PRODUCTION)%'
                 site: "%env(PAYBOX_MEMBERSHIP_SITE)%"
                 rank: "%env(PAYBOX_MEMBERSHIP_RANK)%"
                 login: "%env(PAYBOX_MEMBERSHIP_IDENTIFIER)%"
@@ -330,7 +330,7 @@ services:
 
     App\Donation\PayboxFormFactory:
         arguments:
-            $membershipRequestHandler: '@app.paybox.subscriptions_handler'
+            $membershipRequestHandler: '@app.paybox.membership_handler'
 
     League\OAuth2\Server\AuthorizationValidators\AuthorizationValidatorInterface: '@App\OAuth\AuthorizationValidators\JsonWebTokenValidator'
     League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface: '@App\OAuth\Store\AccessTokenStore'
