@@ -315,7 +315,7 @@ services:
         class: Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request
         arguments:
             $parameters:
-                production: '%env(PAYBOX_PRODUCTION)%'
+                production: '%env(bool:PAYBOX_PRODUCTION)%'
                 site: "%env(PAYBOX_MEMBERSHIP_SITE)%"
                 rank: "%env(PAYBOX_MEMBERSHIP_RANK)%"
                 login: "%env(PAYBOX_MEMBERSHIP_IDENTIFIER)%"
