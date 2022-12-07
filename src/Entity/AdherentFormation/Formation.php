@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="adherent_formation")
  *
  * @UniqueEntity(fields={"title"}, message="adherent_formation.title.unique_entity")
- * @UniqueEntity(fields={"slug"}, message="adherent_formation.slug.unique_entity")
  */
 class Formation
 {
@@ -34,9 +33,8 @@ class Formation
     private ?string $title = null;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      *
-     * @Assert\NotBlank(message="Veuillez renseigner une description.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      */
     private ?string $description = null;

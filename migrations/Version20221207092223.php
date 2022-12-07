@@ -13,7 +13,7 @@ final class Version20221207092223 extends AbstractMigration
           id BIGINT AUTO_INCREMENT NOT NULL,
           file_id INT UNSIGNED DEFAULT NULL,
           title VARCHAR(255) NOT NULL,
-          description LONGTEXT NOT NULL,
+          description LONGTEXT DEFAULT NULL,
           visible TINYINT(1) DEFAULT \'0\' NOT NULL,
           downloads_count SMALLINT UNSIGNED NOT NULL,
           position SMALLINT UNSIGNED DEFAULT 0 NOT NULL,

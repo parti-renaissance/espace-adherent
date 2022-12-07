@@ -18,6 +18,7 @@ class FormationRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('formation')
             ->andWhere('formation.visible = TRUE')
+            ->orderBy('formation.position', 'ASC')
             ->getQuery()
             ->getResult()
         ;

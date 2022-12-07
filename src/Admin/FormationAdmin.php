@@ -9,13 +9,12 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class FormationAdmin extends AbstractAdmin
 {
-    use MediaSynchronisedAdminTrait;
-
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
@@ -25,17 +24,22 @@ class FormationAdmin extends AbstractAdmin
                 ])
                 ->add('description', TextareaType::class, [
                     'label' => 'description',
+                    'required' => false,
                 ])
                 ->add('position', PositionType::class, [
                     'label' => 'Position sur la page',
+                ])
+                ->add('visible', CheckboxType::class, [
+                    'label' => 'Visible',
+                    'required' => false,
                 ])
             ->end()
             ->with('Fichier attaché', ['class' => 'col-md-12'])
                 ->add('file', BaseFileType::class, [
                     'label' => false,
-                    'attr' => ['accept' => 'application/pdf'],
-                ], [
                     'data_class' => File::class,
+                    'can_update_file' => true,
+                    'attr' => ['accept' => 'application/pdf'],
                 ])
             ->end()
         ;
@@ -62,6 +66,9 @@ class FormationAdmin extends AbstractAdmin
             ])
             ->add('position', null, [
                 'label' => 'Position',
+            ])
+            ->add('visible', null, [
+                'label' => 'Visible',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
