@@ -200,7 +200,7 @@
                         class="{{ not loop.first ? 'mt-8 ' }} h-fit group bg-white border border-gray-100 active:bg-yellow px-4 py-5 cursor-pointer rounded-md p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 hover:border-transparent duration-200 slide-over--trigger break-inside-avoid"
                         data-commitment-title="{{ commitment.title|e('html_attr') }}"
                         data-commitment-slug="{{ slug }}"
-                        data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath()}) }}"
+                        data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath(), app_domain: renaissance_host}) }}"
                         data-commitment-description="{{ commitment.description|e('html_attr') }}"
                     >
                         <h3 class="text-re-blue-400 font-medium text-base lg:text-lg mb-2.5 group-hover:text-white">{{ commitment.title }}</h3>
@@ -282,7 +282,7 @@
                            {% for member in executive_office_group %}
                                <div>
                                    <div class="shrink-0 mb-5 lg:mb-6">
-                                       <img src="{{ path('asset_url', {path: member.imagePath}) }}" class="object-cover w-full h-auto transition ease-in-out rounded md:hover:scale-105 lg:h-[350px]" alt="{{ member.fullName }}"/>
+                                       <img src="{{ path('asset_url', {path: member.imagePath, app_domain: renaissance_host}) }}" class="object-cover w-full h-auto transition ease-in-out rounded md:hover:scale-105 lg:h-[350px]" alt="{{ member.fullName }}"/>
                                    </div>
                                   <div class="text-center text-sm md:text-base">
                                       <p class="font-medium text-gray-900 md:text-lg">{{ member.fullName }}</p>

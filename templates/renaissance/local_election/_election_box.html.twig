@@ -40,11 +40,6 @@
                     {% if my_vote %}
                         <h3 class="text-lg font-medium text-gray-900">Votre choix a bien été enregistré.</h3>
 
-                        <div class="em-countdown-clock l__col--full" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
-                            <span class="text--dark text--small">Les résultats seront publiés dans :</span>
-                            <span class="clock-container text-re-blue-600 font-medium"></span>
-                        </div>
-
                         <p class="mt-6">
                             <button type="button" class="button button--blue disabled:opacity-75 cursor-not-allowed disabled:bg-re-blue-500/75 disabled:text-white" disabled>J'accède au vote</button>
                         </p>
