@@ -113,9 +113,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
-        // Ex-host should be allow to follow again
-        $this->assertTrue($this->seeFollowLink($crawler));
-
         $this->logout($this->client);
         $this->getEntityManager(Adherent::class)->clear();
 

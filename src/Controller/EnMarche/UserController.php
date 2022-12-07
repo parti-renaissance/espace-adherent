@@ -58,10 +58,6 @@ class UserController extends AbstractController
             return $this->render('adherent/renaissance_profile.html.twig');
         }
 
-        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
-        }
-
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);
 
         $form = $this
