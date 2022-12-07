@@ -2,13 +2,14 @@
 
 namespace App\Form\Admin;
 
-use App\Entity\Mooc\AttachmentFile;
+use App\Entity\BaseFile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BaseFileType extends AbstractType
 {
@@ -21,12 +22,14 @@ class BaseFileType extends AbstractType
             ->add('file', FileType::class)
         ;
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'changeRequiredOptionForFile']);
+        if (!$options['can_update_file']) {
+            $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'changeRequiredOptionForFile']);
+        }
     }
 
     public function changeRequiredOptionForFile(FormEvent $formEvent): void
     {
-        /** @var AttachmentFile $file */
+        /** @var BaseFile $file */
         $file = $formEvent->getData();
 
         if ($file && $file->getPath()) {
@@ -37,5 +40,12 @@ class BaseFileType extends AbstractType
                 ])
             ;
         }
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'can_update_file' => false,
+        ]);
     }
 }
