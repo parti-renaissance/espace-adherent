@@ -23,4 +23,15 @@ class FormationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findOneVisible(int $id): ?Formation
+    {
+        return $this->createQueryBuilder('formation')
+            ->andWhere('formation.id = :id')
+            ->andWhere('formation.visible = TRUE')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
