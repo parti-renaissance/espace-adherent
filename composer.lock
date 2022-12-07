@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "16d43bb675771e5621ca49fe6daf842d",
+    "content-hash": "1bdc932d1277149a0844b341a72ba222",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -246,26 +246,26 @@
         },
         {
             "name": "algolia/search-bundle",
-            "version": "5.2.1",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/algolia/search-bundle.git",
-                "reference": "ac565e075bc67410281c873db58aff3fc80f32b4"
+                "reference": "79d48fdc96d36a34649007b9ef465877e586371f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/algolia/search-bundle/zipball/ac565e075bc67410281c873db58aff3fc80f32b4",
-                "reference": "ac565e075bc67410281c873db58aff3fc80f32b4",
+                "url": "https://api.github.com/repos/algolia/search-bundle/zipball/79d48fdc96d36a34649007b9ef465877e586371f",
+                "reference": "79d48fdc96d36a34649007b9ef465877e586371f",
                 "shasum": ""
             },
             "require": {
                 "algolia/algoliasearch-client-php": "^3.0",
                 "doctrine/event-manager": "^1.1",
                 "doctrine/persistence": "^2.1",
-                "php": "^7.2 || ^8.0",
-                "symfony/filesystem": "^3.4 || ^4.0 || ^5.0",
-                "symfony/property-access": "^3.4 || ^4.0 || ^5.0",
-                "symfony/serializer": "^3.4 || ^4.0 || ^5.0"
+                "php": ">= 8.0.2",
+                "symfony/filesystem": "^5.0 || ^6.0",
+                "symfony/property-access": "^5.0 || ^6.0",
+                "symfony/serializer": "^5.0 || ^6.0"
             },
             "conflict": {
                 "doctrine/mongodb-odm": "< 1.3"
@@ -279,10 +279,10 @@
                 "jms/serializer-bundle": "^3.0",
                 "phpunit/phpunit": "^8.5 || ^9.0",
                 "roave/security-advisories": "dev-master",
-                "symfony/framework-bundle": "^3.4 || ^4.0 || ^5.0",
-                "symfony/phpunit-bridge": "^3.4 || ^4.0 || ^5.0",
+                "symfony/framework-bundle": "^5.0 || ^6.0",
+                "symfony/phpunit-bridge": "^5.0 || ^6.0",
                 "symfony/proxy-manager-bridge": "*",
-                "symfony/yaml": "^3.4 || ^4.0 || ^5.0"
+                "symfony/yaml": "^5.0 || ^6.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -307,9 +307,9 @@
             ],
             "support": {
                 "issues": "https://github.com/algolia/search-bundle/issues",
-                "source": "https://github.com/algolia/search-bundle/tree/5.2.1"
+                "source": "https://github.com/algolia/search-bundle/tree/6.0.0"
             },
-            "time": "2022-03-07T15:22:39+00:00"
+            "time": "2022-01-28T08:33:58+00:00"
         },
         {
             "name": "api-platform/core",
@@ -13128,16 +13128,16 @@
         },
         {
             "name": "symfony/deprecation-contracts",
-            "version": "v3.1.1",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "07f1b9cc2ffee6aaafcf4b710fbc38ff736bd918"
+                "reference": "1ee04c65529dea5d8744774d474e7cbd2f1206d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/07f1b9cc2ffee6aaafcf4b710fbc38ff736bd918",
-                "reference": "07f1b9cc2ffee6aaafcf4b710fbc38ff736bd918",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/1ee04c65529dea5d8744774d474e7cbd2f1206d3",
+                "reference": "1ee04c65529dea5d8744774d474e7cbd2f1206d3",
                 "shasum": ""
             },
             "require": {
@@ -13146,7 +13146,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "3.1-dev"
+                    "dev-main": "3.3-dev"
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -13175,7 +13175,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.1.1"
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.2.0"
             },
             "funding": [
                 {
@@ -13191,7 +13191,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-02-25T11:15:52+00:00"
+            "time": "2022-11-25T10:21:52+00:00"
         },
         {
             "name": "symfony/doctrine-bridge",
