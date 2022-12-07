@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 
 class RenaissanceAdherentVoter extends AbstractAdherentVoter
 {
-    public const ROLE_RENAISSANCE_ADHERENT = 'ROLE_RENAISSANCE_ADHERENT';
+    public const RENAISSANCE_ADHERENT = 'RENAISSANCE_ADHERENT';
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
@@ -15,6 +15,6 @@ class RenaissanceAdherentVoter extends AbstractAdherentVoter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return self::ROLE_RENAISSANCE_ADHERENT === $attribute;
+        return self::RENAISSANCE_ADHERENT === $attribute && null === $subject;
     }
 }

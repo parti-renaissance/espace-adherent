@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-adherent/formations", name="app_renaissance_adherent_formation_list", methods={"GET"})
- * @IsGranted("ROLE_RENAISSANCE_ADHERENT")
+ * @IsGranted("RENAISSANCE_ADHERENT")
  */
 class ListController extends AbstractController
 {

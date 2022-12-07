@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/espace-adherent/formations/{id}/telecharger", name="app_renaissance_adherent_formation_download", methods={"GET"})
  * @Entity("formation", expr="repository.findOneVisible(id)")
- * @IsGranted("ROLE_RENAISSANCE_ADHERENT")
+ * @IsGranted("RENAISSANCE_ADHERENT")
  */
 class DownloadController extends AbstractController
 {
