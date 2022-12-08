@@ -10,6 +10,8 @@ use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\Voter;
 use App\Mailer\MailerService;
 use App\Mailer\Message\CommitteeElectionCandidacyPeriodIsOverMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformLocalElectionVoteIsOpenMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformLocalElectionVoteIsOverMessage;
 use App\Mailer\Message\VotingPlatformElectionSecondRoundNotificationMessage;
 use App\Mailer\Message\VotingPlatformElectionVoteIsOpenMessage;
 use App\Mailer\Message\VotingPlatformElectionVoteIsOverMessage;
@@ -73,6 +75,10 @@ class ElectionNotifier
             function (array $recipients) use ($election, $electionType, $url) {
                 if (DesignationTypeEnum::POLL === $electionType) {
                     return VotingPlatformVoteStatusesIsOpenMessage::create($election, $recipients, $url);
+                }
+
+                if (DesignationTypeEnum::LOCAL_ELECTION === $electionType) {
+                    return VotingPlatformLocalElectionVoteIsOpenMessage::create($election, $recipients, $url);
                 }
 
                 return VotingPlatformElectionVoteIsOpenMessage::create($election, $recipients, $url);
@@ -154,6 +160,10 @@ class ElectionNotifier
                     return VotingPlatformVoteStatusesIsOverMessage::create($election, $recipients, $url);
                 }
 
+                if (DesignationTypeEnum::LOCAL_ELECTION === $electionType) {
+                    return VotingPlatformLocalElectionVoteIsOverMessage::create($election, $recipients, $url);
+                }
+
                 return VotingPlatformElectionVoteIsOverMessage::create($election, $recipients, $url);
             },
             DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $electionType
@@ -220,6 +230,10 @@ class ElectionNotifier
 
         if ($election->getDesignation()->isPollType()) {
             return $this->urlGenerator->generate('app_vote_statuses_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        }
+
+        if ($election->getDesignation()->isLocalElectionType()) {
+            return $this->urlGenerator->generate('app_renaissance_departmental_election_lists', [], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         if ($entityElection = $election->getElectionEntity()) {
