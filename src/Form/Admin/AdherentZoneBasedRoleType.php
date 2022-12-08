@@ -27,9 +27,7 @@ class AdherentZoneBasedRoleType extends AbstractType
                 'label' => 'Zones',
                 'multiple' => true,
                 'model_manager' => $options['model_manager'],
-                'req_params' => [
-                    '_sonata_admin' => AdherentZoneBasedRoleAdmin::SERVICE_ID,
-                ],
+                'admin_code' => AdherentZoneBasedRoleAdmin::SERVICE_ID,
                 'template' => 'admin/adherent/partial/zone_based_role_autocomplete.html.twig',
             ])
         ;

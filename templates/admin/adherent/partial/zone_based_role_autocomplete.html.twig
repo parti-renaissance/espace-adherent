@@ -6,14 +6,14 @@
         {%- if disabled %} disabled="disabled"{% endif %}
         {%- if multiple %} multiple="multiple"{% endif %}
     >
-        {%- for idx, val  in value|filter((val, idx) => idx~'' != '_labels') -%}
+        {%- for idx, val in value|filter((val, idx) => idx~'' != '_labels') -%}
             <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
         {%- endfor -%}
     </select>
 
     <div id="{{ id }}_hidden_inputs_wrap">
         {% if multiple -%}
-            {%- for idx, val  in value|filter((val, idx) => idx~'' != '_labels') -%}
+            {%- for idx, val in value|filter((val, idx) => idx~'' != '_labels') -%}
                 <input type="hidden" name="{{ full_name }}[]" {%- if disabled %} disabled="disabled"{% endif %} value="{{ val }}">
             {%- endfor -%}
         {% else -%}
@@ -31,10 +31,20 @@
                 }}"
                     onclick="return start_field_dialog_form_add_{{ id }}(this);"
                     class="btn btn-success btn-sm sonata-ba-action"
-                    title="{{ btn_add|trans({}, btn_catalogue) }}"
+                    {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
+                    title="{{
+                    btn_translation_domain|default(null) is same as(false)
+                    ? btn_add
+                    : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
+                    }}"
                 >
                     <i class="fas fa-plus-circle"></i>
-                    {{ btn_add|trans({}, btn_catalogue) }}
+                    {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
+                    {{
+                    btn_translation_domain|default(null) is same as(false)
+                    ? btn_add
+                    : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
+                    }}
                 </a>
                 {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
                 {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
@@ -95,11 +105,6 @@
                             '_sonata_admin': '{{ sonata_admin.admin.baseCodeRoute|e('js') }}',
                             {% elseif admin_code %}
                             '_sonata_admin': '{{ admin_code|e('js') }}',
-                            {% endif %}
-
-                            // subclass
-                            {% if app.request.query.get('subclass') %}
-                            'subclass': '{{ app.request.query.get('subclass') }}',
                             {% endif %}
 
                             {% if context == 'filter' %}
@@ -196,7 +201,7 @@
                     var length = addedItems.length;
                     for (var i = 0; i < length; i++) {
                         el = addedItems[i];
-                        $('#{{ id }}_hidden_inputs_wrap').append('<input type="hidden" name="{{ full_name }}[]" value="'+el.id+'" />');
+                        $('#{{ id }}_hidden_inputs_wrap').append('<input type="hidden" name="{{ full_name|raw }}[]" value="'+el.id+'" />');
                     }
                     {%- else -%}
                     $('#{{ id }}_hidden_inputs_wrap input:hidden').val(addedItems.id);
