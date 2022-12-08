@@ -8,7 +8,13 @@
 
     <main class="max-w-8xl mx-auto px-4 md:px-6">
         <header class="py-10 space-y-10 md:py-12" role="banner">
+
             <div class="text-center">
+                {% if not article.published %}
+                    <div class="rounded-md bg-orange-50 p-4 mb-2">
+                        <p class="text-lg font-medium text-gray-700">Vous consultez un article non-publié</p>
+                    </div>
+                {% endif %}
                 <time class="text-sm text-re-blue-500 lg:text-base">{{ article.publishedAt|format_datetime('none', 'none', "d MMMM yyyy") }}</time>
                 <h1 class="mt-2 text-2xl text-black font-din lg:text-4xl font-bold">{{ article.title }}</h1>
                 <p class="mt-1 text-base text-gray-500 leading-6 lg:leading-7 max-w-4xl mx-auto lg:text-lg">{{ article.description }}</p>

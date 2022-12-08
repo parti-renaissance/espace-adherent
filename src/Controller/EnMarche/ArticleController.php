@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche;
 
 use App\AppCodeEnum;
-use App\Entity\Administrator;
 use App\Entity\Article;
 use App\Entity\ArticleCategory;
 use App\Feed\ArticleFeedGenerator;
@@ -76,41 +75,13 @@ class ArticleController extends AbstractController
         Article $article,
         ArticleRepository $repository,
         Request $request,
-        AuthAppUrlManager $appUrlManager
-    ): Response {
-        $appCode = $appUrlManager->getAppCodeFromRequest($request);
-
-        if ($article->isForRenaissance() xor AppCodeEnum::isRenaissanceApp($appCode)) {
-            throw $this->createNotFoundException();
-        }
-
-        return $this->render(AppCodeEnum::isRenaissanceApp($appCode) ? 'article/renaissance_article.html.twig' : 'article/article.html.twig', [
-            'article' => $article,
-            'latestArticles' => $repository->findThreeLatestOtherThan($article),
-        ]);
-    }
-
-    /**
-     * @Route("/articles/preview/{categorySlug}/{articleSlug}", name="article_preview")
-     * @Entity("article", expr="repository.findOneBySlugAndCategorySlug(articleSlug, categorySlug, false)")
-     */
-    public function previewAction(
-        Article $article,
-        ArticleRepository $repository,
-        Request $request,
         AuthAppUrlManager $appUrlManager,
-        string $renaissanceArticlePreviewKey
+        string $articlePreviewAdminKey
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
         $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
 
-        $user = $this->getUser();
-
-        if (!$isRenaissanceApp && !$user instanceof Administrator) {
-            throw $this->createNotFoundException();
-        }
-
-        if ($isRenaissanceApp && ($request->query->get('bypass') !== $renaissanceArticlePreviewKey)) {
+        if (!$article->isPublished() && $articlePreviewAdminKey !== $request->query->get('preview')) {
             throw $this->createNotFoundException();
         }
 
@@ -118,7 +89,7 @@ class ArticleController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        return $this->render(AppCodeEnum::isRenaissanceApp($appCode) ? 'article/renaissance_article.html.twig' : 'article/article.html.twig', [
+        return $this->render($isRenaissanceApp ? 'article/renaissance_article.html.twig' : 'article/article.html.twig', [
             'article' => $article,
             'latestArticles' => $repository->findThreeLatestOtherThan($article),
         ]);
