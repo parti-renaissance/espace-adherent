@@ -98,18 +98,19 @@ class ArticleRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findOnePublishedBySlugAndCategorySlug(string $articleSlug, string $categorySlug): ?Article
+    public function findOneBySlugAndCategorySlug(string $articleSlug, string $categorySlug): ?Article
     {
-        return $this->createQueryBuilder('a')
+        $qb = $this->createQueryBuilder('a')
             ->select('a', 'm', 'c')
             ->leftJoin('a.media', 'm')
             ->leftJoin('a.category', 'c')
             ->where('a.slug = :articleSlug')
             ->setParameter('articleSlug', $articleSlug)
-            ->andWhere('a.published = :published')
-            ->setParameter('published', true)
             ->andWhere('c.slug = :categorySlug')
             ->setParameter('categorySlug', $categorySlug)
+        ;
+
+        return $qb
             ->getQuery()
             ->getOneOrNullResult()
         ;

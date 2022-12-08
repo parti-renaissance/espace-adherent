@@ -84,6 +84,7 @@ services:
             $invalidEmailHashKey: '%env(INVALID_EMAIL_HASH_KEY)%'
             $campaignMailProducer: '@old_sound_rabbit_mq.mailer_campaign_producer'
             $transactionalMailProducer: '@old_sound_rabbit_mq.mailer_transactional_producer'
+            $articlePreviewAdminKey: '%env(ARTICLE_PREVIEW_ADMIN_KEY)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
