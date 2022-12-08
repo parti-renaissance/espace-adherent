@@ -21,7 +21,6 @@ class VotingPlatformLocalElectionVoteConfirmationMessage extends AbstractRenaiss
                 'election_type' => $designation->getDenomination(false, true).'s',
                 'first_name' => $adherent->getFirstName(),
                 'voter_key' => static::escape($voterKey),
-                'vote_end_date' => static::formatDate($election->getRealVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
             ],
         );
     }
