@@ -22,7 +22,7 @@ class File extends BaseFile
      * @var UploadedFile|null
      *
      * @Assert\File(
-     *     maxSize="10M",
+     *     maxSize="5M",
      *     binaryFormat=false,
      *     mimeTypes={
      *         "image/*",
