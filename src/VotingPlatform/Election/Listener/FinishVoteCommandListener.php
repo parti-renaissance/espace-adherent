@@ -10,6 +10,7 @@ use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\VoteResult;
 use App\Mailer\MailerService;
+use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformLocalElectionVoteConfirmationMessage;
 use App\Mailer\Message\VotingPlatformElectionVoteConfirmationMessage;
 use App\Mailer\Message\VotingPlatformVoteStatusesVoteConfirmationMessage;
 use App\Repository\VotingPlatform\CandidateGroupRepository;
@@ -164,10 +165,15 @@ class FinishVoteCommandListener implements EventSubscriberInterface
 
     private function sendVoteConfirmationEmail(Vote $vote, string $voterKey): void
     {
-        if (DesignationTypeEnum::POLL === $vote->getElection()->getDesignationType()) {
-            $message = VotingPlatformVoteStatusesVoteConfirmationMessage::create($vote, $voterKey);
-        } else {
-            $message = VotingPlatformElectionVoteConfirmationMessage::create($vote, $voterKey);
+        switch ($vote->getElection()->getDesignationType()) {
+            case DesignationTypeEnum::POLL:
+                $message = VotingPlatformVoteStatusesVoteConfirmationMessage::create($vote, $voterKey);
+                break;
+            case DesignationTypeEnum::LOCAL_ELECTION:
+                $message = VotingPlatformLocalElectionVoteConfirmationMessage::create($vote, $voterKey);
+                break;
+            default:
+                $message = VotingPlatformElectionVoteConfirmationMessage::create($vote, $voterKey);
         }
 
         $this->mailer->sendMessage($message);
