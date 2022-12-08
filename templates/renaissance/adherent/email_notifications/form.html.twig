@@ -63,8 +63,8 @@
     </section>
 {% endblock %}
 
-{% if not app.user.isEmailSubscribed() %}
-    {% block final_javascripts %}
+{% block final_javascripts %}
+    {% if not app.user.isEmailSubscribed() %}
         <script type="text/javascript">
             Bootstrap.onLoad(function () {
                 on(dom('#resubscribe-mc-trigger'), 'click', function (event) {
@@ -73,6 +73,5 @@
                 })
             });
         </script>
-    {% endblock %}
-{% endif %}
-
+    {% endif %}
+{% endblock %}
