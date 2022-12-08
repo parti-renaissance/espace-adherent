@@ -1952,16 +1952,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.7.1",
+            "version": "2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "a2dcad48741c9d12fd6040398cf075025030096e"
+                "reference": "22d53b2c5ad03929628fb4a928b01135585b7179"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/a2dcad48741c9d12fd6040398cf075025030096e",
-                "reference": "a2dcad48741c9d12fd6040398cf075025030096e",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/22d53b2c5ad03929628fb4a928b01135585b7179",
+                "reference": "22d53b2c5ad03929628fb4a928b01135585b7179",
                 "shasum": ""
             },
             "require": {
@@ -2046,7 +2046,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.7.1"
+                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.7.2"
             },
             "funding": [
                 {
@@ -2062,7 +2062,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-10-23T09:47:06+00:00"
+            "time": "2022-12-07T12:07:11+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
@@ -5411,51 +5411,51 @@
         },
         {
             "name": "knplabs/doctrine-behaviors",
-            "version": "2.3.0",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/DoctrineBehaviors.git",
-                "reference": "35ba29cefdfa18778f5273e1dc7c156f43d92340"
+                "reference": "a6a4bf3b118137de11b9913a76c58ae89f68c307"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/DoctrineBehaviors/zipball/35ba29cefdfa18778f5273e1dc7c156f43d92340",
-                "reference": "35ba29cefdfa18778f5273e1dc7c156f43d92340",
+                "url": "https://api.github.com/repos/KnpLabs/DoctrineBehaviors/zipball/a6a4bf3b118137de11b9913a76c58ae89f68c307",
+                "reference": "a6a4bf3b118137de11b9913a76c58ae89f68c307",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": "^3.0",
-                "doctrine/dbal": "^2.9",
-                "doctrine/orm": "^2.8",
-                "doctrine/persistence": "^2.0",
+                "doctrine/common": "^3.1",
+                "doctrine/dbal": "^2.3|^3.1",
+                "doctrine/doctrine-bundle": "^2.4",
+                "doctrine/orm": "^2.9.3",
+                "doctrine/persistence": "^2.2",
                 "nette/utils": "^3.2",
                 "php": ">=8.0",
-                "ramsey/uuid": "^4.0",
-                "symfony/cache": "^4.4|^5.2",
-                "symfony/dependency-injection": "^4.4|^5.2",
-                "symfony/framework-bundle": "^4.4|^5.2",
-                "symfony/http-kernel": "^4.4|^5.2",
-                "symfony/polyfill-php80": "^1.22",
-                "symfony/security-core": "^4.4|^5.2",
-                "symfony/string": "^5.2",
-                "symfony/translation-contracts": "^2.3"
+                "ramsey/uuid": "^4.2",
+                "symfony/cache": "^5.3|^6.0",
+                "symfony/dependency-injection": "^5.3|^6.0",
+                "symfony/framework-bundle": "^5.3|^6.0",
+                "symfony/http-kernel": "^5.3|^6.0",
+                "symfony/security-core": "^5.3|^6.0",
+                "symfony/string": "^5.3|^6.0",
+                "symfony/translation-contracts": "^2.4"
             },
             "require-dev": {
-                "doctrine/annotations": "^1.12",
-                "doctrine/doctrine-bundle": "^2.2",
+                "doctrine/annotations": "^1.13",
                 "ext-pdo_mysql": "*",
                 "ext-pdo_pgsql": "*",
                 "ext-pdo_sqlite": "*",
                 "php-parallel-lint/php-parallel-lint": "^1.3",
                 "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "^0.12.84",
+                "phpstan/phpstan": "^0.12.94",
                 "phpstan/phpstan-doctrine": "^0.12.42",
                 "phpstan/phpstan-phpunit": "^0.12",
                 "phpunit/phpunit": "^9.5",
                 "psr/log": "^1.1",
-                "rector/rector": "^0.11.45",
+                "rector/rector": "^0.11.46",
                 "symplify/amnesia": "^9.4",
                 "symplify/config-transformer": "^9.4",
+                "symplify/easy-ci": "^9.4",
                 "symplify/easy-coding-standard": "^9.4",
                 "symplify/package-builder": "^9.4",
                 "symplify/phpstan-extensions": "^9.4",
@@ -5492,9 +5492,9 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/DoctrineBehaviors/issues",
-                "source": "https://github.com/KnpLabs/DoctrineBehaviors/tree/2.3.0"
+                "source": "https://github.com/KnpLabs/DoctrineBehaviors/tree/2.5.0"
             },
-            "time": "2021-08-09T08:28:16+00:00"
+            "time": "2021-11-22T10:10:15+00:00"
         },
         {
             "name": "knplabs/knp-menu",
@@ -15121,28 +15121,27 @@
         },
         {
             "name": "symfony/password-hasher",
-            "version": "v5.4.11",
+            "version": "v6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/password-hasher.git",
-                "reference": "b0169ed8f09a4ae39eb119218ea1685079a9b179"
+                "reference": "955ce6bdbb53933897043ad00776a88ba916208a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/password-hasher/zipball/b0169ed8f09a4ae39eb119218ea1685079a9b179",
-                "reference": "b0169ed8f09a4ae39eb119218ea1685079a9b179",
+                "url": "https://api.github.com/repos/symfony/password-hasher/zipball/955ce6bdbb53933897043ad00776a88ba916208a",
+                "reference": "955ce6bdbb53933897043ad00776a88ba916208a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
-                "symfony/polyfill-php80": "^1.15"
+                "php": ">=8.1"
             },
             "conflict": {
-                "symfony/security-core": "<5.3"
+                "symfony/security-core": "<5.4"
             },
             "require-dev": {
-                "symfony/console": "^5.3|^6.0",
-                "symfony/security-core": "^5.3|^6.0"
+                "symfony/console": "^5.4|^6.0",
+                "symfony/security-core": "^5.4|^6.0"
             },
             "type": "library",
             "autoload": {
@@ -15174,7 +15173,7 @@
                 "password"
             ],
             "support": {
-                "source": "https://github.com/symfony/password-hasher/tree/v5.4.11"
+                "source": "https://github.com/symfony/password-hasher/tree/v6.2.0"
             },
             "funding": [
                 {
@@ -15190,7 +15189,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-07-20T13:00:38+00:00"
+            "time": "2022-09-01T02:03:18+00:00"
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
