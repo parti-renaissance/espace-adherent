@@ -22,8 +22,28 @@ class File extends BaseFile
      * @var UploadedFile|null
      *
      * @Assert\File(
-     *     maxSize="5M",
-     *     mimeTypes={"application/pdf", "application/x-pdf"}
+     *     maxSize="10M",
+     *     binaryFormat=false,
+     *     mimeTypes={
+     *         "image/*",
+     *         "video/mpeg",
+     *         "video/mp4",
+     *         "video/quicktime",
+     *         "video/webm",
+     *         "application/pdf",
+     *         "application/x-pdf",
+     *         "application/vnd.ms-powerpoint",
+     *         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+     *         "application/msword",
+     *         "application/vnd.ms-excel",
+     *         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+     *         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+     *         "application/rtf",
+     *         "text/plain",
+     *         "text/csv",
+     *         "text/html",
+     *         "text/calendar"
+     *     }
      * )
      */
     protected $file;
