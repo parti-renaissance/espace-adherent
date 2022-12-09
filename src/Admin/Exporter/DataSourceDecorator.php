@@ -5,7 +5,6 @@ namespace App\Admin\Exporter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\Exporter\Source\AbstractPropertySourceIterator;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 
 class DataSourceDecorator implements DataSourceInterface
 {
@@ -13,7 +12,7 @@ class DataSourceDecorator implements DataSourceInterface
     {
     }
 
-    public function createIterator(ProxyQueryInterface $query, array $fields): SourceIteratorInterface
+    public function createIterator(ProxyQueryInterface $query, array $fields): \Iterator
     {
         $sourceIterator = $this->decorated->createIterator($query, $fields);
 
