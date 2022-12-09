@@ -9,7 +9,7 @@
         {% else %}
             {{ object.referentTags|map(tag => tag.code)|join(', ') }}
         {% endif %}
-    {% elseif object.isLocalElectionType() %}
+    {% elseif object.isLocalElectionTypes() %}
         {{ object.getZones()|first }}
         {% if object.getZones()|length > 1 %}
             (+ {{ object.getZones()|length - 1 }})

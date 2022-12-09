@@ -11,9 +11,9 @@
 
     <a href="{{ path('admin_app_votingplatform_vote_list', {filter: filters}) }}">
         {% for round in object.electionRounds %}
-            {% set details_by_pool = get_election_participation_details(round) %}
+            {% set details_by_pool = get_election_participation_details(round)|first %}
 
-            tour {{ loop.index }} : {{ (details_by_pool|first.votes_count * 100 / details_by_pool|first.voters_count)|round(1) }} %<br/>
+            tour {{ loop.index }} : {{ details_by_pool.voters_count > 0 ? (details_by_pool.votes_count * 100 / details_by_pool.voters_count)|round(1) : '0' }} %<br/>
         {% endfor %}
     </a>
 {% endblock %}

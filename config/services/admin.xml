@@ -714,6 +714,22 @@
             <argument />
         </service>
 
+        <service id="app.admin.voting_platform.designation_poll" class="App\Admin\VotingPlatform\Designation\DesignationPollAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Designation » Questionnaires" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\VotingPlatform\Designation\Poll\Poll</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.voting_platform.designation_poll_question_choice" class="App\Admin\VotingPlatform\Designation\PollQuestionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Designation questionnaires choix" group="Instances" show_in_dashboard="false" />
+
+            <argument />
+            <argument>App\Entity\VotingPlatform\Designation\Poll\PollQuestion</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.territorial_council_membership_log" class="App\Admin\TerritorialCouncil\TerritorialCouncilMembershipLogAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Logs" group="Instances" />
 
@@ -1094,6 +1110,7 @@
             <tag name="sonata.admin.extension" target="app.admin.jecoute_national_survey" />
             <tag name="sonata.admin.extension" target="app.admin.jecoute_local_survey" />
             <tag name="sonata.admin.extension" target="app.admin.je_mengage.deep_link" />
+            <tag name="sonata.admin.extension" target="app.admin.voting_platform.designation" />
         </service>
 
         <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">

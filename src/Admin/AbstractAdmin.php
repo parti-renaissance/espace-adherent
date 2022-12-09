@@ -24,6 +24,7 @@ class AbstractAdmin extends SonataAdmin
 
     protected function configureDefaultSortValues(array &$sortValues): void
     {
+        $sortValues[DatagridInterface::SORT_BY] = 'id';
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 }

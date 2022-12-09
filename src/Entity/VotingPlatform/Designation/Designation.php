@@ -2,11 +2,13 @@
 
 namespace App\Entity\VotingPlatform\Designation;
 
+use App\Entity\EntityAdministratorBlameableInterface;
+use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
-use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
+use App\Entity\VotingPlatform\Designation\Poll\Poll;
 use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\VotingPlatform\Designation\CreatePartialDesignationCommand;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
@@ -20,11 +22,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\DesignationRepository")
  */
-class Designation
+class Designation implements EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityZoneTrait;
+    use EntityAdministratorBlameableTrait;
 
     public const DENOMINATION_DESIGNATION = 'désignation';
     public const DENOMINATION_ELECTION = 'élection';
@@ -49,6 +52,11 @@ class Designation
      * @Assert\NotBlank(groups={"Admin"})
      */
     private $label;
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $customTitle = null;
 
     /**
      * @var string|null
@@ -77,8 +85,6 @@ class Designation
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Assert\NotBlank
      */
     private $candidacyStartDate;
 
@@ -189,6 +195,13 @@ class Designation
      */
     private bool $isBlankVoteEnabled = true;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Poll\Poll")
+     *
+     * @Assert\Expression("!this.isLocalPollType() or value", message="Vous devez préciser le questionnaire qui sera utilisé pour cette élection.")
+     */
+    public ?Poll $poll = null;
+
     public function __construct(string $label = null, UuidInterface $uuid = null)
     {
         $this->label = $label;
@@ -221,7 +234,7 @@ class Designation
             $this->limited = true;
         }
 
-        if ($this->isLocalElectionType()) {
+        if (!$this->isDenominationEditable()) {
             $this->denomination = self::DENOMINATION_ELECTION;
         }
     }
@@ -366,7 +379,7 @@ class Designation
 
     public function getTitle(): string
     {
-        return DesignationTypeEnum::TITLES[$this->getDetailedType()] ?? '';
+        return $this->customTitle ?? DesignationTypeEnum::TITLES[$this->getDetailedType()] ?? '';
     }
 
     public function getLockPeriodThreshold(): int
@@ -419,12 +432,30 @@ class Designation
      */
     public function hasValidDates(): bool
     {
-        return !empty($this->candidacyStartDate)
-            && (
-                (!empty($this->candidacyEndDate) && !empty($this->voteStartDate) && !empty($this->voteEndDate))
-                || (empty($this->candidacyEndDate) && empty($this->voteStartDate) && empty($this->voteEndDate))
-            )
-        ;
+        if ($this->isCandidacyPeriodEnabled()) {
+            $result =
+                !empty($this->candidacyStartDate)
+                && (
+                    (!empty($this->candidacyEndDate) && !empty($this->voteStartDate) && !empty($this->voteEndDate))
+                    || (empty($this->candidacyEndDate) && empty($this->voteStartDate) && empty($this->voteEndDate))
+                )
+            ;
+        } else {
+            $result = !empty($this->voteStartDate)
+                && !empty($this->voteEndDate)
+                && $this->voteStartDate < $this->voteEndDate
+            ;
+        }
+
+        if (!$result) {
+            return false;
+        }
+
+        if ($this->electionCreationDate) {
+            return $this->voteStartDate && $this->electionCreationDate < $this->voteStartDate;
+        }
+
+        return true;
     }
 
     /**
@@ -444,7 +475,7 @@ class Designation
         return
             ($this->isCommitteeType() && !empty($this->globalZones))
             || ($this->isCopolType() && !$this->referentTags->isEmpty())
-            || ($this->isLocalElectionType() && !$this->zones->isEmpty())
+            || ($this->isLocalElectionTypes() && !$this->zones->isEmpty())
         ;
     }
 
@@ -546,6 +577,19 @@ class Designation
         return DesignationTypeEnum::LOCAL_ELECTION === $this->type;
     }
 
+    public function isLocalElectionTypes(): bool
+    {
+        return \in_array($this->type, [
+            DesignationTypeEnum::LOCAL_POLL,
+            DesignationTypeEnum::LOCAL_ELECTION,
+        ]);
+    }
+
+    public function isLocalPollType(): bool
+    {
+        return DesignationTypeEnum::LOCAL_POLL === $this->type;
+    }
+
     public function isExecutiveOfficeType(): bool
     {
         return DesignationTypeEnum::EXECUTIVE_OFFICE === $this->type;
@@ -576,7 +620,16 @@ class Designation
 
     public function setDenomination(string $denomination): void
     {
+        if (!$this->isDenominationEditable()) {
+            return;
+        }
+
         $this->denomination = $denomination;
+    }
+
+    public function isDenominationEditable(): bool
+    {
+        return !$this->isLocalElectionTypes();
     }
 
     public function equals(self $other): bool
@@ -664,6 +717,6 @@ class Designation
 
     public function isCandidacyPeriodEnabled(): bool
     {
-        return DesignationTypeEnum::LOCAL_ELECTION !== $this->type;
+        return !$this->isLocalElectionTypes();
     }
 }

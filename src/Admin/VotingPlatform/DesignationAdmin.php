@@ -11,11 +11,12 @@ use App\Form\Admin\DesignationTypeType;
 use App\Form\Admin\VotingPlatform\DesignationNotificationType;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\QueryBuilder;
-use Sonata\AdminBundle\Admin\AbstractAdmin as SonataAbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -43,6 +44,12 @@ class DesignationAdmin extends AbstractAdmin
                 ->with('Général 📜', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-primary'])
                     ->add('label', null, [
                         'label' => 'Label',
+                        'help' => 'Visible uniquement sur l\'interface d\'administration.',
+                    ])
+                    ->add('customTitle', null, [
+                        'label' => 'Titre',
+                        'required' => false,
+                        'help' => 'Optionnel, un titre par défaut en fonction du type de la designation sera affiché',
                     ])
                     ->add('type', DesignationTypeType::class, [
                         'label' => 'Type d’élection',
@@ -50,7 +57,7 @@ class DesignationAdmin extends AbstractAdmin
                     ])
                     ->add('denomination', ChoiceType::class, [
                         'label' => 'Dénomination',
-                        'disabled' => $subject->isLocalElectionType(),
+                        'disabled' => !$subject->isDenominationEditable(),
                         'choices' => [
                             Designation::DENOMINATION_DESIGNATION => Designation::DENOMINATION_DESIGNATION,
                             Designation::DENOMINATION_ELECTION => Designation::DENOMINATION_ELECTION,
@@ -90,19 +97,27 @@ class DesignationAdmin extends AbstractAdmin
                     ->add('candidacyStartDate', DateTimeType::class, [
                         'label' => 'Ouverture des candidatures',
                         'widget' => 'single_text',
+                        'required' => false,
                         'with_seconds' => true,
-                        'attr' => [
-                            'step' => 1,
-                        ],
+                        'attr' => ['step' => 30],
+                        'disabled' => !$subject->isCandidacyPeriodEnabled(),
                     ])
                     ->add('candidacyEndDate', DateTimeType::class, [
                         'label' => 'Clôture des candidatures',
                         'required' => false,
                         'widget' => 'single_text',
                         'with_seconds' => true,
-                        'attr' => [
-                            'step' => 1,
-                        ],
+                        'attr' => ['step' => 30],
+                        'disabled' => !$subject->isCandidacyPeriodEnabled(),
+                    ])
+                ->end()
+                ->with('Date d\'initialisation de l\'élection', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-default', 'description' => 'La date à laquelle l\'élection est créée et le corps électoral est figé.<br/>Si vide, c\'est la date du vote qui sera prise.'])
+                    ->add('electionCreationDate', DateTimeType::class, [
+                        'label' => 'Date d\'initialisation',
+                        'required' => false,
+                        'widget' => 'single_text',
+                        'with_seconds' => true,
+                        'attr' => ['step' => 30],
                     ])
                 ->end()
                 ->with('Vote 🗳', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-default'])
@@ -111,24 +126,28 @@ class DesignationAdmin extends AbstractAdmin
                         'required' => false,
                         'widget' => 'single_text',
                         'with_seconds' => true,
-                        'attr' => [
-                            'step' => 1,
-                        ],
+                        'attr' => ['step' => 30],
                     ])
                     ->add('voteEndDate', DateTimeType::class, [
                         'label' => 'Clôture du vote',
                         'required' => false,
                         'widget' => 'single_text',
                         'with_seconds' => true,
-                        'attr' => [
-                            'step' => 1,
-                        ],
+                        'attr' => ['step' => 30],
                     ])
                 ->end()
             ->end()
             ->tab('Notifications 📯')
                 ->with('Envoi de mail')
                     ->add('notifications', DesignationNotificationType::class, ['required' => false])
+                ->end()
+            ->end()
+            ->tab('Questionnaire ❓')
+            ->with('Questionnaire')
+                ->add('poll', ModelType::class, [
+                    'label' => false,
+                    'btn_add' => 'Créer',
+                ])
                 ->end()
             ->end()
             ->tab('Résultats 🏆')
@@ -148,7 +167,7 @@ class DesignationAdmin extends AbstractAdmin
                     ])
                 ->end()
             ->end()
-            ->tab('Autre ⚙️')
+            ->tab('Autre ⚙')
                 ->with('Vote', ['class' => 'col-md-6'])
                     ->add('isBlankVoteEnabled', BooleanType::class, [
                         'label' => 'Le vote blanc activé',
@@ -210,11 +229,12 @@ class DesignationAdmin extends AbstractAdmin
     {
         $list
             ->add('id', null, ['label' => '#'])
-            ->add('label')
+            ->addIdentifier('label')
             ->add('type', 'trans', ['format' => 'voting_platform.designation.type_%s'])
             ->add('zones', 'array', ['label' => 'Zones', 'virtual_field' => true, 'template' => 'admin/designation/list_zone.html.twig'])
             ->add('candidacyStartDate', null, ['label' => 'Ouverture des candidatures'])
             ->add('candidacyEndDate', null, ['label' => 'Clôture des candidatures'])
+            ->add('electionCreationDate', null, ['label' => 'Date d\'initialisation'])
             ->add('voteStartDate', null, ['label' => 'Ouverture du vote'])
             ->add('voteEndDate', null, ['label' => 'Clôture du vote'])
             ->add(ListMapper::NAME_ACTIONS, null, [
@@ -231,7 +251,7 @@ class DesignationAdmin extends AbstractAdmin
     }
 
     public static function prepareZoneAutocompleteCallback(
-        SonataAbstractAdmin $admin,
+        AdminInterface $admin,
         array $properties,
         string $value
     ): void {

@@ -19,6 +19,7 @@ final class DesignationTypeEnum extends Enum
     public const EXECUTIVE_OFFICE = 'executive_office';
 
     public const POLL = 'poll';
+    public const LOCAL_POLL = 'local_poll';
     public const LOCAL_ELECTION = 'local_election';
 
     public const TITLES = [
@@ -33,6 +34,7 @@ final class DesignationTypeEnum extends Enum
         self::EXECUTIVE_OFFICE => 'Élection des membres du Bureau Exécutif',
         self::POLL => 'Convocation de la Convention de La République En Marche !',
         self::LOCAL_ELECTION => 'Élection départementale',
+        self::LOCAL_POLL => 'Élection locale',
     ];
 
     public const MAIN_TYPES = [
@@ -43,5 +45,6 @@ final class DesignationTypeEnum extends Enum
         self::EXECUTIVE_OFFICE,
         self::POLL,
         self::LOCAL_ELECTION,
+        self::LOCAL_POLL,
     ];
 }
