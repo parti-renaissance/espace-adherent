@@ -27,6 +27,8 @@ class DownloadController extends AbstractController
 
     public function __invoke(Formation $formation): Response
     {
+        $this->createNotFoundException();
+
         $formation->incrementDownloadsCount();
         $this->entityManager->flush();
 
