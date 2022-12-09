@@ -4276,16 +4276,16 @@
         },
         {
             "name": "google/cloud-vision",
-            "version": "v1.6.0",
+            "version": "v1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-vision.git",
-                "reference": "ec2fd5bf522920f8db42b931d70173e6d057545d"
+                "reference": "7d93740457d4ac0c56c176bd475493ca98827cb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-vision/zipball/ec2fd5bf522920f8db42b931d70173e6d057545d",
-                "reference": "ec2fd5bf522920f8db42b931d70173e6d057545d",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-vision/zipball/7d93740457d4ac0c56c176bd475493ca98827cb3",
+                "reference": "7d93740457d4ac0c56c176bd475493ca98827cb3",
                 "shasum": ""
             },
             "require": {
@@ -4327,9 +4327,9 @@
             ],
             "description": "Cloud Vision Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-vision/tree/v1.6.0"
+                "source": "https://github.com/googleapis/google-cloud-php-vision/tree/v1.6.1"
             },
-            "time": "2022-11-01T20:21:07+00:00"
+            "time": "2022-12-07T23:19:22+00:00"
         },
         {
             "name": "google/common-protos",
@@ -4431,16 +4431,16 @@
         },
         {
             "name": "google/gax",
-            "version": "v1.17.0",
+            "version": "v1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "bb8d95187dcfebe04a40d2de916951fa4942fc35"
+                "reference": "45e01473b7215d593a58a72c89225f110e9d2ce0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/bb8d95187dcfebe04a40d2de916951fa4942fc35",
-                "reference": "bb8d95187dcfebe04a40d2de916951fa4942fc35",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/45e01473b7215d593a58a72c89225f110e9d2ce0",
+                "reference": "45e01473b7215d593a58a72c89225f110e9d2ce0",
                 "shasum": ""
             },
             "require": {
@@ -4481,9 +4481,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/gax-php/issues",
-                "source": "https://github.com/googleapis/gax-php/tree/v1.17.0"
+                "source": "https://github.com/googleapis/gax-php/tree/v1.18.1"
             },
-            "time": "2022-09-12T15:22:54+00:00"
+            "time": "2022-12-06T22:02:34+00:00"
         },
         {
             "name": "google/grpc-gcp",
@@ -4532,16 +4532,16 @@
         },
         {
             "name": "google/longrunning",
-            "version": "v0.2.0",
+            "version": "v0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/php-longrunning.git",
-                "reference": "5b7500eede9d6b18ef038bef0b5449cbf085e1d6"
+                "reference": "3bdea7559f0e9ff65b826b07c942cd430eabaf38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/php-longrunning/zipball/5b7500eede9d6b18ef038bef0b5449cbf085e1d6",
-                "reference": "5b7500eede9d6b18ef038bef0b5449cbf085e1d6",
+                "url": "https://api.github.com/repos/googleapis/php-longrunning/zipball/3bdea7559f0e9ff65b826b07c942cd430eabaf38",
+                "reference": "3bdea7559f0e9ff65b826b07c942cd430eabaf38",
                 "shasum": ""
             },
             "require-dev": {
@@ -4570,22 +4570,22 @@
             ],
             "description": "Google LongRunning Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/php-longrunning/tree/v0.2.0"
+                "source": "https://github.com/googleapis/php-longrunning/tree/v0.2.1"
             },
-            "time": "2022-08-05T00:41:21+00:00"
+            "time": "2022-12-07T23:19:22+00:00"
         },
         {
             "name": "google/protobuf",
-            "version": "v3.21.10",
+            "version": "v3.21.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "118cb171ecd7dcac38055a954717a3b5ed4a4e5a"
+                "reference": "8f8dc48540aed2c96eb3febcc4816f1321f66b85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/118cb171ecd7dcac38055a954717a3b5ed4a4e5a",
-                "reference": "118cb171ecd7dcac38055a954717a3b5ed4a4e5a",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/8f8dc48540aed2c96eb3febcc4816f1321f66b85",
+                "reference": "8f8dc48540aed2c96eb3febcc4816f1321f66b85",
                 "shasum": ""
             },
             "require": {
@@ -4614,9 +4614,9 @@
                 "proto"
             ],
             "support": {
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.21.10"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.21.11"
             },
-            "time": "2022-11-30T19:56:32+00:00"
+            "time": "2022-12-08T06:36:59+00:00"
         },
         {
             "name": "grpc/grpc",
