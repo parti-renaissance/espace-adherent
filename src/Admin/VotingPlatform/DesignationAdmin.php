@@ -143,11 +143,11 @@ class DesignationAdmin extends AbstractAdmin
                 ->end()
             ->end()
             ->tab('Questionnaire ❓')
-            ->with('Questionnaire')
-                ->add('poll', ModelType::class, [
-                    'label' => false,
-                    'btn_add' => 'Créer',
-                ])
+                ->with('Questionnaire')
+                    ->add('poll', ModelType::class, [
+                        'label' => false,
+                        'btn_add' => 'Créer',
+                    ])
                 ->end()
             ->end()
             ->tab('Résultats 🏆')
