@@ -65,7 +65,6 @@ class AdherentCreateCommandHandler
 
         $this->dispatcher->dispatch(new UserEvent($adherent, true, true), UserEvents::USER_CREATED);
         $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
-        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
 
         $this->notifier->sendAccountCreatedEmail($adherent);
     }
