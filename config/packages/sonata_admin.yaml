@@ -10,3 +10,5 @@ sonata_admin:
     options:
         html5_validate: false
         default_admin_route: edit
+    default_admin_services:
+        label_translator_strategy: 'sonata.admin.label.strategy.noop'
