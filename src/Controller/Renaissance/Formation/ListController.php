@@ -21,6 +21,8 @@ class ListController extends AbstractController
 
     public function __invoke(): Response
     {
+        $this->createNotFoundException();
+
         return $this->render('renaissance/formation/list.html.twig', [
             'formations' => $this->formationRepository->findAllVisible(),
         ]);
