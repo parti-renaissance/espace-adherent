@@ -5,13 +5,12 @@ namespace App\Admin\Exporter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 
 class IteratorCallbackDataSource implements DataSourceInterface
 {
     public const CALLBACK = 'callback';
 
-    public function createIterator(ProxyQueryInterface $query, array $fields): SourceIteratorInterface
+    public function createIterator(ProxyQueryInterface $query, array $fields): \Iterator
     {
         if (!isset($fields[self::CALLBACK]) || !\is_callable($fields[self::CALLBACK])) {
             throw new \InvalidArgumentException(self::class.' needs a callback field');
