@@ -85,13 +85,15 @@ class LocalElectionAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('designation.label', null, ['label' => 'Libellé'])
+            ->add('designation.id', null, ['label' => 'Désignation id'])
+            ->addIdentifier('designation.label', null, ['label' => 'Libellé'])
             ->add('designation.zones', null, ['label' => 'Zones'])
             ->add('status', 'trans', [
                 'label' => 'Statut',
                 'format' => 'designation.status.%s',
             ])
             ->add('designation.voteStartDate', null, ['label' => 'Vote le'])
+            ->add('designation.updatedAt', null, ['label' => 'Date de modification'])
             ->add(ListMapper::NAME_ACTIONS, ListMapper::TYPE_ACTIONS, [
                 'actions' => [
                     'edit' => [],

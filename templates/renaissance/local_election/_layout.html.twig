@@ -5,7 +5,7 @@
 {% block content_section %}
     <div class="bg-gray-50" role="banner">
         <div class="max-w-7xl mx-auto px-4 md:px-6 py-10 lg:py-16">
-            <h1 class="text-2xl lg:text-4xl font-bold text-gray-900 font-din">Élection départementale</h1>
+            <h1 class="text-2xl lg:text-4xl font-bold text-gray-900 font-din">{{ designation.getTitle() }}</h1>
             <p class="mt-4 flex items-center space-x-3 text-gray-500">
                 {% include 'icons/map.svg.twig' %}
 
@@ -20,10 +20,6 @@
         {% if designation.isActive() %}
             {% include 'renaissance/local_election/_election_box.html.twig' %}
         {% endif %}
-
-        <div class="mt-10 mb-5">
-            {{ include('renaissance/local_election/_nav.html.twig') }}
-        </div>
 
         {% block sub_content '' %}
     </section>

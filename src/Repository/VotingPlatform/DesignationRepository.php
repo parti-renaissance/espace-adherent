@@ -3,11 +3,15 @@
 namespace App\Repository\VotingPlatform;
 
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Repository\GeoZoneTrait;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DesignationRepository extends ServiceEntityRepository
 {
+    use GeoZoneTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Designation::class);
@@ -20,7 +24,15 @@ class DesignationRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('d')
             ->where('d.voteStartDate IS NOT NULL AND d.voteEndDate IS NOT NULL')
-            ->andWhere('d.voteStartDate <= :date AND d.voteEndDate > :date')
+            ->andWhere(
+                '(
+                    d.voteStartDate <= :date
+                    OR (
+                        d.electionCreationDate IS NOT NULL
+                        AND d.electionCreationDate <= :date
+                    )
+                ) AND d.voteEndDate > :date'
+            )
             ->setParameter('date', $voteStartDate)
             ->getQuery()
             ->getResult()
@@ -81,5 +93,32 @@ class DesignationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findFirstActiveForZones(array $zones): ?Designation
+    {
+        $queryBuilder = $this->createQueryBuilder('designation')
+            ->where('designation.voteStartDate IS NOT NULL AND designation.voteEndDate IS NOT NULL')
+            ->andWhere('designation.voteEndDate > :date')
+            ->andWhere('designation.type = :type')
+            ->setParameters([
+                'date' => new \DateTime(),
+                'type' => DesignationTypeEnum::LOCAL_POLL,
+            ])
+            ->orderBy('designation.voteStartDate', 'ASC')
+            ->setMaxResults(1)
+        ;
+
+        $this->withGeoZones(
+            $zones,
+            $queryBuilder,
+            'designation',
+            Designation::class,
+            'd2',
+            'zones',
+            'z2'
+        );
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 }

@@ -15,7 +15,6 @@ use App\Entity\City;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use App\Entity\LocalElection\LocalElection;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
 use App\Entity\Phoning\Campaign;
@@ -1295,21 +1294,22 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function findForLocalElection(LocalElection $localElection, bool $partial = false): array
+    public function findForLocalElection(array $electionZones, \DateTime $startDate): array
     {
-        $designation = $localElection->getDesignation();
-
-        if (!$electionZones = $designation->getZones()->toArray()) {
+        if (!$electionZones) {
             return [];
         }
 
         $queryBuilder = $this->createQueryBuilder('adherent')
+            ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
             ->where('adherent.status = :status')
             ->andWhere('adherent.lastMembershipDonation IS NOT NULL')
             ->andWhere('adherent.source = :source')
+            ->andWhere('adherent.registeredAt <= :date')
             ->setParameters([
                 'status' => Adherent::ENABLED,
                 'source' => MembershipSourceEnum::RENAISSANCE,
+                'date' => $startDate,
             ])
         ;
 
@@ -1322,10 +1322,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             'zones',
             'z2'
         );
-
-        if ($partial) {
-            $queryBuilder->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}');
-        }
 
         return $queryBuilder->getQuery()->getResult();
     }

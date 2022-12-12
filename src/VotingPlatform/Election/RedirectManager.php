@@ -33,6 +33,10 @@ class RedirectManager
             return $this->urlGenerator->generate('app_national_council_index');
         }
 
+        if ($designation->isRenaissanceElection()) {
+            return $this->urlGenerator->generate('app_renaissance_homepage');
+        }
+
         return $this->urlGenerator->generate('homepage');
     }
 }

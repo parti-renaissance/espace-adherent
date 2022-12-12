@@ -38,6 +38,10 @@ class VotingPlatformExtension extends AbstractExtension
             case DesignationTypeEnum::COMMITTEE_ADHERENT:
                 $key = 'common.';
                 break;
+            case DesignationTypeEnum::LOCAL_ELECTION:
+            case DesignationTypeEnum::LOCAL_POLL:
+                $key = '';
+                break;
         }
 
         return $key.$pool->getCode();

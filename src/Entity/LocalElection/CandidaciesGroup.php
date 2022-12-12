@@ -2,7 +2,9 @@
 
 namespace App\Entity\LocalElection;
 
-use App\Entity\TerritorialCouncil\Election;
+use App\Entity\EntityAdministratorBlameableInterface;
+use App\Entity\EntityAdministratorBlameableTrait;
+use App\Entity\EntityTimestampableTrait;
 use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use Doctrine\Common\Collections\Collection;
@@ -14,8 +16,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="local_election_candidacies_group")
  */
-class CandidaciesGroup extends BaseCandidaciesGroup
+class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministratorBlameableInterface
 {
+    use EntityTimestampableTrait;
+    use EntityAdministratorBlameableTrait;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\LocalElection\LocalElection", inversedBy="candidaciesGroups")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")

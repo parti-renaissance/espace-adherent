@@ -96,6 +96,8 @@ class ConfigureCommand extends Command
                 $this->configurePoll($designation);
             } elseif ($designation->isLocalElectionType()) {
                 $this->configureLocalElection($designation);
+            } elseif ($designation->isLocalPollType()) {
+                $this->configureLocalPoll($designation);
             }
         }
 
@@ -305,7 +307,43 @@ class ConfigureCommand extends Command
 
         $this->entityManager->persist($this->createVoterList(
             $election,
-            $this->adherentRepository->findForLocalElection($localElection, true),
+            $this->adherentRepository->findForLocalElection($designation->getZones()->toArray(), $designation->getElectionCreationDate()),
+        ));
+        $this->entityManager->persist($election);
+        $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+
+        $this->entityManager->clear();
+
+        $this->io->progressAdvance();
+    }
+
+    private function configureLocalPoll(Designation $designation): void
+    {
+        if ($this->electionRepository->findByDesignation($designation)) {
+            return;
+        }
+
+        if (!$designation->poll || !$designation->poll->getQuestions()) {
+            return;
+        }
+
+        $election = $this->createNewElection($designation);
+
+        foreach ($designation->poll->getQuestions() as $question) {
+            $election->getCurrentRound()->addElectionPool($pool = new ElectionPool($question->content));
+            $election->addElectionPool($pool);
+
+            foreach ($question->getChoices() as $choice) {
+                $pool->addCandidateGroup($group = new CandidateGroup());
+                $group->addCandidate(new Candidate($choice->label, '', ''));
+            }
+        }
+
+        $this->entityManager->persist($this->createVoterList(
+            $election,
+            $this->adherentRepository->findForLocalElection($designation->getZones()->toArray(), $designation->getElectionCreationDate()),
         ));
         $this->entityManager->persist($election);
         $this->entityManager->flush();
