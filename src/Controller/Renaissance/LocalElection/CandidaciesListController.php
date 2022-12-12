@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/elections-departementales", name="app_renaissance_departmental_election_lists", methods="GET")
- * @IsGranted("ROLE_ADHERENT")
+ * @IsGranted("ROLE_RENAISSANCE_ADHERENT")
  */
 class CandidaciesListController extends AbstractController
 {

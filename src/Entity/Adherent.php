@@ -62,8 +62,6 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
-use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -105,7 +103,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
  */
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface
 {
     use EntityCrudTrait;
     use EntityIdentityTrait;
@@ -1031,6 +1029,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_ADHERENT';
         }
 
+        if ($this->isRenaissanceAdherent()) {
+            $roles[] = 'ROLE_RENAISSANCE_ADHERENT';
+        }
+
         if ($this->isReferent()) {
             $roles[] = 'ROLE_REFERENT';
         }
@@ -1249,22 +1251,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return null !== $this->oldPassword;
     }
 
-    public function getEncoderName(): ?string
-    {
-        if ($this->hasLegacyPassword()) {
-            return 'legacy_encoder';
-        }
-
-        return null;
-    }
-
     public function getSalt()
     {
     }
 
-    public function getUsername()
+    public function getUserIdentifier(): string
     {
         return $this->emailAddress;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->getUserIdentifier();
     }
 
     public function eraseCredentials()

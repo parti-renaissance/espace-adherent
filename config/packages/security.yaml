@@ -527,8 +527,9 @@ security:
             entry_point: App\Security\LoginFormGuardAuthenticator
 
     access_control:
-        - { path: '^/parametres', roles: [ROLE_USER] }
-        - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
+        - { path: '^/parametres', host: '%app_host%', roles: [ROLE_USER] }
+        - { path: '^/espace-adherent', host: '%app_host%', roles: [ROLE_ADHERENT] }
+        - { path: '^/(espace-adherent|parametres)', host: '%renaissance_host%', roles: [ROLE_RENAISSANCE_ADHERENT] }
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/admin/(2fa|logout)', role: [IS_AUTHENTICATED_2FA_IN_PROGRESS] }
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }
