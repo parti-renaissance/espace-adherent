@@ -21,7 +21,9 @@
             {% include 'renaissance/local_election/_election_box.html.twig' %}
         {% endif %}
 
-        <h2 class="my-10 text-xl lg:text-2xl text-gray-900">Candidatures</h2>
+        <div class="mt-10 mb-5">
+            {{ include('renaissance/local_election/_nav.html.twig') }}
+        </div>
 
         {% block sub_content '' %}
     </section>
