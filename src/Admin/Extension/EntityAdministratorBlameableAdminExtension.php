@@ -38,7 +38,7 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
             ->add('_blame', null, [
                 'label' => 'Auteur',
                 'virtual_field' => true,
-                'template' => 'admin/_list_administrator_blameable.html.twig',
+                'template' => 'admin/list/list_administrator_blameable.html.twig',
             ])
         ;
 

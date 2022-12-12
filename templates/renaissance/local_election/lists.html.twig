@@ -1,6 +1,10 @@
 {% extends 'renaissance/local_election/_layout.html.twig' %}
 
 {% block sub_content %}
+    <div class="mt-10 mb-5">
+        {{ include('renaissance/local_election/_nav.html.twig') }}
+    </div>
+
     <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {% for group in candidacies_groups %}
             <li x-data="{ open: false }" class="relative">

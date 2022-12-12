@@ -27,7 +27,8 @@ class Poll
     public ?string $label = null;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\Designation\Poll\PollQuestion", mappedBy="poll", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\Designation\Poll\PollQuestion", mappedBy="poll", fetch="EAGER", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"position": "ASC"})
      *
      * @Assert\Count(min=1)
      * @Assert\Valid
@@ -40,6 +41,7 @@ class Poll
         $this->questions = new ArrayCollection();
     }
 
+    /** @return PollQuestion[] */
     public function getQuestions(): array
     {
         return $this->questions->toArray();

@@ -501,6 +501,11 @@ class Designation implements EntityAdministratorBlameableInterface
         ;
     }
 
+    public function getElectionCreationDate(): ?\DateTime
+    {
+        return $this->electionCreationDate ?? $this->voteStartDate;
+    }
+
     public function isResultPeriodActive(): bool
     {
         $now = new \DateTime();
@@ -601,6 +606,11 @@ class Designation implements EntityAdministratorBlameableInterface
             DesignationTypeEnum::COMMITTEE_SUPERVISOR,
             DesignationTypeEnum::NATIONAL_COUNCIL,
         ], true);
+    }
+
+    public function isRenaissanceElection(): bool
+    {
+        return $this->isLocalElectionTypes();
     }
 
     public function getDenomination(bool $withDeterminer = false, bool $ucfirst = false): string
@@ -707,7 +717,12 @@ class Designation implements EntityAdministratorBlameableInterface
 
     public function isSecondRoundEnabled(): bool
     {
-        return !($this->isExecutiveOfficeType() || $this->isPollType());
+        return \in_array($this->type, [
+            DesignationTypeEnum::COMMITTEE_ADHERENT,
+            DesignationTypeEnum::COMMITTEE_SUPERVISOR,
+            DesignationTypeEnum::COPOL,
+            DesignationTypeEnum::NATIONAL_COUNCIL,
+        ]);
     }
 
     public function isVotePeriodStarted(): bool

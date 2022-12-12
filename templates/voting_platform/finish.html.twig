@@ -33,7 +33,7 @@
                 </div>
             </div>
             <h1 class="text--larger b__nudge--bottom-large">
-                {% if designation.isExecutiveOfficeType() or designation.isLocalElectionType() %}
+                {% if designation.isExecutiveOfficeType() or designation.isLocalElectionTypes() %}
                     Félicitations, votre bulletin est dans l'urne !
                 {% elseif designation.isPollType() %}
                     Félicitations, votre vote est bien enregistré !
@@ -50,7 +50,7 @@
 {% block voting_platform_content %}
     <div class="l__wrapper--600 text--center">
         <p class="text--body text--dark">
-            {% if designation.isExecutiveOfficeType() or designation.isPollType() or designation.isLocalElectionType() %}
+            {% if designation.isExecutiveOfficeType() or designation.isPollType() or designation.isLocalElectionTypes() %}
                 Votre bulletin a été anonymisé.<br/><br/>
                 Le numéro ci-dessous, connu de vous seul, est l'unique moyen de tracer votre
                 bulletin de votre choix au dépouillement. Retrouvez-le dans le détail des résultats.

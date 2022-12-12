@@ -170,6 +170,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
                 $message = VotingPlatformVoteStatusesVoteConfirmationMessage::create($vote, $voterKey);
                 break;
             case DesignationTypeEnum::LOCAL_ELECTION:
+            case DesignationTypeEnum::LOCAL_POLL:
                 $message = VotingPlatformLocalElectionVoteConfirmationMessage::create($vote, $voterKey);
                 break;
             default:

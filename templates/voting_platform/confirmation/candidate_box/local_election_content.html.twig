@@ -3,19 +3,27 @@
 <div class="ballot-paper">
     <div class="ballot-paper__content">
         <div>
+            <p class="text-xl">{{ get_election_pool_title_key(pool)|trans }}</p>
+
             {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
 
             {% if candidate_group %}
                 {% set candidates = candidate_group.getCandidatesSorted(true) %}
                 {% set first = candidates|first %}
 
-                <ul>
-                    <li class="text-gray-500">
+                {% if designation.isLocalPollType() %}
+                    <p class="text-gray-500 font-bold text-center">
                         {{ first.getFirstName() }}
-                        <span class="uppercase font-medium"> {{ first.getLastName() }}</span>
-                    </li>
-                    <li class="text-gray-500">+ {{ candidates|length - 1 }} candidature{{ candidates|length - 1 > 1 ? 's' }}</li>
-                </ul>
+                    </p>
+                {% else %}
+                    <ul>
+                        <li class="text-gray-500">
+                            {{ first.getFirstName() }}
+                            <span class="uppercase font-medium"> {{ first.getLastName() }}</span>
+                        </li>
+                        <li class="text-gray-500">+ {{ candidates|length - 1 }} candidature{{ candidates|length - 1 > 1 ? 's' }}</li>
+                    </ul>
+                {% endif %}
             {% else %}
                 <h3>Bulletin blanc</h3>
             {% endif %}

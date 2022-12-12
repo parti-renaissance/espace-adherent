@@ -46,6 +46,7 @@ class PollQuestion
         $this->choices = new ArrayCollection();
     }
 
+    /** @return QuestionChoice[] */
     public function getChoices(): array
     {
         return $this->choices->toArray();

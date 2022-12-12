@@ -4,7 +4,7 @@
 
     {% if designation.isExecutiveOfficeType() %}
         {% include 'voting_platform/vote_step/candidate_box/burex_content.html.twig' %}
-    {% elseif designation.isLocalElectionType() %}
+    {% elseif designation.isLocalElectionTypes() %}
         {% include 'voting_platform/vote_step/candidate_box/local_election_content.html.twig' %}
     {% else %}
         {% include 'voting_platform/vote_step/candidate_box/default_content.html.twig' %}

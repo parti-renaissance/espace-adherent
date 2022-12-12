@@ -50,13 +50,16 @@ class CandidaciesGroupAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('election.designation.label', null, ['label' => 'Libellé'])
+            ->add('id', null, ['label' => 'ID'])
+            ->addIdentifier('election.designation.label', null, ['label' => 'Libellé'])
             ->add('election.designation.zones', null, ['label' => 'Zones'])
             ->add('candidacies', null, [
                 'label' => 'Nombre de candidats',
                 'virtual_field' => true,
                 'template' => 'admin/local_election/list_candidacies_count.html.twig',
             ])
+            ->add('createdAt', null, ['label' => 'Date de création'])
+            ->add('updatedAt', null, ['label' => 'Date de modification'])
             ->add(ListMapper::NAME_ACTIONS, ListMapper::TYPE_ACTIONS, [
                 'actions' => [
                     'edit' => [],

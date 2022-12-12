@@ -77,7 +77,7 @@ class ElectionNotifier
                     return VotingPlatformVoteStatusesIsOpenMessage::create($election, $recipients, $url);
                 }
 
-                if (DesignationTypeEnum::LOCAL_ELECTION === $electionType) {
+                if ($election->getDesignation()->isLocalElectionTypes()) {
                     return VotingPlatformLocalElectionVoteIsOpenMessage::create($election, $recipients, $url);
                 }
 
@@ -160,7 +160,7 @@ class ElectionNotifier
                     return VotingPlatformVoteStatusesIsOverMessage::create($election, $recipients, $url);
                 }
 
-                if (DesignationTypeEnum::LOCAL_ELECTION === $electionType) {
+                if ($election->getDesignation()->isLocalElectionTypes()) {
                     return VotingPlatformLocalElectionVoteIsOverMessage::create($election, $recipients, $url);
                 }
 
@@ -220,24 +220,30 @@ class ElectionNotifier
 
     private function getUrl(Election $election): string
     {
-        if ($election->getDesignation()->isCopolType()) {
+        $designation = $election->getDesignation();
+
+        if ($designation->isCopolType()) {
             return $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
-        if ($election->getDesignation()->isExecutiveOfficeType()) {
+        if ($designation->isExecutiveOfficeType()) {
             return $this->urlGenerator->generate('app_national_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
-        if ($election->getDesignation()->isPollType()) {
+        if ($designation->isPollType()) {
             return $this->urlGenerator->generate('app_vote_statuses_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
-        if ($election->getDesignation()->isLocalElectionType()) {
+        if ($designation->isLocalElectionType()) {
             return $this->urlGenerator->generate('app_renaissance_departmental_election_lists', [], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
+        if ($designation->isLocalElectionTypes()) {
+            return $this->urlGenerator->generate('app_renaissance_local_election_home', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        }
+
         if ($entityElection = $election->getElectionEntity()) {
-            if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
+            if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
                 if ($election->isClosed()) {
                     return $this->urlGenerator->generate('app_committee_show', ['slug' => $election->getElectionEntity()->getCommittee()->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
                 }

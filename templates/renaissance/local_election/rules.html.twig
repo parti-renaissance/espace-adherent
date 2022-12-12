@@ -1,6 +1,10 @@
 {% extends 'renaissance/local_election/_layout.html.twig' %}
 
 {% block sub_content %}
+    <div class="mt-10 mb-5">
+        {{ include('renaissance/local_election/_nav.html.twig') }}
+    </div>
+
     <div class="prose text-gray-500 prose-blue lg:max-w-none">
         {{ cms_block('departmental-election-sas-rules-text') }}
     </div>
