@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -39,17 +40,23 @@ class FormationAdmin extends AbstractAdmin
                     'label' => 'Visible',
                     'required' => false,
                 ])
+                ->add('zone', ModelAutocompleteType::class, [
+                    'label' => 'Zone',
+                    'property' => 'name',
+                    'required' => false,
+                    'help' => 'Laissez vide pour appliquer une visibilité nationale.',
+                    'btn_add' => false,
+                ])
                 ->add('position', PositionType::class, [
                     'label' => 'Position sur la page',
                 ])
             ->end()
-            ->with('Fichier attaché', ['class' => 'col-md-12'])
+            ->with('Fichier attaché', ['class' => 'col-md-6'])
                 ->add('file', BaseFileType::class, [
                     'label' => false,
                     'required' => $this->isCurrentRoute('create'),
                     'data_class' => File::class,
                     'can_update_file' => true,
-                    'attr' => ['accept' => 'application/pdf'],
                 ])
             ->end()
         ;
@@ -60,6 +67,10 @@ class FormationAdmin extends AbstractAdmin
         $datagridMapper
             ->add('title', null, [
                 'label' => 'Titre',
+                'show_filter' => true,
+            ])
+            ->add('visible', null, [
+                'label' => 'Est visible ?',
                 'show_filter' => true,
             ])
         ;

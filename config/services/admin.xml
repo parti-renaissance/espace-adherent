@@ -1121,11 +1121,13 @@
             <tag name="sonata.admin.extension" target="app.admin.je_mengage.deep_link" />
             <tag name="sonata.admin.extension" target="app.admin.voting_platform.designation" />
             <tag name="sonata.admin.extension" target="app.admin.local_election.candidacies_group" />
+            <tag name="sonata.admin.extension" target="app.admin.adherent_formation" />
         </service>
 
         <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">
             <tag name="sonata.admin.extension" target="app.admin.team.team" />
             <tag name="sonata.admin.extension" target="app.admin.phoning.campaign" />
+            <tag name="sonata.admin.extension" target="app.admin.adherent_formation" />
         </service>
         <!--
         ######################################################

@@ -2,8 +2,18 @@
 
 namespace App\Entity\AdherentFormation;
 
+use App\Entity\EntityAdherentBlameableInterface;
+use App\Entity\EntityAdherentBlameableTrait;
+use App\Entity\EntityAdministratorBlameableInterface;
+use App\Entity\EntityAdministratorBlameableTrait;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityScopeVisibilityTrait;
+use App\Entity\EntityScopeVisibilityWithZoneInterface;
+use App\Entity\EntityTimestampableTrait;
 use App\Entity\PositionTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,16 +23,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity(fields={"title"}, message="adherent_formation.title.unique_entity")
  */
-class Formation
+class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
+    use EntityIdentityTrait;
+    use EntityTimestampableTrait;
+    use EntityAdministratorBlameableTrait;
+    use EntityAdherentBlameableTrait;
+    use EntityScopeVisibilityTrait;
     use PositionTrait;
-
-    /**
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
-    private ?int $id = null;
 
     /**
      * @ORM\Column(unique=true)
@@ -60,6 +68,11 @@ class Formation
      * @ORM\Column(type="smallint", options={"unsigned": true})
      */
     protected $downloadsCount = 0;
+
+    public function __construct(UuidInterface $uuid = null)
+    {
+        $this->uuid = $uuid ?? Uuid::uuid4();
+    }
 
     public function __toString()
     {

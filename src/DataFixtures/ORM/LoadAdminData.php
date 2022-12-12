@@ -127,7 +127,7 @@ class LoadAdminData extends Fixture
             'roles' => $writerRoles,
         ]));
 
-        $manager->persist($this->administratorFactory->createFromArray([
+        $manager->persist($renaissanceAdmin = $this->administratorFactory->createFromArray([
             'email' => 'admin@renaissance.code',
             'password' => 'renaissance',
             'roles' => [
@@ -135,6 +135,7 @@ class LoadAdminData extends Fixture
                 'ROLE_ADMIN_RENAISSANCE',
             ],
         ]));
+        $this->setReference('administrator-renaissance', $renaissanceAdmin);
 
         $manager->persist($superAdmin2fa);
         $manager->persist($admin);
