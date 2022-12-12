@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/elections-departementale/reglement-interieur", name="app_renaissance_departmental_election_rules", methods="GET")
+ * @Route("/elections-departementales/reglement-interieur", name="app_renaissance_departmental_election_rules", methods="GET")
  * @IsGranted("ROLE_ADHERENT")
  */
 class RulesController extends AbstractController
