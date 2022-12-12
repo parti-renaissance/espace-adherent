@@ -52,7 +52,7 @@
                                  x-transition:leave="ease-in duration-200"
                                  x-transition:leave-start="opacity-100 translate-y-0 md:scale-100"
                                  x-transition:leave-end="opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
-                                 class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all md:my-8 md:w-full md:max-w-lg md:p-6"
+                                 class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all md:my-8 w-full max-w-sm md:max-w-lg md:p-6"
                                  @click.away="open = false"
                                  x-cloak
                             >
@@ -64,15 +64,15 @@
                                 </div>
                                 <div>
                                     <div class="flex items-center space-x-3">
-                                        <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-re-blue-100 md:mx-0 md:h-10 md:w-10">
+                                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-re-blue-100">
                                             {% include 'icons/teams.svg.twig' with { svg_class: 'w-6 h-6 text-re-blue-600' } %}
                                         </div>
                                         <h3 class="!my-0 !text-lg font-medium !leading-6 !text-gray-900">Membres de la liste</h3>
                                     </div>
-                                    <div class="mt-2">
-                                        <ul class="!my-0">
+                                    <div class="mt-4 not-prose">
+                                        <ul class="space-y-1 list-disc px-4 md:px-6" role="list">
                                             {% for candidacy in candidates %}
-                                                <li class="!px-4 !py-1.5">
+                                                <li class="px-4 py-1.5">
                                                     <span class="text-gray-400">{{ candidacy.gender == 'male' ? 'M' : 'Mme' }}</span>
                                                     <span class="inline-block ml-0.5 text-gray-700 font-medium">
                                                         {{ candidacy.getFirstName() }} <span class="uppercase">{{ candidacy.getLastName() }}</span>
@@ -98,9 +98,11 @@
                 </div>
             {% endif %}
         {% else %}
-            <div class="flex items-center space-x-3">
-                {% include 'icons/archive.svg.twig' with { svg_class: 'w-6 h-6 text-gray-400' } %}
-                <h3 class="!my-0 text-lg !font-medium">Bulletin blanc</h3>
+            <div class="mt-4 space-y-1 not-prose">
+                <div class="mt-4 flex items-center space-x-3">
+                    {% include 'icons/archive.svg.twig' with { svg_class: 'w-6 h-6 text-gray-400' } %}
+                    <h3 class="text-lg font-medium text-gray-900">Bulletin blanc</h3>
+                </div>
             </div>
         {% endif %}
     </div>
