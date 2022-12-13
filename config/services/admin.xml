@@ -73,6 +73,11 @@
             <argument />
             <argument>App\Entity\AdherentFormation\Formation</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/adherent_formation/edit.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.renaissance_department_site" class="App\Admin\DepartmentSite\DepartmentSiteAdmin">

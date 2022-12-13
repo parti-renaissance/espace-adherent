@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Entity\AdherentFormation\File;
+use App\Entity\AdherentFormation\FormationContentTypeEnum;
 use App\Form\Admin\BaseFileType;
 use App\Form\PositionType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -11,8 +12,10 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class FormationAdmin extends AbstractAdmin
 {
@@ -33,6 +36,7 @@ class FormationAdmin extends AbstractAdmin
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
                     'required' => false,
+                    'help' => 'Optionnelle. Sera affichée aux utilisateurs',
                 ])
             ->end()
             ->with('Visibilité', ['class' => 'col-md-6'])
@@ -51,12 +55,26 @@ class FormationAdmin extends AbstractAdmin
                     'label' => 'Position sur la page',
                 ])
             ->end()
-            ->with('Fichier attaché', ['class' => 'col-md-6'])
+            ->with('Contenu', ['class' => 'col-md-6'])
+                ->add('contentType', EnumType::class, [
+                    'label' => 'Type',
+                    'class' => FormationContentTypeEnum::class,
+                    'choice_label' => function (FormationContentTypeEnum $choice): string {
+                        return sprintf('adherent_formation.content_type.%s', $choice->value);
+                    },
+                ])
                 ->add('file', BaseFileType::class, [
                     'label' => false,
-                    'required' => $this->isCurrentRoute('create'),
+                    'required' => false,
                     'data_class' => File::class,
                     'can_update_file' => true,
+                ])
+                ->add('link', UrlType::class, [
+                    'label' => 'Lien',
+                    'required' => false,
+                    'attr' => [
+                        'placeholder' => 'https://',
+                    ],
                 ])
             ->end()
         ;

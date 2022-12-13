@@ -11,7 +11,8 @@ use Symfony\Component\Validator\Constraint;
 class FormationContent extends Constraint
 {
     public $errorPath = 'file';
-    public $message = 'Veuillez télécharger un fichier ou spécifier un lien.';
+    public $missingFileMessage = 'Veuillez télécharger un fichier.';
+    public $missingLinkMessage = 'Veuillez spécifier un lien.';
 
     public function getTargets(): string|array
     {

@@ -1,25 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
-final class Version20221213140031 extends AbstractMigration
+final class Version20221214142552 extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP INDEX UNIQ_2D97408B2B36786B ON adherent_formation');
         $this->addSql('ALTER TABLE
           adherent_formation
@@ -33,6 +22,8 @@ final class Version20221213140031 extends AbstractMigration
           updated_by_adherent_id INT UNSIGNED DEFAULT NULL,
         ADD
           zone_id INT UNSIGNED DEFAULT NULL,
+        ADD
+          content_type VARCHAR(255) NOT NULL,
         ADD
           link VARCHAR(255) DEFAULT NULL,
         ADD
@@ -85,7 +76,6 @@ final class Version20221213140031 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE adherent_formation DROP FOREIGN KEY FK_2D97408B9DF5350C');
         $this->addSql('ALTER TABLE adherent_formation DROP FOREIGN KEY FK_2D97408BCF1918FF');
         $this->addSql('ALTER TABLE adherent_formation DROP FOREIGN KEY FK_2D97408B85C9D733');
@@ -109,6 +99,8 @@ final class Version20221213140031 extends AbstractMigration
           updated_by_adherent_id,
         DROP
           zone_id,
+        DROP
+          content_type,
         DROP
           link,
         DROP

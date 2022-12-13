@@ -71,6 +71,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\AdherentFormation\FormationRepository");
  * @ORM\Table(name="adherent_formation")
+ * @ORM\EntityListeners({"App\EntityListener\AdherentFormationListener"})
  *
  * @UniqueEntity(fields={"zone", "title"}, message="adherent_formation.zone_title.unique_entity")
  *
@@ -114,10 +115,10 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     private ?string $description = null;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(type="string", enumType=FormationContentTypeEnum::class)
      *
      * @Assert\NotBlank
-     * @Assert\Choice(choices=FormationContentTypeEnum::class)
+     * @Assert\Choice(callback={FormationContentTypeEnum::class, "cases"})
      */
     private ?FormationContentTypeEnum $contentType = FormationContentTypeEnum::FILE;
 
@@ -207,12 +208,22 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
         $this->description = $description;
     }
 
+    public function getContentType(): ?FormationContentTypeEnum
+    {
+        return $this->contentType;
+    }
+
+    public function setContentType(?FormationContentTypeEnum $contentType): void
+    {
+        $this->contentType = $contentType;
+    }
+
     public function getFile(): ?File
     {
         return $this->file;
     }
 
-    public function setFile(File $file): void
+    public function setFile(?File $file): void
     {
         $this->file = $file;
     }
