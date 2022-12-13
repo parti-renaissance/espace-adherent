@@ -2,6 +2,10 @@
 
 namespace App\Entity\AdherentFormation;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Api\Filter\ScopeVisibilityFilter;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityAdministratorBlameableInterface;
@@ -11,17 +15,67 @@ use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\PositionTrait;
+use App\Validator\AdherentFormation\FormationContent;
+use App\Validator\Scope\ScopeVisibility;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "order": {"createdAt": "DESC"},
+ *         "normalization_context": {
+ *             "groups": {"formation_read"}
+ *         },
+ *         "denormalization_context": {
+ *             "groups": {"formation_write"}
+ *         },
+ *         "security": "is_granted('IS_FEATURE_GRANTED', 'formation')"
+ *     },
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/v3/formations",
+ *             "normalization_context": {
+ *                 "groups": {"formation_list_read"}
+ *             },
+ *             "maximum_items_per_page": 1000
+ *         },
+ *         "post": {
+ *             "path": "/v3/formations",
+ *         }
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/v3/formations/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'formation') and is_granted('SCOPE_CAN_MANAGE', object)"
+ *         },
+ *         "put": {
+ *             "path": "/v3/formations/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'formation') and is_granted('SCOPE_CAN_MANAGE', object)"
+ *         }
+ *     }
+ * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "name": "partial",
+ *     "visibility": "exact",
+ * })
+ *
+ * @ApiFilter(ScopeVisibilityFilter::class)
+ *
  * @ORM\Entity(repositoryClass="App\Repository\AdherentFormation\FormationRepository");
  * @ORM\Table(name="adherent_formation")
  *
- * @UniqueEntity(fields={"title"}, message="adherent_formation.title.unique_entity")
+ * @UniqueEntity(fields={"zone", "title"}, message="adherent_formation.zone_title.unique_entity")
+ *
+ * @ScopeVisibility
+ * @FormationContent
  */
 class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
@@ -33,10 +87,16 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     use PositionTrait;
 
     /**
-     * @ORM\Column(unique=true)
+     * @ORM\Column
      *
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     *     "formation_write",
+     * })
      */
     private ?string $title = null;
 
@@ -44,8 +104,22 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     *     "formation_write",
+     * })
      */
     private ?string $description = null;
+
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Choice(choices=FormationContentTypeEnum::class)
+     */
+    private ?FormationContentTypeEnum $contentType = FormationContentTypeEnum::FILE;
 
     /**
      * @ORM\OneToOne(
@@ -54,18 +128,47 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      *     orphanRemoval=true
      * )
      *
-     * @Assert\NotBlank
      * @Assert\Valid
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     *     "formation_write",
+     * })
      */
     private ?File $file = null;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     *     "formation_write",
+     * })
      */
-    private bool $visible = false;
+    private ?string $link = null;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     *     "formation_write",
+     * })
+     */
+    private bool $published = false;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     * })
      */
     protected $downloadsCount = 0;
 
@@ -114,14 +217,24 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
         $this->file = $file;
     }
 
-    public function isVisible(): bool
+    public function getLink(): ?string
     {
-        return $this->visible;
+        return $this->link;
     }
 
-    public function setVisible(bool $visible): void
+    public function setLink(?string $link): void
     {
-        $this->visible = $visible;
+        $this->link = $link;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published): void
+    {
+        $this->published = $published;
     }
 
     public function getDownloadsCount(): int

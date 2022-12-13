@@ -36,8 +36,8 @@ class FormationAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Visibilité', ['class' => 'col-md-6'])
-                ->add('visible', CheckboxType::class, [
-                    'label' => 'Visible',
+                ->add('published', CheckboxType::class, [
+                    'label' => 'Publiée ?',
                     'required' => false,
                 ])
                 ->add('zone', ModelAutocompleteType::class, [
@@ -69,8 +69,8 @@ class FormationAdmin extends AbstractAdmin
                 'label' => 'Titre',
                 'show_filter' => true,
             ])
-            ->add('visible', null, [
-                'label' => 'Est visible ?',
+            ->add('published', null, [
+                'label' => 'Publiée',
                 'show_filter' => true,
             ])
         ;
@@ -88,8 +88,8 @@ class FormationAdmin extends AbstractAdmin
             ->add('position', null, [
                 'label' => 'Position',
             ])
-            ->add('visible', null, [
-                'label' => 'Visible',
+            ->add('published', null, [
+                'label' => 'Publiée',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,

@@ -37,7 +37,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
 
         $manager->persist($this->createNationalFormation(self::FORMATION_1_UUID, $administrator, 'Première formation'));
         $manager->persist($this->createNationalFormation(self::FORMATION_2_UUID, $administrator, 'Formation sans description', false));
-        $manager->persist($this->createNationalFormation(self::FORMATION_3_UUID, $administrator, 'Formation non visible', true, false));
+        $manager->persist($this->createNationalFormation(self::FORMATION_3_UUID, $administrator, 'Formation non publiée', true, false));
 
         /** @var Adherent $referent77 */
         $referent77 = $this->getReference('adherent-8');
@@ -55,9 +55,9 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         Administrator $creator,
         string $title,
         bool $description = true,
-        bool $visible = true
+        bool $published = true
     ): Formation {
-        $formation = $this->createFormation($uuid, $title, $description, $visible);
+        $formation = $this->createFormation($uuid, $title, $description, $published);
         $formation->setCreatedByAdministrator($creator);
 
         return $formation;
@@ -69,9 +69,9 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         Zone $zone,
         string $title,
         bool $description = true,
-        bool $visible = true
+        bool $published = true
     ): Formation {
-        $formation = $this->createFormation($uuid, $title, $description, $visible);
+        $formation = $this->createFormation($uuid, $title, $description, $published);
         $formation->setCreatedByAdherent($creator);
         $formation->setZone($zone);
 
@@ -82,12 +82,12 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         string $uuid,
         string $title,
         bool $description = true,
-        bool $visible = true
+        bool $published = true
     ): Formation {
         $formation = new Formation(Uuid::fromString($uuid));
         $formation->setTitle($title);
         $formation->setDescription($description ? $this->faker->text('200') : null);
-        $formation->setVisible($visible);
+        $formation->setPublished($published);
         $formation->setFile($this->createFile($title));
 
         return $formation;

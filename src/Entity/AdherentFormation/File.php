@@ -5,6 +5,7 @@ namespace App\Entity\AdherentFormation;
 use App\Entity\BaseFile;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,6 +27,10 @@ class File extends BaseFile
      *     maxSize="5M",
      *     mimeTypes={"application/pdf", "application/x-pdf"}
      * )
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_write",
+     * })
      */
     protected $file;
 

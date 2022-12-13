@@ -1,14 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20221212185051 extends AbstractMigration
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20221213140031 extends AbstractMigration
 {
+    public function getDescription(): string
+    {
+        return '';
+    }
+
     public function up(Schema $schema): void
     {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('DROP INDEX UNIQ_2D97408B2B36786B ON adherent_formation');
         $this->addSql('ALTER TABLE
           adherent_formation
         ADD
@@ -22,6 +34,8 @@ final class Version20221212185051 extends AbstractMigration
         ADD
           zone_id INT UNSIGNED DEFAULT NULL,
         ADD
+          link VARCHAR(255) DEFAULT NULL,
+        ADD
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
         ADD
           created_at DATETIME NOT NULL,
@@ -30,7 +44,9 @@ final class Version20221212185051 extends AbstractMigration
         ADD
           visibility VARCHAR(30) NOT NULL,
         CHANGE
-          id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
+          id id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+        CHANGE
+          visible published TINYINT(1) DEFAULT \'0\' NOT NULL');
         $this->addSql('ALTER TABLE
           adherent_formation
         ADD
@@ -69,6 +85,7 @@ final class Version20221212185051 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
+        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE adherent_formation DROP FOREIGN KEY FK_2D97408B9DF5350C');
         $this->addSql('ALTER TABLE adherent_formation DROP FOREIGN KEY FK_2D97408BCF1918FF');
         $this->addSql('ALTER TABLE adherent_formation DROP FOREIGN KEY FK_2D97408B85C9D733');
@@ -93,6 +110,8 @@ final class Version20221212185051 extends AbstractMigration
         DROP
           zone_id,
         DROP
+          link,
+        DROP
           uuid,
         DROP
           created_at,
@@ -101,6 +120,9 @@ final class Version20221212185051 extends AbstractMigration
         DROP
           visibility,
         CHANGE
-          id id BIGINT AUTO_INCREMENT NOT NULL');
+          id id BIGINT AUTO_INCREMENT NOT NULL,
+        CHANGE
+          published visible TINYINT(1) DEFAULT \'0\' NOT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_2D97408B2B36786B ON adherent_formation (title)');
     }
 }

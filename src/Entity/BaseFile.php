@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -27,12 +28,24 @@ abstract class BaseFile implements EntityFileInterface
      * @ORM\Column
      *
      * @Assert\NotBlank
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     *     "formation_write",
+     * })
      */
     private $title;
 
     /**
      * @ORM\Column
      * @Gedmo\Slug(fields={"title"})
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     *     "formation_write",
+     * })
      */
     private $slug;
 
@@ -40,6 +53,12 @@ abstract class BaseFile implements EntityFileInterface
      * @var string
      *
      * @ORM\Column
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     *     "formation_write",
+     * })
      */
     private $path;
 
@@ -47,6 +66,12 @@ abstract class BaseFile implements EntityFileInterface
      * @var string
      *
      * @ORM\Column
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     *     "formation_write",
+     * })
      */
     private $extension;
 
