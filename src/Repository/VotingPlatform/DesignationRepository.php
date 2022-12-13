@@ -95,19 +95,24 @@ class DesignationRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findFirstActiveForZones(array $zones): ?Designation
+    public function findAllActiveForZones(array $zones, array $types = [], int $limit = null): array
     {
         $queryBuilder = $this->createQueryBuilder('designation')
             ->where('designation.voteStartDate IS NOT NULL AND designation.voteEndDate IS NOT NULL')
             ->andWhere('designation.voteEndDate > :date')
-            ->andWhere('designation.type = :type')
             ->setParameters([
                 'date' => new \DateTime(),
-                'type' => DesignationTypeEnum::LOCAL_POLL,
             ])
+            ->setMaxResults($limit)
             ->orderBy('designation.voteStartDate', 'ASC')
-            ->setMaxResults(1)
         ;
+
+        if ($types) {
+            $queryBuilder
+                ->andWhere('designation.type IN (:types)')
+                ->setParameter('types', $types)
+            ;
+        }
 
         $this->withGeoZones(
             $zones,
@@ -119,6 +124,15 @@ class DesignationRepository extends ServiceEntityRepository
             'z2'
         );
 
-        return $queryBuilder->getQuery()->getOneOrNullResult();
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function findFirstActiveLocalPollForZones(array $zones): ?Designation
+    {
+        if ($designations = $this->findAllActiveForZones($zones, [DesignationTypeEnum::LOCAL_POLL], 1)) {
+            return current($designations);
+        }
+
+        return null;
     }
 }

@@ -41,6 +41,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     public const ELECTION_UUID9 = '39949c8f-d233-1e20-905e-5e214c6a12f2';
     public const ELECTION_UUID10 = '4095339f-3aad-18ba-924f-adffe2085cd6';
     public const ELECTION_UUID11 = '13814072-1dd2-11b2-9593-b97d988be702';
+    public const ELECTION_UUID12 = 'f9f2894b-64a2-446f-b2fd-134015f0c0d2';
 
     /**
      * @var \Faker\Generator
@@ -215,6 +216,17 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         );
         $this->manager->persist($election);
         $this->loadLocalElectionCandidates($election, $this->getReference('local-election-1'));
+        $this->loadVoters($election);
+
+        // -------------------------------------------
+
+        $election = new Election(
+            $this->getReference('designation-14'),
+            Uuid::fromString(self::ELECTION_UUID12),
+            [new ElectionRound()]
+        );
+        $this->manager->persist($election);
+        $this->loadLocalPollCandidates($election);
         $this->loadVoters($election);
 
         // -------------------------------------------
@@ -506,6 +518,24 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
                     $candidacy->getGender()
                 ));
                 $candidate->position = $candidacy->getPosition();
+            }
+        }
+    }
+
+    private function loadLocalPollCandidates(Election $election): void
+    {
+        $designation = $election->getDesignation();
+        $currentRound = $election->getCurrentRound();
+
+        foreach ($designation->poll->getQuestions() as $question) {
+            $pool = new ElectionPool($question->content);
+
+            $currentRound->addElectionPool($pool);
+            $election->addElectionPool($pool);
+
+            foreach ($question->getChoices() as $choice) {
+                $pool->addCandidateGroup($group = new CandidateGroup());
+                $group->addCandidate(new Candidate($choice->label, '', ''));
             }
         }
     }

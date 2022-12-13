@@ -34,13 +34,7 @@ class AbleToVoteVoter extends AbstractAdherentVoter
             return false;
         }
 
-        $alreadyVoted = $this->voteRepository->alreadyVoted($adherent, $subject->getCurrentRound());
-
-        if ($alreadyVoted) {
-            return false;
-        }
-
-        return true;
+        return !$this->voteRepository->alreadyVoted($adherent, $subject->getCurrentRound());
     }
 
     protected function supports(string $attribute, $subject): bool

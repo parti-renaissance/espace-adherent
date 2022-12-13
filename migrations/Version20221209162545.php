@@ -9,7 +9,6 @@ final class Version20221209162545 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE
           local_election_candidacies_group
         ADD
@@ -48,7 +47,6 @@ final class Version20221209162545 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE local_election_candidacies_group DROP FOREIGN KEY FK_8D478DE89DF5350C');
         $this->addSql('ALTER TABLE local_election_candidacies_group DROP FOREIGN KEY FK_8D478DE8CF1918FF');
         $this->addSql('DROP INDEX IDX_8D478DE89DF5350C ON local_election_candidacies_group');

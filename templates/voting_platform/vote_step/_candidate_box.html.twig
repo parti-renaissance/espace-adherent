@@ -1,6 +1,5 @@
 <div class="candidate__box l__row {{ not designation.isPollType() ? 'l__row--v-stretch' }} b__nudge--bottom-medium">
     {{ form_widget(form) }}
-    {{ form_label(form, ' ') }}
 
     {% if designation.isExecutiveOfficeType() %}
         {% include 'voting_platform/vote_step/candidate_box/burex_content.html.twig' %}

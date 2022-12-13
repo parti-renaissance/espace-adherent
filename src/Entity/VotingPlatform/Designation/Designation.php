@@ -2,6 +2,7 @@
 
 namespace App\Entity\VotingPlatform\Designation;
 
+use App\Entity\CmsBlock;
 use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
@@ -201,6 +202,11 @@ class Designation implements EntityAdministratorBlameableInterface
      * @Assert\Expression("!this.isLocalPollType() or value", message="Vous devez préciser le questionnaire qui sera utilisé pour cette élection.")
      */
     public ?Poll $poll = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CmsBlock")
+     */
+    public ?CmsBlock $wordingWelcomePage = null;
 
     public function __construct(string $label = null, UuidInterface $uuid = null)
     {

@@ -6,6 +6,7 @@ use App\Admin\AbstractAdmin;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Pap\Campaign;
+use App\Form\Admin\SimpleMDEContent;
 use App\Pap\Command\UpdateCampaignAddressInfoCommand;
 use App\Scope\ScopeVisibilityEnum;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -20,7 +21,6 @@ use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Security;
@@ -45,10 +45,10 @@ class CampaignAdmin extends AbstractAdmin
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
                 ])
-                ->add('brief', TextareaType::class, [
+                ->add('brief', SimpleMDEContent::class, [
                     'label' => 'Brief',
                     'required' => false,
-                    'attr' => ['class' => 'simplified-content-editor', 'rows' => 15],
+                    'attr' => ['rows' => 15],
                 ])
                 ->add('goal', IntegerType::class, [
                     'attr' => ['min' => 1],

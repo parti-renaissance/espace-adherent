@@ -2,12 +2,12 @@
 
 namespace App\Admin;
 
+use App\Form\Admin\SimpleMDEContent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CmsBlockAdmin extends AbstractAdmin
@@ -31,10 +31,10 @@ class CmsBlockAdmin extends AbstractAdmin
                 'required' => false,
                 'help' => 'cms_block.description.help',
             ])
-            ->add('content', TextareaType::class, [
+            ->add('content', SimpleMDEContent::class, [
                 'label' => 'Contenu',
                 'required' => false,
-                'attr' => ['class' => 'simplified-content-editor', 'rows' => 20],
+                'attr' => ['rows' => 20],
                 'help' => 'help.markdown',
                 'help_html' => true,
             ])

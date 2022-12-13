@@ -126,7 +126,7 @@
     @apply grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 m-0;
 
     .candidate__box {
-        @apply flex flex-col bg-white shadow rounded-lg p-4 lg:px-6 lg:py-5 focus-within:ring-2 focus-within:ring-re-blue-500 focus-within:ring-offset-2;
+        @apply flex flex-col bg-white shadow rounded-lg;
 
         ul {
             li {
@@ -136,7 +136,11 @@
         }
 
         input[type=radio] {
-            @apply h-4 w-4 border-gray-300 text-re-blue-500 focus:ring-re-blue-500;
+            @apply hidden;
+        }
+
+        input[type=radio]:checked + label {
+            @apply shadow rounded-lg ring-2 ring-re-blue-500 ring-offset-2;
         }
     }
 }

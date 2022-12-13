@@ -20,7 +20,7 @@ class LocalPollElectionController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if (!$designation = $designationRepository->findFirstActiveForZones($adherent->getParentZones())) {
+        if (!$designation = $designationRepository->findFirstActiveLocalPollForZones($adherent->getParentZones())) {
             return $this->redirectToRoute('app_renaissance_homepage');
         }
 
