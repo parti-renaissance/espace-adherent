@@ -36,7 +36,7 @@ class DonatorSubscriber implements EventSubscriberInterface
     {
         $donator = $event->getDonation()->getDonator();
 
-        if (!$donator->isAdherent()) {
+        if (!$donator->isAdherent() && $donator->getEmailAddress() && $donator->getFirstName() && $donator->getLastName()) {
             $donator->setAdherent($this->adherentRepository->findOneForMatching(
                 $donator->getEmailAddress(),
                 $donator->getFirstName(),
