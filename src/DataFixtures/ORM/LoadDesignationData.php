@@ -163,8 +163,23 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setVoteStartDate(new \DateTime('-5 minutes'));
         $designation->setVoteEndDate(new \DateTime('+10 days'));
         $designation->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
+        $designation->wordingWelcomePage = $this->getReference('cms-block-local-election-welcome-page');
 
         $this->setReference('designation-13', $designation);
+        $manager->persist($designation);
+
+        // Local poll in dpt 92
+        $designation = new Designation('Sondage dans le département 92');
+        $designation->customTitle = 'Mon super sondage';
+        $designation->setType(DesignationTypeEnum::LOCAL_POLL);
+        $designation->electionCreationDate = new \DateTime('-2 hours');
+        $designation->setVoteStartDate(new \DateTime('-5 minutes'));
+        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
+        $designation->poll = $this->getReference('designation-poll-1');
+        $designation->wordingWelcomePage = $this->getReference('cms-block-local-poll-welcome-page');
+
+        $this->setReference('designation-14', $designation);
         $manager->persist($designation);
 
         $manager->flush();
@@ -174,6 +189,9 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
     {
         return [
             LoadReferentTagData::class,
+            LoadGeoZoneData::class,
+            LoadDesignationPollData::class,
+            LoadCmsBlockData::class,
         ];
     }
 }

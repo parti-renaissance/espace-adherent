@@ -24,6 +24,7 @@ class VotingPlatformExtension extends AbstractExtension
             new TwigFunction('find_committee_for_recent_candidate', [VotingPlatformRuntime::class, 'findCommitteeForRecentCandidate']),
             new TwigFunction('find_committee_for_recent_vote', [VotingPlatformRuntime::class, 'findCommitteeForRecentVote']),
             new TwigFunction('find_active_poll_designation', [VotingPlatformRuntime::class, 'findActivePollDesignation']),
+            new TwigFunction('find_active_local_designations', [VotingPlatformRuntime::class, 'findActiveLocalDesignations']),
         ];
     }
 

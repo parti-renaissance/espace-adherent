@@ -2,7 +2,9 @@
     <h2 class="text-base font-medium lg:text-xl text-[#CF0822]">{{ designation.getTitle() }}</h2>
 
     <div class="mt-4 prose-sm prose-re-blue lg:prose-base text-gray-500 lg:max-w-none">
-        {{ cms_block('vote-statuses-landing-page-designation-description')|markdown }}
+        {% if designation.wordingWelcomePage is defined %}
+            {{ designation.wordingWelcomePage.content|markdown }}
+        {% endif %}
     </div>
 
     <p class="mt-5 inline-block text-base leading-6 text-re-blue-600 rounded-md px-4 py-3 border border-dashed border-re-blue-300 bg-re-blue-50">

@@ -8,6 +8,7 @@ use App\Entity\Jecoute\Survey;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
 use App\Form\Admin\AdminZoneAutocompleteType;
+use App\Form\Admin\SimpleMDEContent;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use App\Form\Audience\AudienceSnapshotType;
 use App\Repository\AdherentRepository;
@@ -23,7 +24,6 @@ use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CampaignAdmin extends AbstractAdmin
@@ -44,10 +44,10 @@ class CampaignAdmin extends AbstractAdmin
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
                 ])
-                ->add('brief', TextareaType::class, [
+                ->add('brief', SimpleMDEContent::class, [
                     'label' => 'Brief',
                     'required' => false,
-                    'attr' => ['class' => 'simplified-content-editor', 'rows' => 15],
+                    'attr' => ['rows' => 15],
                 ])
                 ->add('goal', IntegerType::class, [
                     'attr' => ['min' => 1],

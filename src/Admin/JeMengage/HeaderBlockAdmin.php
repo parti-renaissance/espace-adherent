@@ -3,11 +3,11 @@
 namespace App\Admin\JeMengage;
 
 use App\Admin\AbstractAdmin;
+use App\Form\Admin\SimpleMDEContent;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class HeaderBlockAdmin extends AbstractAdmin
 {
@@ -37,10 +37,10 @@ class HeaderBlockAdmin extends AbstractAdmin
                     'required' => false,
                     'help' => 'Ne spécifiez que la fin du slogan. Ex: [prefix] [votre valeur]',
                 ])
-                ->add('content', TextareaType::class, [
+                ->add('content', SimpleMDEContent::class, [
                     'label' => 'Contenu',
                     'required' => false,
-                    'attr' => ['class' => 'simplified-content-editor', 'rows' => 20],
+                    'attr' => ['rows' => 20],
                     'help' => <<<HELP
                             Veuillez restreindre le contenu au format <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown.</a><br/>
                             Si une date d'échéance est spécifiée, rajoutez la balise <strong>{{ date_echeance }}</strong> dans le texte.<br/>

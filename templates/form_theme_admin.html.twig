@@ -770,3 +770,93 @@
         </div>
     {% endif %}
 {% endblock %}
+
+{% block simple_mde_content_widget %}
+    {{ form_widget(form) }}
+
+    <script type="text/javascript">
+        setTimeout(function () {
+            if (window.simpleMdeInstances === undefined) {
+                window.simpleMdeInstances = [];
+            }
+
+            window.simpleMdeInstances['{{ form.vars.id }}'] = new SimpleMDE({
+                element: document.querySelector('#{{ form.vars.id }}'),
+                spellChecker: false,
+                renderingConfig: {
+                    singleLineBreaks: false
+                },
+                previewConfig: {
+                    useIframe: true,
+                    editorCss: [
+                        '{{ webpack_asset('kernel.css') }}',
+                        '{{ asset('css/simplemde.inside.css') }}'
+                    ],
+                },
+                toolbar: [
+                    {
+                        name: "fullscreen",
+                        action: function() {
+                            window.simpleMdeInstances['{{ form.vars.id }}'].toggleSideBySide();
+                            window.simpleMdeInstances['{{ form.vars.id }}'].toggleFullScreen();
+                        },
+                        className: "fa fa-eye",
+                        title: "Plein écran avec prévisualisation"
+                    },
+                    "|",
+                    {
+                        name: "bold",
+                        action: SimpleMDE.toggleBold,
+                        className: "fa fa-bold",
+                        title: "Gras"
+                    },
+                    {
+                        name: "italic",
+                        action: SimpleMDE.toggleItalic,
+                        className: "fa fa-italic",
+                        title: "Italique"
+                    },
+                    {
+                        name: "title",
+                        action: SimpleMDE.toggleHeading3,
+                        className: "fa fa-header",
+                        title: "Titre"
+                    },
+                    "|",
+                    {
+                        name: "unordered-list",
+                        action: SimpleMDE.toggleUnorderedList,
+                        className: "fa fa-list-ul",
+                        title: "Liste à puces"
+                    },
+                    {
+                        name: "ordered-list",
+                        action: SimpleMDE.toggleUnorderedList,
+                        className: "fa fa-list-ol",
+                        title: "Liste à chiffres"
+                    },
+                    "|",
+                    {
+                        name: "horizontal-rule",
+                        action: SimpleMDE.drawHorizontalRule,
+                        className: "fa fa-minus",
+                        title: "Barre de séparation horizontale"
+                    },
+                    "|",
+                    "side-by-side"
+                ],
+            });
+        }, 1000);
+    </script>
+{% endblock %}
+
+{% block app_admin_voting_platform_designation_wordingWelcomePage_sonata_type_model_widget %}
+    {{ form_widget(form) }}
+
+    {% if form.vars.data and form.vars.data.content %}
+        <div style="margin-top: 20px">
+            <p><a href="{{ path('admin_app_cmsblock_edit', {id: form.vars.value}) }}">Modifier</a></p>
+            <div>{{ form.vars.data.content|markdown }}</div>
+        </div>
+    {% endif %}
+{% endblock %}

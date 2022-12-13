@@ -2,11 +2,11 @@
 
 namespace App\Admin;
 
+use App\Form\Admin\SimpleMDEContent;
 use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class CommitmentAdmin extends AbstractAdmin
 {
@@ -37,9 +37,9 @@ class CommitmentAdmin extends AbstractAdmin
             ->with('Général', ['class' => 'col-md-6'])
                 ->add('title', null, ['label' => 'Titre'])
                 ->add('shortDescription', null, ['label' => 'Description courte'])
-                ->add('description', TextareaType::class, [
+                ->add('description', SimpleMDEContent::class, [
                     'label' => 'Description complète',
-                    'attr' => ['class' => 'simplified-content-editor', 'rows' => 20],
+                    'attr' => ['rows' => 20],
                     'help' => 'help.markdown',
                     'help_html' => true,
                 ])

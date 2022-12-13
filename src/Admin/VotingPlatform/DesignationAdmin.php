@@ -150,6 +150,15 @@ class DesignationAdmin extends AbstractAdmin
                     ])
                 ->end()
             ->end()
+            ->tab('Wording 🌐')
+                ->with('Wording')
+                    ->add('wordingWelcomePage', ModelType::class, [
+                        'label' => false,
+                        'required' => false,
+                        'btn_add' => 'Créer',
+                    ])
+                ->end()
+            ->end()
             ->tab('Résultats 🏆')
                 ->with('Affichage', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-default'])
                     ->add('resultDisplayDelay', IntegerType::class, [
