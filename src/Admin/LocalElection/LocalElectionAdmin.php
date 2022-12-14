@@ -88,6 +88,7 @@ class LocalElectionAdmin extends AbstractAdmin
                     ->add('candidaciesGroups', null, [
                         'label' => false,
                     ])
+                ->end()
             ;
         }
     }
