@@ -450,3 +450,7 @@ services:
     App\Donation\DonationRequestUtils:
         arguments:
             $tokenManager: '@App\Security\SimpleCsrfTokenManager'
+
+#    League\CommonMark\CommonMarkConverter: ~
+#        arguments:
+#            - {html_input: 'allow'}

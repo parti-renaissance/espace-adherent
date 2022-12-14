@@ -94,6 +94,9 @@
                 {% endif %}
             </div>
 
+            <div>
+                {{ "<p># test\n**test**\n\n*test 2*</p>"|markdown }}
+            </div>
         <div class="text--center b__nudge--top-50">
             <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid}) }}" class="btn btn--blue btn--large-and-full">{{ start_button_label ?? 'Soumettre mon vote' }}</a>
         </div>

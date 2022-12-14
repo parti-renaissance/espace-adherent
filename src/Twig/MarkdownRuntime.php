@@ -20,6 +20,6 @@ class MarkdownRuntime implements RuntimeExtensionInterface
             return '';
         }
 
-        return $this->markdownParser->convertToHtml($content);
+        return $this->markdownParser->convert($content);
     }
 }
