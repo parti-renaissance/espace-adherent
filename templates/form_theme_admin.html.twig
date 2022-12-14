@@ -860,3 +860,39 @@
         </div>
     {% endif %}
 {% endblock %}
+
+{% block app_admin_local_election_candidaciesGroups_entity_widget %}
+    {% set local_election = form.parent.vars.value %}
+    {% set candidacies_groups = local_election.candidaciesGroups %}
+
+    {% if candidacies_groups is empty %}
+        <p>Aucune(s) liste(s) renseignée(s) à date.</p>
+    {% else %}
+        <table class="table table-bordered table-striped sonata-ba-list">
+            <thead>
+            <tr class="sonata-ba-list-field-header">
+                <th class="sonata-ba-list-field-header-text">Libellé</th>
+                <th class="sonata-ba-list-field-header-text">Nombre de candidats</th>
+                <th class="sonata-ba-list-field-header-text">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for candidacy in candidacies_groups %}
+                <tr>
+                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                        Liste {{ loop.index }}
+                    </td>
+                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                        {{ candidacy.candidacies|length }} candidat(s)
+                    </td>
+                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                        <a href="{{ path('admin_app_localelection_candidaciesgroup_edit', { id: candidacy.id }) }}" target="_blank">
+                            Voir le détail
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
