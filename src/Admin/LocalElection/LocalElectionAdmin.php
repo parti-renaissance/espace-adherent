@@ -14,16 +14,15 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Sonata\Form\Type\DateRangePickerType;
 
 class LocalElectionAdmin extends AbstractAdmin
 {
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $filter
-            ->add('designation.label')
-            ->add('designation', ModelFilter::class, [
-                'show_filter' => true,
+        $filter->add('designation', ModelFilter::class, [
                 'label' => 'Désignation',
                 'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
@@ -60,6 +59,15 @@ class LocalElectionAdmin extends AbstractAdmin
                     },
                 ],
             ])
+            ->add('designation.voteStartDate', DateRangeFilter::class, [
+                'label' => 'Date de début de vote',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('designation.voteEndDate', DateRangeFilter::class, [
+                'label' => 'Date de fin de vote',
+                'field_type' => DateRangePickerType::class,
+            ])
         ;
     }
 
@@ -73,6 +81,16 @@ class LocalElectionAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
+
+        if (!$this->isCurrentRoute('create')) {
+            $form
+                ->with('Listes', ['class' => 'col-md-6'])
+                    ->add('candidaciesGroups', null, [
+                        'label' => false,
+                    ])
+                ->end()
+            ;
+        }
     }
 
     /** @param LocalElection $object */
@@ -88,11 +106,17 @@ class LocalElectionAdmin extends AbstractAdmin
             ->add('designation.id', null, ['label' => 'Désignation id'])
             ->addIdentifier('designation.label', null, ['label' => 'Libellé'])
             ->add('designation.zones', null, ['label' => 'Zones'])
+            ->add('candidaciesGroups', null, [
+                'label' => 'Nombre de listes',
+                'virtual_field' => true,
+                'template' => 'admin/local_election/list_candidacies_groups_count.html.twig',
+            ])
             ->add('status', 'trans', [
                 'label' => 'Statut',
                 'format' => 'designation.status.%s',
             ])
             ->add('designation.voteStartDate', null, ['label' => 'Vote le'])
+            ->add('designation.voteEndDate', null, ['label' => 'Clôture du vote'])
             ->add('designation.updatedAt', null, ['label' => 'Date de modification'])
             ->add(ListMapper::NAME_ACTIONS, ListMapper::TYPE_ACTIONS, [
                 'actions' => [
