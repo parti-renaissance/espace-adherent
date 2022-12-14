@@ -22,6 +22,7 @@ class VotingPlatformLocalElectionVoteIsOverMessage extends AbstractRenaissanceVo
             sprintf('[%s] Les résultats sont disponibles', self::getMailSubjectPrefix($election->getDesignation())),
             [
                 'election_type' => $election->getDesignationType(),
+                'election_denomination' => $election->getDesignation()->getDenomination(false, true),
                 'name' => $election->getElectionEntityName(),
                 'page_url' => $url,
             ],

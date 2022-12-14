@@ -19,6 +19,7 @@ class VotingPlatformLocalElectionVoteConfirmationMessage extends AbstractRenaiss
             sprintf('[%s] Félicitations, votre bulletin est dans l\'urne !', self::getMailSubjectPrefix($designation = $election->getDesignation())),
             [
                 'election_type' => $designation->getDenomination(false, true).'s',
+                'election_denomination' => $election->getDesignation()->getDenomination(false, true),
                 'first_name' => $adherent->getFirstName(),
                 'voter_key' => static::escape($voterKey),
             ],

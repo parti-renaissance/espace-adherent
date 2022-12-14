@@ -321,7 +321,11 @@ class ConfigureCommand extends Command
 
     private function configureLocalPoll(Designation $designation): void
     {
-        if ($this->electionRepository->findByDesignation($designation)) {
+        if ($election = $this->electionRepository->findByDesignation($designation)) {
+            if (!$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)) {
+                $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+            }
+
             return;
         }
 
@@ -348,7 +352,9 @@ class ConfigureCommand extends Command
         $this->entityManager->persist($election);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+        if ($election->isVotePeriodStarted()) {
+            $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+        }
 
         $this->entityManager->clear();
 
