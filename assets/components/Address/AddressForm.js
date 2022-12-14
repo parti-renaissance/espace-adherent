@@ -50,17 +50,17 @@ export default class AddressForm {
         });
 
         let addressValue = [
-            (placeData.street_number && placeData.street_number.long_name || ''),
-            (placeData.route && placeData.route.long_name || ''),
+            ((placeData.street_number && placeData.street_number.long_name) || ''),
+            ((placeData.route && placeData.route.long_name) || ''),
         ].join(' ').trim();
 
         if (addressValue.length === 0) {
             addressValue = [
-                (placeData.sublocality_level_3 && placeData.sublocality_level_3.long_name || ''),
-                (placeData.sublocality_level_2 && placeData.sublocality_level_2.long_name || ''),
-                (placeData.sublocality_level_1 && placeData.sublocality_level_1.long_name || ''),
-            ].filter(function (el) {
-                return el != null && el !== '';
+                ((placeData.sublocality_level_3 && placeData.sublocality_level_3.long_name) || ''),
+                ((placeData.sublocality_level_2 && placeData.sublocality_level_2.long_name) || ''),
+                ((placeData.sublocality_level_1 && placeData.sublocality_level_1.long_name) || ''),
+            ].filter((el) => {
+                return null != el && '' !== el;
             }).join(', ').trim();
         }
 
