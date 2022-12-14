@@ -31,7 +31,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "core-js": "^3.26.1",
     "cropperjs": "^1.5.13",
-    "css-loader": "^6.7.2",
+    "css-loader": "^6.7.3",
     "css-minimizer-webpack-plugin": "^4.2.2",
     "eslint": "^8.29.0",
     "eslint-config-airbnb": "^19.0.4",
