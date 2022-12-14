@@ -76,7 +76,7 @@ export default class AddressForm {
         this._postalCode.value = (
             (placeData.postal_code && placeData.postal_code.long_name)
             || (placeData.postal_code_prefix && placeData.postal_code_prefix.long_name)
-            || placeData.plus_code && placeData.plus_code.long_name
+            || (placeData.plus_code && placeData.plus_code.long_name)
             || ''
         );
 
