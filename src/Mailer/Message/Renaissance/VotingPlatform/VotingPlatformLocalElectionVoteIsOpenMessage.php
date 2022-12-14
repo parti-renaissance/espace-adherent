@@ -24,6 +24,7 @@ class VotingPlatformLocalElectionVoteIsOpenMessage extends AbstractRenaissanceVo
                 'vote_end_date' => static::formatDate($election->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
                 'name' => $election->getElectionEntityName(),
                 'election_type' => $election->getDesignationType(),
+                'election_denomination' => $election->getDesignation()->getDenomination(false, true),
                 'page_url' => $url,
             ],
             [

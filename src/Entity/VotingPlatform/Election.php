@@ -98,6 +98,11 @@ class Election
      */
     private $votersList;
 
+    /**
+     * @ORM\Column(type="smallint", options={"default": 0})
+     */
+    public int $notificationsSent = 0;
+
     public function __construct(
         Designation $designation,
         UuidInterface $uuid = null,
@@ -326,5 +331,15 @@ class Election
         }
 
         return $this->designation->getResultStartDate($date) <= new \DateTime();
+    }
+
+    public function markSentNotification(int $notification): void
+    {
+        $this->notificationsSent += $notification;
+    }
+
+    public function isNotificationAlreadySent(int $notification): bool
+    {
+        return 0 !== ($this->notificationsSent & $notification);
     }
 }
