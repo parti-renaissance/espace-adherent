@@ -33,8 +33,11 @@ export default class AddressForm {
             locality: null,
             postal_town: null,
             sublocality_level_1: null,
+            sublocality_level_2: null,
+            sublocality_level_3: null,
             postal_code: null,
             postal_code_prefix: null,
+            plus_code: null,
             country: null,
             administrative_area_level_1: null,
         };
@@ -46,10 +49,20 @@ export default class AddressForm {
             }
         });
 
-        this._address.value = ([
-            (placeData.street_number && placeData.street_number.long_name || ''),
-            (placeData.route && placeData.route.long_name || ''),
-        ].join(' '));
+        let addressValue = [
+            ((placeData.street_number && placeData.street_number.long_name) || ''),
+            ((placeData.route && placeData.route.long_name) || ''),
+        ].join(' ').trim();
+
+        if (addressValue.length === 0) {
+            addressValue = [
+                ((placeData.sublocality_level_3 && placeData.sublocality_level_3.long_name) || ''),
+                ((placeData.sublocality_level_2 && placeData.sublocality_level_2.long_name) || ''),
+                ((placeData.sublocality_level_1 && placeData.sublocality_level_1.long_name) || ''),
+            ].filter((el) => null != el && '' !== el).join(', ').trim();
+        }
+
+        this._address.value = addressValue;
 
         this._cityName.value = (
             (placeData.locality && placeData.locality.long_name)
@@ -61,6 +74,7 @@ export default class AddressForm {
         this._postalCode.value = (
             (placeData.postal_code && placeData.postal_code.long_name)
             || (placeData.postal_code_prefix && placeData.postal_code_prefix.long_name)
+            || (placeData.plus_code && placeData.plus_code.long_name)
             || ''
         );
 

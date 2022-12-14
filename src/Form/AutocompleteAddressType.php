@@ -14,6 +14,8 @@ class AutocompleteAddressType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('address', AutocompleteInputType::class);
+        $builder->add('address', AutocompleteInputType::class, [
+            'required' => false,
+        ]);
     }
 }

@@ -153,6 +153,10 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.8790183,
             'longitude' => 2.3379062,
         ],
+        '8447+6m base antarctique mario-zucchelli, aq' => [
+            'latitude' => 74.6944361,
+            'longitude' => 164.1119988,
+        ],
     ];
 
     public function geocode(string $value): Collection

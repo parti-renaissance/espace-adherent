@@ -22,7 +22,12 @@ class Address implements AddressInterface, GeocodableInterface
     public const FRANCE = 'FR';
 
     /**
-     * @Assert\NotBlank(message="common.address.required", groups={"Default", "Update", "fill_personal_info"})
+     * @Assert\NotBlank(message="common.address.required", groups={"Default", "Update"})
+     * @Assert\Expression(
+     *     expression="value or 'FR' != this.getCountry()",
+     *     message="common.address.required",
+     *     groups={"fill_personal_info"}
+     * )
      * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "Update", "fill_personal_info"})
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
