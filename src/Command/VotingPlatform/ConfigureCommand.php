@@ -322,7 +322,10 @@ class ConfigureCommand extends Command
     private function configureLocalPoll(Designation $designation): void
     {
         if ($election = $this->electionRepository->findByDesignation($designation)) {
-            if (!$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)) {
+            if (
+                !$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)
+                && $election->isVotePeriodStarted()
+            ) {
                 $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
             }
 
