@@ -59,9 +59,7 @@ export default class AddressForm {
                 ((placeData.sublocality_level_3 && placeData.sublocality_level_3.long_name) || ''),
                 ((placeData.sublocality_level_2 && placeData.sublocality_level_2.long_name) || ''),
                 ((placeData.sublocality_level_1 && placeData.sublocality_level_1.long_name) || ''),
-            ].filter((el) => {
-                return null != el && '' !== el;
-            }).join(', ').trim();
+            ].filter((el) => null != el && '' !== el).join(', ').trim();
         }
 
         this._address.value = addressValue;
