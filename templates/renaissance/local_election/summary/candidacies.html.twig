@@ -1,27 +1,65 @@
 {% extends 'base_renaissance.html.twig' %}
 
 {% block content %}
-    <main class="flex flex-col h-screen">
-        {% include 'renaissance/partials/site-header.html.twig' with { theme_bg: 'border-b border-re-blue-400 bg-re-blue-500' } %}
+    {% include 'renaissance/partials/site-header.html.twig' with { theme_bg: 'border-b border-re-blue-400 bg-re-blue-500' } %}
+
+    <section class="bg-re-blue-50 py-10 md:py-12">
+        <div class="max-w-8xl mx-auto px-4 md:px-6">
+            <div>
+                <nav class="md:hidden" aria-label="Back">
+                    <a href="#" class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700">
+                        <svg class="-ml-1 mr-1 h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                        </svg>
+                        Retour
+                    </a>
+                </nav>
+                <nav class="hidden md:flex" aria-label="Breadcrumb">
+                    <ol role="list" class="flex items-center space-x-4">
+                        <li>
+                            <div class="flex">
+                                <a href="#" class="text-sm font-medium text-gray-500 hover:text-gray-700">Résultats élections</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center">
+                                <svg class="h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                                </svg>
+                                <a href="#" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Nom de l'election</a>
+                            </div>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <main class="py-12 lg:py-16 max-w-8xl mx-auto px-4 md:px-6">
 
         {% block content_section %}
-            {% for candidaciesGroup in election.candidaciesGroups %}
-                <h3>Liste #{{ candidaciesGroup.id }}</h3>
-                <a href="{{ path('asset_url', { path: candidaciesGroup.getFaithStatementFilePath(), app_domain: renaissance_host }) }}">
-                    Télécharger la profession de foi
-                </a>
+            <div class="grid gap-5 md:grid-cols-2 md:gap-x-6 lg:grid-cols-3 lg:gap-y-8">
+                {% for candidaciesGroup in election.candidaciesGroups %}
+                    <div class="border border-gray-300 rounded-md p-4 md:p-5">
+                        <h3 class="text-lg font-medium text-gray-900">Liste #{{ candidaciesGroup.id }}</h3>
+                        <a class="inline-flex items-center mt-1 text-re-blue-500 hover:text-re-blue-600" href="{{ path('asset_url', { path: candidaciesGroup.getFaithStatementFilePath(), app_domain: renaissance_host }) }}">
+                            {% include 'icons/download.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+                            Télécharger la profession de foi
+                        </a>
 
-                <p>
-                    Liste:
-                    <ul>
-                        {% for candidacy in candidaciesGroup.candidacies %}
-                            <li>{{ candidacy.firstName}} {{ candidacy.lastName }}</li>
-                        {% endfor %}
-                    </ul>
-                </p>
-
-                <hr>
-            {% endfor %}
+                        <div class="border-t border-dashed border-gray-200 mt-5 pt-4">
+                            <h4 class="text-gray-700 font-medium underline">Liste</h4>
+                            <ul class="mt-2 space-y-3 text-gray-500" role="list">
+                                {% for candidacy in candidaciesGroup.candidacies %}
+                                    <li>{{ candidacy.firstName}} {{ candidacy.lastName }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         {% endblock %}
     </main>
+
+    {% include 'renaissance/partials/small-footer.html.twig' %}
 {% endblock %}
