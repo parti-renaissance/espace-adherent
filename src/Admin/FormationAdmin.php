@@ -12,20 +12,13 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class FormationAdmin extends AbstractAdmin
 {
-    protected function configureFormOptions(array &$formOptions): void
-    {
-        if ($this->isCurrentRoute('create')) {
-            $formOptions['validation_groups'] = ['Default', 'adherent_formation_create'];
-        }
-    }
-
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
@@ -56,11 +49,11 @@ class FormationAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Contenu', ['class' => 'col-md-6'])
-                ->add('contentType', EnumType::class, [
+                ->add('contentType', ChoiceType::class, [
                     'label' => 'Type',
-                    'class' => FormationContentTypeEnum::class,
-                    'choice_label' => function (FormationContentTypeEnum $choice): string {
-                        return sprintf('adherent_formation.content_type.%s', $choice->value);
+                    'choices' => FormationContentTypeEnum::ALL,
+                    'choice_label' => function (string $choice): string {
+                        return sprintf('adherent_formation.content_type.%s', $choice);
                     },
                 ])
                 ->add('file', BaseFileType::class, [

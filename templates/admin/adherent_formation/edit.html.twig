@@ -12,10 +12,10 @@
             contentTypeWidget.change(function() {
                 var selectedValue = $(this).val();
 
-                if (selectedValue === '{{ constant('App\\Entity\\AdherentFormation\\FormationContentTypeEnum::FILE').value }}') {
+                if (selectedValue === '{{ constant('App\\Entity\\AdherentFormation\\FormationContentTypeEnum::FILE') }}') {
                     fileField.show();
                     linkField.hide();
-                } else if (selectedValue === '{{ constant('App\\Entity\\AdherentFormation\\FormationContentTypeEnum::LINK').value }}') {
+                } else if (selectedValue === '{{ constant('App\\Entity\\AdherentFormation\\FormationContentTypeEnum::LINK') }}') {
                     fileField.hide();
                     linkField.show();
                 }

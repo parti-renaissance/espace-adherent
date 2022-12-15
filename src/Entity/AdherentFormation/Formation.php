@@ -115,12 +115,12 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     private ?string $description = null;
 
     /**
-     * @ORM\Column(type="string", enumType=FormationContentTypeEnum::class)
+     * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Choice(callback={FormationContentTypeEnum::class, "cases"})
+     * @Assert\Choice(choices=FormationContentTypeEnum::ALL)
      */
-    private ?FormationContentTypeEnum $contentType = FormationContentTypeEnum::FILE;
+    private ?string $contentType = FormationContentTypeEnum::FILE;
 
     /**
      * @ORM\OneToOne(
@@ -208,12 +208,12 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
         $this->description = $description;
     }
 
-    public function getContentType(): ?FormationContentTypeEnum
+    public function getContentType(): ?string
     {
         return $this->contentType;
     }
 
-    public function setContentType(?FormationContentTypeEnum $contentType): void
+    public function setContentType(?string $contentType): void
     {
         $this->contentType = $contentType;
     }
