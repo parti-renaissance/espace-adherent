@@ -179,6 +179,7 @@ class DesignationAdmin extends AbstractAdmin
             ->tab('Autre ⚙')
                 ->with('Vote', ['class' => 'col-md-6'])
                     ->add('isBlankVoteEnabled', BooleanType::class, [
+                        'transform' => true,
                         'label' => 'Le vote blanc activé',
                         'disabled' => !$subject->isBlankVoteAvailable(),
                     ])
