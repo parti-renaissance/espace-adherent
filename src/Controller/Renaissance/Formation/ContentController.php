@@ -2,6 +2,7 @@
 
 namespace App\Controller\Renaissance\Formation;
 
+use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\AdherentFormation\Formation;
 use App\Storage\FileRequestHandler;
@@ -13,13 +14,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-adherent/formations/{id}/telecharger", name="app_renaissance_adherent_formation_download", methods={"GET"})
- * @Entity("formation", expr="repository.findOneVisible(id)")
+ * @Route("/espace-adherent/formations/{uuid}/contenu", name="app_renaissance_adherent_formation_content", methods={"GET"})
+ * @Entity("formation", expr="repository.findOnePublished(uuid)")
  * @IsGranted("RENAISSANCE_ADHERENT")
  */
-class DownloadController extends AbstractController
+class ContentController extends AbstractController
 {
-    use AdherentFormationControllerTrait;
+    use CanaryControllerTrait;
 
     public function __construct(
         private readonly FileRequestHandler $fileRequestHandler,
@@ -29,11 +30,19 @@ class DownloadController extends AbstractController
 
     public function __invoke(Formation $formation): Response
     {
-        $this->checkAdherentFormationsEnabled();
+        $this->disableInProduction();
 
-        $formation->incrementDownloadsCount();
+        $formation->incrementPrintCount();
         $this->entityManager->flush();
 
-        return $this->fileRequestHandler->createResponse($formation->getFile());
+        if ($formation->isFileContent()) {
+            return $this->fileRequestHandler->createResponse($formation->getFile());
+        }
+
+        if ($formation->isLinkContent()) {
+            return $this->redirect($formation->getLink());
+        }
+
+        throw $this->createNotFoundException(sprintf('No content found for Formation "%s".', $formation->getUuid()));
     }
 }

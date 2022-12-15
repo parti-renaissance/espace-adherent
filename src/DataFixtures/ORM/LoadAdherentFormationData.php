@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\AdherentFormation\File;
 use App\Entity\AdherentFormation\Formation;
+use App\Entity\AdherentFormation\FormationContentTypeEnum;
 use App\Entity\Administrator;
 use App\Entity\Geo\Zone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -22,6 +23,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
     public const FORMATION_3_UUID = '55034c8d-b9b9-448b-b29c-64bc23be486c';
     public const FORMATION_4_UUID = 'ebdbafa2-c0b0-40ff-adbd-745f48f48c42';
     public const FORMATION_5_UUID = '366c1da2-f833-4172-883a-c10a41588766';
+    public const FORMATION_6_UUID = '405ffc51-810e-4b2b-8b7c-4bea1384a164';
 
     private Generator $faker;
 
@@ -35,17 +37,45 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         /** @var Administrator $administrator */
         $administrator = $this->getReference('administrator-renaissance');
 
-        $manager->persist($this->createNationalFormation(self::FORMATION_1_UUID, $administrator, 'Première formation'));
-        $manager->persist($this->createNationalFormation(self::FORMATION_2_UUID, $administrator, 'Formation sans description', false));
-        $manager->persist($this->createNationalFormation(self::FORMATION_3_UUID, $administrator, 'Formation non publiée', true, false));
+        $formation = $this->createNationalFormation(self::FORMATION_1_UUID, $administrator, 'Première formation nationale');
+        $formation->setContentType(FormationContentTypeEnum::FILE);
+        $formation->setFile($this->createFile());
+        $manager->persist($formation);
+
+        $formation = $this->createNationalFormation(self::FORMATION_2_UUID, $administrator, 'Formation sans description', false);
+        $formation->setContentType(FormationContentTypeEnum::LINK);
+        $formation->setLink('http://enmarche.code/');
+        $manager->persist($formation);
+
+        $formation = $this->createNationalFormation(self::FORMATION_3_UUID, $administrator, 'Formation non publiée', true, false);
+        $formation->setContentType(FormationContentTypeEnum::FILE);
+        $formation->setFile($this->createFile());
+        $manager->persist($formation);
 
         /** @var Adherent $referent77 */
         $referent77 = $this->getReference('adherent-8');
         /** @var Zone $zoneDepartment77 */
         $zoneDepartment77 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_77');
 
-        $manager->persist($this->createLocalFormation(self::FORMATION_4_UUID, $referent77, $zoneDepartment77, 'Première formation du 77'));
-        $manager->persist($this->createLocalFormation(self::FORMATION_5_UUID, $referent77, $zoneDepartment77, 'Deuxième formation du 77'));
+        $formation = $this->createLocalFormation(self::FORMATION_4_UUID, $referent77, $zoneDepartment77, 'Première formation du 77');
+        $formation->setContentType(FormationContentTypeEnum::FILE);
+        $formation->setFile($this->createFile());
+        $manager->persist($formation);
+
+        $formation = $this->createLocalFormation(self::FORMATION_5_UUID, $referent77, $zoneDepartment77, 'Deuxième formation du 77');
+        $formation->setContentType(FormationContentTypeEnum::LINK);
+        $formation->setLink('http://renaissance.code/');
+        $manager->persist($formation);
+
+        /** @var Adherent $referent06 */
+        $referent06 = $this->getReference('renaissance-user-3');
+        /** @var Zone $zoneDepartment06 */
+        $zoneDepartment06 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_06');
+
+        $formation = $this->createLocalFormation(self::FORMATION_6_UUID, $referent06, $zoneDepartment06, 'Première formation du 06');
+        $formation->setContentType(FormationContentTypeEnum::FILE);
+        $formation->setFile($this->createFile());
+        $manager->persist($formation);
 
         $manager->flush();
     }
@@ -88,18 +118,17 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         $formation->setTitle($title);
         $formation->setDescription($description ? $this->faker->text('200') : null);
         $formation->setPublished($published);
-        $formation->setFile($this->createFile($title));
 
         return $formation;
     }
 
-    private function createFile(string $title): File
+    private function createFile(): File
     {
         $file = new File();
-        $file->setTitle($title);
+        $file->setTitle('Formation PDF');
         $file->setFile(new UploadedFile(
             __DIR__.'/../adherent_formations/formation.pdf',
-            "$title.pdf",
+            'Formation.pdf',
             'application/pdf',
             null,
             true

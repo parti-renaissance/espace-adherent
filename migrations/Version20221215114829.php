@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20221214142552 extends AbstractMigration
+final class Version20221215114829 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -37,7 +37,9 @@ final class Version20221214142552 extends AbstractMigration
         CHANGE
           id id INT UNSIGNED AUTO_INCREMENT NOT NULL,
         CHANGE
-          visible published TINYINT(1) DEFAULT \'0\' NOT NULL');
+          visible published TINYINT(1) DEFAULT \'0\' NOT NULL,
+        CHANGE
+          downloads_count print_count SMALLINT UNSIGNED NOT NULL');
         $this->addSql('ALTER TABLE
           adherent_formation
         ADD
@@ -114,7 +116,9 @@ final class Version20221214142552 extends AbstractMigration
         CHANGE
           id id BIGINT AUTO_INCREMENT NOT NULL,
         CHANGE
-          published visible TINYINT(1) DEFAULT \'0\' NOT NULL');
+          published visible TINYINT(1) DEFAULT \'0\' NOT NULL,
+        CHANGE
+          print_count downloads_count SMALLINT UNSIGNED NOT NULL');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_2D97408B2B36786B ON adherent_formation (title)');
     }
 }

@@ -171,7 +171,7 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      *     "formation_list_read",
      * })
      */
-    protected $downloadsCount = 0;
+    protected $printCount = 0;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -218,6 +218,16 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
         $this->contentType = $contentType;
     }
 
+    public function isFileContent(): bool
+    {
+        return FormationContentTypeEnum::FILE === $this->contentType;
+    }
+
+    public function isLinkContent(): bool
+    {
+        return FormationContentTypeEnum::LINK === $this->contentType;
+    }
+
     public function getFile(): ?File
     {
         return $this->file;
@@ -248,13 +258,13 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
         $this->published = $published;
     }
 
-    public function getDownloadsCount(): int
+    public function getPrintCount(): int
     {
-        return $this->downloadsCount;
+        return $this->printCount;
     }
 
-    public function incrementDownloadsCount(): void
+    public function incrementPrintCount(): void
     {
-        ++$this->downloadsCount;
+        ++$this->printCount;
     }
 }

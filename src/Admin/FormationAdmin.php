@@ -93,8 +93,8 @@ class FormationAdmin extends AbstractAdmin
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
             ])
-            ->add('downloadsCount', null, [
-                'label' => 'Téléchargements',
+            ->add('printCount', null, [
+                'label' => 'Vues',
             ])
             ->add('position', null, [
                 'label' => 'Position',

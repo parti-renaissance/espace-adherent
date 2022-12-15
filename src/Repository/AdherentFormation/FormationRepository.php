@@ -3,7 +3,9 @@
 namespace App\Repository\AdherentFormation;
 
 use App\Entity\AdherentFormation\Formation;
+use App\Scope\ScopeVisibilityEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class FormationRepository extends ServiceEntityRepository
@@ -13,25 +15,46 @@ class FormationRepository extends ServiceEntityRepository
         parent::__construct($registry, Formation::class);
     }
 
-    public function findAllVisible(): array
+    public function findAllNational(): array
     {
-        return $this
-            ->createQueryBuilder('formation')
-            ->andWhere('formation.visible = TRUE')
-            ->orderBy('formation.position', 'ASC')
+        return $this->createPublishedQueryBuilder()
+            ->andWhere('formation.visibility = :visibility_national')
+            ->setParameter('visibility_national', ScopeVisibilityEnum::NATIONAL)
             ->getQuery()
             ->getResult()
         ;
     }
 
-    public function findOneVisible(int $id): ?Formation
+    public function findAllLocal(array $zones): array
     {
-        return $this->createQueryBuilder('formation')
-            ->andWhere('formation.id = :id')
-            ->andWhere('formation.visible = TRUE')
-            ->setParameter('id', $id)
+        return $this->createPublishedQueryBuilder()
+            ->andWhere('formation.visibility = :visibility_local')
+            ->setParameter('visibility_local', ScopeVisibilityEnum::LOCAL)
+            ->leftJoin('formation.zone', 'zone')
+            ->leftJoin('zone.parents', 'zone_parent')
+            ->andWhere('zone IN (:zones) OR zone_parent IN (:zones)')
+            ->setParameter('zones', $zones)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findOnePublished(string $uuid): ?Formation
+    {
+        return $this->createPublishedQueryBuilder()
+            ->andWhere('formation.uuid = :uuid')
+            ->setParameter('uuid', $uuid)
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    private function createPublishedQueryBuilder(): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('formation')
+            ->andWhere('formation.published = TRUE')
+            ->orderBy('formation.position', 'ASC')
         ;
     }
 }
