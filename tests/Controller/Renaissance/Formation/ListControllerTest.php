@@ -16,6 +16,8 @@ class ListControllerTest extends WebTestCase
 
     public function testREAdherentCanSeeFormations(): void
     {
+        $this->markTestSkipped('Formation space is disabled.');
+
         $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/formations');

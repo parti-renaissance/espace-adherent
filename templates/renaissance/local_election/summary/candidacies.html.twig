@@ -1,0 +1,20 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block content %}
+    <main class="flex flex-col h-screen">
+        {% include 'renaissance/partials/site-header.html.twig' with { theme_bg: 'border-b border-re-blue-400 bg-re-blue-500' } %}
+
+        {% block content_section %}
+            {% for candidaciesGroup in election.candidaciesGroups %}
+                <h3>Liste #{{ candidaciesGroup.id }}</h3>
+                {% for candidacy in candidaciesGroup.candidacies %}
+                    <p>
+                        {{ candidacy.firstName}} {{ candidacy.lastName }}
+                    </p>
+                {% endfor %}
+
+                <hr>
+            {% endfor %}
+        {% endblock %}
+    </main>
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Repository\LocalElection;
 
+use App\Entity\Geo\Zone;
 use App\Entity\LocalElection\LocalElection;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -12,6 +13,19 @@ class LocalElectionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, LocalElection::class);
+    }
+
+    public function findUpcomingDepartmentElections(): array
+    {
+        return $this->createQueryBuilder('local_election')
+            ->innerJoin('local_election.designation', 'designation')
+            ->innerJoin('designation.zones', 'zone')
+            ->andWhere('zone.type = :type_department')
+            ->setParameter('type_department', Zone::DEPARTMENT)
+            ->addOrderBy('zone.code')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     public function findLastForZones(array $zones): ?LocalElection

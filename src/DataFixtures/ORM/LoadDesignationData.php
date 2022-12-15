@@ -183,7 +183,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $manager->persist($designation);
 
         // Upcoming Local election in departments
-        foreach (['06', '77', '92', '93'] as $department) {
+        foreach (['06', '77', '93'] as $department) {
             $designation = new Designation("Élection départementale dans le département $department");
             $designation->setType(DesignationTypeEnum::LOCAL_ELECTION);
             $designation->setVoteStartDate(new \DateTime('+1 day'));

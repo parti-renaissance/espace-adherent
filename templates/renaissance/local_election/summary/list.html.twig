@@ -1,0 +1,33 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block content %}
+    <main class="flex flex-col h-screen">
+        {% include 'renaissance/partials/site-header.html.twig' with { theme_bg: 'border-b border-re-blue-400 bg-re-blue-500' } %}
+
+        {% block content_section %}
+            {% for regionData in elections.getAllByRegions() %}
+                {% set region = regionData.region %}
+                {% set elections = regionData.elections %}
+
+                <h2>Région: {{ region.name }} ({{ region.code }})</h2>
+
+                {% for election in elections %}
+                    {% set department = election.designation.zones.first %}
+
+                    <h3>Département: {{ department.name }} ({{ department.code }})</h3>
+
+                    <p>Début des votes: {{ election.voteStartDate|date('d/m/Y à H:i')  }}</p>
+                    <p>Fin des votes: {{ election.voteEndDate|date('d/m/Y à H:i')  }}</p>
+
+                    <p>{{ election.candidaciesGroups|length }} candidature{{ election.candidaciesGroups|length > 1 ? 's' }}</p>
+
+                    <a href="{{ path('app_renaissance_local_election_summary_candidacies', { uuid: election.uuid }) }}">
+                        Voir les candidatures
+                    </a>
+
+                {% endfor %}
+                <hr>
+            {% endfor %}
+        {% endblock %}
+    </main>
+{% endblock %}
