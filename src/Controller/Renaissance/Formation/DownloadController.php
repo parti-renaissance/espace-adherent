@@ -19,6 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DownloadController extends AbstractController
 {
+    use AdherentFormationControllerTrait;
+
     public function __construct(
         private readonly FileRequestHandler $fileRequestHandler,
         private readonly EntityManagerInterface $entityManager
@@ -27,7 +29,7 @@ class DownloadController extends AbstractController
 
     public function __invoke(Formation $formation): Response
     {
-        $this->createNotFoundException();
+        $this->checkAdherentFormationsEnabled();
 
         $formation->incrementDownloadsCount();
         $this->entityManager->flush();

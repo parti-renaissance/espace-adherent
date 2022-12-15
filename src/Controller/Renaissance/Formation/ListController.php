@@ -15,13 +15,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ListController extends AbstractController
 {
+    use AdherentFormationControllerTrait;
+
     public function __construct(private readonly FormationRepository $formationRepository)
     {
     }
 
     public function __invoke(): Response
     {
-        $this->createNotFoundException();
+        $this->checkAdherentFormationsEnabled();
 
         return $this->render('renaissance/formation/list.html.twig', [
             'formations' => $this->formationRepository->findAllVisible(),
