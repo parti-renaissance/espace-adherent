@@ -121,7 +121,9 @@ class DesignationRepository extends ServiceEntityRepository
             Designation::class,
             'd2',
             'zones',
-            'z2'
+            'z2',
+            null,
+            false
         );
 
         return $queryBuilder->getQuery()->getResult();
