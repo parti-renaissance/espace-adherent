@@ -7,7 +7,7 @@
         {% block content_section %}
             {% for candidaciesGroup in election.candidaciesGroups %}
                 <h3>Liste #{{ candidaciesGroup.id }}</h3>
-                <a href="{{ path('app_renaissance_local_election_summary_faith_statement_download', { id: candidaciesGroup.id, download: true}) }}">
+                <a href="{{ path('asset_url', { path: candidaciesGroup.getFaithStatementFilePath(), app_domain: renaissance_host }) }}">
                     Télécharger la profession de foi
                 </a>
 
