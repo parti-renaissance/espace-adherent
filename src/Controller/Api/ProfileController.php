@@ -110,7 +110,7 @@ class ProfileController extends AbstractController
 
     /**
      * @Route("/unregister", name="_unregister", methods={"POST"})
-     * @IsGranted("UNREGISTER")
+     * @Security("is_granted('UNREGISTER', user)")
      */
     public function terminateMembershipAction(
         MembershipRequestHandler $handler,

@@ -2,21 +2,32 @@
 
 namespace Tests\App\Security\Voter;
 
+use App\Entity\Adherent;
 use App\Repository\AdherentMandate\AdherentMandateRepository;
-use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\AdherentUnregistrationVoter;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class AdherentUnregistrationVoterTest extends AbstractAdherentVoterTest
+class AdherentUnregistrationVoterTest extends TestCase
 {
-    /** @var MockObject|AdherentMandateRepository */
-    private $adherentMandateRepository;
+    private ?AdherentMandateRepository $adherentMandateRepository = null;
+    private ?AdherentUnregistrationVoter $voter = null;
 
-    protected function getVoter(): AbstractAdherentVoter
+    protected function setUp(): void
     {
-        $this->adherentMandateRepository = $this->createMock(AdherentMandateRepository::class);
+        parent::setUp();
 
-        return new AdherentUnregistrationVoter($this->adherentMandateRepository);
+        $this->adherentMandateRepository = $this->createMock(AdherentMandateRepository::class);
+        $this->voter = new AdherentUnregistrationVoter($this->adherentMandateRepository);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->adherentMandateRepository = null;
+        $this->voter = null;
     }
 
     public function provideAnonymousCases(): iterable
@@ -50,7 +61,10 @@ class AdherentUnregistrationVoterTest extends AbstractAdherentVoterTest
             ;
         }
 
-        $this->assertGrantedForAdherent($granted, true, $adherent, AdherentUnregistrationVoter::PERMISSION_UNREGISTER);
+        $this->assertSame(
+            $granted ? VoterInterface::ACCESS_GRANTED : VoterInterface::ACCESS_DENIED,
+            $this->voter->vote($this->createTokenMock(), $adherent, [AdherentUnregistrationVoter::PERMISSION_UNREGISTER])
+        );
     }
 
     public function provideBasicAdherentCases(): iterable
@@ -71,7 +85,10 @@ class AdherentUnregistrationVoterTest extends AbstractAdherentVoterTest
             ->willReturn($granted)
         ;
 
-        $this->assertGrantedForUser($granted, true, $adherent, AdherentUnregistrationVoter::PERMISSION_UNREGISTER);
+        $this->assertSame(
+            $granted ? VoterInterface::ACCESS_GRANTED : VoterInterface::ACCESS_DENIED,
+            $this->voter->vote($this->createTokenMock(), $adherent, [AdherentUnregistrationVoter::PERMISSION_UNREGISTER])
+        );
     }
 
     public function provideUserCases(): iterable
@@ -99,12 +116,25 @@ class AdherentUnregistrationVoterTest extends AbstractAdherentVoterTest
             ->willReturn($granted)
         ;
 
-        $this->assertGrantedForAdherent(!$granted, true, $adherent, AdherentUnregistrationVoter::PERMISSION_UNREGISTER);
+        $this->assertSame(
+            !$granted ? VoterInterface::ACCESS_GRANTED : VoterInterface::ACCESS_DENIED,
+            $this->voter->vote($this->createTokenMock(), $adherent, [AdherentUnregistrationVoter::PERMISSION_UNREGISTER])
+        );
     }
 
     public function provideWithActiveMandateCases(): iterable
     {
         yield [true];
         yield [false];
+    }
+
+    private function createAdherentMock(): Adherent
+    {
+        return $this->createMock(Adherent::class);
+    }
+
+    private function createTokenMock(): TokenInterface
+    {
+        return $this->createMock(TokenInterface::class);
     }
 }

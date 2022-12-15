@@ -4,42 +4,41 @@ namespace App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Repository\AdherentMandate\AdherentMandateRepository;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class AdherentUnregistrationVoter extends AbstractAdherentVoter
+class AdherentUnregistrationVoter extends Voter
 {
     public const PERMISSION_UNREGISTER = 'UNREGISTER';
 
-    /** @var AdherentMandateRepository */
-    private $adherentMandateRepository;
-
-    public function __construct(AdherentMandateRepository $adherentMandateRepository)
+    public function __construct(private readonly AdherentMandateRepository $adherentMandateRepository)
     {
-        $this->adherentMandateRepository = $adherentMandateRepository;
     }
 
     protected function supports(string $attribute, $subject): bool
     {
-        return self::PERMISSION_UNREGISTER === $attribute && null === $subject;
+        return self::PERMISSION_UNREGISTER === $attribute && $subject instanceof Adherent;
     }
 
-    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
     {
-        if ($adherent->isUser()) {
+        /** @var Adherent $subject */
+        if ($subject->isUser()) {
             return true;
         }
 
-        if ($adherent->getMemberships()->getCommitteeCandidacyMembership(true)) {
+        if ($subject->getMemberships()->getCommitteeCandidacyMembership(true)) {
             return false;
         }
 
-        if (($coTerrMembership = $adherent->getTerritorialCouncilMembership()) && $coTerrMembership->getActiveCandidacy()) {
+        if (($coTerrMembership = $subject->getTerritorialCouncilMembership()) && $coTerrMembership->getActiveCandidacy()) {
             return false;
         }
 
-        if ($this->adherentMandateRepository->hasActiveMandate($adherent)) {
+        if ($this->adherentMandateRepository->hasActiveMandate($subject)) {
             return false;
         }
 
-        return $adherent->isBasicAdherent();
+        return $subject->isBasicAdherent();
     }
 }

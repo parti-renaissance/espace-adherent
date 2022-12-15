@@ -21,7 +21,7 @@ use App\Membership\UserEvents;
 use App\OAuth\App\AuthAppUrlManager;
 use App\Subscription\SubscriptionHandler;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -189,7 +189,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/desadherer", name="app_user_terminate_membership", methods={"GET", "POST"})
-     * @IsGranted("UNREGISTER")
+     * @Security("is_granted('UNREGISTER', user)")
      */
     public function terminateMembershipAction(
         Request $request,
