@@ -7,11 +7,18 @@
         {% block content_section %}
             {% for candidaciesGroup in election.candidaciesGroups %}
                 <h3>Liste #{{ candidaciesGroup.id }}</h3>
-                {% for candidacy in candidaciesGroup.candidacies %}
-                    <p>
-                        {{ candidacy.firstName}} {{ candidacy.lastName }}
-                    </p>
-                {% endfor %}
+                <a href="{{ path('app_renaissance_local_election_summary_faith_statement_download', { id: candidaciesGroup.id, download: true}) }}">
+                    Télécharger la profession de foi
+                </a>
+
+                <p>
+                    Liste:
+                    <ul>
+                        {% for candidacy in candidaciesGroup.candidacies %}
+                            <li>{{ candidacy.firstName}} {{ candidacy.lastName }}</li>
+                        {% endfor %}
+                    </ul>
+                </p>
 
                 <hr>
             {% endfor %}
