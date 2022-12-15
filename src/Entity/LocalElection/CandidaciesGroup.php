@@ -57,11 +57,6 @@ class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministrat
         return null !== $this->faithStatementFileName;
     }
 
-    public function getFaithStatementFilename(): ?string
-    {
-        return $this->faithStatementFileName;
-    }
-
     public function getFaithStatementFilePath(): string
     {
         return sprintf('elections/profession-de-foi/%s', $this->faithStatementFileName);
