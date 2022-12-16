@@ -130,7 +130,8 @@ class AdherentAdminTest extends AbstractWebCaseTest
         $this->assertEquals('Retourner à la liste', trim($navBar->getNode(1)->nodeValue));
         $this->assertEquals('Impersonnifier', trim($navBar->getNode(2)->nodeValue));
         $this->assertEquals('Exclure cet adhérent ⚠️', trim($navBar->getNode(3)->nodeValue));
-        $this->assertEquals('Certifier cet adhérent', trim($navBar->getNode(4)->nodeValue));
+        $this->assertEquals('Supprimer cet adhérent ⚠️', trim($navBar->getNode(4)->nodeValue));
+        $this->assertEquals('Certifier cet adhérent', trim($navBar->getNode(5)->nodeValue));
 
         $link = $crawler->selectLink('Exclure cet adhérent ⚠️')->link();
         $crawler = $this->client->click($link);
