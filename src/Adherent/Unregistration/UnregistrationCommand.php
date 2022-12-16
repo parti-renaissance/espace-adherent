@@ -19,11 +19,18 @@ class UnregistrationCommand
 
     private ?Administrator $excludedBy;
 
-    public function __construct(array $reasons = [], string $comment = null, Administrator $excludedBy = null)
-    {
+    private bool $notification;
+
+    public function __construct(
+        array $reasons = [],
+        string $comment = null,
+        Administrator $excludedBy = null,
+        bool $notification = false
+    ) {
         $this->reasons = $reasons;
         $this->comment = $comment;
         $this->excludedBy = $excludedBy;
+        $this->notification = $notification;
     }
 
     public function getReasons(): array
@@ -49,6 +56,16 @@ class UnregistrationCommand
     public function getExcludedBy(): ?Administrator
     {
         return $this->excludedBy;
+    }
+
+    public function getNotification(): bool
+    {
+        return $this->notification;
+    }
+
+    public function setNotification(bool $notification): void
+    {
+        $this->notification = $notification;
     }
 
     public function setExcludedBy(?Administrator $admin): void

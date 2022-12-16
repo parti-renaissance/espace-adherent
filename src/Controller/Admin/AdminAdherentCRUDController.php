@@ -12,9 +12,9 @@ use App\Adherent\UnregistrationManager;
 use App\Entity\Adherent;
 use App\Entity\AdherentEmailSubscribeToken;
 use App\Form\Admin\Adherent\CreateRenaissanceType;
+use App\Form\Admin\Adherent\UnregistrationType;
 use App\Form\Admin\Extract\AdherentExtractType;
 use App\Form\ConfirmActionType;
-use App\Form\UnregistrationType;
 use App\Renaissance\Membership\Admin\AdherentCreateCommandHandler;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,7 +70,7 @@ class AdminAdherentCRUDController extends CRUDController
         if (!$this->isGranted('UNREGISTER', $adherent)) {
             $this->addFlash(
                 'error',
-                'Il est possible de faire désadhérer uniquement les adhérents sans aucun rôle (animateur, référent etc.).'
+                'Il est possible de faire désadhérer uniquement les adhérents sans aucun rôle (animateur, référent, candidat etc.).'
             );
 
             return $this->redirectTo($request, $adherent);
@@ -79,9 +79,7 @@ class AdminAdherentCRUDController extends CRUDController
         $unregistrationCommand = $unregistrationManager->createUnregistrationCommand($this->getUser());
 
         $form = $this
-            ->createForm(UnregistrationType::class, $unregistrationCommand, [
-                'is_admin' => true,
-            ])
+            ->createForm(UnregistrationType::class, $unregistrationCommand)
             ->handleRequest($request)
         ;
 

@@ -18,12 +18,12 @@ class UnregistrationManager
 
     public function createUnregistrationCommand(Administrator $administrator): UnregistrationCommand
     {
-        return new UnregistrationCommand(['Compte supprimé via action administrateur.'], null, $administrator);
+        return new UnregistrationCommand(['Compte supprimé via action administrateur.'], null, $administrator, true);
     }
 
     public function terminateMembership(Adherent $adherent, UnregistrationCommand $unregistrationCommand): void
     {
-        $this->membershipRequestHandler->terminateMembership($adherent, $unregistrationCommand);
+        $this->membershipRequestHandler->terminateMembership($adherent, $unregistrationCommand, false);
 
         $this->tokenRevocationAuthority->revokeUserTokens($adherent);
     }

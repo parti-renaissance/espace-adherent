@@ -25,7 +25,7 @@ class BanManager
 
         $unregistrationCommand = new UnregistrationCommand([$reason], $reason, $administrator);
 
-        $this->membershipRequestHandler->terminateMembership($adherent, $unregistrationCommand, false);
+        $this->membershipRequestHandler->terminateMembership($adherent, $unregistrationCommand);
 
         $adherentBanned = BannedAdherent::createFromAdherent($adherent);
         $this->entityManager->persist($adherentBanned);
