@@ -8,11 +8,13 @@ use App\Adherent\BanManager;
 use App\Adherent\Certification\CertificationAuthorityManager;
 use App\Adherent\Certification\CertificationPermissions;
 use App\Adherent\Command\SendResubscribeEmailCommand;
+use App\Adherent\UnregistrationManager;
 use App\Entity\Adherent;
 use App\Entity\AdherentEmailSubscribeToken;
 use App\Form\Admin\Adherent\CreateRenaissanceType;
 use App\Form\Admin\Extract\AdherentExtractType;
 use App\Form\ConfirmActionType;
+use App\Form\UnregistrationType;
 use App\Renaissance\Membership\Admin\AdherentCreateCommandHandler;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,6 +58,45 @@ class AdminAdherentCRUDController extends CRUDController
             'object' => $adherent,
             'action' => 'ban',
             'elements' => $this->admin->getShow(),
+        ]);
+    }
+
+    public function terminateMembershipAction(Request $request, UnregistrationManager $unregistrationManager): Response
+    {
+        $adherent = $this->admin->getSubject();
+
+        $this->admin->checkAccess('terminate_membership', $adherent);
+
+        if (!$this->isGranted('UNREGISTER', $adherent)) {
+            $this->addFlash(
+                'error',
+                'Il est possible de faire désadhérer uniquement les adhérents sans aucun rôle (animateur, référent etc.).'
+            );
+
+            return $this->redirectTo($request, $adherent);
+        }
+
+        $unregistrationCommand = $unregistrationManager->createUnregistrationCommand($this->getUser());
+
+        $form = $this
+            ->createForm(UnregistrationType::class, $unregistrationCommand, [
+                'is_admin' => true,
+            ])
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $unregistrationManager->terminateMembership($adherent, $unregistrationCommand);
+
+            $this->addFlash('success', sprintf('L\'adhérent <b>%s</b> a bien été supprimé.', $adherent->getFullName()));
+
+            return $this->redirectToList();
+        }
+
+        return $this->renderWithExtraParams('admin/adherent/terminate_membership.html.twig', [
+            'form' => $form->createView(),
+            'object' => $adherent,
+            'action' => 'terminate_membership',
         ]);
     }
 

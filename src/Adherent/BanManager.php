@@ -7,37 +7,35 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\BannedAdherent;
 use App\Membership\MembershipRequestHandler;
+use App\OAuth\TokenRevocationAuthority;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 
 class BanManager
 {
-    private $membershipRequestHandler;
-    private $entityManager;
-
-    public function __construct(MembershipRequestHandler $membershipRequestHandler, ObjectManager $entityManager)
-    {
-        $this->membershipRequestHandler = $membershipRequestHandler;
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private readonly MembershipRequestHandler $membershipRequestHandler,
+        private readonly ObjectManager $entityManager,
+        private readonly TokenRevocationAuthority $tokenRevocationAuthority
+    ) {
     }
 
     public function ban(Adherent $adherent, Administrator $administrator): void
     {
         $reason = sprintf('Exclu(e) par la Commission des conflits le %s', date('d-m-Y'));
 
-        $unregistrationCommand = new UnregistrationCommand();
-        $unregistrationCommand->setReasons([$reason]);
-        $unregistrationCommand->setComment($reason);
-        $unregistrationCommand->setExcludedBy($administrator);
+        $unregistrationCommand = new UnregistrationCommand([$reason], $reason, $administrator);
 
         $this->membershipRequestHandler->terminateMembership($adherent, $unregistrationCommand, false);
 
         $adherentBanned = BannedAdherent::createFromAdherent($adherent);
         $this->entityManager->persist($adherentBanned);
         $this->entityManager->flush();
+
+        $this->tokenRevocationAuthority->revokeUserTokens($adherent);
     }
 
     public function canBan(Adherent $adherent): bool
     {
-        return [] === array_diff($adherent->getRoles(), ['ROLE_ADHERENT', 'ROLE_USER']);
+        return !$adherent->isToDelete() && [] === array_diff($adherent->getRoles(), ['ROLE_ADHERENT', 'ROLE_USER']);
     }
 }

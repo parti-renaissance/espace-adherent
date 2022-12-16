@@ -10,14 +10,21 @@ class UnregistrationCommand
     /**
      * @Assert\NotBlank(message="adherent.unregistration.reasons")
      */
-    private $reasons = [];
+    private array $reasons;
 
     /**
-     * @Assert\Length(max=1000)
+     * @Assert\Length(max=1000, groups={"Default", "admin"})
      */
-    private $comment;
+    private ?string $comment;
 
-    private $excludedBy;
+    private ?Administrator $excludedBy;
+
+    public function __construct(array $reasons = [], string $comment = null, Administrator $excludedBy = null)
+    {
+        $this->reasons = $reasons;
+        $this->comment = $comment;
+        $this->excludedBy = $excludedBy;
+    }
 
     public function getReasons(): array
     {

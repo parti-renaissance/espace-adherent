@@ -19,13 +19,18 @@ class UnregistrationType extends AbstractType
                 ->add('comment', TextareaType::class, [
                     'required' => false,
                 ])
-                ->add('reasons', ChoiceType::class, [
-                    'choices' => $options['reasons'],
-                    'choice_translation_domain' => 'forms',
-                    'expanded' => true,
-                    'multiple' => true,
-                ])
             ;
+
+            if (!$options['is_admin']) {
+                $builder
+                    ->add('reasons', ChoiceType::class, [
+                        'choices' => $options['reasons'],
+                        'choice_translation_domain' => 'forms',
+                        'expanded' => true,
+                        'multiple' => true,
+                    ])
+                ;
+            }
         }
     }
 
@@ -36,14 +41,21 @@ class UnregistrationType extends AbstractType
                 'data_class' => UnregistrationCommand::class,
                 'reasons' => [],
                 'is_renaissance' => false,
+                'is_admin' => false,
                 'validation_groups' => function (Options $options) {
-                    return $options['is_renaissance']
-                        ? ['renaissance']
-                        : ['Default']
-                    ;
+                    if ($options['is_renaissance']) {
+                        return ['renaissance'];
+                    }
+
+                    if ($options['is_admin']) {
+                        return ['admin'];
+                    }
+
+                    return ['Default'];
                 },
             ])
             ->setAllowedTypes('is_renaissance', 'bool')
+            ->setAllowedTypes('is_admin', 'bool')
         ;
     }
 }

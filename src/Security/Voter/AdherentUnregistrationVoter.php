@@ -23,6 +23,10 @@ class AdherentUnregistrationVoter extends Voter
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
     {
         /** @var Adherent $subject */
+        if ($subject->isToDelete()) {
+            return false;
+        }
+
         if ($subject->isUser()) {
             return true;
         }

@@ -6,7 +6,6 @@ use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
 use App\Adherent\Unregistration\UnregistrationCommand;
 use App\Adherent\Unregistration\UnregistrationFactory;
 use App\Entity\Adherent;
-use App\Entity\Unregistration;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -26,7 +25,7 @@ class UnregistrationHandler
         if ($command) {
             $unregistration = UnregistrationFactory::createFromUnregistrationCommandAndAdherent($command, $adherent);
         } else {
-            $unregistration = $comment ? Unregistration::createFromAdherent($adherent, $comment) : Unregistration::createFromAdherent($adherent);
+            $unregistration = UnregistrationFactory::createFromAdherent($adherent, $comment);
         }
 
         $adherent->markAsToDelete();

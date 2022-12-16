@@ -127,6 +127,7 @@ class AdherentAdmin extends AbstractAdmin
     {
         return [
             'ban' => 'BAN',
+            'terminate_membership' => 'TERMINATE_MEMBERSHIP',
             'certify' => 'CERTIFY',
             'uncertify' => 'UNCERTIFY',
             'extract' => 'EXTRACT',
@@ -145,6 +146,7 @@ class AdherentAdmin extends AbstractAdmin
     {
         $collection
             ->add('ban', $this->getRouterIdParameter().'/ban')
+            ->add('terminate_membership', $this->getRouterIdParameter().'/terminate-membership')
             ->add('certify', $this->getRouterIdParameter().'/certify')
             ->add('uncertify', $this->getRouterIdParameter().'/uncertify')
             ->add('extract', 'extract')
@@ -170,6 +172,10 @@ class AdherentAdmin extends AbstractAdmin
         if (\in_array($action, ['edit', 'show'], true)) {
             if ($this->hasAccess('ban', $object) && $this->hasRoute('ban')) {
                 $actions['ban'] = ['template' => 'admin/adherent/action_button_ban.html.twig'];
+            }
+
+            if ($this->hasAccess('terminate_membership', $object) && $this->hasRoute('terminate_membership')) {
+                $actions['terminate_membership'] = ['template' => 'admin/adherent/action_button_terminate_membership.html.twig'];
             }
 
             if ($this->hasAccess('certify', $object) && $this->hasRoute('certify')) {

@@ -1,0 +1,7 @@
+{% if is_granted('UNREGISTER', object) %}
+    <li>
+        <a href="{{ admin.generateObjectUrl('terminate_membership', object) }}" class="sonata-action-element" title="Suppression de compte">
+            <i class="fa fa-close"></i> Supprimer cet adhérent ⚠️
+        </a>
+    </li>
+{% endif %}
