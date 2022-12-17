@@ -32,9 +32,6 @@ services:
     App\OpenGraph\OpenGraphFetcher:
         class: 'Tests\App\Test\OpenGraph\DummyOpenGraphFetcher'
 
-    Tests\App\Test\SendInBlue\DummyClient:
-        decorates: 'App\SendInBlue\Client'
-
     Tests\App\Test\Firebase\DummyDynamicLinks: ~
     Tests\App\Test\Firebase\DummyMessaging: ~
 

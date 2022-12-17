@@ -6,11 +6,9 @@ use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
 use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\Entity\Adherent;
 use App\Entity\Unregistration;
-use App\SendInBlue\Client;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
-use Tests\App\Test\SendInBlue\DummyClient;
 
 /**
  * @group functional
@@ -41,8 +39,6 @@ class UnregistrationControllerTest extends WebTestCase
 
             $this->isSuccessful($this->client->getResponse());
 
-            self::assertEmpty($this->getSendInBlueClient()->getDeleteSchedule());
-
             $reasons = Unregistration::REASONS_LIST_ADHERENT;
             $reasonsValues = array_values($reasons);
             $chosenReasons = [
@@ -63,10 +59,6 @@ class UnregistrationControllerTest extends WebTestCase
 
             $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-            $sendInBlueDeletes = $this->getSendInBlueClient()->getDeleteSchedule();
-            self::assertCount(1, $sendInBlueDeletes);
-            self::assertContains($email, $sendInBlueDeletes);
-
             self::assertCount(0, $crawler->filter('.form__errors > li'));
             self::assertSame(
                 $adherent->isUser(
@@ -79,10 +71,5 @@ class UnregistrationControllerTest extends WebTestCase
         }
 
         self::assertSame(30, $countForbidden);
-    }
-
-    private function getSendInBlueClient(): DummyClient
-    {
-        return $this->client->getContainer()->get(Client::class);
     }
 }

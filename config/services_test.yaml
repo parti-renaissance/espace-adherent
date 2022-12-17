@@ -67,5 +67,3 @@ services:
     App\Committee\CommitteeManager: ~
 
     Algolia\SearchBundle\SearchService: '@Tests\App\Test\Algolia\DummySearchService'
-
-    App\SendInBlue\Client: '@Tests\App\Test\SendInBlue\DummyClient'
