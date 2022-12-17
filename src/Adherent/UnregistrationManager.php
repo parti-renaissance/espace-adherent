@@ -23,8 +23,8 @@ class UnregistrationManager
 
     public function terminateMembership(Adherent $adherent, UnregistrationCommand $unregistrationCommand): void
     {
-        $this->membershipRequestHandler->terminateMembership($adherent, $unregistrationCommand, false);
-
         $this->tokenRevocationAuthority->revokeUserTokens($adherent);
+
+        $this->membershipRequestHandler->terminateMembership($adherent, $unregistrationCommand, false);
     }
 }

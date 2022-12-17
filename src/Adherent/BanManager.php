@@ -21,17 +21,16 @@ class BanManager
 
     public function ban(Adherent $adherent, Administrator $administrator): void
     {
+        $this->tokenRevocationAuthority->revokeUserTokens($adherent);
+
         $reason = sprintf('Exclu(e) par la Commission des conflits le %s', date('d-m-Y'));
 
         $unregistrationCommand = new UnregistrationCommand([$reason], $reason, $administrator);
 
         $this->membershipRequestHandler->terminateMembership($adherent, $unregistrationCommand);
 
-        $adherentBanned = BannedAdherent::createFromAdherent($adherent);
-        $this->entityManager->persist($adherentBanned);
+        $this->entityManager->persist(BannedAdherent::createFromAdherent($adherent));
         $this->entityManager->flush();
-
-        $this->tokenRevocationAuthority->revokeUserTokens($adherent);
     }
 
     public function canBan(Adherent $adherent): bool

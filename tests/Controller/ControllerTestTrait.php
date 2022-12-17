@@ -36,14 +36,18 @@ trait ControllerTestTrait
         string $path,
         KernelBrowser $client,
         bool $withSchemes = false,
-        bool $permanent = false
+        bool $permanent = false,
+        bool $withParameters = true
     ): void {
         $response = $client->getResponse();
 
         $this->assertResponseStatusCode($permanent ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND, $response);
+
         $this->assertSame(
             $withSchemes ? $client->getRequest()->getSchemeAndHttpHost().$path : $path,
-            $response->headers->get('location')
+            $withParameters
+                    ? $response->headers->get('location')
+                    : substr($response->headers->get('location'), 0, strpos($response->headers->get('location'), '?'))
         );
     }
 

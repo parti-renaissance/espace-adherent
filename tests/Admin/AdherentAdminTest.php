@@ -8,7 +8,12 @@ use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\MyTeam;
+use App\Entity\Unregistration;
+use App\Mailer\Message\AdherentTerminateMembershipMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountCreatedMessage;
+use App\Mailer\Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage;
+use App\Repository\AdherentRepository;
+use App\Repository\UnregistrationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest;
@@ -24,7 +29,114 @@ class AdherentAdminTest extends AbstractWebCaseTest
 
     private const ADHERENT_EDIT_URI_PATTERN = '/admin/app/adherent/%d/edit';
 
-    private $adherentRepository;
+    private ?AdherentRepository $adherentRepository = null;
+    private ?UnregistrationRepository $unregistrationRepository = null;
+
+    /**
+     * @dataProvider provideTerminateMembershipForbidden
+     */
+    public function testTerminateMembershipForbidden(string $email): void
+    {
+        $this->authenticateAsAdmin($this->client);
+
+        $adherent = $this->adherentRepository->findOneByEmail($email);
+        $this->assertInstanceOf(Adherent::class, $adherent);
+
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertStringNotContainsString('Supprimer cet adhérent ⚠️', $crawler->filter('ul.dropdown-menu')->text());
+
+        $this->client->request(Request::METHOD_GET, sprintf('/admin/app/adherent/%s/terminate-membership', $adherent->getId()));
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo(sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()), $this->client);
+
+        $crawler = $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertStringContainsString(
+            'Il est possible de faire désadhérer uniquement les adhérents sans aucun rôle (animateur, référent, candidat etc.).',
+            $crawler->filter('.alert.alert-danger ')->text()
+        );
+    }
+
+    public function provideTerminateMembershipForbidden(): \Generator
+    {
+        yield 'Sénateur' => ['senateur@en-marche-dev.fr'];
+        yield 'Député' => ['deputy@en-marche-dev.fr'];
+        yield 'Membre du conseil' => ['carl999@example.fr'];
+        yield 'Animateur' => ['jacques.picard@en-marche.fr'];
+        yield 'Référent' => ['referent@en-marche-dev.fr'];
+        yield 'Référent RE' => ['renaissance-user-3@en-marche-dev.fr'];
+    }
+
+    /**
+     * @dataProvider provideTerminateMembershipSuccess
+     */
+    public function testTerminateMembershipSuccess(
+        string $email,
+        string $fullName,
+        bool $notification,
+        bool $isRenaissance
+    ): void {
+        $this->authenticateAsAdmin($this->client);
+
+        $adherent = $this->adherentRepository->findOneByEmail($email);
+        $this->assertInstanceOf(Adherent::class, $adherent);
+        $this->assertSame(0, $this->unregistrationRepository->count([]));
+        $this->assertCountMails(0, RenaissanceAdherentTerminateMembershipMessage::class, $email);
+        $this->assertCountMails(0, AdherentTerminateMembershipMessage::class, $email);
+        $adherentUuid = $adherent->getUuid()->toString();
+
+        $this->client->request(Request::METHOD_GET, sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->client->clickLink('Supprimer cet adhérent ⚠️');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame(
+            sprintf('/admin/app/adherent/%s/terminate-membership', $adherent->getId()),
+            $this->client->getRequest()->getPathInfo()
+        );
+
+        $this->client->submitForm('Confirmer', [
+            'unregistration' => [
+                'comment' => 'Unregistered.',
+                'notification' => $notification,
+            ],
+        ]);
+        $this->assertClientIsRedirectedTo('/admin/app/adherent/list', $this->client, false, false, false);
+
+        $crawler = $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertStringContainsString(
+            "L'adhérent $fullName a bien été supprimé.",
+            $crawler->filter('.alert.alert-success ')->text()
+        );
+
+        $this->assertNull($this->adherentRepository->findOneByEmail($email));
+        $this->assertSame(1, $this->unregistrationRepository->count([]));
+        $this->assertCountMails(($notification && $isRenaissance) ? 1 : 0, RenaissanceAdherentTerminateMembershipMessage::class, $email);
+        $this->assertCountMails(($notification && !$isRenaissance) ? 1 : 0, AdherentTerminateMembershipMessage::class, $email);
+
+        $unregistration = $this->unregistrationRepository->findOneBy(['uuid' => $adherentUuid]);
+        $this->assertInstanceOf(Unregistration::class, $unregistration);
+        $this->assertSame('Compte supprimé via action administrateur.', $unregistration->getReasons()[0]);
+        $this->assertSame('Unregistered.', $unregistration->getComment());
+        $this->assertSame($isRenaissance, $unregistration->isRenaissance());
+    }
+
+    public function provideTerminateMembershipSuccess(): \Generator
+    {
+        // Simple user
+        yield ['simple-test-user@example.ch', 'Simple User', false, false];
+        yield ['simple-user@example.ch', 'Simple User', true, false];
+        yield ['coalitions-user-1@en-marche-dev.fr', 'Luis Phplover', false, false];
+        yield ['je-mengage-user-2@en-marche-dev.fr', 'Jerome Musk', true, false];
+        // Adhérent EM
+        yield ['michelle.dufour@example.ch', 'Michelle Dufour', false, false];
+        yield ['bernard.morin@example.fr', 'Bernard Morin', true, false];
+        // Adhérent RE
+        yield ['renaissance-user-1@en-marche-dev.fr', 'Laure Fenix', true, true];
+        yield ['renaissance-user-2@en-marche-dev.fr', 'John Smith', false, true];
+    }
 
     public function testAnAdminCantBanAnAdherent()
     {
@@ -34,10 +146,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
         $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_2_UUID);
         $crawler = $this->client->request(Request::METHOD_GET, sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
 
-        $navBar = $crawler->filter('ul.dropdown-menu > li');
-        $this->assertEquals('Afficher', trim($navBar->getNode(0)->nodeValue));
-        $this->assertEquals('Retourner à la liste', trim($navBar->getNode(1)->nodeValue));
-        $this->assertEquals('Impersonnifier', trim($navBar->getNode(2)->nodeValue));
+        $this->assertStringNotContainsString('Exclure cet adhérent ⚠️', $crawler->filter('ul.dropdown-menu')->text());
 
         $this->client->request(Request::METHOD_GET, sprintf('/admin/app/adherent/%s/ban', $adherent->getId()));
         $this->assertResponseStatusCode(403, $this->client->getResponse());
@@ -123,26 +232,30 @@ class AdherentAdminTest extends AbstractWebCaseTest
 
         /** @var Adherent $adherent */
         $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_19_UUID);
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
+        $this->client->request(Request::METHOD_GET, sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $navBar = $crawler->filter('ul.dropdown-menu > li');
-        $this->assertEquals('Afficher', trim($navBar->getNode(0)->nodeValue));
-        $this->assertEquals('Retourner à la liste', trim($navBar->getNode(1)->nodeValue));
-        $this->assertEquals('Impersonnifier', trim($navBar->getNode(2)->nodeValue));
-        $this->assertEquals('Exclure cet adhérent ⚠️', trim($navBar->getNode(3)->nodeValue));
-        $this->assertEquals('Supprimer cet adhérent ⚠️', trim($navBar->getNode(4)->nodeValue));
-        $this->assertEquals('Certifier cet adhérent', trim($navBar->getNode(5)->nodeValue));
+        $this->client->clickLink('Exclure cet adhérent ⚠️');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame(
+            sprintf('/admin/app/adherent/%s/ban', $adherent->getId()),
+            $this->client->getRequest()->getPathInfo()
+        );
 
-        $link = $crawler->selectLink('Exclure cet adhérent ⚠️')->link();
-        $crawler = $this->client->click($link);
+        $crawler = $this->client->submitForm('Confirmer');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame(
+            '/admin/app/adherent/list',
+            $this->client->getRequest()->getPathInfo()
+        );
 
-        $this->assertResponseStatusCode(200, $this->client->getResponse());
-
-        $this->client->submit($crawler->selectButton('Confirmer')->form());
-
-        $this->assertStringContainsString(sprintf('L\'adhérent <b>%s</b> a bien été exclu', $adherent->getFullName()), $this->client->getResponse()->getContent());
+        $this->assertStringContainsString(
+            sprintf('L\'adhérent %s a bien été exclu.', $adherent->getFullName()),
+            $crawler->filter('.alert.alert-success ')->text()
+        );
 
         $crawler = $this->client->request('GET', '/adhesion');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $crawler = $this->client->submit(
             $crawler->selectButton('Je rejoins La République En Marche')->form(),
@@ -625,11 +738,13 @@ class AdherentAdminTest extends AbstractWebCaseTest
         parent::setUp();
 
         $this->adherentRepository = $this->getAdherentRepository();
+        $this->unregistrationRepository = $this->getRepository(Unregistration::class);
     }
 
     protected function tearDown(): void
     {
         $this->adherentRepository = null;
+        $this->unregistrationRepository = null;
 
         parent::tearDown();
     }
