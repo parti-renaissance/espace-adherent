@@ -1,6 +1,9 @@
 {% extends 'base_renaissance.html.twig' %}
 
-{% set region = election.designation.zones.first.getParentsOfType(constant('App\\Entity\\Geo\\Zone::REGION'))|first %}
+{% set designation = election.designation %}
+{% set region = designation.zones.first.getParentsOfType(constant('App\\Entity\\Geo\\Zone::REGION'))|first %}
+
+{% block page_title designation.label %}
 
 {% block content %}
     {% include 'renaissance/partials/site-header.html.twig' with { theme_bg: 'border-b border-re-blue-400 bg-re-blue-500' } %}
@@ -42,7 +45,7 @@
 
     <main class="py-12 lg:py-16 max-w-8xl mx-auto px-4 md:px-6">
 
-        <h2 class="text-lg font-medium text-gray-900">{{ election.designation.label }}</h2>
+        <h2 class="text-lg font-medium text-gray-900">{{ designation.label }}</h2>
 
         {% block content_section %}
             <div class="grid gap-5 md:grid-cols-2 md:gap-x-6 lg:grid-cols-3 lg:gap-y-8">
