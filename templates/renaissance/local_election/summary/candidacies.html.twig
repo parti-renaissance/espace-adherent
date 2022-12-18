@@ -1,5 +1,7 @@
 {% extends 'base_renaissance.html.twig' %}
 
+{% set region = election.designation.zones.first.getParentsOfType(constant('App\\Entity\\Geo\\Zone::REGION'))|first %}
+
 {% block content %}
     {% include 'renaissance/partials/site-header.html.twig' with { theme_bg: 'border-b border-re-blue-400 bg-re-blue-500' } %}
 
@@ -18,7 +20,9 @@
                     <ol role="list" class="flex items-center space-x-4">
                         <li>
                             <div class="flex">
-                                <a href="#" class="text-sm font-medium text-gray-500 hover:text-gray-700">Résultats élections</a>
+                                <a href="{{ path('app_renaissance_local_election_summary_list') }}" class="text-sm font-medium text-gray-500 hover:text-gray-700">
+                                    Retour à la liste des élections
+                                </a>
                             </div>
                         </li>
                         <li>
@@ -26,7 +30,8 @@
                                 <svg class="h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
                                 </svg>
-                                <a href="#" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Nom de l'election</a>
+
+                                {{ region.name }}
                             </div>
                         </li>
                     </ol>
@@ -37,11 +42,13 @@
 
     <main class="py-12 lg:py-16 max-w-8xl mx-auto px-4 md:px-6">
 
+        <h2 class="text-lg font-medium text-gray-900">{{ election.designation.label }}</h2>
+
         {% block content_section %}
             <div class="grid gap-5 md:grid-cols-2 md:gap-x-6 lg:grid-cols-3 lg:gap-y-8">
                 {% for candidaciesGroup in election.candidaciesGroups %}
                     <div class="border border-gray-300 rounded-md p-4 md:p-5">
-                        <h3 class="text-lg font-medium text-gray-900">Liste #{{ candidaciesGroup.id }}</h3>
+                        <h3 class="text-lg font-medium text-gray-900">Liste #{{ loop.index }}</h3>
                         <a class="inline-flex items-center mt-1 text-re-blue-500 hover:text-re-blue-600" href="{{ path('asset_url', { path: candidaciesGroup.getFaithStatementFilePath(), app_domain: renaissance_host }) }}">
                             {% include 'icons/download.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
                             Télécharger la profession de foi
