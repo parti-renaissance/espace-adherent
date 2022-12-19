@@ -19,8 +19,24 @@ class UnregistrationFactory
             $adherent->getRegisteredAt(),
             $adherent->getPostAddress()->getPostalCode(),
             $adherent->isAdherent(),
+            $adherent->isRenaissanceUser(),
             $adherent->getReferentTags()->toArray(),
             $command->getExcludedBy()
+        );
+    }
+
+    public static function createFromAdherent(Adherent $adherent, string $comment = null): self
+    {
+        return new Unregistration(
+            $adherent->getUuid(),
+            Adherent::createUuid($adherent->getEmailAddress()),
+            ['autre'],
+            $comment,
+            $adherent->getRegisteredAt(),
+            $adherent->getPostAddress()->getPostalCode(),
+            $adherent->isAdherent(),
+            $adherent->isRenaissanceUser(),
+            $adherent->getReferentTags()->toArray()
         );
     }
 }

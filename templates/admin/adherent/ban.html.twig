@@ -4,6 +4,10 @@
      Exclure {{ admin.toString(object)|u.truncate(15, '...') }} ⚠️
 {% endblock %}
 
+{% block navbar_title %}
+    Exclure {{ admin.toString(object)|u.truncate(15, '...') }}
+{% endblock %}
+
 {% block show %}
     {{ parent() }}
 
@@ -12,7 +16,7 @@
             {{ form_start(form) }}
                 <div class="box box-solid box-success">
                     <div class="box-header">
-                        <h4 class="box-title">Confirmez-vous? Attention, cette action est irreversible.</h4>
+                        <h4 class="box-title">Confirmez-vous? Attention, cette action est irréversible.</h4>
                     </div>
                     <div class="box-body">
                         <div class="row">

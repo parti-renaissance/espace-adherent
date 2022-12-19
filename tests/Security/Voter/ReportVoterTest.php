@@ -36,8 +36,8 @@ class ReportVoterTest extends TestCase
     {
         parent::tearDown();
 
-        $this->authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
-        $this->voter = new ReportVoter($this->authorizationChecker);
+        $this->authorizationChecker = null;
+        $this->voter = null;
     }
 
     public function provideUsers(): iterable

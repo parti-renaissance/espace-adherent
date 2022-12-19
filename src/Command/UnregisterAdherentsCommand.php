@@ -129,7 +129,7 @@ class UnregisterAdherentsCommand extends Command
                     continue;
                 }
 
-                $this->handler->handle($adherent);
+                $this->handler->handle($adherent, null, 'Compte supprimé par commande administrateur.');
 
                 $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_DELETED);
             } catch (\Exception $ex) {

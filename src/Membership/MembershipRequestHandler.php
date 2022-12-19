@@ -182,7 +182,7 @@ class MembershipRequestHandler
     ): void {
         $this->unregistrationHandler->handle($adherent, $command, $comment);
 
-        if ($sendMail) {
+        if ($sendMail || ($command && $command->getNotification())) {
             $this->notifier->sendUnregistrationMessage($adherent);
         }
 

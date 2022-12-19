@@ -1,0 +1,56 @@
+{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block title %}
+     Suppression du compte <b>{{ admin.toString(object)|u.truncate(15, '...') }}</b> ⚠️
+{% endblock %}
+
+{% block navbar_title %}
+    Suppression du compte <b>{{ admin.toString(object)|u.truncate(100, '...') }}</b>
+{% endblock %}
+
+{% block show %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form) }}
+            <div class="box box-solid box-danger">
+                <div class="box-header">
+                    <h4 class="box-title">
+                        Suppression du compte de <b>{{ object.fullName }}</b> ({{ object.emailAddress }})
+                    </h4>
+                </div>
+                <div class="box-body">
+                    <p>
+                        Attention, cette action est irréversible.
+                    </p>
+                </div>
+            </div>
+                <div class="box box-solid box-danger">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(form.comment, { label: 'Commentaire' }) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.notification, { label: 'Envoyer un e-mail de notification' }) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-1">
+                                <button type="submit" class="btn btn-danger">
+                                    Confirmer la suppression
+                                </button>
+                            </div>
+                            <div class="col-md-1 col-md-offset-10">
+                                <a href="{{ admin.generateObjectUrl('edit', object) }}" class="btn btn-info">
+                                    Annuler
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

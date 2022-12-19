@@ -101,6 +101,11 @@ class Unregistration
     private $isAdherent;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $isRenaissance;
+
+    /**
      * @var Collection|ReferentTag[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
@@ -122,6 +127,7 @@ class Unregistration
         \DateTime $registeredAt,
         ?string $postalCode,
         bool $isAdherent,
+        bool $isRenaissance,
         array $referentTags,
         Administrator $admin = null
     ) {
@@ -133,24 +139,9 @@ class Unregistration
         $this->registeredAt = $registeredAt;
         $this->unregisteredAt = new \DateTime('now');
         $this->isAdherent = $isAdherent;
+        $this->isRenaissance = $isRenaissance;
         $this->referentTags = new ArrayCollection($referentTags);
         $this->excludedBy = $admin;
-    }
-
-    public static function createFromAdherent(
-        Adherent $adherent,
-        string $comment = 'Adhérent supprimé par l\'administrateur'
-    ): self {
-        return new self(
-            $adherent->getUuid(),
-            Adherent::createUuid($adherent->getEmailAddress()),
-            ['autre'],
-            $comment,
-            $adherent->getRegisteredAt(),
-            $adherent->getPostAddress()->getPostalCode(),
-            $adherent->isAdherent(),
-            $adherent->getReferentTags()->toArray()
-        );
     }
 
     public function getId(): ?int
@@ -206,6 +197,11 @@ class Unregistration
     public function isAdherent(): bool
     {
         return $this->isAdherent;
+    }
+
+    public function isRenaissance(): bool
+    {
+        return $this->isRenaissance;
     }
 
     /**

@@ -2,8 +2,12 @@
 
 {% block field %}
     {% if object.isAdherent %}
-        <span class="label label-primary">Adhérent</span>
+        <span class="label label-info">Adhérent</span>
     {% else %}
         <span class="label label-default">Utilisateur</span>
+    {% endif %}
+
+    {% if object.isRenaissance %}
+        <span class="label label-primary">Renaissance</span>
     {% endif %}
 {% endblock %}

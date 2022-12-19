@@ -110,7 +110,7 @@ class ProfileController extends AbstractController
 
     /**
      * @Route("/unregister", name="_unregister", methods={"POST"})
-     * @IsGranted("UNREGISTER")
+     * @Security("is_granted('UNREGISTER', user)")
      */
     public function terminateMembershipAction(
         MembershipRequestHandler $handler,
@@ -119,7 +119,7 @@ class ProfileController extends AbstractController
         /** @var Adherent $user */
         $user = $this->getUser();
 
-        $handler->terminateMembership($user, null, false, 'Compte supprimé par l\'adhérent');
+        $handler->terminateMembership($user, null, false, '[API] Compte supprimé par l\'adhérent');
         $tokenRevocationAuthority->revokeUserTokens($user);
 
         return $this->json('OK');
