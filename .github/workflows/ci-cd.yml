@@ -20,6 +20,7 @@ env:
   REGISTRY: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
   REGISTRY_HOST: ${{ secrets.GCP_HOST_GCR }}
   GCP_SA_KEY_GCR_PUSHER: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
+  USE_GKE_GCLOUD_AUTH_PLUGIN: true
 
 concurrency:
   group: ${{ github.ref_name }}
