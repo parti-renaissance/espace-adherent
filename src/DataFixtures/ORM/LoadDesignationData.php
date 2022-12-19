@@ -182,6 +182,19 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $this->setReference('designation-14', $designation);
         $manager->persist($designation);
 
+        // Upcoming Local election in departments
+        foreach (['06', '77', '93'] as $department) {
+            $designation = new Designation("Élection départementale dans le département $department");
+            $designation->setType(DesignationTypeEnum::LOCAL_ELECTION);
+            $designation->setVoteStartDate(new \DateTime('+1 day'));
+            $designation->setVoteEndDate(new \DateTime('+10 days'));
+            $designation->addZone(LoadGeoZoneData::getZoneReference($manager, "zone_department_$department"));
+            $designation->wordingWelcomePage = $this->getReference('cms-block-local-election-welcome-page');
+
+            $this->setReference("designation-local-dpt-$department", $designation);
+            $manager->persist($designation);
+        }
+
         $manager->flush();
     }
 

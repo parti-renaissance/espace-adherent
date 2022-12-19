@@ -31,6 +31,13 @@ class LoadLocalElectionData extends Fixture implements DependentFixtureInterface
 
         $this->setReference('local-election-1', $object);
 
+        foreach (['06', '77', '93'] as $department) {
+            $manager->persist($election = new LocalElection($this->getReference("designation-local-dpt-$department"), Uuid::uuid4()));
+            $this->fillLists($election, 5, 12);
+
+            $this->setReference("local-election-dpt-$department", $object);
+        }
+
         $manager->flush();
     }
 
