@@ -20,6 +20,7 @@ env:
   REGISTRY: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
   REGISTRY_HOST: ${{ secrets.GCP_HOST_GCR }}
   GCP_SA_KEY_GCR_PUSHER: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
+  USE_GKE_GCLOUD_AUTH_PLUGIN: true
 
 concurrency:
   group: ${{ github.ref_name }}
@@ -353,6 +354,13 @@ jobs:
       - uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY_GKE_DEPLOYER }}
+
+      - name: Install GKE gcloud auth plugin
+        run: |-
+          sudo apt-get install apt-transport-https ca-certificates gnupg
+          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+          sudo apt-get update && sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
 
       - run: |-
           gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --region ${{ secrets.GKE_REGION }}
