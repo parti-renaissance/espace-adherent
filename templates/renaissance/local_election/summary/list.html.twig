@@ -27,7 +27,7 @@
                         {% set region = regionData.region %}
                         {% set elections = regionData.elections %}
 
-                        <div x-data="{ open: true }">
+                        <div x-data="{ open: true }" id="region-{{ region.code }}">
                             <button @click="open = !open" class="w-full border-b border-gray-200 pb-4 flex items-center justify-between" x-bind:aria-expanded="open.toString()" aria-controls="faq-{{ region.id }}">
                                 <span class="text-lg leading-6 text-gray-500">
                                     <span class="font-medium text-gray-900">{{ region.name }}</span> ({{ region.code }})
