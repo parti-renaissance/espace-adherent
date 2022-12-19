@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -173,6 +174,27 @@ class DesignationAdmin extends AbstractAdmin
                         'scale' => 1,
                         'html5' => true,
                         'required' => false,
+                    ])
+                ->end()
+                ->with('Scrutin proportionnel plurinominal', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-info'])
+                    ->add('seats', NumberType::class, [
+                        'required' => false,
+                        'label' => 'Sièges',
+                        'attr' => ['min' => 1, 'step' => 1],
+                        'help' => 'Le nombre de sièges à attribuer',
+                        'html5' => true,
+                    ])
+                    ->add('majorityPrime', NumberType::class, [
+                        'required' => false,
+                        'label' => 'Prime majoritaire',
+                        'attr' => ['min' => 1, 'step' => 1],
+                        'help' => 'en %',
+                        'html5' => true,
+                    ])
+                    ->add('majorityPrimeRoundSupMode', CheckboxType::class, [
+                        'required' => false,
+                        'label' => 'Configurer l\'arrondi : vers l\'entier supérieur',
+                        'help' => 'Si cochée l\'arrondi sera vers l\'entier supérieur, sinon inférieur',
                     ])
                 ->end()
             ->end()

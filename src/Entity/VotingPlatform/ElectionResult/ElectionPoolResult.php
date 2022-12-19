@@ -12,9 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
-use EnMarche\MajorityJudgment\Election;
-use EnMarche\MajorityJudgment\Mention;
-use EnMarche\MajorityJudgment\Processor;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -130,58 +127,6 @@ class ElectionPoolResult
         $this->electionRoundResult = $electionRoundResult;
     }
 
-    public function sync(): void
-    {
-        $elected = null;
-
-        if ($this->electionPool->getElection()->getDesignation()->isMajorityType()) {
-            $candidatesIdentifiers = $votingProfiles = [];
-
-            foreach ($this->candidateGroupResults as $result) {
-                $candidatesIdentifiers[] = $id = $result->getCandidateGroup()->getId();
-                $votingProfiles[$id] = array_map(function (string $mention) use ($result) {
-                    return $result->getTotalMentions()[$mention] ?? 0;
-                }, MajorityVoteMentionEnum::ALL);
-            }
-
-            $election = Election::createWithVotingProfiles(
-                array_map(function (string $mention) { return new Mention($mention); }, MajorityVoteMentionEnum::ALL),
-                $candidatesIdentifiers,
-                $votingProfiles
-            );
-            Processor::process($election);
-
-            foreach ($this->candidateGroupResults as $result) {
-                $candidate = $election->findCandidate($result->getCandidateGroup()->getId());
-                if ($candidate->getMajorityMention()) {
-                    $result->setMajorityMention($candidate->getMajorityMention()->getValue());
-                }
-
-                if ($candidate->isElected()) {
-                    $elected = $result->getCandidateGroup();
-                }
-            }
-        } else {
-            $max = 0;
-
-            foreach ($this->candidateGroupResults as $result) {
-                $total = $result->getTotal();
-
-                if ($total > $max) {
-                    $max = $total;
-                    $elected = $result->getCandidateGroup();
-                } elseif ($max === $total) {
-                    $elected = null;
-                }
-            }
-        }
-
-        if ($elected) {
-            $this->isElected = true;
-            $elected->setElected(true);
-        }
-    }
-
     public function getExpressed(): int
     {
         return $this->expressed;
@@ -281,5 +226,10 @@ class ElectionPoolResult
         }
 
         return $candidates;
+    }
+
+    public function setIsElected(bool $value): void
+    {
+        $this->isElected = $value;
     }
 }

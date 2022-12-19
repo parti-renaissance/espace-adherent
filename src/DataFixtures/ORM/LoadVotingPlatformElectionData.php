@@ -53,11 +53,9 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
      */
     private $manager;
     private $voters = [];
-    private $resultCalculator;
 
-    public function __construct(ResultCalculator $resultCalculator)
+    public function __construct(private readonly ResultCalculator $resultCalculator)
     {
-        $this->resultCalculator = $resultCalculator;
     }
 
     public function load(ObjectManager $manager)
@@ -212,22 +210,24 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $election = new Election(
             $this->getReference('designation-13'),
             Uuid::fromString(self::ELECTION_UUID6),
-            [new ElectionRound()]
+            [$round = new ElectionRound()]
         );
         $this->manager->persist($election);
         $this->loadLocalElectionCandidates($election, $this->getReference('local-election-1'));
-        $this->loadVoters($election);
+        $votersList = $this->loadVoters($election);
+        $this->loadResults($round, $votersList);
 
         // -------------------------------------------
 
         $election = new Election(
             $this->getReference('designation-14'),
             Uuid::fromString(self::ELECTION_UUID12),
-            [new ElectionRound()]
+            [$round = new ElectionRound()]
         );
         $this->manager->persist($election);
         $this->loadLocalPollCandidates($election);
-        $this->loadVoters($election);
+        $votersList = $this->loadVoters($election);
+        $this->loadResults($round, $votersList);
 
         // -------------------------------------------
 
@@ -386,7 +386,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     private function loadResults(ElectionRound $electionRound, VotersList $votersList): void
     {
         $pools = $electionRound->getElectionPools();
-        $counters = [];
 
         foreach ($votersList->getVoters() as $i => $voter) {
             // simulate abstention
@@ -405,8 +404,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
                 if (0 === $i % 10) {
                     $choice->setIsBlank(true);
                 } else {
-                    $choice->setCandidateGroup($candidateGroups[$index = random_int(0, random_int(1, $totalGroups) - 1)]);
-                    !isset($counters[$pool->getId()][$index]) ? $counters[$pool->getId()][$index] = 1 : ++$counters[$pool->getId()][$index];
+                    $choice->setCandidateGroup($candidateGroups[random_int(0, random_int(1, $totalGroups) - 1)]);
                 }
 
                 $result->addVoteChoice($choice);

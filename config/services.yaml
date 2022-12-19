@@ -103,6 +103,8 @@ services:
             tags: ['app.redirection.handler']
         App\VotingPlatform\AdherentMandate\Factory\AdherentMandateFactoryInterface:
             tags: ['app.voting_platform.mandate_factory']
+        App\VotingPlatform\Election\ResultCalculator\ResultCalculatorInterface:
+            tags: [ 'app.voting_platform.result_calculator' ]
         App\Instance\InstanceQualityUpdater\QualityUpdaterInterface:
             tags: ['app.instance.quality_updater']
         App\Scope\Generator\ScopeGeneratorInterface:
@@ -362,6 +364,9 @@ services:
 
     App\VotingPlatform\AdherentMandate\AdherentMandateFactory:
         arguments: [!tagged_iterator 'app.voting_platform.mandate_factory']
+
+    App\VotingPlatform\Election\ResultCalculator:
+        arguments: [ !tagged_iterator { tag: 'app.voting_platform.result_calculator', default_priority_method: 'getPriority' } ]
 
     App\Instance\Handler\UpdateInstanceQualitiesCommandHandler:
         arguments:

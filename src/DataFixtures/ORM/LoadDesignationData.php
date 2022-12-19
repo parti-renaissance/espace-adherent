@@ -164,6 +164,9 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setVoteEndDate(new \DateTime('+10 days'));
         $designation->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
         $designation->wordingWelcomePage = $this->getReference('cms-block-local-election-welcome-page');
+        $designation->seats = 7;
+        $designation->majorityPrime = 10;
+        $designation->majorityPrimeRoundSupMode = true;
 
         $this->setReference('designation-13', $designation);
         $manager->persist($designation);
