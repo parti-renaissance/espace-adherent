@@ -354,8 +354,10 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY_GKE_DEPLOYER }}
 
-      - run: |-
-          gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --region ${{ secrets.GKE_REGION }}
+      - uses: google-github-actions/get-gke-credentials@v1
+        with:
+            cluster_name: ${{ secrets.GKE_CLUSTER }}
+            location: ${{ secrets.GKE_REGION }}
 
       - run: |-
           for GKE_DEPLOYMENT in $(echo ${{ secrets.GKE_DEPLOYMENTS }}); do
