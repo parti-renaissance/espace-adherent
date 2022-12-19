@@ -20,7 +20,6 @@ env:
   REGISTRY: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
   REGISTRY_HOST: ${{ secrets.GCP_HOST_GCR }}
   GCP_SA_KEY_GCR_PUSHER: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
-  USE_GKE_GCLOUD_AUTH_PLUGIN: true
 
 concurrency:
   group: ${{ github.ref_name }}
@@ -356,15 +355,10 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY_GKE_DEPLOYER }}
 
-      - uses: google-github-actions/setup-gcloud@v1
-        with:
-            install_components: 'gke-gcloud-auth-plugin'
-
       - uses: google-github-actions/get-gke-credentials@v1
         with:
             cluster_name: ${{ secrets.GKE_CLUSTER }}
             location: ${{ secrets.GKE_REGION }}
-            use_auth_provider: true
 
       - run: |-
           for GKE_DEPLOYMENT in $(echo ${{ secrets.GKE_DEPLOYMENTS }}); do
