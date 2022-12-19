@@ -281,8 +281,9 @@ jobs:
   docker-build-push-gcr:
     name: Build prod & push on registry
     runs-on: ubuntu-20.04
-    needs: [ lint, phpunit, behat, behat-selenium ]
-    if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
+    #needs: [ lint, phpunit, behat, behat-selenium ]
+    #if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
+    needs: [ build, build-static ]
 
     steps:
       - uses: actions/checkout@v3
@@ -336,7 +337,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: [ docker-build-push-gcr ]
     environment: staging
-    if: github.event.ref == 'refs/heads/master'
+    #if: github.event.ref == 'refs/heads/master'
 
     steps:
       - uses: actions/checkout@v3
