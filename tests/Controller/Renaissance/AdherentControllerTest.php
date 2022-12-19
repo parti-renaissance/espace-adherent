@@ -12,14 +12,12 @@ use App\Entity\Unregistration;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage;
 use App\Repository\EmailRepository;
 use App\Repository\UnregistrationRepository;
-use App\SendInBlue\Client;
 use App\Subscription\SubscriptionTypeEnum;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
-use Tests\App\Test\SendInBlue\DummyClient;
 
 /**
  * @group functional
@@ -137,8 +135,6 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        self::assertEmpty($this->getSendInBlueClient()->getUpdateSchedule());
-
         $errors = $crawler->filter('.re-form-error');
         self::assertSame(7, $errors->count());
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
@@ -175,8 +171,6 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        self::assertEmpty($this->getSendInBlueClient()->getUpdateSchedule());
-
         $errors = $crawler->filter('.re-form-error');
 
         self::assertSame(5, $errors->count());
@@ -209,10 +203,6 @@ class AdherentControllerTest extends WebTestCase
         ]));
 
         $this->assertClientIsRedirectedTo('/parametres/mon-compte/modifier', $this->client);
-
-        $sendInBlueUpdates = $this->getSendInBlueClient()->getUpdateSchedule();
-        self::assertCount(1, $sendInBlueUpdates);
-        self::assertSame('renaissance-user-1@en-marche-dev.fr', $sendInBlueUpdates[0]['email']);
 
         $crawler = $this->client->followRedirect();
 
@@ -458,10 +448,5 @@ class AdherentControllerTest extends WebTestCase
         return array_map(static function (SubscriptionType $type) use ($codes) {
             return \in_array($type->getCode(), $codes, true) ? $type->getId() : false;
         }, $this->getSubscriptionTypeRepository()->findByCodes(SubscriptionTypeEnum::ADHERENT_TYPES));
-    }
-
-    private function getSendInBlueClient(): DummyClient
-    {
-        return $this->client->getContainer()->get(Client::class);
     }
 }

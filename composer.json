@@ -83,7 +83,6 @@
         "scheb/2fa-bundle": "^6.3",
         "scheb/2fa-google-authenticator": "^6.3",
         "scienta/doctrine-json-functions": "^4.3",
-        "sendinblue/api-v3-sdk": "^8.1",
         "sensio/framework-extra-bundle": "^6.0",
         "sentry/sentry-symfony": "^4.2",
         "snc/redis-bundle": "^4.3",

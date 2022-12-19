@@ -40,7 +40,5 @@ class PostContactEditListener implements EventSubscriberInterface
         if (null !== $contact->getBirthdate()) {
             $this->contactHandler->dispatchProcess($contact);
         }
-
-        $this->contactHandler->dispatchSynchronisation($contact);
     }
 }
