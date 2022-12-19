@@ -1,7 +1,7 @@
 {% extends 'base_renaissance.html.twig' %}
 
 {% set designation = election.designation %}
-{% set region = designation.zones.first.getParentsOfType(constant('App\\Entity\\Geo\\Zone::REGION'))|first %}
+{% set region = designation.getParentZonesOfType(constant('App\\Entity\\Geo\\Zone::REGION'))|first %}
 
 {% block page_title designation.label %}
 

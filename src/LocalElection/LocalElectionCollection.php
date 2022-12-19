@@ -11,7 +11,7 @@ class LocalElectionCollection extends ArrayCollection
     {
         $regions = [];
         foreach ($this->toArray() as $election) {
-            $zones = $election->getDesignation()->getZones()->first()->getParentsOfType(Zone::REGION);
+            $zones = $election->getDesignation()->getParentZonesOfType(Zone::REGION);
             $region = reset($zones);
 
             if (!\array_key_exists($region->getCode(), $regions)) {
