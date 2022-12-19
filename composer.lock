@@ -8040,16 +8040,16 @@
         },
         {
             "name": "odolbeau/phone-number-bundle",
-            "version": "v3.8.0",
+            "version": "v3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odolbeau/phone-number-bundle.git",
-                "reference": "40e330c21d24903fac53aca5acb4b2ebce7a38a3"
+                "reference": "bd0282e89f888734ba5e85f1507ba3593877b59e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/40e330c21d24903fac53aca5acb4b2ebce7a38a3",
-                "reference": "40e330c21d24903fac53aca5acb4b2ebce7a38a3",
+                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/bd0282e89f888734ba5e85f1507ba3593877b59e",
+                "reference": "bd0282e89f888734ba5e85f1507ba3593877b59e",
                 "shasum": ""
             },
             "require": {
@@ -8108,9 +8108,9 @@
             ],
             "support": {
                 "issues": "https://github.com/odolbeau/phone-number-bundle/issues",
-                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.8.0"
+                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.9.0"
             },
-            "time": "2022-10-24T08:51:32+00:00"
+            "time": "2022-12-19T09:14:01+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -13455,16 +13455,16 @@
         },
         {
             "name": "symfony/error-handler",
-            "version": "v6.2.1",
+            "version": "v6.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/error-handler.git",
-                "reference": "b4e41f62c1124378863ff2705158a60da3e4c6b9"
+                "reference": "12a25d01cc5273b2445e125d62b61d34db42297e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/error-handler/zipball/b4e41f62c1124378863ff2705158a60da3e4c6b9",
-                "reference": "b4e41f62c1124378863ff2705158a60da3e4c6b9",
+                "url": "https://api.github.com/repos/symfony/error-handler/zipball/12a25d01cc5273b2445e125d62b61d34db42297e",
+                "reference": "12a25d01cc5273b2445e125d62b61d34db42297e",
                 "shasum": ""
             },
             "require": {
@@ -13506,7 +13506,7 @@
             "description": "Provides tools to manage errors and ease debugging PHP code",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/error-handler/tree/v6.2.1"
+                "source": "https://github.com/symfony/error-handler/tree/v6.2.2"
             },
             "funding": [
                 {
@@ -13522,7 +13522,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-01T21:07:46+00:00"
+            "time": "2022-12-14T16:11:27+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -17447,16 +17447,16 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v6.2.1",
+            "version": "v6.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "8a3f442d48567a5447e984ce9e86875ed768304a"
+                "reference": "ada947160cf9444d17d9ac0b2df46c06941b5526"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/8a3f442d48567a5447e984ce9e86875ed768304a",
-                "reference": "8a3f442d48567a5447e984ce9e86875ed768304a",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/ada947160cf9444d17d9ac0b2df46c06941b5526",
+                "reference": "ada947160cf9444d17d9ac0b2df46c06941b5526",
                 "shasum": ""
             },
             "require": {
@@ -17501,7 +17501,7 @@
                 "serialize"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-exporter/tree/v6.2.1"
+                "source": "https://github.com/symfony/var-exporter/tree/v6.2.2"
             },
             "funding": [
                 {
@@ -17517,7 +17517,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-03T22:32:58+00:00"
+            "time": "2022-12-12T08:57:11+00:00"
         },
         {
             "name": "symfony/web-link",
