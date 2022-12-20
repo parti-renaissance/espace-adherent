@@ -1,9 +1,8 @@
 NodeList.prototype.forEach = Array.prototype.forEach;
 
-window.find = (element, selector) => element.querySelector(selector);
+window.findOne = (element, selector) => element.querySelector(selector);
 
-// eslint-disable-next-line no-restricted-globals
-window.dom = (selector) => find(document, selector);
+window.dom = (selector) => findOne(document, selector);
 
 window.findAll = (element, selector) => element.querySelectorAll(selector);
 

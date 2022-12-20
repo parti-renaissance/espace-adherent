@@ -1,11 +1,7 @@
-import EventEmitter from 'events';
-
-export default class GooglePlaceAutocomplete extends EventEmitter {
-    constructor({ wrapper, addressForm, inputClassName }) {
-        super();
+export default class GooglePlaceAutocomplete {
+    constructor({ wrapper, addressForm }) {
         this._wrapper = wrapper;
         this._addressForm = addressForm;
-        this._inputClassName = inputClassName;
     }
 
     build() {
@@ -19,27 +15,22 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
     }
 
     createAutocomplete() {
-        this.createInputElement();
+        this.configureAutocompleteInput();
 
         this._autocomplete = new google.maps.places.Autocomplete(this._input, { types: ['address'] });
         this._autocomplete.setFields(['address_components']);
         this._input.value = this._addressForm ? this._addressForm.getAddressString() : '';
     }
 
-    createInputElement() {
-        this._input = document.createElement('input');
-        this._input.placeholder = '';
-        this._input.className = `outline-0 ${this._inputClassName}`;
-
-        this._wrapper.appendChild(this._input);
+    configureAutocompleteInput() {
+        this._input = findOne(this._wrapper, 'input');
     }
 
     bindListeners() {
         if (this._addressForm) {
             this._autocomplete.addListener('place_changed', () => {
                 this._addressForm.updateWithPlace(this._autocomplete.getPlace());
-
-                this.emit('changed');
+                this._input.value = this._addressForm.getAddressString();
             });
         }
     }

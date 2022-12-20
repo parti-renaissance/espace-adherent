@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class AutocompleteAddressType extends AbstractType
@@ -14,8 +15,9 @@ class AutocompleteAddressType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('address', AutocompleteInputType::class, [
-            'required' => false,
+        $builder->add('autocomplete', TextType::class, [
+            'mapped' => false,
+            'required' => true,
         ]);
     }
 }

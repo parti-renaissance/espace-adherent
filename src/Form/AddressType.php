@@ -28,48 +28,41 @@ class AddressType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if ($options['as_hidden']) {
-            $builder
-                ->add('address', HiddenType::class, ['required' => false])
-                ->add('city', HiddenType::class, ['required' => false])
-                ->add('cityName', HiddenType::class, ['required' => false])
-                ->add('country', HiddenType::class, ['required' => false])
-                ->add('postalCode', HiddenType::class, ['required' => false])
-            ;
-        } else {
-            $builder
-                ->add('address', TextType::class, ['label' => 'Adresse'])
-                ->add('city', HiddenType::class, [
-                    'required' => false,
-                    'error_bubbling' => $options['child_error_bubbling'],
-                    'disabled' => $options['disable_fields'],
-                ])
-                ->add('cityName', TextType::class, [
-                    'label' => 'Ville',
-                    'required' => false,
-                    'disabled' => $options['disable_fields'],
-                ])
-                ->add('country', CountryType::class, [
-                    'label' => 'Pays',
-                    'disabled' => $options['disable_fields'],
-                    'placeholder' => 'Sélectionner un pays',
-                    'preferred_choices' => [Address::FRANCE],
-                    'invalid_message' => 'common.country.invalid',
-                ])
-                ->add('postalCode', TextType::class, [
-                    'label' => 'Code postal',
-                    'error_bubbling' => $options['child_error_bubbling'],
-                    'disabled' => $options['disable_fields'],
-                ])
-            ;
+        $builder
+            ->add('address', TextType::class, [
+                'label' => 'Adresse',
+                'required' => $options['strict_mode'],
+            ])
+            ->add('city', HiddenType::class, [
+                'required' => false,
+                'error_bubbling' => $options['child_error_bubbling'],
+                'disabled' => $options['disable_fields'],
+            ])
+            ->add('cityName', TextType::class, [
+                'label' => 'Ville',
+                'required' => false,
+                'disabled' => $options['disable_fields'],
+            ])
+            ->add('country', CountryType::class, [
+                'label' => 'Pays',
+                'disabled' => $options['disable_fields'],
+                'placeholder' => 'Sélectionner un pays',
+                'preferred_choices' => [Address::FRANCE],
+                'invalid_message' => 'common.country.invalid',
+            ])
+            ->add('postalCode', TextType::class, [
+                'label' => 'Code postal',
+                'error_bubbling' => $options['child_error_bubbling'],
+                'disabled' => $options['disable_fields'],
+            ])
+        ;
 
-            if ($options['set_address_region']) {
-                $builder->add('region', TextType::class, [
-                    'label' => 'Région',
-                    'required' => false,
-                    'disabled' => $options['disable_fields'],
-                ]);
-            }
+        if ($options['set_address_region']) {
+            $builder->add('region', TextType::class, [
+                'label' => 'Région',
+                'required' => false,
+                'disabled' => $options['disable_fields'],
+            ]);
         }
 
         $builder
@@ -102,11 +95,11 @@ class AddressType extends AbstractType
                 'child_error_bubbling' => true,
                 'disable_fields' => false,
                 'set_address_region' => false,
-                'as_hidden' => false,
+                'strict_mode' => true,
             ])
             ->setAllowedTypes('disable_fields', 'bool')
-            ->setAllowedTypes('as_hidden', 'bool')
             ->setAllowedTypes('child_error_bubbling', 'bool')
+            ->setAllowedTypes('strict_mode', 'bool')
         ;
     }
 }

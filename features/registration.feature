@@ -295,11 +295,10 @@ Feature:
       | Nationalité        | FR               |
     And I press "Créer mon compte"
     Then the response status code should be 200
-    And I should see 6 ".form__error" elements
+    And I should see 5 ".form__error" elements
     And I should see "Les adresses email ne correspondent pas."
     And I should see "Votre mot de passe doit comporter au moins 8 caractères."
     And I should see "Le code postal doit contenir moins de 15 caractères"
-    And I should see "Cette valeur n'est pas un code postal français valide."
     And I should see "Cette valeur ne doit pas être vide."
 
   Scenario: A new user should see personal message to help him to validate his account

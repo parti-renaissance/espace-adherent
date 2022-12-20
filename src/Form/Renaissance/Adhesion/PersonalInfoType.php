@@ -28,7 +28,9 @@ class PersonalInfoType extends AbstractType
                 'format_identity_case' => true,
                 'disabled' => $fromCertifiedAdherent,
             ])
-            ->add('address', AutocompleteAddressType::class)
+            ->add('address', AutocompleteAddressType::class, [
+                'strict_mode' => false,
+            ])
         ;
 
         if ($fromAdherent) {
