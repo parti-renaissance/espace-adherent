@@ -1,5 +1,11 @@
-<div class="candidates-block">
+<div class="candidates-block grid grid-cols-1 md:grid-cols-2 gap-6">
     {% for candidate_group_result in pool_result.candidateGroupResultsSorted %}
-        {% include 'voting_platform/results/' ~ (designation.isPollType ? '_poll') ~ '_candidate_box.html.twig' %}
+        {% if designation.isPollType() %}
+            {% include 'voting_platform/results/_poll_candidate_box.html.twig' %}
+        {% elseif designation.isLocalElectionType() %}
+            {% include 'voting_platform/results/_local_election_candidate_box.html.twig' %}
+        {% else %}
+            {% include 'voting_platform/results/_candidate_box.html.twig' %}
+        {% endif %}
     {% endfor %}
 </div>

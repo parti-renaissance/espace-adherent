@@ -46,7 +46,7 @@
             }
 
             &__content {
-                @apply w-full lg:max-w-3xl lg:mx-auto py-12 md:py-16 lg:py-20 space-y-8 lg:space-y-10;
+                @apply w-full lg:max-w-4xl lg:mx-auto py-12 md:py-16 lg:py-20 space-y-8 lg:space-y-10;
 
                 .introduction-header,
                 .confirmation-header {
@@ -89,6 +89,16 @@
 
                 .text--on-white.space--20 {
                     @apply inline-block bg-white rounded-md px-5 py-3 text-gray-900 font-medium shadow-sm;
+                }
+            }
+
+            &__results {
+                .candidate__box {
+                    .progress-bar {
+                        &__gauge .slider {
+                            background: theme('colors.re.blue.500');
+                        }
+                    }
                 }
             }
         }

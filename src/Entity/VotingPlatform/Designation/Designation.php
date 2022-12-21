@@ -208,6 +208,28 @@ class Designation implements EntityAdministratorBlameableInterface
      */
     public ?CmsBlock $wordingWelcomePage = null;
 
+    /**
+     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
+     *
+     * @Assert\Expression("!this.isLocalPollType() or value", message="Vous devez préciser le nombre des sièges à distribuer.")
+     */
+    public ?int $seats = null;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
+     *
+     * @Assert\GreaterThan(0)
+     * @Assert\LessThanOrEqual(100)
+     */
+    public ?int $majorityPrime = null;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Assert\Expression("!this.isLocalPollType() or !this.majorityPrime or null != value", message="Vous devez préciser le mode d'arrondi pour la prime majoritaire.")
+     */
+    public ?bool $majorityPrimeRoundSupMode = null;
+
     public function __construct(string $label = null, UuidInterface $uuid = null)
     {
         $this->label = $label;

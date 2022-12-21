@@ -10,20 +10,22 @@ use App\Entity\VotingPlatform\ElectionResult\ElectionRoundResult;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Repository\VotingPlatform\VoteResultRepository;
 use App\Repository\VotingPlatform\VoterRepository;
+use App\VotingPlatform\Election\ResultCalculator\ResultCalculatorInterface;
 
 class ResultCalculator
 {
-    private $voterRepository;
-    private $voteResultRepository;
-
-    public function __construct(VoterRepository $voterRepository, VoteResultRepository $voteResultRepository)
-    {
-        $this->voterRepository = $voterRepository;
-        $this->voteResultRepository = $voteResultRepository;
+    /** @param ResultCalculatorInterface[]|iterable $calculators */
+    public function __construct(
+        private readonly iterable $calculators,
+        private readonly VoterRepository $voterRepository,
+        private readonly VoteResultRepository $voteResultRepository
+    ) {
     }
 
     public function computeElectionResult(Election $election): ElectionResult
     {
+        $calculator = $this->findCalculator($election);
+
         if (!$electionResult = $election->getElectionResult()) {
             $electionResult = new ElectionResult($election);
             $electionResult->setParticipated($this->voterRepository->countForElection($election));
@@ -51,7 +53,7 @@ class ResultCalculator
                 $electionRoundResult->updateFromNewVoteResult($voteResult);
             }
 
-            $electionRoundResult->sync();
+            $calculator->calculate($electionRoundResult);
         }
 
         return $electionResult;
@@ -70,5 +72,18 @@ class ResultCalculator
         }
 
         return $electionRoundResult;
+    }
+
+    private function findCalculator(Election $election): ResultCalculatorInterface
+    {
+        $designation = $election->getDesignation();
+
+        foreach ($this->calculators as $calculator) {
+            if ($calculator->support($designation)) {
+                return $calculator;
+            }
+        }
+
+        throw new \RuntimeException('ResultCalculator missing');
     }
 }

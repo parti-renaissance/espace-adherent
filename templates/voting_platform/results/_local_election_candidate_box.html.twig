@@ -1,0 +1,45 @@
+{% import 'voting_platform/_macros.html.twig' as helper %}
+
+{% set candidate_group = candidate_group_result.candidateGroup %}
+{% set candidacies = candidate_group.getCandidates() %}
+{% set first = candidacies|first %}
+
+<div class="candidate__box {{ candidate_group.elected ? 'elected' }}">
+    <div class="box__content">
+        <div>
+            <h3 class="text-gray-500">
+                Liste
+                <span class="text-gray-500"> ({{ candidacies|length }} candidat{{ candidacies|length > 1 ? 's' }})</span>
+            </h3>
+            <p class="font-bold">{{ first.getFirstName() }} <span class="uppercase"> {{ first.getLastName() }}</span></p>
+        </div>
+
+        <hr class="my-5" />
+
+        {% set elected = candidacies|filter(cand => cand.isAdditionallyElected()) %}
+
+        <h3>Siège{{ elected|length > 1 ? 's' }} attribué{{ elected|length > 1 ? 's' }} : <span class="font-bold">{{ elected|length }}</span></h3>
+
+        <ul class="candidate-names">
+            {% for candidate in elected %}
+                <li class="text--body">{{ candidate.fullName }}
+                    {% if (pool_result.isElected and candidate_group.elected) or candidate.isAdditionallyElected %}
+                        <span class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">
+                            Élu{{ candidate.isFemale ? 'e' }}
+                        </span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="candidate-footer l__row">
+            <div class="l__row progress-bar">
+                {% set votes_rate = candidate_group_result.rate %}
+                <div class="progress-bar__gauge">
+                    <div class="slider" style="width: {{ votes_rate }}%"></div>
+                </div>
+                <div class="progress-bar__value text--right text--body">{{ votes_rate|number_format(0) }}%</div>
+            </div>
+        </div>
+    </div>
+</div>

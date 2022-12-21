@@ -137,13 +137,6 @@ class ElectionRoundResult
         $this->electionResult = $electionResult;
     }
 
-    public function sync(): void
-    {
-        foreach ($this->electionPoolResults as $poolResult) {
-            $poolResult->sync();
-        }
-    }
-
     public function hasOnlyElectedPool(): bool
     {
         foreach ($this->electionPoolResults as $poolResult) {
