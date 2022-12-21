@@ -440,7 +440,8 @@ Feature:
             "pap_v2",
             "team",
             "phoning_campaign",
-            "survey"
+            "survey",
+            "local_site"
         ],
         "delegated_access": {
             "delegator": {

@@ -382,7 +382,8 @@ Feature:
                             "pap_v2",
                             "team",
                             "phoning_campaign",
-                            "survey"
+                            "survey",
+                            "local_site"
                         ],
                         "uuid": "e0da56db-c4c6-4aa4-ad8d-7e9505dfdd93"
                     }

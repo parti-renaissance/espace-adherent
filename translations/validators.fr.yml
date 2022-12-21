@@ -622,6 +622,13 @@ header_block.prefixe.not_blank: Veuillez renseigner un préfixe pour cette en-t�
 header_block.slogen.max_length: Le slogan d'une en-tête ne doit pas dépasser {{ limit }} caractères.
 
 #
+# LocaSite
+#
+local_site.zone.not_unique: Cette zone est déjà lié à un site départemental.
+local_site.zone.type.not_valid: Le type de la zone est invalide.
+local_site.zone.not_in_scope_zones: Cette zone ne fait pas partir des zones que vous gérez.
+
+#
 # Admin validations
 #
 

@@ -50,6 +50,8 @@ trait GeoTrait
      *     "phoning_campaign_read",
      *     "phoning_campaign_list",
      *     "read_api",
+     *     "local_site_read",
+     *     "local_site_read_list",
      * })
      */
     private $code;
@@ -77,7 +79,9 @@ trait GeoTrait
      *     "pap_campaign_read",
      *     "pap_campaign_read_after_write",
      *     "phoning_campaign_read",
-     *     "phoning_campaign_list"
+     *     "phoning_campaign_list",
+     *     "local_site_read",
+     *     "local_site_read_list",
      * })
      */
     private $name;

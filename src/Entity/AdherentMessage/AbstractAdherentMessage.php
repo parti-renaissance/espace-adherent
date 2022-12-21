@@ -13,6 +13,7 @@ use App\Api\Filter\AdherentMessageScopeFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\UnLayerJsonContentTrait;
 use App\Validator\ValidAuthorRoleMessageType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -125,6 +126,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 abstract class AbstractAdherentMessage implements AdherentMessageInterface
 {
     use EntityIdentityTrait;
+    use UnLayerJsonContentTrait;
     use EntityTimestampableTrait;
 
     /**
@@ -170,17 +172,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @Assert\NotBlank
      */
     private $content;
-
-    /**
-     * JSON representation of message content (using by Unlayer JS lib)
-     *
-     * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"message_write", "message_read_content"})
-     */
-    private $jsonContent;
 
     /**
      * @var string
@@ -283,16 +274,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function getContent(): ?string
     {
         return $this->content;
-    }
-
-    public function getJsonContent(): ?string
-    {
-        return $this->jsonContent;
-    }
-
-    public function setJsonContent(?string $jsonContent): void
-    {
-        $this->jsonContent = $jsonContent;
     }
 
     public function setLabel(string $label): void

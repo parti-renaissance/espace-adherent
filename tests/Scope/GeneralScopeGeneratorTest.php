@@ -143,7 +143,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                     ],
                 ],
                 'apps' => ['data_corner'],
-                'features' => ['dashboard', 'contacts', 'messages', 'events', 'mobile_app', 'news', 'elections', 'ripostes', 'pap', 'pap_v2', 'team', 'phoning_campaign', 'survey'],
+                'features' => ['dashboard', 'contacts', 'messages', 'events', 'mobile_app', 'news', 'elections', 'ripostes', 'pap', 'pap_v2', 'team', 'phoning_campaign', 'survey', 'local_site'],
             ],
         ]];
         yield [LoadAdherentData::ADHERENT_3_UUID, [
