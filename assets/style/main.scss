@@ -91,6 +91,16 @@
                     @apply inline-block bg-white rounded-md px-5 py-3 text-gray-900 font-medium shadow-sm;
                 }
             }
+
+            &__results {
+                .candidate__box {
+                    .progress-bar {
+                        &__gauge .slider {
+                            background: theme('colors.re.blue.500');
+                        }
+                    }
+                }
+            }
         }
     }
 
