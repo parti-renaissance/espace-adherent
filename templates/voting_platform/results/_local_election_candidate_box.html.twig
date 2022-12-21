@@ -4,22 +4,21 @@
 {% set candidacies = candidate_group.getCandidates() %}
 {% set first = candidacies|first %}
 
-<div class="candidate__box {{ candidate_group.elected ? 'elected' }} l__row  b__nudge--bottom-medium">
+<div class="candidate__box {{ candidate_group.elected ? 'elected' }}">
     <div class="box__content">
         <div>
-            <h3 class="font-bold">
-                <span class="text-gray-500">Liste :</span>
-                {{ first.getFirstName() }}
-                <span class="uppercase"> {{ first.getLastName() }}</span>
-                <span class="text-gray-500"> (+{{ candidacies|length }} candidat{{ candidacies|length > 1 ? 's' }})</span>
+            <h3 class="text-gray-500">
+                Liste
+                <span class="text-gray-500"> ({{ candidacies|length }} candidat{{ candidacies|length > 1 ? 's' }})</span>
             </h3>
+            <p class="font-bold">{{ first.getFirstName() }} <span class="uppercase"> {{ first.getLastName() }}</span></p>
         </div>
 
         <hr class="my-5" />
 
         {% set elected = candidacies|filter(cand => cand.isAdditionallyElected()) %}
 
-        <h3 class="">Siège{{ elected|length > 1 ? 's' }} attribué{{ elected|length > 1 ? 's' }} : <span class="font-bold">{{ elected|length }}</span></h3>
+        <h3>Siège{{ elected|length > 1 ? 's' }} attribué{{ elected|length > 1 ? 's' }} : <span class="font-bold">{{ elected|length }}</span></h3>
 
         <ul class="candidate-names">
             {% for candidate in elected %}

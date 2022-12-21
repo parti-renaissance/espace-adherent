@@ -1,4 +1,4 @@
-<div class="candidates-block">
+<div class="candidates-block grid grid-cols-1 md:grid-cols-2 gap-6">
     {% for candidate_group_result in pool_result.candidateGroupResultsSorted %}
         {% if designation.isPollType() %}
             {% include 'voting_platform/results/_poll_candidate_box.html.twig' %}
