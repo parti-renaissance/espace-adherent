@@ -2,8 +2,10 @@
 
 namespace App\QrCode;
 
-use Endroid\QrCode\Factory\QrCodeFactory as BaseQrCodeFactory;
-use Endroid\QrCode\QrCodeInterface;
+use Endroid\QrCode\Builder\BuilderInterface;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Writer\Result\ResultInterface;
+use Endroid\QrCode\Writer\SvgWriter;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -12,11 +14,8 @@ class QrCodeResponseFactory
 {
     private const DEFAULT_WRITER = 'png';
 
-    private $qrCodeFactory;
-
-    public function __construct(BaseQrCodeFactory $qrCodeFactory)
+    public function __construct(private readonly BuilderInterface $builder)
     {
-        $this->qrCodeFactory = $qrCodeFactory;
     }
 
     public function createResponse(
@@ -39,10 +38,13 @@ class QrCodeResponseFactory
         return $response;
     }
 
-    private function getQrContent(string $text, string $writerByName): QrCodeInterface
+    private function getQrContent(string $text, string $writerByName): ResultInterface
     {
-        return $this->qrCodeFactory->create($text, [
-            'writer' => $writerByName,
-        ]);
+        $writer = match ($writerByName) {
+            'svg' => new SvgWriter(),
+            default => new PngWriter(),
+        };
+
+        return $this->builder->writer($writer)->data($text)->build();
     }
 }
