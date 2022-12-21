@@ -1,0 +1,184 @@
+{% extends '@SonataAdmin/CRUD/show.html.twig' %}
+
+{% block show %}
+    {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
+    {% set rounds = object.getElectionRounds() %}
+    {% set designation = object.getDesignation() %}
+    {% set is_tab_view = rounds|length > 1 %}
+
+    {% if is_tab_view %}
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                {% for round in rounds %}
+                    <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
+                        <a href="#round-{{ loop.index }}" data-toggle="tab">Tour {{ loop.index }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <div class="tab-content">
+    {% endif %}
+
+    {% if is_tab_view %}
+        {% for round in rounds %}
+            <div class="tab-pane {% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %}active{% endif %}" id="round-{{ loop.index }}">
+                {% with {
+                    round: round,
+                    designation: designation,
+                } %}
+                    {{ block('round_dashboard') }}
+                {% endwith %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="box box-solid">
+            <div class="box-body">
+                {% with {
+                    round: rounds|first,
+                    designation: designation,
+                } %}
+                    {{ block('round_dashboard') }}
+                {% endwith %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if is_tab_view %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block round_dashboard %}
+    {% set details_by_pool = get_election_participation_details(round)|first %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3>{{ designation.getLabel() }}</h3>
+            <h4>{{ designation.getTitle() }}</h4>
+            <p>Vote est ouvert du <strong>{{ designation.getVoteStartDate()|format_datetime }}</strong> au <strong>{{ designation.getVoteEndDate()|format_datetime }}</strong>.</p>
+        </div>
+
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <div class="info-box bg-aqua">
+                    <span class="info-box-icon">
+                        <i class="fa fa-users"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Inscrits</span>
+                        <span class="info-box-number">{{ details_by_pool.voters_count }}</span>
+
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 100%"></div>
+                        </div>
+                        <span class="progress-description">Corps électoral</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-box bg-green">
+                    <span class="info-box-icon">
+                        <i class="fa fa-check-square-o"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Participants</span>
+                        <span class="info-box-number">{{ details_by_pool.votes_count }}</span>
+
+                        {% set votes_percent = (details_by_pool.voters_count > 0 ? details_by_pool.votes_count * 100 / details_by_pool.voters_count : 0)|round(1) %}
+
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ votes_percent }}%"></div>
+                        </div>
+                        <span class="progress-description">Participation {{ votes_percent }}%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-box bg-yellow">
+                    <span class="info-box-icon">
+                        <i class="fa fa-close"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Blancs</span>
+                        <span class="info-box-number">{{ details_by_pool.votes_blank_count }}</span>
+
+                        {% set vote_blanc_percent = (details_by_pool.votes_count > 0 ? details_by_pool.votes_blank_count * 100 / details_by_pool.votes_count : 0)|round(1) %}
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ vote_blanc_percent }}%"></div>
+                        </div>
+                        <span class="progress-description">{{ vote_blanc_percent }}% vote blanc</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <h3>Répartition des voix</h3>
+
+    <div class="row">
+        {% for pool in round.getElectionPools() %}
+            {% set pool_results = aggregate_pool_results(pool) %}
+            {% set candidate_groups = pool.getCandidateGroups() %}
+
+            <div class="col-md-6">
+                <div class="box box-success">
+                    <div class="box-header">
+                        <h3 class="box-title">{{ loop.length > 1 ? '(' ~ loop.index ~ ' / ' ~ loop.length ~ ' étape)' }}</h3>
+                    </div>
+
+                    <div class="box-body">
+                        <canvas id="pie-chart-{{ pool.getId() }}"></canvas>
+                    </div>
+
+                    <script>
+                        setTimeout(function () {
+                            new Chart(
+                                document.getElementById('pie-chart-{{ pool.getId() }}'),
+                                {
+                                    type: 'bar',
+                                    data: {
+                                        labels: ["{{ candidate_groups|map(candidate_group => candidate_group.getTitle())|join('", "')|raw }}"],
+                                        datasets: [{
+                                            axis: 'y',
+                                            data: [{{ candidate_groups|map(candidate_group => pool_results[candidate_group.getId()].count ?? 0)|join(', ')|raw }}],
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132)',
+                                                'rgba(255, 159, 64)',
+                                                'rgba(255, 205, 86)',
+                                                'rgba(75, 192, 192)',
+                                                'rgba(54, 162, 235)',
+                                                'rgba(153, 102, 255)',
+                                                'rgba(201, 203, 207)'
+                                            ],
+                                        }],
+                                    },
+                                    options: {
+                                        indexAxis: 'y',
+                                        responsive: true,
+                                        plugins: {
+                                            legend: {
+                                                display: false,
+                                            },
+                                        },
+                                    },
+                                }
+                            );
+                        }, 1000);
+                    </script>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block sonata_javascript_config %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}

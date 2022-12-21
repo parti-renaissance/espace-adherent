@@ -8,9 +8,11 @@ use App\Entity\Instance\NationalCouncil\Election as NationalCouncilElection;
 use App\Entity\TerritorialCouncil\Election as TerritorialCouncilElection;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionPool;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Repository\CommitteeRepository;
+use App\Repository\VotingPlatform\CandidateGroupRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoteRepository;
@@ -20,24 +22,14 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class VotingPlatformRuntime implements RuntimeExtensionInterface
 {
-    private ElectionRepository $electionRepository;
-    private VoteRepository $voteRepository;
-    private VoteResultRepository $voteResultRepository;
-    private CommitteeRepository $committeeRepository;
-    private DesignationRepository $designationRepository;
-
     public function __construct(
-        ElectionRepository $electionRepository,
-        VoteRepository $voteRepository,
-        VoteResultRepository $voteResultRepository,
-        CommitteeRepository $committeeRepository,
-        DesignationRepository $designationRepository
+        private readonly ElectionRepository $electionRepository,
+        private readonly VoteRepository $voteRepository,
+        private readonly VoteResultRepository $voteResultRepository,
+        private readonly CommitteeRepository $committeeRepository,
+        private readonly DesignationRepository $designationRepository,
+        private readonly CandidateGroupRepository $candidateGroupRepository
     ) {
-        $this->electionRepository = $electionRepository;
-        $this->voteRepository = $voteRepository;
-        $this->voteResultRepository = $voteResultRepository;
-        $this->committeeRepository = $committeeRepository;
-        $this->designationRepository = $designationRepository;
     }
 
     public function findActivePollDesignation(): ?Designation
@@ -82,6 +74,11 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
     public function hasVotedForDesignation(Adherent $adherent, Designation $designation): bool
     {
         return (bool) $this->voteRepository->findVoteForDesignation($adherent, $designation);
+    }
+
+    public function aggregatePoolResults(ElectionPool $electionPool): array
+    {
+        return $this->candidateGroupRepository->aggregatePoolResults($electionPool);
     }
 
     public function getElectionParticipationDetails(ElectionRound $electionRound): array

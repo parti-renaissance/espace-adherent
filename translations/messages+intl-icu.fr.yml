@@ -697,6 +697,7 @@ RepublicanSilence_list: Liste des Silences Républicains
 Commitment_list: Valeurs et engagements
 Commitment_create: Créer une nouvelle valeur
 
+Election_list: Élections
 LocalElection_list: Élections départementales
 LocalElection_create: Nouvelle
 _actions: Actions

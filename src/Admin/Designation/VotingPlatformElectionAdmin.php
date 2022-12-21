@@ -2,11 +2,12 @@
 
 namespace App\Admin\Designation;
 
+use App\Admin\AbstractAdmin;
+use App\Entity\VotingPlatform\Election;
 use App\VotingPlatform\Designation\DesignationStatusEnum;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\ORM\QueryBuilder;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -51,7 +52,7 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection->clearExcept('list');
+        $collection->clearExcept(['list', 'show']);
     }
 
     protected function configureBatchActions(array $actions): array
@@ -203,14 +204,17 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/instances/election_list_details_column.html.twig',
             ])
+            ->add(ListMapper::NAME_ACTIONS, null, [
+                'actions' => [
+                    'show' => [],
+                ],
+            ])
         ;
     }
 
-    protected function configureDefaultFilterValues(array &$filterValues): void
+    /** @param Election $object */
+    public function toString(object $object): string
     {
-        $filterValues = array_merge($filterValues, [
-            '_sort_order' => 'DESC',
-            '_sort_by' => 'designation.voteStartDate',
-        ]);
+        return $object->getTitle();
     }
 }
