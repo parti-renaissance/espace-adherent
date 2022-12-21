@@ -6,6 +6,7 @@ use Doctrine\Persistence\Mapping\ClassMetadata;
 use Gedmo\Sluggable\Handler\SlugHandlerInterface;
 use Gedmo\Sluggable\Mapping\Event\SluggableAdapter;
 use Gedmo\Sluggable\SluggableListener;
+use Gedmo\Sluggable\Util\Urlizer;
 
 class DepartmentSiteSlugHandler implements SlugHandlerInterface
 {
@@ -48,7 +49,7 @@ class DepartmentSiteSlugHandler implements SlugHandlerInterface
         $this->sluggable->setTransliterator($this->originalTransliterator);
 
         if (method_exists($object, 'getZone')) {
-            $result = sprintf('%s-%s', $object->getZone()?->getCode(), strtolower($object->getZone()?->getName()));
+            $result = sprintf('%s-%s', $object->getZone()?->getCode(), Urlizer::urlize($object->getZone()?->getName()));
         }
 
         return $result;

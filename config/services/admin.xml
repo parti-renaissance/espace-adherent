@@ -75,6 +75,15 @@
             <argument />
         </service>
 
+        <service id="app.admin.renaissance_department_site" class="App\Admin\DepartmentSite\DepartmentSiteAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Sites Départementaux" group="Re site web" />
+
+            <argument/>
+            <argument>App\Entity\DepartmentSite\DepartmentSite</argument>
+            <argument/>
+            <argument type="string">%env(DPT_SITE_UNLAYER_TEMPLATE_ID)%</argument>
+        </service>
+
         <!--
         ######################################################
         # Communication

@@ -83,6 +83,8 @@ services:
             $campaignMailProducer: '@old_sound_rabbit_mq.mailer_campaign_producer'
             $transactionalMailProducer: '@old_sound_rabbit_mq.mailer_transactional_producer'
             $articlePreviewAdminKey: '%env(ARTICLE_PREVIEW_ADMIN_KEY)%'
+            $unlayerDefaultTemplateId: '%env(UNLAYER_DEFAULT_TEMPLATE_ID)%'
+            $dptSiteUnlayerTemplateId: '%env(DPT_SITE_UNLAYER_TEMPLATE_ID)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:

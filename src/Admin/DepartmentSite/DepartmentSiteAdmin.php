@@ -1,0 +1,139 @@
+<?php
+
+namespace App\Admin\DepartmentSite;
+
+use App\Admin\AbstractAdmin;
+use App\Entity\DepartmentSite\DepartmentSite;
+use App\Entity\Geo\Zone;
+use App\Form\Admin\UnlayerContentType;
+use Doctrine\ORM\QueryBuilder;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+
+class DepartmentSiteAdmin extends AbstractAdmin
+{
+    private int $dptSiteUnlayerTemplateId;
+
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        string $dptSiteUnlayerTemplateId
+    ) {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->dptSiteUnlayerTemplateId = (int) $dptSiteUnlayerTemplateId;
+    }
+
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'zone.code';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'ASC';
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
+        $datagridMapper
+            ->add('zone', ModelFilter::class, [
+                'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'multiple' => true,
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'property' => ['name', 'code'],
+                    'callback' => function (AdminInterface $admin, array $property, $value): void {
+                        $datagrid = $admin->getDatagrid();
+                        $query = $datagrid->getQuery();
+                        $rootAlias = $query->getRootAlias();
+                        $query
+                            ->andWhere($rootAlias.'.type IN (:types)')
+                            ->setParameter('types', [Zone::DEPARTMENT])
+                        ;
+
+                        $datagrid->setValue($property[0], null, $value);
+                    },
+                ],
+            ])
+        ;
+    }
+
+    protected function configureListFields(ListMapper $listMapper): void
+    {
+        $listMapper
+            ->addIdentifier('slug', null, [
+                'label' => 'Slug',
+            ])
+            ->add('zone', null, [
+                'label' => 'Département',
+            ])
+            ->add(ListMapper::NAME_ACTIONS, null, [
+                'virtual_field' => true,
+                'actions' => [
+                    'preview' => [
+                        'template' => 'admin/department_site/list_preview.html.twig',
+                    ],
+                    'edit' => [],
+                ],
+            ])
+        ;
+    }
+
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
+        $formMapper
+            ->with('Département', ['class' => 'col-md-6'])
+                ->add('zone', ModelAutocompleteType::class, [
+                    'property' => ['name', 'code'],
+                    'label' => 'Zone départementale',
+                    'btn_add' => false,
+                    'callback' => [$this, 'prepareZoneAutocompleteCallback'],
+                ])
+            ->end()
+            ->with('Contenu')
+                ->add('jsonContent', HiddenType::class)
+                ->add('content', UnlayerContentType::class, [
+                    'label' => false,
+                    'unlayer_template_id' => $this->dptSiteUnlayerTemplateId,
+                ])
+            ->end()
+        ;
+    }
+
+    public static function prepareZoneAutocompleteCallback(
+        AdminInterface $admin,
+        array $properties,
+        string $value
+    ): void {
+        /** @var QueryBuilder $qb */
+        $qb = $admin->getDatagrid()->getQuery();
+        $alias = $qb->getRootAliases()[0];
+
+        $orx = $qb->expr()->orX();
+        foreach ($properties as $property) {
+            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
+            $qb->setParameter('property_'.$property, '%'.$value.'%');
+        }
+        $qb
+            ->orWhere($orx)
+            ->andWhere(sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
+            ->setParameter('type', Zone::DEPARTMENT)
+        ;
+    }
+
+    /**
+     * @param DepartmentSite $object
+     */
+    public function toString(object $object): string
+    {
+        return sprintf('Site départemental %s', $object->getSlug());
+    }
+}
