@@ -21,9 +21,7 @@ class QrCodeEntityHandler
     {
         $redirectUrl = $this->urlGenerator->generate(
             $this->getRedirectUrlRouteName($qrCode),
-            [
-                'uuid' => $qrCode->getUuid()->toString(),
-            ],
+            ['uuid' => $qrCode->getUuid()->toString()],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 

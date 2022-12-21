@@ -18,7 +18,7 @@
         "allow-plugins": {
             "symfony/flex": true,
             "symfony/thanks": true,
-            "endroid/installer": true,
+            "endroid/installer": false,
             "phpstan/extension-installer": true
         }
     },
@@ -47,7 +47,7 @@
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "egulias/email-validator": "^3.0",
-        "endroid/qr-code-bundle": "^3.4.2",
+        "endroid/qr-code-bundle": "^4.2",
         "enmarche/majority-judgment": "^0.0.3",
         "exercise/htmlpurifier-bundle": "^3.1",
         "fusonic/opengraph": "^2.1",
@@ -117,6 +117,7 @@
         "symfony/psr7-meta": "^1.0",
         "symfony/routing": "^5.4",
         "symfony/security-bundle": "^5.4",
+        "symfony/security-csrf": "^5.4",
         "symfony/serializer": "^5.4",
         "symfony/stopwatch": "^5.4",
         "symfony/string": "^5.4",
@@ -182,11 +183,6 @@
     "extra": {
         "symfony": {
             "require": "^5.4"
-        },
-        "endroid": {
-            "installer": {
-                "enabled": false
-            }
         }
     },
     "replace": {
