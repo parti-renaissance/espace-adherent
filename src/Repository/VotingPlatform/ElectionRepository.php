@@ -9,6 +9,7 @@ use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionPool;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
+use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\Voter;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
@@ -189,7 +190,7 @@ class ElectionRepository extends ServiceEntityRepository
     public function getSingleAggregatedData(ElectionRound $electionRound): array
     {
         return $this->createQueryBuilder('election')
-            ->addSelect('pool.code AS pool_code')
+            ->select('pool.code AS pool_code')
             ->addSelect(
                 sprintf(
                     '(SELECT COUNT(1)
@@ -207,6 +208,11 @@ class ElectionRepository extends ServiceEntityRepository
                 sprintf(
                     '(SELECT COUNT(vote.id) FROM %s AS vote WHERE vote.electionRound = election_round) AS votes_count',
                     Vote::class
+                ),
+                sprintf(
+                    '(SELECT COUNT(vote_choice.id) FROM %s AS vote_choice
+                    WHERE vote_choice.electionPool = pool AND vote_choice.isBlank = true) AS votes_blank_count',
+                    VoteChoice::class
                 ),
             )
             ->innerJoin('election.electionRounds', 'election_round')
@@ -273,23 +279,6 @@ class ElectionRepository extends ServiceEntityRepository
         }
 
         return $qb->getResult();
-    }
-
-    /**
-     * @return Election[]
-     */
-    public function getElectionsWithIncomingSecondRounds(): array
-    {
-        return $this->createQueryBuilder('election')
-            ->addSelect('designation')
-            ->innerJoin('election.designation', 'designation')
-            ->andWhere('election.secondRoundEndDate IS NOT NULL')
-            ->andWhere('election.secondRoundEndDate >= CURRENT_DATE()')
-            ->andWhere('election.status = :open')
-            ->setParameter('open', ElectionStatusEnum::OPEN)
-            ->getQuery()
-            ->getResult()
-        ;
     }
 
     private function getElectionStatsSelectParts(): array

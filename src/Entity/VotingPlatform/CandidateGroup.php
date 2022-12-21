@@ -135,4 +135,20 @@ class CandidateGroup
 
         return null;
     }
+
+    public function getTitle(): string
+    {
+        $labelParts = [];
+
+        /** @var Candidate $first */
+        $first = $this->candidates->first();
+
+        $labelParts[] = $first->getFullName();
+
+        if (($count = $this->candidates->count()) > 1) {
+            $labelParts[] = sprintf('(+%d candidat%s)', $count - 1, $count > 2 ? 's' : '');
+        }
+
+        return implode(' ', $labelParts);
+    }
 }

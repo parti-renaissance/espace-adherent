@@ -1575,6 +1575,11 @@
             <argument />
             <argument>App\Entity\VotingPlatform\Election</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>show</argument>
+                <argument>admin/instances/election_dashboard.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.designation.candidature" class="App\Admin\Designation\CandidateAdmin">
