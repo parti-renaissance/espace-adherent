@@ -1,13 +1,13 @@
 <?php
 
-namespace App\LocalSite;
+namespace App\DepartmentSite;
 
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Gedmo\Sluggable\Handler\SlugHandlerInterface;
 use Gedmo\Sluggable\Mapping\Event\SluggableAdapter;
 use Gedmo\Sluggable\SluggableListener;
 
-class LocalSiteSlugHandler implements SlugHandlerInterface
+class DepartmentSiteSlugHandler implements SlugHandlerInterface
 {
     /**
      * @var callable

@@ -1,45 +1,45 @@
 @api
 Feature:
-  In order to manage federations sites
+  In order to manage department sites
   As a logged-in user
-  I should be able to access local sites API
+  I should be able to access department sites API
 
-  Scenario Outline: As Anonymous user I cannot access local sites endpoints
+  Scenario Outline: As Anonymous user I cannot access department sites endpoints
     When I send a "<method>" request to "<url>"
     Then the response status code should be 401
 
     Examples:
-      | method | url                                                      |
-      | GET    | /api/v3/local_sites                                      |
-      | POST   | /api/v3/local_sites                                      |
-      | GET    | /api/v3/local_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3 |
-      | PUT    | /api/v3/local_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3 |
+      | method | url                                                           |
+      | GET    | /api/v3/department_sites                                      |
+      | POST   | /api/v3/department_sites                                      |
+      | GET    | /api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3 |
+      | PUT    | /api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3 |
 
-  Scenario Outline: as a logged-in user without correct right I cannot access local sites endpoints
+  Scenario Outline: as a logged-in user without correct right I cannot access department sites endpoints
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
 
     Examples:
-      | method | url                                                                     |
-      | GET    | /api/v3/local_sites?scope=referent                                      |
-      | POST   | /api/v3/local_sites?scope=referent                                      |
-      | GET    | /api/v3/local_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=referent |
-      | PUT    | /api/v3/local_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=referent |
+      | method | url                                                                          |
+      | GET    | /api/v3/department_sites?scope=referent                                      |
+      | POST   | /api/v3/department_sites?scope=referent                                      |
+      | GET    | /api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=referent |
+      | PUT    | /api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=referent |
 
   Scenario: As referent I cannot create my department site if no scope
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/local_sites"
+    When I send a "POST" request to "/api/v3/department_sites"
     Then the response status code should be 403
 
   Scenario: As a referent I cannot create my department site with a different scope than referent
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/local_sites?scope=deputy"
+    When I send a "POST" request to "/api/v3/department_sites?scope=deputy"
     Then the response status code should be 403
 
   Scenario: As a referent I cannot create a department site other than my department one
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/local_sites?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/department_sites?scope=referent" with body:
     """
     {
       "content": "<p>test</p>",
@@ -66,7 +66,7 @@ Feature:
 
   Scenario: As a referent I cannot create my department site
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/local_sites?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/department_sites?scope=referent" with body:
     """
     {
       "content": "<p>test</p>",
@@ -93,7 +93,7 @@ Feature:
   Scenario: As referent I can get my department site
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/local_sites?scope=referent"
+    And I send a "GET" request to "/api/v3/department_sites?scope=referent"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -123,7 +123,7 @@ Feature:
 
   Scenario: As referent I cannot create my department site with invalid payload
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/local_sites?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/department_sites?scope=referent" with body:
     """
     {
     }
@@ -157,7 +157,7 @@ Feature:
 
   Scenario: As a referent I cannot create my department site
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "PUT" request to "/api/v3/local_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=referent" with body:
+    When I send a "PUT" request to "/api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=referent" with body:
     """
     {
       "content": "<p>ceci est une mise à jour</p>",

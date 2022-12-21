@@ -383,7 +383,7 @@ Feature:
                             "team",
                             "phoning_campaign",
                             "survey",
-                            "local_site"
+                            "department_site"
                         ],
                         "uuid": "e0da56db-c4c6-4aa4-ad8d-7e9505dfdd93"
                     }

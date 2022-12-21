@@ -441,7 +441,7 @@ Feature:
             "team",
             "phoning_campaign",
             "survey",
-            "local_site"
+            "department_site"
         ],
         "delegated_access": {
             "delegator": {

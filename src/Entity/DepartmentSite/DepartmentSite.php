@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity\LocalSite;
+namespace App\Entity\DepartmentSite;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Api\Filter\LocalSiteScopeFilter;
+use App\Api\Filter\DepartmentSiteScopeFilter;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
@@ -20,44 +20,44 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     attributes={
- *         "filters": {LocalSiteScopeFilter::class},
+ *         "filters": {DepartmentSiteScopeFilter::class},
  *         "normalization_context": {
- *             "groups": {"local_site_read"}
+ *             "groups": {"department_site_read"}
  *         },
  *         "denormalization_context": {
- *             "groups": {"local_site_write"}
+ *             "groups": {"department_site_write"}
  *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'local_site')"
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'department_site')"
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/local_sites/{uuid}",
+ *             "path": "/v3/department_sites/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *         "put": {
- *             "path": "/v3/local_sites/{uuid}",
+ *             "path": "/v3/department_sites/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *     },
  *     collectionOperations={
  *         "get": {
- *             "path": "/v3/local_sites",
+ *             "path": "/v3/department_sites",
  *             "normalization_context": {
- *                 "groups": {"local_site_read_list"}
+ *                 "groups": {"department_site_read_list"}
  *             }
  *         },
  *         "post": {
- *             "path": "/v3/local_sites",
+ *             "path": "/v3/department_sites",
  *         }
  *     }
  * )
  *
- * @ORM\Entity(repositoryClass="App\Repository\LocalSite\LocalSiteRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DepartmentSite\DepartmentSiteRepository")
  *
- * @UniqueEntity(fields={"zone"}, message="local_site.zone.not_unique")
+ * @UniqueEntity(fields={"zone"}, message="department_site.zone.not_unique")
  * @UniqueEntity(fields={"slug"})
  */
-class LocalSite
+class DepartmentSite
 {
     use EntityIdentityTrait;
     use UnLayerJsonContentTrait;
@@ -68,7 +68,7 @@ class LocalSite
      *
      * @Assert\NotBlank
      *
-     * @Groups({"local_site_read", "local_site_read_list", "local_site_write"})
+     * @Groups({"department_site_read", "department_site_read_list", "department_site_write"})
      */
     private ?string $content = null;
 
@@ -79,21 +79,21 @@ class LocalSite
      * @Assert\NotBlank
      * @Assert\Expression(
      *     "value and value.getType() === constant('App\\Entity\\Geo\\Zone::DEPARTMENT')",
-     *     message="local_site.zone.type.not_valid"
+     *     message="department_site.zone.type.not_valid"
      * )
      * @AssertZoneInScopeZones
      *
-     * @Groups({"local_site_read", "local_site_read_list", "local_site_write"})
+     * @Groups({"department_site_read", "department_site_read_list", "department_site_write"})
      */
     private ?Zone $zone = null;
 
     /**
      * @ORM\Column(unique=true)
      * @Gedmo\Slug(handlers={
-     *     @Gedmo\SlugHandler(class="App\LocalSite\LocalSiteSlugHandler")
+     *     @Gedmo\SlugHandler(class="App\DepartmentSite\DepartmentSiteSlugHandler")
      * }, fields={"slug"}, updatable=true)
      *
-     * @Groups({"local_site_read", "local_site_read_list"})
+     * @Groups({"department_site_read", "department_site_read_list"})
      */
     private ?string $slug = null;
 

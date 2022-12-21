@@ -15,9 +15,9 @@ trait UnLayerJsonContentTrait
      * @Groups({
      *     "message_write",
      *     "message_read_content",
-     *     "local_site_read",
-     *     "local_site_read_list",
-     *     "local_site_write",
+     *     "department_site_read",
+     *     "department_site_read_list",
+     *     "department_site_write",
      * })
      */
     protected ?string $jsonContent = null;

@@ -3,15 +3,15 @@
 namespace App\Api\Filter;
 
 use App\Entity\Adherent;
-use App\Entity\LocalSite\LocalSite;
+use App\Entity\DepartmentSite\DepartmentSite;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
 
-class LocalSiteScopeFilter extends AbstractScopeFilter
+class DepartmentSiteScopeFilter extends AbstractScopeFilter
 {
     protected function needApplyFilter(string $property, string $resourceClass): bool
     {
-        return is_a($resourceClass, LocalSite::class, true);
+        return is_a($resourceClass, DepartmentSite::class, true);
     }
 
     protected function applyFilter(

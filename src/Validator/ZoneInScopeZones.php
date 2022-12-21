@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ZoneInScopeZones extends Constraint
 {
-    public string $message = 'local_site.zone.not_in_scope_zones';
+    public string $message = 'department_site.zone.not_in_scope_zones';
 
     public function getTargets(): string|array
     {
