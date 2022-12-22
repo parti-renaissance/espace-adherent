@@ -53,18 +53,18 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "zone: Cette zone ne fait pas partir des zones que vous gérez.",
+      "detail": "zone: Cette zone ne fait pas partie des zones que vous gérez.",
       "violations": [
         {
           "propertyPath": "zone",
-          "message": "Cette zone ne fait pas partir des zones que vous gérez.",
+          "message": "Cette zone ne fait pas partie des zones que vous gérez.",
           "code": null
         }
       ]
     }
     """
 
-  Scenario: As a referent I cannot create my department site
+  Scenario: As a referent I can create my department site
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "POST" request to "/api/v3/department_sites?scope=referent" with body:
     """
