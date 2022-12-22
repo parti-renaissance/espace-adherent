@@ -624,9 +624,9 @@ header_block.slogen.max_length: Le slogan d'une en-tête ne doit pas dépasser {
 #
 # LocaSite
 #
-department_site.zone.not_unique: Cette zone est déjà lié à un site départemental.
+department_site.zone.not_unique: Cette zone est déjà liée à un site départemental.
 department_site.zone.type.not_valid: Le type de la zone est invalide.
-department_site.zone.not_in_scope_zones: Cette zone ne fait pas partir des zones que vous gérez.
+department_site.zone.not_in_scope_zones: Cette zone ne fait pas partie des zones que vous gérez.
 
 #
 # Admin validations
