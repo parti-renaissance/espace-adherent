@@ -8,12 +8,26 @@ export default class AddressForm {
         this._country = country;
     }
 
+    showFields() {
+        this._address.required = 'false' !== this._address.dataset.required;
+        this._postalCode.required = 'false' !== this._postalCode.dataset.required;
+        this._cityName.required = 'false' !== this._cityName.dataset.required;
+        this._country.required = 'false' !== this._country.dataset.required;
+    }
+
+    hideFields() {
+        this._address.required = false;
+        this._postalCode.required = false;
+        this._cityName.required = false;
+        this._country.required = false;
+    }
+
     getAddressString() {
         return [
             this._address.value,
-            this._cityName.value,
             this._postalCode.value,
-            this._country.value,
+            this._cityName.value,
+            this._country.selectedIndex ? this._country.options[this._country.selectedIndex].innerHTML : '',
         ].filter((item) => item).join(', ');
     }
 

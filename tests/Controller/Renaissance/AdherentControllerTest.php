@@ -173,12 +173,11 @@ class AdherentControllerTest extends WebTestCase
 
         $errors = $crawler->filter('.re-form-error');
 
-        self::assertSame(5, $errors->count());
+        self::assertSame(4, $errors->count());
         self::assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(0)->text());
         self::assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(1)->text());
         self::assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(2)->text());
-        self::assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(3)->text());
-        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(4)->text());
+        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(3)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('Enregistrer')->form([

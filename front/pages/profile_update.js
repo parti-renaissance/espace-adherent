@@ -29,7 +29,7 @@ export default () => {
     );
 
     autocompleteWidget.on('changed', () => {
-        find(autocompleteWrapper, 'input.form').value = addressField.value;
+        findOne(autocompleteWrapper, 'input.form').value = addressField.value;
 
         countryField.dispatchEvent(new CustomEvent('change', {
             target: countryField,
@@ -42,7 +42,7 @@ export default () => {
 
     autocompleteWidget.buildWidget();
 
-    const autocompleteInput = find(autocompleteWrapper, 'input.form');
+    const autocompleteInput = findOne(autocompleteWrapper, 'input.form');
 
     if (autocompleteInput) {
         autocompleteInput.value = addressField.value;

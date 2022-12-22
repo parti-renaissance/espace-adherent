@@ -64,7 +64,7 @@ export default class AddressForm {
             show(this._cityName);
             if (null !== this._region) {
                 show(this._region);
-                const regionLabel = find(this._region.parentNode, 'label');
+                const regionLabel = findOne(this._region.parentNode, 'label');
                 if (regionLabel) {
                     show(regionLabel);
                 }
@@ -76,7 +76,7 @@ export default class AddressForm {
 
         if (null !== this._region) {
             hide(this._region);
-            const regionLabel = find(this._region.parentNode, 'label');
+            const regionLabel = findOne(this._region.parentNode, 'label');
             if (regionLabel) {
                 hide(regionLabel);
             }

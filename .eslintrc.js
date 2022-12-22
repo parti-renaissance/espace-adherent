@@ -29,7 +29,7 @@ module.exports = {
     },
     globals: {
         dom: true,
-        find: true,
+        findOne: true,
         findAll: true,
         on: true,
         once: true,

@@ -11,9 +11,9 @@ let croppedImageElement;
 let container;
 
 function updatePreviewImages(src, circle = false) {
-    const previewContainer = find(container, '.image-uploader--preview');
+    const previewContainer = findOne(container, '.image-uploader--preview');
 
-    const containerElement = find(previewContainer, '.preview-image--container');
+    const containerElement = findOne(previewContainer, '.preview-image--container');
     containerElement.style.backgroundImage = `url(${src})`;
 
     if (false === circle) {
@@ -21,7 +21,7 @@ function updatePreviewImages(src, circle = false) {
     }
 
     show(previewContainer);
-    hide(find(container, '.image-uploader--label'));
+    hide(findOne(container, '.image-uploader--label'));
 }
 
 async function handleCropAction(options) {

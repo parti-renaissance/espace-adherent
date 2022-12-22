@@ -628,10 +628,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
                 ],
             ],
             [
-                'address' => [
-                    'L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.',
-                    'Cette valeur n\'est pas un code postal français valide.',
-                ],
+                'address' => ['L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.'],
             ],
         ];
         yield 'No country' => [

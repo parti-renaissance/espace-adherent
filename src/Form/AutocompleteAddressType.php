@@ -2,20 +2,71 @@
 
 namespace App\Form;
 
+use App\Address\Address;
+use App\FranceCities\FranceCities;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AutocompleteAddressType extends AbstractType
 {
-    public function getParent(): ?string
+    public function __construct(private readonly FranceCities $franceCities)
     {
-        return AddressType::class;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('address', AutocompleteInputType::class, [
-            'required' => false,
-        ]);
+        $builder
+            ->add('autocomplete', TextType::class, [
+                'mapped' => false,
+                'required' => true,
+            ])
+            ->add('address', TextType::class, [
+                'required' => false,
+            ])
+            ->add('cityName', TextType::class)
+            ->add('country', CountryType::class, [
+                'preferred_choices' => [Address::FRANCE],
+                'invalid_message' => 'common.country.invalid',
+            ])
+            ->add('postalCode', TextType::class)
+        ;
+
+        $builder
+            ->get('postalCode')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($data) { return $data; },
+                function ($value) { return str_replace(' ', '', $value); }
+            ))
+        ;
+
+        $builder
+            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+                /** @var Address $address */
+                $address = $event->getData();
+
+                if ($address && Address::FRANCE === $address->getCountry() && $address->getCityName() && $address->getPostalCode()) {
+                    $city = $this->franceCities->getCityByPostalCodeAndName($address->getPostalCode(), $address->getCityName());
+
+                    if ($city) {
+                        $address->setCity(sprintf('%s-%s', $address->getPostalCode(), $city->getInseeCode()));
+                    }
+                }
+            })
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver
+            ->setDefaults([
+                'data_class' => Address::class,
+            ])
+        ;
     }
 }

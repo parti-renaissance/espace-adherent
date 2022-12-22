@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 function initializeTimer(element, refreshPage) {
-    const container = find(element, '.clock-container');
+    const container = findOne(element, '.clock-container');
 
     const interval = 1000;
     const diffTime = element.dataset.eventTimestamp - element.dataset.nowTimestamp;

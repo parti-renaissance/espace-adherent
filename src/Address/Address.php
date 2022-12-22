@@ -4,14 +4,15 @@ namespace App\Address;
 
 use App\Geocoder\GeocodableInterface;
 use App\Validator\Address as AssertValidAddress;
-use App\Validator\FrenchZipCode;
+use App\Validator\FrenchAddress;
 use App\Validator\GeocodableAddress as AssertGeocodableAddress;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertValidAddress(groups={"Default", "fill_personal_info"})
- * @AssertGeocodableAddress(groups={"Default", "fill_personal_info"})
+ * @AssertValidAddress(groups={"Default"})
+ * @FrenchAddress(groups={"fill_personal_info"})
+ * @AssertGeocodableAddress(groups={"Default"})
  * @AssertGeocodableAddress(
  *     message="admin.common.address.not_geocodable",
  *     groups={"admin_adherent_renaissance_create"}
@@ -41,7 +42,6 @@ class Address implements AddressInterface, GeocodableInterface
      *     groups={"Default", "Registration", "Update", "fill_personal_info"}
      * )
      * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update", "fill_personal_info"})
-     * @FrenchZipCode(groups={"Default", "Registration", "Update", "fill_personal_info", "admin_adherent_renaissance_create"})
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
@@ -56,7 +56,11 @@ class Address implements AddressInterface, GeocodableInterface
 
     /**
      * @Assert\Length(max=255, groups={"Default", "Update", "fill_personal_info"})
-     * @Assert\Expression(expression="(this.getCountry() === constant('App\\Address\\Address::FRANCE') and this.getCity()) or value", message="common.city_name.not_blank", groups={"Update", "fill_personal_info"})
+     * @Assert\Expression(
+     *     expression="value or ('FR' === this.getCountry() and this.getCity())",
+     *     message="common.city_name.not_blank",
+     *     groups={"Update", "fill_personal_info"}
+     * )
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
