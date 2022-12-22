@@ -89,10 +89,10 @@
             var changeNationalityCallback = function (value) {
                 if (value === 'FR') {
                     hide(frenchTaxResidentConfirmationBlock);
-                    find(frenchTaxResidentConfirmationBlock, 'input').removeAttribute('required');
+                    findOne(frenchTaxResidentConfirmationBlock, 'input').removeAttribute('required');
                 } else {
                     show(frenchTaxResidentConfirmationBlock);
-                    find(frenchTaxResidentConfirmationBlock, 'input').setAttribute('required', 'required');
+                    findOne(frenchTaxResidentConfirmationBlock, 'input').setAttribute('required', 'required');
                 }
             }
             on(nationalityField, 'change', function (event) { changeNationalityCallback(event.target.value); });

@@ -67,7 +67,7 @@
             // Other vote cities
             var otherVoteCitiesWrapper = dom('#other-vote-cities_wrapper');
             var inputWrapper = dom('#{{ procuration_form.otherVoteCities.vars.id }}_wrapper');
-            var select = find(inputWrapper, 'select');
+            var select = findOne(inputWrapper, 'select');
 
             on(dom('#{{ procuration_form.country.vars.id }}'), 'change', function (event) {
                 if (event.target.value === 'FR') {
