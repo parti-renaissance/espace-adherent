@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "088c8262ddf298fc10a1f2ebd46bb66c",
+    "content-hash": "e0e146bf018e1385a5b72ad5b8cadb34",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -9690,23 +9690,23 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "4.6.0",
+            "version": "4.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "ad63bc700e7d021039e30ce464eba384c4a1d40f"
+                "reference": "5ed9ad582647bbc3864ef78db34bdc1afdcf9b49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/ad63bc700e7d021039e30ce464eba384c4a1d40f",
-                "reference": "ad63bc700e7d021039e30ce464eba384c4a1d40f",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/5ed9ad582647bbc3864ef78db34bdc1afdcf9b49",
+                "reference": "5ed9ad582647bbc3864ef78db34bdc1afdcf9b49",
                 "shasum": ""
             },
             "require": {
                 "brick/math": "^0.8.8 || ^0.9 || ^0.10",
                 "ext-json": "*",
                 "php": "^8.0",
-                "ramsey/collection": "^1.0"
+                "ramsey/collection": "^1.2"
             },
             "replace": {
                 "rhumsaa/uuid": "self.version"
@@ -9766,7 +9766,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/uuid/issues",
-                "source": "https://github.com/ramsey/uuid/tree/4.6.0"
+                "source": "https://github.com/ramsey/uuid/tree/4.7.0"
             },
             "funding": [
                 {
@@ -9778,35 +9778,55 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-11-05T23:03:38+00:00"
+            "time": "2022-12-19T22:30:49+00:00"
         },
         {
             "name": "ramsey/uuid-doctrine",
-            "version": "1.8.2",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid-doctrine.git",
-                "reference": "6867db3f39b9088dd8909b2523c1d2bfe274e541"
+                "reference": "b002676be0e5e342d857c47f1b68e24de6841d08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid-doctrine/zipball/6867db3f39b9088dd8909b2523c1d2bfe274e541",
-                "reference": "6867db3f39b9088dd8909b2523c1d2bfe274e541",
+                "url": "https://api.github.com/repos/ramsey/uuid-doctrine/zipball/b002676be0e5e342d857c47f1b68e24de6841d08",
+                "reference": "b002676be0e5e342d857c47f1b68e24de6841d08",
                 "shasum": ""
             },
             "require": {
-                "doctrine/dbal": "^2.5 || ^3.0",
-                "php": "^5.4 || ^7 || ^8",
-                "ramsey/uuid": "^3.5 || ^4"
+                "doctrine/dbal": "^2.8 || ^3.0",
+                "php": "^7.4 || ^8.0",
+                "ramsey/uuid": "^3.9.7 || ^4.0"
             },
             "require-dev": {
+                "captainhook/plugin-composer": "^5.3",
                 "doctrine/orm": "^2.5",
-                "mockery/mockery": "^0.9.11 || ^1",
-                "php-parallel-lint/php-parallel-lint": "^1",
-                "phpunit/phpunit": "^4.8.36 || ^5.7 || ^6.5 || ^7 || ^8 || ^9",
-                "squizlabs/php_codesniffer": "^3.5"
+                "ergebnis/composer-normalize": "^2.28.3",
+                "mockery/mockery": "^1.5",
+                "php-parallel-lint/php-console-highlighter": "^1.0",
+                "php-parallel-lint/php-parallel-lint": "^1.3",
+                "phpcsstandards/phpcsutils": "^1.0.0-alpha4",
+                "phpstan/extension-installer": "^1.2",
+                "phpstan/phpstan": "^1.9",
+                "phpstan/phpstan-mockery": "^1.1",
+                "phpstan/phpstan-phpunit": "^1.3",
+                "phpunit/phpunit": "^9.5",
+                "psalm/plugin-mockery": "^1.1",
+                "psalm/plugin-phpunit": "^0.18.4",
+                "ramsey/coding-standard": "^2.0.3",
+                "ramsey/conventional-commits": "^1.3",
+                "vimeo/psalm": "^5.4"
             },
             "type": "library",
+            "extra": {
+                "captainhook": {
+                    "force-install": true
+                },
+                "ramsey/conventional-commits": {
+                    "configFile": "conventional-commits.json"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Ramsey\\Uuid\\Doctrine\\": "src/"
@@ -9833,7 +9853,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/uuid-doctrine/issues",
-                "source": "https://github.com/ramsey/uuid-doctrine/tree/1.8.2"
+                "source": "https://github.com/ramsey/uuid-doctrine/tree/2.0.0"
             },
             "funding": [
                 {
@@ -9845,7 +9865,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-11-03T19:30:26+00:00"
+            "time": "2022-12-20T23:38:28+00:00"
         },
         {
             "name": "riverline/multipart-parser",
