@@ -39,7 +39,14 @@ class AccessTokenStore implements OAuthAccessTokenRepository
 
     public function persistNewAccessToken(AccessTokenEntityInterface $accessToken)
     {
-        $this->store($this->persistentTokenFactory->createAccessToken($accessToken));
+        $newToken = $this->persistentTokenFactory->createAccessToken($accessToken);
+        $user = $newToken->getUser();
+
+        if ($user instanceof Adherent) {
+            $user->recordLastLoginTime();
+        }
+
+        $this->store($newToken);
     }
 
     public function revokeAccessToken($tokenId)
@@ -70,12 +77,6 @@ class AccessTokenStore implements OAuthAccessTokenRepository
 
     private function store(PersistentAccessToken $token): void
     {
-        $user = $token->getUser();
-
-        if ($user instanceof Adherent) {
-            $user->recordLastLoginTime();
-        }
-
         $this->accessTokenRepository->save($token);
     }
 }
