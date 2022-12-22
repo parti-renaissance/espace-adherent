@@ -62,6 +62,8 @@ export default () => {
             enableAddressAutocomplete(addressForm, autocompleteWrapper, addressFieldsWrapper);
         };
 
-        enableAddressAutocomplete(addressForm, autocompleteWrapper, addressFieldsWrapper);
+        if (0 === findAll(addressContainer, '.form-errors').length) {
+            enableAddressAutocomplete(addressForm, autocompleteWrapper, addressFieldsWrapper);
+        }
     });
 };

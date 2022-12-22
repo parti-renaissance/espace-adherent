@@ -33,11 +33,19 @@ class AddressType extends AbstractType
                 'label' => 'Adresse',
                 'required' => $options['strict_mode'],
             ])
-            ->add('city', HiddenType::class, [
-                'required' => false,
-                'error_bubbling' => $options['child_error_bubbling'],
-                'disabled' => $options['disable_fields'],
-            ])
+        ;
+
+        if ($options['with_city']) {
+            $builder
+                ->add('city', HiddenType::class, [
+                    'required' => false,
+                    'error_bubbling' => $options['child_error_bubbling'],
+                    'disabled' => $options['disable_fields'],
+                ])
+            ;
+        }
+
+        $builder
             ->add('cityName', TextType::class, [
                 'label' => 'Ville',
                 'required' => false,
@@ -96,10 +104,12 @@ class AddressType extends AbstractType
                 'disable_fields' => false,
                 'set_address_region' => false,
                 'strict_mode' => true,
+                'with_city' => true,
             ])
             ->setAllowedTypes('disable_fields', 'bool')
             ->setAllowedTypes('child_error_bubbling', 'bool')
             ->setAllowedTypes('strict_mode', 'bool')
+            ->setAllowedTypes('with_city', 'bool')
         ;
     }
 }

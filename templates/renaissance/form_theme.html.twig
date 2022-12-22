@@ -44,7 +44,7 @@
 
 {%- block form_errors -%}
     {%- if errors|length > 0 -%}
-        <div class="text-red-500 mb-2">{{ parent()|raw }}</div>
+        <div class="text-red-500 mb-2 form-errors">{{ parent()|raw }}</div>
     {%- endif -%}
 {%- endblock form_errors -%}
 
@@ -111,7 +111,7 @@
 {% endblock %}
 
 {% block autocomplete_address_row %}
-    <div class="address-autocomplete" data-form="{{ form.vars.name }}">
+    <div class="address-autocomplete {% if not form.vars.valid %}has-error{% endif %}" data-form="{{ form.vars.name }}">
         {{ block('form_errors') }}
 
         <div class="address-autocomplete-wrapper hidden">
@@ -137,15 +137,13 @@
             </div>
         </div>
 
-        <div class="address-fields-wrapper ">
-
+        <div class="address-fields-wrapper">
             {{ form_row(form.address, { label: 'Adresse' }) }}
-            {{ form_row(form.cityName) }}
-            {{ form_row(form.city) }}
+            {{ form_row(form.cityName, { label: 'Ville' }) }}
 
             <div class="flex space-x-4">
-                {{ form_row(form.postalCode) }}
-                {{ form_row(form.country) }}
+                {{ form_row(form.postalCode, { label: 'Code postal' }) }}
+                {{ form_row(form.country, { label: 'Pays', attr: { placeholder: 'Sélectionner un pays' } }) }}
             </div>
 
             <div class="rounded-md bg-blue-50/30 p-4">

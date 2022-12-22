@@ -4,12 +4,14 @@ namespace App\Address;
 
 use App\Geocoder\GeocodableInterface;
 use App\Validator\Address as AssertValidAddress;
+use App\Validator\FrenchAddress;
 use App\Validator\GeocodableAddress as AssertGeocodableAddress;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertValidAddress(groups={"Default", "fill_personal_info"})
+ * @AssertValidAddress(groups={"Default"})
+ * @FrenchAddress(groups={"fill_personal_info"})
  * @AssertGeocodableAddress(groups={"Default"})
  * @AssertGeocodableAddress(
  *     message="admin.common.address.not_geocodable",

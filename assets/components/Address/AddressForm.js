@@ -9,10 +9,10 @@ export default class AddressForm {
     }
 
     showFields() {
-        this._address.required = this._address.dataset.required;
-        this._postalCode.required = this._postalCode.dataset.required;
-        this._cityName.required = this._cityName.dataset.required;
-        this._country.required = this._country.dataset.required;
+        this._address.required = 'false' !== this._address.dataset.required;
+        this._postalCode.required = 'false' !== this._postalCode.dataset.required;
+        this._cityName.required = 'false' !== this._cityName.dataset.required;
+        this._country.required = 'false' !== this._country.dataset.required;
     }
 
     hideFields() {
