@@ -33,7 +33,7 @@ class UrlGenerator extends AbstractAppUrlGenerator
     public function generateForLoginSuccess(Adherent $adherent): string
     {
         if ($adherent->isRenaissanceUser()) {
-            return $this->urlGenerator->generate('app_user_edit', ['app_domain' => $this->appHost]);
+            return $this->urlGenerator->generate('app_renaissance_adherent_profile');
         }
 
         return $this->generateHomepageLink();

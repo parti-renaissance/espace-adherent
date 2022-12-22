@@ -1,5 +1,5 @@
 {% set is_information_route = is_active_route(app.request, [
-    'app_user_edit',
+    'app_renaissance_adherent_profile',
     'app_certification_request_*',
     'app_user_change_password',
     'app_adherent_pin_interests',
@@ -14,7 +14,7 @@
     </h5>
     <ul class="ml-2 space-y-4 lg:space-y-2 border-l border-gray-200">
         <li>
-            <a href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, ['app_user_edit', 'app_user_terminate_membership']) ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+            <a href="{{ path('app_renaissance_adherent_profile') }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, ['app_renaissance_adherent_profile', 'app_user_terminate_membership']) ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
                 Général
             </a>
         </li>

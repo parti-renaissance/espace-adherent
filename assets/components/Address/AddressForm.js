@@ -27,7 +27,7 @@ export default class AddressForm {
             this._address.value,
             this._postalCode.value,
             this._cityName.value,
-            this._country.selectedIndex ? this._country.options[this._country.selectedIndex].innerHTML : '',
+            Number.isInteger(this._country.selectedIndex) ? this._country.options[this._country.selectedIndex].innerHTML : '',
         ].filter((item) => item).join(', ');
     }
 

@@ -49,11 +49,21 @@ class AdherentProfileType extends AbstractType
             ])
         ;
 
-        if (!$options['is_renaissance']) {
+        if ($options['is_renaissance']) {
+            $builder
+                ->add('address', AutocompleteAddressType::class, [
+                    'validation_groups' => ['fill_personal_info'],
+                ])
+            ;
+        } else {
             $builder
                 ->add('customGender', TextType::class, [
                     'required' => false,
                     'disabled' => $options['disabled_form'],
+                ])
+                ->add('address', AddressType::class, [
+                    'label' => false,
+                    'child_error_bubbling' => false,
                 ])
             ;
         }
@@ -63,10 +73,6 @@ class AdherentProfileType extends AbstractType
                 'disabled' => $options['disabled_form'],
                 'max_date' => new \DateTime('-15 years'),
                 'min_date' => new \DateTime('-120 years'),
-            ])
-            ->add('address', AddressType::class, [
-                'label' => false,
-                'child_error_bubbling' => false,
             ])
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
