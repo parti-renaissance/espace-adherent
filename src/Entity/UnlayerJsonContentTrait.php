@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-trait UnLayerJsonContentTrait
+trait UnlayerJsonContentTrait
 {
     /**
      * JSON representation of unlayer content (using by Unlayer JS lib)

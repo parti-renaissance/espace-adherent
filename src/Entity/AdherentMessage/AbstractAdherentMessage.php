@@ -13,7 +13,7 @@ use App\Api\Filter\AdherentMessageScopeFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\UnLayerJsonContentTrait;
+use App\Entity\UnlayerJsonContentTrait;
 use App\Validator\ValidAuthorRoleMessageType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -126,7 +126,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 abstract class AbstractAdherentMessage implements AdherentMessageInterface
 {
     use EntityIdentityTrait;
-    use UnLayerJsonContentTrait;
+    use UnlayerJsonContentTrait;
     use EntityTimestampableTrait;
 
     /**

@@ -53,7 +53,7 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
     use EntityContentTrait;
-    use UnLayerJsonContentTrait;
+    use UnlayerJsonContentTrait;
     use EntityMediaTrait;
     use EntityPublishableTrait;
     use EntitySourceableTrait;

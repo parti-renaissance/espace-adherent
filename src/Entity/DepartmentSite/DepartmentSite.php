@@ -7,7 +7,7 @@ use App\Api\Filter\DepartmentSiteScopeFilter;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
-use App\Entity\UnLayerJsonContentTrait;
+use App\Entity\UnlayerJsonContentTrait;
 use App\Validator\ZoneInScopeZones as AssertZoneInScopeZones;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -60,7 +60,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class DepartmentSite
 {
     use EntityIdentityTrait;
-    use UnLayerJsonContentTrait;
+    use UnlayerJsonContentTrait;
     use EntityTimestampableTrait;
 
     /**
