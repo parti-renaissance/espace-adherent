@@ -79,7 +79,7 @@
                 </a>
             </div>
             <div class="l__col--half text--right">
-                <a href="#" class="link--blue--dark" onClick="document.cookie='{{ constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::DISMISS_COOKIE_KEY') }}=true;path=/;max-age=2592000';find(this.parentNode.parentNode.parentNode.parentNode, '.close').click();">
+                <a href="#" class="link--blue--dark" onClick="document.cookie='{{ constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::DISMISS_COOKIE_KEY') }}=true;path=/;max-age=2592000';findOne(this.parentNode.parentNode.parentNode.parentNode, '.close').click();">
                     Ne plus m'avertir
                 </a>
             </div>

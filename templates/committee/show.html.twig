@@ -191,7 +191,7 @@
             {% if has_role_adherent %}
                 findAll(document, '.committee-action-button').forEach(function (button) {
                     on(button, 'click', function () {
-                        let loader = find(button, '.btn-loader');
+                        let loader = findOne(button, '.btn-loader');
                         if (loader) {
                             removeClass(loader, 'visually-hidden');
                         }
@@ -204,7 +204,7 @@
                             function (response) {
                                 if (response === null) {
                                     button.parentNode.querySelector('.error-label').innerText = 'Une erreur est survenue';
-                                    addClass(find(button, '.btn-loader'), 'visually-hidden');
+                                    addClass(findOne(button, '.btn-loader'), 'visually-hidden');
                                     button.disabled = false;
                                 } else {
                                     window.location.reload();

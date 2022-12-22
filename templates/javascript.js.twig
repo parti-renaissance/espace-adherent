@@ -633,14 +633,14 @@ $(document).ready(function() {
             );
         });
 
-        on(find(container, '.delete-profile-image--trigger'), 'click', function (event) {
+        on(findOne(container, '.delete-profile-image--trigger'), 'click', function (event) {
             event.preventDefault();
 
             inputFile.value = '';
             inputCroppedImage.value = -1;
 
-            show(find(container, '.image-uploader--label'));
-            hide(find(container, '.image-uploader--preview'));
+            show(findOne(container, '.image-uploader--label'));
+            hide(findOne(container, '.image-uploader--preview'));
         });
     };
     cropperInitCallback();
