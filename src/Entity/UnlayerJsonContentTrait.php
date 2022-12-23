@@ -16,7 +16,6 @@ trait UnlayerJsonContentTrait
      *     "message_write",
      *     "message_read_content",
      *     "department_site_read",
-     *     "department_site_read_list",
      *     "department_site_write",
      * })
      */

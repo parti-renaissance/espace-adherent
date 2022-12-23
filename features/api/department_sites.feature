@@ -107,8 +107,6 @@ Feature:
       },
       "items": [
         {
-          "content": "@string@",
-          "json_content": "@string@",
           "uuid": "51e507e5-3d7c-4f08-b05d-b7cb45e960d3",
           "slug": "92-hauts-de-seine",
           "zone": {
@@ -177,6 +175,26 @@ Feature:
         "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
         "code": "92",
         "name": "Hauts-de-Seine"
+      }
+    }
+    """
+
+  Scenario: As a referent I can get my department site
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "content": "@string@",
+      "json_content": "@string@",
+      "uuid": "51e507e5-3d7c-4f08-b05d-b7cb45e960d3",
+      "slug": "92-hauts-de-seine",
+      "zone": {
+        "code": "92",
+        "name": "Hauts-de-Seine",
+        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
       }
     }
     """

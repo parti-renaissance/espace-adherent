@@ -68,7 +68,7 @@ class DepartmentSite
      *
      * @Assert\NotBlank
      *
-     * @Groups({"department_site_read", "department_site_read_list", "department_site_write"})
+     * @Groups({"department_site_read", "department_site_write"})
      */
     private ?string $content = null;
 
