@@ -29,8 +29,12 @@ export default class GooglePlaceAutocomplete {
     bindListeners() {
         if (this._addressForm) {
             this._autocomplete.addListener('place_changed', () => {
-                this._addressForm.updateWithPlace(this._autocomplete.getPlace());
-                this._input.value = this._addressForm.getAddressString();
+                const place = this._autocomplete.getPlace();
+
+                if (place.address_components !== undefined) {
+                    this._addressForm.updateWithPlace(this._autocomplete.getPlace());
+                    this._input.value = this._addressForm.getAddressString();
+                }
             });
         }
     }
