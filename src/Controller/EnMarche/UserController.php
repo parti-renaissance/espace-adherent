@@ -50,12 +50,8 @@ class UserController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
+        if ($adherent->isRenaissanceUser()) {
             return $this->render('adherent/renaissance_profile.html.twig');
-        }
-
-        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);
@@ -63,7 +59,6 @@ class UserController extends AbstractController
         $form = $this
             ->createForm(AdherentProfileType::class, $adherentProfile, [
                 'disabled_form' => $adherent->isCertified(),
-                'is_renaissance' => $isRenaissanceApp,
             ])
             ->handleRequest($request)
         ;
@@ -72,17 +67,12 @@ class UserController extends AbstractController
             $handler->update($adherent, $adherentProfile);
             $this->addFlash('info', 'adherent.update_profile.success');
 
-            return $this->redirectToRoute('app_user_edit', ['app_domain' => $app_domain]);
+            return $this->redirectToRoute('app_user_edit');
         }
 
-        return $this->render(
-            $isRenaissanceApp
-                ? 'renaissance/adherent/profile/form.html.twig'
-                : 'adherent/profile.html.twig',
-            [
-                'form' => $form->createView(),
-            ]
-        );
+        return $this->render('adherent/profile.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

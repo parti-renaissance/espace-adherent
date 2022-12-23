@@ -10,16 +10,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @Route("/parametres/mon-compte", name="app_renaissance_adherent_profile", methods={"GET"})
- */
+#[Route(path: '/parametres/mon-compte', name: 'app_renaissance_adherent_profile', methods: ['GET', 'POST'])]
 class ProfileController extends AbstractController
 {
     public function __invoke(Request $request, AdherentProfileHandler $handler): Response
     {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
+
+        if (!$adherent->isRenaissanceUser()) {
+            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
 
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);
         $form = $this

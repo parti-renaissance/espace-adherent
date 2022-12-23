@@ -102,7 +102,6 @@ class AdherentControllerTest extends WebTestCase
         self::assertSame('Fenix', $crawler->filter(sprintf($inputPattern, 'lastName'))->attr('value'));
         self::assertSame('2 avenue Jean Jaurès', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
         self::assertSame('77000', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
-        self::assertSame('77000-77288', $crawler->filter(sprintf($inputPattern, 'address][city'))->attr('value'));
         self::assertSame('France', $crawler->filter(sprintf($optionPattern, 'address][country'))->text());
         self::assertSame(null, $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
         self::assertSame('En activité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
@@ -122,7 +121,6 @@ class AdherentControllerTest extends WebTestCase
                     'address' => '',
                     'country' => 'FR',
                     'postalCode' => '',
-                    'city' => '10102-45029',
                     'cityName' => '',
                 ],
                 'phone' => [
@@ -137,13 +135,13 @@ class AdherentControllerTest extends WebTestCase
 
         $errors = $crawler->filter('.re-form-error');
         self::assertSame(7, $errors->count());
-        self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
+        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(0)->text());
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
-        self::assertSame('La nationalité est requise.', $errors->eq(2)->text());
-        self::assertSame('L\'adresse email est requise.', $errors->eq(3)->text());
-        self::assertSame('L\'adresse est obligatoire.', $errors->eq(4)->text());
-        self::assertSame('Veuillez renseigner un code postal.', $errors->eq(5)->text());
-        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(6)->text());
+        self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(2)->text());
+        self::assertSame('La nationalité est requise.', $errors->eq(3)->text());
+        self::assertSame('L\'adresse email est requise.', $errors->eq(4)->text());
+        self::assertSame('L\'adresse est obligatoire.', $errors->eq(5)->text());
+        self::assertSame('Veuillez renseigner un code postal.', $errors->eq(6)->text());
 
         // Submit the profile form with too long input
         $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
@@ -157,7 +155,6 @@ class AdherentControllerTest extends WebTestCase
                     'address' => 'Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Oui oui oui.',
                     'country' => 'FR',
                     'postalCode' => '0600000000000000',
-                    'city' => '06000-6088',
                     'cityName' => 'Nice, France',
                 ],
                 'phone' => [
@@ -174,10 +171,10 @@ class AdherentControllerTest extends WebTestCase
         $errors = $crawler->filter('.re-form-error');
 
         self::assertSame(4, $errors->count());
-        self::assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(0)->text());
-        self::assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(1)->text());
-        self::assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(2)->text());
-        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(3)->text());
+        self::assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(0)->text());
+        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(1)->text());
+        self::assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(2)->text());
+        self::assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(3)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('Enregistrer')->form([
@@ -189,7 +186,6 @@ class AdherentControllerTest extends WebTestCase
                     'address' => '9 rue du Lycée',
                     'country' => 'FR',
                     'postalCode' => '06000',
-                    'city' => '06000-6088',
                     'cityName' => 'Nice',
                 ],
                 'phone' => [
