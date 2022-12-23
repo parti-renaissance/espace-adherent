@@ -27,7 +27,7 @@ class LoadScopeData extends Fixture
         $manager->persist($this->createScope(ScopeEnum::REFERENT, 'Référent'));
         $manager->persist($this->createScope(ScopeEnum::DEPUTY, 'Député', self::BASIC_FEATURES));
         $manager->persist($this->createScope(ScopeEnum::SENATOR, 'Sénateur', self::BASIC_FEATURES));
-        $manager->persist($this->createScope(ScopeEnum::NATIONAL, 'National', array_diff(FeatureEnum::ALL, [FeatureEnum::MESSAGES])));
+        $manager->persist($this->createScope(ScopeEnum::NATIONAL, 'National', array_diff(FeatureEnum::ALL, [FeatureEnum::MESSAGES, FeatureEnum::DEPARTMENT_SITE])));
         $manager->persist($this->createScope(ScopeEnum::NATIONAL_COMMUNICATION, 'National communication', [FeatureEnum::NEWS]));
         $manager->persist($this->createScope(ScopeEnum::CANDIDATE, 'Candidat', array_merge(self::BASIC_FEATURES, [FeatureEnum::PAP]), []));
         $manager->persist($this->createScope(ScopeEnum::PHONING, 'Appelant', [], [AppEnum::JEMARCHE]));
@@ -36,7 +36,7 @@ class LoadScopeData extends Fixture
         $manager->persist($this->createScope(ScopeEnum::PAP, 'Porte-à-porteur', [], [AppEnum::JEMARCHE]));
         $manager->persist($this->createScope(ScopeEnum::CORRESPONDENT, 'Correspondant', array_merge(self::BASIC_FEATURES, [FeatureEnum::NEWS, FeatureEnum::MY_TEAM])));
         $manager->persist($this->createScope(ScopeEnum::LEGISLATIVE_CANDIDATE, 'Candidat aux législatives', array_merge(self::BASIC_FEATURES, [FeatureEnum::NEWS, FeatureEnum::PAP, FeatureEnum::MY_TEAM, FeatureEnum::PAP_V2])));
-        $manager->persist($this->createScope(ScopeEnum::REGIONAL_COORDINATOR, 'Coordinateur régional'));
+        $manager->persist($this->createScope(ScopeEnum::REGIONAL_COORDINATOR, 'Coordinateur régional', array_diff(FeatureEnum::ALL, [FeatureEnum::DEPARTMENT_SITE])));
 
         $manager->flush();
     }

@@ -93,6 +93,8 @@ trait EntityIdentityTrait
      *     "scope",
      *     "contact_read_after_write",
      *     "contact_read",
+     *     "department_site_read",
+     *     "department_site_read_list",
      * })
      *
      * @ApiProperty(

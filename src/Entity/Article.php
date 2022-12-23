@@ -53,6 +53,7 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
     use EntityContentTrait;
+    use UnlayerJsonContentTrait;
     use EntityMediaTrait;
     use EntityPublishableTrait;
     use EntitySourceableTrait;
@@ -123,13 +124,6 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      * @Groups({"article_list_read", "article_read"})
      */
     private $slug;
-
-    /**
-     * JSON representation of message content (using by Unlayer JS lib)
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    public ?string $jsonContent = null;
 
     public function __construct()
     {

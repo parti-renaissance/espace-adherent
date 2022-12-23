@@ -1,0 +1,426 @@
+{
+    "counters": {
+        "u_row": 1,
+        "u_column": 1,
+        "u_content_text": 1,
+        "u_content_divider": 3,
+        "u_content_heading": 1,
+        "u_content_button": 1,
+        "u_content_image": 1,
+        "u_content_social": 1,
+        "u_content_timer": 1
+    },
+    "body": {
+        "id": "CawWvavknl",
+        "rows": [
+            {
+                "id": "DMh_l2dtba",
+                "cells": [
+                    1
+                ],
+                "columns": [
+                    {
+                        "id": "aB6ZyNEmC9",
+                        "contents": [
+                            {
+                                "id": "9Anw_hAbPH",
+                                "type": "heading",
+                                "values": {
+                                    "containerPadding": "10px",
+                                    "anchor": "",
+                                    "headingType": "h1",
+                                    "fontSize": "22px",
+                                    "textAlign": "left",
+                                    "lineHeight": "140%",
+                                    "linkStyle": {
+                                        "inherit": true,
+                                        "linkColor": "#0000ee",
+                                        "linkHoverColor": "#0000ee",
+                                        "linkUnderline": true,
+                                        "linkHoverUnderline": true
+                                    },
+                                    "hideDesktop": false,
+                                    "displayCondition": null,
+                                    "_meta": {
+                                        "htmlID": "u_content_heading_1",
+                                        "htmlClassNames": "u_content_heading"
+                                    },
+                                    "selectable": true,
+                                    "draggable": true,
+                                    "duplicatable": true,
+                                    "deletable": true,
+                                    "hideable": true,
+                                    "text": "<strong>Exemple de titre</strong>"
+                                }
+                            },
+                            {
+                                "id": "0C-NL5orTf",
+                                "type": "divider",
+                                "values": {
+                                    "width": "100%",
+                                    "border": {
+                                        "borderTopWidth": "1px",
+                                        "borderTopStyle": "solid",
+                                        "borderTopColor": "#BBBBBB"
+                                    },
+                                    "textAlign": "center",
+                                    "containerPadding": "10px",
+                                    "anchor": "",
+                                    "hideDesktop": false,
+                                    "displayCondition": null,
+                                    "_meta": {
+                                        "htmlID": "u_content_divider_1",
+                                        "htmlClassNames": "u_content_divider"
+                                    },
+                                    "selectable": true,
+                                    "draggable": true,
+                                    "duplicatable": true,
+                                    "deletable": true,
+                                    "hideable": true
+                                }
+                            },
+                            {
+                                "id": "gV0-1ozUuy",
+                                "type": "button",
+                                "values": {
+                                    "containerPadding": "10px",
+                                    "anchor": "",
+                                    "href": {
+                                        "name": "web",
+                                        "values": {
+                                            "href": "",
+                                            "target": "_blank"
+                                        }
+                                    },
+                                    "buttonColors": {
+                                        "color": "#FFFFFF",
+                                        "backgroundColor": "#3AAEE0",
+                                        "hoverColor": "#FFFFFF",
+                                        "hoverBackgroundColor": "#3AAEE0"
+                                    },
+                                    "size": {
+                                        "autoWidth": true,
+                                        "width": "100%"
+                                    },
+                                    "textAlign": "center",
+                                    "lineHeight": "120%",
+                                    "padding": "10px 20px",
+                                    "border": {},
+                                    "borderRadius": "4px",
+                                    "hideDesktop": false,
+                                    "displayCondition": null,
+                                    "_meta": {
+                                        "htmlID": "u_content_button_1",
+                                        "htmlClassNames": "u_content_button"
+                                    },
+                                    "selectable": true,
+                                    "draggable": true,
+                                    "duplicatable": true,
+                                    "deletable": true,
+                                    "hideable": true,
+                                    "text": "<span style=\"font-size: 14px; line-height: 16.8px;\">Button Text</span>"
+                                }
+                            },
+                            {
+                                "id": "nBEnsBvIKZ",
+                                "type": "text",
+                                "values": {
+                                    "containerPadding": "10px",
+                                    "anchor": "",
+                                    "textAlign": "left",
+                                    "lineHeight": "140%",
+                                    "linkStyle": {
+                                        "inherit": true,
+                                        "linkColor": "#0000ee",
+                                        "linkHoverColor": "#0000ee",
+                                        "linkUnderline": true,
+                                        "linkHoverUnderline": true
+                                    },
+                                    "hideDesktop": false,
+                                    "displayCondition": null,
+                                    "_meta": {
+                                        "htmlID": "u_content_text_1",
+                                        "htmlClassNames": "u_content_text"
+                                    },
+                                    "selectable": true,
+                                    "draggable": true,
+                                    "duplicatable": true,
+                                    "deletable": true,
+                                    "hideable": true,
+                                    "text": "<p style=\"font-size: 14px; line-height: 140%;\"><span style=\"font-family: Maax, sans-serif; font-size: 14px; line-height: 19.6px;\"><strong>Lorem ipsum</strong> dolor sit amet. Eum repellendus temporibus sit voluptate incidunt hic repellat voluptas et sint nobis ut dolorem quia aut fuga eius et recusandae tempore. Sit labore similique ut fugiat exercitationem est esse doloribus ut quia fugit et distinctio consectetur?</span></p>\n<p style=\"font-size: 14px; line-height: 140%;\"><span style=\"font-family: Maax, sans-serif; font-size: 14px; line-height: 19.6px;\">Ut porro porro aut consequatur rerum sit temporibus officia qui molestias atque et odit animi et facere corrupti. In corporis internos aut dolore consectetur in quas quod? Vel voluptas fugit et amet voluptatem sed beatae quaerat et neque eveniet sit accusamus galisum. Est provident ipsum quo necessitatibus repellendus et quod numquam.</span></p>\n<p style=\"font-size: 14px; line-height: 140%;\">Ad blanditiis reiciendis sit dolorem similique et ducimus galisum? Nam voluptas quia sit incidunt fuga ad deleniti unde et molestiae excepturi non sunt rerum aut quis unde est rerum laborum. Est aspernatur atque non tempora quidem aut recusandae totam quo quidem rerum eos assumenda illo sed nulla impedit.</p>"
+                                }
+                            },
+                            {
+                                "id": "lZfprtFvxP",
+                                "type": "divider",
+                                "values": {
+                                    "width": "100%",
+                                    "border": {
+                                        "borderTopWidth": "1px",
+                                        "borderTopStyle": "solid",
+                                        "borderTopColor": "#BBBBBB"
+                                    },
+                                    "textAlign": "center",
+                                    "containerPadding": "10px",
+                                    "anchor": "",
+                                    "hideDesktop": false,
+                                    "displayCondition": null,
+                                    "_meta": {
+                                        "htmlID": "u_content_divider_2",
+                                        "htmlClassNames": "u_content_divider"
+                                    },
+                                    "selectable": true,
+                                    "draggable": true,
+                                    "duplicatable": true,
+                                    "deletable": true,
+                                    "hideable": true
+                                }
+                            },
+                            {
+                                "id": "f1BunQHwJH",
+                                "type": "timer",
+                                "values": {
+                                    "containerPadding": "10px",
+                                    "anchor": "",
+                                    "countdown": {
+                                        "countdownUrl": "https://cdn.tools.unlayer.com/countdown/countdown.gif",
+                                        "endTime": "",
+                                        "backgroundColor": "#000000",
+                                        "labelColor": "#FFFFFF",
+                                        "labelFontFamily": "Open Sans",
+                                        "labelFontSize": 28,
+                                        "digitColor": "#FFFFFF",
+                                        "digitFontFamily": "Open Sans",
+                                        "digitFontSize": 75,
+                                        "timezone": "America/Los_Angeles",
+                                        "locale": null,
+                                        "showLabels": true,
+                                        "width": 660,
+                                        "height": 147
+                                    },
+                                    "width": {
+                                        "autoWidth": true,
+                                        "width": "100%"
+                                    },
+                                    "textAlign": "center",
+                                    "altText": "Countdown",
+                                    "action": {
+                                        "name": "web",
+                                        "values": {
+                                            "href": "",
+                                            "target": "_blank"
+                                        }
+                                    },
+                                    "hideDesktop": false,
+                                    "displayCondition": null,
+                                    "_meta": {
+                                        "htmlID": "u_content_timer_1",
+                                        "htmlClassNames": "u_content_timer"
+                                    },
+                                    "selectable": true,
+                                    "draggable": true,
+                                    "duplicatable": true,
+                                    "deletable": true,
+                                    "hideable": true
+                                }
+                            },
+                            {
+                                "id": "q-fSME7nYb",
+                                "type": "divider",
+                                "values": {
+                                    "width": "100%",
+                                    "border": {
+                                        "borderTopWidth": "1px",
+                                        "borderTopStyle": "solid",
+                                        "borderTopColor": "#BBBBBB"
+                                    },
+                                    "textAlign": "center",
+                                    "containerPadding": "10px",
+                                    "anchor": "",
+                                    "hideDesktop": false,
+                                    "displayCondition": null,
+                                    "_meta": {
+                                        "htmlID": "u_content_divider_3",
+                                        "htmlClassNames": "u_content_divider"
+                                    },
+                                    "selectable": true,
+                                    "draggable": true,
+                                    "duplicatable": true,
+                                    "deletable": true,
+                                    "hideable": true
+                                }
+                            },
+                            {
+                                "id": "eMOBSOTXpO",
+                                "type": "image",
+                                "values": {
+                                    "containerPadding": "10px",
+                                    "anchor": "",
+                                    "src": {
+                                        "url": "https://assets.unlayer.com/projects/112621/1668587876280-cartes-test-resolution-tv_97886-1126.jpg",
+                                        "width": 626,
+                                        "height": 472
+                                    },
+                                    "textAlign": "center",
+                                    "altText": "",
+                                    "action": {
+                                        "name": "web",
+                                        "values": {
+                                            "href": "",
+                                            "target": "_blank"
+                                        }
+                                    },
+                                    "hideDesktop": false,
+                                    "displayCondition": null,
+                                    "_meta": {
+                                        "htmlID": "u_content_image_1",
+                                        "htmlClassNames": "u_content_image"
+                                    },
+                                    "selectable": true,
+                                    "draggable": true,
+                                    "duplicatable": true,
+                                    "deletable": true,
+                                    "hideable": true
+                                }
+                            },
+                            {
+                                "id": "fkxG28ODHx",
+                                "type": "social",
+                                "values": {
+                                    "containerPadding": "10px",
+                                    "anchor": "",
+                                    "icons": {
+                                        "iconType": "circle",
+                                        "icons": [],
+                                        "editor": {
+                                            "data": {
+                                                "showDefaultIcons": true,
+                                                "showDefaultOptions": true,
+                                                "customIcons": [],
+                                                "customOptions": []
+                                            }
+                                        }
+                                    },
+                                    "align": "center",
+                                    "spacing": 5,
+                                    "hideDesktop": false,
+                                    "displayCondition": null,
+                                    "_meta": {
+                                        "htmlID": "u_content_social_1",
+                                        "htmlClassNames": "u_content_social"
+                                    },
+                                    "selectable": true,
+                                    "draggable": true,
+                                    "duplicatable": true,
+                                    "deletable": true,
+                                    "hideable": true
+                                }
+                            }
+                        ],
+                        "values": {
+                            "_meta": {
+                                "htmlID": "u_column_1",
+                                "htmlClassNames": "u_column"
+                            },
+                            "border": {},
+                            "padding": "0px",
+                            "backgroundColor": ""
+                        }
+                    }
+                ],
+                "values": {
+                    "displayCondition": null,
+                    "columns": false,
+                    "backgroundColor": "",
+                    "columnsBackgroundColor": "",
+                    "backgroundImage": {
+                        "url": "",
+                        "fullWidth": true,
+                        "repeat": "no-repeat",
+                        "size": "custom",
+                        "position": "top-center",
+                        "customPosition": [
+                            "50%",
+                            "0%"
+                        ]
+                    },
+                    "padding": "0px",
+                    "anchor": "",
+                    "hideDesktop": false,
+                    "_meta": {
+                        "htmlID": "u_row_1",
+                        "htmlClassNames": "u_row"
+                    },
+                    "selectable": true,
+                    "draggable": true,
+                    "duplicatable": true,
+                    "deletable": true,
+                    "hideable": true
+                }
+            }
+        ],
+        "values": {
+            "popupPosition": "center",
+            "popupWidth": "600px",
+            "popupHeight": "auto",
+            "borderRadius": "10px",
+            "contentAlign": "left",
+            "contentVerticalAlign": "center",
+            "contentWidth": "1024px",
+            "fontFamily": {
+                "label": "Arial",
+                "value": "arial,helvetica,sans-serif"
+            },
+            "textColor": "#000000",
+            "popupBackgroundColor": "#FFFFFF",
+            "popupBackgroundImage": {
+                "url": "",
+                "fullWidth": true,
+                "repeat": "no-repeat",
+                "size": "cover",
+                "position": "top-center",
+                "customPosition": [
+                    "50%",
+                    "0%"
+                ]
+            },
+            "popupOverlay_backgroundColor": "rgba(0, 0, 0, 0.1)",
+            "popupCloseButton_position": "top-right",
+            "popupCloseButton_backgroundColor": "#DDDDDD",
+            "popupCloseButton_iconColor": "#000000",
+            "popupCloseButton_borderRadius": "0px",
+            "popupCloseButton_margin": "0px",
+            "popupCloseButton_action": {
+                "name": "close_popup",
+                "attrs": {
+                    "onClick": "document.querySelector('.u-popup-container').style.display = 'none';"
+                }
+            },
+            "backgroundColor": "#ffffff",
+            "backgroundImage": {
+                "url": "",
+                "fullWidth": true,
+                "repeat": "no-repeat",
+                "size": "custom",
+                "position": "top-center",
+                "customPosition": [
+                    "50%",
+                    "0%"
+                ]
+            },
+            "preheaderText": "",
+            "linkStyle": {
+                "body": true,
+                "linkColor": "#0000ee",
+                "linkHoverColor": "#0000ee",
+                "linkUnderline": true,
+                "linkHoverUnderline": true
+            },
+            "_meta": {
+                "htmlID": "u_body",
+                "htmlClassNames": "u_body"
+            }
+        }
+    },
+    "schemaVersion": 11
+}
