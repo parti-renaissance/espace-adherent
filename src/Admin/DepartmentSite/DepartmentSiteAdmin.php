@@ -93,7 +93,7 @@ class DepartmentSiteAdmin extends AbstractAdmin
             ->with('Département', ['class' => 'col-md-6'])
                 ->add('zone', ModelAutocompleteType::class, [
                     'property' => ['name', 'code'],
-                    'label' => 'Zone départementale',
+                    'label' => 'Département',
                     'btn_add' => false,
                     'callback' => [$this, 'prepareZoneAutocompleteCallback'],
                 ])
