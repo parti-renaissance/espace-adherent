@@ -27,6 +27,7 @@ window.Kernel = class {
                         integrations: [new BrowserTracing()],
                         ignoreErrors: ['Non-Error promise rejection captured'],
                         tracesSampleRate: 0.025,
+                        denyUrls: ['axept.io'],
                     });
 
                     if (user) {
