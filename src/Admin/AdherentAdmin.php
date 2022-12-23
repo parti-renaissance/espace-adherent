@@ -79,6 +79,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -306,7 +307,7 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('postAddress.cityName', null, [
                     'label' => 'Ville',
                 ])
-                ->add('postAddress.country', CountryType::class, [
+                ->add('postAddress.country', null, [
                     'label' => 'Pays',
                 ])
                 ->add('postAddress.latitude', null, [
@@ -579,11 +580,13 @@ class AdherentAdmin extends AbstractAdmin
                     ->add('postAddress.country', CountryType::class, [
                         'label' => 'Pays',
                     ])
-                    ->add('postAddress.latitude', TextType::class, [
+                    ->add('postAddress.latitude', NumberType::class, [
                         'label' => 'Latitude',
+                        'html5' => true,
                     ])
-                    ->add('postAddress.longitude', TextType::class, [
+                    ->add('postAddress.longitude', NumberType::class, [
                         'label' => 'Longitude',
+                        'html5' => true,
                     ])
                 ->end()
                 ->with('Zone expérimentale 🚧', [
