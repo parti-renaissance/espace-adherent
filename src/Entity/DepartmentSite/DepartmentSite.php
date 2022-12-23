@@ -91,7 +91,7 @@ class DepartmentSite
      * @ORM\Column(unique=true)
      * @Gedmo\Slug(handlers={
      *     @Gedmo\SlugHandler(class="App\DepartmentSite\DepartmentSiteSlugHandler")
-     * }, fields={"slug"}, updatable=true)
+     * }, fields={"content"})
      *
      * @Groups({"department_site_read", "department_site_read_list"})
      */
