@@ -56,6 +56,9 @@ class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
             case AdherentMessageTypeEnum::CORRESPONDENT:
                 $prefix = '[Correspondant]';
                 break;
+            case AdherentMessageTypeEnum::REGIONAL_COORDINATOR:
+                $prefix = '[Coordinateur Régional]';
+                break;
             default:
                 $prefix = '';
         }

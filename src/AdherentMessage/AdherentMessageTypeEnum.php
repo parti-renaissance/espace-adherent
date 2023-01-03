@@ -14,6 +14,7 @@ use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
+use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use MyCLabs\Enum\Enum;
 
@@ -32,6 +33,7 @@ class AdherentMessageTypeEnum extends Enum
     public const CANDIDATE_JECOUTE = 'candidate_jecoute';
     public const COALITIONS = 'coalitions';
     public const CORRESPONDENT = 'correspondent';
+    public const REGIONAL_COORDINATOR = 'regional_coordinator';
 
     public const CLASSES = [
         self::DEPUTY => DeputyAdherentMessage::class,
@@ -47,6 +49,7 @@ class AdherentMessageTypeEnum extends Enum
         self::CANDIDATE_JECOUTE => CandidateJecouteMessage::class,
         self::COALITIONS => CoalitionsMessage::class,
         self::CORRESPONDENT => CorrespondentAdherentMessage::class,
+        self::REGIONAL_COORDINATOR => RegionalCoordinatorAdherentMessage::class,
     ];
 
     public const ROLES = [
@@ -72,5 +75,7 @@ class AdherentMessageTypeEnum extends Enum
         CoalitionsMessage::class => 'ROLE_CAUSE_AUTHOR',
 
         CorrespondentAdherentMessage::class => ['ROLE_CORRESPONDENT', 'ROLE_DELEGATED_CORRESPONDENT'],
+
+        RegionalCoordinatorAdherentMessage::class => ['ROLE_REGIONAL_COORDINATOR', 'ROLE_DELEGATED_REGIONAL_COORDINATOR'],
     ];
 }
