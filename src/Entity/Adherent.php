@@ -886,7 +886,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ?\DateTimeInterface $birthdate,
         bool $exclusiveMembership = false,
         bool $territoiresProgresMembership = false,
-        bool $agirMembership = false
+        bool $agirMembership = false,
+        ?\DateTime $registeredAt = null
     ): self {
         $adherent = new self();
 
@@ -902,7 +903,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->exclusiveMembership = $exclusiveMembership;
         $adherent->territoireProgresMembership = $territoiresProgresMembership;
         $adherent->agirMembership = $agirMembership;
-        $adherent->registeredAt = new \DateTime('now');
+        $adherent->registeredAt = $registeredAt ?? new \DateTime('now');
 
         $adherent->password = Uuid::uuid4();
 
