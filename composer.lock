@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e0e146bf018e1385a5b72ad5b8cadb34",
+    "content-hash": "a3187130be0844fc007bbe111c53aa5f",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -11760,16 +11760,16 @@
         },
         {
             "name": "sonata-project/exporter",
-            "version": "3.0.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/exporter.git",
-                "reference": "1877816a03b96cadf1be03d1857d9ef11088778a"
+                "reference": "7a6b1dc85efba95461f21fa24d135c71a83def6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/1877816a03b96cadf1be03d1857d9ef11088778a",
-                "reference": "1877816a03b96cadf1be03d1857d9ef11088778a",
+                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/7a6b1dc85efba95461f21fa24d135c71a83def6e",
+                "reference": "7a6b1dc85efba95461f21fa24d135c71a83def6e",
                 "shasum": ""
             },
             "require": {
@@ -11777,7 +11777,9 @@
             },
             "conflict": {
                 "doctrine/mongodb-odm": "<2.0",
-                "doctrine/orm": "<2.8"
+                "doctrine/orm": "<2.8",
+                "phpoffice/phpspreadsheet": "<1.23",
+                "symfony/config": "<5.4"
             },
             "require-dev": {
                 "doctrine/annotations": "^1.13",
@@ -11787,7 +11789,7 @@
                 "friendsofphp/php-cs-fixer": "^3.4",
                 "matthiasnoback/symfony-config-test": "^4.2",
                 "matthiasnoback/symfony-dependency-injection-test": "^4.0",
-                "phpoffice/phpspreadsheet": "^1.0",
+                "phpoffice/phpspreadsheet": "^1.23",
                 "phpstan/extension-installer": "^1.0",
                 "phpstan/phpstan": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
@@ -11796,7 +11798,7 @@
                 "phpunit/phpunit": "^9.5",
                 "psalm/plugin-phpunit": "^0.16",
                 "psalm/plugin-symfony": "^3.0",
-                "rector/rector": "^0.13",
+                "rector/rector": "^0.15",
                 "symfony/config": "^5.4 || ^6.0",
                 "symfony/dependency-injection": "^5.4 || ^6.0",
                 "symfony/http-foundation": "^5.4 || ^6.0",
@@ -11843,13 +11845,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/exporter/issues",
-                "source": "https://github.com/sonata-project/exporter/tree/3.0.0"
+                "source": "https://github.com/sonata-project/exporter/tree/3.1.1"
             },
             "funding": [
-                {
-                    "url": "https://github.com/OskarStark",
-                    "type": "github"
-                },
                 {
                     "url": "https://github.com/VincentLanglet",
                     "type": "github"
@@ -11861,9 +11859,13 @@
                 {
                     "url": "https://github.com/greg0ire",
                     "type": "github"
+                },
+                {
+                    "url": "https://github.com/jordisala1991",
+                    "type": "github"
                 }
             ],
-            "time": "2022-07-28T07:39:57+00:00"
+            "time": "2023-01-02T20:12:43+00:00"
         },
         {
             "name": "sonata-project/form-extensions",
