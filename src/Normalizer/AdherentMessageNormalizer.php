@@ -66,6 +66,8 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
                 return [$author->getDeputyZone()];
             case AdherentMessageTypeEnum::CORRESPONDENT && $author->isCorrespondent():
                 return [$author->getCorrespondentZone()];
+            case AdherentMessageTypeEnum::REGIONAL_COORDINATOR && $author->isRegionalCoordinator():
+                return $author->getRegionalCoordinatorZone();
             default:
                 return [];
         }

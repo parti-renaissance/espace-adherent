@@ -42,6 +42,8 @@ abstract class FilterFactory
                 return static::createCoalitionsFilter($user);
             case AdherentMessageTypeEnum::CORRESPONDENT:
                 return static::createCorrespondentFilter($user);
+            case AdherentMessageTypeEnum::REGIONAL_COORDINATOR:
+                return static::createRegionalCoordinatorFilter($user);
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid message type "%s"', $messageType));
@@ -151,5 +153,14 @@ abstract class FilterFactory
         }
 
         return new AdherentGeoZoneFilter($user->getCorrespondentZone());
+    }
+
+    private static function createRegionalCoordinatorFilter(Adherent $user): MessageFilter
+    {
+        if ($user->isRegionalCoordinator()) {
+            throw new \InvalidArgumentException('[AdherentMessage] Adherent should be a regional coordinator');
+        }
+
+        return new MessageFilter($user->getRegionalCoordinatorZone());
     }
 }

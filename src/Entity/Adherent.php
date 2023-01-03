@@ -2401,6 +2401,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isCandidate()
             || $this->isDelegatedCandidate()
             || $this->isCorrespondent()
+            || $this->isRegionalCoordinator()
             || $this->hasDelegatedAccess(DelegatedAccess::ACCESS_MESSAGES)
             || $this->hasDelegatedScopeFeature(FeatureEnum::MESSAGES)
         ;

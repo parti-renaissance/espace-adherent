@@ -272,3 +272,31 @@ Feature:
     Then the response status code should be 400
     And the response should be in JSON
     And the JSON node "detail" should be equal to "The message is not yet ready to send."
+
+  Scenario: As a regional coordinator I can create a message
+    Given I am logged with "coordinateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/adherent_messages?scope=regional_coordinator" with body:
+    """
+    {
+      "type": "regional_coordinator",
+      "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
+      "subject": "L'objet du mail",
+      "content": "<table>...</table>",
+      "json_content": "{\"foo\": \"bar\", \"items\": [1, 2, true, \"hello world\"]}"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "@uuid@",
+      "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
+      "subject": "L'objet du mail",
+      "status": "draft",
+      "recipient_count": 0,
+      "source": "api",
+      "synchronized": false
+    }
+    """
