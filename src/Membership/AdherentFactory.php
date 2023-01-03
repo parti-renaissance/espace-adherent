@@ -4,6 +4,7 @@ namespace App\Membership;
 
 use App\Address\PostAddressFactory;
 use App\Entity\Adherent;
+use App\Entity\Administrator;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Membership\MembershipRequest\AvecVousMembershipRequest;
 use App\Membership\MembershipRequest\CoalitionMembershipRequest;
@@ -160,8 +161,10 @@ class AdherentFactory
         return $adherent;
     }
 
-    public function createFromAdminAdherentCreateCommand(AdherentCreateCommand $command): Adherent
-    {
+    public function createFromAdminAdherentCreateCommand(
+        AdherentCreateCommand $command,
+        Administrator $administrator
+    ): Adherent {
         $adherent = Adherent::createBlank(
             $command->gender,
             $command->firstName,
@@ -177,6 +180,7 @@ class AdherentFactory
         );
 
         $adherent->setSource($command->source);
+        $adherent->setCreatedByAdministrator($administrator);
 
         return $adherent;
     }

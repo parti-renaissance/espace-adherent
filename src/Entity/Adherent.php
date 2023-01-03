@@ -105,7 +105,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
  */
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface
 {
     use EntityCrudTrait;
     use EntityIdentityTrait;
@@ -115,6 +115,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     use EntityReferentTagTrait;
     use EntityZoneTrait;
     use EntityUTMTrait;
+    use EntityAdministratorBlameableTrait;
 
     public const ENABLED = 'ENABLED';
     public const TO_DELETE = 'TO_DELETE';

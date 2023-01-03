@@ -5,6 +5,7 @@ namespace App\Renaissance\Membership\Admin;
 use App\Donation\DonationRequest;
 use App\Donation\DonationRequestHandler;
 use App\Donation\PayboxPaymentSubscription;
+use App\Entity\Administrator;
 use App\Entity\Donation;
 use App\Membership\AdherentEvents;
 use App\Membership\AdherentFactory;
@@ -36,9 +37,9 @@ class AdherentCreateCommandHandler
         return new AdherentCreateCommand(MembershipSourceEnum::RENAISSANCE);
     }
 
-    public function handle(AdherentCreateCommand $command): void
+    public function handle(AdherentCreateCommand $command, Administrator $administrator): void
     {
-        $adherent = $this->adherentFactory->createFromAdminAdherentCreateCommand($command);
+        $adherent = $this->adherentFactory->createFromAdminAdherentCreateCommand($command, $administrator);
         $adherent->join();
 
         $this->entityManager->persist($adherent);
