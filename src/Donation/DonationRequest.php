@@ -115,6 +115,8 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
      */
     private $confirmSubscriptionAmount;
 
+    private ?\DateTime $donatedAt = null;
+
     private $type;
 
     private ?string $source = null;
@@ -349,6 +351,16 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     public function getAdherentId(): ?int
     {
         return $this->adherentId;
+    }
+
+    public function getDonatedAt(): ?\DateTime
+    {
+        return $this->donatedAt;
+    }
+
+    public function setDonatedAt(?\DateTime $donatedAt): void
+    {
+        $this->donatedAt = $donatedAt;
     }
 
     public function updateFromAdherent(Adherent $adherent): void

@@ -146,8 +146,14 @@ class AdherentCreateCommand implements MembershipInterface
      */
     public ?float $cotisationCustomAmount = null;
 
+    /**
+     * @Assert\LessThanOrEqual("today")
+     */
+    public \DateTime $cotisationDate;
+
     public function __construct(public ?string $source = null)
     {
+        $this->cotisationDate = new \DateTime();
     }
 
     public function isExclusiveMembership(): bool

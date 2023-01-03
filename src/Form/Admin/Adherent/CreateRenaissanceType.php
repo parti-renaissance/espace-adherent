@@ -13,6 +13,7 @@ use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -68,6 +69,9 @@ class CreateRenaissanceType extends AbstractType
             ])
             ->add('cotisationCustomAmount', NumberType::class, [
                 'required' => false,
+            ])
+            ->add('cotisationDate', DateType::class, [
+                'years' => range(2022, date('Y')),
             ])
         ;
     }

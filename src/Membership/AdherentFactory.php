@@ -173,7 +173,8 @@ class AdherentFactory
             $command->birthdate,
             $command->isExclusiveMembership(),
             $command->isTerritoiresProgresMembership(),
-            $command->isAgirMembership()
+            $command->isAgirMembership(),
+            $command->cotisationDate
         );
 
         $adherent->setSource($command->source);

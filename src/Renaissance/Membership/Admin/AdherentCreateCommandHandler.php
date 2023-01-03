@@ -56,8 +56,10 @@ class AdherentCreateCommandHandler
             Donation::TYPE_CHECK
         );
         $donationRequest->forMembership();
+        $donationRequest->setDonatedAt($command->cotisationDate);
 
         $donation = $this->donationRequestHandler->handle($donationRequest, $adherent);
+        $donation->setDonatedAt($command->cotisationDate);
         $donation->markAsFinished();
         $donation->markAsLastSuccessfulDonation();
 
