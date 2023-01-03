@@ -1113,6 +1113,7 @@
         </service>
 
         <service id="app.admin.entity_administrator_blameable_extension" class="App\Admin\Extension\EntityAdministratorBlameableAdminExtension">
+            <tag name="sonata.admin.extension" target="app.admin.adherent" />
             <tag name="sonata.admin.extension" target="app.admin.cms_block" />
             <tag name="sonata.admin.extension" target="app.admin.team.team" />
             <tag name="sonata.admin.extension" target="app.admin.phoning.campaign" />

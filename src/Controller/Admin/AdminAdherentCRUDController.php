@@ -239,7 +239,7 @@ class AdminAdherentCRUDController extends CRUDController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $adherentCreateCommandHandler->handle($adherentCreateCommand);
+            $adherentCreateCommandHandler->handle($adherentCreateCommand, $this->getUser());
 
             $this->addFlash('sonata_flash_success', 'Le compte adhérent Renaissance a bien été créé.');
 
