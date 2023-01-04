@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 class DepartmentalElectionComplementaryCandidatureInformationMessage extends AbstractRenaissanceMessage
 {
     /** @param Adherent[] $adherents */
-    public function create(array $adherents): self
+    public static function create(array $adherents): self
     {
         $adherent = array_shift($adherents);
 
