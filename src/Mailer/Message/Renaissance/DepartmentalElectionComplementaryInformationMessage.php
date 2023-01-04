@@ -5,7 +5,7 @@ namespace App\Mailer\Message\Renaissance;
 use App\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
-class DepartmentalElectionComplementaryCandidatureInformationMessage extends AbstractRenaissanceMessage
+class DepartmentalElectionComplementaryInformationMessage extends AbstractRenaissanceMessage
 {
     /** @param Adherent[] $adherents */
     public static function create(array $adherents): self

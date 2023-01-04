@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\Adherent;
 use App\Mailer\MailerService;
-use App\Mailer\Message\Renaissance\DepartmentalElectionComplementaryCandidatureInformationMessage;
+use App\Mailer\Message\Renaissance\DepartmentalElectionComplementaryInformationMessage;
 use App\Membership\MembershipSourceEnum;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class SendComplementaryCandidatureInformationMessageCommand extends Command
+class SendComplementaryInformationMessageCommand extends Command
 {
     private const DPT_CODES = [
         '01',
@@ -116,7 +116,7 @@ class SendComplementaryCandidatureInformationMessageCommand extends Command
         '95',
     ];
 
-    protected static $defaultName = 'app:departmental-election:send-complementary-candidature-information';
+    protected static $defaultName = 'app:departmental-election:send-complementary-information';
 
     private SymfonyStyle $io;
 
@@ -177,7 +177,7 @@ class SendComplementaryCandidatureInformationMessageCommand extends Command
             $alreadySentCount < $total
             && ($adherents = $this->getChunkAdherents($selectedEmails, $excludedDptCodes, $sentUntil, $chunkLimit))
         ) {
-            if ($this->transactionalMailer->sendMessage(DepartmentalElectionComplementaryCandidatureInformationMessage::create($adherents))) {
+            if ($this->transactionalMailer->sendMessage(DepartmentalElectionComplementaryInformationMessage::create($adherents))) {
                 if (!$selectedEmails) {
                     array_walk($adherents, function (Adherent $adherent) use ($now) {
                         $adherent->globalNotificationSentAt = $now;
