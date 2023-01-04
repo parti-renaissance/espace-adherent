@@ -207,6 +207,11 @@ renaissance.membership.adherent: Adhérent RE seulement
 renaissance.membership.sympathizer: Sympathisant RE seulement
 renaissance.membership.none: Ni adhérent RE ni sympathisant RE
 
+adherent.source.renaissance_adherent: Adhérent RE
+adherent.source.renaissance_sympathizer: Sympathisant RE
+adherent.source.enmarche_adherent: Adhérent EM
+adherent.source.enmarche_user: Utilisateur EM
+
 membership.type.exclusive: Certifie n'appartenir à aucun autre parti politique
 membership.type.territoires_progres: Membre de « Territoires de Progrès »
 membership.type.agir: Membre d' « Agir, la droite constructive »
@@ -979,6 +984,7 @@ adherent.extract.field.country: Pays de résidence
 adherent.extract.field.postalCode: Code postal
 adherent.extract.field.city: Ville
 adherent.extract.field.address: Adresse postale
+adherent.extract.field.source: Source
 
 donator.extract.field.email: Email
 donator.extract.field.gender: Sexe

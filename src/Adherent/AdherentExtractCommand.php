@@ -17,6 +17,7 @@ class AdherentExtractCommand extends AbstractEmailExtractCommand
     public const FIELD_POSTAL_CODE = 'postalCode';
     public const FIELD_CITY = 'city';
     public const FIELD_ADDRESS = 'address';
+    public const FIELD_SOURCE = 'source';
 
     public static function getFieldChoices(): array
     {
@@ -32,6 +33,7 @@ class AdherentExtractCommand extends AbstractEmailExtractCommand
             self::FIELD_PHONE,
             self::FIELD_REGISTERED_AT,
             self::FIELD_BIRTH_DATE,
+            self::FIELD_SOURCE,
         ];
     }
 }
