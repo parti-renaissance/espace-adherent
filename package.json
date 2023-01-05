@@ -26,7 +26,7 @@
     "alpinejs": "^3.10.5",
     "atob": "^2.1.0",
     "autoprefixer": "^10.4.13",
-    "babel-loader": "^9.1.0",
+    "babel-loader": "^9.1.2",
     "clipboard": "^2.0.11",
     "copy-webpack-plugin": "^11.0.0",
     "core-js": "^3.27.1",
