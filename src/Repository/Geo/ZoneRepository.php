@@ -2,6 +2,7 @@
 
 namespace App\Repository\Geo;
 
+use App\Entity\DepartmentSite\DepartmentSite;
 use App\Entity\Committee;
 use App\Entity\Geo\City;
 use App\Entity\Geo\GeoInterface;
@@ -529,5 +530,19 @@ class ZoneRepository extends ServiceEntityRepository
     public function findOneByCode(string $code): ?Zone
     {
         return $this->findOneBy(['code' => $code, 'active' => true]);
+    }
+
+    public function findAllDepartmentSiteIndexByCode(): array
+    {
+        return $this->createQueryBuilder('zone', 'zone.code')
+            ->select('zone.name', 'zone.code')
+            ->addSelect('site.slug AS site_slug')
+            ->leftJoin(DepartmentSite::class, 'site', Join::WITH, 'zone = site.zone')
+            ->where('zone.type = :dpt')
+            ->orderBy('zone.name', 'ASC')
+            ->setParameter('dpt', Zone::DEPARTMENT)
+            ->getQuery()
+            ->getArrayResult()
+        ;
     }
 }
