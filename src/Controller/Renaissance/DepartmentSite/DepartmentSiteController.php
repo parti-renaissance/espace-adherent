@@ -2,7 +2,9 @@
 
 namespace App\Controller\Renaissance\DepartmentSite;
 
+use App\Controller\CanaryControllerTrait;
 use App\Entity\DepartmentSite\DepartmentSite;
+use App\Repository\Geo\ZoneRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +15,20 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DepartmentSiteController extends AbstractController
 {
+    use CanaryControllerTrait;
+
+    /**
+     * @Route(name="list", methods={"GET"})
+     */
+    public function departmentSiteListAction(ZoneRepository $zoneRepository): Response
+    {
+        $this->disableInProduction();
+
+        return $this->render('renaissance/department_site/list.html.twig', [
+            'department_sites' => $zoneRepository->findAllDepartmentSiteIndexByCode(),
+        ]);
+    }
+
     /**
      * @Route("/{slug}", name="view"), methods={"GET"}
      * @Entity("departmentSite", expr="repository.findOneBySlug(slug)")

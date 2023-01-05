@@ -2,6 +2,7 @@
 
 namespace App\Repository\Geo;
 
+use App\Entity\DepartmentSite\DepartmentSite;
 use App\Entity\Geo\City;
 use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
@@ -474,6 +475,19 @@ class ZoneRepository extends ServiceEntityRepository
         ;
     }
 
+    public function getDepartments(): array
+    {
+        return $this->createQueryBuilder('zone')
+            ->select('zone.name')
+            ->addSelect('zone.code')
+            ->where('zone.type = :type')
+            ->orderBy('zone.name', 'ASC')
+            ->setParameter('type', Zone::DEPARTMENT)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
     public function findByInseeCode(string $code): ?Zone
     {
         return $this->createQueryBuilder('zone', 'zone.code')
@@ -499,5 +513,20 @@ class ZoneRepository extends ServiceEntityRepository
         ;
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findAllDepartmentSiteIndexByCode(): array
+    {
+        return $this->createQueryBuilder('zone', 'zone.code')
+            ->select('zone.name AS department_name', 'zone.code AS department_code')
+            ->addSelect('site.slug AS department_site_slug')
+            ->leftJoin(DepartmentSite::class, 'site', Join::WITH, 'zone = site.zone')
+            ->where('zone.type = :dpt')
+            ->orderBy('zone.name', 'ASC')
+            ->setParameter('dpt', Zone::DEPARTMENT)
+            ->getQuery()
+            ->enableResultCache(2678400) // 31 days
+            ->getArrayResult()
+        ;
     }
 }
