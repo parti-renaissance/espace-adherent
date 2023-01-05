@@ -22,7 +22,9 @@ class LocalElectionAdmin extends AbstractAdmin
 {
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $filter->add('designation', ModelFilter::class, [
+        $filter
+            ->add('designation.label')
+            ->add('designation', ModelFilter::class, [
                 'label' => 'Désignation',
                 'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
