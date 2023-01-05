@@ -34,8 +34,10 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $candidateImportCommand->file->getPathname();
-            $csv = Reader::createFromPath($file);
-            $csv->setHeaderOffset(0);
+            $csv = Reader::createFromPath($file)
+                ->setDelimiter(';')
+                ->setHeaderOffset(0)
+            ;
 
             $header = $csv->getHeader();
             $records = $csv->getRecords();
