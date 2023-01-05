@@ -146,7 +146,7 @@
         $(document).ready(function() {
             var cotisationCustomAmountBlock = $('#sonata-ba-field-container-{{ form.cotisationCustomAmount.vars.id }}');
 
-            $('input[type=radio][name="{{ form.cotisationAmountChoice.vars.full_name }}"]').change(function() {
+            $('#{{ form.cotisationAmountChoice.vars.id }} input[type="radio"]').on('ifChanged change', function () {
                 if (!$(this).is(':checked')) {
                     return;
                 }
@@ -157,7 +157,7 @@
                     cotisationCustomAmountBlock.hide();
                     cotisationCustomAmountBlock.find('input').val('');
                 }
-            }).change();
+            }).trigger('ifChanged');
         });
     </script>
 {% endblock %}
