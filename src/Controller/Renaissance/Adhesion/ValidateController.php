@@ -40,7 +40,7 @@ class ValidateController extends AbstractController
         $adherent = $adherentRepository->findOneByEmail($adherentRequest->email);
         $tokenUsedAt = $adherentRequest->tokenUsedAt;
 
-        if (null === $tokenUsedAt) {
+        if (null === $tokenUsedAt || null === $adherent) {
             $adherent = $membershipRequestHandler->createOrUpdateRenaissanceAdherent($adherentRequest, $adherent);
         }
 
