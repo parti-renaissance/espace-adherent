@@ -15,8 +15,8 @@ class PartyList
         return $this->seats;
     }
 
-    public function increaseSeats(): void
+    public function increaseSeats(int $step = 1): void
     {
-        ++$this->seats;
+        $this->seats += $step;
     }
 }

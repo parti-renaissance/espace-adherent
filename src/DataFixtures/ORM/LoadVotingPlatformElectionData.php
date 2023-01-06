@@ -20,6 +20,7 @@ use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VoteResult;
 use App\Entity\VotingPlatform\VotersList;
 use App\ValueObject\Genders;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Designation\MajorityVoteMentionEnum;
 use App\VotingPlatform\Election\ResultCalculator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -496,7 +497,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
     private function loadLocalElectionCandidates(Election $election, LocalElection $localElection): void
     {
-        $pool = new ElectionPool('');
+        $pool = new ElectionPool(DesignationTypeEnum::LOCAL_ELECTION);
         $lists = $localElection->getCandidaciesGroups();
         $currentRound = $election->getCurrentRound();
         $currentRound->addElectionPool($pool);

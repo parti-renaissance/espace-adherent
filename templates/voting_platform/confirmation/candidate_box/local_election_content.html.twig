@@ -3,8 +3,6 @@
 <div class="ballot-paper">
     <div class="ballot-paper__content">
         <div>
-            <p class="text-xl">{{ get_election_pool_title_key(pool)|trans }}</p>
-
             {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
 
             {% if candidate_group %}
