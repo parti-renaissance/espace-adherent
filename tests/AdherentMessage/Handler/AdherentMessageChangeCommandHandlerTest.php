@@ -1039,7 +1039,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
         (new GenericMailchimpCampaignHandler())->handle($message);
 
-
         $this->clientMock
             ->expects($this->exactly(2))
             ->method('request')
@@ -1051,7 +1050,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'title' => 'Full Name - '.date('d/m/Y'),
                         'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
                         'from_name' => 'Full Name | Renaissance',
-                        'template_id' => 1,
+                        'template_id' => 11,
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -1088,6 +1087,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
         $this->createHandler($message)($this->commandDummy);
     }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -1160,6 +1160,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'candidate_jecoute' => 8,
                         'coalitions' => 9,
                         'correspondent' => 10,
+                        'regional_coordinator' => 11,
                     ],
                     [
                         'subscribed_emails_referents' => 1,
