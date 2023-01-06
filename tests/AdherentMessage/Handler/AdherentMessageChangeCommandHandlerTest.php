@@ -26,6 +26,7 @@ use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
+use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\Coalition;
@@ -1028,6 +1029,62 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $this->createHandler($message)($this->commandDummy);
     }
 
+    public function testRegionalCoordinatorMessageGeneratesGoodPayloads(): void
+    {
+        $message = $this->preparedMessage(RegionalCoordinatorAdherentMessage::class);
+        $message->setFilter(new MessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
+
+        (new GenericMailchimpCampaignHandler())->handle($message);
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->withConsecutive(
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'subject_line' => '[Coordinateur Régional] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
+                        'template_id' => 11,
+                    ],
+                    'recipients' => [
+                        'list_id' => 'main_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'ends',
+                                    'field' => 'ZONE_DPT',
+                                    'value' => '(code1)',
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontains',
+                                    'field' => 'interests-A',
+                                    'value' => [5, 6],
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [1],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+            )
+            ->willReturn(
+                $this->createMockResponse(json_encode(['id' => 'id1'])),
+            )
+        ;
+
+        $this->createHandler($message)($this->commandDummy);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -1100,6 +1157,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'candidate_jecoute' => 8,
                         'coalitions' => 9,
                         'correspondent' => 10,
+                        'regional_coordinator' => 11,
                     ],
                     [
                         'subscribed_emails_referents' => 1,
