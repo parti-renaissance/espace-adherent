@@ -25,7 +25,6 @@ class PartyListProportionalCalculator extends MajoritarianCalculator
 
     protected function calculateForPool(ElectionPoolResult $electionPoolResult): ?CandidateGroup
     {
-        $elected = null;
         $election = $electionPoolResult->getElectionPool()->getElection();
         $designation = $election->getDesignation();
 
@@ -59,9 +58,7 @@ class PartyListProportionalCalculator extends MajoritarianCalculator
         ));
 
         if ($electionToProcess->hasFreeSeats()) {
-            $this->logger->error('Plateforme de vote : problème de distribution de siège pour l\'élection "'.$election->getId().'"');
-
-            return null;
+            $this->logger->error(sprintf('Plateforme de vote : problème de distribution de siège pour l\'élection "%d", reste %d siège(s) à distribuer', $elected->getId(), $electionToProcess->getFreeSeatsNumber()));
         }
 
         foreach ($electionToProcess->partyLists as $list) {
@@ -72,6 +69,10 @@ class PartyListProportionalCalculator extends MajoritarianCalculator
             foreach ($candidateGroupResults as $groupResult) {
                 $candidateGroup = $groupResult->getCandidateGroup();
                 if ($candidateGroup->getId() == $list->identifier) {
+                    if ($candidateGroup === $elected && $primeSeats) {
+                        $list->increaseSeats($primeSeats);
+                    }
+
                     array_map(function (Candidate $candidate) {
                         $candidate->setAdditionallyElected(true);
                     }, \array_slice($candidateGroup->getCandidates(), 0, $list->getSeats()));

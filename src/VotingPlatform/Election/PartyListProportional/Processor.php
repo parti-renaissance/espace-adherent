@@ -20,16 +20,9 @@ class Processor
 
             arsort($quotients, \SORT_NUMERIC);
 
-            if (
-                \count($quotients) > 1
-                && array_values($quotients)[0] === array_values($quotients)[1]
-                && $election->getFreeSeatsNumber() <= 2
-            ) {
-                return;
+            if ($list = static::findWinnerList($election, $quotients)) {
+                $list->increaseSeats();
             }
-
-            $list = $election->findListByIdentifier(key($quotients));
-            $list->increaseSeats();
         }
     }
 
@@ -37,10 +30,39 @@ class Processor
     {
         $divider = 2 * $list->getSeats() + 1;
 
-        if (1 === $divider) {
+        if (1 === $divider && 0 === $list->getSeats()) {
             $divider = self::FIRST_COEFFICIENT;
         }
 
         return $list->totalVotes / $divider;
+    }
+
+    private static function findWinnerList(Election $election, array $quotients): ?PartyList
+    {
+        $max = max($quotients);
+
+        $winnerListIds = [];
+        foreach ($quotients as $listIdentifier => $quotient) {
+            if ($quotient === $max) {
+                $winnerListIds[] = $listIdentifier;
+            }
+        }
+
+        $winnerList = null;
+
+        if (\count($winnerListIds) > 0) {
+            $maxVote = 0;
+            foreach ($winnerListIds as $listId) {
+                $list = $election->findListByIdentifier($listId);
+                if ($list->totalVotes > $maxVote) {
+                    $maxVote = $list->totalVotes;
+                    $winnerList = $list;
+                }
+            }
+        } else {
+            $winnerList = $election->findListByIdentifier(current($winnerListIds));
+        }
+
+        return $winnerList;
     }
 }

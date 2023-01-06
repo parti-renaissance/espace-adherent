@@ -80,6 +80,8 @@
     {{ parent() }}
 
     <script type="text/javascript">
-        Kernel.onLoad(function () { addClass(dom('.envelope'), 'active'); });
+        if (window.Kernel !== undefined) {
+            Kernel.onLoad(function () { addClass(dom('.envelope'), 'active'); });
+        }
     </script>
 {% endblock %}
