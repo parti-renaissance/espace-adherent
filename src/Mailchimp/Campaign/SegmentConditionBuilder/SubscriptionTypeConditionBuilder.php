@@ -46,6 +46,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 
         switch ($messageClass = \get_class($campaign->getMessage())) {
             case ReferentAdherentMessage::class:
+            case RegionalCoordinatorAdherentMessage::class:
                 if (
                     (
                         ($filter = $campaign->getMessage()->getFilter()) instanceof ReferentUserFilter
@@ -83,7 +84,6 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 break;
 
             case CorrespondentAdherentMessage::class:
-            case RegionalCoordinatorAdherentMessage::class:
                 if ($campaign->getMailchimpListType()) {
                     return [];
                 }
