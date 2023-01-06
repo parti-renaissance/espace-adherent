@@ -1029,9 +1029,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $this->createHandler($message)($this->commandDummy);
     }
 
-    /**
-     * @group debug
-     */
     public function testRegionalCoordinatorMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(RegionalCoordinatorAdherentMessage::class);
