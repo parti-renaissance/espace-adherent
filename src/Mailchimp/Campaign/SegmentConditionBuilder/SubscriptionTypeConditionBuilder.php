@@ -16,6 +16,7 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
+use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
@@ -35,6 +36,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
             LegislativeCandidateAdherentMessage::class,
             CandidateAdherentMessage::class,
             CorrespondentAdherentMessage::class,
+            RegionalCoordinatorAdherentMessage::class,
         ], true);
     }
 
@@ -81,6 +83,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 break;
 
             case CorrespondentAdherentMessage::class:
+            case RegionalCoordinatorAdherentMessage::class:
                 if ($campaign->getMailchimpListType()) {
                     return [];
                 }
@@ -126,6 +129,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 $interestKeys[] = SubscriptionTypeEnum::SENATOR_EMAIL;
                 break;
             case ScopeEnum::CORRESPONDENT:
+            case ScopeEnum::REGIONAL_COORDINATOR:
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
             default:
