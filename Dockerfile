@@ -15,3 +15,4 @@ COPY --from=build /app /app
 COPY docker/prod/entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 RUN mkdir /run/php && mkdir var && APP_ENV=prod composer install --optimize-autoloader --no-interaction --no-ansi --no-dev && APP_ENV=prod bin/console cache:clear --no-warmup && APP_ENV=prod bin/console cache:warmup
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
