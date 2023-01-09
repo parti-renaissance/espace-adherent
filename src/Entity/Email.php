@@ -87,10 +87,12 @@ class Email
 
         $parts = explode('\\', $message::class);
 
+        $senderName = $message->getSenderName() ?? 'EnMarche';
+
         return new self(
             $message->getUuid(),
             end($parts),
-            $message->getReplyTo() ?? 'EnMarche',
+            $message->getReplyTo() ?? $senderName,
             $recipients,
             $requestPayload
         );

@@ -70,6 +70,7 @@ class EmailAdmin extends AbstractAdmin
             ])
             ->add('sender', null, [
                 'label' => 'Expéditeur',
+                'show_filter' => true,
             ])
             ->add('recipients', null, [
                 'label' => 'Destinataire',
