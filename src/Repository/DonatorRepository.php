@@ -33,4 +33,17 @@ class DonatorRepository extends ServiceEntityRepository
 
         return null;
     }
+
+    public function updateDonatorEmail(string $oldEmail, string $newEmail): void
+    {
+        $this->_em->createQueryBuilder()
+            ->update($this->_entityName, 'donator')
+            ->where('donator.emailAddress = :old_email')
+            ->set('donator.emailAddress', ':new_email')
+            ->setParameter('old_email', $oldEmail)
+            ->setParameter('new_email', $newEmail)
+            ->getQuery()
+            ->execute()
+        ;
+    }
 }
