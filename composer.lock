@@ -20119,24 +20119,25 @@
         },
         {
             "name": "pedrotroller/php-cs-custom-fixer",
-            "version": "v2.28.0",
+            "version": "v2.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PedroTroller/PhpCSFixer-Custom-Fixers.git",
-                "reference": "46783e4b14fecdd130dec9c2848f3846c0f9ffee"
+                "reference": "b25f454516abd7fdcf4e64629d2e0fa364975128"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PedroTroller/PhpCSFixer-Custom-Fixers/zipball/46783e4b14fecdd130dec9c2848f3846c0f9ffee",
-                "reference": "46783e4b14fecdd130dec9c2848f3846c0f9ffee",
+                "url": "https://api.github.com/repos/PedroTroller/PhpCSFixer-Custom-Fixers/zipball/b25f454516abd7fdcf4e64629d2e0fa364975128",
+                "reference": "b25f454516abd7fdcf4e64629d2e0fa364975128",
                 "shasum": ""
             },
             "require": {
-                "friendsofphp/php-cs-fixer": "^3.7",
-                "php": "^7.4 || ^8.0"
+                "friendsofphp/php-cs-fixer": "^3.13.1",
+                "php": "^8.0"
             },
             "require-dev": {
                 "phpspec/phpspec": "^7.0",
+                "sebastian/diff": "^4.0",
                 "twig/twig": "^3.3",
                 "webmozart/assert": "^1.10"
             },
@@ -20158,9 +20159,9 @@
             "description": "PHP-CS-FIXER : my custom fixers",
             "support": {
                 "issues": "https://github.com/PedroTroller/PhpCSFixer-Custom-Fixers/issues",
-                "source": "https://github.com/PedroTroller/PhpCSFixer-Custom-Fixers/tree/v2.28.0"
+                "source": "https://github.com/PedroTroller/PhpCSFixer-Custom-Fixers/tree/v2.30.0"
             },
-            "time": "2022-04-27T09:00:24+00:00"
+            "time": "2023-01-05T10:09:55+00:00"
         },
         {
             "name": "phar-io/manifest",
