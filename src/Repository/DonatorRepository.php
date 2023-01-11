@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Adherent;
 use App\Entity\Donator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -32,5 +33,18 @@ class DonatorRepository extends ServiceEntityRepository
         }
 
         return null;
+    }
+
+    public function updateDonatorEmail(Adherent $adherent): void
+    {
+        $this->_em->createQueryBuilder()
+            ->update($this->_entityName, 'donator')
+            ->where('donator.adherent = :adherent')
+            ->set('donator.emailAddress', ':email')
+            ->setParameter('adherent', $adherent)
+            ->setParameter('email', $adherent->getEmailAddress())
+            ->getQuery()
+            ->execute()
+        ;
     }
 }
