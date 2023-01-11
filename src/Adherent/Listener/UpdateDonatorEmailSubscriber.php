@@ -23,8 +23,7 @@ class UpdateDonatorEmailSubscriber implements EventSubscriberInterface
     public function onAdherentEmailUpdate(UserEmailEvent $event): void
     {
         $adherent = $event->getUser();
-        $oldEmail = $event->getOldEmail();
 
-        $this->donatorRepository->updateDonatorEmail($oldEmail, $adherent->getEmailAddress());
+        $this->donatorRepository->updateDonatorEmail($adherent);
     }
 }
