@@ -49,6 +49,7 @@ doctrine:
                 convert_tz: DoctrineExtensions\Query\Mysql\ConvertTz
                 now: DoctrineExtensions\Query\Mysql\Now
                 date: DoctrineExtensions\Query\Mysql\Date
+                date_add: DoctrineExtensions\Query\Mysql\DateAdd
                 timediff: DoctrineExtensions\Query\Mysql\TimeDiff
             numeric_functions:
                 acos: DoctrineExtensions\Query\Mysql\Acos

@@ -22,7 +22,7 @@
 
         <ul class="candidate-names">
             {% for candidate in elected %}
-                <li class="text--body">{{ candidate.fullName }}
+                <li class="text--body">{{ candidate.getFirstName() }} <span class="uppercase">{{ candidate.getLastName() }}</span>
                     {% if (pool_result.isElected and candidate_group.elected) or candidate.isAdditionallyElected %}
                         <span class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">
                             Élu{{ candidate.isFemale ? 'e' }}
