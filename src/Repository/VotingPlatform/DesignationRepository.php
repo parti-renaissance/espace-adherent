@@ -2,9 +2,10 @@
 
 namespace App\Repository\VotingPlatform;
 
+use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\VotingPlatform\Election;
 use App\Repository\GeoZoneTrait;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -83,28 +84,39 @@ class DesignationRepository extends ServiceEntityRepository
     /**
      * @return Designation[]
      */
-    public function getWithFinishCandidacyPeriod(\DateTime $candidacyStartDate): array
+    public function getWithFinishCandidacyPeriod(\DateTime $candidacyStartDate, array $types): array
     {
         return $this->createQueryBuilder('d')
             ->where('d.candidacyStartDate <= :date')
-            ->andWhere('d.candidacyEndDate < :date')
-            ->andWhere('d.voteStartDate > :date')
+            ->andWhere('d.candidacyEndDate < :date AND d.voteStartDate > :date')
+            ->andWhere('d.type IN (:types)')
             ->setParameter('date', $candidacyStartDate)
+            ->setParameter('types', $types)
             ->getQuery()
             ->getResult()
         ;
     }
 
-    public function findAllActiveForZones(array $zones, array $types = [], int $limit = null): array
+    public function findAllActiveForAdherent(Adherent $adherent, array $types = [], int $limit = null): array
     {
         $queryBuilder = $this->createQueryBuilder('designation')
-            ->where('designation.voteStartDate IS NOT NULL AND designation.voteEndDate IS NOT NULL')
-            ->andWhere('designation.voteEndDate > :date')
-            ->setParameters([
-                'date' => new \DateTime(),
-            ])
+            ->addSelect(
+                'CASE
+                    WHEN (designation.voteStartDate < :now AND designation.voteEndDate > :now) THEN 1
+                    ELSE 0
+                END AS HIDDEN score'
+            )
+            ->where(
+                'designation.voteEndDate > :now
+                OR (
+                    designation.resultDisplayDelay > 0
+                    AND DATE_ADD(designation.voteEndDate, designation.resultDisplayDelay, \'DAY\') > :now
+                )'
+            )
+            ->setParameters(['now' => new \DateTime()])
             ->setMaxResults($limit)
-            ->orderBy('designation.voteStartDate', 'ASC')
+            ->orderBy('score', 'DESC')
+            ->addOrderBy('designation.voteStartDate', 'ASC')
         ;
 
         if ($types) {
@@ -114,27 +126,42 @@ class DesignationRepository extends ServiceEntityRepository
             ;
         }
 
-        $this->withGeoZones(
-            $zones,
-            $queryBuilder,
-            'designation',
-            Designation::class,
-            'd2',
-            'zones',
-            'z2',
-            null,
-            false
-        );
+        $conditions = $queryBuilder->expr()->orX();
 
-        return $queryBuilder->getQuery()->getResult();
-    }
+        if ($zones = $adherent->getParentZones()) {
+            $zoneQueryBuilder = $this->createGeoZonesQueryBuilder(
+                $zones,
+                $queryBuilder,
+                Designation::class,
+                'd2',
+                'zones',
+                'z2',
+                null,
+                false
+            );
 
-    public function findFirstActiveLocalPollForZones(array $zones): ?Designation
-    {
-        if ($designations = $this->findAllActiveForZones($zones, [DesignationTypeEnum::LOCAL_POLL], 1)) {
-            return current($designations);
+            $conditions->add(
+                sprintf('designation.id IN (%s)', $zoneQueryBuilder->getDQL())
+            );
         }
 
-        return null;
+        $votingPlatformElectionQueryBuilder = $this->getEntityManager()->createQueryBuilder()
+            ->select('DISTINCT d3.id')
+            ->from(Election::class, 'voting_platform_election')
+            ->innerJoin('voting_platform_election.designation', 'd3')
+            ->innerJoin('voting_platform_election.votersList', 'voter_list')
+            ->innerJoin('voter_list.voters', 'voter')
+            ->where('voter.adherent = :adherent')
+        ;
+        $queryBuilder->setParameter('adherent', $adherent);
+
+        if ($types) {
+            $votingPlatformElectionQueryBuilder->andWhere('d3.type IN (:d3_types)');
+            $queryBuilder->setParameter('d3_types', $types);
+        }
+        $conditions->add(sprintf('designation.id IN (%s)', $votingPlatformElectionQueryBuilder->getDQL()));
+        $queryBuilder->andWhere($conditions);
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

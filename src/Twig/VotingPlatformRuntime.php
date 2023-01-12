@@ -18,6 +18,7 @@ use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoteRepository;
 use App\Repository\VotingPlatform\VoteResultRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
+use App\VotingPlatform\ElectionManager;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class VotingPlatformRuntime implements RuntimeExtensionInterface
@@ -28,7 +29,8 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
         private readonly VoteResultRepository $voteResultRepository,
         private readonly CommitteeRepository $committeeRepository,
         private readonly DesignationRepository $designationRepository,
-        private readonly CandidateGroupRepository $candidateGroupRepository
+        private readonly CandidateGroupRepository $candidateGroupRepository,
+        private readonly ElectionManager $electionManager
     ) {
     }
 
@@ -39,7 +41,7 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
 
     public function findActiveLocalDesignations(Adherent $adherent): array
     {
-        return $this->designationRepository->findAllActiveForZones($adherent->getParentZones());
+        return $this->electionManager->findActiveDesignations($adherent);
     }
 
     public function findElectionForCommittee(Committee $committee): ?Election

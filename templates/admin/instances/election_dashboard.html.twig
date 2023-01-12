@@ -119,8 +119,6 @@
         </div>
     </div>
 
-
-
     <h3>Répartition des voix</h3>
 
     <div class="row">
@@ -135,13 +133,13 @@
                     </div>
 
                     <div class="box-body">
-                        <canvas id="pie-chart-{{ pool.getId() }}"></canvas>
+                        <canvas id="pie-chart-{{ round.getId() }}-{{ pool.getId() }}"></canvas>
                     </div>
 
                     <script>
                         setTimeout(function () {
                             new Chart(
-                                document.getElementById('pie-chart-{{ pool.getId() }}'),
+                                document.getElementById('pie-chart-{{ round.getId() }}-{{ pool.getId() }}'),
                                 {
                                     type: 'bar',
                                     data: {

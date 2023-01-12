@@ -109,7 +109,7 @@ class CloseElectionCommand extends Command
     {
         $date = new \DateTime();
 
-        $designations = $this->designationRepository->getWithFinishCandidacyPeriod($date);
+        $designations = $this->designationRepository->getWithFinishCandidacyPeriod($date, [DesignationTypeEnum::COMMITTEE_ADHERENT]);
 
         $this->io->progressStart();
 
