@@ -22,18 +22,17 @@ class InitializeElectionsCommand extends Command
 {
     protected static $defaultName = 'app:voting-platform:step-1:initialize-elections';
 
-    /** @var DesignationRepository */
-    private $designationRepository;
-    /** @var SymfonyStyle */
-    private $io;
-    /** @var EntityManagerInterface */
-    private $entityManager;
-    /** @var CommitteeRepository */
-    private $committeeRepository;
-    /** @var TerritorialCouncilRepository */
-    private $territorialCouncilRepository;
-    /** @var ElectionRepository */
-    private $nationalCouncilElectionRepository;
+    private SymfonyStyle $io;
+
+    public function __construct(
+        private readonly DesignationRepository $designationRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly CommitteeRepository $committeeRepository,
+        private readonly TerritorialCouncilRepository $territorialCouncilRepository,
+        private readonly ElectionRepository $nationalCouncilElectionRepository
+    ) {
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -107,35 +106,5 @@ class InitializeElectionsCommand extends Command
             $this->entityManager->flush();
             $this->io->progressAdvance();
         }
-    }
-
-    /** @required */
-    public function setDesignationRepository(DesignationRepository $designationRepository): void
-    {
-        $this->designationRepository = $designationRepository;
-    }
-
-    /** @required */
-    public function setEntityManager(EntityManagerInterface $entityManager): void
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /** @required */
-    public function setCommitteeRepository(CommitteeRepository $committeeRepository): void
-    {
-        $this->committeeRepository = $committeeRepository;
-    }
-
-    /** @required */
-    public function setTerritorialCouncilRepository(TerritorialCouncilRepository $territorialCouncilRepository): void
-    {
-        $this->territorialCouncilRepository = $territorialCouncilRepository;
-    }
-
-    /** @required */
-    public function setNationalCouncilElectionRepository(ElectionRepository $nationalCouncilElectionRepository): void
-    {
-        $this->nationalCouncilElectionRepository = $nationalCouncilElectionRepository;
     }
 }

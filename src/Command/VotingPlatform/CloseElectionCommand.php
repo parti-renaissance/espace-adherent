@@ -2,15 +2,9 @@
 
 namespace App\Command\VotingPlatform;
 
-use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
-use App\Repository\CommitteeElectionRepository;
-use App\Repository\CommitteeMembershipRepository;
-use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\ResultCalculator;
-use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOverEvent;
 use App\VotingPlatform\Notifier\Event\VotingPlatformSecondRoundNotificationEvent;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,22 +18,16 @@ class CloseElectionCommand extends Command
 {
     protected static $defaultName = 'app:voting-platform:step-3:close-election';
 
-    /** @var SymfonyStyle */
-    private $io;
-    /** @var ElectionRepository */
-    private $electionRepository;
-    /** @var EntityManagerInterface */
-    private $entityManager;
-    /** @var DesignationRepository */
-    private $designationRepository;
-    /** @var CommitteeElectionRepository */
-    private $committeeElectionRepository;
-    /** @var CommitteeMembershipRepository */
-    private $committeeMembershipRepository;
-    /** @var ResultCalculator */
-    private $resultManager;
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private SymfonyStyle $io;
+
+    public function __construct(
+        private readonly ElectionRepository $electionRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ResultCalculator $resultManager,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -52,15 +40,6 @@ class CloseElectionCommand extends Command
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $this->closeElections();
-
-        $this->notifyForEndForCandidacy();
-
-        return 0;
-    }
-
-    private function closeElections(): void
     {
         $date = new \DateTime();
 
@@ -77,6 +56,8 @@ class CloseElectionCommand extends Command
         }
 
         $this->io->progressFinish();
+
+        return 0;
     }
 
     private function doCloseElection(Election $election): void
@@ -103,89 +84,5 @@ class CloseElectionCommand extends Command
 
         // 3. persist results
         $this->entityManager->flush();
-    }
-
-    private function notifyForEndForCandidacy(): void
-    {
-        $date = new \DateTime();
-
-        $designations = $this->designationRepository->getWithFinishCandidacyPeriod($date, [DesignationTypeEnum::COMMITTEE_ADHERENT]);
-
-        $this->io->progressStart();
-
-        foreach ($designations as $designation) {
-            if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
-                $this->notifyCommitteeElections($designation);
-            }
-        }
-
-        $this->io->progressFinish();
-    }
-
-    public function notifyCommitteeElections(Designation $designation): void
-    {
-        while ($committeeElections = $this->committeeElectionRepository->findAllToNotify($designation)) {
-            foreach ($committeeElections as $committeeElection) {
-                $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee = $committeeElection->getCommittee());
-
-                foreach ($memberships as $membership) {
-                    $this->eventDispatcher->dispatch(new CommitteeElectionCandidacyPeriodIsOverEvent(
-                        $membership->getAdherent(),
-                        $designation,
-                        $committee
-                    ));
-                }
-
-                $committeeElection->setAdherentNotified(true);
-
-                $this->entityManager->flush();
-
-                $this->io->progressAdvance();
-            }
-
-            $this->entityManager->clear();
-        }
-    }
-
-    /** @required */
-    public function setElectionRepository(ElectionRepository $electionRepository): void
-    {
-        $this->electionRepository = $electionRepository;
-    }
-
-    /** @required */
-    public function setEntityManager(EntityManagerInterface $entityManager): void
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /** @required */
-    public function setDesignationRepository(DesignationRepository $designationRepository): void
-    {
-        $this->designationRepository = $designationRepository;
-    }
-
-    /** @required */
-    public function setCommitteeElectionRepository(CommitteeElectionRepository $committeeElectionRepository): void
-    {
-        $this->committeeElectionRepository = $committeeElectionRepository;
-    }
-
-    /** @required */
-    public function setCommitteeMembershipRepository(CommitteeMembershipRepository $committeeMembershipRepository): void
-    {
-        $this->committeeMembershipRepository = $committeeMembershipRepository;
-    }
-
-    /** @required */
-    public function setResultManager(ResultCalculator $resultManager): void
-    {
-        $this->resultManager = $resultManager;
-    }
-
-    /** @required */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
     }
 }

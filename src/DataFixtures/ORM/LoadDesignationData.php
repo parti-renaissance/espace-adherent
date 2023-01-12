@@ -167,6 +167,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->seats = 7;
         $designation->majorityPrime = 10;
         $designation->majorityPrimeRoundSupMode = true;
+        $designation->setNotifications(array_sum(Designation::NOTIFICATION_ALL));
 
         $this->setReference('designation-13', $designation);
         $manager->persist($designation);

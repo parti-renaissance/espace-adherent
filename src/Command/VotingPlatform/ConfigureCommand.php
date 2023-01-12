@@ -307,7 +307,7 @@ class ConfigureCommand extends Command
 
         $this->entityManager->persist($this->createVoterList(
             $election,
-            $this->adherentRepository->findForLocalElection($designation->getZones()->toArray(), $designation->getElectionCreationDate()),
+            $this->adherentRepository->findForLocalElection($designation->getZones()->toArray(), $designation->getElectionCreationDate() ?? $designation->getVoteStartDate()),
         ));
         $this->entityManager->persist($election);
         $this->entityManager->flush();
@@ -350,7 +350,7 @@ class ConfigureCommand extends Command
 
         $this->entityManager->persist($this->createVoterList(
             $election,
-            $this->adherentRepository->findForLocalElection($designation->getZones()->toArray(), $designation->getElectionCreationDate()),
+            $this->adherentRepository->findForLocalElection($designation->getZones()->toArray(), $designation->getElectionCreationDate() ?? $designation->getVoteStartDate()),
         ));
         $this->entityManager->persist($election);
         $this->entityManager->flush();
