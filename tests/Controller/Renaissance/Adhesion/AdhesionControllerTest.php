@@ -164,9 +164,11 @@ class AdhesionControllerTest extends WebTestCase
             'CVVX' => '123',
         ]));
 
-        $this->payboxClient->submit($crawler->filter('form[name=form3dsecure]')->form());
+        if ($crawler->filter('form[name=form3dsecure]')->count()) {
+            $this->payboxClient->submit($crawler->filter('form[name=form3dsecure]')->form());
 
-        $crawler = $this->payboxClient->clickLink('Continuer');
+            $crawler = $this->payboxClient->clickLink('Continuer');
+        }
 
         $callbackUrl = $crawler->filter('td#ticketCell div.textCenter a')->attr('href');
         $callbackUrlRegExp = 'http://'.$this->getParameter('renaissance_host').'/adhesion/callback/(.+)'; // token
