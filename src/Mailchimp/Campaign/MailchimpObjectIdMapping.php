@@ -158,8 +158,6 @@ class MailchimpObjectIdMapping
     public function getListIdByMessageType(string $messageType): string
     {
         switch ($messageType) {
-            case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
-                return $this->applicationRequestCandidateListId;
             case AdherentMessageTypeEnum::CANDIDATE_JECOUTE:
                 return $this->jecouteListId;
             case AdherentMessageTypeEnum::COALITIONS:

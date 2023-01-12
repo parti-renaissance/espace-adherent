@@ -54,11 +54,6 @@
         <a href="{{ path('app_access_delegation_unset', {type: 'assessor_manager_requests'}) }}">Espace responsable assesseur</a>
     </li>
 {% endif %}
-{% if app.user.isMunicipalChief %}
-    <li>
-        <a href="{{ path('app_access_delegation_unset', {type: 'municipal_chief_home'}) }}">Espace Municipales 2020 🇫🇷</a>
-    </li>
-{% endif %}
 {% if app.user.isSenatorialCandidate %}
     <li>
         <a href="{{ path('app_access_delegation_unset', {type: 'senatorial_candidate_elected_representatives'}) }}">Espace Sénatoriales</a>

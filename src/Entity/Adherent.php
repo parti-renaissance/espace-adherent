@@ -582,14 +582,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $emailUnsubscribedAt;
 
     /**
-     * @var MunicipalChiefManagedArea|null
-     *
-     * @Assert\Valid
-     * @ORM\OneToOne(targetEntity="App\Entity\MunicipalChiefManagedArea", cascade={"all"}, orphanRemoval=true)
-     */
-    private $municipalChiefManagedArea;
-
-    /**
      * @var SenatorialCandidateManagedArea|null
      *
      * @Assert\Valid
@@ -1081,10 +1073,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_CANARY_TESTER';
         }
 
-        if ($this->isMunicipalChief()) {
-            $roles[] = 'ROLE_MUNICIPAL_CHIEF';
-        }
-
         if ($this->hasPrintPrivilege()) {
             $roles[] = 'ROLE_PRINT_PRIVILEGE';
         }
@@ -1201,7 +1189,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isDelegatedDeputy()
             || $this->isSenator()
             || $this->isDelegatedSenator()
-            || $this->isMunicipalChief()
             || $this->isElectionResultsReporter()
             || $this->isSenatorialCandidate()
             || $this->isHeadedRegionalCandidate()
@@ -2340,22 +2327,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ;
     }
 
-    public function isMunicipalChief(): bool
-    {
-        return $this->municipalChiefManagedArea instanceof MunicipalChiefManagedArea
-            && $this->municipalChiefManagedArea->getInseeCode();
-    }
-
-    public function getMunicipalChiefManagedArea(): ?MunicipalChiefManagedArea
-    {
-        return $this->municipalChiefManagedArea;
-    }
-
-    public function setMunicipalChiefManagedArea(MunicipalChiefManagedArea $municipalChiefManagedArea = null): void
-    {
-        $this->municipalChiefManagedArea = $municipalChiefManagedArea;
-    }
-
     public function __clone()
     {
         $this->subscriptionTypes = new ArrayCollection($this->subscriptionTypes->toArray());
@@ -2373,13 +2344,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = [
                 'label' => 'ROLE_REFERENT',
                 'codes' => $this->getManagedAreaTagCodes(),
-            ];
-        }
-
-        if ($this->isMunicipalChief()) {
-            $roles[] = [
-                'label' => 'ROLE_MUNICIPAL_CHIEF',
-                'codes' => [$this->municipalChiefManagedArea->getInseeCode()],
             ];
         }
 
@@ -2433,7 +2397,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $this->isHost()
             || $this->isSupervisor()
             || $this->isReferent()
-            || $this->isMunicipalChief()
         ;
     }
 

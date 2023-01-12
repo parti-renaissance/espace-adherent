@@ -6,7 +6,6 @@ use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\AdherentMessage\Handler\AdherentMessageChangeCommandHandler;
 use App\AdherentMessage\MailchimpCampaign\Handler\AdherentZoneMailchimpCampaignHandler;
 use App\AdherentMessage\MailchimpCampaign\Handler\GenericMailchimpCampaignHandler;
-use App\AdherentMessage\MailchimpCampaign\Handler\MunicipalChiefMailchimpCampaignHandler;
 use App\AdherentMessage\MailchimpCampaign\Handler\ReferentMailchimpCampaignHandler;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
@@ -21,10 +20,8 @@ use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
-use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
@@ -32,7 +29,6 @@ use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\Coalition;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
-use App\Entity\MunicipalChiefManagedArea;
 use App\Entity\ReferentTag;
 use App\FranceCities\FranceCities;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
@@ -41,7 +37,6 @@ use App\Mailchimp\Campaign\ContentSection\BasicMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\CoalitionMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder;
-use App\Mailchimp\Campaign\ContentSection\MunicipalChiefMessageSectionBuilder;
 use App\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber;
 use App\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
@@ -57,9 +52,6 @@ use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactAgeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactCityConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactNameConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\JecouteConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\MunicipalChiefToAdherentConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\MunicipalChiefToCandidateConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\MunicipalChiefToNewsletterConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ReferentToAdherentConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ReferentToCandidateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\SubscriptionTypeConditionBuilder;
@@ -432,367 +424,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $this->createHandler($message)($this->commandDummy);
     }
 
-    public function testMunicipalChiefMessageGeneratesGoodPayloads(): void
-    {
-        $message = $this->preparedMessage(MunicipalChiefAdherentMessage::class);
-        $message->setFilter($filter = new MunicipalChiefFilter(75101));
-        $filter->setContactRunningMateTeam(true);
-
-        (new MunicipalChiefMailchimpCampaignHandler($this->franceCities))->handle($message);
-
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->withConsecutive(
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '5',
-                        'template_id' => 5,
-                        'subject_line' => '[Municipales 2020] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y').' - Paris 1er',
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'application_request_candidate_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'TextMerge',
-                                    'op' => 'contains',
-                                    'field' => 'FVR_CODES',
-                                    'value' => '#75101',
-                                ],
-                                [
-                                    'condition_type' => 'TextMerge',
-                                    'op' => 'is',
-                                    'field' => 'MUNIC_TEAM',
-                                    'value' => '75101',
-                                ],
-                                [
-                                    'condition_type' => 'StaticSegment',
-                                    'op' => 'static_is',
-                                    'field' => 'static_segment',
-                                    'value' => 123,
-                                ],
-                            ],
-                        ],
-                    ],
-                ]]],
-                ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
-                    'template' => [
-                        'id' => 5,
-                        'sections' => [
-                            'content' => 'Content',
-                            'first_name' => 'First Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'city_name' => 'Paris 1er',
-                        ],
-                    ],
-                ]]]
-            )
-            ->willReturn(
-                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id1']))
-            )
-        ;
-
-        $this->createHandler($message)($this->commandDummy);
-    }
-
-    public function testBoisColombesMunicipalChiefMessageGeneratesGoodPayloads(): void
-    {
-        $message = $this->preparedMessage(MunicipalChiefAdherentMessage::class);
-        $message->setFilter($filter = new MunicipalChiefFilter(92009));
-        $filter->setContactAdherents(true);
-
-        (new MunicipalChiefMailchimpCampaignHandler($this->franceCities))->handle($message);
-
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->withConsecutive(
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '5',
-                        'template_id' => 5,
-                        'subject_line' => '[Municipales 2020] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y').' - Bois-Colombes',
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'TextMerge',
-                                    'op' => 'starts',
-                                    'field' => 'CITY',
-                                    'value' => 'Bois-Colombes (',
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                            ],
-                        ],
-                    ],
-                ]]],
-                ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
-                    'template' => [
-                        'id' => 5,
-                        'sections' => [
-                            'content' => 'Content',
-                            'first_name' => 'First Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'city_name' => 'Paris 1er',
-                        ],
-                    ],
-                ]]],
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '5',
-                        'template_id' => 5,
-                        'subject_line' => '[Municipales 2020] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y').' - Annecy-le-Vieux',
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'TextMerge',
-                                    'op' => 'starts',
-                                    'field' => 'CITY',
-                                    'value' => 'Annecy-le-Vieux (',
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                            ],
-                        ],
-                    ],
-                ]]],
-                ['PUT', '/3.0/campaigns/campaign_id2/content', ['json' => [
-                    'template' => [
-                        'id' => 5,
-                        'sections' => [
-                            'content' => 'Content',
-                            'first_name' => 'First Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'city_name' => 'Paris 1er',
-                        ],
-                    ],
-                ]]],
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '5',
-                        'template_id' => 5,
-                        'subject_line' => '[Municipales 2020] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y').' - Seynod',
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'TextMerge',
-                                    'op' => 'starts',
-                                    'field' => 'CITY',
-                                    'value' => 'Seynod (',
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                            ],
-                        ],
-                    ],
-                ]]],
-                ['PUT', '/3.0/campaigns/campaign_id3/content', ['json' => [
-                    'template' => [
-                        'id' => 5,
-                        'sections' => [
-                            'content' => 'Content',
-                            'first_name' => 'First Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'city_name' => 'Paris 1er',
-                        ],
-                    ],
-                ]]],
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '5',
-                        'template_id' => 5,
-                        'subject_line' => '[Municipales 2020] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y').' - Cran-Gevrier',
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'TextMerge',
-                                    'op' => 'starts',
-                                    'field' => 'CITY',
-                                    'value' => 'Cran-Gevrier (',
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                            ],
-                        ],
-                    ],
-                ]]],
-                ['PUT', '/3.0/campaigns/campaign_id4/content', ['json' => [
-                    'template' => [
-                        'id' => 5,
-                        'sections' => [
-                            'content' => 'Content',
-                            'first_name' => 'First Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'city_name' => 'Paris 1er',
-                        ],
-                    ],
-                ]]],
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '5',
-                        'template_id' => 5,
-                        'subject_line' => '[Municipales 2020] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y').' - Meythet',
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'TextMerge',
-                                    'op' => 'starts',
-                                    'field' => 'CITY',
-                                    'value' => 'Meythet (',
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                            ],
-                        ],
-                    ],
-                ]]],
-                ['PUT', '/3.0/campaigns/campaign_id5/content', ['json' => [
-                    'template' => [
-                        'id' => 5,
-                        'sections' => [
-                            'content' => 'Content',
-                            'first_name' => 'First Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'city_name' => 'Paris 1er',
-                        ],
-                    ],
-                ]]],
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '5',
-                        'template_id' => 5,
-                        'subject_line' => '[Municipales 2020] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y').' - Pringy',
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'TextMerge',
-                                    'op' => 'starts',
-                                    'field' => 'CITY',
-                                    'value' => 'Pringy (',
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                            ],
-                        ],
-                    ],
-                ]]],
-                ['PUT', '/3.0/campaigns/campaign_id6/content', ['json' => [
-                    'template' => [
-                        'id' => 5,
-                        'sections' => [
-                            'content' => 'Content',
-                            'first_name' => 'First Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'city_name' => 'Paris 1er',
-                        ],
-                    ],
-                ]]],
-            )
-            ->willReturn(
-                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id2'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id2'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id3'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id3'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id4'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id4'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id5'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id5'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id6'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id6']))
-            )
-        ;
-
-        $this->createHandler($message)($this->commandDummy);
-    }
-
     public function testCandidateMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(CandidateAdherentMessage::class);
@@ -1095,7 +726,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             'getFirstName' => 'First Name',
             'getEmailAddress' => 'adherent@mail.com',
             'getDeputyZone' => $this->createConfiguredMock(Zone::class, ['__toString' => 'District1']),
-            'getMunicipalChiefManagedArea' => $this->createConfiguredMock(MunicipalChiefManagedArea::class, ['getCityName' => 'Paris 1er']),
         ]);
 
         $this->clientMock = $this->createMock(HttpClientInterface::class);
@@ -1199,9 +829,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     new ContactAgeConditionBuilder(),
                     new ContactCityConditionBuilder(),
                     new JecouteConditionBuilder(),
-                    new MunicipalChiefToAdherentConditionBuilder($this->mailchimpMapping, $this->franceCities),
-                    new MunicipalChiefToCandidateConditionBuilder($this->mailchimpMapping),
-                    new MunicipalChiefToNewsletterConditionBuilder($this->mailchimpMapping),
                     new ReferentToAdherentConditionBuilder($this->mailchimpMapping),
                     new ReferentToCandidateConditionBuilder($this->mailchimpMapping),
                     new SubscriptionTypeConditionBuilder($this->mailchimpMapping),
@@ -1221,7 +848,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             new CommitteeMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://committee_url'])),
             new BasicMessageSectionBuilder(),
             new DeputyMessageSectionBuilder(),
-            new MunicipalChiefMessageSectionBuilder(),
             new CoalitionMessageSectionBuilder(),
         ];
     }

@@ -23,34 +23,17 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture implements De
     {
         $faker = Factory::create('fr_FR');
 
-        $municipal1 = $this->getReference('municipal-chief-1');
-        $municipal2 = $this->getReference('municipal-chief-2');
-        $municipal3 = $this->getReference('municipal-chief-3');
-
         $runningMateRequest1 = new RunningMateRequest(Uuid::fromString(self::UUID_1));
         $runningMateRequest1->setGender(Genders::FEMALE);
         $runningMateRequest1->setFirstName('Lorie');
         $runningMateRequest1->setLastName('Delisle');
         $runningMateRequest1->setEmailAddress('l.delisle@en-marche-dev.fr');
 
-        $runningMateRequest1->setFavoriteCities([
-            $municipal1->getMunicipalChiefManagedArea()->getInseeCode(),
-            $municipal2->getMunicipalChiefManagedArea()->getInseeCode(),
-        ]);
-
-        $runningMateRequest1->setTakenForCity($municipal2->getMunicipalChiefManagedArea()->getInseeCode());
-
         $runningMateRequest2 = new RunningMateRequest(Uuid::fromString(self::UUID_2));
         $runningMateRequest2->setGender(Genders::MALE);
         $runningMateRequest2->setFirstName('Damien');
         $runningMateRequest2->setLastName('Schmidt');
         $runningMateRequest2->setEmailAddress('damien.schmidt@example.ch');
-
-        $runningMateRequest2->setFavoriteCities([
-            $municipal1->getMunicipalChiefManagedArea()->getInseeCode(),
-            $municipal2->getMunicipalChiefManagedArea()->getInseeCode(),
-            $municipal3->getMunicipalChiefManagedArea()->getInseeCode(),
-        ]);
 
         $runningMateRequest2->setAdherent($this->getReference('adherent-14'));
 
@@ -60,20 +43,11 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture implements De
         $runningMateRequest3->setLastName('Banner');
         $runningMateRequest3->setEmailAddress('bruce.banner@en-marche-dev.fr');
 
-        $runningMateRequest3->setFavoriteCities([
-            $municipal1->getMunicipalChiefManagedArea()->getInseeCode(),
-            $municipal3->getMunicipalChiefManagedArea()->getInseeCode(),
-        ]);
-
         $runningMateRequest4 = new RunningMateRequest(Uuid::fromString(self::UUID_4));
         $runningMateRequest4->setGender(Genders::MALE);
         $runningMateRequest4->setFirstName('Killian');
         $runningMateRequest4->setLastName('Jacquinot');
         $runningMateRequest4->setEmailAddress('kill.jac@example.ch');
-
-        $runningMateRequest4->setFavoriteCities([
-            $municipal1->getMunicipalChiefManagedArea()->getInseeCode(),
-        ]);
 
         $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', Address::FRANCE);
 

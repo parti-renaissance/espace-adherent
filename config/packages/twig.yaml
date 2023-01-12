@@ -27,7 +27,6 @@ twig:
         jemengage_auth_host:        "%env(JEMENGAGE_AUTH_HOST)%"
         renaissance_host:           "%env(RENAISSANCE_HOST)%"
         adherent_interests:         "%adherent_interests%"
-        dpt_api_host:               "%env(DPT_API_HOST)%"
         data_corner_host:           "%env(DATA_CORNER_HOST)%"
         enable_assessor_space:      "%env(bool:ENABLE_ASSESSOR_SPACE)%"
         enable_municipal_space:     "%env(bool:ENABLE_MUNICIPAL_SPACE)%"

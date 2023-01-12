@@ -29,7 +29,6 @@ class ProcurationReliabilityProcessor
             || $adherent->isSenator()
             || $adherent->isDeputy()
             || $adherent->isCoordinatorCommitteeSector()
-            || $adherent->isMunicipalChief()
         ) {
             $proxy->setRepresentativeReliability();
 

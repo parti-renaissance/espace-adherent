@@ -162,12 +162,5 @@
         <service id="App\ChezVous\EventSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.chezvous_algolia_producer" />
         </service>
-
-        <service id="App\MunicipalSite\ApiDriver">
-            <argument type="service" id="app.http_client.dpt_api" />
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
-        </service>
     </services>
 </container>

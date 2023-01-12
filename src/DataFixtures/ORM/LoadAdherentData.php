@@ -7,7 +7,6 @@ use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentCharter\CandidateCharter;
 use App\Entity\AdherentCharter\CommitteeHostCharter;
-use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\PapCampaignCharter;
 use App\Entity\AdherentCharter\PhoningCampaignCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
@@ -719,63 +718,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $senator_59->setSenatorArea($senatorArea);
         $senator_59->addCharter(new ReferentCharter());
         $this->addReference('senator-59', $senator_59);
-
-        // municipal chief
-        $municipalChief1 = $this->adherentFactory->createFromArray([
-            'uuid' => self::MUNICIPAL_CHIEF_1_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'municipal-chief@en-marche-dev.fr',
-            'gender' => 'male',
-            'first_name' => 'Municipal 1',
-            'last_name' => 'Chef 1',
-            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
-            'birthdate' => '1992-07-28',
-            'position' => 'employed',
-            'phone' => '+33673654349',
-            'registered_at' => '2019-06-10 09:19:00',
-        ]);
-        $municipalChief1->addCharter(new MunicipalChiefCharter());
-        $municipalChiefArea1 = new MunicipalChiefManagedArea();
-        $municipalChiefArea1->setInseeCode('59350');
-        $municipalChiefArea1->setJecouteAccess(true);
-        $municipalChief1->setMunicipalChiefManagedArea($municipalChiefArea1);
-        $this->addReference('municipal-chief-1', $municipalChief1);
-
-        $municipalChief2 = $this->adherentFactory->createFromArray([
-            'uuid' => self::MUNICIPAL_CHIEF_2_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'municipal-chief-2@en-marche-dev.fr',
-            'gender' => 'male',
-            'first_name' => 'Municipal 2',
-            'last_name' => 'Chef 2',
-            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
-            'birthdate' => '1982-08-27',
-            'position' => 'employed',
-            'phone' => '+33673654349',
-            'registered_at' => '2019-06-10 09:19:00',
-        ]);
-        $municipalChiefArea2 = new MunicipalChiefManagedArea();
-        $municipalChiefArea2->setInseeCode('59124');
-        $municipalChief2->setMunicipalChiefManagedArea($municipalChiefArea2);
-        $this->addReference('municipal-chief-2', $municipalChief2);
-
-        $municipalChief3 = $this->adherentFactory->createFromArray([
-            'uuid' => self::MUNICIPAL_CHIEF_3_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'municipal-chief-3@en-marche-dev.fr',
-            'gender' => 'male',
-            'first_name' => 'Municipal 3',
-            'last_name' => 'Chef 3',
-            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
-            'birthdate' => '1982-08-27',
-            'position' => 'employed',
-            'phone' => '+33673654349',
-            'registered_at' => '2019-06-10 09:19:00',
-        ]);
-        $municipalChiefArea3 = new MunicipalChiefManagedArea();
-        $municipalChiefArea3->setInseeCode('59411');
-        $municipalChief3->setMunicipalChiefManagedArea($municipalChiefArea3);
-        $this->addReference('municipal-chief-3', $municipalChief3);
 
         $assessor = $this->adherentFactory->createFromArray([
             'uuid' => self::ASSESSOR_UUID,

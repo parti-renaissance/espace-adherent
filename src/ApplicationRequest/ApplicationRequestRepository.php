@@ -61,16 +61,4 @@ class ApplicationRequestRepository
         $this->runningMateRepository->updateAdherentRelation($email, $adherent);
         $this->volunteerRepository->updateAdherentRelation($email, $adherent);
     }
-
-    public function countCandidates(array $inseeCodes): int
-    {
-        return $this->runningMateRepository->countForInseeCodes($inseeCodes) +
-            $this->volunteerRepository->countForInseeCodes($inseeCodes);
-    }
-
-    public function countTeamMembers(array $inseeCodes): int
-    {
-        return $this->runningMateRepository->countTakenFor($inseeCodes) +
-            $this->volunteerRepository->countTakenFor($inseeCodes);
-    }
 }

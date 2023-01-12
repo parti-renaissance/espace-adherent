@@ -11,7 +11,6 @@ use App\Form\AdherentMessage\AdherentGeoZoneFilterType;
 use App\Form\AdherentMessage\AdvancedMessageFilterType;
 use App\Form\AdherentMessage\ElectedRepresentativeFilterType;
 use App\Form\AdherentMessage\JecouteFilterType;
-use App\Form\AdherentMessage\MunicipalChiefFilterType;
 use App\Form\AdherentMessage\ReferentElectedRepresentativeFilterType;
 use App\Form\AdherentMessage\ReferentFilterType;
 use App\Form\AdherentMessage\ReferentInstancesFilterType;
@@ -48,9 +47,6 @@ class FilterFormFactory
                     'message_type' => $messageType,
                     'zones' => [$adherent->getSenatorArea()->getDepartmentTag()->getZone()],
                 ]);
-
-            case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
-                return $this->formFactory->create(MunicipalChiefFilterType::class, $data);
 
             case AdherentMessageTypeEnum::COMMITTEE:
                 return $this->formFactory->create(SimpleMessageFilterType::class, $data);

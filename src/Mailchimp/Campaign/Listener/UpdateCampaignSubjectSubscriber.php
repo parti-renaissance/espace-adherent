@@ -34,9 +34,6 @@ class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
             case AdherentMessageTypeEnum::REFERENT:
                 $prefix = '[Référent]';
                 break;
-            case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
-                $prefix = '[Municipales 2020]';
-                break;
             case AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE:
             case AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE:
                 $prefix = '[Élus]';

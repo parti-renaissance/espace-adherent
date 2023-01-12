@@ -9,7 +9,6 @@ use App\Entity\AdherentCharter\CommitteeHostCharter;
 use App\Entity\AdherentCharter\DeputyCharter;
 use App\Entity\AdherentCharter\LegislativeCandidateCharter;
 use App\Entity\AdherentCharter\LreCharter;
-use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\PapCampaignCharter;
 use App\Entity\AdherentCharter\PhoningCampaignCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
@@ -31,13 +30,6 @@ class AdherentCharterCollection extends ArrayCollection
     {
         return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
             return $charter instanceof ReferentCharter;
-        });
-    }
-
-    public function hasMunicipalChiefCharterAccepted(): bool
-    {
-        return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
-            return $charter instanceof MunicipalChiefCharter;
         });
     }
 
@@ -112,9 +104,6 @@ class AdherentCharterCollection extends ArrayCollection
 
             case AdherentCharterTypeEnum::TYPE_REFERENT:
                 return $this->hasReferentCharterAccepted();
-
-            case AdherentCharterTypeEnum::TYPE_MUNICIPAL_CHIEF:
-                return $this->hasMunicipalChiefCharterAccepted();
 
             case AdherentCharterTypeEnum::TYPE_DEPUTY:
                 return $this->hasDeputyCharterAccepted();

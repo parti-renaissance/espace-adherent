@@ -8,12 +8,10 @@ use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
-use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
 use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
@@ -31,7 +29,6 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
             ReferentInstancesMessage::class,
             DeputyAdherentMessage::class,
             CommitteeAdherentMessage::class,
-            MunicipalChiefAdherentMessage::class,
             SenatorAdherentMessage::class,
             LegislativeCandidateAdherentMessage::class,
             CandidateAdherentMessage::class,
@@ -90,15 +87,6 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
-
-            case MunicipalChiefAdherentMessage::class:
-                /** @var MunicipalChiefFilter $filter */
-                if (($filter = $campaign->getMessage()->getFilter()) && $filter->getContactAdherents()) {
-                    $interestKeys[] = SubscriptionTypeEnum::CANDIDATE_EMAIL;
-                    break;
-                }
-
-                return [];
 
             default:
                 throw new \InvalidArgumentException(sprintf('Message type %s does not match any subscription type', $messageClass));
