@@ -69,6 +69,7 @@ class CreateRenaissanceType extends AbstractType
             ])
             ->add('cotisationCustomAmount', NumberType::class, [
                 'required' => false,
+                'html5' => true,
             ])
             ->add('cotisationDate', DateType::class, [
                 'years' => range(2022, date('Y')),
