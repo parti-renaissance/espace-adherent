@@ -129,7 +129,6 @@ assessor: Assesseur
 user: utilisateur
 municipal_chief: Candidat Municipales 2020 🇫🇷
 municipal_manager: Responsable communal
-municipal_manager_supervisor: Responsable attribution
 election_results_reporter: Rapporteur résultats
 print_privilege: Accès LMI
 role_national: Rôle National
@@ -381,10 +380,8 @@ referent.managed_area: Zone gérée
 referent.radio.co_referent: "Donner un accès à l'onglet&nbsp;<i>Adhérents</i>"
 referent.radio.limited_co_referent: "Donner un accès restreint à l'onglet&nbsp;<i>Adhérents</i>&nbsp;:"
 referent.checkbox.jecoute_manager: Donner un accès à l'espace&nbsp;<i>Questionnaires</i>
-referent.checkbox.municipal_manager_supervisor: Donner un accès à l'onglet&nbsp;<i>Responsables Communaux</i>
 referent.coreferent_access: Accès adhérents
 referent.limited_coreferent_access: Accès adhérents (limité)
-referent.municipal_managers_access: Accès responsables communaux
 referent.email.unchangeable: Pour pouvoir modifier l'e-mail, veuillez décocher la case donnant les droits d'accès à la rubrique <i>Adhérents</i> et sauvegarder la modification.
 referent.save: Enregistrer
 referent.territorial_council.committee: Comité

@@ -109,13 +109,6 @@ class ReferentPersonLink
     private $isJecouteManager = false;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private $isMunicipalManagerSupervisor = false;
-
-    /**
      * @var Committee[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Committee")
@@ -248,16 +241,6 @@ class ReferentPersonLink
     public function setIsJecouteManager(bool $isJecouteManager): void
     {
         $this->isJecouteManager = $isJecouteManager;
-    }
-
-    public function isMunicipalManagerSupervisor(): bool
-    {
-        return $this->isMunicipalManagerSupervisor;
-    }
-
-    public function setIsMunicipalManagerSupervisor(bool $isMunicipalManagerSupervisor): void
-    {
-        $this->isMunicipalManagerSupervisor = $isMunicipalManagerSupervisor;
     }
 
     public function getPersonOrganizationalChartItem(): ?PersonOrganizationalChartItem

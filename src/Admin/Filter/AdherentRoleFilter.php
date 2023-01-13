@@ -115,12 +115,6 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                     $where->add('municipalManagerRole IS NOT NULL');
                 }
 
-                // Municipal Manager Supervisor
-                if (\in_array(AdherentRoleEnum::MUNICIPAL_MANAGER_SUPERVISOR, $value, true)) {
-                    $qb->leftJoin(sprintf('%s.municipalManagerSupervisorRole', $alias), 'municipalManagerSupervisorRole');
-                    $where->add('municipalManagerSupervisorRole IS NOT NULL');
-                }
-
                 // Election results reporter
                 if (\in_array(AdherentRoleEnum::ELECTION_RESULTS_REPORTER, $value, true)) {
                     $where->add(sprintf('%s.electionResultsReporter = :election_result_reporter', $alias));

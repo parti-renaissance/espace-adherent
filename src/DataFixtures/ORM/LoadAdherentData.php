@@ -20,7 +20,6 @@ use App\Entity\LreArea;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MunicipalChiefManagedArea;
 use App\Entity\MunicipalManagerRoleAssociation;
-use App\Entity\MunicipalManagerSupervisorRole;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTeamMember;
 use App\Entity\SenatorArea;
@@ -1297,7 +1296,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
 
         // For Organizational chart: adherent which is co-referent and municipal manager supervisor in the referent@en-marche-dev.fr team
         $adherent6->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-8')));
-        $adherent6->setMunicipalManagerSupervisorRole(new MunicipalManagerSupervisorRole($this->getReference('adherent-8')));
         // For Organizational chart: adherent which is co-referent in another referent team
         $adherent4->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-19')));
 
