@@ -2,8 +2,8 @@
 
 namespace App\Controller\EnMarche;
 
+use App\AssociationCity\Filter\AssociationCityFilter;
 use App\Form\CityFilterType;
-use App\MunicipalManager\Filter\AssociationCityFilter;
 use App\Repository\CityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

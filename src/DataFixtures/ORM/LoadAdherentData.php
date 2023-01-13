@@ -19,7 +19,6 @@ use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
 use App\Entity\LreArea;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MunicipalChiefManagedArea;
-use App\Entity\MunicipalManagerRoleAssociation;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTeamMember;
 use App\Entity\SenatorArea;
@@ -57,7 +56,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public const ADHERENT_19_UUID = '1529f096-12d7-42bb-8c98-a4966a730e2a';
     public const COORDINATOR_1_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
     public const COORDINATOR_2_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
-    public const COORDINATOR_3_UUID = '4663329b-4e73-4f1a-8139-add08f9b50be';
     public const REFERENT_1_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
     public const REFERENT_2_UUID = '2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf';
     public const REFERENT_3_UUID = 'e1bee762-4dc1-42f6-9884-1c83ba9c6d17';
@@ -66,15 +64,12 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public const DEPUTY_3_UUID = '160cdf45-80c4-4663-aa21-0ae23091a381';
     public const SENATOR_UUID = '021268fe-d4b3-44a7-bce9-c001191249a7';
     public const ASSESSOR_UUID = 'ae341e67-6e4c-4ead-b4be-1ade6693d512';
-    public const MUNICIPAL_MANAGER_UUID = 'c2ba1ce4-e103-415f-a67a-260b8c651b55';
     public const SENATORIAL_CANDIDATE_UUID = 'ab03c939-8f70-40a8-b2cd-d147ec7fd09e';
     public const COALITIONS_USER_1_UUID = '7dd297ad-a84c-4bbd-9fd2-d1152ebc3044';
 
     public const RENAISSANCE_USER_1_UUID = '88c92d85-4e55-4e47-b1ce-b625b7de3871';
     public const RENAISSANCE_USER_2_UUID = 'd0a0935f-da7c-4caa-b582-a8c2376e5158';
     public const RENAISSANCE_USER_3_UUID = '859b1528-9451-41d7-bc9e-7c95e23c5113';
-    public const RENAISSANCE_USER_4_UUID = 'ac4fae84-17e6-43c3-a901-a4dea34c2d5e';
-
     public const MUNICIPAL_CHIEF_1_UUID = '15d9154e-22d0-45f4-9b82-7f383342a3b8';
     public const MUNICIPAL_CHIEF_2_UUID = 'bdc66cc7-ddf0-4406-b76a-447acb1594ab';
     public const MUNICIPAL_CHIEF_3_UUID = '991e29ff-0333-4a30-a228-067ac5bbe6a9';
@@ -800,22 +795,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $assessor->setElectionResultsReporter(true);
         $this->addReference('assessor-1', $assessor);
 
-        $municipalManager = $this->adherentFactory->createFromArray([
-            'uuid' => self::MUNICIPAL_MANAGER_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'responsable-communal@en-marche-dev.fr',
-            'gender' => 'female',
-            'first_name' => 'Isabelle',
-            'last_name' => 'Responsable Communal',
-            'address' => $this->createPostAddress('12 Avenue du Peuple Belge', '59000-59350', null, 50.6420374, 3.0630445),
-            'birthdate' => '1983-08-27',
-            'position' => 'employed',
-            'phone' => '+33673654350',
-            'registered_at' => '2019-07-10 09:19:00',
-        ]);
-        $municipalManager->setMunicipalManagerRole(new MunicipalManagerRoleAssociation([$this->getReference('city-lille')]));
-        $this->addReference('municipal-manager-1', $municipalManager);
-
         $senatorialCandidate = $this->adherentFactory->createFromArray([
             'uuid' => self::SENATORIAL_CANDIDATE_UUID,
             'password' => self::DEFAULT_PASSWORD,
@@ -1217,7 +1196,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $key27 = AdherentActivationToken::generate($adherent18);
         $key28 = AdherentActivationToken::generate($senator_59);
         $key29 = AdherentActivationToken::generate($assessor);
-        $key30 = AdherentActivationToken::generate($municipalManager);
         $key31 = AdherentActivationToken::generate($deputy_75_2);
         $key32 = AdherentActivationToken::generate($adherent19);
         $key33 = AdherentActivationToken::generate($senatorialCandidate);
@@ -1253,7 +1231,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $municipalChief2->activate($key24, '2019-06-10 09:19:00');
         $municipalChief3->activate($key25, '2019-06-10 09:19:00');
         $assessor->activate($key29, '2019-06-10 09:19:00');
-        $municipalManager->activate($key30, '2019-07-10 09:19:00');
         $senatorialCandidate->activate($key33, '2019-07-10 09:19:00');
 
         // Make an adherent request a new password
@@ -1291,7 +1268,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $manager->persist($adherent18);
         $manager->persist($adherent19);
         $manager->persist($assessor);
-        $manager->persist($municipalManager);
         $manager->persist($senatorialCandidate);
 
         // For Organizational chart: adherent which is co-referent and municipal manager supervisor in the referent@en-marche-dev.fr team

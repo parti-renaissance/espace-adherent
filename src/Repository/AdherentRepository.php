@@ -11,7 +11,6 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Audience\AudienceInterface;
 use App\Entity\BoardMember\BoardMember;
-use App\Entity\City;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
@@ -727,36 +726,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             0,
             'votePlaceId'
         );
-    }
-
-    /**
-     * @var City[]|array
-     *
-     * @return Adherent[]
-     */
-    public function findMunicipalManagersForCities(array $cities): array
-    {
-        /** @var Adherent[]|array $adherents */
-        $adherents = $this
-            ->createQueryBuilder('a')
-            ->innerJoin('a.municipalManagerRole', 'mmr')
-            ->innerJoin('mmr.cities', 'c')
-            ->where('c IN (:cities)')
-            ->setParameter('cities', $cities)
-            ->getQuery()
-            ->getResult()
-        ;
-
-        $data = [];
-        foreach ($cities as $city) {
-            foreach ($adherents as $adherent) {
-                if ($adherent->getMunicipalManagerRole()->getCities()->contains($city)) {
-                    $data[$city->getId()] = $adherent;
-                }
-            }
-        }
-
-        return $data;
     }
 
     public function findDuplicateCertified(
