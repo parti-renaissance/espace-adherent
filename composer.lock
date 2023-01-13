@@ -5266,16 +5266,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "3.20.0",
+            "version": "3.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "0fa5e4f332fdce524aef5e5d4572d98d30168437"
+                "reference": "cc49ca6cd97baa173166c1f4fc54521964cf28bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/0fa5e4f332fdce524aef5e5d4572d98d30168437",
-                "reference": "0fa5e4f332fdce524aef5e5d4572d98d30168437",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/cc49ca6cd97baa173166c1f4fc54521964cf28bd",
+                "reference": "cc49ca6cd97baa173166c1f4fc54521964cf28bd",
                 "shasum": ""
             },
             "require": {
@@ -5350,7 +5350,7 @@
             ],
             "support": {
                 "issues": "https://github.com/schmittjoh/serializer/issues",
-                "source": "https://github.com/schmittjoh/serializer/tree/3.20.0"
+                "source": "https://github.com/schmittjoh/serializer/tree/3.21.0"
             },
             "funding": [
                 {
@@ -5358,7 +5358,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-06T21:17:32+00:00"
+            "time": "2023-01-10T13:08:17+00:00"
         },
         {
             "name": "knplabs/doctrine-behaviors",
@@ -11161,16 +11161,16 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "4.22.2",
+            "version": "4.22.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "7cd96b22eff6ceef0bf9f936aadfe7b9a323504c"
+                "reference": "8a64279435fb4e5a1eecacb0475da5a8ba73f83e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/7cd96b22eff6ceef0bf9f936aadfe7b9a323504c",
-                "reference": "7cd96b22eff6ceef0bf9f936aadfe7b9a323504c",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/8a64279435fb4e5a1eecacb0475da5a8ba73f83e",
+                "reference": "8a64279435fb4e5a1eecacb0475da5a8ba73f83e",
                 "shasum": ""
             },
             "require": {
@@ -11276,7 +11276,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/SonataAdminBundle/issues",
-                "source": "https://github.com/sonata-project/SonataAdminBundle/tree/4.22.2"
+                "source": "https://github.com/sonata-project/SonataAdminBundle/tree/4.22.3"
             },
             "funding": [
                 {
@@ -11296,7 +11296,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-05T16:02:52+00:00"
+            "time": "2023-01-11T16:59:17+00:00"
         },
         {
             "name": "sonata-project/block-bundle",
