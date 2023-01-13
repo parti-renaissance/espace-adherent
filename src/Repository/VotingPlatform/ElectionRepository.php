@@ -12,7 +12,6 @@ use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\Voter;
 use App\Repository\UuidEntityRepositoryTrait;
-use App\ValueObject\Genders;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -126,27 +125,16 @@ class ElectionRepository extends ServiceEntityRepository
         ;
     }
 
-    public function getAllAggregatedDataForCommittee(Committee $committee): array
+    /**
+     * @return Election[]
+     */
+    public function findAllForDesignation(Designation $designation): array
     {
-        return $this->createQueryBuilder('election')
-            ->select('election', 'designation')
-            ->addSelect(...$this->getElectionStatsSelectParts())
-            ->innerJoin('election.designation', 'designation')
-            ->innerJoin('election.electionEntity', 'election_entity')
-            ->innerJoin('election.electionPools', 'pool')
-            ->innerJoin('pool.candidateGroups', 'candidate_groups')
-            ->innerJoin('candidate_groups.candidates', 'candidate')
-            ->innerJoin('election.electionRounds', 'election_round')
-            ->where('election_entity.committee = :committee')
-            ->andWhere('election_round.isActive = :true')
-            ->setParameters([
-                'committee' => $committee,
-                'male' => Genders::MALE,
-                'female' => Genders::FEMALE,
-                'true' => true,
-            ])
-            ->orderBy('designation.voteEndDate', 'DESC')
-            ->groupBy('election.id')
+        return $this->createQueryBuilder('e')
+            ->addSelect('d')
+            ->innerJoin('e.designation', 'd')
+            ->where('d = :designation')
+            ->setParameters(['designation' => $designation])
             ->getQuery()
             ->getResult()
         ;
@@ -279,23 +267,5 @@ class ElectionRepository extends ServiceEntityRepository
         }
 
         return $qb->getResult();
-    }
-
-    private function getElectionStatsSelectParts(): array
-    {
-        return [
-            'SUM(IF(candidate.gender = :female, 1, 0)) as woman_count',
-            'SUM(IF(candidate.gender = :male, 1, 0)) as man_count',
-            sprintf(
-                '(SELECT COUNT(1) FROM %s AS voter
-                INNER JOIN voter.votersLists AS voters_list
-                WHERE voters_list.election = election) AS voters_count',
-                Voter::class
-            ),
-            sprintf(
-                '(SELECT COUNT(vote.id) FROM %s AS vote WHERE vote.electionRound = election_round) AS votes_count',
-                Vote::class
-            ),
-        ];
     }
 }

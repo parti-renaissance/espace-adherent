@@ -36,6 +36,7 @@ class Designation implements EntityAdministratorBlameableInterface
     public const NOTIFICATION_ALL = [
         'Ouverture du vote' => self::NOTIFICATION_VOTE_OPENED,
         'Fermeture du vote' => self::NOTIFICATION_VOTE_CLOSED,
+        'Résultats disponible' => self::NOTIFICATION_RESULT_READY,
         'Rappel de vote' => self::NOTIFICATION_VOTE_REMINDER,
         'Ouverture du tour bis' => self::NOTIFICATION_SECOND_ROUND,
     ];
@@ -44,6 +45,7 @@ class Designation implements EntityAdministratorBlameableInterface
     public const NOTIFICATION_VOTE_CLOSED = 2;
     public const NOTIFICATION_VOTE_REMINDER = 4;
     public const NOTIFICATION_SECOND_ROUND = 8;
+    public const NOTIFICATION_RESULT_READY = 16;
 
     /**
      * @var string|null
@@ -190,6 +192,11 @@ class Designation implements EntityAdministratorBlameableInterface
      * @ORM\Column(type="integer", nullable=true)
      */
     private $notifications = 15;
+
+    /**
+     * @ORM\Column(type="integer", options={"default": 0})
+     */
+    private int $notificationsSent = 0;
 
     /**
      * @ORM\Column(type="boolean")
@@ -430,6 +437,11 @@ class Designation implements EntityAdministratorBlameableInterface
         $this->notifications = $notifications;
     }
 
+    public function markAsNotifiedFor(int $notification): void
+    {
+        $this->notificationsSent |= $notification;
+    }
+
     public function isNotificationEnabled(string $notificationBit): bool
     {
         return 0 !== ($this->notifications & $notificationBit);
@@ -531,7 +543,7 @@ class Designation implements EntityAdministratorBlameableInterface
 
     public function getElectionCreationDate(): ?\DateTime
     {
-        return $this->electionCreationDate ?? $this->voteStartDate;
+        return $this->electionCreationDate;
     }
 
     public function isResultPeriodActive(): bool

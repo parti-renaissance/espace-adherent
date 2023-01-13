@@ -6,7 +6,9 @@ use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Repository\GeoZoneTrait;
+use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DesignationRepository extends ServiceEntityRepository
@@ -84,7 +86,7 @@ class DesignationRepository extends ServiceEntityRepository
     /**
      * @return Designation[]
      */
-    public function getWithFinishCandidacyPeriod(\DateTime $candidacyStartDate, array $types): array
+    public function getWithFinishCandidacyPeriod(\DateTimeInterface $candidacyStartDate, array $types): array
     {
         return $this->createQueryBuilder('d')
             ->where('d.candidacyStartDate <= :date')
@@ -92,6 +94,28 @@ class DesignationRepository extends ServiceEntityRepository
             ->andWhere('d.type IN (:types)')
             ->setParameter('date', $candidacyStartDate)
             ->setParameter('types', $types)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Designation[]
+     */
+    public function getWithActiveResultsPeriod(\DateTimeInterface $date): array
+    {
+        return $this->createQueryBuilder('designation')
+            ->innerJoin(Election::class, 'election', Join::WITH, 'election.designation = designation')
+            ->innerJoin('election.electionResult', 'election_result')
+            ->where('designation.resultDisplayDelay > 0 AND election.status = :close_status')
+            ->andWhere('BIT_AND(designation.notifications, :notification) > 0 AND BIT_AND(designation.notificationsSent, :notification) = 0')
+            ->andWhere('DATE_ADD(designation.voteEndDate, designation.resultScheduleDelay, \'HOUR\') < :now')
+            ->andWhere('DATE_ADD(DATE_ADD(designation.voteEndDate, designation.resultScheduleDelay, \'HOUR\'), designation.resultDisplayDelay, \'DAY\') > :now')
+            ->setParameters([
+                'now' => $date,
+                'close_status' => ElectionStatusEnum::CLOSED,
+                'notification' => Designation::NOTIFICATION_RESULT_READY,
+            ])
             ->getQuery()
             ->getResult()
         ;
