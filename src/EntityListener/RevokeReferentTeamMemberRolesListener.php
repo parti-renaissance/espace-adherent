@@ -3,7 +3,6 @@
 namespace App\EntityListener;
 
 use App\Entity\Adherent;
-use App\Entity\MunicipalManagerSupervisorRole;
 use App\Entity\ReferentManagedArea;
 use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use App\Entity\ReferentTeamMember;
@@ -39,14 +38,8 @@ class RevokeReferentTeamMemberRolesListener
             $this->entityManager->remove($member);
         }
 
-        // Revoke Municipal manager supervisor role
-        foreach ($this->entityManager->getRepository(MunicipalManagerSupervisorRole::class)->findBy(['referent' => $adherent]) as $role) {
-            $this->entityManager->remove($role);
-        }
-
         foreach ($this->entityManager->getRepository(ReferentPersonLink::class)->findByReferentEmail($adherent->getEmailAddress()) as $personLink) {
             $personLink->setCoReferent(null);
-            $personLink->setIsMunicipalManagerSupervisor(false);
         }
 
         $this->needRevokeRoles = false;

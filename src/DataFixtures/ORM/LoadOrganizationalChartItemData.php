@@ -56,7 +56,6 @@ class LoadOrganizationalChartItemData extends Fixture implements DependentFixtur
                                                         'postalAddress' => '39 rue de Crimée, Marseille',
                                                         'referent' => 'referent3',
                                                         'coReferent' => ReferentPersonLink::CO_REFERENT,
-                                                        'isMunicipalManagerSupervisor' => true,
                                                         'adherent' => 'adherent-6',
                                                     ],
                                                 ],

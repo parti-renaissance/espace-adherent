@@ -96,13 +96,6 @@
         <a href="{{ path('app_access_delegation_unset', {type: 'election_results_reporter_space_cities'}) }}">Espace Rapporteur résultats</a>
     </li>
 {% endif %}
-{% if app.user.isMunicipalManagerSupervisor %}
-    <li>
-        <a href="{{ path('app_access_delegation_unset', {type: 'municipal_manager_municipal_manager_supervisor_attribution'}) }}">
-            Espace Responsable attribution
-        </a>
-    </li>
-{% endif %}
 {% if app.user.isLre %}
     <li>
         <a href="{{ path('app_access_delegation_unset', {type: 'lre_elected_representatives'}) }}">
