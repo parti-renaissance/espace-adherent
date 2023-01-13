@@ -5,7 +5,7 @@ namespace App\Mailer\Message\Renaissance;
 use App\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
-final class DepartmentalElectionCandidateInvitationMessage extends AbstractRenaissanceMessage
+final class DepartmentalElectionVoteInvitationMessage extends AbstractRenaissanceMessage
 {
     /** @param Adherent[] $adherents */
     public static function create(array $adherents): self
@@ -16,7 +16,7 @@ final class DepartmentalElectionCandidateInvitationMessage extends AbstractRenai
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Appel à candidature pour l\'élection des bureaux départementaux'
+            'Convocation aux votes des adhérents Renaissance pour l’élection de leur bureau départemental'
         );
 
         foreach ($adherents as $adherent) {
