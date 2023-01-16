@@ -59,7 +59,7 @@
         "google/cloud-vision": "^1.2",
         "knplabs/doctrine-behaviors": "^2.0.0",
         "knplabs/knp-time-bundle": "^1.7",
-        "kreait/firebase-bundle": "^4.1",
+        "kreait/firebase-bundle": "^5.0",
         "league/commonmark": "1.6.6",
         "league/csv": "^9.2",
         "league/flysystem": "^1.0",
