@@ -6,7 +6,10 @@ import Alpine from 'alpinejs';
 import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
 
+import departmentMap from './components/DepartmentMap';
+import tooltip from './components/Tooltip';
 import './style/main.scss';
+import Tooltip from "./components/Tooltip";
 
 window.Alpine = Alpine;
 window.Bootstrap = class {
@@ -34,6 +37,9 @@ window.Bootstrap = class {
                 }
 
                 listeners.forEach((listener) => Main.addListener(listener));
+
+                Alpine.data('departmentMap', departmentMap);
+                Alpine.directive('tooltip', Tooltip);
 
                 Alpine.start();
 

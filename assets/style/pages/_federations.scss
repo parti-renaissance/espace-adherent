@@ -1,0 +1,29 @@
+.map {
+    display: none;
+
+    path {
+        fill: #D2DFFB;
+        stroke: #1D214F;
+        stroke-width: 1px;
+        transition: all 0.3s;
+    }
+
+    a {
+        outline: none;
+        border: none;
+    }
+
+    .current path {
+        fill: #104CC2;
+    }
+
+    .invalid path {
+        fill: #F00032;
+    }
+
+    @media screen and (min-width: 1024px) {
+        display: block;
+        width: 60%;
+        height: auto;
+    }
+}
