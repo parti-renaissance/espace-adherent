@@ -28,12 +28,14 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture implements De
         $runningMateRequest1->setFirstName('Lorie');
         $runningMateRequest1->setLastName('Delisle');
         $runningMateRequest1->setEmailAddress('l.delisle@en-marche-dev.fr');
+        $runningMateRequest1->setFavoriteCities(['59350', '59124']);
 
         $runningMateRequest2 = new RunningMateRequest(Uuid::fromString(self::UUID_2));
         $runningMateRequest2->setGender(Genders::MALE);
         $runningMateRequest2->setFirstName('Damien');
         $runningMateRequest2->setLastName('Schmidt');
         $runningMateRequest2->setEmailAddress('damien.schmidt@example.ch');
+        $runningMateRequest2->setFavoriteCities(['59350', '59124', '59411']);
 
         $runningMateRequest2->setAdherent($this->getReference('adherent-14'));
 
@@ -42,12 +44,14 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture implements De
         $runningMateRequest3->setFirstName('Bruce');
         $runningMateRequest3->setLastName('Banner');
         $runningMateRequest3->setEmailAddress('bruce.banner@en-marche-dev.fr');
+        $runningMateRequest3->setFavoriteCities(['59350', '59411']);
 
         $runningMateRequest4 = new RunningMateRequest(Uuid::fromString(self::UUID_4));
         $runningMateRequest4->setGender(Genders::MALE);
         $runningMateRequest4->setFirstName('Killian');
         $runningMateRequest4->setLastName('Jacquinot');
         $runningMateRequest4->setEmailAddress('kill.jac@example.ch');
+        $runningMateRequest4->setFavoriteCities(['59411']);
 
         $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', Address::FRANCE);
 

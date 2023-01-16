@@ -25,12 +25,14 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture implements Depe
         $volunteerRequest1->setFirstName('Tony');
         $volunteerRequest1->setLastName('Stark');
         $volunteerRequest1->setEmailAddress('tony.stark@stark-industries.com');
+        $volunteerRequest1->setFavoriteCities(['59350', '59124']);
 
         $volunteerRequest2 = new VolunteerRequest(Uuid::fromString(self::UUID_2));
         $volunteerRequest2->setGender(Genders::FEMALE);
         $volunteerRequest2->setFirstName('Damien');
         $volunteerRequest2->setLastName('Schmidt');
         $volunteerRequest2->setEmailAddress('damien.schmidt@example.ch');
+        $volunteerRequest2->setFavoriteCities(['59350', '59124', '59411']);
 
         $volunteerRequest2->setAdherent($this->getReference('adherent-14'));
 
@@ -39,12 +41,14 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture implements Depe
         $volunteerRequest3->setFirstName('Tony');
         $volunteerRequest3->setLastName('Stark');
         $volunteerRequest3->setEmailAddress('tony.stark@stark-industries.com');
+        $volunteerRequest3->setFavoriteCities(['59350', '59411']);
 
         $volunteerRequest4 = new VolunteerRequest(Uuid::fromString(self::UUID_4));
         $volunteerRequest4->setGender(Genders::OTHER);
         $volunteerRequest4->setFirstName('Damien');
         $volunteerRequest4->setLastName('Schmidt');
         $volunteerRequest4->setEmailAddress('damien.schmidt@example.ch');
+        $volunteerRequest4->setFavoriteCities(['59411']);
 
         $volunteerRequest4->setAdherent($this->getReference('adherent-14'));
 
