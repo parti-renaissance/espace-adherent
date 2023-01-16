@@ -73,7 +73,6 @@ class DelegatedAccessEnum extends Enum
             'senatorial_candidate_elected_representatives' => 'app_senatorial_candidate_elected_representatives_list',
             'jecoute_manager_local_surveys' => 'app_jecoute_manager_local_surveys_list',
             'vote_results_assessor' => 'app_vote_results_assessor_index',
-            'assessors_municipal_manager_attribution' => 'app_assessors_municipal_manager_attribution_form',
             'election_results_reporter_space_cities' => 'app_election_results_reporter_space_cities_list',
             'lre_elected_representatives' => 'app_lre_elected_representatives_list',
             'thematic_community' => 'app_thematic_community_members_list',

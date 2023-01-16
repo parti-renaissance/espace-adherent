@@ -73,8 +73,8 @@ class LoadTerritorialCouncilCandidacyData extends Fixture implements DependentFi
         $candidacy = $this->createCandidacy(
             $manager,
             $coTerr,
-            $this->getReference('municipal-manager-1'),
             $this->getReference('senatorial-candidate'),
+            null,
             TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
             __DIR__.'/../../../app/data/dist/avatar_femme_01.jpg'
         );

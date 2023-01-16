@@ -282,9 +282,8 @@ class LoadCommitteeData extends AbstractLoadPostAddressData implements Dependent
         $adherent14 = $this->getReference('adherent-14');
         $adherent19 = $this->getReference('adherent-19');
         $adherent20 = $this->getReference('senatorial-candidate');
-        $adherent21 = $this->getReference('municipal-manager-1');
-        $adherent22 = $this->getReference('adherent-20');
-        $adherent23 = $this->getReference('adherent-49');
+        $adherent21 = $this->getReference('adherent-20');
+        $adherent22 = $this->getReference('adherent-49');
         $referent = $this->getReference('adherent-8');
         $assessor = $this->getReference('assessor-1');
 
@@ -316,7 +315,7 @@ class LoadCommitteeData extends AbstractLoadPostAddressData implements Dependent
         $manager->persist($adherent7->followCommittee($committee5));
         $manager->persist($adherent5->followCommittee($committee16, new \DateTime('-2 months')));
         $manager->persist($adherent3->followCommittee($committee5));
-        $manager->persist($adherent22->followCommittee($committee5));
+        $manager->persist($adherent21->followCommittee($committee5));
         $manager->persist($adherent9->followCommittee($committee5));
         $manager->persist($assessor->followCommittee($committee5));
         $manager->persist($membership = $adherent19->followCommittee($committee5));
@@ -363,10 +362,9 @@ class LoadCommitteeData extends AbstractLoadPostAddressData implements Dependent
         // Committee 12
         $manager->persist($adherent10->hostCommittee($committee12, new \DateTime('-2 months')));
         $manager->persist($adherent20->followCommittee($committee12, new \DateTime('-2 months')));
-        $manager->persist($adherent23->followCommittee($committee12, new \DateTime('-2 months')));
+        $manager->persist($adherent22->followCommittee($committee12, new \DateTime('-2 months')));
         $manager->persist($adherent13->followCommittee($committee12));
         $manager->persist($adherent14->followCommittee($committee12));
-        $manager->persist($adherent21->followCommittee($committee12, new \DateTime('-2 months')));
 
         // Committee 13
         $manager->persist($this->getReference('adherent-21')->followCommittee($committee13, new \DateTime('-2 months')));

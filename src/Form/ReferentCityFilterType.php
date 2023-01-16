@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\MunicipalManager\Filter\AssociationCityFilter;
+use App\AssociationCity\Filter\AssociationCityFilter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,15 +23,6 @@ class ReferentCityFilterType extends AbstractType
                 'required' => false,
             ])
             ->add('inseeCode', TextType::class, [
-                'required' => false,
-            ])
-            ->add('municipalManagerFirstName', TextType::class, [
-                'required' => false,
-            ])
-            ->add('municipalManagerLastName', TextType::class, [
-                'required' => false,
-            ])
-            ->add('municipalManagerEmail', TextType::class, [
                 'required' => false,
             ])
         ;

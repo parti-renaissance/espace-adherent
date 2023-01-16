@@ -333,14 +333,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $assessorRole;
 
     /**
-     * @var MunicipalManagerRoleAssociation|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\MunicipalManagerRoleAssociation", cascade={"all"}, orphanRemoval=true)
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
-    private $municipalManagerRole;
-
-    /**
      * @var CoalitionModeratorRoleAssociation|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Coalition\CoalitionModeratorRoleAssociation", cascade={"all"}, orphanRemoval=true)
@@ -1073,10 +1065,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_ASSESSOR';
         }
 
-        if ($this->isMunicipalManager()) {
-            $roles[] = 'ROLE_MUNICIPAL_MANAGER';
-        }
-
         if ($this->isJecouteManager()) {
             $roles[] = 'ROLE_JECOUTE_MANAGER';
         }
@@ -1214,7 +1202,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isSenator()
             || $this->isDelegatedSenator()
             || $this->isMunicipalChief()
-            || $this->isMunicipalManager()
             || $this->isElectionResultsReporter()
             || $this->isSenatorialCandidate()
             || $this->isHeadedRegionalCandidate()
@@ -1732,16 +1719,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->assessorRole = $assessorRole;
     }
 
-    public function getMunicipalManagerRole(): ?MunicipalManagerRoleAssociation
-    {
-        return $this->municipalManagerRole;
-    }
-
-    public function setMunicipalManagerRole(?MunicipalManagerRoleAssociation $municipalManagerRole): void
-    {
-        $this->municipalManagerRole = $municipalManagerRole;
-    }
-
     public function getCoalitionModeratorRole(): ?CoalitionModeratorRoleAssociation
     {
         return $this->coalitionModeratorRole;
@@ -1972,16 +1949,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isAssessor(): bool
     {
         return !empty($this->assessorRole);
-    }
-
-    public function isMunicipalManager(): bool
-    {
-        return !empty($this->municipalManagerRole);
-    }
-
-    public function revokeMunicipalManager(): void
-    {
-        $this->municipalManagerRole = null;
     }
 
     public function canBeProxy(): bool

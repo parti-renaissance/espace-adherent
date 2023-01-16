@@ -52,14 +52,6 @@ class LoadTerritorialCouncilAdherentMandateData extends Fixture implements Depen
             TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT
         ));
 
-        $manager->persist(TerritorialCouncilAdherentMandate::create(
-            $coTerr92,
-            $this->getReference('municipal-manager-1'),
-            new \DateTime('2020-02-02'),
-            Genders::FEMALE,
-            TerritorialCouncilQualityEnum::CITY_COUNCILOR
-        ));
-
         $manager->flush();
     }
 

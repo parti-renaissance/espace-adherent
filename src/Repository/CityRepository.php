@@ -3,12 +3,9 @@
 namespace App\Repository;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
-use App\Entity\Adherent;
+use App\AssociationCity\Filter\AssociationCityFilter;
 use App\Entity\City;
-use App\Entity\MunicipalManagerRoleAssociation;
-use App\MunicipalManager\Filter\AssociationCityFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CityRepository extends ServiceEntityRepository
@@ -57,48 +54,6 @@ class CityRepository extends ServiceEntityRepository
                 ->andWhere(self::ALIAS.'.inseeCode LIKE :insee_code')
                 ->setParameter('insee_code', sprintf('%s%%', $inseeCode))
             ;
-        }
-
-        $municipalManagerFirstName = $filter->getMunicipalManagerFirstName();
-        $municipalManagerLastName = $filter->getMunicipalManagerLastName();
-        $municipalManagerEmail = $filter->getMunicipalManagerEmail();
-
-        if ($municipalManagerFirstName || $municipalManagerLastName || $municipalManagerEmail) {
-            $qb
-                ->leftJoin(
-                    MunicipalManagerRoleAssociation::class,
-                    'municipal_manager_role',
-                    Join::WITH,
-                    self::ALIAS.' MEMBER OF municipal_manager_role.cities'
-                )
-                ->leftJoin(
-                    Adherent::class,
-                    'municipal_manager',
-                    Join::WITH,
-                    'municipal_manager.municipalManagerRole = municipal_manager_role'
-                )
-            ;
-
-            if ($municipalManagerFirstName) {
-                $qb
-                    ->andWhere('municipal_manager.firstName LIKE :municipal_manager_first_name')
-                    ->setParameter('municipal_manager_first_name', sprintf('%%%s%%', $municipalManagerFirstName))
-                ;
-            }
-
-            if ($municipalManagerLastName) {
-                $qb
-                    ->andWhere('municipal_manager.lastName LIKE :municipal_manager_last_name')
-                    ->setParameter('municipal_manager_last_name', sprintf('%%%s%%', $municipalManagerLastName))
-                ;
-            }
-
-            if ($municipalManagerEmail) {
-                $qb
-                    ->andWhere('municipal_manager.emailAddress LIKE :municipal_manager_email')
-                    ->setParameter('municipal_manager_email', sprintf('%%%s%%', $municipalManagerEmail))
-                ;
-            }
         }
 
         $qb->orderBy(self::ALIAS.'.inseeCode', 'ASC');

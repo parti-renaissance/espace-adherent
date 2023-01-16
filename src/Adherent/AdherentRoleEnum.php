@@ -33,7 +33,6 @@ class AdherentRoleEnum extends Enum
     public const ELECTED = 'elected';
 
     public const MUNICIPAL_CHIEF = 'municipal_chief';
-    public const MUNICIPAL_MANAGER = 'municipal_manager';
     public const PRINT_PRIVILEGE = 'print_privilege';
     public const ROLE_NATIONAL = 'role_national';
     public const ROLE_NATIONAL_COMMUNICATION = 'role_national_communication';

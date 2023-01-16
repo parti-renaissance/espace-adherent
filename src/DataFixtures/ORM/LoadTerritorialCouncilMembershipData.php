@@ -81,10 +81,6 @@ class LoadTerritorialCouncilMembershipData extends Fixture implements DependentF
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR, 'Ile de France'));
         $manager->persist($membership);
 
-        $membership = new TerritorialCouncilMembership($coTerr92, $this->getReference('municipal-manager-1'), new \DateTime('2020-02-02'));
-        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR, 'Chatillon'));
-        $manager->persist($membership);
-
         $membership = new TerritorialCouncilMembership($coTerr92, $this->getReference('senatorial-candidate'), new \DateTime('2020-02-02'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR, 'Chatillon'));
         $manager->persist($membership);

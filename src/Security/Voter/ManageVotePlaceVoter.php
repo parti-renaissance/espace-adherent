@@ -36,10 +36,6 @@ class ManageVotePlaceVoter extends AbstractAdherentVoter
             ;
         }
 
-        if (false === $result && $adherent->isMunicipalManager()) {
-            $result = \in_array($subject->getInseeCode(), $adherent->getMunicipalManagerRole()->getInseeCodes(), true);
-        }
-
         return $result;
     }
 
