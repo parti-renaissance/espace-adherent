@@ -313,16 +313,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v2.7.5",
+            "version": "v2.7.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "b670958db633d66b05bc46ff34c3bb7c1b306c70"
+                "reference": "e6cb63475c0ae13b9c8861004728751e8d2e899d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/b670958db633d66b05bc46ff34c3bb7c1b306c70",
-                "reference": "b670958db633d66b05bc46ff34c3bb7c1b306c70",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/e6cb63475c0ae13b9c8861004728751e8d2e899d",
+                "reference": "e6cb63475c0ae13b9c8861004728751e8d2e899d",
                 "shasum": ""
             },
             "require": {
@@ -376,7 +376,7 @@
                 "psr/log": "^1.0 || ^2.0 || ^3.0",
                 "ramsey/uuid": "^3.7 || ^4.0",
                 "ramsey/uuid-doctrine": "^1.4",
-                "soyuka/contexts": "dev-main",
+                "soyuka/contexts": "^3.3.6",
                 "soyuka/stubs-mongodb": "^1.0",
                 "symfony/asset": "^3.4 || ^4.4 || ^5.1 || ^6.0",
                 "symfony/browser-kit": "^4.4 || ^5.1 || ^6.0",
@@ -470,7 +470,7 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v2.7.5"
+                "source": "https://github.com/api-platform/core/tree/v2.7.6"
             },
             "funding": [
                 {
@@ -478,7 +478,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-11-25T08:03:09+00:00"
+            "time": "2023-01-14T07:49:28+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -9418,25 +9418,28 @@
         },
         {
             "name": "psr/link",
-            "version": "1.1.1",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/link.git",
-                "reference": "846c25f58a1f02b93a00f2404e3626b6bf9b7807"
+                "reference": "84b159194ecfd7eaa472280213976e96415433f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/link/zipball/846c25f58a1f02b93a00f2404e3626b6bf9b7807",
-                "reference": "846c25f58a1f02b93a00f2404e3626b6bf9b7807",
+                "url": "https://api.github.com/repos/php-fig/link/zipball/84b159194ecfd7eaa472280213976e96415433f7",
+                "reference": "84b159194ecfd7eaa472280213976e96415433f7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.0.0"
             },
+            "suggest": {
+                "fig/link-util": "Provides some useful PSR-13 utilities"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -9465,9 +9468,9 @@
                 "rest"
             ],
             "support": {
-                "source": "https://github.com/php-fig/link/tree/1.1.1"
+                "source": "https://github.com/php-fig/link/tree/2.0.1"
             },
-            "time": "2021-03-11T22:59:13+00:00"
+            "time": "2021-03-11T23:00:27+00:00"
         },
         {
             "name": "psr/log",
@@ -17506,31 +17509,30 @@
         },
         {
             "name": "symfony/web-link",
-            "version": "v5.4.3",
+            "version": "v6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-link.git",
-                "reference": "8b9b073390359549fec5f5d797f23bbe9e2997a5"
+                "reference": "068136a48bd945b0b4a4a13ceaa1327ac6606aa3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-link/zipball/8b9b073390359549fec5f5d797f23bbe9e2997a5",
-                "reference": "8b9b073390359549fec5f5d797f23bbe9e2997a5",
+                "url": "https://api.github.com/repos/symfony/web-link/zipball/068136a48bd945b0b4a4a13ceaa1327ac6606aa3",
+                "reference": "068136a48bd945b0b4a4a13ceaa1327ac6606aa3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
-                "psr/link": "^1.0",
-                "symfony/polyfill-php80": "^1.16"
+                "php": ">=8.1",
+                "psr/link": "^1.1|^2.0"
             },
             "conflict": {
-                "symfony/http-kernel": "<5.3"
+                "symfony/http-kernel": "<5.4"
             },
             "provide": {
-                "psr/link-implementation": "1.0"
+                "psr/link-implementation": "1.0|2.0"
             },
             "require-dev": {
-                "symfony/http-kernel": "^5.3|^6.0"
+                "symfony/http-kernel": "^5.4|^6.0"
             },
             "suggest": {
                 "symfony/http-kernel": ""
@@ -17573,7 +17575,7 @@
                 "push"
             ],
             "support": {
-                "source": "https://github.com/symfony/web-link/tree/v5.4.3"
+                "source": "https://github.com/symfony/web-link/tree/v6.2.0"
             },
             "funding": [
                 {
@@ -17589,7 +17591,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-02T09:53:40+00:00"
+            "time": "2022-08-25T15:27:04+00:00"
         },
         {
             "name": "symfony/workflow",
