@@ -1098,6 +1098,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
         $adherent->donatedForMembership();
+        $adherent->setMandates(['european_deputy']);
         $adherent->certify();
         $this->addReference('renaissance-user-2', $adherent);
 

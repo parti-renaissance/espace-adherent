@@ -1,0 +1,26 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% block page_title 'Cotisation élus' %}
+
+{% block content_right_side %}
+    <section class="space-y-4 md:space-y-6" id="elected-representative-contribution">
+        <h1 class="text-3xl font-bold leading-10 text-gray-900">Cotisation élus [1/4]</h1>
+
+        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+            {{ form_start(form, { attr: { id: 'app_elected_representative_contribution_revenue' } }) }}
+
+            {{ form_errors(form) }}
+
+            <div>
+                Montant de l’ensemble des indemnités brutes perçues au titre du ou des mandats locaux et mandats annexes (EPCI, Syndicats intercommunaux)
+            </div>
+
+            {{ form_row(form.revenueAmount, { label: 'Montant (€)' }) }}
+
+            <div>
+                <button type="submit" class="button button-blue">Valider</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}

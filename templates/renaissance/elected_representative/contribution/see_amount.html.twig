@@ -1,0 +1,20 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% block page_title 'Cotisation élus' %}
+
+{% block content_right_side %}
+    <section class="space-y-4 md:space-y-6" id="elected-representative-contribution">
+        <h1 class="text-3xl font-bold leading-10 text-gray-900">Cotisation élus [2]</h1>
+
+        <div>
+            Montant de cotisation calculé: {{ command.contributionAmount }}€
+        </div>
+
+        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+            <a href="{{ path('app_renaissance_elected_representative_contribution_fill_informations') }}">Remplir les informations</a>
+        </div>
+        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+            <a href="{{ path('app_renaissance_elected_representative_contribution_fill_revenue') }}">Retour</a>
+        </div>
+    </section>
+{% endblock %}
