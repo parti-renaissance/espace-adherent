@@ -7996,16 +7996,16 @@
         },
         {
             "name": "odolbeau/phone-number-bundle",
-            "version": "v3.9.0",
+            "version": "v3.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odolbeau/phone-number-bundle.git",
-                "reference": "bd0282e89f888734ba5e85f1507ba3593877b59e"
+                "reference": "a4c084d9709a416511234b49d6803d76b64dbc02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/bd0282e89f888734ba5e85f1507ba3593877b59e",
-                "reference": "bd0282e89f888734ba5e85f1507ba3593877b59e",
+                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/a4c084d9709a416511234b49d6803d76b64dbc02",
+                "reference": "a4c084d9709a416511234b49d6803d76b64dbc02",
                 "shasum": ""
             },
             "require": {
@@ -8064,9 +8064,9 @@
             ],
             "support": {
                 "issues": "https://github.com/odolbeau/phone-number-bundle/issues",
-                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.9.0"
+                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.9.1"
             },
-            "time": "2022-12-19T09:14:01+00:00"
+            "time": "2023-01-16T11:06:41+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
