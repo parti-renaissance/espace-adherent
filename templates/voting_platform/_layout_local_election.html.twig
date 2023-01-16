@@ -4,7 +4,7 @@
 
 {% block banner %}
     <div class="max-w-8xl mx-auto py-3 px-4 md:px-6">
-        <a href="{{ path('app_renaissance_departmental_election_lists') }}" class="text-base text-gray-500 hover:text-gray-900">
+        <a href="{{ path('app_renaissance_departmental_election_lists', {uuid: designation.getUuid()}) }}" class="text-base text-gray-500 hover:text-gray-900">
             ← Retourner
         </a>
     </div>
@@ -22,7 +22,7 @@
 
 {% block vote_finish_action_block %}
     <div class="b__nudge--bottom-large b__nudge--top-large">
-        <a href="{{ path('app_renaissance_departmental_election_lists') }}" class="btn btn--blue">
+        <a href="{{ path('app_renaissance_departmental_election_lists', {uuid: designation.getUuid()}) }}" class="btn btn--blue">
             Retour à l’accueil
         </a>
     </div>

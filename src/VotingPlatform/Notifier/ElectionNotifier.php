@@ -231,7 +231,7 @@ class ElectionNotifier
         }
 
         if ($designation->isLocalElectionType()) {
-            return $this->urlGenerator->generate('app_renaissance_departmental_election_lists', [], UrlGeneratorInterface::ABSOLUTE_URL);
+            return $this->urlGenerator->generate('app_renaissance_departmental_election_lists', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         if ($designation->isLocalElectionTypes()) {
