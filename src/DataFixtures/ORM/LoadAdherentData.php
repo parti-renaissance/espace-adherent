@@ -1127,16 +1127,13 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $key20 = AdherentActivationToken::generate($deputy_75_1);
         $key21 = AdherentActivationToken::generate($deputy_ch_li);
         $key22 = AdherentActivationToken::generate($adherent16);
-        $key23 = AdherentActivationToken::generate($municipalChief1);
-        $key24 = AdherentActivationToken::generate($municipalChief2);
-        $key25 = AdherentActivationToken::generate($municipalChief3);
-        $key26 = AdherentActivationToken::generate($adherent17);
-        $key27 = AdherentActivationToken::generate($adherent18);
-        $key28 = AdherentActivationToken::generate($senator_59);
-        $key29 = AdherentActivationToken::generate($assessor);
-        $key31 = AdherentActivationToken::generate($deputy_75_2);
-        $key32 = AdherentActivationToken::generate($adherent19);
-        $key33 = AdherentActivationToken::generate($senatorialCandidate);
+        $key23 = AdherentActivationToken::generate($adherent17);
+        $key24 = AdherentActivationToken::generate($adherent18);
+        $key25 = AdherentActivationToken::generate($senator_59);
+        $key26 = AdherentActivationToken::generate($assessor);
+        $key27 = AdherentActivationToken::generate($deputy_75_2);
+        $key28 = AdherentActivationToken::generate($adherent19);
+        $key29 = AdherentActivationToken::generate($senatorialCandidate);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -1152,9 +1149,9 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent13->activate($key13, '2017-05-03 09:16:54');
         $adherent14->activate($key14, '2017-05-04 09:34:21');
         $adherent16->activate($key22, '2017-05-04 09:34:21');
-        $adherent17->activate($key26, '2017-06-25 11:36:48');
-        $adherent18->activate($key27, '2017-06-25 11:36:48');
-        $adherent19->activate($key32, '2017-06-25 11:36:48');
+        $adherent17->activate($key23, '2017-06-25 11:36:48');
+        $adherent18->activate($key24, '2017-06-25 11:36:48');
+        $adherent19->activate($key28, '2017-06-25 11:36:48');
         // $key15 is not activated, but adherent is enabled
         $referent->activate($key8, '2017-02-07 13:20:45');
         $coordinator->activate($key16, '2017-09-20 17:44:32');
@@ -1162,14 +1159,11 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $referentChild->activate($key18, '2017-02-07 13:20:45');
         $referent75and77->activate($key19, '2018-05-13 07:21:01');
         $deputy_75_1->activate($key20, '2017-06-01 12:14:51');
-        $deputy_75_2->activate($key31, '2017-07-26 12:14:51');
+        $deputy_75_2->activate($key27, '2017-07-26 12:14:51');
         $deputy_ch_li->activate($key21, '2017-06-26 12:14:51');
-        $senator_59->activate($key28, '2017-06-26 12:14:51');
-        $municipalChief1->activate($key23, '2019-06-10 09:19:00');
-        $municipalChief2->activate($key24, '2019-06-10 09:19:00');
-        $municipalChief3->activate($key25, '2019-06-10 09:19:00');
-        $assessor->activate($key29, '2019-06-10 09:19:00');
-        $senatorialCandidate->activate($key33, '2019-07-10 09:19:00');
+        $senator_59->activate($key25, '2017-06-26 12:14:51');
+        $assessor->activate($key26, '2019-06-10 09:19:00');
+        $senatorialCandidate->activate($key29, '2019-07-10 09:19:00');
 
         // Make an adherent request a new password
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent1);
@@ -1199,9 +1193,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $manager->persist($deputy_75_2);
         $manager->persist($deputy_ch_li);
         $manager->persist($senator_59);
-        $manager->persist($municipalChief1);
-        $manager->persist($municipalChief2);
-        $manager->persist($municipalChief3);
         $manager->persist($adherent17);
         $manager->persist($adherent18);
         $manager->persist($adherent19);
@@ -1241,8 +1232,8 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $manager->persist($key25);
         $manager->persist($key26);
         $manager->persist($key27);
-        $manager->persist($key31);
-        $manager->persist($key33);
+        $manager->persist($key28);
+        $manager->persist($key29);
 
         $manager->persist($resetPasswordToken);
 
