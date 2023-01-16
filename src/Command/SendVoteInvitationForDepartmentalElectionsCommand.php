@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Adherent;
 use App\Mailer\MailerService;
+use App\Mailer\Message\Renaissance\DepartmentalElectionFdeVoteInvitationMessage;
 use App\Mailer\Message\Renaissance\DepartmentalElectionVoteInvitationMessage;
 use App\Membership\MembershipSourceEnum;
 use App\Repository\AdherentRepository;
@@ -140,6 +141,7 @@ class SendVoteInvitationForDepartmentalElectionsCommand extends Command
             ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('exclude-dpt-code', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('sent-until', null, InputOption::VALUE_REQUIRED)
+            ->addOption('fde-only', null, InputOption::VALUE_NONE)
         ;
     }
 
@@ -148,6 +150,7 @@ class SendVoteInvitationForDepartmentalElectionsCommand extends Command
         $limit = (int) $input->getOption('limit');
         $selectedEmails = $input->getOption('emails');
         $excludedDptCodes = $input->getOption('exclude-dpt-code');
+        $fdeOnly = $input->getOption('fde-only');
 
         if ($sentUntil = $input->getOption('sent-until')) {
             $sentUntil = new \DateTime($sentUntil);
@@ -155,7 +158,7 @@ class SendVoteInvitationForDepartmentalElectionsCommand extends Command
             $sentUntil = new \DateTime();
         }
 
-        if (!$count = $this->countAdherents($selectedEmails, $excludedDptCodes, $sentUntil)) {
+        if (!$count = $this->countAdherents($selectedEmails, $excludedDptCodes, $fdeOnly, $sentUntil)) {
             $this->io->note('0 adherent to notify');
 
             return 0;
@@ -175,9 +178,13 @@ class SendVoteInvitationForDepartmentalElectionsCommand extends Command
 
         while (
             $alreadySentCount < $total
-            && ($adherents = $this->getChunkAdherents($selectedEmails, $excludedDptCodes, $sentUntil, $chunkLimit))
+            && ($adherents = $this->getChunkAdherents($selectedEmails, $excludedDptCodes, $fdeOnly, $sentUntil, $chunkLimit))
         ) {
-            if ($this->transactionalMailer->sendMessage(DepartmentalElectionVoteInvitationMessage::create($adherents))) {
+            if ($this->transactionalMailer->sendMessage(
+                $fdeOnly ?
+                    DepartmentalElectionFdeVoteInvitationMessage::create($adherents) :
+                    DepartmentalElectionVoteInvitationMessage::create($adherents)
+            )) {
                 if (!$selectedEmails) {
                     array_walk($adherents, function (Adherent $adherent) use ($now) {
                         $adherent->globalNotificationSentAt = $now;
@@ -202,9 +209,9 @@ class SendVoteInvitationForDepartmentalElectionsCommand extends Command
         return 0;
     }
 
-    private function countAdherents(array $emails, array $excludedDptCodes, \DateTime $sentUntil): int
+    private function countAdherents(array $emails, array $excludedDptCodes, bool $fdeOnly, \DateTime $sentUntil): int
     {
-        return (int) $this->getQueryBuilder($emails, $excludedDptCodes, $sentUntil)
+        return (int) $this->getQueryBuilder($emails, $excludedDptCodes, $fdeOnly, $sentUntil)
             ->select('COUNT(adherent.id)')
             ->getQuery()
             ->getSingleScalarResult()
@@ -215,10 +222,11 @@ class SendVoteInvitationForDepartmentalElectionsCommand extends Command
     private function getChunkAdherents(
         array $emails,
         array $excludedDptCodes,
+        bool $fdeOnly,
         \DateTime $sentUntil,
         int $limit = 500
     ): array {
-        return $this->getQueryBuilder($emails, $excludedDptCodes, $sentUntil)
+        return $this->getQueryBuilder($emails, $excludedDptCodes, $fdeOnly, $sentUntil)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
@@ -228,8 +236,12 @@ class SendVoteInvitationForDepartmentalElectionsCommand extends Command
     /**
      * @return Paginator|Adherent[]
      */
-    private function getQueryBuilder(array $emails, array $excludedDptCodes, \DateTime $sentUntil): QueryBuilder
-    {
+    private function getQueryBuilder(
+        array $emails,
+        array $excludedDptCodes,
+        bool $fdeOnly,
+        \DateTime $sentUntil
+    ): QueryBuilder {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
             ->select('PARTIAL adherent.{id, firstName, lastName, emailAddress, globalNotificationSentAt}')
@@ -276,10 +288,14 @@ class SendVoteInvitationForDepartmentalElectionsCommand extends Command
                 ->setParameter('sent_until', $sentUntil)
             ;
 
-            $queryBuilder
-                ->andWhere('adherent.postAddress.country != \'FR\' OR (adherent.postAddress.country = \'FR\' AND LEFT(adherent.postAddress.postalCode, 2) IN (:dpt_codes))')
-                ->setParameter('dpt_codes', array_diff(self::DPT_CODES, $excludedDptCodes))
-            ;
+            if ($fdeOnly) {
+                $queryBuilder->andWhere('adherent.postAddress.country != \'FR\'');
+            } else {
+                $queryBuilder
+                    ->andWhere('adherent.postAddress.country != \'FR\' OR (adherent.postAddress.country = \'FR\' AND LEFT(adherent.postAddress.postalCode, 2) IN (:dpt_codes))')
+                    ->setParameter('dpt_codes', array_diff(self::DPT_CODES, $excludedDptCodes))
+                ;
+            }
         }
 
         return $queryBuilder;
