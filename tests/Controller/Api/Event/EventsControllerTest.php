@@ -103,7 +103,7 @@ class EventsControllerTest extends AbstractApiCaseTest
     {
         return [
             ['CE011', 0],
-            ['CE001', 2, [1]],
+            ['CE001', 1, [1]],
             ['CE005', 1],
         ];
     }

@@ -28,8 +28,8 @@ Feature:
     """
     {
       "female":24,
-      "male":40,
-      "total":64
+      "male":37,
+      "total":61
     }
     """
 

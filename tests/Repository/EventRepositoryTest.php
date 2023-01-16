@@ -21,16 +21,16 @@ class EventRepositoryTest extends AbstractKernelTestCase
 
     public function testCountEvents()
     {
-        $this->assertSame(19, $this->repository->countElements(true, false));
-        $this->assertSame(20, $this->repository->countElements(true, true));
+        $this->assertSame(18, $this->repository->countElements(true, false));
+        $this->assertSame(19, $this->repository->countElements(true, true));
     }
 
     public function testFindUpcomingEvents()
     {
         Chronos::setTestNow('2018-05-18');
 
-        $this->assertCount(10, $this->repository->findUpcomingEvents(null, true));
-        $this->assertCount(9, $this->repository->findUpcomingEvents(null, false));
+        $this->assertCount(9, $this->repository->findUpcomingEvents(null, true));
+        $this->assertCount(8, $this->repository->findUpcomingEvents(null, false));
 
         Chronos::setTestNow();
     }
@@ -39,8 +39,8 @@ class EventRepositoryTest extends AbstractKernelTestCase
     {
         Chronos::setTestNow('2018-05-18');
 
-        $this->assertSame(10, $this->repository->countUpcomingEvents(true));
-        $this->assertSame(9, $this->repository->countUpcomingEvents(false));
+        $this->assertSame(9, $this->repository->countUpcomingEvents(true));
+        $this->assertSame(8, $this->repository->countUpcomingEvents(false));
 
         Chronos::setTestNow();
     }
