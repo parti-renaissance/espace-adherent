@@ -77,7 +77,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     EventTypeEnum::TYPE_COALITION: "CoalitionEvent",
  *     EventTypeEnum::TYPE_CAUSE: "CauseEvent",
  *     EventTypeEnum::TYPE_INSTITUTIONAL: "InstitutionalEvent",
- *     EventTypeEnum::TYPE_MUNICIPAL: "MunicipalEvent",
  * })
  *
  * @DateRange(

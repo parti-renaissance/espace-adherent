@@ -201,11 +201,6 @@ referent.adherent.can_be_coreferent: Cet adhérent est déjà co-référent d’
 referent.managed_zone.empty: La zone gérée ne doit pas être vide.
 
 #
-# Adherent Message
-#
-adherent_message.filter.municipal_chief.empty_contact_type: Vous devez sélectionner au moins un type de contact (équipe, adhérents etc.)
-
-#
 # J'écoute
 #
 
@@ -436,9 +431,6 @@ path.description.min_length: La description doit faire au moins {{ limit }} cara
 
 module.title.unique_entity: Il existe déjà un module avec ce titre pour cet axe de formation.
 module.slug.unique_entity: Il existe déjà un module avec cette URL pour cet axe de formation.
-
-municipal_chief.invalid_city: La valeur saisie dans le champ Candidat Municipales 2020 🇫🇷 n'est pas un code INSEE de ville valide.
-municipal_chief.invalid_postal_code: Le code postal ne fait pas partie de votre ville
 
 #
 # ProgrammaticFoundation

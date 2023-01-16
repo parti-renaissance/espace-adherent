@@ -14,7 +14,6 @@ class AdherentSpaceEnum
     public const CANDIDATE = 'candidate';
     public const CANDIDATE_JECOUTE = 'candidate_jecoute';
     public const LEGISLATIVE_CANDIDATE = 'legislative_candidate';
-    public const MUNICIPAL_CHIEF = 'municipal_chief';
     public const ASSESSOR = 'assessor';
     public const CORRESPONDENT = 'correspondent';
     public const REGIONAL_COORDINATOR = 'regional_coordinator';

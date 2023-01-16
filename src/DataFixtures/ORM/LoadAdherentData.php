@@ -68,9 +68,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public const RENAISSANCE_USER_1_UUID = '88c92d85-4e55-4e47-b1ce-b625b7de3871';
     public const RENAISSANCE_USER_2_UUID = 'd0a0935f-da7c-4caa-b582-a8c2376e5158';
     public const RENAISSANCE_USER_3_UUID = '859b1528-9451-41d7-bc9e-7c95e23c5113';
-    public const MUNICIPAL_CHIEF_1_UUID = '15d9154e-22d0-45f4-9b82-7f383342a3b8';
-    public const MUNICIPAL_CHIEF_2_UUID = 'bdc66cc7-ddf0-4406-b76a-447acb1594ab';
-    public const MUNICIPAL_CHIEF_3_UUID = '991e29ff-0333-4a30-a228-067ac5bbe6a9';
 
     public const DEFAULT_PASSWORD = 'secret!12345';
 
