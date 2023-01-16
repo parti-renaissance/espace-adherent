@@ -17,7 +17,6 @@ use App\Entity\BoardMember\BoardMember;
 use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
 use App\Entity\LreArea;
 use App\Entity\ManagedArea\CandidateManagedArea;
-use App\Entity\MunicipalChiefManagedArea;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTeamMember;
 use App\Entity\SenatorArea;
