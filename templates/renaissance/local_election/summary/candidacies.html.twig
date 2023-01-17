@@ -55,12 +55,34 @@
                         </a>
 
                         <div class="border-t border-dashed border-gray-200 mt-5 pt-4">
-                            <h4 class="text-gray-700 font-medium underline">Liste</h4>
-                            <ul class="mt-2 space-y-3 text-gray-500" role="list">
+                            <div class="pb-3">
+                                <h3 class="text-lg font-medium leading-6 text-gray-500">Titulaires</h3>
+                            </div>
+                            <ul class="px-2 mt-2 space-y-3 text-gray-500" role="list">
                                 {% for candidacy in candidaciesGroup.candidacies %}
-                                    <li>{{ candidacy.firstName}} {{ candidacy.lastName }}</li>
+                                    <li class="px-4 py-1.5">
+                                        <span class="text-gray-400">{{ candidacy.gender == 'male' ? 'M' : 'Mme' }}</span>
+                                        <span class="inline-block ml-0.5 text-gray-600 font-medium">
+                                            {{ candidacy.getFirstName() }} <span class="uppercase">{{ candidacy.getLastName() }}</span>
+                                        </span>
+                                    </li>
                                 {% endfor %}
                             </ul>
+                            {%if candidaciesGroup.substituteCandidacies is not empty %}
+                                <div class="mt-2 pb-3">
+                                    <h3 class="text-lg font-medium leading-6 text-gray-500">Suppléants</h3>
+                                </div>
+                                <ul class="px-2 mt-2 space-y-3 text-gray-500" role="list">
+                                    {% for substitute in candidaciesGroup.substituteCandidacies %}
+                                        <li class="px-4 py-1.5">
+                                            <span class="text-gray-400">{{ substitute.gender == 'male' ? 'M' : 'Mme' }}</span>
+                                            <span class="inline-block ml-0.5 text-gray-700 font-medium">
+                                                {{ substitute.getFirstName() }} <span class="uppercase">{{ substitute.getLastName() }}</span>
+                                            </span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

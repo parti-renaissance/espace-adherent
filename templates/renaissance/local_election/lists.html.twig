@@ -35,6 +35,9 @@
                             {% endif %}
                         </div>
                         <div x-cloak x-show="open" class="mt-4 border-t border-dashed border-gray-300 pt-4 md:hidden">
+                            <div class="border-b border-gray-200 pb-3">
+                                <h3 class="text-lg font-medium leading-6 text-gray-500">Titulaires</h3>
+                            </div>
                             {% for candidacy in group.candidacies %}
                                 <div class="py-1.5">
                                     <span class="text-gray-400">{{ candidacy.gender == 'male' ? 'M' : 'Mme' }}</span>
@@ -43,6 +46,21 @@
                                     </span>
                                 </div>
                             {% endfor %}
+                            {%if group.substituteCandidacies is not empty %}
+                                <div class="border-b border-gray-200 mt-2 pb-3">
+                                    <h3 class="text-lg font-medium leading-6 text-gray-500">Suppléants</h3>
+                                </div>
+                                <ul class="!my-0">
+                                    {% for substitute in group.substituteCandidacies %}
+                                        <li class="py-1.5">
+                                            <span class="text-gray-400">{{ substitute.gender == 'male' ? 'M' : 'Mme' }}</span>
+                                            <span class="inline-block ml-0.5 text-gray-700 font-medium">
+                                                {{ substitute.getFirstName() }} <span class="uppercase">{{ substitute.getLastName() }}</span>
+                                            </span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                             <p class="mt-4 border-t border-gray-200 text-right py-3 px-4">
                                 <button type="button" @click="open = false" class="text-sm leading-5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:underline">Reduire</button>
                             </p>
@@ -89,6 +107,9 @@
                                             <h3 class="!my-0 !text-lg font-medium !leading-6 !text-gray-900">Membres de la liste</h3>
                                         </div>
                                         <div class="mt-2">
+                                            <div class="border-b border-gray-200 pb-3">
+                                                <h3 class="text-lg font-medium leading-6 text-gray-500">Titulaires</h3>
+                                            </div>
                                             <ul class="!my-0">
                                                 {% for candidacy in group.candidacies %}
                                                     <li class="px-4 py-1.5">
@@ -99,6 +120,21 @@
                                                     </li>
                                                 {% endfor %}
                                             </ul>
+                                            {%if group.substituteCandidacies is not empty %}
+                                                <div class="border-b border-gray-200 mt-2 pb-3">
+                                                    <h3 class="text-lg font-medium leading-6 text-gray-500">Suppléants</h3>
+                                                </div>
+                                                <ul class="!my-0">
+                                                    {% for substitute in group.substituteCandidacies %}
+                                                        <li class="px-4 py-1.5">
+                                                            <span class="text-gray-400">{{ substitute.gender == 'male' ? 'M' : 'Mme' }}</span>
+                                                            <span class="inline-block ml-0.5 text-gray-700 font-medium">
+                                                            {{ substitute.getFirstName() }} <span class="uppercase">{{ substitute.getLastName() }}</span>
+                                                        </span>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="mt-5 md:mt-4 md:flex md:flex-row-reverse">
