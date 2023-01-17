@@ -17,6 +17,13 @@ abstract class AbstractContributionController extends AbstractController
     ) {
     }
 
+    public function checkContributionsEnabled(): void
+    {
+        if ('production' === $this->getParameter('app_environment')) {
+            throw $this->createNotFoundException('Contributions are disabled.');
+        }
+    }
+
     protected function getCommand(Request $request = null): ContributionRequest
     {
         /** @var ?Adherent $user */

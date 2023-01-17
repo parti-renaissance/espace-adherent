@@ -14,6 +14,8 @@ class FillRevenueController extends AbstractContributionController
 {
     public function __invoke(Request $request): Response
     {
+        $this->checkContributionsEnabled();
+
         $command = $this->getCommand($request);
 
         if (!$this->processor->canFillRevenue($command)) {

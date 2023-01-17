@@ -21,6 +21,8 @@ class FillInformationsController extends AbstractContributionController
         MembershipNotifier $notifier,
         EncoderFactoryInterface $encoders
     ): Response {
+        $this->checkContributionsEnabled();
+
         $command = $this->getCommand();
 
         if (!$this->processor->canFillContributionInformations($command)) {
