@@ -31,3 +31,54 @@
 {% block voting_platform_result_tab_votes_list_title 'Détails des résultats' %}
 
 {% block voting_platform_result_tab_pool_title '' %}
+
+{% block voting_platform_result_header %}
+    <h1 class="text-xl text-center font-bold">Résultats de {{ designation.getDenomination(true) }}</h1>
+
+    {% set pool_result = election_round_result.getElectionPoolResults|first %}
+    {% set voters = pool_result.participated ?? 0 %}
+    {% set expressed = pool_result.expressed ?? 0 %}
+    {% set participated = pool_result.bulletinCount() ?? 0 %}
+    {% set blank = pool_result.blank ?? 0 %}
+
+    <div class="flex flex-col">
+        <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-300">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-6"></th>
+                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">% Inscrits</th>
+                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">% Votants</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 bg-white">
+                            <tr>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Participation</td>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (participated / voters * 100)|number_format(1, ',') }}%</td>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"></td>
+                            </tr>
+
+                            {% if designation.isBlankVoteEnabled() %}
+                                <tr>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Blancs</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (blank / voters * 100)|number_format(1, ',') }}%</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (blank / participated * 100)|number_format(1, ',') }}%</td>
+                                </tr>
+                            {% endif %}
+
+                            <tr>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Exprimés</td>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ ((expressed / voters) * 100)|number_format(1, ',') }}%</td>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ ((expressed / participated) * 100)|number_format(1, ',') }}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="text-xl text-center font-bold">Exprimés</h1>
+{% endblock %}
