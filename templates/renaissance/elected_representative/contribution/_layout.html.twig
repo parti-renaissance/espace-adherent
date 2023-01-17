@@ -24,14 +24,13 @@
                 <ol role="list" class="ml-8 flex items-center space-x-5">
                     {% for step in steps %}
                         <li>
-                            <!-- Completed Step -->
                             {% if current_step_index is same as null or current_step_index > loop.index %}
-
+                                <!-- Completed Step -->
                                 <a href="{{ path(step) }}" class="block h-2.5 w-2.5 rounded-full bg-re-blue-600 hover:bg-re-blue-900">
                                     <span class="sr-only">Etape {{ loop.index }}</span>
                                 </a>
-                                <!-- Current Step -->
                             {% elseif current_step_index is same as loop.index %}
+                                <!-- Current Step -->
                                 <a href="#" class="relative flex items-center justify-center" aria-current="step">
                                     <span class="absolute flex h-5 w-5 p-px" aria-hidden="true">
                                         <span class="h-full w-full rounded-full bg-re-blue-200"></span>
@@ -39,8 +38,8 @@
                                     <span class="relative block h-2.5 w-2.5 rounded-full bg-re-blue-600" aria-hidden="true"></span>
                                     <span class="sr-only">Etape {{ loop.index }}</span>
                                 </a>
-                                <!-- Upcoming Step -->
                             {% else %}
+                                <!-- Upcoming Step -->
                                 <a href="#" class="block h-2.5 w-2.5 rounded-full bg-gray-200 hover:bg-gray-400">
                                     <span class="sr-only">Step {{ loop.index }}</span>
                                 </a>
