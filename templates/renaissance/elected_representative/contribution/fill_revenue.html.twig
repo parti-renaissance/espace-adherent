@@ -1,79 +1,37 @@
-{% extends 'renaissance/adherent/_layout.html.twig' %}
+{% extends 'renaissance/elected_representative/contribution/_layout.html.twig' %}
 
 {% form_theme form with 'renaissance/forms/form_theme_profile.html.twig' %}
 
-{% block page_title 'Cotisation élus' %}
+{% block contribution_content %}
+    {{ form_start(form, { attr: { id: 'app_elected_representative_contribution_revenue' } }) }}
 
-{% block content_right_side %}
-    <section class="space-y-4 md:space-y-6" id="elected-representative-contribution">
-        <div class="flex items-center justify-between">
-            <h1 class="text-3xl font-bold leading-10 text-gray-900">Cotisation élus [1/4]</h1>
-            <nav class="flex items-center justify-center" aria-label="Progress">
-                <p class="text-sm font-medium">Etape 1 sur 4</p>
-                <ol role="list" class="ml-8 flex items-center space-x-5">
-                    <li>
-                        <!-- Completed Step -->
-                        <a href="#" class="block h-2.5 w-2.5 rounded-full bg-re-blue-600 hover:bg-re-blue-900">
-                            <span class="sr-only">Etape 1</span>
-                        </a>
-                    </li>
+    <div class="space-y-4">
+        {{ form_errors(form) }}
+        <p class="text-base leading-6 text-gray-500">
+            {{ cms_block('renaissance-elected-representative-contribution-step-1') }}
+        </p>
 
-                    <li>
-                        <!-- Current Step -->
-                        <a href="#" class="relative flex items-center justify-center" aria-current="step">
-                            <span class="absolute flex h-5 w-5 p-px" aria-hidden="true">
-                              <span class="h-full w-full rounded-full bg-re-blue-200"></span>
-                            </span>
-                            <span class="relative block h-2.5 w-2.5 rounded-full bg-re-blue-600" aria-hidden="true"></span>
-                            <span class="sr-only">Etape 2</span>
-                        </a>
-                    </li>
+        <div>
+            {{ form_label(form.revenueAmount, 'Montant (€)') }}
 
-                    <li>
-                        <!-- Upcoming Step -->
-                        <a href="#" class="block h-2.5 w-2.5 rounded-full bg-gray-200 hover:bg-gray-400">
-                            <span class="sr-only">Etape 3</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <!-- Upcoming Step -->
-                        <a href="#" class="block h-2.5 w-2.5 rounded-full bg-gray-200 hover:bg-gray-400">
-                            <span class="sr-only">Step 4</span>
-                        </a>
-                    </li>
-                </ol>
-            </nav>
-        </div>
-
-        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
-            {{ form_start(form, { attr: { id: 'app_elected_representative_contribution_revenue' } }) }}
-
-            <div class="space-y-4">
-                {{ form_errors(form) }}
-
-                <p class="text-lg text-gray-500 leading-6">
-                    Montant de l’ensemble des indemnités brutes perçues au titre du ou des mandats locaux et mandats annexes (EPCI, Syndicats intercommunaux)
-                </p>
-
-                <div>
-                    {{ form_label(form.revenueAmount, 'Montant (€)') }}
-                    <div class="relative mt-1 max-w-lg">
-                        {{ form_widget(form.revenueAmount) }}
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                            <span class="text-gray-500 sm:text-sm" id="price-currency">EUR</span>
-                        </div>
-                    </div>
-                    <p class="mt-2">
-                        {{ form_errors(form.revenueAmount) }}
-                    </p>
+            <div class="relative mt-1 max-w-lg">
+                {{ form_widget(form.revenueAmount) }}
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                    <span class="text-gray-500 sm:text-sm" id="price-currency">EUR</span>
                 </div>
             </div>
+            <p class="mt-2">
+                {{ form_errors(form.revenueAmount) }}
+            </p>
 
-            <div class="mt-5">
-                <button type="submit" class="button button-blue">Valider</button>
-            </div>
-            {{ form_end(form) }}
+            <p class="text-lg text-gray-500 leading-6">
+                Montant de l’ensemble des indemnités brutes perçues au titre du ou des mandats locaux et mandats annexes (EPCI, Syndicats intercommunaux)
+            </p>
         </div>
-    </section>
+    </div>
+
+    <div class="mt-5">
+        <button type="submit" class="button button-blue">Valider</button>
+    </div>
+    {{ form_end(form) }}
 {% endblock %}

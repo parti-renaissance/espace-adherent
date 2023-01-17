@@ -421,6 +421,27 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
         $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-2', 'Vote des statuts', 'Approuvez vous la résolution B ?'));
         $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-3', 'Vote des statuts', 'Approuvez vous la résolution C ?'));
 
+        $manager->persist($this->createCmsBlock(
+            'renaissance-elected-representative-contribution-step-1',
+            'Texte affiché à la première étape du funnel des cotisations élus',
+            'Lorem ipsum dolor sit amet. Eum  facilis et nemo dicta et  sint et numquam sapiente eum commodi consequatur ut dolorem natus? Sed similique itaque in  rerum ea alias voluptates ut optio odio nam officiis deleniti aut sapiente voluptates et culpa tenetur. Vel dignissimos provident et eligendi officia in animi distinctio est omnis esse vel cumque doloribus eos cumque nobis.'
+        ));
+        $manager->persist($this->createCmsBlock(
+            'renaissance-elected-representative-contribution-step-2',
+            'Texte affiché à la deuxième étape du funnel des cotisations élus',
+            'Lorem ipsum dolor sit amet. Eum  facilis et nemo dicta et  sint et numquam sapiente eum commodi consequatur ut dolorem natus? Sed similique itaque in  rerum ea alias voluptates ut optio odio nam officiis deleniti aut sapiente voluptates et culpa tenetur. Vel dignissimos provident et eligendi officia in animi distinctio est omnis esse vel cumque doloribus eos cumque nobis.'
+        ));
+        $manager->persist($this->createCmsBlock(
+            'renaissance-elected-representative-contribution-step-3',
+            'Texte affiché à la troisième étape du funnel des cotisations élus',
+            'Les informations suivantes (Nom, Prénom, Pays de résidence, Adresse postale, E-mail) doivent être renseignées et à jour dans vos informations générales. Sans cette correspondance, votre contribution pourrait être mal traitée.'
+        ));
+        $manager->persist($this->createCmsBlock(
+            'renaissance-elected-representative-contribution-step-confirmation',
+            'Texte affiché à la première étape du funnel des cotisations élus',
+            '<p class="text-green-700">Votre cotisation a été enregistrée avec succès.</p>'
+        ));
+
         $manager->flush();
     }
 
