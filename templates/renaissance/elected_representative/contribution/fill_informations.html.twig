@@ -1,18 +1,58 @@
 {% extends 'renaissance/adherent/_layout.html.twig' %}
 
+{% form_theme form with 'renaissance/forms/form_theme_profile.html.twig' %}
+
 {% block page_title 'Cotisation élus' %}
 
 {% block content_right_side %}
     <section class="space-y-4 md:space-y-6" id="elected-representative-contribution">
-        <h1 class="text-3xl font-bold leading-10 text-gray-900">Cotisation élus [3/4]</h1>
+        <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold leading-10 text-gray-900">Cotisation élus [3/4]</h1>
+            <nav class="flex items-center justify-center" aria-label="Progress">
+                <p class="text-sm font-medium">Etape 3 sur 4</p>
+                <ol role="list" class="ml-8 flex items-center space-x-5">
+                    <li>
+                        <!-- Completed Step -->
+                        <a href="#" class="block h-2.5 w-2.5 rounded-full bg-re-blue-600 hover:bg-re-blue-900">
+                            <span class="sr-only">Etape 1</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <!-- Current Step -->
+                        <a href="#" class="relative flex items-center justify-center" aria-current="step">
+                            <span class="absolute flex h-5 w-5 p-px" aria-hidden="true">
+                              <span class="h-full w-full rounded-full bg-re-blue-200"></span>
+                            </span>
+                            <span class="relative block h-2.5 w-2.5 rounded-full bg-re-blue-600" aria-hidden="true"></span>
+                            <span class="sr-only">Etape 2</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <!-- Upcoming Step -->
+                        <a href="#" class="block h-2.5 w-2.5 rounded-full bg-gray-200 hover:bg-gray-400">
+                            <span class="sr-only">Etape 3</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <!-- Upcoming Step -->
+                        <a href="#" class="block h-2.5 w-2.5 rounded-full bg-gray-200 hover:bg-gray-400">
+                            <span class="sr-only">Step 4</span>
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
 
         <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
             {{ form_start(form, { attr: { id: 'app_elected_representative_contribution_informations' } }) }}
 
             {{ form_errors(form) }}
 
-            <div class="space-y-6">
-                <div class="space-y-5">
+            <div class="space-y-5">
+                <div class="space-y-4">
                     <h2 class="text-lg font-medium text-gray-900">1. Mettez à jour vos informations personnelles</h2>
 
                     <p class="text-gray-500 leading-7">
@@ -34,23 +74,27 @@
                         </svg>
                     </a>
                 </div>
+                {{ form_row(form.accountName, { label: 'Nom du titulaire du compte' }) }}
+
+                {{ form_row(form.accountCountry, { label: 'Pays du compte bancaire' }) }}
+
+                <div>
+                    {{ form_row(form.iban, { label: 'IBAN' }) }}
+                    <p class="mt-1 text-sm text-gray-500">Identifiant international de compte bancaire (IBAN)</p>
+                </div>
             </div>
 
-            {{ form_row(form.accountName, { label: 'Nom du titulaire du compte' }) }}
-
-            {{ form_row(form.accountCountry, { label: 'Pays du compte bancaire' }) }}
-
-            <p class="mt-1 text-sm text-gray-500">Identifiant international de compte bancaire (IBAN)</p>
-            {{ form_row(form.iban, { label: 'IBAN' }) }}
-
-            <div>
+            <div class="mt-6">
                 <button type="submit" class="button button-blue">Valider</button>
             </div>
 
             {{ form_end(form) }}
 
-            <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
-                <a href="{{ path('app_renaissance_elected_representative_contribution_fill_revenue') }}">Retour</a>
+            <div class="mt-4 border-t pt-3 border-gray-200">
+                <a class="inline-flex items-center text-base leading-5 font-medium text-re-blue-500 hover:text-re-blue-700 hover:underline" href="{{ path('app_renaissance_elected_representative_contribution_fill_revenue') }}">
+                    <span aria-hidden="true">&larr; </span>
+                    Retournez aux informations
+                </a>
             </div>
         </div>
     </section>

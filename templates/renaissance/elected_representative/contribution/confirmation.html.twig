@@ -4,8 +4,65 @@
 
 {% block content_right_side %}
     <section class="space-y-4 md:space-y-6" id="certification">
-        <h1 class="text-3xl font-bold leading-10 text-gray-900">Cotisation élus [4/4]</h1>
+        <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold leading-10 text-gray-900">Cotisation élus [4/4]</h1>
+            <nav class="flex items-center justify-center" aria-label="Progress">
+                <p class="text-sm font-medium">Etape 4 sur 4</p>
+                <ol role="list" class="ml-8 flex items-center space-x-5">
+                    <li>
+                        <!-- Completed Step -->
+                        <a href="#" class="block h-2.5 w-2.5 rounded-full bg-re-blue-600 hover:bg-re-blue-900">
+                            <span class="sr-only">Etape 1</span>
+                        </a>
+                    </li>
 
-        Cotisation enregistrée avec succès!
+                    <li>
+                        <!-- Current Step -->
+                        <a href="#" class="relative flex items-center justify-center" aria-current="step">
+                            <span class="absolute flex h-5 w-5 p-px" aria-hidden="true">
+                              <span class="h-full w-full rounded-full bg-re-blue-200"></span>
+                            </span>
+                            <span class="relative block h-2.5 w-2.5 rounded-full bg-re-blue-600" aria-hidden="true"></span>
+                            <span class="sr-only">Etape 2</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <!-- Upcoming Step -->
+                        <a href="#" class="block h-2.5 w-2.5 rounded-full bg-gray-200 hover:bg-gray-400">
+                            <span class="sr-only">Etape 3</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <!-- Upcoming Step -->
+                        <a href="#" class="block h-2.5 w-2.5 rounded-full bg-gray-200 hover:bg-gray-400">
+                            <span class="sr-only">Step 4</span>
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="mt-6 rounded-md bg-green-50 border border-green-100 p-4">
+            <div class="flex">
+                <div class="shrink-0">
+                    {% include 'icons/check-circle.svg.twig' with { svg_class: 'h-5 w-5 text-green-400' } %}
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-base font-medium text-green-800">Cotisation effectuée</h3>
+                    <div class="mt-2 text-base leading-6 text-green-700">
+                        <p>Votre cotisation a été enregistrée avec succès. Merci d'etre un membre actif du Parti Renaissance.</p>
+                    </div>
+                    <div class="mt-4">
+                        <div class="-mx-2 -my-1.5 flex">
+                            <a href="#" class="rounded-md bg-green-50 px-2 py-1.5 text-base font-medium text-green-800 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50">
+                                Refaire une cotisation
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 {% endblock %}

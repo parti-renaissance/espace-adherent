@@ -4,17 +4,74 @@
 
 {% block content_right_side %}
     <section class="space-y-4 md:space-y-6" id="elected-representative-contribution">
-        <h1 class="text-3xl font-bold leading-10 text-gray-900">Cotisation élus [2]</h1>
+        <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold leading-10 text-gray-900">Cotisation élus [2/4]</h1>
+            <nav class="flex items-center justify-center" aria-label="Progress">
+                <p class="text-sm font-medium">Etape 2 sur 4</p>
+                <ol role="list" class="ml-8 flex items-center space-x-5">
+                    <li>
+                        <!-- Completed Step -->
+                        <a href="#" class="block h-2.5 w-2.5 rounded-full bg-re-blue-600 hover:bg-re-blue-900">
+                            <span class="sr-only">Etape 1</span>
+                        </a>
+                    </li>
 
-        <div>
-            Montant de cotisation calculé: {{ command.contributionAmount }}€
+                    <li>
+                        <!-- Current Step -->
+                        <a href="#" class="relative flex items-center justify-center" aria-current="step">
+                            <span class="absolute flex h-5 w-5 p-px" aria-hidden="true">
+                              <span class="h-full w-full rounded-full bg-re-blue-200"></span>
+                            </span>
+                            <span class="relative block h-2.5 w-2.5 rounded-full bg-re-blue-600" aria-hidden="true"></span>
+                            <span class="sr-only">Etape 2</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <!-- Upcoming Step -->
+                        <a href="#" class="block h-2.5 w-2.5 rounded-full bg-gray-200 hover:bg-gray-400">
+                            <span class="sr-only">Etape 3</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <!-- Upcoming Step -->
+                        <a href="#" class="block h-2.5 w-2.5 rounded-full bg-gray-200 hover:bg-gray-400">
+                            <span class="sr-only">Step 4</span>
+                        </a>
+                    </li>
+                </ol>
+            </nav>
         </div>
 
-        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
-            <a href="{{ path('app_renaissance_elected_representative_contribution_fill_informations') }}">Remplir les informations</a>
-        </div>
-        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
-            <a href="{{ path('app_renaissance_elected_representative_contribution_fill_revenue') }}">Retour</a>
+        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden space-y-4">
+            <div class="rounded-md bg-blue-50 p-4">
+                <div class="flex">
+                    <div class="shrink-0">
+                        {% include 'icons/money.svg.twig' with { svg_class: 'h-5 w-5 text-re-blue-400' } %}
+                    </div>
+                    <div class="ml-3 flex-1 md:flex md:justify-between">
+                        <p class="text-sm text-blue-700">
+                            Montant de cotisation calculé: <span class="font-medium text-re-blue-700">{{ command.contributionAmount }}€</span>
+                        </p>
+                        <p class="mt-3 text-sm md:mt-0 md:ml-6">
+                            <a href="{{ path('app_renaissance_elected_representative_contribution_fill_revenue') }}" class="whitespace-nowrap text-blue-700 hover:text-blue-500">
+                                Modifier ce montant
+                                <span aria-hidden="true"> &larr;</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-base leading-6 text-gray-500">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab debitis dicta dignissimos
+                eaque esse est explicabo fugit maiores molestias nobis,
+                perferendis placeat quibusdam quod suscipit tempora voluptate voluptatibus? Esse, nisi.
+            </p>
+            <a class="inline-flex items-center text-re-blue-500 text-base leading-5 underline hover:text-re-blue-600 font-medium hover:decoration-re-blue-600 hover:decoration-2" href="{{ path('app_renaissance_elected_representative_contribution_fill_informations') }}">
+                Remplir les informations
+                <span aria-hidden="true"> &rarr;</span>
+            </a>
         </div>
     </section>
 {% endblock %}
