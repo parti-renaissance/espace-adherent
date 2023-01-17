@@ -31,6 +31,7 @@ class AdherentRoleEnum extends Enum
     public const LAREM = 'gq_ideas';
 
     public const ELECTED = 'elected';
+    public const ONGOING_ELECTED_REPRESENTATIVE = 'ongoing_eletected_representative';
 
     public const PRINT_PRIVILEGE = 'print_privilege';
     public const ROLE_NATIONAL = 'role_national';

@@ -2,6 +2,7 @@
 
 namespace App\ElectedRepresentative\Contribution;
 
+use App\Adherent\AdherentRoleEnum;
 use App\Entity\Adherent;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Workflow\StateMachine;
@@ -61,7 +62,10 @@ class ContributionRequestProcessor
     {
         $user = $this->security->getUser();
 
-        if (!$user instanceof Adherent || !$user->isElected()) {
+        if (
+            !$user instanceof Adherent
+            || !$this->security->isGranted(AdherentRoleEnum::ONGOING_ELECTED_REPRESENTATIVE)
+        ) {
             return false;
         }
 

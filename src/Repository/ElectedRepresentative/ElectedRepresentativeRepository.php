@@ -101,6 +101,23 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         ;
     }
 
+    public function hasActiveMandate(Adherent $adherent): bool
+    {
+        $qb = $this
+            ->createQueryBuilder('elected_representative')
+            ->andWhere('elected_representative.adherent = :adherent')
+            ->setParameter('adherent', $adherent)
+        ;
+
+        $this->withActiveMandatesCondition($qb, 'elected_representative');
+
+        return (bool) $qb
+            ->select('COUNT(elected_representative)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     private function createFilterQueryBuilder(ListFilter $filter): QueryBuilder
     {
         $qb = $this
