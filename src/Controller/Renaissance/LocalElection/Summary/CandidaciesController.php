@@ -2,7 +2,6 @@
 
 namespace App\Controller\Renaissance\LocalElection\Summary;
 
-use App\Controller\CanaryControllerTrait;
 use App\Entity\LocalElection\LocalElection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,12 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CandidaciesController extends AbstractController
 {
-    use CanaryControllerTrait;
-
     public function __invoke(LocalElection $localElection)
     {
-        $this->disableInProduction();
-
         return $this->render('renaissance/local_election/summary/candidacies.html.twig', [
             'election' => $localElection,
         ]);
