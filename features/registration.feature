@@ -255,7 +255,7 @@ Feature:
     """
     And I clean the "api_sync" queue
 
-    Given I am on "/parametres/mon-compte/modifier"
+    Given I am on "/parametres/mon-compte"
     Then the response status code should be 200
 
     And the "adherent_profile[address][address]" field should contain "1 rue de l'egalite"

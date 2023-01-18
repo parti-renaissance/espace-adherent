@@ -70,7 +70,7 @@ class AdherentControllerTest extends WebTestCase
 
     public function provideProfilePage(): \Generator
     {
-        yield 'Mes informations personnelles' => ['/parametres/mon-compte/modifier'];
+        yield 'Mes informations personnelles' => ['/parametres/mon-compte'];
         yield 'Mot de passe' => ['/parametres/mon-compte/changer-mot-de-passe'];
         yield 'Certification' => ['/espace-adherent/mon-compte/certification'];
     }
@@ -92,7 +92,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertCount(0, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
 
         $inputPattern = 'input[name="adherent_profile[%s]"]';
         $optionPattern = 'select[name="adherent_profile[%s]"] option[selected="selected"]';
@@ -201,7 +201,7 @@ class AdherentControllerTest extends WebTestCase
             ],
         ]));
 
-        $this->assertClientIsRedirectedTo('/parametres/mon-compte/modifier', $this->client);
+        $this->assertClientIsRedirectedTo('/parametres/mon-compte', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -241,7 +241,7 @@ class AdherentControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'renaissance-user-2@en-marche-dev.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $disabledFields = $crawler->filter('form[name="adherent_profile"] input[disabled="disabled"], form[name="adherent_profile"] select[disabled="disabled"]');
@@ -336,7 +336,7 @@ class AdherentControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, $email);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringNotContainsString(

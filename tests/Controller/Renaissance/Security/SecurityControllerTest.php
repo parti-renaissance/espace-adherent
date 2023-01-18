@@ -49,7 +49,7 @@ class SecurityControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(
             $isRenaissanceUser
-                ? '/parametres/mon-compte/modifier'
+                ? '/parametres/mon-compte'
                 : 'http://test.renaissance.code/',
             $this->client
         );
