@@ -95,8 +95,18 @@ class CandidaciesGroupAdmin extends AbstractAdmin
                 ->end()
             ->end()
             ->tab('Candidat(e)s')
-                ->with(false, ['description' => $candidaciesGroup->election ? 'Les candidat(e)s sont ordonnés par leur position.' : '<span class="text-danger">Veuillez d\'abord créer une liste afin de pouvoir y ajouter des candidats.</span>'])
+                ->with('Titulaires', ['description' => $candidaciesGroup->election ? 'Les candidat(e)s sont ordonnés par leur position.' : '<span class="text-danger">Veuillez d\'abord créer une liste afin de pouvoir y ajouter des candidats.</span>'])
                     ->add('candidacies', CollectionType::class, [
+                        'label' => false,
+                        'by_reference' => false,
+                        'btn_add' => $candidaciesGroup->election ? 'Ajouter' : false,
+                    ], [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                    ])
+                ->end()
+                ->with('Suppléants')
+                    ->add('substituteCandidacies', CollectionType::class, [
                         'label' => false,
                         'by_reference' => false,
                         'btn_add' => $candidaciesGroup->election ? 'Ajouter' : false,

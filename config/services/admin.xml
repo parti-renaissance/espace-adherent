@@ -1631,5 +1631,12 @@
             <argument>App\Entity\LocalElection\Candidacy</argument>
             <argument />
         </service>
+        <service id="app.admin.local_election.substitute_candidacy" class="App\Admin\LocalElection\SubstituteCandidacyAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Candidatures Supléants" group="Élections départementales" show_in_dashboard="false" />
+
+            <argument />
+            <argument>App\Entity\LocalElection\SubstituteCandidacy</argument>
+            <argument />
+        </service>
     </services>
 </container>

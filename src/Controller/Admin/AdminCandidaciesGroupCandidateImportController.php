@@ -4,9 +4,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\LocalElection\CandidaciesGroup;
 use App\Entity\LocalElection\Candidacy;
+use App\Entity\LocalElection\SubstituteCandidacy;
 use App\Form\Admin\LocalElection\CandidateImportType;
 use App\LocalElection\CandidateImportCommand;
 use App\Repository\LocalElection\CandidacyRepository;
+use App\Repository\LocalElection\SubstituteCandidacyRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
@@ -23,7 +25,8 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
     public function candidateImportAction(
         Request $request,
         CandidaciesGroup $candidaciesGroup,
-        CandidacyRepository $candidacyRepository
+        CandidacyRepository $candidacyRepository,
+        SubstituteCandidacyRepository $substituteCandidacyRepository
     ): Response {
         $this->admin->checkAccess('candidate_import');
 
@@ -43,7 +46,7 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
             $records = $csv->getRecords();
             $totalCandidates = iterator_count($records);
 
-            if (!empty($diff = array_diff(['GENRE', 'NOM', 'PRENOM', 'EMAIL', 'POSITION'], $header))) {
+            if (!empty($diff = array_diff(['GENRE', 'NOM', 'PRENOM', 'EMAIL', 'POSITION', 'LISTE'], $header))) {
                 $this->addFlash('sonata_flash_error', sprintf('En-tête de fichier invalide. Il manque la ou les colonne(s) %s', implode(',', $diff)));
 
                 return $this->redirect($this->admin->generateObjectUrl('candidate_import', $candidaciesGroup));
@@ -52,9 +55,10 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
             $candidatesImported = 0;
             foreach ($records as $candidate) {
                 if (!empty($email = $candidate['EMAIL'])) {
-                    if (!$candidacy = $candidacyRepository->findOneByCandidaciesGroupAndEmail($candidaciesGroup, $email)) {
-                        $candidaciesGroup->addCandidacy($candidacy = new Candidacy());
-                        $candidacy->setEmail($email);
+                    if (\in_array(mb_strtolower($candidate['LISTE']), ['suppléant', 'suppléante'])) {
+                        $candidacy = $this->getSubstituteCandidacy($substituteCandidacyRepository, $candidaciesGroup, $email);
+                    } else {
+                        $candidacy = $this->getHolderCandidacy($candidacyRepository, $candidaciesGroup, $email);
                     }
 
                     if (!empty($candidate['GENRE'])) {
@@ -111,5 +115,31 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
         }
 
         return $validValue;
+    }
+
+    private function getHolderCandidacy(
+        CandidacyRepository $candidacyRepository,
+        CandidaciesGroup $candidaciesGroup,
+        string $email
+    ): Candidacy {
+        if (!$candidacy = $candidacyRepository->findOneByCandidaciesGroupAndEmail($candidaciesGroup, $email)) {
+            $candidaciesGroup->addCandidacy($candidacy = new Candidacy());
+            $candidacy->setEmail($email);
+        }
+
+        return $candidacy;
+    }
+
+    private function getSubstituteCandidacy(
+        SubstituteCandidacyRepository $substituteCandidacyRepository,
+        CandidaciesGroup $candidaciesGroup,
+        string $email
+    ): SubstituteCandidacy {
+        if (!$candidacy = $substituteCandidacyRepository->findOneByCandidaciesGroupAndEmail($candidaciesGroup, $email)) {
+            $candidaciesGroup->addSubstituteCandidacy($candidacy = new SubstituteCandidacy());
+            $candidacy->setEmail($email);
+        }
+
+        return $candidacy;
     }
 }
