@@ -21,7 +21,7 @@ class UserControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/');
 
         $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form(), [
             'adherent_profile[emailAddress]' => 'referent@en-marche-dev.fr',
@@ -37,13 +37,13 @@ class UserControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
-        $crawler = $this->client->request('GET', '/parametres/mon-compte/modifier');
+        $crawler = $this->client->request('GET', '/parametres/mon-compte/');
 
         $this->client->submit($crawler->selectButton('Enregistrer')->form(), [
             'adherent_profile[emailAddress]' => 'new.mail@test.com',
         ]);
 
-        $this->assertClientIsRedirectedTo('/parametres/mon-compte/modifier', $this->client);
+        $this->assertClientIsRedirectedTo('/parametres/mon-compte/', $this->client);
 
         $crawler = $this->client->followRedirect();
 

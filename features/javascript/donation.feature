@@ -170,7 +170,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
 
     When I follow "vous rendre sur votre profil"
-    Then I should be on "/parametres/mon-compte/modifier"
+    Then I should be on "/parametres/mon-compte/"
 
     When I am on "/parametres/mes-activites"
     And I follow "Mettre fin à mon don mensuel"

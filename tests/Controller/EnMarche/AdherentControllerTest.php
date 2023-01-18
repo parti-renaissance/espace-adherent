@@ -127,7 +127,7 @@ class AdherentControllerTest extends WebTestCase
 
     public function provideProfilePage(): \Generator
     {
-        yield 'Mes informations personnelles' => ['/parametres/mon-compte/modifier'];
+        yield 'Mes informations personnelles' => ['/parametres/mon-compte/'];
         yield 'Mes centres d\'intérêt' => ['/espace-adherent/mon-compte/centres-d-interet'];
         yield 'Notifications' => ['/parametres/mon-compte/preferences-des-emails'];
         yield 'Mot de passe' => ['/parametres/mon-compte/changer-mot-de-passe'];
@@ -138,7 +138,7 @@ class AdherentControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'thomas.leclerc@example.ch');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Thomas Leclerc', $crawler->filter('.adherent-profile__id .name')->text());
@@ -180,7 +180,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertCount(0, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/');
 
         $inputPattern = 'input[name="adherent_profile[%s]"]';
         $optionPattern = 'select[name="adherent_profile[%s]"] option[selected="selected"]';
@@ -288,7 +288,7 @@ class AdherentControllerTest extends WebTestCase
             ],
         ]));
 
-        $this->assertClientIsRedirectedTo('/parametres/mon-compte/modifier', $this->client);
+        $this->assertClientIsRedirectedTo('/parametres/mon-compte/', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -327,7 +327,7 @@ class AdherentControllerTest extends WebTestCase
     public function testCertifiedAdherentCanNotEditFields(): void
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/');
 
         $disabledFields = $crawler->filter('form[name="adherent_profile"] input[disabled="disabled"], form[name="adherent_profile"] select[disabled="disabled"]');
         self::assertCount(5, $disabledFields);
@@ -817,7 +817,7 @@ class AdherentControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, $email);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringNotContainsString(
@@ -854,7 +854,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->authenticateAsAdherent($this->client, $userEmail);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringContainsString(
