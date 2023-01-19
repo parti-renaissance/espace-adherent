@@ -18716,16 +18716,16 @@
         },
         {
             "name": "coduo/php-matcher",
-            "version": "6.0.9",
+            "version": "6.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/coduo/php-matcher.git",
-                "reference": "e782a9ee7f97bbc4f751324591ec619b5822f721"
+                "reference": "8c85e04ae4621d05559974bd4e13087a64ae0ae8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/coduo/php-matcher/zipball/e782a9ee7f97bbc4f751324591ec619b5822f721",
-                "reference": "e782a9ee7f97bbc4f751324591ec619b5822f721",
+                "url": "https://api.github.com/repos/coduo/php-matcher/zipball/8c85e04ae4621d05559974bd4e13087a64ae0ae8",
+                "reference": "8c85e04ae4621d05559974bd4e13087a64ae0ae8",
                 "shasum": ""
             },
             "require": {
@@ -18735,7 +18735,7 @@
                 "ext-filter": "*",
                 "ext-json": "*",
                 "ext-simplexml": "*",
-                "php": "^7.4.2 || ~8.0 || ~8.1"
+                "php": "^7.4.2 || ~8.0 || ~8.1 || ~8.2"
             },
             "require-dev": {
                 "openlss/lib-array2xml": "^1.0",
@@ -18774,9 +18774,9 @@
             ],
             "support": {
                 "issues": "https://github.com/coduo/php-matcher/issues",
-                "source": "https://github.com/coduo/php-matcher/tree/6.0.9"
+                "source": "https://github.com/coduo/php-matcher/tree/6.0.10"
             },
-            "time": "2022-10-04T08:14:53+00:00"
+            "time": "2023-01-19T11:05:58+00:00"
         },
         {
             "name": "coduo/php-to-string",
