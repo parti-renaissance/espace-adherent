@@ -23,21 +23,39 @@
 
     @media screen and (min-width: 1024px) {
         display: block;
-        width: 100%;
         height: auto;
     }
 }
 
-.departments-list {
-    a {
-        transition: all 0.3s;
+.departments {
+    &::-webkit-scrollbar {
+        width: 0.5em;
+        height: 0.5em;
     }
 
-    a.current {
+    &::-webkit-scrollbar-thumb {
         background-color: #1254D8;
-        border-color: #5D8EF1;
+        border-radius: 3px;
 
-        h4 { color: #fff; }
-        p { color: #A2BEF7; }
+        &:hover {
+            background: #5D8EF1;
+        }
+    }
+
+    &-list {
+        a {
+            transition: all 0.3s;
+        }
+
+        a:hover, a.current {
+            display: inline-flex;
+            padding-left: 12px;
+            padding-right: 12px;
+            background-color: #1254D8;
+            border-color: #5D8EF1;
+
+            h4 { color: #fff; }
+            p { color: #A2BEF7; }
+        }
     }
 }

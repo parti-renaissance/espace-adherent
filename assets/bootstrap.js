@@ -7,9 +7,8 @@ import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
 
 import departmentMap from './components/DepartmentMap';
-import tooltip from './components/Tooltip';
+import Tooltip from './components/Tooltip';
 import './style/main.scss';
-import Tooltip from "./components/Tooltip";
 
 window.Alpine = Alpine;
 window.Bootstrap = class {
