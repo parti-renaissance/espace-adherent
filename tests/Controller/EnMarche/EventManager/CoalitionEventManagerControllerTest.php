@@ -18,7 +18,7 @@ class CoalitionEventManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-coalition/evenements-de-coalitions');
 
-        $this->assertCount(12, $crawler->filter('tbody tr.event__item'));
+        $this->assertCount(13, $crawler->filter('tbody tr.event__item'));
     }
 
     public function testListCauseEvents(): void
