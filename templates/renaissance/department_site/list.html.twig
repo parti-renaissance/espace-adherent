@@ -6,18 +6,37 @@
 {% block content %}
     {% include 'renaissance/partials/site-header.html.twig' with { theme_bg: 'border-b border-re-blue-400 bg-re-blue-500' } %}
 
-    <div class="max-w-8xl mx-auto px-4 md:px-6">
-        <div class="text-center py-10 md:py-14 lg:pt-20">
-            <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-                <span class="block">Sites départementaux du parti</span>
-                <span class="block text-re-blue-600">Renaissance</span>
-            </h1>
-            <p class="mx-auto mt-3 max-w-md text-base text-gray-500 sm:text-lg md:mt-5 md:max-w-3xl md:text-xl">
-                Je découvre tous les sites départementaux du parti Renaissance !
-            </p>
+    <div class="lg:flex">
+        <div class="px-4 md:px-6 lg:px-8 h-full w-2/3">
+            <div class="py-8 md:py-10">
+                <h1 class="text-xl font-semibold tracking-tight text-gray-900 lg:text-3xl">
+                    <span>Sites départementaux du parti</span>
+                    <span class="text-re-blue-600">Renaissance</span>
+                </h1>
+                <p class="mt-3 max-w-xl text-base text-gray-500 lg:text-lg">
+                    Je découvre tous les sites départementaux du parti Renaissance !
+                </p>
+            </div>
+            <div class="border-t border-gray-200 pt-8 pb-10">
+                <div class="departments-list grid grid-cols-1 gap-4 md:grid-cols-3">
+                    {% for code, department in department_sites %}
+                        <a id="list-{{ code }}" href="{{ department['department_site_slug'] is null ? '#' : 'federations/' ~ department['department_site_slug'] }}" class="relative rounded-lg border border-gray-300 bg-white px-4 py-3 shadow-sm hover:border-gray-400">
+                            <span class="absolute inset-0" aria-hidden="true"></span>
+                            <h4 class="text-sm font-medium text-gray-900">{{ department['department_name'] }} ({{ department['department_code'] }})</h4>
+                            <p class="truncate text-sm text-gray-500">
+                                {% if not department['department_site_slug'] %}
+                                    Aucun site disponible
+                                {% else %}
+                                    Visitez le site
+                                {% endif %}
+                            </p>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-        <div x-data="departmentMap({{ department_sites | json_encode }})" data-host="{{ renaissance_host }}" class="py-12 lg:pb-16">
-            <div class="flex items-center justify-center">
+        <div class="hidden lg:block fixed top-20 right-0 lg:px-8 lg:w-1/3">
+            <div x-data="departmentMap({{ department_sites | json_encode }})" data-host="{{ renaissance_host }}" class="relative py-12">
                 <svg class="map" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 612 584">
                     <a id="dpt-01" x-tooltip="Ain" xlink:href="javascript:void">
                         <path d="M413.57,308.03L420.26,287.51L425.07,289.58L429.68,287.48L432.49,291.15L435.75,291.85L435.75,291.85L435.11,293.84L438.34,295.69L439.45,299.99L440.3,297.75L442.42,299.69L442.35,302.76L445.06,302.51L449.38,297.95L452.32,300.07L452.8,302.97L458.79,302.74L466.89,293.67L466.89,293.67L471.26,296.62L468.45,301.53L469.38,303.57L463.38,305.63L462.4,310.65L462.4,310.65L459.76,311.46L459.5,313.45L456.73,312.36L457.07,322.2L457.07,322.2L454.87,334.91L451.82,335.73L451.21,339.82L448.63,341.49L448.63,341.49L437.33,325.49L431.99,332.29L426.95,329.63L426.95,329.63L419.33,330.26L417.79,324.74L414.6,324.73L414.77,323.33L411.5,322.02L412.18,313.25L414.51,309.52z"/>
@@ -308,6 +327,18 @@
                         <path d="M285.85,120.07L287.35,120.55L287.42,123.28L291.31,124.35L298.23,123.61L301.51,121.43L305.23,124.39L307.22,123.39L307.58,125.14L311.17,122.94L318.5,127.99L321.15,126.86L322.65,129.65L322.65,129.65L321.01,133.96L321.01,133.96L316.39,137.61L313.35,136.4L309.85,137.88L309.85,137.88L306.49,140.49L306.49,140.49L306.65,137.78L303.15,133.61L299.11,134.84L294.32,131.69L293,133.62L291.11,129.89L286.66,131.89L281.9,129.82L281.9,129.82z"/>
                     </a>
                 </svg>
+                <div class="absolute flex flex-col space-y-2 top-10 right-0">
+                    <button type="button" class="inline-flex items-center justify-center text-sm leading-5 text-gray-500 font-medium h-6 w-6 rounded-md border border-gray-300 hover:border-gray-400 hover:text-gray-700 focus:outline-none">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+                        </svg>
+                    </button>
+                    <button type="button" class="inline-flex items-center justify-center text-sm leading-5 text-gray-500 font-medium h-6 w-6 rounded-md border border-gray-300 hover:border-gray-400 hover:text-gray-700 focus:outline-none">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

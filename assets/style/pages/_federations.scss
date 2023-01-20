@@ -23,7 +23,21 @@
 
     @media screen and (min-width: 1024px) {
         display: block;
-        width: 60%;
+        width: 100%;
         height: auto;
+    }
+}
+
+.departments-list {
+    a {
+        transition: all 0.3s;
+    }
+
+    a.current {
+        background-color: #1254D8;
+        border-color: #5D8EF1;
+
+        h4 { color: #fff; }
+        p { color: #A2BEF7; }
     }
 }

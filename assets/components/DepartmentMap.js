@@ -5,7 +5,7 @@
  * @param {string | null} slug
  */
 const currentSection = (elem, id, slug = null) => {
-    elem.querySelectorAll('.current')
+    document.querySelectorAll('.current')
         .forEach((item) => item.classList.remove('current'));
     elem.querySelectorAll('.invalid')
         .forEach((item) => item.classList.remove('invalid'));
@@ -13,6 +13,15 @@ const currentSection = (elem, id, slug = null) => {
     if (id !== undefined) {
         const validClass = 'string' === typeof slug ? 'current' : 'invalid';
         document.querySelector(`#dpt-${id}`).classList.add(validClass);
+        // document.querySelector(`#list-${id}`).classList.add('current');
+
+        const item = document.querySelector(`#list-${id}`);
+        item.classList.add('current');
+        // const y = item.getBoundingClientRect().top + window.scrollY;
+        window.scroll({
+            top: item.offsetTop - 70,
+            behavior: 'smooth',
+        });
     }
 };
 
@@ -20,11 +29,14 @@ export default (departments = {}) => ({
     display: false,
     departments,
     paths: [],
+    links: [],
 
     init() {
         const element = this.$el;
         const dpts = this.departments;
         this.paths = element.querySelectorAll('.map a');
+        this.links = document.querySelectorAll('.departments-list a');
+
         this.paths.forEach((path) => {
             // eslint-disable-next-line func-names
             path.addEventListener('mouseenter', function (e) {
@@ -46,7 +58,7 @@ export default (departments = {}) => ({
                     alert('Ce département ne possède pas encore de site.');
                 } else {
                     // eslint-disable-next-line max-len
-                    window.location.href = `https://${element.dataset.host}/federations/${department.department_site_slug}`;
+                    window.location.href = `federations/${department.department_site_slug}`;
                 }
             });
         });
