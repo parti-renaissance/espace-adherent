@@ -5,6 +5,6 @@ export default (el, { modifiers, expression }) => {
     tippy(el, {
         content: expression,
         placement: modifiers[0] ?? 'auto',
-    })
-    el.classList.add('tooltips')
+    });
+    el.classList.add('tooltips');
 };
