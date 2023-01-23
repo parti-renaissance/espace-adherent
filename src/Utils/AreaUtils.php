@@ -23,16 +23,6 @@ class AreaUtils
     public const PREFIX_POSTALCODE_DOM = '97';
     public const PREFIX_POSTALCODE_PARIS_DISTRICTS = '75';
     public const PREFIX_POSTALCODE_TOM = '98';
-
-    public const INSEE_CODE_ANNECY = '74010';
-    public const INSEE_CODES_ATTACHED_TO_ANNECY = [
-        '74011',
-        '74268',
-        '74093',
-        '74182',
-        '74217',
-    ];
-
     public const METROPOLIS = [
         self::CODE_METROPOLIS_MONTPELLIER => [
             '34022',
