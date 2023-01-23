@@ -109,9 +109,9 @@ class NotifyCommand extends Command
                 $this->notifyVotersOfElection($election, static function (Election $election, array $adherents) {
                     return VotingPlatformResultsReadyMessage::create($election, $adherents);
                 });
-            }
 
-            $designation->markAsNotifiedFor(Designation::NOTIFICATION_RESULT_READY);
+                $election->markSentNotification(Designation::NOTIFICATION_RESULT_READY);
+            }
 
             $this->entityManager->flush();
         }

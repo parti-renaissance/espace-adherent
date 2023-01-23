@@ -108,7 +108,7 @@ class DesignationRepository extends ServiceEntityRepository
             ->innerJoin(Election::class, 'election', Join::WITH, 'election.designation = designation')
             ->innerJoin('election.electionResult', 'election_result')
             ->where('designation.resultDisplayDelay > 0 AND election.status = :close_status')
-            ->andWhere('BIT_AND(designation.notifications, :notification) > 0 AND BIT_AND(designation.notificationsSent, :notification) = 0')
+            ->andWhere('BIT_AND(designation.notifications, :notification) > 0 AND BIT_AND(election.notificationsSent, :notification) = 0')
             ->andWhere('DATE_ADD(designation.voteEndDate, designation.resultScheduleDelay, \'HOUR\') < :now')
             ->andWhere('DATE_ADD(DATE_ADD(designation.voteEndDate, designation.resultScheduleDelay, \'HOUR\'), designation.resultDisplayDelay, \'DAY\') > :now')
             ->setParameters([
