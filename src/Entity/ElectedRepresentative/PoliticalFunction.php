@@ -4,6 +4,7 @@ namespace App\Entity\ElectedRepresentative;
 
 use App\Exception\BadPoliticalFunctionNameException;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,6 +27,8 @@ class PoliticalFunction
      *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum", "toArray"})
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $name;
 
@@ -35,6 +38,8 @@ class PoliticalFunction
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max="255")
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $clarification;
 
@@ -42,6 +47,8 @@ class PoliticalFunction
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $onGoing = true;
 
@@ -51,6 +58,8 @@ class PoliticalFunction
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $beginAt;
 
@@ -67,6 +76,8 @@ class PoliticalFunction
      *     "not (value !== null and this.isOnGoing())",
      *     message="La date de fin ne peut être saisie que dans le cas où la fonction n'est pas en cours."
      * )
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $finishAt;
 

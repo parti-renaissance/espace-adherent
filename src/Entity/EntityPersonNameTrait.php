@@ -38,6 +38,7 @@ trait EntityPersonNameTrait
      *     "my_team_member_read",
      *     "my_team_read_list",
      *     "scope",
+     *     "elected_representative_read",
      * })
      */
     private $firstName = '';
@@ -72,6 +73,7 @@ trait EntityPersonNameTrait
      *     "my_team_member_read",
      *     "my_team_read_list",
      *     "scope",
+     *     "elected_representative_read"
      * })
      */
     private $lastName = '';

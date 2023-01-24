@@ -2,7 +2,14 @@
 
 namespace App\Entity\ElectedRepresentative;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
+use App\Entity\EntityAdherentBlameableInterface;
+use App\Entity\EntityAdherentBlameableTrait;
+use App\Entity\EntityAdministratorBlameableInterface;
+use App\Entity\EntityAdministratorBlameableTrait;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUserListDefinitionTrait;
 use App\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,33 +20,55 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"elected_representative_read"}
+ *         },
+ *         "denormalization_context": {
+ *             "groups": {"elected_representative_write"}
+ *         },
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/v3/elected_representatives/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('CAN_MANAGE_ELECTED_REPRESENTATIVE', object)"
+ *         },
+ *         "put": {
+ *             "path": "/v3/elected_representatives/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('CAN_MANAGE_ELECTED_REPRESENTATIVE', object)"
+ *         },
+ *         "delete": {
+ *             "path": "/v3/elected_representatives/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('CAN_MANAGE_ELECTED_REPRESENTATIVE', object)"
+ *         }
+ *     },
+ *     collectionOperations={
+ *         "post": {
+ *             "path": "/v3/elected_representatives",
+ *         }
+ *     }
+ * )
+ *
  * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ElectedRepresentativeRepository")
  *
  * @UniqueEntity(fields={"adherent"}, message="elected_representative.invalid_adherent")
  */
-class ElectedRepresentative
+class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
+    use EntityIdentityTrait;
+    use EntityTimestampableTrait;
+    use EntityAdministratorBlameableTrait;
+    use EntityAdherentBlameableTrait;
     use EntityUserListDefinitionTrait;
-
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
-    private $id;
-
-    /**
-     * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid")
-     */
-    private $uuid;
 
     /**
      * @var string
@@ -49,7 +78,7 @@ class ElectedRepresentative
      * @Assert\NotBlank
      * @Assert\Length(max="50")
      *
-     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
+     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read"})
      */
     private $lastName;
 
@@ -61,7 +90,7 @@ class ElectedRepresentative
      * @Assert\NotBlank
      * @Assert\Length(max="50")
      *
-     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
+     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read"})
      */
     private $firstName;
 
@@ -76,7 +105,7 @@ class ElectedRepresentative
      *     strict=true
      * )
      *
-     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
+     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read"})
      */
     private $gender;
 
@@ -85,9 +114,9 @@ class ElectedRepresentative
      *
      * @ORM\Column(type="date")
      *
-     * @Assert\NotNull
+     * @Assert\NotBlank
      *
-     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
+     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read"})
      */
     private $birthDate;
 
@@ -97,6 +126,8 @@ class ElectedRepresentative
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max="255")
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $birthPlace;
 
@@ -107,6 +138,8 @@ class ElectedRepresentative
      *
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
+     *
+     * @Groups({"elected_representative_write"})
      */
     private $contactEmail;
 
@@ -116,6 +149,8 @@ class ElectedRepresentative
      * @ORM\Column(type="phone_number", nullable=true)
      *
      * @AssertPhoneNumber
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $contactPhone;
 
@@ -123,6 +158,8 @@ class ElectedRepresentative
      * @var bool|null
      *
      * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $hasFollowedTraining = false;
 
@@ -149,6 +186,8 @@ class ElectedRepresentative
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $adherent;
 
@@ -178,6 +217,8 @@ class ElectedRepresentative
      * )
      *
      * @Assert\Valid
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $mandates;
 
@@ -226,8 +267,10 @@ class ElectedRepresentative
      */
     private $sponsorships;
 
-    public function __construct()
+    public function __construct(UuidInterface $uuid = null)
     {
+        $this->uuid = $uuid ?? Uuid::uuid4();
+
         $this->socialNetworkLinks = new ArrayCollection();
         $this->mandates = new ArrayCollection();
         $this->politicalFunctions = new ArrayCollection();
@@ -254,16 +297,6 @@ class ElectedRepresentative
         $electedRepresentative->birthDate = $birthDate;
 
         return $electedRepresentative;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getUuid(): UuidInterface
-    {
-        return $this->uuid;
     }
 
     public function setUuid(UuidInterface $uuid): void
@@ -352,7 +385,7 @@ class ElectedRepresentative
     }
 
     /**
-     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
+     * @Groups({"elected_representative_change_diff"})
      */
     public function isAdherent(): bool
     {
@@ -580,7 +613,7 @@ class ElectedRepresentative
     }
 
     /**
-     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
+     * @Groups({"elected_representative_change_diff", "elected_representative_read"})
      */
     public function getEmailAddress(): ?string
     {

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,6 +31,8 @@ class Mandate
      *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\MandateTypeEnum", "toArray"})
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $type;
 
@@ -37,6 +40,8 @@ class Mandate
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $isElected;
 
@@ -58,6 +63,8 @@ class Mandate
      *     "value !== null or (value == null and this.getType() === constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
      *     message="Le périmètre géographique est obligatoire."
      * )
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $geoZone;
 
@@ -65,6 +72,8 @@ class Mandate
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $onGoing = true;
 
@@ -74,6 +83,8 @@ class Mandate
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $beginAt;
 
@@ -90,6 +101,8 @@ class Mandate
      *     "not (value !== null and this.isOnGoing())",
      *     message="La date de fin ne peut être saisie que dans le cas où le mandat n'est pas en cours."
      * )
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $finishAt;
 
@@ -100,6 +113,8 @@ class Mandate
      *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Election\VoteListNuanceEnum", "toArray"})
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $politicalAffiliation;
 
@@ -109,6 +124,8 @@ class Mandate
      * @ORM\Column(nullable=true)
      *
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\LaREMSupportEnum", "toArray"})
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $laREMSupport;
 
@@ -133,6 +150,8 @@ class Mandate
      * )
      *
      * @Assert\Valid
+     *
+     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
     private $politicalFunctions;
 
