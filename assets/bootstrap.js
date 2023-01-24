@@ -2,15 +2,11 @@ import 'utils/dom';
 import 'utils/sharer';
 import 'utils/css';
 
-import Alpine from 'alpinejs';
 import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
 
-import departmentMap from './components/DepartmentMap';
-import Tooltip from './components/Tooltip';
 import './style/main.scss';
 
-window.Alpine = Alpine;
 window.Bootstrap = class {
     static boot(release, sentryDsn, environment, user) {
         let app = false;
@@ -36,11 +32,6 @@ window.Bootstrap = class {
                 }
 
                 listeners.forEach((listener) => Main.addListener(listener));
-
-                Alpine.data('departmentMap', departmentMap);
-                Alpine.directive('tooltip', Tooltip);
-
-                Alpine.start();
 
                 Main.run({
                     sentryDsn,
