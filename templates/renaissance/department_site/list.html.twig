@@ -18,7 +18,7 @@
         </div>
         <div x-data="departmentMap({{ department_sites | json_encode }})" class="mt-8 pb-10 grid lg:grid-cols-3 lg:gap-x-10 lg:pb-0">
             <div class="hidden lg:block lg:col-span-2">
-                <div id="map" data-host="{{ renaissance_host }}" class="relative py-12">
+                <div id="map" data-federatton-path="{{ path('app_renaissance_department_site_list') }}" class="relative py-12">
                     <svg id="svg" class="map" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 612 584">
                         <a id="dpt-01" x-tooltip="Ain" xlink:href="javascript:void">
                             <path d="M413.57,308.03L420.26,287.51L425.07,289.58L429.68,287.48L432.49,291.15L435.75,291.85L435.75,291.85L435.11,293.84L438.34,295.69L439.45,299.99L440.3,297.75L442.42,299.69L442.35,302.76L445.06,302.51L449.38,297.95L452.32,300.07L452.8,302.97L458.79,302.74L466.89,293.67L466.89,293.67L471.26,296.62L468.45,301.53L469.38,303.57L463.38,305.63L462.4,310.65L462.4,310.65L459.76,311.46L459.5,313.45L456.73,312.36L457.07,322.2L457.07,322.2L454.87,334.91L451.82,335.73L451.21,339.82L448.63,341.49L448.63,341.49L437.33,325.49L431.99,332.29L426.95,329.63L426.95,329.63L419.33,330.26L417.79,324.74L414.6,324.73L414.77,323.33L411.5,322.02L412.18,313.25L414.51,309.52z"/>
@@ -338,38 +338,23 @@
                 <div id="departments" class="departments lg:h-[700px] lg:overflow-hidden lg:overflow-y-scroll border border-gray-200 rounded-md pl-4 pr-2 py-2.5">
                     <div id="departments-list" class="departments-list flex flex-col divide-y divide-gray-200">
                         <template x-for="[code, department] in searchResults" :key="code">
-                            <a :id="'list-'+ department.department_code" :href="!department.department_site_slug ? '#' : 'federations/' + department.department_site_slug" target="_blank" class="relative py-2 first:border-t-0">
+                            <a :id="'list-'+ department.code" :href="!department.site_slug ? '#' : 'federations/' + department.site_slug" target="_blank" class="relative py-2 first:border-t-0">
                                 <span class="absolute inset-0" aria-hidden="true"></span>
                                 <div>
                                     <h4 class="text-sm font-medium text-gray-900">
-                                        <span x-text="department.department_name"></span> (<span x-text="department.department_code"></span>)
+                                        <span x-text="department.name"></span> (<span x-text="department.code"></span>)
                                     </h4>
                                     <p class="truncate text-sm text-gray-500">
-                                        <template x-if="!department.department_site_slug">
+                                        <template x-if="!department.site_slug">
                                             <span>Aucun site disponible</span>
                                         </template>
-                                        <template x-if="department.department_site_slug">
+                                        <template x-if="department.site_slug">
                                             <span>Visitez le site</span>
                                         </template>
                                     </p>
                                 </div>
                             </a>
                         </template>
-{#                        {% for code, department in department_sites %}#}
-{#                            <a id="list-{{ code }}" href="{{ department['department_site_slug'] is null ? '#' : 'federations/' ~ department['department_site_slug'] }}" target="_blank" class="relative py-2">#}
-{#                                <span class="absolute inset-0" aria-hidden="true"></span>#}
-{#                                <div>#}
-{#                                    <h4 class="text-sm font-medium text-gray-900">{{ department['department_name'] }} ({{ department['department_code'] }})</h4>#}
-{#                                    <p class="truncate text-sm text-gray-500">#}
-{#                                        {% if not department['department_site_slug'] %}#}
-{#                                            Aucun site disponible#}
-{#                                        {% else %}#}
-{#                                            Visitez le site#}
-{#                                        {% endif %}#}
-{#                                    </p>#}
-{#                                </div>#}
-{#                            </a>#}
-{#                        {% endfor %}#}
                     </div>
                 </div>
             </div>

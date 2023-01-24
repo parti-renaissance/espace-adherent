@@ -91,7 +91,7 @@ export default (departments = {}) => ({
             path.addEventListener('mouseenter', function (e) {
                 e.preventDefault();
                 const id = this.id.replace('dpt-', '');
-                currentSection(element, id, dpts[id].department_site_slug);
+                currentSection(element, id, dpts[id].site_slug);
 
                 this.search = '';
             });
@@ -103,9 +103,9 @@ export default (departments = {}) => ({
                 const id = this.id.replace('dpt-', '');
                 const department = dpts[id];
 
-                if (null !== department.department_site_slug) {
+                if (null !== department.site_slug) {
                     // eslint-disable-next-line max-len
-                    window.open(`federations/${department.department_site_slug}`, '_blank');
+                    window.open(`federations/${department.site_slug}`, '_blank');
                 }
             });
         });
@@ -113,7 +113,7 @@ export default (departments = {}) => ({
 
     get searchResults() {
         return Object.entries(this.departments)
-            .filter(([k, v]) => v.department_name.startsWith(this.search) || k === this.search);
+            .filter(([k, v]) => v.name.startsWith(this.search) || k === this.search);
     },
 
     toggle() {

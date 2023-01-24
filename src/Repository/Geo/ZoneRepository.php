@@ -518,8 +518,8 @@ class ZoneRepository extends ServiceEntityRepository
     public function findAllDepartmentSiteIndexByCode(): array
     {
         return $this->createQueryBuilder('zone', 'zone.code')
-            ->select('zone.name AS department_name', 'zone.code AS department_code')
-            ->addSelect('site.slug AS department_site_slug')
+            ->select('zone.name', 'zone.code')
+            ->addSelect('site.slug AS site_slug')
             ->leftJoin(DepartmentSite::class, 'site', Join::WITH, 'zone = site.zone')
             ->where('zone.type = :dpt')
             ->orderBy('zone.name', 'ASC')
