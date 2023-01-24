@@ -14,7 +14,7 @@
             <p class="font-bold">{{ first.getFirstName() }} <span class="uppercase"> {{ first.getLastName() }}</span></p>
 
             {% set votes_rate = candidate_group_result.rate %}
-            <p class="my-3">Exprimés : <span class="font-bold">{{ votes_rate|number_format(0) }}%</span></p>
+            <p class="my-3">Exprimés : <span class="font-bold">{{ votes_rate|number_format(2, ',') }}%</span></p>
 
             <div class="l__row progress-bar">
                 {% set votes_rate = candidate_group_result.rate %}
