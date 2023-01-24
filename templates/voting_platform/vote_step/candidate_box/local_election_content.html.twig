@@ -4,6 +4,7 @@
     <div x-data="{ open: false }" class="w-full self-center">
         {% if candidate_group %}
             {% set candidates = candidate_group.getCandidatesSorted(true) %}
+            {% set substitute_candidates = candidate_group.getSubstituteCandidates() %}
             {% set first = candidates|first %}
 
             {% if designation.isLocalPollType() %}
@@ -70,6 +71,10 @@
                                         <h3 class="!my-0 !text-lg font-medium !leading-6 !text-gray-900">Membres de la liste</h3>
                                     </div>
                                     <div class="mt-4 not-prose">
+                                        <div class="border-b border-gray-200 mt-2 pb-3">
+                                            <h3 class="text-lg font-medium leading-6 text-gray-500">Titulaires</h3>
+                                        </div>
+
                                         <ul class="space-y-1 list-disc px-4 md:px-6" role="list">
                                             {% for candidacy in candidates %}
                                                 <li class="px-4 py-1.5">
@@ -80,6 +85,23 @@
                                                 </li>
                                             {% endfor %}
                                         </ul>
+
+                                        {% if substitute_candidates|length %}
+                                            <div class="border-b border-gray-200 mt-2 pb-3">
+                                                <h3 class="text-lg font-medium leading-6 text-gray-500">Suppléants</h3>
+                                            </div>
+
+                                            <ul class="space-y-1 list-disc px-4 md:px-6" role="list">
+                                                {% for candidacy in substitute_candidates %}
+                                                    <li class="px-4 py-1.5">
+                                                        <span class="text-gray-400">{{ candidacy.gender == 'male' ? 'M' : 'Mme' }}</span>
+                                                        <span class="inline-block ml-0.5 text-gray-700 font-medium">
+                                                            {{ candidacy.getFirstName() }} <span class="uppercase">{{ candidacy.getLastName() }}</span>
+                                                        </span>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="mt-5 md:mt-4 md:flex md:flex-row-reverse">

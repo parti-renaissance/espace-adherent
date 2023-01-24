@@ -25,6 +25,8 @@ class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministrat
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\LocalElection\LocalElection", inversedBy="candidaciesGroups")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     *
+     * @Assert\NotBlank
      */
     public ?LocalElection $election = null;
 

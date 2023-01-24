@@ -79,7 +79,7 @@ class CandidateGroup
      */
     public function getCandidates(): array
     {
-        return $this->candidates->toArray();
+        return $this->candidates->filter(fn (Candidate $candidate) => !$candidate->isSubstitute)->toArray();
     }
 
     /**
@@ -87,12 +87,26 @@ class CandidateGroup
      */
     public function getCandidatesSorted(bool $byPosition = false): array
     {
-        $candidates = $this->candidates->toArray();
+        $candidates = $this->getCandidates();
 
         usort($candidates, function (Candidate $a, Candidate $b) use ($byPosition) {
             return $byPosition ?
                 $a->position <=> $b->position :
                 $b->isFemale() <=> $a->isFemale();
+        });
+
+        return $candidates;
+    }
+
+    /**
+     * @return Candidate[]
+     */
+    public function getSubstituteCandidates(): array
+    {
+        $candidates = $this->candidates->filter(fn (Candidate $candidate) => true === $candidate->isSubstitute)->toArray();
+
+        usort($candidates, function (Candidate $a, Candidate $b) {
+            return $a->position <=> $b->position;
         });
 
         return $candidates;
