@@ -1,7 +1,7 @@
 const zoomSvg = () => {
-    const svg = document.getElementById('svg');
-    const plusZoom = document.getElementById('plus-zoom');
-    const subZoom = document.getElementById('sub-zoom');
+    const svg = findOne(document, '#svg');
+    const plusZoom = findOne(document, '#plus-zoom');
+    const subZoom = findOne(document, '#sub-zoom');
     let viewBox = {
         x: 0,
         y: 0,
@@ -12,7 +12,7 @@ const zoomSvg = () => {
     svg.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
     const svgSize = { w: svg.clientWidth, h: svg.clientHeight };
 
-    plusZoom.addEventListener('click', (e) => {
+    on(plusZoom, 'click', (e) => {
         e.preventDefault();
         const { w, h } = viewBox;
         const dw = w * 0.05;
@@ -25,7 +25,8 @@ const zoomSvg = () => {
         };
         svg.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
     });
-    subZoom.addEventListener('click', (e) => {
+
+    on(subZoom, 'click', (e) => {
         e.preventDefault();
         const { w, h } = viewBox;
         const mx = e.offsetX; // button x
@@ -44,32 +45,30 @@ const zoomSvg = () => {
     });
 };
 
-zoomSvg();
-
 /**
  *
- * @param {HTMLElement} elem
+ * @param {HTMLElement} element
  * @param {int} id
  * @param {string | null} slug
  */
-const currentSection = (elem, id, slug = null) => {
-    document.querySelectorAll('.current')
-        .forEach((item) => item.classList.remove('current'));
-    elem.querySelectorAll('.invalid')
-        .forEach((item) => item.classList.remove('invalid'));
+const currentSection = (element, id, slug = null) => {
+    findAll(document, '.current').forEach((item) => removeClass(item, 'current'));
+    findAll(element, '.invalid').forEach((item) => removeClass(item, 'invalid'));
 
     if (id !== undefined) {
         const validClass = 'string' === typeof slug ? 'current' : 'invalid';
-        const path = document.querySelector(`#dpt-${id}`);
-        const item = document.querySelector(`#list-${id}`);
-        const departments = document.getElementById('departments');
+        const path = findOne(document, `#dpt-${id}`);
+        const item = findOne(document, `#list-${id}`);
+        const departments = findOne(document, '#departments');
 
-        path.classList.add(validClass);
-        item.classList.add('current');
-        departments.scrollTo({
-            behavior: 'smooth',
-            top: item.offsetTop - 500,
-        });
+        addClass(path, validClass);
+        if (null !== item) {
+            addClass(item, 'current');
+            departments.scrollTo({
+                behavior: 'smooth',
+                top: item.offsetTop - 500,
+            });
+        }
     }
 };
 
@@ -81,22 +80,23 @@ export default (departments = {}) => ({
     search: '',
 
     init() {
-        const element = document.getElementById('map');
+        const element = findOne(document, '#department-map');
+
+        if (!element) {
+            return;
+        }
+
         const dpts = this.departments;
-        this.paths = element.querySelectorAll('.map a');
-        this.links = element.querySelectorAll('.departments-list a');
+        this.paths = findAll(element, '.department-map a');
+        this.links = findAll(element, '.departments-list a');
 
         this.paths.forEach((path) => {
-            // eslint-disable-next-line func-names
             path.addEventListener('mouseenter', function (e) {
                 e.preventDefault();
                 const id = this.id.replace('dpt-', '');
                 currentSection(element, id, dpts[id].site_slug);
-
-                this.search = '';
             });
 
-            // eslint-disable-next-line func-names
             path.addEventListener('click', function (e) {
                 e.preventDefault();
 
@@ -104,20 +104,16 @@ export default (departments = {}) => ({
                 const department = dpts[id];
 
                 if (null !== department.site_slug) {
-                    // eslint-disable-next-line max-len
-                    window.open(`federations/${department.site_slug}`, '_blank');
+                    window.open(`${element.dataset.federationPath}/${department.site_slug}`, '_blank');
                 }
             });
         });
+        zoomSvg();
     },
 
     get searchResults() {
         return Object.entries(this.departments)
             .filter(([k, v]) => v.name.startsWith(this.search) || k === this.search);
-    },
-
-    toggle() {
-        this.display = !this.display;
     },
 
     cleanSearch(e) {
