@@ -313,16 +313,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v2.7.6",
+            "version": "v2.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "e6cb63475c0ae13b9c8861004728751e8d2e899d"
+                "reference": "67dcf62518d0ac14a99ddccb149a5891b9526104"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/e6cb63475c0ae13b9c8861004728751e8d2e899d",
-                "reference": "e6cb63475c0ae13b9c8861004728751e8d2e899d",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/67dcf62518d0ac14a99ddccb149a5891b9526104",
+                "reference": "67dcf62518d0ac14a99ddccb149a5891b9526104",
                 "shasum": ""
             },
             "require": {
@@ -470,7 +470,7 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v2.7.6"
+                "source": "https://github.com/api-platform/core/tree/v2.7.7"
             },
             "funding": [
                 {
@@ -478,7 +478,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-14T07:49:28+00:00"
+            "time": "2023-01-23T15:18:02+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
