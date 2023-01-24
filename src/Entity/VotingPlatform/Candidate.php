@@ -87,6 +87,11 @@ class Candidate
      */
     public ?int $position = null;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    public ?bool $isSubstitute = null;
+
     public function __construct(
         string $firstName,
         string $lastName,

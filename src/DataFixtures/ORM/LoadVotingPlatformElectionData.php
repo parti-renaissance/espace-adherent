@@ -510,6 +510,8 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
                 $group->mediaFilePath = $list->getFaithStatementFilePath();
             }
 
+            $candidacyCount = \count($list->getCandidacies());
+
             foreach ($list->getCandidacies() as $candidacy) {
                 $group->addCandidate($candidate = new Candidate(
                     $candidacy->getFirstName(),
@@ -517,6 +519,16 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
                     $candidacy->getGender()
                 ));
                 $candidate->position = $candidacy->getPosition();
+            }
+
+            foreach ($list->getSubstituteCandidacies() as $substituteCandidacy) {
+                $group->addCandidate($candidate = new Candidate(
+                    $substituteCandidacy->getFirstName(),
+                    $substituteCandidacy->getLastName(),
+                    $substituteCandidacy->getGender()
+                ));
+                $candidate->position = $candidacyCount + $substituteCandidacy->getPosition();
+                $candidate->isSubstitute = true;
             }
         }
     }

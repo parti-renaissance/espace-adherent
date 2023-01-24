@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\LocalElection\CandidaciesGroup;
 use App\Entity\LocalElection\Candidacy;
 use App\Entity\LocalElection\LocalElection;
+use App\Entity\LocalElection\SubstituteCandidacy;
 use App\LocalElection\Manager;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -79,6 +80,18 @@ class LoadLocalElectionData extends Fixture implements DependentFixtureInterface
                 $candidate->setLastName($lastName);
                 $candidate->setEmail($this->faker->freeEmail());
             }
+
+            $list->addSubstituteCandidacy($candidate = new SubstituteCandidacy($election, Genders::FEMALE));
+            $candidate->setPosition(1);
+            $candidate->setFirstName($this->faker->firstNameFemale());
+            $candidate->setLastName($this->faker->lastName());
+            $candidate->setEmail($this->faker->freeEmail());
+
+            $list->addSubstituteCandidacy($candidate = new SubstituteCandidacy($election, Genders::MALE));
+            $candidate->setPosition(2);
+            $candidate->setFirstName($this->faker->firstNameMale());
+            $candidate->setLastName($this->faker->lastName());
+            $candidate->setEmail($this->faker->freeEmail());
         }
     }
 }

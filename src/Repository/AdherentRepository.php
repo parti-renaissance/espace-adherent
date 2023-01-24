@@ -1271,7 +1271,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         $queryBuilder = $this->createQueryBuilder('adherent')
             ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
-            ->where('adherent.status = :status')
+            ->where('adherent.status = :status AND adherent.activatedAt IS NOT NULL')
             ->andWhere('adherent.lastMembershipDonation IS NOT NULL')
             ->andWhere('adherent.source = :source')
             ->andWhere('adherent.registeredAt <= :date')
