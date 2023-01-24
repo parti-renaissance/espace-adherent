@@ -38,6 +38,8 @@ class PayboxFormFactory
             'PBX_REFUSE' => $callbackUrl,
             'PBX_ANNULE' => $callbackUrl,
             'PBX_REPONDRE_A' => $this->router->generate('lexik_paybox_ipn', ['time' => time()], UrlGeneratorInterface::ABSOLUTE_URL),
+            'PBX_SHOPPINGCART' => $this->buildCartParameter(),
+            'PBX_BILLING' => $this->buildBillingParameter($donation),
         ];
 
         if (str_starts_with($this->environment, 'test')) {
@@ -49,5 +51,25 @@ class PayboxFormFactory
         }
 
         return $this->requestHandler->setParameters($parameters);
+    }
+
+    private function buildCartParameter(): string
+    {
+        return '<?xml version="1.0"?><shoppingcart><total><totalQuantity>1</totalQuantity></total></shoppingcart>';
+    }
+
+    private function buildBillingParameter(Donation $donation): string
+    {
+        $donator = $donation->getDonator();
+
+        return sprintf(
+            '<?xml version="1.0"?><Billing><Address><FirstName>%s</FirstName><LastName>%s</LastName><Address1>%s</Address1><ZipCode>%s</ZipCode><City>%s</City><CountryCode>%s</CountryCode></Address></Billing>',
+            $donator->getFirstName(),
+            $donator->getLastName(),
+            $donation->getAddress(),
+            $donation->getPostalCode(),
+            $donation->getCityName(),
+            $donation->getCountry()
+        );
     }
 }
