@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 class VotingPlatformResultsReadyMessage extends AbstractRenaissanceVotingPlatformMessages
 {
-    public static function create(Election $election, array $adherents): self
+    public static function create(Election $election, array $adherents, string $url): self
     {
         $adherent = array_shift($adherents);
 
@@ -16,6 +16,7 @@ class VotingPlatformResultsReadyMessage extends AbstractRenaissanceVotingPlatfor
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             sprintf('[%s] Les résultats sont disponibles !', self::getMailSubjectPrefix($election->getDesignation())),
+            ['page_url' => $url]
         );
 
         foreach ($adherents as $adherent) {

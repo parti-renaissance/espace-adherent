@@ -20,6 +20,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class NotifyCommand extends Command
@@ -35,7 +36,8 @@ class NotifyCommand extends Command
         private readonly CommitteeMembershipRepository $committeeMembershipRepository,
         private readonly ElectionRepository $electionRepository,
         private readonly MailerService $transactionalMailer,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly UrlGeneratorInterface $urlGenerator
     ) {
         parent::__construct();
     }
@@ -106,8 +108,12 @@ class NotifyCommand extends Command
 
         foreach ($designations as $designation) {
             foreach ($this->electionRepository->findAllForDesignation($designation) as $election) {
-                $this->notifyVotersOfElection($election, static function (Election $election, array $adherents) {
-                    return VotingPlatformResultsReadyMessage::create($election, $adherents);
+                $this->notifyVotersOfElection($election, function (Election $election, array $adherents) {
+                    return VotingPlatformResultsReadyMessage::create(
+                        $election,
+                        $adherents,
+                        $this->generateResultPageUrl($election)
+                    );
                 });
             }
 
@@ -144,5 +150,16 @@ class NotifyCommand extends Command
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    private function generateResultPageUrl(Election $election): string
+    {
+        $designation = $election->getDesignation();
+
+        if ($designation->isLocalElectionType()) {
+            return $this->urlGenerator->generate('app_renaissance_departmental_election_lists', ['uuid' => $designation->getUuid()->toString()], UrlGeneratorInterface::ABSOLUTE_URL);
+        }
+
+        return $this->urlGenerator->generate('app_voting_platform_results', ['uuid' => $election->getUuid()->toString()], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }
