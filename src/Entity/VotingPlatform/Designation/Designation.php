@@ -194,11 +194,6 @@ class Designation implements EntityAdministratorBlameableInterface
     private $notifications = 15;
 
     /**
-     * @ORM\Column(type="integer", options={"default": 0})
-     */
-    private int $notificationsSent = 0;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private bool $isBlankVoteEnabled = true;
@@ -435,11 +430,6 @@ class Designation implements EntityAdministratorBlameableInterface
     public function setNotifications(int $notifications): void
     {
         $this->notifications = $notifications;
-    }
-
-    public function markAsNotifiedFor(int $notification): void
-    {
-        $this->notificationsSent |= $notification;
     }
 
     public function isNotificationEnabled(string $notificationBit): bool

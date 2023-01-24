@@ -115,9 +115,9 @@ class NotifyCommand extends Command
                         $this->generateResultPageUrl($election)
                     );
                 });
-            }
 
-            $designation->markAsNotifiedFor(Designation::NOTIFICATION_RESULT_READY);
+                $election->markSentNotification(Designation::NOTIFICATION_RESULT_READY);
+            }
 
             $this->entityManager->flush();
         }
