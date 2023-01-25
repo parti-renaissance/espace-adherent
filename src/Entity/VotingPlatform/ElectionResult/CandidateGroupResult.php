@@ -79,10 +79,10 @@ class CandidateGroupResult
         return $this->total;
     }
 
-    public function getRate(): int
+    public function getRate(): float
     {
         return $this->electionPoolResult->getExpressed() < 1 ? 0 :
-            $this->total * 100 / $this->electionPoolResult->getExpressed();
+            $this->total * 100.0 / $this->electionPoolResult->getExpressed();
     }
 
     public function incrementMention(string $mention): void

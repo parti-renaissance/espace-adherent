@@ -50,14 +50,14 @@
                             <tr>
                                 <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-6"></th>
                                 <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">% Inscrits</th>
-                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">% Votants</th>
+                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Votants</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
                             <tr>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Participation</td>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (participated / voters * 100)|number_format(2, ',') }}%</td>
-                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"></td>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ voters }} votant{{ voters > 1 ? 's' }}</td>
                             </tr>
 
                             {% if designation.isBlankVoteEnabled() %}
