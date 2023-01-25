@@ -5,6 +5,7 @@ import amountChooser from './listeners/amount-chooser';
 import addressAutocomplete from './listeners/address-autocomplete';
 import carousel from './listeners/carousel';
 import alpine from './listeners/alpine';
+import DepartmentMap from "./components/DepartmentMap";
 
 class Main {
     constructor() {
