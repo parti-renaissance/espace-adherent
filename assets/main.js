@@ -1,9 +1,9 @@
-import Container from "./services/Container";
+import Container from './services/Container';
 import registerServices from './services';
 
-import amountChooser from './listeners/amount-chooser'
-import addressAutocomplete from './listeners/address-autocomplete'
-import carousel from './listeners/carousel'
+import amountChooser from './listeners/amount-chooser';
+import addressAutocomplete from './listeners/address-autocomplete';
+import carousel from './listeners/carousel';
 import alpine from './listeners/alpine';
 
 class Main {
@@ -28,7 +28,7 @@ class Main {
 
         // Execute the page load listeners
         this._listeners.forEach((listener) => {
-            listener(this._di)
+            listener(this._di);
         });
     }
 
@@ -51,12 +51,18 @@ class Main {
     runMailchimpResubscribeEmail({
         redirectUrl = null, signupPayload = null, authenticated = true, callback = null,
     }) {
-        import('pages/mc_resubscribe_email').catch((error) => { throw error; }).then((module) => module.default(this.get('api'), redirectUrl, signupPayload, authenticated, callback))
+        import('pages/mc_resubscribe_email').catch((error) => { throw error; }).then((module) => module.default(this.get('api'), redirectUrl, signupPayload, authenticated, callback));
     }
 
     runCountdownClock(clockSelector, refreshPage = false) {
         import('services/utils/countdownClock').catch((error) => { throw error; }).then((module) => {
             module.default(clockSelector, refreshPage);
+        });
+    }
+
+    runDepartmentMapPage() {
+        import('pages/department_map').catch((error) => { throw error; }).then((module) => {
+            module.default();
         });
     }
 }

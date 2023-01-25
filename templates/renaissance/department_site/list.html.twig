@@ -16,10 +16,10 @@
                 Je découvre tous les sites départementaux du parti Renaissance !
             </p>
         </div>
-        <div x-data="departmentMap({{ department_sites | json_encode }})" class="mt-8 pb-10 grid lg:grid-cols-3 lg:gap-x-10 lg:pb-0">
+        <div x-data="{searchResults: []}" class="mt-8 pb-10 grid lg:grid-cols-3 lg:gap-x-10 lg:pb-0">
             <div class="hidden lg:block lg:col-span-2">
                 <div id="department-map" data-federation-path="{{ path('app_renaissance_department_site_list') }}" class="relative py-12">
-                    <svg id="svg" class="department-map" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 612 584">
+                    <svg id="svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 612 584">
                         <a id="dpt-01" x-tooltip="Ain" xlink:href="javascript:void">
                             <path d="M413.57,308.03L420.26,287.51L425.07,289.58L429.68,287.48L432.49,291.15L435.75,291.85L435.75,291.85L435.11,293.84L438.34,295.69L439.45,299.99L440.3,297.75L442.42,299.69L442.35,302.76L445.06,302.51L449.38,297.95L452.32,300.07L452.8,302.97L458.79,302.74L466.89,293.67L466.89,293.67L471.26,296.62L468.45,301.53L469.38,303.57L463.38,305.63L462.4,310.65L462.4,310.65L459.76,311.46L459.5,313.45L456.73,312.36L457.07,322.2L457.07,322.2L454.87,334.91L451.82,335.73L451.21,339.82L448.63,341.49L448.63,341.49L437.33,325.49L431.99,332.29L426.95,329.63L426.95,329.63L419.33,330.26L417.79,324.74L414.6,324.73L414.77,323.33L411.5,322.02L412.18,313.25L414.51,309.52z"/>
                         </a>
@@ -362,4 +362,14 @@
     </div>
 
     {% include 'renaissance/partials/small-footer.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        Bootstrap.onLoad(function() {
+            Main.runDepartmentMapPage()
+        });
+    </script>
 {% endblock %}
