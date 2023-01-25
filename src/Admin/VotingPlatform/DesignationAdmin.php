@@ -147,6 +147,7 @@ class DesignationAdmin extends AbstractAdmin
                 ->with('Questionnaire')
                     ->add('poll', ModelType::class, [
                         'label' => false,
+                        'required' => false,
                         'btn_add' => 'Créer',
                     ])
                 ->end()
