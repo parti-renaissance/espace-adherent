@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/election-locale", name="app_renaissance_local_election_home", methods="GET")
- * @IsGranted("ROLE_ADHERENT")
+ * @IsGranted("RENAISSANCE_ADHERENT")
  */
 class LocalPollElectionController extends AbstractController
 {

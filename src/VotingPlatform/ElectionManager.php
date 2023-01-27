@@ -24,6 +24,10 @@ class ElectionManager
         DesignationTypeEnum::LOCAL_POLL,
         ]
     ): array {
+        if (!$adherent->isRenaissanceAdherent()) {
+            return [];
+        }
+
         $cacheKey = implode('-', array_merge([$adherent->getId()], $types));
 
         if (!empty($this->cache[$cacheKey])) {

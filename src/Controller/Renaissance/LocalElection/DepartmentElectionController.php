@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/elections-departementales/{uuid}")
- * @IsGranted("ROLE_ADHERENT")
+ * @IsGranted("RENAISSANCE_ADHERENT")
  */
 class DepartmentElectionController extends AbstractController
 {
