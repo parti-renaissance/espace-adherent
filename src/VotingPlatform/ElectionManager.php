@@ -20,9 +20,8 @@ class ElectionManager
      */
     public function findActiveDesignations(
         Adherent $adherent,
-        array $types = [
-            DesignationTypeEnum::LOCAL_ELECTION,
-            DesignationTypeEnum::LOCAL_POLL,
+        array $types = [DesignationTypeEnum::LOCAL_ELECTION,
+        DesignationTypeEnum::LOCAL_POLL,
         ]
     ): array {
         if (!$adherent->isRenaissanceAdherent()) {
