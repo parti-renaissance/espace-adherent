@@ -140,6 +140,8 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $crawler = $this->client->followRedirect();
 
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
         $formNode = $crawler->filter('input[name=PBX_CMD]');
 
         if ($suffix = PayboxPaymentSubscription::getCommandSuffix($donation->getAmount(), $donation->getDuration())) {

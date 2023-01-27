@@ -7082,16 +7082,16 @@
         },
         {
             "name": "lexik/paybox-bundle",
-            "version": "v2.2.3",
+            "version": "v2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EnMarche/LexikPayboxBundle.git",
-                "reference": "da0234055c9049bfbc2cb2fafca7e3a49a8f4727"
+                "reference": "eb848799a03746f1aaca97355c29d455b8f9ecc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EnMarche/LexikPayboxBundle/zipball/da0234055c9049bfbc2cb2fafca7e3a49a8f4727",
-                "reference": "da0234055c9049bfbc2cb2fafca7e3a49a8f4727",
+                "url": "https://api.github.com/repos/EnMarche/LexikPayboxBundle/zipball/eb848799a03746f1aaca97355c29d455b8f9ecc1",
+                "reference": "eb848799a03746f1aaca97355c29d455b8f9ecc1",
                 "shasum": ""
             },
             "require": {
@@ -7140,9 +7140,9 @@
                 "bundle"
             ],
             "support": {
-                "source": "https://github.com/EnMarche/LexikPayboxBundle/tree/v2.2.3"
+                "source": "https://github.com/EnMarche/LexikPayboxBundle/tree/v2.2.4"
             },
-            "time": "2022-11-21T09:50:29+00:00"
+            "time": "2023-01-24T17:23:13+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
