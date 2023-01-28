@@ -6,6 +6,7 @@ use App\Adherent\SessionModal\SessionModalActivatorListener;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ReferentSpaceAccessInformation;
+use App\Membership\MembershipSourceEnum;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
@@ -78,8 +79,13 @@ class AdherentRuntime implements RuntimeExtensionInterface
     {
         $labels = [];
 
-        if ($adherent->isAdherent()) {
+        if (
+            $adherent->isRenaissanceAdherent()
+            || ($adherent->isAdherent() && MembershipSourceEnum::RENAISSANCE !== $adherent->getSource())
+        ) {
             $labels[] = $adherent->isFemale() ? 'Adhérente' : 'Adhérent';
+        } elseif ($adherent->isRenaissanceSympathizer()) {
+            $labels[] = $adherent->isFemale() ? 'Sympathisante' : 'Sympathisant';
         } else {
             $labels[] = 'Non-adhérent(e)';
         }
