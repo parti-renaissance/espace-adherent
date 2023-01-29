@@ -57,7 +57,7 @@
                             <tr>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Participation</td>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (participated / voters * 100)|number_format(2, ',') }}%</td>
-                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ voters }} votant{{ voters > 1 ? 's' }}</td>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ participated }} votant{{ participated > 1 ? 's' }}</td>
                             </tr>
 
                             {% if designation.isBlankVoteEnabled() %}
