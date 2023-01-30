@@ -32,7 +32,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     AdherentMessageTypeEnum::REFERENT: "ReferentAdherentMessage",
  *     AdherentMessageTypeEnum::DEPUTY: "DeputyAdherentMessage",
  *     AdherentMessageTypeEnum::COMMITTEE: "CommitteeAdherentMessage",
- *     AdherentMessageTypeEnum::MUNICIPAL_CHIEF: "MunicipalChiefAdherentMessage",
  *     AdherentMessageTypeEnum::SENATOR: "SenatorAdherentMessage",
  *     AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE: "ReferentElectedRepresentativeMessage",
  *     AdherentMessageTypeEnum::REFERENT_INSTANCES: "ReferentInstancesMessage",

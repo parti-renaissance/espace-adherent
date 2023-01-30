@@ -9,7 +9,6 @@ class JecouteSpaceEnum extends Enum
 {
     public const REFERENT_SPACE = 'referent';
     public const MANAGER_SPACE = 'manager';
-    public const MUNICIPAL_CHIEF_SPACE = 'municipal_chief';
     public const CANDIDATE_SPACE = 'candidate';
     public const CORRESPONDENT_SPACE = 'correspondent';
     public const LEGISLATIVE_CANDIDATE_SPACE = 'legislative_candidate';
@@ -19,7 +18,6 @@ class JecouteSpaceEnum extends Enum
         return [
             self::REFERENT_SPACE => 'référent',
             self::MANAGER_SPACE => 'responsable des questionnaires',
-            self::MUNICIPAL_CHIEF_SPACE => 'candidat Municipales',
             self::CANDIDATE_SPACE => 'candidat aux départementales',
             self::CORRESPONDENT_SPACE => 'correspondant',
             self::LEGISLATIVE_CANDIDATE_SPACE => 'candidat aux législatives',

@@ -7,7 +7,6 @@ use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentCharter\CandidateCharter;
 use App\Entity\AdherentCharter\CommitteeHostCharter;
-use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\PapCampaignCharter;
 use App\Entity\AdherentCharter\PhoningCampaignCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
@@ -18,7 +17,6 @@ use App\Entity\BoardMember\BoardMember;
 use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
 use App\Entity\LreArea;
 use App\Entity\ManagedArea\CandidateManagedArea;
-use App\Entity\MunicipalChiefManagedArea;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTeamMember;
 use App\Entity\SenatorArea;
@@ -70,9 +68,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public const RENAISSANCE_USER_1_UUID = '88c92d85-4e55-4e47-b1ce-b625b7de3871';
     public const RENAISSANCE_USER_2_UUID = 'd0a0935f-da7c-4caa-b582-a8c2376e5158';
     public const RENAISSANCE_USER_3_UUID = '859b1528-9451-41d7-bc9e-7c95e23c5113';
-    public const MUNICIPAL_CHIEF_1_UUID = '15d9154e-22d0-45f4-9b82-7f383342a3b8';
-    public const MUNICIPAL_CHIEF_2_UUID = 'bdc66cc7-ddf0-4406-b76a-447acb1594ab';
-    public const MUNICIPAL_CHIEF_3_UUID = '991e29ff-0333-4a30-a228-067ac5bbe6a9';
 
     public const DEFAULT_PASSWORD = 'secret!12345';
 
@@ -720,63 +715,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $senator_59->addCharter(new ReferentCharter());
         $this->addReference('senator-59', $senator_59);
 
-        // municipal chief
-        $municipalChief1 = $this->adherentFactory->createFromArray([
-            'uuid' => self::MUNICIPAL_CHIEF_1_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'municipal-chief@en-marche-dev.fr',
-            'gender' => 'male',
-            'first_name' => 'Municipal 1',
-            'last_name' => 'Chef 1',
-            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
-            'birthdate' => '1992-07-28',
-            'position' => 'employed',
-            'phone' => '+33673654349',
-            'registered_at' => '2019-06-10 09:19:00',
-        ]);
-        $municipalChief1->addCharter(new MunicipalChiefCharter());
-        $municipalChiefArea1 = new MunicipalChiefManagedArea();
-        $municipalChiefArea1->setInseeCode('59350');
-        $municipalChiefArea1->setJecouteAccess(true);
-        $municipalChief1->setMunicipalChiefManagedArea($municipalChiefArea1);
-        $this->addReference('municipal-chief-1', $municipalChief1);
-
-        $municipalChief2 = $this->adherentFactory->createFromArray([
-            'uuid' => self::MUNICIPAL_CHIEF_2_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'municipal-chief-2@en-marche-dev.fr',
-            'gender' => 'male',
-            'first_name' => 'Municipal 2',
-            'last_name' => 'Chef 2',
-            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
-            'birthdate' => '1982-08-27',
-            'position' => 'employed',
-            'phone' => '+33673654349',
-            'registered_at' => '2019-06-10 09:19:00',
-        ]);
-        $municipalChiefArea2 = new MunicipalChiefManagedArea();
-        $municipalChiefArea2->setInseeCode('59124');
-        $municipalChief2->setMunicipalChiefManagedArea($municipalChiefArea2);
-        $this->addReference('municipal-chief-2', $municipalChief2);
-
-        $municipalChief3 = $this->adherentFactory->createFromArray([
-            'uuid' => self::MUNICIPAL_CHIEF_3_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'municipal-chief-3@en-marche-dev.fr',
-            'gender' => 'male',
-            'first_name' => 'Municipal 3',
-            'last_name' => 'Chef 3',
-            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
-            'birthdate' => '1982-08-27',
-            'position' => 'employed',
-            'phone' => '+33673654349',
-            'registered_at' => '2019-06-10 09:19:00',
-        ]);
-        $municipalChiefArea3 = new MunicipalChiefManagedArea();
-        $municipalChiefArea3->setInseeCode('59411');
-        $municipalChief3->setMunicipalChiefManagedArea($municipalChiefArea3);
-        $this->addReference('municipal-chief-3', $municipalChief3);
-
         $assessor = $this->adherentFactory->createFromArray([
             'uuid' => self::ASSESSOR_UUID,
             'password' => self::DEFAULT_PASSWORD,
@@ -1189,16 +1127,13 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $key20 = AdherentActivationToken::generate($deputy_75_1);
         $key21 = AdherentActivationToken::generate($deputy_ch_li);
         $key22 = AdherentActivationToken::generate($adherent16);
-        $key23 = AdherentActivationToken::generate($municipalChief1);
-        $key24 = AdherentActivationToken::generate($municipalChief2);
-        $key25 = AdherentActivationToken::generate($municipalChief3);
-        $key26 = AdherentActivationToken::generate($adherent17);
-        $key27 = AdherentActivationToken::generate($adherent18);
-        $key28 = AdherentActivationToken::generate($senator_59);
-        $key29 = AdherentActivationToken::generate($assessor);
-        $key31 = AdherentActivationToken::generate($deputy_75_2);
-        $key32 = AdherentActivationToken::generate($adherent19);
-        $key33 = AdherentActivationToken::generate($senatorialCandidate);
+        $key23 = AdherentActivationToken::generate($adherent17);
+        $key24 = AdherentActivationToken::generate($adherent18);
+        $key25 = AdherentActivationToken::generate($senator_59);
+        $key26 = AdherentActivationToken::generate($assessor);
+        $key27 = AdherentActivationToken::generate($deputy_75_2);
+        $key28 = AdherentActivationToken::generate($adherent19);
+        $key29 = AdherentActivationToken::generate($senatorialCandidate);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -1214,9 +1149,9 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent13->activate($key13, '2017-05-03 09:16:54');
         $adherent14->activate($key14, '2017-05-04 09:34:21');
         $adherent16->activate($key22, '2017-05-04 09:34:21');
-        $adherent17->activate($key26, '2017-06-25 11:36:48');
-        $adherent18->activate($key27, '2017-06-25 11:36:48');
-        $adherent19->activate($key32, '2017-06-25 11:36:48');
+        $adherent17->activate($key23, '2017-06-25 11:36:48');
+        $adherent18->activate($key24, '2017-06-25 11:36:48');
+        $adherent19->activate($key28, '2017-06-25 11:36:48');
         // $key15 is not activated, but adherent is enabled
         $referent->activate($key8, '2017-02-07 13:20:45');
         $coordinator->activate($key16, '2017-09-20 17:44:32');
@@ -1224,14 +1159,11 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $referentChild->activate($key18, '2017-02-07 13:20:45');
         $referent75and77->activate($key19, '2018-05-13 07:21:01');
         $deputy_75_1->activate($key20, '2017-06-01 12:14:51');
-        $deputy_75_2->activate($key31, '2017-07-26 12:14:51');
+        $deputy_75_2->activate($key27, '2017-07-26 12:14:51');
         $deputy_ch_li->activate($key21, '2017-06-26 12:14:51');
-        $senator_59->activate($key28, '2017-06-26 12:14:51');
-        $municipalChief1->activate($key23, '2019-06-10 09:19:00');
-        $municipalChief2->activate($key24, '2019-06-10 09:19:00');
-        $municipalChief3->activate($key25, '2019-06-10 09:19:00');
-        $assessor->activate($key29, '2019-06-10 09:19:00');
-        $senatorialCandidate->activate($key33, '2019-07-10 09:19:00');
+        $senator_59->activate($key25, '2017-06-26 12:14:51');
+        $assessor->activate($key26, '2019-06-10 09:19:00');
+        $senatorialCandidate->activate($key29, '2019-07-10 09:19:00');
 
         // Make an adherent request a new password
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent1);
@@ -1261,9 +1193,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $manager->persist($deputy_75_2);
         $manager->persist($deputy_ch_li);
         $manager->persist($senator_59);
-        $manager->persist($municipalChief1);
-        $manager->persist($municipalChief2);
-        $manager->persist($municipalChief3);
         $manager->persist($adherent17);
         $manager->persist($adherent18);
         $manager->persist($adherent19);
@@ -1303,8 +1232,8 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $manager->persist($key25);
         $manager->persist($key26);
         $manager->persist($key27);
-        $manager->persist($key31);
-        $manager->persist($key33);
+        $manager->persist($key28);
+        $manager->persist($key29);
 
         $manager->persist($resetPasswordToken);
 

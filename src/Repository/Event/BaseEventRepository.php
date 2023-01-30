@@ -12,7 +12,6 @@ use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Event\InstitutionalEvent;
-use App\Entity\Event\MunicipalEvent;
 use App\Entity\Geo\Zone;
 use App\Event\EventTypeEnum;
 use App\Repository\GeoZoneTrait;
@@ -188,7 +187,6 @@ class BaseEventRepository extends ServiceEntityRepository
                 ->add(sprintf('event INSTANCE OF %s', DefaultEvent::class))
                 ->add(sprintf('event INSTANCE OF %s', CommitteeEvent::class))
                 ->add(sprintf('event INSTANCE OF %s', InstitutionalEvent::class))
-                ->add(sprintf('event INSTANCE OF %s', MunicipalEvent::class))
             )
             ->andWhere('event.beginAt >= :start_after')
             ->andWhere('event.beginAt < :start_before')

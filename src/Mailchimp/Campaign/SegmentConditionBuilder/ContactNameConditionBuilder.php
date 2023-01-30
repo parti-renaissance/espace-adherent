@@ -9,7 +9,6 @@ use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
-use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
@@ -25,7 +24,6 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
             || $filter instanceof MessageFilter
             || $filter instanceof AdherentGeoZoneFilter
             || $filter instanceof CommitteeFilter
-            || ($filter instanceof MunicipalChiefFilter && !$filter->getContactNewsletter())
             || $filter instanceof AbstractElectedRepresentativeFilter
             || $filter instanceof CoalitionsFilter
             || $filter instanceof AudienceFilter
@@ -42,7 +40,7 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
     }
 
     /**
-     * @param MunicipalChiefFilter|ReferentUserFilter|AdherentZoneFilter|AdherentGeoZoneFilter|ReferentElectedRepresentativeFilter|AudienceFilter $filter
+     * @param ReferentUserFilter|AdherentZoneFilter|AdherentGeoZoneFilter|ReferentElectedRepresentativeFilter|AudienceFilter $filter
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {

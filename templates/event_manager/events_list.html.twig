@@ -34,42 +34,6 @@
         </a>
     </div>
 
-    {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::MUNICIPAL_CHIEF') %}
-        <div class="datagrid__table__tabs">
-            <div class="datagrid__table__tabs__items">
-                {% if space_name == constant('App\\Event\\EventManagerSpaceEnum::COALITION_MODERATOR') %}
-                    {% if is_active_route(app.request, "app_#{space_name}_event_manager_coalition_events") %}
-                        <h3>Événements de coalitions</h3>
-                    {% else %}
-                        <h3><a href="{{ path("app_#{space_name}_event_manager_coalition_events") }}">Événements de coalitions</a></h3>
-                    {% endif %}
-
-                    <span class="separator"></span>
-
-                    {% if is_active_route(app.request, "app_#{space_name}_event_manager_cause_events") %}
-                        <h3>Événements de causes</h3>
-                    {% else %}
-                        <h3><a href="{{ path("app_#{space_name}_event_manager_cause_events") }}">Événements de causes</a></h3>
-                    {% endif %}
-                {% else %}
-                    {% if is_active_route(app.request, "app_#{space_name}_event_manager_events") %}
-                        <h3>Tous les événements</h3>
-                    {% else %}
-                        <h3><a href="{{ path("app_#{space_name}_event_manager_events") }}">Tous les événements</a></h3>
-                    {% endif %}
-                {% endif %}
-
-                <span class="separator"></span>
-
-                {% if is_active_route(app.request, "app_#{space_name}_event_manager_events_mine") %}
-                    <h3>Mes événements</h3>
-                {% else %}
-                    <h3><a href="{{ path("app_#{space_name}_event_manager_events_mine") }}">Mes événements</a></h3>
-                {% endif %}
-            </div>
-        </div>
-    {% endif %}
-
     <div class="datagrid">
         <div class="b__nudge--bottom-larger">
             <div class="datagrid__table-container">

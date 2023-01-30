@@ -8,7 +8,6 @@ use App\Entity\AdherentCharter\CommitteeHostCharter;
 use App\Entity\AdherentCharter\DeputyCharter;
 use App\Entity\AdherentCharter\LegislativeCandidateCharter;
 use App\Entity\AdherentCharter\LreCharter;
-use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\PapCampaignCharter;
 use App\Entity\AdherentCharter\PhoningCampaignCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
@@ -25,8 +24,6 @@ abstract class AdherentCharterFactory
                 return new CommitteeHostCharter();
             case AdherentCharterTypeEnum::TYPE_REFERENT:
                 return new ReferentCharter();
-            case AdherentCharterTypeEnum::TYPE_MUNICIPAL_CHIEF:
-                return new MunicipalChiefCharter();
             case AdherentCharterTypeEnum::TYPE_DEPUTY:
                 return new DeputyCharter();
             case AdherentCharterTypeEnum::TYPE_SENATOR:

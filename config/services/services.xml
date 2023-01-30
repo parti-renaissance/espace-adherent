@@ -87,9 +87,6 @@
         <service id="App\Api\Doctrine\JecouteNewsExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Api\Doctrine\MunicipalEventExtension">
-            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
-        </service>
         <service id="App\Api\Doctrine\CoalitionExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
@@ -161,13 +158,6 @@
         <!-- ChezVous -->
         <service id="App\ChezVous\EventSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.chezvous_algolia_producer" />
-        </service>
-
-        <service id="App\MunicipalSite\ApiDriver">
-            <argument type="service" id="app.http_client.dpt_api" />
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
         </service>
     </services>
 </container>

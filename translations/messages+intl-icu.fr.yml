@@ -127,7 +127,6 @@ jecoute_manager: Responsable des questionnaires
 assessors_manager: Responsable assesseurs
 assessor: Assesseur
 user: utilisateur
-municipal_chief: Candidat Municipales 2020 🇫🇷
 election_results_reporter: Rapporteur résultats
 print_privilege: Accès LMI
 role_national: Rôle National
@@ -835,8 +834,6 @@ cities.associated.choices: >-
 application_request.tags.edited_successfully: Les tags ont bien été mis à jour
 application_request.taken_successfully: Le candidat a bien été ajouté à votre équipe
 application_request.removed_successfully: Le candidat a été retiré de votre équipe
-application_request.municipal_chief.popup.title: Charte de bonne utilisation des outils numériques
-application_request.municipal_chief.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_municipales_2020.pdf
 
 admin.image.delete: Supprimer l'image actuelle
 

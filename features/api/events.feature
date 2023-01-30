@@ -56,7 +56,7 @@ Feature:
     And I send a "GET" request to "/api/v3/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 23 |
+      | metadata.total_items  | 22 |
 
   Scenario: As a logged-in user I can get coalitions events
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
@@ -82,14 +82,14 @@ Feature:
     When I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 21 |
+      | metadata.total_items  | 20 |
 
   Scenario: As a logged-in user I can get events
     When I am logged as "jacques.picard@en-marche.fr"
     And I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 23 |
+      | metadata.total_items  | 22 |
 
   Scenario: As a non logged-in user I cannot check if I'm registered for events
     When I send a "POST" request to "/api/v3/events/registered" with body:
@@ -137,7 +137,7 @@ Feature:
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should match:
-      | metadata.total_items  | 21 |
+      | metadata.total_items  | 20 |
 
     When I send a "GET" request to "/api/events?group_source=coalitions"
     Then the response status code should be 200

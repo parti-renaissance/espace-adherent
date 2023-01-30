@@ -9,14 +9,12 @@ class DelegatedAccessEnum extends Enum
     public const TYPE_REFERENT = 'referent';
     public const TYPE_DEPUTY = 'deputy';
     public const TYPE_SENATOR = 'senator';
-    public const TYPE_MUNICIPAL_CHIEF = 'municipal_chief';
     public const TYPE_CANDIDATE = 'candidate';
 
     public const TYPES = [
         self::TYPE_REFERENT,
         self::TYPE_DEPUTY,
         self::TYPE_SENATOR,
-        self::TYPE_MUNICIPAL_CHIEF,
         self::TYPE_CANDIDATE,
     ];
 
@@ -69,7 +67,6 @@ class DelegatedAccessEnum extends Enum
             'coordinator_committees' => 'app_coordinator_committees',
             'procuration_manager_requests' => 'app_procuration_manager_requests',
             'assessor_manager_requests' => 'app_assessor_manager_requests',
-            'municipal_chief_home' => 'app_municipal_chief_home',
             'senatorial_candidate_elected_representatives' => 'app_senatorial_candidate_elected_representatives_list',
             'jecoute_manager_local_surveys' => 'app_jecoute_manager_local_surveys_list',
             'vote_results_assessor' => 'app_vote_results_assessor_index',

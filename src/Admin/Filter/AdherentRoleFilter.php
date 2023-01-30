@@ -126,12 +126,6 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                     $where->add(sprintf('%s.adherent = 0', $alias));
                 }
 
-                // Municipal chief
-                if (\in_array(AdherentRoleEnum::MUNICIPAL_CHIEF, $value, true)) {
-                    $qb->leftJoin(sprintf('%s.municipalChiefManagedArea', $alias), 'municipalChiefManagedArea');
-                    $where->add('municipalChiefManagedArea IS NOT NULL');
-                }
-
                 // Print privilege
                 if (\in_array(AdherentRoleEnum::PRINT_PRIVILEGE, $value, true)) {
                     $where->add("$alias.printPrivilege = :printPrivilege");

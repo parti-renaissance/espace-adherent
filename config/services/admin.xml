@@ -323,7 +323,6 @@
                 <argument type="collection">
                     <argument>App\Entity\Event\DefaultEvent</argument>
                     <argument>App\Entity\Event\CommitteeEvent</argument>
-                    <argument>App\Entity\Event\MunicipalEvent</argument>
                     <argument>App\Entity\Event\InstitutionalEvent</argument>
                     <argument>App\Entity\Event\CauseEvent</argument>
                     <argument>App\Entity\Event\CoalitionEvent</argument>

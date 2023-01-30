@@ -66,7 +66,6 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
             $allowedTypes = [
                 EventTypeEnum::TYPE_DEFAULT,
                 EventTypeEnum::TYPE_COMMITTEE,
-                EventTypeEnum::TYPE_MUNICIPAL,
             ];
 
             if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')) {

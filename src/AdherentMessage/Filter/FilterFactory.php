@@ -9,7 +9,6 @@ use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
 use App\Entity\AdherentMessage\Filter\LreManagerElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
-use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentInstancesFilter;
 
@@ -26,8 +25,6 @@ abstract class FilterFactory
                 return static::createSenatorFilter($user);
             case AdherentMessageTypeEnum::COMMITTEE:
                 return static::createCommitteeFilter();
-            case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
-                return static::createMunicipalChiefFilter($user);
             case AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE:
                 return static::createReferentElectedRepresentativeFilter($user);
             case AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE:
@@ -72,11 +69,6 @@ abstract class FilterFactory
     private static function createCommitteeFilter(): MessageFilter
     {
         return new MessageFilter();
-    }
-
-    private static function createMunicipalChiefFilter(Adherent $adherent): MunicipalChiefFilter
-    {
-        return new MunicipalChiefFilter($adherent->getMunicipalChiefManagedArea()->getInseeCode());
     }
 
     private static function createSenatorFilter(Adherent $user): MessageFilter

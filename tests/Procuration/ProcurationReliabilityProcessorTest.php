@@ -45,7 +45,6 @@ class ProcurationReliabilityProcessorTest extends AbstractKernelTestCase
         yield ['deputy-ch-li@en-marche-dev.fr', 8];
         yield ['coordinateur@en-marche-dev.fr', 4];
         yield ['referent@en-marche-dev.fr', 8];
-        yield ['municipal-chief-3@en-marche-dev.fr', 8];
     }
 
     protected function setUp(): void

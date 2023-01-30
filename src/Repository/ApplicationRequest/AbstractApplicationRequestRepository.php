@@ -49,30 +49,6 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
         return $qb->getQuery()->getResult();
     }
 
-    public function countForInseeCodes(array $inseeCodes): int
-    {
-        $qb = $this->createQueryBuilder('r')
-            ->select('COUNT(1)')
-            ->where('r.displayed = true')
-        ;
-
-        $this->addFavoriteCitiesCondition($inseeCodes, $qb);
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
-
-    public function countTakenFor(array $inseeCodes): int
-    {
-        return $this->createQueryBuilder('r')
-            ->select('COUNT(1)')
-            ->where('r.displayed = true')
-            ->andWhere('r.takenForCity IN (:cities)')
-            ->setParameter('cities', $inseeCodes)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
     /**
      * @return VolunteerRequest[]|RunningMateRequest[]
      */

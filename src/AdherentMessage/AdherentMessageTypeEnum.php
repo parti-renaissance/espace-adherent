@@ -10,7 +10,6 @@ use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\LreManagerElectedRepresentativeMessage;
-use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
@@ -23,7 +22,6 @@ class AdherentMessageTypeEnum extends Enum
     public const DEPUTY = 'deputy';
     public const REFERENT = 'referent';
     public const COMMITTEE = 'committee';
-    public const MUNICIPAL_CHIEF = 'municipal_chief';
     public const SENATOR = 'senator';
     public const REFERENT_ELECTED_REPRESENTATIVE = 'referent_elected_representative';
     public const LRE_MANAGER_ELECTED_REPRESENTATIVE = 'lre_manager_elected_representative';
@@ -39,7 +37,6 @@ class AdherentMessageTypeEnum extends Enum
         self::DEPUTY => DeputyAdherentMessage::class,
         self::REFERENT => ReferentAdherentMessage::class,
         self::COMMITTEE => CommitteeAdherentMessage::class,
-        self::MUNICIPAL_CHIEF => MunicipalChiefAdherentMessage::class,
         self::SENATOR => SenatorAdherentMessage::class,
         self::REFERENT_ELECTED_REPRESENTATIVE => ReferentElectedRepresentativeMessage::class,
         self::LRE_MANAGER_ELECTED_REPRESENTATIVE => LreManagerElectedRepresentativeMessage::class,
@@ -56,8 +53,6 @@ class AdherentMessageTypeEnum extends Enum
         DeputyAdherentMessage::class => ['ROLE_DEPUTY', 'ROLE_DELEGATED_DEPUTY'],
 
         CommitteeAdherentMessage::class => 'ROLE_HOST',
-
-        MunicipalChiefAdherentMessage::class => 'ROLE_MUNICIPAL_CHIEF',
 
         SenatorAdherentMessage::class => ['ROLE_SENATOR', 'ROLE_DELEGATED_SENATOR'],
 

@@ -9,7 +9,6 @@ use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\EventCategory;
-use App\Entity\Event\MunicipalEvent;
 use App\Event\CommitteeEventEvent;
 use App\Event\EventEvent;
 use App\Events;
@@ -251,7 +250,6 @@ class EventAdmin extends AbstractAdmin
                         ->leftJoin(DefaultEvent::class, 'defaultEvent', Join::WITH, 'defaultEvent.id = '.$alias.'.id')
                         ->leftJoin(CauseEvent::class, 'causeEvent', Join::WITH, 'causeEvent.id = '.$alias.'.id')
                         ->leftJoin(CoalitionEvent::class, 'coalitionEvent', Join::WITH, 'coalitionEvent.id = '.$alias.'.id')
-                        ->leftJoin(MunicipalEvent::class, 'municipalEvent', Join::WITH, 'municipalEvent.id = '.$alias.'.id')
                         ->leftJoin(EventCategory::class, 'eventCategory', Join::WITH, 'eventCategory = committeeEvent.category OR eventCategory = defaultEvent.category OR eventCategory = causeEvent.category OR eventCategory = coalitionEvent.category OR eventCategory = municipalEvent.category')
                         ->andWhere('eventCategory IN (:category)')
                         ->setParameter('category', $value->getValue())
