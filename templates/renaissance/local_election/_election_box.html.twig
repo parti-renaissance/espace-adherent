@@ -51,8 +51,6 @@
                 <p class="text-gray-600 text-base leading-6">
                     {% if voting_platform_election.isResultsDisplayable() %}
                         Consulter les <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" class="underline font-medium text-re-blue-600 decoration-2 decoration-red-500">résultats détaillés</a>
-                    {% else %}
-                        Le dépouillement est en cours, encore quelques secondes !
                     {% endif %}
                 </p>
             {% endif %}
