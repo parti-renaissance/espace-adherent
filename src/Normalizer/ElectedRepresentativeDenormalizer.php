@@ -43,7 +43,6 @@ class ElectedRepresentativeDenormalizer implements DenormalizerInterface, Denorm
     {
         return !isset($context[self::ALREADY_CALLED])
             && is_a($type, ElectedRepresentative::class, true)
-            && \in_array('elected_representative_write', $context['groups'] ?? [])
-        ;
+            && 'api_elected_representatives_post_collection' === ($context['operation_name'] ?? []);
     }
 }

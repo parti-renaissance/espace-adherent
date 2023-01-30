@@ -21,6 +21,8 @@ class Mandate
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
+     *
+     * @Groups({"elected_representative_read"})
      */
     private $id;
 
