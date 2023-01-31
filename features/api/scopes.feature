@@ -238,7 +238,7 @@ Feature:
             "name": "Île-de-France"
           }
         ],
-        "apps": []
+        "apps": ["data_corner"]
       },
       {
         "apps": [
