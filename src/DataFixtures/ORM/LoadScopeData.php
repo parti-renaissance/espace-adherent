@@ -58,7 +58,7 @@ class LoadScopeData extends Fixture
         return match ($scopeCode) {
             ScopeEnum::DEPUTY => self::BASIC_FEATURES,
             ScopeEnum::SENATOR => self::BASIC_FEATURES,
-            ScopeEnum::NATIONAL => array_diff(FeatureEnum::ALL, [FeatureEnum::MESSAGES, FeatureEnum::DEPARTMENT_SITE]),
+            ScopeEnum::NATIONAL => array_diff(FeatureEnum::ALL, [FeatureEnum::MESSAGES, FeatureEnum::DEPARTMENT_SITE, FeatureEnum::ELECTED_REPRESENTATIVE]),
             ScopeEnum::NATIONAL_COMMUNICATION => [FeatureEnum::NEWS],
             ScopeEnum::CANDIDATE => array_merge(self::BASIC_FEATURES, [FeatureEnum::PAP]),
             ScopeEnum::PAP => [],

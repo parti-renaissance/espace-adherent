@@ -383,7 +383,8 @@ Feature:
                             "team",
                             "phoning_campaign",
                             "survey",
-                            "department_site"
+                            "department_site",
+                            "elected_representative"
                         ],
                         "uuid": "e0da56db-c4c6-4aa4-ad8d-7e9505dfdd93"
                     }
