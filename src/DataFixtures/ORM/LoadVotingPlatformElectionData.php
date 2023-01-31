@@ -405,7 +405,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
                 if (0 === $i % 10) {
                     $choice->setIsBlank(true);
                 } else {
-                    $choice->setCandidateGroup($candidateGroups[random_int(0, random_int(1, $totalGroups) - 1)]);
+                    $choice->setCandidateGroup($candidateGroups[random_int(0, $totalGroups - 1)]);
                 }
 
                 $result->addVoteChoice($choice);

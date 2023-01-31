@@ -52,6 +52,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public const ADHERENT_17_UUID = '69fcc468-598a-49ac-a651-d4d3ee856446';
     public const ADHERENT_18_UUID = 'a2acfbda-6d5d-4614-b96a-ba00ab6fc7ee';
     public const ADHERENT_19_UUID = '1529f096-12d7-42bb-8c98-a4966a730e2a';
+    public const ADHERENT_20_UUID = '9fec3385-8cfb-46e8-8305-c9bae10e4517';
     public const COORDINATOR_1_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
     public const COORDINATOR_2_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
     public const REFERENT_1_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
@@ -1003,6 +1004,27 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->setSource(MembershipSourceEnum::JEMENGAGE);
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createCorrespondent(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')));
         $this->addReference('correspondent-1', $adherent);
+
+        $manager->persist($adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::fromString(self::ADHERENT_20_UUID),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'president-ad@renaissance-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Damien',
+            'last_name' => 'Durock',
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1942-01-10',
+            'registered_at' => '2017-01-25 19:31:45',
+            'phone' => '+330699008800',
+            'is_adherent' => true,
+        ]));
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
+        $adherent->activate(AdherentActivationToken::generate($adherent));
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent->donatedForMembership();
+        $adherent->addZoneBasedRole(AdherentZoneBasedRole::createPresidentDepartmentalAssembly([LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]));
+        $this->addReference('president-ad-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
             'uuid' => Uuid::uuid4(),

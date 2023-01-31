@@ -19,6 +19,7 @@ class ScopeEnum extends Enum
     public const PAP = 'pap';
     public const LEGISLATIVE_CANDIDATE = 'legislative_candidate';
     public const REGIONAL_COORDINATOR = 'regional_coordinator';
+    public const PRESIDENT_DEPARTMENTAL_ASSEMBLY = 'president_departmental_assembly';
 
     public const ALL = [
         self::REFERENT,
@@ -34,6 +35,7 @@ class ScopeEnum extends Enum
         self::CORRESPONDENT,
         self::LEGISLATIVE_CANDIDATE,
         self::REGIONAL_COORDINATOR,
+        self::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
     ];
 
     public const NATIONAL_SCOPES = [

@@ -153,7 +153,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                     'code' => '11',
                     'name' => 'Île-de-France',
                 ]],
-                'apps' => [],
+                'apps' => ['data_corner'],
             ],
             [
                 'code' => 'pap',
@@ -202,6 +202,16 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
             ],
         ]];
         yield [LoadAdherentData::ADHERENT_2_UUID, []];
+        yield [LoadAdherentData::ADHERENT_20_UUID, [
+            [
+                'code' => 'president_departmental_assembly',
+                'zones' => [[
+                    'code' => '92',
+                    'name' => 'Hauts-de-Seine',
+                ]],
+                'apps' => ['data_corner'],
+            ],
+        ]];
     }
 
     private function checkScope(Scope $scope, array $expectedScope): void
