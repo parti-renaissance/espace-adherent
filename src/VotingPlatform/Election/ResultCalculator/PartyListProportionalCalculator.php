@@ -40,11 +40,15 @@ class PartyListProportionalCalculator extends MajoritarianCalculator
         }
 
         if ($majorityPrime) {
-            $primeSeats = round(
-                \intval($seats * $majorityPrime / 100) + 0.5,
-                0,
-                $majorityPrimeRoundSubMode ? \PHP_ROUND_HALF_UP : \PHP_ROUND_HALF_DOWN
-            );
+            $primeSeats = $seats * $majorityPrime / 100;
+
+            if (\intval($primeSeats) != $primeSeats) {
+                $primeSeats = round(
+                    \intval($primeSeats) + 0.5,
+                    0,
+                    $majorityPrimeRoundSubMode ? \PHP_ROUND_HALF_UP : \PHP_ROUND_HALF_DOWN
+                );
+            }
         }
 
         Processor::process($electionToProcess = new Election(
