@@ -43,31 +43,32 @@ class AdherentZoneBasedRole
 
     public static function createCorrespondent(Zone $zone): self
     {
-        $role = new self(ScopeEnum::CORRESPONDENT);
-        $role->addZone($zone);
-
-        return $role;
+        return static::create(ScopeEnum::CORRESPONDENT, [$zone]);
     }
 
     public static function createLegislativeCandidate(Zone $zone): self
     {
-        $role = new self(ScopeEnum::LEGISLATIVE_CANDIDATE);
-        $role->addZone($zone);
-
-        return $role;
+        return static::create(ScopeEnum::LEGISLATIVE_CANDIDATE, [$zone]);
     }
 
     public static function createDeputy(Zone $zone): self
     {
-        $role = new self(ScopeEnum::DEPUTY);
-        $role->addZone($zone);
-
-        return $role;
+        return static::create(ScopeEnum::DEPUTY, [$zone]);
     }
 
     public static function createRegionalCoordinator(array $zones): self
     {
-        $role = new self(ScopeEnum::REGIONAL_COORDINATOR);
+        return static::create(ScopeEnum::REGIONAL_COORDINATOR, $zones);
+    }
+
+    public static function createPresidentDepartmentalAssembly(array $zones): self
+    {
+        return static::create(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $zones);
+    }
+
+    private static function create(string $scope, array $zones): self
+    {
+        $role = new self($scope);
 
         foreach ($zones as $zone) {
             $role->addZone($zone);

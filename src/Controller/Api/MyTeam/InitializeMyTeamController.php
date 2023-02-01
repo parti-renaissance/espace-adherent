@@ -32,10 +32,6 @@ class InitializeMyTeamController extends AbstractController
             return $myTeam;
         }
 
-        $myTeam = new MyTeam($user, $scopeCode);
-        $entityManager->persist($myTeam);
-        $entityManager->flush();
-
-        return $myTeam;
+        return new MyTeam($user, $scopeCode);
     }
 }

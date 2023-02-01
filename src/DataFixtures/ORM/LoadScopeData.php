@@ -22,31 +22,54 @@ class LoadScopeData extends Fixture
         FeatureEnum::SURVEY,
     ];
 
+    private const LABELS = [
+        ScopeEnum::REFERENT => 'Référent',
+        ScopeEnum::DEPUTY => 'Député',
+        ScopeEnum::SENATOR => 'Sénateur',
+        ScopeEnum::NATIONAL => 'National',
+        ScopeEnum::NATIONAL_COMMUNICATION => 'National communication',
+        ScopeEnum::CANDIDATE => 'Candidat',
+        ScopeEnum::PHONING => 'Appelant',
+        ScopeEnum::PHONING_NATIONAL_MANAGER => 'Responsable Phoning',
+        ScopeEnum::PAP_NATIONAL_MANAGER => 'Responsable National PAP',
+        ScopeEnum::PAP => 'Porte-à-porteur',
+        ScopeEnum::CORRESPONDENT => 'Correspondant',
+        ScopeEnum::LEGISLATIVE_CANDIDATE => 'Candidat aux législatives',
+        ScopeEnum::REGIONAL_COORDINATOR => 'Coordinateur régional',
+        ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Président assemblée départementale',
+    ];
+
     public function load(ObjectManager $manager)
     {
-        $manager->persist($this->createScope(ScopeEnum::REFERENT, 'Référent'));
-        $manager->persist($this->createScope(ScopeEnum::DEPUTY, 'Député', self::BASIC_FEATURES));
-        $manager->persist($this->createScope(ScopeEnum::SENATOR, 'Sénateur', self::BASIC_FEATURES));
-        $manager->persist($this->createScope(ScopeEnum::NATIONAL, 'National', array_diff(FeatureEnum::ALL, [FeatureEnum::MESSAGES, FeatureEnum::DEPARTMENT_SITE])));
-        $manager->persist($this->createScope(ScopeEnum::NATIONAL_COMMUNICATION, 'National communication', [FeatureEnum::NEWS]));
-        $manager->persist($this->createScope(ScopeEnum::CANDIDATE, 'Candidat', array_merge(self::BASIC_FEATURES, [FeatureEnum::PAP]), []));
-        $manager->persist($this->createScope(ScopeEnum::PHONING, 'Appelant', [], [AppEnum::JEMARCHE]));
-        $manager->persist($this->createScope(ScopeEnum::PHONING_NATIONAL_MANAGER, 'Responsable Phoning', [FeatureEnum::TEAM, FeatureEnum::PHONING_CAMPAIGN]));
-        $manager->persist($this->createScope(ScopeEnum::PAP_NATIONAL_MANAGER, 'Responsable National PAP', [FeatureEnum::PAP]));
-        $manager->persist($this->createScope(ScopeEnum::PAP, 'Porte-à-porteur', [], [AppEnum::JEMARCHE]));
-        $manager->persist($this->createScope(ScopeEnum::CORRESPONDENT, 'Correspondant', array_merge(self::BASIC_FEATURES, [FeatureEnum::NEWS, FeatureEnum::MY_TEAM])));
-        $manager->persist($this->createScope(ScopeEnum::LEGISLATIVE_CANDIDATE, 'Candidat aux législatives', array_merge(self::BASIC_FEATURES, [FeatureEnum::NEWS, FeatureEnum::PAP, FeatureEnum::MY_TEAM, FeatureEnum::PAP_V2])));
-        $manager->persist($this->createScope(ScopeEnum::REGIONAL_COORDINATOR, 'Coordinateur régional', array_diff(FeatureEnum::ALL, [FeatureEnum::DEPARTMENT_SITE])));
+        foreach (ScopeEnum::ALL as $code) {
+            $manager->persist($this->createScope($code, \in_array($code, [ScopeEnum::PHONING, ScopeEnum::PAP]) ? [AppEnum::JEMARCHE] : [AppEnum::DATA_CORNER]));
+        }
 
         $manager->flush();
     }
 
-    private function createScope(
-        string $code,
-        string $name,
-        array $features = FeatureEnum::ALL,
-        array $apps = [AppEnum::DATA_CORNER]
-    ): Scope {
-        return new Scope($code, $name, $features, $apps);
+    private function createScope(string $code, array $apps = [AppEnum::DATA_CORNER]): Scope
+    {
+        return new Scope($code, self::LABELS[$code] ?? $code, $this->getFeatures($code), $apps);
+    }
+
+    private function getFeatures(string $scopeCode): array
+    {
+        return match ($scopeCode) {
+            ScopeEnum::DEPUTY => self::BASIC_FEATURES,
+            ScopeEnum::SENATOR => self::BASIC_FEATURES,
+            ScopeEnum::NATIONAL => array_diff(FeatureEnum::ALL, [FeatureEnum::MESSAGES, FeatureEnum::DEPARTMENT_SITE]),
+            ScopeEnum::NATIONAL_COMMUNICATION => [FeatureEnum::NEWS],
+            ScopeEnum::CANDIDATE => array_merge(self::BASIC_FEATURES, [FeatureEnum::PAP]),
+            ScopeEnum::PAP => [],
+            ScopeEnum::PHONING => [],
+            ScopeEnum::PHONING_NATIONAL_MANAGER => [FeatureEnum::TEAM, FeatureEnum::PHONING_CAMPAIGN],
+            ScopeEnum::PAP_NATIONAL_MANAGER => [FeatureEnum::PAP],
+            ScopeEnum::CORRESPONDENT => array_merge(self::BASIC_FEATURES, [FeatureEnum::NEWS, FeatureEnum::MY_TEAM]),
+            ScopeEnum::LEGISLATIVE_CANDIDATE => array_merge(self::BASIC_FEATURES, [FeatureEnum::NEWS, FeatureEnum::PAP, FeatureEnum::MY_TEAM, FeatureEnum::PAP_V2]),
+            ScopeEnum::REGIONAL_COORDINATOR => array_diff(FeatureEnum::ALL, [FeatureEnum::DEPARTMENT_SITE]),
+
+            default => FeatureEnum::ALL,
+        };
     }
 }

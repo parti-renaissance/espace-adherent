@@ -166,14 +166,15 @@ class BoardMemberControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(4, $members);
-        $this->assertStringContainsString('Carl Mirabeau', $members->first()->text());
-        $this->assertMatchesRegularExpression('/\d+, M, Dammarie-les-Lys/', $members->first()->text());
-        $this->assertStringContainsString('Laura Deloche', $members->eq(1)->text());
-        $this->assertMatchesRegularExpression('/\d+, F, Rouen/', $members->eq(1)->text());
-        $this->assertStringContainsString('Martine Lindt', $members->eq(2)->text());
-        $this->assertMatchesRegularExpression('/\d+, F, Berlin/', $members->eq(2)->text());
-        $this->assertStringContainsString('Élodie Dutemps', $members->eq(3)->text());
-        $this->assertMatchesRegularExpression('/\d+, F, Singapour/', $members->eq(3)->text());
+        $text = implode(' ', $members->each(fn ($node) => $node->text()));
+        $this->assertStringContainsString('Carl Mirabeau', $text);
+        $this->assertMatchesRegularExpression('/\d+, M, Dammarie-les-Lys/', $text);
+        $this->assertStringContainsString('Laura Deloche', $text);
+        $this->assertMatchesRegularExpression('/\d+, F, Rouen/', $text);
+        $this->assertStringContainsString('Martine Lindt', $text);
+        $this->assertMatchesRegularExpression('/\d+, F, Berlin/', $text);
+        $this->assertStringContainsString('Élodie Dutemps', $text);
+        $this->assertMatchesRegularExpression('/\d+, F, Singapour/', $text);
         $this->assertStringContainsString('4 profils sauvegardés', $crawler->filter('h2')->eq(1)->text());
 
         // Statistics

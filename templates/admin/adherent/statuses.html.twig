@@ -15,6 +15,10 @@
         <span class="label label-primary" style="padding: 2px;">Coordinateur Régional</span><br/>
     {% endif %}
 
+    {% if object.isPresidentDepartmentalAssembly() %}
+        <span class="label label-primary" style="padding: 2px;">Président assemblée départementale</span><br/>
+    {% endif %}
+
     {% if object.isProcurationManager %}
         <span class="label label-primary" style="padding: 2px;">Procuration</span><br/>
     {% endif %}

@@ -142,6 +142,7 @@ lre: La République Ensemble (LRE)
 legislative_candidate: Candidat aux législatives
 correspondent: Correspondant
 regional_coordinator: coordinateur régional
+president_departmental_assembly: Président assemblée départementale
 thematic_community_chief: Responsable Thématique
 coalition_moderator: Responsables des coalitions
 role_phoning_manager: Responsable phoning
@@ -1389,6 +1390,7 @@ adherent.zone_based_role_type.correspondent: Correspondant
 adherent.zone_based_role_type.legislative_candidate: Candidat aux législatives
 adherent.zone_based_role_type.deputy: Député
 adherent.zone_based_role_type.regional_coordinator: Coordinateur régional
+adherent.zone_based_role_type.president_departmental_assembly: Président assemblée départementale
 
 #
 # Scope
