@@ -54,7 +54,7 @@ class ContributionControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringContainsString('40€', $crawler->filter('#elected-representative-contribution')->text());
 
-        $this->client->clickLink('Remplir les informations');
+        $this->client->clickLink('Valider');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
@@ -68,7 +68,7 @@ class ContributionControllerTest extends WebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringContainsString(
-            'Cotisation effectuée',
+            'Mandat de prélèvement complété',
             $crawler->filter('#elected-representative-contribution')->text()
         );
     }
