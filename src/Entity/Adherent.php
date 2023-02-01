@@ -2321,6 +2321,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
                 'ROLE_SENATOR',
                 'ROLE_LEGISLATIVE_CANDIDATE',
                 'ROLE_CAUSE_AUTHOR',
+                'ROLE_PRESIDENT_DEPARTMENTAL_ASSEMBLY',
             ])
             || $this->isCandidate()
             || $this->isDelegatedCandidate()

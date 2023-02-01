@@ -10,6 +10,7 @@ use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\LreManagerElectedRepresentativeMessage;
+use App\Entity\AdherentMessage\PresidentDepartmentalAssemblyAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
@@ -32,6 +33,7 @@ class AdherentMessageTypeEnum extends Enum
     public const COALITIONS = 'coalitions';
     public const CORRESPONDENT = 'correspondent';
     public const REGIONAL_COORDINATOR = 'regional_coordinator';
+    public const PRESIDENT_DEPARTMENTAL_ASSEMBLY = 'president_departmental_assembly';
 
     public const CLASSES = [
         self::DEPUTY => DeputyAdherentMessage::class,
@@ -47,6 +49,7 @@ class AdherentMessageTypeEnum extends Enum
         self::COALITIONS => CoalitionsMessage::class,
         self::CORRESPONDENT => CorrespondentAdherentMessage::class,
         self::REGIONAL_COORDINATOR => RegionalCoordinatorAdherentMessage::class,
+        self::PRESIDENT_DEPARTMENTAL_ASSEMBLY => PresidentDepartmentalAssemblyAdherentMessage::class,
     ];
 
     public const ROLES = [
@@ -72,5 +75,7 @@ class AdherentMessageTypeEnum extends Enum
         CorrespondentAdherentMessage::class => ['ROLE_CORRESPONDENT', 'ROLE_DELEGATED_CORRESPONDENT'],
 
         RegionalCoordinatorAdherentMessage::class => ['ROLE_REGIONAL_COORDINATOR', 'ROLE_DELEGATED_REGIONAL_COORDINATOR'],
+
+        PresidentDepartmentalAssemblyAdherentMessage::class => ['ROLE_PRESIDENT_DEPARTMENTAL_ASSEMBLY'],
     ];
 }
