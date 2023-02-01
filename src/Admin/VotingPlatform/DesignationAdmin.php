@@ -300,7 +300,7 @@ class DesignationAdmin extends AbstractAdmin
         $qb
             ->orWhere($orx)
             ->andWhere(sprintf('%1$s.type IN(:types) AND %1$s.active = 1', $alias))
-            ->setParameter('types', [Zone::DEPARTMENT])
+            ->setParameter('types', [Zone::DEPARTMENT, Zone::FOREIGN_DISTRICT])
         ;
     }
 

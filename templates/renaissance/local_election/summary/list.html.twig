@@ -46,7 +46,7 @@
                                         {% set department = election.designation.zones.first %}
                                         <a href="{{ path('app_renaissance_local_election_summary_candidacies', { uuid: election.uuid }) }}" class="inline-block pb-4 focus:outline-none">
                                             <span class="absolute inset-0" aria-hidden="true"></span>
-                                            <p class="font-medium text-gray-900">{{ department.name }} ({{ department.code }})</p>
+                                            <p class="font-medium text-gray-900">{% if department.type == constant('App\\Entity\\Geo\\Zone::FOREIGN_DISTRICT') %}Français de l'Étranger{% else %}{{ department.name }} ({{ department.code }}){% endif %}</p>
                                             <p class="truncate text-gray-500">{{ election.candidaciesGroups|length }} candidature{{ election.candidaciesGroups|length > 1 ? 's' }}</p>
                                         </a>
 

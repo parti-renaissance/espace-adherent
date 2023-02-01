@@ -20,8 +20,13 @@ class LocalElectionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('local_election')
             ->innerJoin('local_election.designation', 'designation')
             ->innerJoin('designation.zones', 'zone')
-            ->andWhere('zone.type = :type_department')
-            ->setParameter('type_department', Zone::DEPARTMENT)
+            ->andWhere('zone.type IN (:types)')
+            ->andWhere('designation.voteEndDate > :now
+                OR (
+                    designation.resultDisplayDelay > 0
+                    AND DATE_ADD(designation.voteEndDate, designation.resultDisplayDelay, \'DAY\') > :now
+                )')
+            ->setParameters(['types' => [Zone::DEPARTMENT, Zone::FOREIGN_DISTRICT], 'now' => new \DateTime()])
             ->addOrderBy('zone.code')
             ->getQuery()
             ->getResult()

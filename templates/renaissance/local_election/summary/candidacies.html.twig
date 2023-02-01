@@ -2,6 +2,9 @@
 
 {% set designation = election.designation %}
 {% set region = designation.getParentZonesOfType(constant('App\\Entity\\Geo\\Zone::REGION'))|first %}
+{% if not region %}
+    {% set region = designation.getParentZonesOfType(constant('App\\Entity\\Geo\\Zone::CUSTOM'))|first %}
+{% endif %}
 
 {% block page_title designation.label %}
 
