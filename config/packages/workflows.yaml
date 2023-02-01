@@ -239,17 +239,26 @@ framework:
                 - App\ElectedRepresentative\Contribution\ContributionRequest
             places:
                 - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_START
+                - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_NO_CONTRIBUTION_NEEDED
                 - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_FILL_REVENUE
                 - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_SEE_CONTRIBUTION_AMOUNT
                 - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_FILL_CONTRIBUTION_INFORMATIONS
+                - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_CONTRIBUTION_COMPLETE
             transitions:
                 !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::TO_FILL_REVENUE:
                     from:
-                        - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_FILL_REVENUE
                         - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_START
+                        - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_FILL_REVENUE
+                        - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_NO_CONTRIBUTION_NEEDED
                         - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_SEE_CONTRIBUTION_AMOUNT
                         - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_FILL_CONTRIBUTION_INFORMATIONS
                     to: !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_FILL_REVENUE
+
+                !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::TO_NO_CONTRIBUTION_NEEDED:
+                    from:
+                        - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_FILL_REVENUE
+                        - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_NO_CONTRIBUTION_NEEDED
+                    to: !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_NO_CONTRIBUTION_NEEDED
 
                 !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::TO_SEE_CONTRIBUTION_AMOUNT:
                     from:
@@ -263,3 +272,9 @@ framework:
                         - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_FILL_CONTRIBUTION_INFORMATIONS
                         - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_SEE_CONTRIBUTION_AMOUNT
                     to: !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_FILL_CONTRIBUTION_INFORMATIONS
+
+                !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::TO_CONTRIBUTION_COMPLETE:
+                    from:
+                        - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_CONTRIBUTION_COMPLETE
+                        - !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_FILL_CONTRIBUTION_INFORMATIONS
+                    to: !php/const App\ElectedRepresentative\Contribution\ContributionRequestStateEnum::STATE_CONTRIBUTION_COMPLETE

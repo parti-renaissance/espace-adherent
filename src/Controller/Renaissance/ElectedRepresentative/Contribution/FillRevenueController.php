@@ -30,6 +30,12 @@ class FillRevenueController extends AbstractContributionController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$command->needContribution()) {
+                $this->processor->doNoContributionNeeded($command);
+
+                return $this->render('renaissance/elected_representative/contribution/no_contribution_needed.html.twig');
+            }
+
             return $this->redirectToRoute('app_renaissance_elected_representative_contribution_see_amount');
         }
 

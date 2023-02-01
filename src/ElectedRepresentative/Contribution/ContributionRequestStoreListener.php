@@ -26,7 +26,10 @@ class ContributionRequestStoreListener implements EventSubscriberInterface
             return;
         }
 
-        if (ContributionRequestStateEnum::TO_FINISH === $event->getTransition()->getName()) {
+        if (\in_array($event->getTransition()->getName(), [
+            ContributionRequestStateEnum::TO_CONTRIBUTION_COMPLETE,
+            ContributionRequestStateEnum::TO_NO_CONTRIBUTION_NEEDED,
+        ], true)) {
             $this->storage->clear();
         } else {
             $this->storage->save($command);

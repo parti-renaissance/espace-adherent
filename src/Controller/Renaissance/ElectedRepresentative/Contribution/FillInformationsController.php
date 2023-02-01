@@ -39,7 +39,7 @@ class FillInformationsController extends AbstractContributionController
         if ($form->isSubmitted() && $form->isValid()) {
             // handle contribution
 
-            $this->storage->clear();
+            $this->processor->doCompleteContributionRequest($command);
 
             return $this->render('renaissance/elected_representative/contribution/confirmation.html.twig');
         }

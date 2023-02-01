@@ -424,12 +424,12 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
         $manager->persist($this->createCmsBlock(
             'renaissance-elected-representative-contribution-step-1',
             'Texte affiché à la première étape du funnel des cotisations élus',
-            'Lorem ipsum dolor sit amet. Eum  facilis et nemo dicta et  sint et numquam sapiente eum commodi consequatur ut dolorem natus? Sed similique itaque in  rerum ea alias voluptates ut optio odio nam officiis deleniti aut sapiente voluptates et culpa tenetur. Vel dignissimos provident et eligendi officia in animi distinctio est omnis esse vel cumque doloribus eos cumque nobis.'
+            'En application de l’article 4.1.2 du Règlement Intérieur, les élus titulaires de mandats électifs locaux ouvrant droit à indemnisation doivent s’acquitter d’une cotisation mensuelle dont le montant est fixé suivant le barème décidé par le Bureau Exécutif du 28 novembre 2022: ce barème repose sur le montant des indemnités brutes perçues par l’adhérent élu.'
         ));
         $manager->persist($this->createCmsBlock(
             'renaissance-elected-representative-contribution-step-2',
             'Texte affiché à la deuxième étape du funnel des cotisations élus',
-            'Lorem ipsum dolor sit amet. Eum  facilis et nemo dicta et  sint et numquam sapiente eum commodi consequatur ut dolorem natus? Sed similique itaque in  rerum ea alias voluptates ut optio odio nam officiis deleniti aut sapiente voluptates et culpa tenetur. Vel dignissimos provident et eligendi officia in animi distinctio est omnis esse vel cumque doloribus eos cumque nobis.'
+            'La cotisation calculée est égale à 2% du montant de l’ensemble des indemnités brutes perçues par l’adhérent, avec un plafond fixé à 200€ et un seuil de déclenchement à partir de 250€ d’indemnités mensuelles brutes.<br><a href="#" target="_blank" class="inline-flex items-center text-re-blue-500 text-base leading-5 underline hover:text-re-blue-600 font-medium hover:decoration-re-blue-600 hover:decoration-2">Décision complète du BUREX (PDF)</a>'
         ));
         $manager->persist($this->createCmsBlock(
             'renaissance-elected-representative-contribution-step-3',

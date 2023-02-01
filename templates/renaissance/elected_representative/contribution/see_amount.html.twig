@@ -8,11 +8,13 @@
             </div>
             <div class="ml-3 flex-1 md:flex md:justify-between">
                 <p class="text-sm text-blue-700">
-                    Montant de cotisation calculé: <span class="font-medium text-re-blue-700">{{ command.contributionAmount }}€</span>
+                    Montant de cotisation mensuelle calculé: <span class="font-medium text-re-blue-700">{{ command.contributionAmount }}€</span>
+                    <br>(soit {{ command.contributionAmountAfterTax }}€ après réduction d’impôts)
                 </p>
+
                 <p class="mt-3 text-sm md:mt-0 md:ml-6">
                     <a href="{{ path('app_renaissance_elected_representative_contribution_fill_revenue') }}" class="whitespace-nowrap text-blue-700 hover:text-blue-500">
-                        Modifier ce montant
+                        Modifier le montant des indemnités
                         <span aria-hidden="true"> &larr;</span>
                     </a>
                 </p>
@@ -22,8 +24,8 @@
     <p class="text-base leading-6 text-gray-500">
         {{ cms_block('renaissance-elected-representative-contribution-step-2') }}
     </p>
-    <a class="inline-flex items-center text-re-blue-500 text-base leading-5 underline hover:text-re-blue-600 font-medium hover:decoration-re-blue-600 hover:decoration-2" href="{{ path('app_renaissance_elected_representative_contribution_fill_informations') }}">
-        Remplir les informations
-        <span aria-hidden="true"> &rarr;</span>
-    </a>
+
+    <div class="mt-5">
+        <a class="button button-blue" href="{{ path('app_renaissance_elected_representative_contribution_fill_informations') }}">Valider</a>
+    </div>
 {% endblock %}

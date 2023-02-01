@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ContributionRequest
 {
-    private const CONTRIBUTION_MIN_AMOUNT = 5;
+    private const CONTRIBUTION_MIN_REVENUE_AMOUNT = 250;
     private const CONTRIBUTION_MAX_AMOUNT = 200;
 
     private string $state = ContributionRequestStateEnum::STATE_START;
@@ -27,6 +27,7 @@ class ContributionRequest
 
     /**
      * @Assert\NotBlank(groups={"fill_contribution_informations"})
+     * @Assert\Length(min=2, groups={"fill_contribution_informations"})
      */
     public ?string $accountName = null;
 
@@ -62,18 +63,28 @@ class ContributionRequest
         $this->adherentId = $adherent->getId();
     }
 
+    public function needContribution(): bool
+    {
+        return $this->revenueAmount >= self::CONTRIBUTION_MIN_REVENUE_AMOUNT;
+    }
+
     public function getContributionAmount(): float
     {
-        $contributionAmount = round($this->revenueAmount * 2 / 100);
-
-        if ($contributionAmount < self::CONTRIBUTION_MIN_AMOUNT) {
-            return self::CONTRIBUTION_MIN_AMOUNT;
+        if (!$this->needContribution()) {
+            return 0;
         }
+
+        $contributionAmount = round($this->revenueAmount * 2 / 100);
 
         if ($contributionAmount > self::CONTRIBUTION_MAX_AMOUNT) {
             return self::CONTRIBUTION_MAX_AMOUNT;
         }
 
         return $contributionAmount;
+    }
+
+    public function getContributionAmountAfterTax(): float
+    {
+        return round($this->getContributionAmount() / 3);
     }
 }

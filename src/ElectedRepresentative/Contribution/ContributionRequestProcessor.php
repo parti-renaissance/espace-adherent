@@ -23,6 +23,11 @@ class ContributionRequestProcessor
         return $this->can($contributionRequest, ContributionRequestStateEnum::TO_FILL_REVENUE);
     }
 
+    public function canNoContributionNeeded(ContributionRequest $contributionRequest): bool
+    {
+        return $this->can($contributionRequest, ContributionRequestStateEnum::TO_NO_CONTRIBUTION_NEEDED);
+    }
+
     public function canSeeContributionAmount(ContributionRequest $contributionRequest): bool
     {
         return $this->can($contributionRequest, ContributionRequestStateEnum::TO_SEE_CONTRIBUTION_AMOUNT);
@@ -33,14 +38,19 @@ class ContributionRequestProcessor
         return $this->can($contributionRequest, ContributionRequestStateEnum::TO_FILL_CONTRIBUTION_INFORMATIONS);
     }
 
-    public function canFinishContributionRequest(ContributionRequest $contributionRequest): bool
+    public function canCompleteContributionRequest(ContributionRequest $contributionRequest): bool
     {
-        return $this->can($contributionRequest, ContributionRequestStateEnum::TO_FINISH);
+        return $this->can($contributionRequest, ContributionRequestStateEnum::TO_CONTRIBUTION_COMPLETE);
     }
 
     public function doFillRevenue(ContributionRequest $command): void
     {
         $this->apply($command, ContributionRequestStateEnum::TO_FILL_REVENUE);
+    }
+
+    public function doNoContributionNeeded(ContributionRequest $command): void
+    {
+        $this->apply($command, ContributionRequestStateEnum::TO_NO_CONTRIBUTION_NEEDED);
     }
 
     public function doSeeContributionAmount(ContributionRequest $command): void
@@ -53,9 +63,9 @@ class ContributionRequestProcessor
         $this->apply($command, ContributionRequestStateEnum::TO_FILL_CONTRIBUTION_INFORMATIONS);
     }
 
-    public function doFinishContributionRequest(ContributionRequest $command): void
+    public function doCompleteContributionRequest(ContributionRequest $command): void
     {
-        $this->apply($command, ContributionRequestStateEnum::TO_FINISH);
+        $this->apply($command, ContributionRequestStateEnum::TO_CONTRIBUTION_COMPLETE);
     }
 
     private function can(ContributionRequest $command, string $transitionName): bool
