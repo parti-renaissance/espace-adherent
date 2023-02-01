@@ -12,6 +12,7 @@ use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\PresidentDepartmentalAssemblyAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
 use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
@@ -57,6 +58,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
             case ReferentInstancesMessage::class:
+            case PresidentDepartmentalAssemblyAdherentMessage::class:
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
             case DeputyAdherentMessage::class:
