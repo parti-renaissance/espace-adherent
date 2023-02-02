@@ -31,7 +31,7 @@ class ElectedRepresentativeListController extends AbstractController
     public function __invoke(Request $request): Response
     {
         $scope = $this->scopeGeneratorResolver->generate();
-        $filter = new ListFilter($scope->getZones());
+        $filter = new ListFilter($scope->getZones(), $this->getUser());
 
         $this->denormalizer->denormalize($request->query->all(), ListFilter::class, null, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $filter,

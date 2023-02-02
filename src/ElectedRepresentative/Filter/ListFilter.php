@@ -2,6 +2,7 @@
 
 namespace App\ElectedRepresentative\Filter;
 
+use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinition;
@@ -117,9 +118,12 @@ class ListFilter
      */
     private $order = 'a';
 
-    public function __construct(array $managedZones = [])
+    private ?Adherent $createdByAdherent;
+
+    public function __construct(array $managedZones = [], ?Adherent $createdByAdherent = null)
     {
         $this->managedZones = $managedZones;
+        $this->createdByAdherent = $createdByAdherent;
     }
 
     public function getGender(): ?string
@@ -260,6 +264,16 @@ class ListFilter
     public function setOrder(string $order): void
     {
         $this->order = $order;
+    }
+
+    public function getCreatedByAdherent(): ?Adherent
+    {
+        return $this->createdByAdherent;
+    }
+
+    public function setCreatedByAdherent(?Adherent $createdByAdherent): void
+    {
+        $this->createdByAdherent = $createdByAdherent;
     }
 
     public function toArray(): array

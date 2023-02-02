@@ -140,7 +140,12 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         if ($forJME) {
             $qb
-                ->andWhere('er.adherent IS NOT NULL')
+                ->andWhere(
+                    sprintf(
+                        'er.adherent IS NOT NULL%s',
+                        $filter->getCreatedByAdherent() ? ' OR er.createdByAdherent = '.$filter->getCreatedByAdherent()->getId() : ''
+                    )
+                )
             ;
         }
 
