@@ -421,6 +421,27 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
         $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-2', 'Vote des statuts', 'Approuvez vous la résolution B ?'));
         $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-3', 'Vote des statuts', 'Approuvez vous la résolution C ?'));
 
+        $manager->persist($this->createCmsBlock(
+            'renaissance-elected-representative-contribution-step-1',
+            'Texte affiché à la première étape du funnel des cotisations élus',
+            'En application de l’article 4.1.2 du Règlement Intérieur, les élus titulaires de mandats électifs locaux ouvrant droit à indemnisation doivent s’acquitter d’une cotisation mensuelle dont le montant est fixé suivant le barème décidé par le Bureau Exécutif du 28 novembre 2022: ce barème repose sur le montant des indemnités brutes perçues par l’adhérent élu.'
+        ));
+        $manager->persist($this->createCmsBlock(
+            'renaissance-elected-representative-contribution-step-2',
+            'Texte affiché à la deuxième étape du funnel des cotisations élus',
+            'La cotisation calculée est égale à 2% du montant de l’ensemble des indemnités brutes perçues par l’adhérent, avec un plafond fixé à 200€ et un seuil de déclenchement à partir de 250€ d’indemnités mensuelles brutes.<br><a href="#" target="_blank" class="inline-flex items-center text-re-blue-500 text-base leading-5 underline hover:text-re-blue-600 font-medium hover:decoration-re-blue-600 hover:decoration-2">Décision complète du BUREX (PDF)</a>'
+        ));
+        $manager->persist($this->createCmsBlock(
+            'renaissance-elected-representative-contribution-step-3',
+            'Texte affiché à la troisième étape du funnel des cotisations élus',
+            'Les informations suivantes (Nom, Prénom, Pays de résidence, Adresse postale, E-mail) doivent être renseignées et à jour dans vos informations générales. Sans cette correspondance, votre contribution pourrait être mal traitée.'
+        ));
+        $manager->persist($this->createCmsBlock(
+            'renaissance-elected-representative-contribution-step-confirmation',
+            'Texte affiché à la première étape du funnel des cotisations élus',
+            '<p class="text-green-700">Votre cotisation a été enregistrée avec succès.</p>'
+        ));
+
         $manager->flush();
     }
 

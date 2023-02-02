@@ -409,7 +409,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             VoteListNuanceEnum::NC,
             null,
             null,
-            $erWithNotElectedMandate,
+            $erParis,
             true,
             new \DateTime('2019-03-15')
         );
@@ -426,7 +426,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             VoteListNuanceEnum::REM,
             LaREMSupportEnum::OFFICIAL,
             null,
-            $erWithNotElectedMandate,
+            $erParis2,
             true,
             new \DateTime('2019-01-11')
         );
@@ -443,7 +443,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             VoteListNuanceEnum::RN,
             null,
             null,
-            $erWithNotElectedMandate,
+            $erParis3,
             true,
             new \DateTime('2018-01-11')
         );
@@ -459,7 +459,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             VoteListNuanceEnum::RN,
             null,
             null,
-            $erWithNotElectedMandate,
+            $erDepartment59,
             true,
             new \DateTime('2018-01-11')
         );
@@ -467,6 +467,24 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $erDepartment59->addMandate($mandate);
 
         $manager->persist($erDepartment59);
+
+        // with adherent and ongoing mandate
+        $erDepartment92 = $this->createElectedRepresentative('Département', '92', new \DateTime('1982-03-03'), 'male');
+        $erDepartment92->setAdherent($this->getReference('renaissance-user-2'));
+        $mandate = new Mandate(
+            MandateTypeEnum::SENATOR,
+            true,
+            VoteListNuanceEnum::REM,
+            LaREMSupportEnum::OFFICIAL,
+            null,
+            $erDepartment92,
+            true,
+            new \DateTime('2019-01-11')
+        );
+        $mandate->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
+        $erDepartment92->addMandate($mandate);
+
+        $manager->persist($erDepartment92);
 
         $manager->flush();
     }
