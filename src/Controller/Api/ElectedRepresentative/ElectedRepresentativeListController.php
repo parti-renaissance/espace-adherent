@@ -39,7 +39,12 @@ class ElectedRepresentativeListController extends AbstractController
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
         ]);
 
-        $electedRepresentatives = $this->repository->searchByFilter($filter, $request->query->getInt('page', 1));
+        $electedRepresentatives = $this->repository->searchByFilter(
+            $filter,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('page_size', 100),
+            true
+        );
 
         return $this->json(
             $electedRepresentatives,
