@@ -122,6 +122,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilder('er')
+            ->andWhere('er.adherent IS NOT NULL')
         ;
 
         $this->withActiveMandatesCondition($qb);

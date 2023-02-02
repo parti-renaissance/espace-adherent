@@ -34,7 +34,7 @@ class Mandate
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\MandateTypeEnum", "toArray"})
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_representative_write", "elected_representative_read", "elected_representative_list"})
      */
     private $type;
 
@@ -66,7 +66,7 @@ class Mandate
      *     message="Le périmètre géographique est obligatoire."
      * )
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_representative_write", "elected_representative_read", "elected_representative_list"})
      */
     private $geoZone;
 
