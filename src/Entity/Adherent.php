@@ -181,14 +181,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(unique=true)
      *
-     * @Groups({"user_profile", "profile_read", "adherent_change_diff"})
+     * @Groups({"user_profile", "profile_read", "adherent_change_diff", "elected_representative_read"})
      */
     private $emailAddress;
 
     /**
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @Groups({"profile_read", "phoning_campaign_call_read"})
+     * @Groups({"profile_read", "phoning_campaign_call_read", "elected_representative_read"})
      *
      * @AssertPhoneNumber(message="common.phone_number.invalid", options={"groups": {"additional_info"}})
      */
