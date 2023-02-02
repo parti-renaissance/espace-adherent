@@ -107,7 +107,11 @@ class LocalElectionAdmin extends AbstractAdmin
         $list
             ->add('designation.id', null, ['label' => 'Désignation id'])
             ->addIdentifier('designation.label', null, ['label' => 'Libellé'])
-            ->add('designation.zones', null, ['label' => 'Zones'])
+            ->add('designation.zones', 'array', [
+                'label' => 'Zones',
+                'virtual_field' => true,
+                'template' => 'admin/local_election/list_zone.html.twig',
+            ])
             ->add('candidaciesGroups', null, [
                 'label' => 'Nombre de listes',
                 'virtual_field' => true,

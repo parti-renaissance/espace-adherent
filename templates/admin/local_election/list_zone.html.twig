@@ -1,0 +1,8 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {{ object.designation.getZones()|first }}
+    {% if object.designation.getZones()|length > 1 %}
+        (+ {{ object.designation.getZones()|length - 1 }})
+    {% endif %}
+{% endblock %}
