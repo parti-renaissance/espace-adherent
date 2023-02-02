@@ -96,6 +96,7 @@ class DelegatedAccess
      * @var Adherent
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $delegator;
 

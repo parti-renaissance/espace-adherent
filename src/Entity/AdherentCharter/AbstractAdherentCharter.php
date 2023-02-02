@@ -34,6 +34,7 @@ abstract class AbstractAdherentCharter implements AdherentCharterInterface
      * @var Adherent
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="charters")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $adherent;
 
