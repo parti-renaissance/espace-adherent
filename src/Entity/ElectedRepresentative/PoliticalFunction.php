@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\PoliticalFunctionRepository")
  * @ORM\Table(name="elected_representative_political_function")
  */
 class PoliticalFunction
