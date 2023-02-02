@@ -32,7 +32,7 @@ class FillInformationsController extends AbstractContributionController
         $this->processor->doFillContributionInformations($command);
 
         $form = $this
-            ->createForm(InformationsType::class)
+            ->createForm(InformationsType::class, $command)
             ->handleRequest($request)
         ;
 
