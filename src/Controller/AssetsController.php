@@ -33,6 +33,7 @@ class AssetsController extends AbstractController
         'gif' => 'image/gif',
         'svg' => 'image/svg+xml',
         'pdf' => 'application/pdf',
+        'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     ];
 
     private $manager;
@@ -66,7 +67,7 @@ class AssetsController extends AbstractController
             }
         }
 
-        if (\array_key_exists($extension = substr($path, -3), self::EXTENSIONS_TYPES)) {
+        if (\array_key_exists($extension = pathinfo($path, \PATHINFO_EXTENSION), self::EXTENSIONS_TYPES)) {
             return new Response($storage->read($path), Response::HTTP_OK, [
                 'Content-Type' => self::EXTENSIONS_TYPES[$extension],
             ]);
