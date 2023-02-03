@@ -27,13 +27,15 @@ final class Version20230124144750 extends AbstractMigration
         ADD
           updated_by_adherent_id INT UNSIGNED DEFAULT NULL,
         ADD
-          created_at DATETIME NOT NULL,
+          created_at DATETIME DEFAULT NOW(),
         ADD
-          updated_at DATETIME NOT NULL,
+          updated_at DATETIME DEFAULT NOW(),
         CHANGE
           id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
         $this->addSql('ALTER TABLE
           elected_representative
+        CHANGE created_at created_at DATETIME NOT NULL,
+        CHANGE updated_at updated_at DATETIME NOT NULL,
         ADD
           CONSTRAINT FK_BF51F0FD9DF5350C FOREIGN KEY (created_by_administrator_id) REFERENCES administrators (id) ON DELETE
         SET
