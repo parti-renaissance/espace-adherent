@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Address\Address;
 use App\Adherent\LastLoginGroupEnum;
 use App\AdherentProfile\AdherentProfile;
@@ -70,30 +69,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     collectionOperations={},
- *     itemOperations={
- *         "get": {
- *             "normalization_context": {"groups": {"idea_vote_read"}},
- *             "method": "GET",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "swagger_context": {
- *                 "summary": "Retrieves an Adherent resource by UUID.",
- *                 "description": "Retrieves an Adherent resource by UUID.",
- *                 "parameters": {
- *                     {
- *                         "name": "uuid",
- *                         "in": "path",
- *                         "type": "uuid",
- *                         "description": "The UUID of the Adherent resource.",
- *                         "example": "b4219d47-3138-5efd-9762-2ef9f9495084",
- *                     }
- *                 }
- *             }
- *         }
- *     }
- * )
- *
  * @ORM\Table(name="adherents")
  * @ORM\Entity(repositoryClass="App\Repository\AdherentRepository")
  * @ORM\EntityListeners({
@@ -128,7 +103,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Regex(pattern="/^[a-z0-9 _-]+$/i", message="adherent.nickname.invalid_syntax", groups={"anonymize"})
      * @Assert\Regex(pattern="/^[a-zÀ-ÿ0-9 .!_-]+$/i", message="adherent.nickname.invalid_extended_syntax")
      *
-     * @Groups({"user_profile", "idea_list_read", "idea_read", "idea_thread_list_read", "idea_thread_comment_read", "idea_vote_read"})
+     * @Groups({"user_profile"})
      */
     private $nickname;
 

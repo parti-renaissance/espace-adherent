@@ -14,9 +14,6 @@ trait EntityNameSlugTrait
      * @ORM\Column
      *
      * @SymfonySerializer\Groups({
-     *     "idea_list_read",
-     *     "my_committees",
-     *     "idea_vote_read",
      *     "adherent_committees_modal",
      *     "jecoute_region_read",
      *     "cause_read",
@@ -42,8 +39,6 @@ trait EntityNameSlugTrait
      * @Gedmo\Slug(fields={"canonicalName"})
      *
      * @SymfonySerializer\Groups({
-     *     "idea_list_read",
-     *     "my_committees",
      *     "adherent_committees_modal",
      *     "jecoute_region_read",
      *     "cause_read",

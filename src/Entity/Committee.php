@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Address\AddressInterface;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Committee\Exception\CommitteeProvisionalSupervisorException;
@@ -25,59 +24,6 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * This entity represents a committee group.
- *
- * @ApiResource(
- *     collectionOperations={
- *         "get_my_committees": {
- *             "method": "GET",
- *             "path": "/committees/me",
- *             "security": "is_granted('ROLE_ADHERENT')",
- *             "controller": "App\Controller\Api\CommitteesController::myCommitteesAction",
- *             "normalization_context": {
- *                 "groups": {"my_committees"},
- *             },
- *             "pagination_enabled": false,
- *             "swagger_context": {
- *                 "summary": "Retrieves the committees of the current Adherent.",
- *                 "description": "Retrieves the committees of the current Adherent ordered by privilege.",
- *                 "responses": {
- *                     "200": {
- *                         "description": "Committee collection response",
- *                         "schema": {
- *                             "type": "array",
- *                             "items": {
- *                                 "$ref": "#/definitions/Committee-my_committees"
- *                             }
- *                         }
- *                     },
- *                     "401": {
- *                         "description": "Unauthorized if the user is not connected."
- *                     }
- *                 }
- *             }
- *         }
- *     },
- *     itemOperations={
- *         "get": {
- *             "normalization_context": {"groups": {"idea_list_read"}},
- *             "method": "GET",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "swagger_context": {
- *                 "summary": "Retrieves a Committee resource by UUID.",
- *                 "description": "Retrieves a Committee resource by UUID.",
- *                 "parameters": {
- *                     {
- *                         "name": "uuid",
- *                         "in": "path",
- *                         "type": "uuid",
- *                         "description": "The UUID of the Committee resource.",
- *                         "example": "515a56c0-bde8-56ef-b90c-4745b1c93818",
- *                     }
- *                 }
- *             }
- *         }
- *     },
- * )
  *
  * @ORM\Table(
  *     name="committees",

@@ -46,12 +46,7 @@ class AdherentController extends AbstractController
         if (0 === $violations->count()) {
             $manager->flush();
 
-            return new JsonResponse(
-                $serializer->serialize($adherent, 'json', ['groups' => ['idea_read']]),
-                Response::HTTP_OK,
-                [],
-                true
-            );
+            return $this->json('OK');
         }
 
         $errors = $serializer->serialize($violations, 'jsonproblem');

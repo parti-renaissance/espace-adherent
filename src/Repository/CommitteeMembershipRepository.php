@@ -7,7 +7,6 @@ use App\Collection\AdherentCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Committee\Filter\ListFilterObject;
 use App\Entity\Adherent;
-use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\BaseGroup;
 use App\Entity\Committee;
@@ -63,41 +62,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->createQueryBuilder('cm')
             ->where('cm.adherent = :adherent')
             ->setParameter('adherent', $adherent)
-            ->getQuery()
-        ;
-
-        return new CommitteeMembershipCollection($query->getResult());
-    }
-
-    public function findMembershipsForActiveCommittees(Adherent $adherent): CommitteeMembershipCollection
-    {
-        $query = $this
-            ->createQueryBuilder('cm')
-            ->addSelect('committee')
-            ->addSelect('CASE WHEN (am.quality = :supervisor AND am.provisional = :false) THEN 1 '
-                .'WHEN (am.quality = :supervisor AND am.provisional = :true) THEN 2 '
-                .'WHEN (cm.privilege = :host) THEN 3 '
-                .'WHEN (am.committee IS NOT NULL) THEN 4 '
-                .'ELSE 5 END '
-                .'AS HIDDEN score')
-            ->innerJoin('cm.committee', 'committee')
-            ->leftJoin(
-                CommitteeAdherentMandate::class,
-                'am',
-                Join::WITH,
-                'am.adherent = cm.adherent AND am.committee = cm.committee AND am.finishAt IS NULL'
-            )
-            ->where('cm.adherent = :adherent')
-            ->andWhere('committee.status = :status')
-            ->orderBy('score', 'ASC')
-            ->setParameters([
-                'adherent' => $adherent,
-                'status' => Committee::APPROVED,
-                'supervisor' => CommitteeMandateQualityEnum::SUPERVISOR,
-                'host' => CommitteeMembership::COMMITTEE_HOST,
-                'true' => true,
-                'false' => false,
-            ])
             ->getQuery()
         ;
 
