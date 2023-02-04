@@ -53,6 +53,7 @@ trait GeoTrait
      *     "department_site_read",
      *     "department_site_read_list",
      *     "elected_representative_read",
+     *     "elected_representative_list",
      * })
      */
     private $code;
@@ -83,7 +84,8 @@ trait GeoTrait
      *     "phoning_campaign_list",
      *     "department_site_read",
      *     "department_site_read_list",
-     *     "elected_representative_read"
+     *     "elected_representative_read",
+     *     "elected_representative_list",
      * })
      */
     private $name;

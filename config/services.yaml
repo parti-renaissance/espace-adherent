@@ -123,6 +123,8 @@ services:
             tags: [ 'app.republican_silence.zone_extractor' ]
         App\Statistics\Acquisition\Calculator\CalculatorInterface:
             tags: ['app.acquisition_statistics.calculator']
+        App\ElectedRepresentative\Filter\FilterBuilder\ElectedRepresentativeFilterBuilderInterface:
+            tags: ['app.elected_representative_filter.builder']
 
     # Imports
     App\:
@@ -437,6 +439,9 @@ services:
                 class: Symfony\Component\Cache\Psr16Cache
                 arguments:
                     - '@app.cache.france_cities'
+
+    App\ElectedRepresentative\Filter\ElectedRepresentativeFiltersGenerator:
+        arguments: [!tagged_iterator 'app.elected_representative_filter.builder']
 
     # SonataAdmin requests public `logger` service
     logger:

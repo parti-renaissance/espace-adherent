@@ -13,6 +13,7 @@ use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -47,9 +48,22 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     /**
      * @return ElectedRepresentative[]|PaginatorInterface
      */
-    public function searchByFilter(ListFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
-    {
-        return $this->configurePaginator($this->createFilterQueryBuilder($filter), $page, $limit);
+    public function searchByFilter(
+        ListFilter $filter,
+        int $page = 1,
+        int $limit = 100,
+        bool $forJME = false
+    ): PaginatorInterface {
+        return $this->configurePaginator(
+            $this->createFilterQueryBuilder($filter, $forJME),
+            $page,
+            $limit,
+            static function (Query $query) {
+                $query
+                    ->enableResultCache(1800)
+                ;
+            }
+        );
     }
 
     /**
@@ -118,11 +132,24 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         ;
     }
 
-    private function createFilterQueryBuilder(ListFilter $filter): QueryBuilder
+    private function createFilterQueryBuilder(ListFilter $filter, bool $forJME = false): QueryBuilder
     {
         $qb = $this
             ->createQueryBuilder('er')
         ;
+
+        if ($forJME) {
+            $adherentCondition = new Orx();
+
+            $adherentCondition->add('er.adherent IS NOT NULL');
+
+            if ($filter->getCreatedByAdherent()) {
+                $adherentCondition->add('er.createdByAdherent = :created_by_adherent');
+                $qb->setParameter('created_by_adherent', $filter->getCreatedByAdherent());
+            }
+
+            $qb->andWhere($adherentCondition);
+        }
 
         $this->withActiveMandatesCondition($qb);
 

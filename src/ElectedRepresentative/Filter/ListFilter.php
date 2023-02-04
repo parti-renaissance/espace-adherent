@@ -2,9 +2,11 @@
 
 namespace App\ElectedRepresentative\Filter;
 
+use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinition;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ListFilter
@@ -13,6 +15,8 @@ class ListFilter
      * @var string|null
      *
      * @Assert\Length(max=255)
+     *
+     * @Groups({"filter_write"})
      */
     private $firstName;
 
@@ -20,31 +24,43 @@ class ListFilter
      * @var string|null
      *
      * @Assert\Length(max=255)
+     *
+     * @Groups({"filter_write"})
      */
     private $lastName;
 
     /**
      * @var string|null
+     *
+     * @Groups({"filter_write"})
      */
     private $gender;
 
     /**
      * @var array|null
+     *
+     * @Groups({"filter_write"})
      */
     private $labels = [];
 
     /**
      * @var array|null
+     *
+     * @Groups({"filter_write"})
      */
     private $mandates = [];
 
     /**
      * @var array|null
+     *
+     * @Groups({"filter_write"})
      */
     private $politicalFunctions = [];
 
     /**
      * @var array|null
+     *
+     * @Groups({"filter_write"})
      */
     private $cities = [];
 
@@ -62,11 +78,18 @@ class ListFilter
 
     /**
      * @var bool|null
+     *
+     * @Groups({"filter_write"})
      */
     private $emailSubscribed;
 
     /**
      * @var Zone[]
+     *
+     * @Assert\Expression(
+     *     expression="this.getManagedZones() or this.getZones()",
+     *     message="referent.managed_zone.empty"
+     * )
      */
     private $managedZones = [];
 
@@ -74,6 +97,8 @@ class ListFilter
      * @var Zone[]
      *
      * @Assert\NotNull
+     *
+     * @Groups({"filter_write"})
      */
     private $zones = [];
 
@@ -93,9 +118,12 @@ class ListFilter
      */
     private $order = 'a';
 
-    public function __construct(array $managedZones = [])
+    private ?Adherent $createdByAdherent;
+
+    public function __construct(array $managedZones = [], ?Adherent $createdByAdherent = null)
     {
         $this->managedZones = $managedZones;
+        $this->createdByAdherent = $createdByAdherent;
     }
 
     public function getGender(): ?string
@@ -236,6 +264,16 @@ class ListFilter
     public function setOrder(string $order): void
     {
         $this->order = $order;
+    }
+
+    public function getCreatedByAdherent(): ?Adherent
+    {
+        return $this->createdByAdherent;
+    }
+
+    public function setCreatedByAdherent(?Adherent $createdByAdherent): void
+    {
+        $this->createdByAdherent = $createdByAdherent;
     }
 
     public function toArray(): array

@@ -96,6 +96,7 @@ trait EntityIdentityTrait
      *     "department_site_read",
      *     "department_site_read_list",
      *     "elected_representative_read",
+     *     "elected_representative_list",
      * })
      *
      * @ApiProperty(

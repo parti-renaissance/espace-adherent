@@ -78,7 +78,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      * @Assert\NotBlank
      * @Assert\Length(max="50")
      *
-     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read", "elected_representative_list"})
      */
     private $lastName;
 
@@ -90,7 +90,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      * @Assert\NotBlank
      * @Assert\Length(max="50")
      *
-     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read", "elected_representative_list"})
      */
     private $firstName;
 
@@ -105,7 +105,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *     strict=true
      * )
      *
-     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read", "elected_representative_list"})
      */
     private $gender;
 
@@ -150,7 +150,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *
      * @AssertPhoneNumber
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_representative_write", "elected_representative_read", "elected_representative_list"})
      */
     private $contactPhone;
 
@@ -432,6 +432,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     /**
      * @return Mandate[]|Collection
+     *
+     * @Groups({"elected_representative_list"})
      */
     public function getCurrentMandates(): Collection
     {
@@ -484,6 +486,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     /**
      * @return PoliticalFunction[]|Collection
+     *
+     * @Groups({"elected_representative_list"})
      */
     public function getCurrentPoliticalFunctions(): Collection
     {
