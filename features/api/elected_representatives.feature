@@ -5,7 +5,7 @@ Feature:
   I should be able to access elected representatives API
 
   Scenario Outline: As a user granted with local scope, I can get elected representatives in a zone I am manager of
-    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     And I send a "GET" request to "/api/v3/elected_representatives?scope=<scope>"
     Then the response status code should be 200
     And the response should be in JSON
@@ -25,7 +25,7 @@ Feature:
                 "first_name": "Département",
                 "gender": "male",
                 "contact_phone": null,
-                "uuid": "09638957-3a4a-4c2e-93d2-a7b0a56d9487",
+                "uuid": "0c62d201-826b-4da7-8424-e8e17935b400",
                 "current_mandates": [
                     {
                         "type": "senateur",
@@ -54,11 +54,11 @@ Feature:
                         }
                     }
                 ],
-                "current_political_functions": {
-                    "1": {
+                "current_political_functions": [
+                    {
                         "name": "other_member"
                     }
-                }
+                ]
             },
             {
                 "last_name": "LOBELL",
@@ -84,14 +84,14 @@ Feature:
                         }
                     }
                 ],
-                "current_political_functions": {
-                    "1": {
+                "current_political_functions": [
+                    {
                         "name": "vice_president_of_epci"
                     },
-                    "2": {
+                    {
                         "name": "mayor_assistant"
                     }
-                }
+                ]
             }
         ]
     }
@@ -190,7 +190,7 @@ Feature:
     Scenario Outline: As a user granted with local scope, I can update an elected representative in a zone I am manager of
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I add "Content-Type" header equal to "application/json"
-        And I send a "PUT" request to "/api/v3/elected_representatives/09638957-3a4a-4c2e-93d2-a7b0a56d9487?scope=<scope>" with body:
+        And I send a "PUT" request to "/api/v3/elected_representatives/0c62d201-826b-4da7-8424-e8e17935b400?scope=<scope>" with body:
         """
         {
             "last_name": "Doe",
@@ -234,7 +234,7 @@ Feature:
                     "political_functions": []
                 }
             ],
-            "uuid": "09638957-3a4a-4c2e-93d2-a7b0a56d9487",
+            "uuid": "0c62d201-826b-4da7-8424-e8e17935b400",
             "email_address": "renaissance-user-2@en-marche-dev.fr"
         }
         """
@@ -246,7 +246,7 @@ Feature:
     Scenario Outline: As a user granted with local scope, I can get an elected representative informations in a zone I am manager of
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I add "Content-Type" header equal to "application/json"
-        And I send a "GET" request to "/api/v3/elected_representatives/09638957-3a4a-4c2e-93d2-a7b0a56d9487?scope=<scope>"
+        And I send a "GET" request to "/api/v3/elected_representatives/0c62d201-826b-4da7-8424-e8e17935b400?scope=<scope>"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
@@ -284,7 +284,7 @@ Feature:
                     "political_functions": []
                 }
             ],
-            "uuid": "09638957-3a4a-4c2e-93d2-a7b0a56d9487",
+            "uuid": "0c62d201-826b-4da7-8424-e8e17935b400",
             "email_address": "renaissance-user-2@en-marche-dev.fr"
         }
         """
