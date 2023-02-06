@@ -51,7 +51,7 @@ class ColumnsConfigurator
                 'type' => self::COLUMN_TYPE_BOOLEAN,
             ],
             [
-                'key' => 'phone_number_from_sms_subscription',
+                'key' => 'phone_number',
                 'label' => 'Téléphone',
                 'type' => self::COLUMN_TYPE_TRANS,
                 'messages' => [

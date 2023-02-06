@@ -622,7 +622,7 @@ class ManagedUser
     /**
      * @Groups({"managed_user_read"})
      */
-    public function getPhoneNumberFromSmsSubscription(): ?string
+    public function getPhoneNumber(): ?string
     {
         if (\in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true)) {
             if (MembershipSourceEnum::RENAISSANCE === $this->source) {
