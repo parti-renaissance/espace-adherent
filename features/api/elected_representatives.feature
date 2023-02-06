@@ -1,4 +1,4 @@
-@api
+@api @debug
 Feature:
   In order to manager elected representatives
   As a logged-in user
@@ -292,3 +292,13 @@ Feature:
             | user                      | scope                                          |
             | referent@en-marche-dev.fr | referent                                       |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario Outline: As a user granted with local scope, I can delete an elected representative created by me
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    And I send a "DELETE" request to "/api/v3/elected_representatives/0c62d201-826b-4da7-8424-e8e17935b400?scope=<scope>"
+    Then the response status code should be 204
+
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

@@ -472,6 +472,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         // with adherent and ongoing mandate
         $erDepartment92 = $this->createElectedRepresentative('Département', '92', new \DateTime('1982-03-03'), 'male', self::ELECTED_REPRESENTATIVE_8_UUID);
         $erDepartment92->setAdherent($this->getReference('renaissance-user-2'));
+        $erDepartment92->setCreatedByAdherent($this->getReference('adherent-8'));
         $mandate = new Mandate(
             MandateTypeEnum::SENATOR,
             true,
