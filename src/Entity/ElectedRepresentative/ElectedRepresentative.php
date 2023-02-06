@@ -431,15 +431,15 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     }
 
     /**
-     * @return Mandate[]|Collection
+     * @return Mandate[]
      *
      * @Groups({"elected_representative_list"})
      */
-    public function getCurrentMandates(): Collection
+    public function getCurrentMandates(): array
     {
         return $this->mandates->filter(function (Mandate $mandate) {
             return $mandate->isElected() && $mandate->isOnGoing() && null === $mandate->getFinishAt();
-        });
+        })->getValues();
     }
 
     /**
@@ -485,15 +485,15 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     }
 
     /**
-     * @return PoliticalFunction[]|Collection
+     * @return PoliticalFunction[]
      *
      * @Groups({"elected_representative_list"})
      */
-    public function getCurrentPoliticalFunctions(): Collection
+    public function getCurrentPoliticalFunctions(): array
     {
         return $this->politicalFunctions->filter(function (PoliticalFunction $politicalFunction) {
             return $politicalFunction->isOnGoing() && null === $politicalFunction->getFinishAt();
-        });
+        })->getValues();
     }
 
     public function addPoliticalFunction(PoliticalFunction $politicalFunction): void
@@ -521,7 +521,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     public function exportPoliticalFunctions(): string
     {
-        return implode(', ', $this->getCurrentPoliticalFunctions()->toArray());
+        return implode(', ', $this->getCurrentPoliticalFunctions());
     }
 
     /**

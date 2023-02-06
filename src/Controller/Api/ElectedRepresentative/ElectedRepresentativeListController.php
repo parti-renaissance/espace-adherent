@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 /**
  * @Route("/v3/elected_representatives", name="app_elected_representatives_list_get", methods={"GET"})
  *
- * @Security("is_granted('IS_FEATURE_GRANTED', 'elected_representative')")
+ * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')")
  */
 class ElectedRepresentativeListController extends AbstractController
 {

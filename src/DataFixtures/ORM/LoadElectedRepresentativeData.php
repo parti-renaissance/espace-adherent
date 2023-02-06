@@ -29,6 +29,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
     public const ELECTED_REPRESENTATIVE_5_UUID = '2e6a1018-71bd-4ae9-b17c-f93626e306f6';
     public const ELECTED_REPRESENTATIVE_6_UUID = '82ec811a-45f7-4527-97ef-3dea61af131b';
     public const ELECTED_REPRESENTATIVE_7_UUID = '867aed08-9e1a-4ec1-b2da-097e1de70132';
+    public const ELECTED_REPRESENTATIVE_8_UUID = '0c62d201-826b-4da7-8424-e8e17935b400';
 
     public function load(ObjectManager $manager): void
     {
@@ -469,8 +470,9 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $manager->persist($erDepartment59);
 
         // with adherent and ongoing mandate
-        $erDepartment92 = $this->createElectedRepresentative('Département', '92', new \DateTime('1982-03-03'), 'male');
+        $erDepartment92 = $this->createElectedRepresentative('Département', '92', new \DateTime('1982-03-03'), 'male', self::ELECTED_REPRESENTATIVE_8_UUID);
         $erDepartment92->setAdherent($this->getReference('renaissance-user-2'));
+        $erDepartment92->setCreatedByAdherent($this->getReference('adherent-8'));
         $mandate = new Mandate(
             MandateTypeEnum::SENATOR,
             true,
