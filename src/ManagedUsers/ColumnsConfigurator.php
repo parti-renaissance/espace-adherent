@@ -2,6 +2,7 @@
 
 namespace App\ManagedUsers;
 
+use App\Entity\Projection\ManagedUser;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\ValueObject\Genders;
 
@@ -50,9 +51,14 @@ class ColumnsConfigurator
                 'type' => self::COLUMN_TYPE_BOOLEAN,
             ],
             [
-                'key' => 'sms_subscription',
-                'label' => 'Abonné tel',
-                'type' => self::COLUMN_TYPE_BOOLEAN,
+                'key' => 'phone_number_from_sms_subscription',
+                'label' => 'Téléphone',
+                'type' => self::COLUMN_TYPE_TRANS,
+                'messages' => [
+                    ManagedUser::NOT_APPLICABLE => 'Non applicable',
+                    ManagedUser::UNSUBSCRIBED => 'Non abonné',
+                    ManagedUser::NOT_INDICATED => 'Non renseigné',
+                ],
             ],
             [
                 'key' => 'postal_code',

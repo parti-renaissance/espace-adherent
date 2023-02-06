@@ -42,9 +42,9 @@ class ManagedUser
     private const STYLE_TYPE_ADHERENT = 'adherent';
     private const STYLE_TYPE_HOST = 'host';
 
-    private const NOT_APPLICABLE = 'not_applicable';
-    private const UNSUBSCRIBED = 'unsubscribed';
-    private const NOT_INDICATED = 'not_indicated';
+    public const NOT_APPLICABLE = 'not_applicable';
+    public const UNSUBSCRIBED = 'unsubscribed';
+    public const NOT_INDICATED = 'not_indicated';
 
     /**
      * @var int
@@ -622,7 +622,7 @@ class ManagedUser
     /**
      * @Groups({"managed_user_read"})
      */
-    public function getSmsSubscriptionPhoneNumber(): ?string
+    public function getPhoneNumberFromSmsSubscription(): ?string
     {
         if (\in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true)) {
             if (MembershipSourceEnum::RENAISSANCE === $this->source) {
