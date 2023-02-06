@@ -197,7 +197,6 @@ Feature:
             "first_name": "Jane"
         }
         """
-        Then print last JSON response
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
@@ -205,6 +204,56 @@ Feature:
         {
             "last_name": "Doe",
             "first_name": "Jane",
+            "gender": "male",
+            "birth_date": "@string@.isDateTime()",
+            "birth_place": null,
+            "contact_phone": null,
+            "has_followed_training": false,
+            "adherent": {
+                "email_address": "renaissance-user-2@en-marche-dev.fr",
+                "phone": null,
+                "uuid": "d0a0935f-da7c-4caa-b582-a8c2376e5158",
+                "first_name": "John",
+                "last_name": "Smith"
+            },
+            "mandates": [
+                {
+                    "id": 15,
+                    "type": "senateur",
+                    "is_elected": true,
+                    "geo_zone": {
+                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                        "code": "92",
+                        "name": "Hauts-de-Seine"
+                    },
+                    "on_going": true,
+                    "begin_at": "@string@.isDateTime()",
+                    "finish_at": null,
+                    "political_affiliation": "REM",
+                    "la_r_e_m_support": "official",
+                    "political_functions": []
+                }
+            ],
+            "uuid": "09638957-3a4a-4c2e-93d2-a7b0a56d9487",
+            "email_address": "renaissance-user-2@en-marche-dev.fr"
+        }
+        """
+        Examples:
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | referent                                       |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I can get an elected representative informations in a zone I am manager of
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I add "Content-Type" header equal to "application/json"
+        And I send a "GET" request to "/api/v3/elected_representatives/09638957-3a4a-4c2e-93d2-a7b0a56d9487?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "first_name": "Département",
+            "last_name": "92",
             "gender": "male",
             "birth_date": "@string@.isDateTime()",
             "birth_place": null,
