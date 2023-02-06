@@ -13,11 +13,6 @@ trait EntityPersonNameTrait
      * @SymfonySerializer\Groups({
      *     "user_profile",
      *     "export",
-     *     "idea_list_read",
-     *     "idea_read",
-     *     "idea_thread_list_read",
-     *     "idea_thread_comment_read",
-     *     "idea_vote_read",
      *     "cause_read",
      *     "profile_read",
      *     "event_read",
@@ -48,11 +43,6 @@ trait EntityPersonNameTrait
      *
      * @SymfonySerializer\Groups({
      *     "user_profile",
-     *     "idea_list_read",
-     *     "idea_read",
-     *     "idea_thread_list_read",
-     *     "idea_thread_comment_read",
-     *     "idea_vote_read",
      *     "profile_read",
      *     "cause_read",
      *     "event_read",

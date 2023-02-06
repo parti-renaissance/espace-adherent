@@ -100,19 +100,4 @@ class CommitteesController extends AbstractController
             ['groups' => ['api_candidacy_read']]
         );
     }
-
-    /**
-     * ApiPlatform action
-     *
-     * @see Committee
-     */
-    public function myCommitteesAction(CommitteeMembershipRepository $committeeMembershipRepository): array
-    {
-        /** @var Adherent $user */
-        $user = $this->getUser();
-
-        return array_map(function (CommitteeMembership $committeeMembership) {
-            return $committeeMembership->getCommittee();
-        }, $committeeMembershipRepository->findMembershipsForActiveCommittees($user)->toArray());
-    }
 }

@@ -309,8 +309,6 @@ committee.pending.count: >-
         other {Vous avez # demandes de création de comité en attente de traitement.}
     }
 
-my_committees: Mes comités
-
 committee_host.popup.title: Charte de bonne utilisation des outils numériques
 committee_host.popup.subtitle: à l'usage des animateurs, animateurs provisoires et co-animateurs
 committee_host.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_referents_animateurs.pdf

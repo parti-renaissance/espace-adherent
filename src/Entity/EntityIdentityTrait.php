@@ -33,11 +33,6 @@ trait EntityIdentityTrait
      *
      * @SymfonySerializer\Groups({
      *     "user_profile",
-     *     "idea_list_read",
-     *     "my_committees",
-     *     "idea_thread_comment_read",
-     *     "idea_read",
-     *     "idea_thread_list_read",
      *     "approach_list_read",
      *     "coalition_read",
      *     "cause_read",
