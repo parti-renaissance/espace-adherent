@@ -30,7 +30,7 @@ Feature:
                     {
                         "type": "senateur",
                         "geo_zone": {
-                            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                            "uuid": "@uuid@",
                             "code": "92",
                             "name": "Hauts-de-Seine"
                         }
@@ -48,7 +48,7 @@ Feature:
                     {
                         "type": "conseiller_municipal",
                         "geo_zone": {
-                            "uuid": "e3f18016-906e-11eb-a875-0242ac150002",
+                            "uuid": "@uuid@",
                             "code": "200054781",
                             "name": "Métropole du Grand Paris"
                         }
@@ -70,7 +70,7 @@ Feature:
                     {
                         "type": "depute",
                         "geo_zone": {
-                            "uuid": "e3f01553-906e-11eb-a875-0242ac150002",
+                            "uuid": "@uuid@",
                             "code": "13",
                             "name": "Bouches-du-Rhône"
                         }
@@ -78,7 +78,7 @@ Feature:
                     {
                         "type": "conseiller_regional",
                         "geo_zone": {
-                            "uuid": "e3f28ca9-906e-11eb-a875-0242ac150002",
+                            "uuid": "@uuid@",
                             "code": "76540",
                             "name": "Rouen"
                         }
@@ -100,3 +100,90 @@ Feature:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I can create an elected representative in a zone I am manager of
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I add "Content-Type" header equal to "application/json"
+        And I send a "POST" request to "/api/v3/elected_representatives?scope=<scope>" with body:
+        """
+        {
+            "last_name": "Doe",
+            "first_name": "John",
+            "gender": "male",
+            "birth_date": "1990-02-02",
+            "mandates": [
+                {
+                    "type": "conseiller_municipal",
+                    "geo_zone": "e3f2cede-906e-11eb-a875-0242ac150002",
+                    "begin_at": "2022-06-02",
+                    "political_affiliation": "REM",
+                    "political_functions": [
+                        {
+                            "name": "mayor_assistant",
+                            "on_going": true,
+                            "begin_at": "2022-06-02"
+                        }
+                    ]
+                }
+            ],
+            "adherent": "29461c49-2646-4d89-9c82-50b3f9b586f4"
+        }
+        """
+        Then print last JSON response
+        Then the response status code should be 201
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "last_name": "Doe",
+            "first_name": "John",
+            "gender": "male",
+            "birth_date": "@string@.isDateTime()",
+            "birth_place": null,
+            "contact_phone": null,
+            "has_followed_training": false,
+            "adherent": {
+                "email_address": "referent@en-marche-dev.fr",
+                "phone": {
+                    "country": "FR",
+                    "number": "06 73 65 43 49"
+                },
+                "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                "first_name": "Referent",
+                "last_name": "Referent"
+            },
+            "mandates": [
+                {
+                    "id": "@integer@",
+                    "type": "conseiller_municipal",
+                    "is_elected": false,
+                    "geo_zone": {
+                        "uuid": "e3f2cede-906e-11eb-a875-0242ac150002",
+                        "code": "92078",
+                        "name": "Villeneuve-la-Garenne"
+                    },
+                    "on_going": true,
+                    "begin_at": "@string@.isDateTime()",
+                    "finish_at": null,
+                    "political_affiliation": "REM",
+                    "la_r_e_m_support": null,
+                    "political_functions": [
+                        {
+                            "id": "@integer@",
+                            "name": "mayor_assistant",
+                            "clarification": null,
+                            "on_going": true,
+                            "begin_at": "@string@.isDateTime()",
+                            "finish_at": null
+                        }
+                    ]
+                }
+            ],
+            "uuid": "@uuid@",
+            "email_address": "referent@en-marche-dev.fr"
+        }
+        """
+        Examples:
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | referent                                       |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
