@@ -1,4 +1,4 @@
-@api @debug
+@api
 Feature:
   In order to manager elected representatives
   As a logged-in user
