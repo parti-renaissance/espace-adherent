@@ -7,6 +7,7 @@ use App\Entity\Geo\Zone;
 use App\Membership\MembershipSourceEnum;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Subscription\SubscriptionTypeEnum;
+use App\Utils\PhoneNumberUtils;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,6 +41,10 @@ class ManagedUser
 
     private const STYLE_TYPE_ADHERENT = 'adherent';
     private const STYLE_TYPE_HOST = 'host';
+
+    private const NOT_APPLICABLE = 'not_applicable';
+    private const UNSUBSCRIBED = 'unsubscribed';
+    private const NOT_INDICATED = 'not_indicated';
 
     /**
      * @var int
@@ -617,8 +622,16 @@ class ManagedUser
     /**
      * @Groups({"managed_user_read"})
      */
-    public function getSmsSubscription(): bool
+    public function getSmsSubscriptionPhoneNumber(): ?string
     {
-        return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
+        if (\in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true)) {
+            if (MembershipSourceEnum::RENAISSANCE === $this->source) {
+                return $this->getPhone() ? PhoneNumberUtils::format($this->getPhone()) : self::NOT_INDICATED;
+            }
+
+            return self::NOT_APPLICABLE;
+        }
+
+        return self::UNSUBSCRIBED;
     }
 }
