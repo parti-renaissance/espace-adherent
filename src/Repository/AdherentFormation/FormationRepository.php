@@ -54,6 +54,7 @@ class FormationRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('formation')
             ->andWhere('formation.published = TRUE')
+            ->andWhere('formation.valid = TRUE')
             ->orderBy('formation.position', 'ASC')
         ;
     }

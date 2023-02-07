@@ -20,6 +20,8 @@ class LoadScopeData extends Fixture
         FeatureEnum::ELECTIONS,
         FeatureEnum::RIPOSTES,
         FeatureEnum::SURVEY,
+        FeatureEnum::ELECTED_REPRESENTATIVE,
+        FeatureEnum::ADHERENT_FORMATIONS,
     ];
 
     private const LABELS = [

@@ -3,7 +3,6 @@
 namespace App\Validator\AdherentFormation;
 
 use App\Entity\AdherentFormation\Formation;
-use App\Entity\AdherentFormation\FormationContentTypeEnum;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -31,29 +30,22 @@ class FormationContentValidator extends ConstraintValidator
             return;
         }
 
-        switch ($contentType) {
-            case FormationContentTypeEnum::FILE:
-                if (!$value->getFile()) {
-                    $this
-                        ->context
-                        ->buildViolation($constraint->missingFileMessage)
-                        ->atPath('file')
-                        ->addViolation()
-                    ;
-                }
+        if ($value->isLinkContent() && !$value->getLink()) {
+            $this
+                ->context
+                ->buildViolation($constraint->missingLinkMessage)
+                ->atPath('link')
+                ->addViolation()
+            ;
+        }
 
-                break;
-            case FormationContentTypeEnum::LINK:
-                if (!$value->getFile()) {
-                    $this
-                        ->context
-                        ->buildViolation($constraint->missingLinkMessage)
-                        ->atPath('link')
-                        ->addViolation()
-                    ;
-                }
-
-                break;
+        if ($value->isLinkContent() && $value->getFile()) {
+            $this
+                ->context
+                ->buildViolation($constraint->linkWithFileMessage)
+                ->atPath('file')
+                ->addViolation()
+            ;
         }
     }
 }

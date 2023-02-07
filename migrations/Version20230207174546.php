@@ -5,11 +5,18 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20221215114829 extends AbstractMigration
+final class Version20230207174546 extends AbstractMigration
 {
+    public function getDescription(): string
+    {
+        return '';
+    }
+
     public function up(Schema $schema): void
     {
+        $this->addSql('ALTER TABLE adherent_formation DROP FOREIGN KEY FK_2D97408B93CB796C');
         $this->addSql('DROP INDEX UNIQ_2D97408B2B36786B ON adherent_formation');
+        $this->addSql('DROP INDEX UNIQ_2D97408B93CB796C ON adherent_formation');
         $this->addSql('ALTER TABLE
           adherent_formation
         ADD
@@ -17,15 +24,17 @@ final class Version20221215114829 extends AbstractMigration
         ADD
           updated_by_administrator_id INT DEFAULT NULL,
         ADD
-          created_by_adherent_id INT UNSIGNED DEFAULT NULL,
-        ADD
           updated_by_adherent_id INT UNSIGNED DEFAULT NULL,
         ADD
           zone_id INT UNSIGNED DEFAULT NULL,
         ADD
           content_type VARCHAR(255) NOT NULL,
         ADD
+          file_path VARCHAR(255) DEFAULT NULL,
+        ADD
           link VARCHAR(255) DEFAULT NULL,
+        ADD
+          valid TINYINT(1) DEFAULT \'0\' NOT NULL,
         ADD
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
         ADD
@@ -36,6 +45,8 @@ final class Version20221215114829 extends AbstractMigration
           visibility VARCHAR(30) NOT NULL,
         CHANGE
           id id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+        CHANGE
+          file_id created_by_adherent_id INT UNSIGNED DEFAULT NULL,
         CHANGE
           visible published TINYINT(1) DEFAULT \'0\' NOT NULL,
         CHANGE
@@ -91,6 +102,10 @@ final class Version20221215114829 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_2D97408B9F2C3FAB ON adherent_formation');
         $this->addSql('ALTER TABLE
           adherent_formation
+        ADD
+          file_id INT UNSIGNED DEFAULT NULL,
+        ADD
+          visible TINYINT(1) DEFAULT \'0\' NOT NULL,
         DROP
           created_by_administrator_id,
         DROP
@@ -104,7 +119,13 @@ final class Version20221215114829 extends AbstractMigration
         DROP
           content_type,
         DROP
+          file_path,
+        DROP
           link,
+        DROP
+          published,
+        DROP
+          valid,
         DROP
           uuid,
         DROP
@@ -116,9 +137,12 @@ final class Version20221215114829 extends AbstractMigration
         CHANGE
           id id BIGINT AUTO_INCREMENT NOT NULL,
         CHANGE
-          published visible TINYINT(1) DEFAULT \'0\' NOT NULL,
-        CHANGE
           print_count downloads_count SMALLINT UNSIGNED NOT NULL');
+        $this->addSql('ALTER TABLE
+          adherent_formation
+        ADD
+          CONSTRAINT FK_2D97408B93CB796C FOREIGN KEY (file_id) REFERENCES adherent_formation_file (id) ON UPDATE NO ACTION ON DELETE NO ACTION');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_2D97408B2B36786B ON adherent_formation (title)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_2D97408B93CB796C ON adherent_formation (file_id)');
     }
 }

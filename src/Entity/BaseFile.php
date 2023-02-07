@@ -57,7 +57,6 @@ abstract class BaseFile implements EntityFileInterface
      * @SymfonySerializer\Groups({
      *     "formation_read",
      *     "formation_list_read",
-     *     "formation_write",
      * })
      */
     private $path;
@@ -70,7 +69,6 @@ abstract class BaseFile implements EntityFileInterface
      * @SymfonySerializer\Groups({
      *     "formation_read",
      *     "formation_list_read",
-     *     "formation_write",
      * })
      */
     private $extension;

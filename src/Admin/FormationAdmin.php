@@ -2,9 +2,7 @@
 
 namespace App\Admin;
 
-use App\Entity\AdherentFormation\File;
 use App\Entity\AdherentFormation\FormationContentTypeEnum;
-use App\Form\Admin\BaseFileType;
 use App\Form\PositionType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -13,6 +11,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -56,11 +55,9 @@ class FormationAdmin extends AbstractAdmin
                         return sprintf('adherent_formation.content_type.%s', $choice);
                     },
                 ])
-                ->add('file', BaseFileType::class, [
+                ->add('file', FileType::class, [
                     'label' => false,
                     'required' => false,
-                    'data_class' => File::class,
-                    'can_update_file' => true,
                 ])
                 ->add('link', UrlType::class, [
                     'label' => 'Lien',

@@ -8,6 +8,7 @@
 
 {% block content_right_side %}
     <section class="space-y-4 md:space-y-6">
+        {% if national_formations is not empty %}
         <h1 class="text-3xl font-bold leading-10 text-gray-900">Formations nationales</h1>
 
         <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-6">
@@ -15,13 +16,16 @@
                 {% include 'renaissance/formation/_formation_preview.html.twig' with { formation: formation } %}
             {% endfor %}
         </div>
+        {% endif %}
 
-        <h1 class="text-3xl font-bold leading-10 text-gray-900">Formations locales</h1>
+        {% if local_formations is not empty %}
+            <h1 class="text-3xl font-bold leading-10 text-gray-900">Formations locales</h1>
 
-        <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-6">
-            {% for formation in local_formations %}
-                {% include 'renaissance/formation/_formation_preview.html.twig' with { formation: formation } %}
-            {% endfor %}
-        </div>
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-6">
+                {% for formation in local_formations %}
+                    {% include 'renaissance/formation/_formation_preview.html.twig' with { formation: formation } %}
+                {% endfor %}
+            </div>
+        {% endif %}
     </section>
 {% endblock %}

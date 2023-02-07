@@ -14,8 +14,13 @@
         <a class="inline-flex items-center px-3 py-2 rounded-md text-sm leading-5 bg-re-blue-50 text-re-blue-800 hover:bg-re-blue-100"
            target="_blank"
            href="{{ path('app_renaissance_adherent_formation_content', { uuid: formation.uuid }) }}">
-            {% include 'icons/download.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
-            Télécharger
+            {% if formation.isFileContent() %}
+                {% include 'icons/download.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+                Télécharger
+            {% else %}
+                {% include 'icons/eye.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+                Voir
+            {% endif %}
         </a>
     </div>
 </div>

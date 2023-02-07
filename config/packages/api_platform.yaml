@@ -12,6 +12,8 @@ api_platform:
     formats:
         json:
             mime_types: ['application/json']
+        multipart:
+            mime_types: ['multipart/form-data']
     error_formats:
         jsonproblem:
             mime_types: ['application/problem+json']

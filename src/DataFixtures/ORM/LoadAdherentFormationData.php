@@ -3,11 +3,11 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
-use App\Entity\AdherentFormation\File;
 use App\Entity\AdherentFormation\Formation;
 use App\Entity\AdherentFormation\FormationContentTypeEnum;
 use App\Entity\Administrator;
 use App\Entity\Geo\Zone;
+use App\Formation\FormationHandler;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -27,7 +27,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
 
     private Generator $faker;
 
-    public function __construct()
+    public function __construct(private readonly FormationHandler $formationHandler)
     {
         $this->faker = Factory::create('fr_FR');
     }
@@ -40,6 +40,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         $formation = $this->createNationalFormation(self::FORMATION_1_UUID, $administrator, 'Première formation nationale');
         $formation->setContentType(FormationContentTypeEnum::FILE);
         $formation->setFile($this->createFile());
+        $this->formationHandler->handleFile($formation);
         $manager->persist($formation);
 
         $formation = $this->createNationalFormation(self::FORMATION_2_UUID, $administrator, 'Formation sans description', false);
@@ -50,6 +51,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         $formation = $this->createNationalFormation(self::FORMATION_3_UUID, $administrator, 'Formation non publiée', true, false);
         $formation->setContentType(FormationContentTypeEnum::FILE);
         $formation->setFile($this->createFile());
+        $this->formationHandler->handleFile($formation);
         $manager->persist($formation);
 
         /** @var Adherent $referent77 */
@@ -122,19 +124,15 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         return $formation;
     }
 
-    private function createFile(): File
+    private function createFile(): UploadedFile
     {
-        $file = new File();
-        $file->setTitle('Formation PDF');
-        $file->setFile(new UploadedFile(
+        return new UploadedFile(
             __DIR__.'/../adherent_formations/formation.pdf',
             'Formation.pdf',
             'application/pdf',
             null,
             true
-        ));
-
-        return $file;
+        );
     }
 
     public function getDependencies()

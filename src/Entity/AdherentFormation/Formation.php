@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,9 +33,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "groups": {"formation_read"}
  *         },
  *         "denormalization_context": {
- *             "groups": {"formation_write"}
+ *             "groups": {"formation_write"},
  *         },
- *         "security": "is_granted('IS_FEATURE_GRANTED', 'formation')"
+ *         "security": "is_granted('IS_FEATURE_GRANTED', 'adherent_formations')"
  *     },
  *     collectionOperations={
  *         "get": {
@@ -52,12 +53,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/formations/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'formation') and is_granted('SCOPE_CAN_MANAGE', object)"
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)"
  *         },
  *         "put": {
  *             "path": "/v3/formations/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'formation') and is_granted('SCOPE_CAN_MANAGE', object)"
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)"
+ *         },
+ *         "post_file": {
+ *             "path": "/v3/formations/{uuid}/file",
+ *             "method": "POST",
+ *             "controller": "App\Controller\Api\Formation\PostFileController",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
  *         }
  *     }
  * )
@@ -119,17 +127,6 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      *
      * @Assert\NotBlank
      * @Assert\Choice(choices=FormationContentTypeEnum::ALL)
-     */
-    private ?string $contentType = FormationContentTypeEnum::FILE;
-
-    /**
-     * @ORM\OneToOne(
-     *     targetEntity="App\Entity\AdherentFormation\File",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
-     *
-     * @Assert\Valid
      *
      * @SymfonySerializer\Groups({
      *     "formation_read",
@@ -137,7 +134,45 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      *     "formation_write",
      * })
      */
-    private ?File $file = null;
+    private ?string $contentType = FormationContentTypeEnum::FILE;
+
+    /**
+     * @Assert\File(
+     *     maxSize="5M",
+     *     binaryFormat=false,
+     *     mimeTypes={
+     *         "image/*",
+     *         "video/mpeg",
+     *         "video/mp4",
+     *         "video/quicktime",
+     *         "video/webm",
+     *         "application/pdf",
+     *         "application/x-pdf",
+     *         "application/vnd.ms-powerpoint",
+     *         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+     *         "application/msword",
+     *         "application/vnd.ms-excel",
+     *         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+     *         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+     *         "application/rtf",
+     *         "text/plain",
+     *         "text/csv",
+     *         "text/html",
+     *         "text/calendar"
+     *     }
+     * )
+     */
+    private ?UploadedFile $file = null;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     * })
+     */
+    private ?string $filePath = null;
 
     /**
      * @ORM\Column(nullable=true)
@@ -171,7 +206,12 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      *     "formation_list_read",
      * })
      */
-    protected $printCount = 0;
+    private int $printCount = 0;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $valid = false;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -228,14 +268,34 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
         return FormationContentTypeEnum::LINK === $this->contentType;
     }
 
-    public function getFile(): ?File
+    public function getFile(): ?UploadedFile
     {
         return $this->file;
     }
 
-    public function setFile(?File $file): void
+    public function setFile(?UploadedFile $file): void
     {
         $this->file = $file;
+    }
+
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
+    }
+
+    public function setFilePath(?string $filePath): void
+    {
+        $this->filePath = $filePath;
+    }
+
+    public function getFileExtension(): ?string
+    {
+        return $this->fileExtension;
+    }
+
+    public function setFileExtension(?string $fileExtension): void
+    {
+        $this->fileExtension = $fileExtension;
     }
 
     public function getLink(): ?string
@@ -256,6 +316,16 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     public function setPublished(bool $published): void
     {
         $this->published = $published;
+    }
+
+    public function isValid(): bool
+    {
+        return $this->valid;
+    }
+
+    public function setValid(bool $valid): void
+    {
+        $this->valid = $valid;
     }
 
     public function getPrintCount(): int
