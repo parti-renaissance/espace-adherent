@@ -18,6 +18,7 @@ class MandatesFilterBuilder implements ElectedRepresentativeFilterBuilderInterfa
         return (new FilterCollectionBuilder())
             ->createSelect('mandates', 'Mandats')
             ->setChoices(array_flip(MandateTypeEnum::CHOICES))
+            ->setMultiple(true)
             ->getFilters()
         ;
     }
