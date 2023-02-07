@@ -85,10 +85,20 @@ final class Version20230207174546 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2D97408B85C9D733 ON adherent_formation (created_by_adherent_id)');
         $this->addSql('CREATE INDEX IDX_2D97408BDF6CFDC9 ON adherent_formation (updated_by_adherent_id)');
         $this->addSql('CREATE INDEX IDX_2D97408B9F2C3FAB ON adherent_formation (zone_id)');
+        $this->addSql('DROP TABLE adherent_formation_file');
     }
 
     public function down(Schema $schema): void
     {
+        $this->addSql('CREATE TABLE adherent_formation_file (
+          id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+          title VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`,
+          slug VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`,
+          path VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`,
+          extension VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`,
+          UNIQUE INDEX adherent_formation_file_slug_extension (slug, extension),
+          PRIMARY KEY(id)
+        ) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\'');
         $this->addSql('ALTER TABLE adherent_formation DROP FOREIGN KEY FK_2D97408B9DF5350C');
         $this->addSql('ALTER TABLE adherent_formation DROP FOREIGN KEY FK_2D97408BCF1918FF');
         $this->addSql('ALTER TABLE adherent_formation DROP FOREIGN KEY FK_2D97408B85C9D733');
