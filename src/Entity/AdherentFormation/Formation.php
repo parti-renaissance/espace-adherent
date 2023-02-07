@@ -288,16 +288,6 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
         $this->filePath = $filePath;
     }
 
-    public function getFileExtension(): ?string
-    {
-        return $this->fileExtension;
-    }
-
-    public function setFileExtension(?string $fileExtension): void
-    {
-        $this->fileExtension = $fileExtension;
-    }
-
     public function getLink(): ?string
     {
         return $this->link;

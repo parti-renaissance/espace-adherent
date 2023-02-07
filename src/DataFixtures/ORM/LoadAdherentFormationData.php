@@ -39,8 +39,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
 
         $formation = $this->createNationalFormation(self::FORMATION_1_UUID, $administrator, 'Première formation nationale');
         $formation->setContentType(FormationContentTypeEnum::FILE);
-        $formation->setFile($this->createFile());
-        $this->formationHandler->handleFile($formation);
+        $this->createFile($formation);
         $manager->persist($formation);
 
         $formation = $this->createNationalFormation(self::FORMATION_2_UUID, $administrator, 'Formation sans description', false);
@@ -50,8 +49,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
 
         $formation = $this->createNationalFormation(self::FORMATION_3_UUID, $administrator, 'Formation non publiée', true, false);
         $formation->setContentType(FormationContentTypeEnum::FILE);
-        $formation->setFile($this->createFile());
-        $this->formationHandler->handleFile($formation);
+        $this->createFile($formation);
         $manager->persist($formation);
 
         /** @var Adherent $referent77 */
@@ -61,7 +59,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
 
         $formation = $this->createLocalFormation(self::FORMATION_4_UUID, $referent77, $zoneDepartment77, 'Première formation du 77');
         $formation->setContentType(FormationContentTypeEnum::FILE);
-        $formation->setFile($this->createFile());
+        $this->createFile($formation);
         $manager->persist($formation);
 
         $formation = $this->createLocalFormation(self::FORMATION_5_UUID, $referent77, $zoneDepartment77, 'Deuxième formation du 77');
@@ -76,7 +74,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
 
         $formation = $this->createLocalFormation(self::FORMATION_6_UUID, $referent06, $zoneDepartment06, 'Première formation du 06');
         $formation->setContentType(FormationContentTypeEnum::FILE);
-        $formation->setFile($this->createFile());
+        $this->createFile($formation);
         $manager->persist($formation);
 
         $manager->flush();
@@ -124,15 +122,17 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         return $formation;
     }
 
-    private function createFile(): UploadedFile
+    private function createFile(Formation $formation): void
     {
-        return new UploadedFile(
+        $formation->setFile(new UploadedFile(
             __DIR__.'/../adherent_formations/formation.pdf',
             'Formation.pdf',
             'application/pdf',
             null,
             true
-        );
+        ));
+
+        $this->formationHandler->handleFile($formation);
     }
 
     public function getDependencies()

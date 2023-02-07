@@ -10,7 +10,7 @@ Feature:
     """
     {
         "title": "New formation",
-        "description": "New formation description",
+        "description": "@string@",
         "content_type": "link",
         "link": "https://renaissance.code/",
         "published": true,
@@ -23,13 +23,13 @@ Feature:
     And the JSON should be equal to:
     """
     {
+        "uuid": "@uuid@",
         "title": "New formation",
-        "description": "New formation description",
+        "description": "@string@",
         "content_type": "link",
-        "file": null,
+        "file_path": null,
         "link": "https://renaissance.code/",
         "published": true,
-        "valid": false,
         "print_count": 0,
         "created_at": "@string@.isDateTime()",
         "updated_at": "@string@.isDateTime()",
@@ -66,18 +66,13 @@ Feature:
         },
         "items": [
             {
+                "uuid": "ebdbafa2-c0b0-40ff-adbd-745f48f48c42",
                 "title": "Première formation du 77",
                 "description": "@string@",
                 "content_type": "file",
-                "file": {
-                    "title": "Formation PDF",
-                    "slug": "formation-pdf-2",
-                    "path": "files/adherent_formations/536d2de6-8275-42ff-b077-961cd16798d5.pdf",
-                    "extension": "pdf"
-                },
+                "file_path": "files/adherent_formations/@uuid@.pdf",
                 "link": null,
                 "published": true,
-                "valid": false,
                 "print_count": 0,
                 "created_at": "@string@.isDateTime()",
                 "visibility": "local",
@@ -90,13 +85,13 @@ Feature:
                 "position": 0
             },
             {
+                "uuid": "366c1da2-f833-4172-883a-c10a41588766",
                 "title": "Deuxième formation du 77",
                 "description": "@string@",
                 "content_type": "link",
-                "file": null,
+                "file_path": null,
                 "link": "http://renaissance.code/",
                 "published": true,
-                "valid": false,
                 "print_count": 0,
                 "created_at": "@string@.isDateTime()",
                 "visibility": "local",

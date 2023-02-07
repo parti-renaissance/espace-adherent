@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Controller\Renaissance\Adhesion;
+namespace Tests\App\Controller\Renaissance\Formation;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +22,11 @@ class ListControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $formations = $crawler->filter('h3');
-        self::assertCount(2, $formations);
-        self::assertSame('Première formation', $formations->eq(0)->text());
+        self::assertCount(4, $formations);
+        self::assertSame('Première formation nationale', $formations->eq(0)->text());
         self::assertSame('Formation sans description', $formations->eq(1)->text());
+        self::assertSame('Première formation du 77', $formations->eq(2)->text());
+        self::assertSame('Deuxième formation du 77', $formations->eq(3)->text());
     }
 
     public function testAnonymousCanNotSeeFormations(): void

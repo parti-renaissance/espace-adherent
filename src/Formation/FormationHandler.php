@@ -30,7 +30,6 @@ class FormationHandler
             Uuid::uuid4()->toString(),
             $file->getClientOriginalExtension()
         ));
-        $formation->setFileExtension($file->getExtension());
 
         $this->storage->put($path, file_get_contents($file->getPathname()));
 
@@ -44,7 +43,6 @@ class FormationHandler
         }
 
         $formation->setFilePath(null);
-        $formation->setFileExtension(null);
 
         if (!$this->storage->has($filePath)) {
             return;
