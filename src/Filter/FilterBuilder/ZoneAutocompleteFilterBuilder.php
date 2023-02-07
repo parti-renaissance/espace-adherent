@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AdherentFilter\FilterBuilder;
+namespace App\Filter\FilterBuilder;
 
 use App\Entity\Geo\Zone;
 use App\Filter\FilterCollectionBuilder;
@@ -8,7 +8,7 @@ use App\Filter\Types\DefinedTypes\ZoneAutocomplete;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 
-class ZoneAutocompleteFilterBuilder implements AdherentFilterBuilderInterface
+class ZoneAutocompleteFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, string $feature = null): bool
     {

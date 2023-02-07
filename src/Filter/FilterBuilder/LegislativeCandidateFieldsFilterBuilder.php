@@ -1,13 +1,13 @@
 <?php
 
-namespace App\AdherentFilter\FilterBuilder;
+namespace App\Filter\FilterBuilder;
 
 use App\Filter\FilterCollectionBuilder;
 use App\Mailchimp\Campaign\AudienceTypeEnum;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 
-class LegislativeCandidateFieldsFilterBuilder implements AdherentFilterBuilderInterface
+class LegislativeCandidateFieldsFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, string $feature = null): bool
     {

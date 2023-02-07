@@ -1,13 +1,12 @@
 <?php
 
-namespace App\AdherentFilter;
+namespace App\Filter;
 
-use App\AdherentFilter\FilterBuilder\AdherentFilterBuilderInterface;
-use App\Filter\FilterInterface;
+use App\Filter\FilterBuilder\FilterBuilderInterface;
 
-class AdherentFiltersGenerator
+class FiltersGenerator
 {
-    /** @var AdherentFilterBuilderInterface[]|iterable */
+    /** @var FilterBuilderInterface[]|iterable */
     private iterable $builders;
 
     public function __construct(iterable $builders)

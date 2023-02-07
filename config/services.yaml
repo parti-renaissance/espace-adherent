@@ -113,8 +113,8 @@ services:
             tags: ['app.adherent.scope_generator']
         App\ManagedUsers\Filter\ManagedUsersFilterFactoryInterface:
             tags: ['app.managed_user.filer_factory']
-        App\AdherentFilter\FilterBuilder\AdherentFilterBuilderInterface:
-            tags: [ 'app.adherent_filter.builder' ]
+        App\Filter\FilterBuilder\FilterBuilderInterface:
+            tags: [ 'app.filter.builder' ]
         App\OAuth\App\AuthAppUrlGeneratorInterface:
             tags: [ 'app.auth_app.url_generator' ]
         App\Recaptcha\RecaptchaApiClientInterface:
@@ -123,8 +123,6 @@ services:
             tags: [ 'app.republican_silence.zone_extractor' ]
         App\Statistics\Acquisition\Calculator\CalculatorInterface:
             tags: ['app.acquisition_statistics.calculator']
-        App\ElectedRepresentative\Filter\FilterBuilder\ElectedRepresentativeFilterBuilderInterface:
-            tags: ['app.elected_representative_filter.builder']
 
     # Imports
     App\:
@@ -384,8 +382,8 @@ services:
             $serviceName: '%env(OVHCLOUD_SERVICE_NAME)%'
             $senderName: '%env(OVHCLOUD_SMS_SENDER_NAME)%'
 
-    App\AdherentFilter\AdherentFiltersGenerator:
-        arguments: [!tagged_iterator 'app.adherent_filter.builder']
+    App\Filter\FiltersGenerator:
+        arguments: [!tagged_iterator 'app.filter.builder']
 
     App\Firebase\JeMarcheMessaging:
         lazy: true
@@ -439,9 +437,6 @@ services:
                 class: Symfony\Component\Cache\Psr16Cache
                 arguments:
                     - '@app.cache.france_cities'
-
-    App\ElectedRepresentative\Filter\ElectedRepresentativeFiltersGenerator:
-        arguments: [!tagged_iterator 'app.elected_representative_filter.builder']
 
     # SonataAdmin requests public `logger` service
     logger:

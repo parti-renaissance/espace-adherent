@@ -1,21 +1,21 @@
 <?php
 
-namespace App\AdherentFilter\FilterBuilder;
+namespace App\Filter\FilterBuilder;
 
 use App\Filter\FilterCollectionBuilder;
-use App\Scope\ScopeEnum;
+use App\Scope\FeatureEnum;
 
-class CertifiedStatusFilterBuilder implements AdherentFilterBuilderInterface
+class OnlyJeMengageUsersFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, string $feature = null): bool
     {
-        return \in_array($scope, [ScopeEnum::REFERENT, ScopeEnum::NATIONAL], true);
+        return FeatureEnum::CONTACTS === $feature;
     }
 
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createBooleanSelect('isCertified', 'Certifié')
+            ->createBooleanSelect('onlyJeMengageUsers', 'Compte de la majorité présidentielle')
             ->getFilters()
         ;
     }

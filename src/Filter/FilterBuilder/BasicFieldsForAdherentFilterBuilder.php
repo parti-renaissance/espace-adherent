@@ -1,22 +1,23 @@
 <?php
 
-namespace App\AdherentFilter\FilterBuilder;
+namespace App\Filter\FilterBuilder;
 
 use App\Filter\FilterCollectionBuilder;
+use App\Filter\Types\DefinedTypes\AgeRange;
 use App\Scope\FeatureEnum;
 
-class SmsAndEmailSubscriptionStatusFilterBuilder implements AdherentFilterBuilderInterface
+class BasicFieldsForAdherentFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, string $feature = null): bool
     {
-        return FeatureEnum::CONTACTS === $feature;
+        return FeatureEnum::ELECTED_REPRESENTATIVE !== $feature;
     }
 
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createBooleanSelect('emailSubscription', 'Abonné email')
-            ->createBooleanSelect('smsSubscription', 'Abonné SMS')
+            ->createFrom(AgeRange::class)
+            ->createDateInterval('registered', 'Inscrit')
             ->getFilters()
         ;
     }

@@ -398,7 +398,7 @@ Feature:
 
   Scenario Outline: As a user with (delegated) referent role I can get filters list to filter adherents
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/adherents/filters?scope=<scope>"
+    When I send a "GET" request to "/api/v3/filters?scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -709,7 +709,7 @@ Feature:
 
   Scenario Outline: As a user with (delegated) legislative candidate role I can get filters list to filter adherents
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/adherents/filters?scope=<scope>&feature=contacts"
+    When I send a "GET" request to "/api/v3/filters?scope=<scope>&feature=contacts"
     Then the response status code should be 200
     And the JSON should be equal to:
     """

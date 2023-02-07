@@ -1,19 +1,19 @@
 <?php
 
-namespace App\ElectedRepresentative\Filter\FilterBuilder;
+namespace App\Filter\FilterBuilder;
 
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Filter\FilterCollectionBuilder;
-use App\Scope\ScopeEnum;
+use App\Scope\FeatureEnum;
 
-class PoliticalFunctionFilterBuilder implements ElectedRepresentativeFilterBuilderInterface
+class PoliticalFunctionFilterBuilder implements FilterBuilderInterface
 {
-    public function supports(string $scope): bool
+    public function supports(string $scope, string $feature = null): bool
     {
-        return \in_array($scope, ScopeEnum::ALL, true);
+        return FeatureEnum::ELECTED_REPRESENTATIVE === $feature;
     }
 
-    public function build(string $scope): array
+    public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
             ->createSelect('political_functions', 'Fonctions')

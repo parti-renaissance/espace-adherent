@@ -1,23 +1,21 @@
 <?php
 
-namespace App\AdherentFilter\FilterBuilder;
+namespace App\Filter\FilterBuilder;
 
 use App\Filter\FilterCollectionBuilder;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
+use App\Scope\FeatureEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class RenaissanceMembershipFilterBuilder implements AdherentFilterBuilderInterface
+class RenaissanceMembershipFilterBuilder implements FilterBuilderInterface
 {
-    private TranslatorInterface $translator;
-
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private readonly TranslatorInterface $translator)
     {
-        $this->translator = $translator;
     }
 
     public function supports(string $scope, string $feature = null): bool
     {
-        return true;
+        return FeatureEnum::ELECTED_REPRESENTATIVE !== $feature;
     }
 
     public function build(string $scope, string $feature = null): array

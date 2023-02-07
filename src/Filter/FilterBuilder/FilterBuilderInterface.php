@@ -1,8 +1,8 @@
 <?php
 
-namespace App\AdherentFilter\FilterBuilder;
+namespace App\Filter\FilterBuilder;
 
-interface AdherentFilterBuilderInterface
+interface FilterBuilderInterface
 {
     public function supports(string $scope, string $feature = null): bool;
 
