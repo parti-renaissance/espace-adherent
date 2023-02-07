@@ -18,6 +18,7 @@ class PoliticalFunctionFilterBuilder implements ElectedRepresentativeFilterBuild
         return (new FilterCollectionBuilder())
             ->createSelect('political_functions', 'Fonctions')
             ->setChoices(array_flip(PoliticalFunctionNameEnum::CHOICES))
+            ->setMultiple(true)
             ->getFilters()
         ;
     }
