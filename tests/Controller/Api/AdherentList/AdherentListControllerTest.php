@@ -80,7 +80,7 @@ class AdherentListControllerTest extends AbstractApiCaseTest
                 'department' => 'Seine-et-Marne',
                 'region_code' => '11',
                 'region' => 'Île-de-France',
-                'sms_subscription' => false,
+                'phone_number' => 'unsubscribed',
                 'email_subscription' => false,
             ],
             $content['items'][0]
@@ -141,7 +141,7 @@ class AdherentListControllerTest extends AbstractApiCaseTest
                 'department' => 'Seine-et-Marne',
                 'region_code' => '11',
                 'region' => 'Île-de-France',
-                'sms_subscription' => false,
+                'phone_number' => 'unsubscribed',
                 'email_subscription' => false,
             ],
             $content['items'][0]

@@ -320,9 +320,14 @@ Feature:
             "type": "boolean"
         },
         {
-            "key": "sms_subscription",
-            "label": "Abonné tel",
-            "type": "boolean"
+            "key": "phone_number",
+            "label": "Téléphone",
+            "messages": {
+              "not_applicable": "Non applicable",
+              "not_indicated": "Non renseigné",
+              "unsubscribed": "Non abonné"
+            },
+            "type": "trans"
         },
         {
             "key": "postal_code",
@@ -526,7 +531,7 @@ Feature:
                 "department": "Seine-et-Marne",
                 "region_code": "11",
                 "region": "Île-de-France",
-                "sms_subscription": false,
+                "phone_number": "unsubscribed",
                 "email_subscription": false,
                 "renaissance_membership": null
             },
@@ -543,7 +548,7 @@ Feature:
                 "department": "Hauts-de-Seine",
                 "region_code": "11",
                 "region": "Île-de-France",
-                "sms_subscription": true,
+                "phone_number": "not_applicable",
                 "email_subscription": true,
                 "renaissance_membership": null
             },
@@ -561,7 +566,7 @@ Feature:
                 "postal_code": "77000",
                 "region": "Île-de-France",
                 "region_code": "11",
-                "sms_subscription": false,
+                "phone_number": "unsubscribed",
                 "renaissance_membership": null
             },
             {
@@ -579,7 +584,7 @@ Feature:
                 "department": null,
                 "region_code": null,
                 "region": null,
-                "sms_subscription": true,
+                "phone_number": "not_applicable",
                 "email_subscription": true,
                 "renaissance_membership": null
             },
@@ -600,7 +605,7 @@ Feature:
                 "department": null,
                 "region_code": null,
                 "region": null,
-                "sms_subscription": true,
+                "phone_number": "not_applicable",
                 "email_subscription": false,
                 "renaissance_membership": null
             }
@@ -633,7 +638,7 @@ Feature:
                 "department": "Seine-et-Marne",
                 "region_code": "11",
                 "region": "Île-de-France",
-                "sms_subscription": false,
+                "phone_number": "unsubscribed",
                 "email_subscription": false,
                 "renaissance_membership": null
             }
@@ -673,7 +678,7 @@ Feature:
                 "department": "Hauts-de-Seine",
                 "region_code": "11",
                 "region": "Île-de-France",
-                "sms_subscription": false,
+                "phone_number": "unsubscribed",
                 "email_subscription": false,
                 "renaissance_membership": null
             },
@@ -690,7 +695,7 @@ Feature:
                 "department": "Hauts-de-Seine",
                 "region_code": "11",
                 "region": "Île-de-France",
-                "sms_subscription": true,
+                "phone_number": "not_applicable",
                 "email_subscription": true,
                 "renaissance_membership": null
             }
@@ -862,7 +867,7 @@ Feature:
                 "department": "Paris",
                 "region_code": "11",
                 "region": "Île-de-France",
-                "sms_subscription": true,
+                "phone_number": "not_applicable",
                 "email_subscription": true,
                 "renaissance_membership": null
             },
@@ -883,7 +888,7 @@ Feature:
                 "department": "Paris",
                 "region_code": "11",
                 "region": "Île-de-France",
-                "sms_subscription": true,
+                "phone_number": "not_applicable",
                 "email_subscription": true,
                 "renaissance_membership": null
             }
@@ -920,7 +925,7 @@ Feature:
                 "department": "Paris",
                 "region_code": "11",
                 "region": "Île-de-France",
-                "sms_subscription": true,
+                "phone_number": "not_applicable",
                 "email_subscription": true,
                 "renaissance_membership": null
             }
