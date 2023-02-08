@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\AdherentFormation;
+namespace App\Entity\GeneralMeeting;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -14,66 +14,64 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\PositionTrait;
-use App\Validator\AdherentFormation\FormationContent;
 use App\Validator\Scope\ScopeVisibility;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     routePrefix="/v3",
+ *     routePrefix="/v3"
  *     attributes={
  *         "order": {"createdAt": "DESC"},
  *         "normalization_context": {
- *             "groups": {"formation_read"}
+ *             "groups": {"general_meeting_report_read"}
  *         },
  *         "denormalization_context": {
- *             "groups": {"formation_write"},
+ *             "groups": {"general_meeting_report_write"},
  *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations')",
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports')"
  *     },
  *     collectionOperations={
  *         "get": {
- *             "path": "/formations",
+ *             "path": "/general_meeting_reports",
  *             "normalization_context": {
- *                 "groups": {"formation_list_read"}
+ *                 "groups": {"general_meeting_report_list_read"}
  *             },
  *             "maximum_items_per_page": 1000
  *         },
  *         "post": {
- *             "path": "/formations",
+ *             "path": "/general_meeting_reports",
  *         }
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/formations/{uuid}",
+ *             "path": "/general_meeting_reports/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object)"
  *         },
  *         "put": {
- *             "path": "/formations/{uuid}",
+ *             "path": "/general_meeting_reports/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object)"
  *         },
  *         "post_file": {
- *             "path": "/formations/{uuid}/file",
+ *             "path": "/general_meeting_reports/{uuid}/file",
  *             "method": "POST",
- *             "controller": "App\Controller\Api\FormationUploadFileController",
+ *             "controller": "App\Controller\Api\GeneralMeetingReportUploadFileController",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object)",
  *         },
  *         "get_file": {
- *             "path": "/formations/{uuid}/file",
+ *             "path": "/general_meeting_reports/{uuid}/file",
  *             "method": "GET",
- *             "controller": "App\Controller\Api\FormationDownloadFileController",
+ *             "controller": "App\Controller\Api\GeneralMeetingReportDownloadFileController",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
+ *             "security": "is_granted('RENAISSANCE_ADHERENT') or (is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object))",
  *         }
  *     }
  * )
@@ -85,23 +83,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(ScopeVisibilityFilter::class)
  *
- * @ORM\Entity(repositoryClass="App\Repository\AdherentFormation\FormationRepository");
- * @ORM\Table(name="adherent_formation")
- * @ORM\EntityListeners({"App\EntityListener\AdherentFormationListener"})
+ * @ORM\Entity(repositoryClass="App\Repository\GeneralMeeting\GeneralMeetingReportRepository");
+ * @ORM\Table(name="general_meeting_report")
  *
- * @UniqueEntity(fields={"zone", "title"}, message="adherent_formation.zone_title.unique_entity")
+ * @UniqueEntity(fields={"zone", "title"}, message="general_meeting_report.zone_title.unique_entity")
  *
  * @ScopeVisibility
- * @FormationContent
  */
-class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
+class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
     use EntityAdherentBlameableTrait;
     use EntityScopeVisibilityTrait;
-    use PositionTrait;
 
     /**
      * @ORM\Column
@@ -109,10 +104,10 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
      *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
+     * @SymfonySerializer\Groups({
+     *     "general_meeting_report_list_read",
+     *     "general_meeting_report_read",
+     *     "general_meeting_report_write",
      * })
      */
     private ?string $title = null;
@@ -122,27 +117,26 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      *
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
+     * @SymfonySerializer\Groups({
+     *     "general_meeting_report_list_read",
+     *     "general_meeting_report_read",
+     *     "general_meeting_report_write",
      * })
      */
     private ?string $description = null;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank
-     * @Assert\Choice(choices=FormationContentTypeEnum::ALL)
      *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
+     * @SymfonySerializer\Groups({
+     *     "general_meeting_report_list_read",
+     *     "general_meeting_report_read",
+     *     "general_meeting_report_write",
      * })
      */
-    private string $contentType = FormationContentTypeEnum::FILE;
+    private ?\DateTime $date = null;
 
     /**
      * @Assert\File(
@@ -174,47 +168,13 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     * })
      */
     private ?string $filePath = null;
-
-    /**
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
-     */
-    private ?string $link = null;
-
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
-     */
-    private bool $published = false;
-
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     * })
-     */
-    private int $printCount = 0;
-
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private bool $valid = false;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -246,24 +206,14 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
         $this->description = $description;
     }
 
-    public function getContentType(): string
+    public function getDate(): ?\DateTime
     {
-        return $this->contentType;
+        return $this->date;
     }
 
-    public function setContentType(string $contentType): void
+    public function setDate(?\DateTime $date): void
     {
-        $this->contentType = $contentType;
-    }
-
-    public function isFileContent(): bool
-    {
-        return FormationContentTypeEnum::FILE === $this->contentType;
-    }
-
-    public function isLinkContent(): bool
-    {
-        return FormationContentTypeEnum::LINK === $this->contentType;
+        $this->date = $date;
     }
 
     public function getFile(): ?UploadedFile
@@ -281,53 +231,8 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
         return $this->filePath;
     }
 
-    public function hasFilePath(): bool
-    {
-        return null !== $this->filePath;
-    }
-
     public function setFilePath(?string $filePath): void
     {
         $this->filePath = $filePath;
-    }
-
-    public function getLink(): ?string
-    {
-        return $this->link;
-    }
-
-    public function setLink(?string $link): void
-    {
-        $this->link = $link;
-    }
-
-    public function isPublished(): bool
-    {
-        return $this->published;
-    }
-
-    public function setPublished(bool $published): void
-    {
-        $this->published = $published;
-    }
-
-    public function isValid(): bool
-    {
-        return $this->valid;
-    }
-
-    public function setValid(bool $valid): void
-    {
-        $this->valid = $valid;
-    }
-
-    public function getPrintCount(): int
-    {
-        return $this->printCount;
-    }
-
-    public function incrementPrintCount(): void
-    {
-        ++$this->printCount;
     }
 }
