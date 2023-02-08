@@ -10,7 +10,7 @@ Feature:
     """
     {
         "title": "New formation",
-        "description": "New formation description,
+        "description": "New formation description",
         "content_type": "link",
         "link": "https://renaissance.code/",
         "published": true,
@@ -75,12 +75,14 @@ Feature:
                 "published": true,
                 "print_count": 0,
                 "created_at": "@string@.isDateTime()",
+                "updated_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
                     "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
                     "code": "77",
                     "name": "Seine-et-Marne",
-                    "created_at": "@string@.isDateTime()"
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
                 },
                 "position": 0
             },
@@ -94,12 +96,14 @@ Feature:
                 "published": true,
                 "print_count": 0,
                 "created_at": "@string@.isDateTime()",
+                "updated_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
                     "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
                     "code": "77",
                     "name": "Seine-et-Marne",
-                    "created_at": "@string@.isDateTime()"
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
                 },
                 "position": 0
             }
