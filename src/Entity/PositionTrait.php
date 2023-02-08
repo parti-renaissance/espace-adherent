@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 trait PositionTrait
 {
@@ -10,6 +12,14 @@ trait PositionTrait
      * @var int
      *
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     *
+     * @Gedmo\SortablePosition
+     *
+     * @SymfonySerializer\Groups({
+     *     "formation_read",
+     *     "formation_list_read",
+     *     "formation_write",
+     * })
      */
     private $position = 0;
 

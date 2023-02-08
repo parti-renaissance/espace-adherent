@@ -1,6 +1,6 @@
 @api
 Feature:
-  In order to manager elected representatives
+  In order to manage elected representatives
   As a logged-in user
   I should be able to access elected representatives API
 

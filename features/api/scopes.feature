@@ -131,7 +131,9 @@ Feature:
         "mobile_app",
         "elections",
         "ripostes",
-        "survey"
+        "survey",
+        "elected_representative",
+        "adherent_formations"
       ],
       "delegated_access": null
     }
@@ -173,7 +175,8 @@ Feature:
         "pap_v2",
         "team",
         "phoning_campaign",
-        "survey"
+        "survey",
+        "adherent_formations"
       ],
       "delegated_access": null
     }
@@ -442,7 +445,8 @@ Feature:
             "phoning_campaign",
             "survey",
             "department_site",
-            "elected_representative"
+            "elected_representative",
+            "adherent_formations"
         ],
         "delegated_access": {
             "delegator": {

@@ -1,0 +1,25 @@
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var contentTypeWidget = $('#{{ form.contentType.vars.id }}');
+            var fileField = $('#sonata-ba-field-container-{{ form.file.vars.id }}');
+            var linkField = $('#sonata-ba-field-container-{{ form.link.vars.id }}');
+
+            contentTypeWidget.change(function() {
+                var selectedValue = $(this).val();
+
+                if (selectedValue === '{{ constant('App\\Entity\\AdherentFormation\\FormationContentTypeEnum::FILE') }}') {
+                    fileField.show();
+                    linkField.hide();
+                } else if (selectedValue === '{{ constant('App\\Entity\\AdherentFormation\\FormationContentTypeEnum::LINK') }}') {
+                    fileField.hide();
+                    linkField.show();
+                }
+            }).change();
+        });
+    </script>
+{% endblock %}

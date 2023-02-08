@@ -108,6 +108,9 @@ adherent.nickname.invalid_extended_syntax: La syntaxe est incorrecte, le pseudo 
 
 adherent.unknown_id: Il n'existe aucun adhérent correspondant à cet ID.
 
+adherent_formation.zone_title.unique_entity: Il existe déjà une formation portant ce titre dans cette zone.
+
+
 #
 # Adherent profile
 #

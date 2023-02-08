@@ -54,6 +54,8 @@ trait GeoTrait
      *     "department_site_read_list",
      *     "elected_representative_read",
      *     "elected_representative_list",
+     *     "formation_list_read",
+     *     "formation_read",
      * })
      */
     private $code;
@@ -86,6 +88,8 @@ trait GeoTrait
      *     "department_site_read_list",
      *     "elected_representative_read",
      *     "elected_representative_list",
+     *     "formation_list_read",
+     *     "formation_read",
      * })
      */
     private $name;

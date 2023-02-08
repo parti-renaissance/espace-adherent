@@ -17,9 +17,11 @@ class BaseFileType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre',
+                'label' => 'Nom du fichier',
             ])
-            ->add('file', FileType::class)
+            ->add('file', FileType::class, [
+                'label' => 'Fichier',
+            ])
         ;
 
         if (!$options['can_update_file']) {

@@ -22,6 +22,7 @@ class FeatureEnum extends Enum
     public const SURVEY = 'survey';
     public const DEPARTMENT_SITE = 'department_site';
     public const ELECTED_REPRESENTATIVE = 'elected_representative';
+    public const ADHERENT_FORMATIONS = 'adherent_formations';
 
     public const ALL = [
         self::DASHBOARD,
@@ -40,6 +41,7 @@ class FeatureEnum extends Enum
         self::SURVEY,
         self::DEPARTMENT_SITE,
         self::ELECTED_REPRESENTATIVE,
+        self::ADHERENT_FORMATIONS,
     ];
 
     public const DELEGATED_ACCESSES_BY_DEFAULT = [

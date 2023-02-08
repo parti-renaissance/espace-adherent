@@ -6,7 +6,6 @@ parameters:
     pattern_coordinate:                   '-?\d+(\.\d{1,7})?'
     timeline_max_messages:                30
     search_max_results:                   30
-    app_environment:                      "%env(APP_ENVIRONMENT)%"
     enable_canary:                        "%env(ENABLE_CANARY)%"
     procurations_reply_to_email:          'ne-pas-repondre@avecvous.fr'
     transactional_sender_email:           'contact@en-marche.fr'

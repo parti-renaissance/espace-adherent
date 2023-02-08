@@ -25,6 +25,8 @@ trait EntityScopeVisibilityTrait
      *     "phoning_campaign_list",
      *     "jecoute_news_read_dc",
      *     "jecoute_news_read",
+     *     "formation_read",
+     *     "formation_list_read",
      * })
      */
     private string $visibility = ScopeVisibilityEnum::NATIONAL;
@@ -45,6 +47,9 @@ trait EntityScopeVisibilityTrait
      *     "phoning_campaign_write",
      *     "jecoute_news_read_dc",
      *     "jecoute_news_write",
+     *     "formation_read",
+     *     "formation_list_read",
+     *     "formation_write",
      * })
      */
     private ?Zone $zone = null;
