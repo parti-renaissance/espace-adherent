@@ -38,7 +38,7 @@ class LoadGeneralMeetingReportData extends Fixture implements DependentFixtureIn
             self::GENERAL_MEETING_REPORT_1_UUID,
             $referent77,
             $zoneDepartment77,
-            'Premièr PV d\'AG du 77',
+            'Premier PV d\'AG du 77',
             true,
             new \DateTime('2023-02-05 14:45:00')
         );
@@ -65,7 +65,7 @@ class LoadGeneralMeetingReportData extends Fixture implements DependentFixtureIn
             self::GENERAL_MEETING_REPORT_3_UUID,
             $referent06,
             $zoneDepartment06,
-            'Premièr PV d\'AG du 06',
+            'Premier PV d\'AG du 06',
             true,
             new \DateTime('2023-02-07 15:30:00')
         );

@@ -10,7 +10,7 @@ Feature:
     """
     {
         "title": "New formation",
-        "description": "@string@",
+        "description": "New formation description,
         "content_type": "link",
         "link": "https://renaissance.code/",
         "published": true,
