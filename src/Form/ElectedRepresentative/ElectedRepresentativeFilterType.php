@@ -48,11 +48,11 @@ class ElectedRepresentativeFilterType extends AbstractType
                 'multiple' => false,
                 'required' => false,
             ])
-            ->add('emailSubscribed', ChoiceType::class, [
+            ->add('emailSubscription', ChoiceType::class, [
                 'placeholder' => 'common.all',
                 'choices' => [
-                    'elected_representative.filter.email_subscribed.subscribed' => true,
-                    'elected_representative.filter.email_subscribed.unsubscribed' => false,
+                    'elected_representative.filter.email_subscription.subscribed' => true,
+                    'elected_representative.filter.email_subscription.unsubscribed' => false,
                 ],
                 'multiple' => false,
                 'required' => false,

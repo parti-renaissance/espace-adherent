@@ -265,11 +265,11 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             }
         }
 
-        $emailSubscribed = $filter->isEmailSubscribed();
-        if (null !== $emailSubscribed) {
+        $emailSubscription = $filter->isEmailSubscription();
+        if (null !== $emailSubscription) {
             $qb
                 ->andWhere('er.emailUnsubscribed = :email_unsubscribed')
-                ->setParameter('email_unsubscribed', !$emailSubscribed)
+                ->setParameter('email_unsubscribed', !$emailSubscription)
             ;
         }
 

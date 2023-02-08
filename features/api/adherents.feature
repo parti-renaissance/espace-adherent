@@ -398,7 +398,7 @@ Feature:
 
   Scenario Outline: As a user with (delegated) referent role I can get filters list to filter adherents
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/filters?scope=<scope>"
+    When I send a "GET" request to "/api/v3/filters?scope=<scope>&feature=messages"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -484,15 +484,15 @@ Feature:
             "type": "select"
         },
         {
-            "code": "zones",
+            "code": "zone",
             "label": "Zone géographique",
             "options": {
-                "url": "/api/v3/zone/autocomplete",
+                "url": "/api/v3/zone/autocomplete?types%5B0%5D=borough&types%5B1%5D=canton&types%5B2%5D=city&types%5B3%5D=department&types%5B4%5D=region&types%5B5%5D=country&types%5B6%5D=district&types%5B7%5D=foreign_district",
                 "query_param": "q",
                 "value_param": "uuid",
                 "label_param": "name",
-                "multiple": true,
-                "required": false
+                "multiple": false,
+                "required": true
             },
             "type": "autocomplete"
         }
@@ -771,6 +771,17 @@ Feature:
             "type": "select"
         },
         {
+            "code": "emailSubscription",
+            "label": "Abonné email",
+            "options": {
+                "choices": [
+                    "Non",
+                    "Oui"
+                ]
+            },
+            "type": "select"
+        },
+        {
             "code": "onlyJeMengageUsers",
             "label": "Compte de la majorité présidentielle",
             "options": {
@@ -791,17 +802,6 @@ Feature:
                 "sympathizer_re": "Sympathisant RE seulement",
                 "others_adherent": "Ni adhérent RE ni sympathisant RE"
               }
-            },
-            "type": "select"
-        },
-        {
-            "code": "emailSubscription",
-            "label": "Abonné email",
-            "options": {
-                "choices": [
-                    "Non",
-                    "Oui"
-                ]
             },
             "type": "select"
         },

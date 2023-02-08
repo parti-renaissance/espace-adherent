@@ -335,7 +335,7 @@ Feature:
         "type": "text"
       },
       {
-        "code": "emailSubscribed",
+        "code": "emailSubscription",
         "label": "Abonné email",
         "options": {
           "choices": [
