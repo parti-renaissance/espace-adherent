@@ -9,6 +9,7 @@ use App\Storage\FileRequestHandler;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,7 +29,8 @@ class ContentController extends AbstractController
     public function __construct(
         private readonly FileRequestHandler $fileRequestHandler,
         private readonly EntityManagerInterface $entityManager,
-        private readonly FilesystemInterface $storage
+        private readonly FilesystemInterface $storage,
+        private readonly LoggerInterface $logger
     ) {
     }
 
@@ -43,6 +45,8 @@ class ContentController extends AbstractController
             $filePath = $formation->getFilePath();
 
             if (!$this->storage->has($filePath)) {
+                $this->logger->error(sprintf('No file found for Formation with uuid "%s".', $formation->getUuid()->toString()));
+
                 throw $this->createNotFoundException('File not found.');
             }
 
