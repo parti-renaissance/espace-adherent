@@ -104,7 +104,7 @@ class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, En
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
      *
-     * @Groups(({
+     * @Groups({
      *     "general_meeting_report_list_read",
      *     "general_meeting_report_read",
      *     "general_meeting_report_write",
@@ -117,7 +117,7 @@ class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, En
      *
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      *
-     * @Groups(({
+     * @Groups({
      *     "general_meeting_report_list_read",
      *     "general_meeting_report_read",
      *     "general_meeting_report_write",
@@ -130,7 +130,7 @@ class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, En
      *
      * @Assert\NotBlank
      *
-     * @Groups(({
+     * @Groups({
      *     "general_meeting_report_list_read",
      *     "general_meeting_report_read",
      *     "general_meeting_report_write",
