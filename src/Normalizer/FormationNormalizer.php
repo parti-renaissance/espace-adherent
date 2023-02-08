@@ -3,6 +3,7 @@
 namespace App\Normalizer;
 
 use App\Entity\AdherentFormation\Formation;
+use App\Scope\Generator\ScopeGeneratorInterface;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
@@ -14,6 +15,8 @@ class FormationNormalizer implements NormalizerInterface, NormalizerAwareInterfa
     use NormalizerAwareTrait;
 
     private const ALREADY_CALLED = 'ADHERENT_FORMATION_NORMALIZER_ALREADY_CALLED';
+
+    private ?ScopeGeneratorInterface $currentScope = null;
 
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
@@ -48,10 +51,19 @@ class FormationNormalizer implements NormalizerInterface, NormalizerAwareInterfa
             'uuid' => $formation->getUuid()->toString(),
         ];
 
-        if ($scope = $this->scopeGeneratorResolver->resolve()) {
+        if ($scope = $this->getCurrentScope()) {
             $parameters['scope'] = $scope->getCode();
         }
 
         return $this->urlGenerator->generate('api_formations_get_file_item', $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    private function getCurrentScope(): ?ScopeGeneratorInterface
+    {
+        if (!$this->currentScope) {
+            $this->currentScope = $this->scopeGeneratorResolver->resolve();
+        }
+
+        return $this->currentScope;
     }
 }
