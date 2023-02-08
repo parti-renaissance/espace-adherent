@@ -74,6 +74,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "controller": "App\Controller\Api\Formation\FormationDownloadFileController",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
+ *             "defaults": {"_api_receive": false},
  *         }
  *     }
  * )
