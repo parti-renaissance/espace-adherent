@@ -30,7 +30,7 @@ class FormationNormalizer implements NormalizerInterface, NormalizerAwareInterfa
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\in_array('formation_read', $context['groups'] ?? [])) {
+        if (array_intersect(['formation_read', 'formation_list_read'], $context['groups'] ?? [])) {
             $data['file_path'] = $object->isFileContent() && $object->hasFilePath() ? $this->getUrl($object) : null;
         }
 

@@ -70,7 +70,7 @@ Feature:
                 "title": "Première formation du 77",
                 "description": "@string@",
                 "content_type": "file",
-                "file_path": "files/adherent_formations/@uuid@.pdf",
+                "file_path": "@string@.isUrl()",
                 "link": null,
                 "published": true,
                 "print_count": 0,
