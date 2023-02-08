@@ -27,6 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
+ *     routePrefix="/v3",
  *     attributes={
  *         "order": {"createdAt": "DESC"},
  *         "normalization_context": {
@@ -39,29 +40,29 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     collectionOperations={
  *         "get": {
- *             "path": "/v3/formations",
+ *             "path": "/formations",
  *             "normalization_context": {
  *                 "groups": {"formation_list_read"}
  *             },
  *             "maximum_items_per_page": 1000
  *         },
  *         "post": {
- *             "path": "/v3/formations",
+ *             "path": "/formations",
  *         }
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/formations/{uuid}",
+ *             "path": "/formations/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "security": "is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)"
  *         },
  *         "put": {
- *             "path": "/v3/formations/{uuid}",
+ *             "path": "/formations/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "security": "is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)"
  *         },
  *         "post_file": {
- *             "path": "/v3/formations/{uuid}/file",
+ *             "path": "/formations/{uuid}/file",
  *             "method": "POST",
  *             "controller": "App\Controller\Api\Formation\PostFileController",
  *             "requirements": {"uuid": "%pattern_uuid%"},
