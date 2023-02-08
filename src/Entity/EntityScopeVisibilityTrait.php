@@ -50,6 +50,9 @@ trait EntityScopeVisibilityTrait
      *     "formation_read",
      *     "formation_list_read",
      *     "formation_write",
+     *     "general_meeting_report_list_read",
+     *     "general_meeting_report_read",
+     *     "general_meeting_report_write"
      * })
      */
     private ?Zone $zone = null;

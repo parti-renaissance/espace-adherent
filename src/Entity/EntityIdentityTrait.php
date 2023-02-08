@@ -97,6 +97,8 @@ trait EntityIdentityTrait
      *     "formation_list_read",
      *     "elected_mandate_read",
      *     "committee:list",
+     *     "general_meeting_report_list_read",
+     *     "general_meeting_report_read",
      * })
      *
      * @ApiProperty(

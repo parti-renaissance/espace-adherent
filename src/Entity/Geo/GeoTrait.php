@@ -57,6 +57,8 @@ trait GeoTrait
      *     "formation_list_read",
      *     "formation_read",
      *     "elected_mandate_read",
+     *     "general_meeting_report_list_read",
+     *     "general_meeting_report_read",
      * })
      */
     private $code;
@@ -92,6 +94,8 @@ trait GeoTrait
      *     "formation_list_read",
      *     "formation_read",
      *     "elected_mandate_read",
+     *     "general_meeting_report_list_read",
+     *     "general_meeting_report_read",
      * })
      */
     private $name;
