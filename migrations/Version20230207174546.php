@@ -7,11 +7,6 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20230207174546 extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE adherent_formation DROP FOREIGN KEY FK_2D97408B93CB796C');

@@ -22,7 +22,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "denormalization_context": {
  *             "groups": {"formation_write"},
  *         },
- *         "security": "is_granted('IS_FEATURE_GRANTED', 'adherent_formations')"
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations')",
  *     },
  *     collectionOperations={
  *         "get": {
@@ -54,19 +54,26 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/formations/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)"
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
  *         },
  *         "put": {
  *             "path": "/formations/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)"
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
  *         },
  *         "post_file": {
  *             "path": "/formations/{uuid}/file",
  *             "method": "POST",
- *             "controller": "App\Controller\Api\Formation\PostFileController",
+ *             "controller": "App\Controller\Api\Formation\FormationUploadFileController",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
+ *         },
+ *         "get_file": {
+ *             "path": "/formations/{uuid}/file",
+ *             "method": "GET",
+ *             "controller": "App\Controller\Api\Formation\FormationDownloadFileController",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
  *         }
  *     }
  * )
@@ -102,7 +109,7 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "formation_read",
      *     "formation_list_read",
      *     "formation_write",
@@ -115,7 +122,7 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      *
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "formation_read",
      *     "formation_list_read",
      *     "formation_write",
@@ -129,13 +136,13 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      * @Assert\NotBlank
      * @Assert\Choice(choices=FormationContentTypeEnum::ALL)
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "formation_read",
      *     "formation_list_read",
      *     "formation_write",
      * })
      */
-    private ?string $contentType = FormationContentTypeEnum::FILE;
+    private string $contentType = FormationContentTypeEnum::FILE;
 
     /**
      * @Assert\File(
@@ -168,7 +175,7 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     /**
      * @ORM\Column(nullable=true)
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "formation_read",
      *     "formation_list_read",
      * })
@@ -180,7 +187,7 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      *
      * @Assert\Url
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "formation_read",
      *     "formation_list_read",
      *     "formation_write",
@@ -191,7 +198,7 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "formation_read",
      *     "formation_list_read",
      *     "formation_write",
@@ -202,7 +209,7 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "formation_read",
      *     "formation_list_read",
      * })
@@ -249,12 +256,12 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
         $this->description = $description;
     }
 
-    public function getContentType(): ?string
+    public function getContentType(): string
     {
         return $this->contentType;
     }
 
-    public function setContentType(?string $contentType): void
+    public function setContentType(string $contentType): void
     {
         $this->contentType = $contentType;
     }
@@ -282,6 +289,11 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     public function getFilePath(): ?string
     {
         return $this->filePath;
+    }
+
+    public function hasFilePath(): bool
+    {
+        return null !== $this->filePath;
     }
 
     public function setFilePath(?string $filePath): void

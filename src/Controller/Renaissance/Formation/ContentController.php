@@ -42,6 +42,10 @@ class ContentController extends AbstractController
         if ($formation->isFileContent()) {
             $filePath = $formation->getFilePath();
 
+            if (!$this->storage->has($filePath)) {
+                throw $this->createNotFoundException('File not found.');
+            }
+
             $response = new Response($this->storage->read($filePath), Response::HTTP_OK, [
                 'Content-Type' => $this->storage->getMimetype($filePath),
             ]);
