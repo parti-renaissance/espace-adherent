@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api\Formation;
+namespace App\Controller\Api;
 
 use App\Entity\AdherentFormation\Formation;
 use Cocur\Slugify\Slugify;

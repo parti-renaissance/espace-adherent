@@ -64,14 +64,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "post_file": {
  *             "path": "/formations/{uuid}/file",
  *             "method": "POST",
- *             "controller": "App\Controller\Api\Formation\FormationUploadFileController",
+ *             "controller": "App\Controller\Api\FormationUploadFileController",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
  *         },
  *         "get_file": {
  *             "path": "/formations/{uuid}/file",
  *             "method": "GET",
- *             "controller": "App\Controller\Api\Formation\FormationDownloadFileController",
+ *             "controller": "App\Controller\Api\FormationDownloadFileController",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
  *             "defaults": {"_api_receive": false},
