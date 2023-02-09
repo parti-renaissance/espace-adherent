@@ -396,113 +396,6 @@ Feature:
       | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
       | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
 
-  Scenario Outline: As a user with (delegated) referent role I can get filters list to filter adherents
-    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/adherents/filters?scope=<scope>"
-    Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    [
-        {
-            "code": "gender",
-            "label": "Genre",
-            "options": {
-                "choices": {
-                    "female": "Femme",
-                    "male": "Homme",
-                    "other": "Autre"
-                }
-            },
-            "type": "select"
-        },
-        {
-            "code": "firstName",
-            "label": "Prénom",
-            "options": null,
-            "type": "text"
-        },
-        {
-            "code": "lastName",
-            "label": "Nom",
-            "options": null,
-            "type": "text"
-        },
-        {
-            "code": "age",
-            "label": "Âge",
-            "options": {
-                "first": {
-                    "min": 1,
-                    "max": 200
-                },
-                "second": {
-                    "min": 1,
-                    "max": 200
-                }
-            },
-            "type": "integer_interval"
-        },
-        {
-            "code": "registered",
-            "label": "Inscrit",
-            "options": null,
-            "type": "date_interval"
-        },
-        {
-            "code": "isCertified",
-            "label": "Certifié",
-            "options": {
-                "choices": [
-                    "Non",
-                    "Oui"
-                ]
-            },
-            "type": "select"
-        },
-        {
-            "code": "isCommitteeMember",
-            "label": "Membre d'un comité",
-            "options": {
-                "choices": [
-                    "Non",
-                    "Oui"
-                ]
-            },
-            "type": "select"
-        },
-        {
-            "code": "renaissance_membership",
-            "label": "Renaissance",
-            "options": {
-              "choices": {
-              "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
-              "adherent_re": "Adhérent RE seulement",
-              "sympathizer_re": "Sympathisant RE seulement",
-              "others_adherent": "Ni adhérent RE ni sympathisant RE"
-              }
-            },
-            "type": "select"
-        },
-        {
-            "code": "zones",
-            "label": "Zone géographique",
-            "options": {
-                "url": "/api/v3/zone/autocomplete",
-                "query_param": "q",
-                "value_param": "uuid",
-                "label_param": "name",
-                "multiple": true,
-                "required": false
-            },
-            "type": "autocomplete"
-        }
-    ]
-    """
-      Examples:
-      | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
-      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
-
   Scenario Outline: As a user with (delegated) referent role I can get adherents of my zones
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/adherents?scope=<scope>"
@@ -709,7 +602,7 @@ Feature:
 
   Scenario Outline: As a user with (delegated) legislative candidate role I can get filters list to filter adherents
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/adherents/filters?scope=<scope>&feature=contacts"
+    When I send a "GET" request to "/api/v3/filters?scope=<scope>&feature=contacts"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -771,6 +664,17 @@ Feature:
             "type": "select"
         },
         {
+            "code": "emailSubscription",
+            "label": "Abonné email",
+            "options": {
+                "choices": [
+                    "Non",
+                    "Oui"
+                ]
+            },
+            "type": "select"
+        },
+        {
             "code": "onlyJeMengageUsers",
             "label": "Compte de la majorité présidentielle",
             "options": {
@@ -791,17 +695,6 @@ Feature:
                 "sympathizer_re": "Sympathisant RE seulement",
                 "others_adherent": "Ni adhérent RE ni sympathisant RE"
               }
-            },
-            "type": "select"
-        },
-        {
-            "code": "emailSubscription",
-            "label": "Abonné email",
-            "options": {
-                "choices": [
-                    "Non",
-                    "Oui"
-                ]
             },
             "type": "select"
         },

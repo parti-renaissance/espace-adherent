@@ -81,7 +81,7 @@ class ListFilter
      *
      * @Groups({"filter_write"})
      */
-    private $emailSubscribed;
+    private $emailSubscription;
 
     /**
      * @var Zone[]
@@ -91,7 +91,7 @@ class ListFilter
      *     message="referent.managed_zone.empty"
      * )
      */
-    private $managedZones = [];
+    private $managedZones;
 
     /**
      * @var Zone[]
@@ -206,14 +206,14 @@ class ListFilter
         $this->contactType = $contactType;
     }
 
-    public function isEmailSubscribed(): ?bool
+    public function isEmailSubscription(): ?bool
     {
-        return $this->emailSubscribed;
+        return $this->emailSubscription;
     }
 
-    public function setEmailSubscribed(?bool $emailSubscribed = null): void
+    public function setEmailSubscription(?bool $emailSubscription = null): void
     {
-        $this->emailSubscribed = $emailSubscribed;
+        $this->emailSubscription = $emailSubscription;
     }
 
     /**
@@ -295,7 +295,7 @@ class ListFilter
             'sort' => $this->sort,
             'order' => $this->order,
             'contactType' => $this->contactType,
-            'emailSubscribed' => $this->emailSubscribed,
+            'emailSubscription' => $this->emailSubscription,
         ];
     }
 }
