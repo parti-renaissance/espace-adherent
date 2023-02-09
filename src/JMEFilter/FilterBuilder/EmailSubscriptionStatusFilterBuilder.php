@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filter\FilterBuilder;
+namespace App\JMEFilter\FilterBuilder;
 
-use App\Filter\FilterCollectionBuilder;
+use App\JMEFilter\FilterCollectionBuilder;
 use App\Scope\FeatureEnum;
 
 class EmailSubscriptionStatusFilterBuilder implements FilterBuilderInterface

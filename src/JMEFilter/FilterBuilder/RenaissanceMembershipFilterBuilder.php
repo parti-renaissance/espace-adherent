@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filter\FilterBuilder;
+namespace App\JMEFilter\FilterBuilder;
 
-use App\Filter\FilterCollectionBuilder;
+use App\JMEFilter\FilterCollectionBuilder;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Scope\FeatureEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;

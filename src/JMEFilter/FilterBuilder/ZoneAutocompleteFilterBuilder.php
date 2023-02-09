@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filter\FilterBuilder;
+namespace App\JMEFilter\FilterBuilder;
 
 use App\Entity\Geo\Zone;
-use App\Filter\FilterCollectionBuilder;
-use App\Filter\Types\DefinedTypes\ZoneAutocomplete;
+use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\Types\DefinedTypes\ZoneAutocomplete;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 

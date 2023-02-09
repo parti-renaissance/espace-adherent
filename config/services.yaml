@@ -113,7 +113,7 @@ services:
             tags: ['app.adherent.scope_generator']
         App\ManagedUsers\Filter\ManagedUsersFilterFactoryInterface:
             tags: ['app.managed_user.filer_factory']
-        App\Filter\FilterBuilder\FilterBuilderInterface:
+        App\JMEFilter\FilterBuilder\FilterBuilderInterface:
             tags: [ 'app.filter.builder' ]
         App\OAuth\App\AuthAppUrlGeneratorInterface:
             tags: [ 'app.auth_app.url_generator' ]
@@ -382,7 +382,7 @@ services:
             $serviceName: '%env(OVHCLOUD_SERVICE_NAME)%'
             $senderName: '%env(OVHCLOUD_SMS_SENDER_NAME)%'
 
-    App\Filter\FiltersGenerator:
+    App\JMEFilter\FiltersGenerator:
         arguments: [!tagged_iterator 'app.filter.builder']
 
     App\Firebase\JeMarcheMessaging:

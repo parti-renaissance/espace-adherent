@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filter\Types\DefinedTypes;
+namespace App\JMEFilter\Types\DefinedTypes;
 
-use App\Filter\Types\IntegerInterval;
+use App\JMEFilter\Types\IntegerInterval;
 
 class AgeRange extends IntegerInterval
 {

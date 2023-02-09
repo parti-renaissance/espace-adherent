@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filter\Types;
+namespace App\JMEFilter\Types;
 
-use App\Filter\FilterInterface;
+use App\JMEFilter\FilterInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 abstract class AbstractFilter implements FilterInterface

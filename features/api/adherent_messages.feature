@@ -300,3 +300,110 @@ Feature:
       "synchronized": false
     }
     """
+
+    Scenario Outline: As a user with (delegated) referent role I can get filters list for message feauture
+      Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+      When I send a "GET" request to "/api/v3/filters?scope=<scope>&feature=messages"
+      Then the response status code should be 200
+      And the JSON should be equal to:
+      """
+      [
+          {
+              "code": "gender",
+              "label": "Genre",
+              "options": {
+                  "choices": {
+                      "female": "Femme",
+                      "male": "Homme",
+                      "other": "Autre"
+                  }
+              },
+              "type": "select"
+          },
+          {
+              "code": "firstName",
+              "label": "Prénom",
+              "options": null,
+              "type": "text"
+          },
+          {
+              "code": "lastName",
+              "label": "Nom",
+              "options": null,
+              "type": "text"
+          },
+          {
+              "code": "age",
+              "label": "Âge",
+              "options": {
+                  "first": {
+                      "min": 1,
+                      "max": 200
+                  },
+                  "second": {
+                      "min": 1,
+                      "max": 200
+                  }
+              },
+              "type": "integer_interval"
+          },
+          {
+              "code": "registered",
+              "label": "Inscrit",
+              "options": null,
+              "type": "date_interval"
+          },
+          {
+              "code": "isCertified",
+              "label": "Certifié",
+              "options": {
+                  "choices": [
+                      "Non",
+                      "Oui"
+                  ]
+              },
+              "type": "select"
+          },
+          {
+              "code": "isCommitteeMember",
+              "label": "Membre d'un comité",
+              "options": {
+                  "choices": [
+                      "Non",
+                      "Oui"
+                  ]
+              },
+              "type": "select"
+          },
+          {
+              "code": "renaissance_membership",
+              "label": "Renaissance",
+              "options": {
+                "choices": {
+                "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
+                "adherent_re": "Adhérent RE seulement",
+                "sympathizer_re": "Sympathisant RE seulement",
+                "others_adherent": "Ni adhérent RE ni sympathisant RE"
+                }
+              },
+              "type": "select"
+          },
+          {
+              "code": "zone",
+              "label": "Zone géographique",
+              "options": {
+                  "url": "/api/v3/zone/autocomplete?types%5B0%5D=borough&types%5B1%5D=canton&types%5B2%5D=city&types%5B3%5D=department&types%5B4%5D=region&types%5B5%5D=country&types%5B6%5D=district&types%5B7%5D=foreign_district",
+                  "query_param": "q",
+                  "value_param": "uuid",
+                  "label_param": "name",
+                  "multiple": false,
+                  "required": true
+              },
+              "type": "autocomplete"
+          }
+      ]
+      """
+      Examples:
+          | user                      | scope                                          |
+          | referent@en-marche-dev.fr | referent                                       |
+          | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

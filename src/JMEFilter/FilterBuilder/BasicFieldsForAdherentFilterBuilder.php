@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filter\FilterBuilder;
+namespace App\JMEFilter\FilterBuilder;
 
-use App\Filter\FilterCollectionBuilder;
-use App\Filter\Types\DefinedTypes\AgeRange;
+use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\Types\DefinedTypes\AgeRange;
 use App\Scope\FeatureEnum;
 
 class BasicFieldsForAdherentFilterBuilder implements FilterBuilderInterface

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filter;
+namespace App\JMEFilter;
 
 interface FilterInterface
 {

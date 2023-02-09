@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Filter;
+namespace App\JMEFilter;
 
-use App\Filter\Types\Autocomplete;
-use App\Filter\Types\DateInterval;
-use App\Filter\Types\DefinedTypes\BooleanSelect;
-use App\Filter\Types\Select;
-use App\Filter\Types\Text;
+use App\JMEFilter\Types\Autocomplete;
+use App\JMEFilter\Types\DateInterval;
+use App\JMEFilter\Types\DefinedTypes\BooleanSelect;
+use App\JMEFilter\Types\Select;
+use App\JMEFilter\Types\Text;
 
 /**
  * @method self setChoices(string[] $choices)

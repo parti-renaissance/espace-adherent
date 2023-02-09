@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filter;
+namespace App\JMEFilter;
 
-use App\Filter\FilterBuilder\FilterBuilderInterface;
+use App\JMEFilter\FilterBuilder\FilterBuilderInterface;
 
 class FiltersGenerator
 {

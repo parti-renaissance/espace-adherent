@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filter\Types\DefinedTypes;
+namespace App\JMEFilter\Types\DefinedTypes;
 
 use App\Controller\Api\Zone\ZoneAutocompleteController;
-use App\Filter\Types\Autocomplete;
+use App\JMEFilter\Types\Autocomplete;
 
 class ZoneAutocomplete extends Autocomplete
 {

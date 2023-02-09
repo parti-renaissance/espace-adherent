@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filter\Types;
+namespace App\JMEFilter\Types;
 
-use App\Filter\FilterTypeEnum;
+use App\JMEFilter\FilterTypeEnum;
 
 class DateInterval extends AbstractFilter
 {

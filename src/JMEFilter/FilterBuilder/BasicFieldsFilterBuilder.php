@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filter\FilterBuilder;
+namespace App\JMEFilter\FilterBuilder;
 
-use App\Filter\FilterCollectionBuilder;
-use App\Filter\Types\DefinedTypes\GenderSelect;
+use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\Types\DefinedTypes\GenderSelect;
 use App\Scope\ScopeEnum;
 
 class BasicFieldsFilterBuilder implements FilterBuilderInterface

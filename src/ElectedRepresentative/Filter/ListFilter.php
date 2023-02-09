@@ -91,7 +91,7 @@ class ListFilter
      *     message="referent.managed_zone.empty"
      * )
      */
-    private $managedZones = [];
+    private $managedZones;
 
     /**
      * @var Zone[]
