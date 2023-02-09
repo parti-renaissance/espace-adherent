@@ -56,6 +56,7 @@ class ElectedRepresentativeFilterType extends AbstractType
                 ],
                 'multiple' => false,
                 'required' => false,
+                'expanded' => true,
             ])
             ->add('labels', ChoiceType::class, [
                 'label' => 'elected_representative.labels',
