@@ -509,7 +509,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
     {
         $uuid = (string) $committee->getUuid();
 
-        if (LoadCommitteeData::COMMITTEE_1_UUID === $uuid) {
+        if (LoadCommitteeV1Data::COMMITTEE_1_UUID === $uuid) {
             yield [
                 'subject' => '[Comité local] Nouveau message',
                 'text' => 'Ouverture du comité !',
@@ -537,7 +537,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             ];
         }
 
-        if (LoadCommitteeData::COMMITTEE_3_UUID === $uuid) {
+        if (LoadCommitteeV1Data::COMMITTEE_3_UUID === $uuid) {
             yield [
                 'subject' => '[Comité local] Nouveau message',
                 'text' => 'Lancement du comité !',
@@ -555,7 +555,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
     {
         return [
             LoadEventCategoryData::class,
-            LoadCommitteeData::class,
+            LoadCommitteeV1Data::class,
             LoadReferentTagsZonesLinksData::class,
         ];
     }

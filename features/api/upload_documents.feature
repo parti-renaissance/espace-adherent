@@ -23,7 +23,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "message": "Aucun document uploadé."
+        "message": "Aucun document téléchargé."
     }
     """
 
@@ -38,7 +38,7 @@ Feature:
     """
     {
         "url": "http://test.enmarche.code/documents-partages/@uuid@/upload",
-        "message": "Le document a été uploadé avec succès."
+        "message": "Le document a été téléchargé avec succès."
     }
     """
     Examples:

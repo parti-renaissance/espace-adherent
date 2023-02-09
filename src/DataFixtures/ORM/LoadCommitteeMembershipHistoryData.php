@@ -69,7 +69,7 @@ class LoadCommitteeMembershipHistoryData extends Fixture implements DependentFix
     public function getDependencies()
     {
         return [
-            LoadCommitteeData::class,
+            LoadCommitteeV1Data::class,
         ];
     }
 }

@@ -7,7 +7,7 @@ use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
 use App\Committee\MultipleReferentsFoundException;
 use App\DataFixtures\ORM\LoadAdherentData;
-use App\DataFixtures\ORM\LoadCommitteeData;
+use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\ProvisionalSupervisor;
@@ -28,7 +28,7 @@ class CommitteeManagementAuthorityTest extends TestCase
     public function testApprove()
     {
         $creator = $this->createCreator(LoadAdherentData::ADHERENT_3_UUID);
-        $committee = $this->createCommittee(LoadCommitteeData::COMMITTEE_1_UUID, 'Paris 8e', $creator);
+        $committee = $this->createCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID, 'Paris 8e', $creator);
 
         $manager = $this->createManager($creator);
         // ensure committee is approved
@@ -53,7 +53,7 @@ class CommitteeManagementAuthorityTest extends TestCase
     public function testNotifyReferentsForApproval()
     {
         $creator = $this->createCreator(LoadAdherentData::ADHERENT_3_UUID);
-        $committee = $this->createCommittee(LoadCommitteeData::COMMITTEE_1_UUID, 'Paris 8e', $creator);
+        $committee = $this->createCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID, 'Paris 8e', $creator);
         $referent = $this->createMock(Adherent::class);
 
         $referents = new AdherentCollection([$referent]);
@@ -70,7 +70,7 @@ class CommitteeManagementAuthorityTest extends TestCase
             '/espace-adherent/contacter/%s?from=%s&id=%s',
             LoadAdherentData::ADHERENT_3_UUID,
             'committee',
-            LoadCommitteeData::COMMITTEE_1_UUID
+            LoadCommitteeV1Data::COMMITTEE_1_UUID
         ));
 
         $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer, $this->createMock(EventDispatcherInterface::class));
@@ -81,7 +81,7 @@ class CommitteeManagementAuthorityTest extends TestCase
     {
         $this->expectException(MultipleReferentsFoundException::class);
         $creator = $this->createCreator(LoadAdherentData::ADHERENT_3_UUID);
-        $committee = $this->createCommittee(LoadCommitteeData::COMMITTEE_1_UUID, 'Paris 8e', $creator);
+        $committee = $this->createCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID, 'Paris 8e', $creator);
         $referent = $this->createMock(Adherent::class);
 
         $referents = new AdherentCollection([$referent, $creator]);

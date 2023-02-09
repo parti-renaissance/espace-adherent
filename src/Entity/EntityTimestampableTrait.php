@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait EntityTimestampableTrait
 {
@@ -13,7 +13,7 @@ trait EntityTimestampableTrait
      *
      * @ORM\Column(type="datetime")
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "jecoute_news_read",
      *     "jecoute_news_read_dc",
      *     "email_template_read",
@@ -29,6 +29,7 @@ trait EntityTimestampableTrait
      *     "survey_list_dc",
      *     "formation_read",
      *     "formation_list_read",
+     *     "committee:list",
      * })
      * @Gedmo\Timestampable(on="create")
      */
@@ -39,7 +40,7 @@ trait EntityTimestampableTrait
      *
      * @ORM\Column(type="datetime")
      *
-     * @SymfonySerializer\Groups({"phoning_campaign_read", "formation_read"})
+     * @Groups({"phoning_campaign_read", "formation_read", "committee:list",})
      *
      * @Gedmo\Timestampable(on="update")
      */

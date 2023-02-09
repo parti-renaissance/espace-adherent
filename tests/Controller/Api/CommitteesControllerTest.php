@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller\Api;
 
-use App\DataFixtures\ORM\LoadCommitteeData;
+use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractApiCaseTest;
@@ -39,7 +39,7 @@ class CommitteesControllerTest extends AbstractApiCaseTest
 
     public function testGetCommitteeCandidacyReturnsNothingIfNonMemberOrAnonymous(): void
     {
-        $url = sprintf('/api/committees/%s/candidacies', LoadCommitteeData::COMMITTEE_4_UUID);
+        $url = sprintf('/api/committees/%s/candidacies', LoadCommitteeV1Data::COMMITTEE_4_UUID);
 
         $this->client->request(Request::METHOD_GET, $url);
         $this->assertResponseStatusCode(Response::HTTP_UNAUTHORIZED, $this->client->getResponse());
@@ -54,7 +54,7 @@ class CommitteesControllerTest extends AbstractApiCaseTest
     {
         $this->authenticateAsAdherent($this->client, 'assesseur@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, sprintf('/api/committees/%s/candidacies', LoadCommitteeData::COMMITTEE_6_UUID));
+        $this->client->request(Request::METHOD_GET, sprintf('/api/committees/%s/candidacies', LoadCommitteeV1Data::COMMITTEE_6_UUID));
         $this->isSuccessful($response = $this->client->getResponse());
 
         $data = json_decode($response->getContent(), true);

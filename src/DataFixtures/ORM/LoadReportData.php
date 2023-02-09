@@ -34,7 +34,7 @@ class LoadReportData extends Fixture implements DependentFixtureInterface
     {
         return [
             LoadAdherentData::class,
-            LoadCommitteeData::class,
+            LoadCommitteeV1Data::class,
         ];
     }
 }

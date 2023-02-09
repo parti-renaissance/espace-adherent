@@ -3,7 +3,7 @@
 namespace Tests\App\Controller\Admin;
 
 use App\AdherentMessage\Command\CreateStaticSegmentCommand;
-use App\DataFixtures\ORM\LoadCommitteeData;
+use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use App\Mailer\Message\CommitteeApprovalReferentMessage;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +25,7 @@ class AdminCommitteeCRUDControllerTest extends WebTestCase
 
     public function testApproveCommitteeAction(): void
     {
-        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_2_UUID);
 
         $this->assertFalse($committee->isApproved());
 
@@ -51,7 +51,7 @@ class AdminCommitteeCRUDControllerTest extends WebTestCase
 
         $this->get('doctrine.orm.entity_manager')->clear();
 
-        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_2_UUID);
 
         $this->assertTrue($committee->isApproved());
         $this->assertCountMails(1, CommitteeApprovalConfirmationMessage::class, 'benjyd@aol.com');

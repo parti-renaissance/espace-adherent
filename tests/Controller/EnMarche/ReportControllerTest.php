@@ -2,8 +2,8 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use App\DataFixtures\ORM\LoadCommitteeData;
 use App\DataFixtures\ORM\LoadCommitteeEventData;
+use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Report\CommitteeReport;
 use App\Entity\Report\CommunityEventReport;
 use App\Report\ReportType;
@@ -26,7 +26,7 @@ class ReportControllerTest extends WebTestCase
         yield 'Committee' => [
             CommitteeReport::class,
             '/comites/en-marche-paris-8',
-            LoadCommitteeData::COMMITTEE_1_UUID,
+            LoadCommitteeV1Data::COMMITTEE_1_UUID,
         ];
         yield 'Event' => [
             CommunityEventReport::class,

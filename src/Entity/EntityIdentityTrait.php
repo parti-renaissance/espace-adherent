@@ -5,7 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait EntityIdentityTrait
 {
@@ -20,7 +20,7 @@ trait EntityIdentityTrait
      *
      * @ApiProperty(identifier=false)
      *
-     * @SymfonySerializer\Groups({"autocomplete", "survey_list"})
+     * @Groups({"autocomplete", "survey_list"})
      */
     protected $id;
 
@@ -31,7 +31,7 @@ trait EntityIdentityTrait
      *
      * @ORM\Column(type="uuid", unique=true)
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "user_profile",
      *     "approach_list_read",
      *     "coalition_read",
@@ -96,6 +96,7 @@ trait EntityIdentityTrait
      *     "formation_read",
      *     "formation_list_read",
      *     "elected_mandate_read",
+     *     "committee:list",
      * })
      *
      * @ApiProperty(

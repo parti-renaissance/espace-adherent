@@ -28,6 +28,7 @@ abstract class AbstractScopeFilter extends AbstractFilter
         Operation $operation = null,
         array $context = []
     ) {
+        var_dump('here');
         if (self::PROPERTY_NAME !== $property || !$this->isValidOperation($operation)) {
             return;
         }
@@ -41,14 +42,14 @@ abstract class AbstractScopeFilter extends AbstractFilter
         if (!$currentUser instanceof Adherent) {
             return;
         }
-
+        var_dump('here');
         try {
             $scopeGenerator = $this->generalScopeGenerator->getGenerator($value, $currentUser);
         } catch (ScopeExceptionInterface $e) {
             return;
         }
-
-        $this->applyFilter($queryBuilder, $currentUser, $scopeGenerator);
+        var_dump('123');
+        $this->applyFilter($queryBuilder, $currentUser, $scopeGenerator, $resourceClass);
     }
 
     abstract protected function needApplyFilter(string $property, string $resourceClass): bool;
@@ -56,7 +57,8 @@ abstract class AbstractScopeFilter extends AbstractFilter
     abstract protected function applyFilter(
         QueryBuilder $queryBuilder,
         Adherent $currentUser,
-        ScopeGeneratorInterface $scopeGenerator
+        ScopeGeneratorInterface $scopeGenerator,
+        string $resourceClass
     ): void;
 
     public function getDescription(string $resourceClass): array

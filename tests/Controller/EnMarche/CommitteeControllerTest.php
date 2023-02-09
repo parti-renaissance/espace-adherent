@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use App\DataFixtures\ORM\LoadCommitteeData;
+use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
@@ -52,7 +52,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     public function testRedirectionComiteFromOldUrl()
     {
-        $this->client->request(Request::METHOD_GET, '/comites/'.LoadCommitteeData::COMMITTEE_3_UUID.'/en-marche-dammarie-les-lys');
+        $this->client->request(Request::METHOD_GET, '/comites/'.LoadCommitteeV1Data::COMMITTEE_3_UUID.'/en-marche-dammarie-les-lys');
 
         $this->assertClientIsRedirectedTo('/comites/en-marche-dammarie-les-lys', $this->client, false, true);
 
@@ -280,7 +280,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->assertTrue($this->seeMembersCount($crawler, 4), 'The guest should see the members count');
         $this->assertTrue($this->seeHosts($crawler, 2), 'The guest should see the hosts');
         $this->assertFalse($this->seeHostNav($crawler), 'The guest should not see the host navigation');
-        $this->assertSeeSocialLinks($crawler, $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_1_UUID));
+        $this->assertSeeSocialLinks($crawler, $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_1_UUID));
         $this->assertFalse($this->seeMessageForm($crawler));
         $this->seeMessageForContactHosts($crawler);
     }

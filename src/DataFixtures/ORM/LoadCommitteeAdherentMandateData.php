@@ -73,7 +73,7 @@ class LoadCommitteeAdherentMandateData extends Fixture implements DependentFixtu
     public function getDependencies()
     {
         return [
-            LoadCommitteeData::class,
+            LoadCommitteeV1Data::class,
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait EntityNameSlugTrait
 {
@@ -13,13 +13,14 @@ trait EntityNameSlugTrait
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "adherent_committees_modal",
      *     "jecoute_region_read",
      *     "cause_read",
      *     "cause_write",
      *     "event_read",
      *     "committee_sync",
+     *     "committee:list",
      * })
      */
     protected $name;
@@ -38,7 +39,7 @@ trait EntityNameSlugTrait
      *
      * @Gedmo\Slug(fields={"canonicalName"})
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "adherent_committees_modal",
      *     "jecoute_region_read",
      *     "cause_read",
