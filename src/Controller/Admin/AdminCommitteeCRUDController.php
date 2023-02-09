@@ -37,9 +37,9 @@ class AdminCommitteeCRUDController extends CRUDController
                     $committee->setName($command->getName());
                     $committee->setDescription($command->getDescription());
                     $committee->setNameLocked($command->isNameLocked());
-                    $address = $addressFactory->createFromAddress($command->getAddress());
+                    $address = $addressFactory->createFromAddress($command->getAddress(), true);
                     if (!$committee->getPostAddress()->equals($address)) {
-                        $committee->updatePostAddress($address);
+                        $committee->setPostAddress($address);
                     }
                     $committee->setNameLocked($command->isNameLocked());
                     if ($adherentPSF = $command->getProvisionalSupervisorFemale()) {
@@ -59,8 +59,8 @@ class AdminCommitteeCRUDController extends CRUDController
                     $committeeManagementAuthority->notifyReferentsForApproval($committee);
                 } catch (MultipleReferentsFoundException $exception) {
                     $this->addFlash('warning', sprintf(
-                        'Attention, plusieurs référents (%s) ont été trouvés dans le département de ce nouveau comité. 
-                                Aucun mail de notification pour la validation de ce comité ne leur a été envoyé. 
+                        'Attention, plusieurs référents (%s) ont été trouvés dans le département de ce nouveau comité.
+                                Aucun mail de notification pour la validation de ce comité ne leur a été envoyé.
                                 Nommez un seul référent pour permettre les notifications de ce type.',
                         implode(', ', array_map(function (Adherent $referent) {
                             return $referent->getEmailAddress();

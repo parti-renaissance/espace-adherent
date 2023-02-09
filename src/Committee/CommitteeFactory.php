@@ -87,7 +87,7 @@ class CommitteeFactory
             $command->getAdherent(),
             $command->name,
             $command->description,
-            $this->addressFactory->createFromAddress($command->getAddress()),
+            $this->addressFactory->createFromAddress($command->getAddress(), true),
             $command->getPhone()
         );
 

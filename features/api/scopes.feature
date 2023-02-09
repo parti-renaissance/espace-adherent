@@ -176,7 +176,8 @@ Feature:
         "team",
         "phoning_campaign",
         "survey",
-        "adherent_formations"
+        "adherent_formations",
+        "committee"
       ],
       "delegated_access": null
     }
@@ -446,7 +447,8 @@ Feature:
             "survey",
             "department_site",
             "elected_representative",
-            "adherent_formations"
+            "adherent_formations",
+            "committee"
         ],
         "delegated_access": {
             "delegator": {

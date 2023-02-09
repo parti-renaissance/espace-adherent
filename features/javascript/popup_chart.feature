@@ -6,10 +6,10 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadReferentTagsZonesLinksData    |
-      | LoadAdherentData                  |
-      | LoadCommitteeData                 |
-      | LoadCommitteeAdherentMandateData  |
+      | LoadReferentTagsZonesLinksData   |
+      | LoadAdherentData                 |
+      | LoadCommitteeV1Data              |
+      | LoadCommitteeAdherentMandateData |
 
   Scenario: As deputy, I should see a popup when I'm in the deputy space
     Given I am logged as "deputy@en-marche-dev.fr"

@@ -235,7 +235,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         Adherent $adherent,
         string $name,
         string $description,
-        PostAddress $address,
+        AddressInterface $address,
         ?PhoneNumber $phone = null,
         string $createdAt = 'now'
     ): self {

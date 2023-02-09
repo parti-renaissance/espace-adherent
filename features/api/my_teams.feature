@@ -385,7 +385,8 @@ Feature:
                             "survey",
                             "department_site",
                             "elected_representative",
-                            "adherent_formations"
+                            "adherent_formations",
+                            "committee"
                         ],
                         "uuid": "e0da56db-c4c6-4aa4-ad8d-7e9505dfdd93"
                     }
