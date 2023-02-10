@@ -49,6 +49,10 @@ class AssetsController extends AbstractController
      */
     public function assetAction(Server $glide, FilesystemInterface $storage, string $path, Request $request): Response
     {
+        if (!$storage->has($path)) {
+            throw $this->createNotFoundException();
+        }
+
         $parameters = $request->query->all();
 
         if (!empty($parameters['mime_type'])) {
