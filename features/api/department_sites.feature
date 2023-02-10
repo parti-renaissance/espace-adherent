@@ -79,14 +79,8 @@ Feature:
     """
     {
       "uuid": "@uuid@",
-      "content": "<p>test</p>",
-      "json_content": "{\"test\": \"test\"}",
       "slug": "75-paris",
-      "zone": {
-        "uuid": "e3efe563-906e-11eb-a875-0242ac150002",
-        "code": "75",
-        "name": "Paris"
-      }
+      "url": "@string@.isUrl()"
     }
     """
 
@@ -109,6 +103,7 @@ Feature:
         {
           "uuid": "51e507e5-3d7c-4f08-b05d-b7cb45e960d3",
           "slug": "92-hauts-de-seine",
+          "url": "@string@.isUrl()",
           "zone": {
             "code": "92",
             "name": "Hauts-de-Seine",
@@ -168,14 +163,8 @@ Feature:
     """
     {
       "uuid": "@uuid@",
-      "content": "<p>ceci est une mise à jour</p>",
-      "json_content": "{\"maj\": \"maj\"}",
       "slug": "92-hauts-de-seine",
-      "zone": {
-        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-        "code": "92",
-        "name": "Hauts-de-Seine"
-      }
+      "url": "@string@.isUrl()"
     }
     """
 
@@ -191,6 +180,7 @@ Feature:
       "json_content": "@string@",
       "uuid": "51e507e5-3d7c-4f08-b05d-b7cb45e960d3",
       "slug": "92-hauts-de-seine",
+      "url": "@string@.isUrl()",
       "zone": {
         "code": "92",
         "name": "Hauts-de-Seine",

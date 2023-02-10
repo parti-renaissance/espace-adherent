@@ -37,6 +37,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/department_sites/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "normalization_context": {
+ *                 "groups": {"department_site_post_write"}
+ *             },
  *         },
  *     },
  *     collectionOperations={
@@ -48,6 +51,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "post": {
  *             "path": "/v3/department_sites",
+ *             "normalization_context": {
+ *                 "groups": {"department_site_post_write"}
+ *             },
  *         }
  *     }
  * )
@@ -93,7 +99,11 @@ class DepartmentSite
      *     @Gedmo\SlugHandler(class="App\DepartmentSite\DepartmentSiteSlugHandler")
      * }, fields={"content"})
      *
-     * @Groups({"department_site_read", "department_site_read_list"})
+     * @Groups({
+     *     "department_site_read",
+     *     "department_site_read_list",
+     *     "department_site_post_write",
+     * })
      */
     private ?string $slug = null;
 
