@@ -89,6 +89,7 @@ trait EntityIdentityTrait
      *     "contact_read_after_write",
      *     "contact_read",
      *     "department_site_read",
+     *     "department_site_post_write",
      *     "department_site_read_list",
      *     "elected_representative_read",
      *     "elected_representative_list",

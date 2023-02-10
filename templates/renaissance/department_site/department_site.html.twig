@@ -1,6 +1,6 @@
 {% extends 'base_renaissance.html.twig' %}
 
-{% block page_title department_site.slug %}
+{% block page_title department_site.zone.getNameCode() %}
 {% block canonical_url url('app_renaissance_department_site_view', { slug: department_site.slug }) %}
 
 {% block content %}
