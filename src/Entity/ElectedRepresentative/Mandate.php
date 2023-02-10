@@ -2,29 +2,61 @@
 
 namespace App\Entity\ElectedRepresentative;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\EntityIdentityTrait;
 use App\Entity\Geo\Zone as GeoZone;
 use App\Exception\BadMandateTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     routePrefix="/v3",
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"elected_mandate_read"}
+ *         },
+ *         "denormalization_context": {
+ *             "groups": {"elected_mandate_write"}
+ *         },
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/elected_mandates/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
+ *         },
+ *         "put": {
+ *             "path": "/elected_mandates/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
+ *         },
+ *         "delete": {
+ *             "path": "/elected_mandates/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
+ *         }
+ *     },
+ *     collectionOperations={
+ *         "post": {
+ *             "path": "/elected_mandates",
+ *         }
+ *     }
+ * )
+ *
  * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\MandateRepository")
  * @ORM\Table(name="elected_representative_mandate")
  */
 class Mandate
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     *
-     * @Groups({"elected_representative_read"})
-     */
-    private $id;
+    use EntityIdentityTrait;
 
     /**
      * @var string
@@ -34,7 +66,12 @@ class Mandate
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\MandateTypeEnum", "toArray"})
      *
-     * @Groups({"elected_representative_write", "elected_representative_read", "elected_representative_list"})
+     * @Groups({
+     *     "elected_mandate_write",
+     *     "elected_mandate_read",
+     *     "elected_representative_read",
+     *     "elected_representative_list"
+     * })
      */
     private $type;
 
@@ -43,7 +80,7 @@ class Mandate
      *
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
     private $isElected;
 
@@ -66,7 +103,7 @@ class Mandate
      *     message="Le périmètre géographique est obligatoire."
      * )
      *
-     * @Groups({"elected_representative_write", "elected_representative_read", "elected_representative_list"})
+     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read", "elected_representative_list"})
      */
     private $geoZone;
 
@@ -75,7 +112,7 @@ class Mandate
      *
      * @ORM\Column(type="boolean", options={"default": true})
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
     private $onGoing = true;
 
@@ -86,7 +123,7 @@ class Mandate
      *
      * @Assert\NotBlank
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
     private $beginAt;
 
@@ -104,7 +141,7 @@ class Mandate
      *     message="La date de fin ne peut être saisie que dans le cas où le mandat n'est pas en cours."
      * )
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
     private $finishAt;
 
@@ -116,7 +153,7 @@ class Mandate
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Election\VoteListNuanceEnum", "toArray"})
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
     private $politicalAffiliation;
 
@@ -127,7 +164,7 @@ class Mandate
      *
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\LaREMSupportEnum", "toArray"})
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
     private $laREMSupport;
 
@@ -138,6 +175,8 @@ class Mandate
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank
+     *
+     * @Groups({"elected_mandate_write", "elected_mandate_read"})
      */
     private $electedRepresentative;
 
@@ -153,7 +192,7 @@ class Mandate
      *
      * @Assert\Valid
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
     private $politicalFunctions;
 
@@ -165,19 +204,21 @@ class Mandate
     private $number = 1;
 
     public function __construct(
+        UuidInterface $uuid = null,
         string $type = null,
         bool $isElected = false,
         string $politicalAffiliation = null,
         string $laREMSupport = null,
-        Zone $zone = null,
+        GeoZone $geoZone = null,
         ElectedRepresentative $electedRepresentative = null,
         bool $onGoing = true,
         \DateTime $beginAt = null,
         \DateTime $finishAt = null
     ) {
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;
         $this->isElected = $isElected;
-        $this->zone = $zone;
+        $this->geoZone = $geoZone;
         $this->electedRepresentative = $electedRepresentative;
         $this->laREMSupport = $laREMSupport;
         $this->politicalAffiliation = $politicalAffiliation;
@@ -186,11 +227,6 @@ class Mandate
         $this->finishAt = $finishAt;
 
         $this->politicalFunctions = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getType(): ?string

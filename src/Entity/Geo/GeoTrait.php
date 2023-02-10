@@ -56,6 +56,7 @@ trait GeoTrait
      *     "elected_representative_list",
      *     "formation_list_read",
      *     "formation_read",
+     *     "elected_mandate_read",
      * })
      */
     private $code;
@@ -90,6 +91,7 @@ trait GeoTrait
      *     "elected_representative_list",
      *     "formation_list_read",
      *     "formation_read",
+     *     "elected_mandate_read",
      * })
      */
     private $name;

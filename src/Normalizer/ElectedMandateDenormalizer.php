@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Normalizer;
+
+use App\Entity\ElectedRepresentative\Mandate;
+use App\Entity\ElectedRepresentative\PoliticalFunction;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+
+class ElectedMandateDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
+{
+    use DenormalizerAwareTrait;
+
+    private const ALREADY_CALLED = 'JE_MENGAGE_WEB_ELECTED_MANDATE_DENORMALIZER_ALREADY_CALLED';
+
+    public function denormalize($data, string $class, string $format = null, array $context = [])
+    {
+        $context[self::ALREADY_CALLED] = true;
+
+        /** @var Mandate $mandate */
+        $mandate = $this->denormalizer->denormalize($data, $class, $format, $context);
+
+        if ($functions = $mandate->getPoliticalFunctions()) {
+            /** @var PoliticalFunction $function */
+            foreach ($functions as $function) {
+                if (!$function->getElectedRepresentative()) {
+                    $function->setElectedRepresentative($mandate->getElectedRepresentative());
+                }
+            }
+        }
+
+        return $mandate;
+    }
+
+    public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
+    {
+        return !isset($context[self::ALREADY_CALLED])
+            && is_a($type, Mandate::class, true)
+            && 'api_mandates_post_collection' === ($context['operation_name'] ?? []);
+    }
+}

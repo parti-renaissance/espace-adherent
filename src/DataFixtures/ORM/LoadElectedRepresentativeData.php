@@ -31,6 +31,22 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
     public const ELECTED_REPRESENTATIVE_7_UUID = '867aed08-9e1a-4ec1-b2da-097e1de70132';
     public const ELECTED_REPRESENTATIVE_8_UUID = '0c62d201-826b-4da7-8424-e8e17935b400';
 
+    public const ELECTED_MANDATE_1_UUID = 'b2afc81d-afd5-4bff-84e5-c95f22242244';
+    public const ELECTED_MANDATE_2_UUID = '34d7b4b1-67e9-48fd-b193-373f5076e3f2';
+    public const ELECTED_MANDATE_3_UUID = 'e9aa4ef2-3b81-4f47-b460-c1095a217ef8';
+    public const ELECTED_MANDATE_4_UUID = '02be8205-3068-419a-8b0c-31ce5b293e5f';
+    public const ELECTED_MANDATE_5_UUID = '6206c36f-50bc-4078-a045-2b4842970858';
+    public const ELECTED_MANDATE_6_UUID = '639967f6-60fd-4ca5-a9a6-518f0e8b38a0';
+    public const ELECTED_MANDATE_7_UUID = 'd3906aa5-b185-4467-b263-87563d0bb6ef';
+    public const ELECTED_MANDATE_8_UUID = '23008279-558c-4f46-84f2-3fc182c2ea16';
+    public const ELECTED_MANDATE_9_UUID = 'b7ad3756-35d0-4f9b-a196-eebeaf60925a';
+    public const ELECTED_MANDATE_10_UUID = '13a6adc8-26dc-4374-a05d-ab74c4e62dac';
+    public const ELECTED_MANDATE_11_UUID = 'dc67aae2-68d5-4ac8-9bb0-72588cdee76a';
+    public const ELECTED_MANDATE_12_UUID = '03400430-3a75-4b90-83de-ed368f8b3a51';
+    public const ELECTED_MANDATE_13_UUID = '920cb618-3967-41ed-98e3-e4e3a6cd66aa';
+    public const ELECTED_MANDATE_14_UUID = '1a0fb254-64a1-4846-94a9-4e9ac1338f19';
+    public const ELECTED_MANDATE_15_UUID = '9051e0b5-4b56-41b9-8657-cc45e431c727';
+
     public function load(ObjectManager $manager): void
     {
         // with adherent, mandate 92 CITY_COUNCIL : functions OTHER_MEMBER, PRESIDENT_OF_EPCI
@@ -59,16 +75,16 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             '2017'
         );
         $mandate = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_1_UUID),
             MandateTypeEnum::CITY_COUNCIL,
             true,
             VoteListNuanceEnum::REM,
             LaREMSupportEnum::OFFICIAL,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_community_200054781'),
             $erAdherent92,
             true,
             new \DateTime('2019-07-23')
         );
-        $mandate->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_community_200054781'));
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::OTHER_MEMBER,
             'Some precisions',
@@ -110,16 +126,16 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             '2016'
         );
         $mandate = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_2_UUID),
             MandateTypeEnum::CITY_COUNCIL,
             true,
             VoteListNuanceEnum::NC,
             LaREMSupportEnum::OFFICIAL,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
             $erCityCouncilWithFinishedFunction,
             true,
             new \DateTime('2014-03-23')
         );
-        $mandate->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::MAYOR,
             null,
@@ -178,16 +194,16 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             '2018'
         );
         $mandate1 = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_3_UUID),
             MandateTypeEnum::CITY_COUNCIL,
             true,
             VoteListNuanceEnum::DIV,
             LaREMSupportEnum::NOT_SUPPORTED,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'),
             $er2Mandates,
             true,
             new \DateTime('2014-03-23')
         );
-        $mandate1->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'));
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::DEPUTY_MAYOR,
             null,
@@ -197,16 +213,16 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             new \DateTime('2014-03-23')
         );
         $mandate2 = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_4_UUID),
             MandateTypeEnum::EPCI_MEMBER,
             false,
             VoteListNuanceEnum::DIV,
             LaREMSupportEnum::NOT_SUPPORTED,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'),
             $er2Mandates,
             true,
             new \DateTime('2017-01-11')
         );
-        $mandate2->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'));
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::PRESIDENT_OF_EPCI,
             null,
@@ -240,28 +256,28 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             '2014'
         );
         $mandate1 = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_5_UUID),
             MandateTypeEnum::SENATOR,
             true,
             VoteListNuanceEnum::FN,
             LaREMSupportEnum::INFORMAL,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_region_94'),
             $er2MandatesOneFinished,
             true,
             new \DateTime('2016-03-23')
         );
-        $mandate1->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_region_94'));
         $mandate2 = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_6_UUID),
             MandateTypeEnum::DEPUTY,
             true,
             VoteListNuanceEnum::FN,
             LaREMSupportEnum::NOT_SUPPORTED,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'),
             $er2MandatesOneFinished,
             false,
             new \DateTime('2011-12-23'),
             new \DateTime('2015-02-23')
         );
-        $mandate2->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'));
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::OTHER_MEMBER,
             null,
@@ -299,6 +315,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             '2017'
         );
         $mandate = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_7_UUID),
             MandateTypeEnum::EURO_DEPUTY,
             true,
             VoteListNuanceEnum::ALLI,
@@ -324,16 +341,16 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_6_UUID)
         );
         $mandate1 = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_8_UUID),
             MandateTypeEnum::DEPUTY,
             true,
             VoteListNuanceEnum::RN,
             LaREMSupportEnum::INFORMAL,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_department_13'),
             $er2Mandates2Functions,
             true,
             new \DateTime('2015-03-13')
         );
-        $mandate1->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_13'));
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::VICE_PRESIDENT_OF_EPCI,
             null,
@@ -343,16 +360,16 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             new \DateTime('2014-03-23')
         );
         $mandate2 = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_9_UUID),
             MandateTypeEnum::REGIONAL_COUNCIL,
             true,
             VoteListNuanceEnum::DIV,
             LaREMSupportEnum::NOT_SUPPORTED,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'),
             $er2Mandates2Functions,
             true,
             new \DateTime('2017-07-18')
         );
-        $mandate2->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'));
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::MAYOR_ASSISTANT,
             null,
@@ -388,16 +405,16 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_7_UUID)
         );
         $mandate = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_10_UUID),
             MandateTypeEnum::CORSICA_ASSEMBLY_MEMBER,
             false,
             VoteListNuanceEnum::ALLI,
             LaREMSupportEnum::INFORMAL,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_region_94'),
             $erWithNotElectedMandate,
             false,
             new \DateTime('2020-03-15')
         );
-        $mandate->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_region_94'));
         $erWithNotElectedMandate->addMandate($mandate);
 
         $manager->persist($erWithNotElectedMandate);
@@ -405,16 +422,16 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         // with mandate CITY_COUNCIL 75007
         $erParis = $this->createElectedRepresentative('Arrondissement', 'PARIS', new \DateTime('1972-02-02'), 'male');
         $mandate = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_11_UUID),
             MandateTypeEnum::CITY_COUNCIL,
             true,
             VoteListNuanceEnum::NC,
             null,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75107'),
             $erParis,
             true,
             new \DateTime('2019-03-15')
         );
-        $mandate->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75107'));
         $erParis->addMandate($mandate);
 
         $manager->persist($erParis);
@@ -422,16 +439,16 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         // with mandate DEPUTY CIRCO 75
         $erParis2 = $this->createElectedRepresentative('Circonscription', 'PARISS', new \DateTime('1982-03-03'), 'female');
         $mandate = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_12_UUID),
             MandateTypeEnum::DEPUTY,
             true,
             VoteListNuanceEnum::REM,
             LaREMSupportEnum::OFFICIAL,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
             $erParis2,
             true,
             new \DateTime('2019-01-11')
         );
-        $mandate->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $erParis2->addMandate($mandate);
 
         $manager->persist($erParis2);
@@ -439,32 +456,32 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         // with mandate SENATOR 75
         $erParis3 = $this->createElectedRepresentative('Département', 'PARIS', new \DateTime('1962-04-04'), 'male');
         $mandate = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_13_UUID),
             MandateTypeEnum::SENATOR,
             true,
             VoteListNuanceEnum::RN,
             null,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_department_75'),
             $erParis3,
             true,
             new \DateTime('2018-01-11')
         );
-        $mandate->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_75'));
         $erParis3->addMandate($mandate);
 
         $manager->persist($erParis3);
 
         $erDepartment59 = $this->createElectedRepresentative('Département', 'Nord', new \DateTime('1962-04-04'), 'male');
         $mandate = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_14_UUID),
             MandateTypeEnum::SENATOR,
             true,
             VoteListNuanceEnum::RN,
             null,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'),
             $erDepartment59,
             true,
             new \DateTime('2018-01-11')
         );
-        $mandate->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'));
         $erDepartment59->addMandate($mandate);
 
         $manager->persist($erDepartment59);
@@ -474,16 +491,16 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $erDepartment92->setAdherent($this->getReference('renaissance-user-2'));
         $erDepartment92->setCreatedByAdherent($this->getReference('adherent-8'));
         $mandate = new Mandate(
+            Uuid::fromString(self::ELECTED_MANDATE_15_UUID),
             MandateTypeEnum::SENATOR,
             true,
             VoteListNuanceEnum::REM,
             LaREMSupportEnum::OFFICIAL,
-            null,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
             $erDepartment92,
             true,
             new \DateTime('2019-01-11')
         );
-        $mandate->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
         $erDepartment92->addMandate($mandate);
 
         $manager->persist($erDepartment92);

@@ -119,6 +119,7 @@ class Zone implements GeoInterface
      *     "formation_list_read",
      *     "formation_read",
      *     "formation_write",
+     *     "elected_mandate_read",
      * })
      *
      * @ApiProperty(

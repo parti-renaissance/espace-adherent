@@ -995,18 +995,16 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Abst
     private function createMandate(string $mandateType, array $functions = []): Mandate
     {
         $mandate = new Mandate(
+            Uuid::uuid4(),
             $mandateType,
             true,
             null,
             null,
-            null,
+            new Zone(Zone::CITY, "0-$mandateType", "Zone for '$mandateType' mandate"),
             null,
             true,
             new \DateTime('-2 days')
         );
-
-        $zone = new Zone(Zone::CITY, "0-$mandateType", "Zone for '$mandateType' mandate");
-        $mandate->setGeoZone($zone);
 
         foreach ($functions as $function) {
             $politicalFunction = new PoliticalFunction(

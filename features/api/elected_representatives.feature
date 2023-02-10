@@ -33,7 +33,8 @@ Feature:
                             "uuid": "@uuid@",
                             "code": "92",
                             "name": "Hauts-de-Seine"
-                        }
+                        },
+                        "uuid": "9051e0b5-4b56-41b9-8657-cc45e431c727"
                     }
                 ],
                 "current_political_functions": []
@@ -51,7 +52,8 @@ Feature:
                             "uuid": "@uuid@",
                             "code": "200054781",
                             "name": "Métropole du Grand Paris"
-                        }
+                        },
+                        "uuid": "b2afc81d-afd5-4bff-84e5-c95f22242244"
                     }
                 ],
                 "current_political_functions": [
@@ -73,7 +75,8 @@ Feature:
                             "uuid": "@uuid@",
                             "code": "13",
                             "name": "Bouches-du-Rhône"
-                        }
+                        },
+                        "uuid": "23008279-558c-4f46-84f2-3fc182c2ea16"
                     },
                     {
                         "type": "conseiller_regional",
@@ -81,7 +84,8 @@ Feature:
                             "uuid": "@uuid@",
                             "code": "76540",
                             "name": "Rouen"
-                        }
+                        },
+                        "uuid": "b7ad3756-35d0-4f9b-a196-eebeaf60925a"
                     }
                 ],
                 "current_political_functions": [
@@ -111,21 +115,6 @@ Feature:
             "first_name": "John",
             "gender": "male",
             "birth_date": "1990-02-02",
-            "mandates": [
-                {
-                    "type": "conseiller_municipal",
-                    "geo_zone": "e3f2cede-906e-11eb-a875-0242ac150002",
-                    "begin_at": "2022-06-02",
-                    "political_affiliation": "REM",
-                    "political_functions": [
-                        {
-                            "name": "mayor_assistant",
-                            "on_going": true,
-                            "begin_at": "2022-06-02"
-                        }
-                    ]
-                }
-            ],
             "adherent": "29461c49-2646-4d89-9c82-50b3f9b586f4"
         }
         """
@@ -151,33 +140,7 @@ Feature:
                 "first_name": "Referent",
                 "last_name": "Referent"
             },
-            "mandates": [
-                {
-                    "id": "@integer@",
-                    "type": "conseiller_municipal",
-                    "is_elected": false,
-                    "geo_zone": {
-                        "uuid": "e3f2cede-906e-11eb-a875-0242ac150002",
-                        "code": "92078",
-                        "name": "Villeneuve-la-Garenne"
-                    },
-                    "on_going": true,
-                    "begin_at": "@string@.isDateTime()",
-                    "finish_at": null,
-                    "political_affiliation": "REM",
-                    "la_r_e_m_support": null,
-                    "political_functions": [
-                        {
-                            "id": "@integer@",
-                            "name": "mayor_assistant",
-                            "clarification": null,
-                            "on_going": true,
-                            "begin_at": "@string@.isDateTime()",
-                            "finish_at": null
-                        }
-                    ]
-                }
-            ],
+            "mandates": [],
             "uuid": "@uuid@",
             "email_address": "referent@en-marche-dev.fr"
         }
@@ -218,7 +181,7 @@ Feature:
             },
             "mandates": [
                 {
-                    "id": 15,
+                    "uuid": "9051e0b5-4b56-41b9-8657-cc45e431c727",
                     "type": "senateur",
                     "is_elected": true,
                     "geo_zone": {
@@ -268,7 +231,7 @@ Feature:
             },
             "mandates": [
                 {
-                    "id": 15,
+                    "uuid": "9051e0b5-4b56-41b9-8657-cc45e431c727",
                     "type": "senateur",
                     "is_elected": true,
                     "geo_zone": {
@@ -410,6 +373,213 @@ Feature:
       }
     ]
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario Outline: As a user granted with local scope, I can get an elected representative mandate informations
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/elected_mandates/9051e0b5-4b56-41b9-8657-cc45e431c727?scope=<scope>"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "senateur",
+      "is_elected": true,
+      "geo_zone": {
+        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "code": "92",
+        "name": "Hauts-de-Seine"
+      },
+      "on_going": true,
+      "begin_at": "2019-01-11T00:00:00+01:00",
+      "finish_at": null,
+      "political_affiliation": "REM",
+      "la_r_e_m_support": "official",
+      "elected_representative": {
+        "last_name": "92",
+        "first_name": "Département",
+        "uuid": "0c62d201-826b-4da7-8424-e8e17935b400"
+      },
+      "political_functions": [],
+      "uuid": "9051e0b5-4b56-41b9-8657-cc45e431c727"
+    }
+    """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario Outline: As a user granted with local scope, I can create an elected representative mandate informations
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/elected_mandates?scope=<scope>" with body:
+    """
+    {
+      "type": "membre_EPCI",
+      "is_elected": true,
+      "geo_zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
+      "on_going": true,
+      "begin_at": "2023-01-13",
+      "finish_at": null,
+      "political_affiliation": "REM",
+      "la_r_e_m_support": "informal",
+      "elected_representative": "0c62d201-826b-4da7-8424-e8e17935b400",
+      "political_functions": [
+          {
+              "name": "president_of_epci",
+              "clarification": "string",
+              "on_going": true,
+              "begin_at": "2023-01-30T12:01:51.575Z",
+              "finish_at": null
+          },
+          {
+              "name": "vice_president_of_epci",
+              "clarification": "string",
+              "on_going": false,
+              "begin_at": "2023-01-13T12:01:51.575Z",
+              "finish_at": "2023-01-30T11:01:51.575Z"
+          }
+      ]
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "membre_EPCI",
+      "is_elected": true,
+      "geo_zone": {
+        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "code": "92",
+        "name": "Hauts-de-Seine"
+      },
+      "on_going": true,
+      "begin_at": "2023-01-13T00:00:00+01:00",
+      "finish_at": null,
+      "political_affiliation": "REM",
+      "la_r_e_m_support": "informal",
+      "elected_representative": {
+        "last_name": "92",
+        "first_name": "Département",
+        "uuid": "0c62d201-826b-4da7-8424-e8e17935b400"
+      },
+      "political_functions": [
+        {
+          "id": @integer@,
+          "name": "president_of_epci",
+          "clarification": "string",
+          "on_going": true,
+          "begin_at": "2023-01-30T12:01:51+00:00",
+          "finish_at": null
+        },
+        {
+          "id": @integer@,
+          "name": "vice_president_of_epci",
+          "clarification": "string",
+          "on_going": false,
+          "begin_at": "2023-01-13T12:01:51+00:00",
+          "finish_at": "2023-01-30T11:01:51+00:00"
+        }
+      ],
+      "uuid": "@uuid@"
+    }
+    """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario Outline: As a user granted with local scope, I can update an elected representative mandate informations
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/elected_mandates/9051e0b5-4b56-41b9-8657-cc45e431c727?scope=<scope>" with body:
+    """
+    {
+      "type": "membre_EPCI",
+      "is_elected": true,
+      "geo_zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
+      "on_going": true,
+      "begin_at": "2023-01-13T00:00:00+01:00",
+      "finish_at": null,
+      "political_affiliation": "REM",
+      "la_r_e_m_support": "informal",
+      "elected_representative": "0c62d201-826b-4da7-8424-e8e17935b400",
+      "political_functions": [
+        {
+          "name": "president_of_epci",
+          "clarification": "test",
+          "on_going": true,
+          "begin_at": "2023-01-30T12:01:51+00:00",
+          "finish_at": null
+        },
+        {
+          "name": "vice_president_of_epci",
+          "clarification": "test",
+          "on_going": false,
+          "begin_at": "2023-01-13T12:01:51+00:00",
+          "finish_at": "2023-01-30T11:01:51+00:00"
+        }
+      ]
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "membre_EPCI",
+      "is_elected": true,
+      "geo_zone": {
+        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "code": "92",
+        "name": "Hauts-de-Seine"
+      },
+      "on_going": true,
+      "begin_at": "2023-01-13T00:00:00+01:00",
+      "finish_at": null,
+      "political_affiliation": "REM",
+      "la_r_e_m_support": "informal",
+      "elected_representative": {
+        "last_name": "92",
+        "first_name": "Département",
+        "uuid": "0c62d201-826b-4da7-8424-e8e17935b400"
+      },
+      "political_functions": [
+        {
+          "id": @integer@,
+          "name": "president_of_epci",
+          "clarification": "test",
+          "on_going": true,
+          "begin_at": "2023-01-30T12:01:51+00:00",
+          "finish_at": null
+        },
+        {
+          "id": @integer@,
+          "name": "vice_president_of_epci",
+          "clarification": "test",
+          "on_going": false,
+          "begin_at": "2023-01-13T12:01:51+00:00",
+          "finish_at": "2023-01-30T11:01:51+00:00"
+        }
+      ],
+      "uuid": "9051e0b5-4b56-41b9-8657-cc45e431c727"
+    }
+    """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario Outline: As a user granted with local scope, I can delete an elected representative mandate informations
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "DELETE" request to "/api/v3/elected_mandates/9051e0b5-4b56-41b9-8657-cc45e431c727?scope=<scope>"
+    Then the response status code should be 204
     Examples:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
