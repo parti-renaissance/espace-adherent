@@ -18,7 +18,7 @@ class PoliticalFunction
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      *
-     * @Groups({"elected_representative_read"})
+     * @Groups({"elected_mandate_read"})
      */
     private $id;
 
@@ -30,7 +30,12 @@ class PoliticalFunction
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum", "toArray"})
      *
-     * @Groups({"elected_representative_write", "elected_representative_read", "elected_representative_list"})
+     * @Groups({
+     *     "elected_mandate_write",
+     *     "elected_mandate_read",
+     *     "elected_representative_read",
+     *     "elected_representative_list"
+     * })
      */
     private $name;
 
@@ -41,7 +46,7 @@ class PoliticalFunction
      *
      * @Assert\Length(max="255")
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
     private $clarification;
 
@@ -50,7 +55,7 @@ class PoliticalFunction
      *
      * @ORM\Column(type="boolean", options={"default": true})
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
     private $onGoing = true;
 
@@ -61,7 +66,7 @@ class PoliticalFunction
      *
      * @Assert\NotBlank
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
     private $beginAt;
 
@@ -79,7 +84,7 @@ class PoliticalFunction
      *     message="La date de fin ne peut être saisie que dans le cas où la fonction n'est pas en cours."
      * )
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
     private $finishAt;
 

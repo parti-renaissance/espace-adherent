@@ -78,7 +78,13 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      * @Assert\NotBlank
      * @Assert\Length(max="50")
      *
-     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read", "elected_representative_list"})
+     * @Groups({
+     *     "elected_representative_change_diff",
+     *     "elected_representative_write",
+     *     "elected_representative_read",
+     *     "elected_representative_list",
+     *     "elected_mandate_read",
+     * })
      */
     private $lastName;
 
@@ -90,7 +96,13 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      * @Assert\NotBlank
      * @Assert\Length(max="50")
      *
-     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read", "elected_representative_list"})
+     * @Groups({
+     *     "elected_representative_change_diff",
+     *     "elected_representative_write",
+     *     "elected_representative_read",
+     *     "elected_representative_list",
+     *     "elected_mandate_read",
+     * })
      */
     private $firstName;
 
@@ -218,7 +230,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *
      * @Assert\Valid
      *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
+     * @Groups({"elected_representative_read"})
      */
     private $mandates;
 
@@ -297,11 +309,6 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         $electedRepresentative->birthDate = $birthDate;
 
         return $electedRepresentative;
-    }
-
-    public function setUuid(UuidInterface $uuid): void
-    {
-        $this->uuid = $uuid;
     }
 
     public function getLastName(): ?string

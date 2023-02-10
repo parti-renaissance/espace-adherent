@@ -94,6 +94,7 @@ trait EntityIdentityTrait
      *     "elected_representative_list",
      *     "formation_read",
      *     "formation_list_read",
+     *     "elected_mandate_read",
      * })
      *
      * @ApiProperty(
