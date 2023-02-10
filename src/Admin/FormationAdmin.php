@@ -2,8 +2,10 @@
 
 namespace App\Admin;
 
+use App\Entity\AdherentFormation\Formation;
 use App\Entity\AdherentFormation\FormationContentTypeEnum;
 use App\Form\PositionType;
+use App\Formation\FormationHandler;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -18,6 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class FormationAdmin extends AbstractAdmin
 {
+    private FormationHandler $formationHandler;
+
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
@@ -107,5 +111,34 @@ class FormationAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    /**
+     * @param Formation $object
+     */
+    protected function postPersist(object $object): void
+    {
+        $this->handleFile($object);
+    }
+
+    /**
+     * @param Formation $object
+     */
+    protected function postUpdate(object $object): void
+    {
+        $this->handleFile($object);
+    }
+
+    private function handleFile(Formation $formation): void
+    {
+        $this->formationHandler->handleFile($formation);
+    }
+
+    /**
+     * @required
+     */
+    public function setFormationHandler(FormationHandler $formationHandler): void
+    {
+        $this->formationHandler = $formationHandler;
     }
 }

@@ -99,6 +99,7 @@ trait EntityIdentityTrait
      *     "committee:list",
      *     "general_meeting_report_list_read",
      *     "general_meeting_report_read",
+     *     "document_read",
      * })
      *
      * @ApiProperty(

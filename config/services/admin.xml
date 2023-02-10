@@ -508,6 +508,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.document" class="App\Admin\DocumentAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Documents" group="Territoires"/>
+
+            <argument />
+            <argument>App\Entity\Document</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Application mobile
