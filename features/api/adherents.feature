@@ -307,12 +307,11 @@ Feature:
         {
             "key": "renaissance_membership",
             "label": "Renaissance",
+            "type": "trans",
             "messages": {
-              "adherent_re": "Adhérent",
-              "sympathizer_re": "Sympathisant"
-            },
-
-            "type": "trans"
+                "adherent_re": "Adhérent",
+                "sympathizer_re": "Sympathisant"
+            }
         },
         {
             "key": "email_subscription",
@@ -320,14 +319,43 @@ Feature:
             "type": "boolean"
         },
         {
+            "key": "email",
+            "label": "Email",
+            "dependency": {
+                "fields": [
+                    {
+                        "code": "email_subscription",
+                        "valid_values": [
+                            true
+                        ]
+                    }
+                ],
+                "mode": "color_invalid"
+            }
+        },
+        {
+            "key": "sms_subscription",
+            "label": "Abonné tel",
+            "type": "boolean"
+        },
+        {
             "key": "phone_number",
             "label": "Téléphone",
+            "type": "trans",
             "messages": {
-              "not_applicable": "Non applicable",
-              "not_indicated": "Non renseigné",
-              "unsubscribed": "Non abonné"
+                "not_available": "Non disponible"
             },
-            "type": "trans"
+            "dependency": {
+                "fields": [
+                    {
+                        "code": "sms_subscription",
+                        "valid_values": [
+                            true
+                        ]
+                    }
+                ],
+                "mode": "color_invalid"
+            }
         },
         {
             "key": "postal_code",
@@ -340,22 +368,6 @@ Feature:
         {
             "key": "city",
             "label": "Commune"
-        },
-        {
-            "key": "department_code",
-            "label": "Code département"
-        },
-        {
-            "key": "department",
-            "label": "Département"
-        },
-        {
-            "key": "region_code",
-            "label": "Code région"
-        },
-        {
-            "key": "region",
-            "label": "Région"
         },
         {
             "key": "interests",
@@ -420,11 +432,9 @@ Feature:
                 "gender": "male",
                 "interests": [],
                 "city_code": "77288",
-                "department_code": "77",
-                "department": "Seine-et-Marne",
-                "region_code": "11",
-                "region": "Île-de-France",
-                "phone_number": "unsubscribed",
+                "phone_number": "not_available",
+                "sms_subscription": false,
+                "email": "francis.brioul@yahoo.com",
                 "email_subscription": false,
                 "renaissance_membership": null
             },
@@ -437,11 +447,9 @@ Feature:
                 "gender": "female",
                 "interests": [],
                 "city_code": "92024",
-                "department_code": "92",
-                "department": "Hauts-de-Seine",
-                "region_code": "11",
-                "region": "Île-de-France",
-                "phone_number": "not_applicable",
+                "phone_number": "+33 6 66 66 66 66",
+                "sms_subscription": true,
+                "email": "gisele-berthoux@caramail.com",
                 "email_subscription": true,
                 "renaissance_membership": null
             },
@@ -449,17 +457,15 @@ Feature:
                 "city": "Melun",
                 "city_code": null,
                 "country": "FR",
-                "department": "Hauts-de-Seine",
-                "department_code": "92",
+                "email": "je-mengage-user-1@en-marche-dev.fr",
                 "email_subscription": false,
                 "first_name": "Jules",
                 "gender": "male",
                 "interests": [],
                 "last_name": "Fullstack",
                 "postal_code": "77000",
-                "region": "Île-de-France",
-                "region_code": "11",
-                "phone_number": "unsubscribed",
+                "phone_number": "not_available",
+                "sms_subscription": false,
                 "renaissance_membership": null
             },
             {
@@ -473,12 +479,10 @@ Feature:
                     "numerique"
                 ],
                 "city_code": null,
-                "department_code": null,
-                "department": null,
-                "region_code": null,
-                "region": null,
-                "phone_number": "not_applicable",
+                "phone_number": "+33 6 66 66 66 66",
+                "email": "michel.vasseur@example.ch",
                 "email_subscription": true,
+                "sms_subscription": true,
                 "renaissance_membership": null
             },
             {
@@ -494,11 +498,9 @@ Feature:
                     "sante"
                 ],
                 "city_code": null,
-                "department_code": null,
-                "department": null,
-                "region_code": null,
-                "region": null,
-                "phone_number": "not_applicable",
+                "phone_number": "+33 6 66 66 66 66",
+                "sms_subscription": true,
+                "email": "michelle.dufour@example.ch",
                 "email_subscription": false,
                 "renaissance_membership": null
             }
@@ -527,11 +529,9 @@ Feature:
                 "gender": "male",
                 "interests": [],
                 "city_code": "77288",
-                "department_code": "77",
-                "department": "Seine-et-Marne",
-                "region_code": "11",
-                "region": "Île-de-France",
-                "phone_number": "unsubscribed",
+                "phone_number": "not_available",
+                "sms_subscription": false,
+                "email": "francis.brioul@yahoo.com",
                 "email_subscription": false,
                 "renaissance_membership": null
             }
@@ -567,11 +567,9 @@ Feature:
                 "gender": "male",
                 "interests": [],
                 "city_code": null,
-                "department_code": "92",
-                "department": "Hauts-de-Seine",
-                "region_code": "11",
-                "region": "Île-de-France",
-                "phone_number": "unsubscribed",
+                "phone_number": "not_available",
+                "sms_subscription": false,
+                "email": "je-mengage-user-1@en-marche-dev.fr",
                 "email_subscription": false,
                 "renaissance_membership": null
             },
@@ -584,11 +582,9 @@ Feature:
                 "gender": "female",
                 "interests": [],
                 "city_code": "92024",
-                "department_code": "92",
-                "department": "Hauts-de-Seine",
-                "region_code": "11",
-                "region": "Île-de-France",
-                "phone_number": "not_applicable",
+                "phone_number": "+33 6 66 66 66 66",
+                "sms_subscription": true,
+                "email": "gisele-berthoux@caramail.com",
                 "email_subscription": true,
                 "renaissance_membership": null
             }
@@ -756,11 +752,9 @@ Feature:
                     "numerique"
                 ],
                 "city_code": "75056",
-                "department_code": "75",
-                "department": "Paris",
-                "region_code": "11",
-                "region": "Île-de-France",
-                "phone_number": "not_applicable",
+                "phone_number": "not_available",
+                "sms_subscription": true,
+                "email": "deputy@en-marche-dev.fr",
                 "email_subscription": true,
                 "renaissance_membership": null
             },
@@ -777,11 +771,9 @@ Feature:
                     "sante"
                 ],
                 "city_code": "75056",
-                "department_code": "75",
-                "department": "Paris",
-                "region_code": "11",
-                "region": "Île-de-France",
-                "phone_number": "not_applicable",
+                "phone_number": "+33 1 87 26 42 36",
+                "sms_subscription": true,
+                "email": "jacques.picard@en-marche.fr",
                 "email_subscription": true,
                 "renaissance_membership": null
             }
@@ -814,11 +806,9 @@ Feature:
                     "sante"
                 ],
                 "city_code": "75056",
-                "department_code": "75",
-                "department": "Paris",
-                "region_code": "11",
-                "region": "Île-de-France",
-                "phone_number": "not_applicable",
+                "phone_number": "+33 1 87 26 42 36",
+                "sms_subscription": true,
+                "email": "jacques.picard@en-marche.fr",
                 "email_subscription": true,
                 "renaissance_membership": null
             }

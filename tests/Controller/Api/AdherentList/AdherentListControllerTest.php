@@ -76,12 +76,10 @@ class AdherentListControllerTest extends AbstractApiCaseTest
                 'gender' => 'male',
                 'interests' => [],
                 'city_code' => '77288',
-                'department_code' => '77',
-                'department' => 'Seine-et-Marne',
-                'region_code' => '11',
-                'region' => 'Île-de-France',
-                'phone_number' => 'unsubscribed',
+                'sms_subscription' => false,
+                'phone_number' => 'not_available',
                 'email_subscription' => false,
+                'email' => 'francis.brioul@yahoo.com',
             ],
             $content['items'][0]
         );
@@ -137,12 +135,10 @@ class AdherentListControllerTest extends AbstractApiCaseTest
                 'gender' => 'male',
                 'interests' => [],
                 'city_code' => '77288',
-                'department_code' => '77',
-                'department' => 'Seine-et-Marne',
-                'region_code' => '11',
-                'region' => 'Île-de-France',
-                'phone_number' => 'unsubscribed',
+                'sms_subscription' => false,
+                'phone_number' => 'not_available',
                 'email_subscription' => false,
+                'email' => 'francis.brioul@yahoo.com',
             ],
             $content['items'][0]
         );
