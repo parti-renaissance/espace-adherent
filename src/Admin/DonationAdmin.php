@@ -5,18 +5,22 @@ namespace App\Admin;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Donation\DonationEvents;
+use App\Donation\DonationRequestDestinationEnum;
 use App\Donation\DonationWasCreatedEvent;
 use App\Donation\DonationWasUpdatedEvent;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\DonationTag;
+use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use App\Membership\MembershipSourceEnum;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\QueryBuilder;
 use League\Flysystem\FilesystemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -131,6 +135,12 @@ class DonationAdmin extends AbstractAdmin
                 ->add('code', null, [
                     'label' => 'Code don',
                 ])
+                ->add('zone', ModelAutocompleteType::class, [
+                    'property' => ['name', 'code'],
+                    'label' => 'Destination',
+                    'btn_add' => false,
+                    'callback' => [$this, 'prepareDestinationAutocompleteCallback'],
+                ])
                 ->add('nationality', CountryType::class, [
                     'label' => 'Nationalité',
                 ])
@@ -223,6 +233,32 @@ class DonationAdmin extends AbstractAdmin
             ])
             ->add('code', null, [
                 'label' => 'Code don',
+            ])
+            ->add('zone', CallbackFilter::class, [
+                'label' => 'Destination',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => DonationRequestDestinationEnum::ALL,
+                    'choice_label' => function (string $choice) {
+                        return "donation.destination.$choice";
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    switch ($value->getValue()) {
+                        case DonationRequestDestinationEnum::LOCAL:
+                            $qb->andWhere("$alias.zone IS NOT NULL");
+
+                            return true;
+
+                        case DonationRequestDestinationEnum::NATIONAL:
+                            $qb->andWhere("$alias.zone IS NULL");
+
+                            return true;
+                        default:
+                            return false;
+                    }
+                },
             ])
             ->add('membership', CallbackFilter::class, [
                 'label' => 'Cotisation ?',
@@ -467,6 +503,10 @@ class DonationAdmin extends AbstractAdmin
             ->add('code', null, [
                 'label' => 'Code don',
             ])
+            ->add('zone', null, [
+                'label' => 'Destination',
+                'template' => 'admin/donation/list_destination.html.twig',
+            ])
             ->add('donatedAt', null, [
                 'label' => 'Date',
             ])
@@ -499,10 +539,16 @@ class DonationAdmin extends AbstractAdmin
 
             $phone = $adherent instanceof Adherent ? PhoneNumberUtils::format($adherent->getPhone()) : null;
 
+            $destination = $donation->isNationalVisibility()
+                ? 'Siège'
+                : sprintf('Mixte (%s)', $donation->getZone()->getCode())
+            ;
+
             return [
                 'id' => $donation->getId(),
                 'Montant' => $donation->getAmountInEuros(),
                 'Code don' => $donation->getCode(),
+                'Destination' => $destination,
                 'Date' => $donation->getCreatedAt()->format('Y/m/d H:i:s'),
                 'Type' => $donation->getType(),
                 'Don récurrent' => $donation->hasSubscription(),
@@ -643,5 +689,26 @@ class DonationAdmin extends AbstractAdmin
         }
 
         return $choices;
+    }
+
+    public static function prepareDestinationAutocompleteCallback(
+        AdminInterface $admin,
+        array $properties,
+        string $value
+    ): void {
+        /** @var QueryBuilder $qb */
+        $qb = $admin->getDatagrid()->getQuery();
+        $alias = $qb->getRootAliases()[0];
+
+        $orx = $qb->expr()->orX();
+        foreach ($properties as $property) {
+            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
+            $qb->setParameter('property_'.$property, '%'.$value.'%');
+        }
+        $qb
+            ->orWhere($orx)
+            ->andWhere(sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
+            ->setParameter('type', Zone::DEPARTMENT)
+        ;
     }
 }

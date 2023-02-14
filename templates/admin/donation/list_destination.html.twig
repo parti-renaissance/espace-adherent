@@ -1,0 +1,7 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% import 'admin/donation/_macros.html.twig' as macros %}
+
+{% block field %}
+    {{ macros.get_donation_destination_badge(value) }}
+{% endblock %}

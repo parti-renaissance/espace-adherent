@@ -30,6 +30,7 @@ class Donation implements GeoPointInterface
     use EntityIdentityTrait;
     use EntityCrudTrait;
     use EntityPostAddressTrait;
+    use EntityScopeVisibilityTrait;
 
     public const STATUS_WAITING_CONFIRMATION = 'waiting_confirmation';
     public const STATUS_SUBSCRIPTION_IN_PROGRESS = 'subscription_in_progress';

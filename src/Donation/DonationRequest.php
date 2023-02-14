@@ -106,6 +106,11 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     private $duration;
 
     /**
+     * @Assert\Choice(DonationRequestDestinationEnum::ALL, groups={"choose_donation_amount"})
+     */
+    public string $destination = DonationRequestDestinationEnum::NATIONAL;
+
+    /**
      * @Assert\Choice(DonationRequestType::CONFIRM_DONATION_TYPE_CHOICES, groups={"donation_confirm_type"})
      */
     private $confirmDonationType = DonationRequestType::CONFIRM_DONATION_TYPE_UNIQUE;
@@ -173,6 +178,21 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     public function setAmount(?float $amount)
     {
         $this->amount = floor($amount * 100) / 100;
+    }
+
+    public function getDestination(): string
+    {
+        return $this->destination;
+    }
+
+    public function setDestination(string $destination): void
+    {
+        $this->destination = $destination;
+    }
+
+    public function isLocalDestination(): bool
+    {
+        return null !== $this->destination;
     }
 
     public function getGender(): ?string

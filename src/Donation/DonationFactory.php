@@ -5,17 +5,17 @@ namespace App\Donation;
 use App\Address\PostAddressFactory;
 use App\Entity\Donation;
 use App\Entity\Donator;
+use App\Entity\Geo\Zone;
+use App\Repository\Geo\ZoneRepository;
 use Ramsey\Uuid\Uuid;
 
 class DonationFactory
 {
-    private $addressFactory;
-    private $donationRequestUtils;
-
-    public function __construct(PostAddressFactory $addressFactory, DonationRequestUtils $donationRequestUtils)
-    {
-        $this->addressFactory = $addressFactory;
-        $this->donationRequestUtils = $donationRequestUtils;
+    public function __construct(
+        private readonly PostAddressFactory $addressFactory,
+        private readonly DonationRequestUtils $donationRequestUtils,
+        private readonly ZoneRepository $zoneRepository
+    ) {
     }
 
     public function createFromDonationRequest(DonationRequest $request, Donator $donator): Donation
@@ -39,6 +39,15 @@ class DonationFactory
 
         $donation->setSource($request->getSource());
 
+        if ($request->isLocalDestination()) {
+            $donation->setZone($this->findZone($donation));
+        }
+
         return $donation;
+    }
+
+    private function findZone(Donation $donation): ?Zone
+    {
+        return $this->zoneRepository->findOneDepartmentByPostalCode($donation->getPostalCode());
     }
 }
