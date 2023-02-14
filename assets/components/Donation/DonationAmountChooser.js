@@ -39,7 +39,7 @@ export default class DonationAmountChooser extends React.Component {
 
     render() {
         return (
-            <div className={'pb-12'}>
+            <div>
                 <div className="inline-flex justify-center space-x-5 text-green">
                     <div>
                         <input
