@@ -4,15 +4,12 @@ namespace App\Controller\Api\Zone;
 
 use App\AdherentSpace\AdherentSpaceEnum;
 use App\Controller\EnMarche\AccessDelegatorTrait;
-use App\Entity\Adherent;
-use App\Entity\Geo\Zone;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\AuthorizationChecker;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,12 +19,9 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @IsGranted("REQUEST_SCOPE_GRANTED")
  */
-class ZoneAutocompleteController extends AbstractController
+class ZoneAutocompleteController extends AbstractZoneAutocompleteController
 {
     use AccessDelegatorTrait;
-
-    public const QUERY_SEARCH_PARAM = 'q';
-    public const QUERY_ZONE_TYPE_PARAM = 'types';
 
     public function __invoke(
         Request $request,
@@ -36,17 +30,6 @@ class ZoneAutocompleteController extends AbstractController
         ManagedZoneProvider $managedZoneProvider,
         ScopeGeneratorResolver $scopeGeneratorResolver
     ): Response {
-        /** @var Adherent $user */
-        $user = $this->getUser();
-
-        $term = (string) $request->query->get(self::QUERY_SEARCH_PARAM);
-        $zoneTypes = Zone::TYPES;
-        $managedZones = [];
-
-        if (($zoneTypesFromRequest = $request->query->get(self::QUERY_ZONE_TYPE_PARAM)) && \is_array($zoneTypesFromRequest)) {
-            $zoneTypes = $zoneTypesFromRequest;
-        }
-
         if ($scope = $scopeGeneratorResolver->generate()) {
             $managedZones = $scope->getZones();
         } else {
@@ -58,12 +41,11 @@ class ZoneAutocompleteController extends AbstractController
             }
         }
 
-        return $this->json($repository->searchByTermAndManagedZonesGroupedByType(
-            $term,
-            $managedZones,
-            $zoneTypes,
-            true,
-            10
-        ), Response::HTTP_OK, [], ['groups' => ['zone_read']]);
+        return $this->json(
+            $repository->searchByFilterInsideManagedZones($this->getFilter($request), $managedZones ?? [], 10),
+            Response::HTTP_OK,
+            [],
+            ['groups' => ['zone_read']]
+        );
     }
 }
