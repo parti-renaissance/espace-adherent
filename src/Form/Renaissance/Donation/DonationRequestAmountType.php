@@ -15,7 +15,7 @@ class DonationRequestAmountType extends AbstractType
         $builder
             ->add('amount', HiddenType::class)
             ->add('duration', HiddenType::class)
-            ->add('destination', HiddenType::class)
+            ->add('localDestination', HiddenType::class)
         ;
     }
 

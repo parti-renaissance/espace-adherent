@@ -27,12 +27,12 @@ export default class DonationDestinationChooser extends React.Component {
                         <input
                             type="checkbox"
                             className="form-checkbox"
-                            name="donation-destination"
-                            id="donation-destination"
+                            name="localDestination"
+                            id="donation-localDestination"
                             defaultChecked={this.state.destination}
                             onChange={() => this.handleDestinationChange(true)}
                         />
-                        <label htmlFor="donation-destination" id="donation-destination_label" className={'ml-2'}>
+                        <label htmlFor="donation-localDestination" id="donation-localDestination_label" className={'ml-2'}>
                             Je souhaite que mon don participe au financement de mon assemblée départementale.
                         </label>
                     </div>

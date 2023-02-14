@@ -189,7 +189,6 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         return [
             LoadAdherentData::class,
             LoadDonatorIdentifierData::class,
-            LoadGeoZoneData::class,
         ];
     }
 }
