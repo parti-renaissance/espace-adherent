@@ -66,6 +66,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
             '654321'
         );
         $this->createTransaction($donation0);
+        $donation0->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_75'));
 
         $donation1 = $this->createDonation(
             $donator2,

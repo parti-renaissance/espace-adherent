@@ -409,6 +409,27 @@ class ZoneRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findOneDepartmentByPostalCode(string $postalCode): ?Zone
+    {
+        return $this->createQueryBuilder('dpt_zone')
+            ->innerJoin('dpt_zone.children', 'city_zone')
+            ->andWhere('dpt_zone.type = :dpt_zone_type')
+            ->andWhere('city_zone.type IN (:city_zone_type)')
+            ->setParameter('dpt_zone_type', Zone::DEPARTMENT)
+            ->setParameter('city_zone_type', [Zone::CITY, Zone::BOROUGH])
+            ->andWhere('city_zone.postalCode LIKE :postal_code_1 or city_zone.postalCode LIKE :postal_code_2')
+            ->setParameters([
+                'postal_code_1' => $postalCode.'%',
+                'postal_code_2' => '%,'.$postalCode.'%',
+                'dpt_zone_type' => Zone::DEPARTMENT,
+                'city_zone_type' => [Zone::CITY, Zone::BOROUGH],
+            ])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function findGeoZoneByGeoRegion(Region $region): ?Zone
     {
         return $this->createQueryBuilder('zone')

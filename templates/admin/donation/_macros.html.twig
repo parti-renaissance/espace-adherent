@@ -35,3 +35,21 @@
         </span>
     {% endspaceless %}
 {% endmacro %}
+
+{% macro get_donation_destination_badge(destination) %}
+
+    {% spaceless %}
+        <span class="badge
+            {% if destination is null %}
+                bg-blue
+            {% else %}
+                bg-green
+            {% endif %}
+            ">
+            {{ ('donation.destination.'~ (destination ? 'local' : 'national'))|trans }}
+            {% if destination is not null %}
+                ({{ destination.name }} [{{ destination.code }}])
+            {% endif %}
+        </span>
+    {% endspaceless %}
+{% endmacro %}

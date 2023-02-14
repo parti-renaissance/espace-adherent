@@ -631,6 +631,8 @@ donation.status.canceled: Souscription annulée/désabonnée
 donation.status.finished: Don terminé avec succes
 donation.status.error: Erreur
 donation.source.membership: Adhésion RE
+donation.destination.local: Mixte
+donation.destination.national: Siège
 
 #
 # Transactions
