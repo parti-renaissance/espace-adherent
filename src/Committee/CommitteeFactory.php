@@ -57,6 +57,7 @@ class CommitteeFactory
             $data['created_at'] ?? 'now'
         );
 
+        $committee->version = 1;
         $committee->setNameLocked($data['name_locked'] ?? false);
         $committee->setSocialNetworks(
             $data['facebook_page_url'] ?? null,
@@ -86,7 +87,7 @@ class CommitteeFactory
             $command->getAdherent(),
             $command->name,
             $command->description,
-            $this->addressFactory->createFromAddress($command->getAddress()),
+            $this->addressFactory->createFromAddress($command->getAddress(), true),
             $command->getPhone()
         );
 

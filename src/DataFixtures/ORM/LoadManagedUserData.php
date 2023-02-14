@@ -245,7 +245,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            LoadCommitteeData::class,
+            LoadCommitteeV1Data::class,
             LoadGeoZoneData::class,
         ];
     }

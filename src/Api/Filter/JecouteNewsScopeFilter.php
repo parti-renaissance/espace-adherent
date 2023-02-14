@@ -21,7 +21,8 @@ final class JecouteNewsScopeFilter extends AbstractScopeFilter
     protected function applyFilter(
         QueryBuilder $queryBuilder,
         Adherent $currentUser,
-        ScopeGeneratorInterface $scopeGenerator
+        ScopeGeneratorInterface $scopeGenerator,
+        string $resourceClass
     ): void {
         $alias = $queryBuilder->getRootAliases()[0];
         $user = $scopeGenerator->isDelegatedAccess() ? $scopeGenerator->getDelegatedAccess()->getDelegator() : $currentUser;

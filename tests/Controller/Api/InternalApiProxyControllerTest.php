@@ -73,7 +73,7 @@ class InternalApiProxyControllerTest extends AbstractApiCaseTest
             '/api/v3/internal/%s/api/v3/events?scope=%s&name=%s',
             LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_04_UUID,
             ScopeEnum::REFERENT,
-            urlencode('Grand Meeting de Paris'),
+            urlencode('Grand Meeting'),
         );
 
         $this->client->request(Request::METHOD_GET, $url, [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);

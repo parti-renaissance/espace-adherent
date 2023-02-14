@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Address\AddressInterface;
 use App\AdherentMessage\StaticSegmentInterface;
+use App\Api\Filter\InZoneOfScopeFilter;
 use App\Committee\Exception\CommitteeProvisionalSupervisorException;
 use App\Committee\Exception\CommitteeSupervisorException;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
@@ -21,29 +24,48 @@ use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * This entity represents a committee group.
  *
+ * @ApiResource(
+ *     routePrefix="/v3",
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"committee:list"}
+ *         },
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')"
+ *     },
+ *     itemOperations={},
+ *     collectionOperations={
+ *         "get",
+ *     }
+ * )
+ *
+ * @ApiFilter(InZoneOfScopeFilter::class)
+ *
  * @ORM\Table(
  *     name="committees",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="committee_canonical_name_unique", columns={"canonical_name"}),
- *         @ORM\UniqueConstraint(name="committee_slug_unique", columns={"slug"}),
+ *         @ORM\UniqueConstraint(columns={"canonical_name"}),
+ *         @ORM\UniqueConstraint(columns={"slug"}),
  *     },
  *     indexes={
- *         @ORM\Index(name="committee_status_idx", columns={"status"})
+ *         @ORM\Index(columns={"status"}),
+ *         @ORM\Index(columns={"version"}),
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeRepository")
  */
-class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntity, ExposedObjectInterface
+class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntity, ExposedObjectInterface, EntityAdherentBlameableInterface
 {
-    use EntityPostAddressTrait;
+    use EntityNullablePostAddressTrait;
     use EntityReferentTagTrait;
     use EntityZoneTrait;
     use EntityElectionHelperTrait;
     use StaticSegmentTrait;
+    use EntityAdherentBlameableTrait;
 
     public const CLOSED = 'CLOSED';
     public const WAITING_STATUSES = [
@@ -60,6 +82,8 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
      * The group description.
      *
      * @ORM\Column(type="text")
+     *
+     * @Groups({"committee:list"})
      */
     protected $description;
 
@@ -115,12 +139,17 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
      */
     protected $closedAt;
 
+    /**
+     * @ORM\Column(type="smallint", options={"unsigned": true, "default": "2"})
+     */
+    public int $version = 2;
+
     public function __construct(
         UuidInterface $uuid,
         UuidInterface $creator,
         string $name,
         string $description,
-        PostAddress $address,
+        AddressInterface $address = null,
         PhoneNumber $phone = null,
         string $slug = null,
         string $status = self::PENDING,
@@ -185,8 +214,8 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         string $creatorUuid,
         string $name,
         string $description,
-        PostAddress $address,
-        PhoneNumber $phone,
+        AddressInterface $address = null,
+        PhoneNumber $phone = null,
         string $createdAt = 'now'
     ): self {
         $committee = new self(
@@ -206,7 +235,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         Adherent $adherent,
         string $name,
         string $description,
-        PostAddress $address,
+        AddressInterface $address,
         ?PhoneNumber $phone = null,
         string $createdAt = 'now'
     ): self {
@@ -313,7 +342,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return $links;
     }
 
-    public function update(string $name, string $description, PostAddress $address): void
+    public function update(string $name, string $description, AddressInterface $address): void
     {
         $this->setName($name);
         $this->description = $description;

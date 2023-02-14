@@ -5,7 +5,7 @@ namespace Tests\App\Controller\Admin;
 use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
 use App\Committee\CommitteeAdherentMandateManager;
 use App\DataFixtures\ORM\LoadAdherentData;
-use App\DataFixtures\ORM\LoadCommitteeData;
+use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
@@ -32,7 +32,7 @@ class AdminCommitteeControllerTest extends WebTestCase
      */
     public function testCannotChangeMandateIfCommitteeNotApprovedAction(string $action): void
     {
-        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_2_UUID);
         $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_1_UUID);
 
         $this->assertFalse($committee->isApproved());
@@ -307,7 +307,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
     public function testCannotAddMandateIfNoAvailableMandates(): void
     {
-        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_3_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_3_UUID);
 
         $this->authenticateAsAdmin($this->client);
 
@@ -338,7 +338,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
     public function testCannotAddMandateWhenNoAdherent(): void
     {
-        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_7_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_7_UUID);
 
         $this->authenticateAsAdmin($this->client);
 
@@ -361,7 +361,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
     public function testCannotAddMandateWhenNotCorrectGender(): void
     {
-        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_7_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_7_UUID);
         $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_7_UUID);
 
         $this->authenticateAsAdmin($this->client);
@@ -389,7 +389,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
     public function testCannotAddMandateWhenAdherentIsMinor(): void
     {
-        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_7_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_7_UUID);
         $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_11_UUID);
 
         $this->authenticateAsAdmin($this->client);
@@ -417,7 +417,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
     public function testCanAddMandateEvenAnotherSupervisor(): void
     {
-        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_7_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_7_UUID);
         $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_7_UUID);
 
         /** @var CommitteeAdherentMandate $newMandate */
@@ -546,8 +546,8 @@ class AdminCommitteeControllerTest extends WebTestCase
 
     public function provideMandateUuid(): iterable
     {
-        yield [LoadCommitteeData::COMMITTEE_11_UUID]; // REFUSED
-        yield [LoadCommitteeData::COMMITTEE_16_UUID]; // PENDING
+        yield [LoadCommitteeV1Data::COMMITTEE_11_UUID]; // REFUSED
+        yield [LoadCommitteeV1Data::COMMITTEE_16_UUID]; // PENDING
     }
 
     protected function setUp(): void

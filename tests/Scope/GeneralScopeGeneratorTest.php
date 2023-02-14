@@ -160,6 +160,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                     'department_site',
                     'elected_representative',
                     'adherent_formations',
+                    'committee',
                 ],
             ],
         ]];

@@ -614,7 +614,7 @@ timeline.measure.status.upcoming: à venir
 #
 # UserDocument
 #
-document.upload.success: Le document a été uploadé avec succès.
+document.upload.success: Le document a été téléchargé avec succès.
 
 #
 # Donation

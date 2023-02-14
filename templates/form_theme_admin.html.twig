@@ -116,7 +116,7 @@
     {% set object = form.parent.vars.value %}
     {% if object.filename is defined and object.filename is not empty %}
         <a href="{{ path('app_admin_donation_file', { id: object.id }) }}" target="_blank">
-            <i class="fa fa-link" aria-hidden="true"></i> Voir le fichier uploadé
+            <i class="fa fa-link" aria-hidden="true"></i> Voir le fichier téléchargé
         </a>
     {% endif %}
 {% endblock %}

@@ -862,7 +862,7 @@ class CommitteeRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilder('c')
-            ->where('c.createdAt > :from')
+            ->where('c.createdAt > :from AND c.version = 1')
             ->setParameter('from', new \DateTime('2021-01-01 00:00:00'))
         ;
 

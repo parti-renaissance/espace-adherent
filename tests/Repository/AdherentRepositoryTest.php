@@ -4,7 +4,7 @@ namespace Tests\App\Repository;
 
 use App\BoardMember\BoardMemberFilter;
 use App\DataFixtures\ORM\LoadAdherentData;
-use App\DataFixtures\ORM\LoadCommitteeData;
+use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\DataFixtures\ORM\LoadPhoningCampaignData;
 use App\Entity\Adherent;
 use App\Entity\Committee;
@@ -142,38 +142,38 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
     public function testFindCommitteeHostMembersList()
     {
         // Approved committees
-        $this->assertCount(2, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)), '1 supervisor + 1 host');
-        $this->assertCount(4, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)), '1 supervisor + 1 host');
-        $this->assertCount(1, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_4_UUID)), '1 supervisor');
-        $this->assertCount(2, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_5_UUID)), '1 supervisor');
+        $this->assertCount(2, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)), '1 supervisor + 1 host');
+        $this->assertCount(4, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)), '1 supervisor + 1 host');
+        $this->assertCount(1, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_4_UUID)), '1 supervisor');
+        $this->assertCount(2, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_5_UUID)), '1 supervisor');
 
         // Unapproved committees
-        $this->assertCount(0, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_2_UUID)));
+        $this->assertCount(0, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_2_UUID)));
     }
 
     public function testCountHostMembersInCommittee()
     {
-        $this->assertSame(2, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
-        $this->assertSame(4, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)));
-        $this->assertSame(1, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_4_UUID)));
+        $this->assertSame(2, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
+        $this->assertSame(4, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)));
+        $this->assertSame(1, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_4_UUID)));
     }
 
     public function testCountSupervisorMembersInCommittee()
     {
-        $this->assertSame(1, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
-        $this->assertSame(3, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)));
-        $this->assertSame(2, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeData::COMMITTEE_7_UUID)));
+        $this->assertSame(1, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
+        $this->assertSame(3, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)));
+        $this->assertSame(2, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_7_UUID)));
     }
 
     public function testMemberIsCommitteeHost()
     {
         $this->assertTrue($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_3_UUID)));
-        $this->assertTrue($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_3_UUID), $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
-        $this->assertFalse($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_3_UUID), $this->getCommittee(LoadCommitteeData::COMMITTEE_2_UUID)));
+        $this->assertTrue($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_3_UUID), $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
+        $this->assertFalse($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_3_UUID), $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_2_UUID)));
 
         $this->assertTrue($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_5_UUID)));
-        $this->assertTrue($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_5_UUID), $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
-        $this->assertFalse($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_5_UUID), $this->getCommittee(LoadCommitteeData::COMMITTEE_2_UUID)));
+        $this->assertTrue($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_5_UUID), $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
+        $this->assertFalse($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_5_UUID), $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_2_UUID)));
 
         $this->assertFalse($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_1_UUID)));
         $this->assertFalse($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_2_UUID)));

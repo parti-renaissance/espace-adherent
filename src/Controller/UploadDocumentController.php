@@ -74,12 +74,12 @@ class UploadDocumentController extends AbstractController
 
         if (0 === $request->files->count()) {
             return $this->json(
-                ['message' => 'Aucun document uploadé.'],
+                ['message' => 'Aucun document téléchargé.'],
                 Response::HTTP_BAD_REQUEST
             );
         }
 
-        $message = 'Le document a été uploadé avec succès.';
+        $message = 'Le document a été téléchargé avec succès.';
         try {
             $document = $manager->createAndSave($request->files->get('upload'), $type);
             $url = $this->generateUrl('app_download_user_document', ['uuid' => $document->getUuid()->toString(), 'filename' => $document->getOriginalName()], UrlGeneratorInterface::ABSOLUTE_URL);

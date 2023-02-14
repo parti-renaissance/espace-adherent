@@ -94,7 +94,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
     public function getDependencies()
     {
         return [
-            LoadCommitteeData::class,
+            LoadCommitteeV1Data::class,
             LoadDistrictData::class,
             LoadGeoZoneData::class,
         ];

@@ -3,7 +3,7 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\Committee\CommitteeManager;
-use App\DataFixtures\ORM\LoadCommitteeData;
+use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
@@ -276,7 +276,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertCountMails(0, EventNotificationMessage::class, 'carl999@example.fr');
         $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
 
-        $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadCommitteeData::COMMITTEE_1_UUID);
+        $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadCommitteeV1Data::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);
         $this->assertInstanceOf(CommitteeEvent::class, $eventItem->getEvent());
 
@@ -336,7 +336,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertCountMails(0, EventNotificationMessage::class, 'carl999@example.fr');
         $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
 
-        $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadCommitteeData::COMMITTEE_1_UUID);
+        $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadCommitteeV1Data::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);
         $this->assertInstanceOf(CommitteeEvent::class, $eventItem->getEvent());
 
@@ -388,14 +388,14 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertTrue($this->seeFlashMessage($crawler, 'Votre message a bien été envoyé.'));
         $this->assertCountTimelineMessages($crawler, 9, 'Message should not be published');
 
-        $message = $this->committeeFeedItemRepository->findMostRecentFeedMessage(LoadCommitteeData::COMMITTEE_1_UUID);
+        $message = $this->committeeFeedItemRepository->findMostRecentFeedMessage(LoadCommitteeV1Data::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame('Bienvenue !', $message->getContent());
 
         $mail = $this->getEmailRepository()->findMostRecentMessage(CommitteeMessageNotificationMessage::class);
         $this->assertMailCountRecipients(
             $this->getCommitteeSubscribersCount(
-                $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)
+                $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)
             ),
             $mail
         );

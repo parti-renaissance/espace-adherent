@@ -152,7 +152,7 @@ class LoadCommitteeCandidacyData extends Fixture implements DependentFixtureInte
     public function getDependencies()
     {
         return [
-            LoadCommitteeData::class,
+            LoadCommitteeV1Data::class,
         ];
     }
 

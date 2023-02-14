@@ -8,7 +8,7 @@ Feature:
     Given the following fixtures are loaded:
       | LoadAdherentData      |
       | LoadEventCategoryData |
-      | LoadCommitteeData     |
+      | LoadCommitteeV1Data   |
 
   Scenario: As deputy of 1st Paris district I can see committees.
     Given I am logged as "deputy@en-marche-dev.fr"

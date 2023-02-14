@@ -36,7 +36,7 @@ class CommitteeUpdateCommandHandler
         $committee->update(
             $command->name,
             $command->description,
-            $this->addressFactory->createFromAddress($command->getAddress())
+            $this->addressFactory->createFromAddress($command->getAddress(), true)
         );
 
         $committee->setSocialNetworks($command->facebookPageUrl, $command->twitterNickname);
@@ -58,7 +58,7 @@ class CommitteeUpdateCommandHandler
         $committee->update(
             $command->name,
             $command->description,
-            $this->addressFactory->createFromAddress($command->getAddress())
+            $this->addressFactory->createFromAddress($command->getAddress(), true)
         );
 
         if ($adherentPSF = $command->getProvisionalSupervisorFemale()) {

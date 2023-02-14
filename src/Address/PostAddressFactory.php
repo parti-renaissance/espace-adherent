@@ -3,6 +3,7 @@
 namespace App\Address;
 
 use App\Entity\Geo\Zone;
+use App\Entity\NullablePostAddress;
 use App\Entity\PostAddress;
 
 class PostAddressFactory
@@ -37,13 +38,32 @@ class PostAddressFactory
         return $address;
     }
 
-    public static function createFromAddress(Address $address): PostAddress
+    public static function createFromAddress(Address $address, bool $nullable = false): AddressInterface
     {
         if ($address->isFrenchAddress()) {
+            if ($nullable) {
+                return NullablePostAddress::createFrenchAddress(
+                    $address->getAddress(),
+                    $address->getCity(),
+                    $address->getCityName(),
+                    $address->getRegion()
+                );
+            }
+
             return PostAddress::createFrenchAddress(
                 $address->getAddress(),
                 $address->getCity(),
                 $address->getCityName(),
+                $address->getRegion()
+            );
+        }
+
+        if ($nullable) {
+            return NullablePostAddress::createAddress(
+                $address->getCountry(),
+                $address->getPostalCode(),
+                $address->getCityName(),
+                $address->getAddress(),
                 $address->getRegion()
             );
         }

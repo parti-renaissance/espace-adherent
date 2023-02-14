@@ -3,7 +3,7 @@
 namespace Tests\App\Repository;
 
 use App\DataFixtures\ORM\LoadAdherentData;
-use App\DataFixtures\ORM\LoadCommitteeData;
+use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\CommitteeMembership;
 use App\Repository\CommitteeMembershipRepository;
 use Tests\App\AbstractKernelTestCase;
@@ -20,11 +20,11 @@ class CommitteeMembershipRepositoryTest extends AbstractKernelTestCase
 
     public function testFindCommitteeMembersMemberships()
     {
-        $this->assertNull($this->repository->findMembership($this->getAdherent(LoadAdherentData::ADHERENT_1_UUID), $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
-        $this->assertInstanceOf(CommitteeMembership::class, $this->repository->findMembership($this->getAdherent(LoadAdherentData::ADHERENT_2_UUID), $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
-        $this->assertInstanceOf(CommitteeMembership::class, $this->repository->findMembership($this->getAdherent(LoadAdherentData::ADHERENT_3_UUID), $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
-        $this->assertInstanceOf(CommitteeMembership::class, $this->repository->findMembership($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID), $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
-        $this->assertInstanceOf(CommitteeMembership::class, $this->repository->findMembership($this->getAdherent(LoadAdherentData::ADHERENT_5_UUID), $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
+        $this->assertNull($this->repository->findMembership($this->getAdherent(LoadAdherentData::ADHERENT_1_UUID), $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
+        $this->assertInstanceOf(CommitteeMembership::class, $this->repository->findMembership($this->getAdherent(LoadAdherentData::ADHERENT_2_UUID), $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
+        $this->assertInstanceOf(CommitteeMembership::class, $this->repository->findMembership($this->getAdherent(LoadAdherentData::ADHERENT_3_UUID), $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
+        $this->assertInstanceOf(CommitteeMembership::class, $this->repository->findMembership($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID), $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
+        $this->assertInstanceOf(CommitteeMembership::class, $this->repository->findMembership($this->getAdherent(LoadAdherentData::ADHERENT_5_UUID), $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
     }
 
     protected function setUp(): void

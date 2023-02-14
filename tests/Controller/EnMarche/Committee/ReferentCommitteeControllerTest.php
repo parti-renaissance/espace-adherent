@@ -3,7 +3,7 @@
 namespace Tests\App\Controller\EnMarche\Committee;
 
 use App\DataFixtures\ORM\LoadAdherentData;
-use App\DataFixtures\ORM\LoadCommitteeData;
+use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Committee;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -375,12 +375,12 @@ class ReferentCommitteeControllerTest extends WebTestCase
     public function provideAdherents(): array
     {
         return [
-            ['referent@en-marche-dev.fr', LoadCommitteeData::COMMITTEE_16_UUID, 'pre-approuver', Response::HTTP_OK],
-            ['referent@en-marche-dev.fr', LoadCommitteeData::COMMITTEE_16_UUID, 'pre-refuser', Response::HTTP_FOUND],
-            ['referent@en-marche-dev.fr', LoadCommitteeData::COMMITTEE_1_UUID, 'pre-approuver', Response::HTTP_FORBIDDEN],
-            ['referent@en-marche-dev.fr', LoadCommitteeData::COMMITTEE_1_UUID, 'pre-refuser', Response::HTTP_FORBIDDEN],
-            ['coordinateur@en-marche-dev.fr', LoadCommitteeData::COMMITTEE_15_UUID, 'pre-approuver', Response::HTTP_FORBIDDEN],
-            ['coordinateur@en-marche-dev.fr', LoadCommitteeData::COMMITTEE_15_UUID, 'pre-refuser', Response::HTTP_FORBIDDEN],
+            ['referent@en-marche-dev.fr', LoadCommitteeV1Data::COMMITTEE_16_UUID, 'pre-approuver', Response::HTTP_OK],
+            ['referent@en-marche-dev.fr', LoadCommitteeV1Data::COMMITTEE_16_UUID, 'pre-refuser', Response::HTTP_FOUND],
+            ['referent@en-marche-dev.fr', LoadCommitteeV1Data::COMMITTEE_1_UUID, 'pre-approuver', Response::HTTP_FORBIDDEN],
+            ['referent@en-marche-dev.fr', LoadCommitteeV1Data::COMMITTEE_1_UUID, 'pre-refuser', Response::HTTP_FORBIDDEN],
+            ['coordinateur@en-marche-dev.fr', LoadCommitteeV1Data::COMMITTEE_15_UUID, 'pre-approuver', Response::HTTP_FORBIDDEN],
+            ['coordinateur@en-marche-dev.fr', LoadCommitteeV1Data::COMMITTEE_15_UUID, 'pre-refuser', Response::HTTP_FORBIDDEN],
         ];
     }
 
