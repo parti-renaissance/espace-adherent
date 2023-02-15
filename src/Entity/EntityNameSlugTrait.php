@@ -21,6 +21,7 @@ trait EntityNameSlugTrait
      *     "event_read",
      *     "committee_sync",
      *     "committee:list",
+     *     "committee:write",
      * })
      */
     protected $name;

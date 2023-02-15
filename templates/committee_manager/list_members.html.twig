@@ -165,7 +165,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% set adherentIds = committee.activeAdherentMandateAdherentIds %}
+                {% set adherentIds = committee.getActiveAdherentMandateAdherentIds() %}
                 {% set can_add_host = is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee) %}
                 {% for membership in members %}
                     {% set member = membership.adherent %}

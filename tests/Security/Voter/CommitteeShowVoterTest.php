@@ -4,29 +4,28 @@ namespace Tests\App\Security\Voter;
 
 use App\Committee\CommitteePermissions;
 use App\Entity\Adherent;
-use App\Entity\BaseGroup;
 use App\Entity\Committee;
 use App\Security\Voter\AbstractAdherentVoter;
-use App\Security\Voter\ShowGroupVoter;
+use App\Security\Voter\CommitteeShowVoter;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\UuidInterface;
 
-class ShowGroupVoterTest extends AbstractAdherentVoterTest
+class CommitteeShowVoterTest extends AbstractAdherentVoterTest
 {
     protected function getVoter(): AbstractAdherentVoter
     {
-        return new ShowGroupVoter();
+        return new CommitteeShowVoter();
     }
 
     public function provideAnonymousCases(): iterable
     {
         // Not approved groups should been shown to anonymous
-        $notApprovedCommittee = $this->getGroupMock(Committee::class, false);
+        $notApprovedCommittee = $this->getCommitteeMock(false);
 
         yield [false, true, CommitteePermissions::SHOW, $notApprovedCommittee];
 
         // Approved groups should be shown to anonymous
-        $approvedCommittee = $this->getGroupMock(Committee::class, true);
+        $approvedCommittee = $this->getCommitteeMock(true);
 
         yield [true, false, CommitteePermissions::SHOW, $approvedCommittee];
     }
@@ -34,10 +33,10 @@ class ShowGroupVoterTest extends AbstractAdherentVoterTest
     /**
      * @dataProvider provideGroupCases
      */
-    public function testAdherentIsGrantedIfGroupIsApproved(string $groupClass, bool $approved, string $attribute)
+    public function testAdherentIsGrantedIfGroupIsApproved(bool $approved, string $attribute)
     {
         $adherent = $this->getAdherentMock(!$approved);
-        $group = $this->getGroupMock($groupClass, $approved, false);
+        $group = $this->getCommitteeMock($approved, false);
 
         $this->assertGrantedForAdherent($approved, !$approved, $adherent, $attribute, $group);
     }
@@ -45,21 +44,18 @@ class ShowGroupVoterTest extends AbstractAdherentVoterTest
     /**
      * @dataProvider provideGroupCases
      */
-    public function testAdherentIsGrantedWhenGroupIsNotApprovedIfCreator(
-        string $groupClass,
-        bool $approved,
-        string $attribute
-    ) {
+    public function testAdherentIsGrantedWhenGroupIsNotApprovedIfCreator(bool $approved, string $attribute)
+    {
         $adherent = $this->getAdherentMock(!$approved);
-        $group = $this->getGroupMock($groupClass, $approved, true);
+        $group = $this->getCommitteeMock($approved, true);
 
         $this->assertGrantedForAdherent(true, !$approved, $adherent, $attribute, $group);
     }
 
     public function provideGroupCases(): iterable
     {
-        yield [Committee::class, true, CommitteePermissions::SHOW];
-        yield [Committee::class, false, CommitteePermissions::SHOW];
+        yield [true, CommitteePermissions::SHOW];
+        yield [false, CommitteePermissions::SHOW];
     }
 
     /**
@@ -84,11 +80,11 @@ class ShowGroupVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return BaseGroup|MockObject
+     * @return Committee|MockObject
      */
-    private function getGroupMock(string $groupClass, bool $approved, bool $withCreator = null): BaseGroup
+    private function getCommitteeMock(bool $approved, bool $withCreator = null): Committee
     {
-        $group = $this->createMock($groupClass);
+        $group = $this->createMock(Committee::class);
 
         $group->expects($this->once())
             ->method('isApproved')

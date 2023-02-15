@@ -4,11 +4,10 @@ namespace App\Security\Voter;
 
 use App\Committee\CommitteePermissions;
 use App\Entity\Adherent;
-use App\Entity\BaseGroup;
 use App\Entity\Committee;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class ShowGroupVoter extends AbstractAdherentVoter
+class CommitteeShowVoter extends AbstractAdherentVoter
 {
     protected function supports(string $attribute, $group): bool
     {
@@ -17,22 +16,22 @@ class ShowGroupVoter extends AbstractAdherentVoter
 
     /**
      * @param string    $attribute
-     * @param BaseGroup $group
+     * @param Committee $subject
      */
-    protected function voteOnAttribute($attribute, $group, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        if ($group->isApproved()) {
+        if ($subject->isApproved()) {
             return true;
         }
 
-        return parent::voteOnAttribute($attribute, $group, $token);
+        return parent::voteOnAttribute($attribute, $subject, $token);
     }
 
     /**
-     * @param BaseGroup $group
+     * @param Committee $subject
      */
-    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $group): bool
+    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        return $group->isCreatedBy($adherent->getUuid());
+        return $subject->isCreatedBy($adherent->getUuid());
     }
 }

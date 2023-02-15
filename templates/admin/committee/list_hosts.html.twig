@@ -17,8 +17,8 @@
 {% endmacro %}
 
 {% block field %}
-    {% set supervisors = object.supervisors(false) %}
-    {% set provisionalSupervisors = object.supervisors(true) %}
+    {% set supervisors = object.getSupervisors(false) %}
+    {% set provisionalSupervisors = object.getSupervisors(true) %}
     {% if supervisors|length > 0 %}
         <p>Animateur{{ supervisors|length > 1 ? 's' }}:</p>
         <ul>

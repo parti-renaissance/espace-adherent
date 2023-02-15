@@ -143,6 +143,11 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         return $this->country;
     }
 
+    public function setCountry(?string $country): void
+    {
+        $this->country = $country;
+    }
+
     public function getCity(): ?string
     {
         return $this->city;
@@ -163,9 +168,19 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         return $this->address;
     }
 
+    public function setAddress(?string $address): void
+    {
+        $this->address = $address;
+    }
+
     public function getPostalCode(): ?string
     {
         return $this->postalCode;
+    }
+
+    public function setPostalCode(?string $postalCode): void
+    {
+        $this->postalCode = $postalCode;
     }
 
     public function getLatitude(): ?float

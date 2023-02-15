@@ -122,6 +122,7 @@ class Zone implements GeoInterface
      *     "elected_mandate_read",
      *     "general_meeting_report_list_read",
      *     "general_meeting_report_read",
+     *     "committee:read",
      * })
      *
      * @ApiProperty(
@@ -142,7 +143,12 @@ class Zone implements GeoInterface
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"zone_read", "scope", "read_api"})
+     * @SymfonySerializer\Groups({
+     *     "zone_read",
+     *     "scope",
+     *     "read_api",
+     *     "committee:read",
+     * })
      */
     private $type;
 

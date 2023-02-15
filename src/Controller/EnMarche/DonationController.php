@@ -211,7 +211,6 @@ class DonationController extends AbstractController
                         $logger->info(sprintf('Subscription donation id(%d) from user email %s have been cancel successfully.', $donation->getId(), $this->getUser()->getEmailAddress()));
                     } catch (PayboxPaymentUnsubscriptionException $e) {
                         $this->addFlash('danger', 'La requête n\'a pas abouti, veuillez réessayer s\'il vous plait. Si le problème persiste, merci de nous contacter en <a href="https://contact.en-marche.fr/" target="_blank">cliquant ici</a>');
-                        $this->addFlash('danger', $e->getCodeError());
 
                         $logger->error(sprintf('Subscription donation id(%d) from user email %s have an error.', $donation->getId(), $this->getUser()->getEmailAddress()), ['exception' => $e]);
                     }

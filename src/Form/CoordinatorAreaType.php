@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\BaseGroup;
+use App\Entity\Committee;
 use App\Entity\CoordinatorAreaInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -18,11 +18,11 @@ class CoordinatorAreaType extends AbstractType
             ->add('id', HiddenType::class)
         ;
 
-        if (\in_array($options['status'], [CoordinatorAreaInterface::PRE_APPROVED, BaseGroup::PENDING], true)) {
+        if (\in_array($options['status'], [CoordinatorAreaInterface::PRE_APPROVED, Committee::PENDING], true)) {
             $builder->add('refuse', SubmitType::class);
         }
 
-        if (\in_array($options['status'], [CoordinatorAreaInterface::PRE_REFUSED, BaseGroup::PENDING], true)) {
+        if (\in_array($options['status'], [CoordinatorAreaInterface::PRE_REFUSED, Committee::PENDING], true)) {
             $builder->add('accept', SubmitType::class);
         }
     }
@@ -30,7 +30,7 @@ class CoordinatorAreaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'status' => BaseGroup::PENDING,
+            'status' => Committee::PENDING,
         ]);
     }
 

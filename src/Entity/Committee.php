@@ -11,9 +11,12 @@ use App\Committee\Exception\CommitteeProvisionalSupervisorException;
 use App\Committee\Exception\CommitteeSupervisorException;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
+use App\Entity\Geo\Zone;
+use App\Entity\Report\ReportableInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
 use App\Exception\CommitteeAlreadyApprovedException;
+use App\Geocoder\GeoPointInterface;
 use App\Report\ReportType;
 use App\ValueObject\Genders;
 use App\ValueObject\Link;
@@ -25,6 +28,7 @@ use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * This entity represents a committee group.
@@ -33,13 +37,35 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     routePrefix="/v3",
  *     attributes={
  *         "normalization_context": {
- *             "groups": {"committee:list"}
+ *             "groups": {"committee:list"},
  *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')"
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')",
  *     },
- *     itemOperations={},
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/committees/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
+ *             "normalization_context": {
+ *                 "groups": {"committee:list", "committee:read"},
+ *             },
+ *         },
+ *         "put": {
+ *             "path": "/committees/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
+ *             "denormalization_context": {
+ *                 "groups": {"committee:write"},
+ *             },
+ *         },
+ *     },
  *     collectionOperations={
  *         "get",
+ *         "post": {
+ *             "denormalization_context": {
+ *                 "groups": {"committee:write"},
+ *             },
+ *         },
  *     }
  * )
  *
@@ -58,7 +84,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeRepository")
  */
-class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntity, ExposedObjectInterface, EntityAdherentBlameableInterface
+class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntity, ExposedObjectInterface, EntityAdherentBlameableInterface, GeoPointInterface, CoordinatorAreaInterface, ReportableInterface, EntityAdministratorBlameableInterface
 {
     use EntityNullablePostAddressTrait;
     use EntityReferentTagTrait;
@@ -66,26 +92,84 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     use EntityElectionHelperTrait;
     use StaticSegmentTrait;
     use EntityAdherentBlameableTrait;
+    use EntityAdministratorBlameableTrait;
+    use CoordinatorAreaTrait;
+    use EntityIdentityTrait;
+    use EntityCrudTrait;
+    use EntityTimestampableTrait;
+    use EntityNameSlugTrait;
 
+    public const APPROVED = 'APPROVED';
+    public const PENDING = 'PENDING';
+    public const REFUSED = 'REFUSED';
     public const CLOSED = 'CLOSED';
+
     public const WAITING_STATUSES = [
         self::PENDING,
         self::PRE_APPROVED,
         self::PRE_REFUSED,
     ];
+
     public const BLOCKED_STATUSES = [
         self::CLOSED,
         self::REFUSED,
     ];
 
     /**
+     * The group current status.
+     *
+     * @ORM\Column(length=20)
+     */
+    protected $status;
+
+    /**
+     * The timestamp when an administrator approved this group.
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $approvedAt;
+
+    /**
+     * The timestamp when an administrator refused this group.
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $refusedAt;
+
+    /**
+     * The adherent UUID who created this group.
+     *
+     * @ORM\Column(type="uuid", nullable=true)
+     */
+    private $createdBy;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $closedAt;
+
+    /**
+     * @ORM\Column(type="phone_number", nullable=true)
+     */
+    private $phone;
+
+    /**
+     * The cached number of members (followers and hosts/administrators).
+     *
+     * @ORM\Column(type="smallint", options={"unsigned": true})
+     *
+     * @Groups({"committee_sync"})
+     */
+    private $membersCount;
+
+    /**
      * The group description.
      *
      * @ORM\Column(type="text")
      *
-     * @Groups({"committee:list"})
+     * @Groups({"committee:list", "committee:write"})
      */
-    protected $description;
+    private $description;
 
     /**
      * The committee Facebook page URL.
@@ -135,20 +219,29 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     private $adherentMandates;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $closedAt;
-
-    /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": "2"})
      */
     public int $version = 2;
 
+    /**
+     * @var Collection|Zone[]
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
+     *
+     * @Groups({
+     *     "committee:read",
+     *     "committee:write",
+     * })
+     *
+     * @Assert\Count(min=1)
+     */
+    protected $zones;
+
     public function __construct(
-        UuidInterface $uuid,
-        UuidInterface $creator,
-        string $name,
-        string $description,
+        UuidInterface $uuid = null,
+        UuidInterface $creator = null,
+        string $name = null,
+        string $description = null,
         AddressInterface $address = null,
         PhoneNumber $phone = null,
         string $slug = null,
@@ -158,18 +251,24 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         int $membersCount = 0,
         array $referentTags = []
     ) {
-        parent::__construct(
-            $uuid,
-            $creator,
-            $name,
-            $slug,
-            $phone,
-            $status,
-            $approvedAt,
-            $createdAt,
-            $membersCount
-        );
+        if ($approvedAt) {
+            $approvedAt = new \DateTimeImmutable($approvedAt);
+        }
 
+        if ($createdAt) {
+            $createdAt = new \DateTimeImmutable($createdAt);
+        }
+
+        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->createdBy = $creator;
+        $this->setName($name);
+        $this->slug = $slug;
+        $this->phone = $phone;
+        $this->status = $status;
+        $this->membersCount = $membersCount;
+        $this->approvedAt = $approvedAt;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $createdAt;
         $this->description = $description;
         $this->postAddress = $address;
         $this->adherentMandates = new ArrayCollection();
@@ -569,5 +668,95 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     public function getExposedRouteParams(): array
     {
         return ['slug' => $this->getSlug()];
+    }
+
+    public function __toString()
+    {
+        return $this->name ?? '';
+    }
+
+    public static function createUuid(string $name): UuidInterface
+    {
+        return Uuid::uuid5(Uuid::NAMESPACE_OID, static::canonicalize($name));
+    }
+
+    public function setPhone(PhoneNumber $phone = null): void
+    {
+        $this->phone = $phone;
+    }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
+    }
+
+    public function isApproved(): bool
+    {
+        return self::APPROVED === $this->status && $this->approvedAt;
+    }
+
+    public function isPending(): bool
+    {
+        return self::PENDING === $this->status;
+    }
+
+    public function isRefused(): bool
+    {
+        return self::REFUSED === $this->status;
+    }
+
+    public function getMembersCount(): int
+    {
+        return $this->membersCount;
+    }
+
+    public function incrementMembersCount(int $increment = 1): void
+    {
+        $this->membersCount += $increment;
+    }
+
+    public function decrementMembersCount(int $increment = 1): void
+    {
+        $this->membersCount = $increment >= $this->membersCount ? 0 : $this->membersCount - $increment;
+    }
+
+    /**
+     * Marks this committee as refused/rejected.
+     */
+    public function refused(string $timestamp = 'now')
+    {
+        $this->status = self::REFUSED;
+        $this->refusedAt = new \DateTime($timestamp);
+        $this->approvedAt = null;
+    }
+
+    public function getCreatedBy(): ?string
+    {
+        return $this->createdBy ? $this->createdBy->toString() : null;
+    }
+
+    public function isCreatedBy(UuidInterface $uuid): bool
+    {
+        return $this->createdBy && $this->createdBy->equals($uuid);
+    }
+
+    public function getApprovedAt(): ?\DateTimeInterface
+    {
+        return $this->approvedAt;
+    }
+
+    public function equals(self $other): bool
+    {
+        return $this->uuid->equals($other->getUuid());
+    }
+
+    public function getUuidAsString(): string
+    {
+        return $this->getUuid()->toString();
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
     }
 }

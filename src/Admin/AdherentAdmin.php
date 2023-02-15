@@ -10,7 +10,6 @@ use App\Admin\Filter\ReferentTagAutocompleteFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Adherent;
 use App\Entity\AdherentTag;
-use App\Entity\BaseGroup;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\BoardMember\Role;
 use App\Entity\Committee;
@@ -974,7 +973,7 @@ class AdherentAdmin extends AbstractAdmin
                         $queryBuilder = $datagrid->getQuery();
                         $queryBuilder
                             ->andWhere($queryBuilder->getRootAlias().'.status = :approved')
-                            ->setParameter('approved', BaseGroup::APPROVED)
+                            ->setParameter('approved', Committee::APPROVED)
                             ->orderBy($queryBuilder->getRootAlias().'.name', 'ASC')
                         ;
                         $datagrid->setValue($property, null, $value);

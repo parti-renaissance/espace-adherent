@@ -8,6 +8,7 @@ use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\ZoneableEntity;
 use App\Entity\ZoneableWithScopeEntity;
 use App\Geo\ManagedZoneProvider;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -15,33 +16,30 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'MANAGE_ZONEABLE_ITEM__';
 
-    private $session;
-    private $managedZoneProvider;
-    private $authorizationChecker;
-
     public function __construct(
-        SessionInterface $session,
-        ManagedZoneProvider $managedZoneProvider,
-        AuthorizationCheckerInterface $authorizationChecker
+        private readonly SessionInterface $session,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly ManagedZoneProvider $managedZoneProvider,
+        private readonly AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $this->session = $session;
-        $this->managedZoneProvider = $managedZoneProvider;
-        $this->authorizationChecker = $authorizationChecker;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        /** @var ZoneableEntity $subject */
-        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+        if ($scope = $this->scopeGeneratorResolver->generate()) {
+            $adherent = $scope->getDelegator() ?? $adherent;
+        } elseif ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             $adherent = $delegatedAccess->getDelegator();
         }
 
-        if ($subject instanceof ZoneableWithScopeEntity && $scope = $subject->getScope()) {
-            if (!$this->authorizationChecker->isGranted(RequestScopeVoter::PERMISSION, $scope)) {
+        if ($subject instanceof ZoneableWithScopeEntity && $scopeCode = $subject->getScope()) {
+            if (!$this->authorizationChecker->isGranted(RequestScopeVoter::PERMISSION, $scopeCode)) {
                 return false;
             }
 
-            $spaceType = AdherentSpaceEnum::SCOPES[$scope];
+            $spaceType = AdherentSpaceEnum::SCOPES[$scopeCode];
+        } elseif ($scope) {
+            $spaceType = AdherentSpaceEnum::SCOPES[$scope->getMainCode()];
         } else {
             $spaceType = $this->getSpaceType($attribute);
         }
