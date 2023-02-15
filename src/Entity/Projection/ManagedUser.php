@@ -42,9 +42,7 @@ class ManagedUser
     private const STYLE_TYPE_ADHERENT = 'adherent';
     private const STYLE_TYPE_HOST = 'host';
 
-    public const NOT_APPLICABLE = 'not_applicable';
-    public const UNSUBSCRIBED = 'unsubscribed';
-    public const NOT_INDICATED = 'not_indicated';
+    public const NOT_AVAILABLE = 'not_available';
 
     /**
      * @var int
@@ -101,6 +99,8 @@ class ManagedUser
      * @var string
      *
      * @ORM\Column
+     *
+     * @Groups({"managed_user_read"})
      */
     private $email;
 
@@ -579,9 +579,6 @@ class ManagedUser
         return $zones ? current($zones)->getCode() : null;
     }
 
-    /**
-     * @Groups({"managed_user_read"})
-     */
     public function getDepartmentCode(): ?string
     {
         $zones = $this->getZonesOfType(Zone::DEPARTMENT, true);
@@ -589,9 +586,6 @@ class ManagedUser
         return $zones ? current($zones)->getCode() : null;
     }
 
-    /**
-     * @Groups({"managed_user_read"})
-     */
     public function getDepartment(): ?string
     {
         $zones = $this->getZonesOfType(Zone::DEPARTMENT, true);
@@ -599,9 +593,6 @@ class ManagedUser
         return $zones ? current($zones)->getName() : null;
     }
 
-    /**
-     * @Groups({"managed_user_read"})
-     */
     public function getRegionCode(): ?string
     {
         $zones = $this->getZonesOfType(Zone::REGION, true);
@@ -609,9 +600,6 @@ class ManagedUser
         return $zones ? current($zones)->getCode() : null;
     }
 
-    /**
-     * @Groups({"managed_user_read"})
-     */
     public function getRegion(): ?string
     {
         $zones = $this->getZonesOfType(Zone::REGION, true);
@@ -622,16 +610,16 @@ class ManagedUser
     /**
      * @Groups({"managed_user_read"})
      */
+    public function getSmsSubscription(): bool
+    {
+        return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
+    }
+
+    /**
+     * @Groups({"managed_user_read"})
+     */
     public function getPhoneNumber(): ?string
     {
-        if (\in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true)) {
-            if (MembershipSourceEnum::RENAISSANCE === $this->source) {
-                return $this->getPhone() ? PhoneNumberUtils::format($this->getPhone()) : self::NOT_INDICATED;
-            }
-
-            return self::NOT_APPLICABLE;
-        }
-
-        return self::UNSUBSCRIBED;
+        return $this->getPhone() ? PhoneNumberUtils::format($this->getPhone()) : self::NOT_AVAILABLE;
     }
 }

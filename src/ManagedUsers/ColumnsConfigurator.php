@@ -51,13 +51,32 @@ class ColumnsConfigurator
                 'type' => self::COLUMN_TYPE_BOOLEAN,
             ],
             [
+                'key' => 'email',
+                'label' => 'Email',
+                'dependency' => [
+                    'fields' => [
+                        ['code' => 'email_subscription', 'valid_values' => [true]],
+                    ],
+                    'mode' => 'color_invalid',
+                ],
+            ],
+            [
+                'key' => 'sms_subscription',
+                'label' => 'Abonné tel',
+                'type' => self::COLUMN_TYPE_BOOLEAN,
+            ],
+            [
                 'key' => 'phone_number',
                 'label' => 'Téléphone',
                 'type' => self::COLUMN_TYPE_TRANS,
                 'messages' => [
-                    ManagedUser::NOT_APPLICABLE => 'Non applicable',
-                    ManagedUser::UNSUBSCRIBED => 'Non abonné',
-                    ManagedUser::NOT_INDICATED => 'Non renseigné',
+                    ManagedUser::NOT_AVAILABLE => 'Non disponible',
+                ],
+                'dependency' => [
+                    'fields' => [
+                        ['code' => 'sms_subscription', 'valid_values' => [true]],
+                    ],
+                    'mode' => 'color_invalid',
                 ],
             ],
             [
@@ -71,22 +90,6 @@ class ColumnsConfigurator
             [
                 'key' => 'city',
                 'label' => 'Commune',
-            ],
-            [
-                'key' => 'department_code',
-                'label' => 'Code département',
-            ],
-            [
-                'key' => 'department',
-                'label' => 'Département',
-            ],
-            [
-                'key' => 'region_code',
-                'label' => 'Code région',
-            ],
-            [
-                'key' => 'region',
-                'label' => 'Région',
             ],
             [
                 'key' => 'interests',
