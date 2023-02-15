@@ -18,4 +18,9 @@ class AdherentMessageChangeCommand implements CampaignMessageInterface
     {
         return $this->uuid;
     }
+
+    public function getLockKey(): string
+    {
+        return 'sync_adherent_message_'.$this->uuid->toString();
+    }
 }
