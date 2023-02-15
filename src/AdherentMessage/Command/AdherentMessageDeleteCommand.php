@@ -17,4 +17,9 @@ class AdherentMessageDeleteCommand implements CampaignMessageInterface
     {
         return $this->campaignId;
     }
+
+    public function getLockKey(): string
+    {
+        return 'delete_campaign_'.$this->campaignId;
+    }
 }

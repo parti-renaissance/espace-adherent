@@ -12,6 +12,8 @@ framework:
                     # connection is sometimes lost
                     - doctrine_ping_connection
 
+                    - App\Messenger\LockMiddleware
+
                     # After handling, the Doctrine connection is closed,
                     # which can free up database connections in a worker,
                     # instead of keeping them open forever
