@@ -179,7 +179,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
 
     public function isLocalDestination(): bool
     {
-        return $this->localDestination;
+        return (bool) $this->localDestination;
     }
 
     public function getGender(): ?string
