@@ -62,6 +62,7 @@ use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Psr\Container\ContainerInterface;
+use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -429,7 +430,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $message = $this->preparedMessage(CandidateAdherentMessage::class);
         $message->setFilter(new AdherentGeoZoneFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
 
-        (new GenericMailchimpCampaignHandler())->handle($message);
+        $this->createGenericMailchimpCampaignHandler()->handle($message);
 
         $this->clientMock
             ->expects($this->exactly(2))
@@ -492,7 +493,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $message = $this->preparedMessage(CandidateJecouteMessage::class);
         $message->setFilter(new JecouteFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
 
-        (new GenericMailchimpCampaignHandler())->handle($message);
+        $this->createGenericMailchimpCampaignHandler()->handle($message);
 
         $this->clientMock
             ->expects($this->exactly(2))
@@ -551,7 +552,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $cause->setAuthor($this->adherentDummy);
         $cause->setMailchimpId(123);
 
-        (new GenericMailchimpCampaignHandler())->handle($message);
+        $this->createGenericMailchimpCampaignHandler()->handle($message);
 
         $this->clientMock
             ->expects($this->exactly(2))
@@ -615,7 +616,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $message = $this->preparedMessage(CorrespondentAdherentMessage::class);
         $message->setFilter(new AdherentGeoZoneFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
 
-        (new GenericMailchimpCampaignHandler())->handle($message);
+        $this->createGenericMailchimpCampaignHandler()->handle($message);
 
         $this->clientMock
             ->expects($this->exactly(2))
@@ -665,7 +666,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $message = $this->preparedMessage(RegionalCoordinatorAdherentMessage::class);
         $message->setFilter(new MessageFilter([new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')]));
 
-        (new GenericMailchimpCampaignHandler())->handle($message);
+        $this->createGenericMailchimpCampaignHandler()->handle($message);
 
         $this->clientMock
             ->expects($this->exactly(2))
@@ -908,5 +909,10 @@ class SimpleContainer implements ContainerInterface
     public function has($id): bool
     {
         return isset($this->container[$id]);
+    }
+
+    private function createGenericMailchimpCampaignHandler(): GenericMailchimpCampaignHandler
+    {
+        return new GenericMailchimpCampaignHandler(new NullLogger());
     }
 }
