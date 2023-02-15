@@ -3,11 +3,10 @@
 namespace App\Controller\Api\Zone;
 
 use App\AdherentSpace\AdherentSpaceEnum;
-use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Geo\Zone;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\Geo\ZoneRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,12 +17,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @Route("/zone/autocompletion", name="api_zone_autocomplete", methods={"GET"})
  * @Route("/v3/zone/autocompletion", name="api_v3_zone_autocomplete", methods={"GET"})
  */
-class ZoneAutocompleteSelect2Controller extends AbstractController
+class ZoneAutocompleteSelect2Controller extends AbstractZoneAutocompleteController
 {
-    use AccessDelegatorTrait;
-
     private const SUGGESTIONS_PER_TYPE = 5;
-    private const ACTIVE_ONLY = true;
 
     public function __invoke(
         Request $request,
@@ -31,34 +27,28 @@ class ZoneAutocompleteSelect2Controller extends AbstractController
         ZoneRepository $repository,
         TranslatorInterface $translator
     ): Response {
-        $term = (string) $request->query->get('q', '');
-        $spaceType = (string) $request->query->get('space_type', '');
+        if (empty($spaceType = (string) $request->query->get('space_type'))) {
+            throw new BadRequestException('Space type missing');
+        }
 
         if (($max = $request->query->getInt('page_limit', self::SUGGESTIONS_PER_TYPE)) > 50) {
             $max = self::SUGGESTIONS_PER_TYPE;
         }
 
-        $activeOnly = $request->query->getBoolean('active_only', self::ACTIVE_ONLY);
-
-        $zoneTypes = null;
         $managedZones = [];
-
-        if (($zoneTypesFromRequest = $request->query->get('types')) && \is_array($zoneTypesFromRequest)) {
-            $zoneTypes = $zoneTypesFromRequest;
-        }
 
         if ($this->getUser()) {
             $user = $this->getMainUser($request->getSession());
             $managedZones = $managedZoneProvider->getManagedZones($user, $spaceType);
         }
 
-        $zones = $repository->searchByTermAndManagedZonesGroupedByType(
-            $term,
-            $managedZones,
-            AdherentSpaceEnum::CANDIDATE_JECOUTE === $spaceType ? Zone::CANDIDATE_TYPES : ($zoneTypes ?: Zone::TYPES),
-            $activeOnly,
-            $max
-        );
+        $filter = $this->getFilter($request);
+
+        if (AdherentSpaceEnum::CANDIDATE_JECOUTE === $spaceType) {
+            $filter->setTypes(Zone::CANDIDATE_TYPES);
+        }
+
+        $zones = $repository->searchByFilterInsideManagedZones($filter, $managedZones, $max);
 
         $results = $this->normalizeZoneForSelect2($translator, $zones);
 

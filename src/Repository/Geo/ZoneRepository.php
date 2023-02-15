@@ -2,18 +2,19 @@
 
 namespace App\Repository\Geo;
 
+use App\Entity\Committee;
 use App\Entity\Geo\City;
 use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
 use App\Entity\ReferentTag;
+use App\Geo\Http\ZoneAutocompleteFilter;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ZoneRepository extends ServiceEntityRepository
@@ -67,42 +68,31 @@ class ZoneRepository extends ServiceEntityRepository
     /**
      * @return Zone[]
      */
-    public function searchByTermAndManagedZonesGroupedByType(
-        string $term,
-        array $zones,
-        array $types,
-        bool $activeOnly,
-        int $perType
-    ): array {
-        if ('' === $term) {
+    public function searchByFilterInsideManagedZones(ZoneAutocompleteFilter $filter, array $zones, int $perType): array
+    {
+        if (empty($filter->q) && false === $filter->searchEvenEmptyTerm) {
             return [];
         }
 
         $grouped = [];
-        foreach ($types as $type) {
-            $grouped[] = $this->doSearchByTermManagedZonesAndType($term, $zones, $type, $activeOnly, $perType);
+        foreach ($filter->getTypes() as $type) {
+            $grouped[] = $this->doSearchForFilter($filter, $zones, $type, $perType);
         }
 
         return array_merge(...$grouped);
     }
 
-    private function doSearchByTermManagedZonesAndType(
-        string $term,
-        array $zones,
-        string $type,
-        bool $activeOnly,
-        int $max
-    ): array {
-        $qb = $this->createQueryBuilder('zone');
-        $qb
-            ->andWhere($qb->expr()->eq('zone.type', ':type'))
+    private function doSearchForFilter(ZoneAutocompleteFilter $filter, array $zones, string $type, int $max): array
+    {
+        $qb = $this->createQueryBuilder('zone')
+            ->andWhere('zone.type = :type')
             ->setParameter(':type', $type)
         ;
 
-        if ($activeOnly) {
+        if ($filter->activeOnly) {
             $qb
-                ->andWhere($qb->expr()->eq('zone.active', ':active'))
-                ->setParameter(':active', $activeOnly)
+                ->andWhere('zone.active = :active')
+                ->setParameter(':active', true)
             ;
         }
 
@@ -120,7 +110,7 @@ class ZoneRepository extends ServiceEntityRepository
             ;
         }
 
-        if ('' !== $term) {
+        if (!empty($term = $filter->q)) {
             $qb
                 ->andWhere(
                     $qb->expr()->orX(
@@ -133,15 +123,23 @@ class ZoneRepository extends ServiceEntityRepository
             ;
         }
 
-        $query = $qb
+        if ($filter->availableForCommittee) {
+            $subQuery = $this->getEntityManager()->createQueryBuilder()
+                ->select('DISTINCT committee_zone.id')
+                ->from(Committee::class, 'committee')
+                ->innerJoin('committee.zones', 'committee_zone')
+                ->where('committee.version = 2')
+            ;
+
+            $qb->andWhere(sprintf('zone.id NOT IN (%s)', $subQuery->getDQL()));
+        }
+
+        return $qb
             ->getQuery()
             ->setFirstResult(0)
             ->setMaxResults($max)
+            ->getResult()
         ;
-
-        $paginator = new Paginator($query, true);
-
-        return iterator_to_array($paginator->getIterator());
     }
 
     public function findForMandateAdminAutocomplete(?string $term, array $types, array $codes, int $limit): array
