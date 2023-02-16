@@ -27,11 +27,7 @@ trait EntityTimestampableTrait
      *     "pap_campaign_replies_list",
      *     "event_list_read_extended",
      *     "survey_list_dc",
-     *     "formation_read",
-     *     "formation_list_read",
      *     "committee:list",
-     *     "general_meeting_report_read",
-     *     "general_meeting_report_list_read",
      * })
      * @Gedmo\Timestampable(on="create")
      */
@@ -44,11 +40,7 @@ trait EntityTimestampableTrait
      *
      * @Groups({
      *     "phoning_campaign_read",
-     *     "formation_read",
-     *     "formation_list_read",
      *     "committee:list",
-     *     "general_meeting_report_read",
-     *     "general_meeting_report_list_read",
      * })
      *
      * @Gedmo\Timestampable(on="update")
