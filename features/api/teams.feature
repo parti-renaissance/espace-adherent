@@ -139,8 +139,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I can create a national team
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
+    When I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
     """
     {
       "name": "Nouvelle équipe nationale de phoning"
@@ -162,8 +161,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I can update a national team
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager" with body:
     """
     {
       "name": "Equipe d'appel - IDF"
@@ -185,8 +183,7 @@ Feature:
 
   Scenario: As a connected user, I can delete a team
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
+    When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
     Then the response status code should be 400
     And the response should be in JSON
     And the JSON should be equal to:
@@ -201,8 +198,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I can not create a local team
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
+    When I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
     """
     {
       "name": "Nouvelle équipe locale de phoning",
@@ -229,8 +225,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I can not update a local team
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=phoning_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=phoning_national_manager" with body:
     """
     {
       "name": "Equipe d'appel - IDF"
@@ -323,8 +318,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can create a local team in a zone I am manager of
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/teams?scope=<scope>" with body:
     """
     {
       "name": "Nouvelle équipe locale de phoning dans le 92 <title>",
@@ -355,8 +349,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can update a local team in a zone I am manager of
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=<scope>" with body:
     """
     {
       "name": "Equipe d'appel - 59"
@@ -391,8 +384,7 @@ Feature:
 
   Scenario: As a user granted with local scope, I can not create a local team in a zone I am not manager of
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/teams?scope=referent" with body:
     """
     {
       "name": "Nouvelle équipe locale de phoning dans le 92",
@@ -419,8 +411,7 @@ Feature:
 
   Scenario: As a user granted with local scope, I can not update a local team in a zone I am not manager of
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=referent" with body:
+    When I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=referent" with body:
     """
     {
       "name": "Equipe d'appel - 59"
@@ -430,8 +421,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can not create a national team
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/teams?scope=<scope>" with body:
     """
     {
       "name": "Nouvelle équipe nationale de phoning"
@@ -461,8 +451,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can not update a national team
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=<scope>" with body:
     """
     {
       "name": "Equipe d'appel - IDF"
@@ -479,8 +468,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As an anonymous user, I can not create a team
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=referent" with body:
+    Given I send a "POST" request to "/api/v3/teams?scope=referent" with body:
     """
     {
       "name": "Nouvelle équipe locale de phoning dans le 92",
@@ -490,8 +478,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As an anonymous user, I can not update a team
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=referent" with body:
+    Given I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=referent" with body:
     """
     {
       "name": "Equipe d'appel - 59"
@@ -501,8 +488,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I cannot create a national team with the same name
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
+    When I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
     """
     {
       "name": "Première équipe de phoning"
@@ -526,8 +512,7 @@ Feature:
     }
     """
 
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
+    When I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
     """
     {
       "name": "Équipe locale du département 92"
@@ -537,7 +522,6 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I cannot create a team with the same name and zone
     When I am logged with "<user>" via OAuth client "JeMengage Web"
-    And I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/teams?scope=<scope>" with body:
     """
     {
@@ -563,8 +547,7 @@ Feature:
     }
     """
 
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/teams?scope=<scope>" with body:
     """
     {
       "name": "Première équipe de phoning",
@@ -593,8 +576,6 @@ Feature:
       "members": "@array@.count(4)"
     }
     """
-
-    When I add "Content-Type" header equal to "application/json"
     When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
     """
     [
@@ -643,8 +624,7 @@ Feature:
       "members": "@array@.count(4)"
     }
     """
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
     """
     [
       {
@@ -775,7 +755,6 @@ Feature:
     """
 
   Scenario: As an anonymous user, I can not add a member to a team
-    When I add "Content-Type" header equal to "application/json"
     When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
     """
     [

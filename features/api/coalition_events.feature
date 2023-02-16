@@ -775,8 +775,7 @@ Feature:
 
   Scenario: As a logged-in adherent I can not create a coalition event with invalid data
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/events" with body:
+    When I send a "POST" request to "/api/v3/events" with body:
     """
     {
        "type":"coalition"
@@ -827,8 +826,7 @@ Feature:
 
   Scenario: As a logged-in adherent I can create a coalition event
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scopes "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/events" with body:
+    When I send a "POST" request to "/api/v3/events" with body:
     """
     {
        "type": "coalition",
@@ -901,8 +899,7 @@ Feature:
 
   Scenario: As a logged-in user I can create a coalition event
     Given I am logged with "simple-user@example.ch" via OAuth client "Coalition App" with scopes "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/events" with body:
+    When I send a "POST" request to "/api/v3/events" with body:
     """
     {
        "type": "coalition",
@@ -929,8 +926,7 @@ Feature:
 
   Scenario: As a logged-in user I can edit a coalition event
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App" with scopes "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/events/472d1f86-6522-4122-a0f4-abd69d17bb2d" with body:
+    When I send a "PUT" request to "/api/v3/events/472d1f86-6522-4122-a0f4-abd69d17bb2d" with body:
     """
     {
       "name": "Nouvel objectif",
@@ -999,8 +995,7 @@ Feature:
 
   Scenario: As a logged-in user I can not create a cause event with invalid data
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/events" with body:
+    When I send a "POST" request to "/api/v3/events" with body:
     """
     {
        "type":"cause"
@@ -1051,8 +1046,7 @@ Feature:
 
   Scenario: As a logged-in adherent I can create a cause event
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/events" with body:
+    When I send a "POST" request to "/api/v3/events" with body:
     """
     {
        "type": "cause",
@@ -1257,8 +1251,7 @@ Feature:
 
   Scenario: As a logged-in user I can create a cause event
     Given I am logged with "simple-user@example.ch" via OAuth client "Coalition App" with scope "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/events" with body:
+    When I send a "POST" request to "/api/v3/events" with body:
     """
     {
        "type": "cause",
@@ -1284,8 +1277,7 @@ Feature:
 
   Scenario: As a logged-in user I can edit a cause event
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App" with scope "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8" with body:
+    When I send a "PUT" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8" with body:
     """
     {
       "name": "Nouvel objectif",
@@ -1434,8 +1426,7 @@ Feature:
 
   Scenario: As a logged-in user if I edit only a visioUrl of a cause event, an email is send
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App" with scope "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8" with body:
+    When I send a "PUT" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8" with body:
     """
     {
       "visioUrl": "https://new.url.fr"

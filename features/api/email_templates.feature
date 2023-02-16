@@ -29,8 +29,7 @@ Feature:
 
   Scenario: I can create a new email template
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/email_templates" with body:
+    When I send a "POST" request to "/api/v3/email_templates" with body:
     """
     {
       "label": "Information mail",
@@ -50,8 +49,7 @@ Feature:
 
   Scenario: I can update a logged-in user email template with a specific uuid
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/email_templates/7fc776c1-ead9-46cc-ada8-2601c49b5312" with body:
+    When I send a "PUT" request to "/api/v3/email_templates/7fc776c1-ead9-46cc-ada8-2601c49b5312" with body:
     """
     {
       "label": "Updated Test Template Email",

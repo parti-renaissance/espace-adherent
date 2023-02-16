@@ -725,8 +725,7 @@ Feature:
 
   Scenario: As a logged-in user with no correct rights I cannot create a news
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/jecoute/news?scope=deputy" with body:
+    When I send a "POST" request to "/api/v3/jecoute/news?scope=deputy" with body:
     """
     {
       "title": "Une nouvelle actualité"
@@ -736,8 +735,7 @@ Feature:
 
   Scenario: As a logged-in user I cannot create a news with no data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
+    When I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
     """
     {}
     """
@@ -766,8 +764,7 @@ Feature:
 
   Scenario: As a logged-in user I cannot create a news with invalid data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
+    When I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui - Une nouvelle actualité d'aujourd'hui - Une nouvelle actualité d'aujourd'hui - Une nouvelle actualité d'aujourd'hui - Une nouvelle actualité d'aujourd'hui - Une nouvelle actualité d'aujourd'hui - Une nouvelle actualité d'aujourd'hui",
@@ -806,8 +803,7 @@ Feature:
   Scenario: As a logged-in user with role national I can create a news
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     Then I should have 0 notification
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
+    When I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui",
@@ -850,8 +846,7 @@ Feature:
   Scenario Outline: As a (delegated) referent I can create a news
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
     Then I should have 0 notification
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/jecoute/news?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/jecoute/news?scope=<scope>" with body:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui",
@@ -903,8 +898,7 @@ Feature:
   Scenario Outline: As a (delegated) correspondent I can create a news
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
     Then I should have 0 notification
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/jecoute/news?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/jecoute/news?scope=<scope>" with body:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui",
@@ -954,8 +948,7 @@ Feature:
 
   Scenario Outline: As a (delegated) correspondent I can update a news
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/jecoute/news/<news_uuid>?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/jecoute/news/<news_uuid>?scope=<scope>" with body:
     """
     {
       "title": "Nouveau titre",
@@ -1000,8 +993,7 @@ Feature:
   Scenario Outline: As a (delegated) legislative candidate I can create a news
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
     Then I should have 0 notification
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/jecoute/news?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/jecoute/news?scope=<scope>" with body:
     """
     {
       "title": "Une nouvelle actualité d'un candidat aux législatives",
@@ -1051,8 +1043,7 @@ Feature:
 
   Scenario Outline: As a (delegated) legislative candidate I can update a news
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/jecoute/news/<news_uuid>?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/jecoute/news/<news_uuid>?scope=<scope>" with body:
     """
     {
       "title": "Nouveau titre",
@@ -1129,8 +1120,7 @@ Feature:
 
   Scenario Outline: As a logged-in user I can update a news of my zone
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/jecoute/news/6c70f8e8-6bce-4376-8b9e-3ce342880673?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/jecoute/news/6c70f8e8-6bce-4376-8b9e-3ce342880673?scope=<scope>" with body:
     """
     {
       "title": "[Référent] Nouveau titre",
@@ -1174,8 +1164,7 @@ Feature:
 
   Scenario: As a logged-in user with National role I can update a news
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/jecoute/news/232f99b8-7a0c-40ed-ba9e-bf8f33e19052?scope=national" with body:
+    When I send a "PUT" request to "/api/v3/jecoute/news/232f99b8-7a0c-40ed-ba9e-bf8f33e19052?scope=national" with body:
     """
     {
       "published": false
@@ -1185,8 +1174,7 @@ Feature:
 
   Scenario: As a logged-in user I cannot update a news out of my zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/jecoute/news/25632c43-c224-4745-84d7-09dfa8249367?scope=referent" with body:
+    When I send a "PUT" request to "/api/v3/jecoute/news/25632c43-c224-4745-84d7-09dfa8249367?scope=referent" with body:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui",
@@ -1203,8 +1191,7 @@ Feature:
 
   Scenario: As a referent I cannot create a local news without a zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui",
@@ -1234,8 +1221,7 @@ Feature:
 
   Scenario: As a referent I cannot create a local news with a city zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui",
@@ -1266,8 +1252,7 @@ Feature:
 
   Scenario: As a referent I cannot create a local news with a non managed zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui",

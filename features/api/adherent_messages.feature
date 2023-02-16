@@ -6,8 +6,7 @@ Feature:
 
   Scenario: As a logged-in user I can not update adherent message filter with not my segment
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter" with body:
+    When I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter" with body:
     """
     {
       "segment": "f6c36dd7-0517-4caf-ba6f-ec6822f2ec12"
@@ -33,8 +32,7 @@ Feature:
 
   Scenario: As a logged-in user I can update adherent message filter with segment
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter" with body:
+    When I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter" with body:
     """
     {
       "segment": "830d230f-67fb-4217-9986-1a3ed7d3d5e7"
@@ -49,8 +47,7 @@ Feature:
 
   Scenario: As a delegated user I can update adherent message filter with segment
     Given I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74" with body:
+    When I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74" with body:
     """
     {
       "segment": "830d230f-67fb-4217-9986-1a3ed7d3d5e7"
@@ -176,8 +173,7 @@ Feature:
 
   Scenario Outline: As a (delegated) Correspondent I can create a message
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/adherent_messages?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/adherent_messages?scope=<scope>" with body:
     """
     {
       "type": "correspondent",
@@ -208,8 +204,7 @@ Feature:
 
   Scenario: As a delegated referent I can create a message
     Given I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/adherent_messages?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74" with body:
+    When I send a "POST" request to "/api/v3/adherent_messages?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74" with body:
     """
     {
       "type": "referent",
@@ -236,8 +231,7 @@ Feature:
 
   Scenario Outline: As a (delegated) referent I can update a draft message
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f?scope=<scope>" with body:
     """
     {
       "label": "Mon nouveau titre",
@@ -267,16 +261,14 @@ Feature:
 
   Scenario: As a delegated referent I can access to sending a referent message
     Given I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/send?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74"
+    When I send a "POST" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/send?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74"
     Then the response status code should be 400
     And the response should be in JSON
     And the JSON node "detail" should be equal to "The message is not yet ready to send."
 
   Scenario: As a regional coordinator I can create a message
     Given I am logged with "coordinateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/adherent_messages?scope=regional_coordinator" with body:
+    When I send a "POST" request to "/api/v3/adherent_messages?scope=regional_coordinator" with body:
     """
     {
       "type": "regional_coordinator",

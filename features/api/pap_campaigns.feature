@@ -124,8 +124,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I can create a national campaign
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
+    When I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
     """
     {
       "title": "Nouvelle campagne PAP",
@@ -157,8 +156,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I can update a national campaign
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/63460047-c81a-44b9-aec9-152ecf58df93?scope=pap_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaigns/63460047-c81a-44b9-aec9-152ecf58df93?scope=pap_national_manager" with body:
     """
     {
       "title": "NOUVEAU Campagne de 10 jours suivants",
@@ -189,8 +187,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I can disable/enable a national campaign
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/63460047-c81a-44b9-aec9-152ecf58df93?scope=pap_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaigns/63460047-c81a-44b9-aec9-152ecf58df93?scope=pap_national_manager" with body:
     """
     {
       "enabled": false
@@ -214,8 +211,7 @@ Feature:
       "enabled": false
     }
     """
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/63460047-c81a-44b9-aec9-152ecf58df93?scope=pap_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaigns/63460047-c81a-44b9-aec9-152ecf58df93?scope=pap_national_manager" with body:
     """
     {
       "enabled": true
@@ -242,8 +238,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I can not update a local campaign
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/31f24b6c-0884-461a-af34-dbbb7b1276ab?scope=pap_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaigns/31f24b6c-0884-461a-af34-dbbb7b1276ab?scope=pap_national_manager" with body:
     """
     {
       "title": "**NOUVEAU** Campagne de 10 jours suivants"
@@ -666,8 +661,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can create a local campaign in a zone I am manager of
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/pap_campaigns?scope=<scope>" with body:
     """
     {
       "title": "Nouvelle campagne PAP",
@@ -704,8 +698,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can update a local campaign in a zone I am manager of
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=<scope>" with body:
     """
     {
       "title": "**NOUVEAU** Campagne locale du département 92"
@@ -736,8 +729,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can disable/enable a local campaign in a zone I am manager of
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=<scope>" with body:
     """
     {
       "enabled": false
@@ -761,8 +753,7 @@ Feature:
       }
     }
     """
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=<scope>" with body:
     """
     {
       "enabled": true
@@ -793,8 +784,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can not update a local campaign in a zone I am not manager of
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/74a0d169-1e10-4159-a399-bf499706a2c6?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaigns/74a0d169-1e10-4159-a399-bf499706a2c6?scope=<scope>" with body:
     """
     {
       "title": "**NOUVEAU** Campagne locale de la ville de Nice (06088)"
@@ -808,8 +798,7 @@ Feature:
 
   Scenario: As a legislative candidate granted with local scope, I cannot create a local campaign with not valid vote places
     Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=legislative_candidate" with body:
+    When I send a "POST" request to "/api/v3/pap_campaigns?scope=legislative_candidate" with body:
     """
     {
         "title": "Nouvelle campagne PAP",
@@ -845,8 +834,7 @@ Feature:
 
   Scenario: As a legislative candidate granted with local scope, I can create a local campaign
     Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=legislative_candidate" with body:
+    When I send a "POST" request to "/api/v3/pap_campaigns?scope=legislative_candidate" with body:
     """
     {
         "title": "Nouvelle campagne PAP",
@@ -894,8 +882,7 @@ Feature:
         }
     ]
     """
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/8fbee663-4f18-49d4-9c2d-4553bcc859cf?scope=legislative_candidate" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaigns/8fbee663-4f18-49d4-9c2d-4553bcc859cf?scope=legislative_candidate" with body:
     """
     {
         "title": "Campagne locale de Paris 8ème (modifié)",
@@ -943,8 +930,7 @@ Feature:
 
   Scenario: As a legislative candidate granted with local scope, I cannot update some fields of a local campaign with visited doors
     Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/08463014-bbfe-421c-b8fb-5e456414b088?scope=legislative_candidate" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaigns/08463014-bbfe-421c-b8fb-5e456414b088?scope=legislative_candidate" with body:
     """
     {
         "title": "Campagne locale de Paris 8ème (modifié)",
@@ -983,8 +969,7 @@ Feature:
 
   Scenario: As a user granted with local scope, I can not update a national campaign
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
     """
     {
       "title": "NOUVEAU Campagne de 10 jours suivants",
@@ -1002,8 +987,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As an anonymous user, I can not create a campaign
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
+    When I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
     """
     {
       "title": "Nouvelle campagne PAP",
@@ -1017,8 +1001,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As an anonymous user, I can not update a campaign
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
     """
     {
       "title": "NOUVEAU Campagne de 10 jours suivants",
@@ -1508,8 +1491,7 @@ Feature:
 
   Scenario: As a logged-in user I cannot post a pap campaign history with wrong data
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaign_histories" with body:
+    When I send a "POST" request to "/api/v3/pap_campaign_histories" with body:
     """
     {
         "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -1540,8 +1522,7 @@ Feature:
 
   Scenario: As a logged-in user I can post a pap campaign history
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaign_histories" with body:
+    When I send a "POST" request to "/api/v3/pap_campaign_histories" with body:
     """
     {
         "begin_at": "2022-01-10 10:10:10",
@@ -1564,8 +1545,7 @@ Feature:
 
   Scenario: As a logged-in user I can update my pap campaign history
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:
     """
     {
         "status": "accept_to_answer",
@@ -1594,8 +1574,7 @@ Feature:
 
   Scenario: As a logged-in user I cannot update a pap campaign history with invalid data
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:
     """
     {
         "status": "invalid",
@@ -1649,8 +1628,7 @@ Feature:
 
   Scenario: As a logged-in user I can update a pap campaign history
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:
+    When I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:
     """
     {
         "status": "accept_to_answer",
@@ -1680,8 +1658,7 @@ Feature:
 
   Scenario: As a logged-in user I can not create a campaign with no data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
+    When I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
     """
     {
     }
@@ -1720,8 +1697,7 @@ Feature:
 
   Scenario: As a logged-in user I can not create a campaign with invalid data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
+    When I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
     """
     {
         "title": "Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP",
@@ -3527,8 +3503,7 @@ Feature:
 
   Scenario: As a legislative candidate granted with local scope, I can get vote places
     Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/pap_vote_places?scope=legislative_candidate"
+    When I send a "GET" request to "/api/v3/pap_vote_places?scope=legislative_candidate"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -3560,8 +3535,7 @@ Feature:
 
   Scenario: As a legislative candidate granted with local scope, I can get vote places
     Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/pap_vote_places?scope=legislative_candidate"
+    When I send a "GET" request to "/api/v3/pap_vote_places?scope=legislative_candidate"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -3593,8 +3567,7 @@ Feature:
 
   Scenario: As a legislative candidate granted with local scope, I can get available vote places
     Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/pap_campaigns/74a0d169-1e10-4159-a399-bf499706a2c6/available_vote_places?scope=legislative_candidate"
+    When I send a "GET" request to "/api/v3/pap_campaigns/74a0d169-1e10-4159-a399-bf499706a2c6/available_vote_places?scope=legislative_candidate"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

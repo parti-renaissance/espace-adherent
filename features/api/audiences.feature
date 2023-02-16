@@ -16,8 +16,7 @@ Feature:
 
   Scenario: As a logged-in user I can not create an audience if I have no rights
     Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/audiences" with body:
+    When I send a "POST" request to "/api/v3/audiences" with body:
     """
     {
       "scope": "deputy"
@@ -27,8 +26,7 @@ Feature:
 
   Scenario: As a logged-in user I can not create an audience if I have no rights for this audience type
     Given I am logged with "referent-child@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/audiences" with body:
+    When I send a "POST" request to "/api/v3/audiences" with body:
     """
     {
       "scope": "deputy"
@@ -38,8 +36,7 @@ Feature:
 
   Scenario: As a logged-in user I can not create an audience with no data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/audiences" with body:
+    When I send a "POST" request to "/api/v3/audiences" with body:
     """
     {
       "scope": "deputy"
@@ -65,8 +62,7 @@ Feature:
 
   Scenario: As a logged-in user I can not create an audience with invalid data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/audiences" with body:
+    When I send a "POST" request to "/api/v3/audiences" with body:
     """
     {
       "scope": "deputy",
@@ -116,8 +112,7 @@ Feature:
 
   Scenario: As a logged-in user I can create an audience
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/audiences" with body:
+    When I send a "POST" request to "/api/v3/audiences" with body:
     """
     {
       "scope": "deputy",
@@ -166,8 +161,7 @@ Feature:
 
   Scenario: As a logged-in user I can edit an audience
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c?scope=deputy" with body:
+    When I send a "PUT" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c?scope=deputy" with body:
     """
     {
       "name": "Nouveau nom",

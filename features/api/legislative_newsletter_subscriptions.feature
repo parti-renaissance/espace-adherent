@@ -4,8 +4,7 @@ Feature:
   I should be able to access legislative newsletter subscription API
 
   Scenario: As a non logged-in user I cannot subscribe to a candidate newsletter with nul values
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
+    Given I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
     """
     {
       "email_address": null,
@@ -51,8 +50,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I cannot subscribe to a candidate newsletter with wrong captcha
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
+    Given I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
     """
     {
       "email_address": "lucile@example.org",
@@ -83,8 +81,7 @@ Feature:
 
   Scenario: As a non logged-in user I can subscribe to another candidate newsletter
     Given I should have 0 email
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
+    When I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
     """
     {
       "email_address": "john@example.org",
@@ -101,8 +98,7 @@ Feature:
 
   Scenario: As a non logged-in I can subscribe to a candidate newsletter
     Given I should have 0 email
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
+    When I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
     """
     {
       "email_address": "lucile@example.org",
@@ -148,8 +144,7 @@ Feature:
     When I am on "/newsletters/confirmation/9e0e1a9e-2c5d-4d3a-a6c8-4a582ff78e22/bd879a23-43bf-47d2-b67b-9c7cbb085547"
     Then the response status code should be 302
     And the message "MailchimpSyncLegislativeNewsletterCommand" should be dispatched
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
+    When I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
     """
     {
       "email_address": "jane@example.org",
