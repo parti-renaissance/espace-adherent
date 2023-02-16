@@ -10,7 +10,7 @@ Feature:
     """
     {
         "title": "New formation",
-        "description": "@string@",
+        "description": "New formation description",
         "content_type": "link",
         "link": "https://renaissance.code/",
         "published": true,
@@ -31,15 +31,11 @@ Feature:
         "link": "https://renaissance.code/",
         "published": true,
         "print_count": 0,
-        "created_at": "@string@.isDateTime()",
-        "updated_at": "@string@.isDateTime()",
         "visibility": "local",
         "zone": {
             "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
             "code": "77",
-            "name": "Seine-et-Marne",
-            "created_at": "@string@.isDateTime()",
-            "updated_at": "@string@.isDateTime()"
+            "name": "Seine-et-Marne"
         },
         "position": 4
     }
@@ -74,13 +70,11 @@ Feature:
                 "link": null,
                 "published": true,
                 "print_count": 0,
-                "created_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
                     "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
                     "code": "77",
-                    "name": "Seine-et-Marne",
-                    "created_at": "@string@.isDateTime()"
+                    "name": "Seine-et-Marne"
                 },
                 "position": 0
             },
@@ -93,13 +87,11 @@ Feature:
                 "link": "http://renaissance.code/",
                 "published": true,
                 "print_count": 0,
-                "created_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
                     "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
                     "code": "77",
-                    "name": "Seine-et-Marne",
-                    "created_at": "@string@.isDateTime()"
+                    "name": "Seine-et-Marne"
                 },
                 "position": 0
             }

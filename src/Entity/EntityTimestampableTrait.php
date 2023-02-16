@@ -27,8 +27,6 @@ trait EntityTimestampableTrait
      *     "pap_campaign_replies_list",
      *     "event_list_read_extended",
      *     "survey_list_dc",
-     *     "formation_read",
-     *     "formation_list_read",
      *     "committee:list",
      * })
      * @Gedmo\Timestampable(on="create")
@@ -40,7 +38,10 @@ trait EntityTimestampableTrait
      *
      * @ORM\Column(type="datetime")
      *
-     * @Groups({"phoning_campaign_read", "formation_read", "committee:list",})
+     * @Groups({
+     *     "phoning_campaign_read",
+     *     "committee:list",
+     * })
      *
      * @Gedmo\Timestampable(on="update")
      */
