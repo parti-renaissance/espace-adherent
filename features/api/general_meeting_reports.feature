@@ -26,15 +26,11 @@ Feature:
                 "description": "@string@",
                 "date": "@string@.isDateTime()",
                 "file_path": "@string@.isUrl()",
-                "created_at": "@string@.isDateTime()",
-                "updated_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
                     "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
                     "code": "77",
-                    "name": "Seine-et-Marne",
-                    "created_at": "@string@.isDateTime()",
-                    "updated_at": "@string@.isDateTime()"
+                    "name": "Seine-et-Marne"
                 }
             },
             {
@@ -43,15 +39,11 @@ Feature:
                 "description": "@string@",
                 "date": "@string@.isDateTime()",
                 "file_path": "@string@.isUrl()",
-                "created_at": "@string@.isDateTime()",
-                "updated_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
                     "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
                     "code": "77",
-                    "name": "Seine-et-Marne",
-                    "created_at": "@string@.isDateTime()",
-                    "updated_at": "@string@.isDateTime()"
+                    "name": "Seine-et-Marne"
                 }
             }
         ]
@@ -83,15 +75,11 @@ Feature:
             "description": "@string@",
             "date": "@string@.isDateTime()",
             "file_path": null,
-            "created_at": "@string@.isDateTime()",
-            "updated_at": "@string@.isDateTime()",
             "visibility": "local",
             "zone": {
                 "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
                 "code": "77",
-                "name": "Seine-et-Marne",
-                "created_at": "@string@.isDateTime()",
-                "updated_at": "@string@.isDateTime()"
+                "name": "Seine-et-Marne"
             }
         }
         """
@@ -121,15 +109,11 @@ Feature:
             "description": "General meeting report description (edited)",
             "date": "@string@.isDateTime()",
             "file_path": "@string@.isUrl()",
-            "created_at": "@string@.isDateTime()",
-            "updated_at": "@string@.isDateTime()",
             "visibility": "local",
             "zone": {
                 "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
                 "code": "77",
-                "name": "Seine-et-Marne",
-                "created_at": "@string@.isDateTime()",
-                "updated_at": "@string@.isDateTime()"
+                "name": "Seine-et-Marne"
             }
         }
         """
