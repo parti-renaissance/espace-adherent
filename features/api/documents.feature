@@ -24,16 +24,12 @@ Feature:
                 "title": "Document #1",
                 "comment": "@string@",
                 "uuid": "29eec30e-8f30-41f9-87b9-821d275d19dc",
-                "created_at": "@string@.isDateTime()",
-                "updated_at": "@string@.isDateTime()",
                 "file_path": "@string@.isUrl()"
             },
             {
                 "title": "Document #2",
                 "comment": "@string@",
                 "uuid": "648e7b13-ef89-4b8a-8302-19c66654ed15",
-                "created_at": "@string@.isDateTime()",
-                "updated_at": "@string@.isDateTime()",
                 "file_path": "@string@.isUrl()"
             }
         ]
