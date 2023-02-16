@@ -19,7 +19,8 @@
             "symfony/flex": true,
             "symfony/thanks": true,
             "endroid/installer": false,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "php-http/discovery": true
         }
     },
     "require": {
