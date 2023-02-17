@@ -59,8 +59,8 @@ class DocumentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         return $this->urlGenerator->generate('api_documents_get_file_item', $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    private function getCurrentScope(): ?Scope
+    private function getCurrentScope(): ?ScopeGeneratorInterface
     {
-        return $this->scopeGeneratorResolver->generate();
+        return $this->scopeGeneratorResolver->resolve();
     }
 }

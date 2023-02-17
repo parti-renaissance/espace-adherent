@@ -15,6 +15,7 @@ class ScopeGeneratorResolver
     private AuthorizationChecker $authorizationChecker;
 
     private ?Scope $currentScope = null;
+    private ?ScopeGeneratorInterface $currentScopeGenerator = null;
 
     public function __construct(
         RequestStack $requestStack,
@@ -28,13 +29,17 @@ class ScopeGeneratorResolver
 
     public function resolve(): ?ScopeGeneratorInterface
     {
+        if ($this->currentScopeGenerator) {
+            return $this->currentScopeGenerator;
+        }
+
         $currentUser = $this->getCurrentUser();
 
         if (!$currentUser) {
             return null;
         }
 
-        return $this->authorizationChecker->getScopeGenerator(
+        return $this->currentScopeGenerator = $this->authorizationChecker->getScopeGenerator(
             $this->getRequest(),
             $currentUser
         );
