@@ -356,6 +356,19 @@ Feature:
         "type": "select"
       },
       {
+        "code": "renaissance_membership",
+        "label": "Renaissance",
+        "options": {
+          "choices": {
+            "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
+            "adherent_re": "Adhérent RE seulement",
+            "sympathizer_re": "Sympathisant RE seulement",
+            "others_adherent": "Ni adhérent RE ni sympathisant RE"
+          }
+        },
+        "type": "select"
+      },
+      {
         "code": "zones",
         "label": "Zone géographique",
         "options": {

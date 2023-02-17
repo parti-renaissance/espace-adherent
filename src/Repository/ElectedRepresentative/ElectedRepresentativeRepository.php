@@ -9,6 +9,8 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Geo\Zone;
+use App\Membership\MembershipSourceEnum;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
@@ -273,6 +275,10 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             ;
         }
 
+        if ($renaissanceMembership = $filter->getRenaissanceMembership()) {
+            $this->withRenaissanceMembership($qb, $renaissanceMembership);
+        }
+
         return $qb;
     }
 
@@ -337,5 +343,44 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    private function withRenaissanceMembership(
+        QueryBuilder $qb,
+        string $renaissanceMembership,
+        string $alias = 'er'
+    ): QueryBuilder {
+        if (!\in_array('adherent', $qb->getAllAliases(), true)) {
+            $qb->innerJoin($alias.'.adherent', 'adherent');
+        }
+
+        switch ($renaissanceMembership) {
+            case RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE:
+                $qb
+                    ->andWhere('adherent.source = :source_renaissance')
+                    ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                ;
+                break;
+            case RenaissanceMembershipFilterEnum::ADHERENT_RE:
+                $qb
+                    ->andWhere('adherent.source = :source_renaissance AND adherent.lastMembershipDonation IS NOT NULL')
+                    ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                ;
+                break;
+            case RenaissanceMembershipFilterEnum::SYMPATHIZER_RE:
+                $qb
+                    ->andWhere('adherent.source = :source_renaissance AND adherent.lastMembershipDonation IS NULL')
+                    ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                ;
+                break;
+            case RenaissanceMembershipFilterEnum::OTHERS_ADHERENT:
+                $qb
+                    ->andWhere('adherent.source != :source_renaissance OR adherent.source IS NULL')
+                    ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                ;
+                break;
+        }
+
+        return $qb;
     }
 }
