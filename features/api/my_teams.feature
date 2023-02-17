@@ -378,7 +378,8 @@ Feature:
                             "adherent_formations",
                             "committee",
                             "general_meeting_reports",
-                            "documents"
+                            "documents",
+                            "designation"
                         ],
                         "uuid": "e0da56db-c4c6-4aa4-ad8d-7e9505dfdd93"
                     }

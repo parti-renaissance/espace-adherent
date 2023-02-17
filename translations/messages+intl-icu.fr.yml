@@ -1356,6 +1356,10 @@ scope.feature.survey: Questionnaires
 scope.feature.department_site: Site départemental
 scope.feature.elected_representative: Élus
 scope.feature.documents: Documents
+scope.feature.general_meeting_reports: Procès verbaux
+scope.feature.committee: Comité
+scope.feature.adherent_formations: Formations adhérents
+scope.feature.designation: Désignation
 
 scope.app.data_corner: DataCorner
 scope.app.jemarche: Je m'engage

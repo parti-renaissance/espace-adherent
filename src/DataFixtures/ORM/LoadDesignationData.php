@@ -8,9 +8,12 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Ramsey\Uuid\Uuid;
 
 class LoadDesignationData extends Fixture implements DependentFixtureInterface
 {
+    public const DESIGNATION_COMMITTEE_1_UUID = '7fb0693e-1dad-44c6-984b-19e99603ea2c';
+
     public function load(ObjectManager $manager)
     {
         // Committee designation with started CANDIDATURE period in France
@@ -198,6 +201,18 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
             $this->setReference("designation-local-dpt-$department", $designation);
             $manager->persist($designation);
         }
+
+        $designation = new Designation(null, Uuid::fromString(self::DESIGNATION_COMMITTEE_1_UUID));
+        $designation->customTitle = 'Election AL - comité des 3 communes';
+        $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
+        $designation->setVoteStartDate(new \DateTime('-12 days'));
+        $designation->setVoteEndDate(new \DateTime('-10 days'));
+        $designation->electionCreationDate = new \DateTime('-13 days');
+        $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+        $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeV2Data::COMMITTEE_1_UUID));
+
+        $this->setReference('designation-committee-01', $designation);
+        $manager->persist($designation);
 
         $manager->flush();
     }

@@ -2,7 +2,12 @@
 
 namespace App\Entity\VotingPlatform\Designation;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Api\Filter\InZoneOfScopeFilter;
 use App\Entity\CmsBlock;
+use App\Entity\EntityAdherentBlameableInterface;
+use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
@@ -11,6 +16,7 @@ use App\Entity\EntityZoneTrait;
 use App\Entity\ReferentTag;
 use App\Entity\VotingPlatform\Designation\Poll\Poll;
 use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
+use App\Entity\ZoneableEntity;
 use App\VotingPlatform\Designation\CreatePartialDesignationCommand;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,17 +24,58 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     routePrefix="/v3",
+ *     attributes={
+ *         "order": {"voteStartDate": "DESC"},
+ *         "normalization_context": {
+ *             "groups": {"designation_read"}
+ *         },
+ *         "denormalization_context": {
+ *             "groups": {"designation_write"},
+ *         },
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')"
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/designations/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')"
+ *         },
+ *         "put": {
+ *             "path": "/designations/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation') and is_granted('CAN_EDIT_DESIGNATION', object)",
+ *             "validation_groups": {"api_designation_write"},
+ *         },
+ *     },
+ *     collectionOperations={
+ *         "get": {
+ *             "normalization_context": {
+ *                 "groups": {"designation_list"}
+ *             }
+ *         },
+ *         "post": {
+ *             "validation_groups": {"api_designation_write"},
+ *         }
+ *     }
+ * )
+ *
+ * @ApiFilter(InZoneOfScopeFilter::class)
+ *
  * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\DesignationRepository")
  */
-class Designation implements EntityAdministratorBlameableInterface
+class Designation implements EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, ZoneableEntity
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityZoneTrait;
     use EntityAdministratorBlameableTrait;
+    use EntityAdherentBlameableTrait;
 
     public const DENOMINATION_DESIGNATION = 'désignation';
     public const DENOMINATION_ELECTION = 'élection';
@@ -58,6 +105,10 @@ class Designation implements EntityAdministratorBlameableInterface
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @Assert\NotBlank(groups="api_designation_write")
+     *
+     * @Groups({"designation_read", "designation_write", "designation_list"})
      */
     public ?string $customTitle = null;
 
@@ -66,7 +117,10 @@ class Designation implements EntityAdministratorBlameableInterface
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"Default", "api_designation_write"})
+     * @Assert\Choice(choices=DesignationTypeEnum::MAIN_TYPES, strict=true, groups={"Default", "api_designation_write"})
+     *
+     * @Groups({"designation_read", "designation_write", "designation_list"})
      */
     private $type;
 
@@ -100,6 +154,8 @@ class Designation implements EntityAdministratorBlameableInterface
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"designation_read", "designation_write"})
      */
     public ?\DateTime $electionCreationDate = null;
 
@@ -107,6 +163,14 @@ class Designation implements EntityAdministratorBlameableInterface
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"designation_read", "designation_write", "designation_list"})
+     *
+     * @Assert\GreaterThan(
+     *     "now",
+     *     message="La date de début doit être dans le futur.",
+     *     groups={"Default", "api_designation_write"}
+     * )
      */
     private $voteStartDate;
 
@@ -114,6 +178,14 @@ class Designation implements EntityAdministratorBlameableInterface
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"designation_read", "designation_write"})
+     *
+     * @Assert\Expression(
+     *     "value > this.getVoteStartDate()",
+     *     message="La date de clôture doit être postérieur à la date de début",
+     *     groups={"Default", "api_designation_write"}
+     * )
      */
     private $voteEndDate;
 
@@ -182,11 +254,11 @@ class Designation implements EntityAdministratorBlameableInterface
     private $pools;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @Groups({"designation_read", "designation_write"})
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -231,6 +303,19 @@ class Designation implements EntityAdministratorBlameableInterface
      * @Assert\Expression("!this.isLocalPollType() or !this.majorityPrime or null != value", message="Vous devez préciser le mode d'arrondi pour la prime majoritaire.")
      */
     public ?bool $majorityPrimeRoundSupMode = null;
+
+    /**
+     * @ORM\Column(type="uuid", nullable=true)
+     *
+     * @Assert\Expression(
+     *     "(this.isCommitteeType() and value !== null) or (!this.isCommitteeType() and value === null)",
+     *     message="Un identifiant est requis pour ce champs.",
+     *     groups="api_designation_write"
+     * )
+     *
+     * @Groups({"designation_read", "designation_write"})
+     */
+    private ?UuidInterface $electionEntityIdentifier = null;
 
     public function __construct(string $label = null, UuidInterface $uuid = null)
     {
@@ -760,8 +845,31 @@ class Designation implements EntityAdministratorBlameableInterface
         return $this->getVoteStartDate() && $this->getVoteStartDate() <= (new \DateTime());
     }
 
+    public function isVotePeriodActive(): bool
+    {
+        $now = new \DateTime();
+
+        return $this->getVoteStartDate()
+            && $this->getVoteStartDate() <= $now
+            && (
+                null === $this->getVoteEndDate()
+                || $now < $this->getVoteEndDate()
+            )
+        ;
+    }
+
     public function isCandidacyPeriodEnabled(): bool
     {
         return !$this->isLocalElectionTypes();
+    }
+
+    public function getElectionEntityIdentifier(): ?UuidInterface
+    {
+        return $this->electionEntityIdentifier;
+    }
+
+    public function setElectionEntityIdentifier(?UuidInterface $electionEntityIdentifier): void
+    {
+        $this->electionEntityIdentifier = $electionEntityIdentifier;
     }
 }
