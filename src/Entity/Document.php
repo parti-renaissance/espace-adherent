@@ -47,11 +47,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(SearchFilter::class, properties={
  *     "title": "partial",
- *     "visibility": "exact",
  * })
  *
  * @ORM\Entity(repositoryClass="App\Repository\DocumentRepository");
- * @ORM\Table(name="document")
+ * @ORM\Table
  *
  * @UniqueEntity(fields={"title"}, message="document.title.unique_entity")
  */
@@ -62,14 +61,14 @@ class Document implements EntityAdministratorBlameableInterface
     use EntityAdministratorBlameableTrait;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
      *
      * @Groups({"document_read"})
      */
-    private ?string $title = null;
+    public ?string $title = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -78,7 +77,7 @@ class Document implements EntityAdministratorBlameableInterface
      *
      * @Groups({"document_read"})
      */
-    private ?string $comment = null;
+    public ?string $comment = null;
 
     /**
      * @Assert\File(
@@ -106,12 +105,12 @@ class Document implements EntityAdministratorBlameableInterface
      *     }
      * )
      */
-    private ?UploadedFile $file = null;
+    public ?UploadedFile $file = null;
 
     /**
      * @ORM\Column(nullable=true)
      */
-    private ?string $filePath = null;
+    public ?string $filePath = null;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -123,48 +122,8 @@ class Document implements EntityAdministratorBlameableInterface
         return (string) $this->title;
     }
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
-    }
-
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(?string $comment): void
-    {
-        $this->comment = $comment;
-    }
-
-    public function getFile(): ?UploadedFile
-    {
-        return $this->file;
-    }
-
-    public function setFile(?UploadedFile $file): void
-    {
-        $this->file = $file;
-    }
-
-    public function getFilePath(): ?string
-    {
-        return $this->filePath;
-    }
-
     public function hasFilePath(): bool
     {
         return null !== $this->filePath;
-    }
-
-    public function setFilePath(?string $filePath): void
-    {
-        $this->filePath = $filePath;
     }
 }

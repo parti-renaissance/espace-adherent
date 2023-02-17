@@ -22,7 +22,7 @@ class DocumentHandler
 
         $document->setFilePath($path = sprintf(
             '%s/%s.%s',
-            'files/documents/admin',
+            'files/documents',
             Uuid::uuid4()->toString(),
             $file->getClientOriginalExtension()
         ));

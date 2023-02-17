@@ -2,9 +2,9 @@
 
 namespace App\Normalizer;
 
-use App\Entity\AdherentFormation\Formation;
 use App\Entity\Document;
 use App\Scope\Generator\ScopeGeneratorInterface;
+use App\Scope\Scope;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
@@ -26,7 +26,7 @@ class DocumentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     }
 
     /**
-     * @param Formation $object
+     * @param Document $object
      */
     public function normalize($object, $format = null, array $context = [])
     {
@@ -59,12 +59,8 @@ class DocumentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         return $this->urlGenerator->generate('api_documents_get_file_item', $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    private function getCurrentScope(): ?ScopeGeneratorInterface
+    private function getCurrentScope(): ?Scope
     {
-        if (!$this->currentScope) {
-            $this->currentScope = $this->scopeGeneratorResolver->resolve();
-        }
-
-        return $this->currentScope;
+        return $this->scopeGeneratorResolver->generate();
     }
 }
