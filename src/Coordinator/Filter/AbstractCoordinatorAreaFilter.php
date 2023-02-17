@@ -2,7 +2,7 @@
 
 namespace App\Coordinator\Filter;
 
-use App\Entity\BaseGroup;
+use App\Entity\Committee;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -47,7 +47,7 @@ abstract class AbstractCoordinatorAreaFilter
     {
         $filter = new static();
 
-        $filter->setStatus($request->query->get(self::PARAMETER_STATUS, BaseGroup::PENDING));
+        $filter->setStatus($request->query->get(self::PARAMETER_STATUS, Committee::PENDING));
         $filter->setOffset($request->query->getInt(self::PARAMETER_OFFSET));
 
         return $filter;

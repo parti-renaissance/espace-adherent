@@ -8,7 +8,6 @@ use App\Collection\CommitteeMembershipCollection;
 use App\Committee\Filter\ListFilterObject;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
-use App\Entity\BaseGroup;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
@@ -46,7 +45,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->andWhere('c.status = :approved')
             ->andWhere('c.approvedAt IS NOT NULL')
             ->setParameter('adherent', $adherent)
-            ->setParameter('approved', BaseGroup::APPROVED)
+            ->setParameter('approved', Committee::APPROVED)
         ;
 
         return $this->configurePaginator(

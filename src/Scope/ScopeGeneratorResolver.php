@@ -48,7 +48,7 @@ class ScopeGeneratorResolver
 
         $scopeGenerator = $this->resolve();
 
-        return $this->currentScope = $scopeGenerator ? $scopeGenerator->generate($this->getCurrentUser()) : null;
+        return $this->currentScope = $scopeGenerator?->generate($this->getCurrentUser());
     }
 
     private function getCurrentUser(): ?Adherent

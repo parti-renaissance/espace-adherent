@@ -9,7 +9,6 @@ use App\Committee\Filter\CommitteeListFilter;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
-use App\Entity\BaseGroup;
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
@@ -88,7 +87,7 @@ class CommitteeRepository extends ServiceEntityRepository
                 'postal_code' => $address->getPostalCode(),
                 'city_name' => $address->getCityName().'%',
                 'country' => $address->getCountry(),
-                'approved' => BaseGroup::APPROVED,
+                'approved' => Committee::APPROVED,
             ])
             ->setMaxResults($limit)
             ->getQuery()

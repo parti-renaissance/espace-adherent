@@ -10,7 +10,6 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
-use App\Entity\BaseGroup;
 use App\Entity\Committee;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
@@ -434,7 +433,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
             $this->createPostAddress('50 Rue de la Villette', '69003-69383'),
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69003-en-marche-lyon',
-            BaseGroup::APPROVED
+            Committee::APPROVED
         );
     }
 

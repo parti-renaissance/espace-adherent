@@ -20,12 +20,12 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -84,7 +84,7 @@ class CommitteeAdmin extends AbstractAdmin
                     'label' => 'Nom',
                     'format_title_case' => true,
                 ])
-                ->add('description', TextareaType::class, [
+                ->add('description', null, [
                     'label' => 'Description',
                     'attr' => [
                         'rows' => '3',
@@ -97,7 +97,7 @@ class CommitteeAdmin extends AbstractAdmin
                     'label' => 'Téléphone',
                     'template' => 'admin/adherent/show_phone.html.twig',
                 ])
-                ->add('facebookPageUrl', UrlType::class, [
+                ->add('facebookPageUrl', null, [
                     'label' => 'Facebook',
                 ])
                 ->add('twitterNickname', null, [
@@ -120,22 +120,22 @@ class CommitteeAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-5'])
-                ->add('postAddress.address', TextType::class, [
+                ->add('postAddress.address', null, [
                     'label' => 'Rue',
                 ])
-                ->add('postAddress.postalCode', TextType::class, [
+                ->add('postAddress.postalCode', null, [
                     'label' => 'Code postal',
                 ])
-                ->add('postAddress.cityName', TextType::class, [
+                ->add('postAddress.cityName', null, [
                     'label' => 'Ville',
                 ])
-                ->add('postAddress.country', CountryType::class, [
+                ->add('postAddress.country', null, [
                     'label' => 'Pays',
                 ])
-                ->add('postAddress.latitude', TextType::class, [
+                ->add('postAddress.latitude', null, [
                     'label' => 'Latitude',
                 ])
-                ->add('postAddress.longitude', TextType::class, [
+                ->add('postAddress.longitude', null, [
                     'label' => 'Longitude',
                 ])
             ->end()
@@ -153,9 +153,6 @@ class CommitteeAdmin extends AbstractAdmin
             ->with('Comité', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
-                ])
-                ->add('nameLocked', null, [
-                    'label' => 'Bloquer la modification du nom de comité',
                 ])
                 ->add('description', null, [
                     'label' => 'Description',
@@ -177,15 +174,19 @@ class CommitteeAdmin extends AbstractAdmin
             ->end()
             ->with('Localisation', ['class' => 'col-md-5'])
                 ->add('postAddress.address', TextType::class, [
+                    'required' => false,
                     'label' => 'Adresse postale',
                 ])
                 ->add('postAddress.postalCode', TextType::class, [
+                    'required' => false,
                     'label' => 'Code postal',
                 ])
                 ->add('postAddress.cityName', TextType::class, [
+                    'required' => false,
                     'label' => 'Ville',
                 ])
                 ->add('postAddress.country', CountryType::class, [
+                    'required' => false,
                     'label' => 'Pays',
                 ])
             ->end()
@@ -206,6 +207,14 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
                 'show_filter' => true,
+            ])
+            ->add('version', ChoiceFilter::class, [
+                'label' => 'Version',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [1 => 1, 2 => 2],
+                ],
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
@@ -346,38 +355,24 @@ class CommitteeAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
-            ->add('id', null, [
-                'label' => 'ID',
-            ])
-            ->addIdentifier('name', null, [
-                'label' => 'Nom',
-            ])
+            ->add('id', null, ['label' => 'ID'])
+            ->add('version', null, ['label' => 'Version'])
+            ->addIdentifier('name', null, ['label' => 'Nom'])
             ->add('postAddress', null, [
                 'label' => 'Adresse',
                 'template' => 'admin/list_address.html.twig',
             ])
-            ->add('zones', null, [
-                'label' => 'Zones',
-            ])
-            ->add('phone', null, [
-                'label' => 'Téléphone',
-                'template' => 'admin/adherent/list_phone.html.twig',
-            ])
-            ->add('membersCount', null, [
-                'label' => 'Membres',
-            ])
-            ->add('createdAt', null, [
-                'label' => 'Date de création',
-            ])
-            ->add('hosts', TextType::class, [
+            ->add('zones', null, ['label' => 'Zones'])
+            ->add('createdAt', null, ['label' => 'Date de création'])
+            ->add('hosts', null, [
                 'label' => 'Animateur(s)',
                 'template' => 'admin/committee/list_hosts.html.twig',
             ])
-            ->add('creator', TextType::class, [
+            ->add('creator', null, [
                 'label' => 'Créateur',
                 'template' => 'admin/committee/list_creator.html.twig',
             ])
-            ->add('status', TextType::class, [
+            ->add('status', null, [
                 'label' => 'Statut',
                 'template' => 'admin/committee/list_status.html.twig',
             ])

@@ -44,6 +44,7 @@ Feature:
         Examples:
             | user                            | scope                           |
             | president-ad@renaissance-dev.fr | president_departmental_assembly |
+            | referent@en-marche-dev.fr       | referent                        |
 
     Scenario: As a user granted with local scope, I can get geo zone available for a new committee
         Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -139,3 +140,56 @@ Feature:
             }
         ]
         """
+
+    Scenario Outline: I can create a committee with some zones
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/zone/autocomplete?scope=<scope>&q=Hauts&types[]=department&availableForCommittee=true"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        [
+            {
+                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                "type": "department",
+                "postal_code": [],
+                "code": "92",
+                "name": "Hauts-de-Seine"
+            }
+        ]
+        """
+        When I send a "POST" request to "/api/v3/committees?scope=<scope>" with body:
+        """
+        {
+            "name": "test 1",
+            "description": "my desc",
+            "zones": [
+                "e3f154b1-906e-11eb-a875-0242ac150002",
+                "e3efe6fd-906e-11eb-a875-0242ac150002",
+                "e3f0ee7b-906e-11eb-a875-0242ac150002"
+            ]
+        }
+        """
+        Then the response status code should be 201
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "name": "test 1",
+            "description": "my desc",
+            "uuid": "@uuid@",
+            "created_at": "@string@.isDateTime()",
+            "updated_at": "@string@.isDateTime()"
+        }
+        """
+        When I send a "GET" request to "/api/v3/zone/autocomplete?scope=<scope>&q=Hauts&types[]=department&availableForCommittee=true"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        []
+        """
+        Examples:
+            | user                            | scope                           |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly |
+            | referent@en-marche-dev.fr       | referent                        |
