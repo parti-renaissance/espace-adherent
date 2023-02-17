@@ -229,8 +229,7 @@ Feature:
 
   Scenario: As a logged-in user with no correct rights I cannot create a riposte
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
+    When I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
     """
     {
       "title": "Une nouvelle riposte d'aujourd'hui",
@@ -244,8 +243,7 @@ Feature:
 
   Scenario: As a logged-in user I cannot create a riposte with no data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
+    When I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
     """
     {}
     """
@@ -279,8 +277,7 @@ Feature:
 
   Scenario: As a logged-in user I cannot create a riposte with invalid data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
+    When I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
     """
     {
       "title": "Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui",
@@ -323,8 +320,7 @@ Feature:
   Scenario: As a logged-in user I can create a riposte
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     Then I should have 0 notification
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
+    When I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
     """
     {
       "title": "Une nouvelle riposte d'aujourd'hui",
@@ -367,8 +363,7 @@ Feature:
 
   Scenario: As a logged-in user I can edit a riposte
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4?scope=national" with body:
+    When I send a "PUT" request to "/api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4?scope=national" with body:
     """
     {
       "title": "Une nouvelle titre",

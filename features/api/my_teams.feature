@@ -62,8 +62,7 @@ Feature:
 
   Scenario: As a referent I cannot add a new member in my team with invalid data
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
     """
     {
         "team": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26",
@@ -109,8 +108,7 @@ Feature:
 
   Scenario: As a correspondent I cannot add a new member in my team with invalid data (no user and not correspondent features)
     Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/my_team_members?scope=correspondent" with body:
+    When I send a "POST" request to "/api/v3/my_team_members?scope=correspondent" with body:
     """
     {
         "team": "17921a6c-cf1c-4b49-9aac-06bd3913c3f7",
@@ -147,8 +145,7 @@ Feature:
 
   Scenario: As a referent I cannot add a new member in my team, if the user is already in my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
     """
     {
         "team": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26",
@@ -179,8 +176,7 @@ Feature:
 
   Scenario: As a referent I cannot add a new member in my team, if the user is not in my managed zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
     """
     {
         "team": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26",
@@ -211,8 +207,7 @@ Feature:
 
   Scenario: As a referent I can add a new member in my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
     """
     {
         "team": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26",
@@ -247,8 +242,7 @@ Feature:
 
   Scenario: As a referent I can edit a member in my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent" with body:
+    When I send a "PUT" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent" with body:
     """
     {
         "adherent": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
@@ -280,8 +274,7 @@ Feature:
 
   Scenario: As a referent I can get a member of my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
+    When I send a "GET" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -306,20 +299,17 @@ Feature:
 
   Scenario: As a referent I can delete a member of my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "DELETE" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
+    When I send a "DELETE" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
     Then the response status code should be 204
 
   Scenario: As a referent I cannot delete a member of not my team
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "DELETE" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
+    When I send a "DELETE" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
     Then the response status code should be 403
 
   Scenario: As a referent I can get my team with members
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/my_teams?scope=referent"
+    When I send a "GET" request to "/api/v3/my_teams?scope=referent"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -400,8 +390,7 @@ Feature:
 
   Scenario: As a referent I get an empty list of my team members, if I doesn't have my team
     Given I am logged with "referent-child@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/my_teams?scope=referent"
+    When I send a "GET" request to "/api/v3/my_teams?scope=referent"
     Then the response status code should be 200
     And the JSON should be equal to:
     """

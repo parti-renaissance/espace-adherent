@@ -6,7 +6,6 @@ Feature:
 
   Scenario: As a logged-in adherent I can add and remove a push token
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/v3/push-token" with body:
     """
@@ -27,7 +26,6 @@ Feature:
 
   Scenario: As a logged-in device I can add and remove a push token
     Given I am logged with device "device_2" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/v3/push-token" with body:
     """

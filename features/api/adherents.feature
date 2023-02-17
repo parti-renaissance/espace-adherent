@@ -216,7 +216,6 @@ Feature:
 
   Scenario: As a logged-in user I cannot set my nickname if it's too long
     Given I am logged as "jacques.picard@en-marche.fr"
-    And I add "Content-Type" header equal to "application/json"
     When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
     """
     {
@@ -256,7 +255,6 @@ Feature:
 
   Scenario: As a logged-in user I can set my nickname but not use it
     Given I am logged as "jacques.picard@en-marche.fr"
-    And I add "Content-Type" header equal to "application/json"
     When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
     """
     {

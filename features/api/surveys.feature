@@ -373,7 +373,6 @@ Feature:
 
   Scenario: As a logged-in user I can reply to a national survey (new body structure)
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
@@ -443,7 +442,6 @@ Feature:
 
   Scenario Outline: As a logged-in user I can reply to a national survey
     Given I am logged with "<email>" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
@@ -516,7 +514,6 @@ Feature:
 
   Scenario: As a logged-in user I can reply to a national survey without agreeing to join
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
@@ -562,7 +559,6 @@ Feature:
 
   Scenario: As a logged-in user I can reply to a local survey
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
@@ -637,7 +633,6 @@ Feature:
 
   Scenario: As a logged-in user I cannot reply to a local survey with errors
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
@@ -717,7 +712,6 @@ Feature:
 
   Scenario: As a logged-in user I cannot reply to a local survey with errors (new body structure)
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
@@ -793,7 +787,6 @@ Feature:
 
   Scenario: As a logged-in user I can reply to a local survey with custom validations errors
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
@@ -1214,8 +1207,7 @@ Feature:
 
   Scenario: As a user with national scope I cannot create a local survey
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/surveys?scope=national" with body:
+    When I send a "POST" request to "/api/v3/surveys?scope=national" with body:
     """
     {
         "type": "local",
@@ -1271,8 +1263,7 @@ Feature:
 
   Scenario: As a user with national scope I cannot create a local survey
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/surveys?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/surveys?scope=referent" with body:
     """
     {
         "type": "national",
@@ -1327,8 +1318,7 @@ Feature:
 
   Scenario: As a user with national role I can create a national survey
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/surveys?scope=national" with body:
+    When I send a "POST" request to "/api/v3/surveys?scope=national" with body:
     """
     {
         "type": "national",
@@ -1441,8 +1431,7 @@ Feature:
 
   Scenario Outline: As a user with a (delegated) referent role I can create a local survey
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/surveys?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/surveys?scope=<scope>" with body:
     """
     {
         "type": "local",
@@ -1566,8 +1555,7 @@ Feature:
 
   Scenario Outline: As a user with (delegated) referent role I can unpublished a local survey
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=<scope>" with body:
     """
     {
       "published": false
@@ -1582,8 +1570,7 @@ Feature:
 
   Scenario Outline: As a user with (delegated) referent role I can update a local survey
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=<scope>" with body:
     """
     {
       "name": "5ans à l'écoute",
@@ -1987,8 +1974,7 @@ Feature:
 
   Scenario Outline: As a user with (delegated) referent role I cannot delete all questions on a survey
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=<scope>" with body:
     """
     {
       "name": "5ans à l'écoute",
@@ -2020,8 +2006,7 @@ Feature:
 
   Scenario: As a user with a (delegated) local role I can get surveys KPI
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/surveys/kpi?scope=referent"
+    When I send a "GET" request to "/api/v3/surveys/kpi?scope=referent"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -2036,8 +2021,7 @@ Feature:
 
   Scenario: As a user with a local role I can get the last month jemengage data survey geocode
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/jemarche_data_surveys/kpi?scope=referent"
+    When I send a "GET" request to "/api/v3/jemarche_data_surveys/kpi?scope=referent"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

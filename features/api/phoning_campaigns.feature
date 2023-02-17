@@ -87,8 +87,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I can create a national campaign
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
+    When I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
     """
     {
       "title": "Campagne Novembre 2021",
@@ -180,8 +179,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I can update a national campaign
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668?scope=phoning_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668?scope=phoning_national_manager" with body:
     """
     {
       "title": "**NOUVEAU** Campagne sans adhérent dispo à appeler"
@@ -245,8 +243,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I can not create a local campaign
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
+    When I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
     """
     {
       "title": "Campagne Novembre 2021",
@@ -293,8 +290,7 @@ Feature:
 
   Scenario: As a user granted with national scope, I can not update a local campaign
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaigns/2c0f981b-4e2a-448a-a0c2-aebca3b3eb1e?scope=phoning_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/phoning_campaigns/2c0f981b-4e2a-448a-a0c2-aebca3b3eb1e?scope=phoning_national_manager" with body:
     """
     {
       "title": "**NOUVEAU** Campagne locale du département 92"
@@ -451,8 +447,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can create a local campaign in a zone I am manager of
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/phoning_campaigns?scope=<scope>" with body:
     """
     {
       "title": "Campagne Novembre 2021",
@@ -555,8 +550,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can update a local campaign in a zone I am manager of
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaigns/2c0f981b-4e2a-448a-a0c2-aebca3b3eb1e?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/phoning_campaigns/2c0f981b-4e2a-448a-a0c2-aebca3b3eb1e?scope=<scope>" with body:
     """
     {
       "title": "**NOUVEAU** Campagne locale du département 92"
@@ -630,8 +624,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can not create a local campaign in a zone I am not manager of
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/phoning_campaigns?scope=<scope>" with body:
     """
     {
       "title": "Campagne Novembre 2021",
@@ -682,8 +675,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can not update a local campaign in a zone I am not manager of
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaigns/f909c7b5-aafd-4785-8b09-edebbf5814ee?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/phoning_campaigns/f909c7b5-aafd-4785-8b09-edebbf5814ee?scope=<scope>" with body:
     """
     {
       "title": "**NOUVEAU** Campagne locale de la ville de Nice (06088)"
@@ -697,8 +689,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can not create a national campaign
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/phoning_campaigns?scope=<scope>" with body:
     """
     {
       "title": "Campagne Novembre 2021",
@@ -748,8 +739,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can not update a national campaign
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668?scope=<scope>" with body:
     """
     {
       "title": "**NOUVEAU** Campagne sans adhérent dispo à appeler"
@@ -766,8 +756,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As an anonymous user, I can not create a campaign
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
+    When I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
     """
     {
       "title": "Campagne Novembre 2021",
@@ -796,8 +785,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As an anonymous user, I can not update a campaign
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668?scope=phoning_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668?scope=phoning_national_manager" with body:
     """
     {
       "title": "**NOUVEAU** Campagne sans adhérent dispo à appeler"
@@ -1158,8 +1146,7 @@ Feature:
 
   Scenario: As a logged-in user I cannot change my phoning campaign history with wrong data
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055" with body:
+    When I send a "PUT" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055" with body:
     """
     {
         "status": "send"
@@ -1184,8 +1171,7 @@ Feature:
 
   Scenario: As a logged-in user I can change only status of my phoning campaign history
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055" with body:
+    When I send a "PUT" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055" with body:
     """
     {
         "status": "not-respond"
@@ -1202,8 +1188,7 @@ Feature:
 
   Scenario: As a logged-in user I can change my phoning campaign history
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055" with body:
+    When I send a "PUT" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055" with body:
     """
     {
         "status": "completed",
@@ -1556,8 +1541,7 @@ Feature:
 
   Scenario: As a phoning national manager I can create a new phoning campaign
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
+    When I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
     """
     {
       "title": "Campagne Novembre 2021",
@@ -1647,8 +1631,7 @@ Feature:
 
   Scenario: As a phoning national manager I cannot create a phoning campaign without the title the goal or the survey
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
+    When I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
     """
     {
       "brief": "cette Campagne est un test",
@@ -1699,8 +1682,7 @@ Feature:
 
   Scenario: As a phoning national manager I can update a phoning campaign
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager" with body:
+    When I send a "PUT" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager" with body:
     """
       {
         "title": "Campagne pour les femmes 2021",

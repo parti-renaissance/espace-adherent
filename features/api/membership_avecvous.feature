@@ -5,8 +5,7 @@ Feature:
   I should be able to access the contacts API
 
   Scenario: As a non logged-in user I can create a contact
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/contacts" with body:
+    Given I send a "POST" request to "/api/contacts" with body:
     """
     {
       "first_name": "Rémi",
@@ -41,8 +40,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can update a contact interests
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "interests": ["action_terrain", "campagne_numerique"]
@@ -58,8 +56,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can update a contact with postal code only and phone_contact checkbox
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "interests": ["campagne_numerique"]
@@ -73,8 +70,7 @@ Feature:
       "uuid": "@uuid@"
     }
     """
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "last_name": "Doe",
@@ -98,8 +94,7 @@ Feature:
     And I should have 0 email
 
   Scenario: As a non logged-in user I can update a contact with full address and all contact checkboxes
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "interests": ["action_terrain", "campagne_numerique"]
@@ -113,8 +108,7 @@ Feature:
       "uuid": "@uuid@"
     }
     """
-    Then I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Then I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "last_name": "Doe",
@@ -166,8 +160,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can create a contact with the same email address as an existing account
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/contacts" with body:
+    Given I send a "POST" request to "/api/contacts" with body:
     """
     {
       "first_name": "Carl",
@@ -187,8 +180,7 @@ Feature:
     }
     """
 
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "interests": ["campagne_numerique"]
@@ -202,8 +194,7 @@ Feature:
       "uuid": "@uuid@"
     }
     """
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "last_name": "Doe",
@@ -227,8 +218,7 @@ Feature:
     And I should have 0 email
 
   Scenario: As a non logged-in user I can not create a contact with no captcha
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/contacts" with body:
+    Given I send a "POST" request to "/api/contacts" with body:
     """
     {
       "first_name": "Rémi",
@@ -256,8 +246,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not create a contact with invalid captcha
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/contacts" with body:
+    Given I send a "POST" request to "/api/contacts" with body:
     """
     {
       "first_name": "Rémi",
@@ -287,8 +276,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not create a contact with no cgu accepted
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/contacts" with body:
+    Given I send a "POST" request to "/api/contacts" with body:
     """
     {
       "first_name": "Rémi",
@@ -318,8 +306,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not create a contact with an invalid email address
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/contacts" with body:
+    Given I send a "POST" request to "/api/contacts" with body:
     """
     {
       "first_name": "Rémi",
@@ -349,8 +336,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not create a contact with an already existing email address
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/contacts" with body:
+    Given I send a "POST" request to "/api/contacts" with body:
     """
     {
       "first_name": "Rémi",
@@ -380,8 +366,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not create a contact with no first name
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/contacts" with body:
+    Given I send a "POST" request to "/api/contacts" with body:
     """
     {
       "first_name": null,
@@ -411,8 +396,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not create a contact with a too short first name
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/contacts" with body:
+    Given I send a "POST" request to "/api/contacts" with body:
     """
     {
       "first_name": "R",
@@ -442,8 +426,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not create a contact with a too long first name
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/contacts" with body:
+    Given I send a "POST" request to "/api/contacts" with body:
     """
     {
       "first_name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -473,8 +456,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not create a contact with no source
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/contacts" with body:
+    Given I send a "POST" request to "/api/contacts" with body:
     """
     {
       "first_name": "Rémi",
@@ -504,8 +486,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not create a contact with an invalid source
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/contacts" with body:
+    Given I send a "POST" request to "/api/contacts" with body:
     """
     {
       "first_name": "Rémi",
@@ -535,8 +516,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not update a contact with invalid interests
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "interests": ["invalid_interest_1", "invalid_interest_2"]
@@ -561,8 +541,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not update a contact with no cgu accepted
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "cgu_accepted": false
@@ -587,8 +566,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not update a contact with an invalid phone number
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "phone": "+00 21 35 68"
@@ -613,8 +591,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not update a contact with an invalid birth date
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "birthdate": "2099-01-02"
@@ -639,8 +616,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not update a contact with a too long address
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "post_address": {
@@ -667,8 +643,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not update a contact with a too long postal code
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "post_address": {
@@ -695,8 +670,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not update a contact with a too long city name
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "post_address": {
@@ -723,8 +697,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not update a contact with an invalid country code
-    Given I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    Given I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
       "post_address": {

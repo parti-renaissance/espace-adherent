@@ -6,8 +6,7 @@ Feature:
 
   Scenario Outline: As a logged-in user I can get an event
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/events/<uuid>"
+    When I send a "GET" request to "/api/v3/events/<uuid>"
     Then the response status code should be 200
     Examples:
       | uuid                                  |
@@ -46,22 +45,19 @@ Feature:
 
   Scenario: As a logged-in user I cannot get not published event
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/events/de7f027c-f6c3-439f-b1dd-bf2b110a0fb0"
+    When I send a "GET" request to "/api/v3/events/de7f027c-f6c3-439f-b1dd-bf2b110a0fb0"
     Then the response status code should be 404
 
   Scenario: As a logged-in user I can get events
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/events"
+    When I send a "GET" request to "/api/v3/events"
     Then the response status code should be 200
     And the JSON nodes should match:
       | metadata.total_items  | 22 |
 
   Scenario: As a logged-in user I can get coalitions events
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/events?group_source=coalitions"
+    When I send a "GET" request to "/api/v3/events?group_source=coalitions"
     Then the response status code should be 200
     And the JSON nodes should match:
       | metadata.total_items  | 16 |
@@ -1284,8 +1280,7 @@ Feature:
 
   Scenario: As a deputy I cannot create an event with missing or invalid data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/events?scope=deputy" with body:
+    When I send a "POST" request to "/api/v3/events?scope=deputy" with body:
     """
     {
        "begin_at": "2018-01-01 10:10:10",
@@ -1343,8 +1338,7 @@ Feature:
 
   Scenario: As a deputy I can create an event
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/events" with body:
+    When I send a "POST" request to "/api/v3/events" with body:
     """
     {
         "name": "Nouveau événement",
@@ -1380,8 +1374,7 @@ Feature:
       }]
     }
     """
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/events" with body:
+    When I send a "POST" request to "/api/v3/events" with body:
     """
     {
         "name": "Nouveau événement",
@@ -1449,8 +1442,7 @@ Feature:
 
   Scenario Outline: As a (delegated) referent I can edit my (delegator's) default event
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5?scope=<scope>" with body:
     """
     {
       "description": "Nouvelle description",
@@ -1782,8 +1774,7 @@ Feature:
 
   Scenario Outline:  As a (delegated) legislative candidate I can create an event
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/events?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/events?scope=<scope>" with body:
     """
     {
         "name": "Nouveau événement",
@@ -1855,8 +1846,7 @@ Feature:
 
   Scenario Outline:  As a (delegated) legislative candidate I cannot create an event in not my managed zone
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/events?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/events?scope=<scope>" with body:
     """
     {
         "name": "Nouveau événement",
@@ -1903,8 +1893,7 @@ Feature:
 
   Scenario Outline: As a (delegated) legislative candidate I can edit my (delegator's) event
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b?scope=<scope>" with body:
     """
     {
       "description": "Nouvelle description",

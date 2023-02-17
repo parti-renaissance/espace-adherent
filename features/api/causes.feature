@@ -682,8 +682,7 @@ Feature:
     And the JSON nodes should match:
       | followers_count | 0 |
 
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f/follower" with body:
+    When I send a "PUT" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f/follower" with body:
     """
     {
         "email_address": "adherent@en-marche-dev.fr",
@@ -748,8 +747,7 @@ Feature:
       | followers_count | 1 |
 
   Scenario: As a non logged-in user I can not follow a cause if no all required data
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f/follower" with body:
+    When I send a "PUT" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f/follower" with body:
     """
     {}
     """
@@ -787,8 +785,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not follow a cause that I am already follow
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower" with body:
+    When I send a "PUT" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower" with body:
     """
     {
         "email_address": "adherent@en-marche-dev.fr",
@@ -817,8 +814,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not follow a cause if I have already an account
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f/follower" with body:
+    When I send a "PUT" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f/follower" with body:
     """
     {
         "email_address": "jacques.picard@en-marche.fr",
@@ -854,7 +850,6 @@ Feature:
       | followers_count | 4 |
 
     When I am logged with "benjyd@aol.com" via OAuth client "Coalition App"
-    And I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/causes" with body:
     """
     {
@@ -907,8 +902,7 @@ Feature:
 
   Scenario: As a logged-in user I can create a cause with second coalition
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/causes" with body:
+    When I send a "POST" request to "/api/v3/causes" with body:
     """
     {
       "name": "Nouvelle cause sur la culture 2",
@@ -1126,8 +1120,7 @@ Feature:
 
   Scenario: As a logged in cause author, I should be able to edit my cause description
     Given I am logged with "carl999@example.fr" via OAuth client "Coalition App"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2" with body:
+    When I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2" with body:
     """
     {
       "description": "Nouvelle description"
@@ -1143,8 +1136,7 @@ Feature:
 
   Scenario: As a logged in cause author, i should not be able to edit my cause name
     Given I am logged with "carl999@example.fr" via OAuth client "Coalition App"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2" with body:
+    When I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2" with body:
     """
     {
       "name": "Nouveau nom"
@@ -1160,8 +1152,7 @@ Feature:
 
   Scenario: As a logged user, i should not be allowed to edit a cause i did not authored
     Given I am logged with "carl999@example.fr" via OAuth client "Coalition App"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/causes/fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8" with body:
+    When I send a "PUT" request to "/api/v3/causes/fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8" with body:
     """
     {
       "description": "Nouvelle description"
@@ -1170,8 +1161,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a non logged-in user, I can get sorted causes
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/causes?order[followersCount]=asc"
+    When I send a "GET" request to "/api/causes?order[followersCount]=asc"
     Then the response status code should be 200
     And the JSON nodes should match:
       | items[0].name             | Cause pour la culture 2 |
@@ -1187,8 +1177,7 @@ Feature:
       | items[1].name             | Cause pour la culture 3 |
       | items[1].followers_count  | 0                       |
 
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/causes?order[followersCount]=desc"
+    When I send a "GET" request to "/api/causes?order[followersCount]=desc"
     Then the response status code should be 200
     And the JSON nodes should match:
       | items[0].name             | Cause pour la culture   |
@@ -1196,15 +1185,13 @@ Feature:
       | items[1].name             | Cause pour la culture 2 |
       | items[1].followers_count  | 0                       |
 
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/causes?order[createdAt]=asc"
+    When I send a "GET" request to "/api/causes?order[createdAt]=asc"
     Then the response status code should be 200
     And the JSON nodes should match:
       | items[0].name             | Cause pour la justice   |
       | items[1].name             | Cause pour l'éducation  |
 
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/causes?order[createdAt]=desc"
+    When I send a "GET" request to "/api/causes?order[createdAt]=desc"
     Then the response status code should be 200
     And the JSON nodes should match:
       | items[0].name             | Cause pour la culture   |

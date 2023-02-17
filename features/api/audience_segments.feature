@@ -61,8 +61,7 @@ Feature:
 
   Scenario: As a logged-in user with no correct rights I cannot create an audience segment
     Given I am logged with "michel.vasseur@example.ch" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/audience-segments" with body:
+    When I send a "POST" request to "/api/v3/audience-segments" with body:
     """
     {
         "filter": {
@@ -85,8 +84,7 @@ Feature:
 
   Scenario: As a logged-in user I cannot create an audience segment, if filter scope is not authorized
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/audience-segments?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/audience-segments?scope=referent" with body:
     """
     {
         "filter": {
@@ -125,8 +123,7 @@ Feature:
 
   Scenario: As a logged-in user I cannot create an audience segment with no data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/audience-segments" with body:
+    When I send a "POST" request to "/api/v3/audience-segments" with body:
     """
     {}
     """
@@ -150,8 +147,7 @@ Feature:
 
   Scenario: As a logged-in user I can create an audience segment
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/audience-segments?scope=deputy" with body:
+    When I send a "POST" request to "/api/v3/audience-segments?scope=deputy" with body:
     """
     {
         "filter": {
@@ -200,8 +196,7 @@ Feature:
 
   Scenario Outline: As a (delegated) referent I can create an audience segment
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/audience-segments?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/audience-segments?scope=<scope>" with body:
     """
     {
         "filter": {
@@ -246,8 +241,7 @@ Feature:
 
   Scenario: As a logged-in user I can edit my segment
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7?scope=referent" with body:
+    When I send a "PUT" request to "/api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7?scope=referent" with body:
     """
     {
         "filter": {

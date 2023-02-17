@@ -552,8 +552,7 @@ Feature:
 
   Scenario: As a logged-in user I cannot change building type with invalid type
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b" with body:
+    When I send a "PUT" request to "api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b" with body:
     """
     {
       "type": "invalid"
@@ -579,8 +578,7 @@ Feature:
 
   Scenario: As a logged-in user I can change building type
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b" with body:
+    When I send a "PUT" request to "api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b" with body:
     """
     {
       "type": "house"

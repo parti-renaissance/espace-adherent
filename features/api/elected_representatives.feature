@@ -107,8 +107,7 @@ Feature:
 
     Scenario Outline: As a user granted with local scope, I can create an elected representative in a zone I am manager of
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I add "Content-Type" header equal to "application/json"
-        And I send a "POST" request to "/api/v3/elected_representatives?scope=<scope>" with body:
+        When I send a "POST" request to "/api/v3/elected_representatives?scope=<scope>" with body:
         """
         {
             "last_name": "Doe",
@@ -152,8 +151,7 @@ Feature:
 
     Scenario Outline: As a user granted with local scope, I can update an elected representative in a zone I am manager of
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I add "Content-Type" header equal to "application/json"
-        And I send a "PUT" request to "/api/v3/elected_representatives/0c62d201-826b-4da7-8424-e8e17935b400?scope=<scope>" with body:
+        When I send a "PUT" request to "/api/v3/elected_representatives/0c62d201-826b-4da7-8424-e8e17935b400?scope=<scope>" with body:
         """
         {
             "last_name": "Doe",
@@ -208,8 +206,7 @@ Feature:
 
     Scenario Outline: As a user granted with local scope, I can get an elected representative informations in a zone I am manager of
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I add "Content-Type" header equal to "application/json"
-        And I send a "GET" request to "/api/v3/elected_representatives/0c62d201-826b-4da7-8424-e8e17935b400?scope=<scope>"
+        When I send a "GET" request to "/api/v3/elected_representatives/0c62d201-826b-4da7-8424-e8e17935b400?scope=<scope>"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
@@ -380,8 +377,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can get an elected representative mandate informations
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/elected_mandates/9051e0b5-4b56-41b9-8657-cc45e431c727?scope=<scope>"
+    When I send a "GET" request to "/api/v3/elected_mandates/9051e0b5-4b56-41b9-8657-cc45e431c727?scope=<scope>"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -415,8 +411,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can create an elected representative mandate informations
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/elected_mandates?scope=<scope>" with body:
+    When I send a "POST" request to "/api/v3/elected_mandates?scope=<scope>" with body:
     """
     {
       "type": "membre_EPCI",
@@ -496,8 +491,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can update an elected representative mandate informations
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/elected_mandates/9051e0b5-4b56-41b9-8657-cc45e431c727?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/elected_mandates/9051e0b5-4b56-41b9-8657-cc45e431c727?scope=<scope>" with body:
     """
     {
       "type": "membre_EPCI",
@@ -577,8 +571,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can delete an elected representative mandate informations
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "DELETE" request to "/api/v3/elected_mandates/9051e0b5-4b56-41b9-8657-cc45e431c727?scope=<scope>"
+    When I send a "DELETE" request to "/api/v3/elected_mandates/9051e0b5-4b56-41b9-8657-cc45e431c727?scope=<scope>"
     Then the response status code should be 204
     Examples:
       | user                      | scope                                          |
