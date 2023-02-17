@@ -39,7 +39,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
 
             $spaceType = AdherentSpaceEnum::SCOPES[$scopeCode];
         } elseif ($scope) {
-            $spaceType = AdherentSpaceEnum::SCOPES[$scope->getMainCode()];
+            $spaceType = $scope->getMainCode();
         } else {
             $spaceType = $this->getSpaceType($attribute);
         }
