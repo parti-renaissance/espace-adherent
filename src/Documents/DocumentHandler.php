@@ -14,31 +14,31 @@ class DocumentHandler
 
     public function handleFile(Document $document): void
     {
-        if (!$file = $document->getFile()) {
+        if (!$file = $document->file) {
             return;
         }
 
         $this->removeFile($document);
 
-        $document->setFilePath($path = sprintf(
+        $document->filePath = sprintf(
             '%s/%s.%s',
             'files/documents',
             Uuid::uuid4()->toString(),
             $file->getClientOriginalExtension()
-        ));
+        );
 
-        $this->storage->put($path, file_get_contents($file->getPathname()));
+        $this->storage->put($document->filePath, file_get_contents($file->getPathname()));
 
-        $document->setFile(null);
+        $document->file = null;
     }
 
     private function removeFile(Document $document): void
     {
-        if (!$filePath = $document->getFilePath()) {
+        if (!$filePath = $document->filePath) {
             return;
         }
 
-        $document->setFilePath(null);
+        $document->filePath = null;
 
         if (!$this->storage->has($filePath)) {
             return;

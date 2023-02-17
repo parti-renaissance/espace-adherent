@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20230210135353 extends AbstractMigration
+final class Version20230217142406 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -19,6 +19,7 @@ final class Version20230210135353 extends AbstractMigration
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
           created_at DATETIME NOT NULL,
           updated_at DATETIME NOT NULL,
+          UNIQUE INDEX UNIQ_D8698A762B36786B (title),
           UNIQUE INDEX UNIQ_D8698A76D17F50A6 (uuid),
           INDEX IDX_D8698A769DF5350C (created_by_administrator_id),
           INDEX IDX_D8698A76CF1918FF (updated_by_administrator_id),

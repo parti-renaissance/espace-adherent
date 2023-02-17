@@ -46,21 +46,21 @@ class LoadDocumentData extends Fixture implements DependentFixtureInterface
     private function createDocument(string $uuid, string $title, bool $comment = true): Document
     {
         $document = new Document(Uuid::fromString($uuid));
-        $document->setTitle($title);
-        $document->setComment($comment ? $this->faker->text('200') : null);
+        $document->title = $title;
+        $document->comment = $comment ? $this->faker->text('200') : null;
 
         return $document;
     }
 
     private function createFile(Document $document): void
     {
-        $document->setFile(new UploadedFile(
+        $document->file = new UploadedFile(
             __DIR__.'/../adherent_formations/formation.pdf',
             'Formation.pdf',
             'application/pdf',
             null,
             true
-        ));
+        );
 
         $this->documentHandler->handleFile($document);
     }

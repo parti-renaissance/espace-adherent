@@ -4,7 +4,6 @@ namespace App\Normalizer;
 
 use App\Entity\Document;
 use App\Scope\Generator\ScopeGeneratorInterface;
-use App\Scope\Scope;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
