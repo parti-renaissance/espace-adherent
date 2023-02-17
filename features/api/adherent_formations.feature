@@ -102,3 +102,8 @@ Feature:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario: As a user granted with local scope, I can delete adherent formations in my managed zone
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "DELETE" request to "/api/v3/formations/ebdbafa2-c0b0-40ff-adbd-745f48f48c42?scope=referent"
+        Then the response status code should be 204

@@ -11,7 +11,7 @@ trait PositionTrait
     /**
      * @var int
      *
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     * @ORM\Column(type="smallint", options={"default": 0})
      *
      * @Gedmo\SortablePosition
      *
