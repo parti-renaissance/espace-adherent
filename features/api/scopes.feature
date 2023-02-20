@@ -134,7 +134,8 @@ Feature:
         "survey",
         "elected_representative",
         "adherent_formations",
-        "general_meeting_reports"
+        "general_meeting_reports",
+        "documents"
       ],
       "delegated_access": null
     }
@@ -179,7 +180,8 @@ Feature:
         "survey",
         "adherent_formations",
         "committee",
-        "general_meeting_reports"
+        "general_meeting_reports",
+        "documents"
       ],
       "delegated_access": null
     }
@@ -451,7 +453,8 @@ Feature:
             "elected_representative",
             "adherent_formations",
             "committee",
-            "general_meeting_reports"
+            "general_meeting_reports",
+            "documents"
         ],
         "delegated_access": {
             "delegator": {
