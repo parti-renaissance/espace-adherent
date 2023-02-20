@@ -1355,10 +1355,10 @@ scope.feature.phoning_campaign: Phoning
 scope.feature.survey: Questionnaires
 scope.feature.department_site: Site départemental
 scope.feature.elected_representative: Élus
+scope.feature.general_meeting_reports: Procès-verbal d'AG
+scope.feature.adherent_formations: Formations
 scope.feature.documents: Documents
-scope.feature.general_meeting_reports: Procès verbaux
-scope.feature.committee: Comité
-scope.feature.adherent_formations: Formations adhérents
+scope.feature.committee: Comités locaux
 scope.feature.designation: Désignation
 
 scope.app.data_corner: DataCorner
