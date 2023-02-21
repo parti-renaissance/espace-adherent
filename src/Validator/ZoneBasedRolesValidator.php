@@ -54,7 +54,7 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                 continue;
             }
 
-            if (!$allowedTypes = ZoneBasedRoleTypeEnum::ZONE_TYPES[$role->getType()] ?? null) {
+            if (!$allowedTypesConfiguration = ZoneBasedRoleTypeEnum::ZONE_TYPE_CONDITIONS[$role->getType()] ?? null) {
                 continue;
             }
 
@@ -83,12 +83,24 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                 continue;
             }
 
+            $allowedTypes = [];
+            foreach ($allowedTypesConfiguration as $typeKey => $value) {
+                $allowedTypes[] = is_numeric($typeKey) ? $value : $typeKey;
+            }
+
             foreach ($role->getZones() as $zone) {
-                if (!\in_array($zone->getType(), $allowedTypes, true)) {
+                if (
+                    !\in_array($zone->getType(), $allowedTypes, true)
+                    || (
+                        !empty($allowedTypesConfiguration[$zone->getType()])
+                        && !\in_array($zone->getCode(), $allowedTypesConfiguration[$zone->getType()], true)
+                    )
+                ) {
                     $this->context
                         ->buildViolation($constraint->invalidZoneTypeMessage)
                         ->atPath('['.$key.'].zones')
                         ->setParameter('{{zone_type}}', $zone->getType())
+                        ->setParameter('{{zone_code}}', $zone->getCode())
                         ->setParameter('{{role_type}}', $role->getType())
                         ->addViolation()
                     ;
