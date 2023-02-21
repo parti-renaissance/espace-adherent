@@ -9,6 +9,7 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Geo\Zone;
+use App\Repository\Helper\MembershipFilterHelper;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
@@ -273,6 +274,10 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             ;
         }
 
+        if ($renaissanceMembership = $filter->getRenaissanceMembership()) {
+            $this->withRenaissanceMembership($qb, $renaissanceMembership);
+        }
+
         return $qb;
     }
 
@@ -337,5 +342,19 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    private function withRenaissanceMembership(
+        QueryBuilder $qb,
+        string $renaissanceMembership,
+        string $alias = 'er',
+        string $adherentAlias = 'adherent'
+    ): QueryBuilder {
+        if (!\in_array('adherent', $qb->getAllAliases(), true)) {
+            $qb->innerJoin($alias.'.adherent', $adherentAlias);
+        }
+        MembershipFilterHelper::withMembershipFilter($qb, $adherentAlias, $renaissanceMembership);
+
+        return $qb;
     }
 }

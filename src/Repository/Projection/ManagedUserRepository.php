@@ -8,8 +8,8 @@ use App\Entity\Projection\ManagedUser;
 use App\FranceCities\FranceCities;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Membership\MembershipSourceEnum;
-use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Repository\GeoZoneTrait;
+use App\Repository\Helper\MembershipFilterHelper;
 use App\Repository\PaginatorTrait;
 use App\Repository\ReferentTrait;
 use App\Subscription\SubscriptionTypeEnum;
@@ -272,33 +272,8 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere(sprintf('u.certifiedAt %s NULL', $filter->getIsCertified() ? 'IS NOT' : 'IS'));
         }
 
-        if (null !== $filter->getRenaissanceMembership()) {
-            switch ($filter->getRenaissanceMembership()) {
-                case RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE:
-                    $qb
-                        ->andWhere('u.source = :source_renaissance')
-                        ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                    ;
-                    break;
-                case RenaissanceMembershipFilterEnum::ADHERENT_RE:
-                    $qb
-                        ->andWhere('u.source = :source_renaissance AND u.lastMembershipDonation IS NOT NULL')
-                        ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                    ;
-                    break;
-                case RenaissanceMembershipFilterEnum::SYMPATHIZER_RE:
-                    $qb
-                        ->andWhere('u.source = :source_renaissance AND u.lastMembershipDonation IS NULL')
-                        ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                    ;
-                    break;
-                case RenaissanceMembershipFilterEnum::OTHERS_ADHERENT:
-                    $qb
-                        ->andWhere('u.source != :source_renaissance OR u.source IS NULL')
-                        ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                    ;
-                    break;
-            }
+        if (null !== $renaissanceMembership = $filter->getRenaissanceMembership()) {
+            MembershipFilterHelper::withMembershipFilter($qb, 'u', $renaissanceMembership);
         }
 
         if (null !== $filter->getOnlyJeMengageUsers()) {

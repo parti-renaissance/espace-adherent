@@ -118,6 +118,12 @@ class ListFilter
      */
     private $order = 'a';
 
+    /**
+     * @Groups({"filter_write"})
+     * @Assert\Choice(choices=App\Renaissance\Membership\RenaissanceMembershipFilterEnum::CHOICES)
+     */
+    private ?string $renaissanceMembership = null;
+
     private ?Adherent $createdByAdherent;
 
     public function __construct(array $managedZones = [], ?Adherent $createdByAdherent = null)
@@ -274,6 +280,16 @@ class ListFilter
     public function setCreatedByAdherent(?Adherent $createdByAdherent): void
     {
         $this->createdByAdherent = $createdByAdherent;
+    }
+
+    public function getRenaissanceMembership(): ?string
+    {
+        return $this->renaissanceMembership;
+    }
+
+    public function setRenaissanceMembership(?string $renaissanceMembership): void
+    {
+        $this->renaissanceMembership = $renaissanceMembership;
     }
 
     public function toArray(): array

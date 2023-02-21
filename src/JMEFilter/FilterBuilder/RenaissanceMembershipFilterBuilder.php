@@ -4,7 +4,7 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
-use App\Scope\FeatureEnum;
+use App\Scope\ScopeEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RenaissanceMembershipFilterBuilder implements FilterBuilderInterface
@@ -15,7 +15,7 @@ class RenaissanceMembershipFilterBuilder implements FilterBuilderInterface
 
     public function supports(string $scope, string $feature = null): bool
     {
-        return \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS], true);
+        return \in_array($scope, ScopeEnum::ALL, true);
     }
 
     public function build(string $scope, string $feature = null): array

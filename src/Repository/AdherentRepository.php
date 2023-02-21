@@ -26,7 +26,7 @@ use App\Instance\InstanceQualityScopeEnum;
 use App\Membership\MembershipSourceEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
-use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
+use App\Repository\Helper\MembershipFilterHelper;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
 use Cake\Chronos\Chronos;
@@ -1105,32 +1105,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }
 
         if (null !== $renaissanceMembership = $audience->getRenaissanceMembership()) {
-            switch ($renaissanceMembership) {
-                case RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE:
-                    $qb
-                        ->andWhere('adherent.source = :source_renaissance')
-                        ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                    ;
-                    break;
-                case RenaissanceMembershipFilterEnum::ADHERENT_RE:
-                    $qb
-                        ->andWhere('adherent.source = :source_renaissance AND adherent.lastMembershipDonation IS NOT NULL')
-                        ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                    ;
-                    break;
-                case RenaissanceMembershipFilterEnum::SYMPATHIZER_RE:
-                    $qb
-                        ->andWhere('adherent.source = :source_renaissance AND adherent.lastMembershipDonation IS NULL')
-                        ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                    ;
-                    break;
-                case RenaissanceMembershipFilterEnum::OTHERS_ADHERENT:
-                    $qb
-                        ->andWhere('adherent.source != :source_renaissance OR adherent.source IS NULL')
-                        ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                    ;
-                    break;
-            }
+            MembershipFilterHelper::withMembershipFilter($qb, 'adherent', $renaissanceMembership);
         }
 
         if ($zones = $audience->getZones()->toArray()) {

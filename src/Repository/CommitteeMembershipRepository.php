@@ -15,8 +15,7 @@ use App\Entity\CommitteeMembership;
 use App\Entity\PushToken;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\Membership\MembershipSourceEnum;
-use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
+use App\Repository\Helper\MembershipFilterHelper;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -294,32 +293,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             }
 
             if (null !== $renaissanceMembership = $filter->getRenaissanceMembership()) {
-                switch ($renaissanceMembership) {
-                    case RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE:
-                        $qb
-                            ->andWhere('a.source = :source_renaissance')
-                            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                        ;
-                        break;
-                    case RenaissanceMembershipFilterEnum::ADHERENT_RE:
-                        $qb
-                            ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL')
-                            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                        ;
-                        break;
-                    case RenaissanceMembershipFilterEnum::SYMPATHIZER_RE:
-                        $qb
-                            ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NULL')
-                            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                        ;
-                        break;
-                    case RenaissanceMembershipFilterEnum::OTHERS_ADHERENT:
-                        $qb
-                            ->andWhere('a.source != :source_renaissance OR a.source IS NULL')
-                            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                        ;
-                        break;
-                }
+                MembershipFilterHelper::withMembershipFilter($qb, 'a', $renaissanceMembership);
             }
 
             if (null !== $filter->isSubscribed()) {
