@@ -26,6 +26,7 @@ use App\Instance\InstanceQualityScopeEnum;
 use App\Membership\MembershipSourceEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
+use App\Repository\Helper\MembershipFilterHelper;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
 use Cake\Chronos\Chronos;
@@ -54,7 +55,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     use PaginatorTrait;
     use GeoFilterTrait;
     use GeoZoneTrait;
-    use MembershipTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -1105,7 +1105,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }
 
         if (null !== $renaissanceMembership = $audience->getRenaissanceMembership()) {
-            $this->withMembershipFilter($qb, 'adherent', $renaissanceMembership);
+            MembershipFilterHelper::withMembershipFilter($qb, 'adherent', $renaissanceMembership);
         }
 
         if ($zones = $audience->getZones()->toArray()) {

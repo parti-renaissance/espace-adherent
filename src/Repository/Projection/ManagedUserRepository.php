@@ -9,7 +9,7 @@ use App\FranceCities\FranceCities;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Membership\MembershipSourceEnum;
 use App\Repository\GeoZoneTrait;
-use App\Repository\MembershipTrait;
+use App\Repository\Helper\MembershipFilterHelper;
 use App\Repository\PaginatorTrait;
 use App\Repository\ReferentTrait;
 use App\Subscription\SubscriptionTypeEnum;
@@ -23,7 +23,6 @@ class ManagedUserRepository extends ServiceEntityRepository
     use ReferentTrait;
     use PaginatorTrait;
     use GeoZoneTrait;
-    use MembershipTrait;
 
     private FranceCities $franceCities;
 
@@ -274,7 +273,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (null !== $renaissanceMembership = $filter->getRenaissanceMembership()) {
-            $this->withMembershipFilter($qb, 'u', $renaissanceMembership);
+            MembershipFilterHelper::withMembershipFilter($qb, 'u', $renaissanceMembership);
         }
 
         if (null !== $filter->getOnlyJeMengageUsers()) {

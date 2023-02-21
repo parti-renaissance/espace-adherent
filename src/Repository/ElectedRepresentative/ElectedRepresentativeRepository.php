@@ -9,7 +9,7 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Geo\Zone;
-use App\Repository\MembershipTrait;
+use App\Repository\Helper\MembershipFilterHelper;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
@@ -25,7 +25,6 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
     }
-    use MembershipTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -354,7 +353,8 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         if (!\in_array('adherent', $qb->getAllAliases(), true)) {
             $qb->innerJoin($alias.'.adherent', $adherentAlias);
         }
+        MembershipFilterHelper::withMembershipFilter($qb, $adherentAlias, $renaissanceMembership);
 
-        return $this->withMembershipFilter($qb, $adherentAlias, $renaissanceMembership);
+        return $qb;
     }
 }

@@ -15,6 +15,7 @@ use App\Entity\CommitteeMembership;
 use App\Entity\PushToken;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Repository\Helper\MembershipFilterHelper;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -28,7 +29,6 @@ use Ramsey\Uuid\UuidInterface;
 class CommitteeMembershipRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
-    use MembershipTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -293,7 +293,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             }
 
             if (null !== $renaissanceMembership = $filter->getRenaissanceMembership()) {
-                $this->withMembershipFilter($qb, 'a', $renaissanceMembership);
+                MembershipFilterHelper::withMembershipFilter($qb, 'a', $renaissanceMembership);
             }
 
             if (null !== $filter->isSubscribed()) {

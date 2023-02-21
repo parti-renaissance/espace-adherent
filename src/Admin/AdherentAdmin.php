@@ -43,9 +43,9 @@ use App\Membership\AdherentEvents;
 use App\Membership\Event\AdherentProfileWasUpdatedEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\MandatesEnum;
-use App\Membership\MembershipSourceEnum;
 use App\Membership\UserEvents;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
+use App\Repository\Helper\MembershipFilterHelper;
 use App\Repository\Instance\InstanceQualityRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use App\Utils\PhoneNumberUtils;
@@ -1099,38 +1099,7 @@ class AdherentAdmin extends AbstractAdmin
                     'choices' => RenaissanceMembershipFilterEnum::CHOICES,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    switch ($value->getValue()) {
-                        case RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE:
-                            $qb
-                                ->andWhere("$alias.source = :source_renaissance")
-                                ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                            ;
-
-                            return true;
-                        case RenaissanceMembershipFilterEnum::ADHERENT_RE:
-                            $qb
-                                ->andWhere("$alias.source = :source_renaissance AND $alias.lastMembershipDonation IS NOT NULL")
-                                ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                            ;
-
-                            return true;
-                        case RenaissanceMembershipFilterEnum::SYMPATHIZER_RE:
-                            $qb
-                                ->andWhere("$alias.source = :source_renaissance AND $alias.lastMembershipDonation IS NULL")
-                                ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                            ;
-
-                            return true;
-                        case RenaissanceMembershipFilterEnum::OTHERS_ADHERENT:
-                            $qb
-                                ->andWhere("$alias.source != :source_renaissance OR $alias.source IS NULL")
-                                ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-                            ;
-
-                            return true;
-                        default:
-                            return false;
-                    }
+                    return MembershipFilterHelper::withMembershipFilter($qb, $alias, $value->getValue());
                 },
             ])
         ;
