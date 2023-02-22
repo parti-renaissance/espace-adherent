@@ -30,7 +30,6 @@ use App\Entity\Coalition\Coalition;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
-use App\FranceCities\FranceCities;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\ContentSection\BasicMessageSectionBuilder;
@@ -77,7 +76,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     private $clientMock;
     /** @var MailchimpObjectIdMapping */
     private $mailchimpMapping;
-    private ?FranceCities $franceCities = null;
 
     public function testCommitteeMessageGeneratesGoodPayloads(): void
     {
@@ -107,15 +105,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'segment_opts' => [
                             'match' => 'all',
                             'conditions' => [
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontains',
-                                    'field' => 'interests-A',
-                                    'value' => [
-                                        5,
-                                        6,
-                                    ],
-                                ],
                                 [
                                     'condition_type' => 'StaticSegment',
                                     'op' => 'static_is',
@@ -183,12 +172,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                             'match' => 'all',
                             'conditions' => [
                                 [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontains',
-                                    'field' => 'interests-A',
-                                    'value' => [5, 6],
-                                ],
-                                [
                                     'condition_type' => 'StaticSegment',
                                     'op' => 'static_is',
                                     'field' => 'static_segment',
@@ -231,12 +214,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'segment_opts' => [
                             'match' => 'all',
                             'conditions' => [
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontains',
-                                    'field' => 'interests-A',
-                                    'value' => [5, 6],
-                                ],
                                 [
                                     'condition_type' => 'StaticSegment',
                                     'op' => 'static_is',
@@ -304,12 +281,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'segment_opts' => [
                             'match' => 'all',
                             'conditions' => [
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontains',
-                                    'field' => 'interests-A',
-                                    'value' => [5, 6],
-                                ],
                                 [
                                     'condition_type' => 'StaticSegment',
                                     'op' => 'static_is',
@@ -381,7 +352,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                                     'condition_type' => 'Interests',
                                     'op' => 'interestcontains',
                                     'field' => 'interests-A',
-                                    'value' => [4, 5, 6],
+                                    'value' => [4],
                                 ],
                                 [
                                     'condition_type' => 'Interests',
@@ -693,12 +664,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                                 ],
                                 [
                                     'condition_type' => 'Interests',
-                                    'op' => 'interestcontains',
-                                    'field' => 'interests-A',
-                                    'value' => [5, 6],
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
                                     'op' => 'interestcontainsall',
                                     'field' => 'interests-C',
                                     'value' => [1],
@@ -731,8 +696,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $this->clientMock = $this->createMock(HttpClientInterface::class);
         $this->commandDummy = $this->createMock(AdherentMessageChangeCommand::class);
         $this->commandDummy->expects($this->once())->method('getUuid')->willReturn(Uuid::uuid4());
-
-        $this->franceCities = $this->get(FranceCities::class);
     }
 
     protected function tearDown(): void
@@ -742,7 +705,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $this->adherentDummy = null;
         $this->clientMock = null;
         $this->commandDummy = null;
-        $this->franceCities = null;
     }
 
     private function preparedMessage(string $messageClass): AdherentMessageInterface
