@@ -206,25 +206,31 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation = new Designation(null, Uuid::fromString(self::DESIGNATION_COMMITTEE_1_UUID));
         $designation->customTitle = 'Election AL - comité des 3 communes';
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
+        $designation->setCandidacyStartDate(new \DateTime('-5 days'));
+        $designation->setCandidacyEndDate(new \DateTime('-2 days'));
         $designation->setVoteStartDate(new \DateTime('-2 day'));
         $designation->setVoteEndDate(new \DateTime('+1 day'));
         $designation->electionCreationDate = new \DateTime('-3 days');
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
         $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeV2Data::COMMITTEE_1_UUID));
+        $designation->markAsLimited();
 
         $this->setReference('designation-committee-01', $designation);
         $manager->persist($designation);
 
         $designation = new Designation(null, Uuid::fromString(self::DESIGNATION_COMMITTEE_2_UUID));
-        $designation->customTitle = 'Deuxième Election AL - comité des 3 communes';
+        $designation->customTitle = 'Election AL - second comité des 3 communes';
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
+        $designation->setCandidacyStartDate(new \DateTime());
+        $designation->setCandidacyEndDate(new \DateTime('+2 days'));
         $designation->setVoteStartDate(new \DateTime('+2 days'));
         $designation->setVoteEndDate(new \DateTime('+5 day'));
         $designation->electionCreationDate = new \DateTime('+1 days');
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
-        $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeV2Data::COMMITTEE_1_UUID));
+        $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeV2Data::COMMITTEE_2_UUID));
+        $designation->markAsLimited();
 
-        $this->setReference('designation-committee-01', $designation);
+        $this->setReference('designation-committee-02', $designation);
         $manager->persist($designation);
 
         $manager->flush();

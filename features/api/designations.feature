@@ -74,7 +74,7 @@ Feature:
       "vote_start_date": "+12 days",
       "vote_end_date": "+17 days",
       "description": "lorem ipsum...",
-      "election_entity_identifier": "5e00c264-1d4b-43b8-862e-29edc38389b3"
+      "election_entity_identifier": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3"
     }
     """
     Then the response status code should be 201
@@ -88,7 +88,7 @@ Feature:
       "vote_start_date": "@string@.isDateTime()",
       "vote_end_date": "@string@.isDateTime()",
       "description": "lorem ipsum...",
-      "election_entity_identifier": "5e00c264-1d4b-43b8-862e-29edc38389b3",
+      "election_entity_identifier": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
       "uuid": "@uuid@"
     }
     """
@@ -105,13 +105,13 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "custom_title": "Election AL - comité des 3 communes",
+      "custom_title": "Election AL - second comité des 3 communes",
       "type": "committee_supervisor",
       "election_creation_date": "@string@.isDateTime()",
       "vote_start_date": "@string@.isDateTime()",
       "vote_end_date": "@string@.isDateTime()",
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-      "election_entity_identifier": "5e00c264-1d4b-43b8-862e-29edc38389b3",
+      "election_entity_identifier": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
       "uuid": "7fb0693e-1dad-44c6-984b-19e99603ea2c"
     }
     """
@@ -131,7 +131,7 @@ Feature:
       "vote_start_date": "+12 days",
       "vote_end_date": "+17 days",
       "description": "lorem ipsum...",
-      "election_entity_identifier": "5e00c264-1d4b-43b8-862e-29edc38389b3"
+      "election_entity_identifier": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3"
     }
     """
     Then the response status code should be 200
@@ -145,7 +145,7 @@ Feature:
       "vote_start_date": "@string@.isDateTime()",
       "vote_end_date": "@string@.isDateTime()",
       "description": "lorem ipsum...",
-      "election_entity_identifier": "5e00c264-1d4b-43b8-862e-29edc38389b3",
+      "election_entity_identifier": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
       "uuid": "6c7ca0c7-d656-47c3-a345-170fb43ffd1a"
     }
     """
