@@ -67,8 +67,12 @@ class AssetRuntime implements RuntimeExtensionInterface
         return $this->symfonyAssetExtension->getAssetUrl($path, $packageName);
     }
 
-    private function generateAssetUrl(string $path, array $parameters, int $referenceType, ?string $appDomain = null): string
-    {
+    private function generateAssetUrl(
+        string $path,
+        array $parameters,
+        int $referenceType,
+        ?string $appDomain = null
+    ): string {
         $parameters['fm'] = 'pjpg';
 
         if ('gif' === substr($path, -3)) {
