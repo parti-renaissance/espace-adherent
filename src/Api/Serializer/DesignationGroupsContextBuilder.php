@@ -4,17 +4,12 @@ namespace App\Api\Serializer;
 
 use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\Scope\FeatureEnum;
-use App\Security\Voter\FeatureVoter;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class DesignationGroupsContextBuilder implements SerializerContextBuilderInterface
 {
-    public function __construct(
-        private SerializerContextBuilderInterface $decorated,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
-        ) {
+    public function __construct(private SerializerContextBuilderInterface $decorated)
+    {
     }
 
     public function createFromRequest(Request $request, bool $normalization, array $extractedAttributes = null): array
@@ -23,9 +18,8 @@ class DesignationGroupsContextBuilder implements SerializerContextBuilderInterfa
         $resourceClass = $context['resource_class'] ?? null;
 
         if (Designation::class !== $resourceClass
-            || !$this->authorizationChecker->isGranted(FeatureVoter::PERMISSION, FeatureEnum::DESIGNATION)
             || Request::METHOD_PUT !== $request->getMethod()
-            || false !== $normalization
+            || $normalization
         ) {
             return $context;
         }
