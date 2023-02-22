@@ -73,7 +73,7 @@ class DesignationRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('d')
             ->where('d.candidacyStartDate <= :date')
             ->andWhere('(d.candidacyEndDate IS NULL OR d.candidacyEndDate > :date)')
-            ->andWhere('d.limited = :false')
+            ->andWhere('(d.limited = :false OR d.electionEntityIdentifier IS NOT NULL)')
             ->setParameters([
                 'date' => $candidacyStartDate,
                 'false' => false,

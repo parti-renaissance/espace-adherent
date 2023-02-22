@@ -262,7 +262,7 @@ class DesignationAdmin extends AbstractAdmin
     {
         $list
             ->add('id', null, ['label' => '#'])
-            ->addIdentifier('label')
+            ->addIdentifier('label', null, ['virtual_field' => true, 'template' => 'admin/designation/label.html.twig'])
             ->add('type', 'trans', ['format' => 'voting_platform.designation.type_%s'])
             ->add('zones', 'array', ['label' => 'Zones', 'virtual_field' => true, 'template' => 'admin/designation/list_zone.html.twig'])
             ->add('candidacyStartDate', null, ['label' => 'Ouverture des candidatures'])
