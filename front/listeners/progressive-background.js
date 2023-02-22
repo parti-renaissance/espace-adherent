@@ -23,6 +23,7 @@ export default () => {
         const hd = new Image();
 
         sd.src = sdSrc;
+        sd.crossOrigin = 'Anonymous';
 
         on(sd, 'load', () => {
             const canvas = imgToCanvas(sd);
@@ -33,6 +34,7 @@ export default () => {
 
             // Load high quality version after low quality one
             hd.src = hdSrc;
+            hd.crossOrigin = 'Anonymous';
 
             on(hd, 'load', () => {
                 element.style['background-image'] = `${bgPrefix}url(${hd.src})`;

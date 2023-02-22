@@ -30,11 +30,12 @@ class AssetRuntime implements RuntimeExtensionInterface
     public function transformedStaticAsset(
         string $path,
         array $parameters = [],
-        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
+        string $appDomain = null
     ): string {
         $parameters['cache'] = $this->appVersion;
 
-        return $this->generateAssetUrl('static/'.$path, $parameters, $referenceType);
+        return $this->generateAssetUrl('static/'.$path, $parameters, $referenceType, $appDomain);
     }
 
     public function transformedMediaAsset(
@@ -66,8 +67,12 @@ class AssetRuntime implements RuntimeExtensionInterface
         return $this->symfonyAssetExtension->getAssetUrl($path, $packageName);
     }
 
-    private function generateAssetUrl(string $path, array $parameters, int $referenceType): string
-    {
+    private function generateAssetUrl(
+        string $path,
+        array $parameters,
+        int $referenceType,
+        ?string $appDomain = null
+    ): string {
         $parameters['fm'] = 'pjpg';
 
         if ('gif' === substr($path, -3)) {
@@ -78,6 +83,10 @@ class AssetRuntime implements RuntimeExtensionInterface
 
         $parameters['s'] = SignatureFactory::create($this->secret)->generateSignature($path, $parameters);
         $parameters['path'] = $path;
+
+        if ($appDomain) {
+            $parameters['app_domain'] = $appDomain;
+        }
 
         return $this->urlGenerator->generate('asset_url', $parameters, $referenceType);
     }
