@@ -100,6 +100,8 @@ trait EntityIdentityTrait
      *     "general_meeting_report_list_read",
      *     "general_meeting_report_read",
      *     "document_read",
+     *     "designation_read",
+     *     "designation_list",
      * })
      *
      * @ApiProperty(

@@ -47,4 +47,8 @@ final class DesignationTypeEnum extends Enum
         self::LOCAL_ELECTION,
         self::LOCAL_POLL,
     ];
+
+    public const API_AVAILABLE_TYPES = [
+        self::COMMITTEE_SUPERVISOR,
+    ];
 }

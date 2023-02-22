@@ -181,7 +181,8 @@ Feature:
         "adherent_formations",
         "committee",
         "general_meeting_reports",
-        "documents"
+        "documents",
+        "designation"
       ],
       "delegated_access": null
     }
@@ -454,7 +455,8 @@ Feature:
             "adherent_formations",
             "committee",
             "general_meeting_reports",
-            "documents"
+            "documents",
+            "designation"
         ],
         "delegated_access": {
             "delegator": {
