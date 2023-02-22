@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Api\Serializer;
+
+use ApiPlatform\Serializer\SerializerContextBuilderInterface;
+use App\Entity\VotingPlatform\Designation\Designation;
+use App\Scope\FeatureEnum;
+use App\Security\Voter\FeatureVoter;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
+class DesignationGroupsContextBuilder implements SerializerContextBuilderInterface
+{
+    public function __construct(
+        private SerializerContextBuilderInterface $decorated,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        ) {
+    }
+
+    public function createFromRequest(Request $request, bool $normalization, array $extractedAttributes = null): array
+    {
+        $context = $this->decorated->createFromRequest($request, $normalization, $extractedAttributes);
+        $resourceClass = $context['resource_class'] ?? null;
+
+        if (Designation::class !== $resourceClass
+            || !$this->authorizationChecker->isGranted(FeatureVoter::PERMISSION, FeatureEnum::DESIGNATION)
+            || Request::METHOD_PUT !== $request->getMethod()
+            || false !== $normalization
+        ) {
+            return $context;
+        }
+
+        /** @var Designation $designation */
+        $designation = $request->attributes->get('data');
+
+        if ($designation->isVotePeriodStarted()) {
+            array_splice($context['groups'], array_search('designation_write', $context['groups'], true), 1);
+            $context['groups'][] = 'designation_write_limited';
+        }
+
+        return $context;
+    }
+}

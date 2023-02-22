@@ -5,6 +5,7 @@ namespace App\Entity\VotingPlatform\Designation;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Api\Filter\InZoneOfScopeFilter;
+use App\Api\Validator\UpdateDesignationGroupGenerator;
 use App\Entity\CmsBlock;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -49,8 +50,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/designations/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation') and is_granted('CAN_EDIT_DESIGNATION', object)",
- *             "validation_groups": {"api_designation_write"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')",
+ *             "validation_groups": UpdateDesignationGroupGenerator::class,
  *         },
  *     },
  *     collectionOperations={
@@ -106,9 +107,9 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Assert\NotBlank(groups="api_designation_write")
+     * @Assert\NotBlank(groups={"api_designation_write", "api_designation_write_limited"})
      *
-     * @Groups({"designation_read", "designation_write", "designation_list"})
+     * @Groups({"designation_read", "designation_write", "designation_list", "designation_write_limited"})
      */
     public ?string $customTitle = null;
 
@@ -118,7 +119,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * @ORM\Column
      *
      * @Assert\NotBlank(groups={"Default", "api_designation_write"})
-     * @Assert\Choice(choices=DesignationTypeEnum::MAIN_TYPES, strict=true, groups={"Default", "api_designation_write"})
+     * @Assert\Choice(choices=DesignationTypeEnum::MAIN_TYPES, strict=true, groups={"Default"})
+     * @Assert\Choice(choices=DesignationTypeEnum::API_AVAILABLE_TYPES, strict=true, groups={"api_designation_write"})
      *
      * @Groups({"designation_read", "designation_write", "designation_list"})
      */
@@ -256,7 +258,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups({"designation_read", "designation_write"})
+     * @Groups({"designation_read", "designation_write", "designation_write_limited"})
      */
     private ?string $description = null;
 
@@ -308,7 +310,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * @ORM\Column(type="uuid", nullable=true)
      *
      * @Assert\Expression(
-     *     "(this.isCommitteeType() and value !== null) or (!this.isCommitteeType() and value === null)",
+     *     "!this.isCommitteeType() or value",
      *     message="Un identifiant est requis pour ce champs.",
      *     groups="api_designation_write"
      * )
@@ -843,19 +845,6 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public function isVotePeriodStarted(): bool
     {
         return $this->getVoteStartDate() && $this->getVoteStartDate() <= (new \DateTime());
-    }
-
-    public function isVotePeriodActive(): bool
-    {
-        $now = new \DateTime();
-
-        return $this->getVoteStartDate()
-            && $this->getVoteStartDate() <= $now
-            && (
-                null === $this->getVoteEndDate()
-                || $now < $this->getVoteEndDate()
-            )
-        ;
     }
 
     public function isCandidacyPeriodEnabled(): bool

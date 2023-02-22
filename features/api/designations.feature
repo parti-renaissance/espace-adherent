@@ -120,26 +120,6 @@ Feature:
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario Outline: As a user granted with local scope, I cannot update ongoing a designation
-    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    And I send a "PUT" request to "/api/v3/designations/7fb0693e-1dad-44c6-984b-19e99603ea2c?scope=<scope>" with body:
-    """
-    {
-      "custom_title": "Élection de comité local",
-      "type": "committee_supervisor",
-      "election_creation_date": "+10 days",
-      "vote_start_date": "+12 days",
-      "vote_end_date": "+17 days",
-      "description": "lorem ipsum...",
-      "election_entity_identifier": "5e00c264-1d4b-43b8-862e-29edc38389b3"
-    }
-    """
-    Then the response status code should be 403
-    Examples:
-      | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
-      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
-
   Scenario Outline: As a user granted with local scope, I can update schedule a designation
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     And I send a "PUT" request to "/api/v3/designations/6c7ca0c7-d656-47c3-a345-170fb43ffd1a?scope=<scope>" with body:
