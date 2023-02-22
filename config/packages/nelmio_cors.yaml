@@ -8,3 +8,8 @@ nelmio_cors:
             allow_headers: ['Content-Type', 'Accept', 'Authorization']
             expose_headers: ['Content-Disposition']
             max_age: 3600
+        '^/asset':
+            origin_regex: true
+            allow_origin: [ '%env(CORS_ALLOW_ORIGIN)%' ]
+            allow_methods: [ 'GET' ]
+            max_age: 3600
