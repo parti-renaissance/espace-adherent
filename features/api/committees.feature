@@ -24,9 +24,9 @@ Feature:
         """
         {
             "metadata": {
-                "total_items": 1,
+                "total_items": 2,
                 "items_per_page": 2,
-                "count": 1,
+                "count": 2,
                 "current_page": 1,
                 "last_page": 1
             },
@@ -37,6 +37,13 @@ Feature:
                     "created_at": "@string@.isDateTime()",
                     "updated_at": "@string@.isDateTime()",
                     "name": "Comité des 3 communes"
+                },
+                {
+                    "description": "Un petit comité avec seulement 3 communes",
+                    "uuid": "@uuid@",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()",
+                    "name": "Second Comité des 3 communes"
                 }
             ]
         }

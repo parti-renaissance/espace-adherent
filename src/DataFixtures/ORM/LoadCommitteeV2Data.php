@@ -27,15 +27,15 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
 
         $manager->persist($object = Committee::createSimple(
             Uuid::fromString(self::COMMITTEE_2_UUID),
-            LoadAdherentData::ADHERENT_20_UUID,
+            LoadAdherentData::ADHERENT_5_UUID,
             'Second Comité des 3 communes',
             'Un petit comité avec seulement 3 communes',
         ));
 
-        $object->approved();
-        $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77285'));
-        $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
-        $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77294'));
+        $object->approved('2017-01-27 09:18:33');
+        $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92019'));
+        $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92014'));
+        $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92019'));
 
         $manager->flush();
     }
