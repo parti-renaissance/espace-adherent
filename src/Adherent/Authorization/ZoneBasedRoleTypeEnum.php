@@ -15,12 +15,13 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
     ];
 
-    public const ZONE_TYPES = [
+    public const ZONE_TYPE_CONDITIONS = [
         ScopeEnum::CORRESPONDENT => [
             Zone::DEPARTMENT,
         ],
         ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY => [
             Zone::DEPARTMENT,
+            Zone::CUSTOM => [Zone::FDE_CODE],
         ],
         ScopeEnum::LEGISLATIVE_CANDIDATE => [
             Zone::DISTRICT,

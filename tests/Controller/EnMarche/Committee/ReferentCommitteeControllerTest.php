@@ -79,7 +79,7 @@ class ReferentCommitteeControllerTest extends WebTestCase
         $this->assertSame("L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.", $crawler->filter('#committee_address_errors > li')->eq(0)->text());
         $this->assertSame('Vous devez saisir au moins 2 caractères.', $crawler->filter('#committee_name_errors > li.form__error')->text());
         $this->assertSame('Votre texte de description est trop court. Il doit compter 5 caractères minimum.', $crawler->filter('#committee_description_errors > li')->text());
-        $this->assertSame('Vous devez séléctionner au moins un Animateur provisoire parmi vos adhérents', $crawler->filter('#field-provisional-supervisor-female li')->text());
+        $this->assertSame('Vous devez sélectionner au moins un Animateur provisoire parmi vos adhérents', $crawler->filter('#field-provisional-supervisor-female li')->text());
 
         // Submit the committee form with valid data to create committee
         $crawler = $this->client->submit($crawler->selectButton('Créer le comité')->form([
@@ -226,7 +226,7 @@ class ReferentCommitteeControllerTest extends WebTestCase
 
         $this->assertCount(2, $crawler->filter('.form__error'));
         $this->assertSame('L\'adresse saisie ne fait pas partie de la zone géographique que vous gérez.', $crawler->filter('.form__error')->eq(0)->text());
-        $this->assertSame('Vous devez séléctionner au moins un Animateur provisoire parmi vos adhérents', $crawler->filter('.form__error')->eq(1)->text());
+        $this->assertSame('Vous devez sélectionner au moins un Animateur provisoire parmi vos adhérents', $crawler->filter('.form__error')->eq(1)->text());
     }
 
     public function testPreAcceptCommitteeRequest()

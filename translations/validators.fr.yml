@@ -136,7 +136,7 @@ committee.canonical_name.not_unique: Ce nom de comité est déjà utilisé.
 committee.address.when_approved: Vous ne pouvez pas changer la ville de votre comité.
 committee.address.not_unique: Un comité actif existe déjà à l'adresse indiquée.
 committee.address.not_in_zone: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.
-committee.provisional_supervisor.empty: Vous devez séléctionner au moins un Animateur provisoire parmi vos adhérents
+committee.provisional_supervisor.empty: Vous devez sélectionner au moins un Animateur provisoire parmi vos adhérents
 committee.provisional_supervisor.not_valid: Les Animateurs provisoires ne peuvent pas déjà être Animateurs, Animateurs provisoires, Parlementaires ou mineurs
 committee.provisional_supervisor.gender.not_valid: Le genre de l'adhérent ne corresoind pas au genre demandé.
 
@@ -569,8 +569,8 @@ riposte.open_graph.can_not_fetch: Impossible de récupérer les metadatas de l'U
 jecoute_region.zone.not_unique: Une campagne existe déjà pour cette zone.
 
 adherent.zone_based_role.duplicate_type: Adhérent ne doit pas avoir plusieurs rôles du même type.
-adherent.zone_based_role.invalid_zone_type: Le type de zone "{{zone_type}}" n'est pas autorisé pour le rôle "{{role_type}}".
-adherent.zone_based_role.empty_zone: Aucune zone n'a été séléctionnée pour le rôle "{{role_type}}".
+adherent.zone_based_role.invalid_zone_type: Le type de zone "{{zone_type}}" avec le code "{{zone_code}}" n'est pas autorisé pour le rôle "{{role_type}}".
+adherent.zone_based_role.empty_zone: Aucune zone n'a été sélectionnée pour le rôle "{{role_type}}".
 adherent.zone_based_role.limit_zone: Vous ne pouvez assigner que {{limit}} zone(s) pour ce type de rôle.
 
 news.link_label.required: Le label est obligatoire.

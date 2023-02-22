@@ -12,9 +12,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ZoneMatcher
 {
-    private const FDE_CODE = 'FDE';
-    private const FDE_TYPE = Zone::CUSTOM;
-
     /**
      * @var EntityManagerInterface
      */
@@ -62,8 +59,8 @@ class ZoneMatcher
             // Foreign district
             if ($address instanceof GeoPointInterface) {
                 $this->fde = $this->fde ?: $this->fde = $this->repository->findOneBy([
-                    'code' => self::FDE_CODE,
-                    'type' => self::FDE_TYPE,
+                    'code' => Zone::FDE_CODE,
+                    'type' => Zone::CUSTOM,
                 ]);
 
                 $zones = array_merge($zones, $this->matchGeoPoint($address, [Zone::FOREIGN_DISTRICT], [$this->fde]));

@@ -60,10 +60,22 @@ class AdherentZoneBasedRoleAdmin extends AbstractAdmin
         $request = $admin->getRequest();
         $roleType = $request->query->get('role_type');
 
-        if ($roleType && $zoneTypes = (ZoneBasedRoleTypeEnum::ZONE_TYPES[$roleType] ?? [])) {
+        if ($roleType && $zoneTypeConditions = (ZoneBasedRoleTypeEnum::ZONE_TYPE_CONDITIONS[$roleType] ?? [])) {
+            $conditions = [];
+            foreach ($zoneTypeConditions as $key => $value) {
+                if (is_numeric($key)) {
+                    $conditions[] = sprintf('%s.type = :type_%d', $alias, $key);
+                    $qb->setParameter('type_'.$key, $value);
+                } else {
+                    $conditions[] = sprintf('%1$s.type = :type_%2$s AND %1$s.code IN (:code_%2$s)', $alias, $key);
+                    $qb->setParameter('type_'.$key, $key);
+                    $qb->setParameter('code_'.$key, $value);
+                }
+            }
+
             $qb
-                ->andWhere(sprintf('%1$s.type IN(:types) AND %1$s.active = 1', $alias))
-                ->setParameter('types', $zoneTypes)
+                ->andWhere(sprintf('%s.active = 1', $alias))
+                ->andWhere($qb->expr()->orX(...$conditions))
             ;
         }
     }

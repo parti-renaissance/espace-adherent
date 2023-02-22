@@ -69,6 +69,8 @@ class Zone implements GeoInterface
     public const FOREIGN_DISTRICT = 'foreign_district';
     public const CONSULAR_DISTRICT = 'consular_district';
 
+    public const FDE_CODE = 'FDE';
+
     public const TYPES = [
         Zone::CUSTOM,
         Zone::FOREIGN_DISTRICT,
