@@ -85,6 +85,16 @@ class Zone implements GeoInterface
         Zone::BOROUGH,
     ];
 
+    public const COMMITTEE_TYPES = [
+        Zone::FOREIGN_DISTRICT,
+        Zone::DEPARTMENT,
+        Zone::CITY,
+        Zone::DISTRICT,
+        Zone::CITY_COMMUNITY,
+        Zone::CANTON,
+        Zone::BOROUGH,
+    ];
+
     public const CANDIDATE_TYPES = [
         self::CANTON,
         self::DEPARTMENT,

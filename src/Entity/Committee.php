@@ -39,6 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "normalization_context": {
  *             "groups": {"committee:list"},
  *         },
+ *         "validation_groups": {"api_committee_edition"},
  *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')",
  *     },
  *     itemOperations={
@@ -233,7 +234,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
      *     "committee:write",
      * })
      *
-     * @Assert\Count(min=1)
+     * @Assert\Count(min=1, minMessage="Le comité doit contenir au moins une zone.", groups={"api_committee_edition"})
      */
     protected $zones;
 
