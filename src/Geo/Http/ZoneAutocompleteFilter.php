@@ -23,15 +23,24 @@ class ZoneAutocompleteFilter
     public bool $activeOnly = true;
 
     #[Groups(['filter_write'])]
-    private array $types = Zone::TYPES;
+    private ?array $types = null;
 
     public function getTypes(): array
     {
-        return $this->types;
+        return $this->types ?? $this->getDefaultTypes();
     }
 
     public function setTypes(array $types): void
     {
-        $this->types = array_values(array_intersect(Zone::TYPES, $types));
+        $this->types = array_values(array_intersect($this->getDefaultTypes(), $types));
+    }
+
+    private function getDefaultTypes(): array
+    {
+        if ($this->availableForCommittee) {
+            return Zone::COMMITTEE_TYPES;
+        }
+
+        return Zone::TYPES;
     }
 }
