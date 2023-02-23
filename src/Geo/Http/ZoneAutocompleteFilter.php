@@ -27,12 +27,16 @@ class ZoneAutocompleteFilter
 
     public function getTypes(): array
     {
-        return $this->types ?? $this->getDefaultTypes();
+        if ($this->types) {
+            return array_values(array_intersect($this->getDefaultTypes(), $this->types));
+        }
+
+        return $this->getDefaultTypes();
     }
 
     public function setTypes(array $types): void
     {
-        $this->types = array_values(array_intersect($this->getDefaultTypes(), $types));
+        $this->types = $types;
     }
 
     private function getDefaultTypes(): array
