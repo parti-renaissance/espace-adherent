@@ -37,6 +37,6 @@ class ElectedMandateDenormalizer implements DenormalizerInterface, DenormalizerA
     {
         return !isset($context[self::ALREADY_CALLED])
             && is_a($type, Mandate::class, true)
-            && 'api_mandates_post_collection' === ($context['operation_name'] ?? []);
+            && 'api_mandates_post_collection' === ($context['operation_name'] ?? null);
     }
 }

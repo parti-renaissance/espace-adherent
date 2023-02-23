@@ -745,7 +745,12 @@ class CommitteeRepository extends ServiceEntityRepository
             ->groupBy('c')
         ;
 
-        if (DesignationGlobalZoneEnum::toArray() !== array_intersect(DesignationGlobalZoneEnum::toArray(), $designation->getGlobalZones())) {
+        if ($identifier = $designation->getElectionEntityIdentifier()) {
+            $qb
+                ->andWhere('c.uuid = :committee_uuid')
+                ->setParameter('committee_uuid', $identifier)
+            ;
+        } elseif (DesignationGlobalZoneEnum::toArray() !== array_intersect(DesignationGlobalZoneEnum::toArray(), $designation->getGlobalZones())) {
             $zoneCondition = new Orx();
 
             // Outre-Mer condition

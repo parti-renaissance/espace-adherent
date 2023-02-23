@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Normalizer;
+
+use App\Entity\VotingPlatform\Designation\Designation;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+
+class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
+{
+    use DenormalizerAwareTrait;
+
+    private const ALREADY_CALLED = 'JE_MENGAGE_WEB_DESIGNATION_DENORMALIZER_ALREADY_CALLED';
+
+    public function denormalize($data, string $class, string $format = null, array $context = [])
+    {
+        $context[self::ALREADY_CALLED] = true;
+
+        /** @var Designation $designation */
+        $designation = $this->denormalizer->denormalize($data, $class, $format, $context);
+
+        if (!$designation->isLimited()) {
+            $designation->markAsLimited();
+        }
+
+        if (\in_array('designation_write', $context['groups'] ?? [], true)) {
+            if (!$designation->getCandidacyStartDate()) {
+                $designation->setCandidacyStartDate(new \DateTime());
+            }
+
+            if ($designation->getCandidacyEndDate() !== $voteDate = $designation->getVoteStartDate()) {
+                $designation->setCandidacyEndDate($voteDate);
+            }
+        }
+
+        return $designation;
+    }
+
+    public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
+    {
+        return !isset($context[self::ALREADY_CALLED])
+            && is_a($type, Designation::class, true)
+            && \in_array($context['operation_name'] ?? null, ['api_designations_post_collection', 'api_designations_put_item'], true)
+        ;
+    }
+}

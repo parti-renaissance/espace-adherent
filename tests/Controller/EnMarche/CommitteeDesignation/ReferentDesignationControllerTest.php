@@ -22,7 +22,7 @@ class ReferentDesignationControllerTest extends WebTestCase
         $crawler = $this->client->clickLink('+ Créer une partielle');
         $this->assertResponseIsSuccessful();
 
-        self::assertCount(2, $tableRows = $crawler->filter('table.datagrid__table-manager tbody tr'));
+        self::assertCount(3, $tableRows = $crawler->filter('table.datagrid__table-manager tbody tr'));
 
         self::assertStringContainsString('En Marche Dammarie-les-Lys', $tableRows->eq(0)->text());
         self::assertStringContainsString('Renouveler l\'animatrice locale', $tableRows->eq(0)->text());
