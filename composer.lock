@@ -4178,16 +4178,16 @@
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
-            "version": "v1.2.4",
+            "version": "v1.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise.git",
-                "reference": "808d2070380e99d55760f7872532a6d1d4ae030b"
+                "reference": "5b04ebabf80c43e3724fce42acf54c81b14aec6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/808d2070380e99d55760f7872532a6d1d4ae030b",
-                "reference": "808d2070380e99d55760f7872532a6d1d4ae030b",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/5b04ebabf80c43e3724fce42acf54c81b14aec6c",
+                "reference": "5b04ebabf80c43e3724fce42acf54c81b14aec6c",
                 "shasum": ""
             },
             "require": {
@@ -4222,9 +4222,9 @@
             ],
             "description": "Google Cloud Recaptcha Enterprise Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.2.4"
+                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.2.6"
             },
-            "time": "2022-12-13T22:56:52+00:00"
+            "time": "2023-02-10T16:10:50+00:00"
         },
         {
             "name": "google/cloud-storage",
