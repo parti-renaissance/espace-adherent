@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
     labels:
       - "docker"
       - "dependencies"
@@ -11,7 +11,7 @@ updates:
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
     versioning-strategy: increase-if-necessary
     ignore:
       - dependency-name: "symfony/*"
@@ -23,7 +23,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
     labels:
       - "npm"
       - "dependencies"
@@ -31,4 +31,4 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
