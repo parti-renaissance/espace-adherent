@@ -33,7 +33,7 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
         ));
 
         $object->approved('2017-01-27 09:18:33');
-        $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92019'));
+        $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92012'));
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92014'));
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92019'));
 
