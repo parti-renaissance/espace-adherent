@@ -15,6 +15,7 @@ use App\Entity\Geo\Department;
 use App\Entity\Geo\District;
 use App\Entity\Geo\ForeignDistrict;
 use App\Entity\Geo\Region;
+use App\Entity\Geo\VotePlace;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
 use App\Repository\Geo\ZoneRepository;
@@ -32,17 +33,18 @@ final class SyncZonesCommand extends Command
     protected static $defaultName = 'app:geo:sync-zones';
 
     private const CLASSES = [
-        Country::class,
-        Region::class,
-        Department::class,
-        District::class,
-        Canton::class,
-        CityCommunity::class,
-        City::class,
-        Borough::class,
-        CustomZone::class,
-        ForeignDistrict::class,
-        ConsularDistrict::class,
+        Zone::COUNTRY => Country::class,
+        Zone::REGION => Region::class,
+        Zone::DEPARTMENT => Department::class,
+        Zone::DISTRICT => District::class,
+        Zone::CANTON => Canton::class,
+        Zone::CITY_COMMUNITY => CityCommunity::class,
+        Zone::CITY => City::class,
+        Zone::BOROUGH => Borough::class,
+        Zone::CUSTOM => CustomZone::class,
+        Zone::FOREIGN_DISTRICT => ForeignDistrict::class,
+        Zone::CONSULAR_DISTRICT => ConsularDistrict::class,
+        Zone::VOTE_PLACE => VotePlace::class,
     ];
 
     /**
@@ -78,6 +80,7 @@ final class SyncZonesCommand extends Command
         $this
             ->setDescription('Create missing zone and link it to its parents')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
+            ->addOption('types', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Types to synchronize')
         ;
     }
 
@@ -91,7 +94,9 @@ final class SyncZonesCommand extends Command
     {
         $this->io->title('Start syncing zones');
 
-        $zonables = $this->findZonables();
+        $types = $input->getOption('types');
+
+        $zonables = $this->findZonables($types);
 
         $this->io->section('Transforming source entities into zones');
 
@@ -116,13 +121,13 @@ final class SyncZonesCommand extends Command
     /**
      * @return array|ZoneableInterface[]
      */
-    private function findZonables(): iterable
+    private function findZonables(array $types): iterable
     {
         $grouped = [];
 
         $this->io->section('Fetch zones from sources');
 
-        foreach (self::CLASSES as $class) {
+        foreach ($this->getClasses($types) as $class) {
             $this->io->write(sprintf(' // "%s"', $class));
 
             $entities = $this->em
@@ -161,5 +166,10 @@ final class SyncZonesCommand extends Command
         }
 
         return $zone;
+    }
+
+    private function getClasses(array $types): array
+    {
+        return $types ? array_intersect_key(self::CLASSES, array_flip($types)) : self::CLASSES;
     }
 }

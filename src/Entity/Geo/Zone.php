@@ -68,6 +68,7 @@ class Zone implements GeoInterface
     public const CANTON = 'canton';
     public const FOREIGN_DISTRICT = 'foreign_district';
     public const CONSULAR_DISTRICT = 'consular_district';
+    public const VOTE_PLACE = 'vote_place';
 
     public const FDE_CODE = 'FDE';
 
@@ -83,6 +84,7 @@ class Zone implements GeoInterface
         Zone::CITY_COMMUNITY,
         Zone::CANTON,
         Zone::BOROUGH,
+        Zone::VOTE_PLACE,
     ];
 
     public const COMMITTEE_TYPES = [
@@ -93,6 +95,7 @@ class Zone implements GeoInterface
         Zone::CITY_COMMUNITY,
         Zone::CANTON,
         Zone::BOROUGH,
+        Zone::VOTE_PLACE,
     ];
 
     public const CANDIDATE_TYPES = [
