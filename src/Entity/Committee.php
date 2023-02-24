@@ -18,6 +18,7 @@ use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
 use App\Exception\CommitteeAlreadyApprovedException;
 use App\Geocoder\GeoPointInterface;
 use App\Report\ReportType;
+use App\Validator\ZoneType as AssertZoneType;
 use App\ValueObject\Genders;
 use App\ValueObject\Link;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -235,6 +236,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
      * })
      *
      * @Assert\Count(min=1, minMessage="Le comité doit contenir au moins une zone.", groups={"api_committee_edition"})
+     * @AssertZoneType(types=Zone::COMMITTEE_TYPES, groups={"api_committee_edition"})
      */
     protected $zones;
 
