@@ -4,6 +4,7 @@ namespace App\Security\Voter;
 
 use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\ZoneableEntity;
 use App\Entity\ZoneableWithScopeEntity;
@@ -28,6 +29,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
     {
         if ($scope = $this->scopeGeneratorResolver->generate()) {
             $adherent = $scope->getDelegator() ?? $adherent;
+            $zoneIds = array_map(fn (Zone $zone) => $zone->getId(), $scope->getZones());
         } elseif ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             $adherent = $delegatedAccess->getDelegator();
         }
@@ -44,7 +46,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             $spaceType = $this->getSpaceType($attribute);
         }
 
-        if (!$zoneIds = $this->managedZoneProvider->getManagedZonesIds($adherent, $spaceType)) {
+        if (empty($zoneIds) && !$zoneIds = $this->managedZoneProvider->getManagedZonesIds($adherent, $spaceType)) {
             return false;
         }
 
