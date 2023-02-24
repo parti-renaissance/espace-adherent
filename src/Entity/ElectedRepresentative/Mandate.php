@@ -89,7 +89,7 @@ class Mandate
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\Zone", cascade={"merge", "detach"})
      *
-     * @deprecated Will be replace by $geoZone
+     * @deprecated Will be replaced by $geoZone
      */
     private $zone;
 

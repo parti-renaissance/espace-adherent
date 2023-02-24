@@ -7,14 +7,18 @@ use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
+use App\Entity\ElectedRepresentative\Mandate;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Geo\Zone;
+use App\Repository\GeoZoneTrait;
 use App\Repository\Helper\MembershipFilterHelper;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Composite;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -25,6 +29,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
     }
+    use GeoZoneTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -49,20 +54,14 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     /**
      * @return ElectedRepresentative[]|PaginatorInterface
      */
-    public function searchByFilter(
-        ListFilter $filter,
-        int $page = 1,
-        int $limit = 100,
-        bool $forJME = false
-    ): PaginatorInterface {
+    public function searchByFilter(ListFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
+    {
         return $this->configurePaginator(
-            $this->createFilterQueryBuilder($filter, $forJME),
+            $this->createFilterQueryBuilder($filter),
             $page,
             $limit,
             static function (Query $query) {
-                $query
-                    ->enableResultCache(1800)
-                ;
+                $query->enableResultCache(1800);
             }
         );
     }
@@ -133,30 +132,21 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         ;
     }
 
-    private function createFilterQueryBuilder(ListFilter $filter, bool $forJME = false): QueryBuilder
+    private function createFilterQueryBuilder(ListFilter $filter): QueryBuilder
     {
-        $qb = $this
-            ->createQueryBuilder('er')
-        ;
-
-        if ($forJME) {
-            $adherentCondition = new Orx();
-
-            $adherentCondition->add('er.adherent IS NOT NULL');
-
-            if ($filter->getCreatedByAdherent()) {
-                $adherentCondition->add('er.createdByAdherent = :created_by_adherent');
-                $qb->setParameter('created_by_adherent', $filter->getCreatedByAdherent());
-            }
-
-            $qb->andWhere($adherentCondition);
-        }
+        $qb = $this->createQueryBuilder('er');
 
         $this->withActiveMandatesCondition($qb);
 
-        $zones = $filter->getZones() ?: $filter->getManagedZones();
-        if ($zones) {
-            $this->withZoneCondition($qb, $zones);
+        $authorCondition = new Orx();
+
+        if ($filter->createdByAdherent) {
+            $authorCondition->add('er.createdByAdherent = :created_by_adherent');
+            $qb->setParameter('created_by_adherent', $filter->createdByAdherent);
+        }
+
+        if ($zones = $filter->getZones() ?: $filter->getManagedZones()) {
+            $this->withZoneCondition($qb, $zones, 'er', $authorCondition);
         }
 
         if ($filter->getManagedZones()) {
@@ -284,16 +274,18 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     private function withActiveMandatesCondition(QueryBuilder $qb, string $alias = 'er'): QueryBuilder
     {
         return $qb
-            ->leftJoin($alias.'.mandates', 'mandate')
+            ->leftJoin($alias.'.mandates', 'mandate', Join::WITH, '(mandate.finishAt IS NULL OR mandate.finishAt > :now) AND mandate.onGoing = 1 AND mandate.isElected = 1')
             ->leftJoin('mandate.zone', 'zone')
-            ->andWhere('mandate.finishAt IS NULL')
-            ->andWhere('mandate.onGoing = 1')
-            ->andWhere('mandate.isElected = 1')
+            ->setParameter('now', new \DateTime())
         ;
     }
 
-    private function withZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'er'): QueryBuilder
-    {
+    private function withZoneCondition(
+        QueryBuilder $qb,
+        array $zones,
+        string $alias = 'er',
+        Composite $condition = null
+    ): QueryBuilder {
         if (!$zones) {
             return $qb;
         }
@@ -302,24 +294,20 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             $qb->leftJoin($alias.'.mandates', 'mandate');
         }
 
-        if (!\in_array('geo_zone', $qb->getAllAliases(), true)) {
-            $qb->innerJoin('mandate.geoZone', 'geo_zone');
-        }
-
-        if (!\in_array('geo_zone_parent', $qb->getAllAliases(), true)) {
-            $qb->innerJoin('geo_zone.parents', 'geo_zone_parent');
-        }
-
-        $ids = array_map(static function ($zone) {
-            return $zone->getId();
-        }, $zones);
-
-        return $qb->andWhere(
-            $qb->expr()->orX(
-                $qb->expr()->in('geo_zone.id', $ids),
-                $qb->expr()->in('geo_zone_parent.id', $ids),
-            )
+        $zoneConditionQueryBuilder = $this->createGeoZonesQueryBuilder(
+            $zones,
+            $qb,
+            Mandate::class,
+            'mandate_2',
+            'geoZone',
+            'mandate_zone_2'
         );
+
+        $qb->andWhere(
+            ($condition ?? new Orx())->add(sprintf('mandate.id IN (%s)', $zoneConditionQueryBuilder->getDQL()))
+        );
+
+        return $qb;
     }
 
     public function hasActiveParliamentaryMandate(Adherent $adherent): bool
