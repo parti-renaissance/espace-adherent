@@ -1299,6 +1299,7 @@ geo_zone.district: Circonscription électorale
 geo_zone.city: Ville
 geo_zone.borough: Arrondissement
 geo_zone.city_community: Communauté de commune
+geo_zone.vote_place: Bureau de vote
 geo_zone.canton: Canton
 geo_zone.foreign_district: Circonscription FDE
 geo_zone.consular_district: Circonscription consulaire
