@@ -124,7 +124,7 @@ class ListFilter
      */
     private ?string $renaissanceMembership = null;
 
-    private ?Adherent $createdByAdherent;
+    public ?Adherent $createdByAdherent = null;
 
     public function __construct(array $managedZones = [], ?Adherent $createdByAdherent = null)
     {
@@ -270,16 +270,6 @@ class ListFilter
     public function setOrder(string $order): void
     {
         $this->order = $order;
-    }
-
-    public function getCreatedByAdherent(): ?Adherent
-    {
-        return $this->createdByAdherent;
-    }
-
-    public function setCreatedByAdherent(?Adherent $createdByAdherent): void
-    {
-        $this->createdByAdherent = $createdByAdherent;
     }
 
     public function getRenaissanceMembership(): ?string

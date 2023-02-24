@@ -13,9 +13,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 3,
+            "total_items": 2,
             "items_per_page": 100,
-            "count": 3,
+            "count": 2,
             "current_page": 1,
             "last_page": 1
         },
@@ -59,41 +59,6 @@ Feature:
                 "current_political_functions": [
                     {
                         "name": "other_member"
-                    }
-                ]
-            },
-            {
-                "last_name": "LOBELL",
-                "first_name": "André",
-                "gender": "male",
-                "contact_phone": null,
-                "uuid": "82ec811a-45f7-4527-97ef-3dea61af131b",
-                "current_mandates": [
-                    {
-                        "type": "depute",
-                        "geo_zone": {
-                            "uuid": "@uuid@",
-                            "code": "13",
-                            "name": "Bouches-du-Rhône"
-                        },
-                        "uuid": "23008279-558c-4f46-84f2-3fc182c2ea16"
-                    },
-                    {
-                        "type": "conseiller_regional",
-                        "geo_zone": {
-                            "uuid": "@uuid@",
-                            "code": "76540",
-                            "name": "Rouen"
-                        },
-                        "uuid": "b7ad3756-35d0-4f9b-a196-eebeaf60925a"
-                    }
-                ],
-                "current_political_functions": [
-                    {
-                        "name": "vice_president_of_epci"
-                    },
-                    {
-                        "name": "mayor_assistant"
                     }
                 ]
             }

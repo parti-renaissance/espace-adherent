@@ -11,7 +11,9 @@ use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUserListDefinitionTrait;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
+use App\Entity\ZoneableEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,17 +40,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/elected_representatives/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('CAN_MANAGE_ELECTED_REPRESENTATIVE', object)"
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
  *         },
  *         "put": {
  *             "path": "/v3/elected_representatives/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('CAN_MANAGE_ELECTED_REPRESENTATIVE', object)"
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
  *         },
  *         "delete": {
  *             "path": "/v3/elected_representatives/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('CAN_MANAGE_ELECTED_REPRESENTATIVE', object)"
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
  *         }
  *     },
  *     collectionOperations={
@@ -62,7 +64,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity(fields={"adherent"}, message="elected_representative.invalid_adherent")
  */
-class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
+class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, ZoneableEntity
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -444,8 +446,10 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      */
     public function getCurrentMandates(): array
     {
-        return $this->mandates->filter(function (Mandate $mandate) {
-            return $mandate->isElected() && $mandate->isOnGoing() && null === $mandate->getFinishAt();
+        $now = new \DateTime();
+
+        return $this->mandates->filter(function (Mandate $mandate) use ($now) {
+            return $mandate->isElected() && $mandate->isOnGoing() && (null === $mandate->getFinishAt() || $mandate->getFinishAt() > $now);
         })->getValues();
     }
 
@@ -691,5 +695,31 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         }
 
         return array_unique($tags);
+    }
+
+    public function getZones(): Collection
+    {
+        return new ArrayCollection(
+            array_values(
+                array_filter(
+                    array_map(
+                        fn (Mandate $mandate) => $mandate->getGeoZone(),
+                        $this->getCurrentMandates()
+                    )
+                )
+            )
+        );
+    }
+
+    public function addZone(Zone $Zone): void
+    {
+    }
+
+    public function removeZone(Zone $zone): void
+    {
+    }
+
+    public function clearZones(): void
+    {
     }
 }
