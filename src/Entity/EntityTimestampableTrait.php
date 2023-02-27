@@ -28,6 +28,7 @@ trait EntityTimestampableTrait
      *     "event_list_read_extended",
      *     "survey_list_dc",
      *     "committee:list",
+     *     "document_read",
      * })
      * @Gedmo\Timestampable(on="create")
      */
