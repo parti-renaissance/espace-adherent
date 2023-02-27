@@ -4,6 +4,7 @@ namespace App\Entity\ElectedRepresentative;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
+use App\Entity\AuthoredInterface;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityAdministratorBlameableInterface;
@@ -40,17 +41,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/elected_representatives/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and (is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object) or is_granted('IS_AUTHOR_OF', object))"
  *         },
  *         "put": {
  *             "path": "/v3/elected_representatives/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and (is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object) or is_granted('IS_AUTHOR_OF', object))"
  *         },
  *         "delete": {
  *             "path": "/v3/elected_representatives/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and (is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object) or is_granted('IS_AUTHOR_OF', object))"
  *         }
  *     },
  *     collectionOperations={
@@ -64,7 +65,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity(fields={"adherent"}, message="elected_representative.invalid_adherent")
  */
-class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, ZoneableEntity
+class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, ZoneableEntity, AuthoredInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -721,5 +722,10 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     public function clearZones(): void
     {
+    }
+
+    public function getAuthor(): ?Adherent
+    {
+        return $this->createdByAdherent;
     }
 }
