@@ -24,13 +24,17 @@ Feature:
                 "title": "Document #1",
                 "comment": "@string@",
                 "uuid": "29eec30e-8f30-41f9-87b9-821d275d19dc",
-                "file_path": "@string@.isUrl()"
+                "created_at": "@string@.isDateTime()",
+                "file_url": "@string@.isUrl()",
+                "file_type": "application/pdf"
             },
             {
                 "title": "Document #2",
                 "comment": "@string@",
                 "uuid": "648e7b13-ef89-4b8a-8302-19c66654ed15",
-                "file_path": "@string@.isUrl()"
+                "created_at": "@string@.isDateTime()",
+                "file_url": "@string@.isUrl()",
+                "file_type": "application/pdf"
             }
         ]
     }

@@ -3,8 +3,7 @@
 namespace App\Normalizer;
 
 use App\Entity\Document;
-use App\Scope\Generator\ScopeGeneratorInterface;
-use App\Scope\ScopeGeneratorResolver;
+use Symfony\Component\Mime\MimeTypesInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -16,11 +15,9 @@ class DocumentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
 
     private const ALREADY_CALLED = 'DOCUMENT_NORMALIZER_ALREADY_CALLED';
 
-    private ?ScopeGeneratorInterface $currentScope = null;
-
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly ScopeGeneratorResolver $scopeGeneratorResolver
+        private readonly MimeTypesInterface $mimeTypes
     ) {
     }
 
@@ -34,7 +31,12 @@ class DocumentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         $data = $this->normalizer->normalize($object, $format, $context);
 
         if (\in_array('document_read', $context['groups'] ?? [])) {
-            $data['file_path'] = $object->hasFilePath() ? $this->getUrl($object) : null;
+            $data['file_url'] = $data['file_type'] = null;
+
+            if ($object->hasFilePath()) {
+                $data['file_url'] = $this->getUrl($object);
+                $data['file_type'] = $this->mimeTypes->getMimeTypes(pathinfo($object->filePath, \PATHINFO_EXTENSION))[0] ?? null;
+            }
         }
 
         return $data;
@@ -47,19 +49,10 @@ class DocumentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
 
     private function getUrl(Document $document): string
     {
-        $parameters = [
-            'uuid' => $document->getUuid()->toString(),
-        ];
-
-        if ($scope = $this->getCurrentScope()) {
-            $parameters['scope'] = $scope->getCode();
-        }
-
-        return $this->urlGenerator->generate('api_documents_get_file_item', $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
-    }
-
-    private function getCurrentScope(): ?ScopeGeneratorInterface
-    {
-        return $this->scopeGeneratorResolver->resolve();
+        return $this->urlGenerator->generate(
+            'api_documents_get_file_item',
+            ['uuid' => $document->getUuid()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 }
