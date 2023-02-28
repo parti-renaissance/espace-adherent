@@ -14,7 +14,7 @@ final class ProcurationProxyReminderMessage extends AbstractProcurationMessage
             Uuid::uuid4(),
             $proxy->getEmailAddress(),
             null,
-            'Mandataire, le 10 avril, n\'oubliez pas de voter !',
+            'Mandataire, n\'oubliez pas de voter !',
             [],
             self::createRecipientVariables($proxy)
         );
