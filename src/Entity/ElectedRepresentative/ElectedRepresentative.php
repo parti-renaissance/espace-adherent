@@ -197,6 +197,11 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     private $emailUnsubscribed = false;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTimeInterface $lastContributionRequestDate = null;
+
+    /**
      * @var Adherent|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
@@ -727,5 +732,15 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     public function getAuthor(): ?Adherent
     {
         return $this->createdByAdherent;
+    }
+
+    public function getLastContributionRequestDate(): ?\DateTimeInterface
+    {
+        return $this->lastContributionRequestDate;
+    }
+
+    public function setLastContributionRequestDate(?\DateTimeInterface $lastContributionRequestDate): void
+    {
+        $this->lastContributionRequestDate = $lastContributionRequestDate;
     }
 }
