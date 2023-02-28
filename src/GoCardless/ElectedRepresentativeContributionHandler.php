@@ -7,7 +7,7 @@ use App\Entity\Adherent;
 
 class ElectedRepresentativeContributionHandler
 {
-    public function __construct(private readonly Client $goCardless)
+    public function __construct(private readonly ClientInterface $goCardless)
     {
     }
 

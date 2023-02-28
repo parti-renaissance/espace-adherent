@@ -9,7 +9,7 @@ use GoCardlessPro\Resources\CustomerBankAccount;
 use GoCardlessPro\Resources\Mandate;
 use GoCardlessPro\Resources\Subscription;
 
-class Client
+class Client implements ClientInterface
 {
     private GoCardlessClient $client;
 

@@ -4,7 +4,6 @@ namespace App\Controller\Renaissance\ElectedRepresentative\Contribution;
 
 use App\ElectedRepresentative\Contribution\ContributionRequestHandler;
 use App\Form\Renaissance\ElectedRepresentative\Contribution\InformationsType;
-use App\GoCardless\ElectedRepresentativeContributionHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,10 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FillInformationsController extends AbstractContributionController
 {
-    public function __invoke(
-        Request $request,
-        ContributionRequestHandler $contributionRequestHandler
-    ): Response {
+    public function __invoke(Request $request, ContributionRequestHandler $contributionRequestHandler): Response
+    {
         $this->checkContributionsEnabled();
 
         $command = $this->getCommand();
