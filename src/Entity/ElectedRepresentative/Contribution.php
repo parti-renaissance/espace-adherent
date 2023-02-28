@@ -11,6 +11,7 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ContributionRepository")
+ * @ORM\Table(name="elected_representative_contribution")
  */
 class Contribution
 {
