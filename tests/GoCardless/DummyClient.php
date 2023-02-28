@@ -12,7 +12,7 @@ class DummyClient implements ClientInterface
 {
     public function createCustomer(string $email, string $firstName, string $lastName, array $metadata = []): Customer
     {
-        return new Customer((object) []);
+        return new Customer((object) ['id' => 'customer_123']);
     }
 
     public function createBankAccount(Customer $customer, string $iban, string $accountName): CustomerBankAccount
