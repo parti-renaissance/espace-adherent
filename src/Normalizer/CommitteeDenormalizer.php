@@ -30,7 +30,7 @@ class CommitteeDenormalizer implements DenormalizerInterface, DenormalizerAwareI
     public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
     {
         return !isset($context[self::ALREADY_CALLED])
-            && is_a($type, Committee::class, true)
+            && Committee::class === $type
             && \in_array($context['operation_name'] ?? null, ['api_committees_post_collection', 'api_committees_put_item'], true)
         ;
     }
