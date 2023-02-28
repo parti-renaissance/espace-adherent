@@ -19,21 +19,19 @@ class DocumentDownloadFileController extends AbstractController
 
     public function __invoke(Request $request, Document $document): Response
     {
-        $filePath = $document->getFilePath();
-
-        if (!$this->storage->has($filePath)) {
+        if (!$document->hasFilePath() || !$this->storage->has($document->filePath)) {
             $this->logger->error(sprintf('No file found for Document with uuid "%s".', $document->getUuid()->toString()));
 
             throw $this->createNotFoundException('File not found.');
         }
 
-        $response = new Response($this->storage->read($filePath), Response::HTTP_OK, [
-            'Content-Type' => $this->storage->getMimetype($filePath),
+        $response = new Response($this->storage->read($document->filePath), Response::HTTP_OK, [
+            'Content-Type' => $this->storage->getMimetype($document->filePath),
         ]);
 
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            (new Slugify())->slugify($document->getTitle()).'.'.pathinfo($filePath, \PATHINFO_EXTENSION)
+            (new Slugify())->slugify($document->title).'.'.pathinfo($document->filePath, \PATHINFO_EXTENSION)
         );
 
         $response->headers->set('Content-Disposition', $disposition);
