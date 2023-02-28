@@ -198,6 +198,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"elected_representative_list", "elected_representative_read"})
      */
     private ?\DateTimeInterface $lastContributionDate = null;
 
@@ -287,6 +289,17 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      */
     private $sponsorships;
 
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\ElectedRepresentative\Contribution",
+     *     mappedBy="electedRepresentative",
+     *     cascade={"all"},
+     *     orphanRemoval=true,
+     *     fetch="EXTRA_LAZY"
+     * )
+     */
+    private Collection $contributions;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -297,6 +310,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         $this->labels = new ArrayCollection();
         $this->sponsorships = new ArrayCollection();
         $this->userListDefinitions = new ArrayCollection();
+        $this->contributions = new ArrayCollection();
 
         $this->initializeSponsorships();
     }
@@ -742,5 +756,23 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     public function setLastContributionDate(?\DateTimeInterface $lastContributionDate): void
     {
         $this->lastContributionDate = $lastContributionDate;
+    }
+
+    public function getContributions(): Collection
+    {
+        return $this->contributions;
+    }
+
+    public function addContribution(Contribution $contribution): void
+    {
+        if (!$this->contributions->contains($contribution)) {
+            $contribution->electedRepresentative = $this;
+            $this->contributions->add($contribution);
+        }
+    }
+
+    public function removeContribution(Contribution $contribution): void
+    {
+        $this->contributions->removeElement($contribution);
     }
 }

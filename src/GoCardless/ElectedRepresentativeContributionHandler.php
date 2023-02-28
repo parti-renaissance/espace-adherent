@@ -12,7 +12,7 @@ class ElectedRepresentativeContributionHandler
     {
     }
 
-    public function handle(ContributionRequest $contributionRequest, Adherent $adherent): void
+    public function handle(ContributionRequest $contributionRequest, Adherent $adherent): string
     {
         $metadata = [
             'adherent_uuid' => $adherent->getUuidAsString(),
@@ -40,5 +40,7 @@ class ElectedRepresentativeContributionHandler
             $contributionRequest->getContributionAmount(),
             $metadata
         );
+
+        return $customer->id;
     }
 }

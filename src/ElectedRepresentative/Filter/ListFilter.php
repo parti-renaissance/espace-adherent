@@ -84,6 +84,11 @@ class ListFilter
     private $emailSubscription;
 
     /**
+     * @Groups({"filter_write"})
+     */
+    private ?bool $contributionActive = null;
+
+    /**
      * @var Zone[]
      *
      * @Assert\Expression(
@@ -222,6 +227,16 @@ class ListFilter
         $this->emailSubscription = $emailSubscription;
     }
 
+    public function isContributionActive(): ?bool
+    {
+        return $this->contributionActive;
+    }
+
+    public function setContributionActive(?bool $contributionActive): void
+    {
+        $this->contributionActive = $contributionActive;
+    }
+
     /**
      * @return Zone[]
      */
@@ -302,6 +317,7 @@ class ListFilter
             'order' => $this->order,
             'contactType' => $this->contactType,
             'emailSubscription' => $this->emailSubscription,
+            'contributionActive' => $this->contributionActive,
         ];
     }
 }
