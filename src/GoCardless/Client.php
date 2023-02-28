@@ -32,25 +32,33 @@ class Client implements ClientInterface
         ]);
     }
 
-    public function createBankAccount(Customer $customer, string $iban, string $accountName): CustomerBankAccount
-    {
+    public function createBankAccount(
+        Customer $customer,
+        string $iban,
+        string $accountName,
+        array $metadata = []
+    ): CustomerBankAccount {
         return $this->client->customerBankAccounts()->create([
             'params' => [
                 'iban' => $iban,
                 'account_holder_name' => $accountName,
-                'links' => ['customer' => $customer->id]],
+                'links' => ['customer' => $customer->id],
+                'metadata' => $metadata,
+            ],
         ]);
     }
 
-    public function createMandate(CustomerBankAccount $customerBankAccount): Mandate
+    public function createMandate(CustomerBankAccount $customerBankAccount, array $metadata = []): Mandate
     {
         return $this->client->mandates()->create([
             'params' => [
-                'links' => ['customer_bank_account' => $customerBankAccount->id]],
+                'links' => ['customer_bank_account' => $customerBankAccount->id],
+                'metadata' => $metadata,
+            ],
         ]);
     }
 
-    public function createSubscription(Mandate $mandate, string $amount, array $metadata = []): Subscription
+    public function createSubscription(Mandate $mandate, int $amount, array $metadata = []): Subscription
     {
         return $this->client->subscriptions()->create([
             'params' => [
@@ -58,9 +66,9 @@ class Client implements ClientInterface
                 'currency' => 'EUR',
                 'name' => 'Cotisation élu',
                 'interval_unit' => 'monthly',
-                'day_of_month' => 1,
+                'links' => ['mandate' => $mandate->id],
                 'metadata' => $metadata,
-                'links' => ['mandate' => $mandate->id]],
+            ],
         ]);
     }
 

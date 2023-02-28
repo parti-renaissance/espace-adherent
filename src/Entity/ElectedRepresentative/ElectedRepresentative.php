@@ -199,7 +199,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?\DateTimeInterface $lastContributionRequestDate = null;
+    private ?\DateTimeInterface $lastContributionDate = null;
 
     /**
      * @var Adherent|null
@@ -734,13 +734,13 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->createdByAdherent;
     }
 
-    public function getLastContributionRequestDate(): ?\DateTimeInterface
+    public function getLastContributionDate(): ?\DateTimeInterface
     {
-        return $this->lastContributionRequestDate;
+        return $this->lastContributionDate;
     }
 
-    public function setLastContributionRequestDate(?\DateTimeInterface $lastContributionRequestDate): void
+    public function setLastContributionDate(?\DateTimeInterface $lastContributionDate): void
     {
-        $this->lastContributionRequestDate = $lastContributionRequestDate;
+        $this->lastContributionDate = $lastContributionDate;
     }
 }

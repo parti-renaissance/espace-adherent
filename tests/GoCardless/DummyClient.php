@@ -25,7 +25,7 @@ class DummyClient implements ClientInterface
         return new Mandate((object) []);
     }
 
-    public function createSubscription(Mandate $mandate, string $amount, array $metadata = []): Subscription
+    public function createSubscription(Mandate $mandate, int $amount, array $metadata = []): Subscription
     {
         return new Subscription((object) []);
     }

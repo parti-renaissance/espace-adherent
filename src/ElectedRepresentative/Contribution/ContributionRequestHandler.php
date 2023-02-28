@@ -21,7 +21,7 @@ class ContributionRequestHandler
         $this->goCardless->handle($contributionRequest, $adherent);
 
         $electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
-        $electedRepresentative->setLastContributionRequestDate(new \DateTime());
+        $electedRepresentative->setLastContributionDate(new \DateTime());
 
         $this->entityManager->flush();
     }

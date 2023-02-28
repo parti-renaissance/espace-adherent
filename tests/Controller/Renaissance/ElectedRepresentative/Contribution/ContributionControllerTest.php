@@ -44,7 +44,7 @@ class ContributionControllerTest extends WebTestCase
         $electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
 
         $this->assertInstanceOf(ElectedRepresentative::class, $electedRepresentative);
-        $this->assertNull($electedRepresentative->getLastContributionRequestDate());
+        $this->assertNull($electedRepresentative->getLastContributionDate());
 
         $this->authenticateAsAdherent($this->client, 'renaissance-user-2@en-marche-dev.fr');
 
@@ -86,7 +86,7 @@ class ContributionControllerTest extends WebTestCase
 
         $electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
 
-        $this->assertNotNull($electedRepresentative->getLastContributionRequestDate());
+        $this->assertNotNull($electedRepresentative->getLastContributionDate());
     }
 
     protected function setUp(): void

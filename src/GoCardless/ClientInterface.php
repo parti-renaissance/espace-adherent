@@ -15,5 +15,5 @@ interface ClientInterface
 
     public function createMandate(CustomerBankAccount $customerBankAccount): Mandate;
 
-    public function createSubscription(Mandate $mandate, string $amount, array $metadata = []): Subscription;
+    public function createSubscription(Mandate $mandate, int $amount, array $metadata = []): Subscription;
 }
