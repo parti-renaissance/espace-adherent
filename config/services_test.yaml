@@ -53,6 +53,10 @@ services:
 
     App\Image\ImageManagerInterface: '@Tests\App\Test\Image\DummyImageManager'
 
+    Tests\App\GoCardless\DummyClient: ~
+
+    App\GoCardless\ClientInterface: '@Tests\App\GoCardless\DummyClient'
+
     App\Repository\DonatorRepository: ~
     App\Repository\DonationRepository: ~
     App\Repository\EmailRepository: ~

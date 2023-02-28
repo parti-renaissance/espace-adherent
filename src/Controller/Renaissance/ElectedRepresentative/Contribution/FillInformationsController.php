@@ -2,25 +2,19 @@
 
 namespace App\Controller\Renaissance\ElectedRepresentative\Contribution;
 
+use App\ElectedRepresentative\Contribution\ContributionRequestHandler;
 use App\Form\Renaissance\ElectedRepresentative\Contribution\InformationsType;
-use App\Membership\MembershipNotifier;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * @Route(path="/espace-elus/cotisation/informations", name="app_renaissance_elected_representative_contribution_fill_informations", methods={"GET|POST"})
  */
 class FillInformationsController extends AbstractContributionController
 {
-    public function __invoke(
-        Request $request,
-        EntityManagerInterface $entityManager,
-        MembershipNotifier $notifier,
-        EncoderFactoryInterface $encoders
-    ): Response {
+    public function __invoke(Request $request, ContributionRequestHandler $contributionRequestHandler): Response
+    {
         $this->checkContributionsEnabled();
 
         $command = $this->getCommand();
@@ -37,7 +31,7 @@ class FillInformationsController extends AbstractContributionController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // handle contribution
+            $contributionRequestHandler->handleMandate($command, $this->getUser());
 
             $this->processor->doCompleteContributionRequest($command);
 

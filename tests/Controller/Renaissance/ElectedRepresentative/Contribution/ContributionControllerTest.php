@@ -2,6 +2,9 @@
 
 namespace Tests\App\Controller\Renaissance\ElectedRepresentative\Contribution;
 
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Repository\AdherentRepository;
+use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
@@ -13,6 +16,9 @@ use Tests\App\Controller\ControllerTestTrait;
 class ContributionControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+
+    private ?AdherentRepository $adherentRepository = null;
+    private ?ElectedRepresentativeRepository $electedRepresentativeRepository = null;
 
     public function testAnonymousCanNotAccessContributionWorkflow(): void
     {
@@ -34,6 +40,12 @@ class ContributionControllerTest extends WebTestCase
 
     public function testOnGoingElectedRepresentativeCanSeeContributionWorkflow(): void
     {
+        $adherent = $this->adherentRepository->findOneByEmail('renaissance-user-2@en-marche-dev.fr');
+        $electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
+
+        $this->assertInstanceOf(ElectedRepresentative::class, $electedRepresentative);
+        $this->assertNull($electedRepresentative->getLastContributionDate());
+
         $this->authenticateAsAdherent($this->client, 'renaissance-user-2@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-elus/cotisation');
@@ -71,6 +83,10 @@ class ContributionControllerTest extends WebTestCase
             'Mandat de prélèvement complété',
             $crawler->filter('#elected-representative-contribution')->text()
         );
+
+        $electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
+
+        $this->assertNotNull($electedRepresentative->getLastContributionDate());
     }
 
     protected function setUp(): void
@@ -78,5 +94,16 @@ class ContributionControllerTest extends WebTestCase
         parent::setUp();
 
         $this->client->setServerParameter('HTTP_HOST', $this->getParameter('renaissance_host'));
+
+        $this->adherentRepository = $this->getAdherentRepository();
+        $this->electedRepresentativeRepository = $this->getElectedRepresentativeRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->adherentRepository = null;
+        $this->electedRepresentativeRepository = null;
     }
 }

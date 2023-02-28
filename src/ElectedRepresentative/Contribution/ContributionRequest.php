@@ -68,7 +68,7 @@ class ContributionRequest
         return $this->revenueAmount >= self::CONTRIBUTION_MIN_REVENUE_AMOUNT;
     }
 
-    public function getContributionAmount(): float
+    public function getContributionAmount(): int
     {
         if (!$this->needContribution()) {
             return 0;
