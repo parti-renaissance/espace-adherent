@@ -8,8 +8,8 @@ abstract class AbstractProcurationMessage extends Message
 {
     protected static function updateSenderInfo(Message $message): Message
     {
-        $message->setSenderEmail('ne-pas-repondre@avecvous.fr');
-        $message->setSenderName('Procuration avec vous');
+        $message->setSenderEmail('ne-pas-repondre@parti-renaissance.fr');
+        $message->setSenderName('Procuration Renaissance');
 
         return $message;
     }
