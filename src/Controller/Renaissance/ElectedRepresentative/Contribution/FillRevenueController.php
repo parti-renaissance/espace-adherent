@@ -28,6 +28,11 @@ class FillRevenueController extends AbstractContributionController
         $this->processor->doFillRevenue($command);
 
         $electedRepresentative = $electedRepresentativeRepository->findOneBy(['adherent' => $this->getUser()]);
+
+        if (!$electedRepresentative) {
+            throw $this->createAccessDeniedException(sprintf('No elected representative found for adherent UUID: %s', $this->getUser()->getUuidAsString()));
+        }
+
         if ($electedRepresentative->getLastContributionDate()) {
             $this->processor->doContributionAlreadyDone($command);
 
