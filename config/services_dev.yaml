@@ -16,6 +16,10 @@ services:
 
     Geocoder\Geocoder: '@Tests\App\Test\Geocoder\DummyGeocoder'
 
+    Tests\App\GoCardless\DummyClient: ~
+
+    App\GoCardless\ClientInterface: '@Tests\App\GoCardless\DummyClient'
+
     app.mailer.client:
         class: 'Tests\App\Test\Mailer\NullEmailClient'
 
