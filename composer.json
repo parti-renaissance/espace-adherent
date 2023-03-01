@@ -55,7 +55,7 @@
         "gedmo/doctrine-extensions": "^3.11",
         "geocoder-php/google-maps-provider": "^4.5",
         "geoip2/geoip2": "^2.4",
-        "giggsey/libphonenumber-for-php": "~8.10.8",
+        "giggsey/libphonenumber-for-php": "~8.13.6",
         "gocardless/gocardless-pro": "^4.26",
         "google/cloud-recaptcha-enterprise": "^1.2",
         "google/cloud-storage": "^1.23",
