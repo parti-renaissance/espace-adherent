@@ -68,7 +68,7 @@ class ZoneRepository extends ServiceEntityRepository
     /**
      * @return Zone[]
      */
-    public function searchByFilterInsideManagedZones(ZoneAutocompleteFilter $filter, array $zones, int $perType): array
+    public function searchByFilterInsideManagedZones(ZoneAutocompleteFilter $filter, array $zones, ?int $perType): array
     {
         if (empty($filter->q) && false === $filter->searchEvenEmptyTerm) {
             return [];
@@ -82,7 +82,7 @@ class ZoneRepository extends ServiceEntityRepository
         return array_merge(...$grouped);
     }
 
-    private function doSearchForFilter(ZoneAutocompleteFilter $filter, array $zones, string $type, int $max): array
+    private function doSearchForFilter(ZoneAutocompleteFilter $filter, array $zones, string $type, ?int $max): array
     {
         $qb = $this->createQueryBuilder('zone')
             ->andWhere('zone.type = :type')
@@ -123,7 +123,7 @@ class ZoneRepository extends ServiceEntityRepository
             ;
         }
 
-        if ($filter->availableForCommittee) {
+        if ($filter->usedByCommittees || $filter->availableForCommittee) {
             $subQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('DISTINCT committee_zone.id')
                 ->from(Committee::class, 'committee')
@@ -131,7 +131,7 @@ class ZoneRepository extends ServiceEntityRepository
                 ->where('committee.version = 2')
             ;
 
-            $qb->andWhere(sprintf('zone.id NOT IN (%s)', $subQuery->getDQL()));
+            $qb->andWhere(sprintf('zone.id %s (%s)', $filter->usedByCommittees ? 'IN' : 'NOT IN', $subQuery->getDQL()));
         }
 
         return $qb

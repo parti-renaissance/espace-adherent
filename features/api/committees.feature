@@ -160,3 +160,43 @@ Feature:
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
             | referent@en-marche-dev.fr       | referent                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I can get geo zone available for a new committee
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "GET" request to "/api/v3/committees/used-zones?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        [
+            {
+                "type": "city",
+                "code": "92002"
+            },
+            {
+                "type": "city",
+                "code": "92004"
+            },
+            {
+                "type": "city",
+                "code": "92007"
+            },
+            {
+                "type": "city",
+                "code": "92012"
+            },
+            {
+                "type": "city",
+                "code": "92014"
+            },
+            {
+                "type": "city",
+                "code": "92019"
+            }
+        ]
+        """
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
