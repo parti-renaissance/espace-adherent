@@ -53,6 +53,11 @@ class ContributionRequestProcessor
         $this->apply($command, ContributionRequestStateEnum::TO_NO_CONTRIBUTION_NEEDED);
     }
 
+    public function doContributionAlreadyDone(ContributionRequest $command): void
+    {
+        $this->apply($command, ContributionRequestStateEnum::TO_NO_CONTRIBUTION_NEEDED);
+    }
+
     public function doSeeContributionAmount(ContributionRequest $command): void
     {
         $this->apply($command, ContributionRequestStateEnum::TO_SEE_CONTRIBUTION_AMOUNT);
