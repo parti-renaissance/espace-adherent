@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Committee;
 
 use App\Api\CommitteeProvider;
 use App\Committee\Election\CandidacyManager;

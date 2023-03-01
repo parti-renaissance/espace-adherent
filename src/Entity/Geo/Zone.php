@@ -161,6 +161,7 @@ class Zone implements GeoInterface
      *     "scope",
      *     "read_api",
      *     "committee:read",
+     *     "zone:code,type",
      * })
      */
     private $type;

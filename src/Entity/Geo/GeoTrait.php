@@ -60,6 +60,7 @@ trait GeoTrait
      *     "general_meeting_report_list_read",
      *     "general_meeting_report_read",
      *     "committee:read",
+     *     "zone:code,type",
      * })
      */
     private $code;

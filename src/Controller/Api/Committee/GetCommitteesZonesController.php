@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Controller\Api\Committee;
+
+use App\Geo\Http\ZoneAutocompleteFilter;
+use App\Repository\Geo\ZoneRepository;
+use App\Scope\ScopeGeneratorResolver;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/v3/committees/used-zones", name="api_committee_get_used_zones", methods={"GET"})
+ * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')")
+ */
+class GetCommitteesZonesController extends AbstractController
+{
+    public function __invoke(ScopeGeneratorResolver $scopeGeneratorResolver, ZoneRepository $zoneRepository): Response
+    {
+        $scope = $scopeGeneratorResolver->generate();
+        $zones = $scope->getZones();
+
+        $filter = new ZoneAutocompleteFilter();
+        $filter->searchEvenEmptyTerm = true;
+        $filter->usedByCommittees = true;
+
+        return $this->json(
+            $zoneRepository->searchByFilterInsideManagedZones($filter, $zones, null),
+            Response::HTTP_OK,
+            [],
+            ['groups' => ['zone:code,type']]
+        );
+    }
+}

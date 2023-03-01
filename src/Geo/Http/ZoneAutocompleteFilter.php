@@ -25,6 +25,9 @@ class ZoneAutocompleteFilter
     #[Groups(['filter_write'])]
     private ?array $types = null;
 
+    #[Groups(['filter_write'])]
+    public bool $usedByCommittees = false;
+
     public function getTypes(): array
     {
         if ($this->types) {
@@ -41,7 +44,7 @@ class ZoneAutocompleteFilter
 
     private function getDefaultTypes(): array
     {
-        if ($this->availableForCommittee) {
+        if ($this->availableForCommittee || $this->usedByCommittees) {
             return Zone::COMMITTEE_TYPES;
         }
 
