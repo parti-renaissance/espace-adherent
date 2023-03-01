@@ -2,7 +2,6 @@
 
 namespace App\Controller\Renaissance\Formation;
 
-use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Repository\AdherentFormation\FormationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -16,16 +15,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ListController extends AbstractController
 {
-    use CanaryControllerTrait;
-
     public function __construct(private readonly FormationRepository $formationRepository)
     {
     }
 
     public function __invoke(): Response
     {
-        $this->disableInProduction();
-
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 

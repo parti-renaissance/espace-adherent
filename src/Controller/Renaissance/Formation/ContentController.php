@@ -2,8 +2,6 @@
 
 namespace App\Controller\Renaissance\Formation;
 
-use App\Controller\CanaryControllerTrait;
-use App\Entity\Adherent;
 use App\Entity\AdherentFormation\Formation;
 use App\Storage\FileRequestHandler;
 use Cocur\Slugify\Slugify;
@@ -24,8 +22,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ContentController extends AbstractController
 {
-    use CanaryControllerTrait;
-
     public function __construct(
         private readonly FileRequestHandler $fileRequestHandler,
         private readonly EntityManagerInterface $entityManager,
@@ -36,8 +32,6 @@ class ContentController extends AbstractController
 
     public function __invoke(Formation $formation): Response
     {
-        $this->disableInProduction();
-
         $formation->incrementPrintCount();
         $this->entityManager->flush();
 
