@@ -14,7 +14,7 @@
     "@babel/preset-react": "^7.18.6",
     "@ckeditor/ckeditor5-build-en-marche": "https://github.com/EnMarche/ckeditor5-build-classic#stable",
     "@google/markerclusterer": "^2.0.9",
-    "@headlessui/react": "^1.7.8",
+    "@headlessui/react": "^1.7.12",
     "@mapbox/polylabel": "^1.0.2",
     "@sentry/browser": "^7.39.0",
     "@sentry/tracing": "^7.38.0",
