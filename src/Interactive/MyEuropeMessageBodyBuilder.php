@@ -3,13 +3,14 @@
 namespace App\Interactive;
 
 use App\Repository\MyEuropeChoiceRepository;
+use Twig\Environment;
 
 class MyEuropeMessageBodyBuilder
 {
     private $twig;
     private $repository;
 
-    public function __construct(\Twig_Environment $twig, MyEuropeChoiceRepository $repository)
+    public function __construct(Environment $twig, MyEuropeChoiceRepository $repository)
     {
         $this->twig = $twig;
         $this->repository = $repository;

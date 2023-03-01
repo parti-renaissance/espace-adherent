@@ -1,14 +1,14 @@
 {{ introduction.content|replace({'%friend_first_name%': interactive.friendFirstName|e})|raw }}
 
-{% spaceless %}
+{% apply spaceless %}
 <ul>
     {% if common %}
         <li>{{ common.content|raw }}</li>
     {% endif %}
-    {% for argument in interactive.arguments if argument is not empty %}
+    {% for argument in interactive.arguments|filter(item => item is not empty) %}
         <li>{{- argument|raw }}</li>
     {% endfor %}
 </ul>
-{% endspaceless %}
+{% endapply %}
 
 {{ conclusion.content|raw }}

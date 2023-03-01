@@ -3,13 +3,14 @@
 namespace App\TonMacron;
 
 use App\Repository\TonMacronChoiceRepository;
+use Twig\Environment;
 
 class TonMacronMessageBodyBuilder
 {
     private $twig;
     private $repository;
 
-    public function __construct(\Twig_Environment $twig, TonMacronChoiceRepository $repository)
+    public function __construct(Environment $twig, TonMacronChoiceRepository $repository)
     {
         $this->twig = $twig;
         $this->repository = $repository;

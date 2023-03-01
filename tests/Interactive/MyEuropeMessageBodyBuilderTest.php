@@ -8,6 +8,8 @@ use App\Interactive\MyEuropeProcessor;
 use App\Repository\MyEuropeChoiceRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class MyEuropeMessageBodyBuilderTest extends TestCase
 {
@@ -108,7 +110,7 @@ class MyEuropeMessageBodyBuilderTest extends TestCase
     private function createBuilder(): MyEuropeMessageBodyBuilder
     {
         return new MyEuropeMessageBodyBuilder(
-            new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__.'/../Fixtures/views')),
+            new Environment(new FilesystemLoader([__DIR__.'/../Fixtures/views'])),
             $this->repository
         );
     }

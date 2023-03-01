@@ -1,5 +1,5 @@
-{%- spaceless %}
+{%- apply spaceless %}
     <span class="label {{ object.resolved ? 'label-success' : 'label-danger' }}">
         {{ object.status|trans({}, 'reports') }}
     </span>
-{% endspaceless -%}
+{% endapply -%}

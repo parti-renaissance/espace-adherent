@@ -36,7 +36,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for sponsorship in elected_representative.sponsorships if sponsorship.candidate is not null %}
+                            {% for sponsorship in elected_representative.sponsorships|filter(item => item.candidate is not null) %}
                                 <tr class="referent__item">
                                     <td>{{ sponsorship.candidate }}</td>
                                     <td>{{ sponsorship.presidentialElectionYear }}</td>

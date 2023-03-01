@@ -11,7 +11,7 @@
         <div class="b__nudge--bottom-larger">
             {% set current_quality = null %}
 
-            {% for candidacy in candidacies|sort((a, b) => a.qualityPriority <=> b.qualityPriority) if not candidacy.isTaken %}
+            {% for candidacy in candidacies|sort((a, b) => a.qualityPriority <=> b.qualityPriority)|filter(item => not item.isTaken) %}
                 {% if candidacy.getElection().getDesignationType() == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COPOL') %}
                     {% if current_quality is null or current_quality != candidacy.quality %}
                         {% set current_quality = candidacy.quality %}
