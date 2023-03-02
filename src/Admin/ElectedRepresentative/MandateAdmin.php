@@ -8,6 +8,7 @@ use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Form\Geo\ZoneType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\Form\Type\DatePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -72,9 +73,11 @@ class MandateAdmin extends AbstractAdmin
                 'error_bubbling' => true,
                 'attr' => ['class' => 'width-140'],
             ])
-            ->add('geoZone', ZoneType::class, [
+            ->add('geoZone', ModelAutocompleteType::class, [
                 'label' => 'Périmètre géographique',
+                'property' => ['name', 'code'],
                 'required' => false,
+                'btn_add' => false,
             ])
         ;
     }
