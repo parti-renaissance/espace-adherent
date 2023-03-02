@@ -1,5 +1,5 @@
 {% macro get_donation_status_badge(status) %}
-    {% spaceless %}
+    {% apply spaceless %}
         <span class="badge
             {% if status is constant('App\\Entity\\Donation::STATUS_FINISHED') %}
                 bg-green
@@ -17,11 +17,11 @@
             ">
             {{ ('donation.status.'~status)|trans }}
         </span>
-    {% endspaceless %}
+    {% endapply %}
 {% endmacro %}
 
 {% macro get_donation_type_badge(type) %}
-    {% spaceless %}
+    {% apply spaceless %}
         <span class="badge
             {% if type is constant('App\\Entity\\Donation::TYPE_CB') %}
                 bg-blue
@@ -33,11 +33,11 @@
             ">
             {{ ('donation.type.'~type)|trans }}
         </span>
-    {% endspaceless %}
+    {% endapply %}
 {% endmacro %}
 
 {% macro get_donation_destination_badge(destination) %}
-    {% spaceless %}
+    {% apply spaceless %}
         <span class="badge
             {% if destination is null %}
                 bg-blue
@@ -50,5 +50,5 @@
                 ({{ destination.name }} [{{ destination.code }}])
             {% endif %}
         </span>
-    {% endspaceless %}
+    {% endapply %}
 {% endmacro %}

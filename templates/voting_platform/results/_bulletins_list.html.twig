@@ -25,7 +25,7 @@
 
                     {% for pool_result in election_round_result.getElectionPoolResults %}
                         <td>
-                            {% for vote_choice in vote_result.voteChoices if vote_choice.electionPool == pool_result.electionPool %}
+                            {% for vote_choice in vote_result.voteChoices|filter(item => item.electionPool == pool_result.electionPool) %}
                                 {% if vote_choice.isBlank %}
                                     ~
                                 {% else %}

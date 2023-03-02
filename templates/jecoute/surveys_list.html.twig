@@ -58,7 +58,7 @@
                     },
                 ],
                 [
-                {%- spaceless %}
+                {%- apply spaceless %}
                     {% for data in surveys %}
                         {% set survey = data[0] %}
                         {% set zone = survey is instanceof('App\\Entity\\Jecoute\\LocalSurvey') ? survey.zone %}
@@ -123,7 +123,7 @@
 
                         {{ row|json_encode|raw }},
                     {% endfor %}
-                {% endspaceless -%}
+                {% endapply -%}
                 ]
             );
         });

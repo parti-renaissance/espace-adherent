@@ -45,7 +45,7 @@
                     },
                 ],
                 [
-                {%- spaceless %}
+                {%- apply spaceless %}
                     {% for data in news %}
                         {% set zone = data.zone %}
                         {% set row = {
@@ -87,7 +87,7 @@
 
                         {{ row|json_encode|raw }},
                     {% endfor %}
-                {% endspaceless -%}
+                {% endapply -%}
                 ]
             );
         });

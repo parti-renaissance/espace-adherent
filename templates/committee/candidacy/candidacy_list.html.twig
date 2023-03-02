@@ -21,7 +21,7 @@
         <p class="text--body text--gray text--small b__nudge--bottom-50">{{ description }}</p>
 
         <div class="committee__candidacies b__nudge--bottom-larger">
-            {% for candidacy in candidacies if not candidacy.isTaken %}
+            {% for candidacy in candidacies|filter(candidacy => not candidacy.isTaken) %}
                 <div class="territorial-council__candidacies l__row l__row--wrap">
                     {% if candidacy.hasOtherCandidacies() %}
                         {% set candidacies_sub_array = candidacy.getCandidaciesGroup().getCandidacies()|sort((a, b) => b.isFemale <=> a.isFemale) %}

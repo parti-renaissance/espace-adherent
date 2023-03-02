@@ -65,7 +65,7 @@
                     {% else %}
                         {% for pool_code in constant('App\\ValueObject\\Genders::MALE_FEMALE') %}
                             <td>
-                                {% for choice in choices if pool_code == choice.electionPool.code %}
+                                {% for choice in choices|filter(choice => pool_code == choice.electionPool.code) %}
                                     {% if choice.isBlank %}
                                         ~
                                     {% else %}

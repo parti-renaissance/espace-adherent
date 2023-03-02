@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f73cb26e483b2ff9cfed8498612a84a0",
+    "content-hash": "deba86147f0c79d95bafb79e3bda52bc",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -17961,16 +17961,16 @@
         },
         {
             "name": "twig/extra-bundle",
-            "version": "v3.5.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/twig-extra-bundle.git",
-                "reference": "edfcdbdc943b52101011d57ec546af393dc56537"
+                "reference": "a961e553a624eebdbd423ad5ab931497ca6d87cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/edfcdbdc943b52101011d57ec546af393dc56537",
-                "reference": "edfcdbdc943b52101011d57ec546af393dc56537",
+                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/a961e553a624eebdbd423ad5ab931497ca6d87cd",
+                "reference": "a961e553a624eebdbd423ad5ab931497ca6d87cd",
                 "shasum": ""
             },
             "require": {
@@ -18024,7 +18024,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/twig-extra-bundle/tree/v3.5.0"
+                "source": "https://github.com/twigphp/twig-extra-bundle/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -18036,20 +18036,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-27T12:23:36+00:00"
+            "time": "2023-02-08T07:44:55+00:00"
         },
         {
             "name": "twig/intl-extra",
-            "version": "v3.5.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/intl-extra.git",
-                "reference": "92f2c73471e077d0f72195a331c9a245da2010cd"
+                "reference": "c3ebfac1624228c0556de57a34af6b7d83a1a408"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/intl-extra/zipball/92f2c73471e077d0f72195a331c9a245da2010cd",
-                "reference": "92f2c73471e077d0f72195a331c9a245da2010cd",
+                "url": "https://api.github.com/repos/twigphp/intl-extra/zipball/c3ebfac1624228c0556de57a34af6b7d83a1a408",
+                "reference": "c3ebfac1624228c0556de57a34af6b7d83a1a408",
                 "shasum": ""
             },
             "require": {
@@ -18093,7 +18093,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/intl-extra/tree/v3.5.0"
+                "source": "https://github.com/twigphp/intl-extra/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -18105,7 +18105,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-27T12:23:36+00:00"
+            "time": "2023-02-08T07:44:55+00:00"
         },
         {
             "name": "twig/string-extra",
@@ -18181,23 +18181,22 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.15.4",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "3e059001d6d597dd50ea7c74dd2464b4adea48d3"
+                "reference": "a6e0510cc793912b451fd40ab983a1d28f611c15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3e059001d6d597dd50ea7c74dd2464b4adea48d3",
-                "reference": "3e059001d6d597dd50ea7c74dd2464b4adea48d3",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/a6e0510cc793912b451fd40ab983a1d28f611c15",
+                "reference": "a6e0510cc793912b451fd40ab983a1d28f611c15",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1.3",
+                "php": ">=7.2.5",
                 "symfony/polyfill-ctype": "^1.8",
-                "symfony/polyfill-mbstring": "^1.3",
-                "symfony/polyfill-php72": "^1.8"
+                "symfony/polyfill-mbstring": "^1.3"
             },
             "require-dev": {
                 "psr/container": "^1.0",
@@ -18206,13 +18205,10 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.15-dev"
+                    "dev-master": "3.5-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Twig_": "lib/"
-                },
                 "psr-4": {
                     "Twig\\": "src/"
                 }
@@ -18245,7 +18241,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v2.15.4"
+                "source": "https://github.com/twigphp/Twig/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -18257,7 +18253,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-27T12:26:20+00:00"
+            "time": "2023-02-08T07:49:20+00:00"
         },
         {
             "name": "willdurand/geocoder",

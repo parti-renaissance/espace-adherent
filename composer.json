@@ -128,7 +128,6 @@
         "symfony/templating": "^5.4",
         "symfony/thanks": "^1.2",
         "symfony/translation": "^5.4",
-        "symfony/twig-bridge": "^5.4",
         "symfony/twig-bundle": "^5.4",
         "symfony/validator": "^5.4",
         "symfony/workflow": "^5.4",
@@ -138,7 +137,6 @@
         "twig/extra-bundle": "^3.3",
         "twig/intl-extra": "^3.3",
         "twig/string-extra": "^3.3",
-        "twig/twig": "^2.13",
         "willdurand/geocoder-bundle": "^5.12"
     },
     "require-dev": {
