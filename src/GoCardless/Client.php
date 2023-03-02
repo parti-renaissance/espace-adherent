@@ -66,6 +66,7 @@ class Client implements ClientInterface
                 'currency' => 'EUR',
                 'name' => 'Cotisation élu',
                 'interval_unit' => 'monthly',
+                'day_of_month' => (int) date('d') >= 15 ? 1 : 15,
                 'links' => ['mandate' => $mandate->id],
                 'metadata' => $metadata,
             ],
