@@ -3,6 +3,7 @@
 namespace App\Controller\Renaissance\ElectedRepresentative\Contribution;
 
 use App\Form\Renaissance\ElectedRepresentative\Contribution\RevenueType;
+use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,8 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FillRevenueController extends AbstractContributionController
 {
-    public function __invoke(Request $request): Response
-    {
+    public function __invoke(
+        Request $request,
+        ElectedRepresentativeRepository $electedRepresentativeRepository
+    ): Response {
         $this->checkContributionsEnabled();
 
         $command = $this->getCommand($request);
@@ -23,6 +26,18 @@ class FillRevenueController extends AbstractContributionController
         }
 
         $this->processor->doFillRevenue($command);
+
+        $electedRepresentative = $electedRepresentativeRepository->findOneBy(['adherent' => $this->getUser()]);
+
+        if (!$electedRepresentative) {
+            throw $this->createAccessDeniedException(sprintf('No elected representative found for adherent UUID: %s', $this->getUser()->getUuidAsString()));
+        }
+
+        if ($electedRepresentative->getLastContributionDate()) {
+            $this->processor->doContributionAlreadyDone($command);
+
+            return $this->render('renaissance/elected_representative/contribution/contribution_already_done.html.twig');
+        }
 
         $form = $this
             ->createForm(RevenueType::class, $command)
