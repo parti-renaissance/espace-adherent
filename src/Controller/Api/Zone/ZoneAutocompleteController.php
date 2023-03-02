@@ -42,7 +42,11 @@ class ZoneAutocompleteController extends AbstractZoneAutocompleteController
         }
 
         return $this->json(
-            $repository->searchByFilterInsideManagedZones($this->getFilter($request), $managedZones ?? [], 10),
+            $repository->searchByFilterInsideManagedZones(
+                $this->getFilter($request),
+                $managedZones ?? [],
+                $request->query->has('noLimit') ? null : $request->query->getInt('itemsPerType', 10)
+            ),
             Response::HTTP_OK,
             [],
             ['groups' => ['zone_read']]
