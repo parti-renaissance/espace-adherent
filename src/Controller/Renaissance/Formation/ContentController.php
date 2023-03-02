@@ -3,7 +3,6 @@
 namespace App\Controller\Renaissance\Formation;
 
 use App\Entity\AdherentFormation\Formation;
-use App\Storage\FileRequestHandler;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
@@ -23,7 +22,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class ContentController extends AbstractController
 {
     public function __construct(
-        private readonly FileRequestHandler $fileRequestHandler,
         private readonly EntityManagerInterface $entityManager,
         private readonly FilesystemInterface $storage,
         private readonly LoggerInterface $logger
