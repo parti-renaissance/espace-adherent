@@ -6,7 +6,7 @@ Feature:
 
   Scenario Outline: As a user granted with local scope, I can get elected representatives in a zone I am manager of
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    And I send a "GET" request to "/api/v3/elected_representatives?scope=<scope>"
+    And I send a "GET" request to "/api/v3/elected_representatives?scope=<scope>&renaissanceMembership=adherent_re"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

@@ -3,7 +3,6 @@
 namespace App\Controller\Api\ElectedRepresentative;
 
 use App\ElectedRepresentative\Filter\ListFilter;
-use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -39,9 +38,6 @@ class ElectedRepresentativeListController extends AbstractController
             AbstractNormalizer::GROUPS => ['filter_write'],
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
         ]);
-
-        // Select only ER with associated adherent RE account
-        $filter->setRenaissanceMembership(RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE);
 
         $electedRepresentatives = $this->repository->searchByFilter(
             $filter,
