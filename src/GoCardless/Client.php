@@ -66,10 +66,22 @@ class Client implements ClientInterface
                 'currency' => 'EUR',
                 'name' => 'Cotisation élu',
                 'interval_unit' => 'monthly',
+                'day_of_month' => $this->getNextSubscriptionDay(),
                 'links' => ['mandate' => $mandate->id],
                 'metadata' => $metadata,
             ],
         ]);
+    }
+
+    /**
+     * A subscription can start minimum 6 days after the current date.
+     * The subscription should start at the 1st day of month or the 15th day of month.
+     */
+    private function getNextSubscriptionDay(): int
+    {
+        $nextPossibleDay = (new \DateTime('+6 days'))->format('d');
+
+        return (int) $nextPossibleDay <= 15 ? 15 : 1;
     }
 
     private function createClient(): GoCardlessClient
