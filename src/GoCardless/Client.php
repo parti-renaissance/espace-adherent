@@ -66,11 +66,18 @@ class Client implements ClientInterface
                 'currency' => 'EUR',
                 'name' => 'Cotisation élu',
                 'interval_unit' => 'monthly',
-                'day_of_month' => (int) date('d') >= 15 ? 1 : 15,
+                'day_of_month' => $this->getNextSubscriptionDay(),
                 'links' => ['mandate' => $mandate->id],
                 'metadata' => $metadata,
             ],
         ]);
+    }
+
+    private function getNextSubscriptionDay(): int
+    {
+        $nextPossibleDay = (new \DateTime('+6 days'))->format('d');
+
+        return (int) $nextPossibleDay <= 15 ? 15 : 1;
     }
 
     private function createClient(): GoCardlessClient
