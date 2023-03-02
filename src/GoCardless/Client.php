@@ -73,6 +73,10 @@ class Client implements ClientInterface
         ]);
     }
 
+    /**
+     * A subscription can start minimum 6 days after the current date.
+     * The subscription should start at the 1st day of month or the 15th day of month.
+     */
     private function getNextSubscriptionDay(): int
     {
         $nextPossibleDay = (new \DateTime('+6 days'))->format('d');
