@@ -138,6 +138,8 @@ class DonationAdmin extends AbstractAdmin
                 ->add('zone', ModelAutocompleteType::class, [
                     'property' => ['name', 'code'],
                     'label' => 'Destination',
+                    'help' => 'Sélectionnez un département pour un don local, laissez vide pour un don au siège.',
+                    'required' => false,
                     'btn_add' => false,
                     'callback' => [$this, 'prepareDestinationAutocompleteCallback'],
                 ])
