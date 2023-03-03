@@ -35,6 +35,8 @@ class CommitteeElection extends AbstractElectionEntity
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee", inversedBy="committeeElections")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     *
+     * @Groups({"committee_election:read"})
      */
     private $committee;
 

@@ -200,3 +200,109 @@ Feature:
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
             | referent@en-marche-dev.fr       | referent                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I can get a committee election
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "GET" request to "/api/v3/committee_elections/278fcb58-53b4-4798-a3be-e5bb92f7f0f2?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "committee": {
+                "uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3"
+            },
+            "candidacies_groups": [
+                {
+                    "uuid": "5d88db4a-9f3e-470e-8cc6-145dc6c7517a",
+                    "candidacies": [
+                        {
+                            "committee_membership": {
+                                "adherent": {
+                                    "gender": "female",
+                                    "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+                                    "first_name": "Gisele",
+                                    "last_name": "Berthoux"
+                                },
+                                "uuid": "@uuid@"
+                            },
+                            "uuid": "@uuid@"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "7f048f8e-0096-4cd2-b348-f19579223d6f",
+                    "candidacies": []
+                }
+            ],
+            "uuid": "278fcb58-53b4-4798-a3be-e5bb92f7f0f2"
+        }
+        """
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I cannot create a candidacies group on a past or started committee election
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/committee_candidacies_groups?scope=<scope>" with body:
+        """
+        {
+          "election": "f86ee969-5eca-4666-bcd4-7f7388372e0b"
+        }
+        """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON node "detail" should be equal to "Vous ne pouvez pas créer de liste sur une élection en cours"
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I cannot create a candidacies group on a past or started committee election
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/committee_candidacies_groups?scope=<scope>" with body:
+        """
+        {
+          "election": "278fcb58-53b4-4798-a3be-e5bb92f7f0f2"
+        }
+        """
+        Then the response status code should be 201
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "uuid": "@uuid@",
+            "election": {
+                "uuid": "278fcb58-53b4-4798-a3be-e5bb92f7f0f2"
+            },
+            "candidacies": []
+        }
+        """
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a grand user with local scope, I cannot delete a non empty list
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "DELETE" request to "/api/v3/committee_candidacies_groups/5d88db4a-9f3e-470e-8cc6-145dc6c7517a?scope=<scope>"
+        And the response status code should be 403
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a grand user with local scope, I cannot delete a non empty list
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "DELETE" request to "/api/v3/committee_candidacies_groups/7f048f8e-0096-4cd2-b348-f19579223d6f?scope=<scope>"
+        And the response status code should be 204
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
