@@ -1395,6 +1395,39 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
+    public function countInZones(array $zones, bool $adherentRenaissance, bool $sympathizerRenaissance): int
+    {
+        if (!$zones) {
+            return 0;
+        }
+
+        $qb = $this->createQueryBuilder('adherent')
+            ->select('COUNT(1)')
+            ->where('adherent.source = :source')
+            ->andWhere('adherent.status = :status')
+            ->setParameters([
+                'source' => MembershipSourceEnum::RENAISSANCE,
+                'status' => Adherent::ENABLED,
+            ])
+        ;
+
+        if ($adherentRenaissance ^ $sympathizerRenaissance) {
+            $qb->andWhere(sprintf('adherent.lastMembershipDonation %s NULL', $adherentRenaissance ? 'IS NOT' : 'IS'));
+        }
+
+        $this->withGeoZones(
+            $zones,
+            $qb,
+            'adherent',
+            Adherent::class,
+            'a2',
+            'zones',
+            'z2'
+        );
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
     private function withAdherentRole(QueryBuilder $qb, string $alias, array $roles): void
     {
         $where = $qb->expr()->orX();
