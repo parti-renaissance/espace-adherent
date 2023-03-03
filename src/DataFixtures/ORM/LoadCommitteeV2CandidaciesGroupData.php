@@ -17,6 +17,8 @@ class LoadCommitteeV2CandidaciesGroupData extends Fixture implements DependentFi
     public const CANDIDACIES_GROUP_1_UUID = '5d88db4a-9f3e-470e-8cc6-145dc6c7517a';
     public const CANDIDACIES_GROUP_2_UUID = '7f048f8e-0096-4cd2-b348-f19579223d6f';
 
+    public const CANDIDACY_1_UUID = '50dd9672-69ca-46e1-9353-c2e0d6c03333';
+
     public function load(ObjectManager $manager)
     {
         /** @var Committee $commttee */
@@ -26,7 +28,7 @@ class LoadCommitteeV2CandidaciesGroupData extends Fixture implements DependentFi
         $adherent5 = $this->getReference('adherent-5');
 
         $election->addCandidaciesGroups($list = new CommitteeCandidaciesGroup(Uuid::fromString(self::CANDIDACIES_GROUP_1_UUID)));
-        $list->addCandidacy($candidate = new CommitteeCandidacy($election, Genders::FEMALE));
+        $list->addCandidacy($candidate = new CommitteeCandidacy($election, Genders::FEMALE, Uuid::fromString(self::CANDIDACY_1_UUID)));
 
         $candidate->setCommitteeMembership($adherent5->getMembershipFor($committee));
 

@@ -313,3 +313,32 @@ Feature:
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
             | referent@en-marche-dev.fr       | referent                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I can get a candidate information
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "GET" request to "/api/v3/committee_candidacies/50dd9672-69ca-46e1-9353-c2e0d6c03333?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "committee_membership": {
+                "adherent": {
+                    "gender": "female",
+                    "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+                    "first_name": "Gisele",
+                    "last_name": "Berthoux"
+                },
+                "uuid": "@uuid@"
+            },
+            "candidacies_group": {
+                "uuid": "5d88db4a-9f3e-470e-8cc6-145dc6c7517a"
+            },
+            "uuid": "50dd9672-69ca-46e1-9353-c2e0d6c03333"
+        }
+        """
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

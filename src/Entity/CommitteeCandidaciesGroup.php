@@ -69,7 +69,7 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
      *     }
      * )
      *
-     * @Groups({"committee_election:read", "committee_candidacies_group:read"})
+     * @Groups({"committee_election:read", "committee_candidacies_group:read", "committee_candidacy:read"})
      */
     protected UuidInterface $uuid;
 

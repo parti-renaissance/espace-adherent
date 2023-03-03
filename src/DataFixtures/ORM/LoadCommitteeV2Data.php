@@ -44,6 +44,9 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
         $object->setCurrentElection(new CommitteeElection($this->getReference('designation-committee-02'), Uuid::fromString(self::COMMITTEE_ELECTION_1_UUID)));
         $object->addElection(new CommitteeElection($this->getReference('designation-committee-03'), Uuid::fromString(self::COMMITTEE_ELECTION_2_UUID)));
 
+        $adherentRe4 = $this->getReference('renaissance-user-4');
+        $manager->persist($adherentRe4->followCommittee($object));
+
         $adherent5 = $this->getReference('adherent-5');
         $manager->persist($adherent5->followCommittee($object));
 

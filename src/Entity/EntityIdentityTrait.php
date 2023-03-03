@@ -99,6 +99,7 @@ trait EntityIdentityTrait
      *     "committee:list",
      *     "committee_election:read",
      *     "committee_candidacies_group:read",
+     *     "committee_candidacy:read",
      *     "general_meeting_report_list_read",
      *     "general_meeting_report_read",
      *     "document_read",

@@ -49,7 +49,7 @@ class CommitteeMembership implements UuidEntityInterface
      * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="memberships")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Groups({"export", "api_candidacy_read", "committee_election:read"})
+     * @Groups({"export", "api_candidacy_read", "committee_candidacy:read", "committee_election:read"})
      */
     private $adherent;
 

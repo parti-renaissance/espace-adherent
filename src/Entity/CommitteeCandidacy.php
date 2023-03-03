@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
@@ -14,6 +15,41 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     routePrefix="/v3",
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"committee_candidacy:read"},
+ *         },
+ *         "denormalization_context": {
+ *             "groups": {"committee_candidacy:write"},
+ *         },
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')",
+ *         "validation_groups": {"api_committee_validation"},
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/committee_candidacies/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *         },
+ *         "put": {
+ *             "path": "/committee_candidacies/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and not object.isVotePeriodStarted()",
+ *         },
+ *         "delete": {
+ *             "path": "/committee_candidacies/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and not object.isVotePeriodStarted()",
+ *         },
+ *     },
+ *     collectionOperations={
+ *         "post": {
+ *             "path": "/committee_candidacies",
+ *         }
+ *     }
+ * )
+ *
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeCandidacyRepository")
  *
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
@@ -34,7 +70,9 @@ class CommitteeCandidacy extends BaseCandidacy
      * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeMembership", inversedBy="committeeCandidacies")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
-     * @Groups({"committee_election:read"})
+     * @Assert\NotBlank(message="Cet adherent n'est pas membre du comité.", groups={"api_committee_validation"})
+     *
+     * @Groups({"committee_candidacy:read", "committee_election:read"})
      */
     private $committeeMembership;
 
@@ -58,14 +96,20 @@ class CommitteeCandidacy extends BaseCandidacy
      * @var CommitteeCandidaciesGroup|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeCandidaciesGroup", inversedBy="candidacies", cascade={"persist"})
+     *
+     * @Assert\NotBlank(groups={"api_committee_validation"})
+     *
+     * @Groups({"committee_candidacy:write", "committee_candidacy:read"})
      */
     protected $candidaciesGroup;
 
-    public function __construct(CommitteeElection $election, string $gender = null, UuidInterface $uuid = null)
+    public function __construct(CommitteeElection $election = null, string $gender = null, UuidInterface $uuid = null)
     {
         parent::__construct($gender, $uuid);
 
-        $this->type = $election->getDesignationType();
+        if ($election) {
+            $this->type = $election->getDesignationType();
+        }
 
         if (DesignationTypeEnum::COMMITTEE_ADHERENT === $this->type) {
             $this->status = CandidacyInterface::STATUS_CONFIRMED;
@@ -109,6 +153,11 @@ class CommitteeCandidacy extends BaseCandidacy
         return $this->type;
     }
 
+    public function setType(string $type): void
+    {
+        $this->type = $type;
+    }
+
     public function getAdherent(): ?Adherent
     {
         return $this->committeeMembership->getAdherent();
@@ -127,5 +176,10 @@ class CommitteeCandidacy extends BaseCandidacy
     protected function createCandidaciesGroup(): BaseCandidaciesGroup
     {
         return new CommitteeCandidaciesGroup();
+    }
+
+    public function isVotePeriodStarted(): bool
+    {
+        return $this->committeeElection->getDesignation()->isVotePeriodStarted();
     }
 }
