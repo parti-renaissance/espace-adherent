@@ -4,89 +4,6 @@ Feature:
   As a referent
   I should be able to access adherents API data
 
-  Scenario: As a non logged-in user I can not access the adherents count information
-    When I am on "/api/statistics/adherents/count"
-    Then the response status code should be 401
-
-  Scenario: As an adherent I can not access the adherents count information
-    When I am logged as "jacques.picard@en-marche.fr"
-    And I am on "/api/statistics/adherents/count"
-    Then the response status code should be 401
-
-  Scenario: As a referent I can access the adherents count information
-    Given I send a "POST" request to "/oauth/v2/token" with parameters:
-      | key           | value                                        |
-      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
-      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
-      | grant_type    | client_credentials                           |
-      | scope         | read:stats                                   |
-    And I add the access token to the Authorization header
-    When I send a "GET" request to "/api/statistics/adherents/count?referent=referent@en-marche-dev.fr"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "female":24,
-      "male":38,
-      "total":62
-    }
-    """
-
-  Scenario: As a non logged-in user I can not access the managed by referent adherents count information
-    When I am on "/api/statistics/adherents/count-by-referent-area"
-    Then the response status code should be 401
-
-  Scenario: As an adherent I can not access the managed by referent adherents count information
-    When I am logged as "jacques.picard@en-marche.fr"
-    And I am on "/api/statistics/adherents/count-by-referent-area"
-    Then the response status code should be 401
-
-  Scenario: As a referent I can access the managed by referent adherents count information
-    Given I freeze the clock to "2018-04-17"
-    Given I send a "POST" request to "/oauth/v2/token" with parameters:
-      | key           | value                                        |
-      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
-      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
-      | grant_type    | client_credentials                           |
-      | scope         | read:stats                                   |
-    And I add the access token to the Authorization header
-    When I send a "GET" request to "/api/statistics/adherents/count-by-referent-area?referent=referent-75-77@en-marche-dev.fr"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "female":3,
-      "male":7,
-      "total":10,
-      "adherents": [
-          {"date": "2018-04", "total": 9},
-          {"date": "2018-03", "total": 9},
-          {"date": "2018-02", "total": 9},
-          {"date": "2018-01", "total": 9},
-          {"date": "2017-12", "total": 8},
-          {"date": "2017-11", "total": 8}
-      ],
-      "committee_members": [
-          {"date": "2018-04", "count": 3},
-          {"date": "2018-03", "count": 3},
-          {"date": "2018-02", "count": 2},
-          {"date": "2018-01", "count": 2},
-          {"date": "2017-12", "count": 2},
-          {"date": "2017-11", "count": 2}
-      ],
-      "email_subscriptions": [
-          {"date": "2018-04", "subscribed_emails_local_host": 0, "subscribed_emails_referents": 0},
-          {"date": "2018-03", "subscribed_emails_local_host": 0, "subscribed_emails_referents": 0},
-          {"date": "2018-02", "subscribed_emails_local_host": 4, "subscribed_emails_referents": 0},
-          {"date": "2018-01", "subscribed_emails_local_host": 3, "subscribed_emails_referents": 0},
-          {"date": "2017-12", "subscribed_emails_local_host": 2, "subscribed_emails_referents": 0},
-          {"date": "2017-11", "subscribed_emails_local_host": 1, "subscribed_emails_referents": 0}
-      ]
-    }
-    """
-
   Scenario: As an anonymous user I cannot access to my information
     And I am on "/api/users/me"
     Then the response status code should be 401
@@ -825,3 +742,27 @@ Feature:
       | user                                    | scope                                           |
       | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
       | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
+
+    Scenario: I can count all adherent RE in my zone
+        Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/adherents/count?scope=referent"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+        """
+        {
+            "adherent": 5,
+            "sympathizer": 0
+        }
+        """
+        When I send a "POST" request to "/api/v3/adherents/count?scope=referent" with body:
+        """
+        ["e3efe6fd-906e-11eb-a875-0242ac150002"]
+        """
+        Then the response status code should be 200
+        And the JSON should be equal to:
+        """
+        {
+            "adherent": 1,
+            "sympathizer": 0
+        }
+        """
