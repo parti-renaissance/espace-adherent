@@ -3,6 +3,7 @@
 namespace App\Entity\VotingPlatform\Designation;
 
 use App\Entity\AlgoliaIndexedEntityInterface;
+use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\ImageTrait;
 use App\ValueObject\Genders;
@@ -19,22 +20,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntityInterface
 {
+    use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use ImageTrait;
-
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
-    private $id;
-
-    /**
-     * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid", unique=true)
-     */
-    protected $uuid;
 
     /**
      * @var string
@@ -104,16 +92,6 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
         $this->gender = $gender;
 
         $this->invitations = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getUuid(): UuidInterface
-    {
-        return $this->uuid;
     }
 
     public function getGender(): ?string

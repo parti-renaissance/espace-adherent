@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
@@ -11,6 +10,7 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -33,6 +33,8 @@ class CommitteeCandidacy extends BaseCandidacy
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeMembership", inversedBy="committeeCandidacies")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     *
+     * @Groups({"committee_election:read"})
      */
     private $committeeMembership;
 
