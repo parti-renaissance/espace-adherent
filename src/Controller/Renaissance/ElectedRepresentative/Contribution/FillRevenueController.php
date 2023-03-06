@@ -17,8 +17,6 @@ class FillRevenueController extends AbstractContributionController
         Request $request,
         ElectedRepresentativeRepository $electedRepresentativeRepository
     ): Response {
-        $this->checkContributionsEnabled();
-
         $command = $this->getCommand($request);
 
         if (!$this->processor->canFillRevenue($command)) {

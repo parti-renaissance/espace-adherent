@@ -15,8 +15,6 @@ class FillInformationsController extends AbstractContributionController
 {
     public function __invoke(Request $request, ContributionRequestHandler $contributionRequestHandler): Response
     {
-        $this->checkContributionsEnabled();
-
         $command = $this->getCommand();
 
         if (!$this->processor->canFillContributionInformations($command)) {

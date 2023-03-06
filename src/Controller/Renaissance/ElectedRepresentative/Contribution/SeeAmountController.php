@@ -13,8 +13,6 @@ class SeeAmountController extends AbstractContributionController
 {
     public function __invoke(Request $request): Response
     {
-        $this->checkContributionsEnabled();
-
         $command = $this->getCommand();
 
         if (!$this->processor->canSeeContributionAmount($command)) {

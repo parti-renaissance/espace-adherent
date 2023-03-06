@@ -2,7 +2,6 @@
 
 namespace App\Controller\Renaissance\ElectedRepresentative\Contribution;
 
-use App\Controller\CanaryControllerTrait;
 use App\ElectedRepresentative\Contribution\ContributionRequest;
 use App\ElectedRepresentative\Contribution\ContributionRequestProcessor;
 use App\ElectedRepresentative\Contribution\ContributionRequestStorage;
@@ -12,17 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractContributionController extends AbstractController
 {
-    use CanaryControllerTrait;
-
     public function __construct(
         protected readonly ContributionRequestStorage $storage,
         protected readonly ContributionRequestProcessor $processor
     ) {
-    }
-
-    public function checkContributionsEnabled(): void
-    {
-        $this->disableInProduction();
     }
 
     protected function getCommand(Request $request = null): ContributionRequest
