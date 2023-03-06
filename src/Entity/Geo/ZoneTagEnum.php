@@ -5,4 +5,5 @@ namespace App\Entity\Geo;
 class ZoneTagEnum
 {
     public const DEPARTMENT_BOROUGH_LIST = 'dpt_bor_list';
+    public const CITY_COMMUNITY_MULTI_DEPARTMENT = 'cc_multi_dpt';
 }
