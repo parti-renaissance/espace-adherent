@@ -1184,10 +1184,10 @@
   resolved "https://registry.yarnpkg.com/@google/markerclusterer/-/markerclusterer-2.0.9.tgz#04e50e1bd0ea90e7c21ae487e5890180ce9a5f83"
   integrity sha512-MMOvRRZTe8MtfLmr+3GmpnvbQPvdta7DhLgeapm3NpdBGe7sr8Gt3TvR/2ckBHttzjKz/dGd4v+GPmM34cC0Sg==
 
-"@headlessui/react@^1.7.12":
-  version "1.7.12"
-  resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.7.12.tgz#9ab2baa3c4f632782631e00937f9531a34033619"
-  integrity sha512-FhSx5V+Qp0GvbTpaxyS+ymGDDNntCacClWsk/d8Upbr19g3AsPbjfPk4+m2CgJGcuCB5Dz7LpUIOAbvQTyjL2g==
+"@headlessui/react@^1.7.13":
+  version "1.7.13"
+  resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.7.13.tgz#fd150b394954e9f1d86ed2340cffd1217d6e7628"
+  integrity sha512-9n+EQKRtD9266xIHXdY5MfiXPDfYwl7zBM7KOx2Ae3Gdgxy8QML1FkCMjq6AsOf0l6N9uvI4HcFtuFlenaldKg==
   dependencies:
     client-only "^0.0.1"
 
