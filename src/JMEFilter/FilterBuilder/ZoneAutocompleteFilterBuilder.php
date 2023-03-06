@@ -29,6 +29,7 @@ class ZoneAutocompleteFilterBuilder implements FilterBuilderInterface
                     Zone::COUNTRY,
                     Zone::DISTRICT,
                     Zone::FOREIGN_DISTRICT,
+                    Zone::CUSTOM,
                 ] : [],
             ])
             ->setMultiple(FeatureEnum::MESSAGES !== $feature)
