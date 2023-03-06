@@ -75,10 +75,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(
  *     name="committees",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(columns={"canonical_name"}),
- *         @ORM\UniqueConstraint(columns={"slug"}),
- *     },
  *     indexes={
  *         @ORM\Index(columns={"status"}),
  *         @ORM\Index(columns={"version"}),
