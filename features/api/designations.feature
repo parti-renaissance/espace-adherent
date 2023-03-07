@@ -49,7 +49,6 @@ Feature:
     {
       "custom_title": "Élection de comité local",
       "type": "committee_supervisor",
-      "election_creation_date": "+10 days",
       "vote_start_date": "+12 days",
       "vote_end_date": "+17 days",
       "description": "lorem ipsum..."
@@ -70,7 +69,6 @@ Feature:
     {
       "custom_title": "Élection de comité local",
       "type": "committee_supervisor",
-      "election_creation_date": "+10 days",
       "vote_start_date": "+12 days",
       "vote_end_date": "+17 days",
       "description": "lorem ipsum...",
@@ -127,7 +125,6 @@ Feature:
     {
       "custom_title": "mise à jour de l'Élection de comité local",
       "type": "committee_supervisor",
-      "election_creation_date": "+10 days",
       "vote_start_date": "+12 days",
       "vote_end_date": "+17 days",
       "description": "lorem ipsum...",

@@ -34,6 +34,15 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
             }
         }
 
+        $voterCreationDate = $designation->getVoteStartDate()
+            ? (clone $designation->getVoteStartDate())->modify('-15 days')->setTime(0, 0, 0)
+            : new \DateTime()
+        ;
+
+        if ($designation->electionCreationDate !== $voterCreationDate) {
+            $designation->electionCreationDate = $voterCreationDate;
+        }
+
         return $designation;
     }
 
