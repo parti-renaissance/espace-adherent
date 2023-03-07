@@ -23,7 +23,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *                 "groups": {"committee_election:read"},
  *             },
  *         },
- *     }
+ *     },
+ *     collectionOperations={}
  * )
  *
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeElectionRepository")

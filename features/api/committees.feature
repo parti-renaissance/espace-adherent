@@ -261,7 +261,7 @@ Feature:
             | referent@en-marche-dev.fr       | referent                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-    Scenario Outline: As a user granted with local scope, I cannot create a candidacies group on a past or started committee election
+    Scenario Outline: As a user granted with local scope, I can create a candidacies group on committee election
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "POST" request to "/api/v3/committee_candidacies_groups?scope=<scope>" with body:
         """
@@ -297,7 +297,7 @@ Feature:
             | referent@en-marche-dev.fr       | referent                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-    Scenario Outline: As a grand user with local scope, I cannot delete a non empty list
+    Scenario Outline: As a grand user with local scope, I can delete an empty list
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         And I send a "DELETE" request to "/api/v3/committee_candidacies_groups/7f048f8e-0096-4cd2-b348-f19579223d6f?scope=<scope>"
         And the response status code should be 204
