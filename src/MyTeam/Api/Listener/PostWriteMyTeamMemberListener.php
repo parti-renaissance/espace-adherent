@@ -56,6 +56,9 @@ class PostWriteMyTeamMemberListener implements EventSubscriberInterface
         }
 
         // modification
-        $this->delegatedAccessManager->updateDelegatedAccessForMember($member);
+        $this->delegatedAccessManager->updateDelegatedAccessForMember(
+            $member,
+            $request->attributes->get('previous_data')
+        );
     }
 }
