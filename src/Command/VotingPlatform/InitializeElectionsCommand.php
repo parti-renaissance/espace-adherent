@@ -53,7 +53,7 @@ class InitializeElectionsCommand extends Command
         $this->io->progressStart();
 
         foreach ($designations as $designation) {
-            if ($designation->isCommitteeType()) {
+            if ($designation->isCommitteeTypes()) {
                 $this->configureCommitteeElections($designation);
             } elseif ($designation->isCopolType()) {
                 $this->configureTerritorialCouncilElections($designation);

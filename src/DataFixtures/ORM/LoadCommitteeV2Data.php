@@ -24,7 +24,7 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
             'Comité des 3 communes',
             'Un petit comité avec seulement 3 communes',
         ));
-
+        $object->approved();
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92002'));
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92004'));
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92007'));

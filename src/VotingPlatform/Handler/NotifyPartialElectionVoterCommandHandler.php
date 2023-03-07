@@ -53,7 +53,7 @@ class NotifyPartialElectionVoterCommandHandler implements MessageHandlerInterfac
 
         $this->mailerProducer->reconnect();
 
-        if ($designation->isCommitteeType()) {
+        if ($designation->isCommitteeTypes()) {
             $memberships = $this->committeeMembershipRepository->findVotingForElectionMemberships($committee, $designation, false);
 
             if ($memberships) {

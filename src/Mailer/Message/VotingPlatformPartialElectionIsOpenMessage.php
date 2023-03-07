@@ -24,7 +24,7 @@ final class VotingPlatformPartialElectionIsOpenMessage extends AbstractVotingPla
             'vote_start_date' => static::formatDate($designation->getVoteStartDate(), 'EEEE d MMMM y, HH\'h\'mm'),
             'vote_end_date' => static::formatDate($designation->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
             'election_type' => $designation->getDenomination(false, true).'s',
-            'mail_subject' => $designation->isCommitteeType() ? 'Candidatez dans votre comité !' : 'Candidatez dans votre Conseil territorial !',
+            'mail_subject' => $designation->isCommitteeTypes() ? 'Candidatez dans votre comité !' : 'Candidatez dans votre Conseil territorial !',
             'message_content' => $messageContent,
             'page_url' => $url,
         ];
@@ -36,7 +36,7 @@ final class VotingPlatformPartialElectionIsOpenMessage extends AbstractVotingPla
             sprintf(
                 '[%s] %s',
                 self::getMailSubjectPrefix($designation, true),
-                $designation->isCommitteeType() ? 'Candidatez dans votre comité !' : 'Candidatez dans votre Conseil territorial !'
+                $designation->isCommitteeTypes() ? 'Candidatez dans votre comité !' : 'Candidatez dans votre Conseil territorial !'
             ),
             $params,
             [],

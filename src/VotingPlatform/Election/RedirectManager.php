@@ -18,7 +18,7 @@ class RedirectManager
     {
         $designation = $election->getDesignation();
 
-        if ($designation->isCommitteeType()) {
+        if ($designation->isCommitteeTypes()) {
             return $this->urlGenerator->generate(
                 'app_committee_show',
                 ['slug' => $election->getElectionEntity()->getCommittee()->getSlug()]
