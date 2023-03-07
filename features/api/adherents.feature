@@ -750,7 +750,7 @@ Feature:
         And the JSON should be equal to:
         """
         {
-            "adherent": 5,
+            "adherent": 6,
             "sympathizer": 0
         }
         """
@@ -762,7 +762,7 @@ Feature:
         And the JSON should be equal to:
         """
         {
-            "adherent": 1,
+            "adherent": 2,
             "sympathizer": 0
         }
         """

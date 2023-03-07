@@ -28,7 +28,7 @@ class CommitteeCandidacyDenormalizer implements DenormalizerInterface, Denormali
         /** @var CommitteeElection $election */
         $election = $candidacy->getCandidaciesGroup()?->getElection();
 
-        if ($election && $adherent->isRenaissanceAdherent() && $committeeMembership = $adherent->getMembershipFor($election->getCommittee())) {
+        if ($election && $adherent->isRenaissanceAdherent() && ($committeeMembership = $adherent->getMembershipFor($election->getCommittee()))) {
             if ($candidacy->getCommitteeMembership() !== $committeeMembership) {
                 $candidacy->setCommitteeMembership($committeeMembership);
             }
