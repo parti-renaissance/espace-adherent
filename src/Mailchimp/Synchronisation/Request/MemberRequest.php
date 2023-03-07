@@ -43,6 +43,17 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_CERTIFIED = 'CERTIFIED';
     public const MERGE_FIELD_LAST_LOGIN_GROUP = 'LOGIN_GRP';
 
+    public const ZONE_MERGE_FIELD_BY_ZONE_TYPE = [
+        self::MERGE_FIELD_ZONE_BOROUGH => Zone::BOROUGH,
+        self::MERGE_FIELD_ZONE_CITY => Zone::CITY,
+        self::MERGE_FIELD_ZONE_DISTRICT => Zone::DISTRICT,
+        self::MERGE_FIELD_ZONE_FOREIGN_DISTRICT => Zone::FOREIGN_DISTRICT,
+        self::MERGE_FIELD_ZONE_CANTON => Zone::CANTON,
+        self::MERGE_FIELD_ZONE_DEPARTMENT => Zone::DEPARTMENT,
+        self::MERGE_FIELD_ZONE_REGION => Zone::REGION,
+        self::MERGE_FIELD_ZONE_COUNTRY => Zone::COUNTRY,
+    ];
+
     private $memberIdentifier;
 
     private $emailAddress;

@@ -9,6 +9,7 @@ use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ApplicationRequest\VolunteerRequest;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Geo\Zone;
+use App\Entity\Geo\ZoneTagEnum;
 use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Entity\SubscriptionType;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
@@ -21,7 +22,6 @@ use Doctrine\Common\Collections\Collection;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use Symfony\Component\String\ByteString;
 
 class RequestBuilder implements LoggerAwareInterface
 {
@@ -56,14 +56,10 @@ class RequestBuilder implements LoggerAwareInterface
     private $isSubscribeRequest = true;
     private $referentTagsCodes = [];
 
-    private ?Zone $zoneBorough = null;
-    private ?Zone $zoneCity = null;
-    private ?Zone $zoneCanton = null;
-    private ?Zone $zoneDistrict = null;
-    private ?Zone $zoneForeignDistrict = null;
-    private ?Zone $zoneDepartment = null;
-    private ?Zone $zoneRegion = null;
-    private ?Zone $zoneCountry = null;
+    /** @var Zone[] */
+    private array $subZones = [];
+    /** @var Zone[] */
+    private array $zones = [];
 
     private $teamCode;
 
@@ -353,17 +349,11 @@ class RequestBuilder implements LoggerAwareInterface
             return;
         }
 
-        $fieldName = (new ByteString('zone_'.$zone->getType()))->camel();
-
-        if (!property_exists($this, $fieldName)) {
-            return;
+        if ($zone->hasTag(ZoneTagEnum::SUB_ZONE)) {
+            $this->subZones[] = $zone;
+        } elseif (!isset($this->zones[$zone->getType()])) {
+            $this->zones[$zone->getType()] = $zone;
         }
-
-        if (null !== $this->$fieldName) {
-            return;
-        }
-
-        $this->$fieldName = $zone;
     }
 
     private function setZoneCode(Zone $zone): void
@@ -504,14 +494,24 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM] = (string) $this->takenForCity;
         }
 
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_BOROUGH] = $this->zoneBorough ? (string) $this->zoneBorough : '';
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CANTON] = $this->zoneCanton ? (string) $this->zoneCanton : '';
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CITY] = $this->zoneCity ? (string) $this->zoneCity : '';
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_DISTRICT] = $this->zoneDistrict ? (string) $this->zoneDistrict : '';
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_FOREIGN_DISTRICT] = $this->zoneForeignDistrict ? (string) $this->zoneForeignDistrict : '';
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_DEPARTMENT] = $this->zoneDepartment ? (string) $this->zoneDepartment : '';
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_REGION] = $this->zoneRegion ? (string) $this->zoneRegion : '';
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_COUNTRY] = $this->zoneCountry ? (string) $this->zoneCountry : '';
+        // Fill Zone merge field
+        foreach (MemberRequest::ZONE_MERGE_FIELD_BY_ZONE_TYPE as $mergeField => $zoneType) {
+            $mergeFields[$mergeField] = (string) ($this->zones[$zoneType] ?? null);
+        }
+
+        // Complete Zone merge field with sub zones (zone uses Zone tag `sub_zone`)
+        foreach ($this->subZones as $zone) {
+            $mergeField = array_search($zone->getType(), MemberRequest::ZONE_MERGE_FIELD_BY_ZONE_TYPE);
+            if (!$mergeField) {
+                continue;
+            }
+
+            if (empty($mergeFields[$mergeField])) {
+                $mergeFields[$mergeField] = (string) $zone;
+            } else {
+                $mergeFields[$mergeField] .= sprintf(' (%s)', $zone->getCode());
+            }
+        }
 
         if ($this->codeCanton) {
             $mergeFields[MemberRequest::MERGE_FIELD_CODE_CANTON] = $this->codeCanton;
