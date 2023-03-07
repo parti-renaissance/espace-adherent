@@ -135,6 +135,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *     "phoning_campaign_replies_list",
      *     "survey_replies_list",
      *     "adherent_change_diff",
+     *     "committee_election:read",
      * })
      * @Assert\NotBlank(message="common.gender.not_blank", groups={"adhesion_complete_profile"})
      * @Assert\Choice(

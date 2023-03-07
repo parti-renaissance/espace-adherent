@@ -14,6 +14,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
 {
     public const DESIGNATION_COMMITTEE_1_UUID = '7fb0693e-1dad-44c6-984b-19e99603ea2c';
     public const DESIGNATION_COMMITTEE_2_UUID = '6c7ca0c7-d656-47c3-a345-170fb43ffd1a';
+    public const DESIGNATION_COMMITTEE_3_UUID = '9ab307ac-100a-4a3a-819a-bee2b800e3d4';
 
     public function load(ObjectManager $manager)
     {
@@ -231,6 +232,21 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->markAsLimited();
 
         $this->setReference('designation-committee-02', $designation);
+        $manager->persist($designation);
+
+        $designation = new Designation(null, Uuid::fromString(self::DESIGNATION_COMMITTEE_3_UUID));
+        $designation->customTitle = 'Election passée';
+        $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
+        $designation->setCandidacyStartDate(new \DateTime('-2 months'));
+        $designation->setCandidacyEndDate(new \DateTime('-1 month'));
+        $designation->setVoteStartDate(new \DateTime('-1 month'));
+        $designation->setVoteEndDate(new \DateTime('-25 days'));
+        $designation->electionCreationDate = new \DateTime('-1 months');
+        $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+        $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeV2Data::COMMITTEE_2_UUID));
+        $designation->markAsLimited();
+
+        $this->setReference('designation-committee-03', $designation);
         $manager->persist($designation);
 
         $manager->flush();

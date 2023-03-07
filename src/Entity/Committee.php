@@ -286,6 +286,9 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         return $this->postAddress;
     }
 
+    /**
+     * @Groups({"committee:read"})
+     */
     public function getCommitteeElection(): ?CommitteeElection
     {
         return $this->getCurrentElection();
