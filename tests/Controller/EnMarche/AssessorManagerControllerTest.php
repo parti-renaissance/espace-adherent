@@ -580,7 +580,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
 
         PHPUnitHelper::assertArraySubset(
             [
-                15,
+                '15',
                 'Salle Polyvalente De Wazemmes 59350_0113',
                 'Rue De L\'Abbé Aerts, 59000,59100 Lille FR',
                 'Coptère',
@@ -703,7 +703,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
                 '04/02/1992',
                 'Paris',
                 '70 Rue Saint-Martin',
-                93008,
+                '93008',
                 'Paris',
                 '93008_0005',
                 'Bobigny',
