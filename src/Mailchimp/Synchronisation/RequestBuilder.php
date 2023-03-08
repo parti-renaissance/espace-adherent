@@ -351,7 +351,7 @@ class RequestBuilder implements LoggerAwareInterface
 
         if ($zone->hasTag(ZoneTagEnum::SUB_ZONE)) {
             if (!isset($this->subZones[$zone->getType()])) {
-                $this->subZones[] = $zone;
+                $this->subZones[$zone->getType()] = $zone;
             }
 
             return;
