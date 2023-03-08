@@ -157,7 +157,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Groups({"designation_read", "designation_write"})
+     * @Groups({"designation_read"})
      */
     public ?\DateTime $electionCreationDate = null;
 
