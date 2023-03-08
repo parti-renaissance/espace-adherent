@@ -27,7 +27,7 @@ class DesignationGroupsContextBuilder implements SerializerContextBuilderInterfa
         /** @var Designation $designation */
         $designation = $request->attributes->get('data');
 
-        if ($designation->isVotePeriodStarted()) {
+        if ($designation->isVotePeriodStarted() || $designation->electionCreationDate < new \DateTime()) {
             array_splice($context['groups'], array_search('designation_write', $context['groups'], true), 1);
             $context['groups'][] = 'designation_write_limited';
         }
