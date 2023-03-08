@@ -67,8 +67,8 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
 
         return $this->buildZoneCondition(
             MemberRequest::getMergeFieldFromZone($zone),
-            sprintf('(%s)', $zone->getCode()),
-            'ends'
+            sprintf(' (%s)', $zone->getCode()),
+            'contains'
         );
     }
 
