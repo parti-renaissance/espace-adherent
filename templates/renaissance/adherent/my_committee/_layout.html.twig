@@ -1,0 +1,6 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% block page_title 'Comité local' %}
+
+{% set committee_membership = app.user.getCommitteeV2Membership() %}
+{% set my_committee = committee_membership ? committee_membership.getCommittee() : null %}

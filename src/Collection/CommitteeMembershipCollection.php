@@ -4,6 +4,7 @@ namespace App\Collection;
 
 use App\Entity\CommitteeMembership;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 class CommitteeMembershipCollection extends ArrayCollection
 {
@@ -114,6 +115,16 @@ class CommitteeMembershipCollection extends ArrayCollection
         }
 
         return null;
+    }
+
+    /**
+     * @return CommitteeMembership[]
+     */
+    public function getCommitteeV2Memberships(): array
+    {
+        return $this->matching(
+            Criteria::create()->where(Criteria::expr()->eq('committee.version', 2))
+        )->toArray();
     }
 
     public function getCommitteeCandidacyMembership(bool $confirmed = null): ?CommitteeMembership

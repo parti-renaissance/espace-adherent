@@ -1,0 +1,26 @@
+{% extends 'renaissance/adherent/my_committee/_layout.html.twig' %}
+
+{% block content_right_side %}
+    <section class="space-y-4 md:space-y-6">
+        <h1 class="text-3xl font-bold leading-10 text-gray-900">Mon comité local</h1>
+
+        {% if my_committee %}
+            <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden flex-col">
+                <h3 class="text-lg font-medium leading-6 text-gray-900 uppercase tracking-wider">{{ my_committee.getName() }}</h3>
+                <p class="mt-4 text-base leading-6 text-gray-500">{{ my_committee.getDescription() }}</p>
+                <p class="mt-5 flex justify-between">
+                    <span class="text-sm">
+                        Créé le <time datetime="{{ my_committee.getCreatedAt()|date('Y-m-d') }}" class="text-gray-500">{{ my_committee.getCreatedAt()|format_datetime('none', 'none', 'd MMM yyyy') }}</time>
+                    </span>
+                    <a href="{{ path('app_my_committee_show_list') }}" class="font-medium text-sky-400 sm:text-sm">
+                        Changer
+                    </a>
+                </p>
+            </div>
+        {% else %}
+            <p>
+                Vous n'êtes dans aucun comité pour le moment. Vous pouvez choisir votre comité <a href="{{ path('app_my_committee_show_list') }}" class="text-sky-500">ici</a>
+            </p>
+        {% endif %}
+    </section>
+{% endblock %}

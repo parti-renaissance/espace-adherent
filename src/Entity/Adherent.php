@@ -1996,6 +1996,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->memberships;
     }
 
+    public function getCommitteeV2Membership(): ?CommitteeMembership
+    {
+        return current($this->getMemberships()->getCommitteeV2Memberships()) ?: null;
+    }
+
     public function hasVotingCommitteeMembership(): bool
     {
         return null !== $this->getMemberships()->getVotingCommitteeMembership();

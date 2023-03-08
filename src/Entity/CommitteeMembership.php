@@ -106,6 +106,11 @@ class CommitteeMembership implements UuidEntityInterface
      */
     private $committeeCandidacies;
 
+    /**
+     * @ORM\Column(name="`trigger`", nullable=true)
+     */
+    private ?string $trigger = null;
+
     private function __construct(
         UuidInterface $uuid,
         Committee $committee,
@@ -324,5 +329,10 @@ class CommitteeMembership implements UuidEntityInterface
         }
 
         return false;
+    }
+
+    public function setTrigger(?string $trigger): void
+    {
+        $this->trigger = $trigger;
     }
 }
