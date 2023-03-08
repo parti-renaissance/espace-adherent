@@ -1,7 +1,7 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object.isCommitteeType() %}
+    {% if object.isCommitteeTypes() %}
         {{ object.getGlobalZones()|join(', ') }}
     {% elseif object.isCopolType() %}
         {% if object.referentTags|length > 1 %}

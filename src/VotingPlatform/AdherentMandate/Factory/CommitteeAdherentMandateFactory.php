@@ -30,6 +30,6 @@ class CommitteeAdherentMandateFactory implements AdherentMandateFactoryInterface
 
     public function supports(Election $election): bool
     {
-        return $election->getDesignation()->isCommitteeType();
+        return $election->getDesignation()->isCommitteeTypes();
     }
 }

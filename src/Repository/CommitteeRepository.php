@@ -56,7 +56,7 @@ class CommitteeRepository extends ServiceEntityRepository
         return (int) $this
             ->createQueryBuilder('c')
             ->select('COUNT(c)')
-            ->where('c.status = :approved')
+            ->where('c.status = :approved AND c.version = 1')
             ->setParameter('approved', Committee::APPROVED)
             ->getQuery()
             ->getSingleScalarResult()
@@ -107,7 +107,7 @@ class CommitteeRepository extends ServiceEntityRepository
      */
     public function findApprovedCommittees()
     {
-        return $this->findBy(['status' => Committee::APPROVED]);
+        return $this->findBy(['status' => Committee::APPROVED, 'version' => 1]);
     }
 
     /**
@@ -189,7 +189,7 @@ class CommitteeRepository extends ServiceEntityRepository
         $query = $this
             ->createQueryBuilder('c')
             ->select('COUNT(c.uuid)')
-            ->where('c.status = :status')
+            ->where('c.status = :status AND c.version = 1')
             ->setParameter('status', Committee::APPROVED)
             ->getQuery()
         ;
@@ -293,7 +293,7 @@ class CommitteeRepository extends ServiceEntityRepository
         $qb = $this
             ->createQueryBuilder('c')
             ->select('COUNT(DISTINCT c.id)')
-            ->where('c.status = :status')
+            ->where('c.status = :status AND c.version = 1')
             ->setParameters([
                 'status' => Committee::APPROVED,
             ])
@@ -326,7 +326,7 @@ class CommitteeRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('c')
             ->select('c')
-            ->where('c.status = :status')
+            ->where('c.status = :status AND c.version = 1')
             ->setParameter('status', Committee::APPROVED)
             ->orderBy('c.name', 'ASC')
             ->orderBy('c.createdAt', 'DESC')
@@ -347,6 +347,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->select('c')
             ->orderBy('c.name', 'ASC')
             ->orderBy('c.createdAt', 'DESC')
+            ->where('c.version = 1')
         ;
 
         $this->withGeoZones(
@@ -389,7 +390,7 @@ class CommitteeRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('c')
-            ->where('c.status = :status')
+            ->where('c.status = :status AND c.version = 1')
             ->setParameter('status', Committee::APPROVED)
         ;
     }
@@ -415,7 +416,7 @@ class CommitteeRepository extends ServiceEntityRepository
         }
 
         return $qb
-            ->andWhere('n.status = :status')
+            ->andWhere('n.status = :status AND n.version = 1')
             ->setParameter('status', Committee::APPROVED)
             ->setFirstResult($search->getOffset())
             ->setMaxResults($search->getMaxResults())
@@ -509,21 +510,6 @@ class CommitteeRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findByPartialNameForSenatorialCandidate(
-        Adherent $senatorialCandidate,
-        string $search,
-        int $limit = 10
-    ): array {
-        $qb = $this
-            ->createPartialNameQueryBuilder($search, $alias = 'committee')
-            ->setMaxResults($limit)
-        ;
-
-        $this->applyGeoFilter($qb, $senatorialCandidate->getSenatorialCandidateManagedArea()->getDepartmentTags()->toArray(), $alias);
-
-        return $qb->getQuery()->getResult();
-    }
-
     public function findByPartialNameForCandidate(array $referentTags, string $search, int $limit = 10): array
     {
         $qb = $this
@@ -551,8 +537,8 @@ class CommitteeRepository extends ServiceEntityRepository
         int $offset = 0,
         int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS
     ): Paginator {
-        $query = $this->createQueryBuilder('e')
-            ->andWhere('e.status = :approved')
+        $query = $this->createQueryBuilder('c')
+            ->andWhere('c.status = :approved AND c.version = 1')
             ->setParameter('approved', Committee::APPROVED)
             ->getQuery()
             ->setMaxResults($limit)
@@ -567,7 +553,7 @@ class CommitteeRepository extends ServiceEntityRepository
         return (int) $this->createQueryBuilder('committee')
             ->select('COUNT(committee) AS count')
             ->join('committee.referentTags', 'tag')
-            ->where('committee.status = :status')
+            ->where('committee.status = :status AND committee.version = 1')
             ->andWhere('tag.id IN (:tags)')
             ->setParameter('tags', $referent->getManagedArea()->getTags())
             ->setParameter('status', Committee::APPROVED)
@@ -640,7 +626,7 @@ class CommitteeRepository extends ServiceEntityRepository
     public function createQueryBuilderForZones(array $zones): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
-            ->andWhere('c.status = :status')
+            ->andWhere('c.status = :status AND c.version = 1')
             ->setParameter('status', Committee::APPROVED)
             ->orderBy('c.name', 'ASC')
             ->orderBy('c.createdAt', 'DESC')
@@ -694,12 +680,12 @@ class CommitteeRepository extends ServiceEntityRepository
     ): array {
         $this->checkReferent($referent);
 
-        $result = $this->createQueryBuilder('committee')
-            ->select('committee.name, COUNT(event) AS events, SUM(event.participantsCount) as participants')
+        return $this->createQueryBuilder('committee')
+            ->select('committee.name, COUNT(event) AS events, SUM(event.participantsCount) as HIDDEN participants')
             ->join(CommitteeEvent::class, 'event', Join::WITH, 'event.committee = committee.id')
             ->join('committee.referentTags', 'tag')
             ->where('tag.id IN (:tags)')
-            ->andWhere('committee.status = :status')
+            ->andWhere('committee.status = :status AND committee.version = 1')
             ->andWhere('event.beginAt >= :from')
             ->andWhere('event.beginAt < :until')
             ->setParameter('tags', $referent->getManagedArea()->getTags())
@@ -714,17 +700,6 @@ class CommitteeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult()
         ;
-
-        return $this->removeParticipantionsCountAndId($result);
-    }
-
-    private function removeParticipantionsCountAndId(array $committees): array
-    {
-        array_walk($committees, function (&$item) {
-            unset($item['participants']);
-        });
-
-        return $committees;
     }
 
     /**
@@ -833,7 +808,7 @@ class CommitteeRepository extends ServiceEntityRepository
                     ->andWhere('(designation2.voteEndDate IS NULL OR :now <= designation2.voteEndDate)')
                     ->getDQL()
             ))
-            ->where('c.status = :status')
+            ->where('c.status = :status AND c.version = 1')
             ->setParameters([
                 'status' => Committee::APPROVED,
                 'male' => Genders::MALE,

@@ -3,6 +3,7 @@
 namespace App\VotingPlatform\Listener;
 
 use App\Entity\CommitteeMembership;
+use App\Entity\VotingPlatform\Designation\Designation;
 use App\Mailer\MailerService;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationAcceptedMessage;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationCreatedMessage;
@@ -54,7 +55,7 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
             $invitedMemberships[] = $invitedMembership = $invitation->getMembership();
 
             if ($invitation && (!$previouslyInvitedMemberships || !\in_array($invitation->getMembership(), $previouslyInvitedMemberships))) {
-                if ($designation->isCommitteeType()) {
+                if ($designation->isCommitteeTypes()) {
                     /** @var CommitteeMembership $invitedMembership */
                     $committee = $invitedMembership->getCommittee();
                     $url = $this->urlGenerator->generate('app_committee_candidature_invitation_list', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -78,7 +79,7 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
 
         foreach ($previouslyInvitedMemberships as $invitedMembership) {
             if (!$invitations || !\in_array($invitedMembership, $invitedMemberships)) {
-                if ($designation->isCommitteeType()) {
+                if ($designation->isCommitteeTypes()) {
                     $url = $this->urlGenerator->generate('app_committee_show', ['slug' => $invitedMembership->getCommittee()->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
                 } else {
                     $url = $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -99,9 +100,10 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
         foreach ($event->getInvitations() as $invitation) {
             $candidacy = $invitation->getCandidacy();
             $invitedMembership = $invitation->getMembership();
+            /** @var Designation $designation */
             $designation = $candidacy->getElection()->getDesignation();
 
-            if ($designation->isCommitteeType()) {
+            if ($designation->isCommitteeTypes()) {
                 $url = $this->urlGenerator->generate('app_committee_show', ['slug' => $invitedMembership->getCommittee()->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
             } else {
                 $url = $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -124,7 +126,7 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
         $invitedMembership = $invitation->getMembership();
         $designation = $candidacy->getElection()->getDesignation();
 
-        if ($designation->isCommitteeType()) {
+        if ($designation->isCommitteeTypes()) {
             /** @var CommitteeMembership $invitedMembership */
             $url = $this->urlGenerator->generate('app_committee_candidature_select_pair_candidate', ['slug' => $invitedMembership->getCommittee()->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
         } else {
@@ -147,7 +149,7 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
         $invitedMembership = $invitedCandidacy->getMembership();
         $designation = $candidacy->getElection()->getDesignation();
 
-        if ($designation->isCommitteeType()) {
+        if ($designation->isCommitteeTypes()) {
             /** @var CommitteeMembership $invitedMembership */
             $committee = $invitedMembership->getCommittee();
             $url = $this->urlGenerator->generate('app_committee_candidature_candidacy_list', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);

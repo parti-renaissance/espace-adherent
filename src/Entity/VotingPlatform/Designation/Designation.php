@@ -310,7 +310,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * @ORM\Column(type="uuid", nullable=true)
      *
      * @Assert\Expression(
-     *     "!this.isCommitteeType() or value",
+     *     "!this.isCommitteeSupervisorType() or value",
      *     message="Un identifiant est requis pour ce champs.",
      *     groups="api_designation_write"
      * )
@@ -585,12 +585,12 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         }
 
         // no need to have a zone for committee partial elections
-        if ($this->isCommitteeType() && $this->isLimited()) {
+        if ($this->isCommitteeTypes() && $this->isLimited()) {
             return true;
         }
 
         return
-            ($this->isCommitteeType() && !empty($this->globalZones))
+            ($this->isCommitteeTypes() && !empty($this->globalZones))
             || ($this->isCopolType() && !$this->referentTags->isEmpty())
             || ($this->isLocalElectionTypes() && !$this->zones->isEmpty())
         ;
@@ -666,7 +666,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return [];
     }
 
-    public function isCommitteeType(): bool
+    public function isCommitteeTypes(): bool
     {
         return \in_array($this->type, [DesignationTypeEnum::COMMITTEE_ADHERENT, DesignationTypeEnum::COMMITTEE_SUPERVISOR], true);
     }
@@ -674,6 +674,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public function isCommitteeAdherentType(): bool
     {
         return DesignationTypeEnum::COMMITTEE_ADHERENT === $this->type;
+    }
+
+    public function isCommitteeSupervisorType(): bool
+    {
+        return DesignationTypeEnum::COMMITTEE_SUPERVISOR === $this->type;
     }
 
     public function isCopolType(): bool
