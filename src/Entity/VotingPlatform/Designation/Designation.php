@@ -109,7 +109,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      *
      * @Assert\NotBlank(groups={"api_designation_write", "api_designation_write_limited"})
      *
-     * @Groups({"designation_read", "designation_write", "designation_list", "designation_write_limited"})
+     * @Groups({"designation_read", "designation_write", "designation_list", "designation_write_limited", "committee_election:read"})
      */
     public ?string $customTitle = null;
 
@@ -157,7 +157,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Groups({"designation_read"})
+     * @Groups({"designation_read", "committee_election:read"})
      */
     public ?\DateTime $electionCreationDate = null;
 
@@ -166,7 +166,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      *
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Groups({"designation_read", "designation_write", "designation_list"})
+     * @Groups({"designation_read", "designation_write", "designation_list", "committee_election:read"})
      *
      * @Assert\GreaterThan(
      *     "now",
@@ -181,7 +181,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      *
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Groups({"designation_read", "designation_write"})
+     * @Groups({"designation_read", "designation_write", "committee_election:read"})
      *
      * @Assert\Expression(
      *     "value > this.getVoteStartDate()",
