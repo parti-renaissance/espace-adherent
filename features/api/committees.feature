@@ -212,6 +212,13 @@ Feature:
             "committee": {
                 "uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3"
             },
+            "designation": {
+                "custom_title": "Election AL - second comité des 3 communes",
+                "election_creation_date": "@string@.isDateTime()",
+                "vote_start_date": "@string@.isDateTime()",
+                "vote_end_date": "@string@.isDateTime()",
+                "uuid": "6c7ca0c7-d656-47c3-a345-170fb43ffd1a"
+            },
             "candidacies_groups": [
                 {
                     "uuid": "5d88db4a-9f3e-470e-8cc6-145dc6c7517a",
