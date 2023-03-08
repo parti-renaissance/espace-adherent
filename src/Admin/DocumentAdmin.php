@@ -71,7 +71,7 @@ class DocumentAdmin extends AbstractAdmin
     /**
      * @param Document $object
      */
-    protected function postPersist(object $object): void
+    protected function prePersist(object $object): void
     {
         $this->handleFile($object);
     }
@@ -79,7 +79,7 @@ class DocumentAdmin extends AbstractAdmin
     /**
      * @param Document $object
      */
-    protected function postUpdate(object $object): void
+    protected function preUpdate(object $object): void
     {
         $this->handleFile($object);
     }
