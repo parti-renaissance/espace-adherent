@@ -7,6 +7,7 @@ use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
+use App\Validator\CommitteeMembershipZoneInScopeZones as AssertCommitteeMembershipZoneInScopeZones;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,22 +26,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "groups": {"committee_candidacy:write"},
  *         },
  *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')",
- *         "validation_groups": {"api_committee_validation"},
+ *         "validation_groups": {"api_committee_candidacy_validation"},
  *     },
  *     itemOperations={
  *         "get": {
  *             "path": "/committee_candidacies/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *         "put": {
- *             "path": "/committee_candidacies/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and not object.isVotePeriodStarted()",
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee())",
  *         },
  *         "delete": {
  *             "path": "/committee_candidacies/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and not object.isVotePeriodStarted()",
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee()) and not object.isVotePeriodStarted()",
  *         },
  *     },
  *     collectionOperations={
@@ -53,6 +50,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeCandidacyRepository")
  *
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
+ *
+ * @Assert\Expression(
+ *     expression="!this.isVotePeriodStarted()",
+ *     message="Vous ne pouvez pas créer de candidature sur une élection en cours",
+ *     groups={"api_committee_candidacy_validation"}
+ * )
  */
 class CommitteeCandidacy extends BaseCandidacy
 {
@@ -70,7 +73,8 @@ class CommitteeCandidacy extends BaseCandidacy
      * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeMembership", inversedBy="committeeCandidacies")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
-     * @Assert\NotBlank(message="Cet adherent n'est pas membre du comité.", groups={"api_committee_validation"})
+     * @Assert\NotBlank(message="Cet adhérent n'est pas un membre du comité.", groups={"api_committee_candidacy_validation"})
+     * @AssertCommitteeMembershipZoneInScopeZones(groups={"api_committee_candidacy_validation"})
      *
      * @Groups({"committee_candidacy:read", "committee_election:read"})
      */
@@ -97,19 +101,17 @@ class CommitteeCandidacy extends BaseCandidacy
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeCandidaciesGroup", inversedBy="candidacies", cascade={"persist"})
      *
-     * @Assert\NotBlank(groups={"api_committee_validation"})
+     * @Assert\NotBlank(groups={"api_committee_candidacy_validation"})
      *
      * @Groups({"committee_candidacy:write", "committee_candidacy:read"})
      */
     protected $candidaciesGroup;
 
-    public function __construct(CommitteeElection $election = null, string $gender = null, UuidInterface $uuid = null)
+    public function __construct(CommitteeElection $election, string $gender = null, UuidInterface $uuid = null)
     {
         parent::__construct($gender, $uuid);
 
-        if ($election) {
-            $this->type = $election->getDesignationType();
-        }
+        $this->type = $election->getDesignationType();
 
         if (DesignationTypeEnum::COMMITTEE_ADHERENT === $this->type) {
             $this->status = CandidacyInterface::STATUS_CONFIRMED;
@@ -153,11 +155,6 @@ class CommitteeCandidacy extends BaseCandidacy
         return $this->type;
     }
 
-    public function setType(string $type): void
-    {
-        $this->type = $type;
-    }
-
     public function getAdherent(): ?Adherent
     {
         return $this->committeeMembership->getAdherent();
@@ -181,5 +178,10 @@ class CommitteeCandidacy extends BaseCandidacy
     public function isVotePeriodStarted(): bool
     {
         return $this->committeeElection->getDesignation()->isVotePeriodStarted();
+    }
+
+    public function getCommittee(): Committee
+    {
+        return $this->committeeElection->getCommittee();
     }
 }

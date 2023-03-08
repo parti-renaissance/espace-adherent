@@ -439,6 +439,8 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         ]);
         $adherent16->setPosition(ActivityPositionsEnum::EMPLOYED);
         $adherent16->setAssessorManagedAreaCodesAsString('93, 59, GB');
+        $adherent16->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent16->donatedForMembership();
         $this->addReference('adherent-16', $adherent16);
 
         $adherent17 = $this->adherentFactory->createFromArray([

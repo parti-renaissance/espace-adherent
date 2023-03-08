@@ -2,9 +2,11 @@
 
 namespace App\Normalizer;
 
-use App\Entity\Adherent;
+use _PHPStan_eb00fd21c\Nette\InvalidArgumentException;
+use ApiPlatform\Exception\ItemNotFoundException;
 use App\Entity\CommitteeCandidacy;
-use App\Entity\CommitteeElection;
+use App\Repository\CommitteeCandidaciesGroupRepository;
+use App\Repository\CommitteeMembershipRepository;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -13,47 +15,39 @@ class CommitteeCandidacyDenormalizer implements DenormalizerInterface, Denormali
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'JE_MENGAGE_WEB_COMMMITTE_CANDIDACY_DENORMALIZER_ALREADY_CALLED';
+    public function __construct(
+        private readonly CommitteeCandidaciesGroupRepository $candidaciesGroupRepository,
+        private readonly CommitteeMembershipRepository $committeeMembershipRepository
+    ) {
+    }
 
     public function denormalize($data, string $class, string $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        /** @var CommitteeCandidacy $candidacy */
-        $candidacy = $this->denormalizer->denormalize($data, $class, $format, $context);
-
-        /** @var Adherent $adherent */
-        $adherent = $this->denormalizer->denormalize($data['adherent'], Adherent::class, $format, $context);
-
-        /** @var CommitteeElection $election */
-        $election = $candidacy->getCandidaciesGroup()?->getElection();
-
-        if ($election && $adherent->isRenaissanceAdherent() && ($committeeMembership = $adherent->getMembershipFor($election->getCommittee()))) {
-            if ($candidacy->getCommitteeMembership() !== $committeeMembership) {
-                $candidacy->setCommitteeMembership($committeeMembership);
-            }
-
-            $gender = $committeeMembership->getAdherent()->getGender();
-            if ($candidacy->getGender() !== $gender) {
-                $candidacy->setGender($gender);
-            }
-
-            if (!$candidacy->isConfirmed()) {
-                $candidacy->confirm();
-            }
-
-            $candidacy->setCommitteeElection($election);
-            $candidacy->setType($election->getDesignation()->getType());
+        if (!isset($data['candidacies_group']) || !isset($data['adherent'])) {
+            throw new InvalidArgumentException('Missing "candidacies_group" or "adherent" or both keys');
         }
+
+        if (!$list = $this->candidaciesGroupRepository->findOneByUuid($data['candidacies_group'])) {
+            throw new ItemNotFoundException();
+        }
+
+        $committeeMembership = $this->committeeMembershipRepository->findMembershipfromAdherentUuidAndCommittee($data['adherent'], $list->getCommittee());
+
+        if ($committeeMembership) {
+            $candidacy = new CommitteeCandidacy($list->getElection(), $committeeMembership->getAdherent()->getGender());
+            $candidacy->setCommitteeMembership($committeeMembership);
+        } else {
+            $candidacy = new CommitteeCandidacy($list->getElection());
+        }
+
+        $candidacy->setCandidaciesGroup($list);
+        $candidacy->confirm();
 
         return $candidacy;
     }
 
     public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
     {
-        return !isset($context[self::ALREADY_CALLED])
-            && CommitteeCandidacy::class === $type
-            && \in_array($context['operation_name'] ?? null, ['api_committee_candidacies_post_collection', 'api_committee_candidacies_put_item'], true)
-        ;
+        return CommitteeCandidacy::class === $type && 'api_committee_candidacies_post_collection' === $context['operation_name'];
     }
 }
