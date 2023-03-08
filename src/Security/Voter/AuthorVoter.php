@@ -11,16 +11,19 @@ class AuthorVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'IS_AUTHOR_OF';
 
-    /** @var SessionInterface */
-    private $session;
-
-    public function __construct(SessionInterface $session)
+    public function __construct(private readonly SessionInterface $session)
     {
-        $this->session = $session;
     }
 
+    /**
+     * @param AuthoredInterface $subject
+     */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
+        if (!$subject->getAuthor()) {
+            return false;
+        }
+
         if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             return $subject->getAuthor()->equals($delegatedAccess->getDelegator());
         }
