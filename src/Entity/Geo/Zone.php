@@ -45,7 +45,6 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *     },
  *     indexes={
  *         @ORM\Index(columns={"type"}),
- *         @ORM\Index(columns={"tags"}),
  *     }
  * )
  * @ORM\AttributeOverrides({
@@ -174,7 +173,7 @@ class Zone implements GeoInterface
     private $teamCode;
 
     /**
-     * @var Collection
+     * @var Collection|self[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", inversedBy="children")
      * @ORM\JoinTable(
@@ -202,9 +201,9 @@ class Zone implements GeoInterface
     private $postalCode;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="simple_array", nullable=true)
      */
-    private ?string $tags = null;
+    private ?array $tags = null;
 
     public function __construct(string $type, string $code, string $name, UuidInterface $uuid = null)
     {
@@ -373,5 +372,15 @@ class Zone implements GeoInterface
     public function setPostalCode(?array $postalCode): void
     {
         $this->postalCode = $postalCode;
+    }
+
+    public function hasTag(string $tag): bool
+    {
+        return \in_array($tag, $this->tags ?? [], true);
+    }
+
+    public function getTags(): ?array
+    {
+        return $this->tags;
     }
 }

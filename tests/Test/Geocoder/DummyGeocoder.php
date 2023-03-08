@@ -157,6 +157,10 @@ class DummyGeocoder implements Geocoder
             'latitude' => 74.6944361,
             'longitude' => 164.1119988,
         ],
+        '13 avenue du maréchal juin, 64200 biarritz, fr' => [
+            'latitude' => 43.4726041,
+            'longitude' => -1.5385905,
+        ],
     ];
 
     public function geocode(string $value): Collection
