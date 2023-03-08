@@ -86,7 +86,7 @@ class Member
      * @ORM\Column
      *
      * @Assert\NotBlank(message="my_team.member.role.not_blank")
-     * @Assert\Choice(choices=App\MyTeam\RoleEnum::ALL, message="my_team.member.role.invalid_choice")
+     * @Assert\Choice(callback={"App\MyTeam\RoleEnum", "getAll"}, message="my_team.member.role.invalid_choice")
      *
      * @Groups({"my_team_member_read", "my_team_member_write", "my_team_read_list"})
      */
