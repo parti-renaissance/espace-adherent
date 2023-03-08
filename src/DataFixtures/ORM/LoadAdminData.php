@@ -74,6 +74,7 @@ class LoadAdminData extends Fixture
             'ROLE_ADMIN_CMS_BLOCKS',
             'ROLE_ADMIN_JEMENGAGE_COM',
             'ROLE_ADMIN_LOCAL_ELECTION',
+            'ROLE_ADMIN_JME_DOCUMENTS',
         ];
 
         $writerRoles = [

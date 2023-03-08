@@ -509,7 +509,7 @@
         </service>
 
         <service id="app.admin.document" class="App\Admin\DocumentAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Documents" group="Territoires"/>
+            <tag name="sonata.admin" manager-type="orm" label="Documents JME" group="Territoires"/>
 
             <argument />
             <argument>App\Entity\Document</argument>
