@@ -761,4 +761,9 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     {
         return $this->status;
     }
+
+    public function getVersion(): int
+    {
+        return $this->version;
+    }
 }
