@@ -422,9 +422,9 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                             'conditions' => [
                                 [
                                     'condition_type' => 'TextMerge',
-                                    'op' => 'ends',
+                                    'op' => 'contains',
                                     'field' => 'ZONE_DPT',
-                                    'value' => '(code1)',
+                                    'value' => ' (code1)',
                                 ],
                                 [
                                     'condition_type' => 'Interests',
@@ -608,9 +608,9 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                             'conditions' => [
                                 [
                                     'condition_type' => 'TextMerge',
-                                    'op' => 'ends',
+                                    'op' => 'contains',
                                     'field' => 'ZONE_DPT',
-                                    'value' => '(code1)',
+                                    'value' => ' (code1)',
                                 ],
                                 [
                                     'condition_type' => 'Interests',
@@ -658,9 +658,9 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                             'conditions' => [
                                 [
                                     'condition_type' => 'TextMerge',
-                                    'op' => 'ends',
+                                    'op' => 'contains',
                                     'field' => 'ZONE_DPT',
-                                    'value' => '(code1)',
+                                    'value' => ' (code1)',
                                 ],
                                 [
                                     'condition_type' => 'Interests',
