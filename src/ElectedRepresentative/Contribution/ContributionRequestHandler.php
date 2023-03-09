@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class ContributionRequestHandler
 {
     public function __construct(
-        private readonly ElectedRepresentativeContributionHandler $goCardless,
+        private readonly ElectedRepresentativeContributionHandler $electedRepresentativeContributionHandler,
         private readonly EntityManagerInterface $entityManager,
         private readonly ElectedRepresentativeRepository $electedRepresentativeRepository
     ) {
@@ -19,12 +19,12 @@ class ContributionRequestHandler
 
     public function handleMandate(ContributionRequest $contributionRequest, Adherent $adherent): void
     {
-        $customerId = $this->goCardless->handle($contributionRequest, $adherent);
+        $subscription = $this->electedRepresentativeContributionHandler->handle($contributionRequest, $adherent);
 
         $electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
 
         $electedRepresentative->setLastContributionDate(new \DateTime());
-        $electedRepresentative->addContribution(Contribution::createMandate($electedRepresentative, $customerId));
+        $electedRepresentative->addContribution(Contribution::fromSubscription($electedRepresentative, $subscription));
 
         $this->entityManager->flush();
     }
