@@ -15,6 +15,7 @@ use App\Entity\CommitteeMembership;
 use App\Entity\PushToken;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Membership\MembershipSourceEnum;
 use App\Repository\Helper\MembershipFilterHelper;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
@@ -664,5 +665,22 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         }
 
         return $qb;
+    }
+
+    public function findMembershipfromAdherentUuidAndCommittee(
+        UuidInterface $adherentUuid,
+        Committee $committee
+    ): ?CommitteeMembership {
+        return $this
+            ->createQueryBuilder('cm')
+            ->innerJoin('cm.adherent', 'a')
+            ->where('cm.committee = :committee')
+            ->andWhere('a.uuid = :adherent_uuid AND (a.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL)')
+            ->setParameter('adherent_uuid', $adherentUuid)
+            ->setParameter('committee', $committee)
+            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }

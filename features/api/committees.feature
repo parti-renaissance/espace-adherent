@@ -313,3 +313,123 @@ Feature:
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
             | referent@en-marche-dev.fr       | referent                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I can get a candidate information
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "GET" request to "/api/v3/committee_candidacies/50dd9672-69ca-46e1-9353-c2e0d6c03333?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "committee_membership": {
+                "adherent": {
+                    "gender": "female",
+                    "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+                    "first_name": "Gisele",
+                    "last_name": "Berthoux"
+                },
+                "uuid": "@uuid@"
+            },
+            "candidacies_group": {
+                "uuid": "5d88db4a-9f3e-470e-8cc6-145dc6c7517a"
+            },
+            "uuid": "50dd9672-69ca-46e1-9353-c2e0d6c03333"
+        }
+        """
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I can add a candidate to a group
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/committee_candidacies?scope=<scope>" with body:
+        """
+        {
+            "adherent": "15b63931-cb1a-46c6-8801-ca32366f8ee3",
+            "candidacies_group": "7f048f8e-0096-4cd2-b348-f19579223d6f"
+        }
+        """
+        Then the response status code should be 201
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "committee_membership": {
+                "adherent": {
+                    "gender": "male",
+                    "uuid": "15b63931-cb1a-46c6-8801-ca32366f8ee3",
+                    "first_name": "Louis",
+                    "last_name": "Roche"
+                },
+                "uuid": "@uuid@"
+            },
+            "candidacies_group": {
+                "uuid": "7f048f8e-0096-4cd2-b348-f19579223d6f"
+            },
+            "uuid": "@uuid@"
+        }
+        """
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I can delete a candidate
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "DELETE" request to "/api/v3/committee_candidacies/50dd9672-69ca-46e1-9353-c2e0d6c03333?scope=<scope>"
+        And the response status code should be 204
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I cannot add a candidate to a past or ongoing committee election
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/committee_candidacies?scope=<scope>" with body:
+        """
+        {
+            "adherent": "b4219d47-3138-5efd-9762-2ef9f9495084",
+            "candidacies_group": "f8a426f3-8014-4803-95b5-8077300755c6"
+        }
+        """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON node "detail" should be equal to "Vous ne pouvez pas créer de candidature sur une élection en cours"
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a grand user with local scope, I cannot delete a candidate on a past or ongoing committee election
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "DELETE" request to "/api/v3/committee_candidacies/d229453d-a9dc-4392-a320-d9536c93b5fe?scope=<scope>"
+        And the response status code should be 403
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a grand user with local scope, I cannot create a candidate whose adherent account is not in my managed area
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "POST" request to "/api/v3/committee_candidacies?scope=<scope>" with body:
+        """
+        {
+            "adherent": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+            "candidacies_group": "7f048f8e-0096-4cd2-b348-f19579223d6f"
+        }
+        """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON node "detail" should be equal to "committee_membership: L'adhérent ne fait pas partie de votre zone de couverture."
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

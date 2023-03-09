@@ -69,6 +69,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public const RENAISSANCE_USER_1_UUID = '88c92d85-4e55-4e47-b1ce-b625b7de3871';
     public const RENAISSANCE_USER_2_UUID = 'd0a0935f-da7c-4caa-b582-a8c2376e5158';
     public const RENAISSANCE_USER_3_UUID = '859b1528-9451-41d7-bc9e-7c95e23c5113';
+    public const RENAISSANCE_USER_4_UUID = '15b63931-cb1a-46c6-8801-ca32366f8ee3';
 
     public const DEFAULT_PASSWORD = 'secret!12345';
 
@@ -438,6 +439,8 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         ]);
         $adherent16->setPosition(ActivityPositionsEnum::EMPLOYED);
         $adherent16->setAssessorManagedAreaCodesAsString('93, 59, GB');
+        $adherent16->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent16->donatedForMembership();
         $this->addReference('adherent-16', $adherent16);
 
         $adherent17 = $this->adherentFactory->createFromArray([
@@ -1126,6 +1129,26 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             ]
         );
         $this->addReference('renaissance-user-3', $adherent);
+
+        $manager->persist($adherent = $this->adherentFactory->createFromArray([
+            'uuid' => self::RENAISSANCE_USER_4_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'renaissance-user-4@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Louis',
+            'last_name' => 'Roche',
+            'address' => $this->createPostAddress('3 avenue Jean Jaurès', '92340-92014', null, 48.5278939, 2.6484923),
+            'birthdate' => '1978-02-12',
+            'registered_at' => '2019-03-22 18:23:45',
+            'is_adherent' => true,
+        ]));
+        $adherent->activate(AdherentActivationToken::generate($adherent));
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent->donatedForMembership();
+        $adherent->certify();
+        $this->addReference('renaissance-user-4', $adherent);
 
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);

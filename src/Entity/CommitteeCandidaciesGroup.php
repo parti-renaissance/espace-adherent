@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "delete": {
  *             "path": "/committee_candidacies_groups/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and not object.isVotePeriodStarted() and object.isEmptyCandidacies()",
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee()) and not object.isVotePeriodStarted() and object.isEmptyCandidacies()",
  *         }
  *     },
  *     collectionOperations={
@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\CommitteeCandidaciesGroupRepository")
  *
  * @Assert\Expression(
  *     expression="!this.isVotePeriodStarted()",
@@ -69,7 +69,7 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
      *     }
      * )
      *
-     * @Groups({"committee_election:read", "committee_candidacies_group:read"})
+     * @Groups({"committee_election:read", "committee_candidacies_group:read", "committee_candidacy:read"})
      */
     protected UuidInterface $uuid;
 
@@ -122,5 +122,10 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
     public function isEmptyCandidacies(): bool
     {
         return $this->candidacies->isEmpty();
+    }
+
+    public function getCommittee(): Committee
+    {
+        return $this->election->getCommittee();
     }
 }

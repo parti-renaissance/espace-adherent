@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
+use App\Validator\CommitteeMembershipZoneInScopeZones as AssertCommitteeMembershipZoneInScopeZones;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,9 +16,46 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     routePrefix="/v3",
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"committee_candidacy:read"},
+ *         },
+ *         "denormalization_context": {
+ *             "groups": {"committee_candidacy:write"},
+ *         },
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')",
+ *         "validation_groups": {"api_committee_candidacy_validation"},
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/committee_candidacies/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee())",
+ *         },
+ *         "delete": {
+ *             "path": "/committee_candidacies/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee()) and not object.isVotePeriodStarted()",
+ *         },
+ *     },
+ *     collectionOperations={
+ *         "post": {
+ *             "path": "/committee_candidacies",
+ *         }
+ *     }
+ * )
+ *
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeCandidacyRepository")
  *
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
+ *
+ * @Assert\Expression(
+ *     expression="!this.isVotePeriodStarted()",
+ *     message="Vous ne pouvez pas créer de candidature sur une élection en cours",
+ *     groups={"api_committee_candidacy_validation"}
+ * )
  */
 class CommitteeCandidacy extends BaseCandidacy
 {
@@ -34,7 +73,10 @@ class CommitteeCandidacy extends BaseCandidacy
      * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeMembership", inversedBy="committeeCandidacies")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
-     * @Groups({"committee_election:read"})
+     * @Assert\NotBlank(message="Cet adhérent n'est pas un membre du comité.", groups={"api_committee_candidacy_validation"})
+     * @AssertCommitteeMembershipZoneInScopeZones(groups={"api_committee_candidacy_validation"})
+     *
+     * @Groups({"committee_candidacy:read", "committee_election:read"})
      */
     private $committeeMembership;
 
@@ -58,6 +100,10 @@ class CommitteeCandidacy extends BaseCandidacy
      * @var CommitteeCandidaciesGroup|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeCandidaciesGroup", inversedBy="candidacies", cascade={"persist"})
+     *
+     * @Assert\NotBlank(groups={"api_committee_candidacy_validation"})
+     *
+     * @Groups({"committee_candidacy:write", "committee_candidacy:read"})
      */
     protected $candidaciesGroup;
 
@@ -127,5 +173,15 @@ class CommitteeCandidacy extends BaseCandidacy
     protected function createCandidaciesGroup(): BaseCandidaciesGroup
     {
         return new CommitteeCandidaciesGroup();
+    }
+
+    public function isVotePeriodStarted(): bool
+    {
+        return $this->committeeElection->getDesignation()->isVotePeriodStarted();
+    }
+
+    public function getCommittee(): Committee
+    {
+        return $this->committeeElection->getCommittee();
     }
 }

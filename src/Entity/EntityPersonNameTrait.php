@@ -34,6 +34,7 @@ trait EntityPersonNameTrait
      *     "my_team_read_list",
      *     "scope",
      *     "elected_representative_read",
+     *     "committee_candidacy:read",
      *     "committee_election:read",
      * })
      */
@@ -65,6 +66,7 @@ trait EntityPersonNameTrait
      *     "my_team_read_list",
      *     "scope",
      *     "elected_representative_read",
+     *     "committee_candidacy:read",
      *     "committee_election:read",
      * })
      */
