@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class CommitteeMembershipZoneInScopeZones extends Constraint
 {
-    public string $message = 'L\'adhérent ne fait pas partir de votre zone de couverture.';
+    public string $message = 'L\'adhérent ne fait pas partie de votre zone de couverture.';
 
     public function getTargets(): string|array
     {

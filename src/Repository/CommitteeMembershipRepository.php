@@ -15,18 +15,16 @@ use App\Entity\CommitteeMembership;
 use App\Entity\PushToken;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\Exception\InvalidUuidException;
+use App\Membership\MembershipSourceEnum;
 use App\Repository\Helper\MembershipFilterHelper;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 class CommitteeMembershipRepository extends ServiceEntityRepository
@@ -669,23 +667,18 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    /**
-     * @throws InvalidUuidException|NonUniqueResultException
-     */
     public function findMembershipfromAdherentUuidAndCommittee(
-        string $adherentUuid,
+        UuidInterface $adherentUuid,
         Committee $committee
     ): ?CommitteeMembership {
-        if (false === Uuid::isValid($adherentUuid)) {
-            throw new InvalidUuidException(sprintf('Uuid "%s" is not valid.', $adherentUuid));
-        }
-
         return $this
             ->createQueryBuilder('cm')
             ->innerJoin('cm.adherent', 'a')
-            ->where('a.uuid = :adherent_uuid AND cm.committee = :committee')
+            ->where('cm.committee = :committee')
+            ->andWhere('a.uuid = :adherent_uuid AND (a.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL)')
             ->setParameter('adherent_uuid', $adherentUuid)
             ->setParameter('committee', $committee)
+            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
             ->getQuery()
             ->getOneOrNullResult()
         ;
