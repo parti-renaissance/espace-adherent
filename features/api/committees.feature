@@ -404,11 +404,11 @@ Feature:
         {
             "type": "https://tools.ietf.org/html/rfc2616#section-10",
             "title": "An error occurred",
-            "detail": "committee_membership: Cet adherent n'est pas membre du comité.",
+            "detail": "committee_membership: Cet adhérent n'est pas un membre du comité.",
             "violations": [
                 {
                     "propertyPath": "committee_membership",
-                    "message": "Cet adherent n'est pas membre du comité.",
+                    "message": "Cet adhérent n'est pas un membre du comité.",
                     "code": "@uuid@"
                 }
             ]

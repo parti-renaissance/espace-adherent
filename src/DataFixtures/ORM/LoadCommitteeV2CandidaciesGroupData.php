@@ -38,7 +38,7 @@ class LoadCommitteeV2CandidaciesGroupData extends Fixture implements DependentFi
 
         /** @var CommitteeElection $election2 */
         $election2 = $this->getReference('committee-election-2');
-        $election2->addCandidaciesGroups(new CommitteeCandidaciesGroup(Uuid::fromString(self::CANDIDACIES_GROUP_3_UUID)));
+        $election2->addCandidaciesGroups($list = new CommitteeCandidaciesGroup(Uuid::fromString(self::CANDIDACIES_GROUP_3_UUID)));
         $list->addCandidacy($candidate = new CommitteeCandidacy($election2, Genders::FEMALE, Uuid::fromString(self::CANDIDACY_2_UUID)));
         $candidate->setCommitteeMembership($adherent5->getMembershipFor($committee));
 
