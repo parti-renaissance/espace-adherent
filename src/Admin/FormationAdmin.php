@@ -116,7 +116,7 @@ class FormationAdmin extends AbstractAdmin
     /**
      * @param Formation $object
      */
-    protected function postPersist(object $object): void
+    protected function prePersist(object $object): void
     {
         $this->handleFile($object);
     }
@@ -124,7 +124,7 @@ class FormationAdmin extends AbstractAdmin
     /**
      * @param Formation $object
      */
-    protected function postUpdate(object $object): void
+    protected function preUpdate(object $object): void
     {
         $this->handleFile($object);
     }
