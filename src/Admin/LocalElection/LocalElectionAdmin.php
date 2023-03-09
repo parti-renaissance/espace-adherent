@@ -89,6 +89,7 @@ class LocalElectionAdmin extends AbstractAdmin
                 ->with('Listes', ['class' => 'col-md-6'])
                     ->add('candidaciesGroups', null, [
                         'label' => false,
+                        'disabled' => true,
                     ])
                 ->end()
             ;
