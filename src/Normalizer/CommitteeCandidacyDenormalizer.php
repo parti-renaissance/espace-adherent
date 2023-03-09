@@ -8,14 +8,10 @@ use App\Repository\CommitteeCandidaciesGroupRepository;
 use App\Repository\CommitteeMembershipRepository;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
-use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class CommitteeCandidacyDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
+class CommitteeCandidacyDenormalizer implements DenormalizerInterface
 {
-    use DenormalizerAwareTrait;
-
     public function __construct(
         private readonly CommitteeCandidaciesGroupRepository $candidaciesGroupRepository,
         private readonly CommitteeMembershipRepository $committeeMembershipRepository
