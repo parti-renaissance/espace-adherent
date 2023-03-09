@@ -623,11 +623,14 @@ class CommitteeRepository extends ServiceEntityRepository
         return $this->retrieveTopCommitteesInReferentManagedArea($referent, $limit, false);
     }
 
-    public function createQueryBuilderForZones(array $zones): QueryBuilder
+    public function createQueryBuilderForZones(array $zones, int $version): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
-            ->andWhere('c.status = :status AND c.version = 1')
-            ->setParameter('status', Committee::APPROVED)
+            ->andWhere('c.status = :status AND c.version = :version')
+            ->setParameters([
+                'status' => Committee::APPROVED,
+                'version' => $version,
+            ])
             ->orderBy('c.name', 'ASC')
             ->orderBy('c.createdAt', 'DESC')
         ;
@@ -646,9 +649,9 @@ class CommitteeRepository extends ServiceEntityRepository
     /**
      * @return Committee[]
      */
-    public function findInZones(array $zones): array
+    public function findInZones(array $zones, int $version = 2): array
     {
-        return $this->createQueryBuilderForZones($zones)->getQuery()->getResult();
+        return $this->createQueryBuilderForZones($zones, $version)->getQuery()->getResult();
     }
 
     public function findCommitteesForHost(Adherent $adherent): array

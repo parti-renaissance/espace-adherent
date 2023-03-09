@@ -4,6 +4,7 @@ import registerServices from './services';
 import amountChooser from './listeners/amount-chooser'
 import addressAutocomplete from './listeners/address-autocomplete'
 import carousel from './listeners/carousel'
+import confirmModal from './listeners/confirm-modal'
 
 class Main {
     constructor() {
@@ -12,6 +13,7 @@ class Main {
             amountChooser,
             addressAutocomplete,
             carousel,
+            confirmModal,
         ];
     }
 

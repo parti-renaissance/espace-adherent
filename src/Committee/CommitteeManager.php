@@ -120,11 +120,6 @@ class CommitteeManager
         return $data;
     }
 
-    public function getCommitteeMembers(Committee $committee): AdherentCollection
-    {
-        return $this->getMembershipRepository()->findMembers($committee);
-    }
-
     /**
      * @return CommitteeMembershipCollection|CommitteeMembership[]
      */
