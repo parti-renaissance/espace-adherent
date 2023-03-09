@@ -29,7 +29,7 @@ class FillInformationsController extends AbstractContributionController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $contributionRequestHandler->handleSubscription($command, $this->getUser());
+            $contributionRequestHandler->handle($command, $this->getUser());
 
             $this->processor->doCompleteContributionRequest($command);
 
