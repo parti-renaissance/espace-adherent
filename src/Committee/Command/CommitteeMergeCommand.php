@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Committee;
+namespace App\Committee\Command;
 
 use App\Entity\Administrator;
 use App\Entity\Committee;

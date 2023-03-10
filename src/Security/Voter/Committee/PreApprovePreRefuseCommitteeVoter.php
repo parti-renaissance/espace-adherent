@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter\Committee;
 
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\MyTeam\DelegatedAccess;
@@ -25,7 +25,7 @@ class PreApprovePreRefuseCommitteeVoter extends AbstractAdherentVoter
 
     protected function supports(string $attribute, $committee): bool
     {
-        return \in_array($attribute, [CommitteePermissions::PRE_APPROVE, CommitteePermissions::PRE_REFUSE], true)
+        return \in_array($attribute, [CommitteePermissionEnum::PRE_APPROVE, CommitteePermissionEnum::PRE_REFUSE], true)
             && $committee instanceof Committee;
     }
 
@@ -43,7 +43,7 @@ class PreApprovePreRefuseCommitteeVoter extends AbstractAdherentVoter
             return false;
         }
 
-        if (!$committee->isPending() && !(CommitteePermissions::PRE_APPROVE === $attribute && $committee->isPreRefused())) {
+        if (!$committee->isPending() && !(CommitteePermissionEnum::PRE_APPROVE === $attribute && $committee->isPreRefused())) {
             return false;
         }
 

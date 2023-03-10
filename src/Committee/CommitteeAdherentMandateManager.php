@@ -2,6 +2,7 @@
 
 namespace App\Committee;
 
+use App\Committee\Command\CommitteeAdherentMandateCommand;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\AdherentMandateInterface;

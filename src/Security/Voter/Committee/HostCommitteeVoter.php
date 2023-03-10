@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter\Committee;
 
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Security\Voter\AbstractAdherentVoter;
@@ -11,7 +11,7 @@ class HostCommitteeVoter extends AbstractAdherentVoter
 {
     protected function supports(string $attribute, $committee): bool
     {
-        return CommitteePermissions::HOST === $attribute && $committee instanceof Committee;
+        return CommitteePermissionEnum::HOST === $attribute && $committee instanceof Committee;
     }
 
     /**

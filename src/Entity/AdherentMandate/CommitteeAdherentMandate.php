@@ -3,7 +3,7 @@
 namespace App\Entity\AdherentMandate;
 
 use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
-use App\Committee\CommitteeAdherentMandateCommand;
+use App\Committee\Command\CommitteeAdherentMandateCommand;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use Doctrine\ORM\Mapping as ORM;

@@ -3,7 +3,7 @@
 namespace Tests\App\Committee;
 
 use App\Address\Address;
-use App\Committee\CommitteeCreationCommand;
+use App\Committee\Command\CommitteeCreationCommand;
 use App\Committee\CommitteeFactory;
 use App\Entity\Adherent;
 use App\Entity\Committee;

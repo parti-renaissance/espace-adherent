@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Committee\CommitteeAdherentMandateCommand;
+use App\Committee\Command\CommitteeAdherentMandateCommand;
 use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;

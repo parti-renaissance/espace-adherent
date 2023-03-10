@@ -5,6 +5,7 @@ namespace App\Committee;
 use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
 use App\Collection\AdherentCollection;
 use App\Collection\CommitteeMembershipCollection;
+use App\Committee\Event\CommitteeEvent;
 use App\Committee\Event\FollowCommitteeEvent;
 use App\Committee\Event\UnfollowCommitteeEvent;
 use App\Coordinator\Filter\CommitteeFilter;
@@ -31,9 +32,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeManager
 {
-    public const EXCLUDE_HOSTS = false;
-    public const INCLUDE_HOSTS = true;
-
     private const COMMITTEE_PROPOSALS_COUNT = 3;
 
     private $entityManager;

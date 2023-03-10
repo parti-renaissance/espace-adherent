@@ -3,7 +3,7 @@
 namespace App\Security\Voter\Committee;
 
 use App\Committee\CommitteeManager;
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Committee;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -20,7 +20,7 @@ class PromoteToHostInCommitteeVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return CommitteePermissions::PROMOTE_TO_HOST === $attribute && $subject instanceof Committee;
+        return CommitteePermissionEnum::PROMOTE_TO_HOST === $attribute && $subject instanceof Committee;
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace App\Security\Voter\Committee;
 
 use App\Committee\CommitteeManager;
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Administrator;
 use App\Entity\Committee;
 use App\Security\Voter\Admin\AbstractAdminVoter;
@@ -19,7 +19,7 @@ class ManageCommitteeMandatesVoter extends AbstractAdminVoter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return \in_array($attribute, [CommitteePermissions::CHANGE_MANDATE, CommitteePermissions::ADD_MANDATE], true)
+        return \in_array($attribute, [CommitteePermissionEnum::CHANGE_MANDATE, CommitteePermissionEnum::ADD_MANDATE], true)
             && $subject instanceof Committee;
     }
 
@@ -32,7 +32,7 @@ class ManageCommitteeMandatesVoter extends AbstractAdminVoter
             return false;
         }
 
-        if (CommitteePermissions::ADD_MANDATE === $attribute) {
+        if (CommitteePermissionEnum::ADD_MANDATE === $attribute) {
             return $this->committeeManager->hasAvailableMandateTypesFor($committee);
         }
 

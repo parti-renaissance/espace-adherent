@@ -3,7 +3,7 @@
 namespace App\Committee\EventListener;
 
 use App\Committee\CommitteeAdherentMandateManager;
-use App\Committee\CommitteeEvent;
+use App\Committee\Event\CommitteeEvent;
 use App\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

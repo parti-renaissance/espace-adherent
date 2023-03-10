@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Committee\CommitteeCommand;
+use App\Committee\Command\CommitteeCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

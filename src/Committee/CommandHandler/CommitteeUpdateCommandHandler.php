@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Committee;
+namespace App\Committee\CommandHandler;
 
 use App\Address\PostAddressFactory;
+use App\Committee\Command\CommitteeCommand;
+use App\Committee\Event\CommitteeEvent;
 use App\Events;
 use App\Referent\ReferentTagManager;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;

@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter\Committee;
 
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Repository\AdherentRepository;
@@ -20,7 +20,7 @@ class FollowerCommitteeVoter extends AbstractAdherentVoter
     protected function supports(string $attribute, $subject): bool
     {
         return $subject instanceof Committee
-            && \in_array($attribute, CommitteePermissions::FOLLOWER, true)
+            && \in_array($attribute, CommitteePermissionEnum::FOLLOWER, true)
         ;
     }
 
@@ -35,7 +35,7 @@ class FollowerCommitteeVoter extends AbstractAdherentVoter
 
         $membership = $adherent->getMembershipFor($committee);
 
-        if (CommitteePermissions::FOLLOW === $attribute) {
+        if (CommitteePermissionEnum::FOLLOW === $attribute) {
             return !$membership;
         }
 

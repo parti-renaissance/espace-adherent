@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Committee\CommitteeEvent;
+use App\Committee\Event\CommitteeEvent;
 use App\Entity\Committee;
 use App\Entity\SynchronizedEntity;
 use App\Events;

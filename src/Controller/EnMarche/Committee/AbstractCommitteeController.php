@@ -2,11 +2,11 @@
 
 namespace App\Controller\EnMarche\Committee;
 
-use App\Committee\CommitteeCommand;
-use App\Committee\CommitteeCreationCommand;
-use App\Committee\CommitteeCreationCommandHandler;
+use App\Committee\Command\CommitteeCommand;
+use App\Committee\Command\CommitteeCreationCommand;
+use App\Committee\CommandHandler\CommitteeCreationCommandHandler;
+use App\Committee\CommandHandler\CommitteeUpdateCommandHandler;
 use App\Committee\CommitteeManager;
-use App\Committee\CommitteeUpdateCommandHandler;
 use App\Committee\Filter\CommitteeDesignationsListFilter;
 use App\Committee\Filter\CommitteeListFilter;
 use App\Controller\EnMarche\AccessDelegatorTrait;

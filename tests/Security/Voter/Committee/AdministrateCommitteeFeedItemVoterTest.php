@@ -2,7 +2,7 @@
 
 namespace Tests\App\Security\Voter\Committee;
 
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
@@ -15,7 +15,7 @@ class AdministrateCommitteeFeedItemVoterTest extends AbstractAdherentVoterTest
 {
     public function provideAnonymousCases(): iterable
     {
-        yield [false, true, CommitteePermissions::ADMIN_FEED, $this->createMock(CommitteeFeedItem::class)];
+        yield [false, true, CommitteePermissionEnum::ADMIN_FEED, $this->createMock(CommitteeFeedItem::class)];
     }
 
     protected function getVoter(): AbstractAdherentVoter
@@ -28,7 +28,7 @@ class AdministrateCommitteeFeedItemVoterTest extends AbstractAdherentVoterTest
         $adherent = $this->getAdherentMock(true);
         $committeeFeed = $this->getCommitteeFeedMock($adherent);
 
-        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::ADMIN_FEED, $committeeFeed);
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissionEnum::ADMIN_FEED, $committeeFeed);
     }
 
     public function testAdherentNotGrantedGranted(): void
@@ -37,7 +37,7 @@ class AdministrateCommitteeFeedItemVoterTest extends AbstractAdherentVoterTest
         $adherent = $this->getAdherentMock();
         $committeeFeed = $this->getCommitteeFeedMock($adherent, $committee);
 
-        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::ADMIN_FEED, $committeeFeed);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::ADMIN_FEED, $committeeFeed);
     }
 
     public function testSupervisorGranted(): void
@@ -52,7 +52,7 @@ class AdministrateCommitteeFeedItemVoterTest extends AbstractAdherentVoterTest
         ;
         $committeeFeed = $this->getCommitteeFeedMock($this->getAdherentMock(), $committee);
 
-        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::ADMIN_FEED, $committeeFeed);
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissionEnum::ADMIN_FEED, $committeeFeed);
     }
 
     private function getCommitteeMock(): Committee

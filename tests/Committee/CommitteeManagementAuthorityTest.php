@@ -5,7 +5,7 @@ namespace Tests\App\Committee;
 use App\Collection\AdherentCollection;
 use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
-use App\Committee\MultipleReferentsFoundException;
+use App\Committee\Exception\MultipleReferentsFoundException;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Adherent;

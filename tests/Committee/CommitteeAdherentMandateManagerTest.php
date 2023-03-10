@@ -2,7 +2,7 @@
 
 namespace Tests\App\Committee;
 
-use App\Committee\CommitteeAdherentMandateCommand;
+use App\Committee\Command\CommitteeAdherentMandateCommand;
 use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteeManager;
 use App\Committee\Exception\CommitteeAdherentMandateException;

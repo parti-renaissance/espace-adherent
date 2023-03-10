@@ -2,7 +2,7 @@
 
 namespace Tests\App\Security\Voter\Committee;
 
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Security\Voter\AbstractAdherentVoter;
@@ -33,7 +33,7 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
 
     public function provideAnonymousCases(): iterable
     {
-        yield [false, true, CommitteePermissions::CREATE];
+        yield [false, true, CommitteePermissionEnum::CREATE];
     }
 
     protected function getVoter(): AbstractAdherentVoter
@@ -50,7 +50,7 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
         ;
 
         $this->assertElectedRepresentativeRepositoryBehavior(false);
-        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::CREATE);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::CREATE);
     }
 
     public function testAdherentCannotCreateIfNotCertified()
@@ -66,7 +66,7 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
         ;
 
         $this->assertElectedRepresentativeRepositoryBehavior(false);
-        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::CREATE);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::CREATE);
     }
 
     public function testAdherentCannotCreateIfSupervisor()
@@ -86,7 +86,7 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
         ;
 
         $this->assertElectedRepresentativeRepositoryBehavior(false);
-        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::CREATE);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::CREATE);
     }
 
     public function testAdherentCannotCreateIfHasActiveParliamentaryMandate()
@@ -106,7 +106,7 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
         ;
 
         $this->assertElectedRepresentativeRepositoryBehavior(true, $adherent, false);
-        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::CREATE);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::CREATE);
     }
 
     public function testAdherentWithCorrectConditionsCanCreate()
@@ -126,7 +126,7 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
         ;
 
         $this->assertElectedRepresentativeRepositoryBehavior(true, $adherent, true);
-        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::CREATE);
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissionEnum::CREATE);
     }
 
     public function testReferentCanCreate()
@@ -137,7 +137,7 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
             ->willReturn(true)
         ;
 
-        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::CREATE);
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissionEnum::CREATE);
     }
 
     private function assertElectedRepresentativeRepositoryBehavior(

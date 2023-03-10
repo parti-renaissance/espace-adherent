@@ -4,7 +4,7 @@ namespace App\AdherentMessage\Listener;
 
 use App\AdherentMessage\Command\CreateStaticSegmentCommand;
 use App\AdherentMessage\StaticSegmentInterface;
-use App\Committee\CommitteeEvent;
+use App\Committee\Event\CommitteeEvent;
 use App\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;

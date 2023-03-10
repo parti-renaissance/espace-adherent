@@ -2,7 +2,7 @@
 
 namespace App\Committee;
 
-final class CommitteePermissions
+final class CommitteePermissionEnum
 {
     public const PRE_APPROVE = 'PRE_APPROVE_COMMITTEE';
     public const PRE_REFUSE = 'PRE_REFUSE_COMMITTEE';

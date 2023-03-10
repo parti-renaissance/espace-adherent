@@ -2,7 +2,7 @@
 
 namespace Tests\App\Security\Voter\Committee;
 
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Security\Voter\AbstractAdherentVoter;
@@ -14,7 +14,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTest
 {
     public function provideAnonymousCases(): iterable
     {
-        yield [false, true, CommitteePermissions::HOST, $this->createMock(Committee::class)];
+        yield [false, true, CommitteePermissionEnum::HOST, $this->createMock(Committee::class)];
     }
 
     protected function getVoter(): AbstractAdherentVoter
@@ -35,7 +35,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTest
             ->with($committee)
         ;
 
-        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::HOST, $committee);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::HOST, $committee);
     }
 
     public function testAdherentCanHostCommitteeIfSupervisor()
@@ -43,7 +43,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTest
         $committee = $this->createCommitteeMock();
         $adherent = $this->getAdherentMock($committee, true);
 
-        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::HOST, $committee);
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissionEnum::HOST, $committee);
     }
 
     public function testAdherentCanHostCommitteeIfHost()
@@ -51,7 +51,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTest
         $committee = $this->createCommitteeMock();
         $adherent = $this->getAdherentMock($committee, false, true);
 
-        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::HOST, $committee);
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissionEnum::HOST, $committee);
     }
 
     public function testAdherentCannotHostCommitteeIfNotHostAndNotSupervisor()
@@ -59,7 +59,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTest
         $committee = $this->createCommitteeMock();
         $adherent = $this->getAdherentMock($committee, false, false);
 
-        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::HOST, $committee);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::HOST, $committee);
     }
 
     /**
