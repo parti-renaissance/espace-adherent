@@ -265,10 +265,6 @@ services:
     App\Normalizer\Indexer\ThrowExceptionNormalizer:
         tags: [{name: 'serializer.normalizer', priority: -801}] # to be just after CustomNormalizer
 
-    App\Committee\EventListener\CommitteeSubscriber:
-        arguments:
-            $producer: '@old_sound_rabbit_mq.sync_api_producer'
-
     App\Scope\GeneralScopeGenerator:
         arguments:
             $generators: !tagged_iterator 'app.adherent.scope_generator'

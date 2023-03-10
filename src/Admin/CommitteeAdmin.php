@@ -3,7 +3,7 @@
 namespace App\Admin;
 
 use App\Admin\Filter\ZoneAutocompleteFilter;
-use App\Committee\CommitteeEvent;
+use App\Committee\Event\CommitteeEvent;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;

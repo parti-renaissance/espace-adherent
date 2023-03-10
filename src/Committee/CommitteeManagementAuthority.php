@@ -3,6 +3,7 @@
 namespace App\Committee;
 
 use App\Committee\Event\FollowCommitteeEvent;
+use App\Committee\Exception\MultipleReferentsFoundException;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Mailer\MailerService;

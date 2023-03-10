@@ -27,10 +27,6 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'chezvous_algolia', type: direct }
             class:            App\Producer\ChezVous\AlgoliaProducer
 
-        sync_api:
-            connection: default
-            exchange_options: { name: 'api', type: topic }
-
     consumers:
         mailer_campaign:
             connection:        default

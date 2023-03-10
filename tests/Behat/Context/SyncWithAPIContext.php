@@ -2,7 +2,7 @@
 
 namespace Tests\App\Behat\Context;
 
-use App\Committee\CommitteeEvent;
+use App\Committee\Event\CommitteeEvent;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Event\CommitteeEvent as CommitteeEventEntity;

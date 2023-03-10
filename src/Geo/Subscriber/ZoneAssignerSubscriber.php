@@ -4,7 +4,7 @@ namespace App\Geo\Subscriber;
 
 use App\Address\Address;
 use App\Address\AddressInterface;
-use App\Committee\CommitteeEvent;
+use App\Committee\Event\CommitteeEvent;
 use App\Entity\ZoneableEntity;
 use App\Event\EventEvent;
 use App\Events;

@@ -3,7 +3,7 @@
 namespace App\Form\Admin;
 
 use App\Address\Address;
-use App\Committee\CommitteeCommand;
+use App\Committee\Command\CommitteeCommand;
 use App\Form\AddressType;
 use App\Form\AdherentIdType;
 use Symfony\Component\Form\AbstractType;

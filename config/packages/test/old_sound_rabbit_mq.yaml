@@ -9,15 +9,3 @@ old_sound_rabbit_mq:
             vhost: '/test'
             read_write_timeout: 40
             heartbeat: 20
-
-    producers:
-        sync_api:
-            connection: default
-            exchange_options: { name: 'api', type: topic }
-            queue_options:
-                declare: true
-                name: api_sync
-                routing_keys:
-                    - user.*
-                    - event.*
-                    - committee.*

@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter;
 
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -11,7 +11,7 @@ class CommitteeShowVoter extends AbstractAdherentVoter
 {
     protected function supports(string $attribute, $group): bool
     {
-        return CommitteePermissions::SHOW === $attribute && $group instanceof Committee;
+        return CommitteePermissionEnum::SHOW === $attribute && $group instanceof Committee;
     }
 
     /**

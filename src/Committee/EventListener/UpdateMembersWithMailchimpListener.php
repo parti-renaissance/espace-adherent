@@ -2,7 +2,7 @@
 
 namespace App\Committee\EventListener;
 
-use App\Committee\CommitteeEvent;
+use App\Committee\Event\CommitteeEvent;
 use App\Events;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Repository\CommitteeMembershipRepository;

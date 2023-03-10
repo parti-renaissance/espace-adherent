@@ -3,7 +3,7 @@
 namespace App\Twig;
 
 use App\Committee\CommitteeManager;
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
@@ -50,32 +50,32 @@ class CommitteeRuntime implements RuntimeExtensionInterface
 
     public function isHost(Committee $committee): bool
     {
-        return $this->authorizationChecker->isGranted(CommitteePermissions::HOST, $committee);
+        return $this->authorizationChecker->isGranted(CommitteePermissionEnum::HOST, $committee);
     }
 
     public function isSupervisor(Committee $committee): bool
     {
-        return $this->authorizationChecker->isGranted(CommitteePermissions::SUPERVISE, $committee);
+        return $this->authorizationChecker->isGranted(CommitteePermissionEnum::SUPERVISE, $committee);
     }
 
     public function canFollow(Committee $committee): bool
     {
-        return $this->authorizationChecker->isGranted(CommitteePermissions::FOLLOW, $committee);
+        return $this->authorizationChecker->isGranted(CommitteePermissionEnum::FOLLOW, $committee);
     }
 
     public function canUnfollow(Committee $committee): bool
     {
-        return $this->authorizationChecker->isGranted(CommitteePermissions::UNFOLLOW, $committee);
+        return $this->authorizationChecker->isGranted(CommitteePermissionEnum::UNFOLLOW, $committee);
     }
 
     public function canCreate(Committee $committee): bool
     {
-        return $this->authorizationChecker->isGranted(CommitteePermissions::CREATE, $committee);
+        return $this->authorizationChecker->isGranted(CommitteePermissionEnum::CREATE, $committee);
     }
 
     public function canSee(Committee $committee): bool
     {
-        return $this->authorizationChecker->isGranted(CommitteePermissions::SHOW, $committee);
+        return $this->authorizationChecker->isGranted(CommitteePermissionEnum::SHOW, $committee);
     }
 
     public function getCommitteeColorStatus(Adherent $adherent, Committee $committee): string

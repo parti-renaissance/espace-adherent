@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Committee;
+namespace App\Committee\Exception;
 
 use App\Collection\AdherentCollection;
 

@@ -2,7 +2,7 @@
 
 namespace Tests\App\Security\Voter;
 
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Security\Voter\AbstractAdherentVoter;
@@ -22,12 +22,12 @@ class CommitteeShowVoterTest extends AbstractAdherentVoterTest
         // Not approved groups should been shown to anonymous
         $notApprovedCommittee = $this->getCommitteeMock(false);
 
-        yield [false, true, CommitteePermissions::SHOW, $notApprovedCommittee];
+        yield [false, true, CommitteePermissionEnum::SHOW, $notApprovedCommittee];
 
         // Approved groups should be shown to anonymous
         $approvedCommittee = $this->getCommitteeMock(true);
 
-        yield [true, false, CommitteePermissions::SHOW, $approvedCommittee];
+        yield [true, false, CommitteePermissionEnum::SHOW, $approvedCommittee];
     }
 
     /**
@@ -54,8 +54,8 @@ class CommitteeShowVoterTest extends AbstractAdherentVoterTest
 
     public function provideGroupCases(): iterable
     {
-        yield [true, CommitteePermissions::SHOW];
-        yield [false, CommitteePermissions::SHOW];
+        yield [true, CommitteePermissionEnum::SHOW];
+        yield [false, CommitteePermissionEnum::SHOW];
     }
 
     /**

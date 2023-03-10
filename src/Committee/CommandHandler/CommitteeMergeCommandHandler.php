@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Committee;
+namespace App\Committee\CommandHandler;
 
+use App\Committee\Command\CommitteeMergeCommand;
+use App\Committee\Event\CommitteeEvent;
 use App\Committee\Event\CommitteeMergeEvent;
 use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\Administrator;

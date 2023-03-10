@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Committee;
+namespace App\Committee\Command;
 
 use App\Address\Address;
 use App\Entity\Adherent;

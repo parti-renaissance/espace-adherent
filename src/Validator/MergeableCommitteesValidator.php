@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Committee\CommitteeMergeCommand;
+use App\Committee\Command\CommitteeMergeCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

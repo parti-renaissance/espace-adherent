@@ -3,10 +3,10 @@
 namespace App\Controller\EnMarche;
 
 use App\AppCodeEnum;
-use App\Committee\CommitteeCreationCommand;
-use App\Committee\CommitteeCreationCommandHandler;
+use App\Committee\Command\CommitteeCreationCommand;
+use App\Committee\CommandHandler\CommitteeCreationCommandHandler;
 use App\Committee\CommitteeManager;
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Contact\ContactMessage;
 use App\Contact\ContactMessageHandler;
 use App\Entity\Adherent;
@@ -131,7 +131,7 @@ class AdherentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$this->isGranted(CommitteePermissions::CREATE)) {
+            if (!$this->isGranted(CommitteePermissionEnum::CREATE)) {
                 throw $this->createAccessDeniedException();
             }
 

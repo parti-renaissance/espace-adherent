@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Committee;
+namespace App\Committee\Event;
 
 use App\Entity\Committee;
 use App\Geocoder\GeocodableEntityEventInterface;

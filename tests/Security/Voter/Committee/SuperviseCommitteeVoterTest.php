@@ -2,7 +2,7 @@
 
 namespace Tests\App\Security\Voter\Committee;
 
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Security\Voter\AbstractAdherentVoter;
@@ -14,7 +14,7 @@ class SuperviseCommitteeVoterTest extends AbstractAdherentVoterTest
 {
     public function provideAnonymousCases(): iterable
     {
-        yield [false, true, CommitteePermissions::SUPERVISE, $this->createMock(Committee::class)];
+        yield [false, true, CommitteePermissionEnum::SUPERVISE, $this->createMock(Committee::class)];
     }
 
     protected function getVoter(): AbstractAdherentVoter
@@ -31,7 +31,7 @@ class SuperviseCommitteeVoterTest extends AbstractAdherentVoterTest
             ->with($committee)
         ;
 
-        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::SUPERVISE, $committee);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::SUPERVISE, $committee);
     }
 
     public function testAdherentIsNotGranted()
@@ -39,7 +39,7 @@ class SuperviseCommitteeVoterTest extends AbstractAdherentVoterTest
         $committee = $this->createCommitteeMock();
         $adherent = $this->getAdherentMock(false, $committee);
 
-        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::SUPERVISE, $committee);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissionEnum::SUPERVISE, $committee);
     }
 
     public function testSupervizorIsGranted()
@@ -47,7 +47,7 @@ class SuperviseCommitteeVoterTest extends AbstractAdherentVoterTest
         $committee = $this->createCommitteeMock();
         $adherent = $this->getAdherentMock(true, $committee);
 
-        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::SUPERVISE, $committee);
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissionEnum::SUPERVISE, $committee);
     }
 
     /**

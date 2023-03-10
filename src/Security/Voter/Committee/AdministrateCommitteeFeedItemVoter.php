@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter\Committee;
 
-use App\Committee\CommitteePermissions;
+use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\CommitteeFeedItem;
 use App\Security\Voter\AbstractAdherentVoter;
@@ -11,7 +11,7 @@ class AdministrateCommitteeFeedItemVoter extends AbstractAdherentVoter
 {
     protected function supports(string $attribute, $subject): bool
     {
-        return CommitteePermissions::ADMIN_FEED === $attribute
+        return CommitteePermissionEnum::ADMIN_FEED === $attribute
             && $subject instanceof CommitteeFeedItem;
     }
 

@@ -2,7 +2,7 @@
 
 namespace Tests\App\Geocoder\Subscriber;
 
-use App\Committee\CommitteeEvent;
+use App\Committee\Event\CommitteeEvent;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Geocoder\Geocoder;

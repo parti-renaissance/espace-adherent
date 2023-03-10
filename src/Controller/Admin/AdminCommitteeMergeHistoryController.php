@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin;
 
-use App\Committee\CommitteeMergeCommand;
-use App\Committee\CommitteeMergeCommandHandler;
+use App\Committee\Command\CommitteeMergeCommand;
+use App\Committee\CommandHandler\CommitteeMergeCommandHandler;
 use App\Entity\Reporting\CommitteeMergeHistory;
 use App\Form\Admin\CommitteeMergeType;
 use App\Form\ConfirmActionType;
