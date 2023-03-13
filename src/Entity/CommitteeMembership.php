@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Committee\CommitteeMembershipTriggerEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -108,9 +107,9 @@ class CommitteeMembership implements UuidEntityInterface
     private $committeeCandidacies;
 
     /**
-     * @ORM\Column(type="string", name="`trigger`", nullable=true, enumType=CommitteeMembershipTriggerEnum::class)
+     * @ORM\Column(name="`trigger`", nullable=true)
      */
-    private ?CommitteeMembershipTriggerEnum $trigger;
+    private ?string $trigger;
 
     private function __construct(
         UuidInterface $uuid,
@@ -118,7 +117,7 @@ class CommitteeMembership implements UuidEntityInterface
         Adherent $adherent,
         string $privilege = self::COMMITTEE_FOLLOWER,
         \DateTimeInterface $subscriptionDate = null,
-        CommitteeMembershipTriggerEnum $trigger = null
+        ?string $trigger = null
     ) {
         $this->uuid = $uuid;
         $this->committee = $committee;
@@ -153,7 +152,7 @@ class CommitteeMembership implements UuidEntityInterface
         Adherent $adherent,
         string $privilege,
         \DateTimeInterface $subscriptionDate,
-        CommitteeMembershipTriggerEnum $trigger = null
+        ?string $trigger = null
     ): self {
         return new self(
             self::createUuid($adherent->getUuid(), $committee->getUuid()),
@@ -335,7 +334,7 @@ class CommitteeMembership implements UuidEntityInterface
         return false;
     }
 
-    public function setTrigger(?CommitteeMembershipTriggerEnum $trigger): void
+    public function setTrigger(?string $trigger): void
     {
         $this->trigger = $trigger;
     }

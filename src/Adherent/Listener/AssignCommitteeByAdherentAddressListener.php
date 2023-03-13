@@ -34,7 +34,7 @@ class AssignCommitteeByAdherentAddressListener implements EventSubscriberInterfa
     {
         $adherent = $event->getUser();
         $address = $adherent->getPostAddress();
-        $isAddressChanged = !$this->beforeAddress->equals($address);
+        $isAddressChanged = !$this->beforeAddress || !$this->beforeAddress->equals($address);
 
         $currentCommitteeMembership = $adherent->getCommitteeV2Membership();
         $currentCommittee = $currentCommitteeMembership?->getCommittee();
@@ -47,6 +47,6 @@ class AssignCommitteeByAdherentAddressListener implements EventSubscriberInterfa
             return;
         }
 
-        $this->committeeManager->followCommittee($adherent, $committeeByAddress, CommitteeMembershipTriggerEnum::AddressUpdate);
+        $this->committeeManager->followCommittee($adherent, $committeeByAddress, CommitteeMembershipTriggerEnum::ADDRESS_UPDATE);
     }
 }

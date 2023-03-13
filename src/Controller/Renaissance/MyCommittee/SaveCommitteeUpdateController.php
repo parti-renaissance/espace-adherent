@@ -41,7 +41,7 @@ class SaveCommitteeUpdateController extends AbstractController
             }
         }
 
-        $committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::Manual);
+        $committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::MANUAL);
 
         $this->addFlash('info', 'Votre choix de comité local a bien été sauvegardé');
 

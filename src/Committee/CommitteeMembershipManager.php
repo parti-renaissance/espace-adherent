@@ -33,11 +33,8 @@ class CommitteeMembershipManager
         return null;
     }
 
-    public function followCommittee(
-        Adherent $adherent,
-        Committee $committee,
-        CommitteeMembershipTriggerEnum $trigger
-    ): void {
+    public function followCommittee(Adherent $adherent, Committee $committee, string $trigger): void
+    {
         // 1. Comes out of the existing committees
         foreach ($adherent->getMemberships()->getCommitteeV2Memberships() as $membership) {
             if (!$membership->getCommittee()->equals($committee)) {

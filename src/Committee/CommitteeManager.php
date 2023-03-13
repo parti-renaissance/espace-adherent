@@ -284,11 +284,8 @@ class CommitteeManager
         }
     }
 
-    public function followCommittee(
-        Adherent $adherent,
-        Committee $committee,
-        CommitteeMembershipTriggerEnum $trigger = null
-    ): void {
+    public function followCommittee(Adherent $adherent, Committee $committee, string $trigger = null): void
+    {
         $this->entityManager->persist($membership = $adherent->followCommittee($committee));
         $membership->setTrigger($trigger);
         $this->entityManager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::JOIN()));
