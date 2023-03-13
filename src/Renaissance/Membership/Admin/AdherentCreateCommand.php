@@ -149,7 +149,6 @@ class AdherentCreateCommand implements MembershipInterface
      */
     public \DateTime $cotisationDate;
 
-    private ?int $adherentId = null;
     private bool $isCertified = false;
 
     public function __construct(public ?string $source = null)
@@ -191,11 +190,6 @@ class AdherentCreateCommand implements MembershipInterface
         return $this->source;
     }
 
-    public function getAdherentId(): ?int
-    {
-        return $this->adherentId;
-    }
-
     public function isCertified(): bool
     {
         return $this->isCertified;
@@ -203,7 +197,6 @@ class AdherentCreateCommand implements MembershipInterface
 
     public function updateFromAdherent(Adherent $adherent): void
     {
-        $this->adherentId = $adherent->getId();
         $this->isCertified = $adherent->isCertified();
         $this->gender = $adherent->getGender();
         $this->firstName = $adherent->getFirstName();
