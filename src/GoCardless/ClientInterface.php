@@ -9,11 +9,33 @@ use GoCardlessPro\Resources\Subscription;
 
 interface ClientInterface
 {
-    public function createCustomer(string $email, string $firstName, string $lastName, array $metadata = []): Customer;
+    public function getCustomer(string $customerId): Customer;
 
-    public function createBankAccount(Customer $customer, string $iban, string $accountName): CustomerBankAccount;
+    public function createCustomer(
+        string $email,
+        string $firstName,
+        string $lastName,
+        string $address = null,
+        string $city = null,
+        string $postalCode = null,
+        string $countryCode = null,
+        array $metadata = []
+    ): Customer;
 
-    public function createMandate(CustomerBankAccount $customerBankAccount): Mandate;
+    public function disableBankAccount(string $bankAccountId): CustomerBankAccount;
+
+    public function createBankAccount(
+        Customer $customer,
+        string $iban,
+        string $accountName,
+        array $metadata = []
+    ): CustomerBankAccount;
+
+    public function cancelMandate(string $mandateId): Mandate;
+
+    public function createMandate(CustomerBankAccount $customerBankAccount, array $metadata = []): Mandate;
+
+    public function cancelSubscription(string $subscriptionId): Subscription;
 
     public function createSubscription(Mandate $mandate, int $amount, array $metadata = []): Subscription;
 }

@@ -20,16 +20,38 @@ class Client implements ClientInterface
         $this->client = $this->createClient();
     }
 
-    public function createCustomer(string $email, string $firstName, string $lastName, array $metadata = []): Customer
+    public function getCustomer(string $customerId): Customer
     {
+        return $this->client->customers()->get($customerId);
+    }
+
+    public function createCustomer(
+        string $email,
+        string $firstName,
+        string $lastName,
+        string $address = null,
+        string $city = null,
+        string $postalCode = null,
+        string $countryCode = null,
+        array $metadata = []
+    ): Customer {
         return $this->client->customers()->create([
             'params' => [
                 'email' => $email,
                 'given_name' => $firstName,
                 'family_name' => $lastName,
+                'address_line1' => $address,
+                'city' => $city,
+                'postal_code' => $postalCode,
+                'country_code' => $countryCode,
                 'metadata' => $metadata,
             ],
         ]);
+    }
+
+    public function disableBankAccount(string $bankAccountId): CustomerBankAccount
+    {
+        return $this->client->customerBankAccounts()->disable($bankAccountId);
     }
 
     public function createBankAccount(
@@ -48,6 +70,11 @@ class Client implements ClientInterface
         ]);
     }
 
+    public function cancelMandate(string $mandateId): Mandate
+    {
+        return $this->client->mandates()->cancel($mandateId);
+    }
+
     public function createMandate(CustomerBankAccount $customerBankAccount, array $metadata = []): Mandate
     {
         return $this->client->mandates()->create([
@@ -56,6 +83,11 @@ class Client implements ClientInterface
                 'metadata' => $metadata,
             ],
         ]);
+    }
+
+    public function cancelSubscription(string $subscriptionId): Subscription
+    {
+        return $this->client->subscriptions()->cancel($subscriptionId);
     }
 
     public function createSubscription(Mandate $mandate, int $amount, array $metadata = []): Subscription
