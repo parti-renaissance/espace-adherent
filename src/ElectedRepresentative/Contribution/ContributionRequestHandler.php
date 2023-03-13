@@ -5,7 +5,7 @@ namespace App\ElectedRepresentative\Contribution;
 use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\Contribution;
-use App\GoCardless\Client;
+use App\GoCardless\ClientInterface;
 use App\GoCardless\Subscription;
 use App\Repository\ElectedRepresentative\ContributionRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
@@ -15,7 +15,7 @@ class ContributionRequestHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly Client $goCardless,
+        private readonly ClientInterface $gocardless,
         private readonly ElectedRepresentativeRepository $electedRepresentativeRepository,
         private readonly ContributionRepository $contributionRepository
     ) {
@@ -42,19 +42,19 @@ class ContributionRequestHandler
     private function cancelPreviousSubscription(Contribution $contribution): void
     {
         if ($bankAccountId = $contribution->gocardlessBankAccountId) {
-            $lastBankAccount = $this->goCardless->disableBankAccount($bankAccountId);
+            $lastBankAccount = $this->gocardless->disableBankAccount($bankAccountId);
 
             $contribution->gocardlessBankAccountEnabled = $lastBankAccount->enabled;
         }
 
         if ($mandateId = $contribution->gocardlessMandateId) {
-            $lastMandate = $this->goCardless->cancelMandate($mandateId);
+            $lastMandate = $this->gocardless->cancelMandate($mandateId);
 
             $contribution->gocardlessMandateStatus = $lastMandate->status;
         }
 
         if ($subscriptionId = $contribution->gocardlessSubscriptionId) {
-            $lastSubscription = $this->goCardless->cancelSubscription($subscriptionId);
+            $lastSubscription = $this->gocardless->cancelSubscription($subscriptionId);
 
             $contribution->gocardlessSubscriptionStatus = $lastSubscription->status;
         }
@@ -68,8 +68,8 @@ class ContributionRequestHandler
         $metadata = $this->createMetadata($adherent);
 
         $customer = $customerId
-            ? $this->goCardless->getCustomer($customerId)
-            : $this->goCardless->createCustomer(
+            ? $this->gocardless->getCustomer($customerId)
+            : $this->gocardless->createCustomer(
                 $adherent->getEmailAddress(),
                 $adherent->getFirstName(),
                 $adherent->getLastName(),
@@ -81,16 +81,16 @@ class ContributionRequestHandler
             )
         ;
 
-        $bankAccount = $this->goCardless->createBankAccount(
+        $bankAccount = $this->gocardless->createBankAccount(
             $customer,
             $contributionRequest->iban,
             $contributionRequest->accountName,
             $metadata
         );
 
-        $mandate = $this->goCardless->createMandate($bankAccount, $metadata);
+        $mandate = $this->gocardless->createMandate($bankAccount, $metadata);
 
-        $subscription = $this->goCardless->createSubscription(
+        $subscription = $this->gocardless->createSubscription(
             $mandate,
             $contributionRequest->getContributionAmount(),
             $metadata
