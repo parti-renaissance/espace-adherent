@@ -2,10 +2,10 @@
 
 namespace App\Controller\Renaissance\MyCommittee;
 
-use App\Committee\CommitteeManager;
+use App\Committee\CommitteeMembershipManager;
+use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\CommitteeMembership;
 use App\Entity\Geo\Zone;
 use App\Geo\ManagedZoneProvider;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +21,7 @@ class SaveCommitteeUpdateController extends AbstractController
     public function __invoke(
         Committee $committee,
         ManagedZoneProvider $zoneProvider,
-        CommitteeManager $committeeManager,
+        CommitteeMembershipManager $committeeMembershipManager,
         EntityManagerInterface $entityManager
     ): Response {
         /** @var Adherent $adherent */
@@ -41,16 +41,7 @@ class SaveCommitteeUpdateController extends AbstractController
             }
         }
 
-        $oldMemberships = $adherent->getMemberships()->getCommitteeV2Memberships();
-        array_walk(
-            $oldMemberships,
-            fn (CommitteeMembership $membership) => $committeeManager->unfollowCommittee($adherent, $membership->getCommittee()),
-        );
-
-        $entityManager->persist($committeeMembership = $adherent->followCommittee($committee));
-        $committeeMembership->setTrigger('manual');
-
-        $entityManager->flush();
+        $committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::Manual);
 
         $this->addFlash('info', 'Votre choix de comité local a bien été sauvegardé');
 

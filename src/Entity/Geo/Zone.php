@@ -86,13 +86,17 @@ class Zone implements GeoInterface
         Zone::VOTE_PLACE,
     ];
 
+    /*
+     * Committee zone types, the order is important,
+     * so it's used on assignation process
+     */
     public const COMMITTEE_TYPES = [
-        Zone::COUNTRY,
+        Zone::VOTE_PLACE,
+        Zone::BOROUGH,
         Zone::CITY,
         Zone::CITY_COMMUNITY,
         Zone::CANTON,
-        Zone::BOROUGH,
-        Zone::VOTE_PLACE,
+        Zone::COUNTRY,
     ];
 
     public const CANDIDATE_TYPES = [

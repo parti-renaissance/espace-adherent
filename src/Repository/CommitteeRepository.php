@@ -181,22 +181,6 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
-    /**
-     * Returns the total number of approved committees.
-     */
-    public function countApprovedCommittees(): int
-    {
-        $query = $this
-            ->createQueryBuilder('c')
-            ->select('COUNT(c.uuid)')
-            ->where('c.status = :status AND c.version = 1')
-            ->setParameter('status', Committee::APPROVED)
-            ->getQuery()
-        ;
-
-        return $query->getSingleScalarResult();
-    }
-
     public function getQueryBuilderForTags(array $referentTags): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
@@ -623,7 +607,7 @@ class CommitteeRepository extends ServiceEntityRepository
         return $this->retrieveTopCommitteesInReferentManagedArea($referent, $limit, false);
     }
 
-    public function createQueryBuilderForZones(array $zones, int $version): QueryBuilder
+    public function createQueryBuilderForZones(array $zones, int $version, bool $withZoneParents = true): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
             ->andWhere('c.status = :status AND c.version = :version')
@@ -642,16 +626,18 @@ class CommitteeRepository extends ServiceEntityRepository
             Committee::class,
             'c2',
             'zones',
-            'z2'
+            'z2',
+            null,
+            $withZoneParents
         );
     }
 
     /**
      * @return Committee[]
      */
-    public function findInZones(array $zones, int $version = 2): array
+    public function findInZones(array $zones, int $version = 2, bool $withZoneParents = true): array
     {
-        return $this->createQueryBuilderForZones($zones, $version)->getQuery()->getResult();
+        return $this->createQueryBuilderForZones($zones, $version, $withZoneParents)->getQuery()->getResult();
     }
 
     public function findCommitteesForHost(Adherent $adherent): array

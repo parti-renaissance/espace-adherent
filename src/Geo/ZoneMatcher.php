@@ -144,4 +144,14 @@ class ZoneMatcher
             }
         )));
     }
+
+    public function flattenZones(array $zones, array $types = []): array
+    {
+        $zones = array_unique(array_merge(...array_map(
+            fn (Zone $zone) => $zone->getWithParents($types),
+            array_filter($zones, fn (Zone $zone) => !$types || \in_array($zone->getType(), $types))
+        )));
+
+        return array_values($zones);
+    }
 }

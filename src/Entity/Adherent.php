@@ -8,6 +8,7 @@ use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
 use App\Collection\CommitteeMembershipCollection;
+use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
@@ -1561,19 +1562,26 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public function followCommittee(
         Committee $committee,
-        \DateTimeInterface $subscriptionDate = null
+        \DateTimeInterface $subscriptionDate = null,
+        CommitteeMembershipTriggerEnum $trigger = null
     ): CommitteeMembership {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER, $subscriptionDate ?? new \DateTime());
+        return $this->joinCommittee(
+            $committee,
+            CommitteeMembership::COMMITTEE_FOLLOWER,
+            $subscriptionDate ?? new \DateTime(),
+            $trigger
+        );
     }
 
     private function joinCommittee(
         Committee $committee,
         string $privilege,
-        \DateTimeInterface $subscriptionDate
+        \DateTimeInterface $subscriptionDate,
+        CommitteeMembershipTriggerEnum $trigger = null
     ): CommitteeMembership {
         $committee->incrementMembersCount();
 
-        return CommitteeMembership::createForAdherent($committee, $this, $privilege, $subscriptionDate);
+        return CommitteeMembership::createForAdherent($committee, $this, $privilege, $subscriptionDate, $trigger);
     }
 
     public function getPostAddress(): PostAddress
