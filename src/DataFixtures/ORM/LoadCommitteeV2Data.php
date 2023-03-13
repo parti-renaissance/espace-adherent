@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -47,13 +48,13 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
         $this->setReference('committee-election-2', $election);
 
         $adherentRe4 = $this->getReference('renaissance-user-4');
-        $manager->persist($adherentRe4->followCommittee($object));
+        $manager->persist($adherentRe4->followCommittee($object, trigger: CommitteeMembershipTriggerEnum::COMMITTEE_CREATION));
 
         $adherent5 = $this->getReference('adherent-5');
-        $manager->persist($adherent5->followCommittee($object));
+        $manager->persist($adherent5->followCommittee($object, trigger: CommitteeMembershipTriggerEnum::COMMITTEE_CREATION));
 
         $adherent16 = $this->getReference('adherent-16');
-        $manager->persist($adherent16->followCommittee($object));
+        $manager->persist($adherent16->followCommittee($object, trigger: CommitteeMembershipTriggerEnum::COMMITTEE_CREATION));
 
         $this->setReference('committee-v2-2', $object);
 

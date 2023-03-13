@@ -284,9 +284,10 @@ class CommitteeManager
         }
     }
 
-    public function followCommittee(Adherent $adherent, Committee $committee): void
+    public function followCommittee(Adherent $adherent, Committee $committee, string $trigger = null): void
     {
         $this->entityManager->persist($membership = $adherent->followCommittee($committee));
+        $membership->setTrigger($trigger);
         $this->entityManager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::JOIN()));
 
         $this->entityManager->flush();
@@ -375,11 +376,6 @@ class CommitteeManager
     private function getAdherentRepository(): AdherentRepository
     {
         return $this->entityManager->getRepository(Adherent::class);
-    }
-
-    public function countApprovedCommittees(): int
-    {
-        return $this->getCommitteeRepository()->countApprovedCommittees();
     }
 
     public function changePrivilege(

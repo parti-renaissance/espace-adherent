@@ -109,21 +109,22 @@ class CommitteeMembership implements UuidEntityInterface
     /**
      * @ORM\Column(name="`trigger`", nullable=true)
      */
-    private ?string $trigger = null;
+    private ?string $trigger;
 
     private function __construct(
         UuidInterface $uuid,
         Committee $committee,
         Adherent $adherent,
         string $privilege = self::COMMITTEE_FOLLOWER,
-        \DateTimeInterface $subscriptionDate = null
+        \DateTimeInterface $subscriptionDate = null,
+        ?string $trigger = null
     ) {
         $this->uuid = $uuid;
         $this->committee = $committee;
         $this->adherent = $adherent;
         $this->privilege = $privilege;
         $this->joinedAt = $subscriptionDate ?? new \DateTime();
-
+        $this->trigger = $trigger;
         $this->committeeCandidacies = new ArrayCollection();
     }
 
@@ -150,14 +151,16 @@ class CommitteeMembership implements UuidEntityInterface
         Committee $committee,
         Adherent $adherent,
         string $privilege,
-        \DateTimeInterface $subscriptionDate
+        \DateTimeInterface $subscriptionDate,
+        ?string $trigger = null
     ): self {
         return new self(
             self::createUuid($adherent->getUuid(), $committee->getUuid()),
             $committee,
             $adherent,
             $privilege,
-            $subscriptionDate
+            $subscriptionDate,
+            $trigger
         );
     }
 

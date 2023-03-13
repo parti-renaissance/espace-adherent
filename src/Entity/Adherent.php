@@ -1587,19 +1587,26 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public function followCommittee(
         Committee $committee,
-        \DateTimeInterface $subscriptionDate = null
+        \DateTimeInterface $subscriptionDate = null,
+        ?string $trigger = null
     ): CommitteeMembership {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER, $subscriptionDate ?? new \DateTime());
+        return $this->joinCommittee(
+            $committee,
+            CommitteeMembership::COMMITTEE_FOLLOWER,
+            $subscriptionDate ?? new \DateTime(),
+            $trigger
+        );
     }
 
     private function joinCommittee(
         Committee $committee,
         string $privilege,
-        \DateTimeInterface $subscriptionDate
+        \DateTimeInterface $subscriptionDate,
+        ?string $trigger = null
     ): CommitteeMembership {
         $committee->incrementMembersCount();
 
-        return CommitteeMembership::createForAdherent($committee, $this, $privilege, $subscriptionDate);
+        return CommitteeMembership::createForAdherent($committee, $this, $privilege, $subscriptionDate, $trigger);
     }
 
     public function getPostAddress(): PostAddress
