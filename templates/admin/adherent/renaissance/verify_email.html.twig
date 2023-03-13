@@ -1,0 +1,41 @@
+{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block title '| Création de compte adhérent Renaissance' %}
+
+{% block navbar_title 'Création de compte adhérent Renaissance - vérification de l\'adresse email' %}
+
+{% block show %}
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h4 class="box-title">Vérifier l'existence de l'adresse email</h4>
+                </div>
+                <div class="box-body">
+                    {{ form_errors(form) }}
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ form_row(form.email, { label: 'E-mail' }) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-solid">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-block btn-success">
+                        Vérifier
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{ form_end(form) }}
+{% endblock %}

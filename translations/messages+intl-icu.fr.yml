@@ -1423,3 +1423,9 @@ executive_office_role.member_by_right: Membre de droit
 executive_office.title.deputy_general_delegate: Secrétaires généraux délégués
 executive_office.title.functional_delegate: Délégués fonctionnels
 executive_office.title.member_by_right: Membres de droit
+
+#
+# Menu
+#
+admin.new.renaissance_adherent.label: Nouvel Adhérent
+admin.new.renaissance_adherent.create.label: Créer

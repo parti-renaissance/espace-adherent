@@ -24,23 +24,28 @@ class CreateRenaissanceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $fromCertifiedAdherent = $options['from_certified_adherent'];
+
         $builder
-            ->add('gender', CivilityType::class)
+            ->add('gender', CivilityType::class, ['disabled' => $fromCertifiedAdherent])
             ->add('firstName', TextType::class, [
                 'format_identity_case' => true,
+                'disabled' => $fromCertifiedAdherent,
             ])
             ->add('lastName', TextType::class, [
                 'format_identity_case' => true,
+                'disabled' => $fromCertifiedAdherent,
             ])
             ->add('nationality', CountryType::class, [
                 'preferred_choices' => [Address::FRANCE],
+                'disabled' => $fromCertifiedAdherent,
                 'invalid_message' => 'common.nationality.invalid',
             ])
             ->add('address', AddressType::class, [
                 'label' => false,
                 'child_error_bubbling' => false,
             ])
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, ['disabled' => true])
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
@@ -49,7 +54,7 @@ class CreateRenaissanceType extends AbstractType
                     'invalid_message' => 'common.country.invalid',
                 ],
             ])
-            ->add('birthdate', BirthdateType::class)
+            ->add('birthdate', BirthdateType::class, ['disabled' => $fromCertifiedAdherent])
             ->add('membershipType', ChoiceType::class, [
                 'choices' => MembershipTypeEnum::CHOICES,
                 'choice_label' => function (string $value): string {
@@ -83,7 +88,9 @@ class CreateRenaissanceType extends AbstractType
             ->setDefaults([
                 'data_class' => AdherentCreateCommand::class,
                 'validation_groups' => 'admin_adherent_renaissance_create',
+                'from_certified_adherent' => false,
             ])
+            ->setAllowedTypes('from_certified_adherent', 'bool')
         ;
     }
 

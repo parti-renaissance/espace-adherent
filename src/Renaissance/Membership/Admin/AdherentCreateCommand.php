@@ -3,16 +3,13 @@
 namespace App\Renaissance\Membership\Admin;
 
 use App\Address\Address;
+use App\Entity\Adherent;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Validator\BannedAdherent;
-use App\Validator\UniqueMembership as AssertUniqueMembership;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertUniqueMembership(path="email", groups={"admin_adherent_renaissance_create"})
- */
 class AdherentCreateCommand implements MembershipInterface
 {
     /**
@@ -75,16 +72,16 @@ class AdherentCreateCommand implements MembershipInterface
     /**
      * @Assert\NotBlank(
      *     message="common.email.not_blank",
-     *     groups={"admin_adherent_renaissance_create"}
+     *     groups={"admin_adherent_renaissance_create", "admin_adherent_renaissance_verify_email"}
      * )
      * @Assert\Email(
      *     message="common.email.invalid",
-     *     groups={"admin_adherent_renaissance_create"}
+     *     groups={"admin_adherent_renaissance_create", "admin_adherent_renaissance_verify_email"}
      * )
      * @Assert\Length(
      *     max=255,
      *     maxMessage="common.email.max_length",
-     *     groups={"admin_adherent_renaissance_create"}
+     *     groups={"admin_adherent_renaissance_create", "admin_adherent_renaissance_verify_email"}
      * )
      * @BannedAdherent
      */
@@ -152,6 +149,9 @@ class AdherentCreateCommand implements MembershipInterface
      */
     public \DateTime $cotisationDate;
 
+    private ?int $adherentId = null;
+    private bool $isCertified = false;
+
     public function __construct(public ?string $source = null)
     {
         $this->cotisationDate = new \DateTime();
@@ -189,5 +189,27 @@ class AdherentCreateCommand implements MembershipInterface
     public function getSource(): ?string
     {
         return $this->source;
+    }
+
+    public function getAdherentId(): ?int
+    {
+        return $this->adherentId;
+    }
+
+    public function isCertified(): bool
+    {
+        return $this->isCertified;
+    }
+
+    public function updateFromAdherent(Adherent $adherent): void
+    {
+        $this->adherentId = $adherent->getId();
+        $this->isCertified = $adherent->isCertified();
+        $this->gender = $adherent->getGender();
+        $this->firstName = $adherent->getFirstName();
+        $this->lastName = $adherent->getLastName();
+        $this->address = Address::createFromAddress($adherent->getPostAddress());
+        $this->phone = $adherent->getPhone();
+        $this->birthdate = $adherent->getBirthdate();
     }
 }
