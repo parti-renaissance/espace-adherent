@@ -415,6 +415,19 @@ class AdherentAdminTest extends AbstractWebCaseTest
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/app/adherent/create-renaissance');
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/admin/app/adherent/create-adherent-verify-email', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        self::assertStringContainsString(
+            'Le paramètre email_address est manquant ou invalide',
+            $crawler->filter('.alert-danger')->text()
+        );
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/app/adherent/create-renaissance?email_address='.$submittedValues['email']);
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
@@ -423,7 +436,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/admin/app/adherent/create-renaissance', $this->client);
+        $this->assertClientIsRedirectedTo('/admin/app/adherent/create-adherent-verify-email', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -531,7 +544,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
     {
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/app/adherent/create-renaissance');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/app/adherent/create-renaissance?email_address='.$submittedValues['email']);
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
@@ -561,43 +574,44 @@ class AdherentAdminTest extends AbstractWebCaseTest
     public function provideCreateRenaissanceAdherentValidation(): \Generator
     {
         yield 'No gender' => [
-            ['gender' => ''],
+            ['gender' => '', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['gender' => ['Veuillez renseigner un genre.']],
         ];
         yield 'Invalid gender' => [
-            ['gender' => 'orc'],
+            ['gender' => 'orc', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['gender' => ['Ce sexe n\'est pas valide.']],
         ];
         yield 'No first name' => [
-            ['firstName' => null],
+            ['firstName' => null, 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['firstName' => ['Cette valeur ne doit pas être vide.']],
         ];
         yield 'Too short first name' => [
-            ['firstName' => 'A'],
+            ['firstName' => 'A', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['firstName' => ['Le prénom doit comporter au moins 2 caractères.']],
         ];
         yield 'Too long first name' => [
-            ['firstName' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'],
+            ['firstName' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['firstName' => ['Le prénom ne peut pas dépasser 50 caractères.']],
         ];
         yield 'No last name' => [
-            ['lastName' => null],
+            ['lastName' => null, 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['lastName' => ['Cette valeur ne doit pas être vide.']],
         ];
         yield 'Too long last name' => [
-            ['lastName' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'],
+            ['lastName' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['lastName' => ['Le nom ne peut pas dépasser 50 caractères.']],
         ];
         yield 'No nationality' => [
-            ['nationality' => ''],
+            ['nationality' => '', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['nationality' => ['La nationalité est requise.']],
         ];
         yield 'Invalid nationality' => [
-            ['nationality' => 'ABC'],
+            ['nationality' => 'ABC', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['nationality' => ['Cette nationalité n\'est pas valide.']],
         ];
         yield 'Empty address' => [
             [
+                'email' => 'renaissance-user-1@en-marche-dev.fr',
                 'address' => [
                     'address' => null,
                     'city' => null,
@@ -617,6 +631,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
                     'postalCode' => '06000',
                     'country' => 'FR',
                 ],
+                'email' => 'renaissance-user-1@en-marche-dev.fr',
             ],
             ['address' => ['L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.']],
         ];
@@ -629,6 +644,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
                     'postalCode' => null,
                     'country' => 'FR',
                 ],
+                'email' => 'renaissance-user-1@en-marche-dev.fr',
             ],
             ['address' => ['L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.']],
         ];
@@ -641,6 +657,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
                     'postalCode' => '77abc',
                     'country' => 'FR',
                 ],
+                'email' => 'renaissance-user-1@en-marche-dev.fr',
             ],
             [
                 'address' => ['L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.'],
@@ -655,92 +672,64 @@ class AdherentAdminTest extends AbstractWebCaseTest
                     'postalCode' => '77000',
                     'country' => '',
                 ],
+                'email' => 'renaissance-user-1@en-marche-dev.fr',
             ],
             [
                 'address' => [
                     'L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.',
                 ],
             ],
-        ];
-        yield 'Invalid country' => [
-            [
-                'address' => [
-                    'address' => '3 avenue Jean Jaurès',
-                    'city' => null,
-                    'cityName' => 'Melun',
-                    'postalCode' => '77000',
-                    'country' => 'ABC',
-                ],
-            ],
-            [
-                'address' => [
-                    'L\'adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.',
-                    'Ce pays n\'est pas valide.',
-                ],
-            ],
-        ];
-        yield 'No email address' => [
-            ['email' => null],
-            ['email' => ['Veuillez renseigner une adresse e-mail.']],
         ];
         yield 'Invalid email address' => [
             ['email' => 'abc'],
             ['email' => ['Ceci n\'est pas une adresse e-mail valide.']],
         ];
-        yield 'Existing email address' => [
-            ['email' => 'renaissance-user-1@en-marche-dev.fr'],
-            ['email' => ['Cette adresse e-mail existe déjà.']],
-        ];
-        yield 'Too long email address' => [
-            ['email' => 'loremipsumdolorsitametconsecteturadipiscingelitloremipsumdolorsitametconsecteturadipiscingelitloremipsumdolorsitametconsecteturadipiscingelit@loremipsumdolorsitametconsecteturadipiscingelitloremipsumdolorsitametconsecteturadipiscingelitloremipsumdolorsitametconsecteturadipiscingelit.dev'],
-            ['email' => ['L\'adresse e-mail est trop longue, 255 caractères maximum.']],
-        ];
         yield 'No phone country' => [
-            ['phone' => ['country' => '', 'number' => '0612345678']],
+            ['phone' => ['country' => '', 'number' => '0612345678'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['phone' => ['Cette valeur n\'est pas un numéro de téléphone valide.']],
         ];
         yield 'Invalid phone country' => [
-            ['phone' => ['country' => 'ABC', 'number' => '0612345678']],
+            ['phone' => ['country' => 'ABC', 'number' => '0612345678'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['phone' => ['Ce pays n\'est pas valide.']],
         ];
         yield 'Invalid phone number' => [
-            ['phone' => ['country' => 'FR', 'number' => '02']],
+            ['phone' => ['country' => 'FR', 'number' => '02'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['phone' => ['Cette valeur n\'est pas un numéro de téléphone valide.']],
         ];
         yield 'Empty birthdate' => [
-            ['birthdate' => ['year' => '', 'month' => '', 'day' => '']],
+            ['birthdate' => ['year' => '', 'month' => '', 'day' => ''], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['birthdate' => ['Veuillez spécifier une date de naissance.']],
         ];
         yield 'Invalid birthdate year' => [
-            ['birthdate' => ['year' => '3000', 'month' => '2', 'day' => '2']],
+            ['birthdate' => ['year' => '3000', 'month' => '2', 'day' => '2'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['birthdate' => ['Cette valeur n\'est pas valide.']],
         ];
         yield 'Invalid birthdate month' => [
-            ['birthdate' => ['year' => '2000', 'month' => '13', 'day' => '2']],
+            ['birthdate' => ['year' => '2000', 'month' => '13', 'day' => '2'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['birthdate' => ['Cette valeur n\'est pas valide.']],
         ];
         yield 'Invalid birthdate day' => [
-            ['birthdate' => ['year' => '2000', 'month' => '2', 'day' => '32']],
+            ['birthdate' => ['year' => '2000', 'month' => '2', 'day' => '32'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['birthdate' => ['Cette valeur n\'est pas valide.']],
         ];
         yield 'Too young for adhesion' => [
-            ['birthdate' => ['year' => (new \DateTime('-5 years'))->format('Y'), 'month' => '2', 'day' => '2']],
+            ['birthdate' => ['year' => (new \DateTime('-5 years'))->format('Y'), 'month' => '2', 'day' => '2'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['birthdate' => ['Cette valeur n\'est pas valide.']],
         ];
         yield 'No membership type' => [
-            ['membershipType' => ''],
+            ['membershipType' => '', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['membershipType' => ['Veuillez spécifier au moins un type d\'adhésion.']],
         ];
         yield 'Invalid membership type' => [
-            ['membershipType' => 'invalid'],
+            ['membershipType' => 'invalid', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['membershipType' => ['Ce type d\'adhésion n\'est pas valide.']],
         ];
         yield 'No cotisation amount choice' => [
-            ['cotisationAmountChoice' => ''],
+            ['cotisationAmountChoice' => '', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['cotisationAmountChoice' => ['Veuillez spécifier un montant de cotisation.']],
         ];
         yield 'Invalid cotisation amount choice' => [
-            ['cotisationAmountChoice' => 'invalid'],
+            ['cotisationAmountChoice' => 'invalid', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
             ['cotisationAmountChoice' => ['Ce montant de cotisation est invalide.']],
         ];
     }

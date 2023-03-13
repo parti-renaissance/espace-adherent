@@ -117,6 +117,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_APPLICATION_REQUEST',
                     'ROLE_ADMIN_CHEZ_VOUS',
                     'ROLE_ADMIN_FINANCE',
+                    'ROLE_ADMIN_CREATE_RENAISSANCE_ADHERENT',
                     'ROLE_ADMIN_PROGRAMMATIC_FOUNDATION',
                     'ROLE_ADMIN_ELECTION_CITY_CARD',
                     'ROLE_ADMIN_ELECTION_CITY_CARD_MANAGERS',

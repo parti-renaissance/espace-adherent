@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Address\Address;
+use App\Address\PostAddressFactory;
 use App\Adherent\LastLoginGroupEnum;
 use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
@@ -42,6 +43,7 @@ use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use App\Membership\MembershipSourceEnum;
 use App\OAuth\Model\User as InMemoryOAuthUser;
+use App\Renaissance\Membership\Admin\AdherentCreateCommand;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
@@ -1543,6 +1545,30 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($adherentRequest->password) {
             $this->password = $adherentRequest->password;
+        }
+    }
+
+    public function updateMembershipFormAdminAdherentCreateCommand(
+        AdherentCreateCommand $command,
+        Administrator $administrator
+    ): void {
+        if (!$this->isCertified()) {
+            $this->gender = $command->gender;
+            $this->firstName = $command->firstName;
+            $this->lastName = $command->lastName;
+            $this->birthdate = $command->birthdate;
+            $this->nationality = $command->nationality;
+        }
+
+        $this->postAddress = PostAddressFactory::createFromAddress($command->address);
+        $this->phone = $command->phone;
+        $this->exclusiveMembership = $command->isExclusiveMembership();
+        $this->territoireProgresMembership = $command->isTerritoiresProgresMembership();
+        $this->agirMembership = $command->isAgirMembership();
+        $this->updatedByAdministrator = $administrator;
+
+        if (!$this->isRenaissanceUser()) {
+            $this->source = $command->getSource();
         }
     }
 

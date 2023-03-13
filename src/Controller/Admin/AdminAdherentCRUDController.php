@@ -13,9 +13,11 @@ use App\Entity\Adherent;
 use App\Entity\AdherentEmailSubscribeToken;
 use App\Form\Admin\Adherent\CreateRenaissanceType;
 use App\Form\Admin\Adherent\UnregistrationType;
+use App\Form\Admin\Adherent\VerifyEmailType;
 use App\Form\Admin\Extract\AdherentExtractType;
 use App\Form\ConfirmActionType;
 use App\Renaissance\Membership\Admin\AdherentCreateCommandHandler;
+use App\Repository\AdherentRepository;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +25,10 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class AdminAdherentCRUDController extends CRUDController
 {
+    public function __construct(private readonly AdherentRepository $adherentRepository)
+    {
+    }
+
     public function banAction(Request $request, BanManager $adherentManagementAuthority): Response
     {
         $adherent = $this->admin->getSubject();
@@ -225,30 +231,67 @@ class AdminAdherentCRUDController extends CRUDController
         ]);
     }
 
+    public function createRenaissanceVerifyEmailAction(
+        Request $request,
+        AdherentCreateCommandHandler $adherentCreateCommandHandler
+    ): Response {
+        $this->admin->checkAccess('create_renaissance_verify_email');
+
+        $adherentCreateCommand = $adherentCreateCommandHandler->createCommand();
+
+        $form = $this
+            ->createForm(VerifyEmailType::class, $adherentCreateCommand)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirect($this->admin->generateUrl('create_renaissance', ['email_address' => $adherentCreateCommand->getEmailAddress()]));
+        }
+
+        return $this->renderWithExtraParams('admin/adherent/renaissance/verify_email.html.twig', [
+            'action' => 'create_adherent_verify_email',
+            'object' => $adherentCreateCommand,
+            'form' => $form->createView(),
+        ]);
+    }
+
     public function createRenaissanceAction(
         Request $request,
         AdherentCreateCommandHandler $adherentCreateCommandHandler
     ): Response {
         $this->admin->checkAccess('create_renaissance');
 
-        $adherentCreateCommand = $adherentCreateCommandHandler->createCommand();
+        if (!$email = $request->query->get('email_address')) {
+            $this->addFlash('sonata_flash_error', 'Le paramètre email_address est manquant ou invalide');
+
+            return $this->redirect($this->admin->generateUrl('create_renaissance_verify_email'));
+        }
+
+        $command = $adherentCreateCommandHandler->createCommand();
+        $command->email = $email;
+
+        if ($adherent = $this->adherentRepository->findOneByEmail($command->getEmailAddress())) {
+            $command->updateFromAdherent($adherent);
+        }
 
         $form = $this
-            ->createForm(CreateRenaissanceType::class, $adherentCreateCommand)
+            ->createForm(CreateRenaissanceType::class, $command, [
+                'from_certified_adherent' => $command->isCertified(),
+            ])
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $adherentCreateCommandHandler->handle($adherentCreateCommand, $this->getUser());
+            $adherentCreateCommandHandler->handle($command, $this->getUser(), $adherent);
 
             $this->addFlash('sonata_flash_success', 'Le compte adhérent Renaissance a bien été créé.');
 
-            return $this->redirect($this->admin->generateUrl('create_renaissance'));
+            return $this->redirect($this->admin->generateUrl('create_renaissance_verify_email'));
         }
 
         return $this->renderWithExtraParams('admin/adherent/renaissance/create.html.twig', [
             'action' => 'create_renaissance',
-            'object' => $adherentCreateCommand,
+            'object' => $command,
             'form' => $form->createView(),
         ]);
     }

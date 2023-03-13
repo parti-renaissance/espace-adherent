@@ -4,28 +4,25 @@ namespace App\Membership;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
+use App\Entity\AdherentResetPasswordToken;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Mailer\MailerService;
 use App\Mailer\Message;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountActivationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountCreatedMessage;
+use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\CallbackManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class MembershipNotifier
 {
-    private CallbackManager $callbackManager;
-    private MailerService $mailer;
-    private EntityManagerInterface $manager;
-
     public function __construct(
-        CallbackManager $callbackManager,
-        MailerService $transactionalMailer,
-        EntityManagerInterface $manager
+        private readonly CallbackManager $callbackManager,
+        private readonly MailerService $transactionalMailer,
+        private readonly EntityManagerInterface $manager,
+        private readonly AuthAppUrlManager $appUrlManager
     ) {
-        $this->callbackManager = $callbackManager;
-        $this->mailer = $transactionalMailer;
-        $this->manager = $manager;
     }
 
     public function sendEmailValidation(Adherent $adherent, bool $isReminder = false): bool
@@ -38,10 +35,10 @@ class MembershipNotifier
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
 
         if ($isReminder) {
-            return $this->mailer->sendMessage(Message\AdherentAccountActivationReminderMessage::create($adherent, $activationUrl));
+            return $this->transactionalMailer->sendMessage(Message\AdherentAccountActivationReminderMessage::create($adherent, $activationUrl));
         }
 
-        return $this->mailer->sendMessage(Message\AdherentAccountActivationMessage::create($adherent, $activationUrl));
+        return $this->transactionalMailer->sendMessage(Message\AdherentAccountActivationMessage::create($adherent, $activationUrl));
     }
 
     public function sendRenaissanceValidationEmail(AdherentRequest $adherentRequest): void
@@ -55,29 +52,29 @@ class MembershipNotifier
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
-        $this->mailer->sendMessage(RenaissanceAdherentAccountActivationMessage::create($adherentRequest, $activationUrl));
+        $this->transactionalMailer->sendMessage(RenaissanceAdherentAccountActivationMessage::create($adherentRequest, $activationUrl));
     }
 
     public function sendEmailReminder(Adherent $adherent): bool
     {
         $donationUrl = $this->callbackManager->generateUrl('donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        return $this->mailer->sendMessage(Message\AdherentMembershipReminderMessage::create($adherent, $donationUrl));
+        return $this->transactionalMailer->sendMessage(Message\AdherentMembershipReminderMessage::create($adherent, $donationUrl));
     }
 
     public function sendConfirmationJoinMessage(Adherent $adherent): void
     {
         MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
-            ? $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent))
-            : $this->mailer->sendMessage(Message\AdherentAccountConfirmationMessage::createFromAdherent($adherent))
+            ? $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent))
+            : $this->transactionalMailer->sendMessage(Message\AdherentAccountConfirmationMessage::createFromAdherent($adherent))
         ;
     }
 
     public function sendUnregistrationMessage(Adherent $adherent): void
     {
         MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
-            ? $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage::createFromAdherent($adherent))
-            : $this->mailer->sendMessage(Message\AdherentTerminateMembershipMessage::createFromAdherent($adherent))
+            ? $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage::createFromAdherent($adherent))
+            : $this->transactionalMailer->sendMessage(Message\AdherentTerminateMembershipMessage::createFromAdherent($adherent))
         ;
     }
 
@@ -93,5 +90,19 @@ class MembershipNotifier
             $params,
             UrlGeneratorInterface::ABSOLUTE_URL
         );
+    }
+
+    public function sendAccountCreatedEmail(Adherent $adherent): void
+    {
+        $token = AdherentResetPasswordToken::generate($adherent, '+30 days');
+        $message = RenaissanceAdherentAccountCreatedMessage::create(
+            $adherent,
+            $this->appUrlManager->getUrlGenerator($adherent->getSource())->generateCreatePasswordLink($adherent, $token, ['is_creation' => true])
+        );
+
+        $this->manager->persist($token);
+        $this->manager->flush();
+
+        $this->transactionalMailer->sendMessage($message);
     }
 }
