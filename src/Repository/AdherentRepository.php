@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\Address;
+use App\Adherent\AdherentAutocompleteFilter;
 use App\Adherent\AdherentRoleEnum;
 use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;
@@ -1352,9 +1353,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     /**
      * @return Adherent[]
      */
-    public function findAdherentByAutocompletion(?string $name, array $zones = [], int $limit = 10): array
+    public function findAdherentByAutocompletion(AdherentAutocompleteFilter $filter, int $limit = 10): array
     {
-        if (!$name) {
+        if (!$filter->q) {
             return [];
         }
 
@@ -1369,15 +1370,15 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->setParameters([
                 'source_jme' => MembershipSourceEnum::JEMENGAGE,
                 'source_renaissance' => MembershipSourceEnum::RENAISSANCE,
-                'name' => '%'.strtolower(trim($name)).'%',
+                'name' => '%'.strtolower(trim($filter->q)).'%',
                 'status' => Adherent::ENABLED,
                 'true' => true,
             ])
         ;
 
-        if ($zones) {
+        if (!empty($filter->managedZones)) {
             $this->withGeoZones(
-                $zones,
+                $filter->managedZones,
                 $qb,
                 'a',
                 Adherent::class,
@@ -1385,6 +1386,16 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 'zones',
                 'z2'
             );
+        }
+
+        if ($filter->committee) {
+            $qb
+                ->leftJoin('a.memberships', 'membership')
+                ->leftJoin('membership.committee', 'committee')
+                ->andWhere('committee = :committee')
+                ->andWhere('committee.version = 2')
+                ->setParameter('committee', $filter->committee)
+            ;
         }
 
         return $qb
