@@ -732,7 +732,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     public function isRenaissanceElection(): bool
     {
-        return $this->isLocalElectionTypes();
+        return $this->isLocalElectionTypes() || $this->isCommitteeSupervisorType();
     }
 
     public function getDenomination(bool $withDeterminer = false, bool $ucfirst = false): string

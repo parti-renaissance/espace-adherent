@@ -71,7 +71,7 @@ class ElectionNotifier
                     return VotingPlatformVoteStatusesIsOpenMessage::create($election, $recipients, $url);
                 }
 
-                if ($election->getDesignation()->isLocalElectionTypes()) {
+                if ($election->getDesignation()->isRenaissanceElection()) {
                     return VotingPlatformLocalElectionVoteIsOpenMessage::create($election, $recipients, $url);
                 }
 
@@ -147,7 +147,7 @@ class ElectionNotifier
                     return VotingPlatformVoteStatusesIsOverMessage::create($election, $recipients, $url);
                 }
 
-                if ($election->getDesignation()->isLocalElectionTypes()) {
+                if ($election->getDesignation()->isRenaissanceElection()) {
                     return VotingPlatformLocalElectionVoteIsOverMessage::create($election, $recipients, $url);
                 }
 
