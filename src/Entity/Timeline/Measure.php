@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,8 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
-    use TranslatableTrait;
-
     public const TITLE_MAX_LENGTH = 100;
 
     public const STATUS_UPCOMING = 'UPCOMING';

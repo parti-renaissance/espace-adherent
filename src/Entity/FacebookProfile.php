@@ -46,7 +46,7 @@ class FacebookProfile
     /**
      * @var array
      *
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="json")
      */
     private $ageRange = [];
 

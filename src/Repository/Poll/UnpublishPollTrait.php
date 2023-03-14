@@ -26,9 +26,6 @@ trait UnpublishPollTrait
             ;
         }
 
-        $qb
-            ->getQuery()
-            ->execute()
-        ;
+        $qb->getQuery()->execute();
     }
 }

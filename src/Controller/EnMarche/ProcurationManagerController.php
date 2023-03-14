@@ -11,7 +11,7 @@ use App\Procuration\ProcurationDisableReasonEnum;
 use App\Procuration\ProcurationManager;
 use App\Repository\ElectionRoundRepository;
 use App\Repository\ProcurationRequestRepository;
-use Doctrine\DBAL\Driver\DriverException;
+use Doctrine\DBAL\Exception\DriverException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

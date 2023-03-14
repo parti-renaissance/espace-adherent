@@ -5,7 +5,7 @@ namespace App\Adherent\Handler;
 use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
 use App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface;
 use App\Repository\AdherentRepository;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -51,7 +51,7 @@ class RemoveAdherentAndRelatedDataCommandHandler implements MessageHandlerInterf
             if ($handler->supports($adherent)) {
                 try {
                     $handler->handle($adherent);
-                } catch (DBALException $e) {
+                } catch (Exception $e) {
                     $this->logger->error($e->getMessage(), ['e' => $e]);
 
                     if (null === $firstException) {

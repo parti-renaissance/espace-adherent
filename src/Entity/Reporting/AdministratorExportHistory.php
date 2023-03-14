@@ -37,7 +37,7 @@ class AdministratorExportHistory
     /**
      * @var array
      *
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="json")
      */
     private $parameters;
 

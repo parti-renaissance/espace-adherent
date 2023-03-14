@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
+use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
 
 abstract class AbstractTranslatableEntity implements TranslatableInterface
 {
+    use TranslatableTrait;
+
     protected function getFieldTranslations(string $field): array
     {
         if (!$this->getTranslations()->containsKey('fr')) {

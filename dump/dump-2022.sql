@@ -27,7 +27,7 @@ CREATE TABLE `adherent_activation_keys` (
   UNIQUE KEY `adherent_activation_token_account_unique` (`value`,`adherent_uuid`),
   UNIQUE KEY `adherent_activation_token_unique` (`value`),
   UNIQUE KEY `UNIQ_F9F9FAFBD17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,7 @@ CREATE TABLE `adherent_adherent_tag` (
   KEY `IDX_DD297F82AED03543` (`adherent_tag_id`),
   CONSTRAINT `FK_DD297F8225F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_DD297F82AED03543` FOREIGN KEY (`adherent_tag_id`) REFERENCES `adherent_tags` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +65,7 @@ CREATE TABLE `adherent_certification_histories` (
   KEY `adherent_certification_histories_date_idx` (`date`),
   CONSTRAINT `FK_732EE81A25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_732EE81A4B09E92C` FOREIGN KEY (`administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,7 +86,7 @@ CREATE TABLE `adherent_change_email_token` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_6F8B4B5AD17F50A6` (`uuid`),
   KEY `IDX_6F8B4B5AE7927C7477241BAC253ECC4` (`email`,`used_at`,`expired_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +104,7 @@ CREATE TABLE `adherent_charter` (
   UNIQUE KEY `UNIQ_D6F94F2B25F06C5370AAEA5` (`adherent_id`,`dtype`),
   KEY `IDX_D6F94F2B25F06C53` (`adherent_id`),
   CONSTRAINT `FK_D6F94F2B25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ CREATE TABLE `adherent_commitment` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D239EF6F25F06C53` (`adherent_id`),
   CONSTRAINT `FK_D239EF6F25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,7 +156,7 @@ CREATE TABLE `adherent_email_subscribe_token` (
   CONSTRAINT `FK_376DBA09DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_376DBA0CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_376DBA0F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -177,7 +177,7 @@ CREATE TABLE `adherent_email_subscription_histories` (
   KEY `adherent_email_subscription_histories_adherent_uuid_idx` (`adherent_uuid`),
   KEY `IDX_51AD8354B6596C08` (`subscription_type_id`),
   CONSTRAINT `FK_51AD8354B6596C08` FOREIGN KEY (`subscription_type_id`) REFERENCES `subscription_type` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,7 +194,7 @@ CREATE TABLE `adherent_email_subscription_history_referent_tag` (
   KEY `IDX_6FFBE6E89C262DB3` (`referent_tag_id`),
   CONSTRAINT `FK_6FFBE6E88FCB8132` FOREIGN KEY (`email_subscription_history_id`) REFERENCES `adherent_email_subscription_histories` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_6FFBE6E89C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +262,7 @@ CREATE TABLE `adherent_instance_quality` (
   CONSTRAINT `FK_D63B17FA9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_D63B17FAA623BBD7` FOREIGN KEY (`instance_quality_id`) REFERENCES `instance_quality` (`id`),
   CONSTRAINT `FK_D63B17FAAAA61A99` FOREIGN KEY (`territorial_council_id`) REFERENCES `territorial_council` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -293,7 +293,7 @@ CREATE TABLE `adherent_mandate` (
   CONSTRAINT `FK_9C0C3D6025F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_9C0C3D60AAA61A99` FOREIGN KEY (`territorial_council_id`) REFERENCES `territorial_council` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_9C0C3D60ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -342,7 +342,7 @@ CREATE TABLE `adherent_message_filters` (
   `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `interests` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci COMMENT '(DC2Type:json_array)',
+  `interests` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:json)',
   `registered_since` date DEFAULT NULL,
   `registered_until` date DEFAULT NULL,
   `contact_volunteer_team` tinyint(1) DEFAULT '0',
@@ -359,11 +359,11 @@ CREATE TABLE `adherent_message_filters` (
   `qualities` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `include_committee_provisional_supervisors` tinyint(1) DEFAULT NULL,
   `is_certified` tinyint(1) DEFAULT NULL,
-  `scope` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `scope` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `audience_type` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
-  `renaissance_membership` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `audience_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `renaissance_membership` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_28CA9F9466E2221E` (`cause_id`),
   KEY `IDX_28CA9F949C262DB3` (`referent_tag_id`),
@@ -383,7 +383,7 @@ CREATE TABLE `adherent_message_filters` (
   CONSTRAINT `FK_28CA9F94ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`),
   CONSTRAINT `FK_28CA9F94F74563E3` FOREIGN KEY (`user_list_definition_id`) REFERENCES `user_list_definition` (`id`),
   CONSTRAINT `FK_28CA9F94FAF04979` FOREIGN KEY (`adherent_segment_id`) REFERENCES `adherent_segment` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -415,7 +415,7 @@ CREATE TABLE `adherent_messages` (
   KEY `IDX_D187C183F675F31B` (`author_id`),
   CONSTRAINT `FK_D187C183D395B25E` FOREIGN KEY (`filter_id`) REFERENCES `adherent_message_filters` (`id`),
   CONSTRAINT `FK_D187C183F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -432,7 +432,7 @@ CREATE TABLE `adherent_referent_tag` (
   KEY `IDX_79E8AFFD9C262DB3` (`referent_tag_id`),
   CONSTRAINT `FK_79E8AFFD25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_79E8AFFD9C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -489,7 +489,7 @@ CREATE TABLE `adherent_reset_password_tokens` (
   UNIQUE KEY `adherent_reset_password_token_account_unique` (`value`,`adherent_uuid`),
   UNIQUE KEY `adherent_reset_password_token_unique` (`value`),
   UNIQUE KEY `UNIQ_66D163EAD17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -511,7 +511,7 @@ CREATE TABLE `adherent_segment` (
   UNIQUE KEY `UNIQ_9DF0C7EBD17F50A6` (`uuid`),
   KEY `IDX_9DF0C7EBF675F31B` (`author_id`),
   CONSTRAINT `FK_9DF0C7EBF675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -528,7 +528,7 @@ CREATE TABLE `adherent_subscription_type` (
   KEY `IDX_F93DC28AB6596C08` (`subscription_type_id`),
   CONSTRAINT `FK_F93DC28A25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_F93DC28AB6596C08` FOREIGN KEY (`subscription_type_id`) REFERENCES `subscription_type` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -542,7 +542,7 @@ CREATE TABLE `adherent_tags` (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D34384A45E237E06` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -559,7 +559,7 @@ CREATE TABLE `adherent_thematic_community` (
   KEY `IDX_DAB0B4EC25F06C53` (`adherent_id`),
   CONSTRAINT `FK_DAB0B4EC1BE5825E` FOREIGN KEY (`thematic_community_id`) REFERENCES `thematic_community` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_DAB0B4EC25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -576,7 +576,7 @@ CREATE TABLE `adherent_zone` (
   KEY `IDX_1C14D0859F2C3FAB` (`zone_id`),
   CONSTRAINT `FK_1C14D08525F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_1C14D0859F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -704,15 +704,15 @@ CREATE TABLE `adherents` (
   `phone_verified_at` datetime DEFAULT NULL,
   `national_communication_role` tinyint(1) NOT NULL DEFAULT '0',
   `pap_user_role` tinyint(1) NOT NULL DEFAULT '0',
-  `last_login_group` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `last_login_group` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `global_notification_sent_at` datetime DEFAULT NULL,
   `activism_zone_id` int unsigned DEFAULT NULL,
   `last_membership_donation` datetime DEFAULT NULL,
   `exclusive_membership` tinyint(1) NOT NULL DEFAULT '0',
   `territoire_progres_membership` tinyint(1) NOT NULL DEFAULT '0',
   `agir_membership` tinyint(1) NOT NULL DEFAULT '0',
-  `utm_source` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
-  `utm_campaign` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `utm_source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_campaign` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_562C7DA3B08E074E` (`email_address`),
   UNIQUE KEY `UNIQ_562C7DA3D17F50A6` (`uuid`),
@@ -753,7 +753,7 @@ CREATE TABLE `adherents` (
   CONSTRAINT `FK_562C7DA3E4A5D7A5` FOREIGN KEY (`assessor_role_id`) REFERENCES `assessor_role_association` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_562C7DA3EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`),
   CONSTRAINT `FK_562C7DA3FCCAF6D5` FOREIGN KEY (`senatorial_candidate_managed_area_id`) REFERENCES `senatorial_candidate_areas` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -766,12 +766,12 @@ CREATE TABLE `administrator_export_history` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `administrator_id` int NOT NULL,
   `route_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `parameters` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL COMMENT '(DC2Type:json_array)',
+  `parameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
   `exported_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_10499F014B09E92C` (`administrator_id`),
   CONSTRAINT `FK_10499F014B09E92C` FOREIGN KEY (`administrator_id`) REFERENCES `administrators` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -789,7 +789,7 @@ CREATE TABLE `administrators` (
   `activated` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_73A716FB08E074E` (`email_address`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -801,7 +801,7 @@ CREATE TABLE `administrators` (
 CREATE TABLE `algolia_candidature` (
   `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -857,7 +857,7 @@ CREATE TABLE `application_request_running_mate` (
   UNIQUE KEY `UNIQ_D1D60956D17F50A6` (`uuid`),
   KEY `IDX_D1D6095625F06C53` (`adherent_id`),
   CONSTRAINT `FK_D1D6095625F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -870,7 +870,7 @@ CREATE TABLE `application_request_tag` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -884,7 +884,7 @@ CREATE TABLE `application_request_technical_skill` (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `display` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -898,7 +898,7 @@ CREATE TABLE `application_request_theme` (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `display` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -937,7 +937,7 @@ CREATE TABLE `application_request_volunteer` (
   UNIQUE KEY `UNIQ_11396570D17F50A6` (`uuid`),
   KEY `IDX_1139657025F06C53` (`adherent_id`),
   CONSTRAINT `FK_1139657025F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -954,7 +954,7 @@ CREATE TABLE `article_proposal_theme` (
   KEY `IDX_F6B9A221B85948AF` (`proposal_theme_id`),
   CONSTRAINT `FK_F6B9A2217294869C` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_F6B9A221B85948AF` FOREIGN KEY (`proposal_theme_id`) REFERENCES `proposals_themes` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -980,14 +980,14 @@ CREATE TABLE `articles` (
   `keywords` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `twitter_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `for_renaissance` tinyint(1) NOT NULL DEFAULT '0',
-  `json_content` longtext COLLATE utf8mb3_unicode_ci,
+  `json_content` longtext COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_BFDD3168989D9B62` (`slug`),
   KEY `IDX_BFDD316812469DE2` (`category_id`),
   KEY `IDX_BFDD3168EA9FDD75` (`media_id`),
   CONSTRAINT `FK_BFDD316812469DE2` FOREIGN KEY (`category_id`) REFERENCES `articles_categories` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_BFDD3168EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1006,7 +1006,7 @@ CREATE TABLE `articles_categories` (
   `display` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_DE004A0E989D9B62` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1019,7 +1019,7 @@ CREATE TABLE `assessor_managed_areas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `codes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1040,7 +1040,7 @@ CREATE TABLE `assessor_requests` (
   `postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `vote_city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `office_number` varchar(10) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `office_number` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:phone_number)',
   `assessor_city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1054,14 +1054,14 @@ CREATE TABLE `assessor_requests` (
   `assessor_postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `assessor_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `reachable` tinyint(1) NOT NULL DEFAULT '0',
-  `voter_number` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `election_rounds` longtext COLLATE utf8mb3_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
-  `country` varchar(2) COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'FR',
+  `voter_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `election_rounds` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
+  `country` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'FR',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_26BC800D17F50A6` (`uuid`),
   KEY `IDX_26BC800F3F90B30` (`vote_place_id`),
   CONSTRAINT `FK_26BC800F3F90B30` FOREIGN KEY (`vote_place_id`) REFERENCES `election_vote_place` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1078,7 +1078,7 @@ CREATE TABLE `assessor_requests_vote_place_wishes` (
   KEY `IDX_1517FC13F3F90B30` (`vote_place_id`),
   CONSTRAINT `FK_1517FC131BD1903D` FOREIGN KEY (`assessor_request_id`) REFERENCES `assessor_requests` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_1517FC13F3F90B30` FOREIGN KEY (`vote_place_id`) REFERENCES `election_vote_place` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1093,7 +1093,7 @@ CREATE TABLE `assessor_role_association` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_B93395C2F3F90B30` (`vote_place_id`),
   CONSTRAINT `FK_B93395C2F3F90B30` FOREIGN KEY (`vote_place_id`) REFERENCES `election_vote_place` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1122,12 +1122,12 @@ CREATE TABLE `audience` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `renaissance_membership` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `renaissance_membership` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_FDCD9418D17F50A6` (`uuid`),
   KEY `IDX_FDCD94189F2C3FAB` (`zone_id`),
   CONSTRAINT `FK_FDCD94189F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1150,7 +1150,7 @@ CREATE TABLE `audience_segment` (
   KEY `IDX_C5C2F52FF675F31B` (`author_id`),
   CONSTRAINT `FK_C5C2F52FD395B25E` FOREIGN KEY (`filter_id`) REFERENCES `adherent_message_filters` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_C5C2F52FF675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1178,12 +1178,12 @@ CREATE TABLE `audience_snapshot` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `renaissance_membership` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `renaissance_membership` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_BA99FEBBD17F50A6` (`uuid`),
   KEY `IDX_BA99FEBB9F2C3FAB` (`zone_id`),
   CONSTRAINT `FK_BA99FEBB9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1200,7 +1200,7 @@ CREATE TABLE `audience_snapshot_zone` (
   KEY `IDX_10882DC0ACA633A8` (`audience_snapshot_id`),
   CONSTRAINT `FK_10882DC09F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_10882DC0ACA633A8` FOREIGN KEY (`audience_snapshot_id`) REFERENCES `audience_snapshot` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1217,7 +1217,7 @@ CREATE TABLE `audience_zone` (
   KEY `IDX_A719804F9F2C3FAB` (`zone_id`),
   CONSTRAINT `FK_A719804F848CC616` FOREIGN KEY (`audience_id`) REFERENCES `audience` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_A719804F9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1232,7 +1232,7 @@ CREATE TABLE `banned_adherent` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_B85ACFECD17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1262,11 +1262,11 @@ CREATE TABLE `biography_executive_office_member` (
   `deputy_general_delegate` tinyint(1) NOT NULL DEFAULT '0',
   `president` tinyint(1) NOT NULL DEFAULT '0',
   `for_renaissance` tinyint(1) NOT NULL DEFAULT '0',
-  `role` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `role` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_44A61059989D9B62` (`slug`),
   UNIQUE KEY `UNIQ_44A61059D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1282,7 +1282,7 @@ CREATE TABLE `board_member` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_DCFABEDF25F06C53` (`adherent_id`),
   CONSTRAINT `FK_DCFABEDF25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1299,7 +1299,7 @@ CREATE TABLE `board_member_roles` (
   KEY `IDX_1DD1E043D60322AC` (`role_id`),
   CONSTRAINT `FK_1DD1E043C7BA2FD5` FOREIGN KEY (`board_member_id`) REFERENCES `board_member` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_1DD1E043D60322AC` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1314,7 +1314,7 @@ CREATE TABLE `candidate_managed_area` (
   PRIMARY KEY (`id`),
   KEY `IDX_C604D2EA9F2C3FAB` (`zone_id`),
   CONSTRAINT `FK_C604D2EA9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1348,7 +1348,7 @@ CREATE TABLE `cause` (
   CONSTRAINT `FK_F0DA7FBF38C2B2DC` FOREIGN KEY (`second_coalition_id`) REFERENCES `coalition` (`id`),
   CONSTRAINT `FK_F0DA7FBFC2A46A23` FOREIGN KEY (`coalition_id`) REFERENCES `coalition` (`id`),
   CONSTRAINT `FK_F0DA7FBFF675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1379,7 +1379,7 @@ CREATE TABLE `cause_follower` (
   CONSTRAINT `FK_6F9A854425F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_6F9A854466E2221E` FOREIGN KEY (`cause_id`) REFERENCES `cause` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_6F9A85449F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1396,7 +1396,7 @@ CREATE TABLE `cause_quick_action` (
   PRIMARY KEY (`id`),
   KEY `IDX_DC1B329B66E2221E` (`cause_id`),
   CONSTRAINT `FK_DC1B329B66E2221E` FOREIGN KEY (`cause_id`) REFERENCES `cause` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1433,7 +1433,7 @@ CREATE TABLE `certification_request` (
   CONSTRAINT `FK_6E7481A925F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_6E7481A92FFD4FD3` FOREIGN KEY (`processed_by_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_6E7481A96EA98020` FOREIGN KEY (`found_duplicated_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1446,7 +1446,7 @@ CREATE TABLE `chez_vous_cities` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `department_id` int unsigned NOT NULL,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `postal_codes` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL COMMENT '(DC2Type:json_array)',
+  `postal_codes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
   `insee_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `latitude` float(10,6) NOT NULL COMMENT '(DC2Type:geo_point)',
   `longitude` float(10,6) NOT NULL COMMENT '(DC2Type:geo_point)',
@@ -1456,7 +1456,7 @@ CREATE TABLE `chez_vous_cities` (
   UNIQUE KEY `UNIQ_A42D9BED989D9B62` (`slug`),
   KEY `IDX_A42D9BEDAE80F5DF` (`department_id`),
   CONSTRAINT `FK_A42D9BEDAE80F5DF` FOREIGN KEY (`department_id`) REFERENCES `chez_vous_departments` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1475,7 +1475,7 @@ CREATE TABLE `chez_vous_departments` (
   UNIQUE KEY `UNIQ_29E7DD5777153098` (`code`),
   KEY `IDX_29E7DD5798260155` (`region_id`),
   CONSTRAINT `FK_29E7DD5798260155` FOREIGN KEY (`region_id`) REFERENCES `chez_vous_regions` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1493,7 +1493,7 @@ CREATE TABLE `chez_vous_markers` (
   PRIMARY KEY (`id`),
   KEY `IDX_452F890F8BAC62AF` (`city_id`),
   CONSTRAINT `FK_452F890F8BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `chez_vous_cities` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1513,7 +1513,7 @@ CREATE TABLE `chez_vous_measure_types` (
   `eligibility_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_B80D46F577153098` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1526,14 +1526,14 @@ CREATE TABLE `chez_vous_measures` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `city_id` int unsigned NOT NULL,
   `type_id` int unsigned NOT NULL,
-  `payload` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci COMMENT '(DC2Type:json_array)',
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:json)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `chez_vous_measures_city_type_unique` (`city_id`,`type_id`),
   KEY `IDX_E6E8973E8BAC62AF` (`city_id`),
   KEY `IDX_E6E8973EC54C8C93` (`type_id`),
   CONSTRAINT `FK_E6E8973E8BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `chez_vous_cities` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_E6E8973EC54C8C93` FOREIGN KEY (`type_id`) REFERENCES `chez_vous_measure_types` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1548,7 +1548,7 @@ CREATE TABLE `chez_vous_regions` (
   `code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_A6C12FCC77153098` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1567,7 +1567,7 @@ CREATE TABLE `cities` (
   UNIQUE KEY `UNIQ_D95DB16B15A3C1BC` (`insee_code`),
   KEY `IDX_D95DB16BAE80F5DF` (`department_id`),
   CONSTRAINT `FK_D95DB16BAE80F5DF` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1594,7 +1594,7 @@ CREATE TABLE `clarifications` (
   UNIQUE KEY `UNIQ_2FAB8972989D9B62` (`slug`),
   KEY `IDX_2FAB8972EA9FDD75` (`media_id`),
   CONSTRAINT `FK_2FAB8972EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1618,7 +1618,7 @@ CREATE TABLE `cms_block` (
   KEY `IDX_AD680C0ECF1918FF` (`updated_by_administrator_id`),
   CONSTRAINT `FK_AD680C0E9DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_AD680C0ECF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1640,7 +1640,7 @@ CREATE TABLE `coalition` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_A7CD7AC75E237E06` (`name`),
   UNIQUE KEY `UNIQ_A7CD7AC7D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1662,7 +1662,7 @@ CREATE TABLE `coalition_follower` (
   KEY `IDX_DFF370E2C2A46A23` (`coalition_id`),
   CONSTRAINT `FK_DFF370E225F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_DFF370E2C2A46A23` FOREIGN KEY (`coalition_id`) REFERENCES `coalition` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1674,7 +1674,7 @@ CREATE TABLE `coalition_follower` (
 CREATE TABLE `coalition_moderator_role_association` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1707,7 +1707,7 @@ CREATE TABLE `commitment` (
 CREATE TABLE `committee_candidacies_group` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1739,7 +1739,7 @@ CREATE TABLE `committee_candidacy` (
   CONSTRAINT `FK_9A044544E891720` FOREIGN KEY (`committee_election_id`) REFERENCES `committee_election` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_9A04454FC1537C1` FOREIGN KEY (`candidacies_group_id`) REFERENCES `committee_candidacies_group` (`id`),
   CONSTRAINT `FK_9A04454FCC6DA91` FOREIGN KEY (`committee_membership_id`) REFERENCES `committees_memberships` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1764,7 +1764,7 @@ CREATE TABLE `committee_candidacy_invitation` (
   KEY `IDX_368B016159B22434` (`candidacy_id`),
   CONSTRAINT `FK_368B01611FB354CD` FOREIGN KEY (`membership_id`) REFERENCES `committees_memberships` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_368B016159B22434` FOREIGN KEY (`candidacy_id`) REFERENCES `committee_candidacy` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1785,7 +1785,7 @@ CREATE TABLE `committee_election` (
   KEY `IDX_2CA406E5FAC7D83F` (`designation_id`),
   CONSTRAINT `FK_2CA406E5ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_2CA406E5FAC7D83F` FOREIGN KEY (`designation_id`) REFERENCES `designation` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1812,7 +1812,7 @@ CREATE TABLE `committee_feed_item` (
   CONSTRAINT `FK_4F1CDC8071F7E88B` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_4F1CDC80ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`),
   CONSTRAINT `FK_4F1CDC80F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1829,7 +1829,7 @@ CREATE TABLE `committee_feed_item_user_documents` (
   KEY `IDX_D269D0AABEF808A3` (`committee_feed_item_id`),
   CONSTRAINT `FK_D269D0AA6A24B1A2` FOREIGN KEY (`user_document_id`) REFERENCES `user_documents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_D269D0AABEF808A3` FOREIGN KEY (`committee_feed_item_id`) REFERENCES `committee_feed_item` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1846,7 +1846,7 @@ CREATE TABLE `committee_membership_history_referent_tag` (
   KEY `IDX_B6A8C7189C262DB3` (`referent_tag_id`),
   CONSTRAINT `FK_B6A8C718123C64CE` FOREIGN KEY (`committee_membership_history_id`) REFERENCES `committees_membership_histories` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_B6A8C7189C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1873,7 +1873,7 @@ CREATE TABLE `committee_merge_histories` (
   CONSTRAINT `FK_BB95FBBC50FA8329` FOREIGN KEY (`merged_by_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_BB95FBBC5C34CBC4` FOREIGN KEY (`destination_committee_id`) REFERENCES `committees` (`id`),
   CONSTRAINT `FK_BB95FBBCA8E1562` FOREIGN KEY (`reverted_by_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1890,7 +1890,7 @@ CREATE TABLE `committee_merge_histories_merged_memberships` (
   KEY `IDX_CB8E336F9379ED92` (`committee_merge_history_id`),
   CONSTRAINT `FK_CB8E336F9379ED92` FOREIGN KEY (`committee_merge_history_id`) REFERENCES `committee_merge_histories` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_CB8E336FFCC6DA91` FOREIGN KEY (`committee_membership_id`) REFERENCES `committees_memberships` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1910,7 +1910,7 @@ CREATE TABLE `committee_provisional_supervisor` (
   KEY `IDX_E394C3D4ED1A100B` (`committee_id`),
   CONSTRAINT `FK_E394C3D425F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`),
   CONSTRAINT `FK_E394C3D4ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1927,7 +1927,7 @@ CREATE TABLE `committee_referent_tag` (
   KEY `IDX_285EB1C5ED1A100B` (`committee_id`),
   CONSTRAINT `FK_285EB1C59C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_285EB1C5ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1944,7 +1944,7 @@ CREATE TABLE `committee_zone` (
   KEY `IDX_37C5F224ED1A100B` (`committee_id`),
   CONSTRAINT `FK_37C5F2249F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_37C5F224ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1990,7 +1990,7 @@ CREATE TABLE `committees` (
   KEY `committee_status_idx` (`status`),
   KEY `IDX_A36198C6B4D2A5D1` (`current_designation_id`),
   CONSTRAINT `FK_A36198C6B4D2A5D1` FOREIGN KEY (`current_designation_id`) REFERENCES `designation` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2012,7 +2012,7 @@ CREATE TABLE `committees_membership_histories` (
   KEY `committees_membership_histories_date_idx` (`date`),
   KEY `IDX_4BBAE2C7ED1A100B` (`committee_id`),
   CONSTRAINT `FK_4BBAE2C7ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2038,7 +2038,7 @@ CREATE TABLE `committees_memberships` (
   KEY `IDX_E7A6490EED1A100B` (`committee_id`),
   CONSTRAINT `FK_E7A6490E25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`),
   CONSTRAINT `FK_E7A6490EED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2056,7 +2056,7 @@ CREATE TABLE `consular_district` (
   `points` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_77152B8877153098` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2071,7 +2071,7 @@ CREATE TABLE `consular_managed_area` (
   PRIMARY KEY (`id`),
   KEY `IDX_7937A51292CA96FD` (`consular_district_id`),
   CONSTRAINT `FK_7937A51292CA96FD` FOREIGN KEY (`consular_district_id`) REFERENCES `consular_district` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2126,7 +2126,7 @@ CREATE TABLE `coordinator_managed_areas` (
   `codes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
   `sector` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2148,7 +2148,7 @@ CREATE TABLE `custom_search_results` (
   PRIMARY KEY (`id`),
   KEY `IDX_38973E54EA9FDD75` (`media_id`),
   CONSTRAINT `FK_38973E54EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2167,7 +2167,7 @@ CREATE TABLE `department` (
   UNIQUE KEY `UNIQ_CD1DE18A77153098` (`code`),
   KEY `IDX_CD1DE18A98260155` (`region_id`),
   CONSTRAINT `FK_CD1DE18A98260155` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2202,7 +2202,7 @@ CREATE TABLE `department_site` (
 CREATE TABLE `designation` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `global_zones` longtext COLLATE utf8mb3_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `global_zones` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `candidacy_start_date` datetime DEFAULT NULL,
   `candidacy_end_date` datetime DEFAULT NULL,
   `vote_start_date` datetime DEFAULT NULL,
@@ -2225,7 +2225,7 @@ CREATE TABLE `designation` (
   `poll_id` int unsigned DEFAULT NULL,
   `created_by_administrator_id` int DEFAULT NULL,
   `updated_by_administrator_id` int DEFAULT NULL,
-  `custom_title` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `custom_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `wording_welcome_page_id` int unsigned DEFAULT NULL,
   `seats` smallint unsigned DEFAULT NULL,
   `majority_prime` smallint unsigned DEFAULT NULL,
@@ -2240,7 +2240,7 @@ CREATE TABLE `designation` (
   CONSTRAINT `FK_8947610D9DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_8947610DCF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_8947610DDD49221F` FOREIGN KEY (`wording_welcome_page_id`) REFERENCES `cms_block` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2311,7 +2311,7 @@ CREATE TABLE `designation_referent_tag` (
   KEY `IDX_7538F35AFAC7D83F` (`designation_id`),
   CONSTRAINT `FK_7538F35A9C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_7538F35AFAC7D83F` FOREIGN KEY (`designation_id`) REFERENCES `designation` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2345,7 +2345,7 @@ CREATE TABLE `device_zone` (
   KEY `IDX_29D2153D9F2C3FAB` (`zone_id`),
   CONSTRAINT `FK_29D2153D94A4C7D4` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_29D2153D9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2365,7 +2365,7 @@ CREATE TABLE `devices` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_11074E9A5846859C` (`device_uuid`),
   UNIQUE KEY `UNIQ_11074E9AD17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2390,7 +2390,7 @@ CREATE TABLE `districts` (
   UNIQUE KEY `UNIQ_68E318DC9C262DB3` (`referent_tag_id`),
   CONSTRAINT `FK_68E318DC80E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`),
   CONSTRAINT `FK_68E318DC9C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2407,7 +2407,7 @@ CREATE TABLE `donation_donation_tag` (
   KEY `IDX_F2D7087F790547EA` (`donation_tag_id`),
   CONSTRAINT `FK_F2D7087F4DC1279C` FOREIGN KEY (`donation_id`) REFERENCES `donations` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_F2D7087F790547EA` FOREIGN KEY (`donation_tag_id`) REFERENCES `donation_tags` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2422,7 +2422,7 @@ CREATE TABLE `donation_tags` (
   `color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_7E2FBF0CEA750E8` (`label`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2436,7 +2436,7 @@ CREATE TABLE `donation_transactions` (
   `donation_id` int unsigned NOT NULL,
   `paybox_result_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `paybox_authorization_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `paybox_payload` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci COMMENT '(DC2Type:json_array)',
+  `paybox_payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:json)',
   `paybox_date_time` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
   `paybox_transaction_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `paybox_subscription_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -2446,7 +2446,7 @@ CREATE TABLE `donation_transactions` (
   KEY `donation_transactions_result_idx` (`paybox_result_code`),
   KEY `IDX_89D6D36B4DC1279C` (`donation_id`),
   CONSTRAINT `FK_89D6D36B4DC1279C` FOREIGN KEY (`donation_id`) REFERENCES `donations` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2487,7 +2487,7 @@ CREATE TABLE `donations` (
   `code` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `beneficiary` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `source` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `membership` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_CDE98962D17F50A6` (`uuid`),
@@ -2495,7 +2495,7 @@ CREATE TABLE `donations` (
   KEY `donation_status_idx` (`status`),
   KEY `IDX_CDE98962831BACAF` (`donator_id`),
   CONSTRAINT `FK_CDE98962831BACAF` FOREIGN KEY (`donator_id`) REFERENCES `donators` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2512,7 +2512,7 @@ CREATE TABLE `donator_donator_tag` (
   KEY `IDX_6BAEC28C831BACAF` (`donator_id`),
   CONSTRAINT `FK_6BAEC28C71F026E6` FOREIGN KEY (`donator_tag_id`) REFERENCES `donator_tags` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_6BAEC28C831BACAF` FOREIGN KEY (`donator_id`) REFERENCES `donators` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2525,7 +2525,7 @@ CREATE TABLE `donator_identifier` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `identifier` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2544,7 +2544,7 @@ CREATE TABLE `donator_kinship` (
   KEY `IDX_E542211D831BACAF` (`donator_id`),
   CONSTRAINT `FK_E542211D4162C001` FOREIGN KEY (`related_id`) REFERENCES `donators` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_E542211D831BACAF` FOREIGN KEY (`donator_id`) REFERENCES `donators` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2559,7 +2559,7 @@ CREATE TABLE `donator_tags` (
   `color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_F02E4E4EEA750E8` (`label`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2581,7 +2581,7 @@ CREATE TABLE `donators` (
   `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `comment` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `gender` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb3_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -2594,7 +2594,7 @@ CREATE TABLE `donators` (
   CONSTRAINT `FK_A902FDD725F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_A902FDD7ABF665A8` FOREIGN KEY (`reference_donation_id`) REFERENCES `donations` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_A902FDD7DE59CB1A` FOREIGN KEY (`last_successful_donation_id`) REFERENCES `donations` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2620,7 +2620,7 @@ CREATE TABLE `elected_representative` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_BF51F0FD25F06C53` (`adherent_id`),
   CONSTRAINT `FK_BF51F0FD25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2639,7 +2639,7 @@ CREATE TABLE `elected_representative_label` (
   PRIMARY KEY (`id`),
   KEY `IDX_D8143704D38DA5D3` (`elected_representative_id`),
   CONSTRAINT `FK_D8143704D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2668,7 +2668,7 @@ CREATE TABLE `elected_representative_mandate` (
   CONSTRAINT `FK_38609146283AB2A9` FOREIGN KEY (`geo_zone_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_386091469F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `elected_representative_zone` (`id`),
   CONSTRAINT `FK_38609146D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2691,7 +2691,7 @@ CREATE TABLE `elected_representative_political_function` (
   KEY `IDX_303BAF41D38DA5D3` (`elected_representative_id`),
   CONSTRAINT `FK_303BAF416C1129CD` FOREIGN KEY (`mandate_id`) REFERENCES `elected_representative_mandate` (`id`),
   CONSTRAINT `FK_303BAF41D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2709,7 +2709,7 @@ CREATE TABLE `elected_representative_social_network_link` (
   UNIQUE KEY `social_network_elected_representative_unique` (`type`,`elected_representative_id`),
   KEY `IDX_231377B5D38DA5D3` (`elected_representative_id`),
   CONSTRAINT `FK_231377B5D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2726,7 +2726,7 @@ CREATE TABLE `elected_representative_sponsorship` (
   PRIMARY KEY (`id`),
   KEY `IDX_CA6D486D38DA5D3` (`elected_representative_id`),
   CONSTRAINT `FK_CA6D486D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2743,7 +2743,7 @@ CREATE TABLE `elected_representative_user_list_definition` (
   KEY `IDX_A9C53A24F74563E3` (`user_list_definition_id`),
   CONSTRAINT `FK_A9C53A24D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_A9C53A24F74563E3` FOREIGN KEY (`user_list_definition_id`) REFERENCES `user_list_definition` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2769,7 +2769,7 @@ CREATE TABLE `elected_representative_user_list_definition_history` (
   CONSTRAINT `FK_1ECF75664B09E92C` FOREIGN KEY (`administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_1ECF7566D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_1ECF7566F74563E3` FOREIGN KEY (`user_list_definition_id`) REFERENCES `user_list_definition` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2788,7 +2788,7 @@ CREATE TABLE `elected_representative_zone` (
   KEY `elected_repr_zone_code` (`code`),
   KEY `IDX_C52FC4A712469DE2` (`category_id`),
   CONSTRAINT `FK_C52FC4A712469DE2` FOREIGN KEY (`category_id`) REFERENCES `elected_representative_zone_category` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2802,7 +2802,7 @@ CREATE TABLE `elected_representative_zone_category` (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_2E753C3B5E237E06` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2819,7 +2819,7 @@ CREATE TABLE `elected_representative_zone_parent` (
   KEY `IDX_CECA906FDD62C21B` (`child_id`),
   CONSTRAINT `FK_CECA906F727ACA70` FOREIGN KEY (`parent_id`) REFERENCES `elected_representative_zone` (`id`),
   CONSTRAINT `FK_CECA906FDD62C21B` FOREIGN KEY (`child_id`) REFERENCES `elected_representative_zone` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2836,7 +2836,7 @@ CREATE TABLE `elected_representative_zone_referent_tag` (
   KEY `IDX_D2B7A8C5BE31A103` (`elected_representative_zone_id`),
   CONSTRAINT `FK_D2B7A8C59C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_D2B7A8C5BE31A103` FOREIGN KEY (`elected_representative_zone_id`) REFERENCES `elected_representative_zone` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2858,7 +2858,7 @@ CREATE TABLE `election_city_candidate` (
   `profile` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `investiture_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2903,7 +2903,7 @@ CREATE TABLE `election_city_card` (
   CONSTRAINT `FK_EB01E8D1E4A014FA` FOREIGN KEY (`politic_manager_id`) REFERENCES `election_city_manager` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_EB01E8D1EBF42685` FOREIGN KEY (`candidate_prevision_id`) REFERENCES `election_city_prevision` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_EB01E8D1F543170A` FOREIGN KEY (`third_option_prevision_id`) REFERENCES `election_city_prevision` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2924,7 +2924,7 @@ CREATE TABLE `election_city_contact` (
   PRIMARY KEY (`id`),
   KEY `IDX_D04AFB68BAC62AF` (`city_id`),
   CONSTRAINT `FK_D04AFB68BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `election_city_card` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2938,7 +2938,7 @@ CREATE TABLE `election_city_manager` (
   `phone` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:phone_number)',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2955,7 +2955,7 @@ CREATE TABLE `election_city_partner` (
   PRIMARY KEY (`id`),
   KEY `IDX_704D77988BAC62AF` (`city_id`),
   CONSTRAINT `FK_704D77988BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `election_city_card` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2972,7 +2972,7 @@ CREATE TABLE `election_city_prevision` (
   `validated_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2990,7 +2990,7 @@ CREATE TABLE `election_rounds` (
   PRIMARY KEY (`id`),
   KEY `IDX_37C02EA0A708DAFF` (`election_id`),
   CONSTRAINT `FK_37C02EA0A708DAFF` FOREIGN KEY (`election_id`) REFERENCES `elections` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3043,7 +3043,7 @@ CREATE TABLE `elections` (
   `request_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_1BD26F335E237E06` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3064,7 +3064,7 @@ CREATE TABLE `email_templates` (
   UNIQUE KEY `UNIQ_6023E2A5D17F50A6` (`uuid`),
   KEY `IDX_6023E2A5F675F31B` (`author_id`),
   CONSTRAINT `FK_6023E2A5F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3086,7 +3086,7 @@ CREATE TABLE `emails` (
   `delivered_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_4C81E852D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3118,7 +3118,7 @@ CREATE TABLE `epci` (
   `insee` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `fiscal` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3135,7 +3135,7 @@ CREATE TABLE `event_group_category` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D038E3CD5E237E06` (`name`),
   UNIQUE KEY `UNIQ_D038E3CD989D9B62` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3152,7 +3152,7 @@ CREATE TABLE `event_referent_tag` (
   KEY `IDX_D3C8F5BE9C262DB3` (`referent_tag_id`),
   CONSTRAINT `FK_D3C8F5BE71F7E88B` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_D3C8F5BE9C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3169,7 +3169,7 @@ CREATE TABLE `event_user_documents` (
   KEY `IDX_7D14491F71F7E88B` (`event_id`),
   CONSTRAINT `FK_7D14491F6A24B1A2` FOREIGN KEY (`user_document_id`) REFERENCES `user_documents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_7D14491F71F7E88B` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3186,7 +3186,7 @@ CREATE TABLE `event_zone` (
   KEY `IDX_BF208CAC9F2C3FAB` (`zone_id`),
   CONSTRAINT `FK_BF208CAC3B1C4B73` FOREIGN KEY (`base_event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_BF208CAC9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3235,7 +3235,7 @@ CREATE TABLE `events` (
   `reminded` tinyint(1) NOT NULL DEFAULT '0',
   `private` tinyint(1) NOT NULL DEFAULT '0',
   `electoral` tinyint(1) NOT NULL DEFAULT '0',
-  `dynamic_link` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_5387574A989D9B62` (`slug`),
   UNIQUE KEY `UNIQ_5387574AD17F50A6` (`uuid`),
@@ -3251,7 +3251,7 @@ CREATE TABLE `events` (
   CONSTRAINT `FK_5387574A876C4DDA` FOREIGN KEY (`organizer_id`) REFERENCES `adherents` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `FK_5387574AC2A46A23` FOREIGN KEY (`coalition_id`) REFERENCES `coalition` (`id`),
   CONSTRAINT `FK_5387574AED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3271,7 +3271,7 @@ CREATE TABLE `events_categories` (
   UNIQUE KEY `UNIQ_EF0AF3E9989D9B62` (`slug`),
   KEY `IDX_EF0AF3E9A267D842` (`event_group_category_id`),
   CONSTRAINT `FK_EF0AF3E9A267D842` FOREIGN KEY (`event_group_category_id`) REFERENCES `event_group_category` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3294,7 +3294,7 @@ CREATE TABLE `events_invitations` (
   UNIQUE KEY `UNIQ_B94D5AADD17F50A6` (`uuid`),
   KEY `IDX_B94D5AAD71F7E88B` (`event_id`),
   CONSTRAINT `FK_B94D5AAD71F7E88B` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3314,14 +3314,14 @@ CREATE TABLE `events_registrations` (
   `created_at` datetime NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `source` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_EEFA30C0D17F50A6` (`uuid`),
   KEY `event_registration_adherent_uuid_idx` (`adherent_uuid`),
   KEY `event_registration_email_address_idx` (`email_address`),
   KEY `IDX_EEFA30C071F7E88B` (`event_id`),
   CONSTRAINT `FK_EEFA30C071F7E88B` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3336,7 +3336,7 @@ CREATE TABLE `facebook_profiles` (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gender` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `age_range` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json_array)',
+  `age_range` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
   `created_at` datetime NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `access_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -3345,7 +3345,7 @@ CREATE TABLE `facebook_profiles` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_4C9116989BE8FD98` (`facebook_id`),
   UNIQUE KEY `UNIQ_4C911698D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3365,7 +3365,7 @@ CREATE TABLE `facebook_videos` (
   `updated_at` datetime NOT NULL,
   `published` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3382,7 +3382,7 @@ CREATE TABLE `failed_login_attempt` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_1CD95620D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3419,7 +3419,7 @@ CREATE TABLE `filesystem_file` (
   CONSTRAINT `FK_47F0AE28727ACA70` FOREIGN KEY (`parent_id`) REFERENCES `filesystem_file` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_47F0AE28896DBBDE` FOREIGN KEY (`updated_by_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_47F0AE28B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3436,7 +3436,7 @@ CREATE TABLE `filesystem_file_permission` (
   UNIQUE KEY `file_permission_unique` (`file_id`,`name`),
   KEY `IDX_BD623E4C93CB796C` (`file_id`),
   CONSTRAINT `FK_BD623E4C93CB796C` FOREIGN KEY (`file_id`) REFERENCES `filesystem_file` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3461,7 +3461,7 @@ CREATE TABLE `formation_axes` (
   KEY `IDX_7E652CB6EA9FDD75` (`media_id`),
   CONSTRAINT `FK_7E652CB6D96C566B` FOREIGN KEY (`path_id`) REFERENCES `formation_paths` (`id`),
   CONSTRAINT `FK_7E652CB6EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3481,7 +3481,7 @@ CREATE TABLE `formation_files` (
   UNIQUE KEY `formation_file_slug_extension` (`slug`,`extension`),
   KEY `IDX_70BEDE2CAFC2B591` (`module_id`),
   CONSTRAINT `FK_70BEDE2CAFC2B591` FOREIGN KEY (`module_id`) REFERENCES `formation_modules` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3507,7 +3507,7 @@ CREATE TABLE `formation_modules` (
   KEY `IDX_6B4806ACEA9FDD75` (`media_id`),
   CONSTRAINT `FK_6B4806AC2E30CD41` FOREIGN KEY (`axe_id`) REFERENCES `formation_axes` (`id`),
   CONSTRAINT `FK_6B4806ACEA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3524,7 +3524,7 @@ CREATE TABLE `formation_paths` (
   `position` smallint unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_FD311864989D9B62` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3552,7 +3552,7 @@ CREATE TABLE `geo_borough` (
   KEY `IDX_144958748BAC62AF` (`city_id`),
   CONSTRAINT `FK_1449587480E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`),
   CONSTRAINT `FK_144958748BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `geo_city` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3578,7 +3578,7 @@ CREATE TABLE `geo_canton` (
   KEY `IDX_F04FC05FAE80F5DF` (`department_id`),
   CONSTRAINT `FK_F04FC05F80E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`),
   CONSTRAINT `FK_F04FC05FAE80F5DF` FOREIGN KEY (`department_id`) REFERENCES `geo_department` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3612,7 +3612,7 @@ CREATE TABLE `geo_city` (
   CONSTRAINT `FK_297C2D3480E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`),
   CONSTRAINT `FK_297C2D349D25CF90` FOREIGN KEY (`replacement_id`) REFERENCES `geo_city` (`id`),
   CONSTRAINT `FK_297C2D34AE80F5DF` FOREIGN KEY (`department_id`) REFERENCES `geo_department` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3629,7 +3629,7 @@ CREATE TABLE `geo_city_canton` (
   KEY `IDX_A4AB64718D070D0B` (`canton_id`),
   CONSTRAINT `FK_A4AB64718BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `geo_city` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_A4AB64718D070D0B` FOREIGN KEY (`canton_id`) REFERENCES `geo_canton` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3652,7 +3652,7 @@ CREATE TABLE `geo_city_community` (
   UNIQUE KEY `UNIQ_E5805E0877153098` (`code`),
   UNIQUE KEY `UNIQ_E5805E0880E32C3E` (`geo_data_id`),
   CONSTRAINT `FK_E5805E0880E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3669,7 +3669,7 @@ CREATE TABLE `geo_city_community_department` (
   KEY `IDX_1E2D6D06AE80F5DF` (`department_id`),
   CONSTRAINT `FK_1E2D6D066D3B1930` FOREIGN KEY (`city_community_id`) REFERENCES `geo_city_community` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_1E2D6D06AE80F5DF` FOREIGN KEY (`department_id`) REFERENCES `geo_department` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3686,7 +3686,7 @@ CREATE TABLE `geo_city_district` (
   KEY `IDX_5C4191FB08FA272` (`district_id`),
   CONSTRAINT `FK_5C4191F8BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `geo_city` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_5C4191FB08FA272` FOREIGN KEY (`district_id`) REFERENCES `geo_district` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3714,7 +3714,7 @@ CREATE TABLE `geo_consular_district` (
   KEY `IDX_BBFC552F72D24D35` (`foreign_district_id`),
   CONSTRAINT `FK_BBFC552F72D24D35` FOREIGN KEY (`foreign_district_id`) REFERENCES `geo_foreign_district` (`id`),
   CONSTRAINT `FK_BBFC552F80E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3740,7 +3740,7 @@ CREATE TABLE `geo_country` (
   KEY `IDX_E465446472D24D35` (`foreign_district_id`),
   CONSTRAINT `FK_E465446472D24D35` FOREIGN KEY (`foreign_district_id`) REFERENCES `geo_foreign_district` (`id`),
   CONSTRAINT `FK_E465446480E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3763,7 +3763,7 @@ CREATE TABLE `geo_custom_zone` (
   UNIQUE KEY `UNIQ_ABE4DB5A77153098` (`code`),
   UNIQUE KEY `UNIQ_ABE4DB5A80E32C3E` (`geo_data_id`),
   CONSTRAINT `FK_ABE4DB5A80E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3777,7 +3777,7 @@ CREATE TABLE `geo_data` (
   `geo_shape` geometry NOT NULL COMMENT '(DC2Type:geometry)',
   PRIMARY KEY (`id`),
   SPATIAL KEY `geo_data_geo_shape_idx` (`geo_shape`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3803,7 +3803,7 @@ CREATE TABLE `geo_department` (
   KEY `IDX_B460660498260155` (`region_id`),
   CONSTRAINT `FK_B460660480E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`),
   CONSTRAINT `FK_B460660498260155` FOREIGN KEY (`region_id`) REFERENCES `geo_region` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3830,7 +3830,7 @@ CREATE TABLE `geo_district` (
   KEY `IDX_DF782326AE80F5DF` (`department_id`),
   CONSTRAINT `FK_DF78232680E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`),
   CONSTRAINT `FK_DF782326AE80F5DF` FOREIGN KEY (`department_id`) REFERENCES `geo_department` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3857,7 +3857,7 @@ CREATE TABLE `geo_foreign_district` (
   KEY `IDX_973BE1F198755666` (`custom_zone_id`),
   CONSTRAINT `FK_973BE1F180E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`),
   CONSTRAINT `FK_973BE1F198755666` FOREIGN KEY (`custom_zone_id`) REFERENCES `geo_custom_zone` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3883,7 +3883,7 @@ CREATE TABLE `geo_region` (
   KEY `IDX_A4B3C808F92F3E70` (`country_id`),
   CONSTRAINT `FK_A4B3C80880E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`),
   CONSTRAINT `FK_A4B3C808F92F3E70` FOREIGN KEY (`country_id`) REFERENCES `geo_country` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3906,7 +3906,7 @@ CREATE TABLE `geo_zone` (
   `postal_code` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `tags` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `tags` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `geo_zone_code_type_unique` (`code`,`type`),
   UNIQUE KEY `UNIQ_A4CCEF07D17F50A6` (`uuid`),
@@ -3914,7 +3914,7 @@ CREATE TABLE `geo_zone` (
   KEY `IDX_A4CCEF078CDE5729` (`type`),
   KEY `IDX_A4CCEF076FBC9426` (`tags`),
   CONSTRAINT `FK_A4CCEF0780E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3931,7 +3931,7 @@ CREATE TABLE `geo_zone_parent` (
   KEY `IDX_8E49B9DDD62C21B` (`child_id`),
   CONSTRAINT `FK_8E49B9D727ACA70` FOREIGN KEY (`parent_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_8E49B9DDD62C21B` FOREIGN KEY (`child_id`) REFERENCES `geo_zone` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3964,7 +3964,7 @@ CREATE TABLE `home_blocks` (
   UNIQUE KEY `UNIQ_3EE9FCC54DBB5058` (`position_name`),
   KEY `IDX_3EE9FCC5EA9FDD75` (`media_id`),
   CONSTRAINT `FK_3EE9FCC5EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3981,7 +3981,7 @@ CREATE TABLE `image` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_C53D045FD17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4002,7 +4002,7 @@ CREATE TABLE `instance_quality` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_BB26C6D377153098` (`code`),
   UNIQUE KEY `UNIQ_BB26C6D3D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4019,7 +4019,7 @@ CREATE TABLE `institutional_events_categories` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_18A3A4175E237E06` (`name`),
   UNIQUE KEY `UNIQ_18A3A417989D9B62` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4039,7 +4039,7 @@ CREATE TABLE `interactive_choices` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_3C6695A73F7BFD5C` (`content_key`),
   UNIQUE KEY `UNIQ_3C6695A7D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4056,7 +4056,7 @@ CREATE TABLE `interactive_invitation_has_choices` (
   KEY `IDX_31A811A2A35D7AF0` (`invitation_id`),
   CONSTRAINT `FK_31A811A2998666D1` FOREIGN KEY (`choice_id`) REFERENCES `interactive_choices` (`id`),
   CONSTRAINT `FK_31A811A2A35D7AF0` FOREIGN KEY (`invitation_id`) REFERENCES `interactive_invitations` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4080,7 +4080,7 @@ CREATE TABLE `interactive_invitations` (
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_45258689D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4097,7 +4097,7 @@ CREATE TABLE `internal_api_application` (
   `scope_required` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D0E72FCDD17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4134,7 +4134,7 @@ CREATE TABLE `invitations` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_232710AED17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4155,7 +4155,7 @@ CREATE TABLE `je_marche_reports` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4172,7 +4172,7 @@ CREATE TABLE `jecoute_choice` (
   PRIMARY KEY (`id`),
   KEY `IDX_80BD898B1E27F6BF` (`question_id`),
   CONSTRAINT `FK_80BD898B1E27F6BF` FOREIGN KEY (`question_id`) REFERENCES `jecoute_question` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4191,7 +4191,7 @@ CREATE TABLE `jecoute_data_answer` (
   KEY `IDX_12FB393EA6DF29BA` (`survey_question_id`),
   CONSTRAINT `FK_12FB393E3C5110AB` FOREIGN KEY (`data_survey_id`) REFERENCES `jecoute_data_survey` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_12FB393EA6DF29BA` FOREIGN KEY (`survey_question_id`) REFERENCES `jecoute_survey_question` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4208,7 +4208,7 @@ CREATE TABLE `jecoute_data_answer_selected_choices` (
   KEY `IDX_10DF117998666D1` (`choice_id`),
   CONSTRAINT `FK_10DF117259C0831` FOREIGN KEY (`data_answer_id`) REFERENCES `jecoute_data_answer` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_10DF117998666D1` FOREIGN KEY (`choice_id`) REFERENCES `jecoute_choice` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4223,7 +4223,7 @@ CREATE TABLE `jecoute_data_survey` (
   `survey_id` int unsigned NOT NULL,
   `posted_at` datetime NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `author_postal_code` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `author_postal_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_6579E8E7D17F50A6` (`uuid`),
   KEY `IDX_6579E8E7B3FE509D` (`survey_id`),
@@ -4231,7 +4231,7 @@ CREATE TABLE `jecoute_data_survey` (
   KEY `IDX_6579E8E7B669800E` (`author_postal_code`),
   CONSTRAINT `FK_6579E8E7B3FE509D` FOREIGN KEY (`survey_id`) REFERENCES `jecoute_survey` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_6579E8E7F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4247,7 +4247,7 @@ CREATE TABLE `jecoute_managed_areas` (
   PRIMARY KEY (`id`),
   KEY `IDX_DF8531749F2C3FAB` (`zone_id`),
   CONSTRAINT `FK_DF8531749F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4271,11 +4271,11 @@ CREATE TABLE `jecoute_news` (
   `notification` tinyint(1) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `space` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visibility` varchar(30) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `link_label` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `link_label` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pinned` tinyint(1) NOT NULL DEFAULT '0',
   `enriched` tinyint(1) NOT NULL DEFAULT '0',
-  `dynamic_link` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_3436209D17F50A6` (`uuid`),
   KEY `IDX_34362099F2C3FAB` (`zone_id`),
@@ -4284,7 +4284,7 @@ CREATE TABLE `jecoute_news` (
   CONSTRAINT `FK_34362099F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_3436209B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_3436209F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4316,7 +4316,7 @@ CREATE TABLE `jecoute_question` (
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `discr` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4348,7 +4348,7 @@ CREATE TABLE `jecoute_region` (
   CONSTRAINT `FK_4E74226F4B09E92C` FOREIGN KEY (`administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_4E74226F9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_4E74226FF675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4393,15 +4393,15 @@ CREATE TABLE `jecoute_riposte` (
   `nb_detail_views` int unsigned NOT NULL DEFAULT '0',
   `nb_source_views` int unsigned NOT NULL DEFAULT '0',
   `nb_ripostes` int unsigned NOT NULL DEFAULT '0',
-  `open_graph` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL COMMENT '(DC2Type:json_array)',
-  `dynamic_link` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `open_graph` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
+  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_17E1064BD17F50A6` (`uuid`),
   KEY `IDX_17E1064BB03A8386` (`created_by_id`),
   KEY `IDX_17E1064BF675F31B` (`author_id`),
   CONSTRAINT `FK_17E1064BB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_17E1064BF675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4415,7 +4415,7 @@ CREATE TABLE `jecoute_suggested_question` (
   `published` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_8280E9DABF396750` FOREIGN KEY (`id`) REFERENCES `jecoute_question` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4440,7 +4440,7 @@ CREATE TABLE `jecoute_survey` (
   `blocked_changes` tinyint(1) DEFAULT '0',
   `updated_by_administrator_id` int DEFAULT NULL,
   `updated_by_adherent_id` int unsigned DEFAULT NULL,
-  `dynamic_link` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_EC4948E5D17F50A6` (`uuid`),
   KEY `IDX_EC4948E59F2C3FAB` (`zone_id`),
@@ -4453,7 +4453,7 @@ CREATE TABLE `jecoute_survey` (
   CONSTRAINT `FK_EC4948E59F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_EC4948E5CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_EC4948E5DF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4475,7 +4475,7 @@ CREATE TABLE `jecoute_survey_question` (
   KEY `IDX_A2FBFA81B3FE509D` (`survey_id`),
   CONSTRAINT `FK_A2FBFA811E27F6BF` FOREIGN KEY (`question_id`) REFERENCES `jecoute_question` (`id`),
   CONSTRAINT `FK_A2FBFA81B3FE509D` FOREIGN KEY (`survey_id`) REFERENCES `jecoute_survey` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4510,7 +4510,7 @@ CREATE TABLE `jemarche_data_survey` (
   KEY `IDX_8DF5D81894A4C7D4` (`device_id`),
   CONSTRAINT `FK_8DF5D8183C5110AB` FOREIGN KEY (`data_survey_id`) REFERENCES `jecoute_data_survey` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_8DF5D81894A4C7D4` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4630,7 +4630,7 @@ CREATE TABLE `legislative_candidates` (
   KEY `IDX_AE55AF9BEA9FDD75` (`media_id`),
   CONSTRAINT `FK_AE55AF9B23F5C396` FOREIGN KEY (`district_zone_id`) REFERENCES `legislative_district_zones` (`id`),
   CONSTRAINT `FK_AE55AF9BEA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4648,7 +4648,7 @@ CREATE TABLE `legislative_district_zones` (
   `rank` smallint unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_5853B7FAB5501F87` (`area_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4707,7 +4707,7 @@ CREATE TABLE `list_total_result` (
   KEY `IDX_A19B071E45EB7186` (`vote_result_id`),
   CONSTRAINT `FK_A19B071E3DAE168B` FOREIGN KEY (`list_id`) REFERENCES `vote_result_list` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_A19B071E45EB7186` FOREIGN KEY (`vote_result_id`) REFERENCES `vote_result` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4723,7 +4723,7 @@ CREATE TABLE `live_links` (
   `link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4816,7 +4816,7 @@ CREATE TABLE `lre_area` (
   PRIMARY KEY (`id`),
   KEY `IDX_8D3B8F189C262DB3` (`referent_tag_id`),
   CONSTRAINT `FK_8D3B8F189C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4839,7 +4839,7 @@ CREATE TABLE `mailchimp_campaign` (
   `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `mailchimp_list_type` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `mailchimp_list_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `zone_id` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_CFABD3094BD2A4C0` (`report_id`),
@@ -4848,7 +4848,7 @@ CREATE TABLE `mailchimp_campaign` (
   CONSTRAINT `FK_CFABD3094BD2A4C0` FOREIGN KEY (`report_id`) REFERENCES `mailchimp_campaign_report` (`id`),
   CONSTRAINT `FK_CFABD309537A1329` FOREIGN KEY (`message_id`) REFERENCES `adherent_messages` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_CFABD3099F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4865,7 +4865,7 @@ CREATE TABLE `mailchimp_campaign_mailchimp_segment` (
   KEY `IDX_901CE107D21E482E` (`mailchimp_segment_id`),
   CONSTRAINT `FK_901CE107828112CC` FOREIGN KEY (`mailchimp_campaign_id`) REFERENCES `mailchimp_campaign` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_901CE107D21E482E` FOREIGN KEY (`mailchimp_segment_id`) REFERENCES `mailchimp_segment` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4890,7 +4890,7 @@ CREATE TABLE `mailchimp_campaign_report` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4905,7 +4905,7 @@ CREATE TABLE `mailchimp_segment` (
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `external_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4927,7 +4927,7 @@ CREATE TABLE `medias` (
   `compressed_display` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_12D2AF81B548B0F` (`path`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4958,11 +4958,11 @@ CREATE TABLE `messenger_messages` (
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `migrations` (
-  `version` varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `version` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `executed_at` datetime DEFAULT NULL,
   `execution_time` int DEFAULT NULL,
   PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `migrations` WRITE;
@@ -4992,7 +4992,7 @@ CREATE TABLE `ministry_list_total_result` (
   PRIMARY KEY (`id`),
   KEY `IDX_99D1332580711B75` (`ministry_vote_result_id`),
   CONSTRAINT `FK_99D1332580711B75` FOREIGN KEY (`ministry_vote_result_id`) REFERENCES `ministry_vote_result` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5023,7 +5023,7 @@ CREATE TABLE `ministry_vote_result` (
   CONSTRAINT `FK_B9F11DAE8BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`),
   CONSTRAINT `FK_B9F11DAEB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_B9F11DAEFCBF5E32` FOREIGN KEY (`election_round_id`) REFERENCES `election_rounds` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5054,7 +5054,7 @@ CREATE TABLE `mooc` (
   UNIQUE KEY `UNIQ_9D5D3B55684DD106` (`article_image_id`),
   CONSTRAINT `FK_9D5D3B5543C8160D` FOREIGN KEY (`list_image_id`) REFERENCES `image` (`id`),
   CONSTRAINT `FK_9D5D3B55684DD106` FOREIGN KEY (`article_image_id`) REFERENCES `image` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5071,7 +5071,7 @@ CREATE TABLE `mooc_attachment_file` (
   `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `mooc_attachment_file_slug_extension` (`slug`,`extension`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5087,7 +5087,7 @@ CREATE TABLE `mooc_attachment_link` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5108,7 +5108,7 @@ CREATE TABLE `mooc_chapter` (
   UNIQUE KEY `UNIQ_A3EDA0D1989D9B62` (`slug`),
   KEY `IDX_A3EDA0D1255EEB87` (`mooc_id`),
   CONSTRAINT `FK_A3EDA0D1255EEB87` FOREIGN KEY (`mooc_id`) REFERENCES `mooc` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5125,7 +5125,7 @@ CREATE TABLE `mooc_element_attachment_file` (
   KEY `IDX_88759A26B1828C9D` (`base_mooc_element_id`),
   CONSTRAINT `FK_88759A265B5E2CEA` FOREIGN KEY (`attachment_file_id`) REFERENCES `mooc_attachment_file` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_88759A26B1828C9D` FOREIGN KEY (`base_mooc_element_id`) REFERENCES `mooc_elements` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5142,7 +5142,7 @@ CREATE TABLE `mooc_element_attachment_link` (
   KEY `IDX_324635C7B1828C9D` (`base_mooc_element_id`),
   CONSTRAINT `FK_324635C7653157F7` FOREIGN KEY (`attachment_link_id`) REFERENCES `mooc_attachment_link` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_324635C7B1828C9D` FOREIGN KEY (`base_mooc_element_id`) REFERENCES `mooc_elements` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5175,7 +5175,7 @@ CREATE TABLE `mooc_elements` (
   KEY `IDX_691284C5579F4768` (`chapter_id`),
   CONSTRAINT `FK_691284C53DA5256D` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`),
   CONSTRAINT `FK_691284C5579F4768` FOREIGN KEY (`chapter_id`) REFERENCES `mooc_chapter` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5189,7 +5189,7 @@ CREATE TABLE `municipal_chief_areas` (
   `jecoute_access` tinyint(1) NOT NULL DEFAULT '0',
   `insee_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5201,7 +5201,7 @@ CREATE TABLE `municipal_chief_areas` (
 CREATE TABLE `municipal_manager_role_association` (
   `id` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5218,7 +5218,7 @@ CREATE TABLE `municipal_manager_role_association_cities` (
   KEY `IDX_A713D9C2D96891C` (`municipal_manager_role_association_id`),
   CONSTRAINT `FK_A713D9C28BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`),
   CONSTRAINT `FK_A713D9C2D96891C` FOREIGN KEY (`municipal_manager_role_association_id`) REFERENCES `municipal_manager_role_association` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5233,7 +5233,7 @@ CREATE TABLE `municipal_manager_supervisor_role` (
   PRIMARY KEY (`id`),
   KEY `IDX_F304FF35E47E35` (`referent_id`),
   CONSTRAINT `FK_F304FF35E47E35` FOREIGN KEY (`referent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5270,7 +5270,7 @@ CREATE TABLE `my_team_delegate_access_committee` (
   KEY `IDX_C52A163FFD98FA7A` (`delegated_access_id`),
   CONSTRAINT `FK_C52A163FED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_C52A163FFD98FA7A` FOREIGN KEY (`delegated_access_id`) REFERENCES `my_team_delegated_access` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5288,7 +5288,7 @@ CREATE TABLE `my_team_delegated_access` (
   `restricted_cities` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `scope_features` longtext COLLATE utf8mb3_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `scope_features` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -5297,7 +5297,7 @@ CREATE TABLE `my_team_delegated_access` (
   KEY `IDX_421C13B9B7E7AE18` (`delegated_id`),
   CONSTRAINT `FK_421C13B98825BEFA` FOREIGN KEY (`delegator_id`) REFERENCES `adherents` (`id`),
   CONSTRAINT `FK_421C13B9B7E7AE18` FOREIGN KEY (`delegated_id`) REFERENCES `adherents` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5335,7 +5335,7 @@ CREATE TABLE `national_council_candidacies_group` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5367,7 +5367,7 @@ CREATE TABLE `national_council_candidacy` (
   CONSTRAINT `FK_31A7A20525F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_31A7A205A708DAFF` FOREIGN KEY (`election_id`) REFERENCES `national_council_election` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_31A7A205FC1537C1` FOREIGN KEY (`candidacies_group_id`) REFERENCES `national_council_candidacies_group` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5384,7 +5384,7 @@ CREATE TABLE `national_council_election` (
   UNIQUE KEY `UNIQ_F3809347D17F50A6` (`uuid`),
   KEY `IDX_F3809347FAC7D83F` (`designation_id`),
   CONSTRAINT `FK_F3809347FAC7D83F` FOREIGN KEY (`designation_id`) REFERENCES `designation` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5403,7 +5403,7 @@ CREATE TABLE `newsletter_invitations` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_15C94F61D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5422,13 +5422,13 @@ CREATE TABLE `newsletter_subscriptions` (
   `country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `from_event` tinyint(1) NOT NULL DEFAULT '0',
   `confirmed_at` datetime DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb3_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `token` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_B3C13B0BE7927C74` (`email`),
   UNIQUE KEY `UNIQ_B3C13B0BD17F50A6` (`uuid`),
   UNIQUE KEY `UNIQ_B3C13B0B5F37A13B` (`token`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5449,7 +5449,7 @@ CREATE TABLE `notification` (
   `updated_at` datetime NOT NULL,
   `data` json DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5478,7 +5478,7 @@ CREATE TABLE `oauth_access_tokens` (
   CONSTRAINT `FK_CA42527C19EB6921` FOREIGN KEY (`client_id`) REFERENCES `oauth_clients` (`id`),
   CONSTRAINT `FK_CA42527C94A4C7D4` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_CA42527CA76ED395` FOREIGN KEY (`user_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5508,7 +5508,7 @@ CREATE TABLE `oauth_auth_codes` (
   CONSTRAINT `FK_BB493F8319EB6921` FOREIGN KEY (`client_id`) REFERENCES `oauth_clients` (`id`),
   CONSTRAINT `FK_BB493F8394A4C7D4` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_BB493F83A76ED395` FOREIGN KEY (`user_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5531,10 +5531,10 @@ CREATE TABLE `oauth_clients` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `requested_roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `code` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_13CE8101D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5556,7 +5556,7 @@ CREATE TABLE `oauth_refresh_tokens` (
   UNIQUE KEY `UNIQ_5AB687D17F50A6` (`uuid`),
   KEY `IDX_5AB6872CCB2688` (`access_token_id`),
   CONSTRAINT `FK_5AB6872CCB2688` FOREIGN KEY (`access_token_id`) REFERENCES `oauth_access_tokens` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5584,7 +5584,7 @@ CREATE TABLE `order_articles` (
   UNIQUE KEY `UNIQ_5E25D3D9989D9B62` (`slug`),
   KEY `IDX_5E25D3D9EA9FDD75` (`media_id`),
   CONSTRAINT `FK_5E25D3D9EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5601,7 +5601,7 @@ CREATE TABLE `order_section_order_article` (
   KEY `IDX_A956D4E4C14E7BC9` (`order_article_id`),
   CONSTRAINT `FK_A956D4E46BF91E2F` FOREIGN KEY (`order_section_id`) REFERENCES `order_sections` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_A956D4E4C14E7BC9` FOREIGN KEY (`order_article_id`) REFERENCES `order_articles` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5615,7 +5615,7 @@ CREATE TABLE `order_sections` (
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `position` smallint NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5638,7 +5638,7 @@ CREATE TABLE `organizational_chart_item` (
   KEY `IDX_29C1CBACA977936C` (`tree_root`),
   CONSTRAINT `FK_29C1CBAC727ACA70` FOREIGN KEY (`parent_id`) REFERENCES `organizational_chart_item` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_29C1CBACA977936C` FOREIGN KEY (`tree_root`) REFERENCES `organizational_chart_item` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5668,7 +5668,7 @@ CREATE TABLE `pages` (
   KEY `IDX_2074E575EA9FDD75` (`media_id`),
   CONSTRAINT `FK_2074E5755B42DC0F` FOREIGN KEY (`header_media_id`) REFERENCES `medias` (`id`),
   CONSTRAINT `FK_2074E575EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5688,7 +5688,7 @@ CREATE TABLE `pap_address` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `postal_codes` longtext COLLATE utf8mb3_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `postal_codes` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `voters_count` smallint unsigned NOT NULL DEFAULT '0',
   `vote_place_id` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -5697,7 +5697,7 @@ CREATE TABLE `pap_address` (
   KEY `IDX_47071E11D8AD1DD1AFAA2D47` (`offset_x`,`offset_y`),
   KEY `IDX_47071E11F3F90B30` (`vote_place_id`),
   CONSTRAINT `FK_47071E11F3F90B30` FOREIGN KEY (`vote_place_id`) REFERENCES `pap_vote_place` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5735,7 +5735,7 @@ CREATE TABLE `pap_building` (
   KEY `IDX_112ABBE148ED5CAD` (`current_campaign_id`),
   CONSTRAINT `FK_112ABBE148ED5CAD` FOREIGN KEY (`current_campaign_id`) REFERENCES `pap_campaign` (`id`),
   CONSTRAINT `FK_112ABBE1F5B7AF75` FOREIGN KEY (`address_id`) REFERENCES `pap_address` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5762,7 +5762,7 @@ CREATE TABLE `pap_building_block` (
   CONSTRAINT `FK_61470C814D2A7E12` FOREIGN KEY (`building_id`) REFERENCES `pap_building` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_61470C8185C9D733` FOREIGN KEY (`created_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_61470C81DF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5789,7 +5789,7 @@ CREATE TABLE `pap_building_block_statistics` (
   CONSTRAINT `FK_8B79BF6032618357` FOREIGN KEY (`building_block_id`) REFERENCES `pap_building_block` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_8B79BF60E1FA7797` FOREIGN KEY (`closed_by_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_8B79BF60F639F774` FOREIGN KEY (`campaign_id`) REFERENCES `pap_campaign` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5852,7 +5852,7 @@ CREATE TABLE `pap_building_statistics` (
   CONSTRAINT `FK_B6FB4E7BDCDF6621` FOREIGN KEY (`last_passage_done_by_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_B6FB4E7BE1FA7797` FOREIGN KEY (`closed_by_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_B6FB4E7BF639F774` FOREIGN KEY (`campaign_id`) REFERENCES `pap_campaign` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5873,11 +5873,11 @@ CREATE TABLE `pap_campaign` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `visibility` varchar(30) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nb_addresses` int unsigned NOT NULL DEFAULT '0',
   `nb_voters` int unsigned NOT NULL DEFAULT '0',
   `associated` tinyint(1) NOT NULL DEFAULT '0',
-  `dynamic_link` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_by_adherent_id` int unsigned DEFAULT NULL,
   `updated_by_adherent_id` int unsigned DEFAULT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
@@ -5892,7 +5892,7 @@ CREATE TABLE `pap_campaign` (
   CONSTRAINT `FK_EF50C8E885C9D733` FOREIGN KEY (`created_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_EF50C8E8B3FE509D` FOREIGN KEY (`survey_id`) REFERENCES `jecoute_survey` (`id`),
   CONSTRAINT `FK_EF50C8E8DF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5923,8 +5923,8 @@ CREATE TABLE `pap_campaign_history` (
   `updated_at` datetime NOT NULL,
   `finish_at` datetime DEFAULT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `voter_status` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
-  `voter_postal_code` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `voter_status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `voter_postal_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `begin_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_5A3F26F7D17F50A6` (`uuid`),
@@ -5936,7 +5936,7 @@ CREATE TABLE `pap_campaign_history` (
   CONSTRAINT `FK_5A3F26F74D2A7E12` FOREIGN KEY (`building_id`) REFERENCES `pap_building` (`id`),
   CONSTRAINT `FK_5A3F26F7CC0DE6E1` FOREIGN KEY (`questioner_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_5A3F26F7F639F774` FOREIGN KEY (`campaign_id`) REFERENCES `pap_campaign` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5997,7 +5997,7 @@ CREATE TABLE `pap_floor` (
   CONSTRAINT `FK_633C3C6432618357` FOREIGN KEY (`building_block_id`) REFERENCES `pap_building_block` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_633C3C6485C9D733` FOREIGN KEY (`created_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_633C3C64DF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6016,7 +6016,7 @@ CREATE TABLE `pap_floor_statistics` (
   `updated_at` datetime NOT NULL,
   `closed_by_id` int unsigned DEFAULT NULL,
   `closed_at` datetime DEFAULT NULL,
-  `visited_doors` longtext COLLATE utf8mb3_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `visited_doors` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `nb_surveys` smallint unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_853B68C8D17F50A6` (`uuid`),
@@ -6026,7 +6026,7 @@ CREATE TABLE `pap_floor_statistics` (
   CONSTRAINT `FK_853B68C8854679E2` FOREIGN KEY (`floor_id`) REFERENCES `pap_floor` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_853B68C8E1FA7797` FOREIGN KEY (`closed_by_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_853B68C8F639F774` FOREIGN KEY (`campaign_id`) REFERENCES `pap_campaign` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6073,7 +6073,7 @@ CREATE TABLE `pap_voter` (
   UNIQUE KEY `UNIQ_FBF5A013D17F50A6` (`uuid`),
   KEY `IDX_FBF5A013F5B7AF75` (`address_id`),
   CONSTRAINT `FK_FBF5A013F5B7AF75` FOREIGN KEY (`address_id`) REFERENCES `pap_address` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6101,8 +6101,8 @@ CREATE TABLE `phoning_campaign` (
   `permanent` tinyint(1) NOT NULL DEFAULT '0',
   `participants_count` int NOT NULL DEFAULT '0',
   `zone_id` int unsigned DEFAULT NULL,
-  `visibility` varchar(30) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `dynamic_link` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_C3882BA4D17F50A6` (`uuid`),
   UNIQUE KEY `UNIQ_C3882BA4848CC616` (`audience_id`),
@@ -6121,7 +6121,7 @@ CREATE TABLE `phoning_campaign` (
   CONSTRAINT `FK_C3882BA4B3FE509D` FOREIGN KEY (`survey_id`) REFERENCES `jecoute_survey` (`id`),
   CONSTRAINT `FK_C3882BA4CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_C3882BA4DF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6157,7 +6157,7 @@ CREATE TABLE `phoning_campaign_history` (
   CONSTRAINT `FK_EC1911983C5110AB` FOREIGN KEY (`data_survey_id`) REFERENCES `jecoute_data_survey` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_EC191198A5626C52` FOREIGN KEY (`caller_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_EC191198F639F774` FOREIGN KEY (`campaign_id`) REFERENCES `phoning_campaign` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6177,7 +6177,7 @@ CREATE TABLE `political_committee` (
   UNIQUE KEY `UNIQ_39FAEE95AAA61A99` (`territorial_council_id`),
   UNIQUE KEY `UNIQ_39FAEE95D17F50A6` (`uuid`),
   CONSTRAINT `FK_39FAEE95AAA61A99` FOREIGN KEY (`territorial_council_id`) REFERENCES `territorial_council` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6200,7 +6200,7 @@ CREATE TABLE `political_committee_feed_item` (
   KEY `IDX_54369E83F675F31B` (`author_id`),
   CONSTRAINT `FK_54369E83C7A72` FOREIGN KEY (`political_committee_id`) REFERENCES `political_committee` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_54369E83F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6222,7 +6222,7 @@ CREATE TABLE `political_committee_membership` (
   KEY `IDX_FD85437BC7A72` (`political_committee_id`),
   CONSTRAINT `FK_FD85437B25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_FD85437BC7A72` FOREIGN KEY (`political_committee_id`) REFERENCES `political_committee` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6239,7 +6239,7 @@ CREATE TABLE `political_committee_quality` (
   PRIMARY KEY (`id`),
   KEY `IDX_243D6D3A78632915` (`political_committee_membership_id`),
   CONSTRAINT `FK_243D6D3A78632915` FOREIGN KEY (`political_committee_membership_id`) REFERENCES `political_committee_membership` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6268,7 +6268,7 @@ CREATE TABLE `poll` (
   CONSTRAINT `FK_84BCFA454B09E92C` FOREIGN KEY (`administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_84BCFA459F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_84BCFA45F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6288,7 +6288,7 @@ CREATE TABLE `poll_choice` (
   UNIQUE KEY `UNIQ_2DAE19C9D17F50A6` (`uuid`),
   KEY `IDX_2DAE19C93C947C0F` (`poll_id`),
   CONSTRAINT `FK_2DAE19C93C947C0F` FOREIGN KEY (`poll_id`) REFERENCES `poll` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6311,7 +6311,7 @@ CREATE TABLE `poll_vote` (
   CONSTRAINT `FK_ED568EBE25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_ED568EBE94A4C7D4` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_ED568EBE998666D1` FOREIGN KEY (`choice_id`) REFERENCES `poll_choice` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6324,7 +6324,7 @@ CREATE TABLE `procuration_managed_areas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `codes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6335,9 +6335,9 @@ CREATE TABLE `procuration_managed_areas` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `procuration_proxies` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `gender` varchar(6) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
-  `last_name` varchar(50) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
-  `first_names` varchar(100) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `gender` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `first_names` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -6359,14 +6359,14 @@ CREATE TABLE `procuration_proxies` (
   `proxies_count` smallint unsigned NOT NULL DEFAULT '1',
   `state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reachable` tinyint(1) NOT NULL DEFAULT '0',
-  `voter_number` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
-  `backup_other_vote_cities` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb3_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `disabled_reason` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `voter_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `backup_other_vote_cities` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `disabled_reason` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reminded_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_9B5E777AD17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6387,7 +6387,7 @@ CREATE TABLE `procuration_proxies_to_election_rounds` (
   KEY `IDX_D075F5A9FCBF5E32` (`election_round_id`),
   CONSTRAINT `FK_D075F5A9E15E419B` FOREIGN KEY (`procuration_proxy_id`) REFERENCES `procuration_proxies` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_D075F5A9FCBF5E32` FOREIGN KEY (`election_round_id`) REFERENCES `election_rounds` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6441,15 +6441,15 @@ CREATE TABLE `procuration_requests` (
   `state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reachable` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '0',
-  `disabled_reason` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `disabled_reason` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reminded_at` datetime DEFAULT NULL,
-  `voter_number` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `voter_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_9769FD842F1B6663` (`found_proxy_id`),
   KEY `IDX_9769FD84888FDEEE` (`procuration_request_found_by_id`),
   CONSTRAINT `FK_9769FD842F1B6663` FOREIGN KEY (`found_proxy_id`) REFERENCES `procuration_proxies` (`id`),
   CONSTRAINT `FK_9769FD84888FDEEE` FOREIGN KEY (`procuration_request_found_by_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6466,7 +6466,7 @@ CREATE TABLE `procuration_requests_to_election_rounds` (
   KEY `IDX_A47BBD53FCBF5E32` (`election_round_id`),
   CONSTRAINT `FK_A47BBD53128D9C53` FOREIGN KEY (`procuration_request_id`) REFERENCES `procuration_requests` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_A47BBD53FCBF5E32` FOREIGN KEY (`election_round_id`) REFERENCES `election_rounds` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6485,7 +6485,7 @@ CREATE TABLE `programmatic_foundation_approach` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8B785227D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6509,7 +6509,7 @@ CREATE TABLE `programmatic_foundation_measure` (
   UNIQUE KEY `UNIQ_213A5F1ED17F50A6` (`uuid`),
   KEY `IDX_213A5F1EF0ED738A` (`sub_approach_id`),
   CONSTRAINT `FK_213A5F1EF0ED738A` FOREIGN KEY (`sub_approach_id`) REFERENCES `programmatic_foundation_sub_approach` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6526,7 +6526,7 @@ CREATE TABLE `programmatic_foundation_measure_tag` (
   KEY `IDX_F004297FBAD26311` (`tag_id`),
   CONSTRAINT `FK_F004297F5DA37D00` FOREIGN KEY (`measure_id`) REFERENCES `programmatic_foundation_measure` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_F004297FBAD26311` FOREIGN KEY (`tag_id`) REFERENCES `programmatic_foundation_tag` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6550,7 +6550,7 @@ CREATE TABLE `programmatic_foundation_project` (
   UNIQUE KEY `UNIQ_8E8E96D5D17F50A6` (`uuid`),
   KEY `IDX_8E8E96D55DA37D00` (`measure_id`),
   CONSTRAINT `FK_8E8E96D55DA37D00` FOREIGN KEY (`measure_id`) REFERENCES `programmatic_foundation_measure` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6567,7 +6567,7 @@ CREATE TABLE `programmatic_foundation_project_tag` (
   KEY `IDX_9F63872BAD26311` (`tag_id`),
   CONSTRAINT `FK_9F63872166D1F9C` FOREIGN KEY (`project_id`) REFERENCES `programmatic_foundation_project` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_9F63872BAD26311` FOREIGN KEY (`tag_id`) REFERENCES `programmatic_foundation_tag` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6591,7 +6591,7 @@ CREATE TABLE `programmatic_foundation_sub_approach` (
   UNIQUE KEY `UNIQ_735C1D01D17F50A6` (`uuid`),
   KEY `IDX_735C1D0115140614` (`approach_id`),
   CONSTRAINT `FK_735C1D0115140614` FOREIGN KEY (`approach_id`) REFERENCES `programmatic_foundation_approach` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6605,7 +6605,7 @@ CREATE TABLE `programmatic_foundation_tag` (
   `label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_12127927EA750E8` (`label`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6643,14 +6643,14 @@ CREATE TABLE `projection_managed_users` (
   `address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `certified_at` datetime DEFAULT NULL,
   `is_committee_provisional_supervisor` tinyint(1) NOT NULL,
-  `adherent_status` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `adherent_status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `activated_at` datetime DEFAULT NULL,
-  `source` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_membership_donation` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_90A7D656108B7592` (`original_id`),
   KEY `IDX_90A7D6567B00651C` (`status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6667,7 +6667,7 @@ CREATE TABLE `projection_managed_users_zone` (
   KEY `IDX_E4D4ADCDC679DD78` (`managed_user_id`),
   CONSTRAINT `FK_E4D4ADCD9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_E4D4ADCDC679DD78` FOREIGN KEY (`managed_user_id`) REFERENCES `projection_managed_users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6684,7 +6684,7 @@ CREATE TABLE `proposal_proposal_theme` (
   KEY `IDX_6B80CE41F4792058` (`proposal_id`),
   CONSTRAINT `FK_6B80CE41B85948AF` FOREIGN KEY (`proposal_theme_id`) REFERENCES `proposals_themes` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_6B80CE41F4792058` FOREIGN KEY (`proposal_id`) REFERENCES `proposals` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6712,7 +6712,7 @@ CREATE TABLE `proposals` (
   UNIQUE KEY `UNIQ_A5BA3A8F989D9B62` (`slug`),
   KEY `IDX_A5BA3A8FEA9FDD75` (`media_id`),
   CONSTRAINT `FK_A5BA3A8FEA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6726,7 +6726,7 @@ CREATE TABLE `proposals_themes` (
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `color` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6751,7 +6751,7 @@ CREATE TABLE `push_token` (
   KEY `IDX_51BC138194A4C7D4` (`device_id`),
   CONSTRAINT `FK_51BC138125F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_51BC138194A4C7D4` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6764,18 +6764,18 @@ CREATE TABLE `qr_code` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `created_by_id` int DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `redirect_url` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `redirect_url` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `count` int NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `host` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `host` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_7D8B1FB55E237E06` (`name`),
   UNIQUE KEY `UNIQ_7D8B1FB5D17F50A6` (`uuid`),
   KEY `IDX_7D8B1FB5B03A8386` (`created_by_id`),
   CONSTRAINT `FK_7D8B1FB5B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6786,12 +6786,12 @@ CREATE TABLE `qr_code` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `redirections` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `url_from` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
-  `url_to` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `url_from` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url_to` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` int NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6819,7 +6819,7 @@ CREATE TABLE `referent` (
   UNIQUE KEY `UNIQ_FE9AAC6C989D9B62` (`slug`),
   KEY `IDX_FE9AAC6CEA9FDD75` (`media_id`),
   CONSTRAINT `FK_FE9AAC6CEA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6836,7 +6836,7 @@ CREATE TABLE `referent_area` (
   `keywords` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_AB758097B5501F87` (`area_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6853,7 +6853,7 @@ CREATE TABLE `referent_areas` (
   KEY `IDX_75CEBC6CBD0F409C` (`area_id`),
   CONSTRAINT `FK_75CEBC6C35E47E35` FOREIGN KEY (`referent_id`) REFERENCES `referent` (`id`),
   CONSTRAINT `FK_75CEBC6CBD0F409C` FOREIGN KEY (`area_id`) REFERENCES `referent_area` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6867,7 +6867,7 @@ CREATE TABLE `referent_managed_areas` (
   `marker_latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `marker_longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6884,7 +6884,7 @@ CREATE TABLE `referent_managed_areas_tags` (
   KEY `IDX_8BE84DD59C262DB3` (`referent_tag_id`),
   CONSTRAINT `FK_8BE84DD56B99CC25` FOREIGN KEY (`referent_managed_area_id`) REFERENCES `referent_managed_areas` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_8BE84DD59C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6914,7 +6914,7 @@ CREATE TABLE `referent_person_link` (
   CONSTRAINT `FK_BC75A60A25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_BC75A60A35E47E35` FOREIGN KEY (`referent_id`) REFERENCES `referent` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_BC75A60A810B5A42` FOREIGN KEY (`person_organizational_chart_item_id`) REFERENCES `organizational_chart_item` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6931,7 +6931,7 @@ CREATE TABLE `referent_person_link_committee` (
   KEY `IDX_1C97B2A5ED1A100B` (`committee_id`),
   CONSTRAINT `FK_1C97B2A5B3E4DE86` FOREIGN KEY (`referent_person_link_id`) REFERENCES `referent_person_link` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_1C97B2A5ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6948,7 +6948,7 @@ CREATE TABLE `referent_space_access_information` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_CD8FDF4825F06C53` (`adherent_id`),
   CONSTRAINT `FK_CD8FDF4825F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6969,7 +6969,7 @@ CREATE TABLE `referent_tags` (
   UNIQUE KEY `UNIQ_135D29D95E237E06` (`name`),
   KEY `IDX_135D29D99F2C3FAB` (`zone_id`),
   CONSTRAINT `FK_135D29D99F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6989,7 +6989,7 @@ CREATE TABLE `referent_team_member` (
   KEY `IDX_6C0067135E47E35` (`referent_id`),
   CONSTRAINT `FK_6C0067135E47E35` FOREIGN KEY (`referent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_6C006717597D3FE` FOREIGN KEY (`member_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7006,7 +7006,7 @@ CREATE TABLE `referent_team_member_committee` (
   KEY `IDX_EC89860BFE4CA267` (`referent_team_member_id`),
   CONSTRAINT `FK_EC89860BED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_EC89860BFE4CA267` FOREIGN KEY (`referent_team_member_id`) REFERENCES `referent_team_member` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7023,7 +7023,7 @@ CREATE TABLE `referent_user_filter_referent_tag` (
   KEY `IDX_F2BB20FEEFAB50C4` (`referent_user_filter_id`),
   CONSTRAINT `FK_F2BB20FE9C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_F2BB20FEEFAB50C4` FOREIGN KEY (`referent_user_filter_id`) REFERENCES `adherent_message_filters` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7039,7 +7039,7 @@ CREATE TABLE `region` (
   `country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_F62F17677153098` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7091,7 +7091,7 @@ CREATE TABLE `reports` (
   `author_id` int unsigned DEFAULT NULL,
   `committee_id` int unsigned DEFAULT NULL,
   `community_event_id` int unsigned DEFAULT NULL,
-  `reasons` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json_array)',
+  `reasons` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
   `comment` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `status` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unresolved',
   `created_at` datetime NOT NULL,
@@ -7108,7 +7108,7 @@ CREATE TABLE `reports` (
   CONSTRAINT `FK_F11FA74583B12DAC` FOREIGN KEY (`community_event_id`) REFERENCES `events` (`id`),
   CONSTRAINT `FK_F11FA745ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`),
   CONSTRAINT `FK_F11FA745F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7122,7 +7122,7 @@ CREATE TABLE `republican_silence` (
   `begin_at` datetime NOT NULL,
   `finish_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7155,7 +7155,7 @@ CREATE TABLE `roles` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_B63E2EC777153098` (`code`),
   UNIQUE KEY `UNIQ_B63E2EC75E237E06` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7172,7 +7172,7 @@ CREATE TABLE `running_mate_request_application_request_tag` (
   KEY `IDX_9D534FCFCEDF4387` (`running_mate_request_id`),
   CONSTRAINT `FK_9D534FCF9644FEDA` FOREIGN KEY (`application_request_tag_id`) REFERENCES `application_request_tag` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_9D534FCFCEDF4387` FOREIGN KEY (`running_mate_request_id`) REFERENCES `application_request_running_mate` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7189,7 +7189,7 @@ CREATE TABLE `running_mate_request_referent_tag` (
   KEY `IDX_53AB4FABCEDF4387` (`running_mate_request_id`),
   CONSTRAINT `FK_53AB4FAB9C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_53AB4FABCEDF4387` FOREIGN KEY (`running_mate_request_id`) REFERENCES `application_request_running_mate` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7206,7 +7206,7 @@ CREATE TABLE `running_mate_request_theme` (
   KEY `IDX_A7326227CEDF4387` (`running_mate_request_id`),
   CONSTRAINT `FK_A732622759027487` FOREIGN KEY (`theme_id`) REFERENCES `application_request_theme` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_A7326227CEDF4387` FOREIGN KEY (`running_mate_request_id`) REFERENCES `application_request_running_mate` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7223,7 +7223,7 @@ CREATE TABLE `saved_board_members` (
   KEY `IDX_32865A32FDCCD727` (`board_member_owner_id`),
   CONSTRAINT `FK_32865A324821D202` FOREIGN KEY (`board_member_saved_id`) REFERENCES `board_member` (`id`),
   CONSTRAINT `FK_32865A32FDCCD727` FOREIGN KEY (`board_member_owner_id`) REFERENCES `board_member` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7240,7 +7240,7 @@ CREATE TABLE `scope` (
   `apps` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_AF55D377153098` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7255,7 +7255,7 @@ CREATE TABLE `senator_area` (
   PRIMARY KEY (`id`),
   KEY `IDX_D229BBF7AEC89CE1` (`department_tag_id`),
   CONSTRAINT `FK_D229BBF7AEC89CE1` FOREIGN KEY (`department_tag_id`) REFERENCES `referent_tags` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7267,7 +7267,7 @@ CREATE TABLE `senator_area` (
 CREATE TABLE `senatorial_candidate_areas` (
   `id` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7284,7 +7284,7 @@ CREATE TABLE `senatorial_candidate_areas_tags` (
   KEY `IDX_F83208FAA7BF84E8` (`senatorial_candidate_area_id`),
   CONSTRAINT `FK_F83208FA9C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`),
   CONSTRAINT `FK_F83208FAA7BF84E8` FOREIGN KEY (`senatorial_candidate_area_id`) REFERENCES `senatorial_candidate_areas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7314,7 +7314,7 @@ CREATE TABLE `sms_campaign` (
   KEY `IDX_79E333DC4B09E92C` (`administrator_id`),
   CONSTRAINT `FK_79E333DC4B09E92C` FOREIGN KEY (`administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_79E333DC848CC616` FOREIGN KEY (`audience_id`) REFERENCES `audience_snapshot` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7333,7 +7333,7 @@ CREATE TABLE `sms_stop_history` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_E761AF89D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7348,7 +7348,7 @@ CREATE TABLE `social_share_categories` (
   `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `position` smallint unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7377,7 +7377,7 @@ CREATE TABLE `social_shares` (
   KEY `IDX_8E1413A0EA9FDD75` (`media_id`),
   CONSTRAINT `FK_8E1413A085040FAD` FOREIGN KEY (`social_share_category_id`) REFERENCES `social_share_categories` (`id`),
   CONSTRAINT `FK_8E1413A0EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7396,7 +7396,7 @@ CREATE TABLE `subscription_type` (
   UNIQUE KEY `UNIQ_BBE2473777153098` (`code`),
   UNIQUE KEY `UNIQ_BBE247379F75D7B0` (`external_id`),
   KEY `IDX_BBE2473777153098` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7416,7 +7416,7 @@ CREATE TABLE `team` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `zone_id` int unsigned DEFAULT NULL,
-  `visibility` varchar(30) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_C4E0A61FD17F50A6` (`uuid`),
   UNIQUE KEY `UNIQ_C4E0A61F5E237E069F2C3FAB` (`name`,`zone_id`),
@@ -7430,7 +7430,7 @@ CREATE TABLE `team` (
   CONSTRAINT `FK_C4E0A61F9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_C4E0A61FCF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_C4E0A61FDF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7453,7 +7453,7 @@ CREATE TABLE `team_member` (
   KEY `IDX_6FFBDA1296CD8AE` (`team_id`),
   CONSTRAINT `FK_6FFBDA125F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_6FFBDA1296CD8AE` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7480,7 +7480,7 @@ CREATE TABLE `team_member_history` (
   CONSTRAINT `FK_1F330628296CD8AE` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_1F33062846E746A6` FOREIGN KEY (`team_manager_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_1F3306284B09E92C` FOREIGN KEY (`administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7503,7 +7503,7 @@ CREATE TABLE `territorial_council` (
   UNIQUE KEY `UNIQ_B6DCA2A5D17F50A6` (`uuid`),
   KEY `IDX_B6DCA2A5B4D2A5D1` (`current_designation_id`),
   CONSTRAINT `FK_B6DCA2A5B4D2A5D1` FOREIGN KEY (`current_designation_id`) REFERENCES `designation` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7515,7 +7515,7 @@ CREATE TABLE `territorial_council` (
 CREATE TABLE `territorial_council_candidacies_group` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7547,7 +7547,7 @@ CREATE TABLE `territorial_council_candidacy` (
   CONSTRAINT `FK_39885B61FB354CD` FOREIGN KEY (`membership_id`) REFERENCES `territorial_council_membership` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_39885B6A708DAFF` FOREIGN KEY (`election_id`) REFERENCES `territorial_council_election` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_39885B6FC1537C1` FOREIGN KEY (`candidacies_group_id`) REFERENCES `territorial_council_candidacies_group` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7572,7 +7572,7 @@ CREATE TABLE `territorial_council_candidacy_invitation` (
   KEY `IDX_DA86009A59B22434` (`candidacy_id`),
   CONSTRAINT `FK_DA86009A1FB354CD` FOREIGN KEY (`membership_id`) REFERENCES `territorial_council_membership` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_DA86009A59B22434` FOREIGN KEY (`candidacy_id`) REFERENCES `territorial_council_candidacy` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7611,7 +7611,7 @@ CREATE TABLE `territorial_council_convocation` (
   CONSTRAINT `FK_A9919BF0AAA61A99` FOREIGN KEY (`territorial_council_id`) REFERENCES `territorial_council` (`id`),
   CONSTRAINT `FK_A9919BF0B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_A9919BF0C7A72` FOREIGN KEY (`political_committee_id`) REFERENCES `political_committee` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7648,7 +7648,7 @@ CREATE TABLE `territorial_council_election` (
   CONSTRAINT `FK_14CBC36B8649F5F1` FOREIGN KEY (`election_poll_id`) REFERENCES `territorial_council_election_poll` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_14CBC36BAAA61A99` FOREIGN KEY (`territorial_council_id`) REFERENCES `territorial_council` (`id`),
   CONSTRAINT `FK_14CBC36BFAC7D83F` FOREIGN KEY (`designation_id`) REFERENCES `designation` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7663,7 +7663,7 @@ CREATE TABLE `territorial_council_election_poll` (
   `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_E0D7231ED17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7681,7 +7681,7 @@ CREATE TABLE `territorial_council_election_poll_choice` (
   UNIQUE KEY `UNIQ_63EBCF6BD17F50A6` (`uuid`),
   KEY `IDX_63EBCF6B8649F5F1` (`election_poll_id`),
   CONSTRAINT `FK_63EBCF6B8649F5F1` FOREIGN KEY (`election_poll_id`) REFERENCES `territorial_council_election_poll` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7700,7 +7700,7 @@ CREATE TABLE `territorial_council_election_poll_vote` (
   KEY `IDX_BCDA0C15998666D1` (`choice_id`),
   CONSTRAINT `FK_BCDA0C151FB354CD` FOREIGN KEY (`membership_id`) REFERENCES `territorial_council_membership` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_BCDA0C15998666D1` FOREIGN KEY (`choice_id`) REFERENCES `territorial_council_election_poll_choice` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7723,7 +7723,7 @@ CREATE TABLE `territorial_council_feed_item` (
   KEY `IDX_45241D62F675F31B` (`author_id`),
   CONSTRAINT `FK_45241D62AAA61A99` FOREIGN KEY (`territorial_council_id`) REFERENCES `territorial_council` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_45241D62F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7744,7 +7744,7 @@ CREATE TABLE `territorial_council_membership` (
   KEY `IDX_2A998316AAA61A99` (`territorial_council_id`),
   CONSTRAINT `FK_2A99831625F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_2A998316AAA61A99` FOREIGN KEY (`territorial_council_id`) REFERENCES `territorial_council` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7767,7 +7767,7 @@ CREATE TABLE `territorial_council_membership_log` (
   PRIMARY KEY (`id`),
   KEY `IDX_2F6D242025F06C53` (`adherent_id`),
   CONSTRAINT `FK_2F6D242025F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7796,7 +7796,7 @@ CREATE TABLE `territorial_council_official_report` (
   CONSTRAINT `FK_8D80D385B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_8D80D385C7A72` FOREIGN KEY (`political_committee_id`) REFERENCES `political_committee` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_8D80D385F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7819,7 +7819,7 @@ CREATE TABLE `territorial_council_official_report_document` (
   KEY `IDX_78C1161DB03A8386` (`created_by_id`),
   CONSTRAINT `FK_78C1161D4BD2A4C0` FOREIGN KEY (`report_id`) REFERENCES `territorial_council_official_report` (`id`),
   CONSTRAINT `FK_78C1161DB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7837,7 +7837,7 @@ CREATE TABLE `territorial_council_quality` (
   PRIMARY KEY (`id`),
   KEY `IDX_C018E022E797FAB0` (`territorial_council_membership_id`),
   CONSTRAINT `FK_C018E022E797FAB0` FOREIGN KEY (`territorial_council_membership_id`) REFERENCES `territorial_council_membership` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7854,7 +7854,7 @@ CREATE TABLE `territorial_council_referent_tag` (
   KEY `IDX_78DBEB90AAA61A99` (`territorial_council_id`),
   CONSTRAINT `FK_78DBEB909C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_78DBEB90AAA61A99` FOREIGN KEY (`territorial_council_id`) REFERENCES `territorial_council` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7871,7 +7871,7 @@ CREATE TABLE `territorial_council_zone` (
   KEY `IDX_9467B41EAAA61A99` (`territorial_council_id`),
   CONSTRAINT `FK_9467B41E9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_9467B41EAAA61A99` FOREIGN KEY (`territorial_council_id`) REFERENCES `territorial_council` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7891,7 +7891,7 @@ CREATE TABLE `thematic_community` (
   `image_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_6F22A458D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7925,7 +7925,7 @@ CREATE TABLE `thematic_community_contact` (
   `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_5C0B5CEAD17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7957,7 +7957,7 @@ CREATE TABLE `thematic_community_membership` (
   CONSTRAINT `FK_22B6AC0525F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_22B6AC05E7A1254A` FOREIGN KEY (`contact_id`) REFERENCES `thematic_community_contact` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_22B6AC05FDA7B0BF` FOREIGN KEY (`community_id`) REFERENCES `thematic_community` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7974,7 +7974,7 @@ CREATE TABLE `thematic_community_membership_user_list_definition` (
   KEY `IDX_58815EB9F74563E3` (`user_list_definition_id`),
   CONSTRAINT `FK_58815EB9403AE2A5` FOREIGN KEY (`thematic_community_membership_id`) REFERENCES `thematic_community_membership` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_58815EB9F74563E3` FOREIGN KEY (`user_list_definition_id`) REFERENCES `user_list_definition` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7994,7 +7994,7 @@ CREATE TABLE `timeline_manifesto_translations` (
   UNIQUE KEY `timeline_manifesto_translations_unique_translation` (`translatable_id`,`locale`),
   KEY `IDX_F7BD6C172C2AC5D3` (`translatable_id`),
   CONSTRAINT `FK_F7BD6C172C2AC5D3` FOREIGN KEY (`translatable_id`) REFERENCES `timeline_manifestos` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8010,7 +8010,7 @@ CREATE TABLE `timeline_manifestos` (
   PRIMARY KEY (`id`),
   KEY `IDX_C6ED4403EA9FDD75` (`media_id`),
   CONSTRAINT `FK_C6ED4403EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8028,7 +8028,7 @@ CREATE TABLE `timeline_measure_translations` (
   UNIQUE KEY `timeline_measure_translations_unique_translation` (`translatable_id`,`locale`),
   KEY `IDX_5C9EB6072C2AC5D3` (`translatable_id`),
   CONSTRAINT `FK_5C9EB6072C2AC5D3` FOREIGN KEY (`translatable_id`) REFERENCES `timeline_measures` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8047,7 +8047,7 @@ CREATE TABLE `timeline_measures` (
   PRIMARY KEY (`id`),
   KEY `IDX_BA475ED737E924` (`manifesto_id`),
   CONSTRAINT `FK_BA475ED737E924` FOREIGN KEY (`manifesto_id`) REFERENCES `timeline_manifestos` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8064,7 +8064,7 @@ CREATE TABLE `timeline_measures_profiles` (
   KEY `IDX_B83D81AECCFA12B8` (`profile_id`),
   CONSTRAINT `FK_B83D81AE5DA37D00` FOREIGN KEY (`measure_id`) REFERENCES `timeline_measures` (`id`),
   CONSTRAINT `FK_B83D81AECCFA12B8` FOREIGN KEY (`profile_id`) REFERENCES `timeline_profiles` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8084,7 +8084,7 @@ CREATE TABLE `timeline_profile_translations` (
   UNIQUE KEY `timeline_profile_translations_unique_translation` (`translatable_id`,`locale`),
   KEY `IDX_41B3A6DA2C2AC5D3` (`translatable_id`),
   CONSTRAINT `FK_41B3A6DA2C2AC5D3` FOREIGN KEY (`translatable_id`) REFERENCES `timeline_profiles` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8096,7 +8096,7 @@ CREATE TABLE `timeline_profile_translations` (
 CREATE TABLE `timeline_profiles` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8116,7 +8116,7 @@ CREATE TABLE `timeline_theme_translations` (
   UNIQUE KEY `timeline_theme_translations_unique_translation` (`translatable_id`,`locale`),
   KEY `IDX_F81F72932C2AC5D3` (`translatable_id`),
   CONSTRAINT `FK_F81F72932C2AC5D3` FOREIGN KEY (`translatable_id`) REFERENCES `timeline_themes` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8133,7 +8133,7 @@ CREATE TABLE `timeline_themes` (
   PRIMARY KEY (`id`),
   KEY `IDX_8ADDB8F6EA9FDD75` (`media_id`),
   CONSTRAINT `FK_8ADDB8F6EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `medias` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8150,7 +8150,7 @@ CREATE TABLE `timeline_themes_measures` (
   KEY `IDX_EB8A7B0C5DA37D00` (`measure_id`),
   CONSTRAINT `FK_EB8A7B0C59027487` FOREIGN KEY (`theme_id`) REFERENCES `timeline_themes` (`id`),
   CONSTRAINT `FK_EB8A7B0C5DA37D00` FOREIGN KEY (`measure_id`) REFERENCES `timeline_measures` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8169,7 +8169,7 @@ CREATE TABLE `ton_macron_choices` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_6247B0DE3F7BFD5C` (`content_key`),
   UNIQUE KEY `UNIQ_6247B0DED17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8186,7 +8186,7 @@ CREATE TABLE `ton_macron_friend_invitation_has_choices` (
   KEY `IDX_BB3BCAEEA35D7AF0` (`invitation_id`),
   CONSTRAINT `FK_BB3BCAEE998666D1` FOREIGN KEY (`choice_id`) REFERENCES `ton_macron_choices` (`id`),
   CONSTRAINT `FK_BB3BCAEEA35D7AF0` FOREIGN KEY (`invitation_id`) REFERENCES `ton_macron_friend_invitations` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8211,7 +8211,7 @@ CREATE TABLE `ton_macron_friend_invitations` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_78714946D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8228,7 +8228,7 @@ CREATE TABLE `unregistration_referent_tag` (
   KEY `IDX_59B7AC49C262DB3` (`referent_tag_id`),
   CONSTRAINT `FK_59B7AC414D824CA` FOREIGN KEY (`unregistration_id`) REFERENCES `unregistrations` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_59B7AC49C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8242,17 +8242,17 @@ CREATE TABLE `unregistrations` (
   `excluded_by_id` int DEFAULT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `reasons` json DEFAULT NULL COMMENT '(DC2Type:json_array)',
+  `reasons` json DEFAULT NULL COMMENT '(DC2Type:json)',
   `comment` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `registered_at` datetime NOT NULL,
   `unregistered_at` datetime NOT NULL,
   `is_adherent` tinyint(1) NOT NULL DEFAULT '0',
-  `adherent_uuid` char(36) COLLATE utf8mb3_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `adherent_uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `is_renaissance` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `IDX_F9E4AA0C5B30B80B` (`excluded_by_id`),
   CONSTRAINT `FK_F9E4AA0C5B30B80B` FOREIGN KEY (`excluded_by_id`) REFERENCES `administrators` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8274,7 +8274,7 @@ CREATE TABLE `user_authorizations` (
   KEY `IDX_40448230A76ED395` (`user_id`),
   CONSTRAINT `FK_4044823019EB6921` FOREIGN KEY (`client_id`) REFERENCES `oauth_clients` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `FK_40448230A76ED395` FOREIGN KEY (`user_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8294,7 +8294,7 @@ CREATE TABLE `user_documents` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_A250FF6CD17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8311,7 +8311,7 @@ CREATE TABLE `user_list_definition` (
   `color` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_list_definition_type_code_unique` (`type`,`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8328,7 +8328,7 @@ CREATE TABLE `volunteer_request_application_request_tag` (
   KEY `IDX_6F3FA269B8D6887` (`volunteer_request_id`),
   CONSTRAINT `FK_6F3FA2699644FEDA` FOREIGN KEY (`application_request_tag_id`) REFERENCES `application_request_tag` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_6F3FA269B8D6887` FOREIGN KEY (`volunteer_request_id`) REFERENCES `application_request_volunteer` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8345,7 +8345,7 @@ CREATE TABLE `volunteer_request_referent_tag` (
   KEY `IDX_DA291742B8D6887` (`volunteer_request_id`),
   CONSTRAINT `FK_DA2917429C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_DA291742B8D6887` FOREIGN KEY (`volunteer_request_id`) REFERENCES `application_request_volunteer` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8362,7 +8362,7 @@ CREATE TABLE `volunteer_request_technical_skill` (
   KEY `IDX_7F8C5C1EE98F0EFD` (`technical_skill_id`),
   CONSTRAINT `FK_7F8C5C1EB8D6887` FOREIGN KEY (`volunteer_request_id`) REFERENCES `application_request_volunteer` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_7F8C5C1EE98F0EFD` FOREIGN KEY (`technical_skill_id`) REFERENCES `application_request_technical_skill` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8379,7 +8379,7 @@ CREATE TABLE `volunteer_request_theme` (
   KEY `IDX_5427AF53B8D6887` (`volunteer_request_id`),
   CONSTRAINT `FK_5427AF5359027487` FOREIGN KEY (`theme_id`) REFERENCES `application_request_theme` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_5427AF53B8D6887` FOREIGN KEY (`volunteer_request_id`) REFERENCES `application_request_volunteer` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8404,7 +8404,7 @@ CREATE TABLE `vote_place` (
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_2574310677153098` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8440,7 +8440,7 @@ CREATE TABLE `vote_result` (
   CONSTRAINT `FK_1F8DB349B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_1F8DB349F3F90B30` FOREIGN KEY (`vote_place_id`) REFERENCES `election_vote_place` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_1F8DB349FCBF5E32` FOREIGN KEY (`election_round_id`) REFERENCES `election_rounds` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8463,7 +8463,7 @@ CREATE TABLE `vote_result_list` (
   PRIMARY KEY (`id`),
   KEY `IDX_677ED502DB567AF4` (`list_collection_id`),
   CONSTRAINT `FK_677ED502DB567AF4` FOREIGN KEY (`list_collection_id`) REFERENCES `vote_result_list_collection` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8481,7 +8481,7 @@ CREATE TABLE `vote_result_list_collection` (
   KEY `IDX_9C1DD963FCBF5E32` (`election_round_id`),
   CONSTRAINT `FK_9C1DD9638BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`),
   CONSTRAINT `FK_9C1DD963FCBF5E32` FOREIGN KEY (`election_round_id`) REFERENCES `election_rounds` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8509,7 +8509,7 @@ CREATE TABLE `voting_platform_candidate` (
   KEY `IDX_3F426D6D5F0A9B94` (`candidate_group_id`),
   CONSTRAINT `FK_3F426D6D25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_3F426D6D5F0A9B94` FOREIGN KEY (`candidate_group_id`) REFERENCES `voting_platform_candidate_group` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8524,12 +8524,12 @@ CREATE TABLE `voting_platform_candidate_group` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `elected` tinyint(1) NOT NULL DEFAULT '0',
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `media_file_path` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `media_file_path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_2C1A353AD17F50A6` (`uuid`),
   KEY `IDX_2C1A353AC1E98F21` (`election_pool_id`),
   CONSTRAINT `FK_2C1A353AC1E98F21` FOREIGN KEY (`election_pool_id`) REFERENCES `voting_platform_election_pool` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8552,7 +8552,7 @@ CREATE TABLE `voting_platform_candidate_group_result` (
   KEY `IDX_7249D537B5BA5CC5` (`election_pool_result_id`),
   CONSTRAINT `FK_7249D5375F0A9B94` FOREIGN KEY (`candidate_group_id`) REFERENCES `voting_platform_candidate_group` (`id`),
   CONSTRAINT `FK_7249D537B5BA5CC5` FOREIGN KEY (`election_pool_result_id`) REFERENCES `voting_platform_election_pool_result` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8577,7 +8577,7 @@ CREATE TABLE `voting_platform_election` (
   UNIQUE KEY `UNIQ_4E144C94D17F50A6` (`uuid`),
   KEY `IDX_4E144C94FAC7D83F` (`designation_id`),
   CONSTRAINT `FK_4E144C94FAC7D83F` FOREIGN KEY (`designation_id`) REFERENCES `designation` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8598,7 +8598,7 @@ CREATE TABLE `voting_platform_election_entity` (
   CONSTRAINT `FK_7AAD259FA708DAFF` FOREIGN KEY (`election_id`) REFERENCES `voting_platform_election` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_7AAD259FAAA61A99` FOREIGN KEY (`territorial_council_id`) REFERENCES `territorial_council` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_7AAD259FED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8614,7 +8614,7 @@ CREATE TABLE `voting_platform_election_pool` (
   PRIMARY KEY (`id`),
   KEY `IDX_7225D6EFA708DAFF` (`election_id`),
   CONSTRAINT `FK_7225D6EFA708DAFF` FOREIGN KEY (`election_id`) REFERENCES `voting_platform_election` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8637,7 +8637,7 @@ CREATE TABLE `voting_platform_election_pool_result` (
   KEY `IDX_13C1C73FC1E98F21` (`election_pool_id`),
   CONSTRAINT `FK_13C1C73F8FFC0F0B` FOREIGN KEY (`election_round_result_id`) REFERENCES `voting_platform_election_round_result` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_13C1C73FC1E98F21` FOREIGN KEY (`election_pool_id`) REFERENCES `voting_platform_election_pool` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8655,7 +8655,7 @@ CREATE TABLE `voting_platform_election_result` (
   UNIQUE KEY `UNIQ_67EFA0E4D17F50A6` (`uuid`),
   UNIQUE KEY `UNIQ_67EFA0E4A708DAFF` (`election_id`),
   CONSTRAINT `FK_67EFA0E4A708DAFF` FOREIGN KEY (`election_id`) REFERENCES `voting_platform_election` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8673,7 +8673,7 @@ CREATE TABLE `voting_platform_election_round` (
   UNIQUE KEY `UNIQ_F15D87B7D17F50A6` (`uuid`),
   KEY `IDX_F15D87B7A708DAFF` (`election_id`),
   CONSTRAINT `FK_F15D87B7A708DAFF` FOREIGN KEY (`election_id`) REFERENCES `voting_platform_election` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8690,7 +8690,7 @@ CREATE TABLE `voting_platform_election_round_election_pool` (
   KEY `IDX_E6665F19FCBF5E32` (`election_round_id`),
   CONSTRAINT `FK_E6665F19C1E98F21` FOREIGN KEY (`election_pool_id`) REFERENCES `voting_platform_election_pool` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_E6665F19FCBF5E32` FOREIGN KEY (`election_round_id`) REFERENCES `voting_platform_election_round` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8710,7 +8710,7 @@ CREATE TABLE `voting_platform_election_round_result` (
   KEY `IDX_F267096619FCFB29` (`election_result_id`),
   CONSTRAINT `FK_F267096619FCFB29` FOREIGN KEY (`election_result_id`) REFERENCES `voting_platform_election_result` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_F2670966FCBF5E32` FOREIGN KEY (`election_round_id`) REFERENCES `voting_platform_election_round` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8730,7 +8730,7 @@ CREATE TABLE `voting_platform_vote` (
   KEY `IDX_DCBB2B7BFCBF5E32` (`election_round_id`),
   CONSTRAINT `FK_DCBB2B7BEBB4B8AD` FOREIGN KEY (`voter_id`) REFERENCES `voting_platform_voter` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_DCBB2B7BFCBF5E32` FOREIGN KEY (`election_round_id`) REFERENCES `voting_platform_election_round` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8753,7 +8753,7 @@ CREATE TABLE `voting_platform_vote_choice` (
   CONSTRAINT `FK_B009F31145EB7186` FOREIGN KEY (`vote_result_id`) REFERENCES `voting_platform_vote_result` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_B009F3115F0A9B94` FOREIGN KEY (`candidate_group_id`) REFERENCES `voting_platform_candidate_group` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_B009F311C1E98F21` FOREIGN KEY (`election_pool_id`) REFERENCES `voting_platform_election_pool` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8771,7 +8771,7 @@ CREATE TABLE `voting_platform_vote_result` (
   UNIQUE KEY `unique_vote` (`voter_key`,`election_round_id`),
   KEY `IDX_62C86890FCBF5E32` (`election_round_id`),
   CONSTRAINT `FK_62C86890FCBF5E32` FOREIGN KEY (`election_round_id`) REFERENCES `voting_platform_election_round` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8789,7 +8789,7 @@ CREATE TABLE `voting_platform_voter` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_AB02EC0225F06C53` (`adherent_id`),
   CONSTRAINT `FK_AB02EC0225F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8804,7 +8804,7 @@ CREATE TABLE `voting_platform_voters_list` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_3C73500DA708DAFF` (`election_id`),
   CONSTRAINT `FK_3C73500DA708DAFF` FOREIGN KEY (`election_id`) REFERENCES `voting_platform_election` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8821,7 +8821,7 @@ CREATE TABLE `voting_platform_voters_list_voter` (
   KEY `IDX_7CC26956FB0C8C84` (`voters_list_id`),
   CONSTRAINT `FK_7CC26956EBB4B8AD` FOREIGN KEY (`voter_id`) REFERENCES `voting_platform_voter` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_7CC26956FB0C8C84` FOREIGN KEY (`voters_list_id`) REFERENCES `voting_platform_voters_list` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8842,7 +8842,7 @@ CREATE TABLE `web_hooks` (
   UNIQUE KEY `UNIQ_CDB836ADD17F50A6` (`uuid`),
   KEY `IDX_CDB836AD19EB6921` (`client_id`),
   CONSTRAINT `FK_CDB836AD19EB6921` FOREIGN KEY (`client_id`) REFERENCES `oauth_clients` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
