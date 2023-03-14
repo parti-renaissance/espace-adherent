@@ -3,7 +3,7 @@
 namespace App\Committee;
 
 use App\Address\PostAddressFactory;
-use App\Committee\Command\CommitteeCreationCommand;
+use App\Committee\DTO\CommitteeCreationCommand;
 use App\Entity\Committee;
 use App\Geo\ZoneMatcher;
 use App\Referent\ReferentTagManager;

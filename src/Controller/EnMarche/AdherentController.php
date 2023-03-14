@@ -3,10 +3,10 @@
 namespace App\Controller\EnMarche;
 
 use App\AppCodeEnum;
-use App\Committee\Command\CommitteeCreationCommand;
 use App\Committee\CommandHandler\CommitteeCreationCommandHandler;
 use App\Committee\CommitteeManager;
 use App\Committee\CommitteePermissionEnum;
+use App\Committee\DTO\CommitteeCreationCommand;
 use App\Contact\ContactMessage;
 use App\Contact\ContactMessageHandler;
 use App\Entity\Adherent;

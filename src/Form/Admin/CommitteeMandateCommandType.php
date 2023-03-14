@@ -3,7 +3,7 @@
 namespace App\Form\Admin;
 
 use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
-use App\Committee\Command\CommitteeAdherentMandateCommand;
+use App\Committee\DTO\CommitteeAdherentMandateCommand;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Form\AdherentIdType;
 use App\ValueObject\Genders;

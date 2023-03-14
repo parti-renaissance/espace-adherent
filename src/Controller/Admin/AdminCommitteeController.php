@@ -2,10 +2,10 @@
 
 namespace App\Controller\Admin;
 
-use App\Committee\Command\CommitteeAdherentMandateCommand;
 use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
+use App\Committee\DTO\CommitteeAdherentMandateCommand;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\AdherentMandateInterface;

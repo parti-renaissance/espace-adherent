@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Address\Address;
-use App\Committee\Command\CommitteeCreationCommand;
+use App\Committee\DTO\CommitteeCreationCommand;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
