@@ -79,7 +79,7 @@
         "phpoffice/phpspreadsheet": "^1.16",
         "predis/predis": "^1.1.0",
         "ramsey/uuid": "^4.1",
-        "ramsey/uuid-doctrine": "*",
+        "ramsey/uuid-doctrine": "^2.0",
         "runroom-packages/sortable-behavior-bundle": "^0.16.0",
         "sabre/dav": "^4.1",
         "scheb/2fa-bundle": "^6.3",

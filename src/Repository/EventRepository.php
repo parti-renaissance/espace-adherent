@@ -548,7 +548,7 @@ class EventRepository extends ServiceEntityRepository
             [Connection::PARAM_STR_ARRAY, \PDO::PARAM_STR]
         );
 
-        return $results->fetchNumeric();
+        return $results->fetchOne();
     }
 
     public function countCommitteeEventsInReferentManagedArea(
