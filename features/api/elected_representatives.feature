@@ -38,7 +38,13 @@ Feature:
                         "uuid": "9051e0b5-4b56-41b9-8657-cc45e431c727"
                     }
                 ],
-                "current_political_functions": []
+                "current_political_functions": [],
+                "last_contribution": {
+                    "status": "active",
+                    "type": "mandate",
+                    "start_date": "@string@.isDateTime()",
+                    "end_date": null
+                }
             },
             {
                 "last_name": "DUFOUR",
