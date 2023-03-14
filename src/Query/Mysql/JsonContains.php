@@ -2,8 +2,8 @@
 
 namespace App\Query\Mysql;
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
@@ -29,7 +29,7 @@ class JsonContains extends FunctionNode
     public $jsonPathExpr;
 
     /**
-     * @throws DBALException
+     * @throws Exception
      */
     public function getSql(SqlWalker $sqlWalker): string
     {
@@ -40,11 +40,11 @@ class JsonContains extends FunctionNode
             $jsonPath = ', '.$sqlWalker->walkStringPrimary($this->jsonPathExpr);
         }
 
-        if ($sqlWalker->getConnection()->getDatabasePlatform() instanceof MySqlPlatform) {
+        if ($sqlWalker->getConnection()->getDatabasePlatform() instanceof MySQLPlatform) {
             return sprintf('%s(%s, %s)', static::FUNCTION_NAME, $jsonDoc, $jsonVal.$jsonPath);
         }
 
-        throw DBALException::notSupported(static::FUNCTION_NAME);
+        throw Exception::notSupported(static::FUNCTION_NAME);
     }
 
     /**

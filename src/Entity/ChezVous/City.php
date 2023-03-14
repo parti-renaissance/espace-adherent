@@ -41,7 +41,7 @@ class City implements AlgoliaIndexedEntityInterface
     /**
      * @var string[]|null
      *
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="json")
      *
      * @Assert\NotBlank
      */

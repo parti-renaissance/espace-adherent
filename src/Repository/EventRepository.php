@@ -313,48 +313,48 @@ class EventRepository extends ServiceEntityRepository
     public function searchAllEvents(SearchParametersFilter $search): array
     {
         $sql = <<<'SQL'
-            SELECT events.uuid AS event_uuid, events.organizer_id AS event_organizer_id, events.committee_id AS event_committee_id, 
-            events.name AS event_name, events.category_id AS event_category_id, events.description AS event_description, 
-            events.begin_at AS event_begin_at, events.finish_at AS event_finish_at, 
-            events.capacity AS event_capacity, events.is_for_legislatives AS event_is_for_legislatives, 
+            SELECT events.uuid AS event_uuid, events.organizer_id AS event_organizer_id, events.committee_id AS event_committee_id,
+            events.name AS event_name, events.category_id AS event_category_id, events.description AS event_description,
+            events.begin_at AS event_begin_at, events.finish_at AS event_finish_at,
+            events.capacity AS event_capacity, events.is_for_legislatives AS event_is_for_legislatives,
             events.created_at AS event_created_at, events.participants_count AS event_participants_count, events.slug AS event_slug,
-            events.type AS event_type, events.address_address AS event_address_address, 
-            events.address_country AS event_address_country, events.address_city_name AS event_address_city_name, 
-            events.address_city_insee AS event_address_city_insee, events.address_postal_code AS event_address_postal_code, 
+            events.type AS event_type, events.address_address AS event_address_address,
+            events.address_country AS event_address_country, events.address_city_name AS event_address_city_name,
+            events.address_city_insee AS event_address_city_insee, events.address_postal_code AS event_address_postal_code,
             events.address_latitude AS event_address_latitude, events.address_longitude AS event_address_longitude, events.time_zone AS timeZone,
-            event_category.name AS event_category_name, 
-            committees.uuid AS committee_uuid, committees.name AS committee_name, committees.slug AS committee_slug, 
-            committees.description AS committee_description, committees.created_by AS committee_created_by, 
-            committees.address_address AS committee_address_address, committees.address_country AS committee_address_country, 
-            committees.address_city_name AS committee_address_city_name, committees.address_city_insee AS committee_address_city_insee, 
-            committees.address_postal_code AS committee_address_postal_code, committees.address_latitude AS committee_address_latitude, 
-            committees.address_longitude AS committee_address_longitude, adherents.uuid AS adherent_uuid, 
-            adherents.email_address AS adherent_email_address, adherents.password AS adherent_password, adherents.old_password AS adherent_old_password, 
-            adherents.gender AS adherent_gender, adherents.first_name AS adherent_first_name, 
-            adherents.last_name AS adherent_last_name, adherents.birthdate AS adherent_birthdate, 
-            adherents.address_address AS adherent_address_address, adherents.address_country AS adherent_address_country, 
-            adherents.address_city_name AS adherent_address_city_name, adherents.address_city_insee AS adherent_address_city_insee, 
-            adherents.address_postal_code AS adherent_address_postal_code, adherents.address_latitude AS adherent_address_latitude, 
+            event_category.name AS event_category_name,
+            committees.uuid AS committee_uuid, committees.name AS committee_name, committees.slug AS committee_slug,
+            committees.description AS committee_description, committees.created_by AS committee_created_by,
+            committees.address_address AS committee_address_address, committees.address_country AS committee_address_country,
+            committees.address_city_name AS committee_address_city_name, committees.address_city_insee AS committee_address_city_insee,
+            committees.address_postal_code AS committee_address_postal_code, committees.address_latitude AS committee_address_latitude,
+            committees.address_longitude AS committee_address_longitude, adherents.uuid AS adherent_uuid,
+            adherents.email_address AS adherent_email_address, adherents.password AS adherent_password, adherents.old_password AS adherent_old_password,
+            adherents.gender AS adherent_gender, adherents.first_name AS adherent_first_name,
+            adherents.last_name AS adherent_last_name, adherents.birthdate AS adherent_birthdate,
+            adherents.address_address AS adherent_address_address, adherents.address_country AS adherent_address_country,
+            adherents.address_city_name AS adherent_address_city_name, adherents.address_city_insee AS adherent_address_city_insee,
+            adherents.address_postal_code AS adherent_address_postal_code, adherents.address_latitude AS adherent_address_latitude,
             adherents.address_longitude AS adherent_address_longitude, adherents.position AS adherent_position,
-            (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) AS distance 
-            FROM events 
+            (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) AS distance
+            FROM events
             LEFT JOIN adherents ON adherents.id = events.organizer_id
             LEFT JOIN committees ON committees.id = events.committee_id
             LEFT JOIN events_categories AS event_category ON event_category.id = events.category_id AND events.type IN (:base_event_types)
-            WHERE (events.address_latitude IS NOT NULL 
-                AND events.address_longitude IS NOT NULL 
-                AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max 
-                AND events.begin_at > :today 
+            WHERE (events.address_latitude IS NOT NULL
+                AND events.address_longitude IS NOT NULL
+                AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max
+                AND events.begin_at > :today
                 AND events.published = :published
                 AND events.status = :scheduled
                 AND event_category.id IS NOT NULL
                 )
-                __filter_query__ 
+                __filter_query__
                 __filter_category__
                 __filter_referent_events__
                 __filter_private__
-            ORDER BY events.begin_at ASC, distance ASC 
-            LIMIT :max_results 
+            ORDER BY events.begin_at ASC, distance ASC
+            LIMIT :max_results
             OFFSET :first_result
             SQL;
 
@@ -530,14 +530,14 @@ class EventRepository extends ServiceEntityRepository
             SELECT SUM(events_count.count) as count
             FROM (
                 SELECT events.participants_count AS count
-                FROM events 
-                    INNER JOIN event_referent_tag ert ON events.id = ert.event_id 
-                    INNER JOIN referent_tags tags ON tags.id = ert.referent_tag_id 
-                WHERE (tags.id IN (?) 
-                    AND events.committee_id IS NOT NULL 
-                    AND events.status = ? 
-                    AND events.participants_count > 0) 
-                    AND events.type = ? 
+                FROM events
+                    INNER JOIN event_referent_tag ert ON events.id = ert.event_id
+                    INNER JOIN referent_tags tags ON tags.id = ert.referent_tag_id
+                WHERE (tags.id IN (?)
+                    AND events.committee_id IS NOT NULL
+                    AND events.status = ?
+                    AND events.participants_count > 0)
+                    AND events.type = ?
                 GROUP BY events.id
             ) AS events_count
             SQL;
@@ -548,7 +548,7 @@ class EventRepository extends ServiceEntityRepository
             [Connection::PARAM_STR_ARRAY, \PDO::PARAM_STR]
         );
 
-        return $results->fetchColumn();
+        return $results->fetchNumeric();
     }
 
     public function countCommitteeEventsInReferentManagedArea(

@@ -146,7 +146,7 @@ class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkO
     /**
      * @var array|null
      *
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="json")
      *
      * @Groups({"riposte_list_read", "riposte_read"})
      */

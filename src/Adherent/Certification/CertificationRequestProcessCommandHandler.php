@@ -5,7 +5,7 @@ namespace App\Adherent\Certification;
 use App\Adherent\Certification\Handlers\CertificationRequestHandlerInterface;
 use App\Entity\CertificationRequest;
 use App\Repository\CertificationRequestRepository;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -53,7 +53,7 @@ class CertificationRequestProcessCommandHandler implements MessageHandlerInterfa
             if ($handler->supports($certificationRequest)) {
                 try {
                     $handler->handle($certificationRequest);
-                } catch (DBALException $e) {
+                } catch (Exception $e) {
                     $this->logger->error($e->getMessage(), ['e' => $e]);
 
                     if (null === $firstException) {

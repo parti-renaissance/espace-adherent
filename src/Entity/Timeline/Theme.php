@@ -9,7 +9,6 @@ use App\Entity\EntityMediaTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
 
 /**
  * @ORM\Table(name="timeline_themes")
@@ -18,7 +17,6 @@ use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
 class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, AlgoliaIndexedEntityInterface
 {
     use EntityMediaTrait;
-    use TranslatableTrait;
 
     /**
      * @var int

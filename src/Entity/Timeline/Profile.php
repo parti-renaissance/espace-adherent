@@ -5,7 +5,6 @@ namespace App\Entity\Timeline;
 use App\Entity\AbstractTranslatableEntity;
 use App\Entity\AlgoliaIndexedEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
 
 /**
  * @ORM\Table(name="timeline_profiles")
@@ -13,8 +12,6 @@ use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
  */
 class Profile extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
-    use TranslatableTrait;
-
     /**
      * @var int
      *
