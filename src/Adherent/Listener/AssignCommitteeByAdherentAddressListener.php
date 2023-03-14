@@ -22,6 +22,7 @@ class AssignCommitteeByAdherentAddressListener implements EventSubscriberInterfa
         return [
             UserEvents::USER_BEFORE_UPDATE => 'onBeforeUpdate',
             UserEvents::USER_UPDATED => 'onAfterUpdate',
+            UserEvents::USER_VALIDATED => 'onAfterUpdate',
         ];
     }
 
