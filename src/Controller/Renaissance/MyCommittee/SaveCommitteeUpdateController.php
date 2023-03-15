@@ -27,7 +27,7 @@ class SaveCommitteeUpdateController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if ($adherent->isFrench()) {
+        if (!$adherent->isForeignResident()) {
             $zones = $adherent->getParentZonesOfType(Zone::DEPARTMENT);
         } else {
             $zones = $adherent->getZonesOfType(Zone::COUNTRY);

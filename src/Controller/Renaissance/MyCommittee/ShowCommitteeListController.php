@@ -20,7 +20,7 @@ class ShowCommitteeListController extends AbstractController
         $adherent = $this->getUser();
 
         return $this->render('renaissance/adherent/my_committee/show_committees_list.html.twig', [
-            'committees' => $committeeRepository->findInZones($adherent->isFrench() ? $adherent->getParentZonesOfType(Zone::DEPARTMENT) : $adherent->getZonesOfType(Zone::COUNTRY)),
+            'committees' => $committeeRepository->findInZones(!$adherent->isForeignResident() ? $adherent->getParentZonesOfType(Zone::DEPARTMENT) : $adherent->getZonesOfType(Zone::COUNTRY)),
         ]);
     }
 }
