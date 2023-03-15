@@ -25,16 +25,18 @@ class CommitteeElectionNormalizer implements NormalizerInterface, NormalizerAwar
         /** @var CommitteeElection $object */
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        $data['voters_count'] = $data['votes_count'] = null;
+        if (($context['operation_name'] ?? null) === 'api_committee_elections_get_item') {
+            $data['voters_count'] = $data['votes_count'] = null;
 
-        if ($object->getDesignation()->electionCreationDate <= new \DateTime()) {
-            if ($election = $this->electionRepository->findOneForCommittee($object->getCommittee(), $object->getDesignation())) {
-                $detailsByPool = $this->electionRepository->getSingleAggregatedData($election->getCurrentRound());
+            if ($object->getDesignation()->electionCreationDate <= new \DateTime()) {
+                if ($election = $this->electionRepository->findOneForCommittee($object->getCommittee(), $object->getDesignation())) {
+                    $detailsByPool = $this->electionRepository->getSingleAggregatedData($election->getCurrentRound());
 
-                $data['voters_count'] = $detailsByPool['voters_count'];
+                    $data['voters_count'] = $detailsByPool['voters_count'];
 
-                if ($object->getDesignation()->isVotePeriodStarted()) {
-                    $data['votes_count'] = $detailsByPool['voters_count'];
+                    if ($object->getDesignation()->isVotePeriodStarted()) {
+                        $data['votes_count'] = $detailsByPool['votes_count'];
+                    }
                 }
             }
         }
