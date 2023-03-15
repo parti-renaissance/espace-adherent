@@ -227,6 +227,9 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',
                 ])
+                ->add('nationality', null, [
+                    'label' => 'Nationalité',
+                ])
                 ->add('phone', null, [
                     'label' => 'Téléphone',
                     'template' => 'admin/adherent/show_phone.html.twig',
@@ -370,6 +373,9 @@ class AdherentAdmin extends AbstractAdmin
                     ])
                     ->add('emailAddress', null, [
                         'label' => 'Adresse e-mail',
+                    ])
+                    ->add('nationality', CountryType::class, [
+                        'label' => 'Nationalité',
                     ])
                     ->add('phone', PhoneNumberType::class, [
                         'label' => 'Téléphone',
