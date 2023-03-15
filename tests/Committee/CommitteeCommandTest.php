@@ -2,7 +2,7 @@
 
 namespace Tests\App\Committee;
 
-use App\Committee\Command\CommitteeCommand;
+use App\Committee\DTO\CommitteeCommand;
 use App\Entity\Committee;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;

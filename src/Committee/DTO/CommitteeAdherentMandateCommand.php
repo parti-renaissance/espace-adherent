@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Committee\Command;
+namespace App\Committee\DTO;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;

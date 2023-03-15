@@ -3,8 +3,8 @@
 namespace Tests\App\Committee;
 
 use App\Address\Address;
-use App\Committee\Command\CommitteeCreationCommand;
 use App\Committee\CommitteeFactory;
+use App\Committee\DTO\CommitteeCreationCommand;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Geo\ZoneMatcher;

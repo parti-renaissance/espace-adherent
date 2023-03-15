@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Address\Address;
-use App\Committee\Command\CommitteeCommand;
+use App\Committee\DTO\CommitteeCommand;
 use App\Form\Committee\ProvisionalSupervisorType;
 use App\Validator\AddressInManagedZones;
 use App\ValueObject\Genders;

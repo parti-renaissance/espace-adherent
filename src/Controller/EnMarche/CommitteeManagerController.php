@@ -3,9 +3,9 @@
 namespace App\Controller\EnMarche;
 
 use App\Address\GeoCoder;
-use App\Committee\Command\CommitteeCommand;
 use App\Committee\CommandHandler\CommitteeUpdateCommandHandler;
 use App\Committee\CommitteeManager;
+use App\Committee\DTO\CommitteeCommand;
 use App\Committee\Filter\ListFilterObject;
 use App\Entity\Adherent;
 use App\Entity\Committee;

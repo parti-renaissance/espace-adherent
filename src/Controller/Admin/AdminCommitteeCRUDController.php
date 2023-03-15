@@ -3,8 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Address\PostAddressFactory;
-use App\Committee\Command\CommitteeCommand;
 use App\Committee\CommitteeManagementAuthority;
+use App\Committee\DTO\CommitteeCommand;
 use App\Committee\Exception\MultipleReferentsFoundException;
 use App\Entity\Adherent;
 use App\Entity\Committee;

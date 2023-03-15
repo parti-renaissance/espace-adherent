@@ -24,7 +24,7 @@ class CommitteeMembershipManager
             return null;
         }
 
-        foreach ($this->getOrderedZones($zones) as $zone) {
+        foreach ($this->orderZones($zones, true, Zone::COMMITTEE_TYPES) as $zone) {
             if ($committee = current($this->committeeRepository->findInZones(zones: [$zone], withZoneParents: false))) {
                 return $committee;
             }
@@ -35,23 +35,27 @@ class CommitteeMembershipManager
 
     public function followCommittee(Adherent $adherent, Committee $committee, string $trigger): void
     {
+        $alreadyFollow = false;
+
         // 1. Comes out of the existing committees
         foreach ($adherent->getMemberships()->getCommitteeV2Memberships() as $membership) {
-            if (!$membership->getCommittee()->equals($committee)) {
+            if (!$alreadyFollow = $membership->getCommittee()->equals($committee)) {
                 $this->committeeManager->unfollowCommittee($adherent, $membership->getCommittee());
             }
         }
 
         // 2. Follow the new committee
-        $this->committeeManager->followCommittee($adherent, $committee, $trigger);
+        if (!$alreadyFollow) {
+            $this->committeeManager->followCommittee($adherent, $committee, $trigger);
+        }
     }
 
     /**
      * @return Zone[]
      */
-    private function getOrderedZones(array $zones): array
+    public function orderZones(array $zones, bool $flattenParents = false, array $types = []): array
     {
-        $flattenZones = $this->zoneMatcher->flattenZones($zones, Zone::COMMITTEE_TYPES);
+        $flattenZones = $flattenParents ? $this->zoneMatcher->flattenZones($zones, $types) : $zones;
 
         usort(
             $flattenZones,

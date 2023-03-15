@@ -3,7 +3,7 @@
 namespace App\Committee\CommandHandler;
 
 use App\Address\PostAddressFactory;
-use App\Committee\Command\CommitteeCommand;
+use App\Committee\DTO\CommitteeCommand;
 use App\Committee\Event\CommitteeEvent;
 use App\Events;
 use App\Referent\ReferentTagManager;

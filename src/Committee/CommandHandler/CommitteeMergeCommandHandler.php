@@ -2,7 +2,7 @@
 
 namespace App\Committee\CommandHandler;
 
-use App\Committee\Command\CommitteeMergeCommand;
+use App\Committee\DTO\CommitteeMergeCommand;
 use App\Committee\Event\CommitteeEvent;
 use App\Committee\Event\CommitteeMergeEvent;
 use App\Entity\AdherentMandate\AdherentMandateInterface;

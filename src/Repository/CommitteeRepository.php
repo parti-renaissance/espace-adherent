@@ -627,7 +627,7 @@ class CommitteeRepository extends ServiceEntityRepository
             'c2',
             'zones',
             'z2',
-            null,
+            fn (QueryBuilder $queryBuilder, string $entityClassAlias) => $queryBuilder->andWhere($entityClassAlias.'.status = :status'),
             $withZoneParents
         );
     }

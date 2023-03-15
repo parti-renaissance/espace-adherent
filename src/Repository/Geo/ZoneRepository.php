@@ -524,4 +524,9 @@ class ZoneRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findOneByCode(string $code): ?Zone
+    {
+        return $this->findOneBy(['code' => $code, 'active' => true]);
+    }
 }

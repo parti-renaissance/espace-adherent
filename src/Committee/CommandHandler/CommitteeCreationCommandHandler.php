@@ -2,8 +2,8 @@
 
 namespace App\Committee\CommandHandler;
 
-use App\Committee\Command\CommitteeCreationCommand;
 use App\Committee\CommitteeFactory;
+use App\Committee\DTO\CommitteeCreationCommand;
 use App\Committee\Event\CommitteeEvent;
 use App\Events;
 use App\Mailer\MailerService;

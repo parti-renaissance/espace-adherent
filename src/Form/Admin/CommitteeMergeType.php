@@ -2,7 +2,7 @@
 
 namespace App\Form\Admin;
 
-use App\Committee\Command\CommitteeMergeCommand;
+use App\Committee\DTO\CommitteeMergeCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;

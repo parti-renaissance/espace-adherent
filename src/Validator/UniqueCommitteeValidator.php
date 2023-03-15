@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Committee\Command\CommitteeCommand;
+use App\Committee\DTO\CommitteeCommand;
 use App\Entity\Committee;
 use App\Repository\CommitteeRepository;
 use Symfony\Component\Validator\Constraint;

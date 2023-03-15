@@ -8,6 +8,7 @@ use App\Adherent\AdherentAutocompleteFilter;
 use App\Adherent\AdherentRoleEnum;
 use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;
+use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Audience\AudienceInterface;
@@ -15,6 +16,7 @@ use App\Entity\BoardMember\BoardMember;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\Geo\Zone;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
 use App\Entity\Phoning\Campaign;
@@ -32,6 +34,7 @@ use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -1544,5 +1547,64 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             'status' => Adherent::ENABLED,
             'since_date' => (clone $designation->getVoteStartDate())->modify('-3 months')->format(\DateTimeInterface::ATOM),
         ]);
+    }
+
+    /**
+     * @return Adherent[]
+     */
+    public function findAllForCommitteeZone(Zone $zone): array
+    {
+        $qb = $this
+            ->createQueryBuilder('adherent')
+            ->select('PARTIAL adherent.{id, uuid, emailAddress}')
+            ->where('adherent.source = :source')
+            ->setParameters([
+                'source' => MembershipSourceEnum::RENAISSANCE,
+                'manual_trigger' => CommitteeMembershipTriggerEnum::MANUAL,
+            ])
+        ;
+
+        $zoneQueryModifier = fn (QueryBuilder $queryBuilder, string $entityClassAlias) => $queryBuilder->andWhere($entityClassAlias.'.source = :source');
+
+        $this->withGeoZones(
+            [$zone],
+            $qb,
+            'adherent',
+            Adherent::class,
+            'a2',
+            'zones',
+            'z2',
+            $zoneQueryModifier,
+            true,
+            'zone_parent2'
+        );
+
+        $excludedAdherentQueryBuilder = $this
+            ->createQueryBuilder('exl_adh')
+            ->select('exl_adh.id')
+            ->innerJoin('exl_adh.memberships', 'exl_membership', Join::WITH, 'exl_membership.trigger = :manual_trigger')
+            ->innerJoin('exl_membership.committee', 'committee', Join::WITH, 'committee.version = 2')
+            ->where('exl_adh.source = :source')
+        ;
+
+        $this->withGeoZones(
+            [$zone],
+            $excludedAdherentQueryBuilder,
+            'exl_adh',
+            Adherent::class,
+            'a3',
+            'zones',
+            'z3',
+            $zoneQueryModifier,
+            true,
+            'zone_parent3'
+        );
+
+        $qb
+            ->andWhere(sprintf('adherent.id NOT IN (%s)', $excludedAdherentQueryBuilder->getDQL()))
+            ->setParameters(new ArrayCollection(array_merge($qb->getParameters()->toArray(), $excludedAdherentQueryBuilder->getParameters()->toArray())))
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 }

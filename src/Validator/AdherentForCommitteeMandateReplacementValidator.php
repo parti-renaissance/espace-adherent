@@ -2,8 +2,8 @@
 
 namespace App\Validator;
 
-use App\Committee\Command\CommitteeAdherentMandateCommand;
 use App\Committee\CommitteeAdherentMandateManager;
+use App\Committee\DTO\CommitteeAdherentMandateCommand;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
