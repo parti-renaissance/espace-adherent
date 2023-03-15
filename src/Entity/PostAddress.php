@@ -341,7 +341,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         return implode(', ', array_map('trim', $parts));
     }
 
-    private function isFrenchAddress(): bool
+    public function isFrenchAddress(): bool
     {
         return Address::FRANCE === mb_strtoupper($this->country) && $this->city;
     }
