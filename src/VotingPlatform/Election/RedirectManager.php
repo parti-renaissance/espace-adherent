@@ -18,6 +18,10 @@ class RedirectManager
     {
         $designation = $election->getDesignation();
 
+        if ($designation->isRenaissanceElection()) {
+            return $this->urlGenerator->generate('app_renaissance_homepage');
+        }
+
         if ($designation->isCommitteeTypes()) {
             return $this->urlGenerator->generate(
                 'app_committee_show',
@@ -31,10 +35,6 @@ class RedirectManager
 
         if ($designation->isExecutiveOfficeType()) {
             return $this->urlGenerator->generate('app_national_council_index');
-        }
-
-        if ($designation->isRenaissanceElection()) {
-            return $this->urlGenerator->generate('app_renaissance_homepage');
         }
 
         return $this->urlGenerator->generate('homepage');
