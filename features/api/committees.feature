@@ -242,7 +242,9 @@ Feature:
                     "candidacies": []
                 }
             ],
-            "uuid": "278fcb58-53b4-4798-a3be-e5bb92f7f0f2"
+            "uuid": "278fcb58-53b4-4798-a3be-e5bb92f7f0f2",
+            "votes_count": null,
+            "voters_count": null
         }
         """
         Examples:
