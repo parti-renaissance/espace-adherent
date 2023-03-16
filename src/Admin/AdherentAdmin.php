@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Address\Address;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
@@ -36,6 +37,7 @@ use App\Form\EventListener\BoardMemberListener;
 use App\Form\EventListener\CoalitionModeratorRoleListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
+use App\FranceCities\FranceCities;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Mailchimp\Contact\ContactStatusEnum;
@@ -81,6 +83,8 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentAdmin extends AbstractAdmin
@@ -95,6 +99,7 @@ class AdherentAdmin extends AbstractAdmin
     private $instanceQualityRepository;
     private AdherentProfileHandler $adherentProfileHandler;
     private LoggerInterface $logger;
+    private FranceCities $franceCities;
 
     /**
      * State of adherent data before update
@@ -111,7 +116,8 @@ class AdherentAdmin extends AbstractAdmin
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager,
         PoliticalCommitteeManager $politicalCommitteeManager,
         AdherentProfileHandler $adherentProfileHandler,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        FranceCities $franceCities
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
@@ -120,6 +126,7 @@ class AdherentAdmin extends AbstractAdmin
         $this->politicalCommitteeManager = $politicalCommitteeManager;
         $this->adherentProfileHandler = $adherentProfileHandler;
         $this->logger = $logger;
+        $this->franceCities = $franceCities;
     }
 
     protected function getAccessMapping(): array
@@ -635,6 +642,19 @@ class AdherentAdmin extends AbstractAdmin
             ->addEventSubscriber(new BoardMemberListener())
             ->addEventSubscriber(new CoalitionModeratorRoleListener())
             ->addEventSubscriber(new RevokeManagedAreaSubscriber())
+            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+                /** @var Adherent $adherent */
+                $adherent = $event->getData();
+                $address = $adherent->getPostAddress();
+
+                if (Address::FRANCE === $address->getCountry() && $address->getCityName() && $address->getPostalCode()) {
+                    $city = $this->franceCities->getCityByPostalCodeAndName($address->getPostalCode(), $address->getCityName());
+
+                    if ($city) {
+                        $address->setCity(sprintf('%s-%s', $address->getPostalCode(), $city->getInseeCode()));
+                    }
+                }
+            })
         ;
 
         $formMapper
