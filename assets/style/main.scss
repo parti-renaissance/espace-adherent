@@ -208,6 +208,10 @@
                 color: theme('colors.dark-blue');
             }
         }
+
+        &.custom-amount-donation {
+            padding: 0.75rem 3rem;
+        }
     }
 
     .renaissance-amount-chooser {
