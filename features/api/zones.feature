@@ -121,7 +121,7 @@ Feature:
              ]
           },
           {
-             "text":"Communaut\u00e9 de commune",
+             "text":"Communaut\u00e9 de communes",
              "children":[
                 {
                    "id":1281,
