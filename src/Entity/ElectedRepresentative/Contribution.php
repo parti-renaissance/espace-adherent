@@ -9,6 +9,8 @@ use App\GoCardless\Subscription;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ContributionRepository")
@@ -18,6 +20,16 @@ class Contribution
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    public ?\DateTime $startDate = null;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    public ?\DateTime $endDate = null;
 
     /**
      * @ORM\Column(length=50)
@@ -41,6 +53,8 @@ class Contribution
 
     /**
      * @ORM\Column(length=20)
+     *
+     * @SerializedName("status")
      */
     public ?string $gocardlessMandateStatus = null;
 
@@ -56,6 +70,8 @@ class Contribution
 
     /**
      * @ORM\Column(length=20)
+     *
+     * @Groups({"elected_representative_list", "elected_representative_read"})
      */
     public ?string $type = null;
 
@@ -83,6 +99,8 @@ class Contribution
         $contribution->gocardlessMandateStatus = $subscription->mandate->status;
         $contribution->gocardlessSubscriptionId = $subscription->subscription->id;
         $contribution->gocardlessSubscriptionStatus = $subscription->subscription->status;
+        $contribution->startDate = $subscription->subscription->start_date;
+        $contribution->endDate = $subscription->subscription->end_date;
         $contribution->type = ContributionTypeEnum::MANDATE;
 
         return $contribution;

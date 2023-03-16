@@ -33,8 +33,10 @@ class ContributionRequestHandler
 
         $electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
 
-        $electedRepresentative->setLastContributionDate(new \DateTime());
-        $electedRepresentative->addContribution(Contribution::fromSubscription($electedRepresentative, $subscription));
+        $contribution = Contribution::fromSubscription($electedRepresentative, $subscription);
+
+        $electedRepresentative->addContribution($contribution);
+        $electedRepresentative->setLastContribution($contribution);
 
         $this->entityManager->flush();
     }
