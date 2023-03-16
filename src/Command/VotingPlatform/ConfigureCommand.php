@@ -129,7 +129,7 @@ class ConfigureCommand extends Command
                     $designation->getVoteStartDate() < $now->modify('+10 minutes')
                     && !$this->committeeElectionHasCandidates($committee, $designation)
                 ) {
-                    $this->configureCandidatesGroupsForCommitteeSupervisorElection($election);
+                    $this->configureCandidatesGroupsForCommitteeSupervisorElection($committeeElection, $election);
                 }
 
                 if ($election->isVotePeriodStarted() && !$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)) {
@@ -504,56 +504,35 @@ class ConfigureCommand extends Command
             array_map(function (CommitteeMembership $membership) { return $membership->getAdherent(); }, $memberships)
         );
 
-        // Mark as Ghost voter adherent who can vote in many committees
-        foreach ($list->getVoters() as $voter) {
-            if (\count($voter->getVotersListsForDesignation($designation)) > 1) {
-                $voter->setIsGhost(true);
-            }
-        }
-
         $this->entityManager->persist($list);
         $this->entityManager->persist($election);
         $this->entityManager->flush();
     }
 
-    private function configureCandidatesGroupsForCommitteeSupervisorElection(Election $election): void
-    {
+    private function configureCandidatesGroupsForCommitteeSupervisorElection(
+        CommitteeElection $committeeElection,
+        Election $election
+    ): void {
         $designation = $election->getDesignation();
 
         if (!$designation->isCommitteeSupervisorType()) {
             return;
         }
 
-        $electionRound = $election->getCurrentRound();
-        $committee = $election->getElectionEntity()->getCommittee();
-
-        // Create candidates groups
-        $candidacies = $this->entityManager->getRepository(CommitteeCandidacy::class)->findConfirmedByCommittee($committee, $designation);
-
         $pools = [
             $pool = new ElectionPool(ElectionPoolCodeEnum::COMMITTEE_SUPERVISOR),
         ];
 
-        foreach ($candidacies as $candidacy) {
-            if ($candidacy->isTaken()) {
-                continue;
+        foreach ($committeeElection->getCandidaciesGroups() as $candidaciesGroup) {
+            foreach ($candidaciesGroup as $candidacy) {
+                $group = new CandidateGroup();
+                $group->addCandidate($this->createCommitteeSupervisorCandidate($candidacy));
+
+                $pool->addCandidateGroup($group);
             }
-
-            $group = new CandidateGroup();
-            $group->addCandidate($this->createCommitteeSupervisorCandidate($candidacy));
-
-            if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
-                foreach ($candidaciesGroup->getCandidacies() as $cand) {
-                    if ($cand->isTaken()) {
-                        continue;
-                    }
-
-                    $group->addCandidate($this->createCommitteeSupervisorCandidate($cand));
-                }
-            }
-
-            $pool->addCandidateGroup($group);
         }
+
+        $electionRound = $election->getCurrentRound();
 
         foreach ($pools as $pool) {
             if ($pool->getCandidateGroups()) {
@@ -613,6 +592,15 @@ class ConfigureCommand extends Command
             $election,
             array_map(function (CommitteeMembership $membership) { return $membership->getAdherent(); }, $memberships)
         );
+
+        // Mark as Ghost voter adherent who can vote in many committees
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
+            foreach ($list->getVoters() as $voter) {
+                if (\count($voter->getVotersListsForDesignation($designation)) > 1) {
+                    $voter->setIsGhost(true);
+                }
+            }
+        }
 
         $this->entityManager->persist($list);
         $this->entityManager->persist($election);
