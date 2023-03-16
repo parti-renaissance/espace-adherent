@@ -40,7 +40,7 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
         $object->approved('2017-01-27 09:18:33');
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92012'));
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92014'));
-        $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92019'));
+        $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
 
         $object->setCurrentElection(new CommitteeElection($this->getReference('designation-committee-02'), Uuid::fromString(self::COMMITTEE_ELECTION_1_UUID)));
         $object->addElection($election = new CommitteeElection($this->getReference('designation-committee-03'), Uuid::fromString(self::COMMITTEE_ELECTION_2_UUID)));
