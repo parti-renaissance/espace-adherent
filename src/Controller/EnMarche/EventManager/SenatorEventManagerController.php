@@ -12,10 +12,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-senateur", name="app_senator_event_manager")
- *
  * @Security("is_granted('ROLE_SENATOR') or (is_granted('ROLE_DELEGATED_SENATOR') and is_granted('HAS_DELEGATED_ACCESS_EVENTS'))")
  */
+#[Route(path: '/espace-senateur', name: 'app_senator_event_manager')]
 class SenatorEventManagerController extends AbstractEventManagerController
 {
     private $repository;

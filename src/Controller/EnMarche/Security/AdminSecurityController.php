@@ -11,14 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-/**
- * @Route("/admin")
- */
+#[Route(path: '/admin')]
 class AdminSecurityController extends AbstractController
 {
-    /**
-     * @Route("/login", name="app_admin_login", methods={"GET"})
-     */
+    #[Route(path: '/login', name: 'app_admin_login', methods: ['GET'])]
     public function loginAction(AuthenticationUtils $securityUtils, FormFactoryInterface $formFactory): Response
     {
         $form = $formFactory->createNamed(
@@ -41,18 +37,15 @@ class AdminSecurityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/login", name="app_admin_login_check", methods={"POST"})
-     */
+    #[Route(path: '/login', name: 'app_admin_login_check', methods: ['POST'])]
     public function loginCheckAction()
     {
     }
 
     /**
      * QR-code generator to be used with Google Authenticator.
-     *
-     * @Route("/qr-code/{id}", name="app_admin_qr_code", methods={"GET"})
      */
+    #[Route(path: '/qr-code/{id}', name: 'app_admin_qr_code', methods: ['GET'])]
     public function qrCodeAction(QrCodeResponseFactory $qrCodeResponseFactory, Administrator $administrator): Response
     {
         return $qrCodeResponseFactory->createResponseFor($administrator);

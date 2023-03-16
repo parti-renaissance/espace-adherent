@@ -35,9 +35,7 @@ abstract class AbstractManagedUsersController extends AbstractController
         $this->filterFactory = $filterFactory;
     }
 
-    /**
-     * @Route("/utilisateurs.{_format}", name="list", methods={"GET"}, defaults={"_format": "html"}, requirements={"_format": "html|csv|xls"})
-     */
+    #[Route(path: '/utilisateurs.{_format}', name: 'list', methods: ['GET'], defaults: ['_format' => 'html'], requirements: ['_format' => 'html|csv|xls'])]
     public function listAction(Request $request, string $_format, ManagedUsersExporter $exporter): Response
     {
         $session = $request->getSession();

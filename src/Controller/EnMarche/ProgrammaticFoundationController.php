@@ -7,22 +7,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/projets-qui-marchent")
- */
+#[Route(path: '/projets-qui-marchent')]
 class ProgrammaticFoundationController extends AbstractController
 {
-    /**
-     * @Route(name="app_approaches", methods={"GET"})
-     */
+    #[Route(name: 'app_approaches', methods: ['GET'])]
     public function approachesAction(): Response
     {
         return $this->render('programmatic_foundation/approaches.html.twig');
     }
 
-    /**
-     * @Route("/mesures/{uuid}", name="app_approach_measure_view", methods={"GET"})
-     */
+    #[Route(path: '/mesures/{uuid}', name: 'app_approach_measure_view', methods: ['GET'])]
     public function viewMeasureAction(Measure $measure): Response
     {
         return $this->render('programmatic_foundation/view_measure.html.twig', [

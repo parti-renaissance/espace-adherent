@@ -22,10 +22,9 @@ class PaymentController extends AbstractAdhesionController
     public const AMOUNT_SESSION_KEY = 'adhesion_amount';
 
     /**
-     * @Route(path="/adhesion/pre-paiement", name="app_renaissance_adhesion_pre_payment", methods={"GET"})
-     *
      * @IsGranted("ROLE_ADHERENT")
      */
+    #[Route(path: '/adhesion/pre-paiement', name: 'app_renaissance_adhesion_pre_payment', methods: ['GET'])]
     public function prePaymentAction(Request $request, DonationRequestHandler $donationRequestHandler): Response
     {
         /** @var Adherent $adherent */
@@ -50,9 +49,7 @@ class PaymentController extends AbstractAdhesionController
         ]);
     }
 
-    /**
-     * @Route(path="/adhesion/{uuid}/paiement", requirements={"uuid": "%pattern_uuid%"}, name="app_renaissance_adhesion_payment", methods={"GET"})
-     */
+    #[Route(path: '/adhesion/{uuid}/paiement', requirements: ['uuid' => '%pattern_uuid%'], name: 'app_renaissance_adhesion_payment', methods: ['GET'])]
     public function paymentAction(PayboxFormFactory $payboxFormFactory, Donation $donation): Response
     {
         $paybox = $payboxFormFactory->createPayboxFormForDonation($donation);
@@ -63,9 +60,7 @@ class PaymentController extends AbstractAdhesionController
         ]);
     }
 
-    /**
-     * @Route(path="/adhesion/callback/{_callback_token}", name="app_renaissance_adhesion_callback", methods={"GET"})
-     */
+    #[Route(path: '/adhesion/callback/{_callback_token}', name: 'app_renaissance_adhesion_callback', methods: ['GET'])]
     public function callbackAction(
         Request $request,
         TransactionCallbackHandler $transactionCallbackHandler,
@@ -81,14 +76,9 @@ class PaymentController extends AbstractAdhesionController
     }
 
     /**
-     * @Route(
-     *     path="/adhesion/{uuid}/{status}",
-     *     requirements={"status": "effectue|erreur", "uuid": "%pattern_uuid%"},
-     *     name="app_renaissance_adhesion_payment_result",
-     *     methods={"GET"}
-     * )
      * @ParamConverter("donation", options={"mapping": {"uuid": "uuid"}})
      */
+    #[Route(path: '/adhesion/{uuid}/{status}', requirements: ['status' => 'effectue|erreur', 'uuid' => '%pattern_uuid%'], name: 'app_renaissance_adhesion_payment_result', methods: ['GET'])]
     public function resultAction(Request $request, Donation $donation, string $status): Response
     {
         if (DonationController::RESULT_STATUS_EFFECTUE === $status) {

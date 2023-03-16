@@ -12,7 +12,7 @@ trait EntityControllerTrait
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;

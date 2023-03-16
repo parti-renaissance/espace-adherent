@@ -11,9 +11,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/email-subscriptions/change", name="app_change_email_subscriptions_webhook", methods={"GET", "POST"})
- */
+#[Route(path: '/email-subscriptions/change', name: 'app_change_email_subscriptions_webhook', methods: ['GET', 'POST'])]
 class SubscriptionController extends AbstractController
 {
     private $handler;

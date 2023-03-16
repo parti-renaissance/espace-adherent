@@ -7,9 +7,7 @@ use App\Repository\LocalElection\LocalElectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/elections-assemblees-departementales", name="app_renaissance_local_election_summary_list", methods={"GET"})
- */
+#[Route(path: '/elections-assemblees-departementales', name: 'app_renaissance_local_election_summary_list', methods: ['GET'])]
 class ListController extends AbstractController
 {
     public function __invoke(LocalElectionRepository $localElectionRepository)

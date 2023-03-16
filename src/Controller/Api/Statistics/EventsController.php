@@ -14,15 +14,12 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/statistics/events")
- *
  * @IsGranted("ROLE_OAUTH_SCOPE_READ:STATS")
  */
+#[Route(path: '/statistics/events')]
 class EventsController extends AbstractStatisticsController
 {
-    /**
-     * @Route("/count-by-month", name="app_statistics_committee_events_count_by_month", methods={"GET"})
-     */
+    #[Route(path: '/count-by-month', name: 'app_statistics_committee_events_count_by_month', methods: ['GET'])]
     public function eventsCountInReferentManagedAreaAction(
         Request $request,
         EventRepository $eventRepository,
@@ -43,9 +40,7 @@ class EventsController extends AbstractStatisticsController
         ]);
     }
 
-    /**
-     * @Route("/count", name="app_statistics_events_count", methods={"GET"})
-     */
+    #[Route(path: '/count', name: 'app_statistics_events_count', methods: ['GET'])]
     public function allTypesEventsCountInReferentManagedAreaAction(
         Request $request,
         EventRepository $eventRepository
@@ -59,9 +54,7 @@ class EventsController extends AbstractStatisticsController
         ]);
     }
 
-    /**
-     * @Route("/count-participants", name="app_statistics_committee_events_count_participants", methods={"GET"})
-     */
+    #[Route(path: '/count-participants', name: 'app_statistics_committee_events_count_participants', methods: ['GET'])]
     public function eventsCountInReferentManagedArea(
         Request $request,
         EventRepository $eventRepository,

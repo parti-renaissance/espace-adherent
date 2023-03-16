@@ -34,9 +34,7 @@ abstract class AbstractMessageController extends AbstractController
         'send_success' => 'message/send_success/default.html.twig',
     ];
 
-    /**
-     * @Route(name="list", methods={"GET"})
-     */
+    #[Route(name: 'list', methods: ['GET'])]
     public function messageListAction(Request $request, AdherentMessageRepository $repository): Response
     {
         $this->checkAccess();
@@ -63,9 +61,7 @@ abstract class AbstractMessageController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/creer", name="create", methods={"GET", "POST"})
-     */
+    #[Route(path: '/creer', name: 'create', methods: ['GET', 'POST'])]
     public function createMessageAction(Request $request, AdherentMessageManager $messageManager): Response
     {
         $this->checkAccess();
@@ -99,10 +95,9 @@ abstract class AbstractMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/modifier", name="update", methods={"GET", "POST"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/modifier', name: 'update', methods: ['GET', 'POST'])]
     public function updateMessageAction(
         Request $request,
         AbstractAdherentMessage $message,
@@ -135,10 +130,9 @@ abstract class AbstractMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/visualiser", name="preview", methods={"GET"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/visualiser', name: 'preview', methods: ['GET'])]
     public function previewMessageAction(AbstractAdherentMessage $message): Response
     {
         $this->checkAccess();
@@ -151,10 +145,9 @@ abstract class AbstractMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/supprimer", name="delete", methods={"GET"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/supprimer', name: 'delete', methods: ['GET'])]
     public function deleteMessageAction(AbstractAdherentMessage $message, ObjectManager $manager): Response
     {
         $this->checkAccess();
@@ -168,10 +161,9 @@ abstract class AbstractMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/filtrer", name="filter", methods={"GET", "POST"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/filtrer', name: 'filter', methods: ['GET', 'POST'])]
     public function filterMessageAction(
         Request $request,
         AbstractAdherentMessage $message,
@@ -215,10 +207,9 @@ abstract class AbstractMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/send", name="send", methods={"GET"})
-     *
      * @Security("is_granted('IS_AUTHOR_OF', message) and is_granted('USER_CAN_SEND_MESSAGE', message)")
      */
+    #[Route(path: '/{uuid}/send', name: 'send', methods: ['GET'])]
     public function sendMessageAction(AbstractAdherentMessage $message, AdherentMessageManager $manager): Response
     {
         $this->checkAccess();
@@ -255,10 +246,9 @@ abstract class AbstractMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/confirmation", name="send_success", methods={"GET"})
-     *
      * @Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")
      */
+    #[Route(path: '/{uuid}/confirmation', name: 'send_success', methods: ['GET'])]
     public function sendSuccessAction(AbstractAdherentMessage $message): Response
     {
         $this->checkAccess();
@@ -267,10 +257,9 @@ abstract class AbstractMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/tester", name="test", methods={"GET"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/tester', name: 'test', methods: ['GET'])]
     public function sendTestMessageAction(AbstractAdherentMessage $message, AdherentMessageManager $manager): Response
     {
         $this->checkAccess();

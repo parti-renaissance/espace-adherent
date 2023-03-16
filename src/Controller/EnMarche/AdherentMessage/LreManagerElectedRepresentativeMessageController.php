@@ -8,10 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-la-republique-ensemble/messagerie-elus", name="app_message_lre_manager_elected_representative_")
- *
  * @IsGranted("ROLE_LRE")
  */
+#[Route(path: '/espace-la-republique-ensemble/messagerie-elus', name: 'app_message_lre_manager_elected_representative_')]
 class LreManagerElectedRepresentativeMessageController extends AbstractMessageController
 {
     protected function getMessageType(): string

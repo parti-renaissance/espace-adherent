@@ -25,10 +25,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/conseil-territorial", name="app_territorial_council_")
- *
  * @IsGranted("ROLE_ADHERENT")
  */
+#[Route(path: '/conseil-territorial', name: 'app_territorial_council_')]
 class TerritorialCouncilController extends AbstractController
 {
     use CanaryControllerTrait;
@@ -42,10 +41,8 @@ class TerritorialCouncilController extends AbstractController
         $this->timelineMaxItems = $timelineMaxItems;
     }
 
-    /**
-     * @Route("/faq", name="faq", methods={"GET"})
-     * @Route("/{uuid}/faq", name="selected_faq", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
-     */
+    #[Route(path: '/faq', name: 'faq', methods: ['GET'])]
+    #[Route(path: '/{uuid}/faq', name: 'selected_faq', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
     public function faqAction(TerritorialCouncil $territorialCouncil = null): Response
     {
         $this->checkAccess($territorialCouncil);
@@ -65,10 +62,8 @@ class TerritorialCouncilController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/membres", name="members", methods={"GET"})
-     * @Route("/{uuid}/membres", name="selected_members", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
-     */
+    #[Route(path: '/membres', name: 'members', methods: ['GET'])]
+    #[Route(path: '/{uuid}/membres', name: 'selected_members', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
     public function listMembersAction(TerritorialCouncil $territorialCouncil = null): Response
     {
         $this->disableInProduction();
@@ -90,10 +85,8 @@ class TerritorialCouncilController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/liste-candidature", name="candidacy_list", methods={"GET"})
-     * @Route("/{uuid}/liste-candidature", name="selected_candidacy_list", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
-     */
+    #[Route(path: '/liste-candidature', name: 'candidacy_list', methods: ['GET'])]
+    #[Route(path: '/{uuid}/liste-candidature', name: 'selected_candidacy_list', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
     public function candidacyListAction(
         CandidacyRepository $repository,
         TerritorialCouncil $territorialCouncil = null
@@ -123,9 +116,7 @@ class TerritorialCouncilController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{uuid}/sondage", name="election_poll_save_vote", methods={"POST"}, requirements={"uuid": "%pattern_uuid%"})
-     */
+    #[Route(path: '/{uuid}/sondage', name: 'election_poll_save_vote', methods: ['POST'], requirements: ['uuid' => '%pattern_uuid%'])]
     public function electionPollAction(Request $request, Poll $electionPoll, Manager $voteManager): Response
     {
         $this->checkAccess();
@@ -156,10 +147,8 @@ class TerritorialCouncilController extends AbstractController
         return $this->redirectToRoute('app_territorial_council_index');
     }
 
-    /**
-     * @Route("/accueil", name="homepage", methods={"GET"})
-     * @Route("/accueil/{uuid}", name="selected_homepage", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
-     */
+    #[Route(path: '/accueil', name: 'homepage', methods: ['GET'])]
+    #[Route(path: '/accueil/{uuid}', name: 'selected_homepage', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
     public function homepageAction(TerritorialCouncil $territorialCouncil = null): Response
     {
         $this->checkAccess($territorialCouncil);
@@ -179,10 +168,8 @@ class TerritorialCouncilController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("", name="index", methods={"GET"})
-     * @Route("/{uuid}", name="selected_index", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
-     */
+    #[Route(path: '', name: 'index', methods: ['GET'])]
+    #[Route(path: '/{uuid}', name: 'selected_index', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
     public function feedItemsAction(
         Request $request,
         TerritorialCouncilFeedItemRepository $feedItemRepository,
@@ -220,9 +207,9 @@ class TerritorialCouncilController extends AbstractController
     }
 
     /**
-     * @Route("/messages/{id}/modifier", name="edit_feed_item", methods={"GET", "POST"})
      * @IsGranted("CAN_MANAGE_FEED_ITEM", subject="feedItem")
      */
+    #[Route(path: '/messages/{id}/modifier', name: 'edit_feed_item', methods: ['GET', 'POST'])]
     public function feedItemEditAction(Request $request, TerritorialCouncilFeedItem $feedItem): Response
     {
         $form = $this
@@ -244,9 +231,9 @@ class TerritorialCouncilController extends AbstractController
     }
 
     /**
-     * @Route("/messages/{id}/supprimer", name="delete_feed_item", methods={"DELETE"})
      * @IsGranted("CAN_MANAGE_FEED_ITEM", subject="feedItem")
      */
+    #[Route(path: '/messages/{id}/supprimer', name: 'delete_feed_item', methods: ['DELETE'])]
     public function deleteFeedItemAction(
         EntityManagerInterface $em,
         Request $request,

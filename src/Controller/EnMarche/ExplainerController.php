@@ -10,14 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/transformer-la-france")
- */
+#[Route(path: '/transformer-la-france')]
 class ExplainerController extends AbstractController
 {
-    /**
-     * @Route(name="app_explainer_index", methods={"GET"})
-     */
+    #[Route(name: 'app_explainer_index', methods: ['GET'])]
     public function indexAction(
         OrderSectionRepository $orderSectionRepository,
         PageRepository $pageRepository
@@ -29,9 +25,9 @@ class ExplainerController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="app_explainer_article_show", methods={"GET"})
      * @Entity("article", expr="repository.findPublishedArticle(slug)")
      */
+    #[Route(path: '/{slug}', name: 'app_explainer_article_show', methods: ['GET'])]
     public function proposalAction(OrderArticle $article): Response
     {
         return $this->render('explainer/article.html.twig', ['article' => $article]);

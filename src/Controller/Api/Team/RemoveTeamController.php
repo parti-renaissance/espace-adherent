@@ -12,15 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(
- *     "/v3/teams/{uuid}",
- *     requirements={"uuid": "%pattern_uuid%"},
- *     name="api_team_remove",
- *     methods={"DELETE"}
- * )
- *
  * @Security("is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', team)")
  */
+#[Route(path: '/v3/teams/{uuid}', requirements: ['uuid' => '%pattern_uuid%'], name: 'api_team_remove', methods: ['DELETE'])]
 class RemoveTeamController extends AbstractController
 {
     public function __invoke(Team $team, EntityManagerInterface $entityManager): JsonResponse

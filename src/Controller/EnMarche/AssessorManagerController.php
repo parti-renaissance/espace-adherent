@@ -25,14 +25,12 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-responsable-assesseur")
  * @IsGranted("ROLE_ASSESSOR_MANAGER")
  */
+#[Route(path: '/espace-responsable-assesseur')]
 class AssessorManagerController extends AbstractController
 {
-    /**
-     * @Route(name="app_assessor_manager_requests", methods={"GET"})
-     */
+    #[Route(name: 'app_assessor_manager_requests', methods: ['GET'])]
     public function assessorRequestsAction(Request $request, AssessorManager $manager): Response
     {
         try {
@@ -48,14 +46,7 @@ class AssessorManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     "/plus",
-     *     name="app_assessor_manager_requests_list",
-     *     condition="request.isXmlHttpRequest()",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/plus', name: 'app_assessor_manager_requests_list', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
     public function assessorRequestsMoreAction(Request $request, AssessorManager $manager): Response
     {
         try {
@@ -74,14 +65,9 @@ class AssessorManagerController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     "/demande/{uuid}",
-     *     requirements={"uuid": "%pattern_uuid%"},
-     *     name="app_assessor_manager_request",
-     *     methods={"GET"}
-     * )
      * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
      */
+    #[Route(path: '/demande/{uuid}', requirements: ['uuid' => '%pattern_uuid%'], name: 'app_assessor_manager_request', methods: ['GET'])]
     public function assessorRequestAction(
         AssessorRequest $assessorRequest,
         AssessorManager $manager,
@@ -102,16 +88,11 @@ class AssessorManagerController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     "/demande/{uuid}/associer/{votePlaceId}",
-     *     requirements={"uuid": "%pattern_uuid%", "votePlaceId": "\d+"},
-     *     name="app_assessor_manager_request_associate",
-     *     methods={"GET", "POST"}
-     * )
      * @ParamConverter("assessorRequest", class="App\Entity\AssessorRequest", options={"mapping": {"uuid": "uuid"}})
      * @ParamConverter("votePlace", class="App\Entity\Election\VotePlace", options={"id": "votePlaceId"})
      * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
      */
+    #[Route(path: '/demande/{uuid}/associer/{votePlaceId}', requirements: ['uuid' => '%pattern_uuid%', 'votePlaceId' => '\d+'], name: 'app_assessor_manager_request_associate', methods: ['GET', 'POST'])]
     public function assessorRequestAssociateAction(
         Request $request,
         VotePlaceRepository $votePlaceRepository,
@@ -145,14 +126,9 @@ class AssessorManagerController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     "/demande/{uuid}/desassocier",
-     *     requirements={"uuid": "%pattern_uuid%"},
-     *     name="app_assessor_manager_request_deassociate",
-     *     methods={"GET", "POST"}
-     * )
      * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
      */
+    #[Route(path: '/demande/{uuid}/desassocier', requirements: ['uuid' => '%pattern_uuid%'], name: 'app_assessor_manager_request_deassociate', methods: ['GET', 'POST'])]
     public function assessorRequestDessociateAction(
         Request $request,
         AssessorRequest $assessorRequest,
@@ -182,15 +158,10 @@ class AssessorManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     "/transform/{uuid}/{action}",
-     *     requirements={"uuid": "%pattern_uuid%", "action": App\Entity\ActionEnum::ACTIONS_URI_REGEX },
-     *     name="app_assessor_manager_request_transform",
-     *     methods={"GET"}
-     * )
-     * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
-     */
+/**
+ * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
+ */
+#[Route(path: '/transform/{uuid}/{action}', requirements: ['uuid' => '%pattern_uuid%', 'action' => ActionEnum::ACTIONS_URI_REGEX], name: 'app_assessor_manager_request_transform', methods: ['GET'])]
     public function assessorRequestTransformAction(
         AssessorRequest $assessorRequest,
         string $action,
@@ -207,9 +178,7 @@ class AssessorManagerController extends AbstractController
         return $this->redirectToRoute('app_assessor_manager_requests');
     }
 
-    /**
-     * @Route("/vote-places", name="app_assessor_manager_vote_places", methods={"GET", "POST"})
-     */
+    #[Route(path: '/vote-places', name: 'app_assessor_manager_vote_places', methods: ['GET', 'POST'])]
     public function votePlacesAction(Request $request, AssessorManager $manager): Response
     {
         try {
@@ -232,14 +201,7 @@ class AssessorManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     "/vote-places/plus",
-     *     name="app_assessor_manager_vote_places_list",
-     *     condition="request.isXmlHttpRequest()",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/vote-places/plus', name: 'app_assessor_manager_vote_places_list', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
     public function votePlacesMoreAction(Request $request, AssessorManager $manager): Response
     {
         try {
@@ -264,13 +226,7 @@ class AssessorManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     "/vote-places/export",
-     *     name="app_assessor_manager_vote_places_export",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/vote-places/export', name: 'app_assessor_manager_vote_places_export', methods: ['GET'])]
     public function votePlacesExportAction(
         AssessorRequestRepository $repository,
         AssessorRequestExporter $exporter
@@ -292,9 +248,7 @@ class AssessorManagerController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/communes", name="app_assessor_manager_cities", methods={"GET", "POST"})
-     */
+    #[Route(path: '/communes', name: 'app_assessor_manager_cities', methods: ['GET', 'POST'])]
     public function citiesAction(Request $request, AssessorManager $manager): Response
     {
         try {
@@ -312,9 +266,7 @@ class AssessorManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/communes/export", name="app_assessor_manager_city_assessors_export", methods={"GET"})
-     */
+    #[Route(path: '/communes/export', name: 'app_assessor_manager_city_assessors_export', methods: ['GET'])]
     public function CityAssessorsExporter(
         Request $request,
         CityAssessorExporter $exporter,

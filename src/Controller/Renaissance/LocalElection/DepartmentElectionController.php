@@ -11,18 +11,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/elections-departementales/{uuid}")
  * @IsGranted("RENAISSANCE_ADHERENT")
  */
+#[Route(path: '/elections-departementales/{uuid}')]
 class DepartmentElectionController extends AbstractController
 {
     public function __construct(private readonly LocalElectionRepository $localElectionRepository)
     {
     }
 
-    /**
-     * @Route("", name="app_renaissance_departmental_election_lists", methods="GET")
-     */
+    #[Route(path: '', name: 'app_renaissance_departmental_election_lists', methods: 'GET')]
     public function candidaturesListAction(Designation $designation): Response
     {
         if (!$localElection = $this->localElectionRepository->findByDesignation($designation)) {
@@ -35,9 +33,7 @@ class DepartmentElectionController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/reglement-interieur", name="app_renaissance_departmental_election_rules", methods="GET")
-     */
+    #[Route(path: '/reglement-interieur', name: 'app_renaissance_departmental_election_rules', methods: 'GET')]
     public function rulesAction(Designation $designation): Response
     {
         return $this->render('renaissance/local_election/rules.html.twig', [

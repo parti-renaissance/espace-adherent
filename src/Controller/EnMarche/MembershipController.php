@@ -55,9 +55,8 @@ class MembershipController extends AbstractController
 
     /**
      * This action enables a guest user to adhere to the community.
-     *
-     * @Route("/inscription-utilisateur", name="app_membership_register", methods={"GET", "POST"})
      */
+    #[Route(path: '/inscription-utilisateur', name: 'app_membership_register', methods: ['GET', 'POST'])]
     public function registerAction(
         Request $request,
         GeoCoder $geoCoder,
@@ -95,9 +94,8 @@ class MembershipController extends AbstractController
 
     /**
      * This action enables a guest user to adhere to the community.
-     *
-     * @Route("/adhesion", name="app_membership_join", methods={"GET", "POST"})
      */
+    #[Route(path: '/adhesion', name: 'app_membership_join', methods: ['GET', 'POST'])]
     public function adhesionAction(
         Request $request,
         GeoCoder $geoCoder,
@@ -184,9 +182,8 @@ class MembershipController extends AbstractController
 
     /**
      * This action is the landing page at the end of the subscription process.
-     *
-     * @Route("/presque-fini", name="app_membership_complete", methods={"GET"})
      */
+    #[Route(path: '/presque-fini', name: 'app_membership_complete', methods: ['GET'])]
     public function completeAction(MembershipRegistrationProcess $membershipRegistrationProcess): Response
     {
         $membershipRegistrationProcess->terminate();
@@ -202,18 +199,10 @@ class MembershipController extends AbstractController
      * This action enables a new user to activate his\her newly created
      * membership account.
      *
-     * @Route(
-     *     path="/inscription/finaliser/{adherent_uuid}/{activation_token}",
-     *     name="app_membership_activate",
-     *     requirements={
-     *         "adherent_uuid": "%pattern_uuid%",
-     *         "activation_token": "%pattern_sha1%"
-     *     },
-     *     methods={"GET"}
-     * )
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
      * @Entity("activationToken", expr="repository.findByToken(activation_token)")
      */
+    #[Route(path: '/inscription/finaliser/{adherent_uuid}/{activation_token}', name: 'app_membership_activate', requirements: ['adherent_uuid' => '%pattern_uuid%', 'activation_token' => '%pattern_sha1%'], methods: ['GET'])]
     public function activateAction(
         Adherent $adherent,
         AdherentActivationToken $activationToken,
@@ -258,9 +247,9 @@ class MembershipController extends AbstractController
     /**
      * This action enables a new user to pin his/her interests during the registration process.
      *
-     * @Route("/inscription/centre-interets", name="app_membership_pin_interests", methods={"GET", "POST"})
      * @IsGranted("MEMBERSHIP_REGISTRATION_IN_PROGRESS")
      */
+    #[Route(path: '/inscription/centre-interets', name: 'app_membership_pin_interests', methods: ['GET', 'POST'])]
     public function pinInterestsAction(
         Request $request,
         AdherentRepository $adherentRepository,
@@ -291,9 +280,9 @@ class MembershipController extends AbstractController
     /**
      * This action enables a user to follow some committees during the registration process.
      *
-     * @Route("/inscription/choisir-des-comites", name="app_membership_choose_committees_around_adherent", methods={"GET", "POST"})
      * @IsGranted("MEMBERSHIP_REGISTRATION_IN_PROGRESS")
      */
+    #[Route(path: '/inscription/choisir-des-comites', name: 'app_membership_choose_committees_around_adherent', methods: ['GET', 'POST'])]
     public function chooseCommitteesAction(
         Request $request,
         AdherentRepository $adherentRepository,
@@ -340,9 +329,9 @@ class MembershipController extends AbstractController
     /**
      * This action enables a user to donate during the registration process.
      *
-     * @Route("/inscription/don", name="app_membership_donation", methods={"GET"})
      * @IsGranted("MEMBERSHIP_REGISTRATION_IN_PROGRESS")
      */
+    #[Route(path: '/inscription/don', name: 'app_membership_donation', methods: ['GET'])]
     public function donationAction(
         AdherentRepository $adherentRepository,
         MembershipRegistrationProcess $membershipRegistrationProcess

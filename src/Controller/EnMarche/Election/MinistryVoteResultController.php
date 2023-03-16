@@ -26,9 +26,7 @@ class MinistryVoteResultController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @Route("/espace-rapporteur-resultats/communes/{id}/resultats", name="app_ministry_vote_results_edit", methods={"GET", "POST"})
-     */
+    #[Route(path: '/espace-rapporteur-resultats/communes/{id}/resultats', name: 'app_ministry_vote_results_edit', methods: ['GET', 'POST'])]
     public function __invoke(City $city, Request $request): Response
     {
         $ministryVoteResult = $this->electionManager->getMinistryVoteResultForCurrentElectionRound($city);

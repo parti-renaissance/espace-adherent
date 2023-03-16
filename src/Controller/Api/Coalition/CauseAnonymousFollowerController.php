@@ -18,9 +18,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @Route("/causes/{uuid}/follower", name="api_follow_cause_as_anonymous", methods={"PUT"})
- */
+#[Route(path: '/causes/{uuid}/follower', name: 'api_follow_cause_as_anonymous', methods: ['PUT'])]
 class CauseAnonymousFollowerController extends AbstractController
 {
     public function __invoke(

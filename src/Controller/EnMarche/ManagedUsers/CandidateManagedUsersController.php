@@ -13,10 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-candidat", name="app_candidate_managed_users_", methods={"GET"})
- *
  * @Security("is_granted('ROLE_CANDIDATE') or (is_granted('ROLE_DELEGATED_CANDIDATE') and is_granted('HAS_DELEGATED_ACCESS_ADHERENTS'))")
  */
+#[Route(path: '/espace-candidat', name: 'app_candidate_managed_users_', methods: ['GET'])]
 class CandidateManagedUsersController extends AbstractManagedUsersController
 {
     protected function getSpaceType(): string

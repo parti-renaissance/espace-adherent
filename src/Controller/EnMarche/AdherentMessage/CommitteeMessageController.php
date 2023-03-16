@@ -29,17 +29,13 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-animateur/{committee_slug}/messagerie", name="app_message_committee_")
- *
  * @ParamConverter("committee", options={"mapping": {"committee_slug": "slug"}})
- *
  * @Security("is_granted('HOST_COMMITTEE', committee) and committee.isApproved()")
  */
+#[Route(path: '/espace-animateur/{committee_slug}/messagerie', name: 'app_message_committee_')]
 class CommitteeMessageController extends AbstractController
 {
-    /**
-     * @Route(name="list", methods={"GET"})
-     */
+    #[Route(name: 'list', methods: ['GET'])]
     public function messageListAction(
         Request $request,
         AdherentMessageRepository $repository,
@@ -68,9 +64,7 @@ class CommitteeMessageController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/creer", name="create", methods={"GET", "POST"})
-     */
+    #[Route(path: '/creer', name: 'create', methods: ['GET', 'POST'])]
     public function createMessageAction(
         Request $request,
         Committee $committee,
@@ -113,10 +107,9 @@ class CommitteeMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/modifier", requirements={"uuid": "%pattern_uuid%"}, name="update", methods={"GET", "POST"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/modifier', requirements: ['uuid' => '%pattern_uuid%'], name: 'update', methods: ['GET', 'POST'])]
     public function updateMessageAction(
         Request $request,
         CommitteeAdherentMessage $message,
@@ -154,10 +147,9 @@ class CommitteeMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/filtrer", name="filter", methods={"GET", "POST"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/filtrer', name: 'filter', methods: ['GET', 'POST'])]
     public function filterMessageAction(
         Request $request,
         CommitteeAdherentMessage $message,
@@ -209,10 +201,9 @@ class CommitteeMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/visualiser", name="preview", methods={"GET"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/visualiser', name: 'preview', methods: ['GET'])]
     public function previewMessageAction(CommitteeAdherentMessage $message, Committee $committee): Response
     {
         if (!$message->isSynchronized()) {
@@ -223,10 +214,9 @@ class CommitteeMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/supprimer", name="delete", methods={"GET"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/supprimer', name: 'delete', methods: ['GET'])]
     public function deleteMessageAction(
         CommitteeAdherentMessage $message,
         ObjectManager $manager,
@@ -241,10 +231,9 @@ class CommitteeMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/send", name="send", methods={"GET"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/send', name: 'send', methods: ['GET'])]
     public function sendMessageAction(
         CommitteeAdherentMessage $message,
         AdherentMessageManager $manager,
@@ -274,20 +263,18 @@ class CommitteeMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/confirmation", name="send_success", methods={"GET"})
-     *
      * @Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")
      */
+    #[Route(path: '/{uuid}/confirmation', name: 'send_success', methods: ['GET'])]
     public function sendSuccessAction(AbstractAdherentMessage $message, Committee $committee): Response
     {
         return $this->renderTemplate('message/send_success/committee.html.twig', $committee, ['message' => $message]);
     }
 
     /**
-     * @Route("/{uuid}/publish", name="publish_message", methods={"GET"})
-     *
      * @Security("is_granted('IS_AUTHOR_OF', message) and !message.isSendToTimeline()")
      */
+    #[Route(path: '/{uuid}/publish', name: 'publish_message', methods: ['GET'])]
     public function publishMessageAction(
         AbstractAdherentMessage $message,
         EntityManagerInterface $manager,
@@ -307,10 +294,9 @@ class CommitteeMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/tester", name="test", methods={"GET"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/tester', name: 'test', methods: ['GET'])]
     public function sendTestMessageAction(
         CommitteeAdherentMessage $message,
         Manager $manager,

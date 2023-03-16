@@ -12,9 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MapController extends AbstractController
 {
-    /**
-     * @Route("/le-mouvement/la-carte", name="map_committees", methods={"GET"})
-     */
+    #[Route(path: '/le-mouvement/la-carte', name: 'map_committees', methods: ['GET'])]
     public function committeesAction()
     {
         $doctrine = $this->getDoctrine();

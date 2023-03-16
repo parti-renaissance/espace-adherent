@@ -26,10 +26,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/comites/{slug}/candidature", name="app_committee_candidature")
- *
  * @IsGranted("MEMBER_OF_COMMITTEE", subject="committee")
  */
+#[Route(path: '/comites/{slug}/candidature', name: 'app_committee_candidature')]
 class CandidatureController extends AbstractController
 {
     private $candidatureManager;
@@ -39,9 +38,7 @@ class CandidatureController extends AbstractController
         $this->candidatureManager = $candidatureManager;
     }
 
-    /**
-     * @Route("", name="_edit", methods={"GET", "POST"})
-     */
+    #[Route(path: '', name: '_edit', methods: ['GET', 'POST'])]
     public function candidateAction(Committee $committee, Request $request): Response
     {
         $adherent = $this->getUser();
@@ -103,9 +100,7 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/retirer", name="_remove", methods={"GET"})
-     */
+    #[Route(path: '/retirer', name: '_remove', methods: ['GET'])]
     public function removeCandidacy(Request $request, Committee $committee): Response
     {
         if (!$committee->getCommitteeElection() || !$committee->getCommitteeElection()->isCandidacyPeriodActive()) {
@@ -129,9 +124,7 @@ class CandidatureController extends AbstractController
         return $this->redirectToRoute('app_adherent_committees');
     }
 
-    /**
-     * @Route("/choix-de-binome", name="_select_pair_candidate", methods={"GET", "POST"})
-     */
+    #[Route(path: '/choix-de-binome', name: '_select_pair_candidate', methods: ['GET', 'POST'])]
     public function selectPairCandidateAction(Committee $committee, Request $request): Response
     {
         /** @var Adherent $adherent */
@@ -181,9 +174,7 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/choix-de-binome/fini", name="_select_pair_candidate_finish", methods={"GET"})
-     */
+    #[Route(path: '/choix-de-binome/fini', name: '_select_pair_candidate_finish', methods: ['GET'])]
     public function finishInvitationStepAction(Committee $committee): Response
     {
         /** @var Adherent $adherent */
@@ -203,9 +194,7 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/mes-invitations", name="_invitation_list", methods={"GET"})
-     */
+    #[Route(path: '/mes-invitations', name: '_invitation_list', methods: ['GET'])]
     public function invitationListAction(
         Committee $committee,
         CommitteeCandidacyInvitationRepository $repository
@@ -231,13 +220,11 @@ class CandidatureController extends AbstractController
     }
 
     /**
-     * @Route("/mes-invitations/{uuid}/accepter", name="_invitation_accept", methods={"GET", "POST"})
-     *
      * @ParamConverter("committee", class="App\Entity\Committee", options={"mapping": {"slug": "slug"}})
      * @ParamConverter("votePlace", class="App\Entity\CommitteeCandidacyInvitation", options={"mapping": {"uuid": "uuid"}})
-     *
      * @Security("invitation.getMembership() == user.getMembershipFor(committee)")
      */
+    #[Route(path: '/mes-invitations/{uuid}/accepter', name: '_invitation_accept', methods: ['GET', 'POST'])]
     public function acceptInvitationAction(
         Committee $committee,
         Request $request,
@@ -284,13 +271,11 @@ class CandidatureController extends AbstractController
     }
 
     /**
-     * @Route("/mes-invitations/{uuid}/decliner", name="_invitation_decline", methods={"GET"})
-     *
      * @ParamConverter("committee", class="App\Entity\Committee", options={"mapping": {"slug": "slug"}})
      * @ParamConverter("votePlace", class="App\Entity\CommitteeCandidacyInvitation", options={"mapping": {"uuid": "uuid"}})
-     *
      * @Security("invitation.getMembership() == user.getMembershipFor(committee)")
      */
+    #[Route(path: '/mes-invitations/{uuid}/decliner', name: '_invitation_decline', methods: ['GET'])]
     public function declineInvitationAction(Committee $committee, CommitteeCandidacyInvitation $invitation): Response
     {
         if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
@@ -312,9 +297,7 @@ class CandidatureController extends AbstractController
         return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
     }
 
-    /**
-     * @Route("/liste", name="_candidacy_list", methods={"GET"})
-     */
+    #[Route(path: '/liste', name: '_candidacy_list', methods: ['GET'])]
     public function candidacyListAction(Committee $committee, CommitteeCandidacyRepository $repository): Response
     {
         if (!($election = $committee->getCommitteeElection()) || $election->isVotePeriodStarted()) {

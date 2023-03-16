@@ -9,10 +9,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-senateur/mon-equipe", name="app_senator_my_team_", methods={"GET"})
- *
  * @IsGranted("ROLE_SENATOR")
  */
+#[Route(path: '/espace-senateur/mon-equipe', name: 'app_senator_my_team_', methods: ['GET'])]
 class SenatorMyTeamController extends AbstractMyTeamController
 {
     protected function getCommittees(Adherent $adherent, string $term, CommitteeRepository $committeeRepository): array

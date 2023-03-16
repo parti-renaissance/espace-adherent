@@ -17,9 +17,7 @@ class PaymentController extends AbstractDonationController
     public const RESULT_STATUS_EFFECTUE = 'effectue';
     public const RESULT_STATUS_ERREUR = 'erreur';
 
-    /**
-     * @Route(path="/don/{uuid}/paiement", requirements={"uuid": "%pattern_uuid%"}, name="app_renaissance_donation_payment", methods={"GET"})
-     */
+    #[Route(path: '/don/{uuid}/paiement', requirements: ['uuid' => '%pattern_uuid%'], name: 'app_renaissance_donation_payment', methods: ['GET'])]
     public function paymentAction(PayboxFormFactory $payboxFormFactory, Donation $donation)
     {
         $command = $this->getCommand();
@@ -38,9 +36,7 @@ class PaymentController extends AbstractDonationController
         ]);
     }
 
-    /**
-     * @Route(path="/don/callback/{_callback_token}", name="app_renaissance_donation_callback", methods={"GET"})
-     */
+    #[Route(path: '/don/callback/{_callback_token}', name: 'app_renaissance_donation_callback', methods: ['GET'])]
     public function callbackAction(
         Request $request,
         TransactionCallbackHandler $transactionCallbackHandler,
@@ -56,14 +52,9 @@ class PaymentController extends AbstractDonationController
     }
 
     /**
-     * @Route(
-     *     "/don/{uuid}/{status}",
-     *     requirements={"status": "effectue|erreur", "uuid": "%pattern_uuid%"},
-     *     name="app_renaissance_donation_payment_result",
-     *     methods={"GET"}
-     * )
      * @ParamConverter("donation", options={"mapping": {"uuid": "uuid"}})
      */
+    #[Route(path: '/don/{uuid}/{status}', requirements: ['status' => 'effectue|erreur', 'uuid' => '%pattern_uuid%'], name: 'app_renaissance_donation_payment_result', methods: ['GET'])]
     public function resultAction(
         Request $request,
         Donation $donation,

@@ -31,9 +31,7 @@ abstract class AbstractCommitteeController extends AbstractController
 {
     use AccessDelegatorTrait;
 
-    /**
-     * @Route("", name="committees", methods={"GET", "POST"})
-     */
+    #[Route(path: '', name: 'committees', methods: ['GET', 'POST'])]
     public function committeesAction(
         Request $request,
         CommitteeRepository $committeeRepository,
@@ -58,9 +56,7 @@ abstract class AbstractCommitteeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/demandes", name="committees_requests", methods={"GET", "POST"})
-     */
+    #[Route(path: '/demandes', name: 'committees_requests', methods: ['GET', 'POST'])]
     public function committeesRequestsAction(
         Request $request,
         CommitteeRepository $committeeRepository,
@@ -85,10 +81,9 @@ abstract class AbstractCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/creer", name="create_committee", methods={"GET", "POST"})
-     *
      * @IsGranted("CREATE_COMMITTEE")
      */
+    #[Route(path: '/creer', name: 'create_committee', methods: ['GET', 'POST'])]
     public function createCommitteeAction(Request $request, CommitteeCreationCommandHandler $commandHandler): Response
     {
         $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
@@ -112,13 +107,7 @@ abstract class AbstractCommitteeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/animateur-provisoire-autocompletion",
-     *     name="provisional_supervisor_autocomplete",
-     *     condition="request.isXmlHttpRequest()",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/animateur-provisoire-autocompletion', name: 'provisional_supervisor_autocomplete', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
     public function provisionalSupervisorAutocomplete(
         Request $request,
         AdherentRepository $adherentRepository,
@@ -133,9 +122,7 @@ abstract class AbstractCommitteeController extends AbstractController
         return $this->json($adherents, Response::HTTP_OK);
     }
 
-    /**
-     * @Route("/designations", name="committees_designations", methods={"GET"})
-     */
+    #[Route(path: '/designations', name: 'committees_designations', methods: ['GET'])]
     public function committeesDesignationListAction(
         Request $request,
         ManagedZoneProvider $managedZoneProvider,
@@ -159,9 +146,7 @@ abstract class AbstractCommitteeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/designations/{uuid}/candidatures", name="committee_candidacy_list", methods={"GET"})
-     */
+    #[Route(path: '/designations/{uuid}/candidatures', name: 'committee_candidacy_list', methods: ['GET'])]
     public function committeeCandidaturesListAction(
         Committee $committee,
         CommitteeCandidacyRepository $repository
@@ -181,9 +166,7 @@ abstract class AbstractCommitteeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/designations/partielles", name="committees_designations_partials", methods={"GET"})
-     */
+    #[Route(path: '/designations/partielles', name: 'committees_designations_partials', methods: ['GET'])]
     public function listAvailableCommitteePartialAction(
         Request $request,
         ManagedZoneProvider $managedZoneProvider,
@@ -211,9 +194,9 @@ abstract class AbstractCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/pre-approuver", name="pre_approve", methods={"GET|POST"})
      * @IsGranted("PRE_APPROVE_COMMITTEE", subject="committee")
      */
+    #[Route(path: '/{slug}/pre-approuver', name: 'pre_approve', methods: ['GET|POST'])]
     public function preAcceptAction(
         Request $request,
         Committee $committee,
@@ -243,9 +226,9 @@ abstract class AbstractCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/pre-refuser", name="pre_refuse", methods={"GET|POST"})
      * @IsGranted("PRE_REFUSE_COMMITTEE", subject="committee")
      */
+    #[Route(path: '/{slug}/pre-refuser', name: 'pre_refuse', methods: ['GET|POST'])]
     public function preRefuseAction(Committee $committee, EntityManagerInterface $manager): Response
     {
         if ($committee->isPreRefused()) {

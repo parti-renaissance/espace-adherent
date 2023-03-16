@@ -11,10 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/adherent-message", name="app_message_common_")
- *
  * @IsGranted("ROLE_MESSAGE_REDACTOR")
  */
+#[Route(path: '/adherent-message', name: 'app_message_common_')]
 class CommonMessageController extends AbstractController
 {
     private $mailchimpCampaignUrl;
@@ -27,10 +26,9 @@ class CommonMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/statistics", requirements={"uuid": "%pattern_uuid%"}, condition="request.isXmlHttpRequest()", name="statistics", methods={"GET"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/statistics', requirements: ['uuid' => '%pattern_uuid%'], condition: 'request.isXmlHttpRequest()', name: 'statistics', methods: ['GET'])]
     public function getStatisticsAction(AbstractAdherentMessage $message, StatisticsAggregator $aggregator): Response
     {
         if (!$message->isMailchimp()) {
@@ -41,10 +39,9 @@ class CommonMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/content", requirements={"uuid": "%pattern_uuid%"}, name="content", methods={"GET"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/content', requirements: ['uuid' => '%pattern_uuid%'], name: 'content', methods: ['GET'])]
     public function getMessageTemplateAction(
         AbstractAdherentMessage $message,
         AdherentMessageManager $manager
@@ -53,10 +50,9 @@ class CommonMessageController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/preview-on-mailchimp", requirements={"uuid": "%pattern_uuid%"}, name="preview-on-mailchimp", methods={"GET"})
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="message")
      */
+    #[Route(path: '/{uuid}/preview-on-mailchimp', requirements: ['uuid' => '%pattern_uuid%'], name: 'preview-on-mailchimp', methods: ['GET'])]
     public function previewOnMailchimpAction(AbstractAdherentMessage $message): Response
     {
         if (!$message->isMailchimp()) {

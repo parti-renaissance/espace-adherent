@@ -19,9 +19,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @Route("/v3/profile", name="app_api_user_profile")
- */
+#[Route(path: '/v3/profile', name: 'app_api_user_profile')]
 class ProfileController extends AbstractController
 {
     private const READ_PROFILE_SERIALIZATION_GROUPS = [
@@ -37,10 +35,9 @@ class ProfileController extends AbstractController
     ];
 
     /**
-     * @Route("/me", name="_show", methods={"GET"})
-     *
      * @IsGranted("ROLE_OAUTH_SCOPE_READ:PROFILE")
      */
+    #[Route(path: '/me', name: '_show', methods: ['GET'])]
     public function show(SerializerInterface $serializer): JsonResponse
     {
         /** @var Adherent $user */
@@ -54,10 +51,9 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}", name="_update", methods={"PUT"})
-     *
      * @Security("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE') and user == adherent")
      */
+    #[Route(path: '/{uuid}', name: '_update', methods: ['PUT'])]
     public function update(
         Request $request,
         SerializerInterface $serializer,
@@ -99,19 +95,18 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/configuration", name="_configuration", methods={"GET"})
-     *
      * @IsGranted("ROLE_OAUTH_SCOPE_WRITE:PROFILE")
      */
+    #[Route(path: '/configuration', name: '_configuration', methods: ['GET'])]
     public function configuration(AdherentProfileConfiguration $adherentProfileConfiguration): JsonResponse
     {
         return new JsonResponse($adherentProfileConfiguration->build());
     }
 
     /**
-     * @Route("/unregister", name="_unregister", methods={"POST"})
      * @Security("is_granted('UNREGISTER', user)")
      */
+    #[Route(path: '/unregister', name: '_unregister', methods: ['POST'])]
     public function terminateMembershipAction(
         MembershipRequestHandler $handler,
         TokenRevocationAuthority $tokenRevocationAuthority

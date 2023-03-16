@@ -20,9 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProcurationController extends AbstractController
 {
-    /**
-     * @Route(name="app_procuration_landing", methods={"GET"})
-     */
+    #[Route(name: 'app_procuration_landing', methods: ['GET'])]
     public function landingAction(
         ProcurationSession $procurationSession,
         ElectionRepository $electionRepository
@@ -34,14 +32,7 @@ class ProcurationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     "/choisir/{action}",
-     *     requirements={"action": App\Procuration\ElectionContext::CONTROLLER_ACTION_REQUIREMENT},
-     *     name="app_procuration_choose_election",
-     *     methods={"GET", "POST"}
-     * )
-     */
+    #[Route(path: '/choisir/{action}', requirements: ['action' => ElectionContext::CONTROLLER_ACTION_REQUIREMENT], name: 'app_procuration_choose_election', methods: ['GET', 'POST'])]
     public function chooseElectionAction(
         Request $request,
         string $action,
@@ -67,14 +58,8 @@ class ProcurationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/je-demande", name="app_procuration_index_legacy", methods={"GET", "POST"})
-     * @Route(
-     *     "/je-demande/{step}",
-     *     requirements={"step": "mon-lieu-de-vote|mes-coordonnees|ma-procuration"},
-     *     name="app_procuration_request"
-     * )
-     */
+    #[Route(path: '/je-demande', name: 'app_procuration_index_legacy', methods: ['GET', 'POST'])]
+    #[Route(path: '/je-demande/{step}', requirements: ['step' => 'mon-lieu-de-vote|mes-coordonnees|ma-procuration'], name: 'app_procuration_request')]
     public function requestAction(
         Request $request,
         ProcurationSession $procurationSession,
@@ -126,17 +111,13 @@ class ProcurationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/je-demande/merci", name="app_procuration_request_thanks", methods={"GET"})
-     */
+    #[Route(path: '/je-demande/merci', name: 'app_procuration_request_thanks', methods: ['GET'])]
     public function requestThanksAction(): Response
     {
         return $this->render('procuration/request/thanks.html.twig');
     }
 
-    /**
-     * @Route("/je-propose", name="app_procuration_proxy_proposal", methods={"GET", "POST"})
-     */
+    #[Route(path: '/je-propose', name: 'app_procuration_proxy_proposal', methods: ['GET', 'POST'])]
     public function proxyProposalAction(
         Request $request,
         ProcurationSession $procurationSession,
@@ -172,17 +153,13 @@ class ProcurationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/je-propose/merci", name="app_procuration_proposal_thanks", methods={"GET"})
-     */
+    #[Route(path: '/je-propose/merci', name: 'app_procuration_proposal_thanks', methods: ['GET'])]
     public function proposalThanksAction(): Response
     {
         return $this->render('procuration/proxy/thanks.html.twig');
     }
 
-    /**
-     * @Route("/ma-demande/{id}/{privateToken}", requirements={"privateToken": "%pattern_uuid%"}, name="app_procuration_my_request", methods={"GET"})
-     */
+    #[Route(path: '/ma-demande/{id}/{privateToken}', requirements: ['privateToken' => '%pattern_uuid%'], name: 'app_procuration_my_request', methods: ['GET'])]
     public function myRequestAction(ProcurationRequest $request, string $privateToken): Response
     {
         if ($privateToken !== $request->generatePrivateToken()) {

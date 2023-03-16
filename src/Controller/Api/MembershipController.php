@@ -20,9 +20,8 @@ class MembershipController extends AbstractController
 {
     /**
      * This action enables a guest user to adhere to the community.
-     *
-     * @Route("/membership", name="app_api_membership_register", methods={"POST"})
      */
+    #[Route(path: '/membership', name: 'app_api_membership_register', methods: ['POST'])]
     public function registerAction(
         Request $request,
         AuthorizationCheckerInterface $authorizationChecker,
@@ -57,9 +56,7 @@ class MembershipController extends AbstractController
         return $this->json('OK', Response::HTTP_CREATED);
     }
 
-    /**
-     * @Route("/membership/forgot-password", name="app_api_membership_forgot_password", methods={"POST"})
-     */
+    #[Route(path: '/membership/forgot-password', name: 'app_api_membership_forgot_password', methods: ['POST'])]
     public function forgotPasswordAction(
         Request $request,
         AdherentRepository $adherentRepository,

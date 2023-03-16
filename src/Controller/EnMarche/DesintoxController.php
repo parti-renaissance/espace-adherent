@@ -12,9 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class DesintoxController extends AbstractController
 {
     /**
-     * @Route("/desintox", name="desintox_list", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('desintox')")
      */
+    #[Route(path: '/desintox', name: 'desintox_list', methods: ['GET'])]
     public function listAction(Page $page, ClarificationRepository $clarificationRepository)
     {
         return $this->render('desintox/list.html.twig', [
@@ -24,9 +24,9 @@ class DesintoxController extends AbstractController
     }
 
     /**
-     * @Route("/desintox/{slug}", name="desintox_view", methods={"GET"})
      * @Entity("clarification", expr="repository.findPublishedClarification(slug)")
      */
+    #[Route(path: '/desintox/{slug}', name: 'desintox_view', methods: ['GET'])]
     public function viewAction(Clarification $clarification)
     {
         return $this->render('desintox/view.html.twig', ['clarification' => $clarification]);

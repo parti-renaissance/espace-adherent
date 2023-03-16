@@ -8,9 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/confirmer", name="app_voting_platform_confirm_step", methods={"GET", "POST"})
- */
+#[Route(path: '/confirmer', name: 'app_voting_platform_confirm_step', methods: ['GET', 'POST'])]
 class ConfirmController extends AbstractController
 {
     public function __invoke(Request $request, Election $election): Response

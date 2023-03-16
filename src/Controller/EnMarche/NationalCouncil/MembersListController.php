@@ -9,10 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/conseil-national/membres", name="app_national_council_members", methods={"GET"})
- *
  * @IsGranted("ROLE_NATIONAL_COUNCIL_MEMBER")
  */
+#[Route(path: '/conseil-national/membres', name: 'app_national_council_members', methods: ['GET'])]
 class MembersListController extends AbstractController
 {
     public function __invoke(FilesystemInterface $storage): Response

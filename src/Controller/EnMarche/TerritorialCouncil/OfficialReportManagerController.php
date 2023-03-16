@@ -13,15 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-referent/instances/proces-verbaux", name="app_instances_official_report_referent_")
- *
  * @IsGranted("ROLE_REFERENT")
  */
+#[Route(path: '/espace-referent/instances/proces-verbaux', name: 'app_instances_official_report_referent_')]
 class OfficialReportManagerController extends AbstractController
 {
-    /**
-     * @Route("", name="list", methods={"GET"})
-     */
+    #[Route(path: '', name: 'list', methods: ['GET'])]
     public function listAction(Request $request, OfficialReportRepository $repository): Response
     {
         return $this->render(
@@ -33,9 +30,7 @@ class OfficialReportManagerController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/creer", name="create", methods={"GET", "POST"})
-     */
+    #[Route(path: '/creer', name: 'create', methods: ['GET', 'POST'])]
     public function createAction(Request $request, OfficialReportManager $manager): Response
     {
         $form = $this
@@ -65,9 +60,9 @@ class OfficialReportManagerController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/modifier", name="update", methods={"GET", "POST"})
      * @IsGranted("CAN_EDIT_OFFICIAL_REPORT", subject="officialReport")
      */
+    #[Route(path: '/{uuid}/modifier', name: 'update', methods: ['GET', 'POST'])]
     public function updateAction(
         Request $request,
         OfficialReport $officialReport,

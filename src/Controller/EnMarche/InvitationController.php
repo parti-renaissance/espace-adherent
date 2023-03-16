@@ -19,9 +19,7 @@ class InvitationController extends AbstractController
 {
     use AccessDelegatorTrait;
 
-    /**
-     * @Route("/invitation", name="invitation_form", methods={"GET", "POST"})
-     */
+    #[Route(path: '/invitation', name: 'invitation_form', methods: ['GET', 'POST'])]
     public function inviteAction(Request $request, InvitationRequestHandler $handler): Response
     {
         $invite = Invite::createWithCaptcha((string) $request->request->get('g-recaptcha-response'));
@@ -46,15 +44,14 @@ class InvitationController extends AbstractController
     }
 
     /**
-     * @Route("/espace-referent/invitation", name="app_referent_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "referent"})
-     * @Route("/espace-depute/invitation", name="app_deputy_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "deputy"})
-     * @Route("/espace-senateur/invitation", name="app_senator_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "senator"})
-     * @Route("/espace-comite/{slug}/invitation", name="app_supervisor_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "supervisor"})
-     * @Route("/espace-candidat-legislative/invitation", name="app_legislative_candidate_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "legislative_candidate"})
-     * @Route("/espace-candidat/invitation", name="app_candidate_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "candidate"})
-     *
      * @IsGranted("ROLE_ADHERENT")
      */
+    #[Route(path: '/espace-referent/invitation', name: 'app_referent_adherent_invitation', methods: ['GET', 'POST'], defaults: ['type' => 'referent'])]
+    #[Route(path: '/espace-depute/invitation', name: 'app_deputy_adherent_invitation', methods: ['GET', 'POST'], defaults: ['type' => 'deputy'])]
+    #[Route(path: '/espace-senateur/invitation', name: 'app_senator_adherent_invitation', methods: ['GET', 'POST'], defaults: ['type' => 'senator'])]
+    #[Route(path: '/espace-comite/{slug}/invitation', name: 'app_supervisor_adherent_invitation', methods: ['GET', 'POST'], defaults: ['type' => 'supervisor'])]
+    #[Route(path: '/espace-candidat-legislative/invitation', name: 'app_legislative_candidate_adherent_invitation', methods: ['GET', 'POST'], defaults: ['type' => 'legislative_candidate'])]
+    #[Route(path: '/espace-candidat/invitation', name: 'app_candidate_adherent_invitation', methods: ['GET', 'POST'], defaults: ['type' => 'candidate'])]
     public function connectedAdherentInviteAction(
         Request $request,
         InvitationRequestHandler $handler,

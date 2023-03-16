@@ -8,9 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ReferentsController extends AbstractController
 {
-    /**
-     * @Route("/referents", name="api_referents", methods={"GET"})
-     */
+    #[Route(path: '/referents', name: 'api_referents', methods: ['GET'])]
     public function indexAction()
     {
         return new JsonResponse(self::$referents);

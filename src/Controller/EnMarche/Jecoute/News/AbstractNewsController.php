@@ -30,9 +30,7 @@ abstract class AbstractNewsController extends AbstractController
         $this->zoneRepository = $zoneRepository;
     }
 
-    /**
-     * @Route("", name="news_list", methods={"GET"})
-     */
+    #[Route(path: '', name: 'news_list', methods: ['GET'])]
     public function jecouteNewsListAction(Request $request): Response
     {
         return $this->renderTemplate('jecoute/news/news_list.html.twig', [
@@ -40,13 +38,7 @@ abstract class AbstractNewsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     path="/creer",
-     *     name="news_create",
-     *     methods={"GET|POST"},
-     * )
-     */
+    #[Route(path: '/creer', name: 'news_create', methods: ['GET|POST'])]
     public function jecouteNewsCreateAction(Request $request, ObjectManager $manager, NewsHandler $handler): Response
     {
         /** @var Adherent $user */
@@ -87,15 +79,9 @@ abstract class AbstractNewsController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/{uuid}/editer",
-     *     name="news_edit",
-     *     requirements={"uuid": "%pattern_uuid%"},
-     *     methods={"GET|POST"}
-     * )
-     *
      * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('CAN_EDIT_CANDIDATE_JECOUTE_NEWS', news) or is_granted('CAN_EDIT_REFERENT_JECOUTE_NEWS', news)")
      */
+    #[Route(path: '/{uuid}/editer', name: 'news_edit', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET|POST'])]
     public function jecouteNewsEditAction(Request $request, News $news, ObjectManager $manager): Response
     {
         $zones = $this->getZones($this->getMainUser($request->getSession()));
@@ -124,15 +110,9 @@ abstract class AbstractNewsController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/{uuid}/publier",
-     *     name="news_publish",
-     *     requirements={"uuid": "%pattern_uuid%"},
-     *     methods={"GET"}
-     * )
-     *
      * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)")
      */
+    #[Route(path: '/{uuid}/publier', name: 'news_publish', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function jecouteNewsPublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
         if ($news->isPublished()) {
@@ -147,15 +127,9 @@ abstract class AbstractNewsController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/{uuid}/depublier",
-     *     name="news_unpublish",
-     *     requirements={"uuid": "%pattern_uuid%"},
-     *     methods={"GET"}
-     * )
-     *
      * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)")
      */
+    #[Route(path: '/{uuid}/depublier', name: 'news_unpublish', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function jecouteNewsUnpublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
         if (!$news->isPublished()) {

@@ -12,9 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    /**
-     * @Route("/", name="homepage", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'homepage', methods: ['GET'])]
     public function indexAction(HomeBlockRepository $homeBlockRepository, LiveLinkRepository $linkRepository): Response
     {
         return $this->render('home/index.html.twig', [
@@ -23,23 +21,13 @@ class HomeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/sitemap.xml", name="app_sitemap_index", methods={"GET"})
-     */
+    #[Route(path: '/sitemap.xml', name: 'app_sitemap_index', methods: ['GET'])]
     public function sitemapIndexAction(SitemapFactory $factory): Response
     {
         return $this->createXmlResponse($factory->createSitemapIndex());
     }
 
-    /**
-     * @Route(
-     *     "/sitemap_{type}_{page}.xml",
-     *     requirements={"type": App\Sitemap\SitemapFactory::ALL_TYPES, "page": "\d+"},
-     *     defaults={"page": "1"},
-     *     name="app_sitemap",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/sitemap_{type}_{page}.xml', requirements: ['type' => SitemapFactory::ALL_TYPES, 'page' => '\d+'], defaults: ['page' => 1], name: 'app_sitemap', methods: ['GET'])]
     public function sitemapAction(string $type, int $page, SitemapFactory $factory): Response
     {
         try {

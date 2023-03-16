@@ -19,10 +19,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/conseil-territorial/candidature", name="app_territorial_council_candidature")
- *
  * @IsGranted("ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE")
  */
+#[Route(path: '/conseil-territorial/candidature', name: 'app_territorial_council_candidature')]
 class CandidatureController extends AbstractController
 {
     private $manager;
@@ -32,9 +31,7 @@ class CandidatureController extends AbstractController
         $this->manager = $manager;
     }
 
-    /**
-     * @Route("", name="_edit", methods={"POST", "GET"})
-     */
+    #[Route(path: '', name: '_edit', methods: ['POST', 'GET'])]
     public function editCandidatureAction(Request $request): Response
     {
         /** @var Adherent $adherent */
@@ -97,9 +94,7 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/retirer", name="_remove", methods={"GET"})
-     */
+    #[Route(path: '/retirer', name: '_remove', methods: ['GET'])]
     public function removeCandidacyAction(): Response
     {
         /** @var Adherent $adherent */
@@ -125,9 +120,7 @@ class CandidatureController extends AbstractController
         return $this->redirectToRoute('app_territorial_council_index');
     }
 
-    /**
-     * @Route("/invitation", name="_select_pair_candidate", methods={"GET", "POST"})
-     */
+    #[Route(path: '/invitation', name: '_select_pair_candidate', methods: ['GET', 'POST'])]
     public function selectPairCandidateAction(Request $request): Response
     {
         /** @var Adherent $adherent */
@@ -191,9 +184,7 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/fini", name="_select_pair_candidate_finish", methods={"GET"})
-     */
+    #[Route(path: '/fini', name: '_select_pair_candidate_finish', methods: ['GET'])]
     public function finishInvitationStepAction(): Response
     {
         /** @var Adherent $adherent */
@@ -217,10 +208,9 @@ class CandidatureController extends AbstractController
     }
 
     /**
-     * @Route("/mes-invitations/{uuid}/accepter", name="_invitation_accept", methods={"GET", "POST"})
-     *
      * @Security("invitation.getMembership() == user.getTerritorialCouncilMembership()")
      */
+    #[Route(path: '/mes-invitations/{uuid}/accepter', name: '_invitation_accept', methods: ['GET', 'POST'])]
     public function acceptInvitationAction(Request $request, CandidacyInvitation $invitation): Response
     {
         /** @var Adherent $adherent */
@@ -272,10 +262,9 @@ class CandidatureController extends AbstractController
     }
 
     /**
-     * @Route("/mes-invitations/{uuid}/decliner", name="_invitation_decline", methods={"GET"})
-     *
      * @Security("invitation.getMembership() == user.getTerritorialCouncilMembership()")
      */
+    #[Route(path: '/mes-invitations/{uuid}/decliner', name: '_invitation_decline', methods: ['GET'])]
     public function declineInvitationAction(CandidacyInvitation $invitation): Response
     {
         /** @var Adherent $adherent */

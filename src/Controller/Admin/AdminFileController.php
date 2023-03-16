@@ -15,19 +15,12 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/filesystem", name="app_admin_files_", methods={"GET"})
- *
  * @IsGranted("ROLE_ADMIN_FILES")
  */
+#[Route(path: '/filesystem', name: 'app_admin_files_', methods: ['GET'])]
 class AdminFileController extends AbstractController
 {
-    /**
-     * @Route("/file-directory/autocompletion",
-     *     name="autocomplete_file_directory",
-     *     condition="request.isXmlHttpRequest()",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/file-directory/autocompletion', name: 'autocomplete_file_directory', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
     public function directoriesAutocompleteAction(Request $request, FileRepository $repository): JsonResponse
     {
         $directories = $repository->findForAutocomplete(
@@ -42,9 +35,7 @@ class AdminFileController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/documents/{uuid}", name="download", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
-     */
+    #[Route(path: '/documents/{uuid}', name: 'download', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
     public function downloadAction(File $file, FilesystemInterface $storage): Response
     {
         if ($file->isDir()) {

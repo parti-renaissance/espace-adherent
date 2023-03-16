@@ -10,15 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-assesseur", name="app_vote_results_assessor")
- *
  * @IsGranted("ROLE_ASSESSOR")
  */
+#[Route(path: '/espace-assesseur', name: 'app_vote_results_assessor')]
 class AssessorVoteResultController extends AbstractVoteResultController
 {
-    /**
-     * @Route("/resultats", name="_index", methods={"GET", "POST"})
-     */
+    #[Route(path: '/resultats', name: '_index', methods: ['GET', 'POST'])]
     public function voteResultsAction(Request $request): Response
     {
         /** @var Adherent $user */

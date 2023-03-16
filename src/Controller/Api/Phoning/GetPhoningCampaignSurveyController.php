@@ -9,15 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(
- *     "/v3/phoning_campaigns/{uuid}/survey",
- *     name="api_phoning_camapign_get_campaign_survey",
- *     methods={"GET"},
- *     requirements={"uuid": "%pattern_uuid%"}
- * )
- *
  * @Security("campaign.isPermanent() or is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')")
  */
+#[Route(path: '/v3/phoning_campaigns/{uuid}/survey', name: 'api_phoning_camapign_get_campaign_survey', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
 class GetPhoningCampaignSurveyController extends AbstractController
 {
     public function __invoke(Campaign $campaign): Response

@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/newsletter", name="app_renaissance_newsletter_save", methods={"POST"})
- */
+#[Route(path: '/newsletter', name: 'app_renaissance_newsletter_save', methods: ['POST'])]
 class SaveNewsletterController extends AbstractController
 {
     public function __invoke(Request $request, EntityManagerInterface $entityManager): Response

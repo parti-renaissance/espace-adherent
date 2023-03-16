@@ -15,10 +15,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
- * @Route("/v3/internal/{uuid}/{path}", name="api_internal_api_application", requirements={"path": ".+", "uuid": "%pattern_uuid%"})
- *
  * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
  */
+#[Route(path: '/v3/internal/{uuid}/{path}', name: 'api_internal_api_application', requirements: ['path' => '.+', 'uuid' => '%pattern_uuid%'])]
 class InternalApiProxyController extends AbstractController
 {
     use ScopeTrait;

@@ -16,9 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FunnelController extends AbstractController
 {
-    /**
-     * @Route("/funnel/general", name="app_funnel_general", methods={"GET", "POST"})
-     */
+    #[Route(path: '/funnel/general', name: 'app_funnel_general', methods: ['GET', 'POST'])]
     public function generalAction(Request $request, AdherentProfileHandler $handler): Response
     {
         $adherent = $this->getUser();
@@ -38,9 +36,7 @@ class FunnelController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/funnel/certification", name="app_funnel_certification", methods={"GET", "POST"})
-     */
+    #[Route(path: '/funnel/certification', name: 'app_funnel_certification', methods: ['GET', 'POST'])]
     public function certificationAction(): Response
     {
         return $this->render('certification_request/home.html.twig', [

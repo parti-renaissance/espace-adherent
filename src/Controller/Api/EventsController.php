@@ -17,9 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EventsController extends AbstractController
 {
-    /**
-     * @Route("/upcoming-events", name="api_committees_events", methods={"GET"})
-     */
+    #[Route(path: '/upcoming-events', name: 'api_committees_events', methods: ['GET'])]
     public function getUpcomingCommitteesEventsAction(Request $request, EventProvider $provider): Response
     {
         return new JsonResponse($provider->getUpcomingEvents(
@@ -29,9 +27,9 @@ class EventsController extends AbstractController
     }
 
     /**
-     * @Route("/v3/events/registered", name="api_events_registered", methods={"POST"})
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      */
+    #[Route(path: '/v3/events/registered', name: 'api_events_registered', methods: ['POST'])]
     public function followed(Request $request, BaseEventRepository $eventRepository): JsonResponse
     {
         /** @var Adherent $user */
@@ -51,9 +49,9 @@ class EventsController extends AbstractController
     }
 
     /**
-     * @Route("/v3/events/{uuid}/export-registrations", name="api_export_event_registrations", requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
      * @Security("event.getAuthor() === user")
      */
+    #[Route(path: '/v3/events/{uuid}/export-registrations', name: 'api_export_event_registrations', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function exportRegistrations(EventRegistrationExporter $exporter, BaseEvent $event): Response
     {
         return $exporter->getResponse('xls', $event);

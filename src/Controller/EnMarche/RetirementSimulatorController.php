@@ -7,14 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/retraite-interactif")
- */
+#[Route(path: '/retraite-interactif')]
 class RetirementSimulatorController extends AbstractController
 {
-    /**
-     * @Route(name="app_retirement_simulator_home", methods={"GET"})
-     */
+    #[Route(name: 'app_retirement_simulator_home', methods: ['GET'])]
     public function approachesAction(): Response
     {
         $form = $this->createForm(RetirementSimulatorType::class);

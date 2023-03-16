@@ -8,9 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(path="/espace-elus/cotisation", name="app_renaissance_elected_representative_contribution_fill_revenue", methods={"GET|POST"})
- */
+#[Route(path: '/espace-elus/cotisation', name: 'app_renaissance_elected_representative_contribution_fill_revenue', methods: ['GET|POST'])]
 class FillRevenueController extends AbstractContributionController
 {
     public function __invoke(

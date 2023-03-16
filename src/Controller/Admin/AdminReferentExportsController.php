@@ -9,14 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/referent/exports")
- */
+#[Route(path: '/referent/exports')]
 class AdminReferentExportsController extends AbstractController
 {
-    /**
-     * @Route("/{id}/equipe-departementale", name="app_admin_referent_exports_departemental_team", methods={"GET"})
-     */
+    #[Route(path: '/{id}/equipe-departementale', name: 'app_admin_referent_exports_departemental_team', methods: ['GET'])]
     public function exportDepartementaleTeam(
         ReferentPersonLinkExport $referentPersonLinkExport,
         ReferentPersonLinkRepository $referentPersonLinkRepository,

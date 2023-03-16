@@ -10,9 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 abstract class DefaultVoteResultController extends AbstractVoteResultController
 {
-    /**
-     * @Route("/{id}/resultats", name="_index", methods={"GET", "POST"})
-     */
+    #[Route(path: '/{id}/resultats', name: '_index', methods: ['GET', 'POST'])]
     public function voteResultsAction(VotePlace $votePlace, Request $request): Response
     {
         $this->denyAccessUnlessGranted(ManageVotePlaceVoter::MANAGE_VOTE_PLACE, $votePlace);

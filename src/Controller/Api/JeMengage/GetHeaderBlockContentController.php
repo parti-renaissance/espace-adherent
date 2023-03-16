@@ -9,10 +9,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * @Route("/je-mengage/headers/{slug}", name="api_get_jemengage_header_blocks", methods={"GET"})
- * @Route("/v3/je-mengage/headers/{slug}", name="api_get_v3_jemengage_header_blocks", methods={"GET"})
- */
+#[Route(path: '/je-mengage/headers/{slug}', name: 'api_get_jemengage_header_blocks', methods: ['GET'])]
+#[Route(path: '/v3/je-mengage/headers/{slug}', name: 'api_get_v3_jemengage_header_blocks', methods: ['GET'])]
 class GetHeaderBlockContentController extends AbstractController
 {
     public function __invoke(

@@ -8,9 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/vote", name="app_voting_platform_vote_step", methods={"GET", "POST"})
- */
+#[Route(path: '/vote', name: 'app_voting_platform_vote_step', methods: ['GET', 'POST'])]
 class VoteController extends AbstractController
 {
     public function __invoke(Request $request, Election $election): Response

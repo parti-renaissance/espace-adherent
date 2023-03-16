@@ -27,9 +27,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/evenements/{slug}")
  * @IsGranted("HOST_EVENT", subject="event")
  */
+#[Route(path: '/evenements/{slug}')]
 class CommitteeEventManagerController extends AbstractController
 {
     private const ACTION_CONTACT = 'contact';
@@ -48,9 +48,9 @@ class CommitteeEventManagerController extends AbstractController
     }
 
     /**
-     * @Route("/modifier", name="app_committee_event_edit", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
+    #[Route(path: '/modifier', name: 'app_committee_event_edit', methods: ['GET', 'POST'])]
     public function editAction(Request $request, CommitteeEvent $event, EventCommandHandler $handler): Response
     {
         $form = $this->createForm(
@@ -79,9 +79,9 @@ class CommitteeEventManagerController extends AbstractController
     }
 
     /**
-     * @Route("/annuler", name="app_committee_event_cancel", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
+    #[Route(path: '/annuler', name: 'app_committee_event_cancel', methods: ['GET', 'POST'])]
     public function cancelAction(
         Request $request,
         CommitteeEvent $event,
@@ -106,9 +106,7 @@ class CommitteeEventManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/inscrits", name="app_committee_event_members", methods={"GET"})
-     */
+    #[Route(path: '/inscrits', name: 'app_committee_event_members', methods: ['GET'])]
     public function membersAction(BaseEvent $event): Response
     {
         return $this->render('events/members.html.twig', [
@@ -117,9 +115,7 @@ class CommitteeEventManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/inscrits/exporter", name="app_committee_event_export_members", methods={"POST"})
-     */
+    #[Route(path: '/inscrits/exporter', name: 'app_committee_event_export_members', methods: ['POST'])]
     public function exportMembersAction(
         Request $request,
         BaseEvent $event,
@@ -144,9 +140,7 @@ class CommitteeEventManagerController extends AbstractController
         return $response;
     }
 
-    /**
-     * @Route("/inscrits/contacter", name="app_committee_event_contact_members", methods={"POST"})
-     */
+    #[Route(path: '/inscrits/contacter', name: 'app_committee_event_contact_members', methods: ['POST'])]
     public function contactMembersAction(
         Request $request,
         BaseEvent $event,

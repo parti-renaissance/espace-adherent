@@ -12,25 +12,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TonMacronController extends AbstractController
 {
-    /**
-     * @Route("/pourquoi-voter-macron", methods={"GET"})
-     */
+    #[Route(path: '/pourquoi-voter-macron', methods: ['GET'])]
     public function redirectAction(): Response
     {
         return $this->redirectToRoute('app_ton_macron_invite');
     }
 
-    /**
-     * @Route("/pourquoi-voter-le-candidat-la-republique-en-marche", methods={"GET"})
-     */
+    #[Route(path: '/pourquoi-voter-le-candidat-la-republique-en-marche', methods: ['GET'])]
     public function redirectLegislativesAction(): Response
     {
         return $this->redirectToRoute('app_ton_macron_invite');
     }
 
-    /**
-     * @Route("/pourquoivoterenmarche", name="app_ton_macron_invite", methods={"GET", "POST"})
-     */
+    #[Route(path: '/pourquoivoterenmarche', name: 'app_ton_macron_invite', methods: ['GET', 'POST'])]
     public function inviteAction(Request $request, InvitationProcessorHandler $handler): Response
     {
         $session = $request->getSession();
@@ -59,9 +53,7 @@ class TonMacronController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/pourquoivoterenmarche/recommencer", name="app_ton_macron_invite_restart", methods={"GET"})
-     */
+    #[Route(path: '/pourquoivoterenmarche/recommencer', name: 'app_ton_macron_invite_restart', methods: ['GET'])]
     public function restartInviteAction(Request $request, InvitationProcessorHandler $handler): Response
     {
         $handler->terminate($request->getSession());
@@ -69,9 +61,7 @@ class TonMacronController extends AbstractController
         return $this->redirectToRoute('app_ton_macron_invite');
     }
 
-    /**
-     * @Route("/pourquoivoterenmarche/{uuid}/merci", name="app_ton_macron_invite_sent", methods={"GET"})
-     */
+    #[Route(path: '/pourquoivoterenmarche/{uuid}/merci', name: 'app_ton_macron_invite_sent', methods: ['GET'])]
     public function inviteSentAction(TonMacronFriendInvitation $invitation): Response
     {
         return $this->render('ton_macron/invite_sent.html.twig', [

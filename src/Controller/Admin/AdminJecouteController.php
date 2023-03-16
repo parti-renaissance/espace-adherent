@@ -9,16 +9,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/questionnaires")
- */
+#[Route(path: '/questionnaires')]
 class AdminJecouteController
 {
     /**
-     * @Route("/survey/{id}/export", name="admin_app_jecoute_surveys_export", requirements={"type": "local|national"})
-     *
      * @IsGranted("ROLE_ADMIN_JECOUTE")
      */
+    #[Route(path: '/survey/{id}/export', name: 'admin_app_jecoute_surveys_export', requirements: ['type' => 'local|national'])]
     public function nationalSurveyExportAction(
         Request $request,
         Survey $survey,

@@ -11,9 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/espace-adherent/documents")
- */
+#[Route(path: '/espace-adherent/documents')]
 class DocumentsController extends AbstractController
 {
     private $documentManager;
@@ -23,9 +21,7 @@ class DocumentsController extends AbstractController
         $this->documentManager = $documentManager;
     }
 
-    /**
-     * @Route(name="app_documents_index", methods={"GET"})
-     */
+    #[Route(name: 'app_documents_index', methods: ['GET'])]
     public function indexAction(): Response
     {
         return $this->render('documents/index.html.twig', [
@@ -33,14 +29,7 @@ class DocumentsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     "/dossier/{type}/{path}",
-     *     requirements={"type": "adherents|animateurs|referents|animateurs-etrangers", "path": ".+"},
-     *     name="app_documents_directory",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/dossier/{type}/{path}', requirements: ['type' => 'adherents|animateurs|referents|animateurs-etrangers', 'path' => '.+'], name: 'app_documents_directory', methods: ['GET'])]
     public function directoryAction(string $type, string $path): Response
     {
         $this->checkDocumentTypeAccess($type);
@@ -52,14 +41,7 @@ class DocumentsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     "/telecharger/{type}/{path}",
-     *     requirements={"type": "adherents|animateurs|referents|animateurs-etrangers", "path": ".+"},
-     *     name="app_documents_file",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/telecharger/{type}/{path}', requirements: ['type' => 'adherents|animateurs|referents|animateurs-etrangers', 'path' => '.+'], name: 'app_documents_file', methods: ['GET'])]
     public function fileAction(string $type, string $path): Response
     {
         $this->checkDocumentTypeAccess($type);

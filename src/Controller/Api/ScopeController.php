@@ -18,9 +18,7 @@ class ScopeController extends AbstractController
         $this->generalScopeGenerator = $generalScopeGenerator;
     }
 
-    /**
-     * @Route("/v3/profile/me/scope/{scopeCode}", name="app_api_user_profile_scope", methods={"GET"})
-     */
+    #[Route(path: '/v3/profile/me/scope/{scopeCode}', name: 'app_api_user_profile_scope', methods: ['GET'])]
     public function __invoke(string $scopeCode): JsonResponse
     {
         /** @var Adherent $user */

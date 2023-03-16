@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/parametres/mes-activites", name="app_adherent_profile_activity", methods={"GET"})
- */
+#[Route(path: '/parametres/mes-activites', name: 'app_adherent_profile_activity', methods: ['GET'])]
 class ActivityController extends AbstractController
 {
     private const ITEMS_PER_PAGE = 5;

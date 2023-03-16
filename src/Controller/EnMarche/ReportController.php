@@ -26,17 +26,9 @@ class ReportController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     "/report/{type}/{uuid}",
-     *     name="app_report",
-     *     requirements={
-     *         "type": App\Report\ReportType::TYPES_URI_PATTERN,
-     *         "uuid": "%pattern_uuid%"
-     *     },
-     *     methods={"GET", "POST"}
-     * )
      * @IsGranted("REPORT")
      */
+    #[Route(path: '/report/{type}/{uuid}', name: 'app_report', requirements: ['type' => ReportType::TYPES_URI_PATTERN, 'uuid' => '%pattern_uuid%'], methods: ['GET', 'POST'])]
     public function reportAction(
         Request $request,
         string $type,

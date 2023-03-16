@@ -13,10 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @Route("/zone/autocompletion", name="api_zone_autocomplete", methods={"GET"})
- * @Route("/v3/zone/autocompletion", name="api_v3_zone_autocomplete", methods={"GET"})
- */
+#[Route(path: '/zone/autocompletion', name: 'api_zone_autocomplete', methods: ['GET'])]
+#[Route(path: '/v3/zone/autocompletion', name: 'api_v3_zone_autocomplete', methods: ['GET'])]
 class ZoneAutocompleteSelect2Controller extends AbstractZoneAutocompleteController
 {
     private const SUGGESTIONS_PER_TYPE = 5;

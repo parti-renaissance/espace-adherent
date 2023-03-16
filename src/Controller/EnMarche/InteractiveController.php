@@ -17,9 +17,7 @@ class InteractiveController extends AbstractController
 
     public const MESSAGE_SUBJECT = 'Pour une Renaissance européenne';
 
-    /**
-     * @Route("/mon-europe", name="app_my_europe", methods={"GET", "POST"})
-     */
+    #[Route(path: '/mon-europe', name: 'app_my_europe', methods: ['GET', 'POST'])]
     public function myEuropeAction(Request $request, MyEuropeProcessorHandler $handler): Response
     {
         $this->disableInProduction();
@@ -51,9 +49,7 @@ class InteractiveController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/mon-europe/recommencer", name="app_my_europe_restart", methods={"GET"})
-     */
+    #[Route(path: '/mon-europe/recommencer', name: 'app_my_europe_restart', methods: ['GET'])]
     public function restartMyEuropeAction(Request $request, MyEuropeProcessorHandler $handler): Response
     {
         $this->disableInProduction();
@@ -63,9 +59,7 @@ class InteractiveController extends AbstractController
         return $this->redirectToRoute('app_my_europe');
     }
 
-    /**
-     * @Route("/mon-europe/{uuid}/merci", name="app_my_europe_mail_sent", methods={"GET"})
-     */
+    #[Route(path: '/mon-europe/{uuid}/merci', name: 'app_my_europe_mail_sent', methods: ['GET'])]
     public function mailSentAction(MyEuropeInvitation $myEurope): Response
     {
         $this->disableInProduction();

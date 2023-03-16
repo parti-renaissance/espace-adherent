@@ -9,15 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(
- *     "/v3/pap/buildings/{uuid}/building_blocks",
- *     name="api_get_building_blocks",
- *     methods={"GET"},
- *     requirements={"uuid": "%pattern_uuid%"},
- * )
- *
  * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')")
  */
+#[Route(path: '/v3/pap/buildings/{uuid}/building_blocks', name: 'api_get_building_blocks', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
 class GetBuildingBlocksController extends AbstractController
 {
     public function __invoke(Building $building): Response

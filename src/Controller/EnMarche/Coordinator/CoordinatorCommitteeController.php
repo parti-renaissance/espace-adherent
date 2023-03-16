@@ -16,14 +16,12 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-coordinateur/comites")
  * @IsGranted("ROLE_REGIONAL_COORDINATOR")
  */
+#[Route(path: '/espace-coordinateur/comites')]
 class CoordinatorCommitteeController extends AbstractController
 {
-    /**
-     * @Route("/list", name="app_coordinator_committees", methods={"GET"})
-     */
+    #[Route(path: '/list', name: 'app_coordinator_committees', methods: ['GET'])]
     public function committeesAction(Request $request, CommitteeManager $manager): Response
     {
         try {
@@ -55,9 +53,8 @@ class CoordinatorCommitteeController extends AbstractController
 
     /**
      * Pre-approves or pre-refuses a committee.
-     *
-     * @Route("/{uuid}/{slug}/pre-valider-comite", name="app_coordinator_committee_validate", methods={"POST"})
      */
+    #[Route(path: '/{uuid}/{slug}/pre-valider-comite', name: 'app_coordinator_committee_validate', methods: ['POST'])]
     public function validateAction(
         Request $request,
         Committee $committee,

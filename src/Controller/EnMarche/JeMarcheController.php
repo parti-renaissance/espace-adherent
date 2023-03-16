@@ -12,17 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class JeMarcheController extends AbstractController
 {
-    /**
-     * @Route("/jagis", name="app_je_marche", methods={"GET"})
-     */
+    #[Route(path: '/jagis', name: 'app_je_marche', methods: ['GET'])]
     public function indexAction(): Response
     {
         return $this->render('jemarche/index.html.twig');
     }
 
-    /**
-     * @Route("/jemarche", name="app_je_marche_action", methods={"GET", "POST"})
-     */
+    #[Route(path: '/jemarche', name: 'app_je_marche_action', methods: ['GET', 'POST'])]
     public function actionAction(Request $request, JeMarcheReportHandler $handler): Response
     {
         $jeMarcheReport = JeMarcheReport::createWithCaptcha((string) $request->request->get('g-recaptcha-response'));
@@ -41,17 +37,13 @@ class JeMarcheController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/jemarche/merci", name="app_je_marche_thanks", methods={"GET"})
-     */
+    #[Route(path: '/jemarche/merci', name: 'app_je_marche_thanks', methods: ['GET'])]
     public function thanksAction(): Response
     {
         return $this->render('jemarche/thanks.html.twig');
     }
 
-    /**
-     * @Route("/je-marche", name="app_je_marche_redirect", methods={"GET"})
-     */
+    #[Route(path: '/je-marche', name: 'app_je_marche_redirect', methods: ['GET'])]
     public function redirectAction(): Response
     {
         return $this->redirectToRoute('app_je_marche_action', [], Response::HTTP_MOVED_PERMANENTLY);

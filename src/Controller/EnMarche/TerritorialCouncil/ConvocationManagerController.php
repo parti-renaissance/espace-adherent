@@ -14,15 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-referent/instances/convocations", name="app_instances_convocation_referent")
- *
  * @IsGranted("ROLE_REFERENT")
  */
+#[Route(path: '/espace-referent/instances/convocations', name: 'app_instances_convocation_referent')]
 class ConvocationManagerController extends AbstractController
 {
-    /**
-     * @Route("", name="_list", methods={"GET"})
-     */
+    #[Route(path: '', name: '_list', methods: ['GET'])]
     public function listAction(Request $request, ConvocationRepository $repository): Response
     {
         /** @var Adherent $adherent */
@@ -34,9 +31,7 @@ class ConvocationManagerController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/creer", name="_create", methods={"GET", "POST"})
-     */
+    #[Route(path: '/creer', name: '_create', methods: ['GET', 'POST'])]
     public function createAction(Request $request, Manager $manager): Response
     {
         /** @var Adherent $adherent */

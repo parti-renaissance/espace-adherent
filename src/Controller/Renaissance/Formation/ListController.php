@@ -10,9 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-adherent/formations", name="app_renaissance_adherent_formation_list", methods={"GET"})
  * @IsGranted("RENAISSANCE_ADHERENT")
  */
+#[Route(path: '/espace-adherent/formations', name: 'app_renaissance_adherent_formation_list', methods: ['GET'])]
 class ListController extends AbstractController
 {
     public function __construct(private readonly FormationRepository $formationRepository)

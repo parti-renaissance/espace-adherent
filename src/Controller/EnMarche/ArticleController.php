@@ -20,15 +20,7 @@ class ArticleController extends AbstractController
 {
     public const PER_PAGE = 12;
 
-    /**
-     * @Route(
-     *     "/articles/{category}/{page}",
-     *     requirements={"category": "\w+", "page": "\d+"},
-     *     defaults={"category": "tout", "page": 1},
-     *     name="articles_list",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/articles/{category}/{page}', requirements: ['category' => '\w+', 'page' => '\d+'], defaults: ['category' => 'tout', 'page' => 1], name: 'articles_list', methods: ['GET'])]
     public function actualitesAction(
         ArticleCategoryRepository $categoriesRepo,
         ArticleRepository $articlesRepo,
@@ -68,9 +60,9 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/articles/{categorySlug}/{articleSlug}", name="article_view", methods={"GET"})
      * @Entity("article", expr="repository.findOneBySlugAndCategorySlug(articleSlug, categorySlug)")
      */
+    #[Route(path: '/articles/{categorySlug}/{articleSlug}', name: 'article_view', methods: ['GET'])]
     public function articleAction(
         Article $article,
         ArticleRepository $repository,
@@ -95,9 +87,7 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/feed.xml", name="articles_feed", methods={"GET"})
-     */
+    #[Route(path: '/feed.xml', name: 'articles_feed', methods: ['GET'])]
     public function feedAction(
         ArticleFeedGenerator $generator,
         ArticleRepository $repository,

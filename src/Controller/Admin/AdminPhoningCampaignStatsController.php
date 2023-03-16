@@ -10,9 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/phoning-campaign/{id}/stats", name="app_admin_phoning_campaign_stats", methods="GET")
  * @IsGranted("ROLE_ADMIN_PHONING_CAMPAIGNS")
  */
+#[Route(path: '/phoning-campaign/{id}/stats', name: 'app_admin_phoning_campaign_stats', methods: 'GET')]
 class AdminPhoningCampaignStatsController extends AbstractController
 {
     public function __invoke(AdherentRepository $adherentRepository, Campaign $campaign): Response

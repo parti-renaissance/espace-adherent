@@ -28,9 +28,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @Route("/committee")
- */
+#[Route(path: '/committee')]
 class AdminCommitteeController extends AbstractController
 {
     private $mandateManager;
@@ -50,9 +48,9 @@ class AdminCommitteeController extends AbstractController
     /**
      * Refuses the committee.
      *
-     * @Route("/{id}/refuse", name="app_admin_committee_refuse", methods={"GET|POST"})
      * @IsGranted("ROLE_ADMIN_COMMITTEES")
      */
+    #[Route(path: '/{id}/refuse', name: 'app_admin_committee_refuse', methods: ['GET|POST'])]
     public function refuseAction(
         Request $request,
         Committee $committee,
@@ -83,9 +81,9 @@ class AdminCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/members", name="app_admin_committee_members", methods={"GET"})
      * @IsGranted("ROLE_ADMIN_COMMITTEES")
      */
+    #[Route(path: '/{id}/members', name: 'app_admin_committee_members', methods: ['GET'])]
     public function membersAction(CommitteeManager $manager, Committee $committee): Response
     {
         return $this->render('admin/committee/members.html.twig', [
@@ -97,9 +95,9 @@ class AdminCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/mandates", name="app_admin_committee_mandates", methods={"GET"})
      * @IsGranted("ROLE_ADMIN_COMMITTEES")
      */
+    #[Route(path: '/{id}/mandates', name: 'app_admin_committee_mandates', methods: ['GET'])]
     public function mandatesAction(Committee $committee): Response
     {
         return $this->render('admin/committee/mandates/list.html.twig', [
@@ -108,9 +106,9 @@ class AdminCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/mandates/add", name="app_admin_committee_add_mandate", methods={"GET|POST"})
      * @Security("is_granted('ROLE_ADMIN_COMMITTEES') and is_granted('ADD_MANDATE_TO_COMMITTEE', committee)")
      */
+    #[Route(path: '/{id}/mandates/add', name: 'app_admin_committee_add_mandate', methods: ['GET|POST'])]
     public function addMandateAction(
         Request $request,
         Committee $committee,
@@ -147,9 +145,9 @@ class AdminCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/mandates/{id}/replace", name="app_admin_committee_replace_mandate", methods={"GET|POST"})
      * @Security("is_granted('ROLE_ADMIN_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', mandate.getCommittee())")
      */
+    #[Route(path: '/mandates/{id}/replace', name: 'app_admin_committee_replace_mandate', methods: ['GET|POST'])]
     public function replaceMandateAction(Request $request, CommitteeAdherentMandate $mandate): Response
     {
         $committee = $mandate->getCommittee();
@@ -192,9 +190,9 @@ class AdminCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/mandates/{id}/close", name="app_admin_committee_close_mandate", methods={"GET|POST"})
      * @Security("is_granted('ROLE_ADMIN_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', mandate.getCommittee())")
      */
+    #[Route(path: '/mandates/{id}/close', name: 'app_admin_committee_close_mandate', methods: ['GET|POST'])]
     public function closeMandateAction(
         Request $request,
         CommitteeAdherentMandate $mandate,
@@ -232,9 +230,9 @@ class AdminCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/{committee}/members/{adherent}/set-privilege/{privilege}", name="app_admin_committee_change_privilege", methods={"GET"})
      * @IsGranted("ROLE_ADMIN_COMMITTEES")
      */
+    #[Route(path: '/{committee}/members/{adherent}/set-privilege/{privilege}', name: 'app_admin_committee_change_privilege', methods: ['GET'])]
     public function changePrivilegeAction(
         CommitteeManager $manager,
         Request $request,
@@ -263,9 +261,9 @@ class AdminCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/{committee}/members/{adherent}/{action}-mandate", name="app_admin_committee_change_mandate", methods={"GET"})
      * @IsGranted("ROLE_ADMIN_COMMITTEE_DESIGNATION")
      */
+    #[Route(path: '/{committee}/members/{adherent}/{action}-mandate', name: 'app_admin_committee_change_mandate', methods: ['GET'])]
     public function changeMandateAction(
         Request $request,
         Committee $committee,

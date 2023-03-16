@@ -20,9 +20,7 @@ abstract class AbstractElectedRepresentativeController extends AbstractControlle
 {
     use AccessDelegatorTrait;
 
-    /**
-     * @Route("/elus", name="list", methods={"GET"})
-     */
+    #[Route(path: '/elus', name: 'list', methods: ['GET'])]
     public function listElectedRepresentatives(
         Request $request,
         ElectedRepresentativeRepository $electedRepresentativeRepository
@@ -48,9 +46,7 @@ abstract class AbstractElectedRepresentativeController extends AbstractControlle
         ]);
     }
 
-    /**
-     * @Route("/elus/{uuid}", name="show", methods={"GET"})
-     */
+    #[Route(path: '/elus/{uuid}', name: 'show', methods: ['GET'])]
     public function showElectedRepresentative(ElectedRepresentative $electedRepresentative): Response
     {
         return $this->renderTemplate('elected_representative/show.html.twig', [

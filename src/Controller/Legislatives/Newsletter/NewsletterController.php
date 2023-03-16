@@ -9,20 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/newsletters")
- */
+#[Route(path: '/newsletters')]
 class NewsletterController extends AbstractController
 {
     /**
-     * @Route(
-     *     "/confirmation/{uuid}/{validation_token}",
-     *     name="app_legislatives_newsletter_confirmation",
-     *     methods={"GET"},
-     *     requirements={"uuid": "%pattern_uuid%", "validation_token": "%pattern_uuid%"}
-     * )
      * @Entity("subscription", expr="repository.findOneNotConfirmedByUuidAndToken(uuid, validation_token)")
      */
+    #[Route(path: '/confirmation/{uuid}/{validation_token}', name: 'app_legislatives_newsletter_confirmation', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%', 'validation_token' => '%pattern_uuid%'])]
     public function newsletterConfirmation(
         LegislativeNewsletterSubscription $subscription,
         LegislativeNewsletterSubscriptionHandler $legislativeNewsletterSubscriptionHandler
@@ -32,9 +25,7 @@ class NewsletterController extends AbstractController
         return $this->redirectToRoute('app_legislatives_newsletter_thank');
     }
 
-    /**
-     * @Route("/merci", name="app_legislatives_newsletter_thank", methods={"GET"})
-     */
+    #[Route(path: '/merci', name: 'app_legislatives_newsletter_thank', methods: ['GET'])]
     public function subscribedThanks(): Response
     {
         return $this->render('legislatives/newsletter/thanks.html.twig');

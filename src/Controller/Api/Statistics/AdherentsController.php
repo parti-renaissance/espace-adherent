@@ -13,15 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/statistics/adherents")
- *
  * @IsGranted("ROLE_OAUTH_SCOPE_READ:STATS")
  */
+#[Route(path: '/statistics/adherents')]
 class AdherentsController extends AbstractStatisticsController
 {
-    /**
-     * @Route("/count", name="app_statistics_adherents_count", methods={"GET"})
-     */
+    #[Route(path: '/count', name: 'app_statistics_adherents_count', methods: ['GET'])]
     public function adherentsCountAction(AdherentRepository $adherentRepository): Response
     {
         $count = $adherentRepository->countByGender();
@@ -29,9 +26,7 @@ class AdherentsController extends AbstractStatisticsController
         return new JsonResponse($this->aggregateCount($count));
     }
 
-    /**
-     * @Route("/count-by-referent-area", name="app_statistics_adherents_count_for_referent_managed_area", methods={"GET"})
-     */
+    #[Route(path: '/count-by-referent-area', name: 'app_statistics_adherents_count_for_referent_managed_area', methods: ['GET'])]
     public function adherentsCountForReferentManagedAreaAction(
         Request $request,
         EmailSubscriptionHistoryHandler $historyHandler,

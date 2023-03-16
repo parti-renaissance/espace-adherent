@@ -12,9 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SocialShareController extends AbstractController
 {
-    /**
-     * @Route("/jepartage", name="app_social_share_list", methods={"GET"})
-     */
+    #[Route(path: '/jepartage', name: 'app_social_share_list', methods: ['GET'])]
     public function listAction(): Response
     {
         $manager = $this->getDoctrine();
@@ -26,9 +24,7 @@ class SocialShareController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/jepartage/{slug}", name="app_social_share_show", methods={"GET"})
-     */
+    #[Route(path: '/jepartage/{slug}', name: 'app_social_share_show', methods: ['GET'])]
     public function showAction(
         SocialShareCategory $category,
         SocialShareCategoryRepository $socialShareCategoryRepository,
@@ -41,9 +37,7 @@ class SocialShareController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/je-partage", methods={"GET"})
-     */
+    #[Route(path: '/je-partage', methods: ['GET'])]
     public function redirectAction(): Response
     {
         return $this->redirectToRoute('app_social_share_list', [], Response::HTTP_MOVED_PERMANENTLY);

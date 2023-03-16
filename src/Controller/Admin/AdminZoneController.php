@@ -10,20 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/zone")
- */
+#[Route(path: '/zone')]
 class AdminZoneController extends AbstractController
 {
     private const MAX_SUGGESTIONS = 10;
 
-    /**
-     * @Route("/autocompletion",
-     *     name="app_admin_zone_autocomplete",
-     *     condition="request.isXmlHttpRequest()",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/autocompletion', name: 'app_admin_zone_autocomplete', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
     public function autocompletion(Request $request, ZoneRepository $repository): JsonResponse
     {
         $term = $request->query->get('zone');
