@@ -30,6 +30,7 @@ default:
                     screenshotDir: 'var/behat'
                 - Behatch\Context\XmlContext
                 - Behat\MinkExtension\Context\MinkContext
+                - Tests\App\Behat\Context\AppContext
                 - Tests\App\Behat\Context\DIContext
                 - Tests\App\Behat\Context\TransactionalDatabaseContext
                 - Tests\App\Behat\Context\RestContext
@@ -52,6 +53,7 @@ default:
                 - Behatch\Context\DebugContext:
                     screenshotDir: 'var/behat'
                 - Behat\MinkExtension\Context\MinkContext
+                - Tests\App\Behat\Context\AppContext
                 - Tests\App\Behat\Context\DIContext
                 - Tests\App\Behat\Context\FixtureContext
                 - Tests\App\Behat\Context\RestContext
