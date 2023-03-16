@@ -28,11 +28,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @ParamConverter("committee", options={"mapping": {"committee_slug": "slug"}})
- * @Security("is_granted('HOST_COMMITTEE', committee) and committee.isApproved()")
- */
 #[Route(path: '/espace-animateur/{committee_slug}/messagerie', name: 'app_message_committee_')]
+#[ParamConverter('committee', options: ['mapping' => ['committee_slug' => 'slug']])]
+#[Security("is_granted('HOST_COMMITTEE', committee) and committee.isApproved()")]
 class CommitteeMessageController extends AbstractController
 {
     #[Route(name: 'list', methods: ['GET'])]
@@ -106,10 +104,8 @@ class CommitteeMessageController extends AbstractController
         return $this->renderTemplate('message/create.html.twig', $committee, ['form' => $form->createView()]);
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="message")
-     */
     #[Route(path: '/{uuid}/modifier', requirements: ['uuid' => '%pattern_uuid%'], name: 'update', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     public function updateMessageAction(
         Request $request,
         CommitteeAdherentMessage $message,
@@ -146,10 +142,8 @@ class CommitteeMessageController extends AbstractController
         return $this->renderTemplate('message/update.html.twig', $committee, ['form' => $form->createView()]);
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="message")
-     */
     #[Route(path: '/{uuid}/filtrer', name: 'filter', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     public function filterMessageAction(
         Request $request,
         CommitteeAdherentMessage $message,
@@ -200,10 +194,8 @@ class CommitteeMessageController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="message")
-     */
     #[Route(path: '/{uuid}/visualiser', name: 'preview', methods: ['GET'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     public function previewMessageAction(CommitteeAdherentMessage $message, Committee $committee): Response
     {
         if (!$message->isSynchronized()) {
@@ -213,10 +205,8 @@ class CommitteeMessageController extends AbstractController
         return $this->renderTemplate('message/preview.html.twig', $committee, ['message' => $message]);
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="message")
-     */
     #[Route(path: '/{uuid}/supprimer', name: 'delete', methods: ['GET'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     public function deleteMessageAction(
         CommitteeAdherentMessage $message,
         ObjectManager $manager,
@@ -230,10 +220,8 @@ class CommitteeMessageController extends AbstractController
         return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="message")
-     */
     #[Route(path: '/{uuid}/send', name: 'send', methods: ['GET'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     public function sendMessageAction(
         CommitteeAdherentMessage $message,
         AdherentMessageManager $manager,
@@ -262,19 +250,15 @@ class CommitteeMessageController extends AbstractController
         return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }
 
-    /**
-     * @Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")
-     */
     #[Route(path: '/{uuid}/confirmation', name: 'send_success', methods: ['GET'])]
+    #[Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")]
     public function sendSuccessAction(AbstractAdherentMessage $message, Committee $committee): Response
     {
         return $this->renderTemplate('message/send_success/committee.html.twig', $committee, ['message' => $message]);
     }
 
-    /**
-     * @Security("is_granted('IS_AUTHOR_OF', message) and !message.isSendToTimeline()")
-     */
     #[Route(path: '/{uuid}/publish', name: 'publish_message', methods: ['GET'])]
+    #[Security("is_granted('IS_AUTHOR_OF', message) and !message.isSendToTimeline()")]
     public function publishMessageAction(
         AbstractAdherentMessage $message,
         EntityManagerInterface $manager,
@@ -293,10 +277,8 @@ class CommitteeMessageController extends AbstractController
         return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="message")
-     */
     #[Route(path: '/{uuid}/tester', name: 'test', methods: ['GET'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     public function sendTestMessageAction(
         CommitteeAdherentMessage $message,
         Manager $manager,

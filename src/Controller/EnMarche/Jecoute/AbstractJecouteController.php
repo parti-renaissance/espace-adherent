@@ -91,10 +91,8 @@ abstract class AbstractJecouteController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("CAN_EDIT_SURVEY", subject="survey")
-     */
     #[Route(path: '/questionnaire/{uuid}/editer', name: 'local_survey_edit', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET|POST'])]
+    #[IsGranted('CAN_EDIT_SURVEY', subject: 'survey')]
     public function jecouteSurveyEditAction(
         Request $request,
         LocalSurvey $survey,
@@ -127,10 +125,8 @@ abstract class AbstractJecouteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Entity("survey", expr="repository.findOnePublishedByUuid(uuid)")
-     */
     #[Route(path: '/questionnaire/{uuid}', name: 'survey_show', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
+    #[Entity('survey', expr: 'repository.findOnePublishedByUuid(uuid)')]
     public function jecouteSurveyShowAction(Survey $survey): Response
     {
         $isLocalSurvey = $survey instanceof LocalSurvey;
@@ -146,11 +142,9 @@ abstract class AbstractJecouteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Entity("survey", expr="repository.findOneByUuid(uuid)")
-     * @Security("(is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)) or survey.isNational()")
-     */
     #[Route(path: '/questionnaire/{uuid}/stats', name: 'survey_stats', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
+    #[Entity('survey', expr: 'repository.findOneByUuid(uuid)')]
+    #[Security("(is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)) or survey.isNational()")]
     public function jecouteSurveyStatsAction(
         Request $request,
         Survey $survey,
@@ -182,11 +176,9 @@ abstract class AbstractJecouteController extends AbstractController
         return $this->renderTemplate('jecoute/stats.html.twig', ['data' => $provider->getStatsBySurvey($survey)]);
     }
 
-    /**
-     * @Entity("survey", expr="repository.findOneByUuid(uuid)")
-     * @Security("is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)")
-     */
     #[Route(path: '/questionnaire/{uuid}/dupliquer', name: 'local_survey_duplicate', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
+    #[Entity('survey', expr: 'repository.findOneByUuid(uuid)')]
+    #[Security("is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)")]
     public function jecouteSurveyDuplicateAction(
         Request $request,
         LocalSurvey $survey,
@@ -202,10 +194,8 @@ abstract class AbstractJecouteController extends AbstractController
         return $this->redirectToJecouteRoute('local_surveys_list');
     }
 
-    /**
-     * @Security("is_granted('IS_AUTHOR_OF', surveyQuestion.getSurvey()) or is_granted('IS_SURVEY_MANAGER_OF', surveyQuestion.getSurvey()) or surveyQuestion.getSurvey().isNational()")
-     */
     #[Route(path: '/question/{uuid}/reponses', name: 'survey_stats_answers_list', condition: 'request.isXmlHttpRequest()')]
+    #[Security("is_granted('IS_AUTHOR_OF', surveyQuestion.getSurvey()) or is_granted('IS_SURVEY_MANAGER_OF', surveyQuestion.getSurvey()) or surveyQuestion.getSurvey().isNational()")]
     public function jecouteSurveyAnswersListAction(
         SurveyQuestion $surveyQuestion,
         DataAnswerRepository $dataAnswerRepository

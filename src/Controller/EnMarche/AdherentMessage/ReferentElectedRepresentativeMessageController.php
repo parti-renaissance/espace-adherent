@@ -7,10 +7,8 @@ use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Security("is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_MESSAGES'))")
- */
 #[Route(path: '/espace-referent/messagerie-elus', name: 'app_message_referent_elected_representative_')]
+#[Security("is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_MESSAGES'))")]
 class ReferentElectedRepresentativeMessageController extends AbstractMessageController
 {
     protected function getMessageType(): string

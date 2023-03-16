@@ -11,10 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class WebHookController extends AbstractController
 {
-    /**
-     * @IsGranted("ROLE_OAUTH_SCOPE_WEB_HOOK")
-     */
     #[Route(path: '/webhooks/{event}', name: 'app_webhook_list_config')]
+    #[IsGranted('ROLE_OAUTH_SCOPE_WEB_HOOK')]
     public function listConfigAction(string $event, WebHookRepository $repository): JsonResponse
     {
         if (!Event::isValid($event)) {

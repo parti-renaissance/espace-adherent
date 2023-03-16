@@ -2,7 +2,6 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Report\Report;
 use App\Entity\Report\ReportReasonEnum;
 use App\Report\ReportCommand;
 use App\Report\ReportCreationCommandHandler;
@@ -20,10 +19,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ReportController extends AbstractController
 {
-    /**
-     * @IsGranted("REPORT")
-     */
     #[Route(path: '/report/{type}/{uuid}', name: 'api_report', requirements: ['type' => ReportType::TYPES_URI_PATTERN, 'uuid' => '%pattern_uuid%'], methods: ['POST'])]
+    #[IsGranted('REPORT')]
     public function reportAction(
         Request $request,
         string $type,
@@ -61,10 +58,8 @@ class ReportController extends AbstractController
         return JsonResponse::fromJsonString($errors, Response::HTTP_BAD_REQUEST);
     }
 
-    /**
-     * @IsGranted("REPORT")
-     */
     #[Route(path: '/report/reasons', name: 'api_report_reasons', methods: ['GET'])]
+    #[IsGranted('REPORT')]
     public function reasonsAction(TranslatorInterface $translator): Response
     {
         $reasons = [];

@@ -11,10 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/federations', name: 'app_renaissance_department_site_')]
 class DepartmentSiteController extends AbstractController
 {
-    /**
-     * @Entity("departmentSite", expr="repository.findOneBySlug(slug)")
-     */
     #[Route(path: '/{slug}', name: 'view')]
+    #[Entity('departmentSite', expr: 'repository.findOneBySlug(slug)')]
     public function departmentSiteAction(DepartmentSite $departmentSite): Response
     {
         return $this->render('renaissance/department_site/department_site.html.twig', [

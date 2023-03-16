@@ -8,9 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-/**
- * @Security("is_granted('ROLE_MESSAGE_REDACTOR') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")
- */
+#[Security("is_granted('ROLE_MESSAGE_REDACTOR') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")]
 class SendAdherentMessageController extends AbstractController
 {
     private $manager;

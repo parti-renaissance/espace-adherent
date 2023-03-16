@@ -2,7 +2,6 @@
 
 namespace App\Controller\Renaissance\LocalElection;
 
-use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Repository\LocalElection\LocalElectionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -10,10 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("RENAISSANCE_ADHERENT")
- */
 #[Route(path: '/elections-departementales/{uuid}')]
+#[IsGranted('RENAISSANCE_ADHERENT')]
 class DepartmentElectionController extends AbstractController
 {
     public function __construct(private readonly LocalElectionRepository $localElectionRepository)

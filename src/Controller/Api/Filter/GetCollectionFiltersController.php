@@ -11,10 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN")
- */
 #[Route(path: '/v3/filters', name: 'app_collection_filters_get', methods: ['GET'])]
+#[IsGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')]
 class GetCollectionFiltersController extends AbstractController
 {
     public function __construct(

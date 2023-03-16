@@ -12,10 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_ADHERENT")
- */
 #[Route(path: '/adhesion/completer-mon-profil', name: 'app_renaissance_adhesion_complete_profile', methods: ['GET|POST'])]
+#[IsGranted('ROLE_ADHERENT')]
 class CompleteProfileController extends AbstractController
 {
     public function __invoke(

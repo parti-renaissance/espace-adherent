@@ -18,10 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE")
- */
 #[Route(path: '/conseil-territorial/candidature', name: 'app_territorial_council_candidature')]
+#[IsGranted('ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE')]
 class CandidatureController extends AbstractController
 {
     private $manager;
@@ -207,10 +205,8 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("invitation.getMembership() == user.getTerritorialCouncilMembership()")
-     */
     #[Route(path: '/mes-invitations/{uuid}/accepter', name: '_invitation_accept', methods: ['GET', 'POST'])]
+    #[Security('invitation.getMembership() == user.getTerritorialCouncilMembership()')]
     public function acceptInvitationAction(Request $request, CandidacyInvitation $invitation): Response
     {
         /** @var Adherent $adherent */
@@ -261,10 +257,8 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("invitation.getMembership() == user.getTerritorialCouncilMembership()")
-     */
     #[Route(path: '/mes-invitations/{uuid}/decliner', name: '_invitation_decline', methods: ['GET'])]
+    #[Security('invitation.getMembership() == user.getTerritorialCouncilMembership()')]
     public function declineInvitationAction(CandidacyInvitation $invitation): Response
     {
         /** @var Adherent $adherent */

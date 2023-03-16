@@ -25,10 +25,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("MEMBER_OF_COMMITTEE", subject="committee")
- */
 #[Route(path: '/comites/{slug}/candidature', name: 'app_committee_candidature')]
+#[IsGranted('MEMBER_OF_COMMITTEE', subject: 'committee')]
 class CandidatureController extends AbstractController
 {
     private $candidatureManager;
@@ -219,12 +217,10 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    /**
-     * @ParamConverter("committee", class="App\Entity\Committee", options={"mapping": {"slug": "slug"}})
-     * @ParamConverter("votePlace", class="App\Entity\CommitteeCandidacyInvitation", options={"mapping": {"uuid": "uuid"}})
-     * @Security("invitation.getMembership() == user.getMembershipFor(committee)")
-     */
     #[Route(path: '/mes-invitations/{uuid}/accepter', name: '_invitation_accept', methods: ['GET', 'POST'])]
+    #[ParamConverter('committee', class: 'App\Entity\Committee', options: ['mapping' => ['slug' => 'slug']])]
+    #[ParamConverter('votePlace', class: 'App\Entity\CommitteeCandidacyInvitation', options: ['mapping' => ['uuid' => 'uuid']])]
+    #[Security('invitation.getMembership() == user.getMembershipFor(committee)')]
     public function acceptInvitationAction(
         Committee $committee,
         Request $request,
@@ -270,12 +266,10 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    /**
-     * @ParamConverter("committee", class="App\Entity\Committee", options={"mapping": {"slug": "slug"}})
-     * @ParamConverter("votePlace", class="App\Entity\CommitteeCandidacyInvitation", options={"mapping": {"uuid": "uuid"}})
-     * @Security("invitation.getMembership() == user.getMembershipFor(committee)")
-     */
     #[Route(path: '/mes-invitations/{uuid}/decliner', name: '_invitation_decline', methods: ['GET'])]
+    #[ParamConverter('committee', class: 'App\Entity\Committee', options: ['mapping' => ['slug' => 'slug']])]
+    #[ParamConverter('votePlace', class: 'App\Entity\CommitteeCandidacyInvitation', options: ['mapping' => ['uuid' => 'uuid']])]
+    #[Security('invitation.getMembership() == user.getMembershipFor(committee)')]
     public function declineInvitationAction(Committee $committee, CommitteeCandidacyInvitation $invitation): Response
     {
         if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {

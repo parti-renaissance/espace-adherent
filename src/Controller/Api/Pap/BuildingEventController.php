@@ -20,9 +20,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')")
- */
+#[Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')")]
 class BuildingEventController extends AbstractController
 {
     #[Route(path: '/v3/pap/buildings/{uuid}/events', requirements: ['uuid' => '%pattern_uuid%'], name: 'api_create_building_event', methods: ['POST'])]

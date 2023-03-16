@@ -13,10 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Entity("adherentRequest", expr="repository.findOneBy({'uuid': uuid, 'token': token})")
- */
 #[Route(path: '/adhesion/finaliser/{uuid}/{token}', name: 'app_renaissance_membership_validate', requirements: ['uuid' => '%pattern_uuid%', 'token' => '%pattern_uuid%'], methods: ['GET'])]
+#[Entity('adherentRequest', expr: "repository.findOneBy({'uuid': uuid, 'token': token})")]
 class ValidateController extends AbstractController
 {
     public function __invoke(

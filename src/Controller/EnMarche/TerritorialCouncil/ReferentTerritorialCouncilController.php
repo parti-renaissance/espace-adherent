@@ -15,10 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_REFERENT")
- */
 #[Route(path: '/espace-referent/instances', name: 'app_territorial_council_referent_')]
+#[IsGranted('ROLE_REFERENT')]
 class ReferentTerritorialCouncilController extends AbstractController
 {
     use AccessDelegatorTrait;

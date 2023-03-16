@@ -9,10 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_NATIONAL_COUNCIL_MEMBER")
- */
 #[Route(path: '/conseil-national/candidatures', name: 'app_national_council_candidacy_list', methods: ['GET'])]
+#[IsGranted('ROLE_NATIONAL_COUNCIL_MEMBER')]
 class CandidacyListController extends AbstractController
 {
     public function __invoke(

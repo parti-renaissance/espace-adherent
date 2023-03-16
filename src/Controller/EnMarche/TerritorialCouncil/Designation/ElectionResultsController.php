@@ -15,10 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Security("is_granted('ROLE_REFERENT') and is_granted('CAN_MANAGE_TERRITORIAL_COUNCIL', election.getElectionEntity().getTerritorialCouncil())")
- */
 #[Route(path: '/espace-referent/instances/designations/{uuid}/resultats', name: 'app_territorial_council_referent_designation_results', requirements: ['uuid' => '%pattern_uuid%'])]
+#[Security("is_granted('ROLE_REFERENT') and is_granted('CAN_MANAGE_TERRITORIAL_COUNCIL', election.getElectionEntity().getTerritorialCouncil())")]
 class ElectionResultsController extends AbstractController
 {
     private $electionRepository;
@@ -28,10 +26,8 @@ class ElectionResultsController extends AbstractController
         $this->electionRepository = $electionRepository;
     }
 
-    /**
-     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
-     */
     #[Route(path: '/{election_round_uuid}', name: '_dashboard', methods: ['GET'], defaults: ['election_round_uuid' => null], requirements: ['election_round_uuid' => '%pattern_uuid%'])]
+    #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
     public function dashboardAction(Election $election, ElectionRound $electionRound = null): Response
     {
         if (!$electionRound) {
@@ -47,10 +43,8 @@ class ElectionResultsController extends AbstractController
         ]);
     }
 
-    /**
-     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
-     */
     #[Route(path: '/liste-emargement/{election_round_uuid}', name: '_voters_list', methods: ['GET'], defaults: ['election_round_uuid' => null], requirements: ['election_round_uuid' => '%pattern_uuid%'])]
+    #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
     public function listVotersAction(
         Election $election,
         VoterRepository $voterRepository,
@@ -74,10 +68,8 @@ class ElectionResultsController extends AbstractController
         ]);
     }
 
-    /**
-     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
-     */
     #[Route(path: '/voir-par-groupe/{election_round_uuid}', name: '_by_pool', methods: ['GET'], defaults: ['election_round_uuid' => null], requirements: ['election_round_uuid' => '%pattern_uuid%'])]
+    #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
     public function showResultsAction(
         Request $request,
         Election $election,
@@ -106,10 +98,8 @@ class ElectionResultsController extends AbstractController
         ]);
     }
 
-    /**
-     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
-     */
     #[Route(path: '/bulletins/{election_round_uuid}', name: '_votes', methods: ['GET'], defaults: ['election_round_uuid' => null], requirements: ['election_round_uuid' => '%pattern_uuid%'])]
+    #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
     public function listVotesAction(
         Election $election,
         VoteResultRepository $voteResultRepository,

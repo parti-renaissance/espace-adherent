@@ -9,10 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-/**
- * @Security("is_granted('ROLE_ADHERENT') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")
- */
 #[Route(path: '/adherent_messages/{uuid}', name: 'app_api_get_adherent_message_status', methods: ['GET'])]
+#[Security("is_granted('ROLE_ADHERENT') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")]
 class GetAdherentMessageStatusController extends AbstractController
 {
     public function __invoke(AbstractAdherentMessage $message, SerializerInterface $serializer): Response

@@ -25,10 +25,8 @@ abstract class AbstractFilesController extends AbstractController
         $this->fileRepository = $fileRepository;
     }
 
-    /**
-     * @IsGranted("CAN_DOWNLOAD_FILE", subject="file")
-     */
     #[Route(path: '/documents/{uuid}', name: 'download', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
+    #[IsGranted('CAN_DOWNLOAD_FILE', subject: 'file')]
     public function downloadAction(File $file, FilesystemInterface $storage): Response
     {
         if ($file->isDir()) {

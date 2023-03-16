@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_ELECTION_RESULTS_REPORTER")
- */
+#[IsGranted('ROLE_ELECTION_RESULTS_REPORTER')]
 class MinistryVoteResultController extends AbstractController
 {
     private $electionManager;

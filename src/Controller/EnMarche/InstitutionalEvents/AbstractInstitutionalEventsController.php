@@ -56,10 +56,8 @@ abstract class AbstractInstitutionalEventsController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="institutionalEvent")
-     */
     #[Route(path: '/{uuid}/editer', name: 'edit', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'institutionalEvent')]
     public function institutionalEventsEditAction(
         Request $request,
         InstitutionalEvent $institutionalEvent,
@@ -91,10 +89,8 @@ abstract class AbstractInstitutionalEventsController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="institutionalEvent")
-     */
     #[Route(path: '/{uuid}/supprimer', name: 'delete', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'institutionalEvent')]
     public function institutionalEventsDeleteAction(
         InstitutionalEvent $institutionalEvent,
         InstitutionalEventCommandHandler $institutionalEventCommandHandler

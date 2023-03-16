@@ -52,9 +52,7 @@ class UserController extends AbstractController
         );
     }
 
-    /**
-     * @IsGranted("ROLE_ADHERENT")
-     */
+    #[IsGranted('ROLE_ADHERENT')]
     public function showMe(SerializerInterface $serializer): JsonResponse
     {
         /* @var Adherent $user */
@@ -86,11 +84,9 @@ class UserController extends AbstractController
         return $groups;
     }
 
-    /**
-     * @Entity("user", expr="repository.findOneByUuid(user_uuid)")
-     * @Entity("createPasswordToken", expr="repository.findByToken(create_password_token)")
-     */
     #[Route(path: '/profile/mot-de-passe/{user_uuid}/{create_password_token}', name: 'user_create_password', requirements: ['user_uuid' => '%pattern_uuid%', 'reset_password_token' => '%pattern_sha1%'], methods: ['POST'])]
+    #[Entity('user', expr: 'repository.findOneByUuid(user_uuid)')]
+    #[Entity('createPasswordToken', expr: 'repository.findByToken(create_password_token)')]
     public function createPassword(
         Request $request,
         Adherent $user,

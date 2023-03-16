@@ -24,10 +24,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_ADHERENT")
- */
 #[Route(path: '/conseil-territorial', name: 'app_territorial_council_')]
+#[IsGranted('ROLE_ADHERENT')]
 class TerritorialCouncilController extends AbstractController
 {
     use CanaryControllerTrait;
@@ -206,10 +204,8 @@ class TerritorialCouncilController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("CAN_MANAGE_FEED_ITEM", subject="feedItem")
-     */
     #[Route(path: '/messages/{id}/modifier', name: 'edit_feed_item', methods: ['GET', 'POST'])]
+    #[IsGranted('CAN_MANAGE_FEED_ITEM', subject: 'feedItem')]
     public function feedItemEditAction(Request $request, TerritorialCouncilFeedItem $feedItem): Response
     {
         $form = $this
@@ -230,10 +226,8 @@ class TerritorialCouncilController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("CAN_MANAGE_FEED_ITEM", subject="feedItem")
-     */
     #[Route(path: '/messages/{id}/supprimer', name: 'delete_feed_item', methods: ['DELETE'])]
+    #[IsGranted('CAN_MANAGE_FEED_ITEM', subject: 'feedItem')]
     public function deleteFeedItemAction(
         EntityManagerInterface $em,
         Request $request,

@@ -11,10 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_COALITION_MODERATOR")
- */
 #[Route(path: '/espace-coalition/author/autocompletion', name: 'app_coalition_author_autocomplete', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
+#[IsGranted('ROLE_COALITION_MODERATOR')]
 class CoalitionAuthorAutocompleteController extends AbstractController
 {
     public function __invoke(Request $request, AdherentRepository $adherentRepository): JsonResponse

@@ -22,10 +22,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-/**
- * @IsGranted("IS_AUTHENTICATED_FULLY")
- */
 #[Route(path: '/v3/adherents', name: 'app_adherents_list_get', methods: ['GET'])]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class AdherentListController extends AbstractController
 {
     private $authorizationChecker;

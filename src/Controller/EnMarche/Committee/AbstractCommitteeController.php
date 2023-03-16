@@ -80,10 +80,8 @@ abstract class AbstractCommitteeController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("CREATE_COMMITTEE")
-     */
     #[Route(path: '/creer', name: 'create_committee', methods: ['GET', 'POST'])]
+    #[IsGranted('CREATE_COMMITTEE')]
     public function createCommitteeAction(Request $request, CommitteeCreationCommandHandler $commandHandler): Response
     {
         $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
@@ -193,10 +191,8 @@ abstract class AbstractCommitteeController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("PRE_APPROVE_COMMITTEE", subject="committee")
-     */
     #[Route(path: '/{slug}/pre-approuver', name: 'pre_approve', methods: ['GET|POST'])]
+    #[IsGranted('PRE_APPROVE_COMMITTEE', subject: 'committee')]
     public function preAcceptAction(
         Request $request,
         Committee $committee,
@@ -225,10 +221,8 @@ abstract class AbstractCommitteeController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("PRE_REFUSE_COMMITTEE", subject="committee")
-     */
     #[Route(path: '/{slug}/pre-refuser', name: 'pre_refuse', methods: ['GET|POST'])]
+    #[IsGranted('PRE_REFUSE_COMMITTEE', subject: 'committee')]
     public function preRefuseAction(Committee $committee, EntityManagerInterface $manager): Response
     {
         if ($committee->isPreRefused()) {

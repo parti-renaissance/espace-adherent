@@ -15,10 +15,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-/**
- * @Security("is_granted('IS_FEATURE_GRANTED', ['team', 'my_team', 'committee'])")
- */
 #[Route(path: '/v3/adherents/autocomplete', name: 'api_adherent_autocomplete', methods: ['GET'])]
+#[Security("is_granted('IS_FEATURE_GRANTED', ['team', 'my_team', 'committee'])")]
 class AdherentAutocompleteController extends AbstractController
 {
     public function __invoke(

@@ -12,10 +12,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_LRE")
- */
 #[Route(path: '/espace-la-republique-ensemble', name: 'app_lre_elected_representatives_')]
+#[IsGranted('ROLE_LRE')]
 class LreElectedRepresentativeController extends AbstractElectedRepresentativeController
 {
     protected function getSpaceType(): string

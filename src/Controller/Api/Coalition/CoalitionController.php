@@ -12,10 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CoalitionController extends AbstractController
 {
-    /**
-     * @IsGranted("ROLE_USER")
-     */
     #[Route(path: '/v3/coalitions/followed', name: 'api_coalitions_followed', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function followed(CoalitionRepository $coalitionRepository): JsonResponse
     {
         /** @var Adherent $user */

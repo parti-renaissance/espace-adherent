@@ -19,10 +19,8 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 
-/**
- * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'contacts')")
- */
 #[Route(path: '/v3/adherents/count', name: 'app_adherents_count_get', methods: ['GET', 'POST'])]
+#[Security("is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'contacts')")]
 class CountAdherentController extends AbstractController
 {
     public function __construct(

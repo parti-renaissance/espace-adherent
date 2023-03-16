@@ -116,10 +116,8 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
-     * @Entity("resetPasswordToken", expr="repository.findByToken(reset_password_token)")
-     */
+    #[Entity('adherent', expr: 'repository.findOneByUuid(adherent_uuid)')]
+    #[Entity('resetPasswordToken', expr: 'repository.findByToken(reset_password_token)')]
     public function resetPasswordAction(
         Request $request,
         Adherent $adherent,
@@ -183,10 +181,8 @@ class SecurityController extends AbstractController
         return $this->redirectToRoute('app_user_login');
     }
 
-    /**
-     * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
-     * @Entity("token", expr="repository.findByToken(change_email_token)")
-     */
+    #[Entity('adherent', expr: 'repository.findOneByUuid(adherent_uuid)')]
+    #[Entity('token', expr: 'repository.findByToken(change_email_token)')]
     public function activateNewEmailAction(
         Adherent $adherent,
         AdherentChangeEmailToken $token,

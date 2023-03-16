@@ -181,10 +181,8 @@ class UserController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('UNREGISTER', user)")
-     */
     #[Route(path: '/desadherer', name: 'app_user_terminate_membership', methods: ['GET', 'POST'])]
+    #[Security("is_granted('UNREGISTER', user)")]
     public function terminateMembershipAction(
         Request $request,
         MembershipRequestHandler $handler,

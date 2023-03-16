@@ -11,10 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')")
- */
 #[Route(path: '/v3/pap_campaigns/{uuid}/survey-config', requirements: ['uuid' => '%pattern_uuid%'], name: 'api_get_pap_campaign_survey_config', methods: ['GET'])]
+#[Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')")]
 class GetPapCampaignSurveyConfigController extends AbstractController
 {
     public function __invoke(): JsonResponse

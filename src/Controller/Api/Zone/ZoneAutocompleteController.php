@@ -14,10 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("REQUEST_SCOPE_GRANTED")
- */
 #[Route(path: '/v3/zone/autocomplete', name: 'api_v3_zone_autocomplete_for_scope', methods: ['GET'])]
+#[IsGranted('REQUEST_SCOPE_GRANTED')]
 class ZoneAutocompleteController extends AbstractZoneAutocompleteController
 {
     use AccessDelegatorTrait;
