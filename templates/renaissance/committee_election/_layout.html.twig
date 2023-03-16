@@ -1,0 +1,41 @@
+{% extends 'renaissance/header_layout.html.twig' %}
+
+{% block page_title committee.getName() %}
+
+{% set current_election = committee.getCurrentElection() %}
+{% set designation = current_election.getDesignation() %}
+
+{% block content_section %}
+    <div class="bg-gray-50" role="banner">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-10 lg:py-16">
+            <h1 class="text-2xl lg:text-4xl font-bold text-gray-900 font-din">{{ committee.getName() }}</h1>
+            <p class="mt-4 flex items-center space-x-3 text-gray-500">
+                {% include 'icons/map.svg.twig' %}
+
+                <span class="text-gray-600 text-base leading-5">
+                    {{ committee.getZones|join(', ') }}
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <section class="mx-auto w-full max-w-5xl px-4 md:px-6 py-12 md:py-16">
+        {% if designation.isActive() %}
+            <div class="mb-10">
+                {% include 'renaissance/committee_election/_election_box.html.twig' %}
+            </div>
+        {% endif %}
+
+        {% block sub_content '' %}
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        Bootstrap.onLoad(function() {
+            Main.runCountdownClock('.em-countdown-clock', true);
+        });
+    </script>
+{% endblock %}
