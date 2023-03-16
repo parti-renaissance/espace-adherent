@@ -3,6 +3,7 @@
 namespace App\Command\VotingPlatform;
 
 use App\Entity\Adherent;
+use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
@@ -86,7 +87,9 @@ class ConfigureCommand extends Command
         foreach ($designations as $designation) {
             $this->entityManager->merge($designation);
 
-            if ($designation->isCommitteeTypes()) {
+            if ($designation->isCommitteeSupervisorType()) {
+                $this->configureCommitteeSupervisorElections($designation);
+            } elseif ($designation->isCommitteeTypes()) {
                 $this->configureCommitteeElections($designation);
             } elseif ($designation->isCopolType()) {
                 $this->configureCopolElections($designation);
@@ -104,6 +107,44 @@ class ConfigureCommand extends Command
         $this->io->progressFinish();
 
         return 0;
+    }
+
+    private function configureCommitteeSupervisorElections(Designation $designation): void
+    {
+        $offset = 0;
+
+        $now = new \DateTime();
+
+        while ($committeeElections = $this->committeeElectionRepository->findAllByDesignation($designation, $offset)) {
+            foreach ($committeeElections as $committeeElection) {
+                $committee = $committeeElection->getCommittee();
+
+                if (!$election = $this->electionRepository->hasElectionForCommittee($committee, $designation)) {
+                    $election = $this->createNewElection($designation, $electionEntity = new ElectionEntity());
+                    $electionEntity->setCommittee($committee);
+                    $this->configureNewElectionForCommitteeSupervisor($election);
+                }
+
+                if (
+                    $designation->getVoteStartDate() < $now->modify('+10 minutes')
+                    && !$this->committeeElectionHasCandidates($committee, $designation)
+                ) {
+                    $this->configureCandidatesGroupsForCommitteeSupervisorElection($election);
+                }
+
+                if ($election->isVotePeriodStarted() && !$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)) {
+                    $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+                }
+
+                $this->io->progressAdvance();
+            }
+
+            $this->entityManager->clear();
+
+            $designation = $this->entityManager->merge($designation);
+
+            $offset += \count($committeeElections);
+        }
     }
 
     private function configureCommitteeElections(Designation $designation): void
@@ -446,6 +487,84 @@ class ConfigureCommand extends Command
         $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
     }
 
+    private function configureNewElectionForCommitteeSupervisor(Election $election): void
+    {
+        $designation = $election->getDesignation();
+
+        if (!$designation->isCommitteeSupervisorType()) {
+            return;
+        }
+
+        $committee = $election->getElectionEntity()->getCommittee();
+
+        $memberships = $this->entityManager->getRepository(CommitteeMembership::class)->findVotingForElectionMemberships($committee, $designation);
+
+        $list = $this->createVoterList(
+            $election,
+            array_map(function (CommitteeMembership $membership) { return $membership->getAdherent(); }, $memberships)
+        );
+
+        // Mark as Ghost voter adherent who can vote in many committees
+        foreach ($list->getVoters() as $voter) {
+            if (\count($voter->getVotersListsForDesignation($designation)) > 1) {
+                $voter->setIsGhost(true);
+            }
+        }
+
+        $this->entityManager->persist($list);
+        $this->entityManager->persist($election);
+        $this->entityManager->flush();
+    }
+
+    private function configureCandidatesGroupsForCommitteeSupervisorElection(Election $election): void
+    {
+        $designation = $election->getDesignation();
+
+        if (!$designation->isCommitteeSupervisorType()) {
+            return;
+        }
+
+        $electionRound = $election->getCurrentRound();
+        $committee = $election->getElectionEntity()->getCommittee();
+
+        // Create candidates groups
+        $candidacies = $this->entityManager->getRepository(CommitteeCandidacy::class)->findConfirmedByCommittee($committee, $designation);
+
+        $pools = [
+            $pool = new ElectionPool(ElectionPoolCodeEnum::COMMITTEE_SUPERVISOR),
+        ];
+
+        foreach ($candidacies as $candidacy) {
+            if ($candidacy->isTaken()) {
+                continue;
+            }
+
+            $group = new CandidateGroup();
+            $group->addCandidate($this->createCommitteeSupervisorCandidate($candidacy));
+
+            if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
+                foreach ($candidaciesGroup->getCandidacies() as $cand) {
+                    if ($cand->isTaken()) {
+                        continue;
+                    }
+
+                    $group->addCandidate($this->createCommitteeSupervisorCandidate($cand));
+                }
+            }
+
+            $pool->addCandidateGroup($group);
+        }
+
+        foreach ($pools as $pool) {
+            if ($pool->getCandidateGroups()) {
+                $electionRound->addElectionPool($pool);
+                $election->addElectionPool($pool);
+            }
+        }
+
+        $this->entityManager->flush();
+    }
+
     private function configureNewElectionForCommittee(Election $election): void
     {
         $electionRound = $election->getCurrentRound();
@@ -479,31 +598,6 @@ class ConfigureCommand extends Command
                     $malePool->addCandidateGroup($group);
                 }
             }
-        } elseif (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
-            $pools = [
-                $pool = new ElectionPool(ElectionPoolCodeEnum::COMMITTEE_SUPERVISOR),
-            ];
-
-            foreach ($candidacies as $candidacy) {
-                if ($candidacy->isTaken()) {
-                    continue;
-                }
-
-                $group = new CandidateGroup();
-                $group->addCandidate($this->createCommitteeSupervisorCandidate($candidacy));
-
-                if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
-                    foreach ($candidaciesGroup->getCandidacies() as $cand) {
-                        if ($cand->isTaken()) {
-                            continue;
-                        }
-
-                        $group->addCandidate($this->createCommitteeSupervisorCandidate($cand));
-                    }
-                }
-
-                $pool->addCandidateGroup($group);
-            }
         }
 
         foreach ($pools as $pool) {
@@ -519,15 +613,6 @@ class ConfigureCommand extends Command
             $election,
             array_map(function (CommitteeMembership $membership) { return $membership->getAdherent(); }, $memberships)
         );
-
-        // Mark as Ghost voter adherent who can vote in many committees
-        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
-            foreach ($list->getVoters() as $voter) {
-                if (\count($voter->getVotersListsForDesignation($designation)) > 1) {
-                    $voter->setIsGhost(true);
-                }
-            }
-        }
 
         $this->entityManager->persist($list);
         $this->entityManager->persist($election);
@@ -559,6 +644,11 @@ class ConfigureCommand extends Command
         }
 
         return true;
+    }
+
+    private function committeeElectionHasCandidates(Committee $committee, Designation $designation): bool
+    {
+        return $this->entityManager->getRepository(CommitteeCandidacy::class)->hasConfirmedCandidacies($committee, $designation);
     }
 
     private function createNewElection(Designation $designation, ElectionEntity $electionEntity = null): Election
