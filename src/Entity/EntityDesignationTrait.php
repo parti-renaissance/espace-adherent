@@ -147,6 +147,9 @@ trait EntityDesignationTrait
         return $this->getVoteEndDate();
     }
 
+    /**
+     * @Groups({"committee_election:read"})
+     */
     public function getStatus(): string
     {
         if (!$this->designation) {
