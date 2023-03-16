@@ -2,6 +2,7 @@
 
 namespace Tests\App\Controller\Renaissance\ElectedRepresentative\Contribution;
 
+use App\Entity\ElectedRepresentative\Contribution;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Repository\AdherentRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
@@ -44,7 +45,7 @@ class ContributionControllerTest extends WebTestCase
         $electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
 
         $this->assertInstanceOf(ElectedRepresentative::class, $electedRepresentative);
-        $this->assertNull($electedRepresentative->getLastContributionDate());
+        $this->assertNull($electedRepresentative->getLastContribution());
 
         $this->authenticateAsAdherent($this->client, 'renaissance-user-2@en-marche-dev.fr');
 
@@ -86,7 +87,8 @@ class ContributionControllerTest extends WebTestCase
 
         $electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
 
-        $this->assertNotNull($electedRepresentative->getLastContributionDate());
+        $this->assertNotNull($electedRepresentative->getLastContribution());
+        $this->assertInstanceOf(Contribution::class, $electedRepresentative->getLastContribution());
     }
 
     protected function setUp(): void
