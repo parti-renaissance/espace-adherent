@@ -630,11 +630,11 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->andWhere('membership.joinedAt <= :joined_at_min')
             ->setParameters([
                 'committee' => $committee,
-                'joined_at_min' => $designation->isCommitteeSupervisorType() ? $designation->getElectionCreationDate() : $refDate->modify('-30 days'),
+                'joined_at_min' => $designation->isCommitteeSupervisorType() && $committee->isVersion2() ? $designation->getElectionCreationDate() : $refDate->modify('-30 days'),
             ])
         ;
 
-        if (!$designation->isCommitteeSupervisorType()) {
+        if (!$committee->isVersion2()) {
             $qb
                 ->andWhere('adherent.registeredAt <= :registered_at_min'.($onlyCertified ? ' AND adherent.certifiedAt IS NOT NULL' : ''))
                 ->setParameter('registered_at_min', $refDate->modify('-3 months'))
