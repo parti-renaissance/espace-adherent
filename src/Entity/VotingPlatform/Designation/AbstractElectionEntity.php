@@ -27,6 +27,10 @@ abstract class AbstractElectionEntity implements ElectionEntityInterface
      */
     public function getStatus(): string
     {
+        if (!$this->designation->getElectionEntityIdentifier()) {
+            return $this->getDesignationStatus();
+        }
+
         return match (true) {
             $this->isVotePeriodScheduled() => DesignationStatusEnum::SCHEDULED,
             $this->isVotePeriodActive() => DesignationStatusEnum::IN_PROGRESS,
