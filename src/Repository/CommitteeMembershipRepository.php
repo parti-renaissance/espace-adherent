@@ -628,13 +628,18 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->innerJoin('membership.adherent', 'adherent')
             ->where('membership.committee = :committee')
             ->andWhere('membership.joinedAt <= :joined_at_min')
-            ->andWhere('adherent.registeredAt <= :registered_at_min'.($onlyCertified ? ' AND adherent.certifiedAt IS NOT NULL' : ''))
             ->setParameters([
                 'committee' => $committee,
-                'joined_at_min' => $refDate->modify('-30 days'),
-                'registered_at_min' => $refDate->modify('-3 months'),
+                'joined_at_min' => $designation->isCommitteeSupervisorType() && $committee->isVersion2() ? $designation->getElectionCreationDate() : $refDate->modify('-30 days'),
             ])
         ;
+
+        if (!$committee->isVersion2()) {
+            $qb
+                ->andWhere('adherent.registeredAt <= :registered_at_min'.($onlyCertified ? ' AND adherent.certifiedAt IS NOT NULL' : ''))
+                ->setParameter('registered_at_min', $refDate->modify('-3 months'))
+            ;
+        }
 
         if (!$designation->isLimited()) {
             $forbiddenAdherents = array_column($this->getEntityManager()->createQueryBuilder()
