@@ -500,7 +500,7 @@ class ConfigureCommand extends Command
 
         $list = $this->createVoterList(
             $election,
-            array_map(function (CommitteeMembership $membership) { return $membership->getAdherent(); }, $memberships)
+            array_map(fn (CommitteeMembership $membership) => $membership->getAdherent(), $memberships)
         );
 
         $this->entityManager->persist($list);
