@@ -204,7 +204,7 @@ class ElectionRepository extends ServiceEntityRepository
                 ),
             )
             ->innerJoin('election.electionRounds', 'election_round')
-            ->innerJoin('election.electionPools', 'pool')
+            ->leftJoin('election.electionPools', 'pool')
             ->where('election_round = :election_round')
             ->setParameters([
                 'election_round' => $electionRound,
