@@ -3,7 +3,6 @@
 namespace App\Command\VotingPlatform;
 
 use App\Entity\Adherent;
-use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
@@ -127,7 +126,7 @@ class ConfigureCommand extends Command
 
                 if (
                     $designation->getVoteStartDate() < $now->modify('+10 minutes')
-                    && !$this->committeeElectionHasCandidates($committee, $designation)
+                    && !$committeeElection->countConfirmedCandidacies()
                 ) {
                     $this->configureCandidatesGroupsForCommitteeSupervisorElection($committeeElection, $election);
                 }
@@ -524,11 +523,9 @@ class ConfigureCommand extends Command
         ];
 
         foreach ($committeeElection->getCandidaciesGroups() as $candidaciesGroup) {
+            $pool->addCandidateGroup($group = new CandidateGroup());
             foreach ($candidaciesGroup as $candidacy) {
-                $group = new CandidateGroup();
                 $group->addCandidate($this->createCommitteeSupervisorCandidate($candidacy));
-
-                $pool->addCandidateGroup($group);
             }
         }
 
@@ -632,11 +629,6 @@ class ConfigureCommand extends Command
         }
 
         return true;
-    }
-
-    private function committeeElectionHasCandidates(Committee $committee, Designation $designation): bool
-    {
-        return $this->entityManager->getRepository(CommitteeCandidacy::class)->hasConfirmedCandidacies($committee, $designation);
     }
 
     private function createNewElection(Designation $designation, ElectionEntity $electionEntity = null): Election
