@@ -29,7 +29,7 @@ class CommitteeElectionNormalizer implements NormalizerInterface, NormalizerAwar
 
         if ($object->getDesignation()->electionCreationDate <= new \DateTime()) {
             if ($election = $this->electionRepository->findOneForCommittee($object->getCommittee(), $object->getDesignation())) {
-                $detailsByPool = $this->electionRepository->getSingleAggregatedData($election->getCurrentRound());
+                $detailsByPool = current($this->electionRepository->getSingleAggregatedData($election->getCurrentRound()));
 
                 $data['voters_count'] = $detailsByPool['voters_count'] ?? null;
 
