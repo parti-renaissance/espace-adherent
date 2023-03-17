@@ -86,7 +86,9 @@ class ConfigureCommand extends Command
         foreach ($designations as $designation) {
             $this->entityManager->merge($designation);
 
-            if ($designation->isCommitteeTypes()) {
+            if ($designation->isCommitteeSupervisorType()) {
+                $this->configureCommitteeSupervisorElections($designation);
+            } elseif ($designation->isCommitteeTypes()) {
                 $this->configureCommitteeElections($designation);
             } elseif ($designation->isCopolType()) {
                 $this->configureCopolElections($designation);
@@ -104,6 +106,44 @@ class ConfigureCommand extends Command
         $this->io->progressFinish();
 
         return 0;
+    }
+
+    private function configureCommitteeSupervisorElections(Designation $designation): void
+    {
+        $offset = 0;
+
+        $now = new \DateTime();
+
+        while ($committeeElections = $this->committeeElectionRepository->findAllByDesignation($designation, $offset)) {
+            foreach ($committeeElections as $committeeElection) {
+                $committee = $committeeElection->getCommittee();
+
+                if (!$election = $this->electionRepository->hasElectionForCommittee($committee, $designation)) {
+                    $election = $this->createNewElection($designation, $electionEntity = new ElectionEntity());
+                    $electionEntity->setCommittee($committee);
+                    $this->configureNewElectionForCommitteeSupervisor($election);
+                }
+
+                if (
+                    $designation->getVoteStartDate() < $now->modify('+10 minutes')
+                    && !$committeeElection->countConfirmedCandidacies()
+                ) {
+                    $this->configureCandidatesGroupsForCommitteeSupervisorElection($committeeElection, $election);
+                }
+
+                if ($election->isVotePeriodStarted() && !$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)) {
+                    $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+                }
+
+                $this->io->progressAdvance();
+            }
+
+            $this->entityManager->clear();
+
+            $designation = $this->entityManager->merge($designation);
+
+            $offset += \count($committeeElections);
+        }
     }
 
     private function configureCommitteeElections(Designation $designation): void
@@ -446,6 +486,61 @@ class ConfigureCommand extends Command
         $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
     }
 
+    private function configureNewElectionForCommitteeSupervisor(Election $election): void
+    {
+        $designation = $election->getDesignation();
+
+        if (!$designation->isCommitteeSupervisorType()) {
+            return;
+        }
+
+        $committee = $election->getElectionEntity()->getCommittee();
+
+        $memberships = $this->entityManager->getRepository(CommitteeMembership::class)->findVotingForElectionMemberships($committee, $designation);
+
+        $list = $this->createVoterList(
+            $election,
+            array_map(fn (CommitteeMembership $membership) => $membership->getAdherent(), $memberships)
+        );
+
+        $this->entityManager->persist($list);
+        $this->entityManager->persist($election);
+        $this->entityManager->flush();
+    }
+
+    private function configureCandidatesGroupsForCommitteeSupervisorElection(
+        CommitteeElection $committeeElection,
+        Election $election
+    ): void {
+        $designation = $election->getDesignation();
+
+        if (!$designation->isCommitteeSupervisorType()) {
+            return;
+        }
+
+        $pools = [
+            $pool = new ElectionPool(ElectionPoolCodeEnum::COMMITTEE_SUPERVISOR),
+        ];
+
+        foreach ($committeeElection->getCandidaciesGroups() as $candidaciesGroup) {
+            $pool->addCandidateGroup($group = new CandidateGroup());
+            foreach ($candidaciesGroup as $candidacy) {
+                $group->addCandidate($this->createCommitteeSupervisorCandidate($candidacy));
+            }
+        }
+
+        $electionRound = $election->getCurrentRound();
+
+        foreach ($pools as $pool) {
+            if ($pool->getCandidateGroups()) {
+                $electionRound->addElectionPool($pool);
+                $election->addElectionPool($pool);
+            }
+        }
+
+        $this->entityManager->flush();
+    }
+
     private function configureNewElectionForCommittee(Election $election): void
     {
         $electionRound = $election->getCurrentRound();
@@ -478,31 +573,6 @@ class ConfigureCommand extends Command
                 } else {
                     $malePool->addCandidateGroup($group);
                 }
-            }
-        } elseif (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
-            $pools = [
-                $pool = new ElectionPool(ElectionPoolCodeEnum::COMMITTEE_SUPERVISOR),
-            ];
-
-            foreach ($candidacies as $candidacy) {
-                if ($candidacy->isTaken()) {
-                    continue;
-                }
-
-                $group = new CandidateGroup();
-                $group->addCandidate($this->createCommitteeSupervisorCandidate($candidacy));
-
-                if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
-                    foreach ($candidaciesGroup->getCandidacies() as $cand) {
-                        if ($cand->isTaken()) {
-                            continue;
-                        }
-
-                        $group->addCandidate($this->createCommitteeSupervisorCandidate($cand));
-                    }
-                }
-
-                $pool->addCandidateGroup($group);
             }
         }
 
