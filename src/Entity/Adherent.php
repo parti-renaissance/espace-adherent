@@ -2351,6 +2351,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         $this->subscriptionTypes = new ArrayCollection($this->subscriptionTypes->toArray());
         $this->territorialCouncilMembership = $this->territorialCouncilMembership ? clone $this->territorialCouncilMembership : null;
+        $this->postAddress = clone $this->postAddress;
     }
 
     /**
