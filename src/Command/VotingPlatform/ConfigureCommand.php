@@ -118,7 +118,7 @@ class ConfigureCommand extends Command
             foreach ($committeeElections as $committeeElection) {
                 $committee = $committeeElection->getCommittee();
 
-                if (!$election = $this->electionRepository->hasElectionForCommittee($committee, $designation)) {
+                if (!$election = $this->electionRepository->findOneForCommittee($committee, $designation)) {
                     $election = $this->createNewElection($designation, $electionEntity = new ElectionEntity());
                     $electionEntity->setCommittee($committee);
                     $this->configureNewElectionForCommitteeSupervisor($election);
