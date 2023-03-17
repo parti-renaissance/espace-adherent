@@ -52,6 +52,11 @@ trait EntityDesignationTrait
         return $this->designation->getVoteEndDate();
     }
 
+    public function getElectionCreationDate(): ?\DateTime
+    {
+        return $this->designation->getElectionCreationDate();
+    }
+
     public function isOngoing(): bool
     {
         return $this->designation && $this->designation->isOngoing();
@@ -147,9 +152,6 @@ trait EntityDesignationTrait
         return $this->getVoteEndDate();
     }
 
-    /**
-     * @Groups({"committee_election:read"})
-     */
     public function getStatus(): string
     {
         if (!$this->designation) {
