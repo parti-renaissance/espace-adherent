@@ -8,15 +8,18 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Ramsey\Uuid\Uuid;
 
 class LoadElectedRepresentativeContributionData extends Fixture implements DependentFixtureInterface
 {
+    public const CONTRIBUTION_01_UUID = '117921c2-93ce-4307-8364-709fd34de79c';
+
     public function load(ObjectManager $manager): void
     {
         /** @var ElectedRepresentative $erDepartment92 */
         $erDepartment92 = $this->getReference('elected-representative-dpt-92');
 
-        $contribution = new Contribution();
+        $contribution = new Contribution(Uuid::fromString(self::CONTRIBUTION_01_UUID));
         $contribution->startDate = new \DateTime('2023-03-15');
         $contribution->electedRepresentative = $erDepartment92;
         $contribution->gocardlessCustomerId = 'CU_DPT92';

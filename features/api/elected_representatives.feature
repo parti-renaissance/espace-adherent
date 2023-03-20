@@ -29,7 +29,7 @@ Feature:
                     "start_date": "@string@.isDateTime()",
                     "status": "active",
                     "type": "mandate",
-                    "uuid": "@uuid@"
+                    "uuid": "117921c2-93ce-4307-8364-709fd34de79c"
                 },
                 "contact_phone": null,
                 "uuid": "0c62d201-826b-4da7-8424-e8e17935b400",
@@ -145,7 +145,7 @@ Feature:
                 "start_date": "@string@.isDateTime()",
                 "status": "active",
                 "type": "mandate",
-                "uuid": "@uuid@"
+                "uuid": "117921c2-93ce-4307-8364-709fd34de79c"
             },
             "birth_date": "@string@.isDateTime()",
             "birth_place": null,
@@ -201,7 +201,7 @@ Feature:
                 "start_date": "@string@.isDateTime()",
                 "status": "active",
                 "type": "mandate",
-                "uuid": "@uuid@"
+                "uuid": "117921c2-93ce-4307-8364-709fd34de79c"
             },
             "birth_date": "@string@.isDateTime()",
             "birth_place": null,

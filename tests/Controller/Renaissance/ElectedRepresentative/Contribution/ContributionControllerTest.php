@@ -41,13 +41,13 @@ class ContributionControllerTest extends WebTestCase
 
     public function testOnGoingElectedRepresentativeCanSeeContributionWorkflow(): void
     {
-        $adherent = $this->adherentRepository->findOneByEmail('renaissance-user-2@en-marche-dev.fr');
+        $adherent = $this->adherentRepository->findOneByEmail($email = 'gisele-berthoux@caramail.com');
         $electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
 
         $this->assertInstanceOf(ElectedRepresentative::class, $electedRepresentative);
         $this->assertNull($electedRepresentative->getLastContribution());
 
-        $this->authenticateAsAdherent($this->client, 'renaissance-user-2@en-marche-dev.fr');
+        $this->authenticateAsAdherent($this->client, $email);
 
         $this->client->request(Request::METHOD_GET, '/espace-elus/cotisation');
 
