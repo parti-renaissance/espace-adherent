@@ -160,6 +160,11 @@ trait EntityDesignationTrait
             return DesignationStatusEnum::NOT_STARTED;
         }
 
+        $now = new \DateTime();
+        if ($this->designation->getElectionCreationDate() && $this->designation->getElectionCreationDate() > $now) {
+            return DesignationStatusEnum::NOT_STARTED;
+        }
+
         if (!$this->isVotePeriodStarted()) {
             if ($this->getVoteStartDate()) {
                 return DesignationStatusEnum::SCHEDULED;

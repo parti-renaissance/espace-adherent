@@ -243,7 +243,7 @@ Feature:
                 }
             ],
             "uuid": "278fcb58-53b4-4798-a3be-e5bb92f7f0f2",
-            "status": "scheduled",
+            "status": "not_started",
             "votes_count": null,
             "voters_count": null
         }
