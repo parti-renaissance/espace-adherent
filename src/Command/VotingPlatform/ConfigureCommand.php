@@ -126,7 +126,7 @@ class ConfigureCommand extends Command
 
                 if (
                     $designation->getVoteStartDate() < $now->modify('+10 minutes')
-                    && !$committeeElection->countConfirmedCandidacies()
+                    && !$election->countCandidateGroups()
                 ) {
                     $this->configureCandidatesGroupsForCommitteeSupervisorElection($committeeElection, $election);
                 }
@@ -518,13 +518,19 @@ class ConfigureCommand extends Command
             return;
         }
 
-        $pools = [
-            $pool = new ElectionPool(ElectionPoolCodeEnum::COMMITTEE_SUPERVISOR),
+        $pools = $election->getElectionPools() ?: [
+            new ElectionPool(ElectionPoolCodeEnum::COMMITTEE_SUPERVISOR),
         ];
 
+        $pool = current($pools);
+
         foreach ($committeeElection->getCandidaciesGroups() as $candidaciesGroup) {
+            if (empty($candidaciesGroup->getCandidacies())) {
+                continue;
+            }
+
             $pool->addCandidateGroup($group = new CandidateGroup());
-            foreach ($candidaciesGroup as $candidacy) {
+            foreach ($candidaciesGroup->getCandidacies() as $candidacy) {
                 $group->addCandidate($this->createCommitteeSupervisorCandidate($candidacy));
             }
         }

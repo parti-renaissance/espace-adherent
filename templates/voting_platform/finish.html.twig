@@ -33,7 +33,7 @@
                 </div>
             </div>
             <h1 class="text--larger b__nudge--bottom-large">
-                {% if designation.isExecutiveOfficeType() or designation.isLocalElectionTypes() %}
+                {% if designation.isExecutiveOfficeType() or designation.isLocalElectionTypes() or designation.isCommitteeSupervisorType() %}
                     Félicitations, votre bulletin est dans l'urne !
                 {% elseif designation.isPollType() %}
                     Félicitations, votre vote est bien enregistré !
