@@ -21,7 +21,7 @@ class Autocomplete extends Select
         $this->addOption('value_param', $value);
     }
 
-    public function setLabelParam(string|array $value): void
+    public function setLabelParam(string $value): void
     {
         $this->addOption('label_param', $value);
     }

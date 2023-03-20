@@ -374,7 +374,7 @@ Feature:
           "url": "/api/v3/zone/autocomplete",
           "query_param": "q",
           "value_param": "uuid",
-          "label_param": ["name", "type"],
+          "label_param": "name",
           "multiple": true,
           "required": false
         },
