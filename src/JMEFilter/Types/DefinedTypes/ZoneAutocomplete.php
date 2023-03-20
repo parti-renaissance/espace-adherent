@@ -3,6 +3,7 @@
 namespace App\JMEFilter\Types\DefinedTypes;
 
 use App\Controller\Api\Zone\ZoneAutocompleteController;
+use App\JMEFilter\FilterTypeEnum;
 use App\JMEFilter\Types\Autocomplete;
 
 class ZoneAutocomplete extends Autocomplete
@@ -15,5 +16,10 @@ class ZoneAutocomplete extends Autocomplete
         $this->setQueryParam(ZoneAutocompleteController::QUERY_SEARCH_PARAM);
         $this->setValueParam('uuid');
         $this->setLabelParam(['name', 'type']);
+    }
+
+    protected function _getType(): string
+    {
+        return FilterTypeEnum::ZONE_AUTOCOMPLETE;
     }
 }
