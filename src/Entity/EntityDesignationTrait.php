@@ -152,6 +152,9 @@ trait EntityDesignationTrait
         return $this->getVoteEndDate();
     }
 
+    /**
+     * @Groups({"committee_election:read"})
+     */
     public function getStatus(): string
     {
         if (!$this->designation) {
@@ -159,6 +162,11 @@ trait EntityDesignationTrait
         }
 
         if ($this->designation->isCandidacyPeriodEnabled() && !$this->isCandidacyPeriodStarted()) {
+            return DesignationStatusEnum::NOT_STARTED;
+        }
+
+        $now = new \DateTime();
+        if ($this->designation->getElectionCreationDate() && $this->designation->getElectionCreationDate() > $now) {
             return DesignationStatusEnum::NOT_STARTED;
         }
 
