@@ -12,17 +12,12 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 
 class ElectionAuthorisationChecker
 {
-    private $electedRepresentativeRepository;
-    private $committeeRepository;
-
     public function __construct(
-        ElectedRepresentativeRepository $electedRepresentativeRepository,
-        CommitteeRepository $committeeRepository,
-        public readonly ElectionRepository $electionRepository,
-        public readonly VoterRepository $voterRepository
+        private readonly ElectedRepresentativeRepository $electedRepresentativeRepository,
+        private readonly CommitteeRepository $committeeRepository,
+        private readonly ElectionRepository $electionRepository,
+        private readonly VoterRepository $voterRepository
     ) {
-        $this->electedRepresentativeRepository = $electedRepresentativeRepository;
-        $this->committeeRepository = $committeeRepository;
     }
 
     public function canCandidateOnCommittee(Committee $committee, Adherent $adherent): bool
