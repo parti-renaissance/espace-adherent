@@ -28,6 +28,8 @@ class LoadElectedRepresentativeContributionData extends Fixture implements Depen
         $contribution->gocardlessSubscriptionStatus = 'active';
         $contribution->type = ContributionTypeEnum::MANDATE;
 
+        $erDepartment92->setLastContribution($contribution);
+
         $manager->persist($contribution);
 
         $manager->flush();

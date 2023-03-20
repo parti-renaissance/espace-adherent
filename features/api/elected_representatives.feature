@@ -24,7 +24,13 @@ Feature:
                 "last_name": "92",
                 "first_name": "Département",
                 "gender": "male",
-                "last_contribution": null,
+                "last_contribution": {
+                    "end_date": null,
+                    "start_date": "@string@.isDateTime()",
+                    "status": "active",
+                    "type": "mandate",
+                    "uuid": "@uuid@"
+                },
                 "contact_phone": null,
                 "uuid": "0c62d201-826b-4da7-8424-e8e17935b400",
                 "current_mandates": [
@@ -134,7 +140,13 @@ Feature:
             "last_name": "Doe",
             "first_name": "Jane",
             "gender": "male",
-            "last_contribution": null,
+            "last_contribution": {
+                "end_date": null,
+                "start_date": "@string@.isDateTime()",
+                "status": "active",
+                "type": "mandate",
+                "uuid": "@uuid@"
+            },
             "birth_date": "@string@.isDateTime()",
             "birth_place": null,
             "contact_phone": null,
@@ -184,7 +196,13 @@ Feature:
             "first_name": "Département",
             "last_name": "92",
             "gender": "male",
-            "last_contribution": null,
+            "last_contribution": {
+                "end_date": null,
+                "start_date": "@string@.isDateTime()",
+                "status": "active",
+                "type": "mandate",
+                "uuid": "@uuid@"
+            },
             "birth_date": "@string@.isDateTime()",
             "birth_place": null,
             "contact_phone": null,
