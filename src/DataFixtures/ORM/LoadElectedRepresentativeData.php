@@ -502,6 +502,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             new \DateTime('2019-01-11')
         );
         $erDepartment92->addMandate($mandate);
+        $this->addReference('elected-representative-dpt-92', $erDepartment92);
 
         $manager->persist($erDepartment92);
 

@@ -24,7 +24,13 @@ Feature:
                 "last_name": "92",
                 "first_name": "Département",
                 "gender": "male",
-                "last_contribution_date": null,
+                "last_contribution": {
+                    "end_date": null,
+                    "start_date": "@string@.isDateTime()",
+                    "status": "active",
+                    "type": "mandate",
+                    "uuid": "117921c2-93ce-4307-8364-709fd34de79c"
+                },
                 "contact_phone": null,
                 "uuid": "0c62d201-826b-4da7-8424-e8e17935b400",
                 "current_mandates": [
@@ -44,7 +50,7 @@ Feature:
                 "last_name": "DUFOUR",
                 "first_name": "Michelle",
                 "gender": "female",
-                "last_contribution_date": null,
+                "last_contribution": null,
                 "contact_phone": null,
                 "uuid": "34b0b236-b72e-4161-8f9f-7f23f935758f",
                 "current_mandates": [
@@ -92,7 +98,7 @@ Feature:
             "last_name": "Doe",
             "first_name": "John",
             "gender": "male",
-            "last_contribution_date": null,
+            "last_contribution": null,
             "birth_date": "@string@.isDateTime()",
             "birth_place": null,
             "contact_phone": null,
@@ -134,7 +140,13 @@ Feature:
             "last_name": "Doe",
             "first_name": "Jane",
             "gender": "male",
-            "last_contribution_date": null,
+            "last_contribution": {
+                "end_date": null,
+                "start_date": "@string@.isDateTime()",
+                "status": "active",
+                "type": "mandate",
+                "uuid": "117921c2-93ce-4307-8364-709fd34de79c"
+            },
             "birth_date": "@string@.isDateTime()",
             "birth_place": null,
             "contact_phone": null,
@@ -184,7 +196,13 @@ Feature:
             "first_name": "Département",
             "last_name": "92",
             "gender": "male",
-            "last_contribution_date": null,
+            "last_contribution": {
+                "end_date": null,
+                "start_date": "@string@.isDateTime()",
+                "status": "active",
+                "type": "mandate",
+                "uuid": "117921c2-93ce-4307-8364-709fd34de79c"
+            },
             "birth_date": "@string@.isDateTime()",
             "birth_place": null,
             "contact_phone": null,
