@@ -6,16 +6,23 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Repository\CommitteeRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
+use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 
 class ElectionAuthorisationChecker
 {
+    private $electedRepresentativeRepository;
+    private $committeeRepository;
+
     public function __construct(
-        public readonly ElectedRepresentativeRepository $electedRepresentativeRepository,
-        public readonly CommitteeRepository $committeeRepository,
+        ElectedRepresentativeRepository $electedRepresentativeRepository,
+        CommitteeRepository $committeeRepository,
+        public readonly ElectionRepository $electionRepository,
         public readonly VoterRepository $voterRepository
     ) {
+        $this->electedRepresentativeRepository = $electedRepresentativeRepository;
+        $this->committeeRepository = $committeeRepository;
     }
 
     public function canCandidateOnCommittee(Committee $committee, Adherent $adherent): bool
@@ -91,7 +98,57 @@ class ElectionAuthorisationChecker
 
     public function canVoteOnCommittee(Committee $committee, Adherent $adherent): bool
     {
-        if (!($election = $committee->getCurrentElection())) {
+        if (!($membership = $adherent->getMembershipFor($committee)) || !($election = $committee->getCurrentElection())) {
+            return false;
+        }
+
+        $refDate = $election->getVoteEndDate() ?? new \DateTime();
+
+        if ($adherent->isMinor($refDate)) {
+            return false;
+        }
+
+        if (!$adherent->isCertified()) {
+            return false;
+        }
+
+        if (
+            ($candidateMembership = $adherent->getMemberships()->getCommitteeCandidacyMembership(true))
+            && !$candidateMembership->getCommittee()->equals($committee)
+        ) {
+            return false;
+        }
+
+        $designation = $election->getDesignation();
+
+        if (($committeeRecentVote = $this->committeeRepository->findCommitteeForRecentVote($designation, $adherent)) && !$committeeRecentVote->equals($committee)) {
+            return false;
+        }
+
+        if (($committeeRecentCandidate = $this->committeeRepository->findCommitteeForRecentCandidate($designation, $adherent)) && !$committeeRecentCandidate->equals($committee)) {
+            return false;
+        }
+
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
+            if ($membership->getSubscriptionDate()->modify('30 days') > $refDate) {
+                return false;
+            }
+
+            if (!($registrationDate = $adherent->getRegisteredAt()) || (clone $registrationDate)->modify('+3 months') > $refDate) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function isVoterOnCommittee(Committee $committee, Adherent $adherent): bool
+    {
+        if (!$designation = $committee->getCurrentDesignation()) {
+            return false;
+        }
+
+        if (!$election = $this->electionRepository->findOneForCommittee($committee, $designation)) {
             return false;
         }
 
