@@ -391,7 +391,7 @@ Feature:
                   "multiple": false,
                   "required": true
               },
-              "type": "autocomplete"
+              "type": "zone_autocomplete"
           }
       ]
       """
