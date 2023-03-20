@@ -52,7 +52,7 @@
     "postcss": "^8.4.21",
     "postcss-loader": "^7.1.0",
     "prop-types": "^15.8.1",
-    "qs": "^6.11.0",
+    "qs": "^6.11.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^8.0.6",
