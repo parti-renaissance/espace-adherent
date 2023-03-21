@@ -18,10 +18,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-coalition", name="app_coalition_moderator_event_manager")
- *
  * @IsGranted("ROLE_COALITION_MODERATOR")
  */
+#[Route(path: '/espace-coalition', name: 'app_coalition_moderator_event_manager')]
 class CoalitionEventManagerController extends AbstractEventManagerController
 {
     public const EVENTS_TYPE_CAUSE = 'cause';
@@ -38,21 +37,8 @@ class CoalitionEventManagerController extends AbstractEventManagerController
         $this->coalitionEventRepository = $coalitionEventRepository;
     }
 
-    /**
-     * @Route(
-     *     path="/evenements-de-coalitions",
-     *     name="_coalition_events",
-     *     defaults={"type": CoalitionEventManagerController::EVENTS_TYPE_COALITION},
-     *     methods={"GET"}
-     * )
-     *
-     * @Route(
-     *     path="/evenements-de-causes",
-     *     name="_cause_events",
-     *     defaults={"type": CoalitionEventManagerController::EVENTS_TYPE_CAUSE},
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/evenements-de-coalitions', name: '_coalition_events', defaults: ['type' => CoalitionEventManagerController::EVENTS_TYPE_COALITION], methods: ['GET'])]
+    #[Route(path: '/evenements-de-causes', name: '_cause_events', defaults: ['type' => CoalitionEventManagerController::EVENTS_TYPE_CAUSE], methods: ['GET'])]
     public function events(Request $request, string $type): Response
     {
         return $this->renderTemplate('event_manager/events_list.html.twig', [

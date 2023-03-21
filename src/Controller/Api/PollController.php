@@ -20,14 +20,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class PollController extends AbstractController
 {
-    /**
-     * @Route(
-     *     "/v3/polls/vote",
-     *     name="api_polls_vote",
-     *     requirements={"uuid": "%pattern_uuid%"},
-     *     methods={"POST"}
-     * )
-     */
+    #[Route(path: '/v3/polls/vote', name: 'api_polls_vote', requirements: ['uuid' => '%pattern_uuid%'], methods: ['POST'])]
     public function vote(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -70,10 +63,8 @@ class PollController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/v3/polls", name="api_poll", methods={"GET"})
-     * @Route("/v3/polls/{postalCode}", name="api_poll_by_postal_code", methods={"GET"})
-     */
+    #[Route(path: '/v3/polls', name: 'api_poll', methods: ['GET'])]
+    #[Route(path: '/v3/polls/{postalCode}', name: 'api_poll_by_postal_code', methods: ['GET'])]
     public function getPollByPostalCode(?string $postalCode, PollManager $pollManager): JsonResponse
     {
         return $this->json(

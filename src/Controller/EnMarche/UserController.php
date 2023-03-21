@@ -32,16 +32,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @Route("/parametres/mon-compte")
- */
+#[Route(path: '/parametres/mon-compte')]
 class UserController extends AbstractController
 {
     private const UNREGISTER_TOKEN = 'unregister_token';
 
-    /**
-     * @Route(name="app_user_edit", methods={"GET", "POST"})
-     */
+    #[Route(name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function profileAction(
         Request $request,
         AdherentProfileHandler $handler,
@@ -91,9 +87,8 @@ class UserController extends AbstractController
 
     /**
      * This action enables an adherent to change his/her current password.
-     *
-     * @Route("/changer-mot-de-passe", name="app_user_change_password", methods={"GET", "POST"})
      */
+    #[Route(path: '/changer-mot-de-passe', name: 'app_user_change_password', methods: ['GET', 'POST'])]
     public function changePasswordAction(
         Request $request,
         AdherentChangePasswordHandler $handler,
@@ -135,9 +130,8 @@ class UserController extends AbstractController
 
     /**
      * This action enables an adherent to choose his/her email notifications.
-     *
-     * @Route("/preferences-des-emails", name="app_user_set_email_notifications", methods={"GET", "POST"})
      */
+    #[Route(path: '/preferences-des-emails', name: 'app_user_set_email_notifications', methods: ['GET', 'POST'])]
     public function setEmailNotificationsAction(
         Request $request,
         EventDispatcherInterface $dispatcher,
@@ -188,9 +182,9 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/desadherer", name="app_user_terminate_membership", methods={"GET", "POST"})
      * @Security("is_granted('UNREGISTER', user)")
      */
+    #[Route(path: '/desadherer', name: 'app_user_terminate_membership', methods: ['GET', 'POST'])]
     public function terminateMembershipAction(
         Request $request,
         MembershipRequestHandler $handler,
@@ -250,13 +244,7 @@ class UserController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/chart",
-     *     name="app_user_set_accept_chart",
-     *     condition="request.isXmlHttpRequest()",
-     *     methods={"PUT"}
-     * )
-     */
+    #[Route(path: '/chart', name: 'app_user_set_accept_chart', condition: 'request.isXmlHttpRequest()', methods: ['PUT'])]
     public function chartAcceptationAction(Request $request, ObjectManager $manager): JsonResponse
     {
         /** @var Adherent $adherent */

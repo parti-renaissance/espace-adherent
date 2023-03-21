@@ -8,9 +8,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/qr-code/{uuid}", name="app_qr_code", methods="GET")
- */
+#[Route(path: '/qr-code/{uuid}', name: 'app_qr_code', methods: 'GET')]
 class QrCodeController
 {
     private $entityManager;

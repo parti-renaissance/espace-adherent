@@ -13,14 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(
- *     path="/adhesion/informations-additionelles",
- *     name="app_renaissance_adhesion_additional_informations",
- *     methods={"GET|POST"}
- * )
- *
  * @IsGranted("ROLE_ADHERENT")
  */
+#[Route(path: '/adhesion/informations-additionelles', name: 'app_renaissance_adhesion_additional_informations', methods: ['GET|POST'])]
 class AdditionalInformationController extends AbstractController
 {
     public function __invoke(

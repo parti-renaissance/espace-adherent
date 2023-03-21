@@ -11,15 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/signalements")
- */
+#[Route(path: '/signalements')]
 class AdminReportController extends AbstractController
 {
     /**
-     * @Route("/{id}/resolve", name="app_admin_report_resolve", methods={"GET"})
      * @IsGranted("ROLE_APP_ADMIN_REPORT_APPROVE")
      */
+    #[Route(path: '/{id}/resolve', name: 'app_admin_report_resolve', methods: ['GET'])]
     public function resolveAction(Request $request, Report $report, ReportManager $reportManager): Response
     {
         if (!$this->isCsrfTokenValid(sprintf('report.%s', $report->getId()), $request->query->get('token'))) {

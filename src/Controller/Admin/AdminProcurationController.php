@@ -15,14 +15,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/procuration")
  * @IsGranted("ROLE_ADMIN_PROCURATIONS")
  */
+#[Route(path: '/procuration')]
 class AdminProcurationController extends AbstractController
 {
-    /**
-     * @Route("/export", methods={"GET"})
-     */
+    #[Route(path: '/export', methods: ['GET'])]
     public function exportMailsAction(
         ProcurationRequestRepository $repository,
         ProcurationRequestSerializer $serializer
@@ -35,9 +33,8 @@ class AdminProcurationController extends AbstractController
 
     /**
      * List the procuration referents invitations URLs.
-     *
-     * @Route("/request/{id}/deassociate", name="app_admin_procuration_request_deassociate", methods={"GET", "POST"})
      */
+    #[Route(path: '/request/{id}/deassociate', name: 'app_admin_procuration_request_deassociate', methods: ['GET', 'POST'])]
     public function deassociateAction(
         Request $request,
         ProcurationRequest $procurationRequest,

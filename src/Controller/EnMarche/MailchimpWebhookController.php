@@ -11,9 +11,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\SerializerStamp;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/mailchimp/webhook/{key}", name="app_mailchimp_webhook", methods={"GET", "POST"})
- */
+#[Route(path: '/mailchimp/webhook/{key}', name: 'app_mailchimp_webhook', methods: ['GET', 'POST'])]
 class MailchimpWebhookController extends AbstractController
 {
     private string $mailchimpWebhookKey;

@@ -14,19 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(
- *     "/reabonnement-email/{adherent_uuid}/{email_subscribe_token}",
- *     requirements={
- *         "adherent_uuid": "%pattern_uuid%",
- *         "email_subscribe_token": "%pattern_sha1%"
- *     },
- *     name="app_adherent_profile_email_subscribe",
- *     methods={"GET"}
- * )
- *
  * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
  * @Entity("token", expr="repository.findByToken(email_subscribe_token)")
  */
+#[Route(path: '/reabonnement-email/{adherent_uuid}/{email_subscribe_token}', requirements: ['adherent_uuid' => '%pattern_uuid%', 'email_subscribe_token' => '%pattern_sha1%'], name: 'app_adherent_profile_email_subscribe', methods: ['GET'])]
 class EmailSubscribeController extends AbstractController
 {
     public function __invoke(

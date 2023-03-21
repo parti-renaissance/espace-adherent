@@ -8,10 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-candidat/question-du-jour", name="app_candidate_polls_")
- *
  * @Security("is_granted('ROLE_CANDIDATE_REGIONAL_HEADED') or (is_granted('ROLE_DELEGATED_CANDIDATE') and is_granted('HAS_DELEGATED_ACCESS_POLLS'))")
  */
+#[Route(path: '/espace-candidat/question-du-jour', name: 'app_candidate_polls_')]
 class PollCandidateController extends AbstractPollController
 {
     protected function getSpaceName(): string

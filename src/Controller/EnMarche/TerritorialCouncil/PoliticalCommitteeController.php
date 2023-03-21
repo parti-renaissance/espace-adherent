@@ -22,10 +22,9 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/comite-politique", name="app_political_committee_")
- *
  * @IsGranted("POLITICAL_COMMITTEE_MEMBER")
  */
+#[Route(path: '/comite-politique', name: 'app_political_committee_')]
 class PoliticalCommitteeController extends AbstractController
 {
     use CanaryControllerTrait;
@@ -39,9 +38,7 @@ class PoliticalCommitteeController extends AbstractController
         $this->timelineMaxItems = $timelineMaxItems;
     }
 
-    /**
-     * @Route("", name="index", methods={"GET"})
-     */
+    #[Route(path: '', name: 'index', methods: ['GET'])]
     public function feedItemsAction(
         Request $request,
         PoliticalCommitteeFeedItemRepository $feedItemRepository
@@ -70,9 +67,9 @@ class PoliticalCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/messages/{id}/modifier", name="edit_feed_item", methods={"GET", "POST"})
      * @IsGranted("CAN_MANAGE_FEED_ITEM", subject="feedItem")
      */
+    #[Route(path: '/messages/{id}/modifier', name: 'edit_feed_item', methods: ['GET', 'POST'])]
     public function feedItemEditAction(
         EntityManagerInterface $manager,
         Request $request,
@@ -97,9 +94,9 @@ class PoliticalCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/messages/{id}/supprimer", name="delete_feed_item", methods={"DELETE"})
      * @IsGranted("CAN_MANAGE_FEED_ITEM", subject="feedItem")
      */
+    #[Route(path: '/messages/{id}/supprimer', name: 'delete_feed_item', methods: ['DELETE'])]
     public function deleteFeedItemAction(
         EntityManagerInterface $em,
         Request $request,
@@ -110,9 +107,7 @@ class PoliticalCommitteeController extends AbstractController
         return $this->redirectToRoute('app_political_committee_index');
     }
 
-    /**
-     * @Route("/proces-verbaux", name="official_report_list", methods={"GET"})
-     */
+    #[Route(path: '/proces-verbaux', name: 'official_report_list', methods: ['GET'])]
     public function listOfficialReportsAction(OfficialReportRepository $reportRepository): Response
     {
         /** @var Adherent $adherent */
@@ -127,9 +122,9 @@ class PoliticalCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/proces-verbaux/{uuid}", name="official_report_download", methods={"GET"})
      * @IsGranted("CAN_DOWNLOAD_OFFICIAL_REPORT", subject="officialReport")
      */
+    #[Route(path: '/proces-verbaux/{uuid}', name: 'official_report_download', methods: ['GET'])]
     public function downloadReportAction(OfficialReport $officialReport, FilesystemInterface $storage): Response
     {
         $lastDocument = $officialReport->getLastDocument();

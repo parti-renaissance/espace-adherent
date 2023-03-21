@@ -30,9 +30,7 @@ abstract class AbstractPersonalizationController extends AbstractController
         $this->zoneRepository = $zoneRepository;
     }
 
-    /**
-     * @Route(path="/editer", name="edit", methods={"GET|POST"})
-     */
+    #[Route(path: '/editer', name: 'edit', methods: ['GET|POST'])]
     public function editJecoutePersonalization(
         Request $request,
         EntityManagerInterface $manager,

@@ -16,14 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(
- *     "/v3/je-mengage/timeline_feeds",
- *     name="api_get_jemarche_timeline_feeds",
- *     methods={"GET"}
- * )
- *
  * @IsGranted("ROLE_OAUTH_SCOPE_JEMARCHE_APP")
  */
+#[Route(path: '/v3/je-mengage/timeline_feeds', name: 'api_get_jemarche_timeline_feeds', methods: ['GET'])]
 class GetTimelineFeedsController extends AbstractController
 {
     public function __invoke(Request $request, SearchService $searchService): JsonResponse

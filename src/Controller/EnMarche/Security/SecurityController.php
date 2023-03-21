@@ -28,9 +28,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @Route("/connexion", name="app_user_login", methods={"GET"})
-     */
+    #[Route(path: '/connexion', name: 'app_user_login', methods: ['GET'])]
     public function loginAction(
         Request $request,
         AuthenticationUtils $securityUtils,
@@ -66,9 +64,7 @@ class SecurityController extends AbstractController
     {
     }
 
-    /**
-     * @Route("/mot-de-passe-oublie", name="forgot_password", methods={"GET", "POST"})
-     */
+    #[Route(path: '/mot-de-passe-oublie', name: 'forgot_password', methods: ['GET', 'POST'])]
     public function retrieveForgotPasswordAction(
         Request $request,
         AdherentResetPasswordHandler $handler,
@@ -170,9 +166,7 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/renvoyer-validation", name="adherent_resend_validation", methods={"GET"})
-     */
+    #[Route(path: '/renvoyer-validation', name: 'adherent_resend_validation', methods: ['GET'])]
     public function resendValidationEmailAction(
         MembershipNotifier $membershipNotifier,
         AuthenticationUtils $authenticationUtils,

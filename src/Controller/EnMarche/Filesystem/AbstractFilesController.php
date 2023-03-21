@@ -26,9 +26,9 @@ abstract class AbstractFilesController extends AbstractController
     }
 
     /**
-     * @Route("/documents/{uuid}", name="download", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
      * @IsGranted("CAN_DOWNLOAD_FILE", subject="file")
      */
+    #[Route(path: '/documents/{uuid}', name: 'download', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
     public function downloadAction(File $file, FilesystemInterface $storage): Response
     {
         if ($file->isDir()) {
@@ -59,10 +59,8 @@ abstract class AbstractFilesController extends AbstractController
         return $response;
     }
 
-    /**
-     * @Route("/documents", name="list", methods={"GET"})
-     * @Route("/documents/{slug}", name="list_in_directory", methods={"GET"}, requirements={"slug": "[A-Za-z0-9\-]+"})
-     */
+    #[Route(path: '/documents', name: 'list', methods: ['GET'])]
+    #[Route(path: '/documents/{slug}', name: 'list_in_directory', methods: ['GET'], requirements: ['slug' => '[A-Za-z0-9\-]+'])]
     public function listAction(Request $request, File $directory = null): Response
     {
         $order = $request->query->get('order', 'a');

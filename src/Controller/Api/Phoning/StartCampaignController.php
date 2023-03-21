@@ -13,14 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(
- *     "/v3/phoning_campaigns/{uuid}/start",
- *     name="api_phoning_campaign_start_campaign_for_one_adherent",
- *     methods={"POST"},
- *     requirements={"uuid": "%pattern_uuid%"}
- * )
- */
+#[Route(path: '/v3/phoning_campaigns/{uuid}/start', name: 'api_phoning_campaign_start_campaign_for_one_adherent', methods: ['POST'], requirements: ['uuid' => '%pattern_uuid%'])]
 class StartCampaignController extends AbstractController
 {
     public function __invoke(

@@ -33,10 +33,8 @@ class SearchController extends AbstractController
         $this->translator = $translator;
     }
 
-    /**
-     * @Route("/evenements", name="app_search_events", methods={"GET"})
-     * @Route("/evenements/categorie/{slug}", name="app_search_events_by_category")
-     */
+    #[Route(path: '/evenements', name: 'app_search_events', methods: ['GET'])]
+    #[Route(path: '/evenements/categorie/{slug}', name: 'app_search_events_by_category')]
     public function searchEventsAction(
         Request $request,
         EventGroupCategoryRepository $eventGroupCategoryRepository,
@@ -78,9 +76,7 @@ class SearchController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/comites", name="app_search_committees", methods={"GET"})
-     */
+    #[Route(path: '/comites', name: 'app_search_committees', methods: ['GET'])]
     public function searchCommitteesAction(Request $request): Response
     {
         $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_COMMITTEES);
@@ -104,9 +100,7 @@ class SearchController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/recherche", name="app_search", methods={"GET"})
-     */
+    #[Route(path: '/recherche', name: 'app_search', methods: ['GET'])]
     public function resultsAction(Request $request): Response
     {
         $search = $this->searchParametersFilter->handleRequest($request);
@@ -128,9 +122,7 @@ class SearchController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tous-les-evenements/{page}", requirements={"page": "\d+"}, name="app_search_all_events", methods={"GET"})
-     */
+    #[Route(path: '/tous-les-evenements/{page}', requirements: ['page' => '\d+'], name: 'app_search_all_events', methods: ['GET'])]
     public function allEventsAction(EventRepository $eventRepository, int $page = 1): Response
     {
         $maxResultPage = $this->getParameter('search_max_results');
@@ -150,9 +142,7 @@ class SearchController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tous-les-comites/{page}", requirements={"page": "\d+"}, name="app_search_all_committees", methods={"GET"})
-     */
+    #[Route(path: '/tous-les-comites/{page}', requirements: ['page' => '\d+'], name: 'app_search_all_committees', methods: ['GET'])]
     public function allCommitteesAction(CommitteeRepository $committeeRepository, int $page = 1): Response
     {
         $maxResultPage = $this->getParameter('search_max_results');

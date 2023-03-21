@@ -36,14 +36,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @Route("/espace-adherent")
- */
+#[Route(path: '/espace-adherent')]
 class AdherentController extends AbstractController
 {
-    /**
-     * @Route("/accueil", name="app_adherent_home", methods={"GET"})
-     */
+    #[Route(path: '/accueil', name: 'app_adherent_home', methods: ['GET'])]
     public function homeAction(
         Request $request,
         AdherentRepository $adherentRepository,
@@ -77,9 +73,8 @@ class AdherentController extends AbstractController
 
     /**
      * This action enables an adherent to pin his/her interests.
-     *
-     * @Route("/mon-compte/centres-d-interet", name="app_adherent_pin_interests", methods={"GET", "POST"})
      */
+    #[Route(path: '/mon-compte/centres-d-interet', name: 'app_adherent_pin_interests', methods: ['GET', 'POST'])]
     public function pinInterestsAction(
         EntityManagerInterface $manager,
         Request $request,
@@ -121,9 +116,8 @@ class AdherentController extends AbstractController
 
     /**
      * This action enables an adherent to create a committee.
-     *
-     * @Route("/creer-mon-comite", name="app_adherent_create_committee", methods={"GET", "POST"})
      */
+    #[Route(path: '/creer-mon-comite', name: 'app_adherent_create_committee', methods: ['GET', 'POST'])]
     public function createCommitteeAction(Request $request, CommitteeCreationCommandHandler $commandHandler): Response
     {
         $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
@@ -147,9 +141,7 @@ class AdherentController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/mes-comites", name="app_adherent_committees", methods={"GET"})
-     */
+    #[Route(path: '/mes-comites', name: 'app_adherent_committees', methods: ['GET'])]
     public function committeesAction(CommitteeManager $manager): Response
     {
         /** @var Adherent $adherent */
@@ -160,9 +152,7 @@ class AdherentController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/mes-evenements", name="app_adherent_events", methods={"GET"})
-     */
+    #[Route(path: '/mes-evenements', name: 'app_adherent_events', methods: ['GET'])]
     public function eventsAction(Request $request, EventRegistrationManager $manager): Response
     {
         try {
@@ -176,9 +166,7 @@ class AdherentController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/contacter/{uuid}", name="app_adherent_contact", requirements={"uuid": "%pattern_uuid%"}, methods={"GET", "POST"})
-     */
+    #[Route(path: '/contacter/{uuid}', name: 'app_adherent_contact', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET', 'POST'])]
     public function contactAction(
         Request $request,
         Adherent $adherent,

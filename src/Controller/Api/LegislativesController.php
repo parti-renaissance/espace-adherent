@@ -9,9 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LegislativesController extends AbstractController
 {
-    /**
-     * @Route("/candidates", name="api_legislatives_candidates", methods={"GET"})
-     */
+    #[Route(path: '/candidates', name: 'api_legislatives_candidates', methods: ['GET'])]
     public function getCandidatesListAction(LegislativeCandidateProvider $provider): JsonResponse
     {
         return new JsonResponse($provider->getForApi());

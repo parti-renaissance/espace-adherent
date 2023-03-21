@@ -31,9 +31,9 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * @Route("/comites/{slug}")
  * @IsGranted("HOST_COMMITTEE", subject="committee")
  */
+#[Route(path: '/comites/{slug}')]
 class CommitteeManagerController extends AbstractController
 {
     private $manager;
@@ -43,9 +43,7 @@ class CommitteeManagerController extends AbstractController
         $this->manager = $manager;
     }
 
-    /**
-     * @Route("/editer", name="app_committee_manager_edit", methods={"GET", "POST"})
-     */
+    #[Route(path: '/editer', name: 'app_committee_manager_edit', methods: ['GET', 'POST'])]
     public function editAction(
         Request $request,
         Committee $committee,
@@ -75,10 +73,9 @@ class CommitteeManagerController extends AbstractController
     }
 
     /**
-     * @Route("/evenements/ajouter", name="app_committee_manager_add_event", methods={"GET", "POST"})
-     *
      * @Security("committee.isApproved()")
      */
+    #[Route(path: '/evenements/ajouter', name: 'app_committee_manager_add_event', methods: ['GET', 'POST'])]
     public function addEventAction(
         Request $request,
         Committee $committee,
@@ -111,10 +108,9 @@ class CommitteeManagerController extends AbstractController
     }
 
     /**
-     * @Route("/membres", name="app_committee_manager_list_members", methods={"GET"})
-     *
      * @Security("committee.isApproved()")
      */
+    #[Route(path: '/membres', name: 'app_committee_manager_list_members', methods: ['GET'])]
     public function listMembersAction(
         Request $request,
         Committee $committee,
@@ -187,10 +183,10 @@ class CommitteeManagerController extends AbstractController
     }
 
     /**
-     * @Route("/promouvoir-suppleant/{member_uuid}", name="app_committee_promote_host", methods={"GET", "POST"})
      * @Security("is_granted('SUPERVISE_COMMITTEE', committee) and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee)")
      * @Entity("member", expr="repository.findByUuid(member_uuid)")
      */
+    #[Route(path: '/promouvoir-suppleant/{member_uuid}', name: 'app_committee_promote_host', methods: ['GET', 'POST'])]
     public function promoteHostAction(Request $request, Committee $committee, Adherent $member): Response
     {
         if (!$this->manager->isPromotableHost($member, $committee)) {
@@ -223,10 +219,10 @@ class CommitteeManagerController extends AbstractController
     }
 
     /**
-     * @Route("/retirer-suppleant/{member_uuid}", name="app_committee_demote_host", methods={"GET", "POST"})
      * @IsGranted("SUPERVISE_COMMITTEE", subject="committee")
      * @Entity("member", expr="repository.findByUuid(member_uuid)")
      */
+    #[Route(path: '/retirer-suppleant/{member_uuid}', name: 'app_committee_demote_host', methods: ['GET', 'POST'])]
     public function demoteHostAction(Request $request, Committee $committee, Adherent $member): Response
     {
         if (!$this->manager->isDemotableHost($member, $committee)) {

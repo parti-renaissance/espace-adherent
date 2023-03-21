@@ -22,18 +22,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CauseController extends AbstractController
 {
-    /**
-     * @Route("/causes/statistiques", name="api_causes_stats", methods={"GET"})
-     */
+    #[Route(path: '/causes/statistiques', name: 'api_causes_stats', methods: ['GET'])]
     public function statistiques(CauseRepository $causeRepository): JsonResponse
     {
         return new JsonResponse($causeRepository->getStatistics());
     }
 
     /**
-     * @Route("/v3/causes/followed", name="api_causes_followed", methods={"POST"})
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      */
+    #[Route(path: '/v3/causes/followed', name: 'api_causes_followed', methods: ['POST'])]
     public function followed(Request $request, CauseRepository $causeRepository): JsonResponse
     {
         /** @var Adherent $user */

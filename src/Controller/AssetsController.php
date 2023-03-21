@@ -44,9 +44,9 @@ class AssetsController extends AbstractController
     }
 
     /**
-     * @Route("/assets/{path}", requirements={"path": ".+"}, name="asset_url", methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
+    #[Route(path: '/assets/{path}', requirements: ['path' => '.+'], name: 'asset_url', methods: ['GET'])]
     public function assetAction(Server $glide, FilesystemInterface $storage, string $path, Request $request): Response
     {
         if (!$storage->has($path)) {
@@ -89,14 +89,9 @@ class AssetsController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     "/maps/{latitude},{longitude}",
-     *     requirements={"latitude": "^%pattern_coordinate%$", "longitude": "^%pattern_coordinate%$"},
-     *     name="map_url",
-     *     methods={"GET"}
-     * )
      * @Cache(maxage=900, smaxage=900)
      */
+    #[Route(path: '/maps/{latitude},{longitude}', requirements: ['latitude' => '^%pattern_coordinate%$', 'longitude' => '^%pattern_coordinate%$'], name: 'map_url', methods: ['GET'])]
     public function mapAction(
         Request $request,
         StaticMapProviderInterface $mapProvider,
@@ -115,9 +110,9 @@ class AssetsController extends AbstractController
     }
 
     /**
-     * @Route("/video/homepage.{format}", requirements={"format": "mov|mp4"}, name="homepage_video_url", methods={"GET"})
      * @Cache(maxage=60, smaxage=60)
      */
+    #[Route(path: '/video/homepage.{format}', requirements: ['format' => 'mov|mp4'], name: 'homepage_video_url', methods: ['GET'])]
     public function videoAction(FilesystemInterface $storage, string $format): Response
     {
         return new Response(
@@ -128,9 +123,9 @@ class AssetsController extends AbstractController
     }
 
     /**
-     * @Route("/algolia/{type}/{slug}", requirements={"type": "proposal|custom|article|clarification"}, methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
+    #[Route(path: '/algolia/{type}/{slug}', requirements: ['type' => 'proposal|custom|article|clarification'], methods: ['GET'])]
     public function algoliaAction(Server $glide, Request $request, string $type, string $slug): Response
     {
         $glide->setResponseFactory(new SymfonyResponseFactory($request));
@@ -202,9 +197,9 @@ class AssetsController extends AbstractController
     }
 
     /**
-     * @Route("/image-transformer.jpg", name="asset_timeline", methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
+    #[Route(path: '/image-transformer.jpg', name: 'asset_timeline', methods: ['GET'])]
     public function timelineImageAction(Request $request, TimelineImageFactory $imageFactory): Response
     {
         $locale = 'fr';

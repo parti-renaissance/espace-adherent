@@ -21,10 +21,9 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-referent/messagerie-instances", name="app_message_referent_instances_")
- *
  * @Security("is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_MESSAGES'))")
  */
+#[Route(path: '/espace-referent/messagerie-instances', name: 'app_message_referent_instances_')]
 class ReferentInstancesMessageController extends AbstractMessageController
 {
     private $territorialCouncilMembershipRepository;
@@ -42,10 +41,9 @@ class ReferentInstancesMessageController extends AbstractMessageController
     }
 
     /**
-     * @Route("/{uuid}/publish", name="publish_message", methods={"GET"})
-     *
      * @Security("is_granted('IS_AUTHOR_OF', message) and !message.isSendToTimeline()")
      */
+    #[Route(path: '/{uuid}/publish', name: 'publish_message', methods: ['GET'])]
     public function publishMessageAction(
         Request $request,
         AbstractAdherentMessage $message,

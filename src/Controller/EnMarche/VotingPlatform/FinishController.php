@@ -7,9 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/fin", name="app_voting_platform_finish_step", methods={"GET"})
- */
+#[Route(path: '/fin', name: 'app_voting_platform_finish_step', methods: ['GET'])]
 class FinishController extends AbstractController
 {
     public function __invoke(Election $election, Request $request): Response

@@ -8,15 +8,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/federations", name="app_renaissance_department_site_")
- */
+#[Route(path: '/federations', name: 'app_renaissance_department_site_')]
 class DepartmentSiteController extends AbstractController
 {
     /**
-     * @Route("/{slug}", name="view"), methods={"GET"}
      * @Entity("departmentSite", expr="repository.findOneBySlug(slug)")
      */
+    #[Route(path: '/{slug}', name: 'view')]
     public function departmentSiteAction(DepartmentSite $departmentSite): Response
     {
         return $this->render('renaissance/department_site/department_site.html.twig', [

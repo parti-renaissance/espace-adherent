@@ -14,14 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @Route("/espace-adherent/mon-compte/certification", name="app_certification_request_")
- */
+#[Route(path: '/espace-adherent/mon-compte/certification', name: 'app_certification_request_')]
 class CertificationRequestController extends AbstractController
 {
-    /**
-     * @Route(name="home", methods="GET")
-     */
+    #[Route(name: 'home', methods: 'GET')]
     public function homeAction(Request $request, AuthAppUrlManager $appUrlManager): Response
     {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
@@ -44,9 +40,7 @@ class CertificationRequestController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/demande", name="form", methods={"GET", "POST"})
-     */
+    #[Route(path: '/demande', name: 'form', methods: ['GET', 'POST'])]
     public function requestAction(
         Request $request,
         AuthAppUrlManager $appUrlManager,

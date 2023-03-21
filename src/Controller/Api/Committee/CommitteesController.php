@@ -19,19 +19,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CommitteesController extends AbstractController
 {
-    /**
-     * @Route("/committees", name="api_committees", methods={"GET"})
-     */
+    #[Route(path: '/committees', name: 'api_committees', methods: ['GET'])]
     public function getApprovedCommitteesAction(CommitteeProvider $provider): Response
     {
         return new JsonResponse($provider->getApprovedCommittees());
     }
 
     /**
-     * @Route("/committees/{uuid}/candidacies", name="app_api_committee_candidacies_get", methods={"GET"})
-     *
      * @Security("is_granted('MEMBER_OF_COMMITTEE', committee) or is_granted('ROLE_REFERENT') or is_granted('ROLE_DELEGATED_REFERENT')")
      */
+    #[Route(path: '/committees/{uuid}/candidacies', name: 'app_api_committee_candidacies_get', methods: ['GET'])]
     public function getCommitteeCandidaciesAction(
         Committee $committee,
         CommitteeMembershipRepository $repository
@@ -63,10 +60,9 @@ class CommitteesController extends AbstractController
     }
 
     /**
-     * @Route("/committee/{slug}/candidacy/available-memberships", name="api_committee_candidacy_available_memberships_get", methods={"GET"})
-     *
      * @IsGranted("MEMBER_OF_COMMITTEE", subject="committee")
      */
+    #[Route(path: '/committee/{slug}/candidacy/available-memberships', name: 'api_committee_candidacy_available_memberships_get', methods: ['GET'])]
     public function getAvailableMembershipsAction(
         Committee $committee,
         Request $request,

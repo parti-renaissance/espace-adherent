@@ -9,9 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/ovh/sms-webhook/{key}", name="app_ovh_sms_webhook", methods={"GET", "POST"})
- */
+#[Route(path: '/ovh/sms-webhook/{key}', name: 'app_ovh_sms_webhook', methods: ['GET', 'POST'])]
 class OvhSmsWebhookController extends AbstractController
 {
     private string $ovhSmsWebhookKey;

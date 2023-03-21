@@ -13,16 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(
- *     "/v3/teams/{uuid}/members/{adherent_uuid}",
- *     requirements={"uuid": "%pattern_uuid%", "adherent_uuid": "%pattern_uuid%"},
- *     name="api_team_remove_member",
- *     methods={"DELETE"}
- * )
  * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
- *
  * @Security("is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', team)")
  */
+#[Route(path: '/v3/teams/{uuid}/members/{adherent_uuid}', requirements: ['uuid' => '%pattern_uuid%', 'adherent_uuid' => '%pattern_uuid%'], name: 'api_team_remove_member', methods: ['DELETE'])]
 class RemoveTeamMemberController extends AbstractController
 {
     public function __invoke(

@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @Route("/newsletter/confirmation/{uuid}/{confirm_token}", name="app_renaissance_newsletter_confirm", methods={"GET"})
- */
+#[Route(path: '/newsletter/confirmation/{uuid}/{confirm_token}', name: 'app_renaissance_newsletter_confirm', methods: ['GET'])]
 class ConfirmNewsletterController extends AbstractController
 {
     /**

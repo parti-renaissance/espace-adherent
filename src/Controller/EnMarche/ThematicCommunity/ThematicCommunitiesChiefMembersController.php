@@ -12,14 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/communautes-thematiques", name="app_thematic_community_")
  * @IsGranted("ROLE_THEMATIC_COMMUNITY_CHIEF")
  */
+#[Route(path: '/communautes-thematiques', name: 'app_thematic_community_')]
 class ThematicCommunitiesChiefMembersController extends AbstractController
 {
-    /**
-     * @Route("/membres", name="members_list")
-     */
+    #[Route(path: '/membres', name: 'members_list')]
     public function members(Request $request, ThematicCommunityMembershipRepository $membershipRepository)
     {
         /** @var Adherent $user */

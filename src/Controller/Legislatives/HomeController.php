@@ -11,9 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    /**
-     * @Route("/", name="legislatives_homepage", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'legislatives_homepage', methods: ['GET'])]
     public function indexAction(Request $request): Response
     {
         $doctrine = $this->getDoctrine();
@@ -32,17 +30,13 @@ class HomeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/redirection-en-marche", name="legislatives_redirect_en_marche", methods={"GET"})
-     */
+    #[Route(path: '/redirection-en-marche', name: 'legislatives_redirect_en_marche', methods: ['GET'])]
     public function redirectEnMarcheAction(): Response
     {
         return $this->redirect('https://en-marche.fr', Response::HTTP_MOVED_PERMANENTLY);
     }
 
-    /**
-     * @Route("/candidat/{slug}", name="legislatives_candidate", methods={"GET"})
-     */
+    #[Route(path: '/candidat/{slug}', name: 'legislatives_candidate', methods: ['GET'])]
     public function candidateAction(LegislativeCandidate $candidate): Response
     {
         return $this->render('legislatives/candidate.html.twig', [

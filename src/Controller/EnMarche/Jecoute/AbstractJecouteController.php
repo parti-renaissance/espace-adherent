@@ -44,10 +44,8 @@ abstract class AbstractJecouteController extends AbstractController
         $this->zoneRepository = $zoneRepository;
     }
 
-    /**
-     * @Route("", name="local_surveys_list", methods={"GET"}, defaults={"type": SurveyTypeEnum::LOCAL})
-     * @Route("/questionnaires-nationaux", name="national_surveys_list", methods={"GET"}, defaults={"type": SurveyTypeEnum::NATIONAL})
-     */
+    #[Route(path: '', name: 'local_surveys_list', methods: ['GET'], defaults: ['type' => SurveyTypeEnum::LOCAL])]
+    #[Route(path: '/questionnaires-nationaux', name: 'national_surveys_list', methods: ['GET'], defaults: ['type' => SurveyTypeEnum::NATIONAL])]
     public function jecouteSurveysListAction(Request $request, string $type): Response
     {
         return $this->renderTemplate('jecoute/surveys_list.html.twig', [
@@ -56,13 +54,7 @@ abstract class AbstractJecouteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     path="/creer",
-     *     name="local_survey_create",
-     *     methods={"GET|POST"},
-     * )
-     */
+    #[Route(path: '/creer', name: 'local_survey_create', methods: ['GET|POST'])]
     public function jecouteSurveyCreateAction(
         Request $request,
         ObjectManager $manager,
@@ -100,15 +92,9 @@ abstract class AbstractJecouteController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/questionnaire/{uuid}/editer",
-     *     name="local_survey_edit",
-     *     requirements={"uuid": "%pattern_uuid%"},
-     *     methods={"GET|POST"}
-     * )
-     *
      * @IsGranted("CAN_EDIT_SURVEY", subject="survey")
      */
+    #[Route(path: '/questionnaire/{uuid}/editer', name: 'local_survey_edit', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET|POST'])]
     public function jecouteSurveyEditAction(
         Request $request,
         LocalSurvey $survey,
@@ -142,15 +128,9 @@ abstract class AbstractJecouteController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/questionnaire/{uuid}",
-     *     name="survey_show",
-     *     requirements={"uuid": "%pattern_uuid%"},
-     *     methods={"GET"}
-     * )
-     *
      * @Entity("survey", expr="repository.findOnePublishedByUuid(uuid)")
      */
+    #[Route(path: '/questionnaire/{uuid}', name: 'survey_show', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function jecouteSurveyShowAction(Survey $survey): Response
     {
         $isLocalSurvey = $survey instanceof LocalSurvey;
@@ -167,17 +147,10 @@ abstract class AbstractJecouteController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/questionnaire/{uuid}/stats",
-     *     name="survey_stats",
-     *     requirements={"uuid": "%pattern_uuid%"},
-     *     methods={"GET"}
-     * )
-     *
      * @Entity("survey", expr="repository.findOneByUuid(uuid)")
-     *
      * @Security("(is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)) or survey.isNational()")
      */
+    #[Route(path: '/questionnaire/{uuid}/stats', name: 'survey_stats', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function jecouteSurveyStatsAction(
         Request $request,
         Survey $survey,
@@ -210,19 +183,10 @@ abstract class AbstractJecouteController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/questionnaire/{uuid}/dupliquer",
-     *     name="local_survey_duplicate",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET"},
-     * )
-     *
      * @Entity("survey", expr="repository.findOneByUuid(uuid)")
-     *
      * @Security("is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)")
      */
+    #[Route(path: '/questionnaire/{uuid}/dupliquer', name: 'local_survey_duplicate', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function jecouteSurveyDuplicateAction(
         Request $request,
         LocalSurvey $survey,
@@ -239,14 +203,9 @@ abstract class AbstractJecouteController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/question/{uuid}/reponses",
-     *     name="survey_stats_answers_list",
-     *     condition="request.isXmlHttpRequest()",
-     * )
-     *
      * @Security("is_granted('IS_AUTHOR_OF', surveyQuestion.getSurvey()) or is_granted('IS_SURVEY_MANAGER_OF', surveyQuestion.getSurvey()) or surveyQuestion.getSurvey().isNational()")
      */
+    #[Route(path: '/question/{uuid}/reponses', name: 'survey_stats_answers_list', condition: 'request.isXmlHttpRequest()')]
     public function jecouteSurveyAnswersListAction(
         SurveyQuestion $surveyQuestion,
         DataAnswerRepository $dataAnswerRepository

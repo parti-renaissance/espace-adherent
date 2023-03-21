@@ -11,19 +11,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * @Route("/jecoute/departments")
  * @IsGranted("ROLE_OAUTH_SCOPE_JEMARCHE_APP")
  */
+#[Route(path: '/jecoute/departments')]
 class DepartmentController extends AbstractController
 {
-    /**
-     * @Route(
-     *     "/{postalCode}",
-     *     requirements={"postalCode": "\d{5}"},
-     *     name="api_jecoute_departments_find",
-     *     methods="GET"
-     * )
-     */
+    #[Route(path: '/{postalCode}', requirements: ['postalCode' => '\d{5}'], name: 'api_jecoute_departments_find', methods: 'GET')]
     public function find(
         string $postalCode,
         SerializerInterface $serializer,

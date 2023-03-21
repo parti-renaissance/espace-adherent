@@ -49,10 +49,9 @@ class AdminExportCityCardController extends AbstractController
     }
 
     /**
-     * @Route("/app/election-citycard/export-all.{_format}", name="admin_city_card_export_all", methods={"GET"}, defaults={"_format": "xls"}, requirements={"_format": "csv|xls"})
-     *
      * @IsGranted("ROLE_ADMIN_ELECTION_CITY_CARD")
      */
+    #[Route(path: '/app/election-citycard/export-all.{_format}', name: 'admin_city_card_export_all', methods: ['GET'], defaults: ['_format' => 'xls'], requirements: ['_format' => 'csv|xls'])]
     public function exportCityCardsAction(Request $request, string $_format): Response
     {
         PhpConfigurator::disableMemoryLimit();
@@ -151,10 +150,9 @@ class AdminExportCityCardController extends AbstractController
     }
 
     /**
-     * @Route("/app/election-citycard/export-lists.{_format}", name="admin_city_card_export_lists", methods={"GET"}, defaults={"_format": "xls"}, requirements={"_format": "csv|xls"})
-     *
      * @IsGranted("ROLE_ADMIN_ELECTION_CITY_CARD")
      */
+    #[Route(path: '/app/election-citycard/export-lists.{_format}', name: 'admin_city_card_export_lists', methods: ['GET'], defaults: ['_format' => 'xls'], requirements: ['_format' => 'csv|xls'])]
     public function exportVoteResultListsAction(Request $request, string $_format): Response
     {
         PhpConfigurator::disableMemoryLimit();

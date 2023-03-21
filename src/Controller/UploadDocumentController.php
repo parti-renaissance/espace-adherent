@@ -20,10 +20,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UploadDocumentController extends AbstractController
 {
     /**
-     * @Route("/upload/{type}", name="app_filebrowser_upload", methods={"POST"})
-     *
      * @IsGranted("FILE_UPLOAD", subject="type")
      */
+    #[Route(path: '/upload/{type}', name: 'app_filebrowser_upload', methods: ['POST'])]
     public function filebrowserUploadAction(
         string $type,
         Request $request,
@@ -59,10 +58,9 @@ class UploadDocumentController extends AbstractController
     }
 
     /**
-     * @Route("/api/v3/upload/{type}", name="api_filebrowser_upload_v3", methods={"POST"})
-     *
      * @IsGranted("FILE_UPLOAD", subject="type")
      */
+    #[Route(path: '/api/v3/upload/{type}', name: 'api_filebrowser_upload_v3', methods: ['POST'])]
     public function filebrowserUploadForApi(string $type, Request $request, UserDocumentManager $manager): Response
     {
         if (!\in_array($type, UserDocument::ALL_TYPES)) {
@@ -92,9 +90,9 @@ class UploadDocumentController extends AbstractController
     }
 
     /**
-     * @Route("/ck-upload/{type}", name="app_filebrowser_upload_ckeditor5", methods={"POST"})
      * @IsGranted("FILE_UPLOAD", subject="type")
      */
+    #[Route(path: '/ck-upload/{type}', name: 'app_filebrowser_upload_ckeditor5', methods: ['POST'])]
     public function ckFileUploadAction(string $type, Request $request, UserDocumentManager $manager): Response
     {
         if (!\in_array($type, UserDocument::ALL_TYPES)) {
@@ -118,9 +116,7 @@ class UploadDocumentController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/documents-partages/{uuid}/{filename}", requirements={"uuid": "%pattern_uuid%"}, name="app_download_user_document", methods={"GET"})
-     */
+    #[Route(path: '/documents-partages/{uuid}/{filename}', requirements: ['uuid' => '%pattern_uuid%'], name: 'app_download_user_document', methods: ['GET'])]
     public function downloadDocumentAction(
         UserDocument $document,
         string $filename,

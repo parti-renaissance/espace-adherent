@@ -9,10 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/mon-vote", name="app_adherent_my_vote", methods={"GET"})
- *
  * @IsGranted("ROLE_ADHERENT")
  */
+#[Route(path: '/mon-vote', name: 'app_adherent_my_vote', methods: ['GET'])]
 class MyVoteController extends AbstractController
 {
     use CanaryControllerTrait;

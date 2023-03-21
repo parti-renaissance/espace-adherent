@@ -11,9 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ScopesController extends AbstractController
 {
-    /**
-     * @Route("/v3/profile/me/scopes", name="app_api_user_profile_scopes", methods={"GET"})
-     */
+    #[Route(path: '/v3/profile/me/scopes', name: 'app_api_user_profile_scopes', methods: ['GET'])]
     public function __invoke(GeneralScopeGenerator $scopeGenerator): JsonResponse
     {
         /** @var Adherent $user */

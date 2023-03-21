@@ -15,9 +15,7 @@ class GetNearPointsController extends AbstractController
 {
     private const MAX_LIMIT = 300;
 
-    /**
-     * @Route("/v3/pap/address/near", name="api_pap_get_near_addresses", methods={"GET"})
-     */
+    #[Route(path: '/v3/pap/address/near', name: 'api_pap_get_near_addresses', methods: ['GET'])]
     public function getAddressAction(
         Request $request,
         AddressRepository $addressRepository,
@@ -46,9 +44,7 @@ class GetNearPointsController extends AbstractController
         ), Response::HTTP_OK, [], ['groups' => ['pap_address_list']]);
     }
 
-    /**
-     * @Route("/v3/pap/vote-places/near", name="api_pap_get_near_vote_places", methods={"GET"})
-     */
+    #[Route(path: '/v3/pap/vote-places/near', name: 'api_pap_get_near_vote_places', methods: ['GET'])]
     public function getVotePlaceAction(Request $request, VotePlaceRepository $votePlaceRepository): Response
     {
         if (!$request->query->has('latitude') || !$request->query->has('longitude')) {

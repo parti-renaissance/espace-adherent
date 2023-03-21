@@ -9,9 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/espace-adherent/mon-comite-local/modifier", name="app_my_committee_show_list", methods={"GET"})
- */
+#[Route(path: '/espace-adherent/mon-comite-local/modifier', name: 'app_my_committee_show_list', methods: ['GET'])]
 class ShowCommitteeListController extends AbstractController
 {
     public function __invoke(CommitteeRepository $committeeRepository): Response

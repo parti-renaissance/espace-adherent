@@ -28,9 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/me", name="app_api_user_show_me_for_oauth", methods={"GET"})
-     */
+    #[Route(path: '/me', name: 'app_api_user_show_me_for_oauth', methods: ['GET'])]
     public function oauthShowMe(SerializerInterface $serializer)
     {
         /** @var Adherent|DeviceApiUser $user */
@@ -89,18 +87,10 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/profile/mot-de-passe/{user_uuid}/{create_password_token}",
-     *     name="user_create_password",
-     *     requirements={
-     *         "user_uuid": "%pattern_uuid%",
-     *         "reset_password_token": "%pattern_sha1%"
-     *     },
-     *     methods={"POST"}
-     * )
      * @Entity("user", expr="repository.findOneByUuid(user_uuid)")
      * @Entity("createPasswordToken", expr="repository.findByToken(create_password_token)")
      */
+    #[Route(path: '/profile/mot-de-passe/{user_uuid}/{create_password_token}', name: 'user_create_password', requirements: ['user_uuid' => '%pattern_uuid%', 'reset_password_token' => '%pattern_sha1%'], methods: ['POST'])]
     public function createPassword(
         Request $request,
         Adherent $user,

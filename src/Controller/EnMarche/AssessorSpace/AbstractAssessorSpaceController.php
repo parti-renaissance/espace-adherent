@@ -44,9 +44,7 @@ abstract class AbstractAssessorSpaceController extends AbstractController
         $this->enableAssessorSpace = $enableAssessorSpace;
     }
 
-    /**
-     * @Route("/bureaux-de-vote", name="_attribution_form", methods={"GET", "POST"})
-     */
+    #[Route(path: '/bureaux-de-vote', name: '_attribution_form', methods: ['GET', 'POST'])]
     public function votePlaceAttributionAction(
         Request $request,
         AssessorAssociationManager $manager,
@@ -96,9 +94,7 @@ abstract class AbstractAssessorSpaceController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/export.{_format}", name="_export", methods={"GET"}, defaults={"_format": "xls"}, requirements={"_format": "csv|xls"})
-     */
+    #[Route(path: '/export.{_format}', name: '_export', methods: ['GET'], defaults: ['_format' => 'xls'], requirements: ['_format' => 'csv|xls'])]
     public function exportAssessorsAction(string $_format, AssessorsExporter $exporter): Response
     {
         $this->checkIfSpaceEnabled();
@@ -106,10 +102,8 @@ abstract class AbstractAssessorSpaceController extends AbstractController
         return $exporter->getResponse($_format, $this->getAssessorRequestExportFilter());
     }
 
-    /**
-     * @Route("/bureaux-de-vote/{id}/desactiver", name="_disable_vote_place", methods={"GET"}, defaults={"enabled": false})
-     * @Route("/bureaux-de-vote/{id}/activer", name="_enable_vote_place", methods={"GET"}, defaults={"enabled": true})
-     */
+    #[Route(path: '/bureaux-de-vote/{id}/desactiver', name: '_disable_vote_place', methods: ['GET'], defaults: ['enabled' => false])]
+    #[Route(path: '/bureaux-de-vote/{id}/activer', name: '_enable_vote_place', methods: ['GET'], defaults: ['enabled' => true])]
     public function toggleVotePlaceStatusAction(
         bool $enabled,
         VotePlace $votePlace,
@@ -135,9 +129,7 @@ abstract class AbstractAssessorSpaceController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/bureaux-de-vote/ajouter", name="_create_vote_place", methods={"GET", "POST"})
-     */
+    #[Route(path: '/bureaux-de-vote/ajouter', name: '_create_vote_place', methods: ['GET', 'POST'])]
     public function createVotePlaceAction(Request $request, EntityManagerInterface $manager): Response
     {
         $this->checkIfSpaceEnabled();
@@ -161,9 +153,7 @@ abstract class AbstractAssessorSpaceController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/resultats/export.{_format}", name="_results_export", methods={"GET"}, defaults={"_format": "xls"}, requirements={"_format": "csv|xls"})
-     */
+    #[Route(path: '/resultats/export.{_format}', name: '_results_export', methods: ['GET'], defaults: ['_format' => 'xls'], requirements: ['_format' => 'csv|xls'])]
     public function exportResultsAction(
         string $_format,
         VoteResultsExporter $exporter,

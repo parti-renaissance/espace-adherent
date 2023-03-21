@@ -14,16 +14,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/myeurope")
  * @IsGranted("ROLE_ADMIN_MY_EUROPE")
  */
+#[Route(path: '/myeurope')]
 class AdminMyEuropeController extends AbstractController
 {
     public const PER_PAGE = 1000;
 
-    /**
-     * @Route("/export/choices", name="app_admin_myeurope_export_choices", methods={"GET"})
-     */
+    #[Route(path: '/export/choices', name: 'app_admin_myeurope_export_choices', methods: ['GET'])]
     public function exportChoicesAction(MyEuropeSerializer $serializer, MyEuropeChoiceRepository $repository): Response
     {
         $exported = $serializer->serializeChoices($repository->findAll());
@@ -37,9 +35,7 @@ class AdminMyEuropeController extends AbstractController
         return $response;
     }
 
-    /**
-     * @Route("/export/invitations", name="app_admin_myeurope_export_invitations", methods={"GET"})
-     */
+    #[Route(path: '/export/invitations', name: 'app_admin_myeurope_export_invitations', methods: ['GET'])]
     public function exportInvitationsAction(MyEuropeInvitationRepository $repository): Response
     {
         return $this->render('admin/interactive/invitation_export.html.twig', [
@@ -60,9 +56,7 @@ class AdminMyEuropeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/export/invitations/partial", name="app_admin_myeurope_export_invitations_partial", methods={"GET"})
-     */
+    #[Route(path: '/export/invitations/partial', name: 'app_admin_myeurope_export_invitations_partial', methods: ['GET'])]
     public function exportInvitationsPartialAction(
         MyEuropeInvitationRepository $repository,
         Request $request,

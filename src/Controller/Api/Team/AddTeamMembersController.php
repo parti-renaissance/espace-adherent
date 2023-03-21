@@ -16,15 +16,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @Route(
- *     "/v3/teams/{uuid}/add-members",
- *     requirements={"uuid": "%pattern_uuid%"},
- *     name="api_team_add_members",
- *     methods={"PUT"}
- * )
- *
  * @Security("is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', team)")
  */
+#[Route(path: '/v3/teams/{uuid}/add-members', requirements: ['uuid' => '%pattern_uuid%'], name: 'api_team_add_members', methods: ['PUT'])]
 class AddTeamMembersController extends AbstractController
 {
     public function __invoke(

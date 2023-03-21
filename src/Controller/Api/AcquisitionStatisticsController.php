@@ -14,10 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class AcquisitionStatisticsController extends AbstractController
 {
     /**
-     * @Route("/statistics/acquisition", name="api_acquisition_statistics", methods={"GET"})
-     *
      * @IsGranted("ROLE_OAUTH_SCOPE_READ:STATS")
      */
+    #[Route(path: '/statistics/acquisition', name: 'api_acquisition_statistics', methods: ['GET'])]
     public function getStatsAction(Request $request, Aggregator $aggregator): Response
     {
         try {

@@ -20,9 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NewsletterController extends AbstractController
 {
-    /**
-     * @Route("/newsletter", name="newsletter_subscription", methods={"GET", "POST"})
-     */
+    #[Route(path: '/newsletter', name: 'newsletter_subscription', methods: ['GET', 'POST'])]
     public function subscriptionAction(
         Request $request,
         GeoCoder $geoCoder,
@@ -74,9 +72,9 @@ class NewsletterController extends AbstractController
     }
 
     /**
-     * @Route("/newsletter/confirmation/{uuid}/{confirm_token}", name="app_newsletter_confirmation", methods={"GET"})
      * @Entity("subscription", expr="repository.findOneNotConfirmedByUuidAndToken(uuid, confirm_token)")
      */
+    #[Route(path: '/newsletter/confirmation/{uuid}/{confirm_token}', name: 'app_newsletter_confirmation', methods: ['GET'])]
     public function subscriptionConfirmationAction(
         NewsletterSubscription $subscription,
         NewsletterSubscriptionHandler $newsletterSubscriptionHandler
@@ -86,25 +84,19 @@ class NewsletterController extends AbstractController
         return $this->redirectToRoute('app_newsletter_subscription_subscribed');
     }
 
-    /**
-     * @Route("/newsletter/suscription-demandee", name="app_newsletter_subscription_mail_sent", methods={"GET"})
-     */
+    #[Route(path: '/newsletter/suscription-demandee', name: 'app_newsletter_subscription_mail_sent', methods: ['GET'])]
     public function subscriptionMailSendedAction(): Response
     {
         return $this->render('newsletter/subscription_mail_sent.html.twig');
     }
 
-    /**
-     * @Route("/newsletter/merci", name="app_newsletter_subscription_subscribed", methods={"GET"})
-     */
+    #[Route(path: '/newsletter/merci', name: 'app_newsletter_subscription_subscribed', methods: ['GET'])]
     public function subscribedAction(): Response
     {
         return $this->render('newsletter/subscribed.html.twig');
     }
 
-    /**
-     * @Route("/newsletter/desinscription", name="app_newsletter_unsubscribe", methods={"GET", "POST"})
-     */
+    #[Route(path: '/newsletter/desinscription', name: 'app_newsletter_unsubscribe', methods: ['GET', 'POST'])]
     public function unsubscribeAction(
         Request $request,
         NewsletterSubscriptionHandler $newsletterSubscriptionHandler
@@ -123,17 +115,13 @@ class NewsletterController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/newsletter/desinscription/desinscrit", name="app_newsletter_unsubscribe_unsubscribed", methods={"GET"})
-     */
+    #[Route(path: '/newsletter/desinscription/desinscrit', name: 'app_newsletter_unsubscribe_unsubscribed', methods: ['GET'])]
     public function unsubscribedAction(): Response
     {
         return $this->render('newsletter/unsubscribed.html.twig');
     }
 
-    /**
-     * @Route("/newsletter/invitation", name="app_newsletter_invitation", methods={"GET", "POST"})
-     */
+    #[Route(path: '/newsletter/invitation', name: 'app_newsletter_invitation', methods: ['GET', 'POST'])]
     public function invitationAction(Request $request, NewsletterInvitationHandler $handler): Response
     {
         $form = $this->createForm(NewsletterInvitationType::class)
@@ -154,9 +142,7 @@ class NewsletterController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/newsletter/invitation/merci", name="app_newsletter_invitation_sent", methods={"GET"})
-     */
+    #[Route(path: '/newsletter/invitation/merci', name: 'app_newsletter_invitation_sent', methods: ['GET'])]
     public function invitationSentAction(Request $request): Response
     {
         if (!$invitationsCount = $request->getSession()->remove('newsletter_invitations_count')) {

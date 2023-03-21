@@ -13,9 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/territorialcouncil")
- */
+#[Route(path: '/territorialcouncil')]
 class AdminTerritorialCouncilController extends AbstractController
 {
     private $politicalCommitteeManager;
@@ -26,9 +24,9 @@ class AdminTerritorialCouncilController extends AbstractController
     }
 
     /**
-     * @Route("/{territorialCouncil}/members/{adherent}/{action}-membership", name="app_admin_territorial_council_change_political_committee_membership", methods={"GET"})
      * @IsGranted("ROLE_ADMIN_TERRITORIAL_COUNCIL")
      */
+    #[Route(path: '/{territorialCouncil}/members/{adherent}/{action}-membership', name: 'app_admin_territorial_council_change_political_committee_membership', methods: ['GET'])]
     public function changePoliticalCommitteeMembershipAction(
         Request $request,
         TerritorialCouncil $territorialCouncil,

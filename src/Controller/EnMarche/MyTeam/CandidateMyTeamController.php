@@ -9,10 +9,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-candidat/mon-equipe", name="app_candidate_my_team_", methods={"GET"})
- *
  * @IsGranted("ROLE_CANDIDATE")
  */
+#[Route(path: '/espace-candidat/mon-equipe', name: 'app_candidate_my_team_', methods: ['GET'])]
 class CandidateMyTeamController extends AbstractMyTeamController
 {
     private $referentTagRepository;

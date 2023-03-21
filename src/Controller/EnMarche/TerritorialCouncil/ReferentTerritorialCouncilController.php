@@ -16,20 +16,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-referent/instances", name="app_territorial_council_referent_")
- *
  * @IsGranted("ROLE_REFERENT")
  */
+#[Route(path: '/espace-referent/instances', name: 'app_territorial_council_referent_')]
 class ReferentTerritorialCouncilController extends AbstractController
 {
     use AccessDelegatorTrait;
 
-    /**
-     * @Route("/membres.{_format}",
-     *     name="members_list", methods={"GET"},
-     *     defaults={"_format": "html"}, requirements={"_format": "html|csv|xls"}
-     * )
-     */
+    #[Route(path: '/membres.{_format}', name: 'members_list', methods: ['GET'], defaults: ['_format' => 'html'], requirements: ['_format' => 'html|csv|xls'])]
     public function membersListAction(
         Request $request,
         string $_format,

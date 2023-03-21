@@ -17,10 +17,9 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/v3/adherents/columns", name="app_adherents_list_get_columns", methods={"GET"})
- *
  * @IsGranted("IS_AUTHENTICATED_FULLY")
  */
+#[Route(path: '/v3/adherents/columns', name: 'app_adherents_list_get_columns', methods: ['GET'])]
 class ColumnsConfigurationController extends AbstractController
 {
     private $authorizationChecker;

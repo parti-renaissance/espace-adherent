@@ -17,13 +17,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AdherentController extends AbstractController
 {
     /**
-     * @Route(
-     *     "/adherents/me/anonymize",
-     *     name="api_adherent_anonymize_me",
-     *     methods={"PUT"}
-     * )
      * @IsGranted("ROLE_ADHERENT")
      */
+    #[Route(path: '/adherents/me/anonymize', name: 'api_adherent_anonymize_me', methods: ['PUT'])]
     public function anonymizeAction(
         Request $request,
         SerializerInterface $serializer,
@@ -54,9 +50,7 @@ class AdherentController extends AbstractController
         return JsonResponse::fromJsonString($errors, Response::HTTP_BAD_REQUEST);
     }
 
-    /**
-     * @Route("/adherents/{uuid}/committees", name="api_adherent_committees", methods={"GET"})
-     */
+    #[Route(path: '/adherents/{uuid}/committees', name: 'api_adherent_committees', methods: ['GET'])]
     public function getAdherentCommittees(Adherent $adherent): Response
     {
         $this->denyAccessUnlessGranted(ManagedUserVoter::IS_MANAGED_USER, $adherent);

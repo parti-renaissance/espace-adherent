@@ -15,15 +15,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/donator")
- *
  * @IsGranted("ROLE_ADMIN_FINANCE")
  */
+#[Route(path: '/donator')]
 class AdminDonatorController extends AbstractController
 {
-    /**
-     * @Route("/merge", name="app_admin_donator_merge", methods={"GET", "POST"})
-     */
+    #[Route(path: '/merge', name: 'app_admin_donator_merge', methods: ['GET', 'POST'])]
     public function mergeAction(Request $request, DonatorMergeCommandHandler $donatorMergeCommandHandler): Response
     {
         $donatorMergeCommand = new DonatorMergeCommand();
@@ -54,9 +51,7 @@ class AdminDonatorController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/extract", name="app_admin_donator_extract", methods={"GET", "POST"})
-     */
+    #[Route(path: '/extract', name: 'app_admin_donator_extract', methods: ['GET', 'POST'])]
     public function extractAction(
         Request $request,
         DonatorExtractCommandHandler $donatorExtractCommandHandler

@@ -30,15 +30,13 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @Route("/evenements/{slug}", name="app_committee_event")
  * @Entity("event", expr="repository.findOnePublishedBySlug(slug)")
  * @IsGranted("CAN_ACCESS_EVENT", subject="event")
  */
+#[Route(path: '/evenements/{slug}', name: 'app_committee_event')]
 class EventController extends AbstractController
 {
-    /**
-     * @Route(name="_show", methods={"GET"})
-     */
+    #[Route(name: '_show', methods: ['GET'])]
     public function showAction(BaseEvent $event, EventRepository $eventRepository): Response
     {
         $params = [
@@ -57,9 +55,7 @@ class EventController extends AbstractController
         return $this->render('events/show.html.twig', $params);
     }
 
-    /**
-     * @Route("/ical", name="_export_ical", methods={"GET"})
-     */
+    #[Route(path: '/ical', name: '_export_ical', methods: ['GET'])]
     public function exportIcalAction(BaseEvent $event, SerializerInterface $serializer): Response
     {
         $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics';
@@ -72,11 +68,10 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/inscription-adherent", name="_attend_adherent", methods={"GET"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
-     *
      * @IsGranted("ROLE_ADHERENT")
      */
+    #[Route(path: '/inscription-adherent', name: '_attend_adherent', methods: ['GET'])]
     public function attendAdherentAction(
         BaseEvent $event,
         ValidatorInterface $validator,
@@ -113,9 +108,9 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/inscription", name="_attend", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
+    #[Route(path: '/inscription', name: '_attend', methods: ['GET', 'POST'])]
     public function attendAction(
         Request $request,
         BaseEvent $event,
@@ -163,14 +158,7 @@ class EventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     path="/confirmation",
-     *     name="_attend_confirmation",
-     *     condition="request.query.has('registration')",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/confirmation', name: '_attend_confirmation', condition: "request.query.has('registration')", methods: ['GET'])]
     public function attendConfirmationAction(
         Request $request,
         BaseEvent $event,
@@ -194,9 +182,7 @@ class EventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/invitation", name="_invite", methods={"GET", "POST"})
-     */
+    #[Route(path: '/invitation', name: '_invite', methods: ['GET', 'POST'])]
     public function inviteAction(Request $request, BaseEvent $event, EventInvitationHandler $handler): Response
     {
         $eventInvitation = EventInvitation::createFromAdherent(
@@ -227,9 +213,7 @@ class EventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/invitation/merci", name="_invitation_sent", methods={"GET"})
-     */
+    #[Route(path: '/invitation/merci', name: '_invitation_sent', methods: ['GET'])]
     public function invitationSentAction(Request $request, BaseEvent $event): Response
     {
         if (!$invitationsCount = $request->getSession()->remove('event_invitations_count')) {
@@ -244,9 +228,7 @@ class EventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/desinscription", name="_unregistration", condition="request.isXmlHttpRequest()", methods={"GET", "POST"})
-     */
+    #[Route(path: '/desinscription', name: '_unregistration', condition: 'request.isXmlHttpRequest()', methods: ['GET', 'POST'])]
     public function unregistrationAction(
         Request $request,
         BaseEvent $event,

@@ -17,13 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class BuildingHistoryController extends AbstractController
 {
-    /**
-     * @Route("/v3/pap/buildings/{uuid}/history",
-     *     requirements={"uuid": "%pattern_uuid%"},
-     *     name="api_get_building_history",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/v3/pap/buildings/{uuid}/history', requirements: ['uuid' => '%pattern_uuid%'], name: 'api_get_building_history', methods: ['GET'])]
     public function __invoke(
         Request $request,
         Building $building,

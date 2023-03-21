@@ -22,9 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/communautes-thematiques", name="app_thematic_community_")
- */
+#[Route(path: '/communautes-thematiques', name: 'app_thematic_community_')]
 class ThematicCommunityController extends AbstractController
 {
     use CanaryControllerTrait;
@@ -37,9 +35,7 @@ class ThematicCommunityController extends AbstractController
         $this->handler = $handler;
     }
 
-    /**
-     * @Route("", name="index", methods={"GET"})
-     */
+    #[Route(path: '', name: 'index', methods: ['GET'])]
     public function indexAction(
         ThematicCommunityRepository $thematicCommunityRepository,
         ThematicCommunityMembershipRepository $membershipRepository
@@ -64,9 +60,9 @@ class ThematicCommunityController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="join", methods={"GET", "POST"})
      * @Entity("thematicCommunity", expr="repository.findOneBy({'slug': slug, 'enabled': true})")
      */
+    #[Route(path: '/{slug}', name: 'join', methods: ['GET', 'POST'])]
     public function joinAction(
         Request $request,
         ThematicCommunity $thematicCommunity,
@@ -120,9 +116,9 @@ class ThematicCommunityController extends AbstractController
     }
 
     /**
-     * @Route("/adhesion/{uuid}/modifier", name="membership_edit", methods={"GET", "POST"})
      * @Security("membership.getAdherent() == user")
      */
+    #[Route(path: '/adhesion/{uuid}/modifier', name: 'membership_edit', methods: ['GET', 'POST'])]
     public function editMembershipAction(Request $request, ThematicCommunityMembership $membership): Response
     {
         $this->disableInProduction();
@@ -152,9 +148,9 @@ class ThematicCommunityController extends AbstractController
     }
 
     /**
-     * @Route("/adhesion/{uuid}/quitter", name="membership_leave", methods={"GET"})
      * @Security("membership.getAdherent() == user")
      */
+    #[Route(path: '/adhesion/{uuid}/quitter', name: 'membership_leave', methods: ['GET'])]
     public function leaveMembershipAction(ThematicCommunityMembership $membership): RedirectResponse
     {
         $this->disableInProduction();
@@ -167,9 +163,9 @@ class ThematicCommunityController extends AbstractController
     }
 
     /**
-     * @Route("/adhesion/{uuid}/confirmation", name="membership_confirm", methods={"GET"})
      * @Security("membership.getAdherent() == user")
      */
+    #[Route(path: '/adhesion/{uuid}/confirmation', name: 'membership_confirm', methods: ['GET'])]
     public function confirmMembershipAction(ThematicCommunityMembership $membership): RedirectResponse
     {
         $this->disableInProduction();
@@ -182,9 +178,9 @@ class ThematicCommunityController extends AbstractController
     }
 
     /**
-     * @Route("/adhesion/{uuid}/renvoyer-email", name="membership_resend_confirm_email", methods={"GET"})
      * @Security("membership.getAdherent() == user")
      */
+    #[Route(path: '/adhesion/{uuid}/renvoyer-email', name: 'membership_resend_confirm_email', methods: ['GET'])]
     public function reSendConfirmationEmailAction(ThematicCommunityMembership $membership): RedirectResponse
     {
         $this->disableInProduction();

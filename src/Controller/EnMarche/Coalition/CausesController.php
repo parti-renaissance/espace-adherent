@@ -19,15 +19,12 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-coalition/causes", name="app_coalition_")
- *
  * @IsGranted("ROLE_COALITION_MODERATOR")
  */
+#[Route(path: '/espace-coalition/causes', name: 'app_coalition_')]
 class CausesController extends AbstractController
 {
-    /**
-     * @Route(".{_format}", name="causes_list", methods={"GET"}, defaults={"_format": "html"}, requirements={"_format": "html|csv|xls"})
-     */
+    #[Route(path: '.{_format}', name: 'causes_list', methods: ['GET'], defaults: ['_format' => 'html'], requirements: ['_format' => 'html|csv|xls'])]
     public function list(
         Request $request,
         string $_format,
@@ -54,10 +51,8 @@ class CausesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/approuver", name="approve_causes", defaults={"status": Cause::STATUS_APPROVED}, condition="request.isXmlHttpRequest()", methods={"POST"})
-     * @Route("/refuser", name="refuse_causes", defaults={"status": Cause::STATUS_REFUSED}, condition="request.isXmlHttpRequest()", methods={"POST"})
-     */
+    #[Route(path: '/approuver', name: 'approve_causes', defaults: ['status' => Cause::STATUS_APPROVED], condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
+    #[Route(path: '/refuser', name: 'refuse_causes', defaults: ['status' => Cause::STATUS_REFUSED], condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
     public function changeCauseStatus(
         string $status,
         Request $request,
@@ -102,9 +97,7 @@ class CausesController extends AbstractController
         return $this->json('', Response::HTTP_OK);
     }
 
-    /**
-     * @Route("/{slug}/editer", name="cause_edit", requirements={"slug": "[A-Za-z0-9\-]+"}, methods={"GET", "POST"})
-     */
+    #[Route(path: '/{slug}/editer', name: 'cause_edit', requirements: ['slug' => '[A-Za-z0-9\-]+'], methods: ['GET', 'POST'])]
     public function editAction(Request $request, Cause $cause, EntityManagerInterface $entityManager): Response
     {
         $actualAuthor = $cause->getAuthor();

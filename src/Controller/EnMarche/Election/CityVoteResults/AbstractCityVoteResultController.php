@@ -23,9 +23,7 @@ abstract class AbstractCityVoteResultController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @Route("/communes/{id}/resultats", name="_city_vote_results_edit", methods={"GET", "POST"})
-     */
+    #[Route(path: '/communes/{id}/resultats', name: '_city_vote_results_edit', methods: ['GET', 'POST'])]
     public function __invoke(City $city, Request $request): Response
     {
         $cityVoteResult = $this->electionManager->getCityVoteResultForCurrentElectionRound($city, true);

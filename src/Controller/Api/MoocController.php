@@ -10,22 +10,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/mooc")
- */
+#[Route(path: '/mooc')]
 class MoocController extends AbstractController
 {
-    /**
-     * @Route("", name="api_mooc_landing", methods={"GET"})
-     */
+    #[Route(path: '', name: 'api_mooc_landing', methods: ['GET'])]
     public function moocLandingPageAction(MoocRepository $moocRepository): Response
     {
         return $this->json($moocRepository->findAllOrdered(), Response::HTTP_OK, [], ['groups' => ['mooc_list']]);
     }
 
-    /**
-     * @Route("/sitemap.xml", name="api_mooc_sitemap", methods={"GET"})
-     */
+    #[Route(path: '/sitemap.xml', name: 'api_mooc_sitemap', methods: ['GET'])]
     public function sitemapAction(SitemapFactory $sitemapFactory): Response
     {
         return $this->createXmlResponse(
@@ -34,9 +28,9 @@ class MoocController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="api_mooc", methods={"GET"})
      * @Entity("mooc", expr="repository.findOneBySlug(slug)")
      */
+    #[Route(path: '/{slug}', name: 'api_mooc', methods: ['GET'])]
     public function moocAction(Mooc $mooc): Response
     {
         return $this->json($mooc, Response::HTTP_OK, [], ['groups' => ['mooc_read']]);

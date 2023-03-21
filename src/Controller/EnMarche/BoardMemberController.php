@@ -18,24 +18,20 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
- * @Route("/espace-membres-conseil")
  * @IsGranted("ROLE_BOARD_MEMBER")
  */
+#[Route(path: '/espace-membres-conseil')]
 class BoardMemberController extends AbstractController
 {
     public const TOKEN_ID = 'board_member_search';
 
-    /**
-     * @Route("/", name="app_board_member_home", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'app_board_member_home', methods: ['GET'])]
     public function indexAction()
     {
         return $this->render('board_member/home.html.twig');
     }
 
-    /**
-     * @Route("/recherche", name="app_board_member_search", methods={"GET"})
-     */
+    #[Route(path: '/recherche', name: 'app_board_member_search', methods: ['GET'])]
     public function searchAction(
         Request $request,
         BoardMemberManager $manager,
@@ -61,9 +57,7 @@ class BoardMemberController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/profils-sauvegardes", name="app_board_member_saved_profile", methods={"GET"})
-     */
+    #[Route(path: '/profils-sauvegardes', name: 'app_board_member_saved_profile', methods: ['GET'])]
     public function savedProfilAction(BoardMemberManager $manager): Response
     {
         $savedMembers = $manager->findSavedMembers($this->getUser());
@@ -75,9 +69,7 @@ class BoardMemberController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/recherche/message", name="app_board_member_message_search", methods={"GET", "POST"})
-     */
+    #[Route(path: '/recherche/message', name: 'app_board_member_message_search', methods: ['GET', 'POST'])]
     public function sendMessageToSearchResultsAction(
         Request $request,
         BoardMemberManager $manager,
@@ -111,9 +103,7 @@ class BoardMemberController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/profils-sauvegardes/message", name="app_board_member_message_saved_profile", methods={"GET", "POST"})
-     */
+    #[Route(path: '/profils-sauvegardes/message', name: 'app_board_member_message_saved_profile', methods: ['GET', 'POST'])]
     public function sendMessageToSavedProfilesAction(
         Request $request,
         BoardMemberManager $manager,
@@ -139,9 +129,7 @@ class BoardMemberController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/message/{member}", name="app_board_member_message_member", methods={"GET", "POST"})
-     */
+    #[Route(path: '/message/{member}', name: 'app_board_member_message_member', methods: ['GET', 'POST'])]
     public function sendMessageToMemberAction(
         Request $request,
         Adherent $member,
@@ -171,9 +159,7 @@ class BoardMemberController extends AbstractController
         return new BoardMemberMessage($this->getUser(), $recipients);
     }
 
-    /**
-     * @Route("/list/boardmember", name="app_board_add_profile_on_list", methods={"POST"})
-     */
+    #[Route(path: '/list/boardmember', name: 'app_board_add_profile_on_list', methods: ['POST'])]
     public function addBoardMemberOnListAction(Request $request, EntityManagerInterface $manager): Response
     {
         if (!$id = $request->request->getInt('boardMemberId')) {
@@ -195,9 +181,7 @@ class BoardMemberController extends AbstractController
         return new Response('', Response::HTTP_CREATED);
     }
 
-    /**
-     * @Route("/list/boardmember/{id}", name="app_board_remove_profile_on_list", methods={"DELETE"})
-     */
+    #[Route(path: '/list/boardmember/{id}', name: 'app_board_remove_profile_on_list', methods: ['DELETE'])]
     public function deleteBoardMemberOnListAction(
         EntityManagerInterface $entityManager,
         BoardMember $boadMemberToDelete

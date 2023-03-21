@@ -18,8 +18,8 @@ class CharterController extends AbstractController
 {
     /**
      * @IsGranted("CAN_ACCEPT_CHARTER", subject="type")
-     * @Route("/v3/profile/charter/{type}", name="app_api_get_charter", methods={"GET"})
      */
+    #[Route(path: '/v3/profile/charter/{type}', name: 'app_api_get_charter', methods: ['GET'])]
     public function retrieveCharter(
         string $type,
         TranslatorInterface $translator,
@@ -50,8 +50,8 @@ class CharterController extends AbstractController
 
     /**
      * @IsGranted("CAN_ACCEPT_CHARTER", subject="type")
-     * @Route("/v3/profile/charter/{type}/accept", name="app_api_accept_charter", methods={"PUT"})
      */
+    #[Route(path: '/v3/profile/charter/{type}/accept', name: 'app_api_accept_charter', methods: ['PUT'])]
     public function acceptChart(string $type, EntityManagerInterface $entityManager): JsonResponse
     {
         if (!AdherentCharterTypeEnum::isValid($type)) {

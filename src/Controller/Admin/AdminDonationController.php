@@ -11,15 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/donation")
- *
  * @IsGranted("ROLE_ADMIN_FINANCE")
  */
+#[Route(path: '/donation')]
 class AdminDonationController extends AbstractController
 {
-    /**
-     * @Route("/file/{id}", name="app_admin_donation_file", methods="GET")
-     */
+    #[Route(path: '/file/{id}', name: 'app_admin_donation_file', methods: 'GET')]
     public function fileAction(Donation $donation, FilesystemInterface $storage): Response
     {
         $filePath = $donation->getFilePathWithDirectory();
@@ -33,9 +30,7 @@ class AdminDonationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/refund/{id}", name="app_admin_donation_refund", methods="GET")
-     */
+    #[Route(path: '/refund/{id}', name: 'app_admin_donation_refund', methods: 'GET')]
     public function refundAction(Donation $donation, EntityManagerInterface $em): Response
     {
         $donation->markAsRefunded();

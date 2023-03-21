@@ -29,21 +29,8 @@ abstract class AbstractEventManagerController extends AbstractController
     public const EVENTS_TYPE_ALL = 'all';
     public const EVENTS_TYPE_MINE = 'mine';
 
-    /**
-     * @Route(
-     *     path="/evenements",
-     *     name="_events",
-     *     defaults={"type": AbstractEventManagerController::EVENTS_TYPE_ALL},
-     *     methods={"GET"}
-     * )
-     *
-     * @Route(
-     *     path="/mes-evenements",
-     *     name="_events_mine",
-     *     defaults={"type": AbstractEventManagerController::EVENTS_TYPE_MINE},
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/evenements', name: '_events', defaults: ['type' => AbstractEventManagerController::EVENTS_TYPE_ALL], methods: ['GET'])]
+    #[Route(path: '/mes-evenements', name: '_events_mine', defaults: ['type' => AbstractEventManagerController::EVENTS_TYPE_MINE], methods: ['GET'])]
     public function eventsAction(Request $request, string $type): Response
     {
         return $this->renderTemplate('event_manager/events_list.html.twig', [
@@ -56,9 +43,7 @@ abstract class AbstractEventManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/evenements/creer", name="_create", methods={"GET", "POST"})
-     */
+    #[Route(path: '/evenements/creer', name: '_create', methods: ['GET', 'POST'])]
     public function eventsCreateAction(
         Request $request,
         GeoCoder $geoCoder,
@@ -90,9 +75,9 @@ abstract class AbstractEventManagerController extends AbstractController
     }
 
     /**
-     * @Route("/evenements/{slug}/modifier", name="_edit", methods={"GET", "POST"})
      * @IsGranted("HOST_EVENT", subject="event")
      */
+    #[Route(path: '/evenements/{slug}/modifier', name: '_edit', methods: ['GET', 'POST'])]
     public function editAction(Request $request, BaseEvent $event, EventCommandHandler $handler): Response
     {
         $command = EventCommand::createFromEvent($event);
@@ -119,9 +104,9 @@ abstract class AbstractEventManagerController extends AbstractController
     }
 
     /**
-     * @Route("/evenements/{slug}/annuler", name="_cancel", methods={"GET"})
      * @IsGranted("HOST_EVENT", subject="event")
      */
+    #[Route(path: '/evenements/{slug}/annuler', name: '_cancel', methods: ['GET'])]
     public function cancelAction(BaseEvent $event, EventCanceledHandler $eventCanceledHandler): Response
     {
         if (!$event->isActive()) {

@@ -10,15 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(
- *     "/qr-code/{uuid}/generate.{_format}",
- *     name="app_admin_qr_code_generate",
- *     methods="GET",
- *     defaults={"_format": "png"},
- *     requirements={"_format": "png|svg"}
- * )
  * @IsGranted("ROLE_ADMIN_QR_CODES")
  */
+#[Route(path: '/qr-code/{uuid}/generate.{_format}', name: 'app_admin_qr_code_generate', methods: 'GET', defaults: ['_format' => 'png'], requirements: ['_format' => 'png|svg'])]
 class AdminQrCodeGeneratorController
 {
     private $qrCodeEntityHandler;

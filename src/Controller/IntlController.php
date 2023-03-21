@@ -19,9 +19,7 @@ class IntlController extends AbstractController
         $this->franceCities = $franceCities;
     }
 
-    /**
-     * @Route("/postal-code/{postalCode}", name="api_postal_code", methods={"GET"})
-     */
+    #[Route(path: '/postal-code/{postalCode}', name: 'api_postal_code', methods: ['GET'])]
     public function postalCodeAction(string $postalCode): JsonResponse
     {
         $cities = $this->franceCities->findCitiesByPostalCode($postalCode);
@@ -34,17 +32,13 @@ class IntlController extends AbstractController
         return new JsonResponse($result);
     }
 
-    /**
-     * @Route("/vote-offices/{countryCode}", name="api_vote_offices", methods={"GET"})
-     */
+    #[Route(path: '/vote-offices/{countryCode}', name: 'api_vote_offices', methods: ['GET'])]
     public function voteOfficesAction(string $countryCode): JsonResponse
     {
         return new JsonResponse(VoteOfficeBundle::getVoteOfficies($countryCode));
     }
 
-    /**
-     * @Route("/countries", name="api_countries", methods={"GET"})
-     */
+    #[Route(path: '/countries', name: 'api_countries', methods: ['GET'])]
     public function countriesAction(): JsonResponse
     {
         $util = PhoneNumberUtil::getInstance();

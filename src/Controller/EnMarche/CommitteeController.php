@@ -23,9 +23,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-/**
- * @Route("/comites/{slug}")
- */
+#[Route(path: '/comites/{slug}')]
 class CommitteeController extends AbstractController
 {
     use EntityControllerTrait;
@@ -40,9 +38,9 @@ class CommitteeController extends AbstractController
     }
 
     /**
-     * @Route(name="app_committee_show", methods={"GET"})
      * @IsGranted("SHOW_COMMITTEE", subject="committee")
      */
+    #[Route(name: 'app_committee_show', methods: ['GET'])]
     public function showAction(
         Request $request,
         Committee $committee,
@@ -70,11 +68,11 @@ class CommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/timeline/{id}/modifier", name="app_committee_timeline_edit", methods={"GET", "POST"})
      * @ParamConverter("committee", options={"mapping": {"slug": "slug"}})
      * @ParamConverter("committeeFeedItem", options={"mapping": {"id": "id"}})
      * @IsGranted("ADMIN_FEED_COMMITTEE", subject="committeeFeedItem")
      */
+    #[Route(path: '/timeline/{id}/modifier', name: 'app_committee_timeline_edit', methods: ['GET', 'POST'])]
     public function timelineEditAction(
         EntityManagerInterface $manager,
         Request $request,
@@ -101,11 +99,11 @@ class CommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/timeline/{id}/supprimer", name="app_committee_timeline_delete", methods={"DELETE"})
      * @ParamConverter("committee", options={"mapping": {"slug": "slug"}})
      * @ParamConverter("committeeFeedItem", options={"mapping": {"id": "id"}})
      * @IsGranted("ADMIN_FEED_COMMITTEE", subject="committeeFeedItem")
      */
+    #[Route(path: '/timeline/{id}/supprimer', name: 'app_committee_timeline_delete', methods: ['DELETE'])]
     public function timelineDeleteAction(
         EntityManagerInterface $em,
         Request $request,
@@ -127,9 +125,9 @@ class CommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/timeline", name="app_committee_timeline", methods={"GET"})
      * @IsGranted("SHOW_COMMITTEE", subject="committee")
      */
+    #[Route(path: '/timeline', name: 'app_committee_timeline', methods: ['GET'])]
     public function timelineAction(Request $request, Committee $committee): Response
     {
         $timeline = $this->committeeManager->getTimeline(
@@ -148,9 +146,9 @@ class CommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/rejoindre", name="app_committee_follow", condition="request.request.has('token')", methods={"POST"})
      * @IsGranted("FOLLOW_COMMITTEE", subject="committee")
      */
+    #[Route(path: '/rejoindre', name: 'app_committee_follow', condition: "request.request.has('token')", methods: ['POST'])]
     public function followAction(
         Request $request,
         Committee $committee,
@@ -173,9 +171,9 @@ class CommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/quitter", name="app_committee_unfollow", condition="request.request.has('token')", methods={"POST"})
      * @IsGranted("UNFOLLOW_COMMITTEE", subject="committee")
      */
+    #[Route(path: '/quitter', name: 'app_committee_unfollow', condition: "request.request.has('token')", methods: ['POST'])]
     public function unfollowAction(
         Request $request,
         Committee $committee,
@@ -197,11 +195,10 @@ class CommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/voter", defaults={"enable": true}, name="app_committee_vote", condition="request.isXmlHttpRequest()", methods={"POST"})
-     * @Route("/ne-plus-voter", defaults={"enable": false}, name="app_committee_unvote", condition="request.isXmlHttpRequest()", methods={"POST"})
-     *
      * @Security("is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') and is_granted('COMMITTEE_IS_NOT_LOCKED', committee)")
      */
+    #[Route(path: '/voter', defaults: ['enable' => true], name: 'app_committee_vote', condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
+    #[Route(path: '/ne-plus-voter', defaults: ['enable' => false], name: 'app_committee_unvote', condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
     public function toggleCommitteeVoteAction(
         bool $enable,
         Request $request,

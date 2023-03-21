@@ -9,14 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/le-mouvement/nos-referents")
- */
+#[Route(path: '/le-mouvement/nos-referents')]
 class ReferentNominationController extends AbstractController
 {
-    /**
-     * @Route("", name="our_referents_homepage", methods={"GET"})
-     */
+    #[Route(path: '', name: 'our_referents_homepage', methods: ['GET'])]
     public function indexAction(Request $request): Response
     {
         $doctrine = $this->getDoctrine();
@@ -29,9 +25,7 @@ class ReferentNominationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{slug}", name="our_referents_referent", methods={"GET"})
-     */
+    #[Route(path: '/{slug}', name: 'our_referents_referent', methods: ['GET'])]
     public function candidateAction(Referent $referent): Response
     {
         return $this->render('referent/nomination/referent.html.twig', [

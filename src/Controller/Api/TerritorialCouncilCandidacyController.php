@@ -15,10 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/territorial-council/candidacy/available-memberships", name="api_territorial_council_candidacy_available_memberships_get", methods={"GET"})
- *
  * @IsGranted("ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE")
  */
+#[Route(path: '/territorial-council/candidacy/available-memberships', name: 'api_territorial_council_candidacy_available_memberships_get', methods: ['GET'])]
 class TerritorialCouncilCandidacyController extends AbstractController
 {
     public function __invoke(Request $request, TerritorialCouncilMembershipRepository $repository): Response

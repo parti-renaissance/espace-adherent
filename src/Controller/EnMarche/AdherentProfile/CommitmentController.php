@@ -13,9 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CommitmentController extends AbstractController
 {
-    /**
-     * @Route("/parametres/engagement", name="app_adherent_commitment", methods={"GET", "POST"})
-     */
+    #[Route(path: '/parametres/engagement', name: 'app_adherent_commitment', methods: ['GET', 'POST'])]
     public function indexAction(Request $request, EntityManagerInterface $entityManager): Response
     {
         /** @var Adherent $adherent */

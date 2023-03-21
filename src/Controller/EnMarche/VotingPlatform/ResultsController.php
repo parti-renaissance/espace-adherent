@@ -11,15 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(
- *     "/resultats/{election_round_uuid}",
- *     name="app_voting_platform_results",
- *     methods={"GET"},
- *     defaults={"election_round_uuid": null}
- * )
- *
  * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
  */
+#[Route(path: '/resultats/{election_round_uuid}', name: 'app_voting_platform_results', methods: ['GET'], defaults: ['election_round_uuid' => null])]
 class ResultsController extends AbstractController
 {
     public function __invoke(

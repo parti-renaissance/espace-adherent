@@ -11,9 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DelegatedAccessController extends AbstractController
 {
-    /**
-     * @Route("/espace-partage/{uuid}", name="app_access_delegation_set", methods={"GET"})
-     */
+    #[Route(path: '/espace-partage/{uuid}', name: 'app_access_delegation_set', methods: ['GET'])]
     public function delegatedSpace(DelegatedAccess $delegatedAccess, SessionInterface $session)
     {
         if (0 === \count($delegatedAccess->getAccesses())) {
@@ -27,9 +25,7 @@ class DelegatedAccessController extends AbstractController
         return $this->redirectToRoute($routes[$delegatedAccess->getAccesses()[0]]);
     }
 
-    /**
-     * @Route("/espace-standard/{type}", name="app_access_delegation_unset", methods={"GET"})
-     */
+    #[Route(path: '/espace-standard/{type}', name: 'app_access_delegation_unset', methods: ['GET'])]
     public function standardSpace(Request $request, string $type, SessionInterface $session)
     {
         $session->remove(DelegatedAccess::ATTRIBUTE_KEY);

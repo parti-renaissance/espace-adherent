@@ -12,9 +12,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @Route("/territorial-council-membership-log")
- */
+#[Route(path: '/territorial-council-membership-log')]
 class AdminTerritorialCouncilMembershipLogController extends AbstractController
 {
     public const STATUS_RESOLVED = 'resolved';
@@ -25,9 +23,9 @@ class AdminTerritorialCouncilMembershipLogController extends AbstractController
     ];
 
     /**
-     * @Route("/{membershipLog}/{status}", name="app_admin_territorial_council_membership_log_resolve", methods={"GET"})
      * @IsGranted("ROLE_ADMIN_TERRITORIAL_COUNCIL_MEMBERSHIP_LOG")
      */
+    #[Route(path: '/{membershipLog}/{status}', name: 'app_admin_territorial_council_membership_log_resolve', methods: ['GET'])]
     public function changeResolvedAction(
         Request $request,
         TerritorialCouncilMembershipLog $membershipLog,

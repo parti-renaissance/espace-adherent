@@ -12,9 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ReferentTagController extends AbstractController
 {
-    /**
-     * @Route("/referent-tags", name="api_referent_tag", methods={"GET"})
-     */
+    #[Route(path: '/referent-tags', name: 'api_referent_tag', methods: ['GET'])]
     public function getReferentTagsAction(Request $request, ReferentTagRepository $repository): Response
     {
         $limit = $request->query->getInt('_per_page', 10);

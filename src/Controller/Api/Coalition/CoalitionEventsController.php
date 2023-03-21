@@ -12,9 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CoalitionEventsController extends AbstractController
 {
-    /**
-     * @Route("/coalitions/{uuid}/events", name="api_coalition_events", methods={"GET"})
-     */
+    #[Route(path: '/coalitions/{uuid}/events', name: 'api_coalition_events', methods: ['GET'])]
     public function _invoke(
         Request $request,
         Coalition $coalition,

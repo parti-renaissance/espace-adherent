@@ -6,9 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(path="/don/cheque", name="app_renaissance_donation_cheque", methods={"GET"})
- */
+#[Route(path: '/don/cheque', name: 'app_renaissance_donation_cheque', methods: ['GET'])]
 class ChequeDonationController extends AbstractController
 {
     public function __invoke(): Response

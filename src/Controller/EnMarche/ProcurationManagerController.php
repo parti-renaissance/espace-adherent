@@ -23,14 +23,12 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-responsable-procuration")
  * @IsGranted("ROLE_PROCURATION_MANAGER")
  */
+#[Route(path: '/espace-responsable-procuration')]
 class ProcurationManagerController extends AbstractController
 {
-    /**
-     * @Route(name="app_procuration_manager_requests", methods={"GET"})
-     */
+    #[Route(name: 'app_procuration_manager_requests', methods: ['GET'])]
     public function requestsAction(
         Request $request,
         ProcurationManager $procurationManager,
@@ -52,9 +50,7 @@ class ProcurationManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/plus", name="app_procuration_manager_requests_list", condition="request.isXmlHttpRequest()", methods={"GET"})
-     */
+    #[Route(path: '/plus', name: 'app_procuration_manager_requests_list', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
     public function requestsMoreAction(Request $request, ProcurationManager $procurationManager): Response
     {
         try {
@@ -72,9 +68,7 @@ class ProcurationManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/mandataires", name="app_procuration_manager_proposals", methods={"GET"})
-     */
+    #[Route(path: '/mandataires', name: 'app_procuration_manager_proposals', methods: ['GET'])]
     public function proposalsAction(
         Request $request,
         ProcurationManager $procurationManager,
@@ -96,9 +90,7 @@ class ProcurationManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/mandataires/plus", name="app_procuration_manager_proposals_list", condition="request.isXmlHttpRequest()", methods={"GET"})
-     */
+    #[Route(path: '/mandataires/plus', name: 'app_procuration_manager_proposals_list', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
     public function proposalsMoreAction(Request $request, ProcurationManager $procurationManager): Response
     {
         try {
@@ -116,14 +108,7 @@ class ProcurationManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     "/mandataires/{id}",
-     *     requirements={"id": "\d+"},
-     *     name="app_procuration_manager_proposal",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/mandataires/{id}', requirements: ['id' => '\d+'], name: 'app_procuration_manager_proposal', methods: ['GET'])]
     public function proposal(int $id, ProcurationManager $procurationManager): Response
     {
         if (!$proxy = $procurationManager->getProcurationProxyProposal($id, $this->getUser())) {
@@ -135,14 +120,7 @@ class ProcurationManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     "/mandataires/{id}/{action}",
-     *     requirements={ "id": "\d+", "action": App\Entity\ProcurationProxy::ACTIONS_URI_REGEX },
-     *     name="app_procuration_manager_proposal_transform",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/mandataires/{id}/{action}', requirements: ['id' => '\d+', 'action' => ProcurationProxy::ACTIONS_URI_REGEX], name: 'app_procuration_manager_proposal_transform', methods: ['GET'])]
     public function proposalTransformAction(int $id, string $action, ProcurationManager $procurationManager): Response
     {
         if (!$proxy = $procurationManager->getProcurationProxyProposal($id, $this->getUser())) {
@@ -160,14 +138,7 @@ class ProcurationManagerController extends AbstractController
         return $this->redirectToRoute('app_procuration_manager_proposals');
     }
 
-    /**
-     * @Route(
-     *     "/demande/{id}",
-     *     requirements={"id": "\d+"},
-     *     name="app_procuration_manager_request",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/demande/{id}', requirements: ['id' => '\d+'], name: 'app_procuration_manager_request', methods: ['GET'])]
     public function requestAction(int $id, ProcurationManager $procurationManager): Response
     {
         if (!$request = $procurationManager->getProcurationRequest($id, $this->getUser())) {
@@ -181,14 +152,7 @@ class ProcurationManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     "/demande/{id}/{action}/{csrfToken}",
-     *     requirements={"id": "\d+", "action": App\Entity\ProcurationRequest::ACTIONS_URI_REGEX},
-     *     name="app_procuration_manager_request_transform",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/demande/{id}/{action}/{csrfToken}', requirements: ['id' => '\d+', 'action' => ProcurationRequest::ACTIONS_URI_REGEX], name: 'app_procuration_manager_request_transform', methods: ['GET'])]
     public function requestTransformAction(
         int $id,
         string $action,
@@ -234,14 +198,9 @@ class ProcurationManagerController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     "/demande/{id}/associer/{proxyId}",
-     *     requirements={"id": "\d+", "proxyId": "\d+"},
-     *     name="app_procuration_manager_request_associate",
-     *     methods={"GET", "POST"}
-     * )
      * @ParamConverter("proxy", class="App\Entity\ProcurationProxy", options={"id": "proxyId"})
      */
+    #[Route(path: '/demande/{id}/associer/{proxyId}', requirements: ['id' => '\d+', 'proxyId' => '\d+'], name: 'app_procuration_manager_request_associate', methods: ['GET', 'POST'])]
     public function requestAssociateAction(
         Request $sfRequest,
         ProcurationRequest $procurationRequest,
@@ -280,14 +239,7 @@ class ProcurationManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     "/demande/{id}/desassocier",
-     *     requirements={"id": "\d+"},
-     *     name="app_procuration_manager_request_deassociate",
-     *     methods={"GET", "POST"}
-     * )
-     */
+    #[Route(path: '/demande/{id}/desassocier', requirements: ['id' => '\d+'], name: 'app_procuration_manager_request_deassociate', methods: ['GET', 'POST'])]
     public function requestDessociateAction(
         Request $sfRequest,
         ProcurationRequest $procurationRequest,

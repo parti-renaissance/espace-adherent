@@ -19,9 +19,7 @@ abstract class AbstractInstitutionalEventsController extends AbstractController
 {
     use AccessDelegatorTrait;
 
-    /**
-     * @Route("", name="list", methods={"GET"})
-     */
+    #[Route(path: '', name: 'list', methods: ['GET'])]
     public function institutionalEventsAction(
         Request $request,
         InstitutionalEventRepository $institutionalEventRepository
@@ -31,9 +29,7 @@ abstract class AbstractInstitutionalEventsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/creer", name="create", methods={"GET", "POST"})
-     */
+    #[Route(path: '/creer', name: 'create', methods: ['GET', 'POST'])]
     public function institutionalEventsCreateAction(
         Request $request,
         InstitutionalEventCommandHandler $institutionalEventCommandHandler,
@@ -61,17 +57,9 @@ abstract class AbstractInstitutionalEventsController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/{uuid}/editer",
-     *     name="edit",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET", "POST"}
-     * )
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="institutionalEvent")
      */
+    #[Route(path: '/{uuid}/editer', name: 'edit', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET', 'POST'])]
     public function institutionalEventsEditAction(
         Request $request,
         InstitutionalEvent $institutionalEvent,
@@ -104,17 +92,9 @@ abstract class AbstractInstitutionalEventsController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/{uuid}/supprimer",
-     *     name="delete",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET"}
-     * )
-     *
      * @IsGranted("IS_AUTHOR_OF", subject="institutionalEvent")
      */
+    #[Route(path: '/{uuid}/supprimer', name: 'delete', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function institutionalEventsDeleteAction(
         InstitutionalEvent $institutionalEvent,
         InstitutionalEventCommandHandler $institutionalEventCommandHandler

@@ -21,9 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractMyTeamController extends AbstractController
 {
-    /**
-     * @Route("", name="list")
-     */
+    #[Route(path: '', name: 'list')]
     public function list(DelegatedAccessRepository $delegatedAccessRepository): Response
     {
         $delegatedAccesses = $delegatedAccessRepository->findBy(['delegator' => $this->getUser(), 'type' => $this->getSpaceType()]);
@@ -34,11 +32,10 @@ abstract class AbstractMyTeamController extends AbstractController
     }
 
     /**
-     * @Route("/deleguer-acces", name="delegate_access", methods={"GET", "POST"})
-     * @Route("/deleguer-acces/{uuid}", name="delegate_access_edit", methods={"GET", "POST"})
-     *
      * @Security("delegatedAccess ? delegatedAccess.getDelegator() == user : true")
      */
+    #[Route(path: '/deleguer-acces', name: 'delegate_access', methods: ['GET', 'POST'])]
+    #[Route(path: '/deleguer-acces/{uuid}', name: 'delegate_access_edit', methods: ['GET', 'POST'])]
     public function delegateAccess(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -70,9 +67,9 @@ abstract class AbstractMyTeamController extends AbstractController
     }
 
     /**
-     * @Route("/deleguer-acces/{uuid}/supprimer", name="delegate_access_delete", methods={"GET"})
      * @Security("delegatedAccess.getDelegator() == user")
      */
+    #[Route(path: '/deleguer-acces/{uuid}/supprimer', name: 'delegate_access_delete', methods: ['GET'])]
     public function deleteDelegatedAccess(DelegatedAccess $delegatedAccess, EntityManagerInterface $entityManager)
     {
         $entityManager->remove($delegatedAccess);
@@ -83,9 +80,7 @@ abstract class AbstractMyTeamController extends AbstractController
         return $this->redirectToRoute(sprintf('app_%s_my_team_list', $this->getSpaceType()));
     }
 
-    /**
-     * @Route("/search", name="search", methods={"POST"})
-     */
+    #[Route(path: '/search', name: 'search', methods: ['POST'])]
     public function search(Request $request, AdherentRepository $adherentRepository): Response
     {
         $form = $this->createForm(MyTeamSearchAdherentType::class);
@@ -114,13 +109,7 @@ abstract class AbstractMyTeamController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/mon-equipe/autocompletion/comite",
-     *     name="autocomplete_committee",
-     *     condition="request.isXmlHttpRequest()",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/mon-equipe/autocompletion/comite', name: 'autocomplete_committee', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
     public function committeeAutocompleteAction(Request $request, CommitteeRepository $committeeRepository)
     {
         if (!$term = $request->query->get('term')) {
@@ -142,13 +131,7 @@ abstract class AbstractMyTeamController extends AbstractController
         return new JsonResponse($result ?? []);
     }
 
-    /**
-     * @Route("/mon-equipe/autocompletion/ville",
-     *     name="autocomplete_city",
-     *     condition="request.isXmlHttpRequest()",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/mon-equipe/autocompletion/ville', name: 'autocomplete_city', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
     public function cityAutocompleteAction(
         Request $request,
         FranceCities $franceCities,

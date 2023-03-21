@@ -17,10 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-referent/instances", name="app_territorial_council_referent_designations", methods={"GET"})
- *
  * @IsGranted("ROLE_REFERENT")
  */
+#[Route(path: '/espace-referent/instances', name: 'app_territorial_council_referent_designations', methods: ['GET'])]
 class ReferentDesignationController extends AbstractController
 {
     private $electionRepository;
@@ -30,9 +29,7 @@ class ReferentDesignationController extends AbstractController
         $this->electionRepository = $electionRepository;
     }
 
-    /**
-     * @Route("/designations", name="_list", methods={"GET"})
-     */
+    #[Route(path: '/designations', name: '_list', methods: ['GET'])]
     public function listAction(): Response
     {
         /** @var Adherent $adherent */
@@ -46,10 +43,9 @@ class ReferentDesignationController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/convocation", name="_election_send_convocation", methods={"GET", "POST"}, requirements={"uuid": "%pattern_uuid%"})
-     *
      * @Security("is_granted('CAN_MANAGE_TERRITORIAL_COUNCIL', election.getTerritorialCouncil())")
      */
+    #[Route(path: '/{uuid}/convocation', name: '_election_send_convocation', methods: ['GET', 'POST'], requirements: ['uuid' => '%pattern_uuid%'])]
     public function editDesignationAction(
         Request $request,
         Election $election,

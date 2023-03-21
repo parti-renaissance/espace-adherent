@@ -11,9 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BiographyController extends AbstractController
 {
-    /**
-     * @Route("/le-mouvement/notre-organisation", name="app_our_organization", methods={"GET"})
-     */
+    #[Route(path: '/le-mouvement/notre-organisation', name: 'app_our_organization', methods: ['GET'])]
     public function executiveOfficeMemberListAction(ExecutiveOfficeMemberRepository $repository): Response
     {
         $allMembers = $repository->findAllPublishedMembers();
@@ -26,9 +24,9 @@ class BiographyController extends AbstractController
     }
 
     /**
-     * @Route("/le-mouvement/notre-organisation/{slug}", name="app_our_organization_show", methods={"GET"})
      * @Entity("executiveOfficeMember", expr="repository.findOnePublishedBySlug(slug)")
      */
+    #[Route(path: '/le-mouvement/notre-organisation/{slug}', name: 'app_our_organization_show', methods: ['GET'])]
     public function executiveOfficeMemberAction(ExecutiveOfficeMember $executiveOfficeMember): Response
     {
         return $this->render('biography/executive_office_member/show.html.twig', [

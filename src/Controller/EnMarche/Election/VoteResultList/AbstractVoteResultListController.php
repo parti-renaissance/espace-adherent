@@ -33,9 +33,7 @@ abstract class AbstractVoteResultListController extends AbstractController
         $this->electionManager = $electionManager;
     }
 
-    /**
-     * @Route("/{id}/listes", name="_vote_result_list_edit", methods={"GET", "POST"})
-     */
+    #[Route(path: '/{id}/listes', name: '_vote_result_list_edit', methods: ['GET', 'POST'])]
     public function __invoke(City $city, Request $request): Response
     {
         $electionRound = $this->electionManager->getClosestElectionRound();

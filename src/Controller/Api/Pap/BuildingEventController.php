@@ -25,13 +25,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class BuildingEventController extends AbstractController
 {
-    /**
-     * @Route("/v3/pap/buildings/{uuid}/events",
-     *     requirements={"uuid": "%pattern_uuid%"},
-     *     name="api_create_building_event",
-     *     methods={"POST"}
-     * )
-     */
+    #[Route(path: '/v3/pap/buildings/{uuid}/events', requirements: ['uuid' => '%pattern_uuid%'], name: 'api_create_building_event', methods: ['POST'])]
     public function __invoke(
         Request $request,
         Building $building,

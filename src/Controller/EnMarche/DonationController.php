@@ -29,17 +29,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/don")
- */
+#[Route(path: '/don')]
 class DonationController extends AbstractController
 {
     public const RESULT_STATUS_EFFECTUE = 'effectue';
     public const RESULT_STATUS_ERREUR = 'erreur';
 
-    /**
-     * @Route(name="donation_index", methods={"GET"})
-     */
+    #[Route(name: 'donation_index', methods: ['GET'])]
     public function indexAction(Request $request): Response
     {
         if (!$amount = $request->query->get('montant')) {
@@ -55,9 +51,7 @@ class DonationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/coordonnees", name="donation_informations", methods={"GET", "POST"})
-     */
+    #[Route(path: '/coordonnees', name: 'donation_informations', methods: ['GET', 'POST'])]
     public function informationsAction(
         Request $request,
         DonationRequestUtils $donationRequestUtils,
@@ -95,9 +89,7 @@ class DonationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{uuid}/paiement", requirements={"uuid": "%pattern_uuid%"}, name="donation_pay", methods={"GET"})
-     */
+    #[Route(path: '/{uuid}/paiement', requirements: ['uuid' => '%pattern_uuid%'], name: 'donation_pay', methods: ['GET'])]
     public function payboxAction(PayboxFormFactory $payboxFormFactory, Donation $donation): Response
     {
         $paybox = $payboxFormFactory->createPayboxFormForDonation($donation);
@@ -108,9 +100,7 @@ class DonationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/callback/{_callback_token}", name="donation_callback", methods={"GET"})
-     */
+    #[Route(path: '/callback/{_callback_token}', name: 'donation_callback', methods: ['GET'])]
     public function callbackAction(
         Request $request,
         TransactionCallbackHandler $transactionCallbackHandler,
@@ -126,14 +116,9 @@ class DonationController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     "/{uuid}/{status}",
-     *     requirements={"status": "effectue|erreur", "uuid": "%pattern_uuid%"},
-     *     name="donation_result",
-     *     methods={"GET"}
-     * )
      * @ParamConverter("donation", options={"mapping": {"uuid": "uuid"}})
      */
+    #[Route(path: '/{uuid}/{status}', requirements: ['status' => 'effectue|erreur', 'uuid' => '%pattern_uuid%'], name: 'donation_result', methods: ['GET'])]
     public function resultAction(
         Request $request,
         MembershipRegistrationProcess $membershipRegistrationProcess,
@@ -175,9 +160,7 @@ class DonationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/mensuel/annuler", name="donation_subscription_cancel", methods={"GET", "POST"})
-     */
+    #[Route(path: '/mensuel/annuler', name: 'donation_subscription_cancel', methods: ['GET', 'POST'])]
     public function cancelSubscriptionAction(
         EntityManagerInterface $manager,
         Request $request,

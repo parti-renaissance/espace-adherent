@@ -13,9 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AssessorController extends AbstractController
 {
-    /**
-     * @Route(name="app_assessor_request", methods={"GET|POST"})
-     */
+    #[Route(name: 'app_assessor_request', methods: ['GET|POST'])]
     public function assessorRequest(Request $request, AssessorRequestHandler $assessorResquestHandler): Response
     {
         $assessorRequestCommand = $assessorResquestHandler->start(
@@ -44,13 +42,7 @@ class AssessorController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     path="/demande/retour",
-     *     name="app_assessor_request_back",
-     *     methods={"GET"},
-     * )
-     */
+    #[Route(path: '/demande/retour', name: 'app_assessor_request_back', methods: ['GET'])]
     public function assessorRequestBack(AssessorRequestHandler $assessorResquestHandler): Response
     {
         $assessorResquestHandler->back();
@@ -58,14 +50,7 @@ class AssessorController extends AbstractController
         return $this->redirectToRoute('app_assessor_request');
     }
 
-    /**
-     * @Route(
-     *     path="/demande/bureaux-de-vote",
-     *     name="app_assessor_request_find_vote_places",
-     *     condition="request.isXmlHttpRequest()",
-     *     methods={"GET"},
-     * )
-     */
+    #[Route(path: '/demande/bureaux-de-vote', name: 'app_assessor_request_find_vote_places', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
     public function assessorRequestFindVotePlaces(Request $request, VotePlaceManager $votePlaceManager): JsonResponse
     {
         return new JsonResponse($votePlaceManager->getVotePlaceWishesByCountryOrPostalCode(

@@ -30,9 +30,7 @@ abstract class AbstractPollController extends AbstractController
         $this->zoneRepository = $zoneRepository;
     }
 
-    /**
-     * @Route("", name="local_list", methods={"GET"})
-     */
+    #[Route(path: '', name: 'local_list', methods: ['GET'])]
     public function listLocalPolls(Request $request): Response
     {
         return $this->renderTemplate('poll/local_list.html.twig', [
@@ -40,13 +38,7 @@ abstract class AbstractPollController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *     path="/creer",
-     *     name="local_create",
-     *     methods={"GET|POST"},
-     * )
-     */
+    #[Route(path: '/creer', name: 'local_create', methods: ['GET|POST'])]
     public function createLocalPoll(Request $request, PollManager $pollManager): Response
     {
         /** @var Adherent $user */
@@ -81,15 +73,9 @@ abstract class AbstractPollController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/{uuid}/editer",
-     *     name="local_edit",
-     *     requirements={"uuid": "%pattern_uuid%"},
-     *     methods={"GET|POST"}
-     * )
-     *
      * @Security("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', localPoll) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', localPoll)")
      */
+    #[Route(path: '/{uuid}/editer', name: 'local_edit', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET|POST'])]
     public function editLocalPoll(
         Request $request,
         LocalPoll $localPoll,
@@ -126,11 +112,10 @@ abstract class AbstractPollController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/depublier", name="unpublish", methods={"GET"}, defaults={"publish": false})
-     * @Route("/{uuid}/publier", name="publish", methods={"GET"}, defaults={"publish": true})
-     *
      * @Security("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', poll) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', poll)")
      */
+    #[Route(path: '/{uuid}/depublier', name: 'unpublish', methods: ['GET'], defaults: ['publish' => false])]
+    #[Route(path: '/{uuid}/publier', name: 'publish', methods: ['GET'], defaults: ['publish' => true])]
     public function togglePublish(bool $publish, Poll $poll, PollManager $pollManager): Response
     {
         if (!($publish xor $poll->isPublished())) {

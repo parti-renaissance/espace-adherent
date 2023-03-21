@@ -10,10 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/resubscribe-email", name="api_resubscribe_email_payload", methods={"GET"})
- *
  * @IsGranted("IS_AUTHENTICATED_FULLY")
  */
+#[Route(path: '/resubscribe-email', name: 'api_resubscribe_email_payload', methods: ['GET'])]
 class ResubscribeEmailController extends AbstractController
 {
     public function __invoke(SignUpHandler $signUpHandler): Response

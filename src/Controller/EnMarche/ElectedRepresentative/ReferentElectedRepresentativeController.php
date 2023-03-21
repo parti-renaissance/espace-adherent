@@ -8,9 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-referent", name="app_referent_elected_representatives_")
  * @Security("is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES'))")
  */
+#[Route(path: '/espace-referent', name: 'app_referent_elected_representatives_')]
 class ReferentElectedRepresentativeController extends AbstractElectedRepresentativeController
 {
     protected function getSpaceType(): string

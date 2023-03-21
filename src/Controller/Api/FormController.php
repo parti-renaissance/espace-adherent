@@ -11,9 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/form/validate/{formType}", name="api_form_validate", condition="request.isXmlHttpRequest()", methods={"POST"})
- */
+#[Route(path: '/form/validate/{formType}', name: 'api_form_validate', condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
 class FormController extends AbstractController
 {
     public function __invoke(Request $request, string $formType): Response

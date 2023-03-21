@@ -12,10 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/crm-paris")
- *
  * @IsGranted("ROLE_OAUTH_SCOPE_CRM_PARIS")
  */
+#[Route(path: '/crm-paris')]
 class CrmParisController extends AbstractController
 {
     private const CSV_DELIMITER = ';';
@@ -38,9 +37,7 @@ class CrmParisController extends AbstractController
         'sms_mms',
     ];
 
-    /**
-     * @Route("/adherents", name="app_crm_paris_adherents", methods={"GET"})
-     */
+    #[Route(path: '/adherents', name: 'app_crm_paris_adherents', methods: ['GET'])]
     public function adherentsAction(
         AdherentRepository $adherentRepository,
         CsvResponseFactory $csvResponseFactory

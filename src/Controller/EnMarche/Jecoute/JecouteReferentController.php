@@ -8,10 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-referent/questionnaires", name="app_jecoute_referent_")
- *
  * @Security("is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_JECOUTE'))")
  */
+#[Route(path: '/espace-referent/questionnaires', name: 'app_jecoute_referent_')]
 class JecouteReferentController extends AbstractJecouteController
 {
     protected function getSpaceName(): string
