@@ -724,10 +724,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     public function isMajorityType(): bool
     {
-        return \in_array($this->type, [
-            DesignationTypeEnum::COMMITTEE_SUPERVISOR,
-            DesignationTypeEnum::NATIONAL_COUNCIL,
-        ], true);
+        return DesignationTypeEnum::NATIONAL_COUNCIL === $this->type;
     }
 
     public function isRenaissanceElection(): bool
@@ -761,7 +758,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     public function isDenominationEditable(): bool
     {
-        return !$this->isLocalElectionTypes();
+        return !$this->isLocalElectionTypes() && !$this->isCommitteeSupervisorType();
     }
 
     public function equals(self $other): bool

@@ -355,21 +355,11 @@ class ReferentCommitteeControllerTest extends WebTestCase
         $this->assertStringContainsString('Résultats par scrutin : Animateurs Locaux', $crawler->filter('.datagrid__pre-table.b__nudge--bottom-50 h3')->text());
 
         $tableContent = $crawler->filter('table')->text();
-        $this->assertStringContainsString('Très bien', $tableContent);
-        $this->assertStringContainsString('Bien', $tableContent);
-        $this->assertStringContainsString('Insuffisant', $tableContent);
+        $this->assertStringContainsString('5', $tableContent);
 
         $crawler = $this->client->click($crawler->selectLink('Bulletins dépouillés')->link());
 
         $this->assertCount(5, $crawler->filter('tbody tr'));
-
-        $tableHeader = $crawler->filter('thead')->text();
-        $this->assertStringContainsString('Adherent 32 Fa32ke', $tableHeader);
-        $this->assertStringContainsString('Adherent 33 Fa33ke', $tableHeader);
-        $this->assertStringContainsString('Adherent 34 Fa34ke', $tableHeader);
-        $this->assertStringContainsString('Adherent 35 Fa35ke', $tableHeader);
-        $this->assertStringContainsString('Adherent 36 Fa36ke', $tableHeader);
-        $this->assertStringContainsString('Adherent 37 Fa37ke', $tableHeader);
     }
 
     public function provideAdherents(): array

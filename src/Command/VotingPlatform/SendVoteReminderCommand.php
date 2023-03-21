@@ -2,6 +2,7 @@
 
 namespace App\Command\VotingPlatform;
 
+use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\Vote;
 use App\Repository\CommitteeMembershipRepository;
@@ -85,6 +86,13 @@ class SendVoteReminderCommand extends Command
         $this->io->progressStart();
 
         foreach ($elections as $election) {
+            if (
+                !$election->getDesignation()->isNotificationVoteReminderEnabled()
+                || !$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_REMINDER)
+            ) {
+                continue;
+            }
+
             $this->sendElectionVoteReminders($election);
 
             $this->io->progressAdvance();
@@ -114,12 +122,14 @@ class SendVoteReminderCommand extends Command
                 $this->dispatcher->dispatch(new VotingPlatformVoteReminderEvent($election, $adherent));
 
                 $adherent->notifyForElection();
-                $this->entityManager->flush();
             }
         } else {
             foreach ($this->voterRepository->findVotersToRemindForElection($election) as $voter) {
                 $this->dispatcher->dispatch(new VotingPlatformVoteReminderEvent($election, $voter->getAdherent()));
             }
         }
+
+        $election->markSentNotification(Designation::NOTIFICATION_VOTE_REMINDER);
+        $this->entityManager->flush();
     }
 }

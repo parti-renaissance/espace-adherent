@@ -63,15 +63,13 @@
                             {% endfor %}
                         {% endfor %}
                     {% else %}
-                        {% for pool_code in constant('App\\ValueObject\\Genders::MALE_FEMALE') %}
+                        {% for choice in choices|sort((a, b) => a.electionPool.code <=> b.electionPool.code) %}
                             <td>
-                                {% for choice in choices|filter(choice => pool_code == choice.electionPool.code) %}
-                                    {% if choice.isBlank %}
-                                        ~
-                                    {% else %}
-                                        {{ choice.candidateGroup.candidates|first.fullName }}
-                                    {% endif %}
-                                {% endfor %}
+                                {% if choice.isBlank %}
+                                    ~
+                                {% else %}
+                                    {{ choice.candidateGroup.candidates|first.fullName }}
+                                {% endif %}
                             </td>
                         {% endfor %}
                     {% endif %}

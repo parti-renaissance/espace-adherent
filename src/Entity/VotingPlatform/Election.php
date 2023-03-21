@@ -342,4 +342,9 @@ class Election
     {
         return 0 !== ($this->notificationsSent & $notification);
     }
+
+    public function countCandidateGroups(): int
+    {
+        return array_sum($this->electionPools->map(fn (ElectionPool $pool) => $pool->countCandidateGroups())->toArray());
+    }
 }

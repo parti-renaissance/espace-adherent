@@ -15,7 +15,9 @@
                         {{ first.getFirstName() }}
                         <span class="uppercase font-medium"> {{ first.getLastName() }}</span>
                     </li>
-                    <li class="text-gray-500">+ {{ candidates|length - 1 }} candidature{{ candidates|length - 1 > 1 ? 's' }}</li>
+                    {% if candidates|length > 1 %}
+                        <li class="text-gray-500">+ {{ candidates|length - 1 }} candidature{{ candidates|length - 1 > 1 ? 's' }}</li>
+                    {% endif %}
                 </ul>
 
                 <div class="flex items-center justify-between text-base !text-gray-500">

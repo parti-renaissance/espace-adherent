@@ -184,4 +184,11 @@ class CommitteeCandidacy extends BaseCandidacy
     {
         return $this->committeeElection->getCommittee();
     }
+
+    public function candidateWith(CandidacyInterface $candidacy): void
+    {
+        parent::candidateWith($candidacy);
+
+        $this->candidaciesGroup->setElection($candidacy->getElection());
+    }
 }

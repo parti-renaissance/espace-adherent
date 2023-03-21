@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\CommitteeCandidacy;
+use App\Entity\CommitteeElection;
 use App\Entity\LocalElection\LocalElection;
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
@@ -21,7 +22,6 @@ use App\Entity\VotingPlatform\VoteResult;
 use App\Entity\VotingPlatform\VotersList;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
-use App\VotingPlatform\Designation\MajorityVoteMentionEnum;
 use App\VotingPlatform\Election\ResultCalculator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -197,14 +197,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $election->setElectionEntity(new ElectionEntity($this->getReference('committee-15')));
         $this->loadCommitteeSupervisorElectionCandidates($election);
         $this->manager->persist($votersList = $this->loadCommitteeSupervisorElectionVoters($election));
-        $this->loadMajorityVotes($round, $votersList, [
-            [4, 1, 1],
-            [4, 4, 0],
-            [1, 2, 3],
-            [4, 0, 1],
-            [2, 3, 4],
-        ]);
-        $this->resultCalculator->computeElectionResult($election);
+        $this->loadResults($round, $votersList);
 
         // -------------------------------------------
 
@@ -269,47 +262,23 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $election->addElectionPool($pool);
 
         $committee = $election->getElectionEntity()->getCommittee();
+        /** @var CommitteeElection $committeeElection */
         $committeeElection = $committee->getCurrentElection();
 
-        foreach ($committeeElection->getCandidacies() as $committeeCandidacy) {
-            /** @var CommitteeCandidacy $committeeCandidacy */
-            if (!$committeeCandidacy->isConfirmed() || $committeeCandidacy->isTaken()) {
-                continue;
+        foreach ($committeeElection->getCandidaciesGroups() as $candidacyGroup) {
+            $pool->addCandidateGroup($group = new CandidateGroup());
+
+            foreach ($candidacyGroup->getCandidacies() as $committeeCandidacy) {
+                $group->addCandidate($candidate = new Candidate(
+                    $committeeCandidacy->getFirstName(),
+                    $committeeCandidacy->getLastName(),
+                    $committeeCandidacy->getGender(),
+                    $committeeCandidacy->getAdherent()
+                ));
+                $candidate->setImagePath($committeeCandidacy->getImagePath());
+                $candidate->setBiography($committeeCandidacy->getBiography());
+                $candidate->setFaithStatement($committeeCandidacy->getFaithStatement());
             }
-
-            $group = new CandidateGroup();
-
-            $group->addCandidate($candidate = new Candidate(
-                $committeeCandidacy->getFirstName(),
-                $committeeCandidacy->getLastName(),
-                $committeeCandidacy->getGender(),
-                $committeeCandidacy->getAdherent()
-            ));
-            $candidate->setImagePath($committeeCandidacy->getImagePath());
-            $candidate->setBiography($committeeCandidacy->getBiography());
-            $candidate->setFaithStatement($committeeCandidacy->getFaithStatement());
-            $committeeCandidacy->take();
-
-            if ($committeeCandidaciesGroup = $committeeCandidacy->getCandidaciesGroup()) {
-                foreach ($committeeCandidaciesGroup->getCandidacies() as $committeeCandidacy) {
-                    if ($committeeCandidacy->isTaken()) {
-                        continue;
-                    }
-
-                    $group->addCandidate($candidate = new Candidate(
-                        $committeeCandidacy->getFirstName(),
-                        $committeeCandidacy->getLastName(),
-                        $committeeCandidacy->getGender(),
-                        $committeeCandidacy->getAdherent()
-                    ));
-                    $candidate->setImagePath($committeeCandidacy->getImagePath());
-                    $candidate->setBiography($committeeCandidacy->getBiography());
-                    $candidate->setFaithStatement($committeeCandidacy->getFaithStatement());
-                    $committeeCandidacy->take();
-                }
-            }
-
-            $pool->addCandidateGroup($group);
         }
     }
 
@@ -390,7 +359,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
         foreach ($votersList->getVoters() as $i => $voter) {
             // simulate abstention
-            if (0 === $i % 7 || \in_array($voter, $this->voters, true)) {
+            if (0 === $i % 7) {
                 continue;
             }
 
@@ -560,30 +529,5 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
             LoadTerritorialCouncilCandidacyData::class,
             LoadLocalElectionData::class,
         ];
-    }
-
-    private function loadMajorityVotes(ElectionRound $electionRound, VotersList $votersList, array $votesData): void
-    {
-        $voters = $votersList->getVoters();
-        shuffle($voters);
-
-        foreach ($votesData as $voteRow) {
-            $voter = array_shift($voters);
-            $this->manager->persist(new Vote($voter, $electionRound));
-
-            $result = new VoteResult($electionRound, VoteResult::generateVoterKey());
-
-            foreach ($electionRound->getElectionPools() as $pool) {
-                foreach ($voteRow as $i => $mentionIndex) {
-                    $result->addVoteChoice($choice = new VoteChoice($pool));
-                    $choice->setMention(MajorityVoteMentionEnum::ALL[$mentionIndex]);
-                    $choice->setCandidateGroup($pool->getCandidateGroups()[$i]);
-                }
-            }
-
-            $this->manager->persist($result);
-        }
-
-        $this->manager->flush();
     }
 }
