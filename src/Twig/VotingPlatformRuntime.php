@@ -41,7 +41,11 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
 
     public function findActiveLocalDesignations(Adherent $adherent): array
     {
-        return $this->electionManager->findActiveDesignations($adherent);
+        return $this->electionManager->findActiveDesignations($adherent, [
+            DesignationTypeEnum::LOCAL_ELECTION,
+            DesignationTypeEnum::LOCAL_POLL,
+            DesignationTypeEnum::COMMITTEE_SUPERVISOR,
+        ]);
     }
 
     public function findElectionForCommittee(Committee $committee): ?Election

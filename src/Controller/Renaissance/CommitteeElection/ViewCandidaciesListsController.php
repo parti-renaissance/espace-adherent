@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/comites/{uuid}/listes-candidats', name: 'app_renaissance_committee_election_candidacies_lists_view', methods: ['GET'])]
-#[IsGranted('MEMBER_OF_COMMITTEE', subject: 'committee')]
+#[IsGranted('IS_VOTER_IN_COMMITTEE', subject: 'committee')]
 class ViewCandidaciesListsController extends AbstractController
 {
     public function __invoke(Committee $committee): Response

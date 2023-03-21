@@ -11,6 +11,7 @@ class CommitteeElectionVoter extends AbstractAdherentVoter
 {
     public const PERMISSION_ABLE_TO_CANDIDATE = 'ABLE_TO_CANDIDATE_IN_COMMITTEE';
     public const PERMISSION_ABLE_TO_VOTE = 'ABLE_TO_VOTE_IN_COMMITTEE';
+    public const PERMISSION_IS_VOTER = 'IS_VOTER_IN_COMMITTEE';
 
     private $authorisationChecker;
 
@@ -32,11 +33,15 @@ class CommitteeElectionVoter extends AbstractAdherentVoter
             return $this->authorisationChecker->canVoteOnCommittee($subject, $adherent);
         }
 
+        if (self::PERMISSION_IS_VOTER === $attribute) {
+            return $this->authorisationChecker->isVoterOnCommittee($subject, $adherent);
+        }
+
         return false;
     }
 
     protected function supports(string $attribute, $subject): bool
     {
-        return \in_array($attribute, [self::PERMISSION_ABLE_TO_CANDIDATE, self::PERMISSION_ABLE_TO_VOTE], true) && $subject instanceof Committee;
+        return \in_array($attribute, [self::PERMISSION_ABLE_TO_CANDIDATE, self::PERMISSION_ABLE_TO_VOTE, self::PERMISSION_IS_VOTER], true) && $subject instanceof Committee;
     }
 }

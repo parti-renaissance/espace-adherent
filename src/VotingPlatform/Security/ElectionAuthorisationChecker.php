@@ -6,19 +6,18 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Repository\CommitteeRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
+use App\Repository\VotingPlatform\ElectionRepository;
+use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 
 class ElectionAuthorisationChecker
 {
-    private $electedRepresentativeRepository;
-    private $committeeRepository;
-
     public function __construct(
-        ElectedRepresentativeRepository $electedRepresentativeRepository,
-        CommitteeRepository $committeeRepository
+        private readonly ElectedRepresentativeRepository $electedRepresentativeRepository,
+        private readonly CommitteeRepository $committeeRepository,
+        private readonly ElectionRepository $electionRepository,
+        private readonly VoterRepository $voterRepository
     ) {
-        $this->electedRepresentativeRepository = $electedRepresentativeRepository;
-        $this->committeeRepository = $committeeRepository;
     }
 
     public function canCandidateOnCommittee(Committee $committee, Adherent $adherent): bool
@@ -136,5 +135,18 @@ class ElectionAuthorisationChecker
         }
 
         return true;
+    }
+
+    public function isVoterOnCommittee(Committee $committee, Adherent $adherent): bool
+    {
+        if (!$designation = $committee->getCurrentDesignation()) {
+            return false;
+        }
+
+        if (!$election = $this->electionRepository->findOneForCommittee($committee, $designation)) {
+            return false;
+        }
+
+        return $this->voterRepository->existsForElection($adherent, $election->getUuid()->toString());
     }
 }
