@@ -104,8 +104,6 @@ class Contribution
         $contribution->gocardlessMandateStatus = $subscription->mandate->status;
         $contribution->gocardlessSubscriptionId = $subscription->subscription->id;
         $contribution->gocardlessSubscriptionStatus = $subscription->subscription->status;
-        $contribution->startDate = $subscription->subscription->start_date;
-        $contribution->endDate = $subscription->subscription->end_date;
         $contribution->type = ContributionTypeEnum::MANDATE;
 
         return $contribution;
