@@ -20,10 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Security("is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_MESSAGES'))")
- */
 #[Route(path: '/espace-referent/messagerie-instances', name: 'app_message_referent_instances_')]
+#[Security("is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_MESSAGES'))")]
 class ReferentInstancesMessageController extends AbstractMessageController
 {
     private $territorialCouncilMembershipRepository;
@@ -40,10 +38,8 @@ class ReferentInstancesMessageController extends AbstractMessageController
         $this->setTemplate('send_success', 'message/send_success/referent_instances.html.twig');
     }
 
-    /**
-     * @Security("is_granted('IS_AUTHOR_OF', message) and !message.isSendToTimeline()")
-     */
     #[Route(path: '/{uuid}/publish', name: 'publish_message', methods: ['GET'])]
+    #[Security("is_granted('IS_AUTHOR_OF', message) and !message.isSendToTimeline()")]
     public function publishMessageAction(
         Request $request,
         AbstractAdherentMessage $message,

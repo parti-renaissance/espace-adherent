@@ -9,10 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Security("is_granted('ROLE_SUPERVISOR') or is_granted('ROLE_HOST')")
- */
 #[Route(path: '/espace-comite', name: 'app_committee_space_dashboard')]
+#[Security("is_granted('ROLE_SUPERVISOR') or is_granted('ROLE_HOST')")]
 class CommitteeSpaceController extends AbstractController
 {
     public function __invoke(CommitteeRepository $repository): Response

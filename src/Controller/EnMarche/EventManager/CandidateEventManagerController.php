@@ -13,10 +13,8 @@ use App\Repository\EventGroupCategoryRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Security("is_granted('ROLE_CANDIDATE') or (is_granted('ROLE_DELEGATED_CANDIDATE') and is_granted('HAS_DELEGATED_ACCESS_EVENTS'))")
- */
 #[Route(path: '/espace-candidat', name: 'app_candidate_event_manager')]
+#[Security("is_granted('ROLE_CANDIDATE') or (is_granted('ROLE_DELEGATED_CANDIDATE') and is_granted('HAS_DELEGATED_ACCESS_EVENTS'))")]
 class CandidateEventManagerController extends AbstractEventManagerController
 {
     private $repository;

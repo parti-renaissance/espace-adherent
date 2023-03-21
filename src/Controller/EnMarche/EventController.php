@@ -29,11 +29,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @Entity("event", expr="repository.findOnePublishedBySlug(slug)")
- * @IsGranted("CAN_ACCESS_EVENT", subject="event")
- */
 #[Route(path: '/evenements/{slug}', name: 'app_committee_event')]
+#[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
+#[IsGranted('CAN_ACCESS_EVENT', subject: 'event')]
 class EventController extends AbstractController
 {
     #[Route(name: '_show', methods: ['GET'])]
@@ -67,11 +65,9 @@ class EventController extends AbstractController
         return $response;
     }
 
-    /**
-     * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
-     * @IsGranted("ROLE_ADHERENT")
-     */
     #[Route(path: '/inscription-adherent', name: '_attend_adherent', methods: ['GET'])]
+    #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
+    #[IsGranted('ROLE_ADHERENT')]
     public function attendAdherentAction(
         BaseEvent $event,
         ValidatorInterface $validator,
@@ -107,10 +103,8 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_committee_event_show', ['slug' => $event->getSlug()]);
     }
 
-    /**
-     * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
-     */
     #[Route(path: '/inscription', name: '_attend', methods: ['GET', 'POST'])]
+    #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
     public function attendAction(
         Request $request,
         BaseEvent $event,

@@ -72,10 +72,8 @@ abstract class AbstractPollController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', localPoll) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', localPoll)")
-     */
     #[Route(path: '/{uuid}/editer', name: 'local_edit', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET|POST'])]
+    #[Security("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', localPoll) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', localPoll)")]
     public function editLocalPoll(
         Request $request,
         LocalPoll $localPoll,
@@ -111,11 +109,9 @@ abstract class AbstractPollController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', poll) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', poll)")
-     */
     #[Route(path: '/{uuid}/depublier', name: 'unpublish', methods: ['GET'], defaults: ['publish' => false])]
     #[Route(path: '/{uuid}/publier', name: 'publish', methods: ['GET'], defaults: ['publish' => true])]
+    #[Security("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', poll) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', poll)")]
     public function togglePublish(bool $publish, Poll $poll, PollManager $pollManager): Response
     {
         if (!($publish xor $poll->isPublished())) {

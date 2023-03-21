@@ -7,10 +7,8 @@ use App\Jecoute\JecouteSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Security("is_granted('ROLE_CANDIDATE') or (is_granted('ROLE_DELEGATED_CANDIDATE') and is_granted('HAS_DELEGATED_ACCESS_JECOUTE'))")
- */
 #[Route(path: '/espace-candidat/questionnaires', name: 'app_jecoute_candidate_')]
+#[Security("is_granted('ROLE_CANDIDATE') or (is_granted('ROLE_DELEGATED_CANDIDATE') and is_granted('HAS_DELEGATED_ACCESS_JECOUTE'))")]
 class JecouteCandidateController extends AbstractJecouteController
 {
     protected function getSpaceName(): string

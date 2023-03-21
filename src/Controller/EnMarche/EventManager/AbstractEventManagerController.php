@@ -74,10 +74,8 @@ abstract class AbstractEventManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("HOST_EVENT", subject="event")
-     */
     #[Route(path: '/evenements/{slug}/modifier', name: '_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('HOST_EVENT', subject: 'event')]
     public function editAction(Request $request, BaseEvent $event, EventCommandHandler $handler): Response
     {
         $command = EventCommand::createFromEvent($event);
@@ -103,10 +101,8 @@ abstract class AbstractEventManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("HOST_EVENT", subject="event")
-     */
     #[Route(path: '/evenements/{slug}/annuler', name: '_cancel', methods: ['GET'])]
+    #[IsGranted('HOST_EVENT', subject: 'event')]
     public function cancelAction(BaseEvent $event, EventCanceledHandler $eventCanceledHandler): Response
     {
         if (!$event->isActive()) {

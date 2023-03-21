@@ -31,11 +31,9 @@ abstract class AbstractMyTeamController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("delegatedAccess ? delegatedAccess.getDelegator() == user : true")
-     */
     #[Route(path: '/deleguer-acces', name: 'delegate_access', methods: ['GET', 'POST'])]
     #[Route(path: '/deleguer-acces/{uuid}', name: 'delegate_access_edit', methods: ['GET', 'POST'])]
+    #[Security('delegatedAccess ? delegatedAccess.getDelegator() == user : true')]
     public function delegateAccess(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -66,10 +64,8 @@ abstract class AbstractMyTeamController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("delegatedAccess.getDelegator() == user")
-     */
     #[Route(path: '/deleguer-acces/{uuid}/supprimer', name: 'delegate_access_delete', methods: ['GET'])]
+    #[Security('delegatedAccess.getDelegator() == user')]
     public function deleteDelegatedAccess(DelegatedAccess $delegatedAccess, EntityManagerInterface $entityManager)
     {
         $entityManager->remove($delegatedAccess);

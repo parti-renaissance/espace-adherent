@@ -38,10 +38,10 @@ abstract class AbstractDesignationController extends AbstractController
     }
 
     /**
-     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
      * @param Committee $committee used in Security notation in concretes classes
      */
     #[Route(path: '/{uuid}/{election_round_uuid}', name: '_dashboard', methods: ['GET'], defaults: ['election_round_uuid' => null])]
+    #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
     public function dashboardAction(
         Request $request,
         Committee $committee,
@@ -61,10 +61,8 @@ abstract class AbstractDesignationController extends AbstractController
         ]);
     }
 
-    /**
-     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
-     */
     #[Route(path: '/{uuid}/liste-emargement/{election_round_uuid}', name: '_voters_list', methods: ['GET'], defaults: ['election_round_uuid' => null])]
+    #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
     public function listVotersAction(
         Request $request,
         Committee $committee,
@@ -90,10 +88,8 @@ abstract class AbstractDesignationController extends AbstractController
         ]);
     }
 
-    /**
-     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
-     */
     #[Route(path: '/{uuid}/resultats/{election_round_uuid}', name: '_results', methods: ['GET'], defaults: ['election_round_uuid' => null])]
+    #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
     public function showResultsAction(
         Request $request,
         Committee $committee,
@@ -125,10 +121,8 @@ abstract class AbstractDesignationController extends AbstractController
         ]);
     }
 
-    /**
-     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
-     */
     #[Route(path: '/{uuid}/bulletins/{election_round_uuid}', name: '_votes', methods: ['GET'], defaults: ['election_round_uuid' => null])]
+    #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
     public function listVotesAction(
         Request $request,
         Committee $committee,

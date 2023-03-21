@@ -10,10 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("RENAISSANCE_ADHERENT")
- */
 #[Route(path: '/election-locale', name: 'app_renaissance_local_election_home', methods: 'GET')]
+#[IsGranted('RENAISSANCE_ADHERENT')]
 class LocalPollElectionController extends AbstractController
 {
     public function __invoke(ElectionManager $electionManager): Response

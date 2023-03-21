@@ -11,10 +11,8 @@ use App\Repository\Event\BaseEventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Security("is_granted('ROLE_DEPUTY') or (is_granted('ROLE_DELEGATED_DEPUTY') and is_granted('HAS_DELEGATED_ACCESS_EVENTS'))")
- */
 #[Route(path: '/espace-depute', name: 'app_deputy_event_manager')]
+#[Security("is_granted('ROLE_DEPUTY') or (is_granted('ROLE_DELEGATED_DEPUTY') and is_granted('HAS_DELEGATED_ACCESS_EVENTS'))")]
 class DeputyEventManagerController extends AbstractEventManagerController
 {
     private $repository;

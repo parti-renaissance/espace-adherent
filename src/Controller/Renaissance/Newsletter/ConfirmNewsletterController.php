@@ -15,9 +15,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 #[Route(path: '/newsletter/confirmation/{uuid}/{confirm_token}', name: 'app_renaissance_newsletter_confirm', methods: ['GET'])]
 class ConfirmNewsletterController extends AbstractController
 {
-    /**
-     * @Entity("subscription", expr="repository.findOneByUuidAndToken(uuid, confirm_token)")
-     */
+    #[Entity('subscription', expr: 'repository.findOneByUuidAndToken(uuid, confirm_token)')]
     public function __invoke(
         NewsletterSubscription $subscription,
         EntityManagerInterface $entityManager,

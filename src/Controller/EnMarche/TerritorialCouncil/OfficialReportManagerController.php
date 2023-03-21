@@ -12,10 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_REFERENT")
- */
 #[Route(path: '/espace-referent/instances/proces-verbaux', name: 'app_instances_official_report_referent_')]
+#[IsGranted('ROLE_REFERENT')]
 class OfficialReportManagerController extends AbstractController
 {
     #[Route(path: '', name: 'list', methods: ['GET'])]
@@ -59,10 +57,8 @@ class OfficialReportManagerController extends AbstractController
         );
     }
 
-    /**
-     * @IsGranted("CAN_EDIT_OFFICIAL_REPORT", subject="officialReport")
-     */
     #[Route(path: '/{uuid}/modifier', name: 'update', methods: ['GET', 'POST'])]
+    #[IsGranted('CAN_EDIT_OFFICIAL_REPORT', subject: 'officialReport')]
     public function updateAction(
         Request $request,
         OfficialReport $officialReport,

@@ -13,10 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_REFERENT")
- */
 #[Route(path: '/espace-referent/instances/convocations', name: 'app_instances_convocation_referent')]
+#[IsGranted('ROLE_REFERENT')]
 class ConvocationManagerController extends AbstractController
 {
     #[Route(path: '', name: '_list', methods: ['GET'])]

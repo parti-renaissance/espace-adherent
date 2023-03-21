@@ -13,10 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_ADMIN_MY_EUROPE")
- */
 #[Route(path: '/myeurope')]
+#[IsGranted('ROLE_ADMIN_MY_EUROPE')]
 class AdminMyEuropeController extends AbstractController
 {
     public const PER_PAGE = 1000;

@@ -13,10 +13,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_REFERENT")
- */
 #[Route(path: '/espace-referent/assesseurs', name: 'app_assessors_referent')]
+#[IsGranted('ROLE_REFERENT')]
 class ReferentAssessorSpaceController extends AbstractAssessorSpaceController
 {
     protected function getSpaceType(): string

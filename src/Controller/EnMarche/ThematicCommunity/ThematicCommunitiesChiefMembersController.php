@@ -11,10 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_THEMATIC_COMMUNITY_CHIEF")
- */
 #[Route(path: '/communautes-thematiques', name: 'app_thematic_community_')]
+#[IsGranted('ROLE_THEMATIC_COMMUNITY_CHIEF')]
 class ThematicCommunitiesChiefMembersController extends AbstractController
 {
     #[Route(path: '/membres', name: 'members_list')]

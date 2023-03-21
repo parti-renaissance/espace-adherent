@@ -19,10 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-/**
- * @Security("(is_granted('ROLE_USER') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))")
- */
 #[Route(path: '/jecoute/survey')]
+#[Security("(is_granted('ROLE_USER') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))")]
 class SurveyController extends AbstractController
 {
     #[Route(name: 'api_public_surveys_list', methods: ['GET'])]

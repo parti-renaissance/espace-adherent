@@ -27,10 +27,8 @@ class MoocController extends AbstractController
         );
     }
 
-    /**
-     * @Entity("mooc", expr="repository.findOneBySlug(slug)")
-     */
     #[Route(path: '/{slug}', name: 'api_mooc', methods: ['GET'])]
+    #[Entity('mooc', expr: 'repository.findOneBySlug(slug)')]
     public function moocAction(Mooc $mooc): Response
     {
         return $this->json($mooc, Response::HTTP_OK, [], ['groups' => ['mooc_read']]);

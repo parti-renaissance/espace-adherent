@@ -14,10 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_ADMIN_FINANCE")
- */
 #[Route(path: '/donator')]
+#[IsGranted('ROLE_ADMIN_FINANCE')]
 class AdminDonatorController extends AbstractController
 {
     #[Route(path: '/merge', name: 'app_admin_donator_merge', methods: ['GET', 'POST'])]

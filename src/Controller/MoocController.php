@@ -12,10 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/mooc')]
 class MoocController extends AbstractController
 {
-    /**
-     * @Cache(maxage=900, smaxage=900)
-     */
     #[Route(path: '/file/{slug}.{extension}', name: 'mooc_get_file', methods: ['GET'])]
+    #[Cache(maxage: 900, smaxage: 900)]
     public function getFile(FileRequestHandler $fileRequestHandler, AttachmentFile $file): Response
     {
         return $fileRequestHandler->createResponse($file);

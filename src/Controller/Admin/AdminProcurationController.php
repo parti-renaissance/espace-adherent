@@ -14,10 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_ADMIN_PROCURATIONS")
- */
 #[Route(path: '/procuration')]
+#[IsGranted('ROLE_ADMIN_PROCURATIONS')]
 class AdminProcurationController extends AbstractController
 {
     #[Route(path: '/export', methods: ['GET'])]

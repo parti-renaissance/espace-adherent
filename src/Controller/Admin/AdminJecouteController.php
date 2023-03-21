@@ -12,10 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/questionnaires')]
 class AdminJecouteController
 {
-    /**
-     * @IsGranted("ROLE_ADMIN_JECOUTE")
-     */
     #[Route(path: '/survey/{id}/export', name: 'admin_app_jecoute_surveys_export', requirements: ['type' => 'local|national'])]
+    #[IsGranted('ROLE_ADMIN_JECOUTE')]
     public function nationalSurveyExportAction(
         Request $request,
         Survey $survey,

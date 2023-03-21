@@ -21,10 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("POLITICAL_COMMITTEE_MEMBER")
- */
 #[Route(path: '/comite-politique', name: 'app_political_committee_')]
+#[IsGranted('POLITICAL_COMMITTEE_MEMBER')]
 class PoliticalCommitteeController extends AbstractController
 {
     use CanaryControllerTrait;
@@ -66,10 +64,8 @@ class PoliticalCommitteeController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("CAN_MANAGE_FEED_ITEM", subject="feedItem")
-     */
     #[Route(path: '/messages/{id}/modifier', name: 'edit_feed_item', methods: ['GET', 'POST'])]
+    #[IsGranted('CAN_MANAGE_FEED_ITEM', subject: 'feedItem')]
     public function feedItemEditAction(
         EntityManagerInterface $manager,
         Request $request,
@@ -93,10 +89,8 @@ class PoliticalCommitteeController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("CAN_MANAGE_FEED_ITEM", subject="feedItem")
-     */
     #[Route(path: '/messages/{id}/supprimer', name: 'delete_feed_item', methods: ['DELETE'])]
+    #[IsGranted('CAN_MANAGE_FEED_ITEM', subject: 'feedItem')]
     public function deleteFeedItemAction(
         EntityManagerInterface $em,
         Request $request,
@@ -121,10 +115,8 @@ class PoliticalCommitteeController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("CAN_DOWNLOAD_OFFICIAL_REPORT", subject="officialReport")
-     */
     #[Route(path: '/proces-verbaux/{uuid}', name: 'official_report_download', methods: ['GET'])]
+    #[IsGranted('CAN_DOWNLOAD_OFFICIAL_REPORT', subject: 'officialReport')]
     public function downloadReportAction(OfficialReport $officialReport, FilesystemInterface $storage): Response
     {
         $lastDocument = $officialReport->getLastDocument();

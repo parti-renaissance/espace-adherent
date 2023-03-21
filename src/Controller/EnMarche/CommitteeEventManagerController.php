@@ -26,10 +26,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("HOST_EVENT", subject="event")
- */
 #[Route(path: '/evenements/{slug}')]
+#[IsGranted('HOST_EVENT', subject: 'event')]
 class CommitteeEventManagerController extends AbstractController
 {
     private const ACTION_CONTACT = 'contact';
@@ -47,10 +45,8 @@ class CommitteeEventManagerController extends AbstractController
         $this->eventRegistrationRepository = $eventRegistrationRepository;
     }
 
-    /**
-     * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
-     */
     #[Route(path: '/modifier', name: 'app_committee_event_edit', methods: ['GET', 'POST'])]
+    #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
     public function editAction(Request $request, CommitteeEvent $event, EventCommandHandler $handler): Response
     {
         $form = $this->createForm(
@@ -78,10 +74,8 @@ class CommitteeEventManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
-     */
     #[Route(path: '/annuler', name: 'app_committee_event_cancel', methods: ['GET', 'POST'])]
+    #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
     public function cancelAction(
         Request $request,
         CommitteeEvent $event,

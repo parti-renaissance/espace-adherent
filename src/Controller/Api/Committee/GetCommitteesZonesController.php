@@ -10,10 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')")
- */
 #[Route(path: '/v3/committees/used-zones', name: 'api_committee_get_used_zones', methods: ['GET'])]
+#[Security("is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')")]
 class GetCommitteesZonesController extends AbstractController
 {
     public function __invoke(ScopeGeneratorResolver $scopeGeneratorResolver, ZoneRepository $zoneRepository): Response

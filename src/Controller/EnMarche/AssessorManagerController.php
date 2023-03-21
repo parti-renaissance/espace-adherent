@@ -24,10 +24,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_ASSESSOR_MANAGER")
- */
 #[Route(path: '/espace-responsable-assesseur')]
+#[IsGranted('ROLE_ASSESSOR_MANAGER')]
 class AssessorManagerController extends AbstractController
 {
     #[Route(name: 'app_assessor_manager_requests', methods: ['GET'])]
@@ -64,10 +62,8 @@ class AssessorManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
-     */
     #[Route(path: '/demande/{uuid}', requirements: ['uuid' => '%pattern_uuid%'], name: 'app_assessor_manager_request', methods: ['GET'])]
+    #[IsGranted('MANAGE_ASSESSOR', subject: 'assessorRequest')]
     public function assessorRequestAction(
         AssessorRequest $assessorRequest,
         AssessorManager $manager,
@@ -87,12 +83,10 @@ class AssessorManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @ParamConverter("assessorRequest", class="App\Entity\AssessorRequest", options={"mapping": {"uuid": "uuid"}})
-     * @ParamConverter("votePlace", class="App\Entity\Election\VotePlace", options={"id": "votePlaceId"})
-     * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
-     */
     #[Route(path: '/demande/{uuid}/associer/{votePlaceId}', requirements: ['uuid' => '%pattern_uuid%', 'votePlaceId' => '\d+'], name: 'app_assessor_manager_request_associate', methods: ['GET', 'POST'])]
+    #[ParamConverter('assessorRequest', class: 'App\Entity\AssessorRequest', options: ['mapping' => ['uuid' => 'uuid']])]
+    #[ParamConverter('votePlace', class: 'App\Entity\Election\VotePlace', options: ['id' => 'votePlaceId'])]
+    #[IsGranted('MANAGE_ASSESSOR', subject: 'assessorRequest')]
     public function assessorRequestAssociateAction(
         Request $request,
         VotePlaceRepository $votePlaceRepository,
@@ -125,10 +119,8 @@ class AssessorManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
-     */
     #[Route(path: '/demande/{uuid}/desassocier', requirements: ['uuid' => '%pattern_uuid%'], name: 'app_assessor_manager_request_deassociate', methods: ['GET', 'POST'])]
+    #[IsGranted('MANAGE_ASSESSOR', subject: 'assessorRequest')]
     public function assessorRequestDessociateAction(
         Request $request,
         AssessorRequest $assessorRequest,
@@ -158,10 +150,8 @@ class AssessorManagerController extends AbstractController
         ]);
     }
 
-/**
- * @IsGranted("MANAGE_ASSESSOR", subject="assessorRequest")
- */
 #[Route(path: '/transform/{uuid}/{action}', requirements: ['uuid' => '%pattern_uuid%', 'action' => ActionEnum::ACTIONS_URI_REGEX], name: 'app_assessor_manager_request_transform', methods: ['GET'])]
+#[IsGranted('MANAGE_ASSESSOR', subject: 'assessorRequest')]
     public function assessorRequestTransformAction(
         AssessorRequest $assessorRequest,
         string $action,

@@ -115,10 +115,8 @@ class DonationController extends AbstractController
         return $transactionCallbackHandler->handle($id, $request, $_callback_token);
     }
 
-    /**
-     * @ParamConverter("donation", options={"mapping": {"uuid": "uuid"}})
-     */
     #[Route(path: '/{uuid}/{status}', requirements: ['status' => 'effectue|erreur', 'uuid' => '%pattern_uuid%'], name: 'donation_result', methods: ['GET'])]
+    #[ParamConverter('donation', options: ['mapping' => ['uuid' => 'uuid']])]
     public function resultAction(
         Request $request,
         MembershipRegistrationProcess $membershipRegistrationProcess,

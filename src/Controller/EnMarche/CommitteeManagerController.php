@@ -30,10 +30,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
-/**
- * @IsGranted("HOST_COMMITTEE", subject="committee")
- */
 #[Route(path: '/comites/{slug}')]
+#[IsGranted('HOST_COMMITTEE', subject: 'committee')]
 class CommitteeManagerController extends AbstractController
 {
     private $manager;
@@ -72,10 +70,8 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("committee.isApproved()")
-     */
     #[Route(path: '/evenements/ajouter', name: 'app_committee_manager_add_event', methods: ['GET', 'POST'])]
+    #[Security('committee.isApproved()')]
     public function addEventAction(
         Request $request,
         Committee $committee,
@@ -107,10 +103,8 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("committee.isApproved()")
-     */
     #[Route(path: '/membres', name: 'app_committee_manager_list_members', methods: ['GET'])]
+    #[Security('committee.isApproved()')]
     public function listMembersAction(
         Request $request,
         Committee $committee,
@@ -182,11 +176,9 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('SUPERVISE_COMMITTEE', committee) and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee)")
-     * @Entity("member", expr="repository.findByUuid(member_uuid)")
-     */
     #[Route(path: '/promouvoir-suppleant/{member_uuid}', name: 'app_committee_promote_host', methods: ['GET', 'POST'])]
+    #[Security("is_granted('SUPERVISE_COMMITTEE', committee) and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee)")]
+    #[Entity('member', expr: 'repository.findByUuid(member_uuid)')]
     public function promoteHostAction(Request $request, Committee $committee, Adherent $member): Response
     {
         if (!$this->manager->isPromotableHost($member, $committee)) {
@@ -218,11 +210,9 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    /**
-     * @IsGranted("SUPERVISE_COMMITTEE", subject="committee")
-     * @Entity("member", expr="repository.findByUuid(member_uuid)")
-     */
     #[Route(path: '/retirer-suppleant/{member_uuid}', name: 'app_committee_demote_host', methods: ['GET', 'POST'])]
+    #[IsGranted('SUPERVISE_COMMITTEE', subject: 'committee')]
+    #[Entity('member', expr: 'repository.findByUuid(member_uuid)')]
     public function demoteHostAction(Request $request, Committee $committee, Adherent $member): Response
     {
         if (!$this->manager->isDemotableHost($member, $committee)) {

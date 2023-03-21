@@ -26,10 +26,8 @@ class EventsController extends AbstractController
         ));
     }
 
-    /**
-     * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
-     */
     #[Route(path: '/v3/events/registered', name: 'api_events_registered', methods: ['POST'])]
+    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function followed(Request $request, BaseEventRepository $eventRepository): JsonResponse
     {
         /** @var Adherent $user */
@@ -48,10 +46,8 @@ class EventsController extends AbstractController
         }, $events));
     }
 
-    /**
-     * @Security("event.getAuthor() === user")
-     */
     #[Route(path: '/v3/events/{uuid}/export-registrations', name: 'api_export_event_registrations', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
+    #[Security('event.getAuthor() === user')]
     public function exportRegistrations(EventRegistrationExporter $exporter, BaseEvent $event): Response
     {
         return $exporter->getResponse('xls', $event);

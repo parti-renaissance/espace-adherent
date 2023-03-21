@@ -17,10 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_COALITION_MODERATOR")
- */
 #[Route(path: '/espace-coalition', name: 'app_coalition_moderator_event_manager')]
+#[IsGranted('ROLE_COALITION_MODERATOR')]
 class CoalitionEventManagerController extends AbstractEventManagerController
 {
     public const EVENTS_TYPE_CAUSE = 'cause';

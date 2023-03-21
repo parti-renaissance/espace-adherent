@@ -17,9 +17,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @Security("is_granted('ROLE_ADHERENT') and is_granted('CAN_MANAGE_EVENT', event)")
- */
+#[Security("is_granted('ROLE_ADHERENT') and is_granted('CAN_MANAGE_EVENT', event)")]
 class EventImageController extends AbstractController
 {
     private ImageUploadHelper $imageUploadHelper;

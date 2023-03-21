@@ -198,11 +198,10 @@ class MembershipController extends AbstractController
     /**
      * This action enables a new user to activate his\her newly created
      * membership account.
-     *
-     * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
-     * @Entity("activationToken", expr="repository.findByToken(activation_token)")
      */
     #[Route(path: '/inscription/finaliser/{adherent_uuid}/{activation_token}', name: 'app_membership_activate', requirements: ['adherent_uuid' => '%pattern_uuid%', 'activation_token' => '%pattern_sha1%'], methods: ['GET'])]
+    #[Entity('adherent', expr: 'repository.findOneByUuid(adherent_uuid)')]
+    #[Entity('activationToken', expr: 'repository.findByToken(activation_token)')]
     public function activateAction(
         Adherent $adherent,
         AdherentActivationToken $activationToken,
@@ -246,10 +245,9 @@ class MembershipController extends AbstractController
 
     /**
      * This action enables a new user to pin his/her interests during the registration process.
-     *
-     * @IsGranted("MEMBERSHIP_REGISTRATION_IN_PROGRESS")
      */
     #[Route(path: '/inscription/centre-interets', name: 'app_membership_pin_interests', methods: ['GET', 'POST'])]
+    #[IsGranted('MEMBERSHIP_REGISTRATION_IN_PROGRESS')]
     public function pinInterestsAction(
         Request $request,
         AdherentRepository $adherentRepository,
@@ -279,10 +277,9 @@ class MembershipController extends AbstractController
 
     /**
      * This action enables a user to follow some committees during the registration process.
-     *
-     * @IsGranted("MEMBERSHIP_REGISTRATION_IN_PROGRESS")
      */
     #[Route(path: '/inscription/choisir-des-comites', name: 'app_membership_choose_committees_around_adherent', methods: ['GET', 'POST'])]
+    #[IsGranted('MEMBERSHIP_REGISTRATION_IN_PROGRESS')]
     public function chooseCommitteesAction(
         Request $request,
         AdherentRepository $adherentRepository,
@@ -328,10 +325,9 @@ class MembershipController extends AbstractController
 
     /**
      * This action enables a user to donate during the registration process.
-     *
-     * @IsGranted("MEMBERSHIP_REGISTRATION_IN_PROGRESS")
      */
     #[Route(path: '/inscription/don', name: 'app_membership_donation', methods: ['GET'])]
+    #[IsGranted('MEMBERSHIP_REGISTRATION_IN_PROGRESS')]
     public function donationAction(
         AdherentRepository $adherentRepository,
         MembershipRegistrationProcess $membershipRegistrationProcess

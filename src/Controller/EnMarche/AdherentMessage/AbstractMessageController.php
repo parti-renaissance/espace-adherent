@@ -94,10 +94,8 @@ abstract class AbstractMessageController extends AbstractController
         return $this->renderTemplate('message/create.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="message")
-     */
     #[Route(path: '/{uuid}/modifier', name: 'update', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     public function updateMessageAction(
         Request $request,
         AbstractAdherentMessage $message,
@@ -129,10 +127,8 @@ abstract class AbstractMessageController extends AbstractController
         return $this->renderTemplate('message/update.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="message")
-     */
     #[Route(path: '/{uuid}/visualiser', name: 'preview', methods: ['GET'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     public function previewMessageAction(AbstractAdherentMessage $message): Response
     {
         $this->checkAccess();
@@ -144,10 +140,8 @@ abstract class AbstractMessageController extends AbstractController
         return $this->renderTemplate('message/preview.html.twig', ['message' => $message]);
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="message")
-     */
     #[Route(path: '/{uuid}/supprimer', name: 'delete', methods: ['GET'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     public function deleteMessageAction(AbstractAdherentMessage $message, ObjectManager $manager): Response
     {
         $this->checkAccess();
@@ -160,10 +154,8 @@ abstract class AbstractMessageController extends AbstractController
         return $this->redirectToMessageRoute('list');
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="message")
-     */
     #[Route(path: '/{uuid}/filtrer', name: 'filter', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     public function filterMessageAction(
         Request $request,
         AbstractAdherentMessage $message,
@@ -206,10 +198,8 @@ abstract class AbstractMessageController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('IS_AUTHOR_OF', message) and is_granted('USER_CAN_SEND_MESSAGE', message)")
-     */
     #[Route(path: '/{uuid}/send', name: 'send', methods: ['GET'])]
+    #[Security("is_granted('IS_AUTHOR_OF', message) and is_granted('USER_CAN_SEND_MESSAGE', message)")]
     public function sendMessageAction(AbstractAdherentMessage $message, AdherentMessageManager $manager): Response
     {
         $this->checkAccess();
@@ -245,10 +235,8 @@ abstract class AbstractMessageController extends AbstractController
         return $this->redirectToMessageRoute('list');
     }
 
-    /**
-     * @Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")
-     */
     #[Route(path: '/{uuid}/confirmation', name: 'send_success', methods: ['GET'])]
+    #[Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")]
     public function sendSuccessAction(AbstractAdherentMessage $message): Response
     {
         $this->checkAccess();
@@ -256,10 +244,8 @@ abstract class AbstractMessageController extends AbstractController
         return $this->renderTemplate($this->getTemplate('send_success'), ['message' => $message]);
     }
 
-    /**
-     * @IsGranted("IS_AUTHOR_OF", subject="message")
-     */
     #[Route(path: '/{uuid}/tester', name: 'test', methods: ['GET'])]
+    #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     public function sendTestMessageAction(AbstractAdherentMessage $message, AdherentMessageManager $manager): Response
     {
         $this->checkAccess();

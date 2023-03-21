@@ -24,10 +24,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/espace-referent')]
 class ReferentController extends AbstractController
 {
-    /**
-     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")
-     */
     #[Route(path: '/mon-equipe', name: 'app_referent_organizational_chart', methods: ['GET'])]
+    #[Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")]
     public function organizationalChartAction(
         OrganizationalChartItemRepository $organizationalChartItemRepository,
         ReferentRepository $referentRepository
@@ -38,10 +36,8 @@ class ReferentController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")
-     */
     #[Route(path: '/mon-equipe/{id}', name: 'app_referent_referent_person_link_edit', methods: ['GET', 'POST'])]
+    #[Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")]
     public function editReferentPersonLink(
         Request $request,
         ReferentPersonLinkRepository $referentPersonLinkRepository,
@@ -81,10 +77,8 @@ class ReferentController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")
-     */
     #[Route(path: '/mon-equipe/autocompletion/comite', name: 'app_referent_referent_person_link_autocomplete_committee', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
+    #[Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")]
     public function committeeAutocompleteAction(Request $request, CommitteeRepository $committeeRepository)
     {
         if (!$term = $request->query->get('term')) {
@@ -106,10 +100,8 @@ class ReferentController extends AbstractController
         return new JsonResponse($result ?? []);
     }
 
-    /**
-     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")
-     */
     #[Route(path: '/mon-equipe/autocompletion/ville', name: 'app_referent_referent_person_link_autocomplete_city', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
+    #[Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")]
     public function cityAutocompleteAction(Request $request, FranceCities $franceCities): JsonResponse
     {
         if (!$search = $request->query->get('search')) {

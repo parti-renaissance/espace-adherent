@@ -21,10 +21,8 @@ class PaymentController extends AbstractAdhesionController
 {
     public const AMOUNT_SESSION_KEY = 'adhesion_amount';
 
-    /**
-     * @IsGranted("ROLE_ADHERENT")
-     */
     #[Route(path: '/adhesion/pre-paiement', name: 'app_renaissance_adhesion_pre_payment', methods: ['GET'])]
+    #[IsGranted('ROLE_ADHERENT')]
     public function prePaymentAction(Request $request, DonationRequestHandler $donationRequestHandler): Response
     {
         /** @var Adherent $adherent */
@@ -75,10 +73,8 @@ class PaymentController extends AbstractAdhesionController
         return $transactionCallbackHandler->handle($id, $request, $_callback_token, true);
     }
 
-    /**
-     * @ParamConverter("donation", options={"mapping": {"uuid": "uuid"}})
-     */
     #[Route(path: '/adhesion/{uuid}/{status}', requirements: ['status' => 'effectue|erreur', 'uuid' => '%pattern_uuid%'], name: 'app_renaissance_adhesion_payment_result', methods: ['GET'])]
+    #[ParamConverter('donation', options: ['mapping' => ['uuid' => 'uuid']])]
     public function resultAction(Request $request, Donation $donation, string $status): Response
     {
         if (DonationController::RESULT_STATUS_EFFECTUE === $status) {

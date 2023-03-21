@@ -7,10 +7,8 @@ use App\Jecoute\JecouteSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_JECOUTE_MANAGER")
- */
 #[Route(path: '/espace-responsable-des-questionnaires', name: 'app_jecoute_manager_')]
+#[IsGranted('ROLE_JECOUTE_MANAGER')]
 class JecouteManagerController extends AbstractJecouteController
 {
     protected function getSpaceName(): string

@@ -18,10 +18,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_COALITION_MODERATOR")
- */
 #[Route(path: '/espace-coalition/causes', name: 'app_coalition_')]
+#[IsGranted('ROLE_COALITION_MODERATOR')]
 class CausesController extends AbstractController
 {
     #[Route(path: '.{_format}', name: 'causes_list', methods: ['GET'], defaults: ['_format' => 'html'], requirements: ['_format' => 'html|csv|xls'])]

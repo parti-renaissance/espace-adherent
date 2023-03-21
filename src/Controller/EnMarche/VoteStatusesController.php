@@ -7,10 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_STATUSES_VOTER")
- */
 #[Route(path: '/changement-des-statuts', name: 'app_vote_statuses')]
+#[IsGranted('ROLE_STATUSES_VOTER')]
 class VoteStatusesController extends AbstractController
 {
     #[Route(path: '', name: '_index')]

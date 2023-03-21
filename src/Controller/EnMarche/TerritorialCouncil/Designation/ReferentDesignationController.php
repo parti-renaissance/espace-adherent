@@ -16,10 +16,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_REFERENT")
- */
 #[Route(path: '/espace-referent/instances', name: 'app_territorial_council_referent_designations', methods: ['GET'])]
+#[IsGranted('ROLE_REFERENT')]
 class ReferentDesignationController extends AbstractController
 {
     private $electionRepository;
@@ -42,10 +40,8 @@ class ReferentDesignationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('CAN_MANAGE_TERRITORIAL_COUNCIL', election.getTerritorialCouncil())")
-     */
     #[Route(path: '/{uuid}/convocation', name: '_election_send_convocation', methods: ['GET', 'POST'], requirements: ['uuid' => '%pattern_uuid%'])]
+    #[Security("is_granted('CAN_MANAGE_TERRITORIAL_COUNCIL', election.getTerritorialCouncil())")]
     public function editDesignationAction(
         Request $request,
         Election $election,

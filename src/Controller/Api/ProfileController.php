@@ -34,10 +34,8 @@ class ProfileController extends AbstractController
         'uncertified_profile_write',
     ];
 
-    /**
-     * @IsGranted("ROLE_OAUTH_SCOPE_READ:PROFILE")
-     */
     #[Route(path: '/me', name: '_show', methods: ['GET'])]
+    #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
     public function show(SerializerInterface $serializer): JsonResponse
     {
         /** @var Adherent $user */
@@ -50,10 +48,8 @@ class ProfileController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE') and user == adherent")
-     */
     #[Route(path: '/{uuid}', name: '_update', methods: ['PUT'])]
+    #[Security("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE') and user == adherent")]
     public function update(
         Request $request,
         SerializerInterface $serializer,
@@ -94,19 +90,15 @@ class ProfileController extends AbstractController
         return JsonResponse::fromJsonString($errors, JsonResponse::HTTP_BAD_REQUEST);
     }
 
-    /**
-     * @IsGranted("ROLE_OAUTH_SCOPE_WRITE:PROFILE")
-     */
     #[Route(path: '/configuration', name: '_configuration', methods: ['GET'])]
+    #[IsGranted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')]
     public function configuration(AdherentProfileConfiguration $adherentProfileConfiguration): JsonResponse
     {
         return new JsonResponse($adherentProfileConfiguration->build());
     }
 
-    /**
-     * @Security("is_granted('UNREGISTER', user)")
-     */
     #[Route(path: '/unregister', name: '_unregister', methods: ['POST'])]
+    #[Security("is_granted('UNREGISTER', user)")]
     public function terminateMembershipAction(
         MembershipRequestHandler $handler,
         TokenRevocationAuthority $tokenRevocationAuthority

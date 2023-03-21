@@ -11,10 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @IsGranted("ROLE_OAUTH_SCOPE_CRM_PARIS")
- */
 #[Route(path: '/crm-paris')]
+#[IsGranted('ROLE_OAUTH_SCOPE_CRM_PARIS')]
 class CrmParisController extends AbstractController
 {
     private const CSV_DELIMITER = ';';

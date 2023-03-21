@@ -28,10 +28,8 @@ class CauseController extends AbstractController
         return new JsonResponse($causeRepository->getStatistics());
     }
 
-    /**
-     * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
-     */
     #[Route(path: '/v3/causes/followed', name: 'api_causes_followed', methods: ['POST'])]
+    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function followed(Request $request, CauseRepository $causeRepository): JsonResponse
     {
         /** @var Adherent $user */
@@ -50,9 +48,7 @@ class CauseController extends AbstractController
         }, $causes));
     }
 
-    /**
-     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED') and cause.getAuthor() === user")
-     */
+    #[Security("is_granted('IS_AUTHENTICATED_REMEMBERED') and cause.getAuthor() === user")]
     public function updateImage(
         Request $request,
         Cause $cause,

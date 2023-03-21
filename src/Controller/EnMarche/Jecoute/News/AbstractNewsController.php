@@ -78,10 +78,8 @@ abstract class AbstractNewsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('CAN_EDIT_CANDIDATE_JECOUTE_NEWS', news) or is_granted('CAN_EDIT_REFERENT_JECOUTE_NEWS', news)")
-     */
     #[Route(path: '/{uuid}/editer', name: 'news_edit', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET|POST'])]
+    #[Security("is_granted('IS_AUTHOR_OF', news) or is_granted('CAN_EDIT_CANDIDATE_JECOUTE_NEWS', news) or is_granted('CAN_EDIT_REFERENT_JECOUTE_NEWS', news)")]
     public function jecouteNewsEditAction(Request $request, News $news, ObjectManager $manager): Response
     {
         $zones = $this->getZones($this->getMainUser($request->getSession()));
@@ -109,10 +107,8 @@ abstract class AbstractNewsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)")
-     */
     #[Route(path: '/{uuid}/publier', name: 'news_publish', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
+    #[Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)")]
     public function jecouteNewsPublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
         if ($news->isPublished()) {
@@ -126,10 +122,8 @@ abstract class AbstractNewsController extends AbstractController
         return $this->redirectToNewsRoute('news_list');
     }
 
-    /**
-     * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)")
-     */
     #[Route(path: '/{uuid}/depublier', name: 'news_unpublish', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
+    #[Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)")]
     public function jecouteNewsUnpublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
         if (!$news->isPublished()) {

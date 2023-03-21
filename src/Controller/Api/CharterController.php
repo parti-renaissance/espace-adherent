@@ -16,10 +16,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CharterController extends AbstractController
 {
-    /**
-     * @IsGranted("CAN_ACCEPT_CHARTER", subject="type")
-     */
     #[Route(path: '/v3/profile/charter/{type}', name: 'app_api_get_charter', methods: ['GET'])]
+    #[IsGranted('CAN_ACCEPT_CHARTER', subject: 'type')]
     public function retrieveCharter(
         string $type,
         TranslatorInterface $translator,
@@ -48,10 +46,8 @@ class CharterController extends AbstractController
         return $this->json(['pdf' => $fileUrl]);
     }
 
-    /**
-     * @IsGranted("CAN_ACCEPT_CHARTER", subject="type")
-     */
     #[Route(path: '/v3/profile/charter/{type}/accept', name: 'app_api_accept_charter', methods: ['PUT'])]
+    #[IsGranted('CAN_ACCEPT_CHARTER', subject: 'type')]
     public function acceptChart(string $type, EntityManagerInterface $entityManager): JsonResponse
     {
         if (!AdherentCharterTypeEnum::isValid($type)) {

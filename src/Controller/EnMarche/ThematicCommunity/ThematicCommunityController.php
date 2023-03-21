@@ -59,10 +59,8 @@ class ThematicCommunityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Entity("thematicCommunity", expr="repository.findOneBy({'slug': slug, 'enabled': true})")
-     */
     #[Route(path: '/{slug}', name: 'join', methods: ['GET', 'POST'])]
+    #[Entity('thematicCommunity', expr: "repository.findOneBy({'slug': slug, 'enabled': true})")]
     public function joinAction(
         Request $request,
         ThematicCommunity $thematicCommunity,
@@ -115,10 +113,8 @@ class ThematicCommunityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("membership.getAdherent() == user")
-     */
     #[Route(path: '/adhesion/{uuid}/modifier', name: 'membership_edit', methods: ['GET', 'POST'])]
+    #[Security('membership.getAdherent() == user')]
     public function editMembershipAction(Request $request, ThematicCommunityMembership $membership): Response
     {
         $this->disableInProduction();
@@ -147,10 +143,8 @@ class ThematicCommunityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Security("membership.getAdherent() == user")
-     */
     #[Route(path: '/adhesion/{uuid}/quitter', name: 'membership_leave', methods: ['GET'])]
+    #[Security('membership.getAdherent() == user')]
     public function leaveMembershipAction(ThematicCommunityMembership $membership): RedirectResponse
     {
         $this->disableInProduction();
@@ -162,10 +156,8 @@ class ThematicCommunityController extends AbstractController
         return $this->redirectToRoute('app_thematic_community_index');
     }
 
-    /**
-     * @Security("membership.getAdherent() == user")
-     */
     #[Route(path: '/adhesion/{uuid}/confirmation', name: 'membership_confirm', methods: ['GET'])]
+    #[Security('membership.getAdherent() == user')]
     public function confirmMembershipAction(ThematicCommunityMembership $membership): RedirectResponse
     {
         $this->disableInProduction();
@@ -177,10 +169,8 @@ class ThematicCommunityController extends AbstractController
         return $this->redirectToRoute('app_thematic_community_index');
     }
 
-    /**
-     * @Security("membership.getAdherent() == user")
-     */
     #[Route(path: '/adhesion/{uuid}/renvoyer-email', name: 'membership_resend_confirm_email', methods: ['GET'])]
+    #[Security('membership.getAdherent() == user')]
     public function reSendConfirmationEmailAction(ThematicCommunityMembership $membership): RedirectResponse
     {
         $this->disableInProduction();
