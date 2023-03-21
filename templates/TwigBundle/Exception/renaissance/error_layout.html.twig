@@ -1,0 +1,34 @@
+{% extends 'renaissance/double_columns_layout.html.twig' %}
+
+{% block page_title 'Une erreur est survenue.' %}
+
+{% block content_left_side %}
+    {% include 'renaissance/partials/left-side-content.html.twig' with {
+        re_logo_class: 'w-20 h-20 re-logo-blue',
+        text_color_class: 'text-blue',
+    } %}
+{% endblock %}
+
+{% block content_right_side %}
+
+    <div class="mx-5 my-10 flex flex-grow items-center justify-center">
+
+        <section class="lg:max-w-lg lg:mx-auto space-y-12">
+            <h1 class="flex flex-col items-center justify-center uppercase text-center text-4xl text-light-blue-500 mb-12 md:flex-row">
+                {{ status_code }}
+            </h1>
+
+            <div class="mt-10 text-center leading-6 md:leading-9">
+                <h3 class="text-xl text-gray-900">
+                    {% block error_message 'Une erreur inattendue s’est produite.' %}
+                </h3>
+            </div>
+
+            <div class="flex mt-6 justify-between">
+                <a href="{{ path('app_renaissance_homepage') }}" class="button button-blue button-full">
+                    Retour au site
+                </a>
+            </div>
+        </section>
+    </div>
+{% endblock %}
