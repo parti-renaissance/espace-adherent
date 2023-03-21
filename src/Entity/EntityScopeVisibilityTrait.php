@@ -12,51 +12,17 @@ trait EntityScopeVisibilityTrait
 {
     /**
      * @ORM\Column(length=30)
-     *
-     * @Assert\NotBlank(message="scope.visibility.not_blank")
-     * @Assert\Choice(choices=App\Scope\ScopeVisibilityEnum::ALL, message="scope.visibility.choice")
-     *
-     * @SymfonySerializer\Groups({
-     *     "team_read",
-     *     "team_list_read",
-     *     "pap_campaign_read",
-     *     "pap_campaign_read_after_write",
-     *     "phoning_campaign_read",
-     *     "phoning_campaign_list",
-     *     "jecoute_news_read_dc",
-     *     "jecoute_news_read",
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "general_meeting_report_read",
-     *     "general_meeting_report_list_read",
-     * })
      */
+    #[Assert\NotBlank(message: 'scope.visibility.not_blank')]
+    #[Assert\Choice(choices: App\Scope\ScopeVisibilityEnum::ALL, message: 'scope.visibility.choice')]
+    #[SymfonySerializer\Groups(['team_read', 'team_list_read', 'pap_campaign_read', 'pap_campaign_read_after_write', 'phoning_campaign_read', 'phoning_campaign_list', 'jecoute_news_read_dc', 'jecoute_news_read', 'formation_read', 'formation_list_read', 'general_meeting_report_read', 'general_meeting_report_list_read'])]
     private string $visibility = ScopeVisibilityEnum::NATIONAL;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(nullable=true)
-     *
-     * @SymfonySerializer\Groups({
-     *     "team_read",
-     *     "team_list_read",
-     *     "team_write",
-     *     "pap_campaign_read",
-     *     "pap_campaign_write",
-     *     "pap_campaign_read_after_write",
-     *     "phoning_campaign_read",
-     *     "phoning_campaign_list",
-     *     "phoning_campaign_write",
-     *     "jecoute_news_read_dc",
-     *     "jecoute_news_write",
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     *     "general_meeting_report_list_read",
-     *     "general_meeting_report_read",
-     *     "general_meeting_report_write"
-     * })
      */
+    #[SymfonySerializer\Groups(['team_read', 'team_list_read', 'team_write', 'pap_campaign_read', 'pap_campaign_write', 'pap_campaign_read_after_write', 'phoning_campaign_read', 'phoning_campaign_list', 'phoning_campaign_write', 'jecoute_news_read_dc', 'jecoute_news_write', 'formation_read', 'formation_list_read', 'formation_write', 'general_meeting_report_list_read', 'general_meeting_report_read', 'general_meeting_report_write'])]
     private ?Zone $zone = null;
 
     public function getZone(): ?Zone

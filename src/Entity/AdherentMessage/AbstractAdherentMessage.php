@@ -134,53 +134,44 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var Adherent
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     *
-     * @Groups({"message_read_list"})
-     *
-     * @Assert\NotBlank
      */
+    #[Groups(['message_read_list'])]
+    #[Assert\NotBlank]
     private $author;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @Groups({"message_read", "message_read_list", "message_write"})
-     *
-     * @Assert\NotBlank
      */
+    #[Groups(['message_read', 'message_read_list', 'message_write'])]
+    #[Assert\NotBlank]
     private $label;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @Groups({"message_read", "message_read_list", "message_write", "message_read_content"})
-     *
-     * @Assert\NotBlank
      */
+    #[Groups(['message_read', 'message_read_list', 'message_write', 'message_read_content'])]
+    #[Assert\NotBlank]
     private $subject;
 
     /**
      * @var string
      *
      * @ORM\Column(type="text")
-     *
-     * @Groups({"message_write", "message_read_content"})
-     *
-     * @Assert\NotBlank
      */
+    #[Groups(['message_write', 'message_read_content'])]
+    #[Assert\NotBlank]
     private $content;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @Groups({"message_read_status", "message_read", "message_read_list"})
      */
+    #[Groups(['message_read_status', 'message_read', 'message_read_list'])]
     private $status = AdherentMessageStatusEnum::DRAFT;
 
     /**
@@ -200,9 +191,8 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"message_read_list"})
      */
+    #[Groups(['message_read_list'])]
     private $sentAt;
 
     /**
@@ -235,9 +225,8 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var string
      *
      * @ORM\Column(options={"default": self::SOURCE_PLATFORM})
-     *
-     * @Groups({"message_read", "message_read_list"})
      */
+    #[Groups(['message_read', 'message_read_list'])]
     private $source = self::SOURCE_PLATFORM;
 
     final public function __construct(UuidInterface $uuid = null, Adherent $author = null)
@@ -308,9 +297,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return AdherentMessageStatusEnum::SENT_SUCCESSFULLY === $this->status;
     }
 
-    /**
-     * @Groups({"message_read_status", "message_read", "message_read_list"})
-     */
+    #[Groups(['message_read_status', 'message_read', 'message_read_list'])]
     public function isSynchronized(): bool
     {
         if ($this->mailchimpCampaigns->isEmpty()) {
@@ -360,9 +347,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         }, $this->getMailchimpCampaigns());
     }
 
-    /**
-     * @Groups({"message_read_status", "message_read", "message_read_list"})
-     */
+    #[Groups(['message_read_status', 'message_read', 'message_read_list'])]
     public function getRecipientCount(): ?int
     {
         return $this->recipientCount + array_sum(
@@ -377,9 +362,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         $this->recipientCount = $recipientCount;
     }
 
-    /**
-     * @Groups("message_read_list")
-     */
+    #[Groups('message_read_list')]
     public function getFromName(): ?string
     {
         return ($this->author ? trim($this->author->getFullName()) : null).$this->getFromNameSuffix();

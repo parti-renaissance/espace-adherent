@@ -39,9 +39,7 @@ class NationalPoll extends Poll
         return $this->administrator;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"poll_read"})
-     */
+    #[SymfonySerializer\Groups(['poll_read'])]
     public function getType(): string
     {
         return PollTypeEnum::NATIONAL;

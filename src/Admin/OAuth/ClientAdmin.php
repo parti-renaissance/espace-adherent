@@ -151,7 +151,7 @@ class ClientAdmin extends AbstractAdmin
         $this->tokenRevocationAuthority->revokeClientTokens($object);
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setTokenRevocationAuthority(TokenRevocationAuthority $tokenRevocationAuthority): void
     {
         $this->tokenRevocationAuthority = $tokenRevocationAuthority;

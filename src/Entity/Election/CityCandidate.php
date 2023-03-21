@@ -26,29 +26,26 @@ class CityCandidate
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $name;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=6, nullable=true)
-     *
-     * @Assert\Choice(choices=App\ValueObject\Genders::CHOICES, strict=true)
      */
+    #[Assert\Choice(choices: App\ValueObject\Genders::CHOICES, strict: true)]
     private $gender;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     private $email;
 
     /**
@@ -64,36 +61,32 @@ class CityCandidate
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     private $profile;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     private $investitureType;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     private $politicalScheme;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     private $alliances;
 
     /**
@@ -107,9 +100,8 @@ class CityCandidate
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
-     *
-     * @Assert\GreaterThanOrEqual(0)
      */
+    #[Assert\GreaterThanOrEqual(0)]
     private $eligibleAdvisersCount;
 
     public function __construct(

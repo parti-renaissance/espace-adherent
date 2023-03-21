@@ -26,11 +26,9 @@ class CauseEvent extends BaseEventWithCategory
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Cause", inversedBy="events")
-     *
-     * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({"event_write", "event_read", "event_list_read"})
      */
+    #[Assert\NotBlank]
+    #[SymfonySerializer\Groups(['event_write', 'event_read', 'event_list_read'])]
     private $cause;
 
     public function getType(): string

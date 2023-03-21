@@ -99,31 +99,26 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\NotBlank(groups={"Admin"})
      */
+    #[Assert\NotBlank(groups: ['Admin'])]
     private $label;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\NotBlank(groups={"api_designation_write", "api_designation_write_limited"})
-     *
-     * @Groups({"designation_read", "designation_write", "designation_list", "designation_write_limited", "committee_election:read"})
      */
+    #[Assert\NotBlank(groups: ['api_designation_write', 'api_designation_write_limited'])]
+    #[Groups(['designation_read', 'designation_write', 'designation_list', 'designation_write_limited', 'committee_election:read'])]
     public ?string $customTitle = null;
 
     /**
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank(groups={"Default", "api_designation_write"})
-     * @Assert\Choice(choices=DesignationTypeEnum::MAIN_TYPES, strict=true, groups={"Default"})
-     * @Assert\Choice(choices=DesignationTypeEnum::API_AVAILABLE_TYPES, strict=true, groups={"api_designation_write"})
-     *
-     * @Groups({"designation_read", "designation_write", "designation_list"})
      */
+    #[Assert\NotBlank(groups: ['Default', 'api_designation_write'])]
+    #[Assert\Choice(choices: DesignationTypeEnum::MAIN_TYPES, strict: true, groups: ['Default'])]
+    #[Assert\Choice(choices: DesignationTypeEnum::API_AVAILABLE_TYPES, strict: true, groups: ['api_designation_write'])]
+    #[Groups(['designation_read', 'designation_write', 'designation_list'])]
     private $type;
 
     /**
@@ -156,49 +151,35 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"designation_read", "committee_election:read"})
      */
+    #[Groups(['designation_read', 'committee_election:read'])]
     public ?\DateTime $electionCreationDate = null;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"designation_read", "designation_write", "designation_list", "committee_election:read"})
-     *
-     * @Assert\GreaterThan(
-     *     "now",
-     *     message="La date de début doit être dans le futur.",
-     *     groups={"Default", "api_designation_write"}
-     * )
      */
+    #[Groups(['designation_read', 'designation_write', 'designation_list', 'committee_election:read'])]
+    #[Assert\GreaterThan('now', message: 'La date de début doit être dans le futur.', groups: ['Default', 'api_designation_write'])]
     private $voteStartDate;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"designation_read", "designation_write", "committee_election:read"})
-     *
-     * @Assert\Expression(
-     *     "value > this.getVoteStartDate()",
-     *     message="La date de clôture doit être postérieur à la date de début",
-     *     groups={"Default", "api_designation_write"}
-     * )
      */
+    #[Groups(['designation_read', 'designation_write', 'committee_election:read'])]
+    #[Assert\Expression('value > this.getVoteStartDate()', message: 'La date de clôture doit être postérieur à la date de début', groups: ['Default', 'api_designation_write'])]
     private $voteEndDate;
 
     /**
      * @var int
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
-     * @Assert\NotBlank
-     * @Assert\GreaterThanOrEqual(0)
      */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThanOrEqual(0)]
     private $resultDisplayDelay = 14;
 
     /**
@@ -207,9 +188,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * @var float
      *
      * @ORM\Column(type="float", options={"unsigned": true, "default": 0})
-     *
-     * @Assert\GreaterThanOrEqual(0)
      */
+    #[Assert\GreaterThanOrEqual(0)]
     private $resultScheduleDelay = 0;
 
     /**
@@ -218,20 +198,18 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * @var int
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
-     * @Assert\NotBlank
-     * @Assert\GreaterThan(0)
      */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(0)]
     private $additionalRoundDuration = 5;
 
     /**
      * @var int
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
-     * @Assert\NotBlank
-     * @Assert\GreaterThanOrEqual(0)
      */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThanOrEqual(0)]
     private $lockPeriodThreshold = 3;
 
     /**
@@ -257,9 +235,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"designation_read", "designation_write", "designation_write_limited"})
      */
+    #[Groups(['designation_read', 'designation_write', 'designation_write_limited'])]
     private ?string $description = null;
 
     /**
@@ -274,9 +251,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Poll\Poll")
-     *
-     * @Assert\Expression("!this.isLocalPollType() or value", message="Vous devez préciser le questionnaire qui sera utilisé pour cette élection.")
      */
+    #[Assert\Expression('!this.isLocalPollType() or value', message: 'Vous devez préciser le questionnaire qui sera utilisé pour cette élection.')]
     public ?Poll $poll = null;
 
     /**
@@ -286,37 +262,28 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     /**
      * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
-     *
-     * @Assert\Expression("!this.isLocalPollType() or value", message="Vous devez préciser le nombre des sièges à distribuer.")
      */
+    #[Assert\Expression('!this.isLocalPollType() or value', message: 'Vous devez préciser le nombre des sièges à distribuer.')]
     public ?int $seats = null;
 
     /**
      * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
-     *
-     * @Assert\GreaterThan(0)
-     * @Assert\LessThanOrEqual(100)
      */
+    #[Assert\GreaterThan(0)]
+    #[Assert\LessThanOrEqual(100)]
     public ?int $majorityPrime = null;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Assert\Expression("!this.isLocalPollType() or !this.majorityPrime or null != value", message="Vous devez préciser le mode d'arrondi pour la prime majoritaire.")
      */
+    #[Assert\Expression('!this.isLocalPollType() or !this.majorityPrime or null != value', message: "Vous devez préciser le mode d'arrondi pour la prime majoritaire.")]
     public ?bool $majorityPrimeRoundSupMode = null;
 
     /**
      * @ORM\Column(type="uuid", nullable=true)
-     *
-     * @Assert\Expression(
-     *     "!this.isCommitteeSupervisorType() or value",
-     *     message="Un identifiant est requis pour ce champs.",
-     *     groups="api_designation_write"
-     * )
-     *
-     * @Groups({"designation_read", "designation_write"})
      */
+    #[Assert\Expression('!this.isCommitteeSupervisorType() or value', message: 'Un identifiant est requis pour ce champs.', groups: 'api_designation_write')]
+    #[Groups(['designation_read', 'designation_write'])]
     private ?UuidInterface $electionEntityIdentifier = null;
 
     public function __construct(string $label = null, UuidInterface $uuid = null)
@@ -544,9 +511,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return $this->isNotificationEnabled(self::NOTIFICATION_SECOND_ROUND);
     }
 
-    /**
-     * @Assert\IsTrue(message="La combinaison des dates est invalide.")
-     */
+    #[Assert\IsTrue(message: 'La combinaison des dates est invalide.')]
     public function hasValidDates(): bool
     {
         if ($this->isCandidacyPeriodEnabled()) {
@@ -575,9 +540,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return true;
     }
 
-    /**
-     * @Assert\IsTrue(message="La configuration de la zone est invalide", groups={"Default", "Admin"})
-     */
+    #[Assert\IsTrue(message: 'La configuration de la zone est invalide', groups: ['Default', 'Admin'])]
     public function hasValidZone(): bool
     {
         if (\in_array($this->type, [DesignationTypeEnum::EXECUTIVE_OFFICE, DesignationTypeEnum::POLL], true)) {

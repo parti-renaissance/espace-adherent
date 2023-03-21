@@ -14,11 +14,9 @@ trait EntityPostAddressTrait
      * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
      *
      * @var PostAddress
-     *
-     * @Assert\Valid(groups={"contact_update"})
-     *
-     * @SymfonySerializer\Groups({"contact_update"})
      */
+    #[Assert\Valid(groups: ['contact_update'])]
+    #[SymfonySerializer\Groups(['contact_update'])]
     protected $postAddress;
 
     public function getPostAddressModel(): PostAddress
@@ -36,9 +34,7 @@ trait EntityPostAddressTrait
         return $this->postAddress ? $this->postAddress->getInlineFormattedAddress($locale) : '';
     }
 
-    /**
-     * @SymfonySerializer\Groups({"user_profile", "adherent_change_diff", "committee_sync"})
-     */
+    #[SymfonySerializer\Groups(['user_profile', 'adherent_change_diff', 'committee_sync'])]
     public function getCountry(): ?string
     {
         return $this->postAddress->getCountry();
@@ -49,30 +45,19 @@ trait EntityPostAddressTrait
         return $this->postAddress->getCountry() ? Countries::getName($this->postAddress->getCountry()) : null;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"committee_sync"})
-     */
+    #[SymfonySerializer\Groups(['committee_sync'])]
     public function getAddress(): ?string
     {
         return $this->postAddress->getAddress();
     }
 
-    /**
-     * @SymfonySerializer\Groups({
-     *     "adherent_change_diff",
-     *     "user_profile",
-     *     "export",
-     *     "adherent_autocomplete"
-     * })
-     */
+    #[SymfonySerializer\Groups(['adherent_change_diff', 'user_profile', 'export', 'adherent_autocomplete'])]
     public function getPostalCode(): ?string
     {
         return $this->postAddress->getPostalCode();
     }
 
-    /**
-     * @SymfonySerializer\Groups({"adherent_change_diff"})
-     */
+    #[SymfonySerializer\Groups(['adherent_change_diff'])]
     public function getCityName(): ?string
     {
         return $this->postAddress->getCityName();
@@ -88,17 +73,13 @@ trait EntityPostAddressTrait
         return $this->postAddress->getInseeCode();
     }
 
-    /**
-     * @SymfonySerializer\Groups({"committee_sync"})
-     */
+    #[SymfonySerializer\Groups(['committee_sync'])]
     public function getLatitude(): ?float
     {
         return $this->postAddress->getLatitude();
     }
 
-    /**
-     * @SymfonySerializer\Groups({"committee_sync"})
-     */
+    #[SymfonySerializer\Groups(['committee_sync'])]
     public function getLongitude(): ?float
     {
         return $this->postAddress->getLongitude();

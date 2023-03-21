@@ -26,58 +26,38 @@ abstract class BaseFile implements EntityFileInterface
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Assert\NotBlank]
+    #[SymfonySerializer\Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private $title;
 
     /**
      * @ORM\Column
      * @Gedmo\Slug(fields={"title"})
-     *
-     * @SymfonySerializer\Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[SymfonySerializer\Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private $slug;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @SymfonySerializer\Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     * })
      */
+    #[SymfonySerializer\Groups(['formation_read', 'formation_list_read'])]
     private $path;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @SymfonySerializer\Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     * })
      */
+    #[SymfonySerializer\Groups(['formation_read', 'formation_list_read'])]
     private $extension;
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\File(maxSize="5M")
      */
+    #[Assert\File(maxSize: '5M')]
     protected $file;
 
     public function __construct(

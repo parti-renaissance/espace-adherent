@@ -8,7 +8,7 @@ abstract class AbstractElectedRepresentativeHandler extends AbstractHandler
 {
     private ElectedRepresentativeRepository $repository;
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setRepository(ElectedRepresentativeRepository $repository): void
     {
         $this->repository = $repository;

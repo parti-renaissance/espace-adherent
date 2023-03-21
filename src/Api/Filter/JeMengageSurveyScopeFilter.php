@@ -77,9 +77,7 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
         }
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setZoneRepository(ZoneRepository $zoneRepository): void
     {
         $this->zoneRepository = $zoneRepository;

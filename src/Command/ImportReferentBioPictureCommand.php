@@ -248,31 +248,31 @@ class ImportReferentBioPictureCommand extends Command
         }
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setStorage(FilesystemInterface $storage): void
     {
         $this->storage = $storage;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $em): void
     {
         $this->em = $em;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setReferentRepository(ReferentRepository $referentRepository): void
     {
         $this->referentRepository = $referentRepository;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setMediaRepository(MediaRepository $mediaRepository): void
     {
         $this->mediaRepository = $mediaRepository;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setMediaFactory(MediaFactory $mediaFactory): void
     {
         $this->mediaFactory = $mediaFactory;

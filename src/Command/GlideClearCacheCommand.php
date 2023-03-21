@@ -31,7 +31,7 @@ class GlideClearCacheCommand extends Command
         return 0;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setGlide(Server $glide): void
     {
         $this->glide = $glide;

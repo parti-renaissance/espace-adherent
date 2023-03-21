@@ -58,41 +58,33 @@ class Coalition implements ExposedImageOwnerInterface, FollowedInterface
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\Image(
-     *     maxSize="5M",
-     *     mimeTypes={"image/jpeg", "image/png"}
-     * )
      */
+    #[Assert\Image(maxSize: '5M', mimeTypes: ['image/jpeg', 'image/png'])]
     protected $image;
 
     /**
      * @var string
      *
      * @ORM\Column(unique=true)
-     *
-     * @SymfonySerializer\Groups({"coalition_read", "cause_read", "event_read", "event_list_read"})
      */
+    #[SymfonySerializer\Groups(['coalition_read', 'cause_read', 'event_read', 'event_list_read'])]
     private $name;
 
     /**
      * @var string
      *
      * @ORM\Column(type="text")
-     *
-     * @SymfonySerializer\Groups({"coalition_read"})
      */
+    #[SymfonySerializer\Groups(['coalition_read'])]
     private $description;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=11, nullable=true)
-     *
-     * @Assert\Regex(pattern="/^[A-Za-z0-9_-]{2,11}$/", message="coalition.youtubeid_syntax")
-     *
-     * @SymfonySerializer\Groups({"coalition_read"})
      */
+    #[Assert\Regex(pattern: '/^[A-Za-z0-9_-]{2,11}$/', message: 'coalition.youtubeid_syntax')]
+    #[SymfonySerializer\Groups(['coalition_read'])]
     private $youtubeId;
 
     /**

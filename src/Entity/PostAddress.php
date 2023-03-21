@@ -24,16 +24,9 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(length=150, nullable=true)
-     *
-     * @Assert\Length(max=150, groups={"contact_update"})
-     *
-     * @SymfonySerializer\Groups({
-     *     "profile_read",
-     *     "event_write",
-     *     "contact_read_after_write",
-     *     "contact_update"
-     * })
      */
+    #[Assert\Length(max: 150, groups: ['contact_update'])]
+    #[SymfonySerializer\Groups(['profile_read', 'event_write', 'contact_read_after_write', 'contact_update'])]
     private $address;
 
     /**
@@ -42,16 +35,9 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
-     *
-     * @Assert\Length(max=15, groups={"contact_update"})
-     *
-     * @SymfonySerializer\Groups({
-     *     "profile_read",
-     *     "event_write",
-     *     "contact_read_after_write",
-     *     "contact_update"
-     * })
      */
+    #[Assert\Length(max: 15, groups: ['contact_update'])]
+    #[SymfonySerializer\Groups(['profile_read', 'event_write', 'contact_read_after_write', 'contact_update'])]
     private $postalCode;
 
     /**
@@ -60,15 +46,9 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true, name="city_insee")
-     *
-     * @Assert\Length(max=15, groups={"contact_update"})
-     *
-     * @SymfonySerializer\Groups({
-     *     "event_write",
-     *     "contact_read_after_write",
-     *     "contact_update"
-     * })
      */
+    #[Assert\Length(max: 15, groups: ['contact_update'])]
+    #[SymfonySerializer\Groups(['event_write', 'contact_read_after_write', 'contact_update'])]
     private $city;
 
     /**
@@ -77,16 +57,9 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255, groups={"contact_update"})
-     *
-     * @SymfonySerializer\Groups({
-     *     "profile_read",
-     *     "event_write",
-     *     "contact_read_after_write",
-     *     "contact_update"
-     * })
      */
+    #[Assert\Length(max: 255, groups: ['contact_update'])]
+    #[SymfonySerializer\Groups(['profile_read', 'event_write', 'contact_read_after_write', 'contact_update'])]
     private $cityName;
 
     /**
@@ -95,28 +68,15 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string
      *
      * @ORM\Column(length=2, nullable=true)
-     *
-     * @Assert\Country(groups={"contact_update"})
-     *
-     * @SymfonySerializer\Groups({
-     *     "profile_read",
-     *     "event_write",
-     *     "contact_read_after_write",
-     *     "contact_update"
-     * })
      */
+    #[Assert\Country(groups: ['contact_update'])]
+    #[SymfonySerializer\Groups(['profile_read', 'event_write', 'contact_read_after_write', 'contact_update'])]
     private $country;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @SymfonySerializer\Groups({
-     *     "profile_read",
-     *     "event_write",
-     *     "contact_read_after_write",
-     *     "contact_update"
-     * })
      */
+    #[SymfonySerializer\Groups(['profile_read', 'event_write', 'contact_read_after_write', 'contact_update'])]
     private $region;
 
     /**
@@ -201,9 +161,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         return new self($country, $zipCode, $cityName, $street, $latitude, $longitude, $region);
     }
 
-    /**
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
-     */
+    #[SymfonySerializer\Groups(['event_read', 'event_list_read'])]
     public function getCountry(): ?string
     {
         return $this->country;
@@ -214,49 +172,37 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         return $this->country ? Countries::getName($this->country) : null;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"profile_read", "event_read", "event_list_read"})
-     */
+    #[SymfonySerializer\Groups(['profile_read', 'event_read', 'event_list_read'])]
     public function getCity(): ?string
     {
         return $this->city;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
-     */
+    #[SymfonySerializer\Groups(['event_read', 'event_list_read'])]
     public function getCityName(): ?string
     {
         return $this->cityName;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
-     */
+    #[SymfonySerializer\Groups(['event_read', 'event_list_read'])]
     public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
-     */
+    #[SymfonySerializer\Groups(['event_read', 'event_list_read'])]
     public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
-     */
+    #[SymfonySerializer\Groups(['event_read', 'event_list_read'])]
     public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
-     */
+    #[SymfonySerializer\Groups(['event_read', 'event_list_read'])]
     public function getLongitude(): ?float
     {
         return $this->longitude;

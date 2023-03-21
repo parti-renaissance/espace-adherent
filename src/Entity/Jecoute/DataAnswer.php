@@ -26,18 +26,16 @@ class DataAnswer
     /**
      * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="dataAnswers")
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Groups({"data_survey_write"})
      */
+    #[Groups(['data_survey_write'])]
     private $surveyQuestion;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"data_survey_write"})
      */
+    #[Groups(['data_survey_write'])]
     private $textField;
 
     /**
@@ -54,9 +52,8 @@ class DataAnswer
      *     }
      * )
      * @ORM\OrderBy({"id": "ASC"})
-     *
-     * @Groups({"data_survey_write"})
      */
+    #[Groups(['data_survey_write'])]
     private $selectedChoices;
 
     /**

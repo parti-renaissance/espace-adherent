@@ -82,17 +82,13 @@ final class EventsZipCodeFilter extends AbstractFilter
         return $description;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setBaseEventRepository(BaseEventRepository $baseEventRepository): void
     {
         $this->baseEventRepository = $baseEventRepository;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setZoneRepository(ZoneRepository $zoneRepository): void
     {
         $this->zoneRepository = $zoneRepository;

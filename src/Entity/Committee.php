@@ -155,18 +155,16 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
      * The cached number of members (followers and hosts/administrators).
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
-     * @Groups({"committee_sync"})
      */
+    #[Groups(['committee_sync'])]
     private $membersCount;
 
     /**
      * The group description.
      *
      * @ORM\Column(type="text")
-     *
-     * @Groups({"committee:list", "committee:write"})
      */
+    #[Groups(['committee:list', 'committee:write'])]
     private $description;
 
     /**
@@ -226,14 +224,10 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
      *
-     * @Groups({
-     *     "committee:read",
-     *     "committee:write",
-     * })
-     *
-     * @Assert\Count(min=1, minMessage="Le comité doit contenir au moins une zone.", groups={"api_committee_edition"})
      * @AssertZoneType(types=Zone::COMMITTEE_TYPES, groups={"api_committee_edition"})
      */
+    #[Groups(['committee:read', 'committee:write'])]
+    #[Assert\Count(min: 1, minMessage: 'Le comité doit contenir au moins une zone.', groups: ['api_committee_edition'])]
     protected $zones;
 
     public function __construct(
@@ -286,9 +280,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         return $this->postAddress;
     }
 
-    /**
-     * @Groups({"committee:read"})
-     */
+    #[Groups(['committee:read'])]
     public function getCommitteeElection(): ?CommitteeElection
     {
         return $this->getCurrentElection();

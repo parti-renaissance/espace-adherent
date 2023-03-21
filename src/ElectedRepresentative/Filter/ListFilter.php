@@ -13,55 +13,46 @@ class ListFilter
 {
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
-     *
-     * @Groups({"filter_write"})
      */
+    #[Assert\Length(max: 255)]
+    #[Groups(['filter_write'])]
     private $firstName;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
-     *
-     * @Groups({"filter_write"})
      */
+    #[Assert\Length(max: 255)]
+    #[Groups(['filter_write'])]
     private $lastName;
 
     /**
      * @var string|null
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $gender;
 
     /**
      * @var array|null
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $labels = [];
 
     /**
      * @var array|null
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $mandates = [];
 
     /**
      * @var array|null
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $politicalFunctions = [];
 
     /**
      * @var array|null
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $cities = [];
 
     /**
@@ -71,62 +62,48 @@ class ListFilter
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(choices=ElectedRepresentativeTypeEnum::ALL, strict=true)
      */
+    #[Assert\Choice(choices: ElectedRepresentativeTypeEnum::ALL, strict: true)]
     private $contactType;
 
     /**
      * @var bool|null
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $emailSubscription;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?bool $contributionActive = null;
 
     /**
      * @var Zone[]
-     *
-     * @Assert\Expression(
-     *     expression="this.getManagedZones() or this.getZones()",
-     *     message="referent.managed_zone.empty"
-     * )
      */
+    #[Assert\Expression(expression: 'this.getManagedZones() or this.getZones()', message: 'referent.managed_zone.empty')]
     private $managedZones;
 
     /**
      * @var Zone[]
-     *
-     * @Assert\NotNull
-     *
-     * @Groups({"filter_write"})
      */
+    #[Assert\NotNull]
+    #[Groups(['filter_write'])]
     private $zones = [];
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"lastName"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['lastName'])]
     private $sort = 'lastName';
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"a", "d"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['a', 'd'])]
     private $order = 'a';
 
-    /**
-     * @Groups({"filter_write"})
-     * @Assert\Choice(choices=App\Renaissance\Membership\RenaissanceMembershipFilterEnum::CHOICES)
-     */
+    #[Groups(['filter_write'])]
+    #[Assert\Choice(choices: App\Renaissance\Membership\RenaissanceMembershipFilterEnum::CHOICES)]
     private ?string $renaissanceMembership = null;
 
     public ?Adherent $createdByAdherent = null;

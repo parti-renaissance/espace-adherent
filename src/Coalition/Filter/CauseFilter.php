@@ -10,23 +10,20 @@ class CauseFilter
 {
     /**
      * @var string
-     *
-     * @Assert\Choice(choices=Cause::STATUSES, strict=true)
      */
+    #[Assert\Choice(choices: Cause::STATUSES, strict: true)]
     private $status;
 
     /**
      * @var Coalition|null
-     *
-     * @Assert\Type(Coalition::class)
      */
+    #[Assert\Type(Coalition::class)]
     private $primaryCoalition;
 
     /**
      * @var Coalition|null
-     *
-     * @Assert\Type(Coalition::class)
      */
+    #[Assert\Type(Coalition::class)]
     private $secondaryCoalition;
 
     /**
@@ -56,18 +53,16 @@ class CauseFilter
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"id"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['id'])]
     private $sort = 'id';
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"a", "d"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['a', 'd'])]
     private $order = 'd';
 
     public function __construct(string $status = null)

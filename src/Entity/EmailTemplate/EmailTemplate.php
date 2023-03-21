@@ -98,23 +98,19 @@ class EmailTemplate implements AuthoredItemsCollectionInterface
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @SymfonySerializer\Groups({"email_template_read", "email_template_write", "email_template_list_read"})
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="255")
      */
+    #[SymfonySerializer\Groups(['email_template_read', 'email_template_write', 'email_template_list_read'])]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $label;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({"email_template_read", "email_template_write"})
      */
+    #[Assert\NotBlank]
+    #[SymfonySerializer\Groups(['email_template_read', 'email_template_write'])]
     private $content;
 
     public function __construct(UuidInterface $uuid = null)

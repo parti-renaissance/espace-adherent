@@ -40,7 +40,7 @@ class InZoneOfScopeFilter extends AbstractScopeFilter
         ;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;

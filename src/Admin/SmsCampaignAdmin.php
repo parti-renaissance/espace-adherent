@@ -135,13 +135,13 @@ class SmsCampaignAdmin extends AbstractAdmin
         $object->setAdherentCount($this->adherentRepository->findForSmsCampaign($object, false)->getTotalItems());
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setAdherentRepository(AdherentRepository $adherentRepository): void
     {
         $this->adherentRepository = $adherentRepository;

@@ -37,38 +37,33 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      * @var bool
      *
      * @ORM\Column(type="boolean")
-     *
-     * @Groups({"audience_segment_write"})
      */
+    #[Groups(['audience_segment_write'])]
     private $includeAdherentsNoCommittee = true;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
-     *
-     * @Groups({"audience_segment_write"})
      */
+    #[Groups(['audience_segment_write'])]
     private $includeAdherentsInCommittee = true;
 
     /**
      * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     protected $isCertified;
 
     /**
      * @var Zone|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     *
-     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
-     *
-     * @Assert\Expression("this.getSegment() or this.getZone()", message="Cette valeur ne doit pas être vide.")
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[Assert\Expression('this.getSegment() or this.getZone()', message: 'Cette valeur ne doit pas être vide.')]
     private $zone;
 
     /**
@@ -83,20 +78,18 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      *
      * @ORM\Column
      *
-     * @Assert\Expression("this.getSegment() or this.getScope()", message="Cette valeur ne doit pas être vide.")
      * @ValidScope
-     *
-     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      */
+    #[Assert\Expression('this.getSegment() or this.getScope()', message: 'Cette valeur ne doit pas être vide.')]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $scope;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"adherent_message_update_filter"})
      */
+    #[Groups(['adherent_message_update_filter'])]
     private $audienceType;
 
     public function __construct()
@@ -124,17 +117,13 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->includeAdherentsInCommittee = $value;
     }
 
-    /**
-     * @Groups({"audience_segment_read"})
-     */
+    #[Groups(['audience_segment_read'])]
     public function getIsCommitteeMember(): ?bool
     {
         return $this->includeAdherentsInCommittee ? true : ($this->includeAdherentsNoCommittee ? false : null);
     }
 
-    /**
-     * @Groups({"audience_segment_write", "adherent_message_update_filter"})
-     */
+    #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
     public function setIsCommitteeMember(?bool $value): void
     {
         if (null !== $value) {
@@ -173,9 +162,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->scope = $scope;
     }
 
-    /**
-     * @Groups({"audience_segment_write", "adherent_message_update_filter"})
-     */
+    #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
     public function setAge(array $minMax): void
     {
         if (!empty($minMax['min'])) {
@@ -187,9 +174,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         }
     }
 
-    /**
-     * @Groups({"audience_segment_write", "adherent_message_update_filter"})
-     */
+    #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
     public function setRegistered(array $startEnd): void
     {
         if (!empty($startEnd['start'])) {

@@ -17,25 +17,25 @@ abstract class AbstractFilter implements FilterInterface
         $this->label = $label;
     }
 
-    /** @Groups("filter:read") */
+    #[Groups('filter:read')]
     public function getType(): string
     {
         return $this->_getType();
     }
 
-    /** @Groups("filter:read") */
+    #[Groups('filter:read')]
     public function getCode(): string
     {
         return $this->code;
     }
 
-    /** @Groups("filter:read") */
+    #[Groups('filter:read')]
     public function getLabel(): string
     {
         return $this->label;
     }
 
-    /** @Groups("filter:read") */
+    #[Groups('filter:read')]
     public function getOptions(): ?array
     {
         return $this->options;

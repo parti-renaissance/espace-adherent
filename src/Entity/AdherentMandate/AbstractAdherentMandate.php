@@ -38,23 +38,17 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
      * @var string|null
      *
      * @ORM\Column(length=6)
-     *
-     * @Assert\NotBlank(message="common.gender.invalid_choice")
-     * @Assert\Choice(
-     *     choices=Genders::MALE_FEMALE,
-     *     message="common.gender.invalid_choice",
-     *     strict=true
-     * )
      */
+    #[Assert\NotBlank(message: 'common.gender.invalid_choice')]
+    #[Assert\Choice(choices: Genders::MALE_FEMALE, message: 'common.gender.invalid_choice', strict: true)]
     protected $gender;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     protected $beginAt;
 
     /**

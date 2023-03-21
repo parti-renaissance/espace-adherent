@@ -113,7 +113,7 @@ class TeamAdmin extends AbstractAdmin
         $this->teamMemberHistoryManager->handleChanges($object, $this->beforeUpdate);
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setTeamMemberHistoryManager(TeamMemberHistoryManager $teamMemberHistoryManager): void
     {
         $this->teamMemberHistoryManager = $teamMemberHistoryManager;

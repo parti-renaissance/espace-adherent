@@ -27,12 +27,10 @@ abstract class BaseEventCategory implements EventCategoryInterface
 
     /**
      * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
-     *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_category_read"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
+    #[SymfonySerializer\Groups(['event_read', 'event_list_read', 'event_category_read'])]
     protected $name = '';
 
     /**
@@ -42,12 +40,10 @@ abstract class BaseEventCategory implements EventCategoryInterface
      *
      * @ORM\Column(length=100, unique=true)
      * @Gedmo\Slug(fields={"name"}, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
-     *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_category_read"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
+    #[SymfonySerializer\Groups(['event_read', 'event_list_read', 'event_category_read'])]
     protected $slug;
 
     /**

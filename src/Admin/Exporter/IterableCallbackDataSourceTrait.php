@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Exporter\DataSourceInterface;
  */
 trait IterableCallbackDataSourceTrait
 {
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setIterableCallbackDataSource(IteratorCallbackDataSource $callbackDataSource): void
     {
         $this->setDataSource($callbackDataSource);

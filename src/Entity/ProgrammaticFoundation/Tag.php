@@ -10,9 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="programmatic_foundation_tag")
- *
- * @UniqueEntity("label")
  */
+#[UniqueEntity('label')]
 class Tag
 {
     /**
@@ -24,11 +23,10 @@ class Tag
 
     /**
      * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
+    #[SymfonySerializer\Groups(['approach_list_read'])]
     private $label;
 
     public function __construct(string $label = '')

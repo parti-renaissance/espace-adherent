@@ -10,20 +10,15 @@ class ImageContent
 {
     /**
      * @var string
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $content;
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Image(
-     *     maxSize="5M",
-     *     mimeTypes={"image/jpeg", "image/png"}
-     * )
      */
+    #[Assert\NotBlank]
+    #[Assert\Image(maxSize: '5M', mimeTypes: ['image/jpeg', 'image/png'])]
     private $file;
 
     public function getContent(): ?string

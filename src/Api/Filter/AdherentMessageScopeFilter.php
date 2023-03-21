@@ -37,17 +37,13 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
         $this->authoredItemsCollectionExtension->setSkip(true);
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setAdherentMessageRepository(AdherentMessageRepository $adherentMessageRepository): void
     {
         $this->adherentMessageRepository = $adherentMessageRepository;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setAuthoredItemsCollectionExtension(
         AuthoredItemsCollectionExtension $authoredItemsCollectionExtension
     ): void {

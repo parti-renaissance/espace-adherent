@@ -65,19 +65,19 @@ class PapAssociateActiveCampaignsToBuildingsCommand extends Command implements L
         return 0;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setCampaignRepository(CampaignRepository $campaignRepository): void
     {
         $this->campaignRepository = $campaignRepository;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setAddressRepository(AddressRepository $addressRepository): void
     {
         $this->addressRepository = $addressRepository;

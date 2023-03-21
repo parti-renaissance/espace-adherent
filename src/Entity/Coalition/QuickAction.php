@@ -28,34 +28,29 @@ class QuickAction
      * @ORM\Column(type="integer", options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue
-     *
-     * @SymfonySerializer\Groups({"quick_action_read"})
      */
+    #[SymfonySerializer\Groups(['quick_action_read'])]
     private $id;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min=2, max=100)
-     *
-     * @SymfonySerializer\Groups({"quick_action_read", "cause_update"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(allowEmptyString: true, min: 2, max: 100)]
+    #[SymfonySerializer\Groups(['quick_action_read', 'cause_update'])]
     private $title;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     * @Assert\Url
-     *
-     * @SymfonySerializer\Groups({"quick_action_read", "cause_update"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[Assert\Url]
+    #[SymfonySerializer\Groups(['quick_action_read', 'cause_update'])]
     private $url;
 
     /**
@@ -63,9 +58,8 @@ class QuickAction
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Cause", inversedBy="quickActions")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $cause;
 
     public function __construct(string $title = null, string $url = null, Cause $cause = null)

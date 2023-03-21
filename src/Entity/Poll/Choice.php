@@ -28,15 +28,10 @@ class Choice
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank(message="poll_choice.value.not_blank")
-     * @Assert\Length(
-     *     max=255,
-     *     maxMessage="poll_choice.value.max_length"
-     * )
-     *
-     * @SymfonySerializer\Groups({"poll_read"})
      */
+    #[Assert\NotBlank(message: 'poll_choice.value.not_blank')]
+    #[Assert\Length(max: 255, maxMessage: 'poll_choice.value.max_length')]
+    #[SymfonySerializer\Groups(['poll_read'])]
     private $value;
 
     /**

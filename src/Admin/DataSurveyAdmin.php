@@ -96,9 +96,7 @@ class DataSurveyAdmin extends AbstractAdmin
         }
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSurveyRepository(SurveyRepository $surveyRepository): void
     {
         $this->surveyRepository = $surveyRepository;

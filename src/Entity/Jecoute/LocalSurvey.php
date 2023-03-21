@@ -18,12 +18,10 @@ class LocalSurvey extends Survey implements EntityScopeVisibilityWithZoneInterfa
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255)
-     *
-     * @SymfonySerializer\Groups({"survey_list", "survey_read_dc"})
-     *
      * @deprecated
      */
+    #[Assert\Length(max: 255)]
+    #[SymfonySerializer\Groups(['survey_list', 'survey_read_dc'])]
     private $city;
 
     /**
@@ -37,16 +35,9 @@ class LocalSurvey extends Survey implements EntityScopeVisibilityWithZoneInterfa
      * @var Zone|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     *
-     * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({
-     *     "survey_list",
-     *     "survey_list_dc",
-     *     "survey_read_dc",
-     *     "survey_write_dc",
-     * })
      */
+    #[Assert\NotBlank]
+    #[SymfonySerializer\Groups(['survey_list', 'survey_list_dc', 'survey_read_dc', 'survey_write_dc'])]
     private $zone;
 
     /**

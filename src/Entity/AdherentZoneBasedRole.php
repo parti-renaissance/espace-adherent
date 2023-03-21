@@ -20,18 +20,16 @@ class AdherentZoneBasedRole
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=App\Adherent\Authorization\ZoneBasedRoleTypeEnum::ALL)
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: App\Adherent\Authorization\ZoneBasedRoleTypeEnum::ALL)]
     private ?string $type;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="zoneBasedRoles")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)]
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private ?Adherent $adherent = null;
 
     public function __construct(string $type = null)

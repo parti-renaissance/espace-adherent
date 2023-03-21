@@ -11,9 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="territorial_council_quality")
  * @ORM\Entity
- *
- * @UniqueEntity(fields={"territorialCouncilMembership", "name"})
  */
+#[UniqueEntity(fields: ['territorialCouncilMembership', 'name'])]
 class TerritorialCouncilQuality
 {
     /**
@@ -33,29 +32,25 @@ class TerritorialCouncilQuality
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     *
-     * @Serializer\Groups({"api_candidacy_read"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[Serializer\Groups(['api_candidacy_read'])]
     private $name;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $zone;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $joinedAt;
 
     public function __construct(string $name, string $zone, \DateTime $joinedAt = null)

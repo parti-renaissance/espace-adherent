@@ -104,19 +104,19 @@ class ProcurationSendReminderCommand extends Command
         return 0;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setManager(EntityManagerInterface $manager): void
     {
         $this->manager = $manager;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setFactory(ProcurationProxyMessageFactory $factory): void
     {
         $this->factory = $factory;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setMailer(MailerService $transactionalMailer): void
     {
         $this->mailer = $transactionalMailer;

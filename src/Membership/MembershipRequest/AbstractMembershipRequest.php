@@ -13,42 +13,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 abstract class AbstractMembershipRequest implements MembershipInterface
 {
     /**
-     * @Assert\NotBlank
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      * @BannedAdherent
-     *
-     * @Groups({"merbership:write"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Groups(['merbership:write'])]
     protected ?string $emailAddress = null;
 
-    /**
-     * @Assert\Length(
-     *     min=2,
-     *     max=50,
-     *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length"
-     * )
-     *
-     * @Groups({"merbership:write"})
-     */
+    #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length')]
+    #[Groups(['merbership:write'])]
     public ?string $firstName = null;
 
-    /**
-     * @Assert\IsTrue(message="common.cgu.not_accepted", groups={"Default", "membership_request_amount"})
-     *
-     * @Groups({"merbership:write"})
-     */
+    #[Assert\IsTrue(message: 'common.cgu.not_accepted', groups: ['Default', 'membership_request_amount'])]
+    #[Groups(['merbership:write'])]
     public bool $cguAccepted = false;
 
-    /**
-     * @Groups({"merbership:write"})
-     */
+    #[Groups(['merbership:write'])]
     public ?bool $allowEmailNotifications = null;
 
-    /**
-     * @Groups({"merbership:write"})
-     */
+    #[Groups(['merbership:write'])]
     public ?bool $allowMobileNotifications = null;
 
     public function getEmailAddress(): ?string

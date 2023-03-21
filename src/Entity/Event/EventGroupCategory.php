@@ -9,9 +9,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventGroupCategoryRepository")
- *
- * @UniqueEntity("name")
  */
+#[UniqueEntity('name')]
 class EventGroupCategory extends BaseEventCategory
 {
     public const CAMPAIGN_EVENTS = 'evenements-de-campagne';

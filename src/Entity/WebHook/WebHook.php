@@ -16,8 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="web_hooks", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="web_hook_event_client_id_unique", columns={"event", "client_id"})
  * })
- * @UniqueEntity(fields={"event", "client"})
  */
+#[UniqueEntity(fields: ['event', 'client'])]
 class WebHook
 {
     use EntityIdentityTrait;
@@ -26,9 +26,8 @@ class WebHook
      * @var string
      *
      * @ORM\Column(length=64)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $event;
 
     /**
@@ -38,9 +37,8 @@ class WebHook
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\OAuth\Client", inversedBy="webHooks")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $client;
 
     /**
@@ -54,9 +52,8 @@ class WebHook
      * @var string[]
      *
      * @ORM\Column(type="json")
-     *
-     * @Assert\Count(min=1, minMessage="Veuillez spécifier au moins une url de callback.")
      */
+    #[Assert\Count(min: 1, minMessage: 'Veuillez spécifier au moins une url de callback.')]
     private $callbacks = [];
 
     public function __construct(

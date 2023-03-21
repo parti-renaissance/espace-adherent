@@ -225,31 +225,31 @@ class ImportElectionVotePlaceResultsCommand extends Command
         $this->entityManager->flush();
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setStorage(FilesystemInterface $storage): void
     {
         $this->storage = $storage;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setElectionManager(ElectionManager $electionManager): void
     {
         $this->electionManager = $electionManager;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setVotePlaceRepository(VotePlaceRepository $votePlaceRepository): void
     {
         $this->votePlaceRepository = $votePlaceRepository;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setCityRepository(CityRepository $cityRepository): void
     {
         $this->cityRepository = $cityRepository;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(ObjectManager $entityManager): void
     {
         $this->entityManager = $entityManager;

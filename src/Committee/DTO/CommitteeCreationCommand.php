@@ -9,14 +9,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CommitteeCreationCommand extends CommitteeCommand
 {
-    /**
-     * @Assert\IsTrue(message="committee.must_accept_confidentiality_terms", groups={"created_by_adherent"})
-     */
+    #[Assert\IsTrue(message: 'committee.must_accept_confidentiality_terms', groups: ['created_by_adherent'])]
     public $acceptConfidentialityTerms;
 
-    /**
-     * @Assert\IsTrue(message="committee.must_accept_contacting_terms", groups={"created_by_adherent"})
-     */
+    #[Assert\IsTrue(message: 'committee.must_accept_contacting_terms', groups: ['created_by_adherent'])]
     public $acceptContactingTerms;
 
     /** @var Adherent */

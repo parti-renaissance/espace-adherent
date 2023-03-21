@@ -33,9 +33,8 @@ class ReferentUserFilter extends AbstractUserFilter
      * @var ReferentTag[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $referentTags;
 
     public function __construct(array $referentTags)

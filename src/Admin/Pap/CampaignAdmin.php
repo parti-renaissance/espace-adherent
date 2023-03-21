@@ -213,13 +213,13 @@ class CampaignAdmin extends AbstractAdmin
         $this->bus->dispatch(new UpdateCampaignAddressInfoCommand($object->getUuid()));
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setBus(MessageBusInterface $bus): void
     {
         $this->bus = $bus;

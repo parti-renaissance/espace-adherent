@@ -89,9 +89,7 @@ class DocumentAdmin extends AbstractAdmin
         $this->documentHandler->handleFile($document);
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setDocumentHandler(DocumentHandler $documentHandler): void
     {
         $this->documentHandler = $documentHandler;

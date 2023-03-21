@@ -13,36 +13,24 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class NullableAddress implements AddressInterface, GeocodableInterface
 {
-    /**
-     * @Assert\Length(max=150, maxMessage="common.address.max_length")
-     */
+    #[Assert\Length(max: 150, maxMessage: 'common.address.max_length')]
     private $address;
 
-    /**
-     * @Assert\NotBlank(message="common.postal_code.not_blank")
-     * @Assert\Length(max=15)
-     */
+    #[Assert\NotBlank(message: 'common.postal_code.not_blank')]
+    #[Assert\Length(max: 15)]
     private $postalCode;
 
-    /**
-     * @Assert\Length(max=15)
-     */
+    #[Assert\Length(max: 15)]
     private $city;
 
-    /**
-     * @Assert\Length(max=255)
-     */
+    #[Assert\Length(max: 255)]
     private $cityName;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Country(message="common.country.invalid")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Country(message: 'common.country.invalid')]
     private $country;
 
-    /**
-     * @Assert\Length(max=255)
-     */
+    #[Assert\Length(max: 255)]
     private $region;
 
     public function __construct()

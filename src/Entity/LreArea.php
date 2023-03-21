@@ -64,9 +64,7 @@ class LreArea
         $this->allTags = $allTags;
     }
 
-    /**
-     * @Assert\IsTrue(message="lre_area.all_tags_and_one_selected")
-     */
+    #[Assert\IsTrue(message: 'lre_area.all_tags_and_one_selected')]
     public function isValid()
     {
         return (null !== $this->referentTag) ^ $this->allTags;

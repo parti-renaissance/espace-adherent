@@ -62,9 +62,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ElectedRepresentativeRepository")
- *
- * @UniqueEntity(fields={"adherent"}, message="elected_representative.invalid_adherent")
  */
+#[UniqueEntity(fields: ['adherent'], message: 'elected_representative.invalid_adherent')]
 class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, ZoneableEntity, AuthoredInterface
 {
     use EntityIdentityTrait;
@@ -77,85 +76,57 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      * @var string
      *
      * @ORM\Column(length=50)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="50")
-     *
-     * @Groups({
-     *     "elected_representative_change_diff",
-     *     "elected_representative_write",
-     *     "elected_representative_read",
-     *     "elected_representative_list",
-     *     "elected_mandate_read",
-     * })
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50)]
+    #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list', 'elected_mandate_read'])]
     private $lastName;
 
     /**
      * @var string
      *
      * @ORM\Column(length=50)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="50")
-     *
-     * @Groups({
-     *     "elected_representative_change_diff",
-     *     "elected_representative_write",
-     *     "elected_representative_read",
-     *     "elected_representative_list",
-     *     "elected_mandate_read",
-     * })
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50)]
+    #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list', 'elected_mandate_read'])]
     private $firstName;
 
     /**
      * @var string
      *
      * @ORM\Column(length=10, nullable=true)
-     *
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     strict=true
-     * )
-     *
-     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read", "elected_representative_list"})
      */
+    #[Assert\Choice(callback: ['App\ValueObject\Genders', 'all'], message: 'common.gender.invalid_choice', strict: true)]
+    #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list'])]
     private $gender;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="date")
-     *
-     * @Assert\NotBlank
-     *
-     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read"})
      */
+    #[Assert\NotBlank]
+    #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read'])]
     private $birthDate;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max="255")
-     *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
+    #[Assert\Length(max: 255)]
+    #[Groups(['elected_representative_write', 'elected_representative_read'])]
     private $birthPlace;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
-     *
-     * @Groups({"elected_representative_write"})
      */
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Groups(['elected_representative_write'])]
     private $contactEmail;
 
     /**
@@ -164,18 +135,16 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      * @ORM\Column(type="phone_number", nullable=true)
      *
      * @AssertPhoneNumber
-     *
-     * @Groups({"elected_representative_write", "elected_representative_read", "elected_representative_list"})
      */
+    #[Groups(['elected_representative_write', 'elected_representative_read', 'elected_representative_list'])]
     private $contactPhone;
 
     /**
      * @var bool|null
      *
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
+    #[Groups(['elected_representative_write', 'elected_representative_read'])]
     private $hasFollowedTraining = false;
 
     /**
@@ -199,9 +168,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\ElectedRepresentative\Contribution")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Groups({"elected_representative_list", "elected_representative_read"})
      */
+    #[Groups(['elected_representative_list', 'elected_representative_read'])]
     private ?Contribution $lastContribution = null;
 
     /**
@@ -209,9 +177,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
+    #[Groups(['elected_representative_write', 'elected_representative_read'])]
     private $adherent;
 
     /**
@@ -224,9 +191,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *     orphanRemoval=true,
      *     fetch="EAGER"
      * )
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $socialNetworkLinks;
 
     /**
@@ -238,11 +204,9 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
-     *
-     * @Assert\Valid
-     *
-     * @Groups({"elected_representative_read"})
      */
+    #[Assert\Valid]
+    #[Groups(['elected_representative_read'])]
     private $mandates;
 
     /**
@@ -255,9 +219,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *     orphanRemoval=true,
      *     fetch="EAGER"
      * )
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $politicalFunctions;
 
     /**
@@ -270,9 +233,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *     orphanRemoval=true,
      *     fetch="EAGER"
      * )
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $labels;
 
     /**
@@ -285,9 +247,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *     orphanRemoval=true,
      *     fetch="EAGER"
      * )
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $sponsorships;
 
     /**
@@ -414,9 +375,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         $this->hasFollowedTraining = $hasFollowedTraining;
     }
 
-    /**
-     * @Groups({"elected_representative_change_diff"})
-     */
+    #[Groups(['elected_representative_change_diff'])]
     public function isAdherent(): bool
     {
         return $this->adherent instanceof Adherent;
@@ -462,9 +421,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     /**
      * @return Mandate[]
-     *
-     * @Groups({"elected_representative_list"})
      */
+    #[Groups(['elected_representative_list'])]
     public function getCurrentMandates(): array
     {
         $now = new \DateTime();
@@ -518,9 +476,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     /**
      * @return PoliticalFunction[]
-     *
-     * @Groups({"elected_representative_list"})
      */
+    #[Groups(['elected_representative_list'])]
     public function getCurrentPoliticalFunctions(): array
     {
         return $this->politicalFunctions->filter(function (PoliticalFunction $politicalFunction) {
@@ -648,9 +605,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->birthDate ? $this->birthDate->diff(new \DateTime())->y : null;
     }
 
-    /**
-     * @Groups({"elected_representative_change_diff", "elected_representative_read"})
-     */
+    #[Groups(['elected_representative_change_diff', 'elected_representative_read'])]
     public function getEmailAddress(): ?string
     {
         if ($this->adherent) {

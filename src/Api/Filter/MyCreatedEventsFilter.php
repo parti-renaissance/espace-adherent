@@ -55,13 +55,13 @@ final class MyCreatedEventsFilter extends AbstractFilter
         ];
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setScopeGeneratorResolver(ScopeGeneratorResolver $scopeGeneratorResolver): void
     {
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;

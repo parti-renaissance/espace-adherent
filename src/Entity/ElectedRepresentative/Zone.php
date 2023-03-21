@@ -30,18 +30,16 @@ class Zone
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
-     *
-     * @SymfonySerializer\Groups({"autocomplete"})
      */
+    #[SymfonySerializer\Groups(['autocomplete'])]
     private $id;
 
     /**
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @SymfonySerializer\Groups({"autocomplete"})
      */
+    #[SymfonySerializer\Groups(['autocomplete'])]
     private $name;
 
     /**

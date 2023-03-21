@@ -22,63 +22,33 @@ class Address implements AddressInterface, GeocodableInterface
 {
     public const FRANCE = 'FR';
 
-    /**
-     * @Assert\NotBlank(message="common.address.required", groups={"Default", "Update"})
-     * @Assert\Expression(
-     *     expression="value or 'FR' != this.getCountry()",
-     *     message="common.address.required",
-     *     groups={"fill_personal_info"}
-     * )
-     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "Update", "fill_personal_info"})
-     *
-     * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
-     */
+    #[Assert\NotBlank(message: 'common.address.required', groups: ['Default', 'Update'])]
+    #[Assert\Expression(expression: "value or 'FR' != this.getCountry()", message: 'common.address.required', groups: ['fill_personal_info'])]
+    #[Assert\Length(max: 150, maxMessage: 'common.address.max_length', groups: ['Default', 'Update', 'fill_personal_info'])]
+    #[SymfonySerializer\Groups(['profile_write', 'merbership:write'])]
     private $address;
 
-    /**
-     * @Assert\Expression(
-     *     expression="value or 'FR' != this.getCountry()",
-     *     message="common.postal_code.not_blank",
-     *     groups={"Default", "Registration", "Update", "fill_personal_info"}
-     * )
-     * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update", "fill_personal_info"})
-     *
-     * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
-     */
+    #[Assert\Expression(expression: "value or 'FR' != this.getCountry()", message: 'common.postal_code.not_blank', groups: ['Default', 'Registration', 'Update', 'fill_personal_info'])]
+    #[Assert\Length(max: 15, maxMessage: 'common.postal_code.max_length', groups: ['Default', 'Registration', 'Update', 'fill_personal_info'])]
+    #[SymfonySerializer\Groups(['profile_write', 'merbership:write'])]
     private $postalCode;
 
-    /**
-     * @Assert\Length(max=15, groups={"Default", "Update", "fill_personal_info"})
-     *
-     * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
-     */
+    #[Assert\Length(max: 15, groups: ['Default', 'Update', 'fill_personal_info'])]
+    #[SymfonySerializer\Groups(['profile_write', 'merbership:write'])]
     private $city;
 
-    /**
-     * @Assert\Length(max=255, groups={"Default", "Update", "fill_personal_info"})
-     * @Assert\Expression(
-     *     expression="value or ('FR' === this.getCountry() and this.getCity())",
-     *     message="common.city_name.not_blank",
-     *     groups={"Update", "fill_personal_info"}
-     * )
-     *
-     * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
-     */
+    #[Assert\Length(max: 255, groups: ['Default', 'Update', 'fill_personal_info'])]
+    #[Assert\Expression(expression: "value or ('FR' === this.getCountry() and this.getCity())", message: 'common.city_name.not_blank', groups: ['Update', 'fill_personal_info'])]
+    #[SymfonySerializer\Groups(['profile_write', 'merbership:write'])]
     private $cityName;
 
-    /**
-     * @Assert\NotBlank(message="common.country.not_blank", groups={"Default", "Registration", "Update", "fill_personal_info"})
-     * @Assert\Country(message="common.country.invalid", groups={"Default", "Registration", "Update", "fill_personal_info"})
-     *
-     * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
-     */
+    #[Assert\NotBlank(message: 'common.country.not_blank', groups: ['Default', 'Registration', 'Update', 'fill_personal_info'])]
+    #[Assert\Country(message: 'common.country.invalid', groups: ['Default', 'Registration', 'Update', 'fill_personal_info'])]
+    #[SymfonySerializer\Groups(['profile_write', 'merbership:write'])]
     private $country;
 
-    /**
-     * @Assert\Length(max=255)
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
-     */
+    #[Assert\Length(max: 255)]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $region;
 
     public function getAddress(): ?string

@@ -101,9 +101,7 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
         $this->eventDispatcher->dispatch(new NewsletterEvent($object), Events::UPDATE);
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;

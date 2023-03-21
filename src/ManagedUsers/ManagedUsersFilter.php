@@ -12,58 +12,36 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ManagedUsersFilter
 {
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?string $gender = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?int $ageMin = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?int $ageMax = null;
 
-    /**
-     * @Assert\Length(max=255)
-     *
-     * @Groups({"filter_write"})
-     */
+    #[Assert\Length(max: 255)]
+    #[Groups(['filter_write'])]
     private ?string $firstName = null;
 
-    /**
-     * @Assert\Length(max=255)
-     *
-     * @Groups({"filter_write"})
-     */
+    #[Assert\Length(max: 255)]
+    #[Groups(['filter_write'])]
     private ?string $lastName = null;
 
-    /**
-     * @Assert\Length(max=255)
-     */
+    #[Assert\Length(max: 255)]
     private ?string $city = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private array $interests = [];
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?\DateTime $registeredSince = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?\DateTime $registeredUntil = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?bool $isCommitteeMember = null;
 
     private ?bool $includeCommitteeSupervisors = null;
@@ -74,43 +52,30 @@ class ManagedUsersFilter
 
     /**
      * @var Zone[]
-     *
-     * @Assert\Expression(
-     *     expression="this.getManagedZones() or this.getZones()",
-     *     message="referent.managed_zone.empty"
-     * )
      */
+    #[Assert\Expression(expression: 'this.getManagedZones() or this.getZones()', message: 'referent.managed_zone.empty')]
     private array $managedZones;
 
     /**
      * @var Zone[]
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private array $zones;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?bool $emailSubscription = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?bool $smsSubscription = null;
 
     private ?string $subscriptionType;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"createdAt", "lastName"})
-     */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['createdAt', 'lastName'])]
     private string $sort = 'createdAt';
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"a", "d"})
-     */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['a', 'd'])]
     private string $order = 'd';
 
     private ?Committee $committee = null;
@@ -127,20 +92,14 @@ class ManagedUsersFilter
 
     private ?bool $voteInCommittee = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?bool $isCertified = null;
 
-    /**
-     * @Groups({"filter_write"})
-     * @Assert\Choice(choices=App\Renaissance\Membership\RenaissanceMembershipFilterEnum::CHOICES)
-     */
+    #[Groups(['filter_write'])]
+    #[Assert\Choice(choices: App\Renaissance\Membership\RenaissanceMembershipFilterEnum::CHOICES)]
     private ?string $renaissanceMembership = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?bool $onlyJeMengageUsers = null;
 
     public function __construct(
@@ -191,9 +150,7 @@ class ManagedUsersFilter
         $this->ageMax = $ageMax;
     }
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public function setAge(array $minMax): void
     {
         if (!empty($minMax['min'])) {
@@ -270,9 +227,7 @@ class ManagedUsersFilter
         $this->registeredUntil = $registeredUntil;
     }
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public function setRegistered(array $startEnd): void
     {
         if (!empty($startEnd['start'])) {

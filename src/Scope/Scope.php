@@ -8,34 +8,22 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 class Scope
 {
-    /**
-     * @SymfonySerializer\Groups({"scopes", "scope"})
-     */
+    #[SymfonySerializer\Groups(['scopes', 'scope'])]
     private string $code;
 
-    /**
-     * @SymfonySerializer\Groups({"scopes", "scope"})
-     */
+    #[SymfonySerializer\Groups(['scopes', 'scope'])]
     private string $name;
 
-    /**
-     * @SymfonySerializer\Groups({"scopes", "scope"})
-     */
+    #[SymfonySerializer\Groups(['scopes', 'scope'])]
     private array $zones;
 
-    /**
-     * @SymfonySerializer\Groups({"scopes", "scope"})
-     */
+    #[SymfonySerializer\Groups(['scopes', 'scope'])]
     private array $apps;
 
-    /**
-     * @SymfonySerializer\Groups({"scope"})
-     */
+    #[SymfonySerializer\Groups(['scope'])]
     private array $features;
 
-    /**
-     * @SymfonySerializer\Groups({"scope"})
-     */
+    #[SymfonySerializer\Groups(['scope'])]
     private ?DelegatedAccess $delegatedAccess;
 
     public function __construct(

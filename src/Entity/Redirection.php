@@ -26,30 +26,27 @@ class Redirection
      * @var string|null
      *
      * @ORM\Column(name="url_from", type="text")
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=10000)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 10000)]
     private $from;
 
     /**
      * @var string|null
      *
      * @ORM\Column(name="url_to", type="text")
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=10000)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 10000)]
     private $to;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="integer")
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={301, 302})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: [301, 302])]
     private $type;
 
     /**

@@ -20,9 +20,8 @@ class Department implements ZoneableInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Region", inversedBy="departments")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @SymfonySerializer\Groups({"department_read"})
      */
+    #[SymfonySerializer\Groups(['department_read'])]
     private $region;
 
     public function __construct(string $code, string $name, Region $region)

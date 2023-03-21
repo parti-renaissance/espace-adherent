@@ -180,7 +180,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
         $this->localElectionManager->uploadFaithStatementFile($candidaciesGroup);
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setLocalElectionManager(Manager $localElectionManager): void
     {
         $this->localElectionManager = $localElectionManager;

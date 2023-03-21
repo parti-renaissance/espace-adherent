@@ -21,9 +21,8 @@ class InstitutionalEvent extends BaseEvent implements AuthoredInterface, Reporta
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Event\InstitutionalEventCategory")
-     *
-     * @Groups({"event_list_read"})
      */
+    #[Groups(['event_list_read'])]
     protected $category;
 
     /**

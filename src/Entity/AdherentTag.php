@@ -9,9 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="adherent_tags")
- *
- * @UniqueEntity("name")
  */
+#[UniqueEntity('name')]
 class AdherentTag
 {
     /**
@@ -23,10 +22,9 @@ class AdherentTag
 
     /**
      * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private $name = '';
 
     public function __construct(?string $name = null)

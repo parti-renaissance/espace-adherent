@@ -53,7 +53,7 @@ final class MySubscribedEventsFilter extends AbstractFilter
         ];
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;

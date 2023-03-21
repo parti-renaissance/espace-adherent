@@ -10,13 +10,13 @@ abstract class AbstractHandler implements WebhookHandlerInterface
     protected MailchimpObjectIdMapping $mailchimpObjectIdMapping;
     protected EntityManagerInterface $entityManager;
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setMailchimpObjectIdMapping(MailchimpObjectIdMapping $mailchimpObjectIdMapping): void
     {
         $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;

@@ -112,35 +112,6 @@ class Zone implements GeoInterface
      *
      * @ORM\Column(type="uuid", unique=true)
      *
-     * @SymfonySerializer\Groups({
-     *     "zone_read",
-     *     "scopes",
-     *     "scope",
-     *     "jecoute_news_read_dc",
-     *     "audience_read",
-     *     "audience_segment_read",
-     *     "phoning_campaign_read",
-     *     "survey_list_dc",
-     *     "survey_read_dc",
-     *     "team_read",
-     *     "team_list_read",
-     *     "pap_campaign_read",
-     *     "pap_campaign_read_after_write",
-     *     "phoning_campaign_read",
-     *     "phoning_campaign_list",
-     *     "department_site_read",
-     *     "department_site_read_list",
-     *     "elected_representative_read",
-     *     "elected_representative_list",
-     *     "formation_list_read",
-     *     "formation_read",
-     *     "formation_write",
-     *     "elected_mandate_read",
-     *     "general_meeting_report_list_read",
-     *     "general_meeting_report_read",
-     *     "committee:read",
-     * })
-     *
      * @ApiProperty(
      *     identifier=true,
      *     attributes={
@@ -152,21 +123,15 @@ class Zone implements GeoInterface
      *     }
      * )
      */
+    #[SymfonySerializer\Groups(['zone_read', 'scopes', 'scope', 'jecoute_news_read_dc', 'audience_read', 'audience_segment_read', 'phoning_campaign_read', 'survey_list_dc', 'survey_read_dc', 'team_read', 'team_list_read', 'pap_campaign_read', 'pap_campaign_read_after_write', 'phoning_campaign_read', 'phoning_campaign_list', 'department_site_read', 'department_site_read_list', 'elected_representative_read', 'elected_representative_list', 'formation_list_read', 'formation_read', 'formation_write', 'elected_mandate_read', 'general_meeting_report_list_read', 'general_meeting_report_read', 'committee:read'])]
     protected $uuid;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @SymfonySerializer\Groups({
-     *     "zone_read",
-     *     "scope",
-     *     "read_api",
-     *     "committee:read",
-     *     "zone:code,type",
-     * })
      */
+    #[SymfonySerializer\Groups(['zone_read', 'scope', 'read_api', 'committee:read', 'zone:code,type'])]
     private $type;
 
     /**
@@ -199,9 +164,8 @@ class Zone implements GeoInterface
      * @var string[]|null
      *
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @SymfonySerializer\Groups({"zone_read"})
      */
+    #[SymfonySerializer\Groups(['zone_read'])]
     private $postalCode;
 
     /**

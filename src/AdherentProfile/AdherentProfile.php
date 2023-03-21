@@ -19,249 +19,163 @@ class AdherentProfile implements MembershipInterface
 {
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="common.gender.not_blank")
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     strict=true,
-     *     groups={"Default", "api_put_validation"}
-     * )
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\NotBlank(message: 'common.gender.not_blank')]
+    #[Assert\Choice(callback: ['App\ValueObject\Genders', 'all'], message: 'common.gender.invalid_choice', strict: true, groups: ['Default', 'api_put_validation'])]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $gender;
 
     /**
      * @var string|null
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $customGender;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(groups={"Default", "api_put_validation"})
-     * @Assert\Length(
-     *     min=2,
-     *     max=50,
-     *     allowEmptyString=true,
-     *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length",
-     *     groups={"Default", "api_put_validation"}
-     * )
-     *
-     * @SymfonySerializer\Groups({"uncertified_profile_write"})
      */
+    #[Assert\NotBlank(groups: ['Default', 'api_put_validation'])]
+    #[Assert\Length(min: 2, max: 50, allowEmptyString: true, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length', groups: ['Default', 'api_put_validation'])]
+    #[SymfonySerializer\Groups(['uncertified_profile_write'])]
     private $firstName;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     allowEmptyString=true,
-     *     minMessage="common.last_name.min_length",
-     *     maxMessage="common.last_name.max_length",
-     *     groups={"Default", "api_put_validation"}
-     * )
-     *
-     * @SymfonySerializer\Groups({"uncertified_profile_write"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 50, allowEmptyString: true, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length', groups: ['Default', 'api_put_validation'])]
+    #[SymfonySerializer\Groups(['uncertified_profile_write'])]
     private $lastName;
 
     /**
      * @var Address
-     *
-     * @Assert\Valid
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\Valid]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $address;
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(
-     *     callback={"App\Membership\ActivityPositionsEnum", "all"},
-     *     message="adherent.activity_position.invalid_choice",
-     *     strict=true,
-     * )
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\Choice(callback: ['App\Membership\ActivityPositionsEnum', 'all'], message: 'adherent.activity_position.invalid_choice', strict: true)]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $position;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="adherent_profile.nationality.not_blank")
-     * @Assert\Country(message="common.nationality.invalid", groups={"Default", "api_put_validation"})
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\NotBlank(message: 'adherent_profile.nationality.not_blank')]
+    #[Assert\Country(message: 'common.nationality.invalid', groups: ['Default', 'api_put_validation'])]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $nationality;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="adherent_profile.email.not_blank")
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\NotBlank(message: 'adherent_profile.email.not_blank')]
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $emailAddress;
 
     /**
      * @var PhoneNumber|null
      *
      * @AssertPhoneNumber
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $phone;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank(message="adherent.birthdate.not_blank")
-     * @Assert\Range(
-     *     min="-120 years",
-     *     max="-15 years",
-     *     minMessage="adherent.birthdate.maximum_required_age",
-     *     maxMessage="adherent.birthdate.minimum_required_age",
-     *     groups={"Default", "api_put_validation"}
-     * )
-     *
-     * @SymfonySerializer\Groups({"uncertified_profile_write"})
      */
+    #[Assert\NotBlank(message: 'adherent.birthdate.not_blank')]
+    #[Assert\Range(min: '-120 years', max: '-15 years', minMessage: 'adherent.birthdate.maximum_required_age', maxMessage: 'adherent.birthdate.minimum_required_age', groups: ['Default', 'api_put_validation'])]
+    #[SymfonySerializer\Groups(['uncertified_profile_write'])]
     private $birthdate;
 
     /**
      * @var string
-     *
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="adherent_profile.facebook_page_url.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?facebook.com\/#', message: 'adherent_profile.facebook_page_url.invalid')]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $facebookPageUrl;
 
     /**
      * @var string
-     *
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="adherent_profile.twitter_page_url.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?twitter.com\/#', message: 'adherent_profile.twitter_page_url.invalid')]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $twitterPageUrl;
 
     /**
      * @var string
-     *
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?linkedin.com\/#", message="adherent_profile.linkedin_page_url.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?linkedin.com\/#', message: 'adherent_profile.linkedin_page_url.invalid')]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $linkedinPageUrl;
 
     /**
      * @var string
-     *
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?t.me\/#", message="adherent_profile.telegram_page_url.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?t.me\/#', message: 'adherent_profile.telegram_page_url.invalid')]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $telegramPageUrl;
 
     /**
      * @var string
-     *
-     * @Assert\Choice(
-     *     choices=App\Entity\JobEnum::JOBS,
-     *     message="adherent.job.invalid_choice",
-     *     strict=true,
-     * )
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\Choice(choices: App\Entity\JobEnum::JOBS, message: 'adherent.job.invalid_choice', strict: true)]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $job;
 
     /**
      * @var string
-     *
-     * @Assert\Choice(
-     *     choices=App\Entity\ActivityAreaEnum::ACTIVITIES,
-     *     message="adherent.activity_area.invalid_choice",
-     *     strict=true,
-     * )
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\Choice(choices: App\Entity\ActivityAreaEnum::ACTIVITIES, message: 'adherent.activity_area.invalid_choice', strict: true)]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $activityArea;
 
     /**
      * @var array
-     *
-     * @Assert\Choice(
-     *     callback={"App\Membership\MandatesEnum", "all"},
-     *     multipleMessage="adherent_profile.mandates.invalid_choice",
-     *     multiple=true
-     * )
      */
+    #[Assert\Choice(callback: ['App\Membership\MandatesEnum', 'all'], multipleMessage: 'adherent_profile.mandates.invalid_choice', multiple: true)]
     private $mandates = [];
 
     /**
      * @var array
      *
-     * @SymfonySerializer\Groups({"profile_write"})
-     *
      * @AdherentInterests
      */
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $interests = [];
 
     /**
      * @var array
-     *
-     * @Assert\Choice(
-     *     choices=App\Subscription\SubscriptionTypeEnum::ADHERENT_TYPES,
-     *     multipleMessage="adherent_profile.subscription_types.invalid_choice",
-     *     multiple=true,
-     *     strict=true
-     * )
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\Choice(choices: App\Subscription\SubscriptionTypeEnum::ADHERENT_TYPES, multipleMessage: 'adherent_profile.subscription_types.invalid_choice', multiple: true, strict: true)]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $subscriptionTypes = [];
 
     /**
      * @var bool
-     *
-     * @Assert\Type("bool", message="adherent_profile.coalition_subscription.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\Type('bool', message: 'adherent_profile.coalition_subscription.invalid')]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $coalitionSubscription = false;
 
     /**
      * @var bool
-     *
-     * @Assert\Type("bool", message="adherent_profile.cause_subscription.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\Type('bool', message: 'adherent_profile.cause_subscription.invalid')]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $causeSubscription = false;
 
     /**
      * @var bool
-     *
-     * @Assert\Type("bool", message="adherent_profile.coalitions_cgu_accepted.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Assert\Type('bool', message: 'adherent_profile.coalitions_cgu_accepted.invalid')]
+    #[SymfonySerializer\Groups(['profile_write'])]
     private $coalitionsCguAccepted = false;
 
     public function __construct()

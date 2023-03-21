@@ -43,11 +43,9 @@ class SurveyQuestion implements AuthoredInterface
      * @var Question
      *
      * @ORM\ManyToOne(targetEntity="Question", cascade={"persist"})
-     *
-     * @Assert\Valid
-     *
-     * @SymfonySerializer\Groups({"survey_write_dc"})
      */
+    #[Assert\Valid]
+    #[SymfonySerializer\Groups(['survey_write_dc'])]
     private $question;
 
     /**

@@ -12,11 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ReferentTagRepository")
  * @ORM\Table(name="referent_tags")
  *
- * @UniqueEntity("name")
- * @UniqueEntity("code")
- *
  * @deprecated
  */
+#[UniqueEntity('name')]
+#[UniqueEntity('code')]
 class ReferentTag
 {
     public const TYPE_DEPARTMENT = 'department';
@@ -36,23 +35,20 @@ class ReferentTag
      * @var string|null
      *
      * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private $name;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
-     * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="referent_tag.code.invalid")
-     *
-     * @SymfonySerializer\Groups({"adherent_change_diff"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
+    #[Assert\Regex(pattern: '/^[a-z0-9-]+$/', message: 'referent_tag.code.invalid')]
+    #[SymfonySerializer\Groups(['adherent_change_diff'])]
     private $code;
 
     /**

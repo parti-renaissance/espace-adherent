@@ -177,25 +177,19 @@ class RiposteAdmin extends AbstractAdmin
         $this->riposteHandler->handleNotification($riposte);
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setOpenGraphHandler(RiposteOpenGraphHandler $openGraphHandler): void
     {
         $this->openGraphHandler = $openGraphHandler;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setRiposteHandler(RiposteHandler $riposteHandler): void
     {
         $this->riposteHandler = $riposteHandler;

@@ -18,18 +18,16 @@ class LocalPoll extends Poll implements AuthoredInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $author;
 
     /**
      * @var Zone|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $zone;
 
     public function __construct(
@@ -59,9 +57,7 @@ class LocalPoll extends Poll implements AuthoredInterface
         $this->author = $author;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"poll_read"})
-     */
+    #[SymfonySerializer\Groups(['poll_read'])]
     public function getType(): string
     {
         return PollTypeEnum::LOCAL;

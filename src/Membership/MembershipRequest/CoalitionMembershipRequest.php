@@ -9,22 +9,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CoalitionMembershipRequest extends AbstractMembershipRequest
 {
-    /**
-     * @Assert\NotBlank
-     * @Assert\Valid
-     *
-     * @Groups({"merbership:write"})
-     */
+    #[Assert\NotBlank]
+    #[Assert\Valid]
+    #[Groups(['merbership:write'])]
     public ?Zone $zone = null;
 
-    /**
-     * @Groups({"merbership:write"})
-     */
+    #[Groups(['merbership:write'])]
     public bool $coalitionSubscription = false;
 
-    /**
-     * @Groups({"merbership:write"})
-     */
+    #[Groups(['merbership:write'])]
     public bool $causeSubscription = false;
 
     final public function getSource(): string

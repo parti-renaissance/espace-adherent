@@ -49,19 +49,16 @@ class MyTeam
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private Adherent $owner;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=App\Scope\ScopeEnum::ALL)
-     *
-     * @Groups({"my_team_read_list"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: App\Scope\ScopeEnum::ALL)]
+    #[Groups(['my_team_read_list'])]
     private string $scope;
 
     /**
@@ -73,9 +70,8 @@ class MyTeam
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
-     *
-     * @Groups({"my_team_read_list"})
      */
+    #[Groups(['my_team_read_list'])]
     private Collection $members;
 
     public function __construct(Adherent $owner, string $scope, UuidInterface $uuid = null)

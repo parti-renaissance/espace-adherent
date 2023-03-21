@@ -309,9 +309,7 @@ class NewsAdmin extends AbstractAdmin
         $this->newsHandler->changePinned($object);
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;

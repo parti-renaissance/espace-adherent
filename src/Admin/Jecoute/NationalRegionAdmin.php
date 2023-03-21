@@ -69,17 +69,13 @@ class NationalRegionAdmin extends AbstractRegionAdmin
         ]));
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setZoneRepository(ZoneRepository $zoneRepository): void
     {
         $this->zoneRepository = $zoneRepository;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setRegionRepository(RegionRepository $regionRepository): void
     {
         $this->regionRepository = $regionRepository;

@@ -16,9 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository")
- *
- * @UniqueEntity(fields={"adherent", "territorialCouncil"})
  */
+#[UniqueEntity(fields: ['adherent', 'territorialCouncil'])]
 class TerritorialCouncilMembership implements UuidEntityInterface
 {
     use EntityIdentityTrait;
@@ -26,9 +25,8 @@ class TerritorialCouncilMembership implements UuidEntityInterface
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Adherent", inversedBy="territorialCouncilMembership")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE", unique=true)
-     *
-     * @Groups({"api_candidacy_read"})
      */
+    #[Groups(['api_candidacy_read'])]
     private $adherent;
 
     /**
@@ -36,9 +34,8 @@ class TerritorialCouncilMembership implements UuidEntityInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncil", inversedBy="memberships", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Groups({"adherent_change_diff"})
      */
+    #[Groups(['adherent_change_diff'])]
     private $territorialCouncil;
 
     /**
@@ -50,18 +47,16 @@ class TerritorialCouncilMembership implements UuidEntityInterface
      *     mappedBy="territorialCouncilMembership",
      *     orphanRemoval=true
      * )
-     *
-     * @Groups({"api_candidacy_read"})
      */
+    #[Groups(['api_candidacy_read'])]
     private $qualities;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $joinedAt;
 
     /**
@@ -91,9 +86,7 @@ class TerritorialCouncilMembership implements UuidEntityInterface
         $this->qualities = new ArrayCollection($this->qualities->toArray());
     }
 
-    /**
-     * @Groups({"api_candidacy_read"})
-     */
+    #[Groups(['api_candidacy_read'])]
     public function getUuid(): UuidInterface
     {
         return $this->uuid;

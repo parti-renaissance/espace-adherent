@@ -38,19 +38,19 @@ class ImportElectionMinistryResultFromXMLCommand extends Command
     private $errors = [];
     private $author;
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setCityRepository(CityRepository $cityRepository): void
     {
         $this->cityRepository = $cityRepository;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setElectionManager(ElectionManager $electionManager): void
     {
         $this->electionManager = $electionManager;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;

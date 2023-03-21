@@ -14,10 +14,9 @@ class MoocQuizElement extends BaseMoocElement
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Url
      */
+    #[Assert\NotBlank]
+    #[Assert\Url]
     private $typeformUrl;
 
     public function __construct(

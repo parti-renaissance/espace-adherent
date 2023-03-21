@@ -48,9 +48,7 @@ final class JecouteNewsScopeFilter extends AbstractScopeFilter
         return ['_get_private_item', '_get_private_collection'];
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setZoneRepository(ZoneRepository $zoneRepository): void
     {
         $this->zoneRepository = $zoneRepository;

@@ -41,14 +41,9 @@ class BoardMember
      * @var string
      *
      * @ORM\Column(length=50)
-     *
-     * @Assert\NotBlank(message="board_member.area.invalid_choice", groups={"elections"})
-     * @Assert\Choice(
-     *     callback={"App\Entity\BoardMember\BoardMember", "getAreas"},
-     *     message="board_member.area.invalid_choice",
-     *     strict=true
-     * )
      */
+    #[Assert\NotBlank(message: 'board_member.area.invalid_choice', groups: ['elections'])]
+    #[Assert\Choice(callback: ['App\Entity\BoardMember\BoardMember', 'getAreas'], message: 'board_member.area.invalid_choice', strict: true)]
     private $area;
 
     /**
@@ -65,8 +60,8 @@ class BoardMember
      *     }
      * )
      * @ORM\OrderBy({"name": "ASC"})
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $roles;
 
     /**

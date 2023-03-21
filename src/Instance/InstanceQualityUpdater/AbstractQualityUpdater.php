@@ -17,13 +17,13 @@ abstract class AbstractQualityUpdater implements QualityUpdaterInterface
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setInstanceQualityRepository(InstanceQualityRepository $instanceQualityRepository): void
     {
         $this->instanceQualityRepository = $instanceQualityRepository;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;

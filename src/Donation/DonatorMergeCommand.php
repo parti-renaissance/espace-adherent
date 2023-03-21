@@ -9,16 +9,14 @@ class DonatorMergeCommand
 {
     /**
      * @var Donator|null
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $sourceDonator;
 
     /**
      * @var Donator|null
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $destinationDonator;
 
     public function getSourceDonator(): ?Donator

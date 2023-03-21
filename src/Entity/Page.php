@@ -11,9 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="pages")
  * @ORM\Entity(repositoryClass="App\Repository\PageRepository")
  *
- * @UniqueEntity(fields={"slug"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
+#[UniqueEntity(fields: ['slug'])]
 class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface
 {
     use EntityTimestampableTrait;
@@ -46,19 +46,17 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
      * @var string|null
      *
      * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private $slug;
 
     /**
      * @var string|null
      *
      * @ORM\Column(options={"default": "default"})
-     *
-     * @Assert\Choice(choices=Page::LAYOUTS)
      */
+    #[Assert\Choice(choices: Page::LAYOUTS)]
     private $layout = self::LAYOUT_DEFAULT;
 
     /**

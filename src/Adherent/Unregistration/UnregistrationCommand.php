@@ -7,14 +7,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UnregistrationCommand
 {
-    /**
-     * @Assert\NotBlank(message="adherent.unregistration.reasons")
-     */
+    #[Assert\NotBlank(message: 'adherent.unregistration.reasons')]
     private array $reasons;
 
-    /**
-     * @Assert\Length(max=1000, groups={"Default", "admin"})
-     */
+    #[Assert\Length(max: 1000, groups: ['Default', 'admin'])]
     private ?string $comment;
 
     private ?Administrator $excludedBy;

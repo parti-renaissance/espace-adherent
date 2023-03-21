@@ -12,7 +12,7 @@ final class PapVotePlaceScopeFilter extends AbstractScopeFilter
 {
     private ?VotePlaceRepository $repository = null;
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setVotePlaceRepository(VotePlaceRepository $repository)
     {
         $this->repository = $repository;

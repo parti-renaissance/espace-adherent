@@ -12,10 +12,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VotePlaceRepository")
  *
- * @UniqueEntity(fields={"code"})
- *
  * @deprecated Use {@see \App\Entity\Election\VotePlace}
  */
+#[UniqueEntity(fields: ['code'])]
 class VotePlace
 {
     use EntityTimestampableTrait;
@@ -38,10 +37,9 @@ class VotePlace
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $name;
 
     /**
@@ -55,20 +53,18 @@ class VotePlace
      * @var string
      *
      * @ORM\Column(length=10, unique=true)
-     *
-     * @Assert\NotBlank(message="Il semble que le code postal ou la ville est incorrecte")
-     * @Assert\Length(max=10)
      */
+    #[Assert\NotBlank(message: 'Il semble que le code postal ou la ville est incorrecte')]
+    #[Assert\Length(max: 10)]
     private $code;
 
     /**
      * @var string
      *
      * @ORM\Column(length=150)
-     *
-     * @Assert\NotBlank(message="common.address.required")
-     * @Assert\Length(max=150, maxMessage="common.address.max_length")
      */
+    #[Assert\NotBlank(message: 'common.address.required')]
+    #[Assert\Length(max: 150, maxMessage: 'common.address.max_length')]
     private $address;
 
     /**
@@ -82,19 +78,17 @@ class VotePlace
      * @var string|null
      *
      * @ORM\Column(length=50, nullable=true)
-     *
-     * @Assert\Length(max=50)
      */
+    #[Assert\Length(max: 50)]
     private $city;
 
     /**
      * @var string
      *
      * @ORM\Column(length=2)
-     *
-     * @Assert\NotBlank
-     * @Assert\Country(message="common.country.invalid")
      */
+    #[Assert\NotBlank]
+    #[Assert\Country(message: 'common.country.invalid')]
     private $country = Address::FRANCE;
 
     /**

@@ -30,9 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity
  * @ORM\Table(name="programmatic_foundation_approach")
- *
- * @UniqueEntity("position", message="programmatic_foundation.unique_position.approach")
  */
+#[UniqueEntity('position', message: 'programmatic_foundation.unique_position.approach')]
 class Approach
 {
     use EntityIdentityTrait;
@@ -40,22 +39,22 @@ class Approach
 
     /**
      * @ORM\Column(type="smallint")
-     * @Assert\GreaterThan(value=0, message="programmatic_foundation.position.greater_than_zero")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Assert\GreaterThan(value: 0, message: 'programmatic_foundation.position.greater_than_zero')]
+    #[SymfonySerializer\Groups(['approach_list_read'])]
     private $position;
 
     /**
      * @ORM\Column
-     * @Assert\NotBlank(message="programmatic_foundation.title.not_empty")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Assert\NotBlank(message: 'programmatic_foundation.title.not_empty')]
+    #[SymfonySerializer\Groups(['approach_list_read'])]
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[SymfonySerializer\Groups(['approach_list_read'])]
     private $content;
 
     /**
@@ -66,8 +65,8 @@ class Approach
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"position": "ASC"})
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[SymfonySerializer\Groups(['approach_list_read'])]
     private $subApproaches;
 
     public function __construct(int $position = null, string $title = null, string $content = null)

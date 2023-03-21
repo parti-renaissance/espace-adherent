@@ -221,7 +221,7 @@ class CampaignAdmin extends AbstractAdmin
         $object->setParticipantsCount($this->adherentRepository->findForPhoningCampaign($object)->getTotalItems());
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setAdherentRepository(AdherentRepository $adherentRepository): void
     {
         $this->adherentRepository = $adherentRepository;

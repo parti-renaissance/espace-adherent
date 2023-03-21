@@ -10,9 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SubscriptionTypeRepository")
  * @ORM\Table(indexes={@ORM\Index(columns={"code"})})
- *
- * @UniqueEntity(fields={"code"})
  */
+#[UniqueEntity(fields: ['code'])]
 class SubscriptionType
 {
     /**
@@ -28,33 +27,28 @@ class SubscriptionType
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     *
-     * @SymfonySerializer\Groups({"profile_read"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[SymfonySerializer\Groups(['profile_read'])]
     private $label;
 
     /**
      * @var string|null
      *
      * @ORM\Column(unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     *
-     * @SymfonySerializer\Groups({"profile_read"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[SymfonySerializer\Groups(['profile_read'])]
     private $code;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=64, unique=true, nullable=true)
-     *
-     * @Assert\Length(max=64)
      */
+    #[Assert\Length(max: 64)]
     private $externalId;
 
     /**

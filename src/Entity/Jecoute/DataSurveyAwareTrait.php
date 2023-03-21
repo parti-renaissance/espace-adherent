@@ -10,9 +10,8 @@ trait DataSurveyAwareTrait
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private ?DataSurvey $dataSurvey = null;
 
     public function getDataSurvey(): ?DataSurvey

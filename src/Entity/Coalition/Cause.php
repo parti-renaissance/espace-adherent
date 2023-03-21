@@ -109,11 +109,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         }
  *     )
  * })
- *
- * @UniqueEntity(fields={"name"})
- *
- * @Assert\Expression("this.getSecondCoalition() === null || this.getSecondCoalition() !== this.getCoalition()", message="Veuillez choisir une autre coalition en tant que secondaire.")
  */
+#[UniqueEntity(fields: ['name'])]
+#[Assert\Expression('this.getSecondCoalition() === null || this.getSecondCoalition() !== this.getCoalition()', message: 'Veuillez choisir une autre coalition en tant que secondaire.')]
 class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedInterface, AuthorInterface
 {
     use EntityNameSlugTrait;
@@ -134,35 +132,27 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\Image(
-     *     maxSize="5M",
-     *     mimeTypes={"image/jpeg", "image/png"}
-     * )
      */
+    #[Assert\Image(maxSize: '5M', mimeTypes: ['image/jpeg', 'image/png'])]
     protected $image;
 
     /**
      * @var string|null
      *
      * @ORM\Column(unique=true)
-     *
-     * @SymfonySerializer\Groups({"cause_read", "cause_write", "event_read", "event_list_read"})
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[SymfonySerializer\Groups(['cause_read', 'cause_write', 'event_read', 'event_list_read'])]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     protected $name;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @SymfonySerializer\Groups({"cause_read", "cause_write", "cause_update"})
-     *
-     * @Assert\Length(max=10000)
      */
+    #[SymfonySerializer\Groups(['cause_read', 'cause_write', 'cause_update'])]
+    #[Assert\Length(max: 10000)]
     private $description;
 
     /**
@@ -177,11 +167,10 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="causes", fetch="EAGER")
      *
-     * @SymfonySerializer\Groups({"cause_read"})
-     *
-     * @Assert\NotBlank
      * @AssertEnabledCoalitionUser
      */
+    #[SymfonySerializer\Groups(['cause_read'])]
+    #[Assert\NotBlank]
     private $author;
 
     /**
@@ -189,20 +178,17 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Coalition", inversedBy="causes", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @SymfonySerializer\Groups({"cause_read", "cause_write", "event_read", "event_list_read"})
-     *
-     * @Assert\NotBlank
      */
+    #[SymfonySerializer\Groups(['cause_read', 'cause_write', 'event_read', 'event_list_read'])]
+    #[Assert\NotBlank]
     private $coalition;
 
     /**
      * @var Coalition|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Coalition")
-     *
-     * @SymfonySerializer\Groups({"cause_read", "cause_write"})
      */
+    #[SymfonySerializer\Groups(['cause_read', 'cause_write'])]
     private $secondCoalition;
 
     /**
@@ -214,9 +200,8 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
 
     /**
      * @ORM\Column(type="integer", options={"unsigned": true})
-     *
-     * @SymfonySerializer\Groups({"cause_read", "coalition_read"})
      */
+    #[SymfonySerializer\Groups(['cause_read', 'coalition_read'])]
     protected $followersCount;
 
     /**
@@ -225,11 +210,9 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      * @ApiSubresource
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Coalition\QuickAction", mappedBy="cause", fetch="EXTRA_LAZY", orphanRemoval=true, cascade={"all"})
-     *
-     * @SymfonySerializer\Groups({"cause_update"})
-     *
-     * @Assert\Valid
      */
+    #[SymfonySerializer\Groups(['cause_update'])]
+    #[Assert\Valid]
     private $quickActions;
 
     /**
@@ -316,9 +299,7 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
         $this->status = $status;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"cause_read", "coalition_read"})
-     */
+    #[SymfonySerializer\Groups(['cause_read', 'coalition_read'])]
     public function getFollowersCount(): int
     {
         return $this->followersCount;

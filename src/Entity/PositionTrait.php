@@ -14,13 +14,8 @@ trait PositionTrait
      * @ORM\Column(type="smallint", options={"default": 0})
      *
      * @Gedmo\SortablePosition
-     *
-     * @SymfonySerializer\Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[SymfonySerializer\Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private $position = 0;
 
     public function getPosition(): int

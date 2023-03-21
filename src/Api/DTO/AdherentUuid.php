@@ -9,8 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AdherentUuid
 {
     /**
-     * @Assert\NotBlank
      * @ValidAdherentUuid
      */
+    #[Assert\NotBlank]
     public ?UuidInterface $adherentUuid = null;
 }

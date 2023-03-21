@@ -15,13 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="programmatic_foundation_sub_approach")
- *
- * @UniqueEntity(
- *     fields={"position", "approach"},
- *     errorPath="position",
- *     message="programmatic_foundation.unique_position.sub_approach"
- * )
  */
+#[UniqueEntity(fields: ['position', 'approach'], errorPath: 'position', message: 'programmatic_foundation.unique_position.sub_approach')]
 class SubApproach
 {
     use EntityIdentityTrait;
@@ -29,40 +24,40 @@ class SubApproach
 
     /**
      * @ORM\Column(type="smallint")
-     * @Assert\GreaterThan(value=0, message="programmatic_foundation.position.greater_than_zero")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Assert\GreaterThan(value: 0, message: 'programmatic_foundation.position.greater_than_zero')]
+    #[SymfonySerializer\Groups(['approach_list_read'])]
     private $position;
 
     /**
      * @ORM\Column
-     * @Assert\NotBlank(message="programmatic_foundation.title.not_empty")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Assert\NotBlank(message: 'programmatic_foundation.title.not_empty')]
+    #[SymfonySerializer\Groups(['approach_list_read'])]
     private $title;
 
     /**
      * @ORM\Column(nullable=true)
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[SymfonySerializer\Groups(['approach_list_read'])]
     private $subtitle;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[SymfonySerializer\Groups(['approach_list_read'])]
     private $content;
 
     /**
      * @ORM\Column(type="boolean")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[SymfonySerializer\Groups(['approach_list_read'])]
     private $isExpanded;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProgrammaticFoundation\Approach", inversedBy="subApproaches")
-     * @Assert\NotNull(message="programmatic_foundation.parent.required.sub_approach")
      */
+    #[Assert\NotNull(message: 'programmatic_foundation.parent.required.sub_approach')]
     private $approach;
 
     /**
@@ -73,8 +68,8 @@ class SubApproach
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"position": "ASC"})
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[SymfonySerializer\Groups(['approach_list_read'])]
     private $measures;
 
     public function __construct(

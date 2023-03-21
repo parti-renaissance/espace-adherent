@@ -135,17 +135,13 @@ class NationalPollAdmin extends AbstractAdmin
         $this->pollManager->scheduleNotification($object);
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setPollManager(PollManager $pollManager): void
     {
         $this->pollManager = $pollManager;

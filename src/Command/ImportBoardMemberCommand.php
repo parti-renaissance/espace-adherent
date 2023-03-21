@@ -240,13 +240,13 @@ class ImportBoardMemberCommand extends Command
         $this->em = $em;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setAdherentRepository(AdherentRepository $adherentRepository): void
     {
         $this->adherentRepository = $adherentRepository;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setRoleRepository(RoleRepository $roleRepository): void
     {
         $this->roleRepository = $roleRepository;

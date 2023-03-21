@@ -24,16 +24,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="cause_follower_unique", columns={"cause_id", "adherent_id"}),
  * })
  *
- * @UniqueEntity(fields={"cause", "adherent"}, errorPath="adherent")
- * @UniqueEntity(
- *     fields={"cause", "emailAddress"},
- *     errorPath="emailAddress",
- *     message="cause_follower.exists",
- *     groups={"anonymous_follower"}
- * )
- *
  * @AssertCauseFollowerEmailValid(groups={"anonymous_follower"})
  */
+#[UniqueEntity(fields: ['cause', 'adherent'], errorPath: 'adherent')]
+#[UniqueEntity(fields: ['cause', 'emailAddress'], errorPath: 'emailAddress', message: 'cause_follower.exists', groups: ['anonymous_follower'])]
 class CauseFollower extends AbstractFollower
 {
     /**
@@ -41,26 +35,23 @@ class CauseFollower extends AbstractFollower
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Cause", inversedBy="followers")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $cause;
 
     /**
      * @ORM\Column(length=50, nullable=true)
-     *
-     * @Assert\NotBlank(groups={"anonymous_follower"})
-     * @Assert\Length(max=50, groups={"anonymous_follower"})
      */
+    #[Assert\NotBlank(groups: ['anonymous_follower'])]
+    #[Assert\Length(max: 50, groups: ['anonymous_follower'])]
     private $firstName;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\NotBlank(groups={"anonymous_follower"})
-     * @Assert\Email(message="common.email.invalid", groups={"anonymous_follower"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"anonymous_follower"})
      */
+    #[Assert\NotBlank(groups: ['anonymous_follower'])]
+    #[Assert\Email(message: 'common.email.invalid', groups: ['anonymous_follower'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['anonymous_follower'])]
     private $emailAddress;
 
     /**
@@ -68,16 +59,14 @@ class CauseFollower extends AbstractFollower
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Assert\NotBlank(groups={"anonymous_follower"})
      */
+    #[Assert\NotBlank(groups: ['anonymous_follower'])]
     private $zone;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Assert\NotBlank(groups={"anonymous_follower"})
      */
+    #[Assert\NotBlank(groups: ['anonymous_follower'])]
     private $cguAccepted;
 
     /**

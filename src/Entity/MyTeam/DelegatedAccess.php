@@ -17,8 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MyTeam\DelegatedAccessRepository")
  * @ORM\Table(name="my_team_delegated_access")
- * @UniqueEntity(fields={"delegator", "delegated", "type"}, message="Vous avez déjà délégué des accès à cet adhérent.")
  */
+#[UniqueEntity(fields: ['delegator', 'delegated', 'type'], message: 'Vous avez déjà délégué des accès à cet adhérent.')]
 class DelegatedAccess
 {
     use EntityIdentityTrait;
@@ -86,10 +86,9 @@ class DelegatedAccess
      * @var string
      *
      * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank(message="Veuillez renseigner un rôle.")
-     * @Assert\Length(max=50)
      */
+    #[Assert\NotBlank(message: 'Veuillez renseigner un rôle.')]
+    #[Assert\Length(max: 50)]
     private $role;
 
     /**
@@ -104,9 +103,8 @@ class DelegatedAccess
      * @var Adherent
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="receivedDelegatedAccesses")
-     *
-     * @Assert\NotBlank(message="Veuillez sélectionner un adhérent.")
      */
+    #[Assert\NotBlank(message: 'Veuillez sélectionner un adhérent.')]
     private $delegated;
 
     /**

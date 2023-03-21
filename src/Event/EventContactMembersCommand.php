@@ -13,15 +13,11 @@ class EventContactMembersCommand
     /** @var Adherent */
     private $sender;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=80)
-     */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 80)]
     private $subject;
 
-    /**
-     * @Assert\NotBlank
-     */
+    #[Assert\NotBlank]
     private $message;
 
     public function __construct(array $recipients, Adherent $sender, string $subject = null, string $message = null)

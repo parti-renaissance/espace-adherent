@@ -134,9 +134,7 @@ class FormationAdmin extends AbstractAdmin
         $this->formationHandler->handleFile($formation);
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setFormationHandler(FormationHandler $formationHandler): void
     {
         $this->formationHandler = $formationHandler;

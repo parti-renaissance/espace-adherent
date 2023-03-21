@@ -37,7 +37,7 @@ class CoalitionsConditionBuilder extends AbstractStaticSegmentConditionBuilder
         return $cause->getMailchimpId();
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setBus(MessageBusInterface $bus): void
     {
         $this->bus = $bus;

@@ -28,9 +28,8 @@ class CandidacyInvitation extends BaseCandidacyInvitation
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     *
-     * @Assert\NotBlank(groups={"Default", "national_council_election", "copol_election"})
      */
+    #[Assert\NotBlank(groups: ['Default', 'national_council_election', 'copol_election'])]
     protected $membership;
 
     public function getMembership(): ?TerritorialCouncilMembership

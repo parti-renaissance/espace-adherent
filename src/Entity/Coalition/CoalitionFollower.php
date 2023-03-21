@@ -11,9 +11,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
- *
- * @UniqueEntity(fields={"coalition", "adherent"}, errorPath="adherent")
  */
+#[UniqueEntity(fields: ['coalition', 'adherent'], errorPath: 'adherent')]
 class CoalitionFollower extends AbstractFollower
 {
     /**

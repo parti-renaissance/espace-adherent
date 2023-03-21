@@ -9,9 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- *
- * @UniqueEntity(fields={"politicalCommitteeMembership", "name"})
  */
+#[UniqueEntity(fields: ['politicalCommitteeMembership', 'name'])]
 class PoliticalCommitteeQuality
 {
     /**
@@ -31,19 +30,17 @@ class PoliticalCommitteeQuality
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $name;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $joinedAt;
 
     public function __construct(string $name, \DateTime $joinedAt = null)

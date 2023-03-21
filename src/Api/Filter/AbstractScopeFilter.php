@@ -71,17 +71,13 @@ abstract class AbstractScopeFilter extends AbstractFilter
         ];
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setGeneralScopeGenerator(GeneralScopeGenerator $generalScopeGenerator): void
     {
         $this->generalScopeGenerator = $generalScopeGenerator;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;

@@ -23,35 +23,31 @@ class FacebookVideo
 
     /**
      * @ORM\Column
-     *
-     * @Assert\Length(max=255)
-     * @Assert\NotBlank
-     * @Assert\Url
      */
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Url]
     private $facebookUrl;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
-     * @Assert\Url
      */
+    #[Assert\Length(max: 255)]
+    #[Assert\Url]
     private $twitterUrl;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\Length(max=255)
-     * @Assert\NotBlank
      */
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     private $description;
 
     /**
      * @ORM\Column(length=100)
-     *
-     * @Assert\Length(max=100)
-     * @Assert\NotBlank
      */
+    #[Assert\Length(max: 100)]
+    #[Assert\NotBlank]
     private $author;
 
     /**

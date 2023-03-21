@@ -23,14 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class InstitutionalEventCommand extends BaseEventCommand
 {
-    /**
-     * @Assert\Count(
-     *     min=1,
-     *     max=50,
-     *     minMessage="institutional_event.invitations.min",
-     *     maxMessage="institutional_event.invitations.max"
-     * )
-     */
+    #[Assert\Count(min: 1, max: 50, minMessage: 'institutional_event.invitations.min', maxMessage: 'institutional_event.invitations.max')]
     private $invitations;
 
     public function __construct(

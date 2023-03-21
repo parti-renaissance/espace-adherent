@@ -154,19 +154,19 @@ class LegislativesLoadDistrictZonesCommand extends Command
         return LegislativeDistrictZone::createRegionZone($areaCode, $name);
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setManager(EntityManagerInterface $manager): void
     {
         $this->manager = $manager;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setStorage(FilesystemInterface $storage): void
     {
         $this->storage = $storage;
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSlugify(SlugifyInterface $slugify): void
     {
         $this->slugify = $slugify;

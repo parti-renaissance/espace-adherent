@@ -25,30 +25,26 @@ class AdherentRequest
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $firstName = null;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $lastName = null;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $email = null;
 
     /**
      * @ORM\Column(type="integer")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?int $amount = null;
 
     /**

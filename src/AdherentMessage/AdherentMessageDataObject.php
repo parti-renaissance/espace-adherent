@@ -10,26 +10,24 @@ class AdherentMessageDataObject
 {
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min="3", max="255")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(allowEmptyString: true, min: 3, max: 255)]
     private $label;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min="3", max="255")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(allowEmptyString: true, min: 3, max: 255)]
     private $subject;
 
     /**
      * @var string|null
      *
-     * @Assert\NotBlank
      * @AssertWysiwygLength(min="3", max="6000")
      */
+    #[Assert\NotBlank]
     private $content;
 
     public static function createFromEntity(AdherentMessageInterface $message): self

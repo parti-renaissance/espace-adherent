@@ -11,57 +11,32 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class JeMengageMembershipRequest extends AbstractMembershipRequest
 {
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *     min=2,
-     *     max=50,
-     *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length"
-     * )
-     *
-     * @Groups({"merbership:write"})
-     */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length')]
+    #[Groups(['merbership:write'])]
     public ?string $lastName = null;
 
-    /**
-     * @Assert\NotBlank(message="common.gender.not_blank")
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     strict=true,
-     * )
-     *
-     * @Groups({"merbership:write"})
-     */
+    #[Assert\NotBlank(message: 'common.gender.not_blank')]
+    #[Assert\Choice(callback: ['App\ValueObject\Genders', 'all'], message: 'common.gender.invalid_choice', strict: true)]
+    #[Groups(['merbership:write'])]
     public ?string $gender = null;
 
-    /**
-     * @Assert\NotBlank(message="common.birthdate.not_blank")
-     *
-     * @Groups({"merbership:write"})
-     */
+    #[Assert\NotBlank(message: 'common.birthdate.not_blank')]
+    #[Groups(['merbership:write'])]
     public ?\DateTimeInterface $birthdate = null;
 
-    /**
-     * @Assert\Country(message="common.nationality.invalid")
-     *
-     * @Groups({"merbership:write"})
-     */
+    #[Assert\Country(message: 'common.nationality.invalid')]
+    #[Groups(['merbership:write'])]
     public ?string $nationality = null;
 
     /**
      * @AssertPhoneNumber
-     *
-     * @Groups({"merbership:write"})
      */
+    #[Groups(['merbership:write'])]
     public ?PhoneNumber $phone = null;
 
-    /**
-     * @Assert\Valid
-     *
-     * @Groups({"merbership:write"})
-     */
+    #[Assert\Valid]
+    #[Groups(['merbership:write'])]
     public ?Address $address = null;
 
     final public function getSource(): string

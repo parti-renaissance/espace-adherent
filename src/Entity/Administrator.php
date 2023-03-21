@@ -12,9 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="administrators")
  * @ORM\Entity(repositoryClass="App\Repository\AdministratorRepository")
- *
- * @UniqueEntity(fields={"emailAddress"})
  */
+#[UniqueEntity(fields: ['emailAddress'])]
 class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthenticatedUserInterface
 {
     /**
@@ -30,11 +29,10 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
      * @var string|null
      *
      * @ORM\Column(unique=true)
-     *
-     * @Assert\Email
-     * @Assert\NotBlank
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
+    #[Assert\Email]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     private $emailAddress;
 
     /**

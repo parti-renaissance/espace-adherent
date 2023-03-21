@@ -99,9 +99,8 @@ class ManagedUser
      * @var string
      *
      * @ORM\Column
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $email;
 
     /**
@@ -115,9 +114,8 @@ class ManagedUser
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $postalCode;
 
     /**
@@ -133,36 +131,32 @@ class ManagedUser
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $city;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=2, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $country;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=50, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $firstName;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=50, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $lastName;
 
     /**
@@ -239,16 +233,14 @@ class ManagedUser
      * @var string|null
      *
      * @ORM\Column(length=6, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $gender;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $interests = [];
 
     /**
@@ -554,9 +546,7 @@ class ManagedUser
         return $this->lastMembershipDonation;
     }
 
-    /**
-     * @Groups({"managed_user_read"})
-     */
+    #[Groups(['managed_user_read'])]
     public function getRenaissanceMembership(): ?string
     {
         if (MembershipSourceEnum::RENAISSANCE === $this->source) {
@@ -569,9 +559,7 @@ class ManagedUser
         return null;
     }
 
-    /**
-     * @Groups({"managed_user_read"})
-     */
+    #[Groups(['managed_user_read'])]
     public function getCityCode(): ?string
     {
         $zones = $this->getZonesOfType(Zone::CITY, true);
@@ -607,17 +595,13 @@ class ManagedUser
         return $zones ? current($zones)->getName() : null;
     }
 
-    /**
-     * @Groups({"managed_user_read"})
-     */
+    #[Groups(['managed_user_read'])]
     public function getSmsSubscription(): bool
     {
         return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
     }
 
-    /**
-     * @Groups({"managed_user_read"})
-     */
+    #[Groups(['managed_user_read'])]
     public function getPhoneNumber(): ?string
     {
         return $this->getPhone() ? PhoneNumberUtils::format($this->getPhone()) : self::NOT_AVAILABLE;

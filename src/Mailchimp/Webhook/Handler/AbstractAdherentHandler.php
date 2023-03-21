@@ -10,7 +10,7 @@ abstract class AbstractAdherentHandler extends AbstractHandler
 {
     private AdherentRepository $adherentRepository;
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setAdherentRepository(AdherentRepository $adherentRepository): void
     {
         $this->adherentRepository = $adherentRepository;

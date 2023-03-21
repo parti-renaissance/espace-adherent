@@ -20,9 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\TerritorialCouncilRepository")
- *
- * @UniqueEntity("name")
  */
+#[UniqueEntity('name')]
 class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterface
 {
     use EntityIdentityTrait;
@@ -33,18 +32,16 @@ class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterf
 
     /**
      * @ORM\Column(unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $name;
 
     /**
      * @ORM\Column(length=50, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=50)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50)]
     private $codes;
 
     /**

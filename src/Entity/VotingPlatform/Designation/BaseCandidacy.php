@@ -61,12 +61,8 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\Image(
-     *     maxSize="5M",
-     *     mimeTypes={"image/jpeg", "image/png"}
-     * )
      */
+    #[Assert\Image(maxSize: '5M', mimeTypes: ['image/jpeg', 'image/png'])]
     protected $image;
 
     /**

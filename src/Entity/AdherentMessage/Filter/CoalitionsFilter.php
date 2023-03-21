@@ -19,11 +19,9 @@ class CoalitionsFilter extends AbstractUserFilter
      * @var Cause|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Cause")
-     *
-     * @Assert\NotBlank
-     *
-     * @Groups({"adherent_message_update_filter"})
      */
+    #[Assert\NotBlank]
+    #[Groups(['adherent_message_update_filter'])]
     private $cause;
 
     public function __construct(Cause $cause = null)

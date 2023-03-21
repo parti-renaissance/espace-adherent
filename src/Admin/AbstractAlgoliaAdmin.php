@@ -25,13 +25,13 @@ class AbstractAlgoliaAdmin extends AbstractAdmin
         $collection->clearExcept('list');
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     final public function setAlgoliaManager(ModelManager $modelManager): void
     {
         parent::setModelManager($modelManager);
     }
 
-    /** @required */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     final public function setAlgoliaDatagridBuilder(DatagridBuilder $datagridBuilder): void
     {
         parent::setDatagridBuilder($datagridBuilder);

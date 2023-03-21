@@ -147,9 +147,7 @@ class QrCodeAdmin extends AbstractAdmin
         $object->setCreatedBy($administrator);
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;

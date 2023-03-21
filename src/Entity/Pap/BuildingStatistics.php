@@ -43,53 +43,34 @@ class BuildingStatistics implements CampaignStatisticsInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building", inversedBy="statistics")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Groups({
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_building_statistics_read'])]
     private Building $building;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign", inversedBy="buildingStatistics")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Groups({"pap_address_list", "pap_address_read"})
      */
+    #[Groups(['pap_address_list', 'pap_address_read'])]
     private Campaign $campaign;
 
     /**
      * @ORM\Column(length=25)
-     *
-     * @Groups({
-     *     "pap_address_list",
-     *     "pap_address_read",
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
     private string $status;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({
-     *     "pap_address_list",
-     *     "pap_address_read",
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
     private ?\DateTime $lastPassage = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Groups({
-     *     "pap_address_list",
-     *     "pap_address_read",
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
     protected ?Adherent $lastPassageDoneBy;
 
     /**
@@ -99,20 +80,14 @@ class BuildingStatistics implements CampaignStatisticsInterface
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({
-     *     "pap_address_list",
-     *     "pap_address_read",
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
     private int $nbVisitedDoors = 0;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"pap_address_list", "pap_address_read"})
      */
+    #[Groups(['pap_address_list', 'pap_address_read'])]
     private int $nbSurveys = 0;
 
     public function __construct(Building $building, Campaign $campaign, string $status = null)

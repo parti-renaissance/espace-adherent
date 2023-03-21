@@ -8,9 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ScopeRepository")
- *
- * @UniqueEntity("code")
  */
+#[UniqueEntity('code')]
 class Scope
 {
     /**
@@ -26,38 +25,34 @@ class Scope
      * @var string|null
      *
      * @ORM\Column(unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=App\Scope\ScopeEnum::ALL)
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: App\Scope\ScopeEnum::ALL)]
     private $code;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private $name;
 
     /**
      * @var array
      *
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Assert\Choice(choices=App\Scope\FeatureEnum::ALL, multiple=true)
      */
+    #[Assert\Choice(choices: App\Scope\FeatureEnum::ALL, multiple: true)]
     private $features;
 
     /**
      * @var array
      *
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Assert\Choice(choices=App\Scope\AppEnum::ALL, multiple=true)
      */
+    #[Assert\Choice(choices: App\Scope\AppEnum::ALL, multiple: true)]
     private $apps;
 
     public function __construct(string $code = null, string $name = null, array $features = null, array $apps = null)

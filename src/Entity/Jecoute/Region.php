@@ -17,9 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="jecoute_region")
  * @ORM\Entity(repositoryClass="App\Repository\Jecoute\RegionRepository")
- *
- * @UniqueEntity(fields={"zone"}, message="jecoute_region.zone.not_unique")
  */
+#[UniqueEntity(fields: ['zone'], message: 'jecoute_region.zone.not_unique')]
 class Region
 {
     use EntityTimestampableTrait;
@@ -47,46 +46,38 @@ class Region
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\Length(max=120)
-     * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({"jecoute_region_read"})
      */
+    #[Assert\Length(max: 120)]
+    #[Assert\NotBlank]
+    #[SymfonySerializer\Groups(['jecoute_region_read'])]
     protected $subtitle;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({"jecoute_region_read"})
      */
+    #[Assert\NotBlank]
+    #[SymfonySerializer\Groups(['jecoute_region_read'])]
     private $description;
 
     /**
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\Choice(callback={"App\Jecoute\RegionColorEnum", "all"})
-     * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({"jecoute_region_read"})
      */
+    #[Assert\Choice(callback: ['App\Jecoute\RegionColorEnum', 'all'])]
+    #[Assert\NotBlank]
+    #[SymfonySerializer\Groups(['jecoute_region_read'])]
     protected $primaryColor;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
-     *
-     * @SymfonySerializer\Groups({"jecoute_region_read"})
      */
+    #[Assert\Url]
+    #[SymfonySerializer\Groups(['jecoute_region_read'])]
     protected $externalLink;
 
     /**
@@ -98,14 +89,8 @@ class Region
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\File(
-     *     maxSize="5M",
-     *     mimeTypes={
-     *         "image/*"
-     *     }
-     * )
      */
+    #[Assert\File(maxSize: '5M', mimeTypes: ['image/*'])]
     private $bannerFile;
 
     private $removeBannerFile = false;
@@ -119,14 +104,8 @@ class Region
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\File(
-     *     maxSize="5M",
-     *     mimeTypes={
-     *         "image/*"
-     *     }
-     * )
      */
+    #[Assert\File(maxSize: '5M', mimeTypes: ['image/*'])]
     private $logoFile;
 
     /**
@@ -134,18 +113,16 @@ class Region
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $zone;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
-     *
-     * @Assert\Type("bool")
      */
+    #[Assert\Type('bool')]
     private $enabled;
 
     /**
