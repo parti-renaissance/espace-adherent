@@ -44,7 +44,7 @@ Feature:
     {
       "content": "<p>test</p>",
       "json_content": "{\"test\": \"test\"}",
-      "zone": "e3efe563-906e-11eb-a875-0242ac150002"
+      "zone": "944057ca-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 400
@@ -71,7 +71,7 @@ Feature:
     {
       "content": "<p>test</p>",
       "json_content": "{\"test\": \"test\"}",
-      "zone": "e3efe563-906e-11eb-a875-0242ac150002"
+      "zone": "944057ca-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 201
@@ -106,7 +106,7 @@ Feature:
           "zone": {
             "code": "92",
             "name": "Hauts-de-Seine",
-            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+            "uuid": "944062a9-872a-11eb-9419-42010a840019"
           }
         }
       ]
@@ -154,7 +154,7 @@ Feature:
     {
       "content": "<p>ceci est une mise à jour</p>",
       "json_content": "{\"maj\": \"maj\"}",
-      "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+      "zone": "944062a9-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 200
@@ -182,7 +182,7 @@ Feature:
       "zone": {
         "code": "92",
         "name": "Hauts-de-Seine",
-        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+        "uuid": "944062a9-872a-11eb-9419-42010a840019"
       }
     }
     """

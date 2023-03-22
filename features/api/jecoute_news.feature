@@ -453,7 +453,7 @@ Feature:
                     "code": "59",
                     "created_at": "@string@.isDateTime()",
                     "name": "Nord",
-                    "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
+                    "uuid": "9440518c-872a-11eb-9419-42010a840019"
                 },
                 "notification": true,
                 "enriched": false,
@@ -473,7 +473,7 @@ Feature:
                     "code": "92",
                     "created_at": "@string@.isDateTime()",
                     "name": "Hauts-de-Seine",
-                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                    "uuid": "944062a9-872a-11eb-9419-42010a840019"
                 },
                 "notification": true,
                 "enriched": false,
@@ -493,7 +493,7 @@ Feature:
                     "code": "59",
                     "created_at": "@string@.isDateTime()",
                     "name": "Nord",
-                    "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
+                    "uuid": "9440518c-872a-11eb-9419-42010a840019"
                 },
                 "notification": true,
                 "enriched": false,
@@ -513,7 +513,7 @@ Feature:
                     "code": "92",
                     "created_at": "@string@.isDateTime()",
                     "name": "Hauts-de-Seine",
-                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                    "uuid": "944062a9-872a-11eb-9419-42010a840019"
                 },
                 "notification": true,
                 "enriched": false,
@@ -538,7 +538,7 @@ Feature:
                     "code": "92",
                     "created_at": "2020-12-04T15:24:38+01:00",
                     "name": "Hauts-de-Seine",
-                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                    "uuid": "944062a9-872a-11eb-9419-42010a840019"
                 }
             },
             {
@@ -558,7 +558,7 @@ Feature:
                     "code": "92",
                     "created_at": "2020-12-04T15:24:38+01:00",
                     "name": "Hauts-de-Seine",
-                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                    "uuid": "944062a9-872a-11eb-9419-42010a840019"
                 }
             },
             {
@@ -573,7 +573,7 @@ Feature:
                     "code": "92",
                     "created_at": "2020-12-04T15:24:38+01:00",
                     "name": "Hauts-de-Seine",
-                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                    "uuid": "944062a9-872a-11eb-9419-42010a840019"
                 },
                 "notification": true,
                 "enriched": false,
@@ -593,7 +593,7 @@ Feature:
                     "code": "92",
                     "created_at": "2020-12-04T15:24:38+01:00",
                     "name": "Hauts-de-Seine",
-                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                    "uuid": "944062a9-872a-11eb-9419-42010a840019"
                 },
                 "notification": true,
                 "enriched": true,
@@ -638,7 +638,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
-                    "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+                    "uuid": "94415793-872a-11eb-9419-42010a840019",
                     "code": "75-1",
                     "name": "Paris (1)",
                     "created_at": "2020-12-04T15:24:38+01:00"
@@ -658,7 +658,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
-                    "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+                    "uuid": "94415793-872a-11eb-9419-42010a840019",
                     "code": "75-1",
                     "name": "Paris (1)",
                     "created_at": "2020-12-04T15:24:38+01:00"
@@ -858,7 +858,7 @@ Feature:
       "published": true,
       "enriched": false,
       "pinned": false,
-      "zone": "e3efe5c5-906e-11eb-a875-0242ac150002"
+      "zone": "94405a9c-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 201
@@ -872,7 +872,7 @@ Feature:
         "link_label": "Voir",
         "visibility": "local",
         "zone": {
-            "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+            "uuid": "94405a9c-872a-11eb-9419-42010a840019",
             "code": "77",
             "name": "Seine-et-Marne",
             "created_at": "@string@.isDateTime()"
@@ -909,7 +909,7 @@ Feature:
       "published": true,
       "enriched": true,
       "pinned": true,
-      "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+      "zone": "944062a9-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 201
@@ -926,7 +926,7 @@ Feature:
             "code": "92",
             "created_at": "2020-12-04T15:24:38+01:00",
             "name": "Hauts-de-Seine",
-            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+            "uuid": "944062a9-872a-11eb-9419-42010a840019"
         },
         "created_at": "@string@.isDateTime()",
         "notification": true,
@@ -975,7 +975,7 @@ Feature:
             "code": "92",
             "created_at": "2020-12-04T15:24:38+01:00",
             "name": "Hauts-de-Seine",
-            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+            "uuid": "944062a9-872a-11eb-9419-42010a840019"
         },
         "created_at": "@string@.isDateTime()",
         "notification": false,
@@ -1004,7 +1004,7 @@ Feature:
       "published": true,
       "enriched": true,
       "pinned": true,
-      "zone": "e3f0bf9d-906e-11eb-a875-0242ac150002"
+      "zone": "94415793-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 201
@@ -1021,7 +1021,7 @@ Feature:
             "code": "75-1",
             "created_at": "2020-12-04T15:24:38+01:00",
             "name": "Paris (1)",
-            "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002"
+            "uuid": "94415793-872a-11eb-9419-42010a840019"
         },
         "created_at": "@string@.isDateTime()",
         "notification": true,
@@ -1070,7 +1070,7 @@ Feature:
             "code": "75-1",
             "created_at": "2020-12-04T15:24:38+01:00",
             "name": "Paris (1)",
-            "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002"
+            "uuid": "94415793-872a-11eb-9419-42010a840019"
         },
         "created_at": "@string@.isDateTime()",
         "notification": false,
@@ -1104,7 +1104,7 @@ Feature:
             "code": "59",
             "created_at": "@string@.isDateTime()",
             "name": "Nord",
-            "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
+            "uuid": "9440518c-872a-11eb-9419-42010a840019"
         },
         "notification": true,
         "enriched": false,
@@ -1147,7 +1147,7 @@ Feature:
           "code": "59",
           "created_at": "@string@.isDateTime()",
           "name": "Nord",
-          "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
+          "uuid": "9440518c-872a-11eb-9419-42010a840019"
       },
       "created_at": "@string@.isDateTime()",
       "notification": false,
@@ -1228,7 +1228,7 @@ Feature:
       "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
       "external_link": "http://test.en-marche.fr",
       "link_label": "Voir",
-      "zone": "e3f21338-906e-11eb-a875-0242ac150002",
+      "zone": "9477b1d8-872a-11eb-9419-42010a840019",
       "notification": true,
       "published": true
     }
@@ -1259,7 +1259,7 @@ Feature:
       "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
       "external_link": "http://test.en-marche.fr",
       "link_label": "Voir",
-      "zone": "e3efe7bf-906e-11eb-a875-0242ac150002",
+      "zone": "9440643f-872a-11eb-9419-42010a840019",
       "notification": true,
       "published": true
     }

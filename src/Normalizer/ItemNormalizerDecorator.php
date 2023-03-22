@@ -37,6 +37,14 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
+/**
+ * We are using API Platform annotation on Abstract class for some our entities
+ * and from api-platform v2.7 ItemNormalizer use the abstract class as Resource class
+ * and tries to instantiate it.
+ * This normalizer fixes this issue, by checking if resource_class is not an abstract one.
+ *
+ * @see self::denormalize method and $newResourceClass variable
+ */
 class ItemNormalizerDecorator extends AbstractObjectNormalizer
 {
     use ClassInfoTrait;
@@ -256,6 +264,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
 
         $context['api_denormalize'] = true;
 
+        # GOTO:
         if ($this->resourceClassResolver->isResourceClass($class)) {
             $newResourceClass = $this->resourceClassResolver->getResourceClass($objectToPopulate, $class);
             if (!(new \ReflectionClass($newResourceClass))->isAbstract()) {

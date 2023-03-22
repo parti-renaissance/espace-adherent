@@ -1143,7 +1143,7 @@ Feature:
       "type": "local",
       "city": null,
       "zone": {
-        "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+        "uuid": "94405a9c-872a-11eb-9419-42010a840019",
         "code": "77",
         "name": "Seine-et-Marne"
       },
@@ -1212,7 +1212,7 @@ Feature:
     {
         "type": "local",
         "name": "test questionnaire local du 92",
-        "zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "zone": "944062a9-872a-11eb-9419-42010a840019",
         "published": true,
         "questions": [
             {
@@ -1436,7 +1436,7 @@ Feature:
     {
         "type": "local",
         "name": "test questionnaire local du 92",
-        "zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "zone": "944062a9-872a-11eb-9419-42010a840019",
         "published": true,
         "questions": [
             {
@@ -1489,7 +1489,7 @@ Feature:
       "type": "local",
       "city": null,
       "zone": {
-          "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+          "uuid": "944062a9-872a-11eb-9419-42010a840019",
           "code": "92",
           "name": "Hauts-de-Seine"
       },
@@ -1574,7 +1574,7 @@ Feature:
     """
     {
       "name": "5ans à l'écoute",
-      "zone": "e3efe5c5-906e-11eb-a875-0242ac150002",
+      "zone": "94405a9c-872a-11eb-9419-42010a840019",
       "published": true,
       "questions": [
         {
@@ -1633,7 +1633,7 @@ Feature:
       "type": "local",
       "city": null,
       "zone": {
-        "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+        "uuid": "94405a9c-872a-11eb-9419-42010a840019",
         "code": "77",
         "name": "Seine-et-Marne"
       },
@@ -1978,7 +1978,7 @@ Feature:
     """
     {
       "name": "5ans à l'écoute",
-      "zone": "e3efe5c5-906e-11eb-a875-0242ac150002",
+      "zone": "94405a9c-872a-11eb-9419-42010a840019",
       "published": true,
       "questions": []
     }

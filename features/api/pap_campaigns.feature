@@ -670,7 +670,7 @@ Feature:
       "begin_at": "+30 days",
       "finish_at": "+50 days",
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-      "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+      "zone": "944062a9-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 201

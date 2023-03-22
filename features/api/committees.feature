@@ -63,7 +63,7 @@ Feature:
         """
         [
             {
-                "uuid": "e3f17cac-906e-11eb-a875-0242ac150002",
+                "uuid": "94966e3d-872a-11eb-9419-42010a840019",
                 "type": "city_community",
                 "postal_code": [],
                 "code": "200040954",
@@ -81,7 +81,7 @@ Feature:
         """
         [
             {
-                "uuid": "e3f2c5ec-906e-11eb-a875-0242ac150002",
+                "uuid": "94938d80-872a-11eb-9419-42010a840019",
                 "type": "city",
                 "postal_code": ["92260"],
                 "code": "92032",
@@ -95,9 +95,9 @@ Feature:
             "name": "test 1",
             "description": "my desc",
             "zones": [
-                "e3f154b1-906e-11eb-a875-0242ac150002",
-                "e3f2c5ec-906e-11eb-a875-0242ac150002",
-                "e3f2cb17-906e-11eb-a875-0242ac150002"
+                "94463aee-872a-11eb-9419-42010a840019",
+                "94938d80-872a-11eb-9419-42010a840019",
+                "949393bc-872a-11eb-9419-42010a840019"
             ]
         }
         """
@@ -134,7 +134,7 @@ Feature:
             "name": "test 1",
             "description": "my desc",
             "zones": [
-                "e3f0ebd6-906e-11eb-a875-0242ac150002"
+                "94418bb1-872a-11eb-9419-42010a840019"
             ]
         }
         """

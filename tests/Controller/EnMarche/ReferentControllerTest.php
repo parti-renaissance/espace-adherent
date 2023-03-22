@@ -414,16 +414,16 @@ class ReferentControllerTest extends WebTestCase
         self::assertCount(7, $crawlerOptions);
         self::assertSame('Espagne (ES)', $crawlerOptions->getNode(0)->nodeValue);
         self::assertSame('Suisse (CH)', $crawlerOptions->getNode(1)->nodeValue);
-        self::assertSame('Seine-et-Marne (77)', $crawlerOptions->getNode(2)->nodeValue);
-        self::assertSame('Hauts-de-Seine (92)', $crawlerOptions->getNode(3)->nodeValue);
+        self::assertSame('Bouches-du-Rhône (13)', $crawlerOptions->getNode(2)->nodeValue);
+        self::assertSame('Nord (59)', $crawlerOptions->getNode(3)->nodeValue);
         self::assertSame('Seine-Maritime (76)', $crawlerOptions->getNode(4)->nodeValue);
-        self::assertSame('Nord (59)', $crawlerOptions->getNode(5)->nodeValue);
-        self::assertSame('Bouches-du-Rhône (13)', $crawlerOptions->getNode(6)->nodeValue);
+        self::assertSame('Seine-et-Marne (77)', $crawlerOptions->getNode(5)->nodeValue);
+        self::assertSame('Hauts-de-Seine (92)', $crawlerOptions->getNode(6)->nodeValue);
 
         $crawler = $this->client->submit(
             $crawler->selectButton('Filtrer')->form([
                 'referent_filter' => [
-                    'zones' => 72,
+                    'zones' => 71,
                 ],
             ])
         );

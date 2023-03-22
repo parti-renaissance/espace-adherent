@@ -69,7 +69,7 @@ Feature:
       "first_name": "untrèslongprénomuntrèslongprénomuntrèslongprénomuntrèslongprénomuntrèslongprénomuntrèslongprénom",
       "last_name": "untrèslongnomuntrèslongnomuntrèslongnomuntrèslongnomuntrèslongnomuntrèslongnomuntrèslongnom",
       "gender": "invalid",
-      "zone": "e3ef6700-906e-11eb-a875-0242ac150002"
+      "zone": "943e2b28-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 400
@@ -120,7 +120,7 @@ Feature:
       "first_name": "Prénom",
       "last_name": "Nom",
       "gender": "female",
-      "zone": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+      "zone": "94415793-872a-11eb-9419-42010a840019",
       "age_min": 20,
       "age_max": 45,
       "registered_since": "2017-06-29",
@@ -146,7 +146,7 @@ Feature:
        "registered_since":"2017-06-29T00:00:00+02:00",
        "registered_until":"2021-04-29T00:00:00+02:00",
        "zone":{
-          "uuid":"e3f0bf9d-906e-11eb-a875-0242ac150002",
+          "uuid":"94415793-872a-11eb-9419-42010a840019",
           "code":"75-1",
           "name":"Paris (1)"
        },
@@ -168,7 +168,7 @@ Feature:
       "first_name": "Nouveau prénom",
       "last_name": "Nouveau nom",
       "gender": "female",
-      "zone": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+      "zone": "94415793-872a-11eb-9419-42010a840019",
       "age_min": 20,
       "age_max": 45,
       "registered_since": "2018-08-28",
@@ -194,7 +194,7 @@ Feature:
        "registered_since":"2018-08-28T00:00:00+02:00",
        "registered_until":"2021-06-28T00:00:00+02:00",
        "zone":{
-          "uuid":"e3f0bf9d-906e-11eb-a875-0242ac150002",
+          "uuid":"94415793-872a-11eb-9419-42010a840019",
           "code":"75-1",
           "name":"Paris (1)"
        },
@@ -308,7 +308,7 @@ Feature:
     """
     {
       "zone": {
-        "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+        "uuid": "94415793-872a-11eb-9419-42010a840019",
         "code": "75-1",
         "name": "Paris (1)"
       },
@@ -338,7 +338,7 @@ Feature:
     """
     {
       "zone": {
-        "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+        "uuid": "94415793-872a-11eb-9419-42010a840019",
         "code": "75-1",
         "name": "Paris (1)"
       },

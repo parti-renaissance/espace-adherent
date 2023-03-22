@@ -28,7 +28,7 @@ Feature:
                 "file_path": "@string@.isUrl()",
                 "visibility": "local",
                 "zone": {
-                    "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                    "uuid": "94405a9c-872a-11eb-9419-42010a840019",
                     "code": "77",
                     "name": "Seine-et-Marne"
                 }
@@ -41,7 +41,7 @@ Feature:
                 "file_path": "@string@.isUrl()",
                 "visibility": "local",
                 "zone": {
-                    "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                    "uuid": "94405a9c-872a-11eb-9419-42010a840019",
                     "code": "77",
                     "name": "Seine-et-Marne"
                 }
@@ -62,7 +62,7 @@ Feature:
             "title": "New general meeting report",
             "description": "New general meeting report description",
             "date": "2023-03-08 18:00:00",
-            "zone": "e3efe5c5-906e-11eb-a875-0242ac150002"
+            "zone": "94405a9c-872a-11eb-9419-42010a840019"
         }
         """
         Then the response status code should be 201
@@ -77,7 +77,7 @@ Feature:
             "file_path": null,
             "visibility": "local",
             "zone": {
-                "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                "uuid": "94405a9c-872a-11eb-9419-42010a840019",
                 "code": "77",
                 "name": "Seine-et-Marne"
             }
@@ -96,7 +96,7 @@ Feature:
             "title": "Deuxième PV d'AG du 77 (edited)",
             "description": "General meeting report description (edited)",
             "date": "2023-03-08 17:00:00",
-            "zone": "e3efe5c5-906e-11eb-a875-0242ac150002"
+            "zone": "94405a9c-872a-11eb-9419-42010a840019"
         }
         """
         Then the response status code should be 200
@@ -111,7 +111,7 @@ Feature:
             "file_path": "@string@.isUrl()",
             "visibility": "local",
             "zone": {
-                "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                "uuid": "94405a9c-872a-11eb-9419-42010a840019",
                 "code": "77",
                 "name": "Seine-et-Marne"
             }

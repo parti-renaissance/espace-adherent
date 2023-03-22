@@ -164,7 +164,7 @@ Feature:
                     "type": "senateur",
                     "is_elected": true,
                     "geo_zone": {
-                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                        "uuid": "944062a9-872a-11eb-9419-42010a840019",
                         "code": "92",
                         "name": "Hauts-de-Seine"
                     },
@@ -220,7 +220,7 @@ Feature:
                     "type": "senateur",
                     "is_elected": true,
                     "geo_zone": {
-                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                        "uuid": "944062a9-872a-11eb-9419-42010a840019",
                         "code": "92",
                         "name": "Hauts-de-Seine"
                     },
@@ -398,7 +398,7 @@ Feature:
       "type": "senateur",
       "is_elected": true,
       "geo_zone": {
-        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "uuid": "944062a9-872a-11eb-9419-42010a840019",
         "code": "92",
         "name": "Hauts-de-Seine"
       },
@@ -428,7 +428,7 @@ Feature:
     {
       "type": "membre_EPCI",
       "is_elected": true,
-      "geo_zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
+      "geo_zone": "944062a9-872a-11eb-9419-42010a840019",
       "on_going": true,
       "begin_at": "2023-01-13",
       "finish_at": null,
@@ -461,7 +461,7 @@ Feature:
       "type": "membre_EPCI",
       "is_elected": true,
       "geo_zone": {
-        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "uuid": "944062a9-872a-11eb-9419-42010a840019",
         "code": "92",
         "name": "Hauts-de-Seine"
       },
@@ -508,7 +508,7 @@ Feature:
     {
       "type": "membre_EPCI",
       "is_elected": true,
-      "geo_zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
+      "geo_zone": "944062a9-872a-11eb-9419-42010a840019",
       "on_going": true,
       "begin_at": "2023-01-13T00:00:00+01:00",
       "finish_at": null,
@@ -541,7 +541,7 @@ Feature:
       "type": "membre_EPCI",
       "is_elected": true,
       "geo_zone": {
-        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "uuid": "944062a9-872a-11eb-9419-42010a840019",
         "code": "92",
         "name": "Hauts-de-Seine"
       },

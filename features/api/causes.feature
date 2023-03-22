@@ -687,7 +687,7 @@ Feature:
     {
         "email_address": "adherent@en-marche-dev.fr",
         "first_name": "Pierre",
-        "zone": "e3f274b8-906e-11eb-a875-0242ac150002",
+        "zone": "94869992-872a-11eb-9419-42010a840019",
         "cgu_accepted": true,
         "cause_subscription": true,
         "coalition_subscription": true
@@ -790,7 +790,7 @@ Feature:
     {
         "email_address": "adherent@en-marche-dev.fr",
         "first_name": "Pierre",
-        "zone": "e3f274b8-906e-11eb-a875-0242ac150002",
+        "zone": "94869992-872a-11eb-9419-42010a840019",
         "cause": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
         "cgu_accepted": true
     }
@@ -819,7 +819,7 @@ Feature:
     {
         "email_address": "jacques.picard@en-marche.fr",
         "first_name": "jacques",
-        "zone": "e3f274b8-906e-11eb-a875-0242ac150002",
+        "zone": "94869992-872a-11eb-9419-42010a840019",
         "cause": "017491f9-1953-482e-b491-20418235af1f",
         "cgu_accepted": true
     }

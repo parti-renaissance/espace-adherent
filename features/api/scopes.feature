@@ -16,7 +16,7 @@ Feature:
         "name": "Député",
         "zones": [
           {
-            "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+            "uuid": "94415793-872a-11eb-9419-42010a840019",
             "code": "75-1",
             "name": "Paris (1)"
           }
@@ -30,7 +30,7 @@ Feature:
         "name": "National communication",
         "zones": [
           {
-            "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
+            "uuid": "943fb3ac-872a-11eb-9419-42010a840019",
             "code": "FR",
             "name": "France"
           }
@@ -44,7 +44,7 @@ Feature:
         "name": "National",
         "zones": [
           {
-            "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
+            "uuid": "943fb3ac-872a-11eb-9419-42010a840019",
             "code": "FR",
             "name": "France"
           }
@@ -58,7 +58,7 @@ Feature:
         "name": "Responsable National PAP",
         "zones": [
           {
-            "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
+            "uuid": "943fb3ac-872a-11eb-9419-42010a840019",
             "code": "FR",
             "name": "France"
           }
@@ -80,7 +80,7 @@ Feature:
         "name": "Responsable Phoning",
         "zones": [
           {
-            "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
+            "uuid": "943fb3ac-872a-11eb-9419-42010a840019",
             "code": "FR",
             "name": "France"
           }
@@ -112,7 +112,7 @@ Feature:
       "name": "Député",
       "zones": [
         {
-          "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+          "uuid": "94415793-872a-11eb-9419-42010a840019",
           "code": "75-1",
           "type": "district",
           "name": "Paris (1)",
@@ -156,7 +156,7 @@ Feature:
           "code": "FR",
           "type": "country",
           "name": "France",
-          "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
+          "uuid": "943fb3ac-872a-11eb-9419-42010a840019",
           "latitude": null,
           "longitude": null
         }
@@ -200,7 +200,7 @@ Feature:
         "name": "Député délégué",
         "zones": [
           {
-            "uuid": "e3efac36-906e-11eb-a875-0242ac150002",
+            "uuid": "943fda85-872a-11eb-9419-42010a840019",
             "code": "CIRCO_FDE-06",
             "name": "Suisse"
           }
@@ -214,7 +214,7 @@ Feature:
         "name": "Sénateur délégué",
         "zones": [
         {
-          "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
+          "uuid": "9440518c-872a-11eb-9419-42010a840019",
           "code": "59",
           "name": "Nord"
         }
@@ -228,7 +228,7 @@ Feature:
         "name": "Député délégué",
         "zones": [
           {
-            "uuid": "e3f0bfff-906e-11eb-a875-0242ac150002",
+            "uuid": "944157f5-872a-11eb-9419-42010a840019",
             "code": "75-2",
             "name": "Paris (2)"
           }
@@ -242,7 +242,7 @@ Feature:
         "name": "Candidat délégué",
         "zones": [
           {
-            "uuid": "e3efe139-906e-11eb-a875-0242ac150002",
+            "uuid": "9440131e-872a-11eb-9419-42010a840019",
             "code": "11",
             "name": "Île-de-France"
           }
@@ -259,37 +259,37 @@ Feature:
           {
             "code": "13",
             "name": "Bouches-du-Rhône",
-            "uuid": "e3f01553-906e-11eb-a875-0242ac150002"
+            "uuid": "94403ac2-872a-11eb-9419-42010a840019"
           },
           {
             "code": "59",
             "name": "Nord",
-            "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
+            "uuid": "9440518c-872a-11eb-9419-42010a840019"
           },
           {
             "code": "76",
             "name": "Seine-Maritime",
-            "uuid": "e3efef5d-906e-11eb-a875-0242ac150002"
+            "uuid": "94405a38-872a-11eb-9419-42010a840019"
           },
           {
             "code": "77",
             "name": "Seine-et-Marne",
-            "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002"
+            "uuid": "94405a9c-872a-11eb-9419-42010a840019"
           },
           {
             "code": "92",
             "name": "Hauts-de-Seine",
-            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+            "uuid": "944062a9-872a-11eb-9419-42010a840019"
           },
           {
             "code": "ES",
             "name": "Espagne",
-            "uuid": "e3ef84ed-906e-11eb-a875-0242ac150002"
+            "uuid": "943fb07b-872a-11eb-9419-42010a840019"
           },
           {
             "code": "CH",
             "name": "Suisse",
-            "uuid": "e3efcea1-906e-11eb-a875-0242ac150002"
+            "uuid": "943ffff9-872a-11eb-9419-42010a840019"
           }
         ]
       },
@@ -303,7 +303,7 @@ Feature:
           {
               "code": "92",
               "name": "Hauts-de-Seine",
-              "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+              "uuid": "944062a9-872a-11eb-9419-42010a840019"
           }
         ]
       },
@@ -317,7 +317,7 @@ Feature:
               {
                   "code": "75-1",
                   "name": "Paris (1)",
-                  "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002"
+                  "uuid": "94415793-872a-11eb-9419-42010a840019"
               }
           ]
       }
@@ -336,7 +336,7 @@ Feature:
       "name": "Sénateur délégué",
       "zones": [
         {
-          "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
+          "uuid": "9440518c-872a-11eb-9419-42010a840019",
           "code": "59",
           "type": "department",
           "name": "Nord",
@@ -377,7 +377,7 @@ Feature:
         "name": "Référent délégué",
         "zones": [
             {
-                "uuid": "e3f01553-906e-11eb-a875-0242ac150002",
+                "uuid": "94403ac2-872a-11eb-9419-42010a840019",
                 "code": "13",
                 "type": "department",
                 "name": "Bouches-du-Rhône",
@@ -385,7 +385,7 @@ Feature:
                 "longitude": null
             },
             {
-                "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
+                "uuid": "9440518c-872a-11eb-9419-42010a840019",
                 "code": "59",
                 "type": "department",
                 "name": "Nord",
@@ -393,7 +393,7 @@ Feature:
                 "longitude": null
             },
             {
-                "uuid": "e3efef5d-906e-11eb-a875-0242ac150002",
+                "uuid": "94405a38-872a-11eb-9419-42010a840019",
                 "code": "76",
                 "type": "department",
                 "name": "Seine-Maritime",
@@ -401,7 +401,7 @@ Feature:
                 "longitude": null
             },
             {
-                "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                "uuid": "94405a9c-872a-11eb-9419-42010a840019",
                 "code": "77",
                 "type": "department",
                 "name": "Seine-et-Marne",
@@ -409,7 +409,7 @@ Feature:
                 "longitude": null
             },
             {
-                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                "uuid": "944062a9-872a-11eb-9419-42010a840019",
                 "code": "92",
                 "type": "department",
                 "name": "Hauts-de-Seine",
@@ -417,7 +417,7 @@ Feature:
                 "longitude": null
             },
             {
-                "uuid": "e3ef84ed-906e-11eb-a875-0242ac150002",
+                "uuid": "943fb07b-872a-11eb-9419-42010a840019",
                 "code": "ES",
                 "type": "country",
                 "name": "Espagne",
@@ -425,7 +425,7 @@ Feature:
                 "longitude": null
             },
             {
-                "uuid": "e3efcea1-906e-11eb-a875-0242ac150002",
+                "uuid": "943ffff9-872a-11eb-9419-42010a840019",
                 "code": "CH",
                 "type": "country",
                 "name": "Suisse",

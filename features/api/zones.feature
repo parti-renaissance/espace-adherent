@@ -165,28 +165,28 @@ Feature:
     """
     [
         {
-            "uuid": "e3ef84ed-906e-11eb-a875-0242ac150002",
+            "uuid": "943fb07b-872a-11eb-9419-42010a840019",
             "type": "country",
             "postal_code": [],
             "code": "ES",
             "name": "Espagne"
         },
         {
-            "uuid": "e3f33ac7-906e-11eb-a875-0242ac150002",
+            "uuid": "94989cd0-872a-11eb-9419-42010a840019",
             "type": "consular_district",
             "postal_code": [],
             "code": "CONS_030-2",
             "name": "Espagne  2ème circo"
         },
         {
-            "uuid": "e3f33a66-906e-11eb-a875-0242ac150002",
+            "uuid": "94989c6b-872a-11eb-9419-42010a840019",
             "type": "consular_district",
             "postal_code": [],
             "code": "CONS_030-1",
             "name": "Espagne 1ère circo"
         },
         {
-            "uuid": "e3f29811-906e-11eb-a875-0242ac150002",
+            "uuid": "94884d7a-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "77430"
@@ -195,7 +195,7 @@ Feature:
             "name": "Champagne-sur-Seine"
         },
         {
-            "uuid": "e3f2a3e7-906e-11eb-a875-0242ac150002",
+            "uuid": "948886c7-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "77130"
@@ -204,7 +204,7 @@ Feature:
             "name": "La Grande-Paroisse"
         },
         {
-            "uuid": "e3f1cb08-906e-11eb-a875-0242ac150002",
+            "uuid": "94500a09-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "13610"
@@ -213,7 +213,7 @@ Feature:
             "name": "Le Puy-Sainte-Réparade"
         },
         {
-            "uuid": "e3f28b24-906e-11eb-a875-0242ac150002",
+            "uuid": "94878f83-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "76570"
@@ -222,7 +222,7 @@ Feature:
             "name": "Pavilly"
         },
         {
-            "uuid": "e3f1e343-906e-11eb-a875-0242ac150002",
+            "uuid": "94501105-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "13920"
@@ -231,7 +231,7 @@ Feature:
             "name": "Saint-Mitre-les-Remparts"
         },
         {
-            "uuid": "e3f2b860-906e-11eb-a875-0242ac150002",
+            "uuid": "9488f5dd-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "77178"
@@ -240,7 +240,7 @@ Feature:
             "name": "Saint-Pathus"
         },
         {
-            "uuid": "e3f2c010-906e-11eb-a875-0242ac150002",
+            "uuid": "94891a56-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "77270"
@@ -249,77 +249,77 @@ Feature:
             "name": "Villeparisis"
         },
         {
-            "uuid": "e3f18a2c-906e-11eb-a875-0242ac150002",
+            "uuid": "9497067f-872a-11eb-9419-42010a840019",
             "type": "city_community",
             "postal_code": [],
             "code": "200090504",
             "name": "CA Coulommiers Pays de Brie"
         },
         {
-            "uuid": "e3f18848-906e-11eb-a875-0242ac150002",
+            "uuid": "9497061e-872a-11eb-9419-42010a840019",
             "type": "city_community",
             "postal_code": [],
             "code": "200072346",
             "name": "CA du Pays de Fontainebleau"
         },
         {
-            "uuid": "e3f187e7-906e-11eb-a875-0242ac150002",
+            "uuid": "94970ab1-872a-11eb-9419-42010a840019",
             "type": "city_community",
             "postal_code": [],
             "code": "200072130",
             "name": "CA du Pays de Meaux"
         },
         {
-            "uuid": "e3f1828a-906e-11eb-a875-0242ac150002",
+            "uuid": "94970d5a-872a-11eb-9419-42010a840019",
             "type": "city_community",
             "postal_code": [],
             "code": "200059228",
             "name": "CA Grand Paris Sud Seine Essonne Sénart"
         },
         {
-            "uuid": "e3f18139-906e-11eb-a875-0242ac150002",
+            "uuid": "94970c96-872a-11eb-9419-42010a840019",
             "type": "city_community",
             "postal_code": [],
             "code": "200057958",
             "name": "CA Paris - Vallée de la Marne"
         },
         {
-            "uuid": "e3f180d7-906e-11eb-a875-0242ac150002",
+            "uuid": "94970e20-872a-11eb-9419-42010a840019",
             "type": "city_community",
             "postal_code": [],
             "code": "200055655",
             "name": "CA Roissy Pays de France"
         },
         {
-            "uuid": "e3f19169-906e-11eb-a875-0242ac150002",
+            "uuid": "94970317-872a-11eb-9419-42010a840019",
             "type": "city_community",
             "postal_code": [],
             "code": "247600505",
             "name": "CC Campagne-de-Caux"
         },
         {
-            "uuid": "e3f197ca-906e-11eb-a875-0242ac150002",
+            "uuid": "94970805-872a-11eb-9419-42010a840019",
             "type": "city_community",
             "postal_code": [],
             "code": "247700065",
             "name": "CC du Pays de l'Ourcq"
         },
         {
-            "uuid": "e3f17e32-906e-11eb-a875-0242ac150002",
+            "uuid": "94966a68-872a-11eb-9419-42010a840019",
             "type": "city_community",
             "postal_code": [],
             "code": "200043321",
             "name": "CC du Pays de Mormal"
         },
         {
-            "uuid": "e3f18d97-906e-11eb-a875-0242ac150002",
+            "uuid": "94966e9d-872a-11eb-9419-42010a840019",
             "type": "city_community",
             "postal_code": [],
             "code": "245901038",
             "name": "CC du Pays Solesmois"
         },
         {
-            "uuid": "e3f15390-906e-11eb-a875-0242ac150002",
+            "uuid": "94459aa3-872a-11eb-9419-42010a840019",
             "type": "canton",
             "postal_code": [],
             "code": "7723",
@@ -341,7 +341,7 @@ Feature:
     """
     [
         {
-            "uuid": "e3f29811-906e-11eb-a875-0242ac150002",
+            "uuid": "94884d7a-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "77430"
@@ -350,7 +350,7 @@ Feature:
             "name": "Champagne-sur-Seine"
         },
         {
-            "uuid": "e3f2a3e7-906e-11eb-a875-0242ac150002",
+            "uuid": "948886c7-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "77130"
@@ -359,7 +359,7 @@ Feature:
             "name": "La Grande-Paroisse"
         },
         {
-            "uuid": "e3f1cb08-906e-11eb-a875-0242ac150002",
+            "uuid": "94500a09-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "13610"
@@ -368,7 +368,7 @@ Feature:
             "name": "Le Puy-Sainte-Réparade"
         },
         {
-            "uuid": "e3f28b24-906e-11eb-a875-0242ac150002",
+            "uuid": "94878f83-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "76570"
@@ -377,7 +377,7 @@ Feature:
             "name": "Pavilly"
         },
         {
-            "uuid": "e3f1e343-906e-11eb-a875-0242ac150002",
+            "uuid": "94501105-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "13920"
@@ -386,7 +386,7 @@ Feature:
             "name": "Saint-Mitre-les-Remparts"
         },
         {
-            "uuid": "e3f2b860-906e-11eb-a875-0242ac150002",
+            "uuid": "9488f5dd-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "77178"
@@ -395,7 +395,7 @@ Feature:
             "name": "Saint-Pathus"
         },
         {
-            "uuid": "e3f2c010-906e-11eb-a875-0242ac150002",
+            "uuid": "94891a56-872a-11eb-9419-42010a840019",
             "type": "city",
             "postal_code": [
                 "77270"
