@@ -238,7 +238,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="uuid", unique=true)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_sync", "event_list_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      *
      * @ApiProperty(identifier=true)
      */
@@ -265,7 +265,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=100)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_sync", "event_write", "event_list_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
      * @Assert\Length(allowEmptyString=true, min=5, max=100)
@@ -292,7 +292,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *     handlers={@Gedmo\SlugHandler(class="App\Event\UniqueEventNameHandler")}
      * )
      *
-     * @SymfonySerializer\Groups({"event_read", "event_sync"})
+     * @SymfonySerializer\Groups({"event_read"})
      */
     protected $slug;
 
@@ -313,7 +313,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=50)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_sync", "event_write", "event_list_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
      * @Assert\Timezone
@@ -325,7 +325,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="datetime")
      *
-     * @SymfonySerializer\Groups({"event_read", "event_sync", "event_write", "event_list_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
      */
@@ -336,7 +336,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="datetime")
      *
-     * @SymfonySerializer\Groups({"event_read", "event_sync", "event_write", "event_list_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
      * @Assert\Expression("!value or value > this.getBeginAt()", message="committee.event.invalid_date_range")
@@ -360,7 +360,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
-     * @SymfonySerializer\Groups({"event_read", "event_sync", "event_list_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
     protected $participantsCount = 0;
 
@@ -369,7 +369,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=20)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_sync", "event_list_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
     protected $status = self::STATUS_SCHEDULED;
 
@@ -410,7 +410,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_sync", "event_write", "event_list_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\GreaterThan("0", message="committee.event.invalid_capacity")
      */

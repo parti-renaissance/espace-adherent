@@ -20,7 +20,6 @@ trait EntityNameSlugTrait
      *     "cause_read",
      *     "cause_write",
      *     "event_read",
-     *     "committee_sync",
      *     "committee:list",
      *     "committee:write",
      * })
@@ -49,7 +48,6 @@ trait EntityNameSlugTrait
      *     "cause_read",
      *     "event_list_read",
      *     "event_read",
-     *     "committee_sync",
      * })
      */
     protected $slug;

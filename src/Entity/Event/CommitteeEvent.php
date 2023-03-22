@@ -121,9 +121,6 @@ class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterf
         $this->isForLegislatives = $isForLegislatives;
     }
 
-    /**
-     * @Groups({"event_sync"})
-     */
     public function getCommitteeUuid(): ?string
     {
         if (!$committee = $this->getCommittee()) {
@@ -133,9 +130,6 @@ class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterf
         return $committee->getUuidAsString();
     }
 
-    /**
-     * @Groups({"event_sync"})
-     */
     public function getCategoryName(): ?string
     {
         return parent::getCategoryName();
@@ -146,9 +140,6 @@ class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterf
         return null === $this->getCommittee();
     }
 
-    /**
-     * @Groups({"event_sync"})
-     */
     public function getOrganizerUuid(): ?string
     {
         if (!$organizer = $this->getOrganizer()) {

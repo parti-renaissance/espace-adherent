@@ -13,7 +13,7 @@ Feature:
         Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "GET" request to "/api/v3/committees?scope=referent"
         Then the JSON nodes should be equal to:
-            | metadata.count | 0  |
+            | metadata.count | 0 |
 
     Scenario Outline: As a user granted with local scope, I can get committees in a zone I am manager of
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -36,14 +36,18 @@ Feature:
                     "uuid": "@uuid@",
                     "created_at": "@string@.isDateTime()",
                     "updated_at": "@string@.isDateTime()",
-                    "name": "Comité des 3 communes"
+                    "name": "Comité des 3 communes",
+                    "members_count": 10,
+                    "sympathizers_count": 0
                 },
                 {
                     "description": "Un petit comité avec seulement 3 communes",
                     "uuid": "@uuid@",
                     "created_at": "@string@.isDateTime()",
                     "updated_at": "@string@.isDateTime()",
-                    "name": "Second Comité des 3 communes"
+                    "name": "Second Comité des 3 communes",
+                    "members_count": 3,
+                    "sympathizers_count": 0
                 }
             ]
         }
@@ -110,7 +114,9 @@ Feature:
             "description": "my desc",
             "uuid": "@uuid@",
             "created_at": "@string@.isDateTime()",
-            "updated_at": "@string@.isDateTime()"
+            "updated_at": "@string@.isDateTime()",
+            "members_count": 0,
+            "sympathizers_count": 0
         }
         """
         When I send a "GET" request to "/api/v3/zone/autocomplete?scope=<scope>&q=Fontenay-aux-Roses&types[]=city&availableForCommittee=true"

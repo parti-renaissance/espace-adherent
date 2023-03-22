@@ -83,7 +83,6 @@ trait EntityIdentityTrait
      *     "pap_building_statistics_read",
      *     "survey_replies_list",
      *     "jecoute_resource_links_read",
-     *     "committee_sync",
      *     "adherent_change_diff",
      *     "scope",
      *     "contact_read_after_write",

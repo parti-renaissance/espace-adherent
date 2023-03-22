@@ -37,7 +37,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @SymfonySerializer\Groups({"user_profile", "adherent_change_diff", "committee_sync"})
+     * @SymfonySerializer\Groups({"user_profile", "adherent_change_diff"})
      */
     public function getCountry(): ?string
     {
@@ -49,9 +49,6 @@ trait EntityPostAddressTrait
         return $this->postAddress->getCountry() ? Countries::getName($this->postAddress->getCountry()) : null;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"committee_sync"})
-     */
     public function getAddress(): ?string
     {
         return $this->postAddress->getAddress();
@@ -88,17 +85,11 @@ trait EntityPostAddressTrait
         return $this->postAddress->getInseeCode();
     }
 
-    /**
-     * @SymfonySerializer\Groups({"committee_sync"})
-     */
     public function getLatitude(): ?float
     {
         return $this->postAddress->getLatitude();
     }
 
-    /**
-     * @SymfonySerializer\Groups({"committee_sync"})
-     */
     public function getLongitude(): ?float
     {
         return $this->postAddress->getLongitude();

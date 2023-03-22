@@ -347,7 +347,7 @@ class CommitteeManager
     private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee): void
     {
         $this->entityManager->remove($membership);
-        $committee->decrementMembersCount();
+        $committee->decrementMembersCount($membership->getAdherent()->isRenaissanceSympathizer());
 
         $this->entityManager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::LEAVE()));
 

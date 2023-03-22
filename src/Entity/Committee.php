@@ -154,11 +154,14 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     /**
      * The cached number of members (followers and hosts/administrators).
      *
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
-     * @Groups({"committee_sync"})
+     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
      */
-    private $membersCount;
+    private int $membersCount = 0;
+
+    /**
+     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     */
+    private int $sympathizersCount = 0;
 
     /**
      * The group description.
@@ -707,19 +710,38 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         return self::REFUSED === $this->status;
     }
 
+    /**
+     * @Groups({"committee:list"})
+     */
     public function getMembersCount(): int
     {
         return $this->membersCount;
     }
 
-    public function incrementMembersCount(int $increment = 1): void
+    /**
+     * @Groups({"committee:list"})
+     */
+    public function getSympathizersCount(): int
     {
-        $this->membersCount += $increment;
+        return $this->sympathizersCount;
     }
 
-    public function decrementMembersCount(int $increment = 1): void
+    public function incrementMembersCount(bool $isSympathizer): void
     {
-        $this->membersCount = $increment >= $this->membersCount ? 0 : $this->membersCount - $increment;
+        if ($isSympathizer) {
+            ++$this->sympathizersCount;
+        } else {
+            ++$this->membersCount;
+        }
+    }
+
+    public function decrementMembersCount(bool $isSympathizer): void
+    {
+        if ($isSympathizer) {
+            $this->sympathizersCount = $this->sympathizersCount < 1 ? 0 : $this->sympathizersCount - 1;
+        } else {
+            $this->membersCount = $this->membersCount < 1 ? 0 : $this->membersCount - 1;
+        }
     }
 
     /**
