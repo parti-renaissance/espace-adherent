@@ -2,9 +2,9 @@
 
 namespace App\Committee;
 
-class CommitteeMembershipTriggerEnum
+enum CommitteeMembershipTriggerEnum: string
 {
-    public const MANUAL = 'manual';
-    public const ADDRESS_UPDATE = 'address_update';
-    public const COMMITTEE_EDITION = 'committee_edition';
+    case MANUAL = 'manual';
+    case ADDRESS_UPDATE = 'address_update';
+    case COMMITTEE_EDITION = 'committee_edition';
 }

@@ -481,9 +481,9 @@ Feature:
         And the JSON should be equal to:
         """
         {
-          "female":24,
-          "male":39,
-          "total":63
+          "female":29,
+          "male":44,
+          "total":73
         }
         """
 

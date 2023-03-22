@@ -26,7 +26,9 @@
 
         {% set elected = candidacies|filter(cand => cand.isAdditionallyElected()) %}
 
-        <h3 class="mt-5">Siège{{ elected|length > 1 ? 's' }} attribué{{ elected|length > 1 ? 's' }} : <span class="font-bold">{{ elected|length }}</span></h3>
+        {% if designation.isLocalElectionType() %}
+            <h3 class="mt-5">Siège{{ elected|length > 1 ? 's' }} attribué{{ elected|length > 1 ? 's' }} : <span class="font-bold">{{ elected|length }}</span></h3>
+        {% endif %}
 
         <ul class="candidate-names">
             {% for candidate in candidacies|sort((a, b) => b.isAdditionallyElected() <=> a.isAdditionallyElected()) %}

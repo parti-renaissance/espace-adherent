@@ -57,7 +57,7 @@
                             </li>
                         {% endfor %}
 
-                        {% if not designation.isLocalElectionTypes() %}
+                        {% if not (designation.isLocalElectionTypes() or designation.isCommitteeSupervisorType()) %}
                             <li>
                                 <a href="#" class="tabs-nav__item results-tab--toggle">
                                     {{ block('voting_platform_result_tab_votes_list_title') }}
@@ -75,7 +75,7 @@
                             <div class="tab--container">
                                 {% include 'voting_platform/results/' ~ (designation.isMajorityType ? '_majority_vote') ~ '_candidates_list.html.twig' %}
 
-                                {% if not designation.isLocalElectionTypes() %}
+                                {% if not (designation.isLocalElectionTypes() or designation.isCommitteeSupervisorType()) %}
                                     {% include 'voting_platform/results/_stats_block.html.twig' %}
                                 {% endif %}
                             </div>

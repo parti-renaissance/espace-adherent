@@ -12,7 +12,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class LoadCommitteeCandidacyData extends Fixture implements DependentFixtureInterface
+class LoadCommitteeV1CandidacyData extends Fixture implements DependentFixtureInterface
 {
     private $imageManager;
 

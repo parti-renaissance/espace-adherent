@@ -43,6 +43,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     public const ELECTION_UUID10 = '4095339f-3aad-18ba-924f-adffe2085cd6';
     public const ELECTION_UUID11 = '13814072-1dd2-11b2-9593-b97d988be702';
     public const ELECTION_UUID12 = 'f9f2894b-64a2-446f-b2fd-134015f0c0d2';
+    public const ELECTION_UUID13 = '85f851dd-ea60-4c93-a505-fb51d41c7d70';
 
     /**
      * @var \Faker\Generator
@@ -222,6 +223,18 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $this->loadLocalPollCandidates($election);
         $votersList = $this->loadVoters($election);
         $this->loadResults($round, $votersList);
+
+        // -------------------------------------------
+
+        $election = new Election(
+            $this->getReference('designation-committee-01'),
+            Uuid::fromString(self::ELECTION_UUID13),
+            [new ElectionRound()]
+        );
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-v2-1')));
+        $this->manager->persist($election);
+        $this->loadCommitteeSupervisorElectionCandidates($election);
+        $this->manager->persist($this->loadCommitteeSupervisorElectionVoters($election));
 
         // -------------------------------------------
 
@@ -524,7 +537,8 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     {
         return [
             LoadCommitteeV1Data::class,
-            LoadCommitteeCandidacyData::class,
+            LoadCommitteeV1CandidacyData::class,
+            LoadCommitteeV2CandidacyData::class,
             LoadDesignationData::class,
             LoadTerritorialCouncilCandidacyData::class,
             LoadLocalElectionData::class,

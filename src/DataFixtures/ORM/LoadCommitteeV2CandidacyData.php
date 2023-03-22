@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidaciesGroup;
 use App\Entity\CommitteeCandidacy;
@@ -12,7 +13,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadCommitteeV2CandidaciesGroupData extends Fixture implements DependentFixtureInterface
+class LoadCommitteeV2CandidacyData extends Fixture implements DependentFixtureInterface
 {
     public const CANDIDACIES_GROUP_1_UUID = '5d88db4a-9f3e-470e-8cc6-145dc6c7517a';
     public const CANDIDACIES_GROUP_2_UUID = '7f048f8e-0096-4cd2-b348-f19579223d6f';
@@ -23,7 +24,23 @@ class LoadCommitteeV2CandidaciesGroupData extends Fixture implements DependentFi
 
     public function load(ObjectManager $manager)
     {
-        /** @var Committee $commttee */
+        /** @var Committee $committee */
+        $committee = $this->getReference('committee-v2-1');
+        /** @var CommitteeElection $election */
+        $election = $committee->getCurrentElection();
+        $candidacyGroup = null;
+
+        foreach (range(51, 60) as $index) {
+            if (null === $candidacyGroup || 0 === $index % 3) {
+                $election->addCandidaciesGroups($candidacyGroup = new CommitteeCandidaciesGroup());
+            }
+            /** @var Adherent $adherent */
+            $adherent = $this->getReference('adherent-'.$index);
+            $candidacyGroup->addCandidacy($candidate = new CommitteeCandidacy($election, $adherent->getGender()));
+            $candidate->setCommitteeMembership($adherent->getMembershipFor($committee));
+        }
+
+        /** @var Committee $committee */
         $committee = $this->getReference('committee-v2-2');
         /** @var CommitteeElection $election1 */
         $election1 = $committee->getCurrentElection();

@@ -7,7 +7,7 @@ Feature:
     Given the following fixtures are loaded:
       | LoadAdherentData                 |
       | LoadCommitteeV1Data              |
-      | LoadCommitteeCandidacyData       |
+      | LoadCommitteeV1CandidacyData     |
       | LoadCommitteeAdherentMandateData |
 
   Scenario: I can show a list of followed committees, then I can remove my candidacy and change the vote committee

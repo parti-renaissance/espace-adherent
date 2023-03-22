@@ -9,6 +9,7 @@ use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
 use App\Collection\CommitteeMembershipCollection;
+use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
@@ -1588,7 +1589,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function followCommittee(
         Committee $committee,
         \DateTimeInterface $subscriptionDate = null,
-        ?string $trigger = null
+        ?CommitteeMembershipTriggerEnum $trigger = null
     ): CommitteeMembership {
         return $this->joinCommittee(
             $committee,
@@ -1602,7 +1603,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         Committee $committee,
         string $privilege,
         \DateTimeInterface $subscriptionDate,
-        ?string $trigger = null
+        ?CommitteeMembershipTriggerEnum $trigger = null
     ): CommitteeMembership {
         $committee->incrementMembersCount();
 
