@@ -117,6 +117,8 @@ class ManagedUsersFilter
 
     /**
      * @var string[]
+     *
+     * @Groups({"filter_write"})
      */
     private array $committeeUuids;
 

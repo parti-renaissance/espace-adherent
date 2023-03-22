@@ -275,6 +275,19 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             $this->withRenaissanceMembership($qb, $renaissanceMembership);
         }
 
+        if ($committees = $filter->getCommitteeUuids()) {
+            if (!\in_array('adherent', $qb->getAllAliases(), true)) {
+                $qb->innerJoin('er.adherent', 'adherent');
+            }
+
+            $qb
+                ->innerJoin('adherent.memberships', 'membership')
+                ->innerJoin('membership.committee', 'committee')
+                ->andWhere('committee.uuid IN (:committees)')
+                ->setParameter('committees', $committees)
+            ;
+        }
+
         return $qb;
     }
 

@@ -131,6 +131,13 @@ class ListFilter
 
     public ?Adherent $createdByAdherent = null;
 
+    /**
+     * @var string[]
+     *
+     * @Groups({"filter_write"})
+     */
+    private array $committeeUuids = [];
+
     public function __construct(array $managedZones = [], ?Adherent $createdByAdherent = null)
     {
         $this->managedZones = $managedZones;
@@ -297,6 +304,16 @@ class ListFilter
         $this->renaissanceMembership = $renaissanceMembership;
     }
 
+    public function getCommitteeUuids(): array
+    {
+        return $this->committeeUuids;
+    }
+
+    public function setCommitteeUuids(array $committeeUuids): void
+    {
+        $this->committeeUuids = $committeeUuids;
+    }
+
     public function toArray(): array
     {
         return [
@@ -318,6 +335,7 @@ class ListFilter
             'contactType' => $this->contactType,
             'emailSubscription' => $this->emailSubscription,
             'contributionActive' => $this->contributionActive,
+            'committeeUuids' => $this->committeeUuids,
         ];
     }
 }
