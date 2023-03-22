@@ -2,6 +2,7 @@
 
 namespace App\JMEFilter\FilterBuilder;
 
+use App\Entity\Committee;
 use App\JMEFilter\FilterCollectionBuilder;
 use App\Repository\CommitteeRepository;
 use App\Scope\ScopeEnum;
@@ -26,7 +27,13 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
 
         return (new FilterCollectionBuilder())
             ->createSelect('committeeUuids', 'Comités')
-            ->setChoices($this->committeeRepository->findCommitteeForFilterBuilder($scope->getZones()))
+            ->setChoices(
+                array_reduce($this->committeeRepository->findInZones($scope->getZones()), function ($carry, Committee $item) {
+                    $carry[$item->getUuid()->toString()] = $item->getName();
+
+                    return $carry;
+                }, [])
+            )
             ->setMultiple(true)
             ->getFilters()
         ;

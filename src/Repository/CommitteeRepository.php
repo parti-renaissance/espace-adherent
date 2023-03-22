@@ -953,34 +953,4 @@ class CommitteeRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-
-    public function findCommitteeForFilterBuilder(array $zones): array
-    {
-        $qb = $this->createQueryBuilder('committee')
-            ->select('committee.uuid', 'committee.name')
-            ->where('committee.status = :status')
-            ->andWhere('committee.version = 2')
-            ->setParameter('status', Committee::APPROVED)
-            ->groupBy('committee.uuid')
-        ;
-
-        $this->withGeoZones(
-            $zones,
-            $qb,
-            'committee',
-            Committee::class,
-            'c2',
-            'zones',
-            'z2',
-            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(sprintf('%s.status = :status', $entityClassAlias));
-            }
-        );
-
-        return array_reduce($qb->getQuery()->getArrayResult(), function ($carry, $item) {
-            $carry[$item['uuid']->toString()] = $item['name'];
-
-            return $carry;
-        }, []);
-    }
 }
