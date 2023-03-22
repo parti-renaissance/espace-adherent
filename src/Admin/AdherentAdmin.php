@@ -527,6 +527,7 @@ class AdherentAdmin extends AbstractAdmin
                         'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
                     ])
                     ->add('boardMemberRoles', ModelType::class, [
+                        'label' => 'Rôles',
                         'expanded' => true,
                         'multiple' => true,
                         'btn_add' => false,
