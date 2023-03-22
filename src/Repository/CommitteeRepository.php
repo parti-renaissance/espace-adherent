@@ -616,7 +616,7 @@ class CommitteeRepository extends ServiceEntityRepository
                 'version' => $version,
             ])
             ->orderBy('c.name', 'ASC')
-            ->orderBy('c.createdAt', 'DESC')
+            ->addOrderBy('c.createdAt', 'DESC')
         ;
 
         return $this->withGeoZones(
