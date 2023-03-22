@@ -283,7 +283,7 @@ Feature:
         "type": "text"
       },
       {
-        "code": "committees",
+        "code": "committeeUuids",
         "label": "Comités",
         "options": {
           "choices": {

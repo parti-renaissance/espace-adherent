@@ -25,7 +25,7 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
         $scope = $this->scopeGeneratorResolver->generate();
 
         return (new FilterCollectionBuilder())
-            ->createSelect('committees', 'Comités')
+            ->createSelect('committeeUuids', 'Comités')
             ->setChoices($this->committeeRepository->findCommitteeForFilterBuilder($scope->getZones()))
             ->setMultiple(true)
             ->getFilters()

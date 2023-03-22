@@ -165,7 +165,7 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         $restrictionsExpression = $qb->expr()->orX();
 
-        if ($committees = $filter->getCommittees()) {
+        if ($committees = $filter->getCommitteeUuids()) {
             $committeesExpression = $qb->expr()->orX();
 
             foreach ($committees as $key => $uuid) {

@@ -564,7 +564,7 @@ Feature:
             "type": "date_interval"
         },
         {
-            "code": "committees",
+            "code": "committeeUuids",
             "label": "Comités",
             "options": {
                 "choices": [],
