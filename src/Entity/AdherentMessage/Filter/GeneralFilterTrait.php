@@ -132,15 +132,6 @@ trait GeneralFilterTrait
      */
     protected ?string $renaissanceMembership = null;
 
-    /**
-     * @var string[]|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"adherent_message_update_filter"})
-     */
-    private ?array $committeeUuids = null;
-
     public function getGender(): ?string
     {
         return $this->gender;
@@ -246,16 +237,6 @@ trait GeneralFilterTrait
         $this->renaissanceMembership = $renaissanceMembership;
     }
 
-    public function getCommitteeUuids(): ?array
-    {
-        return $this->committeeUuids;
-    }
-
-    public function setCommitteeUuids(?array $committeeUuids): void
-    {
-        $this->committeeUuids = $committeeUuids;
-    }
-
     public function reset(): void
     {
         $this->gender = null;
@@ -268,6 +249,5 @@ trait GeneralFilterTrait
         $this->registeredSince = null;
         $this->registeredUntil = null;
         $this->renaissanceMembership = null;
-        $this->committeeUuids = null;
     }
 }
