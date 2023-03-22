@@ -266,9 +266,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         $contributionActive = $filter->isContributionActive();
         if (null !== $contributionActive) {
-            $qb
-                ->andWhere(sprintf('er.lastContributionDate %s NULL', $contributionActive ? 'IS NOT' : 'IS'))
-            ;
+            $qb->andWhere(sprintf('er.lastContribution %s NULL', $contributionActive ? 'IS NOT' : 'IS'));
         }
 
         if ($renaissanceMembership = $filter->getRenaissanceMembership()) {
