@@ -56,7 +56,7 @@ Feature:
 
     Scenario: As a user granted with local scope, I can get geo zone available for a new committee
         Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        And I send a "GET" request to "/api/v3/zone/autocomplete?scope=referent&q=Hauts&availableForCommittee=true"
+        And I send a "GET" request to "/api/v3/zone/autocomplete?scope=referent&q=Hauts de Flandre&availableForCommittee=true"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:

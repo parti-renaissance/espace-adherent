@@ -264,7 +264,6 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
 
         $context['api_denormalize'] = true;
 
-        # GOTO:
         if ($this->resourceClassResolver->isResourceClass($class)) {
             $newResourceClass = $this->resourceClassResolver->getResourceClass($objectToPopulate, $class);
             if (!(new \ReflectionClass($newResourceClass))->isAbstract()) {
