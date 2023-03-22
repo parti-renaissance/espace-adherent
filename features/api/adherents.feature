@@ -564,6 +564,15 @@ Feature:
             "type": "date_interval"
         },
         {
+            "code": "committees",
+            "label": "Comités",
+            "options": {
+                "choices": [],
+                "multiple": true
+            },
+            "type": "select"
+        },
+        {
             "code": "isCommitteeMember",
             "label": "Membre d'un comité",
             "options": {

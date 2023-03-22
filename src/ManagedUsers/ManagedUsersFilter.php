@@ -117,8 +117,10 @@ class ManagedUsersFilter
 
     /**
      * @var string[]
+     *
+     * @Groups({"filter_write"})
      */
-    private array $committeeUuids;
+    private array $committees;
 
     /**
      * @var string[]
@@ -157,7 +159,7 @@ class ManagedUsersFilter
         $this->subscriptionType = $subscriptionType;
         $this->managedZones = $managedZones;
         $this->zones = $zones;
-        $this->committeeUuids = $committeeUuids;
+        $this->committees = $committeeUuids;
         $this->cities = $cities;
     }
 
@@ -457,14 +459,14 @@ class ManagedUsersFilter
         $this->committee = $committee;
     }
 
-    public function getCommitteeUuids(): array
+    public function getCommittees(): array
     {
-        return $this->committeeUuids;
+        return $this->committees;
     }
 
-    public function setCommitteeUuids(array $committeeUuids): void
+    public function setCommittees(array $committees): void
     {
-        $this->committeeUuids = $committeeUuids;
+        $this->committees = $committees;
     }
 
     public function getCities(): array

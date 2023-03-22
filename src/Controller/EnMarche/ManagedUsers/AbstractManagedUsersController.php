@@ -75,7 +75,7 @@ abstract class AbstractManagedUsersController extends AbstractController
             $this->managedZoneProvider->getManagedZones($adherent, $this->getSpaceType())
         );
 
-        $model->setCommitteeUuids($this->getRestrictedCommittees($session));
+        $model->setCommittees($this->getRestrictedCommittees($session));
         $model->setCities($this->getRestrictedCities($session));
         $model->setOnlyJeMengageUsers(false);
 

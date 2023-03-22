@@ -3,6 +3,7 @@
 namespace App\ElectedRepresentative\Filter;
 
 use App\Entity\Adherent;
+use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinition;
@@ -130,6 +131,13 @@ class ListFilter
     private ?string $renaissanceMembership = null;
 
     public ?Adherent $createdByAdherent = null;
+
+    /**
+     * @var Committee[]
+     *
+     * @Groups({"filter_write"})
+     */
+    private array $committees = [];
 
     public function __construct(array $managedZones = [], ?Adherent $createdByAdherent = null)
     {
@@ -297,6 +305,28 @@ class ListFilter
         $this->renaissanceMembership = $renaissanceMembership;
     }
 
+    /**
+     * @return Committee[]
+     */
+    public function getCommittees(): array
+    {
+        return $this->committees;
+    }
+
+    public function addCommittee(Committee $committee): void
+    {
+        $this->committees[] = $committee;
+    }
+
+    public function removeCommittee(Committee $committee): void
+    {
+        foreach ($this->committees as $key => $value) {
+            if ($value->getId() === $committee->getId()) {
+                unset($this->committees[$key]);
+            }
+        }
+    }
+
     public function toArray(): array
     {
         return [
@@ -318,6 +348,7 @@ class ListFilter
             'contactType' => $this->contactType,
             'emailSubscription' => $this->emailSubscription,
             'contributionActive' => $this->contributionActive,
+            'committees' => array_map(fn (Committee $committee) => $committee->getId(), $this->committees),
         ];
     }
 }
