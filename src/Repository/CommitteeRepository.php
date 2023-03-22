@@ -269,6 +269,27 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
+    public function updateMembershipsCounters(): void
+    {
+        $this->getEntityManager()->getConnection()->executeQuery(
+            'UPDATE committees AS c
+            INNER JOIN (
+                SELECT
+                    c2.id,
+                    SUM(IF(a.last_membership_donation IS NOT NULL, 1, 0)) AS members_count,
+                    SUM(IF(a.last_membership_donation IS NULL, 1, 0)) AS sympathizers_count
+                FROM committees c2
+                INNER JOIN committees_memberships cm ON cm.committee_id = c2.id
+                INNER JOIN adherents a ON a.id = cm.adherent_id
+                WHERE c2.version = 2
+                GROUP BY c2.id
+            ) AS t ON t.id = c.id
+            SET
+                c.members_count = t.members_count,
+                c.sympathizers_count = t.sympathizers_count'
+        );
+    }
+
     /**
      * @param Zone[] $zones
      */
