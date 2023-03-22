@@ -16,6 +16,7 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
 
     public const COMMITTEE_ELECTION_1_UUID = '278fcb58-53b4-4798-a3be-e5bb92f7f0f2';
     public const COMMITTEE_ELECTION_2_UUID = 'f86ee969-5eca-4666-bcd4-7f7388372e0b';
+    public const COMMITTEE_ELECTION_3_UUID = '9d31ac39-f9ac-4b3b-b1cc-351bc30704b6';
 
     public function load(ObjectManager $manager)
     {
@@ -29,6 +30,13 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92002'));
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92004'));
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92007'));
+        $object->setCurrentElection(new CommitteeElection($this->getReference('designation-committee-01'), Uuid::fromString(self::COMMITTEE_ELECTION_3_UUID)));
+
+        foreach (range(51, 60) as $index) {
+            $manager->persist($this->getReference('adherent-'.$index)->followCommittee($object, new \DateTime('-2 months'), CommitteeMembershipTriggerEnum::COMMITTEE_EDITION));
+        }
+
+        $this->setReference('committee-v2-1', $object);
 
         $manager->persist($object = Committee::createSimple(
             Uuid::fromString(self::COMMITTEE_2_UUID),

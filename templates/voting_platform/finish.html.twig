@@ -50,7 +50,7 @@
 {% block voting_platform_content %}
     <div class="l__wrapper--600 text--center">
         <p class="text--body text--dark">
-            {% if designation.isExecutiveOfficeType() or designation.isPollType() %}
+            {% if designation.isExecutiveOfficeType() or designation.isPollType() or designation.isCommitteeSupervisorType() %}
                 Votre bulletin a été anonymisé.<br/><br/>
                 Le numéro ci-dessous, connu de vous seul, est l'unique moyen de tracer votre
                 bulletin de votre choix au dépouillement. Retrouvez-le dans le détail des résultats.

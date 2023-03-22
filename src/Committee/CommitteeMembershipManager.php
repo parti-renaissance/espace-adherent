@@ -33,8 +33,11 @@ class CommitteeMembershipManager
         return null;
     }
 
-    public function followCommittee(Adherent $adherent, Committee $committee, string $trigger): void
-    {
+    public function followCommittee(
+        Adherent $adherent,
+        Committee $committee,
+        CommitteeMembershipTriggerEnum $trigger
+    ): void {
         $alreadyFollow = false;
 
         // 1. Comes out of the existing committees

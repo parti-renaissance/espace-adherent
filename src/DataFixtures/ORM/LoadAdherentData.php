@@ -963,7 +963,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $manager->persist($adherent);
         $this->addReference('adherent-31', $adherent);
 
-        foreach (range(32, 50) as $index) {
+        foreach (range(32, 60) as $index) {
             $gender = 0 === $index % 2 ? GenderEnum::FEMALE : GenderEnum::MALE;
 
             $adherent = $this->adherentFactory->createFromArray([
@@ -981,6 +981,10 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             ]);
             $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
             $adherent->certify();
+            if ($index > 50) {
+                $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+                $adherent->donatedForMembership();
+            }
             $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
             $manager->persist($adherent);
             $this->addReference('adherent-'.$index, $adherent);

@@ -838,7 +838,6 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     {
         return \in_array($this->type, [
             DesignationTypeEnum::COMMITTEE_ADHERENT,
-            DesignationTypeEnum::COMMITTEE_SUPERVISOR,
             DesignationTypeEnum::COPOL,
             DesignationTypeEnum::NATIONAL_COUNCIL,
         ]);
