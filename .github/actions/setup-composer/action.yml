@@ -8,6 +8,7 @@ runs:
     uses: shivammathur/setup-php@v2
     with:
       php-version: ${{ env.PHP_VERSION }}
+      coverage: none
 
   - name: Install composer dependencies
     shell: bash
