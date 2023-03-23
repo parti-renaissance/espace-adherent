@@ -3,6 +3,7 @@
 namespace App\Entity\AdherentMessage\Filter;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\Committee;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntity;
@@ -100,13 +101,11 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     private $audienceType;
 
     /**
-     * @var string[]|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
      *
      * @Groups({"adherent_message_update_filter"})
      */
-    private ?array $committeeUuids = null;
+    private ?Committee $committee = null;
 
     public function __construct()
     {
@@ -220,14 +219,14 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->audienceType = $audienceType;
     }
 
-    public function getCommitteeUuids(): ?array
+    public function getCommittee(): ?Committee
     {
-        return $this->committeeUuids;
+        return $this->committee;
     }
 
-    public function setCommitteeUuids(?array $committeeUuids): void
+    public function setCommittee(Committee $committee): void
     {
-        $this->committeeUuids = $committeeUuids;
+        $this->committee = $committee;
     }
 
     public function reset(): void
@@ -238,7 +237,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->includeAdherentsInCommittee = true;
         $this->isCertified = null;
         $this->audienceType = null;
-        $this->committeeUuids = null;
+        $this->committee = null;
 
         parent::reset();
     }

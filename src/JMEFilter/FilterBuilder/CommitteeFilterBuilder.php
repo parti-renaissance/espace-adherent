@@ -5,6 +5,7 @@ namespace App\JMEFilter\FilterBuilder;
 use App\Entity\Committee;
 use App\JMEFilter\FilterCollectionBuilder;
 use App\Repository\CommitteeRepository;
+use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 
@@ -26,7 +27,7 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
         $scope = $this->scopeGeneratorResolver->generate();
 
         return (new FilterCollectionBuilder())
-            ->createSelect('committeeUuids', 'Comités')
+            ->createSelect(FeatureEnum::MESSAGES === $feature ? 'committee' : 'committeeUuids', 'Comités')
             ->setChoices(
                 array_reduce($this->committeeRepository->findInZones($scope->getZones()), function ($carry, Committee $item) {
                     $carry[$item->getUuid()->toString()] = $item->getName();
@@ -34,7 +35,7 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
                     return $carry;
                 }, [])
             )
-            ->setMultiple(true)
+            ->setMultiple(FeatureEnum::MESSAGES !== $feature)
             ->getFilters()
         ;
     }

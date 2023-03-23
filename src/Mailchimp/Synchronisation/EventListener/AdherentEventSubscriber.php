@@ -5,7 +5,6 @@ namespace App\Mailchimp\Synchronisation\EventListener;
 use App\AdherentMessage\Command\CreateStaticSegmentCommand;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Committee\Event\CommitteeEventInterface;
-use App\Committee\Event\FollowCommitteeEvent;
 use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Events;
@@ -103,16 +102,6 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         $adherent = $event->getAdherent();
 
         $this->dispatchAdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress());
-
-        if (!$committee = $event->getCommittee()) {
-            return;
-        }
-
-        if ($event instanceof FollowCommitteeEvent) {
-            $this->dispatchAddAdherentToStaticSegmentCommand($adherent, $committee);
-        } else {
-            $this->dispatchRemoveAdherentFromStaticSegmentCommand($adherent, $committee);
-        }
     }
 
     public function onDelete(UserEvent $event): void
