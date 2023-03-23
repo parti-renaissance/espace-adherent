@@ -99,6 +99,15 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      */
     private $audienceType;
 
+    /**
+     * @var string[]|null
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"adherent_message_update_filter"})
+     */
+    private ?array $committeeUuids = null;
+
     public function __construct()
     {
         $this->zones = new ArrayCollection();
@@ -211,6 +220,16 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->audienceType = $audienceType;
     }
 
+    public function getCommitteeUuids(): ?array
+    {
+        return $this->committeeUuids;
+    }
+
+    public function setCommitteeUuids(?array $committeeUuids): void
+    {
+        $this->committeeUuids = $committeeUuids;
+    }
+
     public function reset(): void
     {
         $this->generalFilterTraitReset();
@@ -219,6 +238,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->includeAdherentsInCommittee = true;
         $this->isCertified = null;
         $this->audienceType = null;
+        $this->committeeUuids = null;
 
         parent::reset();
     }
