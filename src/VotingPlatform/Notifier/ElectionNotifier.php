@@ -238,21 +238,11 @@ class ElectionNotifier
             return $this->urlGenerator->generate('app_renaissance_local_election_home', [], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
-        if ($entityElection = $election->getElectionEntity()) {
-            if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
-                if ($election->isClosed()) {
-                    return $this->urlGenerator->generate('app_committee_show', ['slug' => $election->getElectionEntity()->getCommittee()->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
-                }
-
-                return $this->urlGenerator->generate('app_adherent_profile_activity', ['_fragment' => 'committees'], UrlGeneratorInterface::ABSOLUTE_URL);
-            }
-
-            if ($entityElection->getCommittee()) {
-                return $this->urlGenerator->generate('app_committee_show', ['slug' => $election->getElectionEntity()->getCommittee()->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
-            }
+        if ($designation->isCommitteeSupervisorType()) {
+            return $this->urlGenerator->generate('app_renaissance_committee_election_candidacies_lists_view', ['uuid' => $election->getElectionEntity()->getCommittee()->getUuid()]);
         }
 
-        return $this->urlGenerator->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->urlGenerator->generate($designation->isRenaissanceElection() ? 'app_renaissance_homepage' : 'homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     private function batchSendEmail(
