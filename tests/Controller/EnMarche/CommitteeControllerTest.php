@@ -6,8 +6,6 @@ use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
-use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
-use App\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
 use App\Mailer\Message\CommitteeNewFollowerMessage;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -109,7 +107,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         ]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertMessageIsDispatched(RemoveAdherentFromStaticSegmentCommand::class);
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
@@ -156,7 +153,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
         // Email sent to the host
         $this->assertCountMails(1, CommitteeNewFollowerMessage::class, 'francis.brioul@yahoo.com');
-        $this->assertMessageIsDispatched(AddAdherentToStaticSegmentCommand::class);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 

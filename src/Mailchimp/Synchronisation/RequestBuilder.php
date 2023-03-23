@@ -22,6 +22,7 @@ use Doctrine\Common\Collections\Collection;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use Ramsey\Uuid\UuidInterface;
 
 class RequestBuilder implements LoggerAwareInterface
 {
@@ -31,16 +32,14 @@ class RequestBuilder implements LoggerAwareInterface
     private $gender;
     private $firstName;
     private $lastName;
-    /** @var \DateTimeInterface */
-    private $birthDay;
+    private ?\DateTimeInterface $birthDay = null;
     private $city;
     private $zipCode;
     private $countryName;
     private $adhesionDate;
-    /** @var bool|null */
-    private $isCertified;
-    /** @var bool|null */
-    private $isAdherent;
+    private ?bool $isCertified = null;
+    private ?bool $isAdherent = null;
+    private ?string $committeeUuid = null;
 
     private $interests;
     private ?\DateTime $lastMembershipDonation = null;
@@ -104,6 +103,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setInactiveTags($this->getInactiveTags($adherent))
             ->setIsSubscribeRequest($adherent->isEnabled() && $adherent->isEmailSubscribed())
             ->setZones($adherent->getZones())
+            ->setCommitteeUuid($adherent->getCommitteeV2Membership()?->getCommitteeUuid())
         ;
 
         if (null === $adherent->getSource() || $adherent->isRenaissanceUser()) {
@@ -209,6 +209,13 @@ class RequestBuilder implements LoggerAwareInterface
     public function setIsCertified(bool $isCertified = null): self
     {
         $this->isCertified = $isCertified;
+
+        return $this;
+    }
+
+    public function setCommitteeUuid(?UuidInterface $committeeUuid): self
+    {
+        $this->committeeUuid = $committeeUuid ? $committeeUuid->toString() : '';
 
         return $this;
     }
@@ -459,6 +466,10 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_CERTIFIED] = $this->isCertified ? 'oui' : 'non';
         }
 
+        if (null !== $this->committeeUuid) {
+            $mergeFields[MemberRequest::MERGE_FIELD_COMMITTEE] = $this->committeeUuid;
+        }
+
         if (null !== $this->isAdherent) {
             $mergeFields[MemberRequest::MERGE_FIELD_ADHERENT] = $this->isAdherent ? 'oui' : 'non';
         }
@@ -614,10 +625,6 @@ class RequestBuilder implements LoggerAwareInterface
 
         if ($adherent->hasVotingCommitteeMembership()) {
             $tags[] = MailchimpSegmentTagEnum::COMMITTEE_VOTER;
-        }
-
-        foreach ($adherent->getMemberships()->getMembershipsForApprovedCommittees() as $committeeMembership) {
-            $tags[] = $committeeMembership->getCommitteeUuid();
         }
 
         if ($adherent->hasTerritorialCouncilMembership()) {
