@@ -12,19 +12,20 @@ class AbleToVoteVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'ABLE_TO_VOTE';
 
-    private $voterRepository;
-    private $voteRepository;
-
-    public function __construct(VoterRepository $voterRepository, VoteRepository $voteRepository)
-    {
-        $this->voterRepository = $voterRepository;
-        $this->voteRepository = $voteRepository;
+    public function __construct(
+        private readonly VoterRepository $voterRepository,
+        private readonly VoteRepository $voteRepository
+    ) {
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
         /** @var Election $subject */
         if (!$subject->isVotePeriodActive()) {
+            return false;
+        }
+
+        if ($adherent->isRenaissanceSympathizer()) {
             return false;
         }
 
