@@ -232,6 +232,8 @@ class ManagedUser
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime")
+     *
+     * @Groups({"managed_user_read"})
      */
     private $createdAt;
 
@@ -281,6 +283,8 @@ class ManagedUser
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"managed_user_read"})
      */
     private $lastMembershipDonation;
 
