@@ -36,6 +36,8 @@ class ManagedUserFactory
             $data['vote_committee_id'] ?? null,
             isset($data['certified_at']) ? new \DateTime($data['certified_at']) : null,
             isset($data['last_membership_donation']) ? new \DateTime($data['last_membership_donation']) : null,
+            $data['committee'] ?? null,
+            $data['committee_uuid'] ?? null,
             $data['interests'] ?? []
         );
     }

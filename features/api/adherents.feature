@@ -353,7 +353,9 @@ Feature:
                 "email_subscription": false,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null
             },
             {
                 "postal_code": "92110",
@@ -370,7 +372,9 @@ Feature:
                 "email_subscription": true,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null
+                "last_membership_donation": null,
+                "committee": "Second Comité des 3 communes",
+                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3"
             },
             {
                 "city": "Melun",
@@ -387,7 +391,9 @@ Feature:
                 "sms_subscription": false,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null
             },
             {
                 "postal_code": "8802",
@@ -406,7 +412,9 @@ Feature:
                 "sms_subscription": true,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null
             },
             {
                 "postal_code": "8057",
@@ -427,7 +435,9 @@ Feature:
                 "email_subscription": false,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null
             }
         ]
     }
@@ -460,7 +470,9 @@ Feature:
                 "email_subscription": false,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null
             }
         ]
     }
@@ -500,7 +512,9 @@ Feature:
                 "email_subscription": false,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null
             },
             {
                 "postal_code": "92110",
@@ -517,7 +531,9 @@ Feature:
                 "email_subscription": true,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null
+                "last_membership_donation": null,
+                "committee": "Second Comité des 3 communes",
+                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3"
             }
         ]
     }
@@ -698,7 +714,9 @@ Feature:
                 "email_subscription": true,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null
             },
             {
                 "postal_code": "75008",
@@ -719,7 +737,9 @@ Feature:
                 "email_subscription": true,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null
             }
         ]
     }
@@ -756,7 +776,9 @@ Feature:
                 "email_subscription": true,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null
             }
         ]
     }
