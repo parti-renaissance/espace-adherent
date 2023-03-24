@@ -41,17 +41,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/elected_representatives/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and (is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object) or is_granted('IS_AUTHOR_OF', object))"
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and (is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object) or is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getAdherent()) or is_granted('IS_AUTHOR_OF', object))"
  *         },
  *         "put": {
  *             "path": "/v3/elected_representatives/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and (is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object) or is_granted('IS_AUTHOR_OF', object))"
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and (is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object) or is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getAdherent()) or is_granted('IS_AUTHOR_OF', object))"
  *         },
  *         "delete": {
  *             "path": "/v3/elected_representatives/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and (is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object) or is_granted('IS_AUTHOR_OF', object))"
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and (is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object) or is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getAdherent()) or is_granted('IS_AUTHOR_OF', object))"
  *         }
  *     },
  *     collectionOperations={

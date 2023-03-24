@@ -4,6 +4,8 @@ namespace App\Normalizer;
 
 use App\Entity\ElectedRepresentative\Mandate;
 use App\Entity\ElectedRepresentative\PoliticalFunction;
+use App\Scope\ScopeGeneratorResolver;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -16,13 +18,23 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
 
     private const ALREADY_CALLED = 'JE_MENGAGE_WEB_ELECTED_MANDATE_UPDATE_DENORMALIZER_ALREADY_CALLED';
 
+    public function __construct(
+        private readonly Security $security,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver
+    ) {
+    }
+
     public function denormalize($data, string $class, string $format = null, array $context = [])
     {
         $context[self::ALREADY_CALLED] = true;
 
+        $scope = $this->scopeGeneratorResolver->generate();
+        $adherent = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser();
+
         $functionsData = $data['political_functions'] ?? null;
         unset($data['political_functions']);
 
+        /** @var Mandate $mandate */
         $mandate = $this->denormalizer->denormalize($data, $class, $format, $context);
 
         if (\is_array($functionsData)) {
@@ -40,6 +52,8 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
                 }
             }
         }
+
+        $mandate->getElectedRepresentative()->setUpdatedByAdherent($adherent);
 
         return $mandate;
     }
