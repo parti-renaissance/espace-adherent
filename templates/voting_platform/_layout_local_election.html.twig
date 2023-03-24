@@ -56,22 +56,22 @@
                         <tbody class="divide-y divide-gray-200 bg-white">
                             <tr>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Participation</td>
-                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (participated / voters * 100)|number_format(2, ',') }}%</td>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (voters == 0 ? 0 : participated / voters * 100)|number_format(2, ',') }}%</td>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ participated }} votant{{ participated > 1 ? 's' }}</td>
                             </tr>
 
                             {% if designation.isBlankVoteEnabled() %}
                                 <tr>
                                     <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Blancs</td>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (blank / voters * 100)|number_format(2, ',') }}%</td>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (blank / participated * 100)|number_format(2, ',') }}%</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (voters == 0 ? 0 : blank / voters * 100)|number_format(2, ',') }}%</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (participated == 0 ? 0 : blank / participated * 100)|number_format(2, ',') }}%</td>
                                 </tr>
                             {% endif %}
 
                             <tr>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Exprimés</td>
-                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ ((expressed / voters) * 100)|number_format(2, ',') }}%</td>
-                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ ((expressed / participated) * 100)|number_format(2, ',') }}%</td>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (voters == 0 ? 0 : expressed / voters * 100)|number_format(2, ',') }}%</td>
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (participated == 0 ? 0 : expressed / participated * 100)|number_format(2, ',') }}%</td>
                             </tr>
                         </tbody>
                     </table>
