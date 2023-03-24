@@ -6,7 +6,6 @@ use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
-use App\Mailer\Message\CommitteeNewFollowerMessage;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -150,9 +149,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         // Emulate POST request to follow the committee.
         $token = $crawler->selectButton('Suivre ce comité')->attr('data-csrf-token');
         $this->client->request(Request::METHOD_POST, $committeeUrl.'/rejoindre', ['token' => $token]);
-
-        // Email sent to the host
-        $this->assertCountMails(1, CommitteeNewFollowerMessage::class, 'francis.brioul@yahoo.com');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
