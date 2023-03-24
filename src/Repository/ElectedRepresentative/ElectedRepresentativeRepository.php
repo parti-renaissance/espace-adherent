@@ -140,9 +140,9 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         $authorCondition = new Orx();
 
-        if ($filter->createdByAdherent) {
-            $authorCondition->add('er.createdByAdherent = :created_by_adherent');
-            $qb->setParameter('created_by_adherent', $filter->createdByAdherent);
+        if ($filter->createdOrUpdatedByAdherent) {
+            $authorCondition->add('er.createdByAdherent = :created_or_updated_by_adherent OR er.updatedByAdherent = :created_or_updated_by_adherent');
+            $qb->setParameter('created_or_updated_by_adherent', $filter->createdOrUpdatedByAdherent);
         }
 
         if ($zones = $filter->getZones() ?: $filter->getManagedZones()) {

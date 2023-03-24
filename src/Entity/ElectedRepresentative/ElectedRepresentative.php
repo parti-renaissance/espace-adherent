@@ -34,8 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "denormalization_context": {
  *             "groups": {"elected_representative_write"}
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
+ *         }
  *     },
  *     itemOperations={
  *         "get": {
@@ -54,11 +53,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and (is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object) or is_granted('IS_AUTHOR_OF', object))"
  *         }
  *     },
- *     collectionOperations={
- *         "post": {
- *             "path": "/v3/elected_representatives",
- *         }
- *     }
+ *     collectionOperations={}
  * )
  *
  * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ElectedRepresentativeRepository")
