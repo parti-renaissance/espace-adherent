@@ -351,7 +351,9 @@ Feature:
                 "sms_subscription": false,
                 "email": "francis.brioul@yahoo.com",
                 "email_subscription": false,
-                "renaissance_membership": null
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null
             },
             {
                 "postal_code": "92110",
@@ -366,7 +368,9 @@ Feature:
                 "sms_subscription": true,
                 "email": "gisele-berthoux@caramail.com",
                 "email_subscription": true,
-                "renaissance_membership": null
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null
             },
             {
                 "city": "Melun",
@@ -381,7 +385,9 @@ Feature:
                 "postal_code": "77000",
                 "phone_number": "not_available",
                 "sms_subscription": false,
-                "renaissance_membership": null
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null
             },
             {
                 "postal_code": "8802",
@@ -398,7 +404,9 @@ Feature:
                 "email": "michel.vasseur@example.ch",
                 "email_subscription": true,
                 "sms_subscription": true,
-                "renaissance_membership": null
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null
             },
             {
                 "postal_code": "8057",
@@ -417,7 +425,9 @@ Feature:
                 "sms_subscription": true,
                 "email": "michelle.dufour@example.ch",
                 "email_subscription": false,
-                "renaissance_membership": null
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null
             }
         ]
     }
@@ -448,7 +458,9 @@ Feature:
                 "sms_subscription": false,
                 "email": "francis.brioul@yahoo.com",
                 "email_subscription": false,
-                "renaissance_membership": null
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null
             }
         ]
     }
@@ -486,7 +498,9 @@ Feature:
                 "sms_subscription": false,
                 "email": "je-mengage-user-1@en-marche-dev.fr",
                 "email_subscription": false,
-                "renaissance_membership": null
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null
             },
             {
                 "postal_code": "92110",
@@ -501,7 +515,9 @@ Feature:
                 "sms_subscription": true,
                 "email": "gisele-berthoux@caramail.com",
                 "email_subscription": true,
-                "renaissance_membership": null
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null
             }
         ]
     }
@@ -680,7 +696,9 @@ Feature:
                 "sms_subscription": true,
                 "email": "deputy@en-marche-dev.fr",
                 "email_subscription": true,
-                "renaissance_membership": null
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null
             },
             {
                 "postal_code": "75008",
@@ -699,7 +717,9 @@ Feature:
                 "sms_subscription": true,
                 "email": "jacques.picard@en-marche.fr",
                 "email_subscription": true,
-                "renaissance_membership": null
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null
             }
         ]
     }
@@ -734,7 +754,9 @@ Feature:
                 "sms_subscription": true,
                 "email": "jacques.picard@en-marche.fr",
                 "email_subscription": true,
-                "renaissance_membership": null
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null
             }
         ]
     }
