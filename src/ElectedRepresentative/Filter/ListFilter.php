@@ -129,7 +129,7 @@ class ListFilter
      */
     private ?string $renaissanceMembership = null;
 
-    public ?Adherent $createdByAdherent = null;
+    public ?Adherent $createdOrUpdatedByAdherent = null;
 
     /**
      * @var string[]
@@ -141,7 +141,7 @@ class ListFilter
     public function __construct(array $managedZones = [], ?Adherent $createdByAdherent = null)
     {
         $this->managedZones = $managedZones;
-        $this->createdByAdherent = $createdByAdherent;
+        $this->createdOrUpdatedByAdherent = $createdByAdherent;
     }
 
     public function getGender(): ?string

@@ -140,9 +140,9 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         $authorCondition = new Orx();
 
-        if ($filter->createdByAdherent) {
-            $authorCondition->add('er.createdByAdherent = :created_by_adherent');
-            $qb->setParameter('created_by_adherent', $filter->createdByAdherent);
+        if ($filter->createdOrUpdatedByAdherent) {
+            $authorCondition->add('er.createdByAdherent = :created_or_updated_by_adherent OR er.updatedByAdherent = :created_or_updated_by_adherent');
+            $qb->setParameter('created_or_updated_by_adherent', $filter->createdOrUpdatedByAdherent);
         }
 
         if ($zones = $filter->getZones() ?: $filter->getManagedZones()) {
@@ -321,8 +321,26 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             'mandate_zone_2'
         );
 
+        if (!\in_array('adherent', $qb->getAllAliases(), true)) {
+            $qb->leftJoin($alias.'.adherent', 'adherent');
+        }
+
+        $adherentZoneConditionQueryBuilder = $this->createGeoZonesQueryBuilder(
+            $zones,
+            $qb,
+            Adherent::class,
+            'a2',
+            'zones',
+            'z2',
+            null,
+            true,
+            'zone_parent_2'
+        );
+
         $qb->andWhere(
-            ($condition ?? new Orx())->add(sprintf('mandate.id IN (%s)', $zoneConditionQueryBuilder->getDQL()))
+            ($condition ?? new Orx())
+                ->add(sprintf('mandate.id IN (%s)', $zoneConditionQueryBuilder->getDQL()))
+                ->add(sprintf('adherent.id IN (%s)', $adherentZoneConditionQueryBuilder->getDQL()))
         );
 
         return $qb;
