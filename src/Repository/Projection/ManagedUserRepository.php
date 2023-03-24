@@ -170,6 +170,7 @@ class ManagedUserRepository extends ServiceEntityRepository
 
             foreach ($committees as $key => $uuid) {
                 $committeesExpression->add("FIND_IN_SET(:committee_uuid_$key, u.committeeUuids) > 0");
+                $committeesExpression->add("u.committeeUuid = :committee_uuid_$key");
                 $qb->setParameter("committee_uuid_$key", $uuid);
             }
 

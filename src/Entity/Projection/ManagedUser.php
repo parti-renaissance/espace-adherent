@@ -288,6 +288,24 @@ class ManagedUser
      */
     private $lastMembershipDonation;
 
+    /**
+     * name of committee v2
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"managed_user_read"})
+     */
+    private ?string $committee;
+
+    /**
+     * uuid of committee v2
+     *
+     * @ORM\Column(type="uuid", nullable=true)
+     *
+     * @Groups({"managed_user_read"})
+     */
+    private ?UuidInterface $committeeUuid;
+
     public function __construct(
         int $status,
         ?string $source,
@@ -318,6 +336,8 @@ class ManagedUser
         int $voteCommitteeId = null,
         \DateTime $certifiedAt = null,
         \DateTime $lastMembershipDonation = null,
+        string $committee = null,
+        UuidInterface $committeeUuid = null,
         array $interests = []
     ) {
         $this->status = $status;
@@ -350,6 +370,8 @@ class ManagedUser
         $this->voteCommitteeId = $voteCommitteeId;
         $this->zones = new ArrayCollection($zones);
         $this->interests = $interests;
+        $this->committee = $committee;
+        $this->committeeUuid = $committeeUuid;
     }
 
     public function getId(): int
@@ -625,5 +647,15 @@ class ManagedUser
     public function getPhoneNumber(): ?string
     {
         return $this->getPhone() ? PhoneNumberUtils::format($this->getPhone()) : self::NOT_AVAILABLE;
+    }
+
+    public function getCommittee(): ?string
+    {
+        return $this->committee;
+    }
+
+    public function getCommitteeUuid(): ?UuidInterface
+    {
+        return $this->committeeUuid;
     }
 }

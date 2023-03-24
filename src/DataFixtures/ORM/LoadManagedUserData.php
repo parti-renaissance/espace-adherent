@@ -96,8 +96,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'first_name' => $this->getReference('adherent-5')->getFirstName(),
             'last_name' => $this->getReference('adherent-5')->getLastName(),
             'birthday' => $this->getReference('adherent-5')->getBirthdate(),
-            'committees' => implode('|', [$committee1->getName(), $committee11->getName()]),
-            'committee_uuids' => [$committee1->getUuid()->toString(), $committee11->getUuid()->toString()],
+            'committees' => $committee1->getName(),
+            'committee_uuids' => [$committee1->getUuid()->toString()],
             'phone' => PhoneNumberUtils::create('+33666666666'),
             'is_committee_member' => 1,
             'is_committee_host' => 1,
@@ -112,6 +112,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'female',
             'certified_at' => '2018-06-02 10:20:45',
+            'committee' => $committee11->getName(),
+            'committee_uuid' => $committee11->getUuid(),
         ]);
 
         $managedUser4 = $managedUserFactory->createFromArray([
