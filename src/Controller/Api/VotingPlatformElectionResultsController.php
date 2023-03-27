@@ -13,13 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Security("is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')")]
 class VotingPlatformElectionResultsController extends AbstractController
 {
-    public function __construct(private readonly ElectionRepository $electionRepository)
+    public function __invoke(Designation $designation, ElectionRepository $electionRepository): Response
     {
-    }
-
-    public function __invoke(Designation $designation): Response
-    {
-        if (!$election = $this->electionRepository->findByDesignation($designation)) {
+        if (!$election = $electionRepository->findOneByDesignation($designation)) {
             throw $this->createNotFoundException();
         }
 

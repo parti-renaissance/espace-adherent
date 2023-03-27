@@ -113,7 +113,7 @@ class ElectionRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByDesignation(Designation $designation): ?Election
+    public function findOneByDesignation(Designation $designation): ?Election
     {
         $qb = $this->createQueryBuilder('e')
             ->addSelect('d')

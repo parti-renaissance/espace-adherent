@@ -69,7 +69,7 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
 
     public function findElectionForDesignation(Designation $designation): ?Election
     {
-        return $this->electionRepository->findByDesignation($designation);
+        return $this->electionRepository->findOneByDesignation($designation);
     }
 
     public function findMyVoteForElection(Adherent $adherent, ElectionRound $electionRound): ?Vote
