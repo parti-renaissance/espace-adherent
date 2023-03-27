@@ -25,7 +25,7 @@
                 <div class="hidden md:flex flex-nowrap space-x-2">
                     {% if app.user %}
                         {% if app.user.isRenaissanceUser %}
-                        <a class="button button-white" href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}">
+                        <a class="button button-white" href="{{ path('app_renaissance_adherent_profile') }}">
                             Mon profil
                         </a>
                         {% endif %}
@@ -82,7 +82,7 @@
                         <div class="mt-6">
                             <nav class="grid gap-y-8">
                                 {% if app.user %}
-                                    <a class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50" href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}">
+                                    <a class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50" href="{{ path('app_renaissance_adherent_profile') }}">
                                         <span class="text-base font-medium text-gray-900">Mon profil</span>
                                     </a>
                                     <a class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50" href="{{ path('logout', { app_domain: renaissance_host }) }}">

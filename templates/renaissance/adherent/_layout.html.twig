@@ -16,7 +16,7 @@
                         </button>
                         <!-- Logo section -->
                         <div class="flex items-center px-4 lg:px-0">
-                            <a href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}" class="shrink-0">
+                            <a href="{{ path('app_renaissance_adherent_profile') }}" class="shrink-0">
                                 <!-- Logo Renaissance Texte -->
                                 {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-6 w-auto text-white hidden md:block' } %}
                                 <!-- Logo Renaissance Icon -->
@@ -72,7 +72,7 @@
                                     <p class="truncate text-sm font-medium text-gray-900" role="none">{{ app.user.emailAddress }}</p>
                                 </div>
                                 <div class="py-1" role="none">
-                                    <a href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Mon compte</a>
+                                    <a href="{{ path('app_renaissance_adherent_profile') }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Mon compte</a>
                                     <a href="{{ path('app_certification_request_home', { app_domain: renaissance_host }) }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Certification</a>
                                 </div>
                                 <div class="py-1" role="none">

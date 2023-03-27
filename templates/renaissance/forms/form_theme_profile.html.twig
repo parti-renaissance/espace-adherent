@@ -94,3 +94,55 @@
         {{- form_label(form) -}}
     </div>
 {% endblock %}
+
+{% block autocomplete_address_row %}
+
+    <div class="address-autocomplete {% if not form.vars.valid %}has-error{% endif %}" data-form="{{ form.vars.name }}">
+        {{ block('form_errors') }}
+
+        <div class="address-autocomplete-wrapper hidden">
+            <div class="mt-6">
+                {{ form_row(form.autocomplete, { label: 'Adresse postale', attr: { placeholder: 'Saisissez et sélectionnez une adresse' } }) }}
+            </div>
+
+            <div class="mt-2 text-gray-500">
+                <p>
+                    Commencez à saisir votre adresse puis sélectionnez une proposition dans la liste d'adresses affichée.
+                </p>
+            </div>
+
+            <div class="mt-2 rounded-md bg-blue-50 p-4 max-w-2xl">
+                <div class="text-sm text-blue-700">
+                    <p>Votre adresse n'apparait pas dans la liste?</p>
+                    <p>
+                        <a href="#" class="text-blue-800 hover:underline font-medium enable-address-fields">Cliquez ici</a> pour saisir manuellement votre adresse.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="address-fields-wrapper">
+            <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-6">
+                <div class="md:col-span-3">
+                    {{ form_row(form.address, { label: 'Adresse' }) }}
+                </div>
+                <div class="md:col-span-3">
+                    {{ form_row(form.postalCode, { label: 'Code postal' }) }}
+                </div>
+                <div class="md:col-span-2">
+                    {{ form_row(form.cityName, { label: 'Ville' }) }}
+                </div>
+                <div class="md:col-span-4">
+                    {{ form_row(form.country, { label: 'Pays', attr: { placeholder: 'Sélectionner un pays' } }) }}
+                </div>
+            </div>
+            <div class="mt-2 rounded-md bg-blue-50 p-4 max-w-2xl">
+                <div class="text-sm text-blue-700">
+                    <p>
+                        <a href="#" class="text-blue-800 hover:underline font-medium enable-address-autocomplete">Cliquez ici</a> pour retourner à la sélection d'adresse.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

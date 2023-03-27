@@ -86,24 +86,8 @@
                             <div>
                                 <h3 class="text-lg font-medium leading-6 text-gray-900 uppercase tracking-wider">Vos coordonnées</h3>
                             </div>
-                            <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-6">
-                                <div class="md:col-span-3">
-                                    {{ form_row(form.address.address) }}
-                                </div>
-                                <div class="md:col-span-3">
-                                    {{ form_row(form.address.postalCode) }}
-                                </div>
-                                <div class="md:col-span-2">
-                                    {{ form_row(form.address.cityName) }}
-                                    {{ form_row(form.address.city) }}
-                                </div>
-                                <div class="md:col-span-4">
-                                    {{ form_row(form.address.country) }}
-                                </div>
-                                <div class="md:col-span-6">
-                                    {{ form_errors(form.address) }}
-                                </div>
-                            </div>
+
+                            {{ form_row(form.address) }}
                         </div>
                         <div class="pt-8">
                             <div>
