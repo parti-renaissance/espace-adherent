@@ -2,7 +2,6 @@
 
 namespace App\ManagedUsers;
 
-use App\Entity\Projection\ManagedUser;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\ValueObject\Genders;
 
@@ -68,10 +67,6 @@ class ColumnsConfigurator
             [
                 'key' => 'phone_number',
                 'label' => 'Téléphone',
-                'type' => self::COLUMN_TYPE_TRANS,
-                'messages' => [
-                    ManagedUser::NOT_AVAILABLE => 'Non disponible',
-                ],
                 'dependency' => [
                     'fields' => [
                         ['code' => 'sms_subscription', 'valid_values' => [true]],
