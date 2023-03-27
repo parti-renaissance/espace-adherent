@@ -8,6 +8,7 @@ use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -21,6 +22,8 @@ class Candidate
      * @var string
      *
      * @ORM\Column
+     *
+     * @Groups({"election_result"})
      */
     private $firstName;
 
@@ -28,6 +31,8 @@ class Candidate
      * @var string
      *
      * @ORM\Column
+     *
+     * @Groups({"election_result"})
      */
     private $lastName;
 
@@ -35,6 +40,8 @@ class Candidate
      * @var string
      *
      * @ORM\Column
+     *
+     * @Groups({"election_result"})
      */
     private $gender;
 

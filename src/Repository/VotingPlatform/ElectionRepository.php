@@ -14,6 +14,7 @@ use App\Entity\VotingPlatform\Voter;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -114,15 +115,25 @@ class ElectionRepository extends ServiceEntityRepository
 
     public function findByDesignation(Designation $designation): ?Election
     {
-        return $this->createQueryBuilder('e')
+        $qb = $this->createQueryBuilder('e')
             ->addSelect('d')
             ->innerJoin('e.designation', 'd')
             ->where('d = :designation')
             ->setParameters(['designation' => $designation])
             ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
         ;
+
+        if ($electionEntityIdentifier = $designation->getElectionEntityIdentifier()) {
+            if ($designation->isCommitteeSupervisorType()) {
+                $qb
+                    ->innerJoin('e.electionEntity', 'election_entity')
+                    ->innerJoin('election_entity.committee', 'committee', Join::WITH, 'committee.uuid = :committee_uuid')
+                    ->setParameter('committee_uuid', $electionEntityIdentifier)
+                ;
+            }
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**
