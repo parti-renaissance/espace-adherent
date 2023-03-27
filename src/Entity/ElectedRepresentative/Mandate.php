@@ -5,7 +5,6 @@ namespace App\Entity\ElectedRepresentative;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Geo\Zone as GeoZone;
-use App\Exception\BadMandateTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
