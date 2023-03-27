@@ -241,10 +241,6 @@ class Mandate
 
     public function setType(?string $type): void
     {
-        if ($type && !MandateTypeEnum::isValid($type)) {
-            throw new BadMandateTypeException(sprintf('The mandate type "%s" is invalid', $type));
-        }
-
         $this->type = $type;
     }
 
