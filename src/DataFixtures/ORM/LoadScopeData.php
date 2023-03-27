@@ -28,7 +28,7 @@ class LoadScopeData extends Fixture
 
     private const LABELS = [
         ScopeEnum::REFERENT => 'Référent',
-        ScopeEnum::DEPUTY => 'Député',
+        ScopeEnum::DEPUTY => 'Délégué de circonscription',
         ScopeEnum::SENATOR => 'Sénateur',
         ScopeEnum::NATIONAL => 'National',
         ScopeEnum::NATIONAL_COMMUNICATION => 'National communication',

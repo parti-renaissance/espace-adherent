@@ -61,7 +61,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
     public function provideTerminateMembershipForbidden(): \Generator
     {
         yield 'Sénateur' => ['senateur@en-marche-dev.fr'];
-        yield 'Député' => ['deputy@en-marche-dev.fr'];
+        yield 'Délégué de circonscription' => ['deputy@en-marche-dev.fr'];
         yield 'Membre du conseil' => ['carl999@example.fr'];
         yield 'Animateur' => ['jacques.picard@en-marche.fr'];
         yield 'Référent' => ['referent@en-marche-dev.fr'];
