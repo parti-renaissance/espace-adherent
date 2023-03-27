@@ -306,7 +306,7 @@ Feature:
       },
       {
         "code": "contributionActive",
-        "label": "Cotisation à jour",
+        "label": "Cotisation active",
         "options": {
             "choices": [
                 "Non",
@@ -386,6 +386,17 @@ Feature:
             "sympathizer_re": "Sympathisant RE seulement",
             "others_adherent": "Ni adhérent RE ni sympathisant RE"
           }
+        },
+        "type": "select"
+      },
+      {
+        "code": "revenueDeclared",
+        "label": "Revenus déclarés",
+        "options": {
+            "choices": [
+                "Non",
+                "Oui"
+            ]
         },
         "type": "select"
       },
