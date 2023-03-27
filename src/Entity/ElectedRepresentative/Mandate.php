@@ -239,7 +239,7 @@ class Mandate
         return (string) array_search($this->type, MandateTypeEnum::CHOICES);
     }
 
-    public function setType(string $type): void
+    public function setType(?string $type): void
     {
         if (!MandateTypeEnum::isValid($type)) {
             throw new BadMandateTypeException(sprintf('The mandate type "%s" is invalid', $type));
@@ -269,7 +269,7 @@ class Mandate
     /**
      * @deprecated Will be replace by setGeoZone()
      */
-    public function setZone(Zone $zone): void
+    public function setZone(?Zone $zone): void
     {
         $this->zone = $zone;
     }
@@ -279,7 +279,7 @@ class Mandate
         return $this->geoZone;
     }
 
-    public function setGeoZone(GeoZone $geoZone): void
+    public function setGeoZone(?GeoZone $geoZone): void
     {
         $this->geoZone = $geoZone;
     }
@@ -319,7 +319,7 @@ class Mandate
         return $this->politicalAffiliation;
     }
 
-    public function setPoliticalAffiliation(string $politicalAffiliation): void
+    public function setPoliticalAffiliation(?string $politicalAffiliation): void
     {
         $this->politicalAffiliation = $politicalAffiliation;
     }
@@ -349,7 +349,7 @@ class Mandate
         return $this->number;
     }
 
-    public function setNumber(int $number): void
+    public function setNumber(?int $number): void
     {
         $this->number = $number;
     }
