@@ -575,7 +575,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 },
             ])
             ->add('contributionEligible', CallbackFilter::class, [
-                'label' => 'Éligible à la cotisation',
+                'label' => 'Éligible à la cotisation ?',
                 'show_filter' => true,
                 'field_type' => BooleanType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
