@@ -37,6 +37,8 @@ class ContributionRequestHandler
 
         $electedRepresentative->addContribution($contribution);
         $electedRepresentative->setLastContribution($contribution);
+        $electedRepresentative->setContributionStatus(ContributionStatusEnum::ELIGIBLE);
+        $electedRepresentative->setContributedAt(new \DateTime());
 
         $this->entityManager->flush();
     }

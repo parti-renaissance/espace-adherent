@@ -86,6 +86,11 @@ class ListFilter
     /**
      * @Groups({"filter_write"})
      */
+    private ?bool $revenueDeclared = null;
+
+    /**
+     * @Groups({"filter_write"})
+     */
     private ?bool $contributionActive = null;
 
     /**
@@ -232,6 +237,16 @@ class ListFilter
     public function setEmailSubscription(?bool $emailSubscription = null): void
     {
         $this->emailSubscription = $emailSubscription;
+    }
+
+    public function isRevenueDeclared(): ?bool
+    {
+        return $this->revenueDeclared;
+    }
+
+    public function setRevenueDeclared(?bool $revenueDeclared): void
+    {
+        $this->revenueDeclared = $revenueDeclared;
     }
 
     public function isContributionActive(): ?bool

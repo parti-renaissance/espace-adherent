@@ -264,6 +264,11 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             ;
         }
 
+        $revenueDeclared = $filter->isRevenueDeclared();
+        if (null !== $revenueDeclared) {
+            $qb->andWhere(sprintf('er.contributionStatus %s NULL', $revenueDeclared ? 'IS NOT' : 'IS'));
+        }
+
         $contributionActive = $filter->isContributionActive();
         if (null !== $contributionActive) {
             $qb->andWhere(sprintf('er.lastContribution %s NULL', $contributionActive ? 'IS NOT' : 'IS'));

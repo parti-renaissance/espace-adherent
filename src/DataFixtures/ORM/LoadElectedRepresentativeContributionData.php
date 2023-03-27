@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\ElectedRepresentative\Contribution\ContributionStatusEnum;
 use App\ElectedRepresentative\Contribution\ContributionTypeEnum;
 use App\Entity\ElectedRepresentative\Contribution;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
@@ -20,7 +21,7 @@ class LoadElectedRepresentativeContributionData extends Fixture implements Depen
         $erDepartment92 = $this->getReference('elected-representative-dpt-92');
 
         $contribution = new Contribution(Uuid::fromString(self::CONTRIBUTION_01_UUID));
-        $contribution->startDate = new \DateTime('2023-03-15');
+        $contribution->startDate = $contributionDate = new \DateTime('2023-03-15');
         $contribution->electedRepresentative = $erDepartment92;
         $contribution->gocardlessCustomerId = 'CU_DPT92';
         $contribution->gocardlessBankAccountId = 'BA_DPT92';
@@ -32,6 +33,8 @@ class LoadElectedRepresentativeContributionData extends Fixture implements Depen
         $contribution->type = ContributionTypeEnum::MANDATE;
 
         $erDepartment92->setLastContribution($contribution);
+        $erDepartment92->setContributionStatus(ContributionStatusEnum::ELIGIBLE);
+        $erDepartment92->setContributedAt($contributionDate);
 
         $manager->persist($contribution);
 
