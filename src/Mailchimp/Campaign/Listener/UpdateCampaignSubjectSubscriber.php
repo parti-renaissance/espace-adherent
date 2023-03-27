@@ -23,7 +23,7 @@ class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
 
         switch ($message->getType()) {
             case AdherentMessageTypeEnum::DEPUTY:
-                $prefix = '[Député]';
+                $prefix = '[Délégué de circonscription]';
                 break;
             case AdherentMessageTypeEnum::SENATOR:
                 $prefix = '[Sénateur]';

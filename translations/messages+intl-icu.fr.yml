@@ -110,8 +110,8 @@ referent: référent
 coreferent: co-référent
 delegated_referent: référent délégué
 cause_author: porteur de cause ✊
-deputy: député
-delegated_deputy: député délégué
+deputy: délégué de circonscription
+delegated_deputy: délégué de circonscription délégué
 senator: sénateur
 delegated_senator: sénateur délégué
 committee_supervisor: animateur
@@ -1398,7 +1398,7 @@ mailchimp_contact.status.cleaned: Cleaned
 
 adherent.zone_based_role_type.correspondent: Correspondant
 adherent.zone_based_role_type.legislative_candidate: Candidat aux législatives
-adherent.zone_based_role_type.deputy: Député
+adherent.zone_based_role_type.deputy: Délégué de circonscription
 adherent.zone_based_role_type.regional_coordinator: Coordinateur régional
 adherent.zone_based_role_type.president_departmental_assembly: Président assemblée départementale
 

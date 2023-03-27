@@ -13,7 +13,7 @@ Feature:
     [
       {
         "code": "deputy",
-        "name": "Député",
+        "name": "Délégué de circonscription",
         "zones": [
           {
             "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
@@ -109,7 +109,7 @@ Feature:
     """
     {
       "code": "deputy",
-      "name": "Député",
+      "name": "Délégué de circonscription",
       "zones": [
         {
           "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
@@ -197,7 +197,7 @@ Feature:
     [
       {
         "code": "delegated_96076afb-2243-4251-97fe-8201d50c3256",
-        "name": "Député délégué",
+        "name": "Délégué de circonscription délégué",
         "zones": [
           {
             "uuid": "e3efac36-906e-11eb-a875-0242ac150002",
@@ -225,7 +225,7 @@ Feature:
       },
       {
         "code": "delegated_d2315289-a3fd-419c-a3dd-3e1ff71b754d",
-        "name": "Député délégué",
+        "name": "Délégué de circonscription délégué",
         "zones": [
           {
             "uuid": "e3f0bfff-906e-11eb-a875-0242ac150002",

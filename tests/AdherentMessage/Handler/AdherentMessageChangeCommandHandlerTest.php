@@ -271,7 +271,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'settings' => [
                         'folder_id' => '2',
                         'template_id' => 2,
-                        'subject_line' => '[Député] Subject',
+                        'subject_line' => '[Délégué de circonscription] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - code1',
                         'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
                         'from_name' => 'Full Name | Renaissance',
