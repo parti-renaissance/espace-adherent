@@ -256,10 +256,6 @@ Feature:
         {
             "key": "phone_number",
             "label": "Téléphone",
-            "type": "trans",
-            "messages": {
-                "not_available": "Non disponible"
-            },
             "dependency": {
                 "fields": [
                     {
@@ -347,7 +343,7 @@ Feature:
                 "gender": "male",
                 "interests": [],
                 "city_code": "77288",
-                "phone_number": "not_available",
+                "phone_number": null,
                 "sms_subscription": false,
                 "email": "francis.brioul@yahoo.com",
                 "email_subscription": false,
@@ -387,7 +383,7 @@ Feature:
                 "interests": [],
                 "last_name": "Fullstack",
                 "postal_code": "77000",
-                "phone_number": "not_available",
+                "phone_number": null,
                 "sms_subscription": false,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
@@ -464,7 +460,7 @@ Feature:
                 "gender": "male",
                 "interests": [],
                 "city_code": "77288",
-                "phone_number": "not_available",
+                "phone_number": null,
                 "sms_subscription": false,
                 "email": "francis.brioul@yahoo.com",
                 "email_subscription": false,
@@ -506,7 +502,7 @@ Feature:
                 "gender": "male",
                 "interests": [],
                 "city_code": null,
-                "phone_number": "not_available",
+                "phone_number": null,
                 "sms_subscription": false,
                 "email": "je-mengage-user-1@en-marche-dev.fr",
                 "email_subscription": false,
@@ -708,7 +704,7 @@ Feature:
                     "numerique"
                 ],
                 "city_code": "75056",
-                "phone_number": "not_available",
+                "phone_number": null,
                 "sms_subscription": true,
                 "email": "deputy@en-marche-dev.fr",
                 "email_subscription": true,

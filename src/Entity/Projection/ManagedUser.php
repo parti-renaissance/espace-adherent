@@ -42,8 +42,6 @@ class ManagedUser
     private const STYLE_TYPE_ADHERENT = 'adherent';
     private const STYLE_TYPE_HOST = 'host';
 
-    public const NOT_AVAILABLE = 'not_available';
-
     /**
      * @var int
      *
@@ -646,7 +644,7 @@ class ManagedUser
      */
     public function getPhoneNumber(): ?string
     {
-        return $this->getPhone() ? PhoneNumberUtils::format($this->getPhone()) : self::NOT_AVAILABLE;
+        return $this->getPhone() ? PhoneNumberUtils::format($this->getPhone()) : null;
     }
 
     public function getCommittee(): ?string
