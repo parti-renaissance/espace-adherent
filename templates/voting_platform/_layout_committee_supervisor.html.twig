@@ -14,7 +14,7 @@
 {% block vote_finish_action_block %}
     <div class="b__nudge--bottom-large b__nudge--top-large">
         <a href="{{ path('app_renaissance_committee_election_candidacies_lists_view', {uuid: committee.getUuid()}) }}" class="btn btn--blue">
-            Retour au comité
+            Retour
         </a>
     </div>
 {% endblock %}
@@ -29,7 +29,7 @@
     {% set pool_result = election_round_result.getElectionPoolResults|first %}
     {% set voters = pool_result.participated ?? 0 %}
     {% set expressed = pool_result.expressed ?? 0 %}
-    {% set participated = pool_result.bulletinCount() ?? 0 %}
+    {% set participated = pool_result.getBulletinCount() ?? 0 %}
     {% set blank = pool_result.blank ?? 0 %}
 
     <div class="flex flex-col">

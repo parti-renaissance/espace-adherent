@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -33,6 +34,8 @@ class ElectionResult
      * @var ElectionRoundResult[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionResult\ElectionRoundResult", mappedBy="electionResult", cascade={"all"})
+     *
+     * @Groups({"election_result"})
      */
     private $electionRoundResults;
 
@@ -40,6 +43,8 @@ class ElectionResult
      * @var int
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     *
+     * @Groups({"election_result"})
      */
     private $participated = 0;
 

@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -49,6 +50,8 @@ class ElectionPoolResult
      * @var CandidateGroupResult[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionResult\CandidateGroupResult", mappedBy="electionPoolResult", cascade={"all"})
+     *
+     * @Groups({"election_result"})
      */
     private $candidateGroupResults;
 
@@ -56,6 +59,8 @@ class ElectionPoolResult
      * @var int
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     *
+     * @Groups({"election_result"})
      */
     private $expressed = 0;
 
@@ -63,6 +68,8 @@ class ElectionPoolResult
      * @var int
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     *
+     * @Groups({"election_result"})
      */
     private $blank = 0;
 
@@ -137,17 +144,26 @@ class ElectionPoolResult
         return $this->blank;
     }
 
+    /**
+     * @Groups({"election_result"})
+     */
     public function getParticipated(): int
     {
         return $this->electionRoundResult->getElectionResult()->getParticipated();
     }
 
+    /**
+     * @Groups({"election_result"})
+     */
     public function getAbstentions(): int
     {
-        return $this->getParticipated() - $this->bulletinCount();
+        return $this->getParticipated() - $this->getBulletinCount();
     }
 
-    public function bulletinCount(): int
+    /**
+     * @Groups({"election_result"})
+     */
+    public function getBulletinCount(): int
     {
         return $this->expressed + $this->blank;
     }

@@ -221,7 +221,7 @@ class ConfigureCommand extends Command
             return;
         }
 
-        if ($this->electionRepository->findByDesignation($designation)) {
+        if ($this->electionRepository->findOneByDesignation($designation)) {
             return;
         }
 
@@ -276,7 +276,7 @@ class ConfigureCommand extends Command
 
     private function configurePoll(Designation $designation): void
     {
-        if ($this->electionRepository->findByDesignation($designation)) {
+        if ($this->electionRepository->findOneByDesignation($designation)) {
             return;
         }
 
@@ -314,7 +314,7 @@ class ConfigureCommand extends Command
             return;
         }
 
-        $election = $this->electionRepository->findByDesignation($designation);
+        $election = $this->electionRepository->findOneByDesignation($designation);
 
         if ($election) {
             if ($election->isVotePeriodStarted() && !$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)) {
@@ -381,7 +381,7 @@ class ConfigureCommand extends Command
 
     private function configureLocalPoll(Designation $designation): void
     {
-        if ($election = $this->electionRepository->findByDesignation($designation)) {
+        if ($election = $this->electionRepository->findOneByDesignation($designation)) {
             if (
                 !$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)
                 && $election->isVotePeriodStarted()
