@@ -18858,31 +18858,31 @@
         },
         {
             "name": "coduo/php-matcher",
-            "version": "6.0.12",
+            "version": "6.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/coduo/php-matcher.git",
-                "reference": "d2d7b1d49bf1696487b6220518bbc886c2f591ac"
+                "reference": "0bb105e4e5bcf9c8953e34b66923cf0627764a02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/coduo/php-matcher/zipball/d2d7b1d49bf1696487b6220518bbc886c2f591ac",
-                "reference": "d2d7b1d49bf1696487b6220518bbc886c2f591ac",
+                "url": "https://api.github.com/repos/coduo/php-matcher/zipball/0bb105e4e5bcf9c8953e34b66923cf0627764a02",
+                "reference": "0bb105e4e5bcf9c8953e34b66923cf0627764a02",
                 "shasum": ""
             },
             "require": {
-                "aeon-php/calendar": "^1.0",
+                "aeon-php/calendar": "^0.14.0 || ^0.15.0 || ^0.16.0 || ^0.17.0 || ^0.18.0 || ^1.0",
                 "coduo/php-to-string": "^3",
                 "doctrine/lexer": "^1.0||^2.0",
                 "ext-filter": "*",
                 "ext-json": "*",
                 "ext-simplexml": "*",
-                "php": "~8.1 || ~8.2"
+                "php": "^7.4.2 || ~8.0 || ~8.1 || ~8.2"
             },
             "require-dev": {
                 "ext-pcov": "*",
                 "openlss/lib-array2xml": "^1.0",
-                "symfony/expression-language": "^2.3|^3.0|^4.0|^5.0|^6.0"
+                "symfony/expression-language": "^2.3|^3.0|^4.0|^5.0"
             },
             "suggest": {
                 "openlss/lib-array2xml": "In order ot use Coduo\\PHPMatcher\\Matcher\\XmlMatcher",
@@ -18917,9 +18917,9 @@
             ],
             "support": {
                 "issues": "https://github.com/coduo/php-matcher/issues",
-                "source": "https://github.com/coduo/php-matcher/tree/6.0.12"
+                "source": "https://github.com/coduo/php-matcher/tree/6.0.11"
             },
-            "time": "2023-03-03T09:39:00+00:00"
+            "time": "2023-02-14T11:38:39+00:00"
         },
         {
             "name": "coduo/php-to-string",
