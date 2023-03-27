@@ -197,6 +197,20 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     private $emailUnsubscribed = false;
 
     /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"elected_representative_read", "elected_representative_list"})
+     */
+    private ?string $contributionStatus = null;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"elected_representative_read", "elected_representative_list"})
+     */
+    private ?\DateTime $contributedAt = null;
+
+    /**
      * @ORM\OneToOne(targetEntity="App\Entity\ElectedRepresentative\Contribution")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
@@ -747,6 +761,26 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     public function getAuthor(): ?Adherent
     {
         return $this->createdByAdherent;
+    }
+
+    public function getContributionStatus(): ?string
+    {
+        return $this->contributionStatus;
+    }
+
+    public function setContributionStatus(?string $contributionStatus): void
+    {
+        $this->contributionStatus = $contributionStatus;
+    }
+
+    public function getContributedAt(): ?\DateTime
+    {
+        return $this->contributedAt;
+    }
+
+    public function setContributedAt(?\DateTime $contributedAt): void
+    {
+        $this->contributedAt = $contributedAt;
     }
 
     public function getLastContribution(): ?Contribution
