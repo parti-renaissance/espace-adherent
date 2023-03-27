@@ -637,9 +637,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         if ($committee->isVersion2()) {
             $qb->andWhere('adherent.source = :source AND adherent.lastMembershipDonation IS NOT NULL');
             $qb->setParameter('source', MembershipSourceEnum::RENAISSANCE);
-        }
-
-        if (!$committee->isVersion2()) {
+        } else {
             $qb
                 ->andWhere('adherent.registeredAt <= :registered_at_min'.($onlyCertified ? ' AND adherent.certifiedAt IS NOT NULL' : ''))
                 ->setParameter('registered_at_min', $refDate->modify('-3 months'))
