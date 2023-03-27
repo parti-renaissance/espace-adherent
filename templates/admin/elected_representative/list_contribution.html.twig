@@ -1,0 +1,15 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.contributedAt %}
+        <span class="label label-primary">Revenus déclarés</span>
+    {% endif %}
+    {% if object.contributionStatus %}
+        <br>
+        {% if object.contributionStatus == constant('App\\ElectedRepresentative\\Contribution\\ContributionStatusEnum::ELIGIBLE') %}
+            <span class="label label-success">Éligible</span>
+        {% elseif object.contributionStatus == constant('App\\ElectedRepresentative\\Contribution\\ContributionStatusEnum::NOT_ELIGIBLE') %}
+            <span class="label label-danger">Non éligible</span>
+        {% endif %}
+    {% endif %}
+{% endblock %}
