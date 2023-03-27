@@ -4,6 +4,7 @@ namespace App\Admin\ElectedRepresentative;
 
 use App\Address\Address;
 use App\Admin\Filter\ZoneAutocompleteFilter;
+use App\ElectedRepresentative\Contribution\ContributionStatusEnum;
 use App\ElectedRepresentative\ElectedRepresentativeEvent;
 use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
@@ -125,6 +126,11 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'label' => 'Qualifications',
                 'virtual_field' => true,
                 'template' => 'admin/elected_representative/list_type.html.twig',
+            ])
+            ->add('contribution', null, [
+                'label' => 'Cotisation',
+                'virtual_field' => true,
+                'template' => 'admin/elected_representative/list_contribution.html.twig',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
@@ -540,6 +546,55 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
 
                     $qb->andWhere('label.name IN (:label_names)');
                     $qb->setParameter('label_names', $value->getValue());
+
+                    return true;
+                },
+            ])
+            ->add('revenueDeclared', CallbackFilter::class, [
+                'label' => 'Revenus déclarés ?',
+                'show_filter' => true,
+                'field_type' => BooleanType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $alias = $qb->getRootAlias();
+                    switch ($value->getValue()) {
+                        case BooleanType::TYPE_YES:
+                            $qb->andWhere("$alias.contributedAt IS NOT NULL");
+
+                            break;
+                        case BooleanType::TYPE_NO:
+                            $qb->andWhere("$alias.contributedAt IS NULL");
+
+                            break;
+                    }
+
+                    return true;
+                },
+            ])
+            ->add('contributionEligible', CallbackFilter::class, [
+                'label' => 'Éligible à la cotisation ?',
+                'show_filter' => true,
+                'field_type' => BooleanType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $alias = $qb->getRootAlias();
+                    $qb->andWhere("$alias.contributionStatus = :contribution_status");
+                    switch ($value->getValue()) {
+                        case BooleanType::TYPE_YES:
+                            $qb->setParameter('contribution_status', ContributionStatusEnum::ELIGIBLE);
+
+                            break;
+                        case BooleanType::TYPE_NO:
+                            $qb->setParameter('contribution_status', ContributionStatusEnum::NOT_ELIGIBLE);
+
+                            break;
+                    }
 
                     return true;
                 },
