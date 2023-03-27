@@ -37,16 +37,9 @@ class UserController extends AbstractController
 {
     private const UNREGISTER_TOKEN = 'unregister_token';
 
-    #[Route(name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function profileAction(
-        Request $request,
-        AdherentProfileHandler $handler,
-        AuthAppUrlManager $appUrlManager,
-        string $app_domain
-    ): Response {
-        $appCode = $appUrlManager->getAppCodeFromRequest($request);
-        $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
-
+    #[Route(name: 'app_user_edit', requirements: ['app_domain' => '%app_host%'], defaults: ['app_domain' => '%app_host%'], methods: ['GET', 'POST'])]
+    public function profileAction(Request $request, AdherentProfileHandler $handler): Response
+    {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 

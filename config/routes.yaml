@@ -348,9 +348,13 @@ app_article:
         app_domain: "%app_host%|%renaissance_host%"
 
 app_profile:
-    host: "%app_host%"
+    host: "{app_domain}"
     type: "annotation"
     resource: "../src/Controller/EnMarche/UserController.php"
+    defaults:
+        app_domain: "%app_host%"
+    requirements:
+        app_domain: "%app_host%|%renaissance_host%"
 
 app_certification:
     host: "{app_domain}"
