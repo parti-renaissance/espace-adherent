@@ -1365,17 +1365,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $qb = $this->createQueryBuilder('a')
             ->where('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName), \' \', LOWER(a.emailAddress)) LIKE :name')
             ->andWhere('a.status = :status')
-            ->andWhere((new Orx())
-                ->add('a.source IS NULL AND a.adherent = :true')
-                ->add('a.source = :source_jme')
-                ->add('a.source = :source_renaissance')
-            )
             ->setParameters([
-                'source_jme' => MembershipSourceEnum::JEMENGAGE,
-                'source_renaissance' => MembershipSourceEnum::RENAISSANCE,
                 'name' => '%'.strtolower(trim($filter->q)).'%',
                 'status' => Adherent::ENABLED,
-                'true' => true,
             ])
         ;
 
@@ -1397,7 +1389,20 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 ->leftJoin('membership.committee', 'committee')
                 ->andWhere('committee = :committee')
                 ->andWhere('committee.version = 2')
+                ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL')
                 ->setParameter('committee', $filter->committee)
+                ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+            ;
+        } else {
+            $qb
+                ->andWhere((new Orx())
+                    ->add('a.source IS NULL AND a.adherent = :true')
+                    ->add('a.source = :source_jme')
+                    ->add('a.source = :source_renaissance')
+                )
+                ->setParameter('true', true)
+                ->setParameter('source_jme', MembershipSourceEnum::JEMENGAGE)
+                ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
             ;
         }
 
