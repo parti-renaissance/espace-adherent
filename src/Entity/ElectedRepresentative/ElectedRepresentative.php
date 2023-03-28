@@ -760,7 +760,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     public function getAuthor(): ?Adherent
     {
-        return $this->createdByAdherent;
+        return $this->createdByAdherent ?? $this->updatedByAdherent;
     }
 
     public function getContributionStatus(): ?string
