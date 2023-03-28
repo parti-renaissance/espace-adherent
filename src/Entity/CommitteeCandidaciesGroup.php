@@ -87,6 +87,7 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
      * @var CandidacyInterface[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\CommitteeCandidacy", mappedBy="candidaciesGroup", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"createdAt": "ASC"})
      *
      * @Groups({"committee_candidacies_group:read", "committee_election:read"})
      */
