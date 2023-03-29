@@ -28,6 +28,7 @@ use App\Repository\CommitteeElectionRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
+use App\VotingPlatform\Election\Enum\ElectionCancelRaisonEnum;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -112,7 +113,7 @@ class ConfigureCommand extends Command
     {
         $offset = 0;
 
-        $now = new \DateTime();
+        $timeToCheck = new \DateTime('+10 minutes');
 
         while ($committeeElections = $this->committeeElectionRepository->findAllByDesignation($designation, $offset)) {
             foreach ($committeeElections as $committeeElection) {
@@ -124,10 +125,18 @@ class ConfigureCommand extends Command
                     $this->configureNewElectionForCommitteeSupervisor($election);
                 }
 
-                if (
-                    $designation->getVoteStartDate() < $now->modify('+10 minutes')
-                    && !$election->countCandidateGroups()
-                ) {
+                if ($election->isCanceled()) {
+                    continue;
+                }
+
+                if ($designation->getVoteStartDate() < $timeToCheck && !$election->countCandidateGroups()) {
+                    if (0 === \count($committeeElection->getCandidacies())) {
+                        $election->cancel(ElectionCancelRaisonEnum::CandidatesMissing);
+                        $this->entityManager->flush();
+
+                        continue;
+                    }
+
                     $this->configureCandidatesGroupsForCommitteeSupervisorElection($committeeElection, $election);
                 }
 

@@ -675,7 +675,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function findMembershipfromAdherentUuidAndCommittee(
+    public function findMembershipFromAdherentUuidAndCommittee(
         UuidInterface $adherentUuid,
         Committee $committee
     ): ?CommitteeMembership {

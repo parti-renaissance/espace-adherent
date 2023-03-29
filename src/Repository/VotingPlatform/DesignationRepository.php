@@ -27,6 +27,7 @@ class DesignationRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('d')
             ->where('d.voteStartDate IS NOT NULL AND d.voteEndDate IS NOT NULL')
+            ->andWhere('d.isCanceled = false')
             ->andWhere(
                 '(
                     d.voteStartDate <= :date
@@ -72,6 +73,7 @@ class DesignationRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('d')
             ->where('d.candidacyStartDate <= :date')
+            ->andWhere('d.isCanceled = false')
             ->andWhere('(d.candidacyEndDate IS NULL OR d.candidacyEndDate > :date)')
             ->andWhere('(d.limited = :false OR d.electionEntityIdentifier IS NOT NULL)')
             ->setParameters([
@@ -90,6 +92,7 @@ class DesignationRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('d')
             ->where('d.candidacyStartDate <= :date')
+            ->andWhere('d.isCanceled = false')
             ->andWhere('d.candidacyEndDate < :date AND d.voteStartDate > :date')
             ->andWhere('d.type IN (:types)')
             ->setParameter('date', $candidacyStartDate)
@@ -108,6 +111,7 @@ class DesignationRepository extends ServiceEntityRepository
             ->innerJoin(Election::class, 'election', Join::WITH, 'election.designation = designation')
             ->innerJoin('election.electionResult', 'election_result')
             ->where('designation.resultDisplayDelay > 0 AND election.status = :close_status')
+            ->andWhere('designation.isCanceled = false')
             ->andWhere('BIT_AND(designation.notifications, :notification) > 0 AND BIT_AND(election.notificationsSent, :notification) = 0')
             ->andWhere('DATE_ADD(designation.voteEndDate, designation.resultScheduleDelay, \'HOUR\') < :now')
             ->andWhere('DATE_ADD(DATE_ADD(designation.voteEndDate, designation.resultScheduleDelay, \'HOUR\'), designation.resultDisplayDelay, \'DAY\') > :now')
@@ -137,6 +141,7 @@ class DesignationRepository extends ServiceEntityRepository
                     AND DATE_ADD(designation.voteEndDate, designation.resultDisplayDelay, \'DAY\') > :now
                 )'
             )
+            ->andWhere('designation.isCanceled = false')
             ->setParameters(['now' => new \DateTime()])
             ->setMaxResults($limit)
             ->orderBy('score', 'DESC')

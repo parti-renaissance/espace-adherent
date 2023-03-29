@@ -1065,6 +1065,7 @@ designation.status.opened: Ouverte
 designation.status.in_progress: En cours
 designation.status.closed: Terminée
 designation.status.scheduled: Programmée
+designation.status.canceled: Annulée
 designation.candidate.status.draft: Brouillon
 designation.candidate.status.confirmed: Confirmée
 

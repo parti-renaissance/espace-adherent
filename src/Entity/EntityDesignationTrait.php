@@ -156,6 +156,10 @@ trait EntityDesignationTrait
             return DesignationStatusEnum::NOT_STARTED;
         }
 
+        if ($this->designation->isCanceled()) {
+            return DesignationStatusEnum::CANCELED;
+        }
+
         if ($this->designation->isCandidacyPeriodEnabled() && !$this->isCandidacyPeriodStarted()) {
             return DesignationStatusEnum::NOT_STARTED;
         }

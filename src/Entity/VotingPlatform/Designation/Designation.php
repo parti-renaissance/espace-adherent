@@ -319,6 +319,9 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      */
     private ?UuidInterface $electionEntityIdentifier = null;
 
+    /** @ORM\Column(type="boolean", options={"default": false}) */
+    private bool $isCanceled = false;
+
     public function __construct(string $label = null, UuidInterface $uuid = null)
     {
         $this->label = $label;
@@ -861,5 +864,15 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public function setElectionEntityIdentifier(?UuidInterface $electionEntityIdentifier): void
     {
         $this->electionEntityIdentifier = $electionEntityIdentifier;
+    }
+
+    public function isCanceled(): bool
+    {
+        return $this->isCanceled;
+    }
+
+    public function cancel(): void
+    {
+        $this->isCanceled = true;
     }
 }

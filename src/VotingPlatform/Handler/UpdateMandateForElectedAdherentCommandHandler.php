@@ -7,7 +7,6 @@ use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\NationalCouncilAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
-use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\Election;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\VotingPlatform\AdherentMandate\AdherentMandateFactory;
