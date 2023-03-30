@@ -35,7 +35,7 @@ class PaymentController extends AbstractAdhesionController
             $donationRequest = DonationRequest::createFromAdherent($adherent, $request->getClientIp(), $amount);
             $donationRequest->forMembership();
 
-            $donation = $donationRequestHandler->handle($donationRequest, $adherent);
+            $donation = $donationRequestHandler->handle($donationRequest, $adherent, $adherent->isRenaissanceAdherent());
 
             return $this->redirectToRoute('app_renaissance_adhesion_payment', [
                 'uuid' => $donation->getUuid(),
@@ -78,8 +78,7 @@ class PaymentController extends AbstractAdhesionController
     public function resultAction(Request $request, Donation $donation, string $status): Response
     {
         if (DonationController::RESULT_STATUS_EFFECTUE === $status) {
-            $membershipDonations = $donation->getDonator()->getMembershipDonations();
-            if ($membershipDonations->count() > 1) {
+            if ($donation->isReAdhesion()) {
                 return $this->redirectToRoute('app_renaissance_adhesion_finish', ['from_re_adhesion' => true]);
             }
 

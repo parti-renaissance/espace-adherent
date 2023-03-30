@@ -38,8 +38,11 @@ class DonationRequestHandler
         $this->adherentRepository = $adherentRepository;
     }
 
-    public function handle(DonationRequest $donationRequest, Adherent $adherent = null): Donation
-    {
+    public function handle(
+        DonationRequest $donationRequest,
+        Adherent $adherent = null,
+        bool $forReAdhesion = false
+    ): Donation {
         if (!$donator = $this->donatorRepository->findOneForMatching(
             $donationRequest->getEmailAddress(),
             $donationRequest->getFirstName(),
@@ -52,7 +55,7 @@ class DonationRequestHandler
             $donator->setAdherent($adherent);
         }
 
-        $donation = $this->donationFactory->createFromDonationRequest($donationRequest, $donator);
+        $donation = $this->donationFactory->createFromDonationRequest($donationRequest, $donator, $forReAdhesion);
 
         $donator->addDonation($donation);
 

@@ -210,6 +210,11 @@ class Donation implements GeoPointInterface
      */
     private bool $membership = false;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $reAdhesion = false;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $type = null,
@@ -643,5 +648,15 @@ class Donation implements GeoPointInterface
     public function setMembership(bool $membership): void
     {
         $this->membership = $membership;
+    }
+
+    public function isReAdhesion(): bool
+    {
+        return $this->reAdhesion;
+    }
+
+    public function setReAdhesion(bool $reAdhesion): void
+    {
+        $this->reAdhesion = $reAdhesion;
     }
 }

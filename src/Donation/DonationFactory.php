@@ -18,8 +18,11 @@ class DonationFactory
     ) {
     }
 
-    public function createFromDonationRequest(DonationRequest $request, Donator $donator): Donation
-    {
+    public function createFromDonationRequest(
+        DonationRequest $request,
+        Donator $donator,
+        bool $forReAdhesion = false
+    ): Donation {
         $donation = new Donation(
             $uuid = Uuid::uuid4(),
             $request->getType(),
@@ -41,6 +44,10 @@ class DonationFactory
 
         if ($request->isLocalDestination()) {
             $donation->setZone($this->findZone($donation));
+        }
+
+        if ($forReAdhesion) {
+            $donation->setReAdhesion(true);
         }
 
         return $donation;

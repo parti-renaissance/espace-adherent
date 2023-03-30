@@ -436,16 +436,4 @@ class Donator
 
         return $total;
     }
-
-    public function getMembershipDonations(): ArrayCollection
-    {
-        $membershipDonations = $this->donations->filter(fn (Donation $donation) => $donation->isMembership());
-
-        $iterator = $membershipDonations->getIterator();
-        $iterator->uasort(function (Donation $donationA, Donation $donationB) {
-            return $donationA->getDonatedAt() <=> $donationB->getDonatedAt();
-        });
-
-        return new ArrayCollection($iterator->getArrayCopy());
-    }
 }
