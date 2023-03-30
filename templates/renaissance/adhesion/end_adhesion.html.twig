@@ -12,12 +12,23 @@
 
 {% block adhesion_content %}
     <section>
-        <div>
-            <h1 class="text-2xl leading-10 font-medium text-gray-900">Adhésion réussie !</h1>
-            <p class="mt-2 text-lg text-gray-500 leading-8">
-                Vous êtes désormais adhérent, bienvenu(e) !
-            </p>
-        </div>
+        {% if app.request.query.has('from_re_adhesion') %}
+            <div>
+                <h1 class="text-2xl leading-10 font-medium text-gray-900">Re-adhésion réussie !</h1>
+                <p class="mt-2 text-lg text-gray-500 leading-8">
+                    Votre adhésion a été prolongée pour l'année {{ 'now'|date('Y') }}.<br/>
+                    Nous sommes ravis de vous avoir parmi nous.
+                </p>
+            </div>
+        {% else %}
+            <div>
+                <h1 class="text-2xl leading-10 font-medium text-gray-900">Adhésion réussie !</h1>
+                <p class="mt-2 text-lg text-gray-500 leading-8">
+                    Vous êtes désormais adhérent, bienvenu(e) !
+                </p>
+            </div>
+        {% endif %}
+
         <div class="mt-10">
             <a href="{{ path('app_renaissance_homepage') }}" class="button button-red">
                 Retourner sur la page d'accueil

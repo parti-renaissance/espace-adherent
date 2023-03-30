@@ -70,6 +70,11 @@ class MembershipNotifier
         ;
     }
 
+    public function sendReAdhesionConfirmationMessage(Adherent $adherent): void
+    {
+        $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceReAdhesionConfirmationMessage::createFromAdherent($adherent));
+    }
+
     public function sendUnregistrationMessage(Adherent $adherent): void
     {
         MembershipSourceEnum::RENAISSANCE === $adherent->getSource()

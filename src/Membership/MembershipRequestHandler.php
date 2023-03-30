@@ -132,6 +132,11 @@ class MembershipRequestHandler
         $this->notifier->sendConfirmationJoinMessage($adherent);
     }
 
+    public function finishRenaissanceReAdhesion(Adherent $adherent): void
+    {
+        $this->notifier->sendReAdhesionConfirmationMessage($adherent);
+    }
+
     public function join(Adherent $user, PlatformMembershipRequest $membershipRequest): void
     {
         $user->updateMembership(

@@ -82,6 +82,10 @@
                         </div>
 
                         <a href="{{ path('app_renaissance_donation') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Donner</a>
+
+                        {% if app.user.hasActiveMembership() and not app.user.isCurrentYearMembershipDonation() %}
+                            <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Adhésion {{ 'now'|date('Y') }}</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
