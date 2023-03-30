@@ -59,6 +59,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "denormalization_context": {
  *                 "groups": {"committee:write"},
  *             },
+ *             "normalization_context": {
+ *                 "groups": {"committee:list", "committee:read"},
+ *             },
  *         },
  *     },
  *     collectionOperations={
@@ -240,6 +243,13 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
      * @AssertZoneType(types=Zone::COMMITTEE_TYPES, groups={"api_committee_edition"})
      */
     protected $zones;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     *
+     * @Groups({"committee:read", "committee:write"})
+     */
+    public ?Adherent $supervisor = null;
 
     public function __construct(
         UuidInterface $uuid = null,

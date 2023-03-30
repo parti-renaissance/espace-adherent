@@ -36,6 +36,7 @@ trait EntityPersonNameTrait
      *     "elected_representative_read",
      *     "committee_candidacy:read",
      *     "committee_election:read",
+     *     "committee:read",
      * })
      */
     private $firstName = '';
@@ -68,6 +69,7 @@ trait EntityPersonNameTrait
      *     "elected_representative_read",
      *     "committee_candidacy:read",
      *     "committee_election:read",
+     *     "committee:read",
      * })
      */
     private $lastName = '';
