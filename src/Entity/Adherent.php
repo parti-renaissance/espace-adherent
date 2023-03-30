@@ -364,6 +364,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $memberships;
 
     /**
+     * @var Committee[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Committee", mappedBy="supervisor", fetch="EXTRA_LAZY")
+     */
+    private $supervisedCommittees;
+
+    /**
      * @var CommitteeFeedItem[]|Collection|iterable
      *
      * @ORM\OneToMany(targetEntity="CommitteeFeedItem", mappedBy="author", cascade={"remove"})
@@ -816,6 +823,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
+        $this->supervisedCommittees = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->zones = new ArrayCollection();
@@ -2083,9 +2091,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $membership->isHostMember();
     }
 
-    public function isSupervisor(bool $isProvisional = null): bool
+    public function isSupervisor(): bool
     {
-        return $this->getSupervisorMandates($isProvisional)->count() > 0;
+        return !$this->supervisedCommittees->isEmpty();
+    }
+
+    /**
+     * @return Committee[]
+     */
+    public function getSupervisedCommittees(): array
+    {
+        return $this->supervisedCommittees->toArray();
     }
 
     public function isSupervisorOf(Committee $committee, bool $isProvisional = null): bool

@@ -494,6 +494,51 @@ Feature:
     }
     """
 
+    Scenario:
+        When I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "GET" request to "/api/v3/profile/me/scope/supervisor"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "code": "delegated_08f40730-d807-4975-8773-69d8fae1da74",
+            "name": "Référent délégué",
+            "zones": [],
+            "apps": [
+                "data_corner"
+            ],
+            "features": [
+                "dashboard",
+                "contacts",
+                "messages",
+                "events",
+                "mobile_app",
+                "news",
+                "elections",
+                "ripostes",
+                "pap",
+                "pap_v2",
+                "team",
+                "phoning_campaign",
+                "survey",
+                "department_site",
+                "elected_representative",
+                "adherent_formations",
+                "committee",
+                "general_meeting_reports",
+                "documents",
+                "designation"
+            ],
+            "delegated_access": null,
+            "attributes": {
+                "committees": [
+                    {"name": "Comité des 3 communes", "uuid": "@uuid@"}
+                ]
+            }
+        }
+        """
+
   Scenario:
     When I am logged with "gisele-berthoux@caramail.com" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/profile/me/scope/test"

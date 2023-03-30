@@ -37,7 +37,7 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
                 /** @var Zone $zone */
                 $adherents = $this->adherentRepository->findAllForCommitteeZone($zone);
                 /** @var Committee $committee */
-                $committee = $committeesOfZone[$zoneCommitteeMapping[$zone->getCode()]];
+                $committee = $committeesOfZone[$zoneCommitteeMapping[$zone->getTypeCode()]];
 
                 $committeeAdherentIds = [];
                 foreach ($adherents as $adherent) {
@@ -54,6 +54,8 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
                 }
             }
         }
+
+        $this->committeeRepository->updateMembershipsCounters();
     }
 
     /**
@@ -84,7 +86,7 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
                 }
 
                 $committeesZones[$zone->getType()][] = $zone;
-                $zoneCommitteeMapping[$zone->getCode()] = $committee->getId();
+                $zoneCommitteeMapping[$zone->getTypeCode()] = $committee->getId();
             }
         }
 

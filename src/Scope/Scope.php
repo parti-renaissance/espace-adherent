@@ -38,6 +38,11 @@ class Scope
      */
     private ?DelegatedAccess $delegatedAccess;
 
+    /**
+     * @SymfonySerializer\Groups({"scope"})
+     */
+    private ?array $attributes = null;
+
     public function __construct(
         string $code,
         string $name,
@@ -115,5 +120,15 @@ class Scope
     public function getDelegator(): ?Adherent
     {
         return $this->delegatedAccess ? $this->delegatedAccess->getDelegator() : null;
+    }
+
+    public function getAttributes(): ?array
+    {
+        return $this->attributes;
+    }
+
+    public function addAttribute(string $name, $value): void
+    {
+        $this->attributes[$name] = $value;
     }
 }

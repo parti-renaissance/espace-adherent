@@ -46,7 +46,7 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
 
         $this->delegatedAccess = null;
 
-        return $scope;
+        return $this->enrichAttributes($scope, $adherent);
     }
 
     public function setDelegatedAccess(DelegatedAccess $delegatedAccess): void
@@ -109,5 +109,10 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
         }
 
         return $scopeFeatures;
+    }
+
+    protected function enrichAttributes(Scope $scope, Adherent $adherent): Scope
+    {
+        return $scope;
     }
 }
