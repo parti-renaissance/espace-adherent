@@ -8,4 +8,5 @@ class ElectionStatusEnum extends Enum
 {
     public const OPEN = 'open';
     public const CLOSED = 'closed';
+    public const CANCELED = 'canceled';
 }

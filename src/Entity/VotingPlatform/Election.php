@@ -8,6 +8,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\ElectionResult\ElectionResult;
 use App\VotingPlatform\Election\ElectionStatusEnum;
+use App\VotingPlatform\Election\Enum\ElectionCancelRaisonEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -47,6 +48,18 @@ class Election
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $closedAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $canceledAt;
+
+    /**
+     * @ORM\Column(nullable=true, enumType=ElectionCancelRaisonEnum::class)
+     */
+    private ?ElectionCancelRaisonEnum $cancelRaison = null;
 
     /**
      * @var ElectionRound[]|Collection
@@ -159,6 +172,20 @@ class Election
     public function isOpen(): bool
     {
         return ElectionStatusEnum::OPEN === $this->status;
+    }
+
+    public function isCanceled(): bool
+    {
+        return ElectionStatusEnum::CANCELED === $this->status;
+    }
+
+    public function cancel(ElectionCancelRaisonEnum $raison): void
+    {
+        $this->status = ElectionStatusEnum::CANCELED;
+        $this->canceledAt = new \DateTime();
+        $this->cancelRaison = $raison;
+
+        $this->designation->cancel();
     }
 
     public function isClosed(): bool

@@ -11,6 +11,7 @@ final class DesignationStatusEnum extends Enum
     public const OPENED = 'opened';
     public const IN_PROGRESS = 'in_progress';
     public const CLOSED = 'closed';
+    public const CANCELED = 'canceled';
 
     public const ALL = [
         self::NOT_STARTED,
@@ -18,6 +19,7 @@ final class DesignationStatusEnum extends Enum
         self::OPENED,
         self::IN_PROGRESS,
         self::CLOSED,
+        self::CANCELED,
     ];
 
     public const ACTIVE_STATUSES = [

@@ -100,6 +100,7 @@ class CommitteeCandidacy extends BaseCandidacy
      * @var CommitteeCandidaciesGroup|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeCandidaciesGroup", inversedBy="candidacies", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @Assert\NotBlank(groups={"api_committee_candidacy_validation"})
      *

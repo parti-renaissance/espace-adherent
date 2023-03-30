@@ -19,7 +19,6 @@ use App\Mailer\Message\VotingPlatformVoteReminderMessage;
 use App\Mailer\Message\VotingPlatformVoteStatusesIsOpenMessage;
 use App\Mailer\Message\VotingPlatformVoteStatusesIsOverMessage;
 use App\Repository\CommitteeMembershipRepository;
-use App\Repository\VotingPlatform\VoteRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,17 +31,13 @@ class ElectionNotifier
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly EntityManagerInterface $entityManager,
         private readonly VoterRepository $voterRepository,
-        private readonly VoteRepository $voteRepository,
         private readonly CommitteeMembershipRepository $committeeMembershipRepository
     ) {
     }
 
     public function notifyElectionVoteIsOpen(Election $election): void
     {
-        if (
-            !$election->getDesignation()->isNotificationVoteOpenedEnabled()
-            || $election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)
-        ) {
+        if (!$this->isValid($election, Designation::NOTIFICATION_VOTE_OPENED)) {
             return;
         }
 
@@ -54,7 +49,7 @@ class ElectionNotifier
             );
 
             $getRecipientsCallback = function () use ($committeeMemberships): array {
-                return array_map(function (CommitteeMembership $membership) { return $membership->getAdherent(); }, $committeeMemberships);
+                return array_map(fn (CommitteeMembership $membership) => $membership->getAdherent(), $committeeMemberships);
             };
         } else {
             $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
@@ -76,11 +71,11 @@ class ElectionNotifier
                 }
 
                 return VotingPlatformElectionVoteIsOpenMessage::create($election, $recipients, $url);
-            },
-            DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $electionType
+            }
         );
 
         $election->markSentNotification(Designation::NOTIFICATION_VOTE_OPENED);
+
         $this->entityManager->flush();
     }
 
@@ -99,10 +94,7 @@ class ElectionNotifier
 
     public function notifyVotingPlatformVoteReminder(Election $election, Adherent $adherent): void
     {
-        if (
-            !$election->getDesignation()->isNotificationVoteReminderEnabled()
-            || $election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_REMINDER)
-        ) {
+        if (!$this->isValid($election, Designation::NOTIFICATION_VOTE_REMINDER)) {
             return;
         }
 
@@ -112,31 +104,19 @@ class ElectionNotifier
             $this->getUrl($election)
         ));
 
-        $election->markSentNotification(Designation::NOTIFICATION_VOTE_REMINDER);
         $this->entityManager->flush();
     }
 
     public function notifyElectionVoteIsOver(Election $election): void
     {
-        if (
-            !$election->getDesignation()->isNotificationVoteClosedEnabled()
-            || $election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_CLOSED)
-        ) {
+        if (!$this->isValid($election, Designation::NOTIFICATION_VOTE_CLOSED)) {
             return;
         }
 
-        if (($electionType = $election->getDesignationType()) === DesignationTypeEnum::COMMITTEE_SUPERVISOR) {
-            $getRecipientsCallback = function () use ($election): array {
-                return array_map(
-                    function (Voter $voter) { return $voter->getAdherent(); },
-                    $this->voterRepository->findVotedForElection($election)
-                );
-            };
-        } else {
-            $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
-                return $this->getAdherentForElection($election, $offset, $limit);
-            };
-        }
+        $electionType = $election->getDesignationType();
+        $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
+            return $this->getAdherentForElection($election, $offset, $limit);
+        };
 
         $url = $this->getUrl($election);
 
@@ -152,8 +132,7 @@ class ElectionNotifier
                 }
 
                 return VotingPlatformElectionVoteIsOverMessage::create($election, $recipients, $url);
-            },
-            DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $electionType
+            }
         );
 
         $election->markSentNotification(Designation::NOTIFICATION_VOTE_CLOSED);
@@ -162,36 +141,15 @@ class ElectionNotifier
 
     public function notifyElectionSecondRound(Election $election): void
     {
-        if (
-            !$election->getDesignation()->isNotificationSecondRoundEnabled()
-            || $election->isNotificationAlreadySent(Designation::NOTIFICATION_SECOND_ROUND)
-        ) {
+        if (!$election->getDesignation()->isSecondRoundEnabled()) {
             return;
         }
 
-        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
-            $committeeMemberships = $this->committeeMembershipRepository->findVotingForElectionMemberships(
-                $election->getElectionEntity()->getCommittee(),
-                $election->getDesignation(),
-                false
-            );
-
-            $adherents = array_map(function (CommitteeMembership $membership) { return $membership->getAdherent(); }, array_filter($committeeMemberships, function (CommitteeMembership $membership) use ($election) {
-                $votes = $this->voteRepository->findVoteForDesignation($membership->getAdherent(), $election->getDesignation());
-
-                foreach ($votes as $vote) {
-                    if ($vote->getElection()->getId() !== $election->getId()) {
-                        return false;
-                    }
-                }
-
-                return true;
-            }));
-        } else {
-            $adherents = $this->getAdherentForElection($election);
+        if (!$this->isValid($election, Designation::NOTIFICATION_SECOND_ROUND)) {
+            return;
         }
 
-        if ($adherents) {
+        if ($adherents = $this->getAdherentForElection($election)) {
             $this->transactionalMailer->sendMessage(VotingPlatformElectionSecondRoundNotificationMessage::create(
                 $election,
                 $adherents,
@@ -245,11 +203,8 @@ class ElectionNotifier
         return $this->urlGenerator->generate($designation->isRenaissanceElection() ? 'app_renaissance_homepage' : 'homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    private function batchSendEmail(
-        callable $getRecipientsCallback,
-        callable $createMessageCallback,
-        bool $chunkSending = true
-    ): void {
+    private function batchSendEmail(callable $getRecipientsCallback, callable $createMessageCallback): void
+    {
         $offset = 0;
         $limit = 500;
 
@@ -261,6 +216,15 @@ class ElectionNotifier
             }
 
             $offset += \count($recipients);
-        } while ($chunkSending && ($recipients = $getRecipientsCallback($offset, $limit)));
+        } while ($recipients = $getRecipientsCallback($offset, $limit));
+    }
+
+    private function isValid(Election $election, int $notificationBit): bool
+    {
+        return
+            !$election->isCanceled()
+            && $election->getDesignation()->isNotificationEnabled($notificationBit)
+            && !$election->isNotificationAlreadySent($notificationBit)
+        ;
     }
 }
