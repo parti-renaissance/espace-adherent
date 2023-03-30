@@ -87,7 +87,9 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     use EntityNullablePostAddressTrait;
     use EntityReferentTagTrait;
     use EntityZoneTrait;
-    use EntityElectionHelperTrait;
+    use EntityElectionHelperTrait {
+        hasActiveElection as defaultHasActiveElection;
+    }
     use StaticSegmentTrait;
     use EntityAdherentBlameableTrait;
     use EntityAdministratorBlameableTrait;
@@ -792,5 +794,18 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     public function isVersion2(): bool
     {
         return 2 === $this->version;
+    }
+
+    public function hasActiveElection(): bool
+    {
+        $designation = $this->getCurrentDesignation();
+
+        return $this->defaultHasActiveElection()
+            || (
+                $designation
+                && $designation->getElectionCreationDate()
+                && $designation->getElectionCreationDate() < (new \DateTime())
+            )
+        ;
     }
 }

@@ -5,8 +5,10 @@ namespace App\Committee;
 use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
 use App\Entity\Geo\Zone;
 use App\Geo\ZoneMatcher;
+use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
 
 class CommitteeMembershipManager
@@ -14,8 +16,9 @@ class CommitteeMembershipManager
     public function __construct(
         private readonly CommitteeManager $committeeManager,
         private readonly ZoneMatcher $zoneMatcher,
-        private readonly CommitteeRepository $committeeRepository
-    ) {
+        private readonly CommitteeRepository $committeeRepository,
+        private readonly CommitteeMembershipRepository $committeeMembershipRepository,
+        ) {
     }
 
     public function findCommitteeByAddress(AddressInterface $address): ?Committee
@@ -66,5 +69,18 @@ class CommitteeMembershipManager
         );
 
         return $flattenZones;
+    }
+
+    /**
+     * @return CommitteeMembership[]
+     */
+    public function getCommitteeMemberships(Committee $committee): array
+    {
+        return $this->committeeMembershipRepository->findCommitteeMemberships($committee)->toArray();
+    }
+
+    public function unfollowCommittee(CommitteeMembership $membership, Committee $committee): void
+    {
+        $this->committeeManager->unfollowCommittee($membership->getAdherent(), $committee);
     }
 }
