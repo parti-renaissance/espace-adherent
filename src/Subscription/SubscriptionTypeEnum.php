@@ -2,6 +2,7 @@
 
 namespace App\Subscription;
 
+use App\Scope\ScopeEnum;
 use MyCLabs\Enum\Enum;
 
 final class SubscriptionTypeEnum extends Enum
@@ -48,5 +49,18 @@ final class SubscriptionTypeEnum extends Enum
         self::REFERENT_EMAIL,
         self::CANDIDATE_EMAIL,
         self::SENATOR_EMAIL,
+    ];
+
+    public const SUBSCRIPTION_TYPES_BY_SCOPES = [
+        ScopeEnum::REFERENT => self::REFERENT_EMAIL,
+        ScopeEnum::REGIONAL_COORDINATOR => self::REFERENT_EMAIL,
+        ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY => self::REFERENT_EMAIL,
+        ScopeEnum::CORRESPONDENT => self::REFERENT_EMAIL,
+
+        ScopeEnum::CANDIDATE => self::CANDIDATE_EMAIL,
+        ScopeEnum::LEGISLATIVE_CANDIDATE => self::CANDIDATE_EMAIL,
+
+        ScopeEnum::DEPUTY => self::DEPUTY_EMAIL,
+        ScopeEnum::SENATOR => self::SENATOR_EMAIL,
     ];
 }
