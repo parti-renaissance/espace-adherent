@@ -1561,7 +1561,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         $qb = $this
             ->createQueryBuilder('adherent')
-            ->select('PARTIAL adherent.{id, uuid, emailAddress}')
+            ->select('PARTIAL adherent.{id, uuid, emailAddress, source, lastMembershipDonation}')
             ->where('adherent.source = :source')
             ->setParameters([
                 'source' => MembershipSourceEnum::RENAISSANCE,

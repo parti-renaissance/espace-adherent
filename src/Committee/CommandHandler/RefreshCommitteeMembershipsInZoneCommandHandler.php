@@ -36,13 +36,21 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
             foreach ($zones as $zone) {
                 /** @var Zone $zone */
                 $adherents = $this->adherentRepository->findAllForCommitteeZone($zone);
+                /** @var Committee $committee */
+                $committee = $committeesOfZone[$zoneCommitteeMapping[$zone->getCode()]];
 
+                $committeeAdherentIds = [];
                 foreach ($adherents as $adherent) {
-                    $this->committeeMembershipManager->followCommittee(
-                        $adherent,
-                        $committeesOfZone[$zoneCommitteeMapping[$zone->getCode()]],
-                        CommitteeMembershipTriggerEnum::COMMITTEE_EDITION
-                    );
+                    $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
+                    $committeeAdherentIds[] = $adherent->getId();
+                }
+
+                if (!$committee->hasActiveElection()) {
+                    foreach ($this->committeeMembershipManager->getCommitteeMemberships($committee) as $membership) {
+                        if (!\in_array($membership->getAdherent()->getId(), $committeeAdherentIds)) {
+                            $this->committeeMembershipManager->unfollowCommittee($membership, $committee);
+                        }
+                    }
                 }
             }
         }
