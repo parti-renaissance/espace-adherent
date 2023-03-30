@@ -27,7 +27,7 @@ class PaymentController extends AbstractAdhesionController
     {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
-        if ($adherent->hasActiveMembership() && $adherent->isCurrentYearMembershipDonation()) {
+        if ($adherent->hasActiveMembership()) {
             return $this->redirectToRoute('app_renaissance_adhesion_additional_informations');
         }
 

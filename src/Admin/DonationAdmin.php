@@ -639,7 +639,7 @@ class DonationAdmin extends AbstractAdmin
             $donation->isMembership()
             && $donation->isFinished()
             && ($adherent = $donation->getDonator()->getAdherent())
-            && !$adherent->hasActiveMembership()
+            && !$adherent->isRenaissanceAdherent()
         ) {
             $adherent->donatedForMembership($donation->getDonatedAt());
             $adherent->join();

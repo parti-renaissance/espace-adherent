@@ -30,7 +30,7 @@
                         </a>
                         {% endif %}
 
-                        <a class="button button-white"  href="{{ path('logout', { app_domain: renaissance_host }) }}">
+                        <a class="button button-white" href="{{ path('logout', { app_domain: renaissance_host }) }}">
                             Me déconnecter
                         </a>
                     {% else %}
@@ -43,13 +43,13 @@
                         <a href="{{ path('app_renaissance_adhesion') }}" class="button button-blue">
                             {{ app.user ? '(Re)' }} Adhérer
                         </a>
-                    {% elseif app.user.hasActiveMembership() and app.user.isCurrentYearMembershipDonation() %}
+                    {% elseif app.user.hasActiveMembership() %}
                         <a href="{{ path('app_renaissance_donation') }}" class="button button-green">
                             Je donne
                         </a>
                     {% else %}
                         <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="button button-green">
-                            {% if app.user.hasActiveMembership() and not app.user.isCurrentYearMembershipDonation() %} Adhésion {{ 'now'|date('Y') }} {% else %} Je termine mon adhésion {% endif %}
+                            {% if app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() %} Adhésion {{ 'now'|date('Y') }} {% else %} Je termine mon adhésion {% endif %}
                         </a>
                     {% endif %}
                 </div>

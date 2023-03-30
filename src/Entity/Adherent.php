@@ -3011,12 +3011,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isRenaissanceAdherent(): bool
     {
-        return $this->isRenaissanceUser() && $this->hasActiveMembership();
+        return $this->isRenaissanceUser() && null !== $this->lastMembershipDonation;
     }
 
     public function isRenaissanceSympathizer(): bool
     {
-        return $this->isRenaissanceUser() && !$this->hasActiveMembership();
+        return $this->isRenaissanceUser() && null === $this->lastMembershipDonation;
     }
 
     public function isCoalitionSubscription(): bool
@@ -3228,12 +3228,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function hasActiveMembership(): bool
     {
-        return null !== $this->lastMembershipDonation;
-    }
-
-    public function isCurrentYearMembershipDonation(): bool
-    {
-        return $this->lastMembershipDonation?->format('Y') === (new \DateTime())->format('Y');
+        return $this->isRenaissanceAdherent() && $this->lastMembershipDonation->format('Y') === date('Y');
     }
 
     public function getLastMembershipDonation(): ?\DateTimeInterface
