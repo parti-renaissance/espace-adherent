@@ -79,8 +79,12 @@ class AdherentCreateCommandHandler
         $this->dispatcher->dispatch(new UserEvent($adherent, true, true), UserEvents::USER_CREATED);
         $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
 
+        $donator = $donation->getDonator();
+
         if (!$adherent->isEnabled()) {
             $this->notifier->sendAccountCreatedEmail($adherent);
+        } elseif ($donator->getMembershipDonations()->count() > 1) {
+            $this->notifier->sendReAdhesionConfirmationMessage($adherent);
         } else {
             $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
             $this->notifier->sendConfirmationJoinMessage($adherent);
