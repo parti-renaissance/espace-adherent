@@ -7,6 +7,7 @@ use MyCLabs\Enum\Enum;
 final class VoteListNuanceEnum extends Enum
 {
     public const REM = 'REM';
+    public const RE = 'RE';
     public const EXG = 'EXG';
     public const COM = 'COM';
     public const FI = 'FI';
@@ -64,6 +65,7 @@ final class VoteListNuanceEnum extends Enum
             'Régionaliste' => self::REG,
             'Gilets jaunes' => self::GJ,
             'La République en Marche' => self::REM,
+            'Renaissance' => self::RE,
             'Modem' => self::MDM,
             'Union des Démocrates et Indépendants' => self::UDI,
             'Agir' => self::AGR,
