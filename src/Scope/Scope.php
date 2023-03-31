@@ -4,39 +4,44 @@ namespace App\Scope;
 
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class Scope
 {
     /**
-     * @SymfonySerializer\Groups({"scopes", "scope"})
+     * @Groups({"scopes", "scope"})
      */
     private string $code;
 
     /**
-     * @SymfonySerializer\Groups({"scopes", "scope"})
+     * @Groups({"scopes", "scope"})
      */
     private string $name;
 
     /**
-     * @SymfonySerializer\Groups({"scopes", "scope"})
+     * @Groups({"scopes", "scope"})
      */
     private array $zones;
 
     /**
-     * @SymfonySerializer\Groups({"scopes", "scope"})
+     * @Groups({"scopes", "scope"})
      */
     private array $apps;
 
     /**
-     * @SymfonySerializer\Groups({"scope"})
+     * @Groups({"scope"})
      */
     private array $features;
 
     /**
-     * @SymfonySerializer\Groups({"scope"})
+     * @Groups({"scope"})
      */
     private ?DelegatedAccess $delegatedAccess;
+
+    /**
+     * @Groups({"scope"})
+     */
+    private ?array $attributes = null;
 
     public function __construct(
         string $code,
@@ -115,5 +120,15 @@ class Scope
     public function getDelegator(): ?Adherent
     {
         return $this->delegatedAccess ? $this->delegatedAccess->getDelegator() : null;
+    }
+
+    public function getAttributes(): ?array
+    {
+        return $this->attributes;
+    }
+
+    public function addAttribute(string $name, $value): void
+    {
+        $this->attributes[$name] = $value;
     }
 }

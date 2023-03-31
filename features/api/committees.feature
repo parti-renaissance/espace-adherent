@@ -87,7 +87,7 @@ Feature:
                     "updated_at": "@string@.isDateTime()"
                 }
             ],
-            "supervisor": {
+            "animator": {
                 "uuid": "@uuid@",
                 "first_name": "Adherent 56",
                 "last_name": "Fa56ke"

@@ -41,6 +41,7 @@ class LoadScopeData extends Fixture
         ScopeEnum::LEGISLATIVE_CANDIDATE => 'Candidat aux législatives',
         ScopeEnum::REGIONAL_COORDINATOR => 'Coordinateur régional',
         ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Président assemblée départementale',
+        ScopeEnum::ANIMATOR => 'Animateur local',
     ];
 
     public function load(ObjectManager $manager)
@@ -60,11 +61,13 @@ class LoadScopeData extends Fixture
     private function getFeatures(string $scopeCode): array
     {
         return match ($scopeCode) {
-            ScopeEnum::DEPUTY, ScopeEnum::SENATOR => self::BASIC_FEATURES,
+            ScopeEnum::DEPUTY,
+            ScopeEnum::SENATOR => self::BASIC_FEATURES,
             ScopeEnum::NATIONAL => array_diff(FeatureEnum::ALL, [FeatureEnum::MESSAGES, FeatureEnum::DEPARTMENT_SITE, FeatureEnum::ELECTED_REPRESENTATIVE]),
             ScopeEnum::NATIONAL_COMMUNICATION => [FeatureEnum::NEWS],
             ScopeEnum::CANDIDATE => array_merge(self::BASIC_FEATURES, [FeatureEnum::PAP]),
-            ScopeEnum::PAP, ScopeEnum::PHONING => [],
+            ScopeEnum::PAP,
+            ScopeEnum::PHONING => [],
             ScopeEnum::PHONING_NATIONAL_MANAGER => [FeatureEnum::TEAM, FeatureEnum::PHONING_CAMPAIGN],
             ScopeEnum::PAP_NATIONAL_MANAGER => [FeatureEnum::PAP],
             ScopeEnum::CORRESPONDENT => array_merge(self::BASIC_FEATURES, [FeatureEnum::NEWS, FeatureEnum::MY_TEAM]),

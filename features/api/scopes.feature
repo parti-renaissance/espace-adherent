@@ -137,6 +137,7 @@ Feature:
         "general_meeting_reports",
         "documents"
       ],
+      "attributes": null,
       "delegated_access": null
     }
     """
@@ -184,6 +185,7 @@ Feature:
         "documents",
         "designation"
       ],
+      "attributes": null,
       "delegated_access": null
     }
     """
@@ -353,6 +355,7 @@ Feature:
           "messages",
           "mobile_app"
       ],
+      "attributes": null,
       "delegated_access": {
           "delegator": {
               "uuid": "021268fe-d4b3-44a7-bce9-c001191249a7",
@@ -458,6 +461,7 @@ Feature:
             "documents",
             "designation"
         ],
+        "attributes": null,
         "delegated_access": {
             "delegator": {
                 "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
@@ -469,6 +473,52 @@ Feature:
         }
     }
     """
+
+    Scenario:
+        Given I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        When I send a "GET" request to "/api/v3/profile/me/scope/animator"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "code": "animator",
+            "name": "Animateur local",
+            "zones": [],
+            "apps": [
+                "data_corner"
+            ],
+            "features": [
+                "dashboard",
+                "contacts",
+                "messages",
+                "events",
+                "my_team",
+                "mobile_app",
+                "news",
+                "elections",
+                "ripostes",
+                "pap",
+                "pap_v2",
+                "team",
+                "phoning_campaign",
+                "survey",
+                "department_site",
+                "elected_representative",
+                "adherent_formations",
+                "committee",
+                "general_meeting_reports",
+                "documents",
+                "designation"
+            ],
+            "attributes": {
+                "committees": [
+                    {"name": "Comité des 3 communes", "uuid": "@uuid@"}
+                ]
+            },
+            "delegated_access": null
+        }
+        """
 
   Scenario:
     When I am logged with "gisele-berthoux@caramail.com" via OAuth client "JeMengage Web"

@@ -62,5 +62,7 @@ final class SubscriptionTypeEnum extends Enum
 
         ScopeEnum::DEPUTY => self::DEPUTY_EMAIL,
         ScopeEnum::SENATOR => self::SENATOR_EMAIL,
+
+        ScopeEnum::ANIMATOR => self::LOCAL_HOST_EMAIL,
     ];
 }

@@ -364,6 +364,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $memberships;
 
     /**
+     * @var Committee[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Committee", mappedBy="animator", fetch="EXTRA_LAZY")
+     */
+    private $animatorCommittees;
+
+    /**
      * @var CommitteeFeedItem[]|Collection|iterable
      *
      * @ORM\OneToMany(targetEntity="CommitteeFeedItem", mappedBy="author", cascade={"remove"})
@@ -816,6 +823,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
+        $this->animatorCommittees = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->zones = new ArrayCollection();
@@ -1027,6 +1035,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isSupervisor()) {
             $roles[] = 'ROLE_SUPERVISOR';
+        }
+
+        if ($this->isAnimator()) {
+            $roles[] = 'ROLE_ANIMATOR';
         }
 
         if ($this->isProcurationManager()) {
@@ -2088,6 +2100,19 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->getSupervisorMandates($isProvisional)->count() > 0;
     }
 
+    public function isAnimator(): bool
+    {
+        return !$this->animatorCommittees->isEmpty();
+    }
+
+    /**
+     * @return Committee[]
+     */
+    public function getAnimatorCommittees(): array
+    {
+        return $this->animatorCommittees->toArray();
+    }
+
     public function isSupervisorOf(Committee $committee, bool $isProvisional = null): bool
     {
         return $this->adherentMandates->filter(static function (AdherentMandateInterface $mandate) use ($committee, $isProvisional) {
@@ -2971,6 +2996,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         })->count() > 0;
     }
 
+    /** @return CommitteeAdherentMandate[]|Collection */
     public function getSupervisorMandates(bool $isProvisional = null, string $gender = null): Collection
     {
         return $this->adherentMandates->filter(static function (AdherentMandateInterface $mandate) use ($gender, $isProvisional) {
