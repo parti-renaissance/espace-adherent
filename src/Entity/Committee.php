@@ -245,12 +245,12 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     protected $zones;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="supervisedCommittees")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="animatorCommittees")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Groups({"committee:read"})
      */
-    public ?Adherent $supervisor = null;
+    public ?Adherent $animator = null;
 
     public function __construct(
         UuidInterface $uuid = null,

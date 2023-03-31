@@ -366,9 +366,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var Committee[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Committee", mappedBy="supervisor", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\Committee", mappedBy="animator", fetch="EXTRA_LAZY")
      */
-    private $supervisedCommittees;
+    private $animatorCommittees;
 
     /**
      * @var CommitteeFeedItem[]|Collection|iterable
@@ -823,7 +823,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
-        $this->supervisedCommittees = new ArrayCollection();
+        $this->animatorCommittees = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->zones = new ArrayCollection();
@@ -1035,6 +1035,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isSupervisor()) {
             $roles[] = 'ROLE_SUPERVISOR';
+        }
+
+        if ($this->isAnimator()) {
+            $roles[] = 'ROLE_ANIMATOR';
         }
 
         if ($this->isProcurationManager()) {
@@ -2091,17 +2095,22 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $membership->isHostMember();
     }
 
-    public function isSupervisor(): bool
+    public function isSupervisor(bool $isProvisional = null): bool
     {
-        return !$this->supervisedCommittees->isEmpty();
+        return $this->getSupervisorMandates($isProvisional)->count() > 0;
+    }
+
+    public function isAnimator(): bool
+    {
+        return !$this->animatorCommittees->isEmpty();
     }
 
     /**
      * @return Committee[]
      */
-    public function getSupervisedCommittees(): array
+    public function getAnimatorCommittees(): array
     {
-        return $this->supervisedCommittees->toArray();
+        return $this->animatorCommittees->toArray();
     }
 
     public function isSupervisorOf(Committee $committee, bool $isProvisional = null): bool

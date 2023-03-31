@@ -137,6 +137,7 @@ Feature:
         "general_meeting_reports",
         "documents"
       ],
+      "attributes": null,
       "delegated_access": null
     }
     """
@@ -184,6 +185,7 @@ Feature:
         "documents",
         "designation"
       ],
+      "attributes": null,
       "delegated_access": null
     }
     """
@@ -195,30 +197,6 @@ Feature:
     And the JSON should be equal to:
     """
     [
-      {
-        "code": "supervisor",
-        "name": "Superviseur",
-        "zones": [
-          {
-            "uuid": "e3f0cc51-906e-11eb-a875-0242ac150002",
-            "code": "77-1",
-            "name": "Seine-et-Marne (1)"
-          },
-          {
-            "uuid": "e3f29ef5-906e-11eb-a875-0242ac150002",
-            "code": "77152",
-            "name": "Dammarie-les-Lys"
-          },
-          {
-            "uuid": "e3f0e92b-906e-11eb-a875-0242ac150002",
-            "code": "91-1",
-            "name": "Essonne (1)"
-          }
-        ],
-        "apps": [
-          "data_corner"
-        ]
-      },
       {
         "code": "delegated_96076afb-2243-4251-97fe-8201d50c3256",
         "name": "Délégué de circonscription délégué",
@@ -377,6 +355,7 @@ Feature:
           "messages",
           "mobile_app"
       ],
+      "attributes": null,
       "delegated_access": {
           "delegator": {
               "uuid": "021268fe-d4b3-44a7-bce9-c001191249a7",
@@ -482,6 +461,7 @@ Feature:
             "documents",
             "designation"
         ],
+        "attributes": null,
         "delegated_access": {
             "delegator": {
                 "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
@@ -496,14 +476,14 @@ Feature:
 
     Scenario:
         When I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web"
-        When I send a "GET" request to "/api/v3/profile/me/scope/supervisor"
+        When I send a "GET" request to "/api/v3/profile/me/scope/animator"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
         """
         {
-            "code": "delegated_08f40730-d807-4975-8773-69d8fae1da74",
-            "name": "Référent délégué",
+            "code": "animator",
+            "name": "Animateur local",
             "zones": [],
             "apps": [
                 "data_corner"
@@ -513,6 +493,7 @@ Feature:
                 "contacts",
                 "messages",
                 "events",
+                "my_team",
                 "mobile_app",
                 "news",
                 "elections",
@@ -530,12 +511,12 @@ Feature:
                 "documents",
                 "designation"
             ],
-            "delegated_access": null,
             "attributes": {
                 "committees": [
                     {"name": "Comité des 3 communes", "uuid": "@uuid@"}
                 ]
-            }
+            },
+            "delegated_access": null
         }
         """
 

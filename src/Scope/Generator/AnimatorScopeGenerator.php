@@ -7,7 +7,7 @@ use App\Entity\Committee;
 use App\Scope\Scope;
 use App\Scope\ScopeEnum;
 
-class SupervisorScopeGenerator extends AbstractScopeGenerator
+class AnimatorScopeGenerator extends AbstractScopeGenerator
 {
     protected function getZones(Adherent $adherent): array
     {
@@ -16,12 +16,12 @@ class SupervisorScopeGenerator extends AbstractScopeGenerator
 
     public function supports(Adherent $adherent): bool
     {
-        return $adherent->isSupervisor();
+        return $adherent->isAnimator();
     }
 
     public function getCode(): string
     {
-        return ScopeEnum::SUPERVISOR;
+        return ScopeEnum::ANIMATOR;
     }
 
     protected function enrichAttributes(Scope $scope, Adherent $adherent): Scope
@@ -35,7 +35,7 @@ class SupervisorScopeGenerator extends AbstractScopeGenerator
                     'name' => $committee->getName(),
                     'uuid' => $committee->getUuid()->toString(),
                 ],
-                $adherent->getSupervisedCommittees()
+                $adherent->getAnimatorCommittees()
             )
         );
 
