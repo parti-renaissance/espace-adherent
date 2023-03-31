@@ -246,6 +246,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Groups({"committee:read", "committee:write"})
      */

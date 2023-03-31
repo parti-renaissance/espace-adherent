@@ -13,7 +13,9 @@ final class Version20230330153931 extends AbstractMigration
         $this->addSql('ALTER TABLE
           committees
         ADD
-          CONSTRAINT FK_A36198C619E9AC5F FOREIGN KEY (supervisor_id) REFERENCES adherents (id)');
+          CONSTRAINT FK_A36198C619E9AC5F FOREIGN KEY (supervisor_id) REFERENCES adherents (id) ON DELETE
+        SET
+          NULL');
         $this->addSql('CREATE INDEX IDX_A36198C619E9AC5F ON committees (supervisor_id)');
     }
 
