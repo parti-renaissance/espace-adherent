@@ -9,11 +9,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InitializeSupervisorMandatesListener implements EventSubscriberInterface
 {
-    private $mandateManager;
-
-    public function __construct(CommitteeAdherentMandateManager $mandateManager)
+    public function __construct(private readonly CommitteeAdherentMandateManager $mandateManager)
     {
-        $this->mandateManager = $mandateManager;
     }
 
     public static function getSubscribedEvents(): array

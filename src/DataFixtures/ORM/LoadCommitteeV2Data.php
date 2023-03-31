@@ -31,6 +31,7 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92004'));
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92007'));
         $object->setCurrentElection(new CommitteeElection($this->getReference('designation-committee-01'), Uuid::fromString(self::COMMITTEE_ELECTION_3_UUID)));
+        $object->supervisor = $this->getReference('adherent-55');
 
         foreach (range(51, 60) as $index) {
             $manager->persist($this->getReference('adherent-'.$index)->followCommittee($object, new \DateTime('-2 months'), CommitteeMembershipTriggerEnum::COMMITTEE_EDITION));
@@ -50,6 +51,7 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92014'));
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
 
+        $object->supervisor = $this->getReference('adherent-56');
         $object->setCurrentElection(new CommitteeElection($this->getReference('designation-committee-02'), Uuid::fromString(self::COMMITTEE_ELECTION_1_UUID)));
         $object->addElection($election = new CommitteeElection($this->getReference('designation-committee-03'), Uuid::fromString(self::COMMITTEE_ELECTION_2_UUID)));
 

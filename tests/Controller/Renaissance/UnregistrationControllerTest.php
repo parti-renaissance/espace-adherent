@@ -41,7 +41,7 @@ class UnregistrationControllerTest extends WebTestCase
 
             $crawler = $this->client->submit($crawler->selectButton('Je confirme la suppression de mon adhésion')->form());
 
-            $this->assertStatusCode(Response::HTTP_OK, $this->client);
+            $this->assertResponseIsSuccessful($email.' fail');
 
             self::assertCount(0, $crawler->filter('.re-form-error'));
             self::assertStringContainsString(

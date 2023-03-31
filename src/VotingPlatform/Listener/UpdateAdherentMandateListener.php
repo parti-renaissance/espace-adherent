@@ -38,7 +38,6 @@ class UpdateAdherentMandateListener implements EventSubscriberInterface
     {
         return \in_array($election->getDesignationType(), [
             DesignationTypeEnum::COMMITTEE_ADHERENT,
-            DesignationTypeEnum::COMMITTEE_SUPERVISOR,
             DesignationTypeEnum::COPOL,
             DesignationTypeEnum::NATIONAL_COUNCIL,
         ], true);

@@ -96,6 +96,7 @@ trait EntityIdentityTrait
      *     "formation_list_read",
      *     "elected_mandate_read",
      *     "committee:list",
+     *     "committee:read",
      *     "committee_election:read",
      *     "committee_candidacies_group:read",
      *     "committee_candidacy:read",

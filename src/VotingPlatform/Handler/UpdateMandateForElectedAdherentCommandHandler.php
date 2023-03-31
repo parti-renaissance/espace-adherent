@@ -50,7 +50,6 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
 
         switch ($election->getDesignationType()) {
             case DesignationTypeEnum::COMMITTEE_ADHERENT:
-            case DesignationTypeEnum::COMMITTEE_SUPERVISOR:
                 // do not close any committee mandate if an election has 0 elected candidate
                 if (!$election->hasElected()) {
                     return;
@@ -62,9 +61,7 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
                     $election->getElectionEntity()->getCommittee(),
                     AdherentMandateInterface::REASON_ELECTION,
                     $election->getVoteEndDate(),
-                    DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType() ?
-                        CommitteeAdherentMandateTypeEnum::TYPE_SUPERVISOR :
-                        CommitteeAdherentMandateTypeEnum::TYPE_DESIGNED_ADHERENT,
+                    CommitteeAdherentMandateTypeEnum::TYPE_DESIGNED_ADHERENT,
                     $designation->getPools() ? current($designation->getPools()) : null
                 );
 

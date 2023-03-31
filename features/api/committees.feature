@@ -17,7 +17,7 @@ Feature:
 
     Scenario Outline: As a user granted with local scope, I can get committees in a zone I am manager of
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        And I send a "GET" request to "/api/v3/committees?scope=<scope>"
+        When I send a "GET" request to "/api/v3/committees?scope=<scope>"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
@@ -50,6 +50,55 @@ Feature:
                     "sympathizers_count": 0
                 }
             ]
+        }
+        """
+        When I send a "GET" request to "/api/v3/committees/8c4b48ec-9290-47ae-a5db-d1cf2723e8b3?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "members_count": 3,
+            "sympathizers_count": 0,
+            "description": "Un petit comité avec seulement 3 communes",
+            "zones": [
+                {
+                    "uuid": "@uuid@",
+                    "type": "city",
+                    "code": "92012",
+                    "name": "Boulogne-Billancourt",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                },
+                {
+                    "uuid": "@uuid@",
+                    "type": "city",
+                    "code": "92014",
+                    "name": "Bourg-la-Reine",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                },
+                {
+                    "uuid": "@uuid@",
+                    "type": "city",
+                    "code": "92024",
+                    "name": "Clichy",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                }
+            ],
+            "supervisor": {
+                "uuid": "@uuid@",
+                "first_name": "Adherent 56",
+                "last_name": "Fa56ke"
+            },
+            "uuid": "@uuid@",
+            "created_at": "@string@.isDateTime()",
+            "updated_at": "@string@.isDateTime()",
+            "name": "Second Comité des 3 communes",
+            "committee_election": {
+                "uuid": "@uuid@"
+            }
         }
         """
         Examples:
