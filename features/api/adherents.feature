@@ -593,7 +593,7 @@ Feature:
         },
         {
             "code": "isNewRenaissanceUser",
-            "label": "Nouveau Militant",
+            "label": "Nouveau militant",
             "options": {
                 "choices": [
                     "Non",

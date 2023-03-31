@@ -22,7 +22,7 @@ class BasicFieldsForAdherentFilterBuilder implements FilterBuilderInterface
 
         if (FeatureEnum::CONTACTS === $feature) {
             $filterBuilder
-                ->createBooleanSelect('isNewRenaissanceUser', 'Nouveau Militant')
+                ->createBooleanSelect('isNewRenaissanceUser', 'Nouveau militant')
             ;
         }
 
