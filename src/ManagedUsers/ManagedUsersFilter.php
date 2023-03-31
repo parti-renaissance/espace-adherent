@@ -145,6 +145,11 @@ class ManagedUsersFilter
      */
     private ?bool $onlyJeMengageUsers = null;
 
+    /**
+     * @Groups({"filter_write"})
+     */
+    private ?bool $isNewRenaissanceUser = null;
+
     public function __construct(
         string $subscriptionType = null,
         array $managedZones = [],
@@ -532,5 +537,15 @@ class ManagedUsersFilter
     public function setOnlyJeMengageUsers(?bool $onlyJeMengageUsers): void
     {
         $this->onlyJeMengageUsers = $onlyJeMengageUsers;
+    }
+
+    public function getIsNewRenaissanceUser(): ?bool
+    {
+        return $this->isNewRenaissanceUser;
+    }
+
+    public function setIsNewRenaissanceUser(?bool $isNewRenaissanceUser): void
+    {
+        $this->isNewRenaissanceUser = $isNewRenaissanceUser;
     }
 }

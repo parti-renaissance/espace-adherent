@@ -149,6 +149,13 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
+        if (null !== $filter->getIsNewRenaissanceUser()) {
+            $qb
+                ->andWhere(sprintf('u.createdAt %s :registered_since_last_15d', $filter->getIsNewRenaissanceUser() ? '>=' : '<'))
+                ->setParameter('registered_since_last_15d', (new \DateTime('-15 days'))->setTime(0, 0))
+            ;
+        }
+
         foreach (array_values($filter->getInterests()) as $key => $interest) {
             $qb
                 ->andWhere(sprintf('FIND_IN_SET(:interest_%s, u.interests) > 0', $key))
