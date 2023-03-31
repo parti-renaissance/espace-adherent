@@ -49,7 +49,7 @@
                         </a>
                     {% else %}
                         <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="button button-green">
-                            Je termine mon adhésion
+                            {% if app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() %} Adhésion {{ 'now'|date('Y') }} {% else %} Je termine mon adhésion {% endif %}
                         </a>
                     {% endif %}
                 </div>

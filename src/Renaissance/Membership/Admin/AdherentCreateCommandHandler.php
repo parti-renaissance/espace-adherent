@@ -43,7 +43,9 @@ class AdherentCreateCommandHandler
         Administrator $administrator,
         Adherent $adherent = null
     ): void {
+        $forReAdhesion = false;
         if ($adherent) {
+            $forReAdhesion = $adherent->isRenaissanceAdherent();
             $adherent->updateMembershipFormAdminAdherentCreateCommand($command, $administrator);
         } else {
             $adherent = $this->adherentFactory->createFromAdminAdherentCreateCommand($command, $administrator);
@@ -69,7 +71,7 @@ class AdherentCreateCommandHandler
         $donationRequest->forMembership();
         $donationRequest->setDonatedAt($command->cotisationDate);
 
-        $donation = $this->donationRequestHandler->handle($donationRequest, $adherent);
+        $donation = $this->donationRequestHandler->handle($donationRequest, $adherent, $forReAdhesion);
         $donation->setDonatedAt($command->cotisationDate);
         $donation->markAsFinished();
         $donation->markAsLastSuccessfulDonation();
@@ -81,6 +83,8 @@ class AdherentCreateCommandHandler
 
         if (!$adherent->isEnabled()) {
             $this->notifier->sendAccountCreatedEmail($adherent);
+        } elseif ($donation->isReAdhesion()) {
+            $this->notifier->sendReAdhesionConfirmationMessage($adherent);
         } else {
             $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
             $this->notifier->sendConfirmationJoinMessage($adherent);

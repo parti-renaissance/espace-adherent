@@ -92,7 +92,7 @@ class MembershipRequestProcessor
     {
         $user = $this->security->getUser();
 
-        if ($user instanceof Adherent && $user->hasActiveMembership()) {
+        if ($user instanceof Adherent && $user->isRenaissanceAdherent()) {
             return false;
         }
 
