@@ -26,21 +26,11 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class AdherentListController extends AbstractController
 {
-    private $authorizationChecker;
-    private $filterFactory;
-    private $repository;
-    private $denormalizer;
-
     public function __construct(
-        AuthorizationChecker $authorizationChecker,
-        ManagedUsersFilterFactory $filterFactory,
-        ManagedUserRepository $repository,
-        DenormalizerInterface $denormalizer
+        private readonly AuthorizationChecker $authorizationChecker,
+        private readonly ManagedUserRepository $repository,
+        private readonly DenormalizerInterface $denormalizer
     ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->filterFactory = $filterFactory;
-        $this->repository = $repository;
-        $this->denormalizer = $denormalizer;
     }
 
     public function __invoke(Request $request): Response
@@ -56,7 +46,7 @@ class AdherentListController extends AbstractController
         }
 
         $scopeGenerator = $this->authorizationChecker->getScopeGenerator($request, $user);
-        $filter = $this->filterFactory->createForZones($scopeGenerator->getCode(), $scopeGenerator->generate($user)->getZones());
+        $filter = ManagedUsersFilterFactory::createForZones($scopeGenerator->getCode(), $scopeGenerator->generate($user)->getZones());
 
         $this->denormalizer->denormalize($request->query->all(), ManagedUsersFilter::class, null, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $filter,

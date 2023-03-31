@@ -2,26 +2,15 @@
 
 namespace App\ManagedUsers;
 
-use App\ManagedUsers\Filter\ManagedUsersFilterFactoryInterface;
+use App\Subscription\SubscriptionTypeEnum;
 
 class ManagedUsersFilterFactory
 {
-    /** @var iterable|ManagedUsersFilterFactoryInterface[] */
-    private iterable $factories;
-
-    public function __construct(iterable $factories)
+    public static function createForZones(string $scopeCode, array $zones): ?ManagedUsersFilter
     {
-        $this->factories = $factories;
-    }
-
-    public function createForZones(string $scopeCode, array $zones): ?ManagedUsersFilter
-    {
-        foreach ($this->factories as $factory) {
-            if ($factory->support($scopeCode)) {
-                return $factory->create($zones);
-            }
-        }
-
-        return null;
+        return new ManagedUsersFilter(
+            SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scopeCode] ?? null,
+            $zones
+        );
     }
 }

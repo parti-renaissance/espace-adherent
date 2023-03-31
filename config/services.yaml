@@ -112,8 +112,6 @@ services:
             tags: ['app.instance.quality_updater']
         App\Scope\Generator\ScopeGeneratorInterface:
             tags: ['app.adherent.scope_generator']
-        App\ManagedUsers\Filter\ManagedUsersFilterFactoryInterface:
-            tags: ['app.managed_user.filer_factory']
         App\JMEFilter\FilterBuilder\FilterBuilderInterface:
             tags: [ 'app.filter.builder' ]
         App\OAuth\App\AuthAppUrlGeneratorInterface:
@@ -184,10 +182,6 @@ services:
     App\AdherentMessage\AdherentMessageManager:
         arguments:
             $senders: !tagged_iterator 'app.adherent_message.sender'
-
-    App\ManagedUsers\ManagedUsersFilterFactory:
-        arguments:
-            $factories: !tagged_iterator 'app.managed_user.filer_factory'
 
     App\OAuth\App\AuthAppUrlManager:
         arguments:

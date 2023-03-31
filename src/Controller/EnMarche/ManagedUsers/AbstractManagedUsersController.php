@@ -21,18 +21,10 @@ abstract class AbstractManagedUsersController extends AbstractController
 {
     use AccessDelegatorTrait;
 
-    private $managedUsersRepository;
-    private $filterFactory;
-    private $managedZoneProvider;
-
     public function __construct(
-        ManagedUserRepository $managedUsersRepository,
-        ManagedZoneProvider $managedZoneProvider,
-        ManagedUsersFilterFactory $filterFactory
-    ) {
-        $this->managedUsersRepository = $managedUsersRepository;
-        $this->managedZoneProvider = $managedZoneProvider;
-        $this->filterFactory = $filterFactory;
+        private readonly ManagedUserRepository $managedUsersRepository,
+        private readonly ManagedZoneProvider $managedZoneProvider,
+        ) {
     }
 
     #[Route(path: '/utilisateurs.{_format}', name: 'list', methods: ['GET'], defaults: ['_format' => 'html'], requirements: ['_format' => 'html|csv|xls'])]
@@ -70,7 +62,7 @@ abstract class AbstractManagedUsersController extends AbstractController
 
     protected function createFilterModel(SessionInterface $session, Adherent $adherent): ManagedUsersFilter
     {
-        $model = $this->filterFactory->createForZones(
+        $model = ManagedUsersFilterFactory::createForZones(
             $this->getScopeCode(),
             $this->managedZoneProvider->getManagedZones($adherent, $this->getSpaceType())
         );
