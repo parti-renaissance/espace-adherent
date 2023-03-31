@@ -36,7 +36,7 @@ class MandateAdmin extends AbstractAdmin
                 'attr' => ['class' => 'width-125'],
             ])
             ->add('politicalAffiliation', ChoiceType::class, [
-                'choices' => VoteListNuanceEnum::toArray(),
+                'choices' => VoteListNuanceEnum::getChoices(),
                 'label' => 'Nuance politique',
                 'required' => true,
             ])
