@@ -475,7 +475,7 @@ Feature:
     """
 
     Scenario:
-        When I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        Given I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web"
         When I send a "GET" request to "/api/v3/profile/me/scope/animator"
         Then the response status code should be 200
         And the response should be in JSON

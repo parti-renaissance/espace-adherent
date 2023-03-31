@@ -3,22 +3,22 @@
 namespace App\Scope;
 
 use App\Entity\Adherent;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class DelegatedAccess
 {
     /**
-     * @SymfonySerializer\Groups({"scope"})
+     * @Groups({"scope"})
      */
     private Adherent $delegator;
 
     /**
-     * @SymfonySerializer\Groups({"scope"})
+     * @Groups({"scope"})
      */
     private string $role;
 
     /**
-     * @SymfonySerializer\Groups({"scope"})
+     * @Groups({"scope"})
      */
     private string $type;
 
