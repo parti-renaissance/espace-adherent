@@ -592,6 +592,17 @@ Feature:
             "type": "date_interval"
         },
         {
+            "code": "isNewRenaissanceUser",
+            "label": "Nouveau Militant",
+            "options": {
+                "choices": [
+                    "Non",
+                    "Oui"
+                ]
+            },
+            "type": "select"
+        },
+        {
             "code": "committeeUuids",
             "label": "Comités",
             "options": {
