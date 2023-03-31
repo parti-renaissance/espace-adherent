@@ -13,7 +13,6 @@ use App\Repository\Helper\MembershipFilterHelper;
 use App\Repository\PaginatorTrait;
 use App\Repository\ReferentTrait;
 use App\Subscription\SubscriptionTypeEnum;
-use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -153,7 +152,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         if (null !== $filter->getIsNewRenaissanceUser()) {
             $qb
                 ->andWhere(sprintf('u.createdAt %s :registered_since_last_15d', $filter->getIsNewRenaissanceUser() ? '>=' : '<'))
-                ->setParameter('registered_since_last_15d', (new Chronos('-15 days'))->setTime(0, 0))
+                ->setParameter('registered_since_last_15d', (new \DateTime('-15 days'))->setTime(0, 0))
             ;
         }
 
