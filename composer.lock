@@ -10600,7 +10600,7 @@
         },
         {
             "name": "scheb/2fa-bundle",
-            "version": "v6.7.0",
+            "version": "v6.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-bundle.git",
@@ -10661,13 +10661,13 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-bundle/tree/v6.7.0"
+                "source": "https://github.com/scheb/2fa-bundle/tree/v6.8.0"
             },
             "time": "2023-01-26T18:47:22+00:00"
         },
         {
             "name": "scheb/2fa-google-authenticator",
-            "version": "v6.7.0",
+            "version": "v6.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-google-authenticator.git",
@@ -10712,7 +10712,7 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v6.7.0"
+                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v6.8.0"
             },
             "time": "2022-12-10T15:20:09+00:00"
         },
