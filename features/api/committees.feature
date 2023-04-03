@@ -107,6 +107,172 @@ Feature:
             | referent@en-marche-dev.fr       | referent                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
+    Scenario Outline: As a user granted with local scope, I can update a committee
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/committees/8c4b48ec-9290-47ae-a5db-d1cf2723e8b3?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "members_count": 3,
+            "sympathizers_count": 0,
+            "description": "Un petit comité avec seulement 3 communes",
+            "zones": [
+                {
+                    "uuid": "@uuid@",
+                    "type": "city",
+                    "code": "92012",
+                    "name": "Boulogne-Billancourt",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                },
+                {
+                    "uuid": "@uuid@",
+                    "type": "city",
+                    "code": "92014",
+                    "name": "Bourg-la-Reine",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                },
+                {
+                    "uuid": "@uuid@",
+                    "type": "city",
+                    "code": "92024",
+                    "name": "Clichy",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                }
+            ],
+            "animator": {
+                "uuid": "@uuid@",
+                "first_name": "Adherent 56",
+                "last_name": "Fa56ke"
+            },
+            "uuid": "@uuid@",
+            "created_at": "@string@.isDateTime()",
+            "updated_at": "@string@.isDateTime()",
+            "name": "Second Comité des 3 communes",
+            "committee_election": {
+                "uuid": "@uuid@"
+            }
+        }
+        """
+        When I send a "PUT" request to "/api/v3/committees/8c4b48ec-9290-47ae-a5db-d1cf2723e8b3?scope=<scope>" with body:
+        """
+        {
+            "name": "test 1",
+            "description": "my desc"
+        }
+        """
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "members_count": 3,
+            "sympathizers_count": 0,
+            "description": "my desc",
+            "zones": [
+                {
+                    "uuid": "@uuid@",
+                    "type": "city",
+                    "code": "92012",
+                    "name": "Boulogne-Billancourt",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                },
+                {
+                    "uuid": "@uuid@",
+                    "type": "city",
+                    "code": "92014",
+                    "name": "Bourg-la-Reine",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                },
+                {
+                    "uuid": "@uuid@",
+                    "type": "city",
+                    "code": "92024",
+                    "name": "Clichy",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                }
+            ],
+            "animator": {
+                "uuid": "@uuid@",
+                "first_name": "Adherent 56",
+                "last_name": "Fa56ke"
+            },
+            "uuid": "@uuid@",
+            "created_at": "@string@.isDateTime()",
+            "updated_at": "@string@.isDateTime()",
+            "name": "test 1",
+            "committee_election": {
+                "uuid": "@uuid@"
+            }
+        }
+        """
+        When I send a "PUT" request to "/api/v3/committees/8c4b48ec-9290-47ae-a5db-d1cf2723e8b3/animator?scope=<scope>" with body:
+        """
+        {
+            "animator": "2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf"
+        }
+        """
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "members_count": 3,
+            "sympathizers_count": 0,
+            "description": "my desc",
+            "zones": [
+                {
+                    "uuid": "@uuid@",
+                    "type": "city",
+                    "code": "92012",
+                    "name": "Boulogne-Billancourt",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                },
+                {
+                    "uuid": "@uuid@",
+                    "type": "city",
+                    "code": "92014",
+                    "name": "Bourg-la-Reine",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                },
+                {
+                    "uuid": "@uuid@",
+                    "type": "city",
+                    "code": "92024",
+                    "name": "Clichy",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                }
+            ],
+            "animator": {
+                "uuid": "@uuid@",
+                "first_name": "Referent75and77",
+                "last_name": "Referent75and77"
+            },
+            "uuid": "@uuid@",
+            "created_at": "@string@.isDateTime()",
+            "updated_at": "@string@.isDateTime()",
+            "name": "test 1",
+            "committee_election": {
+                "uuid": "@uuid@"
+            }
+        }
+        """
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
     Scenario: As a user granted with local scope, I can get geo zone available for a new committee
         Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         And I send a "GET" request to "/api/v3/zone/autocomplete?scope=referent&q=Hauts&availableForCommittee=true"
