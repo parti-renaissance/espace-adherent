@@ -70,6 +70,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public const RENAISSANCE_USER_2_UUID = 'd0a0935f-da7c-4caa-b582-a8c2376e5158';
     public const RENAISSANCE_USER_3_UUID = '859b1528-9451-41d7-bc9e-7c95e23c5113';
     public const RENAISSANCE_USER_4_UUID = '15b63931-cb1a-46c6-8801-ca32366f8ee3';
+    public const RENAISSANCE_USER_5_UUID = '9b85a6ad-4cdf-49c1-971f-35625df0cddc';
 
     public const DEFAULT_PASSWORD = 'secret!12345';
 
@@ -1153,6 +1154,24 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->donatedForMembership();
         $adherent->certify();
         $this->addReference('renaissance-user-4', $adherent);
+
+        $manager->persist($adherent = $this->adherentFactory->createFromArray([
+            'uuid' => self::RENAISSANCE_USER_5_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'renaissance-user-5@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Jack',
+            'last_name' => 'Doe',
+            'address' => $this->createPostAddress('3 avenue Jean Jaurès', '92340-92014', null, 48.5278939, 2.6484923),
+            'birthdate' => '1978-02-12',
+            'registered_at' => '2019-03-22 18:23:45',
+            'is_adherent' => true,
+        ]));
+        $adherent->activate(AdherentActivationToken::generate($adherent));
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $this->addReference('renaissance-user-5', $adherent);
 
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
