@@ -15,7 +15,7 @@ class RevenueDeclaredFilterBuilder implements FilterBuilderInterface
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createBooleanSelect('revenueDeclared', 'Revenus déclarés')
+            ->createBooleanSelect('revenueDeclared', 'Indemnités déclarées')
             ->getFilters()
         ;
     }
