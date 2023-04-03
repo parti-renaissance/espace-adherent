@@ -52,7 +52,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Laure Fenix', trim($crawler->filter('h6')->text()));
-        $this->assertStringContainsString('Adhérente depuis le 25 janvier 2017', $crawler->filter('#adherent-since')->text());
+        $this->assertStringContainsString('Inscrite depuis le 25 janvier 2017', $crawler->filter('#adherent-since')->text());
     }
 
     /**
