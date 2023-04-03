@@ -65,7 +65,7 @@ class AdherentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, $profilePage);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('http://test.enmarche.code/', $this->client, false);
+        $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client, false);
     }
 
     public function provideProfilePage(): \Generator
