@@ -166,10 +166,8 @@
                     </div>
                     <div>
                         <p class="text-sm leading-5 text-gray-500" id="adherent-since">
-                            {% if is_granted('RENAISSANCE_ADHERENT') %}
-                                Adhérent{{ app.user.female ? "e" }} depuis le <span class="capitalize">{{ app.user.registeredAt|format_datetime('none', 'none', 'd MMMM yyyy') }}</span>
-                            {% elseif app.user.isRenaissanceSympathizer %}
-                                Sympathisant{{ app.user.female ? "e" }} depuis le <span class="capitalize">{{ app.user.registeredAt|format_datetime('none', 'none', 'd MMMM yyyy') }}</span>
+                            {% if app.user.isRenaissanceUser %}
+                                Inscrit{{ app.user.female ? "e" }} depuis le <span class="capitalize">{{ app.user.registeredAt|format_datetime('none', 'none', 'd MMMM yyyy') }}</span>
                             {% else %}
                                 Non adhérent{{ app.user.female ? "e" }}.
                             {% endif %}
