@@ -391,7 +391,7 @@ Feature:
       },
       {
         "code": "revenueDeclared",
-        "label": "Revenus déclarés",
+        "label": "Indemnités déclarées",
         "options": {
             "choices": [
                 "Non",
