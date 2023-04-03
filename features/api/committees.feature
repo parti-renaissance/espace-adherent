@@ -1,5 +1,4 @@
 @api
-@debug
 Feature:
     In order to manage committees
     As a logged-in user
