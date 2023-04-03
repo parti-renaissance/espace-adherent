@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route(path: '/espace-adherent/mon-comite-local/modifier/{uuid}', name: 'app_my_committee_update', methods: ['GET'])]
 class SaveCommitteeUpdateController extends AbstractController
@@ -24,6 +25,10 @@ class SaveCommitteeUpdateController extends AbstractController
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
+
+        if (!$adherent->isRenaissanceUser()) {
+            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
 
         if (!$adherent->isForeignResident()) {
             $zones = $adherent->getParentZonesOfType(Zone::DEPARTMENT);

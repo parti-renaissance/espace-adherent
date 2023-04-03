@@ -52,7 +52,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Laure Fenix', trim($crawler->filter('h6')->text()));
-        $this->assertStringContainsString('Adhérente depuis le 25 janvier 2017', $crawler->filter('#adherent-since')->text());
+        $this->assertStringContainsString('Inscrite depuis le 25 janvier 2017', $crawler->filter('#adherent-since')->text());
     }
 
     /**
@@ -65,7 +65,7 @@ class AdherentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, $profilePage);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('http://test.enmarche.code/', $this->client, false);
+        $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client, false);
     }
 
     public function provideProfilePage(): \Generator

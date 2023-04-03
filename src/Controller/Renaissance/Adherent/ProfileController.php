@@ -21,7 +21,7 @@ class ProfileController extends AbstractController
         $adherent = $this->getUser();
 
         if (!$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);

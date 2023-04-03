@@ -89,7 +89,7 @@ class UserController extends AbstractController
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         $form = $this->createForm(AdherentChangePasswordType::class);
@@ -133,7 +133,7 @@ class UserController extends AbstractController
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
@@ -183,7 +183,7 @@ class UserController extends AbstractController
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         $unregistrationCommand = new UnregistrationCommand();
