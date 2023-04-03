@@ -130,6 +130,12 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank
+     * @Assert\Range(
+     *     min="-120 years",
+     *     max="-18 years",
+     *     minMessage="L'élu doit être âgé de moins de 120 ans",
+     *     maxMessage="L'age minimum pour être un élu est de 18 ans"
+     * )
      *
      * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read"})
      */
