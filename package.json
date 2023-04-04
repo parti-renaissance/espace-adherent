@@ -50,7 +50,7 @@
     "mini-css-extract-plugin": "^2.7.5",
     "moment": "^2.29.4",
     "postcss": "^8.4.21",
-    "postcss-loader": "^7.1.0",
+    "postcss-loader": "^7.2.3",
     "prop-types": "^15.8.1",
     "qs": "^6.11.1",
     "react": "^18.2.0",
