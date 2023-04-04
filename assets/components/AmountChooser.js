@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const defaultAmounts = [30, 60, 120, 500];
+const defaultAmounts = [
+    { label: 'Tarif réduit *', amount: 10 },
+    { label: 'Tarif normal', amount: 30 },
+    { label: 'Avec don **', amount: 60 },
+    { label: 'Avec don **', amount: 120 },
+    { label: 'Avec don **', amount: 500 },
+];
 
 const amountAfterTaxReturn = (amount) => {
     amount = parseInt(amount, 10);
@@ -23,7 +29,6 @@ export default class AmountChooser extends React.Component {
 
         this.handleButtonClicked = this.handleButtonClicked.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleInputKeyPress = this.handleInputKeyPress.bind(this);
     }
 
     handleButtonClicked(amount) {
@@ -48,19 +53,6 @@ export default class AmountChooser extends React.Component {
         });
     }
 
-    handleInputKeyPress(event) {
-        if (!this.props.onSubmit) {
-            return;
-        }
-
-        const key = event.keyCode || event.charCode;
-
-        if (13 === key) {
-            event.preventDefault();
-            this.props.onSubmit();
-        }
-    }
-
     render() {
         const state = this.state.amount;
         const classSelected = 'renaissance-amount-chooser__button--selected';
@@ -68,14 +60,15 @@ export default class AmountChooser extends React.Component {
         return (
             <div className="renaissance-amount-chooser">
                 <input type="hidden" name={this.props.name} value={state} key={`selected_amount_${state}`}/>
-                <div className="flex mt-5 mb-5" role="group">
-                    {this.props.amounts.map((amount) => (
+                <div className="flex my-5" role="group">
+                    {this.props.amounts.map((item) => (
                         <button
-                            className={`renaissance-amount-chooser__button ${amount === state ? classSelected : ''}`}
+                            className={`renaissance-amount-chooser__button ${item.amount === state ? classSelected : ''}`}
                             type="button"
-                            onClick={() => this.handleButtonClicked(amount)}
-                            key={`amount_${amount}`}>
-                            {amount} €
+                            onClick={() => this.handleButtonClicked(item.amount)}
+                            key={`amount_${item.amount}`}>
+                            {this.props.displayLabel && <span className="text-sm leading-5 text-gray-500">{item.label}</span>}
+                            <span>{item.amount} €</span>
                         </button>
                     ))}
                 </div>
@@ -91,9 +84,8 @@ export default class AmountChooser extends React.Component {
                         ref="other_amount"
                         onFocus={this.handleInputChange}
                         onChange={this.handleInputChange}
-                        onKeyPress={this.handleInputKeyPress}
                         defaultValue={
-                            0 >= this.props.value || -1 < this.props.amounts.indexOf(this.props.value)
+                            0 >= this.props.value || -1 < this.props.amounts.map(e => e.amount).indexOf(this.props.value)
                                 ? null : this.props.value
                         }
                     />
@@ -135,13 +127,15 @@ export default class AmountChooser extends React.Component {
 AmountChooser.defaultProps = {
     maxValue: 7500,
     amounts: defaultAmounts,
+    displayLabel: false,
 };
 
 AmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
-    amounts: PropTypes.arrayOf(PropTypes.number),
+    amounts: PropTypes.arrayOf(PropTypes.object),
     value: PropTypes.number,
     maxValue: PropTypes.number,
+    displayLabel: PropTypes.bool,
     onChange: PropTypes.func,
     onSubmit: PropTypes.func,
 };

@@ -4,7 +4,7 @@ import AmountChooser from '../components/AmountChooser';
 
 export default () => {
     findAll(document, 'input.renaissance-amount-chooser').forEach((element) => {
-        const { name } = element;
+        const { name, dataset } = element;
         const value = parseFloat(element.value) || 0;
         const chooser = document.createElement('div');
 
@@ -15,6 +15,7 @@ export default () => {
             <AmountChooser
                 name={name}
                 value={value}
+                displayLabel={dataset.displayLabel === 'true'}
             />,
             chooser
         );

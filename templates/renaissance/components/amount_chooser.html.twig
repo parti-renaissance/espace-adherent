@@ -1,0 +1,12 @@
+<div>
+    {{ form_errors(form.amount) }}
+    {{ form_row(form.amount, {attr: { class: 'renaissance-amount-chooser', 'data-display-label': 'true' } }) }}
+    {{ form_rest(form.amount) }}
+
+    <p class="mt-4 text-gray-500">
+        (<span class="text-red-500">*</span>) Tarif réservé aux étudiants, personnes bénéficiant des minimas sociaux, sans emploi.
+    </p>
+    <p class="mt-2 text-gray-500">
+        (<span class="text-red-500">**</span>) Tarif normal plus don.
+    </p>
+</div>
