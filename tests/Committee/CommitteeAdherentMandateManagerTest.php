@@ -251,7 +251,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createNewAdherent(Genders::MALE, '2005-04-04');
+        $adherent = $this->createNewAdherent(Genders::MALE, (new \DateTime())->modify('-17 years')->format('Y-m-d'));
         $committee = $this->createCommittee();
 
         $this->translator
@@ -304,7 +304,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createNewAdherent(Genders::MALE, '2005-04-04');
+        $adherent = $this->createNewAdherent(Genders::MALE, (new \DateTime())->modify('-17 years')->format('Y-m-d'));
 
         $this->translator
             ->expects($this->once())
