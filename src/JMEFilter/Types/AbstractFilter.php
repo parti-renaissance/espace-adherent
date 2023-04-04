@@ -9,6 +9,7 @@ abstract class AbstractFilter implements FilterInterface
 {
     private string $code;
     private string $label;
+    private int $position = 0;
     private ?array $options = null;
 
     public function __construct(string $code, string $label)
@@ -33,6 +34,16 @@ abstract class AbstractFilter implements FilterInterface
     public function getLabel(): string
     {
         return $this->label;
+    }
+
+    public function setPosition(int $position): void
+    {
+        $this->position = $position;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
     }
 
     /** @Groups("filter:read") */

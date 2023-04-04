@@ -9,6 +9,7 @@ use App\JMEFilter\Types\Select;
 use App\JMEFilter\Types\Text;
 
 /**
+ * @method self setPosition(int $position)
  * @method self setChoices(string[] $choices)
  * @method self setUrl(string $url)
  * @method self setQueryParam(string $queryParam)
