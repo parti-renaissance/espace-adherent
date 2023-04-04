@@ -1565,7 +1565,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->addSelect('memberships')
             ->leftJoin('adherent.memberships', 'memberships')
             ->where('adherent.source = :source')
+            ->andWhere('adherent.status = :enabled')
             ->setParameters([
+                'enabled' => Adherent::ENABLED,
                 'source' => MembershipSourceEnum::RENAISSANCE,
                 'manual_trigger' => CommitteeMembershipTriggerEnum::MANUAL,
             ])
