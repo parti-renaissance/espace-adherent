@@ -16,6 +16,7 @@ class ContributionActiveFilterBuilder implements FilterBuilderInterface
     {
         return (new FilterCollectionBuilder())
             ->createBooleanSelect('contributionActive', 'Cotisation active')
+            ->setPosition(11)
             ->getFilters()
         ;
     }

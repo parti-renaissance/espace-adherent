@@ -305,17 +305,6 @@ Feature:
         "type": "select"
       },
       {
-        "code": "contributionActive",
-        "label": "Cotisation active",
-        "options": {
-            "choices": [
-                "Non",
-                "Oui"
-            ]
-        },
-        "type": "select"
-      },
-      {
         "code": "emailSubscription",
         "label": "Abonné email",
         "options": {
@@ -390,17 +379,6 @@ Feature:
         "type": "select"
       },
       {
-        "code": "revenueDeclared",
-        "label": "Indemnités déclarées",
-        "options": {
-            "choices": [
-                "Non",
-                "Oui"
-            ]
-        },
-        "type": "select"
-      },
-      {
         "code": "zones",
         "label": "Zone géographique",
         "options": {
@@ -412,6 +390,28 @@ Feature:
           "required": false
         },
         "type": "zone_autocomplete"
+      },
+      {
+        "code": "revenueDeclared",
+        "label": "Indemnités déclarées",
+        "options": {
+            "choices": [
+                "Non",
+                "Oui"
+            ]
+        },
+        "type": "select"
+      },
+      {
+        "code": "contributionActive",
+        "label": "Cotisation active",
+        "options": {
+            "choices": [
+                "Non",
+                "Oui"
+            ]
+        },
+        "type": "select"
       }
     ]
     """

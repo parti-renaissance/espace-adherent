@@ -27,6 +27,10 @@ class FiltersGenerator
             }
         }
 
+        usort($filters, function (FilterInterface $filter1, FilterInterface $filter2) {
+            return $filter1->getPosition() <=> $filter2->getPosition();
+        });
+
         return $filters;
     }
 }

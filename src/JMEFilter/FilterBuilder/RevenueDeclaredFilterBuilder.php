@@ -16,6 +16,7 @@ class RevenueDeclaredFilterBuilder implements FilterBuilderInterface
     {
         return (new FilterCollectionBuilder())
             ->createBooleanSelect('revenueDeclared', 'Indemnités déclarées')
+            ->setPosition(10)
             ->getFilters()
         ;
     }
