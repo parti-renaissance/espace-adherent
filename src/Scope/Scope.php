@@ -131,4 +131,9 @@ class Scope
     {
         $this->attributes[$name] = $value;
     }
+
+    public function getCommitteeUuids(): array
+    {
+        return array_column($this->attributes['committees'] ?? [], 'uuid');
+    }
 }

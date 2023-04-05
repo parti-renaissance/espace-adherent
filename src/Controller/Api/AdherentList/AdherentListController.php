@@ -46,7 +46,13 @@ class AdherentListController extends AbstractController
         }
 
         $scopeGenerator = $this->authorizationChecker->getScopeGenerator($request, $user);
-        $filter = ManagedUsersFilterFactory::createForZones($scopeGenerator->getCode(), $scopeGenerator->generate($user)->getZones());
+        $scope = $scopeGenerator->generate($user);
+
+        $filter = ManagedUsersFilterFactory::createForZones(
+            $scopeGenerator->getCode(),
+            $scope->getZones(),
+            $scope->getCommitteeUuids()
+        );
 
         $this->denormalizer->denormalize($request->query->all(), ManagedUsersFilter::class, null, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $filter,

@@ -157,8 +157,8 @@ class ManagedUsersFilter
         array $cities = [],
         array $zones = []
     ) {
-        if (empty($managedZones) && empty($zones)) {
-            throw new \InvalidArgumentException('Both managed zones and zones could not be empty');
+        if (empty($managedZones) && empty($zones) && empty($committeeUuids)) {
+            throw new \InvalidArgumentException('ManagedUser filter should have managed zones or selected zones or committee');
         }
 
         $this->subscriptionType = $subscriptionType;
