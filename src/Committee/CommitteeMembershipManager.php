@@ -45,8 +45,10 @@ class CommitteeMembershipManager
 
         // 1. Comes out of the existing committees
         foreach ($adherent->getMemberships()->getCommitteeV2Memberships() as $membership) {
-            if (!$alreadyFollow = $membership->getCommittee()->equals($committee)) {
+            if (!$membership->getCommittee()->equals($committee)) {
                 $this->committeeManager->unfollowCommittee($adherent, $membership->getCommittee());
+            } elseif (!$alreadyFollow) {
+                $alreadyFollow = true;
             }
         }
 
