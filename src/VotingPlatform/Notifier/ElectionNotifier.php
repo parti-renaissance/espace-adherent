@@ -4,7 +4,6 @@ namespace App\VotingPlatform\Notifier;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\CommitteeMembership;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\Voter;
@@ -18,7 +17,6 @@ use App\Mailer\Message\VotingPlatformElectionVoteIsOverMessage;
 use App\Mailer\Message\VotingPlatformVoteReminderMessage;
 use App\Mailer\Message\VotingPlatformVoteStatusesIsOpenMessage;
 use App\Mailer\Message\VotingPlatformVoteStatusesIsOverMessage;
-use App\Repository\CommitteeMembershipRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,8 +28,7 @@ class ElectionNotifier
         private readonly MailerService $transactionalMailer,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly EntityManagerInterface $entityManager,
-        private readonly VoterRepository $voterRepository,
-        private readonly CommitteeMembershipRepository $committeeMembershipRepository
+        private readonly VoterRepository $voterRepository
     ) {
     }
 
@@ -41,22 +38,10 @@ class ElectionNotifier
             return;
         }
 
-        if (($electionType = $election->getDesignationType()) === DesignationTypeEnum::COMMITTEE_SUPERVISOR) {
-            $committeeMemberships = $this->committeeMembershipRepository->findVotingForElectionMemberships(
-                $election->getElectionEntity()->getCommittee(),
-                $election->getDesignation(),
-                false
-            );
-
-            $getRecipientsCallback = function () use ($committeeMemberships): array {
-                return array_map(fn (CommitteeMembership $membership) => $membership->getAdherent(), $committeeMemberships);
-            };
-        } else {
-            $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
-                return $this->getAdherentForElection($election, $offset, $limit);
-            };
-        }
-
+        $electionType = $election->getDesignationType();
+        $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
+            return $this->getAdherentForElection($election, $offset, $limit);
+        };
         $url = $this->getUrl($election);
 
         $this->batchSendEmail(
