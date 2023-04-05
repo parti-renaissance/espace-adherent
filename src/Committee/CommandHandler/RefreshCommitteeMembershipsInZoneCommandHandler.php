@@ -10,11 +10,13 @@ use App\Entity\Geo\Zone;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\Geo\ZoneRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerInterface
 {
     public function __construct(
+        private readonly EntityManagerInterface $entityManager,
         private readonly ZoneRepository $zoneRepository,
         private readonly CommitteeRepository $committeeRepository,
         private readonly CommitteeMembershipManager $committeeMembershipManager,
@@ -34,9 +36,7 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
 
         foreach ($committeesZones as $zones) {
             foreach ($zones as $zone) {
-                /** @var Zone $zone */
                 $adherents = $this->adherentRepository->findAllForCommitteeZone($zone);
-                /** @var Committee $committee */
                 $committee = $committeesOfZone[$zoneCommitteeMapping[$zone->getTypeCode()]];
 
                 $committeeAdherentIds = [];
@@ -45,7 +45,7 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
                     $committeeAdherentIds[] = $adherent->getId();
                 }
 
-                if (!$committee->hasActiveElection()) {
+                if ($committee->allowMembershipsMoving()) {
                     foreach ($this->committeeMembershipManager->getCommitteeMemberships($committee) as $membership) {
                         if (!\in_array($membership->getAdherent()->getId(), $committeeAdherentIds)) {
                             $this->committeeMembershipManager->unfollowCommittee($membership, $committee);
@@ -54,6 +54,8 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
                 }
             }
         }
+
+        $this->entityManager->clear();
 
         $this->committeeRepository->updateMembershipsCounters();
     }
