@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Address\Address;
+use App\Donation\DonationSourceEnum;
 use App\Donation\PayboxPaymentSubscription;
 use App\Entity\Adherent;
 use App\Entity\Donation;
@@ -28,6 +29,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         $donator0 = $this->createDonator('000050', $this->getReference('adherent-1'));
         $donator1 = $this->createDonator('000051', $this->getReference('adherent-4'));
         $donator2 = $this->createDonator('000052', $this->getReference('adherent-3'));
+        $donator3 = $this->createDonator('000053', $this->getReference('adherent-5'));
 
         $donationNormal = $this->createDonation(
             $donator0,
@@ -107,6 +109,25 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         );
         $this->createTransaction($donation4);
 
+        $donationForMembership1 = $this->createDonation(
+            $donator3,
+            30.,
+            PayboxPaymentSubscription::NONE,
+            Donation::TYPE_CB,
+            '2023/01/06 19:00:00'
+        );
+        $this->createTransaction($donationForMembership1);
+        $donationForMembership1->setSource(DonationSourceEnum::MEMBERSHIP);
+
+        $donation5 = $this->createDonation(
+            $donator3,
+            50.,
+            PayboxPaymentSubscription::UNLIMITED,
+            Donation::TYPE_CB,
+            '2023/01/06 19:00:00'
+        );
+        $this->createTransaction($donation5);
+
         $donator0->computeLastSuccessfulDonation();
         $donator1->computeLastSuccessfulDonation();
         $donator2->computeLastSuccessfulDonation();
@@ -114,6 +135,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         $manager->persist($donator0);
         $manager->persist($donator1);
         $manager->persist($donator2);
+        $manager->persist($donator3);
 
         $manager->flush();
     }

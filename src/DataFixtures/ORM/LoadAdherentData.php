@@ -219,7 +219,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent5->addCharter(new CandidateCharter());
         $adherent5->addCharter(new CommitteeHostCharter());
         $adherent5->setSource(MembershipSourceEnum::RENAISSANCE);
-        $adherent5->donatedForMembership();
+        $adherent5->donatedForMembership(new \DateTime('2023/01/06 19:00:00'));
         $this->addReference('adherent-5', $adherent5);
 
         $adherent6 = $this->adherentFactory->createFromArray([

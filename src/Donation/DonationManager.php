@@ -31,7 +31,8 @@ class DonationManager
                 $transaction->getPayboxDateTime(),
                 $donation->getAmount(),
                 $donation->getType(),
-                $donation->isSubscription()
+                $donation->isSubscription(),
+                $donation->isMembership()
             );
         }
 
@@ -41,7 +42,8 @@ class DonationManager
                 $donation->getDonatedAt(),
                 $donation->getAmount(),
                 $donation->getType(),
-                $donation->isSubscription()
+                $donation->isSubscription(),
+                $donation->isMembership()
             );
         }
 
@@ -56,8 +58,9 @@ class DonationManager
         \DateTimeInterface $date,
         int $amount,
         string $type,
-        bool $isSubscription
+        bool $isSubscription,
+        bool $isMembership
     ): DonationValueObject {
-        return new DonationValueObject($date, $amount, $type, $isSubscription);
+        return new DonationValueObject($date, $amount, $type, $isSubscription, $isMembership);
     }
 }

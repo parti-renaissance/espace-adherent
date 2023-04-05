@@ -1,0 +1,77 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% block page_title 'Comité local' %}
+
+{% block content_right_side %}
+    <section class="space-y-4 md:space-y-6">
+        <h1 class="text-3xl font-bold leading-10 text-gray-900">Mes dons</h1>
+
+        {% if donations_history is not empty %}
+            <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+                <div>
+                    <h3 class="text-lg font-medium leading-6 text-gray-900 tracking-wider">Merci pour votre engagement à nos côtés !</h3>
+                    <p class="mt-4 text-base leading-6 text-gray-500">Votre dernier don ou dernière cotisation remonte à <strong>{{ donations_history|first.date|ago }}</strong>.</p>
+                </div>
+                <div class="mt-8">
+                    <h2 class="text-lg font-medium leading-6 text-gray-900 tracking-wider">Don mensuel</h2>
+                    <div class="mt-4 bg-blue-50 rounded-lg p-4 flex-1 inline-flex items-center md:flex md:justify-between">
+                    {% if subscribed_donations %}
+                            <p class=" text-sm font-medium text-blue-800">
+                                {% for subscribed_donation in subscribed_donations %}
+                                Prochaine échéance du don mensuel de {{ subscribed_donation.amountInEuros }}€ le {{ subscribed_donation.nextDonationAt|format_datetime('medium', 'none') }}
+                                {% if not loop.last %}
+                                    <br />
+                                {% endif %}
+                                {% endfor %}
+                            </p>
+                            <a href="{{ path('app_renaissance_donation__cancel_subscription') }}" class="text-sm button button-blue">{{ 'adherent.stop_donation'|trans({ count: subscribed_donations|length }) }}</a>
+                    {% elseif last_subscription_ended %}
+                        <p class="text-base leading-6 text-blue-800">Vous avez mis fin à votre don mensuel le {{ last_subscription_ended.subscriptionEndedAt|format_datetime('medium', 'none') }}. Vous pouvez en refaire un <a href="{{ path('app_renaissance_donation') }}">en cliquant <strong>ici</strong></a>. </p>
+                    {% endif %}
+                </div>
+
+                    <p class="mt-4 text-base leading-6 text-gray-500">
+                        Veuillez noter que votre reçu fiscal sera envoyé entre avril et juin, il n'est pas nécessaire de le joindre à la déclaration de revenus de mai. Une fois obtenu, conservez-le pour pouvoir le présenter en cas de contrôle de l'administration fiscale.
+                    </p>
+                </div>
+
+                <div class="mt-8 flex flex-col">
+                    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+                                <table class="min-w-full divide-y divide-gray-300">
+                                    <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Date</th>
+                                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Montant</th>
+                                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Type</th>
+                                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Moyen de paiement</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 bg-white">
+                                    {% for donation in donations_history %}
+                                        <tr>
+                                            <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ donation.date|format_datetime('medium', 'none') }}</td>
+                                            <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ donation.amountInEuros }} €</td>
+                                            <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                {% if donation.isSubscription %}
+                                                    Don mensuel
+                                                {% elseif donation.membership %}
+                                                    Cotisation
+                                                {% else %}
+                                                    Don ponctuel
+                                                {% endif %}
+                                            </td>
+                                            <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ ('donation.type.' ~ donation.type)|trans }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}
