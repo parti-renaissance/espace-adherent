@@ -28,7 +28,7 @@ use App\Repository\CommitteeElectionRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
-use App\VotingPlatform\Election\Enum\ElectionCancelRaisonEnum;
+use App\VotingPlatform\Election\Enum\ElectionCancelReasonEnum;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -131,7 +131,7 @@ class ConfigureCommand extends Command
 
                 if ($designation->getVoteStartDate() < $timeToCheck && !$election->countCandidateGroups()) {
                     if (0 === \count($committeeElection->getCandidacies())) {
-                        $election->cancel(ElectionCancelRaisonEnum::CandidatesMissing);
+                        $election->cancel(ElectionCancelReasonEnum::CandidatesMissing);
                         $this->entityManager->flush();
 
                         continue;

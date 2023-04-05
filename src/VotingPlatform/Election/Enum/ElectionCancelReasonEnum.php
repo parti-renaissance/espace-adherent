@@ -2,7 +2,7 @@
 
 namespace App\VotingPlatform\Election\Enum;
 
-enum ElectionCancelRaisonEnum: string
+enum ElectionCancelReasonEnum: string
 {
     case CandidatesMissing = 'candidates_missing';
 }

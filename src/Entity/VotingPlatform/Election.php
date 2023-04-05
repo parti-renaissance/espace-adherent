@@ -8,7 +8,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\ElectionResult\ElectionResult;
 use App\VotingPlatform\Election\ElectionStatusEnum;
-use App\VotingPlatform\Election\Enum\ElectionCancelRaisonEnum;
+use App\VotingPlatform\Election\Enum\ElectionCancelReasonEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -57,9 +57,9 @@ class Election
     private $canceledAt;
 
     /**
-     * @ORM\Column(nullable=true, enumType=ElectionCancelRaisonEnum::class)
+     * @ORM\Column(nullable=true, enumType=ElectionCancelReasonEnum::class)
      */
-    private ?ElectionCancelRaisonEnum $cancelRaison = null;
+    private ?ElectionCancelReasonEnum $cancelReason = null;
 
     /**
      * @var ElectionRound[]|Collection
@@ -179,11 +179,11 @@ class Election
         return ElectionStatusEnum::CANCELED === $this->status;
     }
 
-    public function cancel(ElectionCancelRaisonEnum $raison): void
+    public function cancel(ElectionCancelReasonEnum $reason): void
     {
         $this->status = ElectionStatusEnum::CANCELED;
         $this->canceledAt = new \DateTime();
-        $this->cancelRaison = $raison;
+        $this->cancelReason = $reason;
 
         $this->designation->cancel();
     }
