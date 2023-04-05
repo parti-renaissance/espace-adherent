@@ -2,6 +2,7 @@
 
 namespace App\Api\Filter;
 
+use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Api\Doctrine\AuthoredItemsCollectionExtension;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
@@ -30,7 +31,7 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
 
         $this
             ->adherentMessageRepository
-            ->withMessageType($queryBuilder, $scopeGenerator->getCode(), $alias)
+            ->withMessageType($queryBuilder, AdherentMessageTypeEnum::getMessageTypeFromScopeCode($scopeGenerator->getCode()), $alias)
             ->withAuthor($queryBuilder, $user, $alias)
         ;
 

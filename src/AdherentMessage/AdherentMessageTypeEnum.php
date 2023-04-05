@@ -16,6 +16,7 @@ use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
 use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
+use App\Scope\ScopeEnum;
 use MyCLabs\Enum\Enum;
 
 class AdherentMessageTypeEnum extends Enum
@@ -55,7 +56,7 @@ class AdherentMessageTypeEnum extends Enum
     public const ROLES = [
         DeputyAdherentMessage::class => ['ROLE_DEPUTY', 'ROLE_DELEGATED_DEPUTY'],
 
-        CommitteeAdherentMessage::class => 'ROLE_HOST',
+        CommitteeAdherentMessage::class => 'ROLE_ANIMATOR',
 
         SenatorAdherentMessage::class => ['ROLE_SENATOR', 'ROLE_DELEGATED_SENATOR'],
 
@@ -78,4 +79,18 @@ class AdherentMessageTypeEnum extends Enum
 
         PresidentDepartmentalAssemblyAdherentMessage::class => ['ROLE_PRESIDENT_DEPARTMENTAL_ASSEMBLY', 'ROLE_DELEGATED_PRESIDENT_DEPARTMENTAL_ASSEMBLY'],
     ];
+
+    public static function getMessageClassFromScopeCode(string $scopeCode): ?string
+    {
+        return self::CLASSES[static::getMessageTypeFromScopeCode($scopeCode)] ?? null;
+    }
+
+    public static function getMessageTypeFromScopeCode(string $scopeCode): string
+    {
+        if (ScopeEnum::ANIMATOR === $scopeCode) {
+            return self::COMMITTEE;
+        }
+
+        return $scopeCode;
+    }
 }
