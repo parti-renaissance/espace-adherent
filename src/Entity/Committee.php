@@ -259,6 +259,8 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Groups({"committee:read", "committee:update_animator"})
+     *
+     * @Assert\Expression("!this.animator or this.animator.isRenaissanceAdherent()", message="Président doit être un adhérent Renaissance.")
      */
     public ?Adherent $animator = null;
 
@@ -286,7 +288,9 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
 
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->createdBy = $creator;
-        $this->setName($name);
+        if ($name) {
+            $this->setName($name);
+        }
         $this->slug = $slug;
         $this->phone = $phone;
         $this->status = $status;

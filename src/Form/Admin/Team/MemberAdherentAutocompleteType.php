@@ -58,16 +58,21 @@ class MemberAdherentAutocompleteType extends AbstractType
     public static function filterCallback(AbstractAdmin $admin, array $property, $value): void
     {
         $datagrid = $admin->getDatagrid();
-
-        $filter = $datagrid->getFilter('adherent');
+        $previousFilter = $filter = $datagrid->getFilter('adherent');
         $filter->setCondition(FilterInterface::CONDITION_AND);
         $datagrid->setValue($filter->getName(), null, true);
 
         foreach ($property as $prop) {
             $filter = $datagrid->getFilter($prop);
             $filter->setCondition(FilterInterface::CONDITION_OR);
+            if ($previousFilter) {
+                $filter->setPreviousFilter($previousFilter);
+            }
             $datagrid->setValue($filter->getFormName(), null, $value);
+            $previousFilter = $filter;
         }
+
+        $datagrid->reorderFilters($property);
     }
 
     public function getParent(): ?string

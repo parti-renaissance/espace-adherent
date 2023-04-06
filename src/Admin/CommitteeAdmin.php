@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Events;
+use App\Form\Admin\RenaissanceAdherentAutocompleteType;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -170,6 +171,16 @@ class CommitteeAdmin extends AbstractAdmin
                 ->add('twitterNickname', null, [
                     'label' => 'Twitter',
                     'required' => false,
+                ])
+            ->end()
+            ->with('Président', ['class' => 'col-md-5'])
+                ->add('animator', RenaissanceAdherentAutocompleteType::class, [
+                    'label' => 'Président du comité',
+                    'required' => false,
+                    'req_params' => [
+                        'field' => 'animator',
+                        '_sonata_admin' => 'app.admin.committee',
+                    ],
                 ])
             ->end()
             ->with('Localisation', ['class' => 'col-md-5'])
@@ -358,20 +369,11 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('id', null, ['label' => 'ID'])
             ->add('version', null, ['label' => 'Version'])
             ->addIdentifier('name', null, ['label' => 'Nom'])
-            ->add('postAddress', null, [
-                'label' => 'Adresse',
-                'template' => 'admin/list_address.html.twig',
+            ->add('animator', null, [
+                'label' => 'Président',
             ])
             ->add('zones', null, ['label' => 'Zones'])
             ->add('createdAt', null, ['label' => 'Date de création'])
-            ->add('hosts', null, [
-                'label' => 'Animateur(s)',
-                'template' => 'admin/committee/list_hosts.html.twig',
-            ])
-            ->add('creator', null, [
-                'label' => 'Créateur',
-                'template' => 'admin/committee/list_creator.html.twig',
-            ])
             ->add('status', null, [
                 'label' => 'Statut',
                 'template' => 'admin/committee/list_status.html.twig',
