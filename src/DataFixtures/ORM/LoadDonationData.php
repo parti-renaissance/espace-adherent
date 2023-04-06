@@ -113,11 +113,11 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
             $donator3,
             30.,
             PayboxPaymentSubscription::NONE,
-            Donation::TYPE_CB,
-            '2023/01/06 19:00:00'
+            Donation::TYPE_CB
         );
         $this->createTransaction($donationForMembership1);
         $donationForMembership1->setSource(DonationSourceEnum::MEMBERSHIP);
+        $donator3->setMembershipDonation($donationForMembership1);
 
         $donation5 = $this->createDonation(
             $donator3,
