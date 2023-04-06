@@ -22,7 +22,6 @@ final class MandatesEnum extends Enum
     private const VICE_PRESIDENT_OF_EPCI = 'vice_president_of_epci';
     private const EPCI_MEMBER = 'epci_member';
 
-
     public const ALL = [
         self::REGIONAL_COUNCILOR,
         self::DEPARTMENTAL_COUNCILOR,
