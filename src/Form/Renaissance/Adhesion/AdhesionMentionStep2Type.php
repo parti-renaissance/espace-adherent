@@ -6,6 +6,7 @@ use App\Form\RequiredCheckboxType;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,7 +15,7 @@ class AdhesionMentionStep2Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('amount', AdhesionAmountType::class)
+            ->add('amount', HiddenType::class)
             ->add('isPhysicalPerson', RequiredCheckboxType::class)
             ->add('conditions', CheckboxType::class)
             ->add('cguAccepted', CheckboxType::class)

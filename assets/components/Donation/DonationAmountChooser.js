@@ -12,6 +12,18 @@ export default class DonationAmountChooser extends React.Component {
         this.state = {
             amount: props.value,
             abonnement: props.abonnement,
+            abonnementPrices: [
+                { amount: 5 },
+                { amount: 10 },
+                { amount: 25 },
+                { amount: 50 },
+            ],
+            noAbonnementPrices: [
+                { amount: 30 },
+                { amount: 60 },
+                { amount: 120 },
+                { amount: 500 },
+            ],
         };
 
         this.handleAmountChange = this.handleAmountChange.bind(this);
@@ -72,7 +84,7 @@ export default class DonationAmountChooser extends React.Component {
                 </div>
 
                 <AmountChooser
-                    amounts={this.state.abonnement ? [5, 10, 25, 50] : [30, 60, 120, 500]}
+                    amounts={this.state.abonnement ? this.state.abonnementPrices : this.state.noAbonnementPrices}
                     key={`amount-abo-${this.state.abonnement}`}
                     name={this.props.name}
                     value={this.props.value}

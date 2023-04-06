@@ -218,7 +218,7 @@
         @apply flex flex-col;
 
         &__button {
-            @apply bg-white text-green button-group grow border border-green border-x first:border-l last:border-r;
+            @apply flex flex-col items-center justify-center space-y-1 bg-white text-green button-group grow border border-green border-x first:border-l last:border-r;
 
             &:hover {
                 @apply bg-lighter-green text-green border-green;

@@ -482,8 +482,8 @@ Feature:
         """
         {
           "female":29,
-          "male":44,
-          "total":73
+          "male":45,
+          "total":74
         }
         """
 
