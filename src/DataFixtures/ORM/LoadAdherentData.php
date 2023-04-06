@@ -1155,6 +1155,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->certify();
         $this->addReference('renaissance-user-4', $adherent);
 
+        // RE Sympathizer
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
             'uuid' => self::RENAISSANCE_USER_5_UUID,
             'password' => self::DEFAULT_PASSWORD,

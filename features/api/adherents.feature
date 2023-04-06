@@ -686,7 +686,7 @@ Feature:
         """
         {
             "adherent": 6,
-            "sympathizer": 0
+            "sympathizer": 1
         }
         """
         When I send a "POST" request to "/api/v3/adherents/count?scope=referent" with body:
@@ -698,6 +698,6 @@ Feature:
         """
         {
             "adherent": 2,
-            "sympathizer": 0
+            "sympathizer": 1
         }
         """
