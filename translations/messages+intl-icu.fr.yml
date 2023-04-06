@@ -188,13 +188,21 @@ adherent.contact.success: Votre message a bien été envoyé.
 
 adherent.mandate.admin.label: Mandat(s)
 adherent.mandate.label: Votre ou vos mandats
-adherent.mandate.regional_councilor: Conseiller régional
-adherent.mandate.departmental_councilor: Conseiller départemental
+adherent.mandate.regional_councilor: Conseiller(e) régional(e)
+adherent.mandate.departmental_councilor: Conseiller(e) départemental(e)
+adherent.mandate.consular_conselor: Conseiller(e) consulaire
+adherent.mandate.corsica_assembly_member: Membre de l'Assemblée de Corse
 adherent.mandate.mayor: Maire
-adherent.mandate.city_councilor: Conseiller municipal
+adherent.mandate.mayor_assistant: Maire adjoint(e)
+adherent.mandate.city_councilor: Conseiller(e) municipal(e)
+adherent.mandate.borough_councilor: Conseiller(e) d'arrondissement
 adherent.mandate.parliamentary: Parlementaire
-adherent.mandate.european_deputy: Député européen
-adherent.mandate.consular_conselor: Conseiller consulaire
+adherent.mandate.deputy: Député(e)
+adherent.mandate.senator: Sénateur(rice)
+adherent.mandate.european_deputy: Député(e) européen(ne)
+adherent.mandate.president_of_epci: Président(e) d'EPCI
+adherent.mandate.vice_president_of_epci: Vice-président(e) d'EPCI
+adherent.mandate.epci_member: Membre d'EPCI
 adherent.form.elected: Je suis élu(e)
 adherent.form.mandate.placeholder: Choisissez un ou plusieurs mandats
 
