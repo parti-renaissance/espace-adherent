@@ -861,3 +861,20 @@ Feature:
       ]
     }
     """
+
+    Scenario: As a logged-in animator I can search an adherent with autocomplete search
+      Given I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web"
+      When I send a "GET" request to "/api/v3/adherents/autocomplete?q=adherent%2056&scope=animator"
+      Then the response status code should be 200
+      And the JSON should be equal to:
+      """
+      [
+        {
+          "registered_at": "@string@.isDateTime()",
+          "uuid": "@uuid@",
+          "first_name": "Adherent 56",
+          "last_name": "Fa56ke",
+          "postal_code": "77000"
+        }
+      ]
+      """
