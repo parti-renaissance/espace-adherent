@@ -15,7 +15,7 @@ export default () => {
             <AmountChooser
                 name={name}
                 value={value}
-                displayLabel={dataset.displayLabel === 'true'}
+                displayLabel={'true' === dataset.displayLabel}
             />,
             chooser
         );

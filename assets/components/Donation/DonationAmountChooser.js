@@ -16,14 +16,14 @@ export default class DonationAmountChooser extends React.Component {
                 { amount: 5 },
                 { amount: 10 },
                 { amount: 25 },
-                { amount: 50 }
+                { amount: 50 },
             ],
             noAbonnementPrices: [
                 { amount: 30 },
                 { amount: 60 },
                 { amount: 120 },
-                { amount: 500 }
-            ]
+                { amount: 500 },
+            ],
         };
 
         this.handleAmountChange = this.handleAmountChange.bind(this);

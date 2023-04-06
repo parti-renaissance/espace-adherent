@@ -89,7 +89,7 @@ export default class AmountChooser extends React.Component {
                         onChange={this.handleInputChange}
                         defaultValue={
                             0 >= this.props.value
-                            || -1 < this.props.amounts.map(e => e.amount).indexOf(this.props.value)
+                            || -1 < this.props.amounts.map((e) => e.amount).indexOf(this.props.value)
                                 ? null : this.props.value
                         }
                     />
