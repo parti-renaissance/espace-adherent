@@ -95,7 +95,7 @@ class FormationAdmin extends AbstractAdmin
                 'label' => 'Titre',
             ])
             ->add('printCount', null, [
-                'label' => 'Vues',
+                'label' => 'Nb de téléchargements',
             ])
             ->add('position', null, [
                 'label' => 'Position',
@@ -106,6 +106,9 @@ class FormationAdmin extends AbstractAdmin
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
+                    'download' => [
+                        'template' => 'admin/formation/_action_download.html.twig',
+                    ],
                     'edit' => [],
                     'delete' => [],
                 ],
