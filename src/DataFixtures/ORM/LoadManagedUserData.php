@@ -249,6 +249,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
     {
         return [
             LoadCommitteeV1Data::class,
+            LoadCommitteeV2Data::class,
             LoadGeoZoneData::class,
         ];
     }
