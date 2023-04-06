@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 const defaultAmounts = [
     { label: 'Tarif réduit *', amount: 10 },
     { label: 'Tarif normal', amount: 30 },
-    { label: 'Avec don **', amount: 60 },
-    { label: 'Avec don **', amount: 120 },
-    { label: 'Avec don **', amount: 500 },
+    { label: 'Tarif normal<br>avec don **', amount: 60 },
+    { label: 'Tarif normal<br>avec don **', amount: 120 },
+    { label: 'Tarif normal<br>avec don **', amount: 500 },
 ];
 
 const amountAfterTaxReturn = (amount) => {
@@ -67,7 +67,10 @@ export default class AmountChooser extends React.Component {
                             type="button"
                             onClick={() => this.handleButtonClicked(item.amount)}
                             key={`amount_${item.amount}`}>
-                            {this.props.displayLabel && <span className="text-sm leading-5 text-gray-500">{item.label}</span>}
+                            {this.props.displayLabel && <span
+                                className="text-sm leading-5 text-gray-500"
+                                dangerouslySetInnerHTML={{ __html: item.label }}
+                            />}
                             <span>{item.amount} €</span>
                         </button>
                     ))}
@@ -85,7 +88,8 @@ export default class AmountChooser extends React.Component {
                         onFocus={this.handleInputChange}
                         onChange={this.handleInputChange}
                         defaultValue={
-                            0 >= this.props.value || -1 < this.props.amounts.map(e => e.amount).indexOf(this.props.value)
+                            0 >= this.props.value
+                            || -1 < this.props.amounts.map(e => e.amount).indexOf(this.props.value)
                                 ? null : this.props.value
                         }
                     />
