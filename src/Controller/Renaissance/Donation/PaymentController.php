@@ -4,13 +4,21 @@ namespace App\Controller\Renaissance\Donation;
 
 use App\Donation\DonationRequestUtils;
 use App\Donation\PayboxFormFactory;
+use App\Donation\PayboxPaymentUnsubscription;
 use App\Donation\TransactionCallbackHandler;
+use App\Entity\Adherent;
 use App\Entity\Donation;
+use App\Exception\PayboxPaymentUnsubscriptionException;
+use App\Form\ConfirmActionType;
+use App\Repository\DonationRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PaymentController extends AbstractDonationController
 {
@@ -79,6 +87,58 @@ class PaymentController extends AbstractDonationController
             'result_code' => $request->query->get('result'),
             'donation' => $donation,
             'retry_url' => $retryUrl,
+        ]);
+    }
+
+    #[Route(path: '/don/mensuel/annuler', name: 'app_renaissance_donation__cancel_subscription', methods: ['GET', 'POST'])]
+    public function cancelSubscriptionAction(
+        EntityManagerInterface $manager,
+        Request $request,
+        DonationRepository $donationRepository,
+        PayboxPaymentUnsubscription $payboxPaymentUnsubscription,
+        LoggerInterface $logger
+    ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
+        if (!$adherent->isRenaissanceUser()) {
+            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
+
+        $donations = $donationRepository->findAllSubscribedDonationByEmail($adherent->getEmailAddress());
+
+        if (!$donations) {
+            $this->addFlash('error', 'Aucun don mensuel n\'a été trouvé');
+
+            return $this->redirect($this->generateUrl('app_my_donations_show_list', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
+
+        $form = $this->createForm(ConfirmActionType::class)->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->get('allow')->isClicked()) {
+                foreach ($donations as $donation) {
+                    try {
+                        $payboxPaymentUnsubscription->unsubscribe($donation);
+                        $manager->flush();
+                        $payboxPaymentUnsubscription->sendConfirmationMessage($donation, $adherent);
+                        $this->addFlash(
+                            'success',
+                            'Votre don mensuel a bien été annulé. Vous recevrez bientôt un mail de confirmation.'
+                        );
+                        $logger->info(sprintf('Subscription donation id(%d) from user email %s have been cancel successfully.', $donation->getId(), $adherent->getEmailAddress()));
+                    } catch (PayboxPaymentUnsubscriptionException $e) {
+                        $this->addFlash('error', 'La requête n\'a pas abouti, veuillez réessayer s\'il vous plait. Si le problème persiste, merci de nous envoyer un mail à dons@parti-renaissance.fr');
+
+                        $logger->error(sprintf('Subscription donation id(%d) from user email %s have an error.', $donation->getId(), $adherent->getEmailAddress()), ['exception' => $e]);
+                    }
+                }
+            }
+
+            return $this->redirect($this->generateUrl('app_my_donations_show_list', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        }
+
+        return $this->render('renaissance/adherent/my_donations/donation_subscription_cancel_confirmation.html.twig', [
+            'confirmation_form' => $form->createView(),
         ]);
     }
 }

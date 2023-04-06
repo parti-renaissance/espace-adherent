@@ -16,7 +16,7 @@ class DonationUpdateReferenceCommandTest extends AbstractCommandCaseTest
         $output = $output->getDisplay();
 
         $this->assertStringContainsString('Starting Donations reference update.', $output);
-        $this->assertStringContainsString('Updated 7 Donations reference.', $output);
+        $this->assertStringContainsString('Updated 9 Donations reference.', $output);
         $this->assertStringContainsString('Donations reference updated successfully!', $output);
     }
 }

@@ -4,32 +4,13 @@ namespace App\Donation;
 
 class DonationValueObject
 {
-    /**
-     * @var \DateTimeInterface
-     */
-    private $date;
-
-    /**
-     * @var int
-     */
-    private $amount;
-
-    /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @var bool
-     */
-    private $subscription;
-
-    public function __construct(\DateTimeInterface $date, int $amount, string $type, bool $subscription)
-    {
-        $this->date = $date;
-        $this->amount = $amount;
-        $this->type = $type;
-        $this->subscription = $subscription;
+    public function __construct(
+        private \DateTimeInterface $date,
+        private int $amount,
+        private string $type,
+        private bool $subscription,
+        private bool $membership
+    ) {
     }
 
     public function getDate(): \DateTimeInterface
@@ -50,5 +31,10 @@ class DonationValueObject
     public function isSubscription(): bool
     {
         return $this->subscription;
+    }
+
+    public function isMembership(): bool
+    {
+        return $this->membership;
     }
 }
