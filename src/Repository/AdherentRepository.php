@@ -1383,16 +1383,25 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             );
         }
 
-        if ($filter->committee) {
+        if ($filter->committee || $filter->managedCommitteeUuids) {
             $qb
-                ->leftJoin('a.memberships', 'membership')
-                ->leftJoin('membership.committee', 'committee')
-                ->andWhere('committee = :committee')
-                ->andWhere('committee.version = 2')
+                ->innerJoin('a.memberships', 'membership')
+                ->innerJoin('membership.committee', 'committee', Join::WITH, 'committee.version = 2')
                 ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL')
-                ->setParameter('committee', $filter->committee)
                 ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
             ;
+
+            if ($filter->committee) {
+                $qb
+                    ->andWhere('committee = :committee')
+                    ->setParameter('committee', $filter->committee)
+                ;
+            } else {
+                $qb
+                    ->andWhere('committee.uuid IN (:committees)')
+                    ->setParameter('committees', $filter->managedCommitteeUuids)
+                ;
+            }
         } else {
             $qb
                 ->andWhere((new Orx())

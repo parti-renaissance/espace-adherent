@@ -19,8 +19,11 @@ class AdherentAutocompleteFilter
      */
     public array $managedZones;
 
-    public function __construct(array $managedZones = [])
+    public array $managedCommitteeUuids;
+
+    public function __construct(array $managedZones = [], array $managedCommitteeUuids = [])
     {
         $this->managedZones = $managedZones;
+        $this->managedCommitteeUuids = $managedCommitteeUuids;
     }
 }
