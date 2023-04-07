@@ -82,8 +82,20 @@ class MandateAdmin extends AbstractAdmin
                     $datagrid = $admin->getDatagrid();
                     $queryBuilder = $datagrid->getQuery();
                     $queryBuilder
-                        ->andWhere($queryBuilder->getRootAlias().'.type NOT IN (:excluded_types)')
-                        ->setParameter('excluded_types', [Zone::VOTE_PLACE])
+                        ->andWhere($queryBuilder->getRootAlias().'.type IN (:zone_types)')
+                        ->setParameter('zone_types', [
+                            Zone::CUSTOM,
+                            Zone::COUNTRY,
+                            Zone::REGION,
+                            Zone::DEPARTMENT,
+                            Zone::DISTRICT,
+                            Zone::CITY,
+                            Zone::BOROUGH,
+                            Zone::CITY_COMMUNITY,
+                            Zone::CANTON,
+                            Zone::FOREIGN_DISTRICT,
+                            Zone::CONSULAR_DISTRICT,
+                        ])
                     ;
                     $datagrid->setValue($property[0], null, $value);
                 },
