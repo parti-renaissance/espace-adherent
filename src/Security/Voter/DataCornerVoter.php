@@ -36,6 +36,10 @@ class DataCornerVoter extends Voter
             return false;
         }
 
+        if (!$subject->isRenaissanceAdherent()) {
+            return false;
+        }
+
         if (!$codes = $this->scopeRepository->findCodesGrantedForDataCorner()) {
             return false;
         }
