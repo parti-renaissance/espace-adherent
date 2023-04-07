@@ -394,6 +394,10 @@ services:
         decorates: 'api_platform.serializer.context_builder'
         arguments: ['@App\Api\Serializer\EventGroupsContextBuilder.inner']
 
+    App\Api\Serializer\CommitteeGroupsContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: ['@App\Api\Serializer\CommitteeGroupsContextBuilder.inner']
+
     App\Api\Serializer\DesignationGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
         arguments: ['@App\Api\Serializer\DesignationGroupsContextBuilder.inner']
