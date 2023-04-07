@@ -162,7 +162,7 @@ class CommitteeFeedItem implements UserDocumentInterface
         return $this->event;
     }
 
-    public function getAuthor(): Adherent
+    public function getAuthor(): ?Adherent
     {
         return $this->author;
     }

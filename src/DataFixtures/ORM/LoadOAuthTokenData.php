@@ -48,7 +48,7 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
 
         $authCode3 = $this->createAuthorizationCode(
             '0c33b1711015b5e3d930f65b5dc87c398bfb3b29401028ee119c882bdf87cf9dcbf9a562629535e5',
-            LoadAdherentData::ADHERENT_1_UUID,
+            LoadAdherentData::ADHERENT_20_UUID,
             LoadClientData::CLIENT_02_UUID,
             '+30 minutes'
         );

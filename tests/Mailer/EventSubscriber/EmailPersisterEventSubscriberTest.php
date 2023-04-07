@@ -28,10 +28,10 @@ class EmailPersisterEventSubscriberTest extends TestCase
         $this->manager->expects($this->once())->method('flush');
         $this->manager->expects($this->once())->method('detach');
 
-        $adherents[] = $this->createAdherentMock('john@smith.tld', 'John', 'Smith');
+        $adherents[] = $author = $this->createAdherentMock('john@smith.tld', 'John', 'Smith');
         $adherents[] = $this->createAdherentMock('johana156@gmail.com', 'Johana', 'Durand');
 
-        $item = $this->createCommitteeFeedItemMock('25c5762d-5a50-4c68-8f6c-106bcbff862e', 'Aurélien', 'Un message !');
+        $item = $this->createCommitteeFeedItemMock('25c5762d-5a50-4c68-8f6c-106bcbff862e', 'Un message !', $author);
 
         $this->subscriber->onMailerDeliveryMessage(new MailerEvent(
             $message = CommitteeMessageNotificationMessage::create($adherents, $item, 'Foo subject'),
@@ -112,12 +112,13 @@ class EmailPersisterEventSubscriberTest extends TestCase
         return $mock;
     }
 
-    private function createCommitteeFeedItemMock(string $uuid, string $author, string $content)
+    private function createCommitteeFeedItemMock(string $uuid, string $content, Adherent $author)
     {
         $mock = $this->getMockBuilder(CommitteeFeedItem::class)->disableOriginalConstructor()->getMock();
         $mock->expects($this->any())->method('getUuid')->willReturn(Uuid::fromString($uuid));
-        $mock->expects($this->any())->method('getAuthorFirstName')->willReturn($author);
+        $mock->expects($this->any())->method('getAuthorFirstName')->willReturn($author->getFirstName());
         $mock->expects($this->any())->method('getContent')->willReturn($content);
+        $mock->expects($this->any())->method('getAuthor')->willReturn($author);
 
         return $mock;
     }

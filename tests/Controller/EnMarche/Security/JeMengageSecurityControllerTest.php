@@ -72,8 +72,8 @@ class JeMengageSecurityControllerTest extends WebTestCase
 
     public function provideAdherentWithCorrectRole(): iterable
     {
-        yield ['referent@en-marche-dev.fr'];
-        yield ['deputy@en-marche-dev.fr'];
-        yield ['laura@deloche.com'];
+        yield ['gisele-berthoux@caramail.com'];
+        yield ['president-ad@renaissance-dev.fr'];
+        yield ['adherent-male-55@en-marche-dev.fr'];
     }
 }
