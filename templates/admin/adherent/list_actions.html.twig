@@ -10,13 +10,6 @@
                         EM
                     </a>
 
-                    {% if object.isRenaissanceUser %}
-                        <a href="{{ path('app_renaissance_homepage', {'_switch_user': object.emailAddress}) }}" class="btn btn-xs btn-default" title="Impersonnifier">
-                            <i class="fa fa-user-secret" aria-hidden="true"></i>
-                            RE
-                        </a>
-                    {% endif %}
-
                     {% if is_granted(constant('App\\Security\\Voter\\DataCornerVoter::DATA_CORNER'), object) %}
                         <a href="{{ path('app_front_oauth_authorize', {
                             '_switch_user': object.emailAddress,
