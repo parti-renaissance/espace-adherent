@@ -183,7 +183,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
      *
      * @ORM\Column(type="text")
      *
-     * @Groups({"committee:list", "committee:write", "committee:write_limited"})
+     * @Groups({"committee:list", "committee:write"})
      */
     private $description;
 
