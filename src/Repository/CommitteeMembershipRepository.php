@@ -55,6 +55,9 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         );
     }
 
+    /**
+     * @return CommitteeMembershipCollection|CommitteeMembership[]
+     */
     public function findMemberships(Adherent $adherent): CommitteeMembershipCollection
     {
         $query = $this
