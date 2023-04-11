@@ -28,7 +28,7 @@ class CommitteeGroupsContextBuilder implements SerializerContextBuilderInterface
         $committee = $request->attributes->get('data');
         $designation = $committee->getCurrentDesignation();
 
-        if ($designation && $designation->isVotePeriodStarted() || $designation->electionCreationDate < new \DateTime()) {
+        if ($designation && ($designation->isVotePeriodStarted() || $designation->electionCreationDate < new \DateTime())) {
             array_splice($context['groups'], array_search('committee:write', $context['groups'], true), 1);
             $context['groups'][] = 'committee:write_limited';
         }
