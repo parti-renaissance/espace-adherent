@@ -483,7 +483,7 @@ Feature:
         """
         {
             "code": "animator",
-            "name": "Animateur local",
+            "name": "Responsable comité local",
             "zones": [],
             "apps": [
                 "data_corner"

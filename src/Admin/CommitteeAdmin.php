@@ -173,9 +173,9 @@ class CommitteeAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
-            ->with('Président', ['class' => 'col-md-5'])
+            ->with('Responsable comité local', ['class' => 'col-md-5'])
                 ->add('animator', RenaissanceAdherentAutocompleteType::class, [
-                    'label' => 'Président du comité',
+                    'label' => false,
                     'required' => false,
                     'req_params' => [
                         'field' => 'animator',
@@ -370,7 +370,7 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('version', null, ['label' => 'Version'])
             ->addIdentifier('name', null, ['label' => 'Nom'])
             ->add('animator', null, [
-                'label' => 'Président',
+                'label' => 'Responsable',
             ])
             ->add('zones', null, ['label' => 'Zones'])
             ->add('createdAt', null, ['label' => 'Date de création'])
