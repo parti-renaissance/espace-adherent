@@ -63,6 +63,12 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                     $qb->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR);
                 }
 
+                // Committee animator
+                if (\in_array(AdherentRoleEnum::ANIMATOR, $value, true)) {
+                    $qb->leftJoin(sprintf('%s.animatorCommittees', $alias), 'ac');
+                    $where->add('ac IS NOT NULL');
+                }
+
                 // Committee host
                 if (\in_array(AdherentRoleEnum::COMMITTEE_HOST, $value, true)) {
                     $qb->leftJoin(sprintf('%s.memberships', $alias), 'ms');
