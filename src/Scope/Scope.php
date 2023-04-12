@@ -39,7 +39,7 @@ class Scope
     private ?DelegatedAccess $delegatedAccess;
 
     /**
-     * @Groups({"scope"})
+     * @Groups({"scopes", "scope"})
      */
     private ?array $attributes = null;
 
