@@ -35,6 +35,7 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
         [$committeesZones, $zoneCommitteeMapping] = $this->getCommitteesZones($committeesOfZone);
 
         $committeeAdherentIds = [];
+        $alreadyAssignedAdherentIds = [];
         $committees = [];
 
         foreach ($committeesZones as $zones) {
@@ -48,8 +49,12 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
                 }
 
                 foreach ($adherents as $adherent) {
+                    if (\in_array($adherent->getId(), $alreadyAssignedAdherentIds)) {
+                        continue;
+                    }
+
                     $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
-                    $committeeAdherentIds[$committee->getId()][] = $adherent->getId();
+                    $committeeAdherentIds[$committee->getId()][] = $alreadyAssignedAdherentIds[] = $adherent->getId();
                 }
             }
         }
