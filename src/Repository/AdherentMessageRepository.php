@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
-use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
@@ -37,30 +36,6 @@ class AdherentMessageRepository extends ServiceEntityRepository
         }
 
         $this->getEntityManager()->flush();
-    }
-
-    public function getLastSentMessage(Adherent $adherent, string $type): ?AdherentMessageInterface
-    {
-        $queryBuilder = $this
-            ->createQueryBuilder('message')
-            ->addSelect('campaign')
-            ->addSelect('report')
-            ->innerJoin('message.mailchimpCampaigns', 'campaign')
-            ->innerJoin('campaign.report', 'report')
-        ;
-
-        $this
-            ->withAuthor($queryBuilder, $adherent)
-            ->withMessageType($queryBuilder, $type)
-            ->orderByDate($queryBuilder)
-            ->withStatus($queryBuilder, AdherentMessageStatusEnum::SENT_SUCCESSFULLY)
-        ;
-
-        return $queryBuilder
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
     }
 
     /**

@@ -33,7 +33,7 @@ class ZoneAutocompleteFilterBuilder implements FilterBuilderInterface
                 ] : [],
             ])
             ->setMultiple(FeatureEnum::MESSAGES !== $feature)
-            ->setRequired(FeatureEnum::MESSAGES === $feature)
+            ->setRequired(FeatureEnum::MESSAGES === $feature && ScopeEnum::ANIMATOR !== $scope)
             ->getFilters()
         ;
     }

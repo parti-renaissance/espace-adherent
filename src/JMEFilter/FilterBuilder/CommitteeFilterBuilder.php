@@ -6,6 +6,7 @@ use App\Entity\Committee;
 use App\JMEFilter\FilterCollectionBuilder;
 use App\Repository\CommitteeRepository;
 use App\Scope\FeatureEnum;
+use App\Scope\Scope;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 
@@ -28,15 +29,25 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
 
         return (new FilterCollectionBuilder())
             ->createSelect(FeatureEnum::MESSAGES === $feature ? 'committee' : 'committeeUuids', 'Comités')
-            ->setChoices(
-                array_reduce($this->committeeRepository->findInZones($scope->getZones()), function ($carry, Committee $item) {
-                    $carry[$item->getUuid()->toString()] = $item->getName();
-
-                    return $carry;
-                }, [])
-            )
+            ->setChoices($this->getCommitteeChoices($scope))
             ->setMultiple(FeatureEnum::MESSAGES !== $feature)
+            ->setRequired(FeatureEnum::MESSAGES === $feature && ScopeEnum::ANIMATOR === $scope->getCode())
             ->getFilters()
         ;
+    }
+
+    private function getCommitteeChoices(Scope $scope): array
+    {
+        return array_reduce(
+            ScopeEnum::ANIMATOR === $scope->getCode() ?
+                $this->committeeRepository->findByUuid($scope->getCommitteeUuids())
+                : $this->committeeRepository->findInZones($scope->getZones()),
+            function ($carry, Committee $item) {
+                $carry[$item->getUuid()->toString()] = $item->getName();
+
+                return $carry;
+            },
+            []
+        );
     }
 }

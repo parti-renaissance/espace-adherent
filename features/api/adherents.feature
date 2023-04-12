@@ -482,7 +482,8 @@ Feature:
             "label": "Comités",
             "options": {
                 "choices": [],
-                "multiple": true
+                "multiple": true,
+                "required": false
             },
             "type": "select"
         },

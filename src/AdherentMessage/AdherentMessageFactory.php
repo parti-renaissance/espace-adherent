@@ -20,10 +20,10 @@ class AdherentMessageFactory
 
     public static function getMessageClassName(string $type): string
     {
-        if (!isset(AdherentMessageTypeEnum::CLASSES[$type])) {
+        if (!$className = AdherentMessageTypeEnum::getMessageClassFromScopeCode($type)) {
             throw new \InvalidArgumentException(sprintf('Message type "%s" is undefined', $type));
         }
 
-        return AdherentMessageTypeEnum::CLASSES[$type];
+        return $className;
     }
 }

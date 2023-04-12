@@ -300,7 +300,8 @@ Feature:
             "5e00c264-1d4b-43b8-862e-29edc38389b3": "Comité des 3 communes",
             "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3": "Second Comité des 3 communes"
           },
-          "multiple": true
+          "multiple": true,
+          "required": false
         },
         "type": "select"
       },
