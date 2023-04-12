@@ -22,13 +22,27 @@
 
 {% block adhesion_content %}
     <div class="max-w-4xl mx-auto">
+        {% set is_re_adhesion = app.request.query.has('is_re_adhesion') %}
+
+        {% if app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() %}
+            <h2 class="text-re-green-500 text-xl lg:text-3xl">Bonjour {{ app.user.firstName }},</h2>
+            <p class="mt-2 mb-4 text-gray-500">Nous vous remercions de votre confiance et vous proposons de cotiser pour l’année en cours.</p>
+        {% endif %}
         {{ form_start(form) }}
 
             {% include 'renaissance/components/amount_chooser.html.twig' %}
 
-            <button type="submit" class="button button-green button-full mt-10">
-                Étape suivante
-            </button>
+            <div class="mt-10 flex flex-col">
+                <button type="submit" class="button button-green button-full mt-10">Étape suivante</button>
+
+                {% if is_re_adhesion %}
+                    <div class="or-separator"></div>
+
+                    <a class="button button-blue button-full" href="https://storage.googleapis.com/enmarche-prod/Renaissance-Bulletin-adhesion.pdf" target="_blank">
+                        Télécharger le bulletin d'adhésion
+                    </a>
+                {% endif %}
+            </div>
         {{ form_end(form) }}
     </div>
 {% endblock %}
