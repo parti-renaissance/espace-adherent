@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const defaultAmounts = [
-    { label: 'Tarif réduit *', amount: 10 },
+    { label: 'Tarif réduit <sup class="text-red-500">(1)</sup>', amount: 10 },
     { label: 'Tarif normal', amount: 30 },
-    { label: 'Tarif normal<br>avec don **', amount: 60 },
-    { label: 'Tarif normal<br>avec don **', amount: 120 },
-    { label: 'Tarif normal<br>avec don **', amount: 500 },
+    { label: 'Tarif normal<br>avec don <sup class="text-red-500">(2)</sup>', amount: 60 },
+    { label: 'Tarif normal<br>avec don <sup class="text-red-500">(2)</sup>', amount: 120 },
+    { label: 'Tarif normal<br>avec don <sup class="text-red-500">(2)</sup>', amount: 500 },
 ];
 
 const amountAfterTaxReturn = (amount) => {

@@ -68,7 +68,7 @@
                                  @keydown.enter.prevent="open = false;"
                                  @keyup.space.prevent="open = false;">
                                 <div class="px-4 py-3" role="none">
-                                    <p class="text-sm" role="none">Connecte avec</p>
+                                    <p class="text-sm" role="none">Connecté avec</p>
                                     <p class="truncate text-sm font-medium text-gray-900" role="none">{{ app.user.emailAddress }}</p>
                                 </div>
                                 <div class="py-1" role="none">
@@ -81,12 +81,47 @@
                             </div>
                         </div>
 
-                        <a href="{{ path('app_renaissance_donation') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Donner</a>
+                        <!-- Donation dropdown -->
+                        <div x-data="{ open: false }" @keydown.escape.stop="open = false;" @click.away="open = false" class="relative shrink-0 md:hidden">
+                            <div>
+                                <button @click="open =! open" type="button" class="flex items-center py-2 px-3 bg-re-blue-700 hover:bg-re-blue-800 rounded-md  text-re-blue-100 hover:text-white focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true" x-bind:aria-expanded="open.toString()">
+                                    <span>Autres liens</span>
+                                </button>
+                            </div>
+                            <div x-cloak x-show="open"
+                                 x-transition:enter="transition ease-out duration-100"
+                                 x-transition:enter-start="transform opacity-0 scale-95"
+                                 x-transition:enter-end="transform opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-75"
+                                 x-transition:leave-start="transform opacity-100 scale-100"
+                                 x-transition:leave-end="transform opacity-0 scale-95"
+                                 class="absolute right-0 z-10 mt-2 w-80 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                 x-ref="menu-items"
+                                 role="menu"
+                                 aria-orientation="vertical"
+                                 aria-labelledby="menu-button"
+                                 tabindex="-1"
+                                 @keydown.tab="open = false"
+                                 @keydown.enter.prevent="open = false;"
+                                 @keyup.space.prevent="open = false;"
+                            >
+                                <div class="px-2" role="none">
+                                    <div class="py-1" role="none">
+                                        <a href="{{ path('app_renaissance_donation') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Donner</a>
+                                        {% if app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() %}
+                                            <a href="{{ path('app_renaissance_adhesion_pre_payment', {is_re_adhesion: true}) }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Je mets à jour ma cotisation</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-
-                        {% if app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() %}
-                            <a href="{{ path('app_renaissance_adhesion_pre_payment', {is_re_adhesion: true}) }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Je mets à jour ma cotisation</a>
-                        {% endif %}
+                        <div class="hidden md:flex items-center space-x-5">
+                            <a href="{{ path('app_renaissance_donation') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Donner</a>
+                            {% if app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() %}
+                                <a href="{{ path('app_renaissance_adhesion_pre_payment', {is_re_adhesion: true}) }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Je mets à jour ma cotisation</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
