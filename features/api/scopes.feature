@@ -14,6 +14,7 @@ Feature:
       {
         "code": "deputy",
         "name": "Délégué de circonscription",
+        "attributes": null,
         "zones": [
           {
             "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
@@ -28,6 +29,7 @@ Feature:
       {
         "code": "national_communication",
         "name": "National communication",
+        "attributes": null,
         "zones": [
           {
             "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
@@ -42,6 +44,7 @@ Feature:
       {
         "code": "national",
         "name": "National",
+        "attributes": null,
         "zones": [
           {
             "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
@@ -56,6 +59,7 @@ Feature:
       {
         "code": "pap_national_manager",
         "name": "Responsable National PAP",
+        "attributes": null,
         "zones": [
           {
             "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
@@ -70,6 +74,7 @@ Feature:
       {
         "code": "pap",
         "name": "Porte-à-porteur",
+        "attributes": null,
         "zones": [],
         "apps": [
           "jemarche"
@@ -78,6 +83,7 @@ Feature:
       {
         "code": "phoning_national_manager",
         "name": "Responsable Phoning",
+        "attributes": null,
         "zones": [
           {
             "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
@@ -92,6 +98,7 @@ Feature:
       {
         "code": "phoning",
         "name": "Appelant",
+        "attributes": null,
         "zones": [],
         "apps": [
           "jemarche"
@@ -200,6 +207,7 @@ Feature:
       {
         "code": "delegated_96076afb-2243-4251-97fe-8201d50c3256",
         "name": "Délégué de circonscription délégué",
+        "attributes": null,
         "zones": [
           {
             "uuid": "e3efac36-906e-11eb-a875-0242ac150002",
@@ -214,6 +222,7 @@ Feature:
       {
         "code": "delegated_411faa64-202d-4ff2-91ce-c98b29af28ef",
         "name": "Sénateur délégué",
+        "attributes": null,
         "zones": [
         {
           "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
@@ -228,6 +237,7 @@ Feature:
       {
         "code": "delegated_d2315289-a3fd-419c-a3dd-3e1ff71b754d",
         "name": "Délégué de circonscription délégué",
+        "attributes": null,
         "zones": [
           {
             "uuid": "e3f0bfff-906e-11eb-a875-0242ac150002",
@@ -242,6 +252,7 @@ Feature:
       {
         "code": "delegated_01ddb89b-25be-4ccb-a90f-8338c42e7e58",
         "name": "Candidat délégué",
+        "attributes": null,
         "zones": [
           {
             "uuid": "e3efe139-906e-11eb-a875-0242ac150002",
@@ -257,6 +268,7 @@ Feature:
         ],
         "code": "delegated_ef339f8e-e9d0-4f22-b98f-1a7526246cad",
         "name": "Référent délégué",
+        "attributes": null,
         "zones": [
           {
             "code": "13",
@@ -301,6 +313,7 @@ Feature:
         ],
         "code": "delegated_6d2506a7-bec7-45a1-a5ee-8f8b48daa5ec",
         "name": "Correspondant délégué",
+        "attributes": null,
         "zones": [
           {
               "code": "92",
@@ -315,6 +328,7 @@ Feature:
           ],
           "code": "delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c",
           "name": "Candidat aux législatives délégué",
+          "attributes": null,
           "zones": [
               {
                   "code": "75-1",
@@ -483,7 +497,7 @@ Feature:
         """
         {
             "code": "animator",
-            "name": "Animateur local",
+            "name": "Responsable comité local",
             "zones": [],
             "apps": [
                 "data_corner"

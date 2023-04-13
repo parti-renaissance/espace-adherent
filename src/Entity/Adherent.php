@@ -1196,6 +1196,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isThematicCommunityChief()
             || $this->isCorrespondent()
             || $this->isPresidentDepartmentalAssembly()
+            || $this->isAnimator()
         ;
     }
 

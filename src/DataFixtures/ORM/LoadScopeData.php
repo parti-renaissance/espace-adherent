@@ -41,7 +41,7 @@ class LoadScopeData extends Fixture
         ScopeEnum::LEGISLATIVE_CANDIDATE => 'Candidat aux législatives',
         ScopeEnum::REGIONAL_COORDINATOR => 'Coordinateur régional',
         ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Président assemblée départementale',
-        ScopeEnum::ANIMATOR => 'Animateur local',
+        ScopeEnum::ANIMATOR => 'Responsable comité local',
     ];
 
     public function load(ObjectManager $manager)

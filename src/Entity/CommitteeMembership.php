@@ -339,4 +339,9 @@ class CommitteeMembership implements UuidEntityInterface
     {
         $this->trigger = $trigger;
     }
+
+    public function isCommitteeV2(): bool
+    {
+        return $this->committee->isVersion2();
+    }
 }

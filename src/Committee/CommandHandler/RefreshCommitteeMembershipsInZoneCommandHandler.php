@@ -34,23 +34,39 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
 
         [$committeesZones, $zoneCommitteeMapping] = $this->getCommitteesZones($committeesOfZone);
 
+        $committeeAdherentIds = [];
+        $alreadyAssignedAdherentIds = [];
+        $committees = [];
+
         foreach ($committeesZones as $zones) {
             foreach ($zones as $zone) {
                 $adherents = $this->adherentRepository->findAllForCommitteeZone($zone);
                 $committee = $committeesOfZone[$zoneCommitteeMapping[$zone->getTypeCode()]];
+                $committees[$committee->getId()] = $committee;
 
-                $committeeAdherentIds = [];
-                foreach ($adherents as $adherent) {
-                    $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
-                    $committeeAdherentIds[] = $adherent->getId();
+                if (!isset($committeeAdherentIds[$committee->getId()])) {
+                    $committeeAdherentIds[$committee->getId()] = [];
                 }
 
-                if ($committee->allowMembershipsMoving()) {
-                    foreach ($this->committeeMembershipManager->getCommitteeMemberships($committee) as $membership) {
-                        if (!\in_array($membership->getAdherent()->getId(), $committeeAdherentIds)) {
-                            $this->committeeMembershipManager->unfollowCommittee($membership, $committee);
-                        }
+                foreach ($adherents as $adherent) {
+                    if (\in_array($adherent->getId(), $alreadyAssignedAdherentIds)) {
+                        continue;
                     }
+
+                    $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
+                    $committeeAdherentIds[$committee->getId()][] = $alreadyAssignedAdherentIds[] = $adherent->getId();
+                }
+            }
+        }
+
+        foreach ($committees as $committee) {
+            if (!$committee->allowMembershipsMoving()) {
+                continue;
+            }
+
+            foreach ($this->committeeMembershipManager->getCommitteeMemberships($committee) as $membership) {
+                if (!\in_array($membership->getAdherent()->getId(), $committeeAdherentIds[$committee->getId()])) {
+                    $this->committeeMembershipManager->unfollowCommittee($membership, $committee);
                 }
             }
         }

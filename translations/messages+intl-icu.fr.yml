@@ -115,6 +115,7 @@ delegated_deputy: délégué de circonscription délégué
 senator: sénateur
 delegated_senator: sénateur délégué
 committee_supervisor: animateur
+animator: Responsable comité local
 committee_provisional_supervisor: animateur provisoire
 supervisor: animateur
 committee_host: co-animateur
