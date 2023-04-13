@@ -5,14 +5,12 @@ namespace App\Committee\CommandHandler;
 use App\Committee\Command\RefreshCommitteeMembershipsInZoneCommand;
 use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteeMembershipTriggerEnum;
-use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerInterface
@@ -22,8 +20,7 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
         private readonly ZoneRepository $zoneRepository,
         private readonly CommitteeRepository $committeeRepository,
         private readonly CommitteeMembershipManager $committeeMembershipManager,
-        private readonly AdherentRepository $adherentRepository,
-        private readonly LoggerInterface $logger
+        private readonly AdherentRepository $adherentRepository
     ) {
     }
 
@@ -42,21 +39,10 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
         $committees = [];
 
         foreach ($committeesZones as $zones) {
-            /** @var Zone $zone */
             foreach ($zones as $zone) {
                 $adherents = $this->adherentRepository->findAllForCommitteeZone($zone);
                 $committee = $committeesOfZone[$zoneCommitteeMapping[$zone->getTypeCode()]];
                 $committees[$committee->getId()] = $committee;
-
-                $reports = [
-                    'committee' => [
-                        'id' => $committee->getId(),
-                        'name' => $committee->getName(),
-                    ],
-                    'zone' => $zone->getTypeCode(),
-                    'assigned_adherents_ids' => [],
-                    'found_adherents_ids' => array_map(fn (Adherent $adherent) => $adherent->getId(), $adherents),
-                ];
 
                 if (!isset($committeeAdherentIds[$committee->getId()])) {
                     $committeeAdherentIds[$committee->getId()] = [];
@@ -68,11 +54,7 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
                     }
 
                     $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
-                    $reports['assigned_adherents_ids'][] = $committeeAdherentIds[$committee->getId()][] = $alreadyAssignedAdherentIds[] = $adherent->getId();
-                }
-
-                if ($zone->isCanton()) {
-                    $this->logger->error('CL - assignation report : '.json_encode($reports));
+                    $committeeAdherentIds[$committee->getId()][] = $alreadyAssignedAdherentIds[] = $adherent->getId();
                 }
             }
         }
