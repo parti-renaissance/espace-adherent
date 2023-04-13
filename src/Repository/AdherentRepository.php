@@ -1593,7 +1593,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             'zones',
             'z2',
             $zoneQueryModifier,
-            true,
+            $zone->isCityCommunity() || $zone->isBoroughCity(),
             'zone_parent2'
         );
 
@@ -1614,7 +1614,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             'zones',
             'z3',
             $zoneQueryModifier,
-            true,
+            $zone->isCityCommunity() || $zone->isBoroughCity(),
             'zone_parent3'
         );
 

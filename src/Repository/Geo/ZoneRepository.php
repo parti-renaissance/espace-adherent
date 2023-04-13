@@ -4,6 +4,7 @@ namespace App\Repository\Geo;
 
 use App\Entity\Committee;
 use App\Entity\Geo\City;
+use App\Entity\Geo\GeoInterface;
 use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
@@ -494,7 +495,7 @@ class ZoneRepository extends ServiceEntityRepository
             ->where('zone.type IN (:types)')
             ->andWhere('zone.code NOT IN (:codes)')
             ->setParameter('types', [Zone::BOROUGH, Zone::CITY])
-            ->setParameter('codes', ['75056', '13055', '69123'])
+            ->setParameter('codes', [GeoInterface::CITY_PARIS_CODE, GeoInterface::CITY_LYON_CODE, GeoInterface::CITY_MARSEILLE_CODE])
         ;
     }
 
