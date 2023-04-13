@@ -4,6 +4,8 @@ namespace App\Api\Serializer;
 
 use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use App\Entity\Committee;
+use App\Entity\CommitteeElection;
+use App\VotingPlatform\Designation\DesignationStatusEnum;
 use Symfony\Component\HttpFoundation\Request;
 
 class CommitteeGroupsContextBuilder implements SerializerContextBuilderInterface
@@ -26,9 +28,15 @@ class CommitteeGroupsContextBuilder implements SerializerContextBuilderInterface
 
         /** @var Committee $committee */
         $committee = $request->attributes->get('data');
-        $designation = $committee->getCurrentDesignation();
 
-        if ($designation && ($designation->isVotePeriodStarted() || $designation->electionCreationDate < new \DateTime())) {
+        $committeeElection = $committee->getCurrentElection();
+
+        if ($committeeElection instanceof CommitteeElection
+            && in_array($committeeElection->getStatus(), [
+                DesignationStatusEnum::SCHEDULED,
+                DesignationStatusEnum::IN_PROGRESS,
+            ])
+        ) {
             array_splice($context['groups'], array_search('committee:write', $context['groups'], true), 1);
             $context['groups'][] = 'committee:write_limited';
         }
