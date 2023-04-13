@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Entity\Media;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Signatures\SignatureFactory;
 use Symfony\Bridge\Twig\Extension\AssetExtension as BaseAssetExtension;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -10,21 +11,13 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class AssetRuntime implements RuntimeExtensionInterface
 {
-    private UrlGeneratorInterface $urlGenerator;
-    private BaseAssetExtension $symfonyAssetExtension;
-    private string $secret;
-    private string $appVersion;
-
     public function __construct(
-        UrlGeneratorInterface $urlGenerator,
-        BaseAssetExtension $symfonyAssetExtension,
-        string $secret,
-        string $appVersion
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly BaseAssetExtension $symfonyAssetExtension,
+        private readonly string $secret,
+        private readonly string $appVersion,
+        private readonly FilesystemInterface $storage
     ) {
-        $this->urlGenerator = $urlGenerator;
-        $this->symfonyAssetExtension = $symfonyAssetExtension;
-        $this->secret = $secret;
-        $this->appVersion = $appVersion;
     }
 
     public function transformedStaticAsset(
@@ -65,6 +58,11 @@ class AssetRuntime implements RuntimeExtensionInterface
     public function webpackAsset(string $path, $packageName = null): string
     {
         return $this->symfonyAssetExtension->getAssetUrl($path, $packageName);
+    }
+
+    public function getAssetMimeType(string $path): string
+    {
+        return $this->storage->getMimetype($path);
     }
 
     private function generateAssetUrl(
