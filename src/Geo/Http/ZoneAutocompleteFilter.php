@@ -28,6 +28,9 @@ class ZoneAutocompleteFilter
     #[Groups(['filter_write'])]
     public bool $usedByCommittees = false;
 
+    #[Groups(['filter_write'])]
+    public bool $usedByMandates = false;
+
     public function getTypes(): array
     {
         if ($this->types) {
@@ -46,6 +49,12 @@ class ZoneAutocompleteFilter
     {
         if ($this->availableForCommittee || $this->usedByCommittees) {
             return Zone::COMMITTEE_TYPES;
+        }
+
+        if ($this->usedByMandates) {
+            return array_filter(Zone::TYPES, static function (string $type) {
+                return Zone::VOTE_PLACE !== $type;
+            });
         }
 
         return Zone::TYPES;
