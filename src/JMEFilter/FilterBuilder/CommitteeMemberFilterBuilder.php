@@ -11,6 +11,7 @@ class CommitteeMemberFilterBuilder implements FilterBuilderInterface
     public function supports(string $scope, string $feature = null): bool
     {
         return \in_array($scope, ScopeEnum::ALL, true)
+            && ScopeEnum::ANIMATOR !== $scope
             && FeatureEnum::ELECTED_REPRESENTATIVE !== $feature
             && (ScopeEnum::CORRESPONDENT !== $scope
                 || FeatureEnum::CONTACTS === $feature)
