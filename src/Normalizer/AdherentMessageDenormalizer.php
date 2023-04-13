@@ -29,7 +29,7 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
         } else {
             $messageType = $data['type'] ?? null;
 
-            if (!$messageType || !($messageClass = $this->getMessageClassFromType($messageType))) {
+            if (!$messageType || !($messageClass = AdherentMessageFactory::getMessageClassName($messageType))) {
                 throw new UnexpectedValueException('Type value is missing or invalid');
             }
         }
@@ -74,10 +74,5 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
         return
             empty($context[self::ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED])
             && AbstractAdherentMessage::class === $type;
-    }
-
-    private function getMessageClassFromType(string $messageType): ?string
-    {
-        return AdherentMessageFactory::getMessageClassName($messageType);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Normalizer;
 use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Geo\ManagedZoneProvider;
+use App\Repository\CommitteeRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -17,18 +18,12 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
 
     private const AUDIENCE_FILTER_DENORMALIZER_ALREADY_CALLED = 'AUDIENCE_FILTER_DENORMALIZER_ALREADY_CALLED';
 
-    private ManagedZoneProvider $managedZoneProvider;
-    private Security $security;
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
-
     public function __construct(
-        ManagedZoneProvider $managedZoneProvider,
-        Security $security,
-        ScopeGeneratorResolver $scopeGeneratorResolver
+        private readonly ManagedZoneProvider $managedZoneProvider,
+        private readonly Security $security,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly CommitteeRepository $committeeRepository
     ) {
-        $this->managedZoneProvider = $managedZoneProvider;
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
-        $this->security = $security;
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])
@@ -40,6 +35,9 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
 
         if ($scope = $this->scopeGeneratorResolver->generate()) {
             $audienceFilter->setZones($scope->getZones());
+            if ($committeeUuids = $scope->getCommitteeUuids()) {
+                $audienceFilter->setCommittee($this->committeeRepository->findOneByUuid(current($committeeUuids)));
+            }
         } else {
             if (($user = $this->security->getUser()) && $audienceFilter->getScope() && AdherentSpaceEnum::SCOPES[$audienceFilter->getScope()]) {
                 $audienceFilter->setZones($this->managedZoneProvider->getManagedZones(

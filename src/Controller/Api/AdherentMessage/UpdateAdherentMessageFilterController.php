@@ -3,7 +3,6 @@
 namespace App\Controller\Api\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageManager;
-use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AdherentMessage\CoalitionsMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
@@ -23,18 +22,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Security("is_granted('ROLE_MESSAGE_REDACTOR') and (data.getAuthor() == user or user.hasDelegatedFromUser(data.getAuthor(), 'messages'))")]
 class UpdateAdherentMessageFilterController extends AbstractController
 {
-    private $manager;
-    private $serializer;
-    private $validator;
-
     public function __construct(
-        AdherentMessageManager $manager,
-        SerializerInterface $serializer,
-        ValidatorInterface $validator
+        private readonly AdherentMessageManager $manager,
+        private readonly SerializerInterface $serializer,
+        private readonly ValidatorInterface $validator
     ) {
-        $this->manager = $manager;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
     }
 
     public function __invoke(
@@ -42,9 +34,6 @@ class UpdateAdherentMessageFilterController extends AbstractController
         AbstractAdherentMessage $data,
         ScopeGeneratorResolver $scopeGeneratorResolver
     ): Response {
-        /** @var Adherent $adherent */
-        $adherent = $this->getUser();
-
         if ($data->isSent()) {
             throw new BadRequestHttpException('This message has been already sent. You cannot update it.');
         }

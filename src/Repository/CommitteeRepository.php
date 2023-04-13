@@ -658,6 +658,10 @@ class CommitteeRepository extends ServiceEntityRepository
      */
     public function findInZones(array $zones, int $version = 2, bool $withZoneParents = true): array
     {
+        if (!$zones) {
+            return [];
+        }
+
         return $this->createQueryBuilderForZones($zones, $version, $withZoneParents)->getQuery()->getResult();
     }
 
