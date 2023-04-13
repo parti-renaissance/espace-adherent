@@ -55,7 +55,7 @@
     "qs": "^6.11.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-markdown": "^8.0.6",
+    "react-markdown": "^8.0.7",
     "regenerator-runtime": "^0.13.11",
     "reqwest": "^2.0.5",
     "sass": "^1.62.0",
