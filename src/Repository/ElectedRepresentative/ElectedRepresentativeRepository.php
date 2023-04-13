@@ -124,6 +124,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         ;
 
         $this->withActiveMandatesCondition($qb, 'elected_representative');
+        $qb->andWhere('mandate IS NOT NULL');
 
         return (bool) $qb
             ->select('COUNT(elected_representative)')
