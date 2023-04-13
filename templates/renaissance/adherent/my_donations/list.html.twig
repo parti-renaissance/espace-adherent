@@ -10,6 +10,14 @@
             <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
                 <div>
                     <h3 class="text-lg font-medium leading-6 text-gray-900 tracking-wider">Merci pour votre engagement à nos côtés !</h3>
+                    {% if app.user.hasActiveMembership() %}
+                        <p class="mt-4 text-base leading-6 text-gray-500">Vous êtes à jour de cotisation.</p>
+                    {% else %}
+                        <p class="mt-4 text-base leading-6 text-red-500">
+                            Vous n'avez pas renouvelé votre cotisation pour cette année.<br/>
+                            Si vous voulez recotiser, cliquez <strong><a href="{{ path('app_renaissance_adhesion_pre_payment', {is_re_adhesion: true}) }}" class="underline">ici</a></strong>.
+                        </p>
+                    {% endif %}
                     <p class="mt-4 text-base leading-6 text-gray-500">Votre dernier don ou dernière cotisation remonte à <strong>{{ donations_history|first.date|ago }}</strong>.</p>
                 </div>
                 <div class="mt-8">
@@ -27,6 +35,8 @@
                             <a href="{{ path('app_renaissance_donation__cancel_subscription') }}" class="text-sm button button-blue">{{ 'adherent.stop_donation'|trans({ count: subscribed_donations|length }) }}</a>
                     {% elseif last_subscription_ended %}
                         <p class="text-base leading-6 text-blue-800">Vous avez mis fin à votre don mensuel le {{ last_subscription_ended.subscriptionEndedAt|format_datetime('medium', 'none') }}. Vous pouvez en refaire un <a href="{{ path('app_renaissance_donation') }}">en cliquant <strong>ici</strong></a>. </p>
+                    {% else %}
+                        <p class="text-base leading-6 text-blue-800">À date, vous n'avez souscrit à aucun don mensuel.</p>
                     {% endif %}
                 </div>
 
