@@ -264,6 +264,11 @@ class Zone implements GeoInterface
         return Zone::DEPARTMENT === $this->type;
     }
 
+    public function isCityCommunity(): bool
+    {
+        return Zone::CITY_COMMUNITY === $this->type;
+    }
+
     public function isRegion(): bool
     {
         return Zone::REGION === $this->type;
@@ -386,5 +391,10 @@ class Zone implements GeoInterface
     public function getTags(): ?array
     {
         return $this->tags;
+    }
+
+    public function isBoroughCity(): bool
+    {
+        return \in_array($this->code, [GeoInterface::CITY_PARIS_CODE, GeoInterface::CITY_LYON_CODE, GeoInterface::CITY_MARSEILLE_CODE], true);
     }
 }

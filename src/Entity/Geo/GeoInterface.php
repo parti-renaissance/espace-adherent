@@ -7,6 +7,9 @@ use App\Entity\GeoData;
 interface GeoInterface
 {
     public const CITY_PARIS_CODE = '75056';
+    public const CITY_LYON_CODE = '69123';
+    public const CITY_MARSEILLE_CODE = '13055';
+
     public const DEPARTMENT_PARIS_CODE = '75';
 
     public function getId(): ?int;

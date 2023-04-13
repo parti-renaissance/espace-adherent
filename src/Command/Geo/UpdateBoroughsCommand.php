@@ -23,7 +23,7 @@ final class UpdateBoroughsCommand extends Command
     protected static $defaultName = 'app:geo:update-boroughs';
 
     private const BOROUGHS = [
-        '75056' => [
+        GeoInterface::CITY_PARIS_CODE => [
             ['code' => '75101', 'postalCode' => '75001', 'name' => 'Paris 1er'],
             ['code' => '75102', 'postalCode' => '75002', 'name' => 'Paris 2ème'],
             ['code' => '75103', 'postalCode' => '75003', 'name' => 'Paris 3ème'],
@@ -45,7 +45,7 @@ final class UpdateBoroughsCommand extends Command
             ['code' => '75119', 'postalCode' => '75019', 'name' => 'Paris 19ème'],
             ['code' => '75120', 'postalCode' => '75020', 'name' => 'Paris 20ème'],
         ],
-        '13055' => [
+        GeoInterface::CITY_MARSEILLE_CODE => [
             ['code' => '13201', 'postalCode' => '13001', 'name' => 'Marseille 1er'],
             ['code' => '13202', 'postalCode' => '13002', 'name' => 'Marseille 2ème'],
             ['code' => '13203', 'postalCode' => '13003', 'name' => 'Marseille 3ème'],
@@ -64,7 +64,7 @@ final class UpdateBoroughsCommand extends Command
             ['code' => '13216', 'postalCode' => '13016', 'name' => 'Marseille 16ème'],
             ['code' => '13217', 'postalCode' => '13017', 'name' => 'Marseille 17ème'],
         ],
-        '69123' => [
+        GeoInterface::CITY_LYON_CODE => [
             ['code' => '69381', 'postalCode' => '69001', 'name' => 'Lyon 1er'],
             ['code' => '69382', 'postalCode' => '69002', 'name' => 'Lyon 2ème'],
             ['code' => '69383', 'postalCode' => '69003', 'name' => 'Lyon 3ème'],
