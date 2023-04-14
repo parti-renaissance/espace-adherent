@@ -1144,11 +1144,13 @@
             <tag name="sonata.admin.extension" target="app.admin.voting_platform.designation" />
             <tag name="sonata.admin.extension" target="app.admin.local_election.candidacies_group" />
             <tag name="sonata.admin.extension" target="app.admin.adherent_formation" />
+            <tag name="sonata.admin.extension" target="app.admin.general_meeting_report" />
         </service>
 
         <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">
             <tag name="sonata.admin.extension" target="app.admin.team.team" />
             <tag name="sonata.admin.extension" target="app.admin.phoning.campaign" />
+            <tag name="sonata.admin.extension" target="app.admin.adherent_formation" />
             <tag name="sonata.admin.extension" target="app.admin.general_meeting_report" />
         </service>
         <!--
