@@ -19,6 +19,10 @@
         <span class="label label-primary" style="padding: 2px;">Président assemblée départementale</span><br/>
     {% endif %}
 
+    {% if object.isDelegatedPresidentDepartmentalAssembly %}
+        <span class="label label-primary" style="padding: 2px;">PaD délégué</span><br/>
+    {% endif %}
+
     {% if object.isProcurationManager %}
         <span class="label label-primary" style="padding: 2px;">Procuration</span><br/>
     {% endif %}
@@ -29,6 +33,10 @@
 
     {% if object.isAnimator %}
         <span class="label label-primary" style="padding: 2px;">Responsable comité local</span><br/>
+    {% endif %}
+
+    {% if object.isDelegatedAnimator %}
+        <span class="label label-primary" style="padding: 2px;">Responsable comité local délégué</span><br/>
     {% endif %}
 
     {% if object.isAssessor %}
