@@ -13,6 +13,7 @@ class AssetExtension extends AbstractExtension
             new TwigFunction('webpack_asset', [AssetRuntime::class, 'webpackAsset'], ['is_safe' => ['html']]),
             new TwigFunction('static_asset', [AssetRuntime::class, 'transformedStaticAsset'], ['is_safe' => ['html']]),
             new TwigFunction('media_asset', [AssetRuntime::class, 'transformedMediaAsset'], ['is_safe' => ['html']]),
+            new TwigFunction('get_asset_mime_type', [AssetRuntime::class, 'getAssetMimeType'], ['is_safe' => ['html']]),
         ];
     }
 }

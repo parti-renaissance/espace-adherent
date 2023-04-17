@@ -138,6 +138,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_RENAISSANCE',
                     'ROLE_ADMIN_LOCAL_ELECTION',
                     'ROLE_ADMIN_JME_DOCUMENTS',
+                    'ROLE_ADMIN_JME_GENERAL_MEETING_REPORT',
                 ],
             ])
             ->add('password', PasswordType::class, [

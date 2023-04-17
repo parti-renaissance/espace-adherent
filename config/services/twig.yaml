@@ -14,6 +14,7 @@ services:
             $secret: '%kernel.secret%'
             $appVersion: '%env(APP_VERSION)%'
             $symfonyAssetExtension: '@twig.extension.assets'
+            $mimeTypes: '@mime_types'
 
     App\Twig\CanaryExtension:
         $canaryMode: '%env(ENABLE_CANARY)%'
