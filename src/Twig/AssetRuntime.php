@@ -3,9 +3,9 @@
 namespace App\Twig;
 
 use App\Entity\Media;
-use League\Flysystem\FilesystemInterface;
 use League\Glide\Signatures\SignatureFactory;
 use Symfony\Bridge\Twig\Extension\AssetExtension as BaseAssetExtension;
+use Symfony\Component\Mime\MimeTypesInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -16,7 +16,7 @@ class AssetRuntime implements RuntimeExtensionInterface
         private readonly BaseAssetExtension $symfonyAssetExtension,
         private readonly string $secret,
         private readonly string $appVersion,
-        private readonly FilesystemInterface $storage
+        private readonly MimeTypesInterface $mimeTypes
     ) {
     }
 
@@ -62,7 +62,7 @@ class AssetRuntime implements RuntimeExtensionInterface
 
     public function getAssetMimeType(string $path): string
     {
-        return $this->storage->getMimetype($path);
+        return $this->mimeTypes->getMimeTypes(pathinfo($path, \PATHINFO_EXTENSION))[0];
     }
 
     private function generateAssetUrl(
