@@ -18,7 +18,7 @@
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Nom', value: command.lastName } %}
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Adresse postale', value: command.address.fullAddress } %}
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'E-mail', value: command.emailAddress } %}
-        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Cotisation', value: command.amount|format_currency('EUR')|replace({',00' : ''}) } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Cotisation', value: command.amount|format_currency('EUR', locale='fr')|replace({',00' : ''}) } %}
 
         {{ form_start(form, { attr: { class: 'mt-10' } }) }}
             {{ form_errors(form) }}

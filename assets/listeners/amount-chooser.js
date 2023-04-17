@@ -16,6 +16,7 @@ export default () => {
                 name={name}
                 value={value}
                 displayLabel={'true' === dataset.displayLabel}
+                minValue={'true' === dataset.adhesion ? 30.0 : 1.0}
             />,
             chooser
         );

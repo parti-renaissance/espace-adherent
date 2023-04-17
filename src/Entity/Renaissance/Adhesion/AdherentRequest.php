@@ -45,11 +45,11 @@ class AdherentRequest
     public ?string $email = null;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      *
      * @Assert\NotBlank
      */
-    public ?int $amount = null;
+    public ?float $amount = null;
 
     /**
      * @ORM\Column(type="uuid")

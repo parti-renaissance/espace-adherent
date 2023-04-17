@@ -34,7 +34,7 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
             'renaissance-user-1@en-marche-dev.fr',
             'Laure',
             'Fenix',
-            3000,
+            30.25,
             $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             true,
             true
@@ -45,7 +45,7 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
             'future-renaissance-user-2@en-marche-dev.fr',
             'Daniel',
             'Dumas',
-            1000,
+            10.50,
             $this->createPostAddress('44 rue des courcelles', '75008-75108'),
             true,
         );
@@ -55,7 +55,7 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
             'future-renaissance-user-3@en-marche-dev.fr',
             'Amelie',
             'Moulin',
-            3000,
+            30.75,
             $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923)
         );
 
