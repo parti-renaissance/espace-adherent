@@ -65,14 +65,24 @@ class MembershipNotifier
     public function sendConfirmationJoinMessage(Adherent $adherent): void
     {
         MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
-            ? $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent))
+            ? $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent(
+                $adherent,
+                $this->callbackManager->generateUrl('app_renaissance_adherent_profile', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                $this->callbackManager->generateUrl('app_renaissance_donation', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                $this->callbackManager->generateUrl('app_my_committee_show_current', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            ))
             : $this->transactionalMailer->sendMessage(Message\AdherentAccountConfirmationMessage::createFromAdherent($adherent))
         ;
     }
 
     public function sendReAdhesionConfirmationMessage(Adherent $adherent): void
     {
-        $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceReAdhesionConfirmationMessage::createFromAdherent($adherent));
+        $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceReAdhesionConfirmationMessage::createFromAdherent(
+            $adherent,
+            $this->callbackManager->generateUrl('app_renaissance_adherent_profile', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->callbackManager->generateUrl('app_renaissance_donation', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->callbackManager->generateUrl('app_my_committee_show_current', [], UrlGeneratorInterface::ABSOLUTE_URL),
+        ));
     }
 
     public function sendUnregistrationMessage(Adherent $adherent): void
