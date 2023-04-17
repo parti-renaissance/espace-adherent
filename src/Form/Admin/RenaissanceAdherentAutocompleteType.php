@@ -4,8 +4,9 @@ namespace App\Form\Admin;
 
 use App\Entity\Adherent;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
+use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,23 +28,21 @@ class RenaissanceAdherentAutocompleteType extends AbstractType
     public static function filterCallback(AbstractAdmin $admin, array $property, $value): void
     {
         $datagrid = $admin->getDatagrid();
-        $previousFilter = $filter = $datagrid->getFilter('renaissanceMembership');
+        $filter = $datagrid->getFilter('renaissanceMembership');
         $datagrid->setValue($filter->getName(), null, RenaissanceMembershipFilterEnum::ADHERENT_RE);
 
-        foreach ($property as $prop) {
-            $filter = $datagrid->getFilter($prop);
-            $filter->setCondition(FilterInterface::CONDITION_OR);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $datagrid->getQuery();
+        $alias = $queryBuilder->getAllAliases()[0];
 
-            if (null !== $previousFilter) {
-                $filter->setPreviousFilter($previousFilter);
+        foreach (explode(' ', $value) as $key => $value) {
+            $conditions = (new Expr())->orX();
+            foreach ($property as $prop) {
+                $conditions->add($alias.'.'.$prop.' LIKE :search_'.$key);
             }
-
-            $datagrid->setValue($filter->getFormName(), null, $value);
-
-            $previousFilter = $filter;
+            $queryBuilder->andWhere($conditions);
+            $queryBuilder->setParameter('search_'.$key, '%'.$value.'%');
         }
-
-        $datagrid->reorderFilters($property);
     }
 
     public function getParent(): ?string
