@@ -1196,7 +1196,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isThematicCommunityChief()
             || $this->isCorrespondent()
             || $this->isPresidentDepartmentalAssembly()
+            || $this->isDelegatedPresidentDepartmentalAssembly()
             || $this->isAnimator()
+            || $this->isDelegatedAnimator()
         ;
     }
 
@@ -2225,6 +2227,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return \count($this->getReceivedDelegatedAccessOfType('deputy')) > 0;
     }
 
+    public function isDelegatedAnimator(): bool
+    {
+        return \count($this->getReceivedDelegatedAccessOfType(ScopeEnum::ANIMATOR)) > 0;
+    }
+
+    public function isDelegatedPresidentDepartmentalAssembly(): bool
+    {
+        return \count($this->getReceivedDelegatedAccessOfType(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY)) > 0;
+    }
+
     public function isAdherent(): bool
     {
         return $this->adherent;
@@ -2608,7 +2620,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getReceivedDelegatedAccessOfType(string $type): Collection
     {
         return $this->receivedDelegatedAccesses->filter(static function (DelegatedAccess $delegatedAccess) use ($type) {
-            return $delegatedAccess->getType() === $type && \count($delegatedAccess->getAccesses());
+            return $delegatedAccess->getType() === $type && (\count($delegatedAccess->getAccesses()) || \count($delegatedAccess->getScopeFeatures()));
         });
     }
 

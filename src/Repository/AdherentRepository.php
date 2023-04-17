@@ -1402,6 +1402,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                     ->setParameter('committees', $filter->managedCommitteeUuids)
                 ;
             }
+        }
+
+        if ($filter->type) {
+            MembershipFilterHelper::withMembershipFilter($qb, 'a', $filter->type);
         } else {
             $qb
                 ->andWhere((new Orx())
