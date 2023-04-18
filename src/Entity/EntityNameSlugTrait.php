@@ -22,6 +22,7 @@ trait EntityNameSlugTrait
      *     "event_read",
      *     "committee:list",
      *     "committee:write",
+     *     "committee:write_limited",
      * })
      *
      * @Assert\NotBlank(groups={"api_committee_edition"})
