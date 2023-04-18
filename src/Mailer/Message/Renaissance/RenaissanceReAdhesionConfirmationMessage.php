@@ -17,7 +17,7 @@ class RenaissanceReAdhesionConfirmationMessage extends AbstractRenaissanceMessag
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Confirmation de votre ré-adhésion à Renaissance !',
+            'Confirmation de votre cotisation à Renaissance !',
             [],
             [
                 'target_firstname' => self::escape($adherent->getFirstName()),
