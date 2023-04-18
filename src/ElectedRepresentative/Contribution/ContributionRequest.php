@@ -15,6 +15,8 @@ class ContributionRequest
 
     private ?int $adherentId = null;
 
+    private bool $redeclare = false;
+
     /**
      * @Assert\NotBlank(groups={"fill_revenue"})
      * @Assert\GreaterThanOrEqual(
@@ -51,6 +53,16 @@ class ContributionRequest
     public function setState(string $state): void
     {
         $this->state = $state;
+    }
+
+    public function isRedeclare(): bool
+    {
+        return $this->redeclare;
+    }
+
+    public function setRedeclare(bool $redeclare): void
+    {
+        $this->redeclare = $redeclare;
     }
 
     public function getAdherentId(): ?int

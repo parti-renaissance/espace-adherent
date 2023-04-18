@@ -32,7 +32,7 @@ class FillRevenueController extends AbstractContributionController
             throw $this->createAccessDeniedException(sprintf('No elected representative found for adherent UUID: %s', $this->getUser()->getUuidAsString()));
         }
 
-        if (!$request->query->has('redeclare') && $electedRepresentative->getContributedAt()) {
+        if (!$command->isRedeclare() && $electedRepresentative->getContributedAt()) {
             $this->processor->doContributionAlreadyDone($command);
 
             return $this->render('renaissance/elected_representative/contribution/contribution_already_done.html.twig');
