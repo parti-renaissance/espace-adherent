@@ -32,7 +32,7 @@ class CommitteeGroupsContextBuilder implements SerializerContextBuilderInterface
         $committeeElection = $committee->getCurrentElection();
 
         if ($committeeElection instanceof CommitteeElection
-            && in_array($committeeElection->getStatus(), [
+            && \in_array($committeeElection->getStatus(), [
                 DesignationStatusEnum::SCHEDULED,
                 DesignationStatusEnum::IN_PROGRESS,
             ])
