@@ -235,6 +235,16 @@
             &__input {
                 @apply rounded border focus:ring-0 border-green focus:border-green w-full bg-white text-green font-medium text-sm placeholder:text-green placeholder:font-medium p-5 mb-4;
             }
+
+            &-error {
+                input {
+                    @apply border-red focus:border-red text-red;
+                }
+
+                span {
+                    color: #F00032;
+                }
+            }
         }
     }
 

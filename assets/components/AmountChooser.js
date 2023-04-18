@@ -25,6 +25,8 @@ export default class AmountChooser extends React.Component {
 
         this.state = {
             amount: props.value,
+            isValid: true,
+            error: null,
         };
 
         this.handleButtonClicked = this.handleButtonClicked.bind(this);
@@ -40,6 +42,8 @@ export default class AmountChooser extends React.Component {
 
         this.setState({
             amount,
+            isValid: true,
+            error: null,
         });
     }
 
@@ -48,8 +52,15 @@ export default class AmountChooser extends React.Component {
             this.props.onChange(event.target.value);
         }
 
+        const amount = event.target.value;
+        const isValid = this.props.minValue <= amount && amount <= this.props.maxValue;
+
         this.setState({
-            amount: event.target.value,
+            amount,
+            isValid,
+            error: isValid
+                ? null
+                : `Veuillez indiquer un montant entre ${this.props.minValue} et ${this.props.maxValue}`,
         });
     }
 
@@ -76,16 +87,15 @@ export default class AmountChooser extends React.Component {
                     ))}
                 </div>
 
-                <div className="renaissance-amount-chooser__other">
+                <div className={`renaissance-amount-chooser__other ${!this.state.isValid && 'renaissance-amount-chooser__other-error'}`}>
                     <input
                         type="number"
                         className="renaissance-amount-chooser__other__input"
                         placeholder="Autre montant"
-                        min="1.0"
+                        min={this.props.minValue}
                         max={this.props.maxValue}
                         step="0.5"
                         ref="other_amount"
-                        onFocus={this.handleInputChange}
                         onChange={this.handleInputChange}
                         defaultValue={
                             0 >= this.props.value
@@ -93,6 +103,8 @@ export default class AmountChooser extends React.Component {
                                 ? null : this.props.value
                         }
                     />
+
+                    <span>{this.state.error}</span>
                 </div>
 
                 {this.state.amount
@@ -129,6 +141,7 @@ export default class AmountChooser extends React.Component {
 }
 
 AmountChooser.defaultProps = {
+    minValue: 1.0,
     maxValue: 7500,
     amounts: defaultAmounts,
     displayLabel: false,

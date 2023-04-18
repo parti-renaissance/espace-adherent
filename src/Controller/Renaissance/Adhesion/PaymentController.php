@@ -31,7 +31,9 @@ class PaymentController extends AbstractAdhesionController
             return $this->redirectToRoute('app_renaissance_adhesion_additional_informations');
         }
 
-        if ($amount = $request->query->getInt('amount')) {
+        $amount = (float) $request->query->get('amount');
+
+        if ($amount && $amount >= 10) {
             $donationRequest = DonationRequest::createFromAdherent($adherent, $request->getClientIp(), $amount);
             $donationRequest->forMembership();
 

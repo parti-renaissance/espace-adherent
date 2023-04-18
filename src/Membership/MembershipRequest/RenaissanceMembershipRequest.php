@@ -29,9 +29,9 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
 
     /**
      * @Assert\NotBlank(groups={"membership_request_amount"})
-     * @Assert\GreaterThanOrEqual(value=1, message="donation.amount.greater_than_1", groups={"membership_request_amount"})
+     * @Assert\GreaterThanOrEqual(value=10, message="Le montant de la cotisation est invalid", groups={"membership_request_amount"})
      */
-    public ?int $amount = null;
+    public ?float $amount = null;
 
     /**
      * @Assert\NotBlank(groups={"fill_personal_info"})
@@ -105,6 +105,11 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
     public function getAmount(): ?float
     {
         return $this->amount;
+    }
+
+    public function setAmount(float $amount): void
+    {
+        $this->amount = floor($amount * 100) / 100;
     }
 
     public function setAddress(Address $address): void

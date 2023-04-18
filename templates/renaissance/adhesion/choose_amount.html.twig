@@ -36,6 +36,7 @@
         </div>
 
         {{ form_start(form) }}
+            {{ form_errors(form) }}
             {% include 'renaissance/components/amount_chooser.html.twig' %}
 
             <div class="my-10 mention-checkbox-container">

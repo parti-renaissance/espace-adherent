@@ -17,6 +17,7 @@ class RequiredCheckboxType extends AbstractType
             'constraints' => [
                 new Assert\IsTrue([
                     'message' => 'common.checkbox.is_true',
+                    'groups' => ['Default', 'membership_request_amount'],
                 ]),
             ],
         ]);

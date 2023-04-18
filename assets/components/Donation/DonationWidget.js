@@ -1,6 +1,6 @@
 import React from 'react';
 import DonationAmountChooser from './DonationAmountChooser';
-import DonationDestinationChooser from "./DonationDestinationChooser";
+import DonationDestinationChooser from './DonationDestinationChooser';
 
 export default class DonationWidget extends React.Component {
     constructor(props) {
@@ -8,7 +8,7 @@ export default class DonationWidget extends React.Component {
 
         this.state = {
             amount: null,
-            destination: false
+            destination: false,
         };
 
         this.handleAmountChange = this.handleAmountChange.bind(this);

@@ -69,7 +69,21 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $form = $crawler->filter('form[name="app_renaissance_membership"]')->form([
             'app_renaissance_membership' => [
-                'amount' => 30,
+                'amount' => 9,
+            ],
+        ]);
+
+        $form['app_renaissance_membership[isPhysicalPerson]']->tick();
+        $form['app_renaissance_membership[conditions]']->tick();
+        $form['app_renaissance_membership[cguAccepted]']->tick();
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertStringContainsString('Le montant de la cotisation est invalid', $this->client->getResponse()->getContent());
+
+        $form = $crawler->filter('form[name="app_renaissance_membership"]')->form([
+            'app_renaissance_membership' => [
+                'amount' => 30.75,
             ],
         ]);
 
@@ -91,14 +105,14 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertStringContainsString('Smith', $list->eq(1)->text());
         $this->assertStringContainsString('62 avenue des Champs-Élysées, 75008 Paris 8ème, FR', $list->eq(2)->text());
         $this->assertStringContainsString('john@test.com', $list->eq(3)->text());
-        $this->assertStringContainsString("30\u{a0}€", $list->eq(4)->text());
+        $this->assertStringContainsString("30,75\u{a0}€", $list->eq(4)->text());
 
         $this->client->submit($crawler->selectButton('Confirmer mon e-mail')->form());
 
         $adherentRequest = $this->getEntityManager()->getRepository(AdherentRequest::class)->findOneBy(['email' => 'john@test.com']);
         $this->assertInstanceOf(AdherentRequest::class, $adherentRequest);
 
-        $this->assertEquals(30, $adherentRequest->amount);
+        $this->assertEquals(30.75, $adherentRequest->amount);
         $this->assertSame('Smith', $adherentRequest->lastName);
         $this->assertSame('John', $adherentRequest->firstName);
         $this->assertSame('john@test.com', $adherentRequest->email);
@@ -107,7 +121,7 @@ class AdhesionControllerTest extends WebTestCase
 
         $this->assertCount(1, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountActivationMessage::class));
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/adhesion/finaliser/%s/%s', $adherentRequest->getUuid(), $adherentRequest->token));
+        $this->client->request(Request::METHOD_GET, sprintf('/adhesion/finaliser/%s/%s', $adherentRequest->getUuid(), $adherentRequest->token));
 
         $this->assertCount(0, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountConfirmationMessage::class));
 
@@ -176,7 +190,7 @@ class AdhesionControllerTest extends WebTestCase
         $callbackUrlRegExp = 'http://'.$this->getParameter('renaissance_host').'/adhesion/callback/(.+)'; // token
         $callbackUrlRegExp .= '\?id=(.+)_john-smith';
         $callbackUrlRegExp .= '&authorization=XXXXXX&result=00000';
-        $callbackUrlRegExp .= '&transaction=(\d+)&amount=3000&date=(\d+)&time=(.+)';
+        $callbackUrlRegExp .= '&transaction=(\d+)&amount=3075&date=(\d+)&time=(.+)';
         $callbackUrlRegExp .= '&card_type=(CB|Visa|MasterCard)&card_end=3212&card_print=(.+)&subscription=(\d+)&Sign=(.+)';
 
         $this->assertMatchesRegularExpression('#'.$callbackUrlRegExp.'#', $callbackUrl);
