@@ -13,8 +13,8 @@
                     {% if app.user.hasActiveMembership() %}
                         <p class="mt-4 text-base leading-6 text-gray-500">Vous êtes à jour de cotisation.</p>
                     {% else %}
-                        <p class="mt-4 text-base leading-6 text-red-500">
-                            Vous n'avez pas renouvelé votre cotisation pour cette année.<br/>
+                        <p class="mt-4 text-base font-bold leading-6 text-blue-800">
+                            Vous n'avez pas encore renouvelé votre cotisation pour cette année.<br/>
                             Si vous voulez recotiser, cliquez <strong><a href="{{ path('app_renaissance_adhesion_pre_payment', {is_re_adhesion: true}) }}" class="underline">ici</a></strong>.
                         </p>
                     {% endif %}
