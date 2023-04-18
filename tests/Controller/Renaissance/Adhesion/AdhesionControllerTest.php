@@ -190,7 +190,7 @@ class AdhesionControllerTest extends WebTestCase
         $callbackUrlRegExp = 'http://'.$this->getParameter('renaissance_host').'/adhesion/callback/(.+)'; // token
         $callbackUrlRegExp .= '\?id=(.+)_john-smith';
         $callbackUrlRegExp .= '&authorization=XXXXXX&result=00000';
-        $callbackUrlRegExp .= '&transaction=(\d+)&amount=3000&date=(\d+)&time=(.+)';
+        $callbackUrlRegExp .= '&transaction=(\d+)&amount=3075&date=(\d+)&time=(.+)';
         $callbackUrlRegExp .= '&card_type=(CB|Visa|MasterCard)&card_end=3212&card_print=(.+)&subscription=(\d+)&Sign=(.+)';
 
         $this->assertMatchesRegularExpression('#'.$callbackUrlRegExp.'#', $callbackUrl);

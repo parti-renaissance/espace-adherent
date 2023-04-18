@@ -58,7 +58,9 @@ export default class AmountChooser extends React.Component {
         this.setState({
             amount,
             isValid,
-            error: isValid ? null : `Veuillez indiquer un montant entre ${this.props.minValue} et ${this.props.maxValue}`,
+            error: isValid
+                ? null
+                : `Veuillez indiquer un montant entre ${this.props.minValue} et ${this.props.maxValue}`,
         });
     }
 
