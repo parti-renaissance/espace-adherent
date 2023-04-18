@@ -63,6 +63,7 @@ class DonationRepository extends ServiceEntityRepository
         ;
     }
 
+    /** @return Donation[] */
     public function findOfflineDonationsByEmail(string $email): array
     {
         return $this->createQueryBuilder('donation')
