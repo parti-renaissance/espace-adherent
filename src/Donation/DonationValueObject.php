@@ -18,7 +18,7 @@ class DonationValueObject
         return $this->date;
     }
 
-    public function getAmountInEuros(): int
+    public function getAmountInEuros(): float
     {
         return $this->amount / 100;
     }
