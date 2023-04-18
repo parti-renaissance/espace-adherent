@@ -33,6 +33,10 @@ abstract class AbstractContributionController extends AbstractController
             $command->updateFromAdherent($user);
         }
 
+        if ($request && $request->query->has('redeclare')) {
+            $command->setRedeclare(true);
+        }
+
         return $command;
     }
 }
