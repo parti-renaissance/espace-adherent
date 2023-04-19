@@ -71,6 +71,26 @@ class VoterRepository extends ServiceEntityRepository
         ;
     }
 
+    public function getVotersForElection(Election $election): array
+    {
+        return $this->createQueryBuilder('voter')
+            ->select(
+                'adherent.firstName AS first_name',
+                'adherent.lastName AS last_name',
+                'adherent.postAddress.postalCode AS postal_code',
+                'vote.votedAt AS voted_at',
+            )
+            ->innerJoin('voter.votersLists', 'list')
+            ->innerJoin('voter.adherent', 'adherent')
+            ->leftJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = :election_round')
+            ->where('list.election = :election')
+            ->setParameter('election', $election)
+            ->setParameter('election_round', $election->getCurrentRound())
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /**
      * @return Voter[]
      */
