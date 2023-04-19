@@ -48,7 +48,7 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
             $contacts = $this->ohme->getContacts($limit, $offset);
 
             if (0 === $count) {
-                if (!\array_key_exists('count', $contacts) || empty($contacts['count'])) {
+                if (empty($contacts['count'])) {
                     $this->io->error('No contact found from Ohme API');
                 }
 
@@ -58,7 +58,7 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
             }
 
             foreach ($contacts['data'] as $contact) {
-                if (!\array_key_exists('uuid_adherent', $contact) || empty($contact['uuid_adherent'])) {
+                if (empty($contact['uuid_adherent'])) {
                     continue;
                 }
 
