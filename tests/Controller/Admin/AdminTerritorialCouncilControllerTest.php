@@ -6,14 +6,14 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\Admin\AbstractAdminWebTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group admin
  */
-class AdminTerritorialCouncilControllerTest extends WebTestCase
+class AdminTerritorialCouncilControllerTest extends AbstractAdminWebTest
 {
     use ControllerTestTrait;
 

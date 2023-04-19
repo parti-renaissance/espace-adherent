@@ -1,4 +1,5 @@
 @app
+@renaissance
 Feature: Merge committees from admin panel
 
   Scenario: A committee can not be merged if it is not approved
@@ -98,7 +99,3 @@ Feature: Merge committees from admin panel
     Then I press "Confirmer la fusion"
     And the response status code should be 200
     And I should be on "/admin/app/reporting-committeemergehistory/list"
-
-    Given I am logged as "adherent-male-49@en-marche-dev.fr"
-    When I am on "/comites/en-marche-allemagne"
-    Then the response status code should be 403

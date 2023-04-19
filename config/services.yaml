@@ -151,6 +151,10 @@ services:
         public: true
         tags: [ 'controller.service_arguments' ]
 
+    App\EntityListener\:
+        resource: ../src/EntityListener
+        tags: [ 'doctrine.orm.entity_listener' ]
+
     # Services
 
     App\Map\StaticMapProviderInterface: '@app.map.google_maps_static_provider'

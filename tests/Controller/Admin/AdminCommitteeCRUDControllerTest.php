@@ -7,7 +7,7 @@ use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use App\Mailer\Message\CommitteeApprovalReferentMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\Admin\AbstractAdminWebTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
@@ -15,7 +15,7 @@ use Tests\App\MessengerTestTrait;
  * @group functional
  * @group admin
  */
-class AdminCommitteeCRUDControllerTest extends WebTestCase
+class AdminCommitteeCRUDControllerTest extends AbstractAdminWebTest
 {
     use ControllerTestTrait;
     use MessengerTestTrait;

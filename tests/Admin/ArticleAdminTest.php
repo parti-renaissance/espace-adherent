@@ -5,14 +5,13 @@ namespace Tests\App\Admin;
 use App\Entity\Article;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group admin
  */
-class ArticleAdminTest extends WebTestCase
+class ArticleAdminTest extends AbstractAdminWebTest
 {
     use ControllerTestTrait;
 
@@ -39,7 +38,7 @@ class ArticleAdminTest extends WebTestCase
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
 
         /** @var Article $article */
-        $article = $this->manager->getRepository(Article::class)->findOneBySlug('outre-mer');
+        $article = $this->manager->getRepository(Article::class)->findOneBySlug('article-renaissance-1');
 
         $this->client->request(
             Request::METHOD_GET,
@@ -50,7 +49,7 @@ class ArticleAdminTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            sprintf('/admin/app/article/%s/edit', $article->getId())
+            sprintf('/admin/renaissance-article/%s/edit', $article->getId())
         );
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $form = $crawler->selectButton('btn_update_and_edit')->form();

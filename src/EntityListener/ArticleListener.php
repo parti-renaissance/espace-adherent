@@ -9,18 +9,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ArticleListener
 {
-    private $redirectionManager;
-    private $router;
+    private array $redirections = [];
 
-    /**
-     * @var array[]
-     */
-    private $redirections = [];
-
-    public function __construct(RedirectionManager $redirectionManager, UrlGeneratorInterface $router)
-    {
-        $this->redirectionManager = $redirectionManager;
-        $this->router = $router;
+    public function __construct(
+        private readonly RedirectionManager $redirectionManager,
+        private readonly UrlGeneratorInterface $router,
+        ) {
     }
 
     public function preUpdate(Article $article, PreUpdateEventArgs $preUpdateEventArgs): void
@@ -44,16 +38,16 @@ class ArticleListener
         }
 
         $this->redirections[$article->getId()] = [
-            'source' => $this->router->generate('article_view',
+            'source' => $this->parseUrl($this->router->generate('article_view',
                 [
                     'articleSlug' => $articleSlugOld,
                     'categorySlug' => $categoryOld->getSlug(),
-                ]),
-            'target' => $this->router->generate('article_view',
+                ])),
+            'target' => $this->parseUrl($this->router->generate('article_view',
                 [
                     'articleSlug' => $articleSlugNew,
                     'categorySlug' => $categoryNew->getSlug(),
-                ]),
+                ])),
         ];
     }
 
@@ -67,5 +61,10 @@ class ArticleListener
 
             $this->redirectionManager->optimiseRedirection($redirection);
         }
+    }
+
+    private function parseUrl(string $url): string
+    {
+        return parse_url($url, \PHP_URL_PATH);
     }
 }

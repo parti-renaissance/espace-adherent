@@ -203,7 +203,7 @@ class AdhesionControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->setServerParameter('HTTP_HOST', $this->getParameter('app_host'));
+        $this->makeEMClient();
         self::assertSame('OK', $this->simulateIpnCall($donation, '00000'));
 
         $this->assertCount(1, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountActivationMessage::class));
@@ -232,7 +232,7 @@ class AdhesionControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->client->setServerParameter('HTTP_HOST', $this->getParameter('renaissance_host'));
+        $this->makeRenaissanceClient();
         $this->adherentRepository = $this->getAdherentRepository();
         $this->donationRepository = $this->getDonationRepository();
         $this->payboxClient = new HttpBrowser();

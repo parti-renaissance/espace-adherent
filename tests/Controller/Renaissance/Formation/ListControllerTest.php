@@ -49,6 +49,6 @@ class ListControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->client->setServerParameter('HTTP_HOST', $this->getParameter('renaissance_host'));
+        $this->makeRenaissanceClient();
     }
 }

@@ -153,7 +153,7 @@ app_oauth:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%renaissance_host%|%jemengage_auth_host%"
+        app_domain: "%app_host%|%renaissance_host%|%jemengage_auth_host%|%coalitions_auth_host%"
 
 #
 # Admin panel

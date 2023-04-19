@@ -4,14 +4,14 @@ namespace Tests\App\Security;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\Admin\AbstractAdminWebTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group time-sensitive
  * @group functional
  */
-class InactiveAdminDisconnectionTest extends WebTestCase
+class InactiveAdminDisconnectionTest extends AbstractAdminWebTest
 {
     use ControllerTestTrait;
 
@@ -29,11 +29,12 @@ class InactiveAdminDisconnectionTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/admin/dashboard');
 
         // should be redirected to logout
-        $this->assertClientIsRedirectedTo('/deconnexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://test.renaissance.code/deconnexion', $this->client);
     }
 
     public function testNoLogoutInactiveAdherent()
     {
+        $this->makeEMClient();
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');

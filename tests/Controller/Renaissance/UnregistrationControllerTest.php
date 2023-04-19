@@ -59,6 +59,6 @@ class UnregistrationControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->client->setServerParameter('HTTP_HOST', self::$container->getParameter('renaissance_host'));
+        $this->makeRenaissanceClient();
     }
 }

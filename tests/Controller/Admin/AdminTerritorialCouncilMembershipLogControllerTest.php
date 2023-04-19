@@ -6,14 +6,14 @@ use App\Controller\Admin\AdminTerritorialCouncilMembershipLogController;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\Admin\AbstractAdminWebTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group admin
  */
-class AdminTerritorialCouncilMembershipLogControllerTest extends WebTestCase
+class AdminTerritorialCouncilMembershipLogControllerTest extends AbstractAdminWebTest
 {
     use ControllerTestTrait;
 

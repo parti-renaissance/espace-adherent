@@ -4,13 +4,13 @@ namespace Tests\App\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\Admin\AbstractAdminWebTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class AdminFileControllerTest extends WebTestCase
+class AdminFileControllerTest extends AbstractAdminWebTest
 {
     use ControllerTestTrait;
 

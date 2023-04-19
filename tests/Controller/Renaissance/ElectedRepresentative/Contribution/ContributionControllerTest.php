@@ -95,7 +95,7 @@ class ContributionControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->client->setServerParameter('HTTP_HOST', $this->getParameter('renaissance_host'));
+        $this->makeRenaissanceClient();
 
         $this->adherentRepository = $this->getAdherentRepository();
         $this->electedRepresentativeRepository = $this->getElectedRepresentativeRepository();

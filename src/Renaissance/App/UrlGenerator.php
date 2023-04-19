@@ -77,4 +77,9 @@ class UrlGenerator extends AbstractAppUrlGenerator
 
         return null;
     }
+
+    public function generateLogout(): string
+    {
+        return $this->urlGenerator->generate('logout', ['app_domain' => $this->appHost], UrlGeneratorInterface::ABSOLUTE_URL);
+    }
 }
