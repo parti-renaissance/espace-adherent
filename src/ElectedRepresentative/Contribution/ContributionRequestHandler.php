@@ -10,6 +10,7 @@ use App\GoCardless\Subscription;
 use App\Repository\ElectedRepresentative\ContributionRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use GoCardlessPro\Core\Exception\InvalidStateException;
 
 class ContributionRequestHandler
 {
@@ -26,7 +27,10 @@ class ContributionRequestHandler
         $lastContribution = $this->contributionRepository->findLastAdherentContribution($adherent);
 
         if ($lastContribution) {
-            $this->cancelPreviousSubscription($lastContribution);
+            try {
+                $this->cancelPreviousSubscription($lastContribution);
+            } catch (InvalidStateException $exception) {
+            }
         }
 
         $subscription = $this->createSubscription($contributionRequest, $adherent, $lastContribution?->gocardlessCustomerId);

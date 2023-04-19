@@ -3,7 +3,6 @@
 namespace App\GoCardless;
 
 use GoCardlessPro\Client as GoCardlessClient;
-use GoCardlessPro\Core\Exception\InvalidStateException;
 use GoCardlessPro\Environment;
 use GoCardlessPro\Resources\Customer;
 use GoCardlessPro\Resources\CustomerBankAccount;
@@ -52,10 +51,7 @@ class Client implements ClientInterface
 
     public function disableBankAccount(string $bankAccountId): CustomerBankAccount
     {
-        try {
-            return $this->client->customerBankAccounts()->disable($bankAccountId);
-        } catch (InvalidStateException $exception) {
-        }
+        return $this->client->customerBankAccounts()->disable($bankAccountId);
     }
 
     public function createBankAccount(
@@ -76,10 +72,7 @@ class Client implements ClientInterface
 
     public function cancelMandate(string $mandateId): Mandate
     {
-        try {
-            return $this->client->mandates()->cancel($mandateId);
-        } catch (InvalidStateException $exception) {
-        }
+        return $this->client->mandates()->cancel($mandateId);
     }
 
     public function createMandate(CustomerBankAccount $customerBankAccount, array $metadata = []): Mandate
@@ -94,10 +87,7 @@ class Client implements ClientInterface
 
     public function cancelSubscription(string $subscriptionId): Subscription
     {
-        try {
-            return $this->client->subscriptions()->cancel($subscriptionId);
-        } catch (InvalidStateException $exception) {
-        }
+        return $this->client->subscriptions()->cancel($subscriptionId);
     }
 
     public function createSubscription(Mandate $mandate, int $amount, array $metadata = []): Subscription
