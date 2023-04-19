@@ -121,7 +121,8 @@ Feature:
             },
             "mandates": [],
             "uuid": "@uuid@",
-            "email_address": "referent@en-marche-dev.fr"
+            "email_address": "referent@en-marche-dev.fr",
+            "payments": []
         }
         """
         Examples:
@@ -185,7 +186,15 @@ Feature:
                 }
             ],
             "uuid": "0c62d201-826b-4da7-8424-e8e17935b400",
-            "email_address": "renaissance-user-2@en-marche-dev.fr"
+            "email_address": "renaissance-user-2@en-marche-dev.fr",
+            "payments": [
+                {
+                    "date": "@string@.isDateTime()",
+                    "method": "IBAN",
+                    "status": "confirmed",
+                    "uuid": "@uuid@"
+                }
+            ]
         }
         """
         Examples:
@@ -243,7 +252,15 @@ Feature:
                 }
             ],
             "uuid": "0c62d201-826b-4da7-8424-e8e17935b400",
-            "email_address": "renaissance-user-2@en-marche-dev.fr"
+            "email_address": "renaissance-user-2@en-marche-dev.fr",
+            "payments": [
+                {
+                    "date": "@string@.isDateTime()",
+                    "method": "IBAN",
+                    "status": "confirmed",
+                    "uuid": "@uuid@"
+                }
+            ]
         }
         """
         Examples:
