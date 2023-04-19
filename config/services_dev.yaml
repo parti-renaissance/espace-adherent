@@ -20,6 +20,10 @@ services:
 
     App\GoCardless\ClientInterface: '@Tests\App\GoCardless\DummyClient'
 
+    Tests\App\Ohme\DummyClient: ~
+
+    App\Ohme\ClientInterface: '@Tests\App\Ohme\DummyClient'
+
     app.mailer.client:
         class: 'Tests\App\Test\Mailer\NullEmailClient'
 

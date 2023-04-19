@@ -4,7 +4,7 @@ namespace App\Ohme;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class Client
+class Client implements ClientInterface
 {
     public function __construct(private readonly HttpClientInterface $client)
     {

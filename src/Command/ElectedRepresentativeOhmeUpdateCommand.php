@@ -3,8 +3,7 @@
 namespace App\Command;
 
 use App\Entity\ElectedRepresentative\Payment;
-use App\Ohme\Client;
-use App\Ohme\ElectedRepresentativeManager;
+use App\Ohme\ClientInterface;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -20,9 +19,8 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
     private $io;
 
     public function __construct(
-        private readonly Client $ohme,
+        private readonly ClientInterface $ohme,
         private readonly ElectedRepresentativeRepository $electedRepresentativeRepository,
-        private readonly ElectedRepresentativeManager $electedRepresentativeManager,
         private readonly EntityManagerInterface $entityManager
     ) {
         parent::__construct();
@@ -83,6 +81,9 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
 
                     $electedRepresentative->addPayment(Payment::fromArray($electedRepresentative, $payment));
                 }
+
+                $this->entityManager->flush();
+                $this->entityManager->clear();
 
                 $this->io->progressAdvance();
             }
