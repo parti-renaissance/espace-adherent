@@ -15,6 +15,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
     public const DESIGNATION_COMMITTEE_1_UUID = '7fb0693e-1dad-44c6-984b-19e99603ea2c';
     public const DESIGNATION_COMMITTEE_2_UUID = '6c7ca0c7-d656-47c3-a345-170fb43ffd1a';
     public const DESIGNATION_COMMITTEE_3_UUID = '9ab307ac-100a-4a3a-819a-bee2b800e3d4';
+    public const DESIGNATION_COMMITTEE_4_UUID = '95da3939-f178-4d67-9237-61d4ea57e33c';
 
     public function load(ObjectManager $manager)
     {
@@ -114,7 +115,10 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $manager->persist($designation);
 
         // SUPERVISOR designation with result period
-        $designation = new Designation('Désignation "Comités-Animateurs" resultats affichés');
+        $designation = new Designation(
+            'Désignation "Comités-Animateurs" resultats affichés',
+            Uuid::fromString(self::DESIGNATION_COMMITTEE_4_UUID)
+        );
         $designation->setGlobalZones([DesignationGlobalZoneEnum::FDE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
         $designation->setCandidacyStartDate(new \DateTime('-15 days'));

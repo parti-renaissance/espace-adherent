@@ -198,7 +198,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $election->setElectionEntity(new ElectionEntity($this->getReference('committee-15')));
         $this->loadCommitteeSupervisorElectionCandidates($election);
         $this->manager->persist($votersList = $this->loadCommitteeSupervisorElectionVoters($election));
-        $this->loadResults($round, $votersList);
+        $this->loadResults($round, $votersList, false);
 
         // -------------------------------------------
 
@@ -366,7 +366,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         return $list;
     }
 
-    private function loadResults(ElectionRound $electionRound, VotersList $votersList): void
+    private function loadResults(ElectionRound $electionRound, VotersList $votersList, bool $random = true): void
     {
         $pools = $electionRound->getElectionPools();
 
@@ -387,7 +387,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
                 if (0 === $i % 10) {
                     $choice->setIsBlank(true);
                 } else {
-                    $choice->setCandidateGroup($candidateGroups[random_int(0, $totalGroups - 1)]);
+                    $choice->setCandidateGroup($candidateGroups[$random ? random_int(0, $totalGroups - 1) : $i % 2]);
                 }
 
                 $result->addVoteChoice($choice);

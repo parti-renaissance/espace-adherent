@@ -150,3 +150,140 @@ Feature:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I can view election results
+      Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+      And I send a "GET" request to "/api/v3/designations/95da3939-f178-4d67-9237-61d4ea57e33c/results?scope=<scope>"
+      Then the response status code should be 200
+      And the response should be in JSON
+      And the JSON should be equal to:
+      """
+      [
+          {
+                "candidate_group_results": [
+                    {
+                        "candidate_group": {
+                            "elected": false,
+                            "candidates": [
+                                {
+                                    "first_name": "Adherent 32",
+                                    "last_name": "Fa32ke",
+                                    "gender": "female"
+                                },
+                                {
+                                    "first_name": "Adherent 33",
+                                    "last_name": "Fa33ke",
+                                    "gender": "male"
+                                }
+                            ],
+                            "title": "Adherent 33 Fa33ke (+1 candidat)"
+                        },
+                        "total": 2,
+                        "rate": 40
+                    },
+                    {
+                        "candidate_group": {
+                            "elected": true,
+                            "candidates": [
+                                {
+                                    "first_name": "Adherent 34",
+                                    "last_name": "Fa34ke",
+                                    "gender": "female"
+                                },
+                                {
+                                    "first_name": "Adherent 35",
+                                    "last_name": "Fa35ke",
+                                    "gender": "male"
+                                }
+                            ],
+                            "title": "Adherent 35 Fa35ke (+1 candidat)"
+                        },
+                        "total": 3,
+                        "rate": 60
+                    },
+                    {
+                        "candidate_group": {
+                            "elected": false,
+                            "candidates": [
+                                {
+                                    "first_name": "Adherent 36",
+                                    "last_name": "Fa36ke",
+                                    "gender": "female"
+                                },
+                                {
+                                    "first_name": "Adherent 37",
+                                    "last_name": "Fa37ke",
+                                    "gender": "male"
+                                }
+                            ],
+                            "title": "Adherent 37 Fa37ke (+1 candidat)"
+                        },
+                        "total": 0,
+                        "rate": 0
+                    }
+                ],
+                "expressed": 5,
+                "blank": 0,
+                "participated": 6,
+                "abstentions": 1,
+                "bulletin_count": 5
+          }
+      ]
+      """
+      Examples:
+        | user                            | scope                                          |
+        | referent@en-marche-dev.fr       | referent                                       |
+        | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+        | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+
+    Scenario Outline: As a user granted with local scope, I can view election voters
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "GET" request to "/api/v3/designations/95da3939-f178-4d67-9237-61d4ea57e33c/voters?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        [
+            {
+                "first_name": "Adherent 33",
+                "last_name": "Fa33ke",
+                "postal_code": "77000",
+                "voted_at": null
+            },
+            {
+                "first_name": "Adherent 32",
+                "last_name": "Fa32ke",
+                "postal_code": "77000",
+                "voted_at": "@string@.isDateTime()"
+            },
+            {
+                "first_name": "Adherent 35",
+                "last_name": "Fa35ke",
+                "postal_code": "77000",
+                "voted_at": "@string@.isDateTime()"
+            },
+            {
+                "first_name": "Adherent 34",
+                "last_name": "Fa34ke",
+                "postal_code": "77000",
+                "voted_at": "@string@.isDateTime()"
+            },
+            {
+                "first_name": "Adherent 37",
+                "last_name": "Fa37ke",
+                "postal_code": "77000",
+                "voted_at": "@string@.isDateTime()"
+            },
+            {
+                "first_name": "Adherent 36",
+                "last_name": "Fa36ke",
+                "postal_code": "77000",
+                "voted_at": "@string@.isDateTime()"
+            }
+        ]
+        """
+        Examples:
+          | user                            | scope                                          |
+          | referent@en-marche-dev.fr       | referent                                       |
+          | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+          | president-ad@renaissance-dev.fr | president_departmental_assembly                |
