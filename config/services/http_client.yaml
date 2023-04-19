@@ -55,3 +55,13 @@ services:
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
         arguments:
             - {base_uri: 'https://eu-api.friendlycaptcha.eu', timeout: 10}
+
+    app.http_client.ohme_api:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            - {
+                base_uri: '%env(OHME_API_HOST)%',
+                timeout: 60,
+                headers: {'client-name': '%env(OHME_CLIENT_NAME)%', 'client-secret': '%env(OHME_CLIENT_SECRET)%', 'accept': 'application/json'}
+            }

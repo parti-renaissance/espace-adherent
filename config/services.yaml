@@ -454,3 +454,7 @@ services:
     App\Donation\DonationRequestUtils:
         arguments:
             $tokenManager: '@App\Security\SimpleCsrfTokenManager'
+
+    App\Ohme\Client:
+        arguments:
+            $client: '@app.http_client.ohme_api'
