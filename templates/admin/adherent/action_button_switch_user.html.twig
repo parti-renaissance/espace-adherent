@@ -1,8 +1,23 @@
 {% if object.enabled and is_granted('ROLE_ALLOWED_TO_SWITCH') %}
     <li>
-        <a href="{{ path('homepage', {'_switch_user': object.emailAddress}) }}" class="sonata-action-element" title="Impersonnifier">
+        <a href="{{ path('app_renaissance_homepage', {'_switch_user': object.emailAddress}) }}" class="sonata-action-element" title="Impersonnifier">
             <i class="fa fa-user-secret" aria-hidden="true"></i>
-            Impersonnifier
+            Impersonnifier site Renaissance
         </a>
     </li>
+
+    {% if is_granted(constant('App\\Security\\Voter\\DataCornerVoter::DATA_CORNER'), object) %}
+        <li>
+            <a href="{{ path('app_front_oauth_authorize', {
+                app_domain: renaissance_host,
+                '_switch_user': object.emailAddress,
+                response_type: 'code',
+                client_id: get_jme_client_id(),
+                scope: constant('App\\OAuth\\Model\\Scope::JEMENGAGE_ADMIN')
+            }) }}" class="sonata-action-element" title="Impersonnifier JME">
+                <i class="fa fa-user-secret" aria-hidden="true"></i>
+                Impersonnifier JME 🇫🇷
+            </a>
+        </li>
+    {% endif %}
 {% endif %}

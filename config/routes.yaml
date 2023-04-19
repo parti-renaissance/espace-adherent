@@ -132,42 +132,60 @@ swagger_ui:
 # API Legislatives
 #
 app_legislatives_api:
-    host:     "{app_domaines}"
+    host:     "{app_domain}"
     resource: "../src/Controller/Api/LegislativesController.php"
     type:     "annotation"
     prefix:   "%api_path_prefix%"
     defaults:
         _format: 'json'
+        app_domain: "%legislatives_host%"
     requirements:
-        app_domaines: "%app_host%|%legislatives_host%"
+        app_domain: "%app_host%|%legislatives_host%"
 
 #
 # OAuth
 #
 app_oauth:
+    host:     "{app_domain}"
     resource: "../src/Controller/OAuth"
     type:     "annotation"
     prefix:   "/oauth/v2"
+    defaults:
+        app_domain: "%app_host%"
+    requirements:
+        app_domain: "%app_host%|%renaissance_host%|%jemengage_auth_host%"
 
 #
 # Admin panel
 #
 admin_dashboard:
-    host:     "%app_host%"
+    host:     "%renaissance_host%"
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
     prefix:   "/admin"
 
 admin_crud:
-    host:     "%app_host%"
+    host:     "%renaissance_host%"
     resource: .
     type:     sonata_admin
     prefix:   "/admin"
 
 app_admin:
-    host:     "%app_host%"
+    host:     "%renaissance_host%"
     resource: "../src/Controller/Admin"
     type:     "annotation"
     prefix:   "/admin"
+
+#
+# Old admin redirection
+#
+app_redirect_admin_login:
+    host: "%app_host%"
+    path: /admin{url}
+    requirements:
+        url: '.*'
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: sonata_admin_dashboard
 
 #
 # En Marche app
