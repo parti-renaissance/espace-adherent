@@ -45,6 +45,13 @@ class Payment
     public ?string $status = null;
 
     /**
+     * @ORM\Column(type="integer")
+     *
+     * @Groups({"elected_representative_read"})
+     */
+    public ?int $amount = null;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="payments")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -64,6 +71,7 @@ class Payment
         $payment->date = $data['date'] ?? \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['date']);
         $payment->method = $data['payment_method_name'];
         $payment->status = $data['payment_status'];
+        $payment->amount = round($data['amount']);
 
         return $payment;
     }

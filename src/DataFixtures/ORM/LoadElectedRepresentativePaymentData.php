@@ -24,6 +24,7 @@ class LoadElectedRepresentativePaymentData extends Fixture implements DependentF
         $payment->date = new \DateTime('2023-03-16');
         $payment->method = 'IBAN';
         $payment->status = 'confirmed';
+        $payment->amount = 50;
 
         $erDepartment92->addPayment($payment);
 

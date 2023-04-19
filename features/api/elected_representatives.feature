@@ -192,6 +192,7 @@ Feature:
                     "date": "@string@.isDateTime()",
                     "method": "IBAN",
                     "status": "confirmed",
+                    "amount": 50,
                     "uuid": "@uuid@"
                 }
             ]
@@ -258,6 +259,7 @@ Feature:
                     "date": "@string@.isDateTime()",
                     "method": "IBAN",
                     "status": "confirmed",
+                    "amount": 50,
                     "uuid": "@uuid@"
                 }
             ]
