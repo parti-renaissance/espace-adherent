@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\ElectedRepresentative\Payment;
 use App\Ohme\Client;
 use App\Ohme\ElectedRepresentativeManager;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
@@ -59,14 +60,14 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
             }
 
             foreach ($contacts['data'] as $contact) {
-                if (!\array_key_exists('adherent_uuid', $contact) || !$contact['adherent_uuid']) {
+                if (!\array_key_exists('uuid_adherent', $contact) || !$contact['uuid_adherent']) {
                     continue;
                 }
 
-                $electedRepresentative = $this->electedRepresentativeRepository->findOneByAdherentUuid($contact['adherent_uuid']);
+                $electedRepresentative = $this->electedRepresentativeRepository->findOneByAdherentUuid($contact['uuid_adherent']);
 
                 if (!$electedRepresentative) {
-                    $this->io->warning(sprintf('ElectedRepresentative with adherent_uuid "%s" has not been found.', $contact['adherent_uuid']));
+                    $this->io->warning(sprintf('ElectedRepresentative with uuid_adherent "%s" has not been found.', $contact['uuid_adherent']));
 
                     continue;
                 }
@@ -76,7 +77,11 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
                 ]);
 
                 foreach ($payments['data'] as $payment) {
-                    $this->electedRepresentativeManager->synchronizePayments($electedRepresentative, $payment);
+                    if ($electedRepresentative->getPaymentByOhmeId($payment['id'])) {
+                        continue;
+                    }
+
+                    $electedRepresentative->addPayment(Payment::fromArray($electedRepresentative, $payment));
                 }
 
                 $this->io->progressAdvance();

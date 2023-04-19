@@ -17,6 +17,7 @@ use App\Entity\ReferentTag;
 use App\Entity\ZoneableEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
@@ -321,6 +322,19 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      */
     private Collection $contributions;
 
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\ElectedRepresentative\Payment",
+     *     mappedBy="electedRepresentative",
+     *     cascade={"all"},
+     *     orphanRemoval=true,
+     *     fetch="EXTRA_LAZY"
+     * )
+     *
+     * @Groups({"elected_representative_read"})
+     */
+    private Collection $payments;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -332,6 +346,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         $this->sponsorships = new ArrayCollection();
         $this->userListDefinitions = new ArrayCollection();
         $this->contributions = new ArrayCollection();
+        $this->payments = new ArrayCollection();
 
         $this->initializeSponsorships();
     }
@@ -815,5 +830,35 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     public function removeContribution(Contribution $contribution): void
     {
         $this->contributions->removeElement($contribution);
+    }
+
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): void
+    {
+        if (!$this->payments->contains($payment)) {
+            $payment->electedRepresentative = $this;
+            $this->payments->add($payment);
+        }
+    }
+
+    public function removePayment(Payment $payment): void
+    {
+        $this->payments->removeElement($payment);
+    }
+
+    public function getPaymentByOhmeId(string $ohmeId): ?Payment
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('ohmeId', $ohmeId))
+        ;
+
+        return $this->payments->matching($criteria)->count() > 0
+            ? $this->payments->matching($criteria)->first()
+            : null
+        ;
     }
 }

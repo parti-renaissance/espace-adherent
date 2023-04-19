@@ -458,5 +458,3 @@ services:
     App\Ohme\Client:
         arguments:
             $client: '@app.http_client.ohme_api'
-            $ohmeClientName: '%env(OHME_CLIENT_NAME)%'
-            $ohmeClientSecret: '%env(OHME_CLIENT_SECRET)%'

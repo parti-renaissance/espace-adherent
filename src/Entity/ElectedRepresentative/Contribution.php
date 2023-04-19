@@ -82,6 +82,7 @@ class Contribution
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="contributions")
+     * @ORM\JoinColumn(nullable=false)
      */
     public ?ElectedRepresentative $electedRepresentative = null;
 
