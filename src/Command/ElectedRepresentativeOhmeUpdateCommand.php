@@ -58,6 +58,8 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
             }
 
             foreach ($contacts['data'] as $contact) {
+                $this->io->progressAdvance();
+
                 if (empty($contact['uuid_adherent'])) {
                     continue;
                 }
@@ -84,16 +86,24 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
 
                 $this->entityManager->flush();
 
-                $this->io->progressAdvance();
+                $this->pause();
             }
 
             $this->entityManager->clear();
 
             $offset += $limit;
+
+            $this->pause();
         } while (0 !== $count && 0 !== $offset && $offset < $count);
 
         $this->io->progressFinish();
 
         return 0;
+    }
+
+    private function pause(): void
+    {
+        // Avoid OHME rate limit (100 requests / minute)
+        usleep(700000);
     }
 }
