@@ -250,7 +250,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
                 ],
                 'phone' => [
                     'country' => 'FR',
-                    'number' => '04 01 02 03 04',
+                    'number' => '01 01 02 03 04',
                 ],
                 'position' => 'student',
                 'birthdate' => '1985-10-27',
@@ -281,7 +281,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
                 ],
                 'phone' => [
                     'country' => 'FR',
-                    'number' => '04 01 02 03 04',
+                    'number' => '01 01 02 03 04',
                 ],
                 'position' => 'student',
                 'birthdate' => '1985-10-27',
@@ -303,7 +303,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertSame('9 rue du Lycée', $adherent->getAddress());
         self::assertSame('06000', $adherent->getPostalCode());
         self::assertSame('Nice', $adherent->getCityName());
-        self::assertSame('401020304', $adherent->getPhone()->getNationalNumber());
+        self::assertSame('101020304', $adherent->getPhone()->getNationalNumber());
         self::assertSame('student', $adherent->getPosition());
         $this->assertNotNull($newLatitude = $adherent->getLatitude());
         $this->assertNotNull($newLongitude = $adherent->getLongitude());
