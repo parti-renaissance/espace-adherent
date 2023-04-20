@@ -1,10 +1,8 @@
 <?php
 
-namespace Tests\App\Admin;
+namespace Tests\App;
 
-use Tests\App\AbstractWebCaseTest;
-
-abstract class AbstractAdminWebTest extends AbstractWebCaseTest
+abstract class AbstractRenaissanceWebCaseTest extends AbstractWebCaseTest
 {
     protected function setUp(): void
     {

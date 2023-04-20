@@ -5,13 +5,14 @@ namespace Tests\App\Admin;
 use App\Entity\Article;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group admin
  */
-class ArticleAdminTest extends AbstractAdminWebTest
+class ArticleRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

@@ -12,14 +12,14 @@ use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\ValueObject\Genders;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\Admin\AbstractAdminWebTest;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group admin
  */
-class AdminCommitteeControllerTest extends AbstractAdminWebTest
+class RenaissanceCommitteeControllerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

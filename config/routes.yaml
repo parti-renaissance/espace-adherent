@@ -176,18 +176,6 @@ app_admin:
     prefix:   "/admin"
 
 #
-# Old admin redirection
-#
-app_redirect_admin_login:
-    host: "%app_host%"
-    path: /admin{url}
-    requirements:
-        url: '.*'
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
-    defaults:
-        route: sonata_admin_dashboard
-
-#
 # En Marche app
 #
 lexik_paybox:

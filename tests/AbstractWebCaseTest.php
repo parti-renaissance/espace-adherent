@@ -18,8 +18,6 @@ abstract class AbstractWebCaseTest extends WebTestCase
         parent::setUp();
 
         $this->client = static::createClient();
-
-        $this->makeEMClient();
         $this->client->setServerParameter('HTTP_ACCEPT', 'text/html');
 
         $this->manager = self::$container->get(EntityManagerInterface::class);

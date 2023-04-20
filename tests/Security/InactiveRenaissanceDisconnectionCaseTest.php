@@ -4,14 +4,14 @@ namespace Tests\App\Security;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\Admin\AbstractAdminWebTest;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group time-sensitive
  * @group functional
  */
-class InactiveAdminDisconnectionTest extends AbstractAdminWebTest
+class InactiveRenaissanceDisconnectionCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

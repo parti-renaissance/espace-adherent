@@ -12,14 +12,14 @@ use App\Repository\AdherentRepository;
 use App\Repository\EmailRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group security
  */
-class SecurityControllerTest extends WebTestCase
+class SecurityControllerTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 
@@ -239,8 +239,6 @@ class SecurityControllerTest extends WebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->makeRenaissanceClient();
 
         $this->adherentRepository = $this->getAdherentRepository();
         $this->emailRepository = $this->getEmailRepository();

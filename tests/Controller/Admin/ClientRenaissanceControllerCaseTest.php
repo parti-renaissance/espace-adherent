@@ -7,14 +7,14 @@ use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\Client;
 use App\Entity\OAuth\RefreshToken;
 use Ramsey\Uuid\Uuid;
-use Tests\App\Admin\AbstractAdminWebTest;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group admin
  */
-class ClientAdminControllerTest extends AbstractAdminWebTest
+class ClientRenaissanceControllerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

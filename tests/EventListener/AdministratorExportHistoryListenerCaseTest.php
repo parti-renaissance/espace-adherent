@@ -4,13 +4,13 @@ namespace Tests\App\EventListener;
 
 use App\Entity\Reporting\AdministratorExportHistory;
 use Doctrine\ORM\EntityRepository;
-use Tests\App\Admin\AbstractAdminWebTest;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class AdministratorExportHistoryListenerTest extends AbstractAdminWebTest
+class AdministratorExportHistoryListenerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

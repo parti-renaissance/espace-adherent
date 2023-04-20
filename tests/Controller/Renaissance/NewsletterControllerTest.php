@@ -4,13 +4,13 @@ namespace Tests\App\Controller\Renaissance;
 
 use App\Entity\Renaissance\NewsletterSubscription;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class NewsletterControllerTest extends WebTestCase
+class NewsletterControllerTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 
@@ -55,12 +55,5 @@ class NewsletterControllerTest extends WebTestCase
         self::assertSame('06500', $nl->zipCode);
         self::assertNotEmpty($nl->token);
         self::assertEmpty($nl->confirmedAt);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->makeRenaissanceClient();
     }
 }

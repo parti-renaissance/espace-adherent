@@ -8,7 +8,7 @@ use App\Repository\ChezVous\CityRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\Admin\AbstractAdminWebTest;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Algolia\DummySearchService;
 
@@ -16,7 +16,7 @@ use Tests\App\Test\Algolia\DummySearchService;
  * @group functional
  * @group admin
  */
-class AdminChezVousCityControllerTest extends AbstractAdminWebTest
+class RenaissanceChezVousCityControllerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 
