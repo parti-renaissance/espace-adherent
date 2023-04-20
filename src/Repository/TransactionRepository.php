@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Adherent;
 use App\Entity\Transaction;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -27,17 +28,19 @@ class TransactionRepository extends ServiceEntityRepository
     /**
      * @return Transaction[]
      */
-    public function findAllSuccessfulTransactionByEmail(string $emailAddress): array
+    public function findAllSuccessfulTransactionByAdherentIdOrEmail(Adherent $adherent): array
     {
         return $this->createQueryBuilder('transaction')
             ->addSelect('donation')
             ->innerJoin('transaction.donation', 'donation')
             ->innerJoin('donation.donator', 'donator')
-            ->andWhere('donator.emailAddress = :email')
+            ->leftJoin('donator.adherent', 'adherent')
+            ->andWhere('donator.emailAddress = :email OR adherent = :adherent')
             ->andWhere('transaction.payboxResultCode = :resultCode')
             ->setParameters([
                 'resultCode' => Transaction::PAYBOX_SUCCESS,
-                'email' => $emailAddress,
+                'email' => $adherent->getEmailAddress(),
+                'adherent' => $adherent,
             ])
             ->orderBy('transaction.payboxDateTime', 'DESC')
             ->getQuery()
