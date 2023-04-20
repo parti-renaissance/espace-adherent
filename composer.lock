@@ -10078,16 +10078,16 @@
         },
         {
             "name": "runroom-packages/sortable-behavior-bundle",
-            "version": "0.16.0",
+            "version": "0.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Runroom/RunroomSortableBehaviorBundle.git",
-                "reference": "a6f1bd6cb26b6cdcfaccd47b62b4c1ac5b4b04d8"
+                "reference": "408695aaeda9237a01a8512608953e270ed757e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Runroom/RunroomSortableBehaviorBundle/zipball/a6f1bd6cb26b6cdcfaccd47b62b4c1ac5b4b04d8",
-                "reference": "a6f1bd6cb26b6cdcfaccd47b62b4c1ac5b4b04d8",
+                "url": "https://api.github.com/repos/Runroom/RunroomSortableBehaviorBundle/zipball/408695aaeda9237a01a8512608953e270ed757e6",
+                "reference": "408695aaeda9237a01a8512608953e270ed757e6",
                 "shasum": ""
             },
             "require": {
@@ -10108,13 +10108,14 @@
                 "sonata-project/admin-bundle": "<3.103"
             },
             "require-dev": {
+                "doctrine/annotations": "^1.13 || ^2.0",
                 "gedmo/doctrine-extensions": "^3.0",
                 "knplabs/knp-menu-bundle": "^3.1",
                 "matthiasnoback/symfony-config-test": "^4.2",
                 "matthiasnoback/symfony-dependency-injection-test": "^4.1",
                 "phpunit/phpunit": "^9.5",
                 "psr/container": "^1.1 || ^2.0",
-                "runroom-packages/testing": "^0.16",
+                "runroom-packages/testing": "^0.16.1",
                 "sonata-project/admin-bundle": "^3.103 || ^4.9",
                 "sonata-project/doctrine-orm-admin-bundle": "^3.34 || ^4.0",
                 "symfony/browser-kit": "^5.4 || ^6.0",
@@ -10127,7 +10128,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.16-dev"
+                    "dev-master": "0.17-dev"
                 }
             },
             "autoload": {
@@ -10154,9 +10155,9 @@
                 "sortable"
             ],
             "support": {
-                "source": "https://github.com/Runroom/RunroomSortableBehaviorBundle/tree/0.16.0"
+                "source": "https://github.com/Runroom/RunroomSortableBehaviorBundle/tree/0.16.1"
             },
-            "time": "2022-09-12T13:18:03+00:00"
+            "time": "2023-04-19T13:05:52+00:00"
         },
         {
             "name": "sabre/dav",
