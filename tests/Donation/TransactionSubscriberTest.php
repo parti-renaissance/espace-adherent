@@ -2,6 +2,7 @@
 
 namespace Tests\App\Donation;
 
+use App\Repository\AdherentRepository;
 use App\Repository\DonationRepository;
 use App\Repository\TransactionRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +16,9 @@ class TransactionSubscriberTest extends AbstractWebCaseTest
 {
     use TestHelperTrait;
 
-    /**
-     * @var DonationRepository
-     */
-    private $donationRepository;
-    /**
-     * @var TransactionRepository
-     */
-    private $transactionRepository;
+    private ?DonationRepository $donationRepository;
+    private ?AdherentRepository $adherentRepository;
+    private ?TransactionRepository $transactionRepository;
 
     public function payloadProvider(): iterable
     {
@@ -51,7 +47,7 @@ class TransactionSubscriberTest extends AbstractWebCaseTest
      */
     public function testAllTransactionCreated(): void
     {
-        $transactions = $this->transactionRepository->findAllSuccessfulTransactionByEmail('jacques.picard@en-marche.fr');
+        $transactions = $this->transactionRepository->findAllSuccessfulTransactionByAdherentIdOrEmail($this->adherentRepository->findOneByEmail('jacques.picard@en-marche.fr'));
 
         // b/c there are initial transactions when donationFixtures are loaded then 1+4 = 5
         static::assertCount(5, $transactions);
@@ -94,12 +90,14 @@ class TransactionSubscriberTest extends AbstractWebCaseTest
         parent::setUp();
 
         $this->donationRepository = $this->getDonationRepository();
+        $this->adherentRepository = $this->getAdherentRepository();
         $this->transactionRepository = $this->getTransactionRepository();
     }
 
     protected function tearDown(): void
     {
         $this->donationRepository = null;
+        $this->adherentRepository = null;
         $this->transactionRepository = null;
 
         parent::tearDown();

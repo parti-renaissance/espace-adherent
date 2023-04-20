@@ -64,13 +64,15 @@ class DonationRepository extends ServiceEntityRepository
     }
 
     /** @return Donation[] */
-    public function findOfflineDonationsByEmail(string $email): array
+    public function findOfflineDonationsByAdherent(Adherent $adherent): array
     {
         return $this->createQueryBuilder('donation')
             ->innerJoin('donation.donator', 'donator')
-            ->andWhere('donator.emailAddress = :email')
+            ->leftJoin('donator.adherent', 'adherent')
+            ->andWhere('donator.emailAddress = :email OR adherent = :adherent')
             ->andWhere('donation.type != :donation_type_cb')
-            ->setParameter('email', $email)
+            ->setParameter('email', $adherent->getEmailAddress())
+            ->setParameter('adherent', $adherent)
             ->setParameter('donation_type_cb', Donation::TYPE_CB)
             ->orderBy('donation.donatedAt', 'DESC')
             ->getQuery()

@@ -8,22 +8,17 @@ use App\Repository\TransactionRepository;
 
 class DonationManager
 {
-    private $donationRepository;
-    private $transactionRepository;
-
-    public function __construct(DonationRepository $donationRepository, TransactionRepository $transactionRepository)
-    {
-        $this->donationRepository = $donationRepository;
-        $this->transactionRepository = $transactionRepository;
+    public function __construct(
+        private readonly DonationRepository $donationRepository,
+        private readonly TransactionRepository $transactionRepository
+    ) {
     }
 
     public function getHistory(Adherent $adherent): array
     {
-        $email = $adherent->getEmailAddress();
-
         $history = [];
 
-        $transactions = $this->transactionRepository->findAllSuccessfulTransactionByEmail($email);
+        $transactions = $this->transactionRepository->findAllSuccessfulTransactionByAdherentIdOrEmail($adherent);
         foreach ($transactions as $transaction) {
             $donation = $transaction->getDonation();
 
@@ -36,7 +31,7 @@ class DonationManager
             );
         }
 
-        $otherDonations = $this->donationRepository->findOfflineDonationsByEmail($email);
+        $otherDonations = $this->donationRepository->findOfflineDonationsByAdherent($adherent);
         foreach ($otherDonations as $donation) {
             $history[] = $this->createDonationValueObject(
                 $donation->getDonatedAt(),
