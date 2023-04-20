@@ -4,14 +4,14 @@ namespace Tests\App\Admin\Phoning;
 
 use App\Entity\Phoning\Campaign;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group admin
  */
-class CampaignAdminTest extends AbstractWebCaseTest
+class CampaignRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

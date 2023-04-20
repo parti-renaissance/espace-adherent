@@ -14,7 +14,7 @@ use App\Repository\Timeline\ProfileRepository;
 use App\Repository\Timeline\ThemeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Algolia\DummySearchService;
 
@@ -22,7 +22,7 @@ use Tests\App\Test\Algolia\DummySearchService;
  * @group functional
  * @group admin
  */
-class AdminTimelineMeasureControllerTest extends WebTestCase
+class RenaissanceTimelineMeasureControllerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

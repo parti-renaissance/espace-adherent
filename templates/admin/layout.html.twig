@@ -1,10 +1,15 @@
 {% extends '@SonataAdmin/standard_layout.html.twig' %}
 
+{% block logo %}
+    <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
+        <img src="{{ asset('images/renaissance/logo.svg') }}" alt="logo"/>
+    </a>
+{% endblock %}
+
 {% block meta_tags %}
     {{ parent() }}
 
-    <link rel="icon" type="image/png" href="{{ asset('favicon-black-32x32.png') }}?v2" sizes="32x32" />
-    <link rel="icon" type="image/png" href="{{ asset('favicon-black-16x16.png') }}?v2" sizes="16x16" />
+    <link rel="icon" type="image/png" href="{{ asset('favicon-re.png') }}?v2" sizes="32x32" />
 {% endblock %}
 
 {% block stylesheets %}
@@ -96,6 +101,14 @@
         }
         .sonata-ba-field-inline-table table tbody.sonata-ba-tbody tr:nth-of-type(odd) {
             background-color: #f9f9f9;
+        }
+        .main-header .logo {
+            background-color: #222d32 !important;
+            border-right: 0 none !important;
+        }
+
+        .main-header .logo img {
+            max-width: inherit;
         }
     </style>
 {% endblock %}
@@ -392,13 +405,13 @@
 {% block side_bar_after_nav %}
     <ul class="sidebar-menu">
         <li>
-            <a href="{{ path('homepage') }}">
+            <a href="{{ path('app_renaissance_homepage') }}">
                 <i class="fa fa-reply"></i>
                 <span>Retour au site</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('logout') }}">
+            <a href="{{ path('logout', { app_domain: renaissance_host }) }}">
                 <i class="fa fa-sign-out"></i>
                 <span>Déconnexion</span>
             </a>

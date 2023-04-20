@@ -5,14 +5,14 @@ namespace Tests\App\Controller\EnMarche;
 use App\Controller\EnMarche\ArticleController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group article
  */
-class ArticleControllerTest extends WebTestCase
+class ArticleControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

@@ -6,13 +6,13 @@ use App\Entity\AssessorOfficeEnum;
 use App\Mailer\Message\Assessor\AssessorRequestConfirmationMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class AssessorControllerTest extends WebTestCase
+class AssessorControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

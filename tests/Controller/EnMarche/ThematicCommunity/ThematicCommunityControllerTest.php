@@ -3,10 +3,10 @@
 namespace Tests\App\Controller\EnMarche\ThematicCommunity;
 
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
-class ThematicCommunityControllerTest extends WebTestCase
+class ThematicCommunityControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\App\Controller\EnMarche\Security;
+namespace Tests\App\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group security
  */
-class AdminSecurityControllerTest extends WebTestCase
+class RenaissanceSecurityControllerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

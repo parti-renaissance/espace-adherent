@@ -4,10 +4,10 @@ namespace Tests\App\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
-class FormationAdminTest extends WebTestCase
+class FormationRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

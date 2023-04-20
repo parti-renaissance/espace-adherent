@@ -1,10 +1,20 @@
 {% extends 'oauth/base.html.twig' %}
 
-{% block page_title 'Administration' %}
+{% block favicon %}
+    <link rel="shortcut icon" href="{{ asset('favicon-re.png') }}" />
+{% endblock %}
+
+{% block title 'Administration' %}
+
+{% block em_logo %}
+    <div class="b__nudge--top-15 b__nudge--left-medium b__nudge--right-small b__nudge--bottom-larger">
+        {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-4 w-auto text-white lg:h-5' } %}
+    </div>
+{% endblock %}
 
 {% block content %}
     <section class="l__inner">
-        <h1>Connectez-vous avec vos identifiants <em>En Marche</em> afin d’accéder à cette application.</h1>
+        <h1>Connectez-vous avec vos identifiants afin d’accéder à cette application.</h1>
 
         {{ form_errors(form) }}
 

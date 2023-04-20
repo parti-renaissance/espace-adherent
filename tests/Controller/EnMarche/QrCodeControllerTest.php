@@ -5,13 +5,13 @@ namespace Tests\App\Controller\EnMarche;
 use App\DataFixtures\ORM\LoadQrCodeData;
 use App\Entity\QrCode;
 use App\Repository\QrCodeRepository;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class QrCodeControllerTest extends WebTestCase
+class QrCodeControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

@@ -16,14 +16,14 @@ use App\Subscription\SubscriptionTypeEnum;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group adherent
  */
-class AdherentControllerTest extends WebTestCase
+class AdherentControllerTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 
@@ -425,8 +425,6 @@ class AdherentControllerTest extends WebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->client->setServerParameter('HTTP_HOST', self::$container->getParameter('renaissance_host'));
 
         $this->emailRepository = $this->getEmailRepository();
     }

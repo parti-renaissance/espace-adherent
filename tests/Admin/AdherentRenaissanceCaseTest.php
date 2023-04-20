@@ -16,14 +16,14 @@ use App\Repository\AdherentRepository;
 use App\Repository\UnregistrationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group admin
  */
-class AdherentAdminTest extends AbstractWebCaseTest
+class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 
@@ -254,43 +254,33 @@ class AdherentAdminTest extends AbstractWebCaseTest
             $crawler->filter('.alert.alert-success ')->text()
         );
 
+        $this->client->getCookieJar()->clear();
         $crawler = $this->client->request('GET', '/adhesion');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $crawler = $this->client->submit(
-            $crawler->selectButton('Je rejoins La République En Marche')->form(),
+            $crawler->selectButton('Étape suivante')->form(),
             [
-                'g-recaptcha-response' => 'fake',
-                'adherent_registration' => [
-                    'firstName' => 'Test',
-                    'lastName' => 'A',
-                    'nationality' => 'FR',
+                'frc-captcha-solution' => 'fake',
+                'app_renaissance_membership' => [
+                    'firstName' => 'John',
+                    'lastName' => 'SMITH',
+                    'address' => [
+                        'country' => 'FR',
+                        'address' => '62 avenue des Champs-Élysées',
+                        'postalCode' => '75008',
+                        'cityName' => 'Paris 8ème',
+                    ],
+                    'password' => 'secret!12345',
                     'emailAddress' => [
                         'first' => 'cedric.lebon@en-marche-dev.fr',
                         'second' => 'cedric.lebon@en-marche-dev.fr',
                     ],
-                    'password' => '12345678',
-                    'address' => [
-                        'address' => '1 rue des alouettes',
-                        'postalCode' => '94320',
-                        'cityName' => 'Thiais',
-                        'city' => '94320-94073',
-                        'country' => 'FR',
-                    ],
-                    'birthdate' => [
-                        'day' => 1,
-                        'month' => 1,
-                        'year' => 1989,
-                    ],
-                    'gender' => 'male',
-                    'conditions' => true,
-                    'allowEmailNotifications' => true,
-                    'allowMobileNotifications' => true,
                 ],
             ]
         );
 
-        $this->assertStringContainsString('Oups, quelque chose s\'est mal passé', $crawler->filter('#adherent_registration_emailAddress_first_errors')->text());
+        $this->assertStringContainsString('Oups, quelque chose s\'est mal passé', $crawler->text());
     }
 
     public function testAnAdminWithoutRoleCannotUpdateCustomInstanceQuality()
@@ -312,10 +302,13 @@ class AdherentAdminTest extends AbstractWebCaseTest
     {
         $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_19_UUID);
 
+        $this->makeEMClient();
+
         $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
         $this->client->request('GET', '/conseil-national');
         $this->assertStatusCode(403, $this->client);
 
+        $this->makeRenaissanceClient();
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
 
         $crawler = $this->client->request('GET', $editUrl = sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
@@ -327,6 +320,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
         $this->client->submit($form);
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
+        $this->makeEMClient();
         $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
 
         $this->client->request('GET', '/conseil-national');

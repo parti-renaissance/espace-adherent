@@ -4,13 +4,13 @@ namespace Tests\App\Controller\Renaissance\Formation;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class ListControllerTest extends WebTestCase
+class ListControllerTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 
@@ -43,12 +43,5 @@ class ListControllerTest extends WebTestCase
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/formations');
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->client->setServerParameter('HTTP_HOST', $this->getParameter('renaissance_host'));
     }
 }

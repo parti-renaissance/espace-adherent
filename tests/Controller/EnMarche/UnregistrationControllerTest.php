@@ -7,14 +7,14 @@ use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\Entity\Adherent;
 use App\Entity\Unregistration;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group controller
  */
-class UnregistrationControllerTest extends WebTestCase
+class UnregistrationControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 
@@ -28,7 +28,7 @@ class UnregistrationControllerTest extends WebTestCase
         foreach ($this->getAdherentRepository()->findBy(['source' => null]) as $adherent) {
             $this->getEntityManager(Adherent::class)->detach($adherent);
 
-            $this->authenticateAsAdherent($this->client, $email = $adherent->getEmailAddress());
+            $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
 
             $crawler = $this->client->request('GET', '/parametres/mon-compte/desadherer');
 

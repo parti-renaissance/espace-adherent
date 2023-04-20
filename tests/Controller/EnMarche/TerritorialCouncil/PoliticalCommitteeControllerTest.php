@@ -6,13 +6,13 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Report\Report;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class PoliticalCommitteeControllerTest extends WebTestCase
+class PoliticalCommitteeControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

@@ -9,13 +9,13 @@ use App\Entity\Coalition\Cause;
 use App\Mailer\Message\Coalition\CauseApprovalMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class CausesControllerTest extends WebTestCase
+class CausesControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

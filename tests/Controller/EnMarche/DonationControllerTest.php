@@ -15,7 +15,7 @@ use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Payment\PayboxProvider;
 
@@ -23,7 +23,7 @@ use Tests\App\Test\Payment\PayboxProvider;
  * @group functional
  * @group donation
  */
-class DonationControllerTest extends WebTestCase
+class DonationControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

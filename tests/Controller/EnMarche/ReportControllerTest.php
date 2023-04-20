@@ -10,14 +10,14 @@ use App\Report\ReportType;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group controller
  */
-class ReportControllerTest extends WebTestCase
+class ReportControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

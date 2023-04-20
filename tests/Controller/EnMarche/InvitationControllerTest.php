@@ -7,14 +7,14 @@ use App\Mailer\Message\MovementInvitationMessage;
 use App\Repository\InviteRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group invitation
  */
-class InvitationControllerTest extends WebTestCase
+class InvitationControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

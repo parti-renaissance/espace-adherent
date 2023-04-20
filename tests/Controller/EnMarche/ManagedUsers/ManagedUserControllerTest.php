@@ -3,10 +3,10 @@
 namespace Tests\App\Controller\EnMarche\ManagedUsers;
 
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
-class ManagedUserControllerTest extends WebTestCase
+class ManagedUserControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

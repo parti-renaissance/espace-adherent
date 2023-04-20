@@ -4,10 +4,10 @@ namespace Tests\App\Controller\EnMarche\EventManager;
 
 use App\Entity\Event\BaseEvent;
 use App\Entity\Notification;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
-class ReferentEventManagerControllerTest extends WebTestCase
+class ReferentEventManagerControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

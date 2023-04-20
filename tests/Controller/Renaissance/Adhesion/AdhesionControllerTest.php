@@ -14,14 +14,14 @@ use App\Repository\DonationRepository;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Payment\PayboxProvider;
 
 /**
  * @group functional
  */
-class AdhesionControllerTest extends WebTestCase
+class AdhesionControllerTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 
@@ -203,7 +203,7 @@ class AdhesionControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->setServerParameter('HTTP_HOST', $this->getParameter('app_host'));
+        $this->makeEMClient();
         self::assertSame('OK', $this->simulateIpnCall($donation, '00000'));
 
         $this->assertCount(1, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountActivationMessage::class));
@@ -232,7 +232,6 @@ class AdhesionControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->client->setServerParameter('HTTP_HOST', $this->getParameter('renaissance_host'));
         $this->adherentRepository = $this->getAdherentRepository();
         $this->donationRepository = $this->getDonationRepository();
         $this->payboxClient = new HttpBrowser();

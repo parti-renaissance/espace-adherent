@@ -7,13 +7,13 @@ use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Committee;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class ReferentCommitteeControllerTest extends WebTestCase
+class ReferentCommitteeControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

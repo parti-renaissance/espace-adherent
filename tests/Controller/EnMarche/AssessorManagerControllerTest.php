@@ -10,7 +10,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
 
@@ -18,7 +18,7 @@ use Tests\App\Test\Helper\PHPUnitHelper;
  * @group functional
  * @group assessor
  */
-class AssessorManagerControllerTest extends AbstractWebCaseTest
+class AssessorManagerControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

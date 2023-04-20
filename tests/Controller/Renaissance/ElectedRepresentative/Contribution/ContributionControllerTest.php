@@ -8,13 +8,13 @@ use App\Repository\AdherentRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class ContributionControllerTest extends WebTestCase
+class ContributionControllerTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 
@@ -94,8 +94,6 @@ class ContributionControllerTest extends WebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->client->setServerParameter('HTTP_HOST', $this->getParameter('renaissance_host'));
 
         $this->adherentRepository = $this->getAdherentRepository();
         $this->electedRepresentativeRepository = $this->getElectedRepresentativeRepository();

@@ -4,13 +4,13 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\Mailchimp\Contact\ContactStatusEnum;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class MailchimpWebhookControllerTest extends WebTestCase
+class MailchimpWebhookControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

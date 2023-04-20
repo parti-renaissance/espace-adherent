@@ -7,14 +7,14 @@ use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\Entity\Adherent;
 use App\Membership\MembershipSourceEnum;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group controller
  */
-class UnregistrationControllerTest extends WebTestCase
+class UnregistrationControllerTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 
@@ -53,12 +53,5 @@ class UnregistrationControllerTest extends WebTestCase
         }
 
         self::assertSame(2, $countForbidden);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->client->setServerParameter('HTTP_HOST', self::$container->getParameter('renaissance_host'));
     }
 }

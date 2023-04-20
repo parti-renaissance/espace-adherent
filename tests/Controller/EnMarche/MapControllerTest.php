@@ -5,14 +5,14 @@ namespace Tests\App\Controller\EnMarche;
 use Cake\Chronos\Chronos;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group map
  */
-class MapControllerTest extends WebTestCase
+class MapControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

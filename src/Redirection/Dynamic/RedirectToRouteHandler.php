@@ -3,7 +3,6 @@
 namespace App\Redirection\Dynamic;
 
 use App\Repository\ArticleRepository;
-use App\Repository\EventRepository;
 use App\Repository\OrderArticleRepository;
 use App\Repository\ProposalRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,7 +13,6 @@ class RedirectToRouteHandler extends AbstractRedirectTo implements RedirectToInt
 {
     private $provider;
     private $urlGenerator;
-    private $eventRepository;
     private $articleRepository;
     private $proposalRepository;
     private $orderArticleRepository;
@@ -22,14 +20,12 @@ class RedirectToRouteHandler extends AbstractRedirectTo implements RedirectToInt
     public function __construct(
         RedirectionsProvider $provider,
         UrlGeneratorInterface $urlGenerator,
-        EventRepository $eventRepository,
         ArticleRepository $articleRepository,
         ProposalRepository $proposalRepository,
         OrderArticleRepository $orderArticleRepository
     ) {
         $this->provider = $provider;
         $this->urlGenerator = $urlGenerator;
-        $this->eventRepository = $eventRepository;
         $this->articleRepository = $articleRepository;
         $this->proposalRepository = $proposalRepository;
         $this->orderArticleRepository = $orderArticleRepository;

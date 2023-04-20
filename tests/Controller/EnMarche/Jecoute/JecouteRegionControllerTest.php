@@ -4,13 +4,13 @@ namespace Tests\App\Controller\EnMarche\Jecoute;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class JecouteRegionControllerTest extends WebTestCase
+class JecouteRegionControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

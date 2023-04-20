@@ -3,14 +3,14 @@
 namespace Tests\App\Controller\EnMarche;
 
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group home
  */
-class HomeControllerTest extends WebTestCase
+class HomeControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

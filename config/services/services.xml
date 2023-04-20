@@ -19,9 +19,6 @@
         </service>
 
         <!-- EventListener -->
-        <prototype namespace="App\EntityListener\" resource="../../src/EntityListener/">
-            <tag name="doctrine.orm.entity_listener" />
-        </prototype>
         <service id="App\EventListener\ManageReferentTeamMembersListener">
             <tag name="doctrine.event_subscriber"/>
         </service>

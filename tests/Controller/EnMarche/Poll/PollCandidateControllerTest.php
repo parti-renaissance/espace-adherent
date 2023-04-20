@@ -3,19 +3,20 @@
 namespace Tests\App\Controller\EnMarche\Poll;
 
 use App\Entity\Notification;
+use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class PollCandidateControllerTest extends WebTestCase
+class PollCandidateControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 
-    /** @var \Doctrine\Common\Persistence\ObjectRepository */
+    /** @var NotificationRepository */
     private $notificationRepository;
 
     /**

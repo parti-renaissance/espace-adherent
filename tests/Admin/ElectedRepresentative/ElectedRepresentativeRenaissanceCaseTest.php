@@ -7,7 +7,7 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeArchiveCommand;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractRenaissanceWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
@@ -15,7 +15,7 @@ use Tests\App\MessengerTestTrait;
  * @group functional
  * @group admin
  */
-class ElectedRepresentativeAdminTest extends WebTestCase
+class ElectedRepresentativeRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
     use MessengerTestTrait;
