@@ -12,14 +12,14 @@ use Cake\Chronos\Chronos;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group eventManager
  */
-class EventManagerControllerTest extends WebTestCase
+class EventManagerControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

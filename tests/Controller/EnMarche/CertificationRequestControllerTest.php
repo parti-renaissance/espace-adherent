@@ -6,7 +6,7 @@ use App\Adherent\Certification\CertificationRequestProcessCommand;
 use App\Entity\CertificationRequest;
 use App\Mailer\Message\CertificationRequestPendingMessage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
@@ -14,7 +14,7 @@ use Tests\App\MessengerTestTrait;
  * @group functional
  * @group certification
  */
-class CertificationRequestControllerTest extends WebTestCase
+class CertificationRequestControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
     use MessengerTestTrait;

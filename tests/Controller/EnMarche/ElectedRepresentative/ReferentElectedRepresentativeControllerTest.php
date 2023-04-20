@@ -5,13 +5,13 @@ namespace Tests\App\Controller\EnMarche\ElectedRepresentative;
 use App\DataFixtures\ORM\LoadElectedRepresentativeData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class ReferentElectedRepresentativeControllerTest extends WebTestCase
+class ReferentElectedRepresentativeControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

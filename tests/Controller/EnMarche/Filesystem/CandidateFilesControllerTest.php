@@ -4,10 +4,10 @@ namespace Tests\App\Controller\EnMarche\Filesystem;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
-class CandidateFilesControllerTest extends WebTestCase
+class CandidateFilesControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

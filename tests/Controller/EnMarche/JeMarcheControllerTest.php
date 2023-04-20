@@ -7,14 +7,14 @@ use App\Mailer\Message\JeMarcheReportMessage;
 use App\Repository\JeMarcheReportRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group jeMarche
  */
-class JeMarcheControllerTest extends WebTestCase
+class JeMarcheControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

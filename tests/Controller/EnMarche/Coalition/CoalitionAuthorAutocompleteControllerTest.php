@@ -4,14 +4,14 @@ namespace Tests\App\Controller\EnMarche;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
 
 /**
  * @group functional
  */
-class CoalitionAuthorAutocompleteControllerTest extends AbstractWebCaseTest
+class CoalitionAuthorAutocompleteControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

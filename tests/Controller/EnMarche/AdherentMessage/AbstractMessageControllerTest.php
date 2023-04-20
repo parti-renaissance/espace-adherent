@@ -6,13 +6,13 @@ use App\Entity\Adherent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Scope\ScopeEnum;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class AbstractMessageControllerTest extends WebTestCase
+class AbstractMessageControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

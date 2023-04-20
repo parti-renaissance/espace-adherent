@@ -3,14 +3,14 @@
 namespace Tests\App\Controller\EnMarche\AdherentMessage;
 
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
 /**
  * @group functional
  */
-class CommitteeMessageControllerTest extends WebTestCase
+class CommitteeMessageControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
     use MessengerTestTrait;

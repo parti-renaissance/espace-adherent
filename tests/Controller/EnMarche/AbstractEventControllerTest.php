@@ -5,10 +5,10 @@ namespace Tests\App\Controller\EnMarche;
 use App\Entity\Event\EventRegistration;
 use Cake\Chronos\Chronos;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
-abstract class AbstractEventControllerTest extends WebTestCase
+abstract class AbstractEventControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
     use RegistrationTrait;

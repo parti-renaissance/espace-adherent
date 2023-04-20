@@ -3,7 +3,7 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
@@ -11,7 +11,7 @@ use Tests\App\MessengerTestTrait;
  * @group functional
  * @group deputy
  */
-class DeputyControllerTest extends WebTestCase
+class DeputyControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
     use MessengerTestTrait;

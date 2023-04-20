@@ -6,13 +6,13 @@ use League\Glide\Signatures\Signature;
 use League\Glide\Signatures\SignatureFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 
 /**
  * @group functional
  * @group controller
  */
-class AssetsControllerTest extends WebTestCase
+class AssetsControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

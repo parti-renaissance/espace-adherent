@@ -3,13 +3,13 @@
 namespace Tests\App\Controller\EnMarche\CommitteeDesignation;
 
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class ReferentDesignationControllerTest extends WebTestCase
+class ReferentDesignationControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

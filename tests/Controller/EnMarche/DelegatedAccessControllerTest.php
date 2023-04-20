@@ -2,10 +2,10 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
-class DelegatedAccessControllerTest extends WebTestCase
+class DelegatedAccessControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

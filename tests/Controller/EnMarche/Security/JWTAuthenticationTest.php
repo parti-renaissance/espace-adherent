@@ -2,14 +2,14 @@
 
 namespace Tests\App\Controller\EnMarche\Security;
 
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group security
  */
-class JWTAuthenticationTest extends WebTestCase
+class JWTAuthenticationTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

@@ -5,13 +5,13 @@ namespace Tests\App\Donation;
 use App\Repository\DonationRepository;
 use App\Repository\TransactionRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\TestHelperTrait;
 
 /**
  * @group functional
  */
-class TransactionSubscriberTest extends AbstractWebCaseTest
+class TransactionSubscriberTest extends AbstractEnMarcheWebCaseTest
 {
     use TestHelperTrait;
 

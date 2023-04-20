@@ -7,14 +7,14 @@ use App\Procuration\Filter\ProcurationRequestFilters;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  * @group procuration
  */
-class ProcurationManagerControllerTest extends WebTestCase
+class ProcurationManagerControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

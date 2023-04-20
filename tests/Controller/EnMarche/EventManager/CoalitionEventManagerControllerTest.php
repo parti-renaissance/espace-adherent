@@ -5,10 +5,10 @@ namespace Tests\App\Controller\EnMarche\EventManager;
 use App\DataFixtures\ORM\LoadCoalitionData;
 use App\Mailer\Message\EventRegistrationConfirmationMessage;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
-class CoalitionEventManagerControllerTest extends WebTestCase
+class CoalitionEventManagerControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 

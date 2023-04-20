@@ -10,7 +10,7 @@ use App\Mailer\Message\InstitutionalEventInvitationMessage;
 use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
@@ -18,7 +18,7 @@ use Tests\App\MessengerTestTrait;
  * @group functional
  * @group referent
  */
-class ReferentControllerTest extends WebTestCase
+class ReferentControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
     use MessengerTestTrait;

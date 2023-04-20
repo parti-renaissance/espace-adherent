@@ -8,7 +8,7 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationAcceptedMessage;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationCreatedMessage;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationDeclinedMessage;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Mandrill\MailAssertTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
@@ -17,7 +17,7 @@ use Tests\App\Test\Helper\PHPUnitHelper;
  * @group functional
  * @group designation
  */
-class CandidatureControllerTest extends WebTestCase
+class CandidatureControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
     use MailAssertTrait;

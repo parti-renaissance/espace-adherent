@@ -5,13 +5,13 @@ namespace Tests\App\Controller\EnMarche\TerritorialCouncil;
 use App\DataFixtures\ORM\LoadAdherentData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
-class TerritorialCouncilControllerTest extends WebTestCase
+class TerritorialCouncilControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
 
