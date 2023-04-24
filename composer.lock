@@ -4299,31 +4299,31 @@
         },
         {
             "name": "google/cloud-storage",
-            "version": "v1.30.2",
+            "version": "v1.30.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-storage.git",
-                "reference": "b7f74ec1b701d56945cbc6c20345e2d21b1b3545"
+                "reference": "43f885c04a22473440e29538dfa2f57d1f2bf83f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/b7f74ec1b701d56945cbc6c20345e2d21b1b3545",
-                "reference": "b7f74ec1b701d56945cbc6c20345e2d21b1b3545",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/43f885c04a22473440e29538dfa2f57d1f2bf83f",
+                "reference": "43f885c04a22473440e29538dfa2f57d1f2bf83f",
                 "shasum": ""
             },
             "require": {
                 "google/cloud-core": "^1.43",
-                "google/crc32": "^0.1.0"
+                "google/crc32": "^0.2.0",
+                "php": ">=7.4"
             },
             "require-dev": {
                 "erusev/parsedown": "^1.6",
                 "google/cloud-pubsub": "^1.0",
-                "phpdocumentor/reflection": "^3.0||^4.0",
+                "phpdocumentor/reflection": "^5.0",
                 "phpseclib/phpseclib": "^2.0||^3.0",
-                "phpspec/prophecy": "^1.10.3",
-                "phpunit/phpunit": "^4.8|^5.0|^8.0",
-                "squizlabs/php_codesniffer": "2.*",
-                "yoast/phpunit-polyfills": "^1.0"
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.0",
+                "squizlabs/php_codesniffer": "2.*"
             },
             "suggest": {
                 "google/cloud-pubsub": "May be used to register a topic to receive bucket notifications.",
@@ -4349,9 +4349,9 @@
             ],
             "description": "Cloud Storage Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.30.2"
+                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.30.3"
             },
-            "time": "2023-01-27T18:26:22+00:00"
+            "time": "2023-04-21T22:21:40+00:00"
         },
         {
             "name": "google/cloud-vision",
@@ -4464,25 +4464,24 @@
         },
         {
             "name": "google/crc32",
-            "version": "v0.1.0",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/php-crc32.git",
-                "reference": "a8525f0dea6fca1893e1bae2f6e804c5f7d007fb"
+                "reference": "948f7945d803dcc1a375152c72f63144c2dadf23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/php-crc32/zipball/a8525f0dea6fca1893e1bae2f6e804c5f7d007fb",
-                "reference": "a8525f0dea6fca1893e1bae2f6e804c5f7d007fb",
+                "url": "https://api.github.com/repos/google/php-crc32/zipball/948f7945d803dcc1a375152c72f63144c2dadf23",
+                "reference": "948f7945d803dcc1a375152c72f63144c2dadf23",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4"
+                "php": ">=7.4"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^1.13 || v2.14.2",
-                "paragonie/random_compat": ">=2",
-                "phpunit/phpunit": "^4"
+                "friendsofphp/php-cs-fixer": "v3.15",
+                "phpunit/phpunit": "^9"
             },
             "type": "library",
             "autoload": {
@@ -4504,9 +4503,9 @@
             "homepage": "https://github.com/google/php-crc32",
             "support": {
                 "issues": "https://github.com/google/php-crc32/issues",
-                "source": "https://github.com/google/php-crc32/tree/v0.1.0"
+                "source": "https://github.com/google/php-crc32/tree/v0.2.0"
             },
-            "time": "2019-05-09T06:24:58+00:00"
+            "time": "2023-04-16T22:44:57+00:00"
         },
         {
             "name": "google/gax",
