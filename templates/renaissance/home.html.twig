@@ -35,9 +35,11 @@
                                 </a>
                             {% endif %}
 
-                            <a class="button button-white" href="{{ is_granted('ROLE_PREVIOUS_ADMIN') ? path('admin_app_adherent_list', {'_switch_user': '_exit'}) : path('logout', { app_domain: renaissance_host }) }}">
-                                Me déconnecter
-                            </a>
+                            {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                <a class="button button-white" href="{{ path('admin_app_adherent_list', {'_switch_user': '_exit'}) }}">Quitter l'impersonnification</a>
+                            {% else %}
+                                <a class="button button-white" href="{{ path('logout', { app_domain: renaissance_host }) }}">Me déconnecter</a>
+                            {% endif %}
                         {% else %}
                             <a class="button button-blue-lighter" href="{{ path('app_renaissance_login') }}">
                                 Me connecter
