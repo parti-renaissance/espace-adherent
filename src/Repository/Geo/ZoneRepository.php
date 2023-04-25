@@ -2,8 +2,8 @@
 
 namespace App\Repository\Geo;
 
-use App\Entity\DepartmentSite\DepartmentSite;
 use App\Entity\Committee;
+use App\Entity\DepartmentSite\DepartmentSite;
 use App\Entity\Geo\City;
 use App\Entity\Geo\GeoInterface;
 use App\Entity\Geo\Region;

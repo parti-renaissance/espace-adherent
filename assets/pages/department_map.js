@@ -1,4 +1,4 @@
-import interact from 'interactjs'
+import interact from 'interactjs';
 
 const zoomSvg = () => {
     const svg = findOne(document, '#svg');
@@ -79,7 +79,7 @@ const currentSection = (element, id, slug = null) => {
 const DepartmentMap = () => {
     const mapContainer = findOne(document, '#container-map');
     const element = findOne(document, '#department-map');
-    const position = { x: 0, y: 0 }
+    const position = { x: 0, y: 0 };
 
     const paths = findAll(element, '.department-map a');
     const dpts = JSON.parse(mapContainer.dataset.departments);
@@ -98,7 +98,7 @@ const DepartmentMap = () => {
         path.addEventListener('click', (e) => {
             e.preventDefault();
 
-            const id = e.target.id.replace('dpt-', '');
+            const id = path.getAttribute('id').replace('dpt-', '');
             const department = dpts[id];
 
             if (null !== department.site_slug) {
@@ -125,13 +125,13 @@ const DepartmentMap = () => {
     interact('.draggable')
         .draggable({
             listeners: {
-                move (event) {
+                move(event) {
                     position.x += event.dx;
                     position.y += event.dy;
 
                     event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
                 },
-            }
+            },
         })
         .resizable({
             edges: {
@@ -151,7 +151,7 @@ const DepartmentMap = () => {
                         width: `${event.rect.width}px`,
                         height: `${event.rect.height}px`,
                         transform: `translate(${x}px, ${y}px)`,
-                    })
+                    });
 
                     Object.assign(event.target.dataset, { x, y });
                 },
