@@ -22,7 +22,6 @@ use App\Entity\SubscriptionType;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
-use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Form\ActivityPositionType;
 use App\Form\Admin\AdherentInstanceQualityType;
 use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
@@ -34,7 +33,6 @@ use App\Form\Admin\ReferentManagedAreaType;
 use App\Form\Admin\SenatorAreaType;
 use App\Form\Admin\SenatorialCandidateManagedAreaType;
 use App\Form\EventListener\BoardMemberListener;
-use App\Form\EventListener\CoalitionModeratorRoleListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
 use App\FranceCities\FranceCities;
@@ -52,7 +50,6 @@ use App\Repository\Instance\InstanceQualityRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -73,14 +70,11 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormEvent;
@@ -338,27 +332,14 @@ class AdherentAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
-            ->tab('Général')
+            ->tab('Informations générales')
                 ->with('Informations personnelles', ['class' => 'col-md-6'])
-                    ->add('status', ChoiceType::class, [
-                        'label' => 'Etat du compte',
-                        'choices' => [
-                            'Activé' => Adherent::ENABLED,
-                            'Désactivé' => Adherent::DISABLED,
-                        ],
-                    ])
-                    ->add('tags', ModelType::class, [
-                        'label' => 'Tags admin',
-                        'multiple' => true,
-                        'by_reference' => false,
-                        'btn_add' => false,
-                    ])
                     ->add('gender', GenderType::class, [
                         'label' => 'Genre',
                     ])
                     ->add('customGender', TextType::class, [
                         'required' => false,
-                        'label' => 'Personnalisez votre genre',
+                        'label' => 'Personnalisez le genre',
                         'attr' => [
                             'max' => 80,
                         ],
@@ -370,13 +351,6 @@ class AdherentAdmin extends AbstractAdmin
                     ->add('firstName', TextType::class, [
                         'label' => 'Prénom',
                         'format_identity_case' => true,
-                    ])
-                    ->add('nickname', TextType::class, [
-                        'label' => 'Pseudo',
-                        'required' => false,
-                    ])
-                    ->add('nicknameUsed', null, [
-                        'label' => 'Pseudo utilisé ?',
                     ])
                     ->add('emailAddress', null, [
                         'label' => 'Adresse e-mail',
@@ -402,14 +376,6 @@ class AdherentAdmin extends AbstractAdmin
                         'required' => false,
                         'multiple' => true,
                     ])
-                    ->add('media', null, [
-                        'label' => 'Photo',
-                    ])
-                    ->add('description', TextareaType::class, [
-                        'label' => 'Biographie',
-                        'required' => false,
-                        'attr' => ['class' => 'content-editor', 'rows' => 20],
-                    ])
                     ->add('twitterPageUrl', UrlType::class, [
                         'label' => 'Page Twitter',
                         'required' => false,
@@ -424,7 +390,36 @@ class AdherentAdmin extends AbstractAdmin
                             'placeholder' => 'https://facebook.com/alexandre-dumoulin',
                         ],
                     ])
+                    ->add('linkedinPageUrl', UrlType::class, [
+                        'label' => 'Page LinkedIn',
+                        'required' => false,
+                        'attr' => [
+                            'placeholder' => 'https://linkedin.com/in/alexandre-dumoulin',
+                        ],
+                    ])
+                    ->add('telegramPageUrl', UrlType::class, [
+                        'label' => 'Telegram',
+                        'required' => false,
+                        'attr' => [
+                            'placeholder' => 'https://t.me/alexandre-dumoulin',
+                        ],
+                    ])
                 ->end()
+            ->with('Information de compte', ['class' => 'col-md-6'])
+            ->add('status', ChoiceType::class, [
+                'label' => 'Etat du compte',
+                'choices' => [
+                    'Activé' => Adherent::ENABLED,
+                    'Désactivé' => Adherent::DISABLED,
+                ],
+            ])
+            ->add('tags', ModelType::class, [
+                'label' => 'Tags admin',
+                'multiple' => true,
+                'by_reference' => false,
+                'btn_add' => false,
+            ])
+            ->end()
                 ->with('Abonnement', ['class' => 'col-md-6'])
                     ->add('subscriptionTypes', null, [
                         'label' => 'Notifications via e-mail et mobile :',
@@ -440,13 +435,6 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                     ->add('electedRepresentative', TextType::class, [
                         'label' => false,
-                        'required' => false,
-                        'mapped' => false,
-                    ])
-                ->end()
-                ->with('Coalitions', ['class' => 'col-md-6'])
-                    ->add('isCoalitionModeratorRole', CheckboxType::class, [
-                        'label' => 'Responsable Coalition',
                         'required' => false,
                         'mapped' => false,
                     ])
@@ -536,20 +524,6 @@ class AdherentAdmin extends AbstractAdmin
                         'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
                     ])
                 ->end()
-                ->with('Responsable communauté thématique', ['class' => 'col-md-6'])
-                    ->add('handledThematicCommunities', EntityType::class, [
-                        'label' => 'Communautés thématiques',
-                        'class' => ThematicCommunity::class,
-                        'required' => false,
-                        'multiple' => true,
-                        'query_builder' => function (EntityRepository $er) {
-                            return $er
-                                ->createQueryBuilder('tc')
-                                ->andWhere('tc.enabled = 1')
-                            ;
-                        },
-                    ])
-                ->end()
                 ->with('Responsable d\'appel', ['class' => 'col-md-6'])
                     ->add('phoningManagerRole', null, [
                         'label' => 'Rôle Responsable phoning',
@@ -594,6 +568,8 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                     ->add('canaryTester')
                 ->end()
+            ->end()
+            ->tab('Responsabilités politique')
             ->end()
             ->tab('Instances')
                 ->with('Membre du Conseil territorial et CoPol', [
@@ -641,7 +617,6 @@ class AdherentAdmin extends AbstractAdmin
 
         $formMapper->getFormBuilder()
             ->addEventSubscriber(new BoardMemberListener())
-            ->addEventSubscriber(new CoalitionModeratorRoleListener())
             ->addEventSubscriber(new RevokeManagedAreaSubscriber())
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                 /** @var Adherent $adherent */
