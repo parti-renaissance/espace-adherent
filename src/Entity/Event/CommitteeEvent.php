@@ -27,7 +27,7 @@ class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterf
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
      *
-     * @Groups({"event_read"})
+     * @Groups({"event_read", "event_write"})
      */
     private $committee;
 
@@ -55,15 +55,15 @@ class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterf
     protected Collection $documents;
 
     public function __construct(
-        UuidInterface $uuid,
-        ?Adherent $organizer,
-        ?Committee $committee,
-        string $name,
-        EventCategory $category,
-        string $description,
-        PostAddress $address,
-        string $beginAt,
-        string $finishAt,
+        UuidInterface $uuid = null,
+        ?Adherent $organizer = null,
+        ?Committee $committee = null,
+        string $name = null,
+        EventCategory $category = null,
+        string $description = null,
+        PostAddress $address = null,
+        string $beginAt = null,
+        string $finishAt = null,
         int $capacity = null,
         bool $isForLegislatives = false,
         string $createdAt = null,

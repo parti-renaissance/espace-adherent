@@ -9,26 +9,23 @@ use ApiPlatform\Metadata\Operation;
 use App\Api\Filter\EventsGroupSourceFilter;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CommitteeEvent;
 use App\Event\EventTypeEnum;
 use App\Repository\Event\BaseEventRepository;
+use App\Scope\ScopeGeneratorResolver;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
 
 class BaseEventExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
 {
-    private Security $security;
-    private AuthorizationCheckerInterface $authorizationChecker;
-    private BaseEventRepository $baseEventRepository;
-
     public function __construct(
-        Security $security,
-        AuthorizationCheckerInterface $authorizationChecker,
-        BaseEventRepository $baseEventRepository
+        private readonly Security $security,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly BaseEventRepository $baseEventRepository,
+        private readonly ScopeGeneratorResolver $scopeResolver
     ) {
-        $this->security = $security;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->baseEventRepository = $baseEventRepository;
     }
 
     public function applyToItem(
@@ -62,6 +59,8 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
             return;
         }
 
+        $alias = $queryBuilder->getRootAliases()[0];
+
         if (BaseEvent::class === $resourceClass && empty($context['filters'][EventsGroupSourceFilter::PROPERTY_NAME])) {
             $allowedTypes = [
                 EventTypeEnum::TYPE_DEFAULT,
@@ -73,14 +72,26 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
             }
 
             $queryBuilder
-                ->andWhere($queryBuilder->getRootAliases()[0].' INSTANCE OF :allowed_types')
+                ->andWhere($alias.' INSTANCE OF :allowed_types')
                 ->setParameter('allowed_types', $allowedTypes)
             ;
         } else {
             $queryBuilder
-                ->andWhere($queryBuilder->getRootAliases()[0].' NOT INSTANCE OF :institutional')
+                ->andWhere($alias.' NOT INSTANCE OF :institutional')
                 ->setParameter('institutional', EventTypeEnum::TYPE_INSTITUTIONAL)
             ;
+        }
+
+        $scope = $this->scopeResolver->generate();
+
+        if ($scope && $committeeUuids = $scope->getCommitteeUuids()) {
+            $queryBuilder->andWhere(sprintf($alias.'.id IN (%s)', $queryBuilder->getEntityManager()->createQueryBuilder()
+                ->select('ce.id')
+                ->from(CommitteeEvent::class, 'ce')
+                ->innerJoin('ce.committee', 'committee', Join::WITH, 'committee.uuid IN (:committee_uuids)')
+                ->getDQL()
+            ));
+            $queryBuilder->setParameter('committee_uuids', $committeeUuids);
         }
 
         if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')) {
@@ -92,7 +103,6 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
         /** @var $user Adherent */
         if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')
             && ($user = $this->security->getUser()) instanceof Adherent) {
-            $alias = $queryBuilder->getRootAliases()[0];
             if ($zone = $user->getParisBoroughOrDepartment()) {
                 $this->baseEventRepository->withGeoZones(
                     [$zone],
@@ -114,13 +124,15 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
     {
         $alias = $queryBuilder->getRootAliases()[0];
 
-        if (\in_array($operationName, [
-            'api_base_events_get_public_item',
-            'api_base_events_get_public_collection',
-            'api_base_events_get_item',
-            'api_base_events_get_collection',
-        ])
-            && !$this->security->getUser() instanceof Adherent) {
+        if (
+            \in_array($operationName, [
+                'api_base_events_get_public_item',
+                'api_base_events_get_public_collection',
+                'api_base_events_get_item',
+                'api_base_events_get_collection',
+            ])
+            && !$this->security->getUser() instanceof Adherent
+        ) {
             $queryBuilder->andWhere("$alias.private = false");
         }
 
