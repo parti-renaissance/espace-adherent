@@ -2,19 +2,18 @@ import 'utils/dom';
 import 'utils/sharer';
 import 'utils/css';
 
-import Alpine from 'alpinejs';
 import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
 
 import './style/main.scss';
 
-window.Alpine = Alpine;
 window.Bootstrap = class {
     static boot(release, sentryDsn, environment, user) {
         let app = false;
 
         const runIfReady = () => {
             if (app) {
+                // eslint-disable-next-line no-undef
                 const { listeners } = Bootstrap;
 
                 if (sentryDsn) {
@@ -33,10 +32,10 @@ window.Bootstrap = class {
                     }
                 }
 
+                // eslint-disable-next-line no-undef
                 listeners.forEach((listener) => Main.addListener(listener));
 
-                Alpine.start();
-
+                // eslint-disable-next-line no-undef
                 Main.run({
                     sentryDsn,
                     release,
@@ -52,8 +51,10 @@ window.Bootstrap = class {
     }
 
     static onLoad(callback) {
+        // eslint-disable-next-line no-undef
         Bootstrap.listeners.push(callback);
     }
 };
 
+// eslint-disable-next-line no-undef
 Bootstrap.listeners = [];

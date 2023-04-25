@@ -14,7 +14,7 @@ module.exports = {
         'react',
     ],
     parserOptions: {
-        ecmaVersion: 6,
+        ecmaVersion: 11,
         sourceType: 'module',
         ecmaFeatures: {
             jsx: true,

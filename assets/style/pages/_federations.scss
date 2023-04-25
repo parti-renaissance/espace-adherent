@@ -1,0 +1,61 @@
+.department-map {
+    display: none;
+
+    path {
+        fill: #D2DFFB;
+        stroke: #1D214F;
+        stroke-width: 1px;
+        transition: all 0.3s;
+    }
+
+    a {
+        outline: none;
+        border: none;
+    }
+
+    .current path {
+        fill: #104CC2;
+    }
+
+    .invalid path {
+        fill: #F00032;
+    }
+
+    @media screen and (min-width: 1024px) {
+        display: block;
+        height: auto;
+    }
+}
+
+.departments {
+    &::-webkit-scrollbar {
+        width: 0.5em;
+        height: 0.5em;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #1254D8;
+        border-radius: 3px;
+
+        &:hover {
+            background: #5D8EF1;
+        }
+    }
+
+    &-list {
+        a {
+            transition: all 0.3s;
+        }
+
+        a:hover, a.current {
+            display: inline-flex;
+            padding-left: 12px;
+            padding-right: 12px;
+            background-color: #1254D8;
+            border-color: #5D8EF1;
+
+            h4 { color: #fff; }
+            p { color: #A2BEF7; }
+        }
+    }
+}

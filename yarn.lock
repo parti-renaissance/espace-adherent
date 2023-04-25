@@ -1203,6 +1203,11 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
+"@interactjs/types@1.10.17":
+  version "1.10.17"
+  resolved "https://registry.yarnpkg.com/@interactjs/types/-/types-1.10.17.tgz#1649de06d9ead790c81ecece76736b852bdfc77e"
+  integrity sha512-X2JpoM7xUw0p9Me0tMaI0HNfcF/Hd07ZZlzpnpEMpGerUZOLoyeThrV9P+CrBHxZrluWJrigJbcdqXliFd0YMA==
+
 "@jest/schemas@^29.4.3":
   version "29.4.3"
   resolved "https://registry.yarnpkg.com/@jest/schemas/-/schemas-29.4.3.tgz#39cf1b8469afc40b6f5a2baaa146e332c4151788"
@@ -1297,6 +1302,11 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
+
+"@popperjs/core@^2.9.0":
+  version "2.11.7"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.7.tgz#ccab5c8f7dc557a52ca3288c10075c9ccd37fff7"
+  integrity sha512-Cr4OjIkipTtcXKjAsm8agyleBuDHvxzeBoa1v543lbv1YaIwQjESsVcmjiWiPEbC1FIeHOG/Op9kdCmAmiS3Kw==
 
 "@sentry-internal/tracing@7.49.0":
   version "7.49.0"
@@ -3316,6 +3326,13 @@ inline-style-parser@0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/inline-style-parser/-/inline-style-parser-0.1.1.tgz#ec8a3b429274e9c0a1f1c4ffa9453a7fef72cea1"
   integrity sha512-7NXolsK4CAS5+xvdj5OMMbI962hU/wvwoxk+LWR9Ek9bVtyuuYScDN6eS0rUm6TxApFpw7CX1o4uJzcd4AyD3Q==
+
+interactjs@^1.10.17:
+  version "1.10.17"
+  resolved "https://registry.yarnpkg.com/interactjs/-/interactjs-1.10.17.tgz#aed66a63020cd092236133f9149e6448dc405d72"
+  integrity sha512-grjHJgnWkCoQLmAlk2yalNd1r0ztUhXLJNVjSOfWn1wfNNgU2tx1cDEkro9WYerDNC9UG3MZTeD4O6zOM5gbIA==
+  dependencies:
+    "@interactjs/types" "1.10.17"
 
 internal-slot@^1.0.3:
   version "1.0.3"
@@ -5485,6 +5502,13 @@ tinyqueue@^1.1.0:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/tinyqueue/-/tinyqueue-1.2.3.tgz#b6a61de23060584da29f82362e45df1ec7353f3d"
   integrity sha512-Qz9RgWuO9l8lT+Y9xvbzhPT2efIUIFd69N7eF7tJ9lnQl0iLj1M7peK7IoUGZL9DJHw9XftqLreccfxcQgYLxA==
+
+tippy.js@^6.3.7:
+  version "6.3.7"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.7.tgz#8ccfb651d642010ed9a32ff29b0e9e19c5b8c61c"
+  integrity sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==
+  dependencies:
+    "@popperjs/core" "^2.9.0"
 
 to-fast-properties@^2.0.0:
   version "2.0.0"
