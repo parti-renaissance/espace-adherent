@@ -44,6 +44,8 @@ module.exports = {
         removeClass: true,
         App: true,
         Kernel: true,
+        Main: true,
+        Bootstrap: true,
         google: true,
         getUrlParameter: true,
     },

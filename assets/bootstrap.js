@@ -13,7 +13,6 @@ window.Bootstrap = class {
 
         const runIfReady = () => {
             if (app) {
-                // eslint-disable-next-line no-undef
                 const { listeners } = Bootstrap;
 
                 if (sentryDsn) {
@@ -32,15 +31,9 @@ window.Bootstrap = class {
                     }
                 }
 
-                // eslint-disable-next-line no-undef
                 listeners.forEach((listener) => Main.addListener(listener));
 
-                // eslint-disable-next-line no-undef
-                Main.run({
-                    sentryDsn,
-                    release,
-                    environment,
-                });
+                Main.run({ sentryDsn, release, environment });
             }
         };
 
@@ -51,10 +44,8 @@ window.Bootstrap = class {
     }
 
     static onLoad(callback) {
-        // eslint-disable-next-line no-undef
         Bootstrap.listeners.push(callback);
     }
 };
 
-// eslint-disable-next-line no-undef
 Bootstrap.listeners = [];
