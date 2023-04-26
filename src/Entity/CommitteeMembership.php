@@ -57,8 +57,8 @@ class CommitteeMembership implements UuidEntityInterface
     /**
      * @var Committee
      *
-     * @ORM\ManyToOne(targetEntity="Committee")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Groups({"adherent_committees_modal"})
      */

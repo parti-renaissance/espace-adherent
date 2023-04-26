@@ -43,11 +43,10 @@ trait BasicUserFiltersTrait
     private $includeCommitteeHosts;
 
     /**
-     * @var Committee
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $committee;
+    private ?Committee $committee = null;
 
     public function includeAdherentsNoCommittee(): ?bool
     {

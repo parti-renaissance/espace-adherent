@@ -657,3 +657,14 @@ Feature:
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
             | referent@en-marche-dev.fr       | referent                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a grand user with local scope, I can delete a committee
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "DELETE" request to "/api/v3/committees/5e00c264-1d4b-43b8-862e-29edc38389b3?scope=<scope>"
+        Then the response status code should be 204
+        And the message "RefreshCommitteeMembershipsInZoneCommand" should be dispatched
+        Examples:
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | referent@en-marche-dev.fr       | referent                                       |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

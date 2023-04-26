@@ -26,6 +26,7 @@ class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterf
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @Groups({"event_read", "event_write"})
      */

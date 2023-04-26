@@ -26,20 +26,25 @@ class RefreshCommitteeMembershipsListener implements EventSubscriberInterface
 
     public function onPostWrite(ViewEvent $viewEvent): void
     {
-        /** @var Committee $committee */
-        $committee = $viewEvent->getControllerResult();
+        $request = $viewEvent->getRequest();
+
+        if (!\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT, Request::METHOD_DELETE])) {
+            return;
+        }
+
+        if (Request::METHOD_DELETE === $request->getMethod()) {
+            $committee = $request->attributes->get('data');
+        } else {
+            $committee = $viewEvent->getControllerResult();
+        }
 
         if (!$committee instanceof Committee) {
             return;
         }
 
-        $request = $viewEvent->getRequest();
-        if (!\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT])) {
-            return;
-        }
-
         /** @var Zone[] $zones */
         $zones = $committee->getZonesOfType(Zone::DEPARTMENT, true);
+
         if (!$zones) {
             $zones = $committee->getZonesOfType(Zone::CUSTOM, true);
         }
