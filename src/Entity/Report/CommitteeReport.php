@@ -14,7 +14,7 @@ class CommitteeReport extends Report
      * @var Committee
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
-     * @ORM\JoinColumn(name="committee_id")
+     * @ORM\JoinColumn(name="committee_id", onDelete="CASCADE")
      */
     protected $subject;
 }
