@@ -1313,16 +1313,6 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.7.tgz#ccab5c8f7dc557a52ca3288c10075c9ccd37fff7"
   integrity sha512-Cr4OjIkipTtcXKjAsm8agyleBuDHvxzeBoa1v543lbv1YaIwQjESsVcmjiWiPEbC1FIeHOG/Op9kdCmAmiS3Kw==
 
-"@sentry-internal/tracing@7.49.0":
-  version "7.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/tracing/-/tracing-7.49.0.tgz#f589de565370884b9a13f82c98463de9b2d25dcd"
-  integrity sha512-ESh3+ZneQk/3HESTUmIPNrW5GVPu/HrRJU+eAJJto74vm+6vP7zDn2YV2gJ1w18O/37nc7W/bVCgZJlhZ3cwew==
-  dependencies:
-    "@sentry/core" "7.49.0"
-    "@sentry/types" "7.49.0"
-    "@sentry/utils" "7.49.0"
-    tslib "^1.9.3"
-
 "@sentry-internal/tracing@7.50.0":
   version "7.50.0"
   resolved "https://registry.yarnpkg.com/@sentry-internal/tracing/-/tracing-7.50.0.tgz#74454af99a03d81762993835d2687c881e14f41e"
@@ -1333,25 +1323,16 @@
     "@sentry/utils" "7.50.0"
     tslib "^1.9.3"
 
-"@sentry/browser@^7.49.0":
-  version "7.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-7.49.0.tgz#5ce1cdb8d883c129d9a4e313c08a54c5ada4661b"
-  integrity sha512-x2DekKkQoY7/dhBzE4J25mdQ978NtPBTVQb+uZqlF/t5mp4K44TAszmPqy8lC/CmVHkp7qcpRGSCIzeboUL4KA==
+"@sentry/browser@^7.50.0":
+  version "7.50.0"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-7.50.0.tgz#16c995c336322c8aec65570f90f50288678004ec"
+  integrity sha512-a+UYbP89+SAvW47/p9wxEi9eWlyp/SkYl52OCdZNXnplQY4kQIOVyiaIs5nnCxIxZgXKrhAX4eo1E9ykleFuNQ==
   dependencies:
-    "@sentry-internal/tracing" "7.49.0"
-    "@sentry/core" "7.49.0"
-    "@sentry/replay" "7.49.0"
-    "@sentry/types" "7.49.0"
-    "@sentry/utils" "7.49.0"
-    tslib "^1.9.3"
-
-"@sentry/core@7.49.0":
-  version "7.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.49.0.tgz#340d059f5efeff1a3359fef66d0c8e34e79ac992"
-  integrity sha512-AlSnCYgfEbvK8pkNluUkmdW/cD9UpvOVCa+ERQswXNRkAv5aDGCL6Ihv6fnIajE++BYuwZh0+HwZUBVKTFzoZg==
-  dependencies:
-    "@sentry/types" "7.49.0"
-    "@sentry/utils" "7.49.0"
+    "@sentry-internal/tracing" "7.50.0"
+    "@sentry/core" "7.50.0"
+    "@sentry/replay" "7.50.0"
+    "@sentry/types" "7.50.0"
+    "@sentry/utils" "7.50.0"
     tslib "^1.9.3"
 
 "@sentry/core@7.50.0":
@@ -1363,14 +1344,14 @@
     "@sentry/utils" "7.50.0"
     tslib "^1.9.3"
 
-"@sentry/replay@7.49.0":
-  version "7.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry/replay/-/replay-7.49.0.tgz#c7f16bc3ca0c5911f641738f8894eb596c5da00d"
-  integrity sha512-UY3bHoBDPOu4Dpq3m3oxNjLrq09NiFVYUfrTN4QOq1Am2SA04XbuCj/YZ+jNVy/NrFtoz9cTovK6oQbNw53jog==
+"@sentry/replay@7.50.0":
+  version "7.50.0"
+  resolved "https://registry.yarnpkg.com/@sentry/replay/-/replay-7.50.0.tgz#dd29f063492d91e708629ff8dd95a59d4b7180f1"
+  integrity sha512-EYRk+DTZ5luwfkiCaDpBC3YBKIEdkReTUNZtWDVUytSVjsCnttkAipx/y6bxy3HN+rSXungMd3XKQT5RNMRUNA==
   dependencies:
-    "@sentry/core" "7.49.0"
-    "@sentry/types" "7.49.0"
-    "@sentry/utils" "7.49.0"
+    "@sentry/core" "7.50.0"
+    "@sentry/types" "7.50.0"
+    "@sentry/utils" "7.50.0"
 
 "@sentry/tracing@^7.50.0":
   version "7.50.0"
@@ -1379,23 +1360,10 @@
   dependencies:
     "@sentry-internal/tracing" "7.50.0"
 
-"@sentry/types@7.49.0":
-  version "7.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.49.0.tgz#2c217091e13dc373682f5be2e9b5baed9d2ae695"
-  integrity sha512-9yXXh7iv76+O6h2ONUVx0wsL1auqJFWez62mTjWk4350SgMmWp/zUkBxnVXhmcYqscz/CepC+Loz9vITLXtgxg==
-
 "@sentry/types@7.50.0":
   version "7.50.0"
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.50.0.tgz#52a035cad83a80ca26fa53c09eb1241250c3df3e"
   integrity sha512-Zo9vyI98QNeYT0K0y57Rb4JRWDaPEgmp+QkQ4CRQZFUTWetO5fvPZ4Gb/R7TW16LajuHZlbJBHmvmNj2pkL2kw==
-
-"@sentry/utils@7.49.0":
-  version "7.49.0"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.49.0.tgz#b1b3a2af52067dd27e660c7c3062a31cdf4b94f9"
-  integrity sha512-JdC9yGnOgev4ISJVwmIoFsk8Zx0psDZJAj2DV7x4wMZsO6QK+YjC7G3mUED/S5D5lsrkBZ/3uvQQhr8DQI4UcQ==
-  dependencies:
-    "@sentry/types" "7.49.0"
-    tslib "^1.9.3"
 
 "@sentry/utils@7.50.0":
   version "7.50.0"
