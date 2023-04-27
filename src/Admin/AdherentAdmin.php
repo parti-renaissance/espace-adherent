@@ -7,7 +7,6 @@ use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\AdherentRoleFilter;
-use App\Admin\Filter\ReferentTagAutocompleteFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Adherent;
 use App\Entity\AdherentTag;
@@ -17,7 +16,6 @@ use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Instance\InstanceQuality;
-use App\Entity\ReferentTag;
 use App\Entity\SubscriptionType;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
@@ -28,8 +26,6 @@ use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AdherentZoneBasedRoleType;
 use App\Form\Admin\CandidateManagedAreaType;
 use App\Form\Admin\JecouteManagedAreaType;
-use App\Form\Admin\LreAreaType;
-use App\Form\Admin\ReferentManagedAreaType;
 use App\Form\Admin\SenatorAreaType;
 use App\Form\Admin\SenatorialCandidateManagedAreaType;
 use App\Form\EventListener\BoardMemberListener;
@@ -376,6 +372,69 @@ class AdherentAdmin extends AbstractAdmin
                         'required' => false,
                         'multiple' => true,
                     ])
+                    ->add('exclusiveMembership', null, [
+                        'label' => 'Je certifie sur l’honneur que je n’appartiens à aucun autre parti politique',
+                        'required' => false,
+                    ])
+                    ->add('territoireProgresMembership', null, [
+                        'label' => 'Je suis membre de territoires de progrès',
+                        'required' => false,
+                    ])
+                    ->add('agirMembership', null, [
+                        'label' => 'Je suis membre d’agir, la droite constructive’',
+                        'required' => false,
+                    ])
+                ->end()
+                ->with('Adresse', ['class' => 'col-md-6'])
+                    ->add('postAddress.address', TextType::class, [
+                        'label' => 'Rue',
+                    ])
+                    ->add('postAddress.postalCode', TextType::class, [
+                        'label' => 'Code postal',
+                    ])
+                    ->add('postAddress.cityName', TextType::class, [
+                        'label' => 'Ville',
+                    ])
+                    ->add('postAddress.country', CountryType::class, [
+                        'label' => 'Pays',
+                    ])
+                    ->add('postAddress.latitude', NumberType::class, [
+                        'label' => 'Latitude',
+                        'html5' => true,
+                    ])
+                    ->add('postAddress.longitude', NumberType::class, [
+                        'label' => 'Longitude',
+                        'html5' => true,
+                    ])
+                ->end()
+                ->with('Information de compte', ['class' => 'col-md-6'])
+                    ->add('status', ChoiceType::class, [
+                        'label' => 'Etat du compte',
+                        'choices' => [
+                            'Activé' => Adherent::ENABLED,
+                            'Désactivé' => Adherent::DISABLED,
+                        ],
+                    ])
+                    ->add('tags', ModelType::class, [
+                        'label' => 'Tags admin',
+                        'multiple' => true,
+                        'by_reference' => false,
+                        'btn_add' => false,
+                    ])
+                    ->add('lastMembershipDonation', null, [
+                        'label' => false,
+                        'required' => false,
+                    ])
+                ->end()
+                ->with('Abonnement', ['class' => 'col-md-6'])
+                    ->add('subscriptionTypes', null, [
+                        'label' => 'Notifications via e-mail et mobile :',
+                        'choice_label' => 'label',
+                        'required' => false,
+                        'multiple' => true,
+                    ])
+                ->end()
+                ->with('Réseaux Sociaux', ['class' => 'col-md-6'])
                     ->add('twitterPageUrl', UrlType::class, [
                         'label' => 'Page Twitter',
                         'required' => false,
@@ -404,50 +463,30 @@ class AdherentAdmin extends AbstractAdmin
                             'placeholder' => 'https://t.me/alexandre-dumoulin',
                         ],
                     ])
-                ->end()
-            ->with('Information de compte', ['class' => 'col-md-6'])
-            ->add('status', ChoiceType::class, [
-                'label' => 'Etat du compte',
-                'choices' => [
-                    'Activé' => Adherent::ENABLED,
-                    'Désactivé' => Adherent::DISABLED,
-                ],
-            ])
-            ->add('tags', ModelType::class, [
-                'label' => 'Tags admin',
-                'multiple' => true,
-                'by_reference' => false,
-                'btn_add' => false,
-            ])
             ->end()
-                ->with('Abonnement', ['class' => 'col-md-6'])
-                    ->add('subscriptionTypes', null, [
-                        'label' => 'Notifications via e-mail et mobile :',
-                        'choice_label' => 'label',
-                        'required' => false,
-                        'multiple' => true,
-                    ])
-                ->end()
-                ->with('Identité de l\'élu', [
+                ->with('Zone expérimentale 🚧', [
                     'class' => 'col-md-6',
-                    'description' => 'adherent.admin.elected_representative.description',
-                    'box_class' => 'box box-success',
+                    'box_class' => 'box box-warning',
                 ])
-                    ->add('electedRepresentative', TextType::class, [
-                        'label' => false,
+                    ->add('canaryTester')
+                ->end()
+            ->end()
+            ->tab('Responsabilités internes')
+                ->with('Rôles', ['class' => 'col-md-6'])
+                    ->add('zoneBasedRoles', CollectionType::class, [
+                        'error_bubbling' => false,
                         'required' => false,
-                        'mapped' => false,
+                        'label' => false,
+                        'entry_type' => AdherentZoneBasedRoleType::class,
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                        'entry_options' => [
+                            'model_manager' => $this->getModelManager(),
+                        ],
+                        'by_reference' => false,
                     ])
                 ->end()
                 ->with('Responsabilités locales', ['class' => 'col-md-6'])
-                    ->add('managedArea', ReferentManagedAreaType::class, [
-                        'label' => false,
-                        'required' => false,
-                    ])
-                    ->add('lreArea', LreAreaType::class, [
-                        'label' => 'La république ensemble',
-                        'required' => false,
-                    ])
                     ->add('jecouteManagedArea', JecouteManagedAreaType::class, [
                         'label' => 'jecoute_manager',
                         'required' => false,
@@ -465,14 +504,6 @@ class AdherentAdmin extends AbstractAdmin
                     ->add('nationalCommunicationRole', null, [
                         'label' => 'Rôle National communication',
                         'required' => false,
-                    ])
-                ->end()
-                ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
-                    ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
-                        'label' => 'Candidat Sénatoriales 2020',
-                    ])
-                    ->add('candidateManagedArea', CandidateManagedAreaType::class, [
-                        'label' => 'Candidat',
                     ])
                     ->add('procurationManagedAreaCodesAsString', TextType::class, [
                         'label' => 'coordinator.label.codes',
@@ -492,18 +523,23 @@ class AdherentAdmin extends AbstractAdmin
                             Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
                             Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
                             HELP
-,
+                        ,
                     ])
-                    ->add('electionResultsReporter', null, [
-                        'label' => 'Accès au formulaire de remontée des résultats du ministère de l\'Intérieur',
+                ->end()
+                ->with('Responsable d\'appel', ['class' => 'col-md-6'])
+                    ->add('phoningManagerRole', null, [
+                        'label' => 'Rôle Responsable phoning',
                         'required' => false,
                     ])
                 ->end()
-                ->with('Mandat électif', ['class' => 'col-md-6'])
-                    ->add('senatorArea', SenatorAreaType::class, [
+                ->with('Porte-à-porte', ['class' => 'col-md-6'])
+                    ->add('papNationalManagerRole', null, [
+                        'label' => 'Responsable National PAP',
                         'required' => false,
-                        'label' => 'Circonscription sénateur',
-                        'help' => 'Laisser vide si l\'adhérent n\'est pas parlementaire.',
+                    ])
+                    ->add('papUserRole', null, [
+                        'label' => 'Utilisateur PAP app mobile',
+                        'required' => false,
                     ])
                 ->end()
                 ->with('Membre du Conseil', ['class' => 'col-md-6'])
@@ -524,54 +560,6 @@ class AdherentAdmin extends AbstractAdmin
                         'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
                     ])
                 ->end()
-                ->with('Responsable d\'appel', ['class' => 'col-md-6'])
-                    ->add('phoningManagerRole', null, [
-                        'label' => 'Rôle Responsable phoning',
-                        'required' => false,
-                    ])
-                ->end()
-                ->with('Porte-à-porte', ['class' => 'col-md-6'])
-                    ->add('papNationalManagerRole', null, [
-                        'label' => 'Responsable National PAP',
-                        'required' => false,
-                    ])
-                    ->add('papUserRole', null, [
-                        'label' => 'Utilisateur PAP app mobile',
-                        'required' => false,
-                    ])
-                ->end()
-                ->with('Adresse', ['class' => 'col-md-6'])
-                    ->add('postAddress.address', TextType::class, [
-                        'label' => 'Rue',
-                    ])
-                    ->add('postAddress.postalCode', TextType::class, [
-                        'label' => 'Code postal',
-                    ])
-                    ->add('postAddress.cityName', TextType::class, [
-                        'label' => 'Ville',
-                    ])
-                    ->add('postAddress.country', CountryType::class, [
-                        'label' => 'Pays',
-                    ])
-                    ->add('postAddress.latitude', NumberType::class, [
-                        'label' => 'Latitude',
-                        'html5' => true,
-                    ])
-                    ->add('postAddress.longitude', NumberType::class, [
-                        'label' => 'Longitude',
-                        'html5' => true,
-                    ])
-                ->end()
-                ->with('Zone expérimentale 🚧', [
-                    'class' => 'col-md-6',
-                    'box_class' => 'box box-warning',
-                ])
-                    ->add('canaryTester')
-                ->end()
-            ->end()
-            ->tab('Responsabilités politique')
-            ->end()
-            ->tab('Instances')
                 ->with('Membre du Conseil territorial et CoPol', [
                     'class' => 'col-md-6 territorial-council-member-info',
                     'description' => 'territorial_council.admin.description',
@@ -586,30 +574,47 @@ class AdherentAdmin extends AbstractAdmin
         if ($this->isGranted('CONSEIL')) {
             $formMapper
                 ->with('Conseil national', ['class' => 'col-md-6'])
-                    ->add('instanceQualities', AdherentInstanceQualityType::class, [
-                        'by_reference' => false,
-                        'label' => false,
-                    ])
-                    ->add('voteInspector', null, ['label' => 'Inspecteur de vote', 'required' => false])
+                ->add('instanceQualities', AdherentInstanceQualityType::class, [
+                    'by_reference' => false,
+                    'label' => false,
+                ])
+                ->add('voteInspector', null, ['label' => 'Inspecteur de vote', 'required' => false])
                 ->end()
             ;
         }
 
         $formMapper
             ->end()
-            ->tab('Rôles locaux')
-                ->with(false)
-                    ->add('zoneBasedRoles', CollectionType::class, [
-                        'error_bubbling' => false,
-                        'required' => false,
+            ->tab('Responsabilités politiques')
+                ->with('Identité de l\'élu', [
+                    'class' => 'col-md-6',
+                    'description' => 'adherent.admin.elected_representative.description',
+                    'box_class' => 'box box-success',
+                ])
+                    ->add('electedRepresentative', TextType::class, [
                         'label' => false,
-                        'entry_type' => AdherentZoneBasedRoleType::class,
-                        'allow_add' => true,
-                        'allow_delete' => true,
-                        'entry_options' => [
-                            'model_manager' => $this->getModelManager(),
-                        ],
-                        'by_reference' => false,
+                        'required' => false,
+                        'mapped' => false,
+                    ])
+                ->end()
+                ->with('Mandat électif', ['class' => 'col-md-6'])
+                    ->add('senatorArea', SenatorAreaType::class, [
+                        'required' => false,
+                        'label' => 'Circonscription sénateur',
+                        'help' => 'Laisser vide si l\'adhérent n\'est pas parlementaire.',
+                    ])
+                ->end()
+                ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
+                    ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
+                        'label' => 'Candidat Sénatoriales 2020',
+                    ])
+                    ->add('candidateManagedArea', CandidateManagedAreaType::class, [
+                        'label' => 'Candidat',
+                    ])
+
+                    ->add('electionResultsReporter', null, [
+                        'label' => 'Accès au formulaire de remontée des résultats du ministère de l\'Intérieur',
+                        'required' => false,
                     ])
                 ->end()
             ->end()
@@ -813,20 +818,6 @@ class AdherentAdmin extends AbstractAdmin
                     'items_per_page' => 20,
                     'multiple' => true,
                     'property' => 'name',
-                ],
-            ])
-            ->add('managedArea', ReferentTagAutocompleteFilter::class, [
-                'label' => 'Tags gérés',
-                'field_type' => ModelAutocompleteType::class,
-                'field_options' => [
-                    'class' => ReferentTag::class,
-                    'multiple' => true,
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
-                    'property' => 'name',
-                    'req_params' => [
-                        'field' => 'referentTags',
-                    ],
                 ],
             ])
             ->add('role', AdherentRoleFilter::class, [
@@ -1161,23 +1152,9 @@ class AdherentAdmin extends AbstractAdmin
             ->add('registeredAt', null, [
                 'label' => 'Date d\'adhésion',
             ])
-            ->add('lastLoggedAt', null, [
-                'label' => 'Dernière connexion',
-            ])
-            ->add('instances', null, [
-                'label' => 'Instances de vote',
-                'virtual_field' => true,
-                'header_style' => 'min-width: 150px',
-                'template' => 'admin/adherent/list_vote_instances.html.twig',
-            ])
             ->add('referentTags', null, [
                 'label' => 'Tags souscrits',
                 'associated_property' => 'code',
-            ])
-            ->add('managedAreaTags', null, [
-                'label' => 'Tags gérés',
-                'virtual_field' => true,
-                'template' => 'admin/adherent/list_managed_area_tags.html.twig',
             ])
             ->add('type', null, [
                 'label' => 'Rôles',
@@ -1185,6 +1162,9 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('lastMembershipDonation', null, [
                 'label' => 'Dernière cotisation',
+            ])
+            ->add('lastLoggedAt', null, [
+                'label' => 'Dernière connexion',
             ])
             ->add('mailchimpStatus', null, [
                 'label' => 'Abonnement',
