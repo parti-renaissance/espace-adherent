@@ -44,7 +44,7 @@ Feature:
           "code": "92024",
           "name": "Clichy"
         },
-        "is_committee_member": null,
+        "is_committee_member": false,
         "gender": "male",
         "age_min": 20,
         "age_max": 30,
@@ -227,7 +227,7 @@ Feature:
             "last_name": null,
             "registered_since": null,
             "registered_until": null,
-            "is_committee_member": true
+            "is_committee_member": null
         },
         "uuid": "@uuid@",
         "recipient_count": null,
