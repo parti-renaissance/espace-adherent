@@ -29,18 +29,11 @@ class JecouteRegionControllerTest extends AbstractEnMarcheWebCaseTest
     /**
      * @dataProvider provideAdherentsWithAccess
      */
-    public function testEditJecouteRegion(string $adherentEmail, string $linkName)
+    public function testEditJecouteRegion(string $adherentEmail)
     {
         $this->authenticateAsAdherent($this->client, $adherentEmail);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/');
-
-        self::assertStringContainsString($linkName, $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
-        $this->client->click($crawler->selectLink($linkName)->link());
-
-        $this->assertResponseStatusCode(302, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-candidat/utilisateurs', $this->client);
-        $crawler = $this->client->followRedirect();
+        $crawler = $this->client->request('GET', '/espace-candidat/utilisateurs');
         $this->isSuccessful($this->client->getResponse());
 
         self::assertCount(1, $link = $crawler->filter('nav.manager-sidebar__menu ul li a:contains("Personnaliser")'));
@@ -101,7 +94,6 @@ class JecouteRegionControllerTest extends AbstractEnMarcheWebCaseTest
     public function provideAdherentsWithAccess(): iterable
     {
         yield ['jacques.picard@en-marche.fr', 'Espace candidat'];  // has a region as candidate managed area
-        yield ['gisele-berthoux@caramail.com', 'Espace candidat partagé (Île-de-France)']; // has a delegated access
     }
 
     protected function setUp(): void

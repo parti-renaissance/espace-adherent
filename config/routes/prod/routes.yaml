@@ -1,7 +1,0 @@
-app_redirect_jme:
-    host: "%app_host%"
-    path: /espace-{type}/{slug}
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
-    defaults:
-        path: "%jemengage_host%"
-        permanent: true
