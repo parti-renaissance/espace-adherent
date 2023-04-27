@@ -14,7 +14,7 @@ class CommunityEventReport extends Report
      * @var BaseEvent
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Event\BaseEvent")
-     * @ORM\JoinColumn(name="community_event_id")
+     * @ORM\JoinColumn(name="community_event_id", onDelete="CASCADE")
      */
     protected $subject;
 }

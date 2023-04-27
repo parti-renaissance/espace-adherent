@@ -36,7 +36,7 @@ class CommitteeMergeHistory
      * @var Committee
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $sourceCommittee;
 
@@ -44,7 +44,7 @@ class CommitteeMergeHistory
      * @var Committee
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $destinationCommittee;
 
