@@ -139,51 +139,12 @@
     is_granted('ROLE_THEMATIC_COMMUNITY_CHIEF') or
     is_granted('ROLE_ADHERENT')
 %}
-    {% set totalSections =
-        (app.user.isSupervisor or app.user.isHost) +
-        (app.user.isReferent or app.user.isCoReferent) +
-        app.user.isDeputy +
-        app.user.isSenator +
-        app.user.isRegionalCoordinator +
-        app.user.isProcurationManager +
-        app.user.isAssessorManager +
-        app.user.isLegislativeCandidate +
-        app.user.isJecouteManager +
-        app.user.isAssessor +
-        app.user.isElectionResultsReporter +
-        app.user.isSenatorialCandidate +
-        app.user.isCandidate +
-        app.user.isLre +
-        app.user.isDelegatedReferent +
-        app.user.isDelegatedDeputy +
-        app.user.isDelegatedSenator +
-        app.user.isDelegatedCandidate +
-        app.user.isCoalitionModerator +
-        app.user.isThematicCommunityChief
-    %}
-
     <div class="background--darker l__hide--on-tablet">
-        <div class="l__row {{ totalSections == 0 ? 'l__row--center' }} font-roboto l__wrapper ">
+        <div class="l__row font-roboto l__wrapper ">
             <ul class="space--10-0 list__links list__links--row list__links--row-left list__links--no-decor list__links--subnav nav-dropdown__menu__items">
-                {% if totalSections > 1 %}
-                    <li>
-                        <div class="nav-dropdown" style="margin: 0;">
-                            <a href="#">Mes espaces</a>
-                            <i class="fa fa-caret-down" aria-hidden="true"></i>
-                            <i class="fa fa-caret-up" aria-hidden="true"></i>
-                            <div class="nav-dropdown__menu nav-dropdown__black">
-                                <ul class="list__links">
-                                    {{ include('adherent/_list_my_sections.html.twig') }}
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                {% else %}
-                    {{ include('adherent/_list_my_sections.html.twig') }}
-                {% endif %}
                 {% if app.user.isReferent or app.user.isDeputy or app.user.isSenator %}
                     <li>
-                        <a href="{{ data_corner_host }}" target="_blank">Je m'engage</a>
+                        <a href="{{ jemengage_host }}" target="_blank">Je m'engage</a>
                     </li>
                 {% endif %}
                 {% if is_granted('ROLE_FORMATION_SPACE') %}
