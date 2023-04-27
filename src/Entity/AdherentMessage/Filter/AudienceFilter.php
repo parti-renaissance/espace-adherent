@@ -35,24 +35,6 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     use EntityZoneTrait;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     *
-     * @Groups({"audience_segment_write"})
-     */
-    private $includeAdherentsNoCommittee = true;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     *
-     * @Groups({"audience_segment_write"})
-     */
-    private $includeAdherentsInCommittee = true;
-
-    /**
      * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true)
@@ -108,29 +90,16 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      */
     private ?Committee $committee = null;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"adherent_message_update_filter"})
+     */
+    private ?bool $isCommitteeMember = null;
+
     public function __construct()
     {
         $this->zones = new ArrayCollection();
-    }
-
-    public function includeAdherentsNoCommittee(): ?bool
-    {
-        return $this->includeAdherentsNoCommittee;
-    }
-
-    public function setIncludeAdherentsNoCommittee(?bool $value): void
-    {
-        $this->includeAdherentsNoCommittee = $value;
-    }
-
-    public function includeAdherentsInCommittee(): ?bool
-    {
-        return $this->includeAdherentsInCommittee;
-    }
-
-    public function setIncludeAdherentsInCommittee(?bool $value): void
-    {
-        $this->includeAdherentsInCommittee = $value;
     }
 
     /**
@@ -138,18 +107,15 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      */
     public function getIsCommitteeMember(): ?bool
     {
-        return $this->includeAdherentsInCommittee ? true : ($this->includeAdherentsNoCommittee ? false : null);
+        return $this->isCommitteeMember;
     }
 
     /**
-     * @Groups({"audience_segment_write", "adherent_message_update_filter"})
+     * @Groups({"audience_segment_write"})
      */
     public function setIsCommitteeMember(?bool $value): void
     {
-        if (null !== $value) {
-            $this->includeAdherentsInCommittee = $value;
-            $this->includeAdherentsNoCommittee = !$value;
-        }
+        $this->isCommitteeMember = $value;
     }
 
     public function getIsCertified(): ?bool
@@ -234,11 +200,10 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     {
         $this->generalFilterTraitReset();
 
-        $this->includeAdherentsNoCommittee = true;
-        $this->includeAdherentsInCommittee = true;
         $this->isCertified = null;
         $this->audienceType = null;
         $this->committee = null;
+        $this->isCommitteeMember = null;
 
         parent::reset();
     }

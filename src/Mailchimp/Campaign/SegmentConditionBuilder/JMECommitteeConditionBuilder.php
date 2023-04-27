@@ -39,6 +39,14 @@ class JMECommitteeConditionBuilder implements SegmentConditionBuilderInterface
             ];
         }
 
+        if (null !== $filter->getIsCommitteeMember()) {
+            $conditions[] = [
+                'condition_type' => 'TextMerge',
+                'op' => $filter->getIsCommitteeMember() ? 'blank_not' : 'blank',
+                'field' => MemberRequest::MERGE_FIELD_COMMITTEE,
+            ];
+        }
+
         return $conditions;
     }
 }

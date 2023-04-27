@@ -42,11 +42,11 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
         $interestIncludeKeys = [];
         $interestExcludeKeys = [];
 
-        if ($filter->includeAdherentsInCommittee() ^ $filter->includeAdherentsNoCommittee()) {
-            $interestIncludeKeys[] = true === $filter->includeAdherentsNoCommittee() ? Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER : Manager::INTEREST_KEY_COMMITTEE_FOLLOWER;
-        }
-
         if (!$filter instanceof AudienceFilter) {
+            if ($filter->includeAdherentsInCommittee() ^ $filter->includeAdherentsNoCommittee()) {
+                $interestIncludeKeys[] = true === $filter->includeAdherentsNoCommittee() ? Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER : Manager::INTEREST_KEY_COMMITTEE_FOLLOWER;
+            }
+
             // include interests
             if (true === $filter->includeCommitteeSupervisors()) {
                 $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR;

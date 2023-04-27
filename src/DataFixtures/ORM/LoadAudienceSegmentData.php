@@ -32,7 +32,6 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
             42,
             new \DateTime('2017-08-03'),
             new \DateTime('2021-07-11'),
-            true,
             false,
             true
         );
@@ -48,7 +47,6 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
             30,
             null,
             null,
-            true,
             false,
             false
         );
@@ -71,7 +69,6 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
         int $ageMax = null,
         \DateTime $registeredSince = null,
         \DateTime $registeredUntil = null,
-        bool $includeAdherentsNoCommittee = null,
         bool $includeAdherentsInCommittee = null,
         bool $isCertified = null
     ): AudienceSegment {
@@ -88,8 +85,7 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
         $filter->setRegisteredSince($registeredSince);
         $filter->setRegisteredUntil($registeredUntil);
         $filter->setZone($zone);
-        $filter->setIncludeAdherentsNoCommittee(!$includeAdherentsNoCommittee);
-        $filter->setIncludeAdherentsInCommittee($includeAdherentsInCommittee);
+        $filter->setIsCommitteeMember($includeAdherentsInCommittee);
         $filter->setIsCertified($isCertified);
         $segment->setFilter($filter);
 
