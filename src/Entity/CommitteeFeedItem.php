@@ -27,7 +27,8 @@ class CommitteeFeedItem implements UserDocumentInterface
     private $itemType;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Committee")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $committee;
 

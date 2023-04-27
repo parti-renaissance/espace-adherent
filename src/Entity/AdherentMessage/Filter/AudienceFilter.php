@@ -102,6 +102,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Groups({"adherent_message_update_filter"})
      */

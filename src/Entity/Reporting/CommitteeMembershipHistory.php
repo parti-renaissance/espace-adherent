@@ -36,6 +36,7 @@ class CommitteeMembershipHistory
      * @var Committee
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $committee;
 
