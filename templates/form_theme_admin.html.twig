@@ -691,6 +691,20 @@
     <a href="{{ form.vars.sonata_admin.admin.generateObjectUrl('send_resubscribe_email', object) }}" class="btn btn-primary">Envoyer un email de réabonnement</a>
 {% endblock %}
 
+{% block app_admin_adherent_lastMembershipDonation_datetime_row %}
+    {% set object = form.parent.vars.data %}
+    <span class="text-bold">Statut de la cotisation</span>
+    <p>
+        {% if object.hasActiveMembership() %}
+            <span class="label" style="background-color:#166534;">A jour de cotisation</span>
+        {% else %}
+            <span class="label" style="background-color:#c11e1e;">Non à jour de cotisation</span>
+        {% endif %}
+    </p>
+
+    {% if object.isRenaissanceAdherent() %}<span class="text-bold">Dernière cotisation: {{ object.getLastMembershipDonation()|date('d-m-Y') }}</span>{% endif %}
+{% endblock %}
+
 {% block unlayer_content_widget %}
     {{ form_row(form) }}
 
