@@ -311,7 +311,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     {
         return $qb
             ->leftJoin($alias.'.mandates', 'mandate', Join::WITH, '(mandate.finishAt IS NULL OR mandate.finishAt > :now) AND mandate.onGoing = 1 AND mandate.isElected = 1')
-            ->leftJoin('mandate.zone', 'zone')
+            ->innerJoin('mandate.geoZone', 'zone')
             ->setParameter('now', new \DateTime())
         ;
     }
@@ -336,7 +336,12 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             Mandate::class,
             'mandate_2',
             'geoZone',
-            'mandate_zone_2'
+            'mandate_zone_2',
+            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                $zoneQueryBuilder
+                    ->andWhere(sprintf('%s.geoZone IS NOT NULL', $entityClassAlias))
+                ;
+            }
         );
 
         if (!\in_array('adherent', $qb->getAllAliases(), true)) {
