@@ -53,6 +53,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')",
  *             "validation_groups": UpdateDesignationGroupGenerator::class,
  *         },
+ *         "cancel": {
+ *             "path": "/designations/{uuid}/cancel",
+ *             "method": "PUT",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "defaults": {"_api_receive": false},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')",
+ *             "controller": "App\Controller\Api\VotingPlatform\CancelElectionController",
+ *         },
  *     },
  *     collectionOperations={
  *         "get": {

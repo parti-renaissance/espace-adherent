@@ -287,3 +287,28 @@ Feature:
           | referent@en-marche-dev.fr       | referent                                       |
           | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
           | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+
+    Scenario Outline: As a grand user with local scope, I can cancel an election
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "PUT" request to "/api/v3/designations/7fb0693e-1dad-44c6-984b-19e99603ea2c/cancel?scope=<scope>"
+        Then the response status code should be 204
+        When I send a "GET" request to "/api/v3/designations/7fb0693e-1dad-44c6-984b-19e99603ea2c?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+          "custom_title": "Election AL - comité des 3 communes",
+          "type": "committee_supervisor",
+          "election_creation_date": "@string@.isDateTime()",
+          "vote_start_date": "@string@.isDateTime()",
+          "vote_end_date": "@string@.isDateTime()",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+          "election_entity_identifier": "5e00c264-1d4b-43b8-862e-29edc38389b3",
+          "uuid": "7fb0693e-1dad-44c6-984b-19e99603ea2c"
+        }
+        """
+        Examples:
+          | user                      | scope                                          |
+          | referent@en-marche-dev.fr | referent                                       |
+          | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
