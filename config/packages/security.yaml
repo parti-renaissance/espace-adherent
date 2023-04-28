@@ -547,4 +547,4 @@ security:
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }
         - { path: '^/membre/.*', roles: [IS_AUTHENTICATED_REMEMBERED] }
         - { path: '^/elections/.+', roles: [ROLE_ADHERENT] }
-        - { path: '^/(adhesion|don)', allow_if: "not is_granted('ROLE_ADMIN_DASHBOARD')"}
+        - { path: '^/(adhesion|don|espace-elus)', allow_if: "not is_granted('ROLE_ADMIN_DASHBOARD')"}
