@@ -13,10 +13,8 @@ Feature:
 
   Scenario: As deputy, I should see a popup when I'm in the deputy space
     Given I am logged as "deputy@en-marche-dev.fr"
-    And I am on "parametres/mon-compte/modifier"
-    When I follow "Espace député"
-    Then I should be on "espace-depute/utilisateurs"
-    And I wait 3 second until I see "Charte de bonne utilisation des outils numériques"
+    When I am on "espace-depute/messagerie"
+    Then I wait 3 second until I see "Charte de bonne utilisation des outils numériques"
 
   Scenario: As deputy, I should be redirected if I close the popup when I'm in the deputy space
     Given I am logged as "deputy@en-marche-dev.fr"
@@ -34,10 +32,8 @@ Feature:
 
   Scenario: As referent, I should see a popup when I'm in the referent space
     Given I am logged as "referent-75-77@en-marche-dev.fr"
-    And I am on "parametres/mon-compte/modifier"
-    When I follow "Espace référent"
-    Then I should be on "espace-referent/utilisateurs"
-    And I wait 3 second until I see "Charte de bonne utilisation des outils numériques"
+    When I am on "espace-referent/messagerie"
+    Then I wait 3 second until I see "Charte de bonne utilisation des outils numériques"
 
   Scenario: As referent, I should be redirected if I close the popup when I'm in the referent space
     Given I am logged as "referent-75-77@en-marche-dev.fr"

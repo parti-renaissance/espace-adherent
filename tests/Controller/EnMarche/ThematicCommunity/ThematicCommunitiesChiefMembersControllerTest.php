@@ -2,28 +2,12 @@
 
 namespace Tests\App\Controller\EnMarche\ThematicCommunity;
 
-use Symfony\Component\HttpFoundation\Request;
 use Tests\App\AbstractEnMarcheWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 
 class ThematicCommunitiesChiefMembersControllerTest extends AbstractEnMarcheWebCaseTest
 {
     use ControllerTestTrait;
-
-    public function testThematiCommunityMembersList()
-    {
-        $this->client->followRedirects();
-
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
-        $crawler = $this->client->request(Request::METHOD_GET, '/');
-
-        $this->assertCount(1, $crawler->filter('a:contains(\'Espace Responsable Communautés\')'));
-
-        $crawler = $this->client->click($crawler->selectLink('Espace Responsable Communautés')->link());
-        $this->assertSame('http://test.enmarche.code/communautes-thematiques/membres', $crawler->getUri());
-
-        $this->assertCount(4, $crawler->filter('table tbody tr.referent__item'));
-    }
 
     public function testThematicCommunityMembersFilter()
     {

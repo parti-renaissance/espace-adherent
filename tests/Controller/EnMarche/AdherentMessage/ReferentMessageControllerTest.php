@@ -17,10 +17,7 @@ class ReferentMessageControllerTest extends AbstractEnMarcheWebCaseTest
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
-        $this->client->click(
-            $this->client->request('GET', '/')->selectLink('Espace référent')->link()
-        );
-        $crawler = $this->client->followRedirect();
+        $crawler = $this->client->request('GET', '/espace-referent/messagerie');
 
         $crawler = $this->client->click($crawler->selectLink('Aux adhérents')->link());
         $crawler = $this->client->click($crawler->selectLink('+ Nouveau message')->link());
