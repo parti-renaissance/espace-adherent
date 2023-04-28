@@ -19,6 +19,9 @@ class CancelElectionController extends AbstractController
         foreach ($electionRepository->findAllForDesignation($designation) as $election) {
             $election->cancel(ElectionCancelReasonEnum::Manual);
         }
+
+        $designation->cancel();
+
         $entityManager->flush();
 
         return new Response(null, Response::HTTP_NO_CONTENT);
