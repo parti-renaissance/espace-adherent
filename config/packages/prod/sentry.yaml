@@ -9,6 +9,7 @@ sentry:
     register_error_listener: false
     tracing: false
     options:
+        send_default_pii: true
         default_integrations: false
         integrations:
             - Sentry\Integration\EnvironmentIntegration
