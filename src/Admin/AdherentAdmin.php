@@ -24,10 +24,7 @@ use App\Form\ActivityPositionType;
 use App\Form\Admin\AdherentInstanceQualityType;
 use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AdherentZoneBasedRoleType;
-use App\Form\Admin\CandidateManagedAreaType;
 use App\Form\Admin\JecouteManagedAreaType;
-use App\Form\Admin\SenatorAreaType;
-use App\Form\Admin\SenatorialCandidateManagedAreaType;
 use App\Form\EventListener\BoardMemberListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
@@ -595,26 +592,6 @@ class AdherentAdmin extends AbstractAdmin
                         'label' => false,
                         'required' => false,
                         'mapped' => false,
-                    ])
-                ->end()
-                ->with('Mandat électif', ['class' => 'col-md-6'])
-                    ->add('senatorArea', SenatorAreaType::class, [
-                        'required' => false,
-                        'label' => 'Circonscription sénateur',
-                        'help' => 'Laisser vide si l\'adhérent n\'est pas parlementaire.',
-                    ])
-                ->end()
-                ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
-                    ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
-                        'label' => 'Candidat Sénatoriales 2020',
-                    ])
-                    ->add('candidateManagedArea', CandidateManagedAreaType::class, [
-                        'label' => 'Candidat',
-                    ])
-
-                    ->add('electionResultsReporter', null, [
-                        'label' => 'Accès au formulaire de remontée des résultats du ministère de l\'Intérieur',
-                        'required' => false,
                     ])
                 ->end()
             ->end()
