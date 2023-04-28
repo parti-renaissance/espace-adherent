@@ -13119,16 +13119,16 @@
         },
         {
             "name": "symfony/doctrine-bridge",
-            "version": "v5.4.22",
+            "version": "v5.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/doctrine-bridge.git",
-                "reference": "decc4801e2ecc4b72334ef472ed82e4d640492ec"
+                "reference": "32cddf41cf6abfc4c3db68568c785e48eebf3d71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/decc4801e2ecc4b72334ef472ed82e4d640492ec",
-                "reference": "decc4801e2ecc4b72334ef472ed82e4d640492ec",
+                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/32cddf41cf6abfc4c3db68568c785e48eebf3d71",
+                "reference": "32cddf41cf6abfc4c3db68568c785e48eebf3d71",
                 "shasum": ""
             },
             "require": {
@@ -13216,7 +13216,7 @@
             "description": "Provides integration for Doctrine with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/doctrine-bridge/tree/v5.4.22"
+                "source": "https://github.com/symfony/doctrine-bridge/tree/v5.4.23"
             },
             "funding": [
                 {
@@ -13232,7 +13232,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-06T21:29:33+00:00"
+            "time": "2023-04-05T05:19:44+00:00"
         },
         {
             "name": "symfony/doctrine-messenger",
