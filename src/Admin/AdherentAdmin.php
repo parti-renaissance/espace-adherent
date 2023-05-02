@@ -67,6 +67,7 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -418,9 +419,10 @@ class AdherentAdmin extends AbstractAdmin
                         'by_reference' => false,
                         'btn_add' => false,
                     ])
-                    ->add('lastMembershipDonation', null, [
+                    ->add('lastMembershipDonationDate', HiddenType::class, [
                         'label' => false,
                         'required' => false,
+                        'mapped' => false,
                     ])
                 ->end()
                 ->with('Abonnement', ['class' => 'col-md-6'])
