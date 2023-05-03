@@ -558,9 +558,11 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      */
     public function getCurrentPoliticalFunctions(): array
     {
-        return $this->politicalFunctions->filter(function (PoliticalFunction $politicalFunction) {
-            return $politicalFunction->isOnGoing() && null === $politicalFunction->getFinishAt();
-        })->getValues();
+        return array_merge(...array_map(function (Mandate $mandate) {
+            return array_filter($mandate->getPoliticalFunctions()->toArray(), function (PoliticalFunction $politicalFunction) {
+                return $politicalFunction->isOnGoing() && null === $politicalFunction->getFinishAt();
+            });
+        }, $this->getCurrentMandates()));
     }
 
     public function addPoliticalFunction(PoliticalFunction $politicalFunction): void
