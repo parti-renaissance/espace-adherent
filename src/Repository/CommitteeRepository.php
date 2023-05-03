@@ -723,7 +723,7 @@ class CommitteeRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('c')
             ->leftJoin('c.currentDesignation', 'd')
-            ->where('(c.currentDesignation IS NULL OR (d.voteEndDate IS NOT NULL AND d.voteEndDate < :date))')
+            ->where('(c.currentDesignation IS NULL OR d.isCanceled = true OR (d.voteEndDate IS NOT NULL AND d.voteEndDate < :date))')
             ->andWhere('c.status = :status')
             ->setParameters([
                 'status' => Committee::APPROVED,
@@ -731,7 +731,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ])
             ->setFirstResult($offset)
             ->setMaxResults($limit)
-            ->groupBy('c')
+            ->groupBy('c.id')
         ;
 
         if ($identifier = $designation->getElectionEntityIdentifier()) {
