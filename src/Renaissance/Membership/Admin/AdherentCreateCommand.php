@@ -133,7 +133,7 @@ class AdherentCreateCommand implements MembershipInterface
     public ?string $cotisationAmountChoice = CotisationAmountChoiceEnum::AMOUNT_30;
 
     /**
-     * @Assert\Expression("this.cotisationAmountChoice != 'amount_other' or this.cotisationCustomAmount > 0", groups={"admin_adherent_renaissance_create"})
+     * @Assert\Expression("this.cotisationAmountChoice != 'amount_other' or this.cotisationCustomAmount >= 30", groups={"admin_adherent_renaissance_create"}, message="Le montant de la cotisation doit être supérieur ou égale à 30 euros")
      * @Assert\Range(
      *     min=1,
      *     max=7500,
