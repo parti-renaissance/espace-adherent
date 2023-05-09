@@ -2,7 +2,8 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\PostAddress;
+use App\Address\AddressInterface;
+use App\Entity\NullablePostAddress;
 use App\Event\EventFactory;
 use App\Event\EventRegistrationFactory;
 use App\FranceCities\FranceCities;
@@ -55,10 +56,10 @@ abstract class AbstractLoadEventData extends Fixture
         string $region = null,
         float $latitude = null,
         float $longitude = null
-    ): PostAddress {
-        [$postalCode, $inseeCode] = explode('-', $cityCode);
+    ): AddressInterface {
+        [, $inseeCode] = explode('-', $cityCode);
         $city = $this->franceCities->getCityByInseeCode($inseeCode);
 
-        return PostAddress::createFrenchAddress($street, $cityCode, $city ? $city->getName() : null, $region, $latitude, $longitude);
+        return NullablePostAddress::createFrenchAddress($street, $cityCode, $city ? $city->getName() : null, $region, $latitude, $longitude);
     }
 }

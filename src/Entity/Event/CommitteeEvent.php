@@ -2,10 +2,10 @@
 
 namespace App\Entity\Event;
 
+use App\Address\AddressInterface;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\PostAddress;
 use App\Entity\SynchronizedEntity;
 use App\Entity\UserDocument;
 use App\Entity\UserDocumentInterface;
@@ -62,7 +62,7 @@ class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterf
         string $name = null,
         EventCategory $category = null,
         string $description = null,
-        PostAddress $address = null,
+        AddressInterface $address = null,
         string $beginAt = null,
         string $finishAt = null,
         int $capacity = null,

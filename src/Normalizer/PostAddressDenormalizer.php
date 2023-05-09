@@ -2,9 +2,9 @@
 
 namespace App\Normalizer;
 
-use App\Entity\PostAddress;
 use App\Geocoder\Exception\GeocodingException;
 use App\Geocoder\Geocoder;
+use App\Geocoder\GeoPointInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -25,6 +25,7 @@ class PostAddressDenormalizer implements DenormalizerInterface, DenormalizerAwar
     public function denormalize($data, $type, $format = null, array $context = [])
     {
         $context[self::ALREADY_CALLED] = true;
+        /** @var GeoPointInterface $entity */
         $entity = $this->denormalizer->denormalize($data, $type, $format, $context);
 
         if ($entity->getGeocodableHash() !== md5($address = $entity->getGeocodableAddress())) {
@@ -40,6 +41,6 @@ class PostAddressDenormalizer implements DenormalizerInterface, DenormalizerAwar
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
-        return is_a($type, PostAddress::class, true) && !isset($context[self::ALREADY_CALLED]);
+        return is_a($type, GeoPointInterface::class, true) && !isset($context[self::ALREADY_CALLED]);
     }
 }

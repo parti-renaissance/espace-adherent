@@ -5,29 +5,18 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Event\EventRegistrationCommand;
-use App\Event\EventRegistrationFactory;
-use App\FranceCities\FranceCities;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadDefaultEventData extends AbstractLoadPostAddressData implements DependentFixtureInterface
+class LoadDefaultEventData extends AbstractLoadEventData implements DependentFixtureInterface
 {
     private const EVENT_1_UUID = '5cab27a7-dbb3-4347-9781-566dad1b9eb5';
     private const EVENT_2_UUID = '2b7238f9-10ca-4a39-b8a4-ad7f438aa95f';
     private const EVENT_3_UUID = '4d962b05-68fe-4888-ab6b-53b96bdbe797';
     private const EVENT_4_UUID = '594e7ad0-c289-49ae-8c23-0129275d128b';
 
-    private $eventRegistrationFactory;
-
-    public function __construct(EventRegistrationFactory $eventRegistrationFactory, FranceCities $franceCities)
-    {
-        parent::__construct($franceCities);
-
-        $this->eventRegistrationFactory = $eventRegistrationFactory;
-    }
-
-    public function load(ObjectManager $manager)
+    public function loadEvents(ObjectManager $manager): void
     {
         $referent = $this->getReference('adherent-8');
         $senatorialCandidate = $this->getReference('senatorial-candidate');

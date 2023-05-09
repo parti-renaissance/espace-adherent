@@ -10,6 +10,7 @@ use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Countries;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Embeddable
@@ -22,6 +23,8 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
      * @var string|null
      *
      * @ORM\Column(length=150, nullable=true)
+     *
+     * @Groups({"event_write"})
      */
     private $address;
 
@@ -31,6 +34,8 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     *
+     * @Groups({"event_write"})
      */
     private $postalCode;
 
@@ -40,6 +45,8 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true, name="city_insee")
+     *
+     * @Groups({"event_write"})
      */
     private $city;
 
@@ -49,6 +56,8 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     *
+     * @Groups({"event_write"})
      */
     private $cityName;
 
@@ -58,6 +67,8 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
      * @var string
      *
      * @ORM\Column(length=2, nullable=true)
+     *
+     * @Groups({"event_write"})
      */
     private $country;
 
@@ -73,6 +84,8 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @Groups({"event_write"})
      */
     private $region;
 
@@ -138,6 +151,9 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         return new self($country, $zipCode, $cityName, $street, $latitude, $longitude, $region);
     }
 
+    /**
+     * @Groups({"event_read", "event_list_read"})
+     */
     public function getCountry(): ?string
     {
         return $this->country;
@@ -148,11 +164,22 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         $this->country = $country;
     }
 
+    /**
+     * @Groups({"event_read", "event_list_read"})
+     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
+    public function setCity(?string $city): void
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @Groups({"event_read", "event_list_read"})
+     */
     public function getCityName(): ?string
     {
         return $this->cityName;
@@ -163,6 +190,9 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         $this->cityName = $cityName;
     }
 
+    /**
+     * @Groups({"event_read", "event_list_read"})
+     */
     public function getAddress(): ?string
     {
         return $this->address;
@@ -173,6 +203,9 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         $this->address = $address;
     }
 
+    /**
+     * @Groups({"event_read", "event_list_read"})
+     */
     public function getPostalCode(): ?string
     {
         return $this->postalCode;
@@ -183,11 +216,17 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         $this->postalCode = $postalCode;
     }
 
+    /**
+     * @Groups({"event_read", "event_list_read"})
+     */
     public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
+    /**
+     * @Groups({"event_read", "event_list_read"})
+     */
     public function getLongitude(): ?float
     {
         return $this->longitude;

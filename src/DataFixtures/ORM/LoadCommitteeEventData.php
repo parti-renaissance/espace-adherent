@@ -9,7 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent as EntityEvent;
-use App\Entity\PostAddress;
+use App\Entity\NullablePostAddress;
 use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
@@ -264,7 +264,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Meeting de Singapour',
             'category' => $eventCategory10,
             'description' => 'Ouvert aux français de Singapour.',
-            'address' => PostAddress::createForeignAddress('SG', '018956', 'Singapour', '10 Bayfront Avenue', null, 1.2835627, 103.8606872),
+            'address' => NullablePostAddress::createAddress('SG', '018956', 'Singapour', '10 Bayfront Avenue', null, 1.2835627, 103.8606872),
             'begin_at' => (new Chronos('now', new \DateTimeZone('Asia/Singapore')))->modify('-4 hours')->format('Y-m-d H:00:00'),
             'finish_at' => (new Chronos('now', new \DateTimeZone('Asia/Singapore')))->modify('-2 hours')->format('Y-m-d H:00:00'),
             'capacity' => 100,
@@ -279,7 +279,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Meeting de New York City',
             'category' => $eventCategory10,
             'description' => 'Ouvert aux français de New York.',
-            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
+            'address' => NullablePostAddress::createAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
             'begin_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
             'finish_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
             'capacity' => 55,
@@ -294,7 +294,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Meeting de Brooklyn',
             'category' => $eventCategory10,
             'description' => 'Ouvert aux français de New York.',
-            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
+            'address' => NullablePostAddress::createAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
             'begin_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
             'finish_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
             'capacity' => 55,
@@ -309,7 +309,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Meeting #11 de Brooklyn',
             'category' => $eventCategory10,
             'description' => 'Ouvert aux français de New York.',
-            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
+            'address' => NullablePostAddress::createAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
             'begin_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
             'finish_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
             'capacity' => 55,
@@ -324,7 +324,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Event of non AL',
             'category' => $eventCategory10,
             'description' => 'HAPPINESS FOR EVERYBODY, FREE, AND NO ONE WILL GO AWAY UNSATISFIED!',
-            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', null, 47.321569, 8.549968799999988),
+            'address' => NullablePostAddress::createAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', null, 47.321569, 8.549968799999988),
             'begin_at' => (new Chronos('yesterday'))->format('Y-m-d').' 10:00:00',
             'finish_at' => (new Chronos('yesterday'))->format('Y-m-d').' 18:00:00',
             'capacity' => 5,

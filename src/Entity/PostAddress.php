@@ -29,7 +29,6 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
-     *     "event_write",
      *     "contact_read_after_write",
      *     "contact_update"
      * })
@@ -47,7 +46,6 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
-     *     "event_write",
      *     "contact_read_after_write",
      *     "contact_update"
      * })
@@ -64,7 +62,6 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @Assert\Length(max=15, groups={"contact_update"})
      *
      * @SymfonySerializer\Groups({
-     *     "event_write",
      *     "contact_read_after_write",
      *     "contact_update"
      * })
@@ -82,7 +79,6 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
-     *     "event_write",
      *     "contact_read_after_write",
      *     "contact_update"
      * })
@@ -100,7 +96,6 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
-     *     "event_write",
      *     "contact_read_after_write",
      *     "contact_update"
      * })
@@ -112,7 +107,6 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
-     *     "event_write",
      *     "contact_read_after_write",
      *     "contact_update"
      * })
