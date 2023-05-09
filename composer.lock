@@ -4126,32 +4126,32 @@
         },
         {
             "name": "google/auth",
-            "version": "v1.26.0",
+            "version": "v1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "f1f0d0319e2e7750ebfaa523c78819792a9ed9f7"
+                "reference": "81a5d40937fb4afc26e80b6fa25b3f164a5763d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/f1f0d0319e2e7750ebfaa523c78819792a9ed9f7",
-                "reference": "f1f0d0319e2e7750ebfaa523c78819792a9ed9f7",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/81a5d40937fb4afc26e80b6fa25b3f164a5763d2",
+                "reference": "81a5d40937fb4afc26e80b6fa25b3f164a5763d2",
                 "shasum": ""
             },
             "require": {
-                "firebase/php-jwt": "^5.5||^6.0",
+                "firebase/php-jwt": "^6.0",
                 "guzzlehttp/guzzle": "^6.2.1|^7.0",
-                "guzzlehttp/psr7": "^1.7|^2.0",
-                "php": "^7.1||^8.0",
-                "psr/cache": "^1.0|^2.0|^3.0",
-                "psr/http-message": "^1.0"
+                "guzzlehttp/psr7": "^2.4.5",
+                "php": "^7.4||^8.0",
+                "psr/cache": "^1.0||^2.0||^3.0",
+                "psr/http-message": "^1.1||^2.0"
             },
             "require-dev": {
-                "guzzlehttp/promises": "0.1.1|^1.3",
+                "guzzlehttp/promises": "^1.3",
                 "kelvinmo/simplejwt": "0.7.0",
-                "phpseclib/phpseclib": "^2.0.31||^3.0",
-                "phpspec/prophecy-phpunit": "^1.1||^2.0",
-                "phpunit/phpunit": "^7.5||^9.0.0",
+                "phpseclib/phpseclib": "^3.0",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.0.0",
                 "sebastian/comparator": ">=1.2.3",
                 "squizlabs/php_codesniffer": "^3.5"
             },
@@ -4178,22 +4178,22 @@
             "support": {
                 "docs": "https://googleapis.github.io/google-auth-library-php/main/",
                 "issues": "https://github.com/googleapis/google-auth-library-php/issues",
-                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.26.0"
+                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.27.0"
             },
-            "time": "2023-04-05T15:11:57+00:00"
+            "time": "2023-05-02T21:53:58+00:00"
         },
         {
             "name": "google/cloud-core",
-            "version": "v1.51.1",
+            "version": "v1.51.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-core.git",
-                "reference": "63e76ef5234209b0263c80a8733690571009accd"
+                "reference": "85dc48d62143f4bbfaa34c24da95003371de7b79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/63e76ef5234209b0263c80a8733690571009accd",
-                "reference": "63e76ef5234209b0263c80a8733690571009accd",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/85dc48d62143f4bbfaa34c24da95003371de7b79",
+                "reference": "85dc48d62143f4bbfaa34c24da95003371de7b79",
                 "shasum": ""
             },
             "require": {
@@ -4243,9 +4243,9 @@
             ],
             "description": "Google Cloud PHP shared dependency, providing functionality useful to all components.",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.51.1"
+                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.51.2"
             },
-            "time": "2023-04-27T13:19:20+00:00"
+            "time": "2023-05-05T23:01:42+00:00"
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
@@ -4299,20 +4299,20 @@
         },
         {
             "name": "google/cloud-storage",
-            "version": "v1.31.1",
+            "version": "v1.31.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-storage.git",
-                "reference": "d65133e9ed6ef6f52ecbaed7da8d34ebe8e10fd1"
+                "reference": "7fe96d56856cda550b21779bb95a066b264852da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/d65133e9ed6ef6f52ecbaed7da8d34ebe8e10fd1",
-                "reference": "d65133e9ed6ef6f52ecbaed7da8d34ebe8e10fd1",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/7fe96d56856cda550b21779bb95a066b264852da",
+                "reference": "7fe96d56856cda550b21779bb95a066b264852da",
                 "shasum": ""
             },
             "require": {
-                "google/cloud-core": "^1.43",
+                "google/cloud-core": "^1.51.1",
                 "google/crc32": "^0.2.0",
                 "php": ">=7.4",
                 "ramsey/uuid": "^4.2.3"
@@ -4350,9 +4350,9 @@
             ],
             "description": "Cloud Storage Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.31.1"
+                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.31.2"
             },
-            "time": "2023-04-27T13:19:20+00:00"
+            "time": "2023-05-05T23:01:42+00:00"
         },
         {
             "name": "google/cloud-vision",
