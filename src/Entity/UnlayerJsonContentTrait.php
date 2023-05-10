@@ -17,6 +17,8 @@ trait UnlayerJsonContentTrait
      *     "message_read_content",
      *     "department_site_read",
      *     "department_site_write",
+     *     "email_template_read",
+     *     "email_template_write",
      * })
      */
     protected ?string $jsonContent = null;

@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Api\Doctrine;
+
+use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
+use App\Entity\EmailTemplate\EmailTemplate;
+use App\Scope\ScopeGeneratorResolver;
+use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Security\Core\Security;
+
+class EmailTemplateExtension implements QueryCollectionExtensionInterface
+{
+    public function __construct(
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly Security $security
+    ) {
+    }
+
+    public function applyToCollection(
+        QueryBuilder $queryBuilder,
+        QueryNameGeneratorInterface $queryNameGenerator,
+        string $resourceClass,
+        Operation $operation = null,
+        array $context = []
+    ): void {
+        if (EmailTemplate::class !== $resourceClass) {
+            return;
+        }
+
+        $scope = $this->scopeGeneratorResolver->generate();
+        $user = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser();
+
+        $rootAlias = $queryBuilder->getRootAliases()[0];
+
+        $queryBuilder
+            ->leftJoin("$rootAlias.zones", 'zone')
+            ->andWhere((new Orx())
+                ->add($queryBuilder->expr()->andX()
+                    ->add(sprintf('%s.createdByAdministrator IS NOT NULL', $rootAlias))
+                    ->add(sprintf('FIND_IN_SET(:scope, %s.scopes) > 0', $rootAlias))
+                    ->add($queryBuilder->expr()->orX()
+                            ->add("$rootAlias.zones IS EMPTY")
+                            ->add('zone IN (:zones)')
+                    )
+                )
+                ->add(sprintf('%s.createdByAdherent = :adherent', $rootAlias))
+            )
+            ->setParameter('adherent', $user)
+            ->setParameter('scope', $scope->getMainCode())
+            ->setParameter('zones', $scope->getZones())
+        ;
+    }
+}
