@@ -4249,16 +4249,16 @@
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
-            "version": "v1.3.1",
+            "version": "v1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise.git",
-                "reference": "acd2077f4187e5648f203fcca5c49b311793e495"
+                "reference": "eeb83bf1b65f0de710b19f20cd7647a6ca944a35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/acd2077f4187e5648f203fcca5c49b311793e495",
-                "reference": "acd2077f4187e5648f203fcca5c49b311793e495",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/eeb83bf1b65f0de710b19f20cd7647a6ca944a35",
+                "reference": "eeb83bf1b65f0de710b19f20cd7647a6ca944a35",
                 "shasum": ""
             },
             "require": {
@@ -4293,9 +4293,9 @@
             ],
             "description": "Google Cloud Recaptcha Enterprise Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.3.1"
+                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.3.2"
             },
-            "time": "2023-04-21T14:12:59+00:00"
+            "time": "2023-05-05T23:01:42+00:00"
         },
         {
             "name": "google/cloud-storage",
@@ -4413,16 +4413,16 @@
         },
         {
             "name": "google/common-protos",
-            "version": "v4.0.0",
+            "version": "v4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/common-protos-php.git",
-                "reference": "ac91dce49de251a599b2262ab4fdbcbd5fc92672"
+                "reference": "4c74dd56310b835115b939a561f7c1f0e3b36364"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/ac91dce49de251a599b2262ab4fdbcbd5fc92672",
-                "reference": "ac91dce49de251a599b2262ab4fdbcbd5fc92672",
+                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/4c74dd56310b835115b939a561f7c1f0e3b36364",
+                "reference": "4c74dd56310b835115b939a561f7c1f0e3b36364",
                 "shasum": ""
             },
             "require": {
@@ -4459,9 +4459,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/common-protos-php/issues",
-                "source": "https://github.com/googleapis/common-protos-php/tree/v4.0.0"
+                "source": "https://github.com/googleapis/common-protos-php/tree/v4.1.0"
             },
-            "time": "2023-05-01T17:30:37+00:00"
+            "time": "2023-05-09T17:34:00+00:00"
         },
         {
             "name": "google/crc32",
