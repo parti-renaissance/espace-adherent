@@ -84,6 +84,7 @@ services:
             $articlePreviewAdminKey: '%env(ARTICLE_PREVIEW_ADMIN_KEY)%'
             $unlayerDefaultTemplateId: '%env(UNLAYER_DEFAULT_TEMPLATE_ID)%'
             $dptSiteUnlayerTemplateId: '%env(DPT_SITE_UNLAYER_TEMPLATE_ID)%'
+            $emailTemplateUnlayerTemplateId: '%env(EMAIL_TEMPLATE_UNLAYER_TEMPLATE_ID)%'
             $goCardlessApiKey: '%env(GOCARDLESS_API_KEY)%'
             $goCardlessEnvironment: '%env(GOCARDLESS_ENV)%'
 

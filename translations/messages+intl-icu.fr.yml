@@ -1349,6 +1349,22 @@ procuration_proxy.reliability_8: Très fiable
 #
 # Scopes
 #
+scope.referent: Référent
+scope.deputy: Délégué de circonscription
+scope.senator: Sénateur
+scope.candidate: Candidat
+scope.national: National
+scope.national_communication: National communication
+scope.phoning: Appelant
+scope.phoning_national_manager: Responsable Phoning
+scope.pap_national_manager: Responsable National PAP
+scope.correspondent: Correspondant
+scope.pap: Porte-à-porteur
+scope.legislative_candidate: Candidat aux législatives
+scope.regional_coordinator: Coordinateur régional
+scope.president_departmental_assembly: Président assemblée départementale
+scope.animator: Responsable comité local
+
 scope.feature.dashboard: Vue d'ensemble
 scope.feature.contacts: Contacts
 scope.feature.contacts_export: Export contacts

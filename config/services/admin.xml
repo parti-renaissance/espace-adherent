@@ -524,6 +524,15 @@
             <argument />
         </service>
 
+        <service id="app.admin.email_template" class="App\Admin\EmailTemplateAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Modèle d'email JME" group="Territoires"/>
+
+            <argument />
+            <argument>App\Entity\EmailTemplate\EmailTemplate</argument>
+            <argument />
+            <argument type="string">%env(EMAIL_TEMPLATE_UNLAYER_TEMPLATE_ID)%</argument>
+        </service>
+
         <!--
         ######################################################
         # Application mobile
@@ -1145,6 +1154,7 @@
             <tag name="sonata.admin.extension" target="app.admin.local_election.candidacies_group" />
             <tag name="sonata.admin.extension" target="app.admin.adherent_formation" />
             <tag name="sonata.admin.extension" target="app.admin.general_meeting_report" />
+            <tag name="sonata.admin.extension" target="app.admin.email_template" />
         </service>
 
         <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">
