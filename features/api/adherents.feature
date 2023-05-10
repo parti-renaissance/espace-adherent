@@ -510,6 +510,12 @@ Feature:
             "type": "select"
         },
         {
+            "code": "last_membership",
+            "label": "Dernière cotisation",
+            "options": null,
+            "type": "date_interval"
+        },
+        {
             "code": "onlyJeMengageUsers",
             "label": "Compte de la majorité présidentielle",
             "options": {

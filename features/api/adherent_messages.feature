@@ -381,6 +381,12 @@ Feature:
               "type": "select"
           },
           {
+            "code": "last_membership",
+            "label": "Dernière cotisation",
+            "options": null,
+            "type": "date_interval"
+          },
+          {
               "code": "renaissance_membership",
               "label": "Renaissance",
               "options": {

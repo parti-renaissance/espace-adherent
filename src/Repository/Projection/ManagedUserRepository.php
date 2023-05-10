@@ -284,6 +284,20 @@ class ManagedUserRepository extends ServiceEntityRepository
             MembershipFilterHelper::withMembershipFilter($qb, 'u', $renaissanceMembership);
         }
 
+        if ($lastMembershipSince = $filter->getLastMembershipSince()) {
+            $qb
+                ->andWhere('u.lastMembershipDonation >= :last_membership_since')
+                ->setParameter('last_membership_since', $lastMembershipSince->format('Y-m-d 00:00:00'))
+            ;
+        }
+
+        if ($lastMembershipBefore = $filter->getLastMembershipBefore()) {
+            $qb
+                ->andWhere('u.lastMembershipDonation <= :last_membership_before')
+                ->setParameter('last_membership_before', $lastMembershipBefore->format('Y-m-d 23:59:59'))
+            ;
+        }
+
         if (null !== $filter->getOnlyJeMengageUsers()) {
             $qb
                 ->andWhere(

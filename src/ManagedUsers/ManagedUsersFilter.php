@@ -143,6 +143,16 @@ class ManagedUsersFilter
     /**
      * @Groups({"filter_write"})
      */
+    private ?\DateTime $lastMembershipSince = null;
+
+    /**
+     * @Groups({"filter_write"})
+     */
+    private ?\DateTime $lastMembershipBefore = null;
+
+    /**
+     * @Groups({"filter_write"})
+     */
     private ?bool $onlyJeMengageUsers = null;
 
     /**
@@ -427,6 +437,40 @@ class ManagedUsersFilter
     public function setRenaissanceMembership(?string $renaissanceMembership): void
     {
         $this->renaissanceMembership = $renaissanceMembership;
+    }
+
+    public function getLastMembershipSince(): ?\DateTime
+    {
+        return $this->lastMembershipSince;
+    }
+
+    public function setLastMembershipSince(?\DateTime $lastMembershipSince): void
+    {
+        $this->lastMembershipSince = $lastMembershipSince;
+    }
+
+    public function getLastMembershipBefore(): ?\DateTime
+    {
+        return $this->lastMembershipBefore;
+    }
+
+    public function setLastMembershipBefore(?\DateTime $lastMembershipBefore): void
+    {
+        $this->lastMembershipBefore = $lastMembershipBefore;
+    }
+
+    /**
+     * @Groups({"filter_write"})
+     */
+    public function setLastMembership(array $startEnd): void
+    {
+        if (!empty($startEnd['start'])) {
+            $this->setLastMembershipSince(new \DateTime($startEnd['start']));
+        }
+
+        if (!empty($startEnd['end'])) {
+            $this->setLastMembershipBefore(new \DateTime($startEnd['end']));
+        }
     }
 
     public function getSubscriptionType(): ?string
