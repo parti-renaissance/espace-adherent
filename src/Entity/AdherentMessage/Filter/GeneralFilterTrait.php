@@ -132,6 +132,32 @@ trait GeneralFilterTrait
      */
     protected ?string $renaissanceMembership = null;
 
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="date", nullable=true)
+     *
+     * @Groups({
+     *     "audience_segment_read",
+     *     "audience_segment_write",
+     *     "adherent_message_update_filter",
+     * })
+     */
+    private $lastMembershipSince;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="date", nullable=true)
+     *
+     * @Groups({
+     *     "audience_segment_read",
+     *     "audience_segment_write",
+     *     "adherent_message_update_filter",
+     * })
+     */
+    private $lastMembershipBefore;
+
     public function getGender(): ?string
     {
         return $this->gender;
@@ -237,6 +263,26 @@ trait GeneralFilterTrait
         $this->renaissanceMembership = $renaissanceMembership;
     }
 
+    public function getLastMembershipSince(): ?\DateTime
+    {
+        return $this->lastMembershipSince;
+    }
+
+    public function setLastMembershipSince(?\DateTime $lastMembershipSince): void
+    {
+        $this->lastMembershipSince = $lastMembershipSince;
+    }
+
+    public function getLastMembershipBefore(): ?\DateTime
+    {
+        return $this->lastMembershipBefore;
+    }
+
+    public function setLastMembershipBefore(?\DateTime $lastMembershipBefore): void
+    {
+        $this->lastMembershipBefore = $lastMembershipBefore;
+    }
+
     public function reset(): void
     {
         $this->gender = null;
@@ -249,5 +295,7 @@ trait GeneralFilterTrait
         $this->registeredSince = null;
         $this->registeredUntil = null;
         $this->renaissanceMembership = null;
+        $this->lastMembershipSince = null;
+        $this->lastMembershipBefore = null;
     }
 }

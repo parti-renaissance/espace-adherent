@@ -45,6 +45,8 @@ Feature:
           "name": "Clichy"
         },
         "is_committee_member": false,
+        "last_membership_before": null,
+        "last_membership_since": null,
         "gender": "male",
         "age_min": 20,
         "age_max": 30,
@@ -180,6 +182,8 @@ Feature:
           "name": "Paris (1)"
         },
         "is_committee_member": true,
+        "last_membership_before": null,
+        "last_membership_since": null,
         "gender": "male",
         "age_min": 25,
         "age_max": 35,
@@ -227,7 +231,9 @@ Feature:
             "last_name": null,
             "registered_since": null,
             "registered_until": null,
-            "is_committee_member": null
+            "is_committee_member": null,
+            "last_membership_before": null,
+            "last_membership_since": null
         },
         "uuid": "@uuid@",
         "recipient_count": null,
@@ -274,6 +280,8 @@ Feature:
           "name": "Lille"
         },
         "is_committee_member": true,
+        "last_membership_before": null,
+        "last_membership_since": null,
         "gender": "male",
         "age_min": 25,
         "age_max": 35,
