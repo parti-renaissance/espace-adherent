@@ -64,8 +64,8 @@ class PayboxFormFactory
 
         return sprintf(
             '<?xml version="1.0"?><Billing><Address><FirstName>%s</FirstName><LastName>%s</LastName><Address1>%s</Address1><ZipCode>%s</ZipCode><City>%s</City><CountryCode>%s</CountryCode></Address></Billing>',
-            $donator->getFirstName(),
-            $donator->getLastName(),
+            mb_substr($donator->getFirstName(), 0, 22),
+            mb_substr($donator->getLastName(), 0, 22),
             $donation->getAddress(),
             $donation->getPostalCode(),
             $donation->getCityName(),
