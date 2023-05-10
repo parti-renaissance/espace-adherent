@@ -15,7 +15,7 @@ abstract class AbstractZonesInScopeZonesValidator extends ConstraintValidator
     ) {
     }
 
-    protected function validateZones(array $zones, Constraint $constraint): void
+    protected function validateZones(array $zones, Constraint $constraint, string $path = null): void
     {
         $scope = $this->scopeGeneratorResolver->generate();
         if (!$scope || $scope->isNational() || !($managedZones = $scope->getZones())) {
@@ -23,10 +23,11 @@ abstract class AbstractZonesInScopeZonesValidator extends ConstraintValidator
         }
 
         if (!$this->zoneRepository->isInZones($zones, $managedZones)) {
-            $this->context
-                ->buildViolation($constraint->message)
-                ->addViolation()
-            ;
+            $violationBuilder = $this->context->buildViolation($constraint->message);
+            if ($path) {
+                $violationBuilder->atPath($path);
+            }
+            $violationBuilder->addViolation();
         }
     }
 }

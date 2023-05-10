@@ -29,13 +29,13 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
 
         if (
             !\array_key_exists('city', $data)
-            && \array_key_exists('postal_code', $data)
-            && \array_key_exists('city_name', $data)
+            && !empty($data['postal_code'])
+            && !empty($data['city_name'])
         ) {
             $postalCode = $data['postal_code'];
             $cityName = $data['city_name'];
 
-            $city = $this->franceCities->getCityByPostalCodeAndName($postalCode ?? '', $cityName);
+            $city = $this->franceCities->getCityByPostalCodeAndName($postalCode, $cityName);
 
             if ($city) {
                 $data['city'] = sprintf('%s-%s', $postalCode, $city->getInseeCode());

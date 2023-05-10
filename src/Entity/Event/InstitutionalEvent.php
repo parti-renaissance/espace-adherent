@@ -2,10 +2,10 @@
 
 namespace App\Entity\Event;
 
+use App\Address\AddressInterface;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
-use App\Entity\PostAddress;
 use App\Entity\Report\ReportableInterface;
 use App\Event\EventTypeEnum;
 use App\Report\ReportType;
@@ -49,7 +49,7 @@ class InstitutionalEvent extends BaseEvent implements AuthoredInterface, Reporta
         string $name,
         EventCategoryInterface $category,
         string $description,
-        PostAddress $address,
+        AddressInterface $address,
         string $beginAt,
         string $finishAt,
         array $invitations = [],

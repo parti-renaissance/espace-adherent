@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Address\AddressInterface;
+use App\Entity\AddressHolderInterface;
 use App\Geo\ZoneMatcher;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeGeneratorResolver;
@@ -30,12 +30,16 @@ class AddressInScopeZonesValidator extends AbstractZonesInScopeZonesValidator
             throw new UnexpectedTypeException($constraint, AddressInScopeZones::class);
         }
 
-        if (!$value instanceof AddressInterface) {
-            throw new UnexpectedValueException($value, AddressInterface::class);
+        if (!$value instanceof AddressHolderInterface) {
+            throw new UnexpectedValueException($value, AddressHolderInterface::class);
         }
 
-        $zones = $this->zoneMatcher->match($value);
+        if (!$address = $value->getPostAddress()) {
+            return;
+        }
 
-        $this->validateZones($zones, $constraint);
+        $zones = $this->zoneMatcher->match($address);
+
+        $this->validateZones($zones, $constraint, 'postAddress');
     }
 }

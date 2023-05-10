@@ -2,11 +2,12 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\Coalition\Coalition;
 use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\EventCategory;
-use App\Entity\PostAddress;
+use App\Entity\NullablePostAddress;
 use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
@@ -103,7 +104,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory5,
             'Événement culturel 3',
             'Nous allons échanger encore autour de différents sujets culturels',
-            PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
+            NullablePostAddress::createAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
             (new Chronos('+1 days'))->format('Y-m-d').' 10:00:00',
             (new Chronos('+1 days'))->format('Y-m-d').' 18:00:00'
         );
@@ -115,7 +116,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory5,
             'Événement culturel 4',
             'Description d\'un événement culturel',
-            PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
+            NullablePostAddress::createAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
             (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
             (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00')
         );
@@ -127,7 +128,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory10,
             'Événement culturel 5',
             'HAPPINESS FOR EVERYBODY, FREE, AND NO ONE WILL GO AWAY UNSATISFIED!',
-            PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', null, 47.321569, 8.549968799999988),
+            NullablePostAddress::createAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', null, 47.321569, 8.549968799999988),
             (new Chronos('+2 days'))->format('Y-m-d').' 10:00:00',
             (new Chronos('+2 days'))->format('Y-m-d').' 18:00:00'
         );
@@ -176,7 +177,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory5,
             'Événement culturel non publié',
             'Cet événement n\'est pas publié',
-            PostAddress::createForeignAddress('SG', '018956', 'Singapour', '10 Bayfront Avenue', null, 1.2835627, 103.8606872),
+            NullablePostAddress::createAddress('SG', '018956', 'Singapour', '10 Bayfront Avenue', null, 1.2835627, 103.8606872),
             (new Chronos('now', new \DateTimeZone('Asia/Singapore')))->modify('-4 hours')->format('Y-m-d H:00:00'),
             (new Chronos('now', new \DateTimeZone('Asia/Singapore')))->modify('-2 hours')->format('Y-m-d H:00:00')
         );
@@ -237,7 +238,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory3,
             'Événement numérique non publié',
             'Événement non publié',
-            PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
+            NullablePostAddress::createAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
             (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
             (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00')
         );
@@ -268,7 +269,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
         EventCategory $category,
         string $name,
         string $description,
-        PostAddress $postAddress,
+        AddressInterface $postAddress,
         string $beginAt,
         string $finishAt
     ): CoalitionEvent {

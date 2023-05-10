@@ -3,13 +3,13 @@
 namespace App\Event;
 
 use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Address\PostAddressFactory;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\InstitutionalEvent;
-use App\Entity\PostAddress;
 use App\Geo\ZoneMatcher;
 use App\Image\ImageManager;
 use App\InstitutionalEvent\InstitutionalEventCommand;
@@ -254,8 +254,8 @@ class EventFactory
         }
     }
 
-    private function createPostAddress(Address $address): PostAddress
+    private function createPostAddress(Address $address): AddressInterface
     {
-        return $this->addressFactory->createFromAddress($address);
+        return $this->addressFactory->createFromAddress($address, true);
     }
 }

@@ -22,7 +22,7 @@ use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityCrudTrait;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\EntityPostAddressTrait;
+use App\Entity\EntityNullablePostAddressTrait;
 use App\Entity\EntityReferentTagTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
@@ -30,7 +30,7 @@ use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ExposedObjectInterface;
 use App\Entity\ImageTrait;
 use App\Entity\IndexableEntityInterface;
-use App\Entity\PostAddress;
+use App\Entity\NullablePostAddress;
 use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
 use App\Entity\Report\ReportableInterface;
@@ -40,7 +40,7 @@ use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Geocoder\GeoPointInterface;
 use App\Report\ReportType;
-use App\Validator\AddressInScopeZones as AssertAddressInScopeZones;
+use App\Validator\AddressInScopeZones;
 use App\Validator\AdherentInterests as AdherentInterestsConstraint;
 use App\Validator\DateRange;
 use App\Validator\EventCategory as AssertValidEventCategory;
@@ -201,12 +201,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @AssertValidEventCategory
+ * @AddressInScopeZones
  */
 abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;
-    use EntityPostAddressTrait;
+    use EntityNullablePostAddressTrait;
     use EntityReferentTagTrait;
     use EntityZoneTrait;
     use EntityTimestampableTrait;
@@ -446,20 +447,18 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     private $mode;
 
     /**
-     * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
-     *
-     * @var PostAddress
-     *
-     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
-     *
-     * @AssertAddressInScopeZones
-     */
-    protected $postAddress;
-
-    /**
      * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_write"})
      */
     protected $category;
+
+    /**
+     * @ORM\Embedded(class="App\Entity\NullablePostAddress", columnPrefix="address_")
+     *
+     * @var NullablePostAddress
+     *
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
+     */
+    protected $postAddress;
 
     public function getCategory(): ?EventCategoryInterface
     {
@@ -747,7 +746,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function update(
         string $name,
         string $description,
-        PostAddress $address,
+        AddressInterface $address,
         string $timeZone,
         \DateTimeInterface $beginAt,
         \DateTimeInterface $finishAt,
