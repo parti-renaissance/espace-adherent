@@ -175,6 +175,7 @@ Feature:
       "features": [
         "dashboard",
         "contacts",
+        "contacts_export",
         "events",
         "my_team",
         "mobile_app",
@@ -456,6 +457,7 @@ Feature:
         "features": [
             "dashboard",
             "contacts",
+            "contacts_export",
             "messages",
             "events",
             "mobile_app",
@@ -505,6 +507,7 @@ Feature:
             "features": [
                 "dashboard",
                 "contacts",
+                "contacts_export",
                 "messages",
                 "events",
                 "my_team",

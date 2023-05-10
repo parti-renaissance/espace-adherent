@@ -146,6 +146,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'features' => [
                     'dashboard',
                     'contacts',
+                    'contacts_export',
                     'messages',
                     'events',
                     'mobile_app',

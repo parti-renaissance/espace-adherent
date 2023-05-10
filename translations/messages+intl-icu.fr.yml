@@ -1351,6 +1351,7 @@ procuration_proxy.reliability_8: Très fiable
 #
 scope.feature.dashboard: Vue d'ensemble
 scope.feature.contacts: Contacts
+scope.feature.contacts_export: Export contacts
 scope.feature.messages: Messagerie
 scope.feature.events: Événements
 scope.feature.my_team: Mon équipe
