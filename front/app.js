@@ -332,12 +332,6 @@ class App {
         });
     }
 
-    createCKEditor(elementSelector, uploadUrl) {
-        import('services/form/CKEditor').catch((error) => { throw error; }).then((module) => {
-            module.default(elementSelector, uploadUrl, { removePlugins: ['MediaEmbed'] });
-        });
-    }
-
     runReferentUserList(committeeModalButtonClass) {
         import('pages/referent_user_list').catch((error) => { throw error; }).then((module) => {
             module.default(committeeModalButtonClass, this.get('api'));

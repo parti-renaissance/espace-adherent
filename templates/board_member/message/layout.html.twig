@@ -2,18 +2,6 @@
 
 {% block page_title 'Contacter les membres du Conseil' %}
 
-{% block javascripts %}
-    {% import 'javascript.js.twig' as js %}
-
-    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            {{ js.ckeditor('board_member_message_content') }}
-        });
-    </script>
-{% endblock %}
-
 {% block content__inner %}
     <section class="l__wrapper--600 b__nudge--top-40 b__nudge--bottom">
         <a href="{%- block return_path path('app_board_member_search') -%}" class="icon--with-text">
@@ -24,8 +12,6 @@
 
     <section class="l__wrapper--600">
         <h2>Envoyer un message</h2>
-
-        {# {% block recipients '' %} #}
 
         <p class="text--body">
             Vous recevrez les réponses directement dans votre boite e-mail.

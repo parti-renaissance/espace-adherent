@@ -6,18 +6,6 @@
     <script type="text/javascript" src={{ asset('js/jquery/jquery-2.2.4.min.js') }}></script>
 {% endblock %}
 
-{% block javascripts %}
-    {% import 'javascript.js.twig' as js %}
-
-    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            {{ js.ckeditor('adherent_message_content', 500, constant('App\\Entity\\UserDocument::TYPE_ADHERENT_MESSAGE'), 5000, true) }}
-        });
-    </script>
-{% endblock %}
-
 {% block message_content %}
     <a href="{{ path("app_message_#{message_type}_list", route_params|default({})) }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
          ⟵ Retour

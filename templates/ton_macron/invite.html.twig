@@ -1,17 +1,5 @@
 {% extends 'ton_macron/_layout.html.twig' %}
 
-{% block javascripts %}
-    {% if transition is constant('App\\TonMacron\\InvitationProcessor::TRANSITION_SEND') %}
-        {% import 'javascript.js.twig' as js %}
-
-        <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-        <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
-        <script type="text/javascript">
-            {{ js.ckeditor('ton_macron_invitation_messageContent', 500) }}
-        </script>
-    {% endif %}
-{% endblock %}
-
 {% block content %}
     <main class="tonmacron">
         {{ include('ton_macron/_'~transition~'.html.twig') }}

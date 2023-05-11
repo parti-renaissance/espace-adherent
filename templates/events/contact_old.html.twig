@@ -2,18 +2,6 @@
 
 {% block page_title 'Contacter des inscrits à mon événement' %}
 
-{% block javascripts %}
-    {% import 'javascript.js.twig' as js %}
-
-    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            {{ js.ckeditor('message') }}
-        });
-    </script>
-{% endblock %}
-
 {% block committee_content %}
     <main>
         <section class="l__wrapper--medium space--30-0">

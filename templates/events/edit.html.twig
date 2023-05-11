@@ -142,12 +142,9 @@
 
     {% import 'javascript.js.twig' as js %}
 
-    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(form.address) }}
-            {{ js.ckeditor('event_command_description', null, constant('App\\Entity\\UserDocument::TYPE_EVENT')) }}
             {{ js.init_event_cropperjs(form.image) }}
             App.startDateFieldsSynchronisation('{{ form.beginAt.vars.full_name|e('js') }}', '{{ form.finishAt.vars.full_name|e('js') }}')
         });

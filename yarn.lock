@@ -1156,10 +1156,6 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@ckeditor/ckeditor5-build-en-marche@https://github.com/EnMarche/ckeditor5-build-classic#stable":
-  version "15.0.0"
-  resolved "https://github.com/EnMarche/ckeditor5-build-classic#73a0a654bd8955d8d3b1868ebbfad634ffaa097e"
-
 "@discoveryjs/json-ext@^0.5.0":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.2.tgz#8f03a22a04de437254e8ce8cc84ba39689288752"

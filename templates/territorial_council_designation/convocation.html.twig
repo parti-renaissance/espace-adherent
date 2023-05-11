@@ -138,14 +138,6 @@
 
 {% block final_javascripts %}
     {{ parent() }}
-    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            {{ js.microCkeditor('edit_designation_description', null, 2000) }}
-            {{ js.microCkeditor('edit_designation_questions', null, 2000) }}
-        });
-    </script>
 
     {% if google_maps_api_key %}
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
