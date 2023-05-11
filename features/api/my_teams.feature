@@ -362,6 +362,7 @@ Feature:
                         "scope_features": [
                             "dashboard",
                             "contacts",
+                            "contacts_export",
                             "messages",
                             "events",
                             "mobile_app",

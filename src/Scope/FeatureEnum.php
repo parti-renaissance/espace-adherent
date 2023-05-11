@@ -8,6 +8,7 @@ class FeatureEnum extends Enum
 {
     public const DASHBOARD = 'dashboard';
     public const CONTACTS = 'contacts';
+    public const CONTACTS_EXPORT = 'contacts_export';
     public const MESSAGES = 'messages';
     public const EVENTS = 'events';
     public const MY_TEAM = 'my_team';
@@ -31,6 +32,7 @@ class FeatureEnum extends Enum
     public const ALL = [
         self::DASHBOARD,
         self::CONTACTS,
+        self::CONTACTS_EXPORT,
         self::MESSAGES,
         self::EVENTS,
         self::MY_TEAM,
