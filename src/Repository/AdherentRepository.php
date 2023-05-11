@@ -1577,7 +1577,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->select('PARTIAL adherent.{id, uuid, emailAddress, source, lastMembershipDonation}')
             ->addSelect('memberships')
             ->leftJoin('adherent.memberships', 'memberships')
-            ->where('adherent.source = :source')
+            ->where('adherent.source IS NULL OR adherent.source = :source')
             ->andWhere('adherent.status = :enabled')
             ->setParameters([
                 'enabled' => Adherent::ENABLED,
@@ -1586,7 +1586,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ])
         ;
 
-        $zoneQueryModifier = fn (QueryBuilder $queryBuilder, string $entityClassAlias) => $queryBuilder->andWhere($entityClassAlias.'.source = :source');
+        $zoneQueryModifier = fn (QueryBuilder $queryBuilder, string $entityClassAlias) => $queryBuilder->andWhere(sprintf('%1$s.source IS NULL OR %1$s.source = :source', $entityClassAlias));
 
         $this->withGeoZones(
             [$zone],
@@ -1606,7 +1606,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->select('exl_adh.id')
             ->innerJoin('exl_adh.memberships', 'exl_membership', Join::WITH, 'exl_membership.trigger = :manual_trigger')
             ->innerJoin('exl_membership.committee', 'committee', Join::WITH, 'committee.version = 2')
-            ->where('exl_adh.source = :source')
+            ->where('exl_adh.source IS NULL OR exl_adh.source = :source')
         ;
 
         $this->withGeoZones(
