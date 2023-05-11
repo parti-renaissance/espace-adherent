@@ -30,13 +30,10 @@ class LoadEmailTemplateData extends Fixture implements DependentFixtureInterface
 
         $emailTemplate2 = $this->createEmailTemplate(
             self::EMAIL_TEMPLATE_2_UUID,
-            'Campaign Newsletter 92 & 78',
+            'Campaign Newsletter 92',
             file_get_contents(__DIR__.'/../unlayer/content.md'),
             file_get_contents(__DIR__.'/../unlayer/json_content.json'),
         );
-        $emailTemplate2->setScopes([ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY]);
-        $emailTemplate2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
-        $emailTemplate2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_78'));
         $emailTemplate2->setCreatedByAdherent($this->getReference('president-ad-1'));
 
         $emailTemplate3 = $this->createEmailTemplate(
@@ -54,8 +51,6 @@ class LoadEmailTemplateData extends Fixture implements DependentFixtureInterface
             file_get_contents(__DIR__.'/../unlayer/content.md'),
             file_get_contents(__DIR__.'/../unlayer/json_content.json'),
         );
-        $emailTemplate4->setScopes([ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY]);
-        $emailTemplate4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $emailTemplate4->setCreatedByAdherent($this->getReference('adherent-5'));
 
         $emailTemplate5 = $this->createEmailTemplate(

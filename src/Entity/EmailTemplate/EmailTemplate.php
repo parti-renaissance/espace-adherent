@@ -44,23 +44,29 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "post": {
  *             "path": "/email_templates",
+ *             "normalization_context": {
+ *                 "groups": {"email_template_read_restricted"}
+ *             },
  *         },
  *     },
  *     itemOperations={
  *         "get": {
  *             "path": "/email_templates/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (is_granted('CAN_ACCESS_ADMIN_TEMPLATE', object) or (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages')))",
+ *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and is_granted('CAN_READ_EMAIL_TEMPLATE', object)",
  *         },
  *         "put": {
  *             "path": "/email_templates/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (not is_granted('CAN_ACCESS_ADMIN_TEMPLATE', object) and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages')))",
+ *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages'))",
+ *             "normalization_context": {
+ *                 "groups": {"email_template_read_restricted"}
+ *             },
  *         },
  *         "delete": {
  *             "path": "/email_templates/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (not is_granted('CAN_ACCESS_ADMIN_TEMPLATE', object) and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages')))",
+ *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages'))",
  *         },
  *     },
  * )

@@ -1,4 +1,4 @@
-@api
+@api @debug
 Feature:
   In order to manage email templates
   As client software developer
@@ -27,7 +27,7 @@ Feature:
                     "from_admin": true
                 },
                 {
-                    "label": "Campaign Newsletter 92 & 78",
+                    "label": "Campaign Newsletter 92",
                     "uuid": "825c3c30-f4bd-42b5-8adf-29926a02a4af",
                     "created_at": "@string@.isDateTime()",
                     "from_admin": false
@@ -44,7 +44,7 @@ Feature:
         And the JSON should be equal to:
         """
         {
-            "label": "Campaign Newsletter 92 & 78",
+            "label": "Campaign Newsletter 92",
             "content": "@string@",
             "json_content": "@string@",
             "uuid": "825c3c30-f4bd-42b5-8adf-29926a02a4af",
@@ -67,12 +67,7 @@ Feature:
         And the JSON should be equal to:
         """
         {
-            "label": "Campaign adhésion 2023",
-            "content": "<p>test</p>",
-            "json_content": "{\"test\": \"test\"}",
-            "uuid": "@uuid@",
-            "created_at": "@string@.isDateTime()",
-            "from_admin": false
+            "uuid": "@uuid@"
         }
         """
 
@@ -90,12 +85,7 @@ Feature:
         And the JSON should be equal to:
         """
         {
-            "label": "Campaign Newsletter",
-            "content": "<p>test</p>",
-            "json_content": "{\"test\": \"test\"}",
-            "uuid": "825c3c30-f4bd-42b5-8adf-29926a02a4af",
-            "created_at": "@string@.isDateTime()",
-            "from_admin": false
+            "uuid": "825c3c30-f4bd-42b5-8adf-29926a02a4af"
         }
         """
 
