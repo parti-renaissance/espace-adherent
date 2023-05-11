@@ -2,7 +2,6 @@
 
 namespace App\Controller\Renaissance\DepartmentSite;
 
-use App\Controller\CanaryControllerTrait;
 use App\Entity\DepartmentSite\DepartmentSite;
 use App\Repository\Geo\ZoneRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -13,13 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/federations', name: 'app_renaissance_department_site_')]
 class DepartmentSiteController extends AbstractController
 {
-    use CanaryControllerTrait;
-
     #[Route(name: 'list')]
     public function departmentSiteListAction(ZoneRepository $zoneRepository): Response
     {
-        $this->disableInProduction();
-
         return $this->render('renaissance/department_site/list.html.twig', [
             'department_sites' => $zoneRepository->findAllDepartmentSiteIndexByCode(),
         ]);
