@@ -22,7 +22,7 @@ class CanReadEmailTemplateVoter extends AbstractAdherentVoter
         $scope = $this->scopeGeneratorResolver->generate();
         $user = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser();
 
-        if (!$scope || !$subject instanceof EmailTemplate) {
+        if (!$scope) {
             return false;
         }
 
