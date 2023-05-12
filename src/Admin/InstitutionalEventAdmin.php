@@ -21,6 +21,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -163,11 +164,13 @@ class InstitutionalEventAdmin extends AbstractAdmin
                 ->add('postAddress.country', CountryType::class, [
                     'label' => 'Pays',
                 ])
-                ->add('postAddress.latitude', TextType::class, [
+                ->add('postAddress.latitude', NumberType::class, [
                     'label' => 'Latitude',
+                    'html5' => true,
                 ])
-                ->add('postAddress.longitude', TextType::class, [
+                ->add('postAddress.longitude', NumberType::class, [
                     'label' => 'Longitude',
+                    'html5' => true,
                 ])
                 ->add('timeZone', null, [
                     'label' => 'Fuseau horaire',
