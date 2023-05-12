@@ -160,6 +160,8 @@ class EventAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper): void
     {
+        $event = $this->getSubject();
+
         $formMapper
             ->with('Événement', ['class' => 'col-md-7'])
                 ->add('name', null, [
@@ -170,7 +172,7 @@ class EventAdmin extends AbstractAdmin
                 ])
         ;
 
-        if (CommitteeEvent::class === $this->getActiveSubClass()) {
+        if (CommitteeEvent::class === $event::class) {
             $formMapper->add('committee', null, [
                 'label' => 'Comité organisateur',
             ]);
@@ -250,7 +252,7 @@ class EventAdmin extends AbstractAdmin
                         ->leftJoin(DefaultEvent::class, 'defaultEvent', Join::WITH, 'defaultEvent.id = '.$alias.'.id')
                         ->leftJoin(CauseEvent::class, 'causeEvent', Join::WITH, 'causeEvent.id = '.$alias.'.id')
                         ->leftJoin(CoalitionEvent::class, 'coalitionEvent', Join::WITH, 'coalitionEvent.id = '.$alias.'.id')
-                        ->leftJoin(EventCategory::class, 'eventCategory', Join::WITH, 'eventCategory = committeeEvent.category OR eventCategory = defaultEvent.category OR eventCategory = causeEvent.category OR eventCategory = coalitionEvent.category OR eventCategory = municipalEvent.category')
+                        ->leftJoin(EventCategory::class, 'eventCategory', Join::WITH, 'eventCategory = committeeEvent.category OR eventCategory = defaultEvent.category OR eventCategory = causeEvent.category OR eventCategory = coalitionEvent.category')
                         ->andWhere('eventCategory IN (:category)')
                         ->setParameter('category', $value->getValue())
                     ;
