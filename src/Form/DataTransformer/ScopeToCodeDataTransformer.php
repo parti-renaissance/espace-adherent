@@ -7,7 +7,7 @@ use App\Repository\ScopeRepository;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Form\DataTransformerInterface;
 
-class EmailTemplateScopeTransformer implements DataTransformerInterface
+class ScopeToCodeDataTransformer implements DataTransformerInterface
 {
     public function __construct(private readonly ScopeRepository $scopeRepository)
     {

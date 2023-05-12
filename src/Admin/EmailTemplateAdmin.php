@@ -59,7 +59,7 @@ class EmailTemplateAdmin extends AbstractAdmin
                     }
 
                     $qb
-                        ->andWhere(sprintf('%1$s.scopes IS NOT NULL AND FIND_IN_SET(:scope, %1$s.scopes) > 0', $alias))
+                        ->andWhere(sprintf('FIND_IN_SET(:scope, %s.scopes) > 0', $alias))
                         ->setParameter('scope', $value->getValue()->getCode())
                     ;
 

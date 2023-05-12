@@ -531,7 +531,7 @@
             <argument>App\Entity\EmailTemplate\EmailTemplate</argument>
             <argument />
             <argument type="string">%env(EMAIL_TEMPLATE_UNLAYER_TEMPLATE_ID)%</argument>
-            <argument type="service" id="App\Form\DataTransformer\EmailTemplateScopeTransformer" />
+            <argument type="service" id="App\Form\DataTransformer\ScopeToCodeDataTransformer" />
         </service>
 
         <!--
