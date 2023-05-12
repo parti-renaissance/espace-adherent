@@ -1,0 +1,14 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set zones = object.zones %}
+
+    {% if zones is empty %}
+        Toute la France
+    {% else %}
+        {{ zones|first }}
+        {% if zones|length > 1 %}
+            (+ {{ zones|length - 1 }})
+        {% endif %}
+    {% endif %}
+{% endblock %}

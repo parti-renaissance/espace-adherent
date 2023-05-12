@@ -110,6 +110,8 @@ class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministr
      * @var string[]|null
      *
      * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Assert\NotBlank(groups={"Admin"})
      */
     private ?array $scopes = null;
 
@@ -117,6 +119,11 @@ class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministr
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->zones = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->label;
     }
 
     public function getLabel(): ?string
