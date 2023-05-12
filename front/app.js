@@ -326,12 +326,6 @@ class App {
         });
     }
 
-    runApplicationRequest(formToDisplay) {
-        import('pages/application_request').catch((error) => { throw error; }).then((module) => {
-            module.default(formToDisplay);
-        });
-    }
-
     runReferentUserList(committeeModalButtonClass) {
         import('pages/referent_user_list').catch((error) => { throw error; }).then((module) => {
             module.default(committeeModalButtonClass, this.get('api'));
