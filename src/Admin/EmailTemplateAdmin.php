@@ -3,8 +3,8 @@
 namespace App\Admin;
 
 use App\Entity\Geo\Zone;
+use App\Entity\Scope;
 use App\Form\Admin\UnlayerContentType;
-use App\Scope\ScopeEnum;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -16,7 +16,8 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -24,15 +25,19 @@ class EmailTemplateAdmin extends AbstractAdmin
 {
     private int $emailTemplateUnlayerTemplateId;
 
+    private DataTransformerInterface $dataTransformer;
+
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        string $emailTemplateUnlayerTemplateId
+        string $emailTemplateUnlayerTemplateId,
+        DataTransformerInterface $dataTransformer
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->emailTemplateUnlayerTemplateId = (int) $emailTemplateUnlayerTemplateId;
+        $this->dataTransformer = $dataTransformer;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
@@ -44,12 +49,9 @@ class EmailTemplateAdmin extends AbstractAdmin
             ])
             ->add('scopes', CallbackFilter::class, [
                 'show_filter' => true,
-                'field_type' => ChoiceType::class,
+                'field_type' => EntityType::class,
                 'field_options' => [
-                    'choices' => ScopeEnum::ALL,
-                    'choice_label' => function (string $label) {
-                        return 'scope.'.$label;
-                    },
+                    'class' => Scope::class,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {
@@ -58,7 +60,7 @@ class EmailTemplateAdmin extends AbstractAdmin
 
                     $qb
                         ->andWhere(sprintf('%1$s.scopes IS NOT NULL AND FIND_IN_SET(:scope, %1$s.scopes) > 0', $alias))
-                        ->setParameter('scope', $value->getValue())
+                        ->setParameter('scope', $value->getValue()->getCode())
                     ;
 
                     return true;
@@ -123,12 +125,9 @@ class EmailTemplateAdmin extends AbstractAdmin
                 ->add('label', TextType::class, [
                     'label' => 'Label',
                 ])
-                ->add('scopes', ChoiceType::class, [
+                ->add('scopes', EntityType::class, [
                     'label' => 'Scopes',
-                    'choices' => ScopeEnum::ALL,
-                    'choice_label' => function (string $choice) {
-                        return 'scope.'.$choice;
-                    },
+                    'class' => Scope::class,
                     'multiple' => true,
                 ])
                 ->add('zones', ModelAutocompleteType::class, [
@@ -149,6 +148,7 @@ class EmailTemplateAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
+        $formMapper->get('scopes')->addModelTransformer($this->dataTransformer);
     }
 
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
