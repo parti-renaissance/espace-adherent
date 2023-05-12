@@ -92,7 +92,7 @@ const DepartmentMap = () => {
         path.addEventListener('mouseenter', (e) => {
             e.preventDefault();
             const id = e.target.id.replace('dpt-', '');
-            currentSection(element, id, dpts[id].site_slug);
+            currentSection(element, id, dpts[id]?.site_slug);
         });
 
         path.addEventListener('click', (e) => {
