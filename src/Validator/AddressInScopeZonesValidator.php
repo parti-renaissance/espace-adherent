@@ -34,7 +34,7 @@ class AddressInScopeZonesValidator extends AbstractZonesInScopeZonesValidator
             throw new UnexpectedValueException($value, AddressHolderInterface::class);
         }
 
-        if (!$address = $value->getPostAddress()) {
+        if (!($address = $value->getPostAddress()) || empty($address->getGeocodableAddress())) {
             return;
         }
 
