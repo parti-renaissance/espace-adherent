@@ -516,17 +516,6 @@ Feature:
             "type": "date_interval"
         },
         {
-            "code": "onlyJeMengageUsers",
-            "label": "Compte de la majorité présidentielle",
-            "options": {
-                "choices": [
-                    "Non",
-                    "Oui"
-                ]
-            },
-            "type": "select"
-        },
-        {
             "code": "renaissance_membership",
             "label": "Renaissance",
             "options": {
