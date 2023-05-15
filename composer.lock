@@ -9028,16 +9028,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.20.3",
+            "version": "1.20.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "6c04009f6cae6eda2f040745b6b846080ef069c2"
+                "reference": "7d568c87a9df9c5f7e8b5f075fc469aa8cb0a4cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/6c04009f6cae6eda2f040745b6b846080ef069c2",
-                "reference": "6c04009f6cae6eda2f040745b6b846080ef069c2",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/7d568c87a9df9c5f7e8b5f075fc469aa8cb0a4cd",
+                "reference": "7d568c87a9df9c5f7e8b5f075fc469aa8cb0a4cd",
                 "shasum": ""
             },
             "require": {
@@ -9067,9 +9067,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.20.3"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.20.4"
             },
-            "time": "2023-04-25T09:01:03+00:00"
+            "time": "2023-05-02T09:19:37+00:00"
         },
         {
             "name": "predis/predis",
@@ -11376,16 +11376,16 @@
         },
         {
             "name": "sonata-project/block-bundle",
-            "version": "4.20.0",
+            "version": "4.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "d5d53a8228591525bada8c108957027df75f971e"
+                "reference": "62f0b80987a20e9e386aba8b744b2807a5ddfad3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/d5d53a8228591525bada8c108957027df75f971e",
-                "reference": "d5d53a8228591525bada8c108957027df75f971e",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/62f0b80987a20e9e386aba8b744b2807a5ddfad3",
+                "reference": "62f0b80987a20e9e386aba8b744b2807a5ddfad3",
                 "shasum": ""
             },
             "require": {
@@ -11396,7 +11396,7 @@
                 "psr/container": "^1.0 || ^2.0",
                 "psr/log": "^1.1 || ^2.0 || ^3.0",
                 "sonata-project/cache": "^2.0",
-                "sonata-project/form-extensions": "^1.4",
+                "sonata-project/form-extensions": "^1.4 || ^2.0",
                 "symfony/asset": "^4.4 || ^5.4 || ^6.2",
                 "symfony/config": "^4.4 || ^5.4 || ^6.2",
                 "symfony/console": "^4.4 || ^5.4 || ^6.2",
@@ -11428,9 +11428,9 @@
                 "phpstan/phpstan-strict-rules": "^1.0",
                 "phpstan/phpstan-symfony": "^1.0",
                 "phpunit/phpunit": "^9.5.13",
-                "psalm/plugin-phpunit": "^0.16",
-                "psalm/plugin-symfony": "^4.0",
-                "rector/rector": "^0.15",
+                "psalm/plugin-phpunit": "^0.18",
+                "psalm/plugin-symfony": "^4.0 || ^5.0",
+                "rector/rector": "^0.16",
                 "sonata-project/doctrine-extensions": "^1.10.1",
                 "symfony/browser-kit": "^4.4 || ^5.4 || ^6.2",
                 "symfony/debug": "^4.4 || ^5.4 || ^6.2",
@@ -11438,7 +11438,7 @@
                 "symfony/routing": "^4.4.12 || ^5.4 || ^6.2",
                 "symfony/stopwatch": "^4.4 || ^5.4 || ^6.2",
                 "symfony/yaml": "^4.4 || ^5.4 || ^6.2",
-                "vimeo/psalm": "^4.1"
+                "vimeo/psalm": "^4.1 || ^5.8.0"
             },
             "suggest": {
                 "knplabs/knp-menu-bundle": "Required to use the menu block"
@@ -11477,7 +11477,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/SonataBlockBundle/issues",
-                "source": "https://github.com/sonata-project/SonataBlockBundle/tree/4.20.0"
+                "source": "https://github.com/sonata-project/SonataBlockBundle/tree/4.21.0"
             },
             "funding": [
                 {
@@ -11497,7 +11497,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-03-10T17:05:08+00:00"
+            "time": "2023-05-13T14:38:22+00:00"
         },
         {
             "name": "sonata-project/cache",
@@ -11701,16 +11701,16 @@
         },
         {
             "name": "sonata-project/doctrine-orm-admin-bundle",
-            "version": "4.12.0",
+            "version": "4.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle.git",
-                "reference": "72a8cb42d3ee19a190fac8901335a8e465be6e56"
+                "reference": "6f45c37d06c168827f1965cc00c3e8a0191f1fb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/72a8cb42d3ee19a190fac8901335a8e465be6e56",
-                "reference": "72a8cb42d3ee19a190fac8901335a8e465be6e56",
+                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/6f45c37d06c168827f1965cc00c3e8a0191f1fb5",
+                "reference": "6f45c37d06c168827f1965cc00c3e8a0191f1fb5",
                 "shasum": ""
             },
             "require": {
@@ -11721,7 +11721,7 @@
                 "php": "^8.0",
                 "sonata-project/admin-bundle": "^4.18",
                 "sonata-project/exporter": "^2.0 || ^3.0",
-                "sonata-project/form-extensions": "^1.19",
+                "sonata-project/form-extensions": "^1.19 || ^2.0",
                 "symfony/config": "^5.4 || ^6.2",
                 "symfony/console": "^5.4 || ^6.2",
                 "symfony/dependency-injection": "^5.4 || ^6.2",
@@ -11755,7 +11755,7 @@
                 "phpunit/phpunit": "^9.5",
                 "psalm/plugin-phpunit": "^0.18",
                 "psalm/plugin-symfony": "^5.0",
-                "rector/rector": "^0.15",
+                "rector/rector": "^0.16",
                 "sonata-project/block-bundle": "^4.2",
                 "sonata-project/entity-audit-bundle": "^1.1",
                 "symfony/browser-kit": "^5.4 || ^6.2",
@@ -11763,6 +11763,7 @@
                 "symfony/panther": "^2.0.1",
                 "symfony/phpunit-bridge": "^6.2",
                 "symfony/templating": "^5.4 || ^6.2",
+                "symfony/uid": "^5.4 || ^6.2",
                 "symfony/yaml": "^5.4 || ^6.2",
                 "vimeo/psalm": "^5.7",
                 "weirdan/doctrine-psalm-plugin": "^2.0"
@@ -11809,7 +11810,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle/issues",
-                "source": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle/tree/4.12.0"
+                "source": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle/tree/4.13.0"
             },
             "funding": [
                 {
@@ -11829,7 +11830,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-04-25T05:45:48+00:00"
+            "time": "2023-05-13T15:33:05+00:00"
         },
         {
             "name": "sonata-project/exporter",
@@ -11942,16 +11943,16 @@
         },
         {
             "name": "sonata-project/form-extensions",
-            "version": "1.19.0",
+            "version": "1.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/form-extensions.git",
-                "reference": "d71ee63126b883636dc1c3c383f9b81e8a091036"
+                "reference": "946e6c91fda1e7a1e50a6c247e9b1e100e24adb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/form-extensions/zipball/d71ee63126b883636dc1c3c383f9b81e8a091036",
-                "reference": "d71ee63126b883636dc1c3c383f9b81e8a091036",
+                "url": "https://api.github.com/repos/sonata-project/form-extensions/zipball/946e6c91fda1e7a1e50a6c247e9b1e100e24adb7",
+                "reference": "946e6c91fda1e7a1e50a6c247e9b1e100e24adb7",
                 "shasum": ""
             },
             "require": {
@@ -12035,7 +12036,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/form-extensions/issues",
-                "source": "https://github.com/sonata-project/form-extensions/tree/1.19.0"
+                "source": "https://github.com/sonata-project/form-extensions/tree/1.19.1"
             },
             "funding": [
                 {
@@ -12055,7 +12056,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-04-10T15:01:18+00:00"
+            "time": "2023-04-30T08:20:55+00:00"
         },
         {
             "name": "sonata-project/twig-extensions",
