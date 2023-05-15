@@ -1,21 +1,22 @@
+# syntax=docker/dockerfile:1.4
+# Adapted from https://github.com/dunglas/symfony-docker
+
 ARG CADDY_VERSION=2
 ARG PHP_VERSION=8.1
 ARG NODE_VERSION=16
-ARG APCU_VERSION=5.1.21
 #ARG BUILD_DEV
 
 FROM node:${NODE_VERSION}-alpine AS node
 RUN apk add --no-cache git
 WORKDIR /srv/app
 
-FROM caddy:${CADDY_VERSION} as caddy
+FROM caddy:${CADDY_VERSION} AS caddy
 
 FROM mlocati/php-extension-installer:2 AS php_extension_installer
 
 FROM php:${PHP_VERSION}-fpm-alpine AS php_caddy
 
 #ARG BUILD_DEV
-#ARG APCU_VERSION
 
 WORKDIR /srv/app
 
@@ -34,21 +35,17 @@ RUN apk add --no-cache \
 
 RUN set -eux; \
     install-php-extensions \
-		apcu \
-		intl \
-		opcache \
-		mbstring \
-		exif \
-		gd \
-		pdo \
-		pdo_mysql \
-		amqp \
-		zip \
-    ;
-
-RUN set -eux; \
-    install-php-extensions \
-		sockets \
+        apcu \
+        intl \
+        opcache \
+        mbstring \
+        exif \
+        gd \
+        pdo \
+        pdo_mysql \
+        amqp \
+        zip \
+        sockets \
     ;
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
@@ -66,25 +63,8 @@ HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
 COPY --link docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:lts /usr/bin/composer /usr/bin/composer
 
-#ENTRYPOINT ["docker-entrypoint"]
-#CMD ["php-fpm"]
-
-#COPY docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
-#RUN chmod +x /usr/local/bin/docker-healthcheck
-#
-#HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
-#
-#RUN ln -s $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
-#
-#COPY docker/php/conf.d/commun.ini $PHP_INI_DIR/conf.d/commun.ini
-#COPY docker/php/conf.d/symfony.prod.ini $PHP_INI_DIR/conf.d/symfony.ini
-#COPY docker/php/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
-#COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-#
-#RUN chmod +x /usr/local/bin/docker-entrypoint
-#
 #RUN test -z "$BUILD_DEV" || (echo "" > $PHP_INI_DIR/conf.d/symfony.ini) && :
 #
 #VOLUME /var/run/php
@@ -116,6 +96,5 @@ COPY --from=caddy /usr/bin/caddy /usr/bin/caddy
 COPY docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
 EXPOSE 80
-EXPOSE 443
 
 CMD ["multirun", "docker-entrypoint php-fpm -F -R", "caddy run --config /etc/caddy/Caddyfile --adapter caddyfile"]

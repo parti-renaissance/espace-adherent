@@ -1,9 +1,6 @@
 #!/bin/sh
 set -e
 
-#echo "Start up PHP-FPM..."
-#exec php-fpm -F -R &
-
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
   set -- php-fpm "$@"

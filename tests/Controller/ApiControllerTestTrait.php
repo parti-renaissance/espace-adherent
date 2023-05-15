@@ -2,7 +2,8 @@
 
 namespace Tests\App\Controller;
 
-use App\Entity\OAuth\AccessToken;
+use App\Entity\OAuth\AccessToken as EntityAccessToken;
+use App\OAuth\Model\AccessToken;
 use App\OAuth\Model\Client;
 use App\OAuth\Model\Scope;
 use League\OAuth2\Server\CryptKey;
@@ -48,17 +49,17 @@ trait ApiControllerTestTrait
 
     protected function getJwtAccessTokenByIdentifier(string $identifier, CryptKey $privateKey): string
     {
-        /** @var AccessToken $accessToken */
+        /** @var EntityAccessToken $accessToken */
         $accessToken = $this
             ->get('doctrine')
             ->getManager()
-            ->getRepository(AccessToken::class)
+            ->getRepository(EntityAccessToken::class)
             ->findAccessTokenByIdentifier($identifier)
         ;
 
         $client = new Client($accessToken->getClientIdentifier(), []);
 
-        $token = new \App\OAuth\Model\AccessToken();
+        $token = new AccessToken();
         $token->setClient($client);
         $token->setIdentifier($identifier);
         $token->setExpiryDateTime($accessToken->getExpiryDateTime());

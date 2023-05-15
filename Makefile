@@ -12,7 +12,7 @@ BEHAT=$(EXEC) vendor/bin/behat
 BEHAT_ARGS?=-vvv
 PHPUNIT=$(EXEC) vendor/bin/phpunit
 PHPUNIT_ARGS?=-v
-DOCKER_FILES=$(shell find ./docker/dev/ -type f -name '*')
+DOCKER_FILES=$(shell find ./docker/ -type f -name '*')
 CONTAINERS?=
 
 .DEFAULT_GOAL := help
@@ -196,7 +196,7 @@ phpstan: vendor
 phplint: phpcsfix phpstan
 
 security-check: vendor                                                                                 ## Check for vulnerable dependencies
-	$(EXEC) local-php-security-checker --path=/app
+	$(EXEC) local-php-security-checker --path=/srv/app
 
 
 ##
@@ -219,7 +219,7 @@ rm-docker-dev.lock:
 
 perm:
 	$(EXEC) chmod -R 777 app/data/images app/data/files
-	$(EXEC) chmod 660 var/public.key var/private.key
+	$(EXEC) chmod 664 var/public.key var/private.key
 
 # Rules from files
 

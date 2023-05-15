@@ -61,7 +61,7 @@ class DonationControllerTest extends AbstractEnMarcheWebCaseTest
 
     public function testPayboxPreprodIsHealthy()
     {
-        $client = HttpClient::createForBaseUri(self::PAYBOX_PREPROD_URL, ['timeout' => 5]);
+        $client = HttpClient::createForBaseUri(self::PAYBOX_PREPROD_URL, ['timeout' => 5, 'http_version' => 1.1]);
 
         if (Response::HTTP_OK === $client->request(Request::METHOD_HEAD, '')->getStatusCode()) {
             $this->assertSame('healthy', 'healthy');
@@ -485,7 +485,7 @@ class DonationControllerTest extends AbstractEnMarcheWebCaseTest
         $this->getRepository(Transaction::class)->createQueryBuilder('t')->delete()->getQuery()->execute();
         $this->getDonationRepository()->createQueryBuilder('d')->delete()->getQuery()->execute();
 
-        $this->payboxClient = new HttpBrowser();
+        $this->payboxClient = new HttpBrowser(HttpClient::create(['http_version' => 1.1]));
         $this->donationRepository = $this->getDonationRepository();
         $this->donatorRepository = $this->getDonatorRepository();
         $this->donatorIdentifierRepository = $this->getDonatorIdentifierRepository();

@@ -1,6 +1,0 @@
-old_sound_rabbit_mq:
-    connections:
-        default:
-            connection_timeout: 120
-            read_write_timeout: 200
-            heartbeat: 15

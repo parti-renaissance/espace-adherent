@@ -6,6 +6,7 @@ on:
     types: [ published ]
 
 env:
+  DOCKER_BUILDKIT: 1
   DOCKER_COMPOSE_ARGS: -f docker-compose.yml -f docker-compose.ci.yml
   EXEC_ARGS: -T
   # Update this to force cache reset
@@ -28,7 +29,7 @@ concurrency:
 jobs:
   build:
     name: Build dev
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -43,19 +44,19 @@ jobs:
 
       - uses: ./.github/actions/docker-pull
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('docker/*') }}
 
       - uses: ./.github/actions/build
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
 
       - uses: ./.github/actions/docker-push
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
 
   build-static:
     name: Build assets
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -83,7 +84,7 @@ jobs:
 
   lint:
     name: Lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [build]
 
     steps:
@@ -147,7 +148,7 @@ jobs:
 
   phpunit:
     name: PHPUnit
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ build ]
 
     steps:
@@ -163,11 +164,11 @@ jobs:
 
       - uses: ./.github/actions/docker-pull
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
 
       - uses: ./.github/actions/build
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
           extra-containers: db rabbitmq
           keys: true
           cache-warmup: true
@@ -182,7 +183,7 @@ jobs:
 
   behat:
     name: Behat
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ build ]
 
     steps:
@@ -198,11 +199,11 @@ jobs:
 
       - uses: ./.github/actions/docker-pull
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
 
       - uses: ./.github/actions/build
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
           extra-containers: db redis rabbitmq
           keys: true
           cache-warmup: true
@@ -217,7 +218,7 @@ jobs:
 
   behat-selenium:
     name: Behat/Selenium
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ build, build-static ]
     strategy:
       fail-fast: false
@@ -255,11 +256,11 @@ jobs:
 
       - uses: ./.github/actions/docker-pull
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
 
       - uses: ./.github/actions/build
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
           extra-containers: db redis rabbitmq selenium
           keys: true
 
@@ -280,7 +281,7 @@ jobs:
 
   docker-build-push-gcr:
     name: Build prod & push on registry
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ lint, phpunit, behat, behat-selenium ]
     if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
 
@@ -333,7 +334,7 @@ jobs:
 
   deploy-staging:
     name: Deploy Staging
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ docker-build-push-gcr ]
     environment: staging
     if: github.event.ref == 'refs/heads/master'

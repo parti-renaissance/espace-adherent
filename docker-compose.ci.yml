@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
     app:
+        image: ${REGISTRY}:${TAG}
         environment:
             - APP_ENV=test
         build:
@@ -12,11 +13,8 @@ services:
     db:
         tmpfs: /var/lib/mysql
 
-    redis:
-      image: redis:3.2-alpine
-
     rabbitmq:
-      image: rabbitmq:3.9.8-alpine
+        image: rabbitmq:3-alpine
 
     selenium:
         ports:

@@ -91,7 +91,7 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
         $this
             ->buildViolation('common.date_range.invalid_date')
             ->atPath('property.path.endDate')
-            ->setParameter('{{ limit }}', '18 mai 2018 à 13:00') // in UTC
+            ->setParameter('{{ limit }}', '18 mai 2018, 15:00')
             ->assertRaised()
         ;
     }
@@ -114,8 +114,8 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
 
         $violation
             ->atPath('property.path.endDate')
-            ->setParameter('{{ dateMin }}', '18 mai 2018 à 13:00')
-            ->setParameter('{{ dateMax }}', '20 mai 2018 à 13:00')
+            ->setParameter('{{ dateMin }}', '18 mai 2018, 15:00')
+            ->setParameter('{{ dateMax }}', '20 mai 2018, 15:00')
             ->assertRaised()
         ;
 
@@ -125,8 +125,8 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
 
         $violation->buildNextViolation('common.date_range.invalid_interval')
             ->atPath('property.path.endDate')
-            ->setParameter('{{ dateMin }}', '18 mai 2018 à 13:00')
-            ->setParameter('{{ dateMax }}', '20 mai 2018 à 13:00')
+            ->setParameter('{{ dateMin }}', '18 mai 2018, 15:00')
+            ->setParameter('{{ dateMax }}', '20 mai 2018, 15:00')
             ->assertRaised()
         ;
     }
