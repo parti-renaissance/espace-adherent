@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+    ## en-marche.fr
+    ###############
+    app:
+        networks:
+            default:
+                aliases:
+                    - test.enmarche.code
+                    - enmarche.code
+        build: docker/dev
+        depends_on:
+            - db
+            - redis
+            - rabbitmq
+
+    db:
+        image: mysql:8.0
+        volumes:
+            - ./docker/dev/my.cnf:/etc/mysql/conf.d/my.cnf
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+
+    redis:
+        image: redis:3.2
+
+    ## testing
+    ####################
+    selenium:
+        image: selenium/standalone-firefox-debug:2.53.1
+        shm_size: 2g
+
+    ## common
+    ####################
+    rabbitmq:
+        image: rabbitmq:3-management

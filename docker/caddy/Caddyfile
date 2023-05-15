@@ -1,0 +1,17 @@
+{
+    # Debug
+    {$CADDY_DEBUG}
+}
+
+{$SERVER_NAME}
+
+{$CADDY_EXTRA_CONFIG}
+
+log
+
+route {
+    root * /srv/app/public
+    php_fastcgi unix//var/run/php/php-fpm.sock
+    encode zstd gzip
+    file_server
+}

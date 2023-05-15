@@ -1,79 +1,121 @@
-FROM ubuntu:20.04
+ARG CADDY_VERSION=2
+ARG PHP_VERSION=8.1
+ARG NODE_VERSION=16
+ARG APCU_VERSION=5.1.21
+#ARG BUILD_DEV
 
-ENV LANG="en_US.UTF-8" \
-    LC_ALL="en_US.UTF-8" \
-    LANGUAGE="en_US.UTF-8" \
-    TERM="xterm" \
-    PHP_VERSION=8.1 \
-    DEBIAN_FRONTEND="noninteractive" \
-    COMPOSER_ALLOW_SUPERUSER=1
+FROM node:${NODE_VERSION}-alpine AS node
+RUN apk add --no-cache git
+WORKDIR /srv/app
+
+FROM caddy:${CADDY_VERSION} as caddy
+
+FROM mlocati/php-extension-installer:2 AS php_extension_installer
+
+FROM php:${PHP_VERSION}-fpm-alpine AS php_caddy
+
+#ARG BUILD_DEV
+#ARG APCU_VERSION
+
+WORKDIR /srv/app
+
+# php extensions installer: https://github.com/mlocati/docker-php-extension-installer
+COPY --from=php_extension_installer --link /usr/bin/install-php-extensions /usr/local/bin/
+
+# persistent / runtime deps
+RUN apk add --no-cache \
+        acl \
+        fcgi \
+        file \
+        gettext \
+        git \
+        multirun \
+    ;
+
+RUN set -eux; \
+    install-php-extensions \
+		apcu \
+		intl \
+		opcache \
+		mbstring \
+		exif \
+		gd \
+		pdo \
+		pdo_mysql \
+		amqp \
+		zip \
+    ;
+
+RUN set -eux; \
+    install-php-extensions \
+		sockets \
+    ;
+
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+COPY --link docker/php/conf.d/app.ini $PHP_INI_DIR/conf.d/
+COPY --link docker/php/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/
+
+COPY --link docker/php/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+RUN mkdir -p /var/run/php
+
+COPY --link docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
+RUN chmod +x /usr/local/bin/docker-healthcheck
+
+HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
+
+COPY --link docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+#ENTRYPOINT ["docker-entrypoint"]
+#CMD ["php-fpm"]
+
+#COPY docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
+#RUN chmod +x /usr/local/bin/docker-healthcheck
+#
+#HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
+#
+#RUN ln -s $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
+#
+#COPY docker/php/conf.d/commun.ini $PHP_INI_DIR/conf.d/commun.ini
+#COPY docker/php/conf.d/symfony.prod.ini $PHP_INI_DIR/conf.d/symfony.ini
+#COPY docker/php/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+#COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+#
+#RUN chmod +x /usr/local/bin/docker-entrypoint
+#
+#RUN test -z "$BUILD_DEV" || (echo "" > $PHP_INI_DIR/conf.d/symfony.ini) && :
+#
+#VOLUME /var/run/php
+#
+#COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+#
+## https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
+#ENV COMPOSER_ALLOW_SUPERUSER=1
+#
+#ENV PATH="${PATH}:/root/.composer/vendor/bin"
+#
+#WORKDIR /srv/app
+#
+COPY . .
+#
+#RUN test -z "$BUILD_DEV" && ( \
+#        set -eux; \
+#        mkdir -p var/cache var/log; \
+#        composer install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction; \
+#        composer dump-autoload --classmap-authoritative --no-dev; \
+#        composer symfony:dump-env prod; \
+#        composer run-script --no-dev post-install-cmd; \
+#        chmod +x bin/console; sync \
+#    ) || :
+#
+#VOLUME /srv/app/var
+#
+COPY --from=caddy /usr/bin/caddy /usr/bin/caddy
+COPY docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
 EXPOSE 80
-WORKDIR /app
+EXPOSE 443
 
-RUN apt-get update -q && \
-    apt-get install -qy software-properties-common language-pack-en-base && \
-    export LC_ALL=en_US.UTF-8 && \
-    export LANG=en_US.UTF-8 && \
-    add-apt-repository -y ppa:ondrej/php && \
-    apt-get update -q && \
-    apt-get install --no-install-recommends -qy \
-        ca-certificates \
-        cron \
-        curl \
-        nano \
-        nginx \
-        git \
-        mysql-client \
-        php${PHP_VERSION} \
-        php${PHP_VERSION}-bcmath \
-        php${PHP_VERSION}-common \
-        php${PHP_VERSION}-curl \
-        php${PHP_VERSION}-dom \
-        php${PHP_VERSION}-fpm \
-        php${PHP_VERSION}-gd \
-        php${PHP_VERSION}-iconv \
-        php${PHP_VERSION}-intl \
-        php${PHP_VERSION}-mbstring \
-        php${PHP_VERSION}-mysql \
-        php${PHP_VERSION}-opcache \
-        php${PHP_VERSION}-pdo \
-        php${PHP_VERSION}-phar \
-        php${PHP_VERSION}-xml \
-        php${PHP_VERSION}-zip \
-        php${PHP_VERSION}-amqp \
-        php${PHP_VERSION}-apcu \
-        php${PHP_VERSION}-uuid \
-        php${PHP_VERSION}-imagick \
-        ghostscript \
-        supervisor \
-        tzdata \
-        wget && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    sed -i -e "s/<policy domain=\"coder\" rights=\"none\" pattern=\"PDF\" \/>/<policy domain=\"coder\" rights=\"read|write\" pattern=\"PDF\" \/>/g" /etc/ImageMagick-6/policy.xml && \
-    cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone
-
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-COPY . /app
-
-COPY docker/prod/entrypoint.sh /usr/local/bin/entrypoint.sh
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-RUN mkdir /run/php && \
-    mkdir var && \
-    APP_ENV=prod composer install --optimize-autoloader --no-interaction --no-ansi --no-dev && \
-    APP_ENV=prod bin/console cache:clear --no-warmup && \
-    APP_ENV=prod bin/console cache:warmup && \
-    chown -R www-data:www-data var && \
-    cp docker/prod/php.ini /etc/php/${PHP_VERSION}/cli/conf.d/50-setting.ini && \
-    mv docker/prod/php.ini /etc/php/${PHP_VERSION}/fpm/conf.d/50-setting.ini && \
-    rm -rf /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf && \
-    mv docker/prod/pool.conf /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf && \
-    rm -rf /etc/nginx/nginx.conf && \
-    mv docker/prod/nginx.conf /etc/nginx/nginx.conf && \
-    mv docker/prod/supervisord.conf /etc/supervisor/conf.d/ && \
-    rm -rf docker composer.lock
-
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["multirun", "docker-entrypoint php-fpm -F -R", "caddy run --config /etc/caddy/Caddyfile --adapter caddyfile"]

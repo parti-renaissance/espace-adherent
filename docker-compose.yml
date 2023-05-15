@@ -1,39 +1,67 @@
 version: "3.9"
 
 services:
-    ## en-marche.fr
-    ###############
     app:
-        networks:
-            default:
-                aliases:
-                    - test.enmarche.code
-                    - enmarche.code
-        build: docker/dev
+        build:
+            context: .
+            target: php_caddy
+            args:
+                BUILD_DEV: true
+        restart: unless-stopped
+        volumes:
+            - ./:/srv/app
+            - /srv/app/var
+            - ./docker/php/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
+            # If you develop on Mac or Windows you can remove the vendor/ directory
+            #  from the bind-mount for better performance by enabling the next line:
+            #- /srv/app/vendor
+            - caddy_data:/data
+            - caddy_config:/config
         depends_on:
             - db
-            - redis
             - rabbitmq
-        volumes:
-            - .:/app
+            - redis
+        healthcheck:
+            interval: 10s
+            timeout: 3s
+            retries: 3
+            start_period: 30s
+        environment:
+            APP_ENV: dev
+            SERVER_NAME: :80
+        extra_hosts:
+            # Ensure that host.docker.internal is correctly defined on Linux
+            - host.docker.internal:host-gateway
 
     db:
         image: mysql:8.0
-        volumes:
-            - ./docker/dev/my.cnf:/etc/mysql/conf.d/my.cnf
         environment:
             MYSQL_ROOT_PASSWORD: root
 
     redis:
-        image: redis:3.2
+        image: redis:6-alpine
 
     ## testing
     ####################
-    selenium:
-        image: selenium/standalone-chrome:90.0
-        shm_size: 2g
+#    selenium:
+#        image: selenium/standalone-chrome:90.0
+#        shm_size: 2g
 
     ## common
     ####################
     rabbitmq:
         image: rabbitmq:3-management
+
+    node:
+        build:
+            target: node
+#        init: true
+#        working_dir: /srv
+#        command: apk add --no-cache git
+        volumes:
+            - ./:/srv/app
+
+
+volumes:
+    caddy_data:
+    caddy_config:

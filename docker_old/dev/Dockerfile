@@ -88,4 +88,6 @@ COPY symfony.conf /etc/nginx/symfony.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY entrypoint.sh /usr/local/bin/
 
+VOLUME /app/var
+
 ENTRYPOINT ["entrypoint.sh"]
