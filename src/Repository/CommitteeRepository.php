@@ -880,7 +880,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->andWhere('committee.approvedAt <= :d30')
             ->andWhere('(designation IS NULL OR designation.voteEndDate < :now)')
             ->groupBy('committee.id')
-            ->orderBy('committee.membersCount', 'DESC')
+            ->orderBy('committee.membersEmCount', 'DESC')
             ->setParameters([
                 'female' => Genders::FEMALE,
                 'male' => Genders::MALE,

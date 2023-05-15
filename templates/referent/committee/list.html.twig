@@ -92,7 +92,7 @@
                         </td>
                         <td>{{ committee.address }}, {{ committee.postalCode }} {{ committee.cityName }}, {{ committee.country }}</td>
                         <td>{{ committee.zones|map(p => p.nameCode)|join('<br>')|raw }}</td>
-                        <td class="text--center">{{ committee.membersCount }}</td>
+                        <td class="text--center">{{ committee.membersEmCount }}</td>
                         <td class="text--center">{{ committee_row.total_voters }}</td>
                         <td class="text--center">
                             {% if committee_row.total_candidacy_female is not null %}

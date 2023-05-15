@@ -24,11 +24,11 @@ class ReferentDesignationControllerTest extends AbstractEnMarcheWebCaseTest
 
         self::assertCount(2, $tableRows = $crawler->filter('table.datagrid__table-manager tbody tr'));
 
-        self::assertStringContainsString('En Marche Dammarie-les-Lys', $tableRows->eq(0)->text());
+        self::assertStringContainsString('Antenne En Marche de Fontainebleau', $tableRows->eq(0)->text());
+        self::assertStringContainsString('Désigner le binôme d\'adhérents', $tableRows->eq(0)->text());
         self::assertStringContainsString('Renouveler l\'animatrice locale', $tableRows->eq(0)->text());
 
-        self::assertStringContainsString('Antenne En Marche de Fontainebleau', $tableRows->eq(1)->text());
-        self::assertStringContainsString('Désigner le binôme d\'adhérents', $tableRows->eq(1)->text());
+        self::assertStringContainsString('En Marche Dammarie-les-Lys', $tableRows->eq(1)->text());
         self::assertStringContainsString('Renouveler l\'animatrice locale', $tableRows->eq(1)->text());
 
         self::assertStringNotContainsStringIgnoringCase('Homme', $tableRows->text());
@@ -47,9 +47,9 @@ class ReferentDesignationControllerTest extends AbstractEnMarcheWebCaseTest
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, '/espace-referent/comites/designations/partielles');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/comites/designations/partielles');
 
-        $crawler = $this->client->clickLink('Renouveler l\'animatrice locale');
+        $crawler = $this->client->click($crawler->selectLink('Renouveler l\'animatrice locale')->eq(1)->link());
 
         self::assertStringContainsString('Renouvellement de l\'animatrice locale', $crawler->filter('form.em-form h2')->text());
 
