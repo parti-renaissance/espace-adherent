@@ -1,38 +1,39 @@
-{% extends 'base.html.twig' %}
+{% extends 'oauth/base.html.twig' %}
+
+{% block favicon %}
+    <link rel="shortcut icon" href="{{ asset('favicon-re.png') }}" />
+{% endblock %}
 
 {% block page_title 'Administration' %}
 
+{% block em_logo %}
+    <div class="b__nudge--top-15 b__nudge--left-medium b__nudge--right-small b__nudge--bottom-larger">
+        {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-4 w-auto text-white lg:h-5' } %}
+    </div>
+{% endblock %}
+
 {% block content %}
+    <section class="l__inner">
+        <h1>Code d'authentification</h1>
 
-    <main>
-        <section class="l__wrapper--500">
-            <div class="login">
-                <h2>Espace d'administration</h2>
+            <form class="form" action="{{ path("admin_security_2fa_check") }}" method="post">
+                {% for flashMessage in app.flashes("two_factor") %}
+                    <p class="text--error">{{ flashMessage|trans }}</p>
+                {% endfor %}
 
-                <div class="login__form">
-                    <p class="login__form__title">Code d'authentification</p>
-
-                    <form class="form" action="{{ path("admin_security_2fa_check") }}" method="post">
-                        {% for flashMessage in app.flashes("two_factor") %}
-                            <p class="text--error">{{ flashMessage|trans }}</p>
-                        {% endfor %}
-
-                        <div class="form__row">
-                            <input id="_auth_code" type="text" autocomplete="off" name="_auth_code"
-                                   class="form form__field form--full" />
-                        </div>
-
-                        <button type="submit"
-                                title="Je me connecte"
-                                class="form form--full btn btn--blue login__button">Je me connecte</button>
-
-                        {# The logout link gives the user a way out if they can't complete the second step #}
-                        <p>
-                            <a href="{{ path('logout') }}">Annuler</a>
-                        </p>
-                    </form>
+                <div class="form__row">
+                    <input id="_auth_code" type="text" autocomplete="off" name="_auth_code"
+                           class="form form__field form--full" />
                 </div>
-            </div>
-        </section>
-    </main>
+
+                <button type="submit"
+                        title="Je me connecte"
+                        class="btn">Je me connecte</button>
+
+                {# The logout link gives the user a way out if they can't complete the second step #}
+                <p class="text--center">
+                    <a href="{{ path('logout', { app_domain: renaissance_host }) }}">Annuler</a>
+                </p>
+            </form>
+    </section>
 {% endblock %}
