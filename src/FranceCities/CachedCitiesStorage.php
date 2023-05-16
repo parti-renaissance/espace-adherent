@@ -22,7 +22,7 @@ class CachedCitiesStorage implements CitiesStorageInterface
         if (!$this->cache->has(self::CACHE_KEY)) {
             $franceCities = $this->decorated->getCitiesList();
 
-            $this->cache->set(self::CACHE_KEY, $franceCities, 2678400);
+            $this->cache->set(self::CACHE_KEY, $franceCities, 86400);
         } else {
             $franceCities = $this->cache->get(self::CACHE_KEY);
         }
