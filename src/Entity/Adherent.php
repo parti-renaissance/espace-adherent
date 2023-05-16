@@ -1620,7 +1620,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         \DateTimeInterface $subscriptionDate,
         ?CommitteeMembershipTriggerEnum $trigger = null
     ): CommitteeMembership {
-        $committee->incrementMembersCount($this->isRenaissanceSympathizer());
+        $committee->updateMembersCount(true, $this->isRenaissanceUser(), $this->isRenaissanceAdherent());
 
         return CommitteeMembership::createForAdherent($committee, $this, $privilege, $subscriptionDate, $trigger);
     }

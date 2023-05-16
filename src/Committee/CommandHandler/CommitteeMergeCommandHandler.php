@@ -159,8 +159,10 @@ class CommitteeMergeCommandHandler
 
     private function revertDestinationCommitteeMemberships(Committee $committee, array $memberships): void
     {
+        /** @var CommitteeMembership[] $memberships */
         foreach ($memberships as $membership) {
-            $committee->decrementMembersCount($membership->getAdherent()->isRenaissanceSympathizer());
+            $adherent = $membership->getAdherent();
+            $committee->updateMembersCount(false, $adherent->isRenaissanceUser(), $adherent->isRenaissanceAdherent());
 
             $this->em->remove($membership);
 

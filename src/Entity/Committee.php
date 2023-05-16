@@ -184,6 +184,11 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     private int $sympathizersCount = 0;
 
     /**
+     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     */
+    private int $membersEmCount = 0;
+
+    /**
      * The group description.
      *
      * @ORM\Column(type="text")
@@ -758,22 +763,66 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         return $this->sympathizersCount;
     }
 
-    public function incrementMembersCount(bool $isSympathizer): void
+    /**
+     * @Groups({"committee:list"})
+     */
+    public function getMembersEmCount(): int
     {
-        if ($isSympathizer) {
-            ++$this->sympathizersCount;
+        return $this->membersEmCount;
+    }
+
+    public function updateMembersCount(
+        bool $incrementAction,
+        bool $isRenaissanceUser,
+        bool $isRenaissanceAdherent
+    ): void {
+        if ($incrementAction) {
+            if ($isRenaissanceAdherent) {
+                $this->incrementMembersCount();
+            } elseif ($isRenaissanceUser) {
+                $this->incrementSympathizersCount();
+            } else {
+                $this->incrementMembersEmCount();
+            }
         } else {
-            ++$this->membersCount;
+            if ($isRenaissanceAdherent) {
+                $this->decrementMembersCount();
+            } elseif ($isRenaissanceUser) {
+                $this->decrementSympathizersCount();
+            } else {
+                $this->decrementMembersEmCount();
+            }
         }
     }
 
-    public function decrementMembersCount(bool $isSympathizer): void
+    public function incrementMembersCount(): void
     {
-        if ($isSympathizer) {
-            $this->sympathizersCount = $this->sympathizersCount < 1 ? 0 : $this->sympathizersCount - 1;
-        } else {
-            $this->membersCount = $this->membersCount < 1 ? 0 : $this->membersCount - 1;
-        }
+        ++$this->membersCount;
+    }
+
+    public function incrementMembersEmCount(): void
+    {
+        ++$this->membersEmCount;
+    }
+
+    public function incrementSympathizersCount(): void
+    {
+        ++$this->sympathizersCount;
+    }
+
+    public function decrementMembersCount(): void
+    {
+        $this->membersCount = $this->membersCount < 1 ? 0 : $this->membersCount - 1;
+    }
+
+    public function decrementSympathizersCount(): void
+    {
+        $this->sympathizersCount = $this->sympathizersCount < 1 ? 0 : $this->sympathizersCount - 1;
+    }
+
+    public function decrementMembersEmCount(): void
+    {
+        $this->membersEmCount = $this->membersEmCount < 1 ? 0 : $this->membersEmCount - 1;
     }
 
     /**

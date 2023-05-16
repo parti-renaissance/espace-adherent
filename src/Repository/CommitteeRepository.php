@@ -181,21 +181,6 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
-    public function getQueryBuilderForTags(array $referentTags): QueryBuilder
-    {
-        $qb = $this->createQueryBuilder('c')
-            ->select('c')
-            ->where('c.status = :status')
-            ->setParameter('status', Committee::APPROVED)
-            ->orderBy('c.name', 'ASC')
-            ->orderBy('c.createdAt', 'DESC')
-        ;
-
-        $this->applyGeoFilter($qb, $referentTags, 'c');
-
-        return $qb;
-    }
-
     public function getQueryBuilderForZones(array $zones): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
@@ -277,7 +262,8 @@ class CommitteeRepository extends ServiceEntityRepository
                 SELECT
                     c2.id,
                     SUM(IF(a.last_membership_donation IS NOT NULL, 1, 0)) AS members_count,
-                    SUM(IF(a.last_membership_donation IS NULL, 1, 0)) AS sympathizers_count
+                    SUM(IF(a.last_membership_donation IS NULL AND a.source IS NOT NULL, 1, 0)) AS sympathizers_count,
+                    SUM(IF(a.last_membership_donation IS NULL AND a.source IS NULL, 1, 0)) AS members_em_count
                 FROM committees c2
                 INNER JOIN committees_memberships cm ON cm.committee_id = c2.id
                 INNER JOIN adherents a ON a.id = cm.adherent_id
@@ -286,6 +272,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ) AS t ON t.id = c.id
             SET
                 c.members_count = t.members_count,
+                c.members_em_count = t.members_em_count,
                 c.sympathizers_count = t.sympathizers_count'
         );
     }
@@ -893,7 +880,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->andWhere('committee.approvedAt <= :d30')
             ->andWhere('(designation IS NULL OR designation.voteEndDate < :now)')
             ->groupBy('committee.id')
-            ->orderBy('committee.membersCount', 'DESC')
+            ->orderBy('committee.membersEmCount', 'DESC')
             ->setParameters([
                 'female' => Genders::FEMALE,
                 'male' => Genders::MALE,
