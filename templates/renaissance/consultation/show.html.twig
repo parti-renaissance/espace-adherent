@@ -6,9 +6,20 @@
 <section class="space-y-4 md:space-y-6">
     <h1 class="text-3xl font-bold leading-10 text-gray-900">{{ consultation.title }}</h1>
 
-    <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
-        <div class="mt-4 prose-sm prose-re-blue lg:prose-base text-gray-500 lg:max-w-none">
-            {{ consultation.content|markdown }}
+    <div class="flex flex-col rounded-lg p-5 md:p-6 bg-white relative shadow">
+        <div class="flex-1 overflow-hidden overflow-y-scroll max-h-[650px] pb-20">
+            <div class="mt-4 prose-sm prose-re-blue lg:prose-base text-gray-500 lg:max-w-none">
+                {{ consultation.content|markdown }}
+            </div>
+        </div>
+        <div class="inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-white pt-20 pointer-events-none sticky -mt-32 transition-opacity duration-300 opacity-100">
+            <a
+                href="{{ consultation.url }}"
+                target="_blank"
+                class="uppercase relative bg-re-blue-500 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-re-blue-400 focus:ring-offset-2 text-sm text-white font-semibold h-12 px-5 py-3 md:px-7 md:py-4 rounded-lg flex items-center transition-transform pointer-events-auto"
+            >
+                Je participe
+            </a>
         </div>
     </div>
 </section>
