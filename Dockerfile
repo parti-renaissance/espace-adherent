@@ -2,9 +2,9 @@
 # Adapted from https://github.com/dunglas/symfony-docker
 
 ARG CADDY_VERSION=2
-ARG PHP_VERSION=8.1
+ARG PHP_VERSION=8.2
 ARG NODE_VERSION=16
-#ARG BUILD_DEV
+ARG BUILD_DEV
 
 FROM node:${NODE_VERSION}-alpine AS node
 RUN apk add --no-cache git
@@ -16,7 +16,8 @@ FROM mlocati/php-extension-installer:2 AS php_extension_installer
 
 FROM php:${PHP_VERSION}-fpm-alpine AS php_caddy
 
-#ARG BUILD_DEV
+ARG BUILD_DEV
+ENV APP_ENV=prod
 
 WORKDIR /srv/app
 
@@ -63,35 +64,24 @@ HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
 COPY --link docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
-COPY --from=composer:lts /usr/bin/composer /usr/bin/composer
+# https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
-#RUN test -z "$BUILD_DEV" || (echo "" > $PHP_INI_DIR/conf.d/symfony.ini) && :
-#
-#VOLUME /var/run/php
-#
-#COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-#
-## https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
-#ENV COMPOSER_ALLOW_SUPERUSER=1
-#
-#ENV PATH="${PATH}:/root/.composer/vendor/bin"
-#
-#WORKDIR /srv/app
-#
-COPY . .
-#
-#RUN test -z "$BUILD_DEV" && ( \
-#        set -eux; \
-#        mkdir -p var/cache var/log; \
-#        composer install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction; \
-#        composer dump-autoload --classmap-authoritative --no-dev; \
-#        composer symfony:dump-env prod; \
-#        composer run-script --no-dev post-install-cmd; \
-#        chmod +x bin/console; sync \
-#    ) || :
-#
-#VOLUME /srv/app/var
-#
+COPY --from=composer/composer:2-bin --link /composer /usr/bin/composer
+
+COPY --link . .
+
+RUN test -z "$BUILD_DEV" && ( \
+        set -eux; \
+        mkdir -p var/cache var/log; \
+        composer install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction; \
+        composer dump-autoload --classmap-authoritative --no-dev; \
+        composer dump-env prod; \
+        composer run-script --no-dev post-install-cmd; \
+        chmod +x bin/console; sync \
+    ) || :
+
 COPY --from=caddy /usr/bin/caddy /usr/bin/caddy
 COPY docker/caddy/Caddyfile /etc/caddy/Caddyfile
 

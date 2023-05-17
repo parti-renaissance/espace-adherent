@@ -1,17 +1,18 @@
 {
-    # Debug
-    {$CADDY_DEBUG}
+	# Debug
+	{$CADDY_DEBUG}
+	auto_https off
 }
 
-{$SERVER_NAME}
+:80
 
 {$CADDY_EXTRA_CONFIG}
 
 log
 
 route {
-    root * /srv/app/public
-    php_fastcgi unix//var/run/php/php-fpm.sock
-    encode zstd gzip
-    file_server
+	root * /srv/app/public
+	php_fastcgi unix//var/run/php/php-fpm.sock
+	encode zstd gzip
+	file_server
 }

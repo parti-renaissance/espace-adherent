@@ -4,7 +4,7 @@ services:
     app:
         image: ${REGISTRY}:${TAG}
         environment:
-            - APP_ENV=test
+            APP_ENV: test
         build:
             cache_from:
                 - ${REGISTRY}:${HASH}

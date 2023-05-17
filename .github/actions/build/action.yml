@@ -37,6 +37,7 @@ runs:
             --tag=$REGISTRY:$TAG-$HASH \
             --target=php_caddy \
             --build-arg BUILDKIT_INLINE_CACHE=1 \
+            --build-arg BUILD_DEV=true \
             --compress \
             .
 

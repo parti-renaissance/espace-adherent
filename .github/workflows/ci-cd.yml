@@ -15,7 +15,7 @@ env:
   TAG: ${{ github.ref_name }}
 
   NODE_VERSION: 16.18.1
-  PHP_VERSION: 8.1
+  PHP_VERSION: 8.2
   PHP_SECURITY_CHECKER_VERSION: 1.2.0
 
   REGISTRY: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
@@ -122,6 +122,8 @@ jobs:
       - uses: ./.github/actions/setup-yarn
 
       - name: PHP Coding Standards Fixer
+        env:
+            PHP_CS_FIXER_IGNORE_ENV: 1
         run: vendor/bin/php-cs-fixer fix --diff --dry-run --no-interaction -v
 
       - name: Lint YAML files
@@ -320,12 +322,17 @@ jobs:
       - uses: ./.github/actions/docker-pull
         with:
           hash: ${{ env.HASH }}
-          tag: master
+          tag: ${{ env.TAG }}
 
       - run: perl -pi -e "s/default/${{ github.sha }}/g" ./config/packages/app_version.yaml
 
       - run: |-
-          docker build --cache-from=${{ env.REGISTRY }}:master --tag ${{ env.REGISTRY }}:$TAG-$HASH .
+          docker build \
+              --cache-from=${{ env.REGISTRY }}:${{ env.TAG }} \
+              --tag ${{ env.REGISTRY }}:${{ env.TAG }}-${{ env.HASH }} \
+              --target=php_caddy \
+              --build-arg BUILDKIT_INLINE_CACHE=1 \
+              .
 
       - uses: ./.github/actions/docker-push
         with:
