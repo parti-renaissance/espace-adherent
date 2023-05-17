@@ -1,0 +1,16 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% block page_title 'Consultations' %}
+
+{% block content_right_side %}
+<section class="space-y-4 md:space-y-6">
+    <h1 class="text-3xl font-bold leading-10 text-gray-900">{{ consultation.title }}</h1>
+
+    <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+        <div class="mt-4 prose-sm prose-re-blue lg:prose-base text-gray-500 lg:max-w-none">
+            {{ consultation.content|markdown }}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
