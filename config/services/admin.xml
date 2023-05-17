@@ -508,6 +508,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.consultation" class="App\Admin\ConsultationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Consultations" group="Territoires"/>
+
+            <argument />
+            <argument>App\Entity\Consultation</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.document" class="App\Admin\DocumentAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Documents JME" group="Territoires"/>
 
@@ -1156,6 +1164,7 @@
             <tag name="sonata.admin.extension" target="app.admin.adherent_formation" />
             <tag name="sonata.admin.extension" target="app.admin.general_meeting_report" />
             <tag name="sonata.admin.extension" target="app.admin.email_template" />
+            <tag name="sonata.admin.extension" target="app.admin.consultation" />
         </service>
 
         <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">
