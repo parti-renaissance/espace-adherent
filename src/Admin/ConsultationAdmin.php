@@ -71,7 +71,6 @@ class ConsultationAdmin extends AbstractAdmin
                 ])
                 ->add('url', UrlType::class, [
                     'label' => 'Lien',
-                    'required' => false,
                 ])
             ->end()
             ->with('Audience', ['class' => 'col-md-6'])
