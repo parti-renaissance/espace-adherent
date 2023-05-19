@@ -150,6 +150,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('er');
 
         $this->withActiveMandatesCondition($qb);
+        $qb->andWhere('mandate IS NOT NULL');
 
         $authorCondition = new Orx();
 
