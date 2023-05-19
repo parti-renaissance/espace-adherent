@@ -51,6 +51,11 @@ class ListFilter
     private $mandates = [];
 
     /**
+     * @Groups({"filter_write"})
+     */
+    private ?array $mandateTypes = [];
+
+    /**
      * @var array|null
      *
      * @Groups({"filter_write"})
@@ -199,6 +204,16 @@ class ListFilter
         $this->mandates = $mandates;
     }
 
+    public function getMandateTypes(): ?array
+    {
+        return $this->mandateTypes;
+    }
+
+    public function setMandateTypes(?array $mandateTypes): void
+    {
+        $this->mandateTypes = $mandateTypes;
+    }
+
     public function getPoliticalFunctions(): ?array
     {
         return $this->politicalFunctions;
@@ -338,6 +353,7 @@ class ListFilter
             'cities' => array_values($this->cities),
             'labels' => $this->labels,
             'mandates' => $this->mandates,
+            'mandateTypes' => $this->mandateTypes,
             'politicalFunctions' => $this->politicalFunctions,
             'userListDefinitions' => array_map(function (UserListDefinition $label) {
                 return $label->getId();

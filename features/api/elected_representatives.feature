@@ -336,6 +336,18 @@ Feature:
         "type": "select"
       },
       {
+        "code": "mandateTypes",
+        "label": "Type de mandat",
+        "options": {
+          "choices": {
+            "local_mandate": "Mandat local",
+            "national_mandate": "Mandat national"
+          },
+          "multiple": true
+        },
+        "type": "select"
+      },
+      {
         "code": "mandates",
         "label": "Mandats",
         "options": {
