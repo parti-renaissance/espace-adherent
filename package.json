@@ -64,7 +64,7 @@
     "stackblur-canvas": "^2.5.0",
     "style-loader": "^3.3.3",
     "tailwindcss": "^3.3.2",
-    "terser-webpack-plugin": "^5.3.8",
+    "terser-webpack-plugin": "^5.3.9",
     "tippy.js": "^6.3.7",
     "webpack": "^5.82.1",
     "webpack-cli": "^5.1.1",
