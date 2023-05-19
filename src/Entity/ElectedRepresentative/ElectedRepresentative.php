@@ -330,6 +330,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *     orphanRemoval=true,
      *     fetch="EXTRA_LAZY"
      * )
+     * @ORM\OrderBy({"date": "DESC"})
      *
      * @Groups({"elected_representative_read"})
      */
