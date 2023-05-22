@@ -3,6 +3,7 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 use App\Mailchimp\Campaign\AudienceTypeEnum;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
@@ -25,5 +26,10 @@ class LegislativeCandidateFieldsFilterBuilder implements FilterBuilderInterface
             ])
             ->getFilters()
         ;
+    }
+
+    public function getGroup(): string
+    {
+        return MilitantFilterGroup::class;
     }
 }

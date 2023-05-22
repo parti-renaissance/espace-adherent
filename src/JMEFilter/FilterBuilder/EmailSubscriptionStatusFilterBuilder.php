@@ -3,6 +3,7 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\FilterGroup\PersonalInformationsFilterGroup;
 use App\Scope\FeatureEnum;
 
 class EmailSubscriptionStatusFilterBuilder implements FilterBuilderInterface
@@ -18,5 +19,10 @@ class EmailSubscriptionStatusFilterBuilder implements FilterBuilderInterface
             ->createBooleanSelect('emailSubscription', 'Abonné email')
             ->getFilters()
         ;
+    }
+
+    public function getGroup(): string
+    {
+        return PersonalInformationsFilterGroup::class;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 use App\JMEFilter\Types\DefinedTypes\AgeRange;
 use App\Scope\FeatureEnum;
 
@@ -27,5 +28,10 @@ class BasicFieldsForAdherentFilterBuilder implements FilterBuilderInterface
         }
 
         return $filterBuilder->getFilters();
+    }
+
+    public function getGroup(): string
+    {
+        return MilitantFilterGroup::class;
     }
 }

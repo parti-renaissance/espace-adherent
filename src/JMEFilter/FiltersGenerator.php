@@ -3,6 +3,7 @@
 namespace App\JMEFilter;
 
 use App\JMEFilter\FilterBuilder\FilterBuilderInterface;
+use App\JMEFilter\FilterGroup\AbstractFilterGroup;
 
 class FiltersGenerator
 {
@@ -23,14 +24,21 @@ class FiltersGenerator
 
         foreach ($this->builders as $builder) {
             if ($builder->supports($scope, $feature)) {
-                array_push($filters, ...$builder->build($scope, $feature));
+                $groupClass = $builder->getGroup();
+
+                if (!\array_key_exists($groupClass, $filters)) {
+                    $filters[$groupClass] = new $groupClass();
+                }
+
+                /** @var AbstractFilterGroup $filterGroup */
+                $filterGroup = $filters[$groupClass];
+
+                foreach ($builder->build($scope, $feature) as $filter) {
+                    $filterGroup->addFilter($filter);
+                }
             }
         }
 
-        usort($filters, function (FilterInterface $filter1, FilterInterface $filter2) {
-            return $filter1->getPosition() <=> $filter2->getPosition();
-        });
-
-        return $filters;
+        return array_values($filters);
     }
 }

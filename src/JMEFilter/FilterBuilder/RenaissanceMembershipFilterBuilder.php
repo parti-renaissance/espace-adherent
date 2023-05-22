@@ -3,6 +3,7 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Scope\ScopeEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -35,5 +36,10 @@ class RenaissanceMembershipFilterBuilder implements FilterBuilderInterface
         }
 
         return $choices;
+    }
+
+    public function getGroup(): string
+    {
+        return MilitantFilterGroup::class;
     }
 }

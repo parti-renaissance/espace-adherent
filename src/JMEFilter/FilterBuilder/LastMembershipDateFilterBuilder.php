@@ -3,6 +3,7 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 use App\Scope\FeatureEnum;
 
 class LastMembershipDateFilterBuilder implements FilterBuilderInterface
@@ -18,5 +19,10 @@ class LastMembershipDateFilterBuilder implements FilterBuilderInterface
             ->createDateInterval('last_membership', 'Dernière cotisation')
             ->getFilters()
         ;
+    }
+
+    public function getGroup(): string
+    {
+        return MilitantFilterGroup::class;
     }
 }

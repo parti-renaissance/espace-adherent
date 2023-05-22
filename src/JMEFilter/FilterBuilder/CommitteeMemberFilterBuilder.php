@@ -3,6 +3,7 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 
@@ -24,5 +25,10 @@ class CommitteeMemberFilterBuilder implements FilterBuilderInterface
             ->createBooleanSelect('isCommitteeMember', 'Membre d\'un comité')
             ->getFilters()
         ;
+    }
+
+    public function getGroup(): string
+    {
+        return MilitantFilterGroup::class;
     }
 }

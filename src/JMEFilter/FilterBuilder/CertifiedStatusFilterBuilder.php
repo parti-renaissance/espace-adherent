@@ -3,6 +3,7 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\FilterGroup\PersonalInformationsFilterGroup;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 
@@ -21,5 +22,10 @@ class CertifiedStatusFilterBuilder implements FilterBuilderInterface
             ->createBooleanSelect('isCertified', 'Certifié')
             ->getFilters()
         ;
+    }
+
+    public function getGroup(): string
+    {
+        return PersonalInformationsFilterGroup::class;
     }
 }
