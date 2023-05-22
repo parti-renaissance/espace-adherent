@@ -301,116 +301,128 @@ Feature:
       """
       [
           {
-              "code": "gender",
-              "label": "Genre",
-              "options": {
-                  "choices": {
-                      "female": "Femme",
-                      "male": "Homme",
-                      "other": "Autre"
-                  }
-              },
-              "type": "select"
-          },
-          {
-              "code": "firstName",
-              "label": "Prénom",
-              "options": null,
-              "type": "text"
-          },
-          {
-              "code": "lastName",
-              "label": "Nom",
-              "options": null,
-              "type": "text"
-          },
-          {
-              "code": "age",
-              "label": "Âge",
-              "options": {
-                  "first": {
-                      "min": 1,
-                      "max": 200
+              "label": "Informations personnelles",
+              "color": "#123456",
+              "filters": [
+                  {
+                      "code": "gender",
+                      "label": "Genre",
+                      "options": {
+                          "choices": {
+                              "female": "Femme",
+                              "male": "Homme",
+                              "other": "Autre"
+                          }
+                      },
+                      "type": "select"
                   },
-                  "second": {
-                      "min": 1,
-                      "max": 200
-                  }
-              },
-              "type": "integer_interval"
-          },
-          {
-              "code": "registered",
-              "label": "Inscrit",
-              "options": null,
-              "type": "date_interval"
-          },
-          {
-              "code": "isCertified",
-              "label": "Certifié",
-              "options": {
-                  "choices": [
-                      "Non",
-                      "Oui"
-                  ]
-              },
-              "type": "select"
-          },
-          {
-              "code": "committee",
-              "label": "Comités",
-              "options": {
-                  "choices": {
-                      "5e00c264-1d4b-43b8-862e-29edc38389b3": "Comité des 3 communes",
-                      "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3": "Second Comité des 3 communes"
+                  {
+                      "code": "firstName",
+                      "label": "Prénom",
+                      "options": null,
+                      "type": "text"
                   },
-                  "multiple": false,
-                  "required": false
-              },
-              "type": "select"
+                  {
+                      "code": "lastName",
+                      "label": "Nom",
+                      "options": null,
+                      "type": "text"
+                  },
+                  {
+                      "code": "age",
+                      "label": "Âge",
+                      "options": {
+                          "first": {
+                              "min": 1,
+                              "max": 200
+                          },
+                          "second": {
+                              "min": 1,
+                              "max": 200
+                          }
+                      },
+                      "type": "integer_interval"
+                  },
+                  {
+                      "code": "registered",
+                      "label": "Inscrit",
+                      "options": null,
+                      "type": "date_interval"
+                  },
+                  {
+                      "code": "isCertified",
+                      "label": "Certifié",
+                      "options": {
+                          "choices": [
+                              "Non",
+                              "Oui"
+                          ]
+                      },
+                      "type": "select"
+                  },
+                  {
+                      "code": "zone",
+                      "label": "Zone géographique",
+                      "options": {
+                          "url": "/api/v3/zone/autocomplete?types%5B0%5D=borough&types%5B1%5D=canton&types%5B2%5D=city&types%5B3%5D=department&types%5B4%5D=region&types%5B5%5D=country&types%5B6%5D=district&types%5B7%5D=foreign_district&types%5B8%5D=custom",
+                          "query_param": "q",
+                          "value_param": "uuid",
+                          "label_param": "name",
+                          "multiple": false,
+                          "required": true
+                      },
+                      "type": "zone_autocomplete"
+                  }
+              ]
           },
           {
-              "code": "isCommitteeMember",
-              "label": "Membre d'un comité",
-              "options": {
-                  "choices": [
-                      "Non",
-                      "Oui"
-                  ]
-              },
-              "type": "select"
-          },
-          {
-            "code": "last_membership",
-            "label": "Dernière cotisation",
-            "options": null,
-            "type": "date_interval"
-          },
-          {
-              "code": "renaissance_membership",
-              "label": "Renaissance",
-              "options": {
-                "choices": {
-                "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
-                "adherent_re": "Adhérent RE seulement",
-                "sympathizer_re": "Sympathisant RE seulement",
-                "others_adherent": "Ni adhérent RE ni sympathisant RE"
-                }
-              },
-              "type": "select"
-          },
-          {
-              "code": "zone",
-              "label": "Zone géographique",
-              "options": {
-                  "url": "/api/v3/zone/autocomplete?types%5B0%5D=borough&types%5B1%5D=canton&types%5B2%5D=city&types%5B3%5D=department&types%5B4%5D=region&types%5B5%5D=country&types%5B6%5D=district&types%5B7%5D=foreign_district&types%5B8%5D=custom",
-                  "query_param": "q",
-                  "value_param": "uuid",
-                  "label_param": "name",
-                  "multiple": false,
-                  "required": true
-              },
-              "type": "zone_autocomplete"
+              "label": "Militant",
+              "color": "#123457",
+              "filters": [
+                  {
+                      "code": "committee",
+                      "label": "Comités",
+                      "options": {
+                          "choices": {
+                              "5e00c264-1d4b-43b8-862e-29edc38389b3": "Comité des 3 communes",
+                              "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3": "Second Comité des 3 communes"
+                          },
+                          "multiple": false,
+                          "required": false
+                      },
+                      "type": "select"
+                  },
+                  {
+                      "code": "isCommitteeMember",
+                      "label": "Membre d'un comité",
+                      "options": {
+                          "choices": [
+                              "Non",
+                              "Oui"
+                          ]
+                      },
+                      "type": "select"
+                  },
+                  {
+                      "code": "last_membership",
+                      "label": "Dernière cotisation",
+                      "options": null,
+                      "type": "date_interval"
+                  },
+                  {
+                      "code": "renaissance_membership",
+                      "label": "Renaissance",
+                      "options": {
+                          "choices": {
+                              "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
+                              "adherent_re": "Adhérent RE seulement",
+                              "sympathizer_re": "Sympathisant RE seulement",
+                              "others_adherent": "Ni adhérent RE ni sympathisant RE"
+                          }
+                      },
+                      "type": "select"
+                  }
+              ]
           }
       ]
       """

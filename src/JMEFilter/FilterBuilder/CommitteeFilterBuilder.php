@@ -4,6 +4,7 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\Entity\Committee;
 use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\FilterGroup\MilitantFilterGroup;
 use App\Repository\CommitteeRepository;
 use App\Scope\FeatureEnum;
 use App\Scope\Scope;
@@ -51,5 +52,10 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
             },
             []
         );
+    }
+
+    public function getGroup(): string
+    {
+        return MilitantFilterGroup::class;
     }
 }

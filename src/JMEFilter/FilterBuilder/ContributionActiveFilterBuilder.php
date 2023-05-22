@@ -3,6 +3,7 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\FilterGroup\ElectedRepresentativeFilterGroup;
 use App\Scope\FeatureEnum;
 
 class ContributionActiveFilterBuilder implements FilterBuilderInterface
@@ -19,5 +20,10 @@ class ContributionActiveFilterBuilder implements FilterBuilderInterface
             ->setPosition(11)
             ->getFilters()
         ;
+    }
+
+    public function getGroup(): string
+    {
+        return ElectedRepresentativeFilterGroup::class;
     }
 }

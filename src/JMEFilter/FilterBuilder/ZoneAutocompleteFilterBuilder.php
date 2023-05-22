@@ -4,6 +4,7 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\Entity\Geo\Zone;
 use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\FilterGroup\PersonalInformationsFilterGroup;
 use App\JMEFilter\Types\DefinedTypes\ZoneAutocomplete;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
@@ -36,5 +37,10 @@ class ZoneAutocompleteFilterBuilder implements FilterBuilderInterface
             ->setRequired(FeatureEnum::MESSAGES === $feature && ScopeEnum::ANIMATOR !== $scope)
             ->getFilters()
         ;
+    }
+
+    public function getGroup(): string
+    {
+        return PersonalInformationsFilterGroup::class;
     }
 }

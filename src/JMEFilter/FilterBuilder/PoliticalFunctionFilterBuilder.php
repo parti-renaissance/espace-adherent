@@ -4,6 +4,7 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\FilterGroup\ElectedRepresentativeFilterGroup;
 use App\Scope\FeatureEnum;
 
 class PoliticalFunctionFilterBuilder implements FilterBuilderInterface
@@ -21,5 +22,10 @@ class PoliticalFunctionFilterBuilder implements FilterBuilderInterface
             ->setMultiple(true)
             ->getFilters()
         ;
+    }
+
+    public function getGroup(): string
+    {
+        return ElectedRepresentativeFilterGroup::class;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
+use App\JMEFilter\FilterGroup\PersonalInformationsFilterGroup;
 use App\JMEFilter\Types\DefinedTypes\GenderSelect;
 use App\Scope\ScopeEnum;
 
@@ -21,5 +22,10 @@ class BasicFieldsFilterBuilder implements FilterBuilderInterface
             ->createText('lastName', 'Nom')
             ->getFilters()
         ;
+    }
+
+    public function getGroup(): string
+    {
+        return PersonalInformationsFilterGroup::class;
     }
 }
