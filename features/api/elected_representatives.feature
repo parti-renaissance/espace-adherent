@@ -287,164 +287,182 @@ Feature:
     And the JSON should be equal to:
     """
     [
-      {
-        "code": "gender",
-        "label": "Genre",
-        "options": {
-            "choices": {
-                "female": "Femme",
-                "male": "Homme",
-                "other": "Autre"
-            }
-        },
-        "type": "select"
-      },
-      {
-        "code": "firstName",
-        "label": "Prénom",
-        "options": null,
-        "type": "text"
-      },
-      {
-        "code": "lastName",
-        "label": "Nom",
-        "options": null,
-        "type": "text"
-      },
-      {
-        "code": "committeeUuids",
-        "label": "Comités",
-        "options": {
-          "choices": {
-            "5e00c264-1d4b-43b8-862e-29edc38389b3": "Comité des 3 communes",
-            "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3": "Second Comité des 3 communes"
-          },
-          "multiple": true,
-          "required": false
-        },
-        "type": "select"
-      },
-      {
-        "code": "emailSubscription",
-        "label": "Abonné email",
-        "options": {
-          "choices": [
-            "Non",
-            "Oui"
-          ]
-        },
-        "type": "select"
-      },
-      {
-        "code": "mandateTypes",
-        "label": "Type de mandat",
-        "options": {
-          "choices": {
-            "local_mandate": "Mandat local",
-            "national_mandate": "Mandat national"
-          },
-          "multiple": true
-        },
-        "type": "select"
-      },
-      {
-        "code": "mandates",
-        "label": "Mandats",
-        "options": {
-          "choices": {
-            "conseiller_municipal": "Conseiller(e) municipal(e)",
-            "membre_EPCI": "Membre d'EPCI",
-            "conseiller_departemental": "Conseiller(e) départemental(e)",
-            "conseiller_regional": "Conseiller(e) régional(e)",
-            "membre_assemblee_corse": "Membre de l'Assemblée de Corse",
-            "depute": "Député(e)",
-            "senateur": "Sénateur(rice)",
-            "euro_depute": "Député(e) européen(ne)",
-            "conseiller_d_arrondissement": "Conseiller(ère) d'arrondissement",
-            "conseiller_consulaire": "Conseiller(ère) FDE"
-          },
-          "multiple": true
-        },
-        "type": "select"
-      },
-      {
-        "code": "political_functions",
-        "label": "Fonctions",
-        "options": {
-          "choices": {
-            "mayor": "Maire",
-            "deputy_mayor": "Maire délégué(e)",
-            "mayor_assistant": "Adjoint(e) au maire",
-            "president_of_regional_council": "Président(e) de conseil régional",
-            "vice_president_of_regional_council": "Vice-président(e) de conseil régional",
-            "president_of_departmental_council": "Président(e) de conseil départemental",
-            "vice_president_of_departmental_council": "Vice-président(e) de conseil départemental",
-            "deputy_vice_president_of_departmental_council": "Vice-président(e) délégué du conseil départemental",
-            "secretary": "Secrétaire",
-            "quaestor": "Questeur(rice)",
-            "president_of_national_assembly": "Président(e) de l'Assemblée nationale",
-            "vice_president_of_national_assembly": "Vice-président(e) de l'Assemblée nationale",
-            "president_of_senate": "Président(e) du Sénat",
-            "vice_president_of_senate": "Vice-président(e) du Sénat",
-            "president_of_commission": "Président(e) de commission",
-            "president_of_group": "Président(e) de groupe",
-            "president_of_epci": "Président(e) d'EPCI",
-            "vice_president_of_epci": "Vice-président(e) d'EPCI",
-            "other_member_of_standing_committee": "Autre membre commission permanente",
-            "other_member": "Autre membre"
-          },
-          "multiple": true
-        },
-        "type": "select"
-      },
-      {
-        "code": "renaissance_membership",
-        "label": "Renaissance",
-        "options": {
-          "choices": {
-            "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
-            "adherent_re": "Adhérent RE seulement",
-            "sympathizer_re": "Sympathisant RE seulement",
-            "others_adherent": "Ni adhérent RE ni sympathisant RE"
-          }
-        },
-        "type": "select"
-      },
-      {
-        "code": "zones",
-        "label": "Zone géographique",
-        "options": {
-          "url": "/api/v3/zone/autocomplete",
-          "query_param": "q",
-          "value_param": "uuid",
-          "label_param": "name",
-          "multiple": true,
-          "required": false
-        },
-        "type": "zone_autocomplete"
-      },
-      {
-        "code": "revenueDeclared",
-        "label": "Indemnités déclarées",
-        "options": {
-            "choices": [
-                "Non",
-                "Oui"
+        {
+            "label": "Informations personnelles",
+            "color": "#123456",
+            "filters": [
+                {
+                    "code": "gender",
+                    "label": "Genre",
+                    "options": {
+                        "choices": {
+                            "female": "Femme",
+                            "male": "Homme",
+                            "other": "Autre"
+                        }
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "firstName",
+                    "label": "Prénom",
+                    "options": null,
+                    "type": "text"
+                },
+                {
+                    "code": "lastName",
+                    "label": "Nom",
+                    "options": null,
+                    "type": "text"
+                },
+                {
+                    "code": "emailSubscription",
+                    "label": "Abonné email",
+                    "options": {
+                        "choices": [
+                            "Non",
+                            "Oui"
+                        ]
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "zones",
+                    "label": "Zone géographique",
+                    "options": {
+                        "url": "/api/v3/zone/autocomplete",
+                        "query_param": "q",
+                        "value_param": "uuid",
+                        "label_param": "name",
+                        "multiple": true,
+                        "required": false
+                    },
+                    "type": "zone_autocomplete"
+                }
             ]
         },
-        "type": "select"
-      },
-      {
-        "code": "contributionActive",
-        "label": "Cotisation active",
-        "options": {
-            "choices": [
-                "Non",
-                "Oui"
+        {
+            "label": "Militant",
+            "color": "#123457",
+            "filters": [
+                {
+                    "code": "committeeUuids",
+                    "label": "Comités",
+                    "options": {
+                        "choices": {
+                            "5e00c264-1d4b-43b8-862e-29edc38389b3": "Comité des 3 communes",
+                            "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3": "Second Comité des 3 communes"
+                        },
+                        "multiple": true,
+                        "required": false
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "renaissance_membership",
+                    "label": "Renaissance",
+                    "options": {
+                        "choices": {
+                            "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
+                            "adherent_re": "Adhérent RE seulement",
+                            "sympathizer_re": "Sympathisant RE seulement",
+                            "others_adherent": "Ni adhérent RE ni sympathisant RE"
+                        }
+                    },
+                    "type": "select"
+                }
             ]
         },
-        "type": "select"
-      }
+        {
+            "label": "Elu",
+            "color": "#123458",
+            "filters": [
+                {
+                    "code": "mandateTypes",
+                    "label": "Type de mandat",
+                    "options": {
+                        "choices": {
+                            "local_mandate": "Mandat local",
+                            "national_mandate": "Mandat national"
+                        },
+                        "multiple": true
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "mandates",
+                    "label": "Mandats",
+                    "options": {
+                        "choices": {
+                            "conseiller_municipal": "Conseiller(e) municipal(e)",
+                            "membre_EPCI": "Membre d'EPCI",
+                            "conseiller_departemental": "Conseiller(e) départemental(e)",
+                            "conseiller_regional": "Conseiller(e) régional(e)",
+                            "membre_assemblee_corse": "Membre de l'Assemblée de Corse",
+                            "depute": "Député(e)",
+                            "senateur": "Sénateur(rice)",
+                            "euro_depute": "Député(e) européen(ne)",
+                            "conseiller_d_arrondissement": "Conseiller(ère) d'arrondissement",
+                            "conseiller_consulaire": "Conseiller(ère) FDE"
+                        },
+                        "multiple": true
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "political_functions",
+                    "label": "Fonctions",
+                    "options": {
+                        "choices": {
+                            "mayor": "Maire",
+                            "deputy_mayor": "Maire délégué(e)",
+                            "mayor_assistant": "Adjoint(e) au maire",
+                            "president_of_regional_council": "Président(e) de conseil régional",
+                            "vice_president_of_regional_council": "Vice-président(e) de conseil régional",
+                            "president_of_departmental_council": "Président(e) de conseil départemental",
+                            "vice_president_of_departmental_council": "Vice-président(e) de conseil départemental",
+                            "deputy_vice_president_of_departmental_council": "Vice-président(e) délégué du conseil départemental",
+                            "secretary": "Secrétaire",
+                            "quaestor": "Questeur(rice)",
+                            "president_of_national_assembly": "Président(e) de l'Assemblée nationale",
+                            "vice_president_of_national_assembly": "Vice-président(e) de l'Assemblée nationale",
+                            "president_of_senate": "Président(e) du Sénat",
+                            "vice_president_of_senate": "Vice-président(e) du Sénat",
+                            "president_of_commission": "Président(e) de commission",
+                            "president_of_group": "Président(e) de groupe",
+                            "president_of_epci": "Président(e) d'EPCI",
+                            "vice_president_of_epci": "Vice-président(e) d'EPCI",
+                            "other_member_of_standing_committee": "Autre membre commission permanente",
+                            "other_member": "Autre membre"
+                        },
+                        "multiple": true
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "revenueDeclared",
+                    "label": "Indemnités déclarées",
+                    "options": {
+                        "choices": [
+                            "Non",
+                            "Oui"
+                        ]
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "contributionActive",
+                    "label": "Cotisation active",
+                    "options": {
+                        "choices": [
+                            "Non",
+                            "Oui"
+                        ]
+                    },
+                    "type": "select"
+                }
+            ]
+        }
     ]
     """
     Examples:

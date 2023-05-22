@@ -3,7 +3,7 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
-use App\JMEFilter\FilterGroup\MilitantFilterGroup;
+use App\JMEFilter\FilterGroup\PersonalInformationsFilterGroup;
 use App\JMEFilter\Types\DefinedTypes\AgeRange;
 use App\Scope\FeatureEnum;
 
@@ -32,6 +32,6 @@ class BasicFieldsForAdherentFilterBuilder implements FilterBuilderInterface
 
     public function getGroup(): string
     {
-        return MilitantFilterGroup::class;
+        return PersonalInformationsFilterGroup::class;
     }
 }

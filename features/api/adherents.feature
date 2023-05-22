@@ -417,142 +417,156 @@ Feature:
   Scenario Outline: As a user with (delegated) legislative candidate role I can get filters list to filter adherents
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/filters?scope=<scope>&feature=contacts"
+    Then print last JSON response
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     [
         {
-            "code": "gender",
-            "label": "Genre",
-            "options": {
-                "choices": {
-                    "female": "Femme",
-                    "male": "Homme",
-                    "other": "Autre"
-                }
-            },
-            "type": "select"
-        },
-        {
-            "code": "firstName",
-            "label": "Prénom",
-            "options": null,
-            "type": "text"
-        },
-        {
-            "code": "lastName",
-            "label": "Nom",
-            "options": null,
-            "type": "text"
-        },
-        {
-            "code": "age",
-            "label": "Âge",
-            "options": {
-                "first": {
-                    "min": 1,
-                    "max": 200
+            "label": "Informations personnelles",
+            "color": "#123456",
+            "filters": [
+                {
+                    "code": "gender",
+                    "label": "Genre",
+                    "options": {
+                        "choices": {
+                            "female": "Femme",
+                            "male": "Homme",
+                            "other": "Autre"
+                        }
+                    },
+                    "type": "select"
                 },
-                "second": {
-                    "min": 1,
-                    "max": 200
+                {
+                    "code": "firstName",
+                    "label": "Prénom",
+                    "options": null,
+                    "type": "text"
+                },
+                {
+                    "code": "lastName",
+                    "label": "Nom",
+                    "options": null,
+                    "type": "text"
+                },
+                {
+                    "code": "age",
+                    "label": "Âge",
+                    "options": {
+                        "first": {
+                            "min": 1,
+                            "max": 200
+                        },
+                        "second": {
+                            "min": 1,
+                            "max": 200
+                        }
+                    },
+                    "type": "integer_interval"
+                },
+                {
+                    "code": "registered",
+                    "label": "Inscrit",
+                    "options": null,
+                    "type": "date_interval"
+                },
+                {
+                    "code": "isNewRenaissanceUser",
+                    "label": "Nouveau militant",
+                    "options": {
+                        "choices": [
+                            "Non",
+                            "Oui"
+                        ]
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "emailSubscription",
+                    "label": "Abonné email",
+                    "options": {
+                        "choices": [
+                            "Non",
+                            "Oui"
+                        ]
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "smsSubscription",
+                    "label": "Abonné SMS",
+                    "options": {
+                        "choices": [
+                            "Non",
+                            "Oui"
+                        ]
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "zones",
+                    "label": "Zone géographique",
+                    "options": {
+                        "url": "/api/v3/zone/autocomplete",
+                        "query_param": "q",
+                        "value_param": "uuid",
+                        "label_param": "name",
+                        "multiple": true,
+                        "required": false
+                    },
+                    "type": "zone_autocomplete"
                 }
-            },
-            "type": "integer_interval"
+            ]
         },
         {
-            "code": "registered",
-            "label": "Inscrit",
-            "options": null,
-            "type": "date_interval"
-        },
-        {
-            "code": "isNewRenaissanceUser",
-            "label": "Nouveau militant",
-            "options": {
-                "choices": [
-                    "Non",
-                    "Oui"
-                ]
-            },
-            "type": "select"
-        },
-        {
-            "code": "committeeUuids",
-            "label": "Comités",
-            "options": {
-                "choices": [],
-                "multiple": true,
-                "required": false
-            },
-            "type": "select"
-        },
-        {
-            "code": "isCommitteeMember",
-            "label": "Membre d'un comité",
-            "options": {
-                "choices": [
-                    "Non",
-                    "Oui"
-                ]
-            },
-            "type": "select"
-        },
-        {
-            "code": "emailSubscription",
-            "label": "Abonné email",
-            "options": {
-                "choices": [
-                    "Non",
-                    "Oui"
-                ]
-            },
-            "type": "select"
-        },
-        {
-            "code": "last_membership",
-            "label": "Dernière cotisation",
-            "options": null,
-            "type": "date_interval"
-        },
-        {
-            "code": "renaissance_membership",
-            "label": "Renaissance",
-            "options": {
-              "choices": {
-                "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
-                "adherent_re": "Adhérent RE seulement",
-                "sympathizer_re": "Sympathisant RE seulement",
-                "others_adherent": "Ni adhérent RE ni sympathisant RE"
-              }
-            },
-            "type": "select"
-        },
-        {
-            "code": "smsSubscription",
-            "label": "Abonné SMS",
-            "options": {
-                "choices": [
-                    "Non",
-                    "Oui"
-                ]
-            },
-            "type": "select"
-        },
-        {
-            "code": "zones",
-            "label": "Zone géographique",
-            "options": {
-                "url": "/api/v3/zone/autocomplete",
-                "query_param": "q",
-                "value_param": "uuid",
-                "label_param": "name",
-                "multiple": true,
-                "required": false
-            },
-            "type": "zone_autocomplete"
+            "label": "Militant",
+            "color": "#123457",
+            "filters": [
+                {
+                    "code": "committeeUuids",
+                    "label": "Comités",
+                    "options": {
+                        "choices": [],
+                        "multiple": true,
+                        "required": false
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "isCommitteeMember",
+                    "label": "Membre d'un comité",
+                    "options": {
+                        "choices": [
+                            "Non",
+                            "Oui"
+                        ]
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "last_membership",
+                    "label": "Dernière cotisation",
+                    "options": null,
+                    "type": "date_interval"
+                },
+                {
+                    "code": "renaissance_membership",
+                    "label": "Renaissance",
+                    "options": {
+                        "choices": {
+                            "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
+                            "adherent_re": "Adhérent RE seulement",
+                            "sympathizer_re": "Sympathisant RE seulement",
+                            "others_adherent": "Ni adhérent RE ni sympathisant RE"
+                        }
+                    },
+                    "type": "select"
+                }
+            ]
         }
     ]
+
     """
     Examples:
       | user                                    | scope                                           |
