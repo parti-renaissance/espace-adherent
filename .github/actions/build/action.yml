@@ -5,7 +5,7 @@ inputs:
   tag:
     description: The docker image tag
     required: false
-    default: dev-caddy
+    default: dev
   hash:
     description: The docker image hash
     required: true
@@ -31,13 +31,13 @@ runs:
         TAG: ${{ inputs.tag }}
         HASH: ${{ inputs.hash }}
       run: |-
-        docker build \
+        docker build --quiet \
             --cache-from=$REGISTRY:$TAG-$HASH \
             --cache-from=$REGISTRY:$TAG \
             --tag=$REGISTRY:$TAG-$HASH \
             --target=php_caddy \
             --build-arg BUILDKIT_INLINE_CACHE=1 \
-            --build-arg BUILD_DEV=true \
+            --build-arg BUILD_DEV=1 \
             --compress \
             .
 

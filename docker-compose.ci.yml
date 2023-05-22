@@ -2,13 +2,9 @@ version: "3.9"
 
 services:
     app:
-        image: ${REGISTRY}:${TAG}
+        image: ${REGISTRY}:${TAG}-${HASH}
         environment:
             APP_ENV: test
-        build:
-            cache_from:
-                - ${REGISTRY}:${HASH}
-                - ${REGISTRY}:${TAG}
 
     db:
         tmpfs: /var/lib/mysql

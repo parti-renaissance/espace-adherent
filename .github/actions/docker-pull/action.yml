@@ -8,7 +8,7 @@ inputs:
   tag:
     description: The docker image tag
     required: false
-    default: dev-caddy
+    default: dev
 
 runs:
   using: composite

@@ -4,7 +4,6 @@
 ARG CADDY_VERSION=2
 ARG PHP_VERSION=8.2
 ARG NODE_VERSION=16
-ARG BUILD_DEV
 
 FROM node:${NODE_VERSION}-alpine AS node
 RUN apk add --no-cache git

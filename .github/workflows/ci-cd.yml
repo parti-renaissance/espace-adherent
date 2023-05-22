@@ -44,7 +44,7 @@ jobs:
 
       - uses: ./.github/actions/docker-pull
         with:
-          hash: ${{ hashFiles('docker/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
 
       - uses: ./.github/actions/build
         with:
@@ -328,6 +328,7 @@ jobs:
 
       - run: |-
           docker build \
+              --quiet \
               --cache-from=${{ env.REGISTRY }}:${{ env.TAG }} \
               --tag ${{ env.REGISTRY }}:${{ env.TAG }}-${{ env.HASH }} \
               --target=php_caddy \
