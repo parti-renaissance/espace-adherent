@@ -302,7 +302,7 @@ Feature:
       [
           {
               "label": "Informations personnelles",
-              "color": "#123456",
+              "color": "#0E7490",
               "filters": [
                   {
                       "code": "gender",
@@ -377,7 +377,7 @@ Feature:
           },
           {
               "label": "Militant",
-              "color": "#123457",
+              "color": "#0F766E",
               "filters": [
                   {
                       "code": "committee",
