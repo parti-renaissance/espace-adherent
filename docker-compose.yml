@@ -1,39 +1,68 @@
 version: "3.9"
 
 services:
-    ## en-marche.fr
-    ###############
     app:
+        build:
+            context: .
+            target: php_caddy
+            args:
+                BUILD_DEV: true
+        restart: unless-stopped
         networks:
             default:
                 aliases:
                     - test.enmarche.code
                     - enmarche.code
-        build: docker/dev
+        volumes:
+            - ./:/srv/app
+            - /srv/app/var
+            - ./docker/php/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
+            - caddy_data:/data
+            - caddy_config:/config
+            # If you develop on Mac or Windows you can remove the vendor/ directory
+            # from the bind-mount for better performance by enabling the next line:
+            # - /srv/app/vendor
         depends_on:
             - db
-            - redis
             - rabbitmq
-        volumes:
-            - .:/app
+            - redis
+        healthcheck:
+            interval: 10s
+            timeout: 3s
+            retries: 3
+            start_period: 30s
+        environment:
+            APP_ENV: dev
+            # See https://xdebug.org/docs/all_settings#mode
+            XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+        extra_hosts:
+            # Ensure that host.docker.internal is correctly defined on Linux
+            - host.docker.internal:host-gateway
 
     db:
         image: mysql:8.0
         volumes:
-            - ./docker/dev/my.cnf:/etc/mysql/conf.d/my.cnf
+            - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
         environment:
             MYSQL_ROOT_PASSWORD: root
 
     redis:
-        image: redis:3.2
+        image: redis:6-alpine
 
-    ## testing
-    ####################
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+
+    node:
+        build:
+            context: .
+            target: node
+        volumes:
+            - ./:/srv/app
+
     selenium:
         image: selenium/standalone-chrome:90.0
         shm_size: 2g
 
-    ## common
-    ####################
-    rabbitmq:
-        image: rabbitmq:3-management
+volumes:
+    caddy_data:
+    caddy_config:

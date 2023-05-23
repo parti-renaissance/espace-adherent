@@ -604,12 +604,12 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "birthdate: Cette valeur doit être comprise entre @string@ à @string@ et @string@ à @string@.",
+      "detail": "birthdate: Cette valeur doit être comprise entre @string@ et @string@.",
       "violations": [
         {
           "code": "@uuid@",
           "propertyPath": "birthdate",
-          "message": "Cette valeur doit être comprise entre @string@ à @string@ et @string@ à @string@."
+          "message": "Cette valeur doit être comprise entre @string@ et @string@."
         }
       ]
     }

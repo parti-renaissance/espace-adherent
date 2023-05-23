@@ -6,6 +6,7 @@ on:
     types: [ published ]
 
 env:
+  DOCKER_BUILDKIT: 1
   DOCKER_COMPOSE_ARGS: -f docker-compose.yml -f docker-compose.ci.yml
   EXEC_ARGS: -T
   # Update this to force cache reset
@@ -13,9 +14,8 @@ env:
   HASH: ${{ github.sha }}
   TAG: ${{ github.ref_name }}
 
-  NODE_VERSION: 16.18.1
-  PHP_VERSION: 8.1
-  PHP_SECURITY_CHECKER_VERSION: 1.2.0
+  NODE_VERSION: 18.x
+  PHP_VERSION: 8.2
 
   REGISTRY: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
   REGISTRY_HOST: ${{ secrets.GCP_HOST_GCR }}
@@ -28,7 +28,7 @@ concurrency:
 jobs:
   build:
     name: Build dev
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -43,19 +43,19 @@ jobs:
 
       - uses: ./.github/actions/docker-pull
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
 
       - uses: ./.github/actions/build
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
 
       - uses: ./.github/actions/docker-push
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
 
   build-static:
     name: Build assets
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -83,7 +83,7 @@ jobs:
 
   lint:
     name: Lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [build]
 
     steps:
@@ -121,6 +121,8 @@ jobs:
       - uses: ./.github/actions/setup-yarn
 
       - name: PHP Coding Standards Fixer
+        env:
+            PHP_CS_FIXER_IGNORE_ENV: 1
         run: vendor/bin/php-cs-fixer fix --diff --dry-run --no-interaction -v
 
       - name: Lint YAML files
@@ -140,14 +142,17 @@ jobs:
 
       - name: Local PHP Security Checker
         run: |-
-          curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v${PHP_SECURITY_CHECKER_VERSION}/local-php-security-checker_${PHP_SECURITY_CHECKER_VERSION}_linux_$(dpkg --print-architecture) --output ./local-php-security-checker
+          lastReleaseInfo=$(curl --silent "https://api.github.com/repos/fabpot/local-php-security-checker/releases/latest")
+          securityCheckVersion=$(echo "${lastReleaseInfo}" | grep '"tag_name":' | sed -E 's/.*"v(.+)",/\1/')
+
+          curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v${securityCheckVersion}/local-php-security-checker_${securityCheckVersion}_linux_$(dpkg --print-architecture) --output ./local-php-security-checker
           chmod +x ./local-php-security-checker
 
           ./local-php-security-checker
 
   phpunit:
     name: PHPUnit
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ build ]
 
     steps:
@@ -163,11 +168,11 @@ jobs:
 
       - uses: ./.github/actions/docker-pull
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
 
       - uses: ./.github/actions/build
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
           extra-containers: db rabbitmq
           keys: true
           cache-warmup: true
@@ -182,7 +187,7 @@ jobs:
 
   behat:
     name: Behat
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ build ]
 
     steps:
@@ -198,11 +203,11 @@ jobs:
 
       - uses: ./.github/actions/docker-pull
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
 
       - uses: ./.github/actions/build
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
           extra-containers: db redis rabbitmq
           keys: true
           cache-warmup: true
@@ -217,7 +222,7 @@ jobs:
 
   behat-selenium:
     name: Behat/Selenium
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ build, build-static ]
     strategy:
       fail-fast: false
@@ -255,11 +260,11 @@ jobs:
 
       - uses: ./.github/actions/docker-pull
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
 
       - uses: ./.github/actions/build
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ hashFiles('Dockerfile', 'docker/*') }}
           extra-containers: db redis rabbitmq selenium
           keys: true
 
@@ -280,7 +285,7 @@ jobs:
 
   docker-build-push-gcr:
     name: Build prod & push on registry
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ lint, phpunit, behat, behat-selenium ]
     if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
 
@@ -319,12 +324,18 @@ jobs:
       - uses: ./.github/actions/docker-pull
         with:
           hash: ${{ env.HASH }}
-          tag: master
+          tag: ${{ env.TAG }}
 
       - run: perl -pi -e "s/default/${{ github.sha }}/g" ./config/packages/app_version.yaml
 
       - run: |-
-          docker build --cache-from=${{ env.REGISTRY }}:master --tag ${{ env.REGISTRY }}:$TAG-$HASH .
+          docker build \
+              --quiet \
+              --cache-from=${{ env.REGISTRY }}:${{ env.TAG }} \
+              --tag ${{ env.REGISTRY }}:${{ env.TAG }}-${{ env.HASH }} \
+              --target=php_caddy \
+              --build-arg BUILDKIT_INLINE_CACHE=1 \
+              .
 
       - uses: ./.github/actions/docker-push
         with:
@@ -333,7 +344,7 @@ jobs:
 
   deploy-staging:
     name: Deploy Staging
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ docker-build-push-gcr ]
     environment: staging
     if: github.event.ref == 'refs/heads/master'

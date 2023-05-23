@@ -24,7 +24,7 @@
         }
     },
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-amqp": "*",
         "ext-apcu": "*",
         "ext-ctype": "*",

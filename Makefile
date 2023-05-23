@@ -1,17 +1,18 @@
 DOCKER_COMPOSE_ARGS?=
 DOCKER_COMPOSE?=docker compose $(DOCKER_COMPOSE_ARGS)
-RUN_ARGS?=
-RUN=$(DOCKER_COMPOSE) run --rm $(RUN_ARGS) app
+RUN_ARGS?=--rm
+RUN=$(DOCKER_COMPOSE) run $(RUN_ARGS) app
+RUN_NODE?=$(DOCKER_COMPOSE) run --rm node
 EXEC_ARGS?=
-EXEC?=$(DOCKER_COMPOSE) exec $(EXEC_ARGS) app entrypoint.sh
+EXEC?=$(DOCKER_COMPOSE) exec $(EXEC_ARGS) app
 COMPOSER=$(EXEC) composer
 CONSOLE=$(EXEC) bin/console
-PHPCSFIXER?=$(EXEC) php -d memory_limit=1024m vendor/bin/php-cs-fixer
+PHPCSFIXER?=$(DOCKER_COMPOSE) exec -e PHP_CS_FIXER_IGNORE_ENV=1 app php -d memory_limit=1024m vendor/bin/php-cs-fixer
 BEHAT=$(EXEC) vendor/bin/behat
 BEHAT_ARGS?=-vvv
 PHPUNIT=$(EXEC) vendor/bin/phpunit
 PHPUNIT_ARGS?=-v
-DOCKER_FILES=$(shell find ./docker/dev/ -type f -name '*')
+DOCKER_FILES=$(shell find ./docker/ -type f -name '*')
 CONTAINERS?=
 
 .DEFAULT_GOAL := help
@@ -83,7 +84,7 @@ db: db-init                                                                     
 db-init: vendor wait-for-db                                                                            ## Init the database
 	$(CONSOLE) doctrine:database:drop --force --if-exists --no-debug
 	$(CONSOLE) doctrine:database:create --if-not-exists --no-debug
-	$(DOCKER_COMPOSE) exec -T app mysql -h db -uroot -proot --quick enmarche < ./dump/dump-2022.sql
+	$(DOCKER_COMPOSE) exec -T db mysql -uroot -proot --quick enmarche < ./dump/dump-2022.sql
 	$(CONSOLE) doctrine:migrations:migrate -n --no-debug
 
 db-diff: vendor wait-for-db                                                                            ## Generate a migration by comparing your current database to your mapping information
@@ -115,10 +116,10 @@ watch-mac:
 	yarn watch
 
 assets: node_modules                                                                                   ## Build the development version of the assets
-	$(EXEC) yarn build-dev
+	$(RUN_NODE) yarn build-dev
 
 assets-prod: node_modules                                                                              ## Build the production version of the assets
-	$(EXEC) yarn build-prod
+	$(RUN_NODE) yarn build-prod
 
 ##
 ## Tests
@@ -154,7 +155,7 @@ tfp-rabbitmq: wait-for-rabbitmq                                                 
 tfp-db-init: wait-for-db                                                                                    ## Init databases for tests
 	$(CONSOLE) doctrine:database:drop --force --if-exists --env=test --no-debug
 	$(CONSOLE) doctrine:database:create --env=test --no-debug
-	$(DOCKER_COMPOSE) exec -T app mysql -h db -uroot -proot --quick enmarche_test < ./dump/dump-2022.sql
+	$(DOCKER_COMPOSE) exec -T db mysql -uroot -proot --quick enmarche_test < ./dump/dump-2022.sql
 	$(CONSOLE) doctrine:migration:migrate -n --no-debug --env=test
 	$(CONSOLE) doctrine:schema:validate --no-debug --env=test
 
@@ -195,7 +196,7 @@ phpstan: vendor
 phplint: phpcsfix phpstan
 
 security-check: vendor                                                                                 ## Check for vulnerable dependencies
-	$(EXEC) local-php-security-checker --path=/app
+	$(EXEC) local-php-security-checker --path=/srv/app
 
 
 ##
@@ -218,7 +219,7 @@ rm-docker-dev.lock:
 
 perm:
 	$(EXEC) chmod -R 777 app/data/images app/data/files
-	$(EXEC) chmod 660 var/public.key var/private.key
+	$(EXEC) chmod 664 var/public.key var/private.key
 
 # Rules from files
 
@@ -231,7 +232,7 @@ composer.lock: composer.json
 	@echo composer.lock is not up to date.
 
 node_modules: yarn.lock
-	$(EXEC) yarn install
+	$(RUN_NODE) yarn install
 
 yarn.lock: package.json
 	@echo yarn.lock is not up to date.

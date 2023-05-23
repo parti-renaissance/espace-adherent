@@ -31,11 +31,15 @@ runs:
         TAG: ${{ inputs.tag }}
         HASH: ${{ inputs.hash }}
       run: |-
-        docker build --quiet docker/dev \
-          --cache-from=$REGISTRY:$TAG-$HASH \
-          --cache-from=$REGISTRY:$TAG \
-          --tag=$REGISTRY:$TAG-$HASH \
-          --compress
+        docker build --quiet \
+            --cache-from=$REGISTRY:$TAG-$HASH \
+            --cache-from=$REGISTRY:$TAG \
+            --tag=$REGISTRY:$TAG-$HASH \
+            --target=php_caddy \
+            --build-arg BUILDKIT_INLINE_CACHE=1 \
+            --build-arg BUILD_DEV=1 \
+            --compress \
+            .
 
     - name: Start app container
       shell: bash
