@@ -205,7 +205,7 @@ class Mandate
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      */
-    private ?GeoZone $attachmentZone;
+    private ?GeoZone $attachedZone;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -218,7 +218,7 @@ class Mandate
         bool $onGoing = true,
         \DateTime $beginAt = null,
         \DateTime $finishAt = null,
-        GeoZone $attachmentZone = null
+        GeoZone $attachedZone = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;
@@ -230,7 +230,7 @@ class Mandate
         $this->onGoing = $onGoing;
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
-        $this->attachmentZone = $attachmentZone;
+        $this->attachedZone = $attachedZone;
 
         $this->politicalFunctions = new ArrayCollection();
     }
@@ -390,14 +390,14 @@ class Mandate
         return $functions->count() > 0 ? $functions->first() : null;
     }
 
-    public function getAttachmentZone(): ?GeoZone
+    public function getAttachedZone(): ?GeoZone
     {
-        return $this->attachmentZone;
+        return $this->attachedZone;
     }
 
-    public function setAttachmentZone(?GeoZone $attachmentZone): void
+    public function setAttachedZone(?GeoZone $attachedZone): void
     {
-        $this->attachmentZone = $attachmentZone;
+        $this->attachedZone = $attachedZone;
     }
 
     public function __toString(): string
