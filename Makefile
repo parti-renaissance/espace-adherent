@@ -7,7 +7,7 @@ EXEC_ARGS?=
 EXEC?=$(DOCKER_COMPOSE) exec $(EXEC_ARGS) app
 COMPOSER=$(EXEC) composer
 CONSOLE=$(EXEC) bin/console
-PHPCSFIXER?=$(DOCKER_COMPOSE) exec -e PHP_CS_FIXER_IGNORE_ENV=1 app php -d memory_limit=1024m vendor/bin/php-cs-fixer
+PHPCSFIXER?=$(EXEC) php -d memory_limit=1024m vendor/bin/php-cs-fixer
 BEHAT=$(EXEC) vendor/bin/behat
 BEHAT_ARGS?=-vvv
 PHPUNIT=$(EXEC) vendor/bin/phpunit
