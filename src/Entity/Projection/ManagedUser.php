@@ -106,6 +106,8 @@ class ManagedUser
      * @var string|null
      *
      * @ORM\Column(length=150, nullable=true)
+     *
+     * @Groups({"managed_user_read"})
      */
     private $address;
 

@@ -210,6 +210,7 @@ Feature:
         },
         "items": [
             {
+                "address": "2 avenue Jean Jaurès",
                 "postal_code": "77000",
                 "city": "Melun",
                 "country": "FR",
@@ -229,6 +230,7 @@ Feature:
                 "committee_uuid": null
             },
             {
+                "address": "47 rue Martre",
                 "postal_code": "92110",
                 "city": "Clichy",
                 "country": "FR",
@@ -248,6 +250,7 @@ Feature:
                 "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3"
             },
             {
+                "address": "2 avenue Jean Jaurès",
                 "city": "Melun",
                 "city_code": null,
                 "country": "FR",
@@ -267,6 +270,7 @@ Feature:
                 "committee_uuid": null
             },
             {
+                "address": "12 Pilgerweg",
                 "postal_code": "8802",
                 "city": "Kilchberg",
                 "country": "CH",
@@ -288,6 +292,7 @@ Feature:
                 "committee_uuid": null
             },
             {
+                "address": "32 Zeppelinstrasse",
                 "postal_code": "8057",
                 "city": "Zürich",
                 "country": "CH",
@@ -327,6 +332,7 @@ Feature:
         },
         "items": [
             {
+                "address": "2 avenue Jean Jaurès",
                 "postal_code": "77000",
                 "city": "Melun",
                 "country": "FR",
@@ -369,6 +375,7 @@ Feature:
         },
         "items": [
             {
+                "address": "2 avenue Jean Jaurès",
                 "postal_code": "77000",
                 "city": "Melun",
                 "country": "FR",
@@ -388,6 +395,7 @@ Feature:
                 "committee_uuid": null
             },
             {
+                "address": "47 rue Martre",
                 "postal_code": "92110",
                 "city": "Clichy",
                 "country": "FR",
@@ -589,6 +597,7 @@ Feature:
         },
         "items": [
             {
+                "address": "3 Avenue du Général Eisenhower",
                 "postal_code": "75008",
                 "city": "Paris 8ème",
                 "country": "FR",
@@ -611,6 +620,7 @@ Feature:
                 "committee_uuid": null
             },
             {
+                "address": "36 rue de la Paix",
                 "postal_code": "75008",
                 "city": "Paris 8ème",
                 "country": "FR",
@@ -650,6 +660,7 @@ Feature:
         },
         "items": [
             {
+                "address": "36 rue de la Paix",
                 "postal_code": "75008",
                 "city": "Paris 8ème",
                 "country": "FR",
