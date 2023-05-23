@@ -123,6 +123,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(OrderFilter::class, properties={"createdAt"})
  *
  * @ValidAuthorRoleMessageType
+ *
+ * @phpstan-consistent-constructor
  */
 abstract class AbstractAdherentMessage implements AdherentMessageInterface
 {
@@ -240,7 +242,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      */
     private $source = self::SOURCE_PLATFORM;
 
-    final public function __construct(UuidInterface $uuid = null, Adherent $author = null)
+    public function __construct(UuidInterface $uuid = null, Adherent $author = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->author = $author;

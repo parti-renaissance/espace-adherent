@@ -4,13 +4,15 @@
 	auto_https off
 }
 
-:80
+:80 
 
 {$CADDY_EXTRA_CONFIG}
 
 log
 
 route {
+	respond /healthcheck 200
+
 	root * /srv/app/public
 	php_fastcgi unix//var/run/php/php-fpm.sock
 	encode zstd gzip

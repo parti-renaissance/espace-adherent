@@ -70,7 +70,7 @@ abstract class Report
     /**
      * @throws \InvalidArgumentException
      */
-    final public function __construct(ReportableInterface $subject, Adherent $author, array $reasons, ?string $comment)
+    public function __construct(ReportableInterface $subject, Adherent $author, array $reasons, ?string $comment)
     {
         if (!\count($reasons)) {
             throw new \InvalidArgumentException('At least one reason must be provided');

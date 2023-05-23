@@ -7,6 +7,12 @@ if [ "${1#-}" != "$1" ]; then
 fi
 
 if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
+  if [ "$APP_ENV" = 'prod' ]; then
+    rm -rf var/cache/*
+    bin/console cache:clear --env=prod --no-warmup
+    bin/console cache:warmup --env=prod
+  fi
+
   setfacl -R -m u:www-data:rwX -m u:"$(whoami)":rwX var
   setfacl -dR -m u:www-data:rwX -m u:"$(whoami)":rwX var
 fi

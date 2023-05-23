@@ -14,6 +14,8 @@ use Ramsey\Uuid\UuidInterface;
  * An abstract temporary token for Adherent.
  *
  * @ORM\MappedSuperclass
+ *
+ * @phpstan-consistent-constructor
  */
 abstract class AdherentToken implements AdherentExpirableTokenInterface
 {
@@ -52,12 +54,8 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
      */
     private $usedAt;
 
-    final private function __construct(
-        UuidInterface $adherentUuid,
-        \DateTime $createdAt,
-        \DateTime $expiration,
-        SHA1 $value
-    ) {
+    public function __construct(UuidInterface $adherentUuid, \DateTime $createdAt, \DateTime $expiration, SHA1 $value)
+    {
         if ($expiration <= new \DateTime('now')) {
             throw new \InvalidArgumentException('Expiration date must be in the future.');
         }
@@ -69,10 +67,7 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         $this->expiredAt = $expiration;
     }
 
-    /**
-     * @return static
-     */
-    public static function generate(Adherent $adherent, string $lifetime = '+1 day'): AdherentExpirableTokenInterface
+    public static function generate(Adherent $adherent, string $lifetime = '+1 day'): static
     {
         $timestamp = new \DateTime('now');
         $adherentUuid = clone $adherent->getUuid();

@@ -99,7 +99,7 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
      */
     public $provisional = false;
 
-    final public function __construct(
+    public function __construct(
         Adherent $adherent,
         ?string $gender,
         \DateTime $beginAt,

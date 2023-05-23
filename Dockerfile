@@ -9,7 +9,7 @@ FROM node:${NODE_VERSION}-alpine AS node
 RUN apk add --no-cache git
 WORKDIR /srv/app
 
-FROM caddy:${CADDY_VERSION} AS caddy
+FROM caddy:${CADDY_VERSION}-alpine AS caddy
 
 FROM mlocati/php-extension-installer:2 AS php_extension_installer
 
@@ -21,7 +21,7 @@ ENV APP_ENV=prod
 WORKDIR /srv/app
 
 # php extensions installer: https://github.com/mlocati/docker-php-extension-installer
-COPY --from=php_extension_installer --link /usr/bin/install-php-extensions /usr/local/bin/
+COPY --link --from=php_extension_installer /usr/bin/install-php-extensions /usr/local/bin/
 
 # persistent / runtime deps
 RUN apk add --no-cache \
@@ -58,7 +58,7 @@ RUN mkdir -p /var/run/php
 COPY --link docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
 RUN chmod +x /usr/local/bin/docker-healthcheck
 
-HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
 
 COPY --link docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
@@ -67,7 +67,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
-COPY --from=composer/composer:2-bin --link /composer /usr/bin/composer
+COPY --link --from=composer/composer:2-bin /composer /usr/bin/composer
 
 COPY --link . .
 
@@ -78,11 +78,12 @@ RUN test -z "$BUILD_DEV" && ( \
         composer dump-autoload --classmap-authoritative --no-dev; \
         composer dump-env prod; \
         composer run-script --no-dev post-install-cmd; \
+        rm -rf /root/.composer; \
         chmod +x bin/console; sync \
     ) || :
 
-COPY --from=caddy /usr/bin/caddy /usr/bin/caddy
-COPY docker/caddy/Caddyfile /etc/caddy/Caddyfile
+COPY --link --from=caddy /usr/bin/caddy /usr/bin/caddy
+COPY --link docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
 EXPOSE 80
 
