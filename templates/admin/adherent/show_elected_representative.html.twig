@@ -1,0 +1,14 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field_value %}
+    {% set elected_representative = get_elected_representative(object) %}
+    {% if not elected_representative %}
+        L'adhérent n'est pas un élu.
+    {% else %}
+        <a class="btn elected-representative-link" title="Fiche élu"
+           target="_blank" rel="noopener noreferrer"
+           href="{{ path('admin_app_electedrepresentative_electedrepresentative_edit', { id: elected_representative.id }) }}">
+            Voir <i class="fa fa-external-link"></i>
+        </a>
+    {% endif %}
+{% endblock %}

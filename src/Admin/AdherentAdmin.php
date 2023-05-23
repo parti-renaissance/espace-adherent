@@ -192,12 +192,6 @@ class AdherentAdmin extends AbstractAdmin
     {
         $showMapper
             ->with('Informations personnelles', ['class' => 'col-md-6'])
-                ->add('status', null, [
-                    'label' => 'Etat du compte',
-                ])
-                ->add('tags', null, [
-                    'label' => 'Tags admin',
-                ])
                 ->add('gender', null, [
                     'label' => 'Genre',
                 ])
@@ -209,15 +203,6 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('firstName', null, [
                     'label' => 'Prénom',
-                ])
-                ->add('certifiedAt', null, [
-                    'label' => 'Certifié le',
-                ])
-                ->add('nickname', null, [
-                    'label' => 'Pseudo',
-                ])
-                ->add('nicknameUsed', null, [
-                    'label' => 'Pseudo utilisé ?',
                 ])
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',
@@ -239,58 +224,8 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'adherent.mandate.admin.label',
                     'template' => 'admin/adherent/show_mandates.html.twig',
                 ])
-                ->add('subscriptionTypes', null, [
-                    'label' => 'Abonné aux notifications via e-mail et mobile',
-                    'associated_property' => 'label',
-                ])
             ->end()
-            ->with('Responsabilités locales', ['class' => 'col-md-3'])
-                ->add('isReferent', 'boolean', [
-                    'label' => 'Est référent ?',
-                ])
-                ->add('coordinatorCommitteeArea', null, [
-                    'label' => 'Coordinateur régional',
-                ])
-                ->add('managedArea.tags', null, [
-                    'label' => 'referent.label.tags',
-                ])
-                ->add('procurationManagedAreaCodesAsString', null, [
-                    'label' => 'Responsable procurations',
-                ])
-                ->add('isAssessorManager', 'boolean', [
-                    'label' => 'Est responsable assesseur ?',
-                ])
-                ->add('assessorManagedAreaCodesAsString', null, [
-                    'label' => 'Responsable assesseurs',
-                ])
-                ->add('isJecouteManager', 'boolean', [
-                    'label' => 'Est responsable des questionnaires ?',
-                ])
-                ->add('jecouteManagedArea.zone', null, [
-                    'label' => 'Responsable des questionnaires',
-                ])
-            ->end()
-            ->with('Mandat électif', ['class' => 'col-md-3'])
-                ->add('isDeputy', 'boolean', [
-                    'label' => 'Est un(e) député(e) ?',
-                ])
-                ->add('deputyZone', null, [
-                    'label' => 'Circonscription député',
-                ])
-            ->end()
-            ->with('Membre du Conseil', ['class' => 'col-md-6'])
-                ->add('isBoardMember', 'boolean', [
-                    'label' => 'Est membre du Conseil ?',
-                ])
-                ->add('boardMember.area', null, [
-                    'label' => 'Région',
-                ])
-                ->add('boardMember.roles', null, [
-                    'label' => 'Rôles',
-                    'template' => 'admin/adherent/list_board_member_roles.html.twig',
-                ])
-            ->end()
-            ->with('Adresse', ['class' => 'col-md-6'])
+            ->with('Adresse', ['class' => 'col-md-3'])
                 ->add('postAddress.address', null, [
                     'label' => 'Rue',
                 ])
@@ -310,14 +245,50 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Longitude',
                 ])
             ->end()
-            ->with('Coordinateur', ['class' => 'col-md-3'])
-                ->add('isRegionalCoordinator', 'boolean', [
-                    'label' => 'Est coordinateur ?',
+            ->with('Information de compte', ['class' => 'col-md-3'])
+                ->add('status', null, [
+                    'label' => 'Etat du compte',
+                ])
+                ->add('tags', null, [
+                    'label' => 'Tags admin',
+                ])
+                ->add('certifiedAt', null, [
+                    'label' => 'Certifié le',
+                ])
+                ->add('lastMembershipDonation', null, [
+                    'label' => 'Statut de la cotisation',
+                    'template' => 'admin/adherent/show_last_membership_donation_date.html.twig',
                 ])
             ->end()
-            ->with('Responsable procuration', ['class' => 'col-md-3'])
-                ->add('isProcurationManager', 'boolean', [
-                    'label' => 'Est responsable procuration ?',
+            ->with('Abonnement', ['class' => 'col-md-6'])
+                ->add('subscriptionTypes', null, [
+                    'label' => 'Abonné aux notifications via e-mail et mobile',
+                    'associated_property' => 'label',
+                ])
+            ->end()
+            ->with('Responsabilités locales', ['class' => 'col-md-3'])
+                ->add('type', null, [
+                    'label' => 'Rôles',
+                    'template' => 'admin/adherent/show_statuses.html.twig',
+                ])
+            ->end()
+            ->with('Membre du Conseil', ['class' => 'col-md-3'])
+                ->add('isBoardMember', 'boolean', [
+                    'label' => 'Est membre du Conseil ?',
+                ])
+                ->add('boardMember.area', null, [
+                    'label' => 'Région',
+                ])
+                ->add('boardMember.roles', null, [
+                    'label' => 'Rôles',
+                    'template' => 'admin/adherent/list_board_member_roles.html.twig',
+                ])
+            ->end()
+            ->with('Responsabilités politiques', ['class' => 'col-md-3'])
+                ->add('electedRepresentative', null, [
+                    'label' => 'Identité de l\'élu',
+                    'template' => 'admin/adherent/show_elected_representative.html.twig',
+                    'virtual_field' => true,
                 ])
             ->end()
         ;
