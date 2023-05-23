@@ -219,6 +219,7 @@ Feature:
                 "interests": [],
                 "city_code": "77288",
                 "phone_number": null,
+                "nationality": null,
                 "sms_subscription": false,
                 "email": "francis.brioul@yahoo.com",
                 "email_subscription": false,
@@ -238,6 +239,7 @@ Feature:
                 "interests": [],
                 "city_code": "92024",
                 "phone_number": "+33 6 66 66 66 66",
+                "nationality": "FR",
                 "sms_subscription": true,
                 "email": "gisele-berthoux@caramail.com",
                 "email_subscription": true,
@@ -259,6 +261,7 @@ Feature:
                 "last_name": "Fullstack",
                 "postal_code": "77000",
                 "phone_number": null,
+                "nationality": null,
                 "sms_subscription": false,
                 "renaissance_membership": null,
                 "created_at": "@string@.isDateTime()",
@@ -278,6 +281,7 @@ Feature:
                 ],
                 "city_code": null,
                 "phone_number": "+33 6 66 66 66 66",
+                "nationality": "FR",
                 "email": "michel.vasseur@example.ch",
                 "email_subscription": true,
                 "sms_subscription": true,
@@ -301,6 +305,7 @@ Feature:
                 ],
                 "city_code": null,
                 "phone_number": "+33 6 66 66 66 66",
+                "nationality": "FR",
                 "sms_subscription": true,
                 "email": "michelle.dufour@example.ch",
                 "email_subscription": false,
@@ -336,6 +341,7 @@ Feature:
                 "interests": [],
                 "city_code": "77288",
                 "phone_number": null,
+                "nationality": null,
                 "sms_subscription": false,
                 "email": "francis.brioul@yahoo.com",
                 "email_subscription": false,
@@ -378,6 +384,7 @@ Feature:
                 "interests": [],
                 "city_code": null,
                 "phone_number": null,
+                "nationality": null,
                 "sms_subscription": false,
                 "email": "je-mengage-user-1@en-marche-dev.fr",
                 "email_subscription": false,
@@ -397,6 +404,7 @@ Feature:
                 "interests": [],
                 "city_code": "92024",
                 "phone_number": "+33 6 66 66 66 66",
+                "nationality": "FR",
                 "sms_subscription": true,
                 "email": "gisele-berthoux@caramail.com",
                 "email_subscription": true,
@@ -417,7 +425,6 @@ Feature:
   Scenario Outline: As a user with (delegated) legislative candidate role I can get filters list to filter adherents
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/filters?scope=<scope>&feature=contacts"
-    Then print last JSON response
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -601,6 +608,7 @@ Feature:
                 ],
                 "city_code": "75056",
                 "phone_number": null,
+                "nationality": null,
                 "sms_subscription": true,
                 "email": "deputy@en-marche-dev.fr",
                 "email_subscription": true,
@@ -624,6 +632,7 @@ Feature:
                 ],
                 "city_code": "75056",
                 "phone_number": "+33 1 87 26 42 36",
+                "nationality": "FR",
                 "sms_subscription": true,
                 "email": "jacques.picard@en-marche.fr",
                 "email_subscription": true,
@@ -663,6 +672,7 @@ Feature:
                 ],
                 "city_code": "75056",
                 "phone_number": "+33 1 87 26 42 36",
+                "nationality": "FR",
                 "sms_subscription": true,
                 "email": "jacques.picard@en-marche.fr",
                 "email_subscription": true,

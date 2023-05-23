@@ -178,6 +178,15 @@ class ManagedUser
     private $phone;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(length=2, nullable=true)
+     *
+     * @Groups({"managed_user_read"})
+     */
+    private $nationality;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="text", nullable=true)
@@ -318,6 +327,7 @@ class ManagedUser
         string $lastName = null,
         int $age = null,
         PhoneNumber $phone = null,
+        string $nationality = null,
         string $committees = null,
         array $committeeUuids = null,
         int $isCommitteeMember = 0,
@@ -352,6 +362,7 @@ class ManagedUser
         $this->lastName = $lastName;
         $this->age = $age;
         $this->phone = $phone;
+        $this->nationality = $nationality;
         $this->committees = $committees;
         $this->committeeUuids = $committeeUuids;
         $this->isCommitteeMember = $isCommitteeMember;
@@ -454,6 +465,11 @@ class ManagedUser
     public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
+    }
+
+    public function getNationality(): ?string
+    {
+        return $this->nationality;
     }
 
     public function getCommittees(): array
