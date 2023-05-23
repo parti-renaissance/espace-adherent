@@ -139,7 +139,7 @@ class ReferentElectedRepresentativeControllerTest extends AbstractEnMarcheWebCas
 
         $text = $crawler->filter('tbody')->text();
 
-        $this->assertCount(6, $crawler->filter('tr.referent__item'));
+        $this->assertCount(4, $crawler->filter('tr.referent__item'));
 
         $this->assertStringContainsString('PARIS Département', $text);
         $this->assertStringContainsString('PARIS Arrondissement', $text);

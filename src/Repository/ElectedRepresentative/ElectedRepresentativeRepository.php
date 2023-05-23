@@ -361,26 +361,9 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             'mandate_zone_2'
         );
 
-        if (!\in_array('adherent', $qb->getAllAliases(), true)) {
-            $qb->leftJoin($alias.'.adherent', 'adherent');
-        }
-
-        $adherentZoneConditionQueryBuilder = $this->createGeoZonesQueryBuilder(
-            $zones,
-            $qb,
-            Adherent::class,
-            'a2',
-            'zones',
-            'z2',
-            null,
-            true,
-            'zone_parent_2'
-        );
-
         $qb->andWhere(
             ($condition ?? new Orx())
                 ->add(sprintf('mandate.id IN (%s)', $zoneConditionQueryBuilder->getDQL()))
-                ->add(sprintf('adherent.id IN (%s)', $adherentZoneConditionQueryBuilder->getDQL()))
         );
 
         return $qb;
