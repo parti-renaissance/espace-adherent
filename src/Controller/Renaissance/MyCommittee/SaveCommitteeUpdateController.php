@@ -26,15 +26,11 @@ class SaveCommitteeUpdateController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if (!$adherent->isRenaissanceUser()) {
+        if (!$adherent->isRenaissanceUser() || $adherent->isForeignResident()) {
             return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
-        if (!$adherent->isForeignResident()) {
-            $zones = $adherent->getParentZonesOfType(Zone::DEPARTMENT);
-        } else {
-            $zones = $adherent->getZonesOfType(Zone::COUNTRY);
-        }
+        $zones = $adherent->getParentZonesOfType(Zone::DEPARTMENT);
 
         foreach ($committee->getZones() as $zone) {
             if (!$zoneProvider->zoneBelongsToSomeZones($zone, $zones)) {
