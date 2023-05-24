@@ -4,7 +4,7 @@
 	auto_https off
 }
 
-:80 
+:80
 
 {$CADDY_EXTRA_CONFIG}
 
@@ -14,6 +14,24 @@ route {
 	respond /healthcheck 200
 
 	root * /srv/app/public
+
+    # Set security headers
+
+	# Disable Google FLOC tracking if not enabled explicitly: https://plausible.io/blog/google-floc
+	header ?Permissions-Policy "interest-cohort=()"
+
+	# Enable HTTP Strict Transport Security (HSTS) to force clients to always connect via HTTPS
+	header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+	# Disallow the site to be rendered within a frame (clickjacking protection)
+	header X-Frame-Options "SAMEORIGIN"
+
+	# Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
+	header X-Content-Type-Options "nosniff"
+
+	# Enable cross-site filter (XSS) and tell browser to block detected attacks
+	header X-XSS-Protection "1; mode=block"
+
 	php_fastcgi unix//var/run/php/php-fpm.sock
 	encode zstd gzip
 	file_server
