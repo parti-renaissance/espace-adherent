@@ -16,14 +16,21 @@
                         </div>
                         <div class="mt-6 flex items-center justify-between space-x-1 text-gray-500">
                             <span class="text-sm">Créé le <time datetime="{{ my_committee.getCreatedAt()|date('Y-m-d') }}">{{ my_committee.getCreatedAt|format_datetime('none', 'none', 'd MMM yyyy') }}</time></span>
-                            <a href="{{ path('app_my_committee_show_list') }}" class="text-dark-blue hover:underline hover:text-light-blue-500">Changer</a>
+
+                            {% if not app.user.isForeignResident() %}
+                                <a href="{{ path('app_my_committee_show_list') }}" class="text-dark-blue hover:underline hover:text-light-blue-500">Changer</a>
+                            {% endif %}
                         </div>
                     </div>
                 </article>
             </div>
         {% else %}
             <p>
-                Vous n'êtes dans aucun comité pour le moment. Vous pouvez choisir votre comité <a href="{{ path('app_my_committee_show_list') }}" class="text-sky-500">ici</a>
+                Vous n'êtes dans aucun comité pour le moment.
+
+                {% if not app.user.isForeignResident() %}
+                    Vous pouvez choisir votre comité <a href="{{ path('app_my_committee_show_list') }}" class="text-sky-500">ici</a>
+                {% endif %}
             </p>
         {% endif %}
     </section>
