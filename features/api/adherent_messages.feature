@@ -344,12 +344,6 @@ Feature:
                       "type": "integer_interval"
                   },
                   {
-                      "code": "registered",
-                      "label": "Inscrit",
-                      "options": null,
-                      "type": "date_interval"
-                  },
-                  {
                       "code": "isCertified",
                       "label": "Certifié",
                       "options": {
@@ -406,6 +400,12 @@ Feature:
                   {
                       "code": "last_membership",
                       "label": "Dernière cotisation",
+                      "options": null,
+                      "type": "date_interval"
+                  },
+                  {
+                      "code": "registered",
+                      "label": "Inscrit",
                       "options": null,
                       "type": "date_interval"
                   },

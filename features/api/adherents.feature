@@ -481,23 +481,6 @@ Feature:
                     "type": "integer_interval"
                 },
                 {
-                    "code": "registered",
-                    "label": "Inscrit",
-                    "options": null,
-                    "type": "date_interval"
-                },
-                {
-                    "code": "isNewRenaissanceUser",
-                    "label": "Nouveau militant",
-                    "options": {
-                        "choices": [
-                            "Non",
-                            "Oui"
-                        ]
-                    },
-                    "type": "select"
-                },
-                {
                     "code": "emailSubscription",
                     "label": "Abonné email",
                     "options": {
@@ -564,6 +547,23 @@ Feature:
                     "label": "Dernière cotisation",
                     "options": null,
                     "type": "date_interval"
+                },
+                {
+                    "code": "registered",
+                    "label": "Inscrit",
+                    "options": null,
+                    "type": "date_interval"
+                },
+                {
+                    "code": "isNewRenaissanceUser",
+                    "label": "Nouveau militant",
+                    "options": {
+                        "choices": [
+                            "Non",
+                            "Oui"
+                        ]
+                    },
+                    "type": "select"
                 },
                 {
                     "code": "renaissance_membership",
