@@ -16,18 +16,10 @@ class BasicFieldsForAdherentFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, string $feature = null): array
     {
-        $filterBuilder = (new FilterCollectionBuilder())
+        return (new FilterCollectionBuilder())
             ->createFrom(AgeRange::class)
-            ->createDateInterval('registered', 'Inscrit')
+            ->getFilters()
         ;
-
-        if (FeatureEnum::CONTACTS === $feature) {
-            $filterBuilder
-                ->createBooleanSelect('isNewRenaissanceUser', 'Nouveau militant')
-            ;
-        }
-
-        return $filterBuilder->getFilters();
     }
 
     public function getGroup(): string
