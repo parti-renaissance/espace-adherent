@@ -3,35 +3,15 @@
 
 use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\ErrorHandler\Debug;
 
-// if you don't want to setup permissions the proper way, just uncomment the following PHP line
-// read http://symfony.com/doc/current/setup.html#checking-symfony-application-configuration-and-setup
-// for more information
-//umask(0000);
-
-set_time_limit(0);
-
-require_once dirname(__DIR__).'/vendor/autoload.php';
-
-$input = new ArgvInput();
-if (null !== $env = $input->getParameterOption(['--env', '-e'], null, true)) {
-    putenv('APP_ENV='.$_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $env);
+if (!is_file(\dirname(__DIR__).'/vendor/autoload_runtime.php')) {
+    throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
 }
 
-if ($input->hasParameterOption('--no-debug', true)) {
-    putenv('APP_DEBUG='.$_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
-}
+require_once \dirname(__DIR__).'/vendor/autoload_runtime.php';
 
-require dirname(__DIR__).'/config/bootstrap.php';
+return function (array $context) {
+    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
 
-if ($_SERVER['APP_DEBUG']) {
-    if (class_exists(Debug::class)) {
-        Debug::enable();
-    }
-}
-
-$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
-$application = new Application($kernel);
-$application->run($input);
+    return new Application($kernel);
+};

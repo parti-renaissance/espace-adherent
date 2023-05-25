@@ -1,8 +1,7 @@
 default:
     extensions:
         FriendsOfBehat\SymfonyExtension:
-            kernel:
-                environment: test
+            bootstrap: tests/bootstrap.php
         Behat\MinkExtension:
             base_url: "http://test.enmarche.code"
             files_path: 'tests/Fixtures'
