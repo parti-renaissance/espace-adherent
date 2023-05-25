@@ -73,6 +73,11 @@ class ManagedUsersFilter
     private ?bool $includeCommitteeHosts = null;
 
     /**
+     * @Groups({"filter_write"})
+     */
+    private ?string $mandateType = null;
+
+    /**
      * @var Zone[]
      *
      * @Assert\Expression(
@@ -569,6 +574,7 @@ class ManagedUsersFilter
                         return false === $role;
                     })
                 ),
+                'mandateType' => $this->mandateType,
             ],
         );
     }
@@ -591,5 +597,15 @@ class ManagedUsersFilter
     public function setIsNewRenaissanceUser(?bool $isNewRenaissanceUser): void
     {
         $this->isNewRenaissanceUser = $isNewRenaissanceUser;
+    }
+
+    public function getMandateType(): ?string
+    {
+        return $this->mandateType;
+    }
+
+    public function setMandateType(?string $mandateType): void
+    {
+        $this->mandateType = $mandateType;
     }
 }

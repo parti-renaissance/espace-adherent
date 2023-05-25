@@ -374,7 +374,7 @@ Feature:
             ]
         },
         {
-            "label": "Elu",
+            "label": "Élu",
             "color": "#2563EB",
             "filters": [
                 {
@@ -384,8 +384,7 @@ Feature:
                         "choices": {
                             "local_mandate": "Mandat local",
                             "national_mandate": "Mandat national"
-                        },
-                        "multiple": true
+                        }
                     },
                     "type": "select"
                 },

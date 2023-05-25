@@ -322,6 +322,13 @@ class ManagedUser
      */
     private ?array $tags;
 
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"managed_user_read"})
+     */
+    private ?array $mandateTypes;
+
     public function __construct(
         int $status,
         ?string $source,
@@ -356,7 +363,8 @@ class ManagedUser
         \DateTime $lastMembershipDonation = null,
         string $committee = null,
         UuidInterface $committeeUuid = null,
-        array $interests = []
+        array $interests = [],
+        array $mandateTypes = null
     ) {
         $this->status = $status;
         $this->source = $source;
@@ -392,6 +400,7 @@ class ManagedUser
         $this->interests = $interests;
         $this->committee = $committee;
         $this->committeeUuid = $committeeUuid;
+        $this->mandateTypes = $mandateTypes;
     }
 
     public function getId(): int
@@ -687,5 +696,10 @@ class ManagedUser
     public function getTags(): ?array
     {
         return $this->tags;
+    }
+
+    public function getMandateTypes(): ?array
+    {
+        return $this->mandateTypes;
     }
 }

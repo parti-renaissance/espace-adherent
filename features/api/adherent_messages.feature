@@ -293,7 +293,7 @@ Feature:
     }
     """
 
-    Scenario Outline: As a user with (delegated) referent role I can get filters list for message feauture
+    Scenario Outline: As a user with (delegated) referent role I can get filters list for message feature
       Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
       When I send a "GET" request to "/api/v3/filters?scope=<scope>&feature=messages"
       Then the response status code should be 200
@@ -418,6 +418,25 @@ Feature:
                               "adherent_re": "Adhérent RE seulement",
                               "sympathizer_re": "Sympathisant RE seulement",
                               "others_adherent": "Ni adhérent RE ni sympathisant RE"
+                          }
+                      },
+                      "type": "select"
+                  }
+              ]
+          },
+          {
+              "label": "Élu",
+              "color": "#2563EB",
+              "filters": [
+                  {
+                      "code": "mandateTypes",
+                      "label": "Type de mandat",
+                      "options": {
+                          "choices": {
+                              "all": "Tous",
+                              "local_mandate": "Mandat local",
+                              "national_mandate": "Mandat national",
+                              "none": "Aucun"
                           }
                       },
                       "type": "select"

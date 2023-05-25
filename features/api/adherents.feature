@@ -229,7 +229,8 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": null,
-                "committee_uuid": null
+                "committee_uuid": null,
+                "mandate_types": []
             },
             {
                 "address": "47 rue Martre",
@@ -251,7 +252,8 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": "Second Comité des 3 communes",
-                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3"
+                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
+                "mandate_types": []
             },
             {
                 "address": "2 avenue Jean Jaurès",
@@ -273,7 +275,8 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": null,
-                "committee_uuid": null
+                "committee_uuid": null,
+                "mandate_types": []
             },
             {
                 "address": "12 Pilgerweg",
@@ -297,7 +300,8 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": null,
-                "committee_uuid": null
+                "committee_uuid": null,
+                "mandate_types": []
             },
             {
                 "address": "32 Zeppelinstrasse",
@@ -323,7 +327,8 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": null,
-                "committee_uuid": null
+                "committee_uuid": null,
+                "mandate_types": []
             }
         ]
     }
@@ -361,7 +366,8 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": null,
-                "committee_uuid": null
+                "committee_uuid": null,
+                "mandate_types": []
             }
         ]
     }
@@ -406,7 +412,8 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": null,
-                "committee_uuid": null
+                "committee_uuid": null,
+                "mandate_types": []
             },
             {
                 "address": "47 rue Martre",
@@ -428,7 +435,8 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": "Second Comité des 3 communes",
-                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3"
+                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
+                "mandate_types": []
             }
         ]
     }
@@ -587,9 +595,27 @@ Feature:
                     "type": "select"
                 }
             ]
+        },
+        {
+            "label": "Élu",
+            "color": "#2563EB",
+            "filters": [
+                {
+                    "code": "mandateTypes",
+                    "label": "Type de mandat",
+                    "options": {
+                        "choices": {
+                            "all": "Tous",
+                            "local_mandate": "Mandat local",
+                            "national_mandate": "Mandat national",
+                            "none": "Aucun"
+                        }
+                    },
+                    "type": "select"
+                }
+            ]
         }
     ]
-
     """
     Examples:
       | user                                    | scope                                           |
@@ -634,7 +660,8 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": null,
-                "committee_uuid": null
+                "committee_uuid": null,
+                "mandate_types": []
             },
             {
                 "address": "36 rue de la Paix",
@@ -660,7 +687,8 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": null,
-                "committee_uuid": null
+                "committee_uuid": null,
+                "mandate_types": []
             }
         ]
     }
@@ -702,7 +730,8 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": null,
-                "committee_uuid": null
+                "committee_uuid": null,
+                "mandate_types": []
             }
         ]
     }
