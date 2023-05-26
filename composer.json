@@ -28,6 +28,7 @@
         "php": "^8.2",
         "ext-amqp": "*",
         "ext-apcu": "*",
+        "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-gd": "*",
