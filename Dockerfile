@@ -40,6 +40,7 @@ RUN set -eux; \
         mbstring \
         exif \
         gd \
+        bcmath \
         pdo \
         pdo_mysql \
         amqp \
