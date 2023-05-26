@@ -32,7 +32,6 @@ services:
             retries: 3
             start_period: 30s
         environment:
-            APP_ENV: dev
             # See https://xdebug.org/docs/all_settings#mode
             XDEBUG_MODE: "${XDEBUG_MODE:-off}"
         extra_hosts:

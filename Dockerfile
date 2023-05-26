@@ -16,7 +16,6 @@ FROM mlocati/php-extension-installer:2 AS php_extension_installer
 FROM php:${PHP_VERSION}-fpm-alpine AS php_caddy
 
 ARG BUILD_DEV
-ENV APP_ENV=prod
 
 WORKDIR /srv/app
 
