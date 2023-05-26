@@ -315,6 +315,13 @@ class ManagedUser
      */
     private ?UuidInterface $committeeUuid;
 
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"managed_user_read"})
+     */
+    private ?array $tags;
+
     public function __construct(
         int $status,
         ?string $source,
@@ -332,6 +339,7 @@ class ManagedUser
         string $nationality = null,
         string $committees = null,
         array $committeeUuids = null,
+        array $tags = null,
         int $isCommitteeMember = 0,
         int $isCommitteeHost = 0,
         int $isCommitteeProvisionalSupervisor = 0,
@@ -367,6 +375,7 @@ class ManagedUser
         $this->nationality = $nationality;
         $this->committees = $committees;
         $this->committeeUuids = $committeeUuids;
+        $this->tags = $tags;
         $this->isCommitteeMember = $isCommitteeMember;
         $this->isCommitteeHost = $isCommitteeHost;
         $this->isCommitteeSupervisor = $isCommitteeSupervisor;
@@ -673,5 +682,10 @@ class ManagedUser
     public function getCommitteeUuid(): ?UuidInterface
     {
         return $this->committeeUuid;
+    }
+
+    public function getTags(): ?array
+    {
+        return $this->tags;
     }
 }

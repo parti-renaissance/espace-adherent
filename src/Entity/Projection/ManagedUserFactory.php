@@ -23,6 +23,7 @@ class ManagedUserFactory
             $data['nationality'] ?? null,
             $data['committees'] ?? null,
             $data['committee_uuids'] ?? null,
+            $data['tags'] ?? null,
             $data['is_committee_member'] ?? 0,
             $data['is_committee_host'] ?? 0,
             $data['is_committee_provisional_supervisor'] ?? 0,

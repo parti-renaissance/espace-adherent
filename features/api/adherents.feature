@@ -218,6 +218,7 @@ Feature:
                 "last_name": "Brioul",
                 "gender": "male",
                 "interests": [],
+                "tags": [],
                 "city_code": "77288",
                 "phone_number": null,
                 "nationality": null,
@@ -239,6 +240,7 @@ Feature:
                 "last_name": "Berthoux",
                 "gender": "female",
                 "interests": [],
+                "tags": [],
                 "city_code": "92024",
                 "phone_number": "+33 6 66 66 66 66",
                 "nationality": "FR",
@@ -261,6 +263,7 @@ Feature:
                 "first_name": "Jules",
                 "gender": "male",
                 "interests": [],
+                "tags": [],
                 "last_name": "Fullstack",
                 "postal_code": "77000",
                 "phone_number": null,
@@ -283,6 +286,7 @@ Feature:
                 "interests": [
                     "numerique"
                 ],
+                "tags": [],
                 "city_code": null,
                 "phone_number": "+33 6 66 66 66 66",
                 "nationality": "FR",
@@ -308,6 +312,7 @@ Feature:
                     "numerique",
                     "sante"
                 ],
+                "tags": [],
                 "city_code": null,
                 "phone_number": "+33 6 66 66 66 66",
                 "nationality": "FR",
@@ -345,6 +350,7 @@ Feature:
                 "last_name": "Brioul",
                 "gender": "male",
                 "interests": [],
+                "tags": [],
                 "city_code": "77288",
                 "phone_number": null,
                 "nationality": null,
@@ -389,6 +395,7 @@ Feature:
                 "last_name": "Fullstack",
                 "gender": "male",
                 "interests": [],
+                "tags": [],
                 "city_code": null,
                 "phone_number": null,
                 "nationality": null,
@@ -410,6 +417,7 @@ Feature:
                 "last_name": "Berthoux",
                 "gender": "female",
                 "interests": [],
+                "tags": [],
                 "city_code": "92024",
                 "phone_number": "+33 6 66 66 66 66",
                 "nationality": "FR",
@@ -615,6 +623,7 @@ Feature:
                     "europe",
                     "numerique"
                 ],
+                "tags": [],
                 "city_code": "75056",
                 "phone_number": null,
                 "nationality": null,
@@ -640,6 +649,7 @@ Feature:
                     "numerique",
                     "sante"
                 ],
+                "tags": [],
                 "city_code": "75056",
                 "phone_number": "+33 1 87 26 42 36",
                 "nationality": "FR",
@@ -681,6 +691,7 @@ Feature:
                     "numerique",
                     "sante"
                 ],
+                "tags": [],
                 "city_code": "75056",
                 "phone_number": "+33 1 87 26 42 36",
                 "nationality": "FR",
