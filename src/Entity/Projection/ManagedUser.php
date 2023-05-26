@@ -316,13 +316,11 @@ class ManagedUser
     private ?UuidInterface $committeeUuid;
 
     /**
-     * @var string[]|null
-     *
      * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Groups({"managed_user_read"})
      */
-    private $tags;
+    private ?array $tags;
 
     public function __construct(
         int $status,
