@@ -10,6 +10,7 @@ use App\Entity\Geo\Zone;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\Geo\ZoneRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -53,7 +54,14 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
                         continue;
                     }
 
-                    $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
+                    try {
+                        $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
+                    } catch (UniqueConstraintViolationException $e) {
+                        if (!str_contains($e->getMessage(), 'adherent_has_joined_committee')) {
+                            throw $e;
+                        }
+                    }
+
                     $committeeAdherentIds[$committee->getId()][] = $alreadyAssignedAdherentIds[] = $adherent->getId();
                 }
             }
