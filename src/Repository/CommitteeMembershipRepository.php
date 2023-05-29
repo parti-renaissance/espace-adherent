@@ -5,6 +5,7 @@ namespace App\Repository;
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Collection\AdherentCollection;
 use App\Collection\CommitteeMembershipCollection;
+use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Committee\Filter\ListFilterObject;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
@@ -692,6 +693,23 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    public function unfollowAllCommittees(array $adherentsIds, Committee $exceptCommittee): void
+    {
+        $this->createQueryBuilder('cm')
+            ->delete()
+            ->where('cm.adherent IN (:adherents_ids)')
+            ->andWhere('cm.committee != :committee_id')
+            ->andWhere('cm.trigger != :manual_trigger')
+            ->setParameters([
+                'manual_trigger' => CommitteeMembershipTriggerEnum::MANUAL,
+                'adherents_ids' => $adherentsIds,
+                'committee_id' => $exceptCommittee->getId(),
+            ])
+            ->getQuery()
+            ->execute()
         ;
     }
 }
