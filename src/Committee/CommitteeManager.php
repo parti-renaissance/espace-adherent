@@ -289,6 +289,10 @@ class CommitteeManager
         Committee $committee,
         CommitteeMembershipTriggerEnum $trigger = null
     ): void {
+        if ($this->getMembershipRepository()->findMembership($adherent, $committee)) {
+            return;
+        }
+
         $this->entityManager->persist($membership = $adherent->followCommittee($committee));
         $membership->setTrigger($trigger);
         $this->entityManager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::JOIN()));
