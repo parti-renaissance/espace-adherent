@@ -7,11 +7,13 @@ use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
+use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerInterface
 {
@@ -20,7 +22,8 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
         private readonly ZoneRepository $zoneRepository,
         private readonly CommitteeRepository $committeeRepository,
         private readonly CommitteeMembershipManager $committeeMembershipManager,
-        private readonly AdherentRepository $adherentRepository
+        private readonly AdherentRepository $adherentRepository,
+        private readonly MessageBusInterface $bus
     ) {
     }
 
@@ -34,12 +37,11 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
 
         [$committeesZones, $zoneCommitteeMapping] = $this->getCommitteesZones($committeesOfZone);
 
-        $committeeAdherentIds = [];
-        $alreadyAssignedAdherentIds = [];
-        $committees = [];
+        $committeeAdherentIds = $alreadyAssignedAdherentIds = $adherentsToSyncMC = $committees = [];
 
         foreach ($committeesZones as $zones) {
             foreach ($zones as $zone) {
+                /** @var Zone $zone */
                 $adherents = $this->adherentRepository->findAllForCommitteeZone($zone);
                 $committee = $committeesOfZone[$zoneCommitteeMapping[$zone->getTypeCode()]];
                 $committees[$committee->getId()] = $committee;
@@ -48,14 +50,19 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
                     $committeeAdherentIds[$committee->getId()] = [];
                 }
 
+                $adherentsMembership = [];
+
                 foreach ($adherents as $adherent) {
                     if (\in_array($adherent->getId(), $alreadyAssignedAdherentIds)) {
                         continue;
                     }
 
-                    $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
-
+                    $adherentsToSyncMC[] = $adherentsMembership[] = $adherent;
                     $committeeAdherentIds[$committee->getId()][] = $alreadyAssignedAdherentIds[] = $adherent->getId();
+                }
+
+                if ($adherentsMembership) {
+                    $this->committeeMembershipManager->batchFollowCommittee($adherentsMembership, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
                 }
             }
         }
@@ -75,6 +82,10 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
         $this->entityManager->clear();
 
         $this->committeeRepository->updateMembershipsCounters();
+
+        foreach ($adherentsToSyncMC as $adherent) {
+            $this->bus->dispatch(new AdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress()));
+        }
     }
 
     /**

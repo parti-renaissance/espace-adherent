@@ -145,6 +145,14 @@ class CommitteeMembership implements UuidEntityInterface
         return static::createForAdherent($committee, $host, self::COMMITTEE_HOST, $subscriptionDate);
     }
 
+    public static function createFollower(
+        Committee $committee,
+        Adherent $follower,
+        CommitteeMembershipTriggerEnum $trigger
+    ): self {
+        return static::createForAdherent($committee, $follower, self::COMMITTEE_FOLLOWER, new \DateTime(), $trigger);
+    }
+
     /**
      * Creates a new membership relationship between an adherent and a committee.
      */

@@ -1575,8 +1575,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $qb = $this
             ->createQueryBuilder('adherent')
             ->select('PARTIAL adherent.{id, uuid, emailAddress, source, lastMembershipDonation}')
-            ->addSelect('memberships')
-            ->leftJoin('adherent.memberships', 'memberships')
             ->where('adherent.source IS NULL OR adherent.source = :source')
             ->andWhere('adherent.status = :enabled')
             ->setParameters([

@@ -10,6 +10,7 @@ use App\Entity\Geo\Zone;
 use App\Geo\ZoneMatcher;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CommitteeMembershipManager
 {
@@ -18,6 +19,7 @@ class CommitteeMembershipManager
         private readonly ZoneMatcher $zoneMatcher,
         private readonly CommitteeRepository $committeeRepository,
         private readonly CommitteeMembershipRepository $committeeMembershipRepository,
+        private readonly EntityManagerInterface $entityManager,
         ) {
     }
 
@@ -34,6 +36,24 @@ class CommitteeMembershipManager
         }
 
         return null;
+    }
+
+    public function batchFollowCommittee(
+        array $adherents,
+        Committee $committee,
+        CommitteeMembershipTriggerEnum $trigger
+    ): void {
+        // 1. Comes out of the existing committees
+        $this->committeeMembershipRepository->unfollowAllCommittees(array_map(fn (Adherent $a) => $a->getId(), $adherents), $committee);
+
+        // 2. Follow the new committee
+        foreach ($adherents as $adherent) {
+            if ($this->committeeMembershipRepository->findMembership($adherent, $committee)) {
+                continue;
+            }
+            $this->entityManager->persist(CommitteeMembership::createFollower($committee, $adherent, $trigger));
+        }
+        $this->entityManager->flush();
     }
 
     public function followCommittee(
