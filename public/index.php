@@ -2,9 +2,16 @@
 
 use App\Kernel;
 
-if ($_SERVER['ENABLE_MAINTENANCE']) {
-    include __DIR__.'/maintenance.html';
-    exit;
+if ('prod' === getenv('APP_ENV')) {
+    if (!isset($_SERVER['HTTP_CF_RAY'])) {
+        echo 'GoogleHC healthy';
+        exit;
+    }
+
+    if (isset($_SERVER['ENABLE_MAINTENANCE'])) {
+        include __DIR__.'/maintenance.html';
+        exit;
+    }
 }
 
 require_once \dirname(__DIR__).'/vendor/autoload_runtime.php';

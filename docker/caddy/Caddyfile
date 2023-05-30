@@ -11,8 +11,6 @@
 log
 
 route {
-	respond /healthcheck 200
-
 	root * /srv/app/public
 
     # Set security headers
