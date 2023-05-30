@@ -2,9 +2,10 @@
 	# Debug
 	{$CADDY_DEBUG}
 	auto_https off
+	admin off
 }
 
-:80
+:80 
 
 {$CADDY_EXTRA_CONFIG}
 
@@ -13,7 +14,7 @@ log
 route {
 	root * /srv/app/public
 
-    # Set security headers
+	# Set security headers
 
 	# Disable Google FLOC tracking if not enabled explicitly: https://plausible.io/blog/google-floc
 	header ?Permissions-Policy "interest-cohort=()"
