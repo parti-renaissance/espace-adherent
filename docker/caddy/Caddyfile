@@ -31,7 +31,9 @@ route {
 	# Enable cross-site filter (XSS) and tell browser to block detected attacks
 	header X-XSS-Protection "1; mode=block"
 
-	php_fastcgi unix//var/run/php/php-fpm.sock
+	php_fastcgi unix//var/run/php/php-fpm.sock {
+		trusted_proxies {$TRUSTED_PROXIES_WITH_SPACE:}
+	}
 	encode zstd gzip
 	file_server
 }
