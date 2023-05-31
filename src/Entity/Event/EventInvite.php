@@ -4,7 +4,7 @@ namespace App\Entity\Event;
 
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPersonNameTrait;
-use App\Event\EventInvitation;
+use App\Event\BaseEventInvitation;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
@@ -65,7 +65,7 @@ class EventInvite
         return sprintf('Invitation à l\'évenement %s de %s', $this->event, $this->getFullName());
     }
 
-    public static function create(BaseEvent $event, EventInvitation $invitation): self
+    public static function create(BaseEvent $event, BaseEventInvitation $invitation): self
     {
         $invite = new self($event);
         $invite->firstName = $invitation->firstName;

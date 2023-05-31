@@ -29,6 +29,25 @@ export default class RequestApiClient {
         });
     }
 
+    unregisterEvent(slug, token, callback) {
+        const request = this._request({
+            url: `/espace-adherent/evenements/${slug}/desinscription`,
+            type: 'html',
+            method: 'post',
+            data: {
+                token,
+            },
+        });
+
+        request.then((response) => {
+            callback(JSON.parse(response));
+        });
+
+        request.fail((response) => {
+            callback(JSON.parse(response));
+        });
+    }
+
     _createRequest(callback, params) {
         const request = this._request(params);
 

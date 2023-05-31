@@ -347,6 +347,7 @@ class EventRepository extends ServiceEntityRepository
                 AND events.begin_at > :today
                 AND events.published = :published
                 AND events.status = :scheduled
+                AND events.renaissance_event = :renaissance
                 AND event_category.id IS NOT NULL
                 )
                 __filter_query__
@@ -403,6 +404,7 @@ class EventRepository extends ServiceEntityRepository
         $query->setParameter('base_event_types', [EventTypeEnum::TYPE_COMMITTEE, EventTypeEnum::TYPE_DEFAULT]);
         $query->setParameter('first_result', $search->getOffset(), \PDO::PARAM_INT);
         $query->setParameter('max_results', $search->getMaxResults(), \PDO::PARAM_INT);
+        $query->setParameter('renaissance', $search->isRenaissanceEvent(), \PDO::PARAM_INT);
 
         return $query->getResult('EventHydrator');
     }
@@ -613,10 +615,12 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('n.beginAt > :date')
             ->andWhere('n.status = :status')
             ->andwhere('n.published = :published')
+            ->andwhere('n.renaissanceEvent = :for_renaissance_event')
             ->setParameter('distance_max', $radius)
             ->setParameter('date', $event->getBeginAt())
             ->setParameter('status', BaseEvent::STATUS_SCHEDULED)
             ->setParameter('published', true)
+            ->setParameter('for_renaissance_event', false)
             ->addOrderBy('n.beginAt', 'ASC')
             ->setMaxResults($max)
             ->getQuery()

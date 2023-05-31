@@ -1,4 +1,4 @@
-<div class="flex justify-center">
+<div class="flex {{ justify_class|default('justify-center') }}">
     <input type="hidden" name="frc-captcha-solution" value="" />
 
     {% if friendly_captcha_site_key is not empty %}

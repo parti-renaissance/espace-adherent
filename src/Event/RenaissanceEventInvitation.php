@@ -6,9 +6,9 @@ use App\Entity\Adherent;
 use App\Validator\Recaptcha as AssertRecaptcha;
 
 /**
- * @AssertRecaptcha
+ * @AssertRecaptcha(api="friendly_captcha")
  */
-class EventInvitation extends BaseEventInvitation
+class RenaissanceEventInvitation extends BaseEventInvitation
 {
     public static function createFromAdherent(?Adherent $adherent, ?string $recaptchaAnswer): self
     {

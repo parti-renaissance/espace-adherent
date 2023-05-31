@@ -1,0 +1,41 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% block page_title 'Mes événements' %}
+
+{% block content_right_side %}
+    <section class="space-y-4 md:space-y-6">
+        <div class="border-b border-gray-200">
+            <div class="md:flex md:items-baseline md:justify-between">
+                <div class="md:flex md:items-baseline">
+                    <h3 class="text-xl font-semibold leading-6 text-gray-900 lg:text-2xl">Mes événements</h3>
+                    <div class="mt-4 md:ml-10 md:mt-0">
+                        <nav class="-mb-px flex space-x-8">
+                            <a
+                                href="{{ path('app_renaissance_event_my_events_list') }}"
+                                class="whitespace-nowrap border-b-2 px-1 pb-4 text-base font-medium {{ app.request.query.get('type') != 'past' ? 'border-re-blue-500 text-re-blue-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }}"
+                            >À venir</a>
+                            <a
+                                href="{{ path('app_renaissance_event_my_events_list', { type: 'past' }) }}"
+                                class="border-b-2 px-1 pb-4 whitespace-nowrap text-base font-medium {{ app.request.query.get('type') == 'past' ? 'border-re-blue-500 text-re-blue-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }}"
+                            >Passés</a>
+                        </nav>
+                    </div>
+                </div>
+                <a href="{{ path('app_renaissance_event_list') }}" class="inline-flex items-center bg-white rounded-md px-4 py-2 text-sm leading-5 border border-gray-200 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">
+                    Participer à un événement
+                </a>
+            </div>
+        </div>
+
+        <div class="lg:col-span-5">
+            <div class="mt-10">
+                <div class="{{ app.request.query.get('type') != 'past' ? 'block': 'hidden' }}">
+                    {% include 'renaissance/adherent/events/my_events/partials/event_grids.html.twig' with { events: upcoming_events, events_type: 'upcoming'} %}
+                </div>
+                <div class="{{ app.request.query.get('type') == 'past' ? 'block': 'hidden' }}">
+                    {% include 'renaissance/adherent/events/my_events/partials/event_grids.html.twig' with { events: past_events, events_type: 'past'} %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

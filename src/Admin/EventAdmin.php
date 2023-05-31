@@ -39,6 +39,7 @@ class EventAdmin extends AbstractAdmin
 {
     private $dispatcher;
     private $referentTagManager;
+    private $beforeUpdate;
 
     public function __construct(
         $code,
@@ -138,9 +139,21 @@ class EventAdmin extends AbstractAdmin
         ;
     }
 
+    /**
+     * @param BaseEvent $object
+     */
+    protected function alterObject(object $object): void
+    {
+        if (null === $this->beforeUpdate) {
+            $this->beforeUpdate = clone $object;
+        }
+    }
+
     protected function preUpdate(object $object): void
     {
-        $this->dispatcher->dispatch(new EventEvent($object->getOrganizer(), $object), Events::EVENT_PRE_UPDATE);
+        if ($this->beforeUpdate) {
+            $this->dispatcher->dispatch(new EventEvent($object->getOrganizer(), $this->beforeUpdate), Events::EVENT_PRE_UPDATE);
+        }
     }
 
     /**
@@ -205,6 +218,9 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('private', null, [
                     'label' => 'Réservé aux adhérents',
+                ])
+                ->add('renaissanceEvent', null, [
+                    'label' => 'Événement renaissance',
                 ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-5'])

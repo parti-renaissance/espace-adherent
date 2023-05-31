@@ -37,6 +37,13 @@
 </div>
 
 <div>
+    <a href="{{ path('app_renaissance_event_my_events_list') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, ['app_renaissance_event_my_events_list', 'app_renaissance_event_list', 'app_renaissance_event_show']) ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
+        {% include 'icons/calendar.svg.twig' with { svg_class: 'h-6 w-6 mr-2' } %}
+        Mes événements
+    </a>
+</div>
+
+<div>
     <a href="{{ path('app_my_donations_show_list') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, ['app_my_donations_show_list', 'app_renaissance_donation__cancel_subscription']) ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
         {% include 'icons/money.svg.twig' with { svg_class: 'h-6 w-6 mr-2' } %}
         Mes dons / Cotisations

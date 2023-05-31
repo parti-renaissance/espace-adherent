@@ -42,6 +42,9 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
     public const EVENT_20_UUID = '65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e';
     public const EVENT_21_UUID = '0e5f9f02-fa33-4c2c-a700-4235d752315b';
 
+    public const EVENT_22_UUID = '7917497a-89b2-4b25-a242-213191c21964';
+    public const EVENT_23_UUID = '5b279c9f-2b1e-4b93-9c34-1669f56e9d64';
+
     private CommitteeFeedManager $committeeFeedManager;
 
     public function __construct(
@@ -72,10 +75,13 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         $author11 = $this->getReference('adherent-11');
         $author12 = $this->getReference('adherent-12');
         $author13 = $this->getReference('adherent-13');
+        $author56 = $this->getReference('adherent-56');
         $referent75and77 = $this->getReference('adherent-19');
 
         $adherent4 = $this->getReference('adherent-4');
+        $adherent5 = $this->getReference('adherent-5');
         $coordinator = $this->getReference('adherent-17');
+        $adherentRe4 = $this->getReference('renaissance-user-4');
 
         $committee1 = $this->getReference('committee-1');
         $committee2 = $this->getReference('committee-2');
@@ -83,6 +89,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         $committee4 = $this->getReference('committee-4');
         $committee5 = $this->getReference('committee-5');
         $committee10 = $this->getReference('committee-10');
+        $committee11 = $this->getReference('committee-v2-2');
 
         // Singapore
         $committee8 = $this->getReference('committee-8');
@@ -404,6 +411,38 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         ]);
         $event20->setPublished(true);
 
+        $event21 = $this->eventFactory->createFromArray([
+            'uuid' => self::EVENT_22_UUID,
+            'organizer' => $author56,
+            'committee' => $committee11,
+            'name' => 'Événements à clichy',
+            'category' => $eventCategory3,
+            'description' => 'Allons à la rencontre des citoyens.',
+            'address' => $this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684),
+            'begin_at' => (new Chronos('+1 month'))->format('Y-m-d').' 10:30:00',
+            'finish_at' => (new Chronos('+1 month'))->format('Y-m-d').' 19:30:00',
+            'capacity' => 50,
+        ]);
+        $event21->setPublished(true);
+        $event21->incrementParticipantsCount(3);
+        $event21->setRenaissanceEvent(true);
+
+        $event22 = $this->eventFactory->createFromArray([
+            'uuid' => self::EVENT_23_UUID,
+            'organizer' => $author56,
+            'committee' => $committee11,
+            'name' => 'Tractage sur le terrain',
+            'category' => $eventCategory6,
+            'description' => 'Tractage sur le marché de la maire de clichy.',
+            'address' => $this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684),
+            'begin_at' => (new Chronos('-1 month'))->format('Y-m-d').' 10:30:00',
+            'finish_at' => (new Chronos('-1 month'))->format('Y-m-d').' 19:30:00',
+            'capacity' => 50,
+        ]);
+        $event22->setPublished(true);
+        $event22->incrementParticipantsCount(3);
+        $event22->setRenaissanceEvent(true);
+
         $manager->persist($eventHidden);
         $manager->persist($event1);
         $manager->persist($event2);
@@ -425,6 +464,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         $manager->persist($event18);
         $manager->persist($event19);
         $manager->persist($event20);
+        $manager->persist($event21);
+        $manager->persist($event22);
 
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event8, $author3)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event9, $author3)));
@@ -449,7 +490,13 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event20, $adherent4)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event20, $coordinator)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $adherent4)));
-        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $this->getReference('adherent-5'))));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $adherent5)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event21, $author56)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event21, $adherent5)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event21, $adherentRe4)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event22, $author56)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event22, $adherent5)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event22, $adherentRe4)));
         // Registrations of not connected users
         $eventRegistration1 = new EventRegistrationCommand($event10);
         $eventRegistration1->setFirstName('Marie');
@@ -556,6 +603,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         return [
             LoadEventCategoryData::class,
             LoadCommitteeV1Data::class,
+            LoadCommitteeV2Data::class,
             LoadReferentTagsZonesLinksData::class,
         ];
     }

@@ -460,6 +460,11 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      */
     protected $postAddress;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $renaissanceEvent = false;
+
     public function getCategory(): ?EventCategoryInterface
     {
         return $this->category;
@@ -848,5 +853,15 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function getSocialDescription(): string
     {
         return $this->getDescription();
+    }
+
+    public function isRenaissanceEvent(): bool
+    {
+        return $this->renaissanceEvent;
+    }
+
+    public function setRenaissanceEvent(bool $renaissanceEvent): void
+    {
+        $this->renaissanceEvent = $renaissanceEvent;
     }
 }

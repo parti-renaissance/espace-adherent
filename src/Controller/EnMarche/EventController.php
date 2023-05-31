@@ -185,7 +185,7 @@ class EventController extends AbstractController
         );
 
         $form = $this
-            ->createForm(EventInvitationType::class, $eventInvitation)
+            ->createForm(EventInvitationType::class, $eventInvitation, ['data_class' => EventInvitation::class])
             ->handleRequest($request)
         ;
 
