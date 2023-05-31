@@ -8,7 +8,7 @@ if ('prod' === getenv('APP_ENV')) {
         exit;
     }
 
-    if (isset($_SERVER['ENABLE_MAINTENANCE'])) {
+    if (!empty($_SERVER['ENABLE_MAINTENANCE'])) {
         include __DIR__.'/maintenance.html';
         exit;
     }
