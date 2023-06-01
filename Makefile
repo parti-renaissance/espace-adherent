@@ -110,7 +110,7 @@ db-validate: vendor wait-for-db                                                 
 ##---------------------------------------------------------------------------
 
 watch: node_modules                                                                                    ## Watch the assets and build their development version on change
-	$(EXEC) yarn watch
+	$(RUN_NODE) yarn watch
 
 watch-mac:
 	yarn watch
@@ -163,7 +163,7 @@ tfp-db: tfp-db-init
 	$(CONSOLE) doctrine:fixtures:load --no-debug --env=test -n
 
 tj: node_modules                                                                                       ## Run the Javascript tests
-	$(EXEC) yarn test
+	$(RUN_NODE) yarn test
 
 lint: ls lj phpcs                                                                                ## Run lint on Twig, YAML, PHP and Javascript files
 
@@ -179,10 +179,10 @@ lc:
 	$(CONSOLE) lint:container
 
 lj: node_modules                                                                                       ## Lint the Javascript to follow the convention
-	$(EXEC) yarn lint
+	$(RUN_NODE) yarn lint
 
 ljfix: node_modules                                                                                    ## Lint and try to fix the Javascript to follow the convention
-	$(EXEC) yarn lint -- --fix
+	$(RUN_NODE) yarn lint -- --fix
 
 phpcs: vendor                                                                                          ## Lint PHP code
 	$(PHPCSFIXER) fix --diff --dry-run --no-interaction -v

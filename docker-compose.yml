@@ -16,7 +16,7 @@ services:
         volumes:
             - ./:/srv/app
             - /srv/app/var
-            - ./docker/php/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
+            - ./docker/php/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.ini:ro
             - caddy_data:/data
             - caddy_config:/config
             # If you develop on Mac or Windows you can remove the vendor/ directory
