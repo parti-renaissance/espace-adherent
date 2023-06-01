@@ -51,7 +51,7 @@ class BindAdherentZoneSubscriberTest extends AbstractKernelTestCase
             ->with(
                 48.869878,
                 2.332197,
-                [Zone::CANTON, Zone::DISTRICT, Zone::FOREIGN_DISTRICT],
+                [Zone::CANTON, Zone::DISTRICT, Zone::FOREIGN_DISTRICT, Zone::VOTE_PLACE],
             )
             ->willReturn($zones)
         ;
