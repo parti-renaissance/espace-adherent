@@ -463,3 +463,7 @@ services:
     App\Ohme\Client:
         arguments:
             $client: '@app.http_client.ohme_api'
+
+    App\Adherent\Campus\Client:
+        arguments:
+            $client: '@app.http_client.campus_registration_api'
