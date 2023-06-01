@@ -1825,10 +1825,10 @@ algoliasearch@^4.17.1:
     "@algolia/requester-node-http" "4.17.1"
     "@algolia/transporter" "4.17.1"
 
-alpinejs@^3.12.1:
-  version "3.12.1"
-  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.12.1.tgz#97c1b975e68fb7c5dcd601cb58130ce163c5fc5d"
-  integrity sha512-GjEmZscHuCPv/XRbzabQLFH3I1+M3TbZqEsLDuYai/Yw+pE1IL7DK4ejRfqBSaysi4wWZ1k5IqVG2aefhWWqsQ==
+alpinejs@^3.12.2:
+  version "3.12.2"
+  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.12.2.tgz#e76ffd00a4858623acf84112c27a4eecbee9ac74"
+  integrity sha512-wrUZULm9w6DYwWcUtB/anFLgRaF4riSuPgIJ3gcPUS8st9luAJnAxoIgro/Al97d2McSSz/JypWg/NlmKFIJJA==
   dependencies:
     "@vue/reactivity" "~3.1.1"
 
