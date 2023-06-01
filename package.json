@@ -13,7 +13,7 @@
     "@babel/preset-env": "^7.22.4",
     "@babel/preset-react": "^7.22.3",
     "@google/markerclusterer": "^2.0.9",
-    "@headlessui/react": "^1.7.14",
+    "@headlessui/react": "^1.7.15",
     "@mapbox/polylabel": "^1.0.2",
     "@sentry/browser": "^7.53.1",
     "@sentry/tracing": "^7.53.1",
