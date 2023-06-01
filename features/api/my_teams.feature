@@ -329,7 +329,8 @@ Feature:
                         "adherent": {
                             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                             "first_name": "Jacques",
-                            "last_name": "Picard"
+                            "last_name": "Picard",
+                            "email_address": "jacques.picard@en-marche.fr"
                         },
                         "role": "mobilization_manager",
                         "scope_features": [
@@ -342,7 +343,8 @@ Feature:
                         "adherent": {
                             "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
                             "first_name": "Gisele",
-                            "last_name": "Berthoux"
+                            "last_name": "Berthoux",
+                            "email_address": "gisele-berthoux@caramail.com"
                         },
                         "role": "communication_manager",
                         "scope_features": [
@@ -356,7 +358,8 @@ Feature:
                         "adherent": {
                             "first_name": "Bob",
                             "last_name": "Senateur (59)",
-                            "uuid": "021268fe-d4b3-44a7-bce9-c001191249a7"
+                            "uuid": "021268fe-d4b3-44a7-bce9-c001191249a7",
+                            "email_address": "senateur@en-marche-dev.fr"
                         },
                         "role": "mobilization_manager",
                         "scope_features": [

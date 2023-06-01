@@ -44,21 +44,24 @@ Feature:
         "uuid": "@uuid@",
         "first_name": "Adrien",
         "last_name": "Petit",
-        "postal_code": "77000"
+        "postal_code": "77000",
+        "email_address": "adherent-male-a@en-marche-dev.fr"
       },
       {
         "registered_at": "@string@.isDateTime()",
         "uuid": "@uuid@",
         "first_name": "Agathe",
         "last_name": "Petit",
-        "postal_code": "77000"
+        "postal_code": "77000",
+        "email_address": "adherent-female-a@en-marche-dev.fr"
       },
       {
         "registered_at": "@string@.isDateTime()",
         "uuid": "@uuid@",
         "first_name": "Étienne",
         "last_name": "Petit",
-        "postal_code": "77000"
+        "postal_code": "77000",
+        "email_address": "adherent-male-b@en-marche-dev.fr"
       }
     ]
     """
@@ -75,7 +78,8 @@ Feature:
             "last_name": "Berthoux",
             "postal_code": "92110",
             "registered_at": "2017-01-08T05:55:43+01:00",
-            "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084"
+            "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+            "email_address": "gisele-berthoux@caramail.com"
         }
     ]
     """
@@ -824,7 +828,6 @@ Feature:
           "registered_at": "@string@.isDateTime()",
           "postal_code": "75008"
         }
-
       ]
     }
     """
@@ -874,7 +877,8 @@ Feature:
           "uuid": "@uuid@",
           "first_name": "Adherent 56",
           "last_name": "Fa56ke",
-          "postal_code": "77000"
+          "postal_code": "77000",
+          "email_address": "adherent-female-56@en-marche-dev.fr"
         }
       ]
       """
