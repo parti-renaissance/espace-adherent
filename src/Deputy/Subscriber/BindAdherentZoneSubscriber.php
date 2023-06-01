@@ -16,6 +16,7 @@ class BindAdherentZoneSubscriber implements EventSubscriberInterface
         Zone::CANTON,
         Zone::DISTRICT,
         Zone::FOREIGN_DISTRICT,
+        Zone::VOTE_PLACE,
     ];
 
     private EntityManagerInterface $em;
