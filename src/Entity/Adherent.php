@@ -161,7 +161,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(unique=true)
      *
-     * @Groups({"user_profile", "profile_read", "adherent_change_diff", "elected_representative_read"})
+     * @Groups({"user_profile", "profile_read", "adherent_change_diff", "elected_representative_read", "adherent_autocomplete", "my_team_read_list"})
      */
     private $emailAddress;
 
