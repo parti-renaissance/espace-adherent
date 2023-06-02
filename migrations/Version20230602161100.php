@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20230602142903 extends AbstractMigration
+final class Version20230602161100 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -23,7 +23,7 @@ final class Version20230602142903 extends AbstractMigration
         $this->addSql('ALTER TABLE
           elected_representative_revenue_declaration
         ADD
-          CONSTRAINT FK_6A0C2D59D38DA5D3 FOREIGN KEY (elected_representative_id) REFERENCES elected_representative (id)');
+          CONSTRAINT FK_6A0C2D59D38DA5D3 FOREIGN KEY (elected_representative_id) REFERENCES elected_representative (id) ON DELETE CASCADE');
     }
 
     public function down(Schema $schema): void

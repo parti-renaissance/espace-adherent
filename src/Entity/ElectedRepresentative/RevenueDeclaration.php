@@ -24,7 +24,7 @@ class RevenueDeclaration
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="revenueDeclarations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     public ElectedRepresentative $electedRepresentative;
 
