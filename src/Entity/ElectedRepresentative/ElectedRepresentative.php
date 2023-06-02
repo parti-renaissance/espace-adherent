@@ -336,6 +336,18 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      */
     private Collection $payments;
 
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\ElectedRepresentative\RevenueDeclaration",
+     *     mappedBy="electedRepresentative",
+     *     cascade={"all"},
+     *     orphanRemoval=true,
+     *     fetch="EXTRA_LAZY"
+     * )
+     * @ORM\OrderBy({"createdAt": "DESC"})
+     */
+    private Collection $revenueDeclarations;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -863,5 +875,15 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
             ? $this->payments->matching($criteria)->first()
             : null
         ;
+    }
+
+    public function getRevenueDeclarations(): Collection
+    {
+        return $this->revenueDeclarations;
+    }
+
+    public function addRevenueDeclaration(int $amount): void
+    {
+        $this->revenueDeclarations->add(RevenueDeclaration::create($this, $amount));
     }
 }
