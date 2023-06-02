@@ -15,7 +15,7 @@ use Tests\App\MessengerTestTrait;
  * @group functional
  * @group admin
  */
-class RenaissanceCommitteeCRUDControllerCaseTest extends AbstractRenaissanceWebCaseTest
+class CommitteeCRUDControllerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
     use MessengerTestTrait;

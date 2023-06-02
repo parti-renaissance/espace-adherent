@@ -10,7 +10,7 @@ use Tests\App\Controller\ControllerTestTrait;
 /**
  * @group functional
  */
-class RenaissanceFileControllerCaseTest extends AbstractRenaissanceWebCaseTest
+class FileControllerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

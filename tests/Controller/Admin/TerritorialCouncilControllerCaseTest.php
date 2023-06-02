@@ -13,7 +13,7 @@ use Tests\App\Controller\ControllerTestTrait;
  * @group functional
  * @group admin
  */
-class RenaissanceTerritorialCouncilControllerCaseTest extends AbstractRenaissanceWebCaseTest
+class TerritorialCouncilControllerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

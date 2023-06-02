@@ -22,7 +22,7 @@ use Tests\App\Test\Algolia\DummySearchService;
  * @group functional
  * @group admin
  */
-class RenaissanceTimelineMeasureControllerCaseTest extends AbstractRenaissanceWebCaseTest
+class TimelineMeasureControllerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

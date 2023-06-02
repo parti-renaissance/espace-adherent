@@ -11,7 +11,7 @@ use Tests\App\Controller\ControllerTestTrait;
  * @group functional
  * @group security
  */
-class RenaissanceSecurityControllerCaseTest extends AbstractRenaissanceWebCaseTest
+class SecurityControllerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 

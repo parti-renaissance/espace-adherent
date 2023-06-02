@@ -16,7 +16,7 @@ use Tests\App\Test\Algolia\DummySearchService;
  * @group functional
  * @group admin
  */
-class RenaissanceChezVousCityControllerCaseTest extends AbstractRenaissanceWebCaseTest
+class ChezVousCityControllerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 
