@@ -18,7 +18,7 @@ class GeometryFactory
                 return new MultiPolygon($geometry['coordinates']);
 
             default:
-                throw new \InvalidArgumentException("${$geometry['type']} is not supported");
+                throw new \InvalidArgumentException("{${$geometry['type']}} is not supported");
         }
     }
 

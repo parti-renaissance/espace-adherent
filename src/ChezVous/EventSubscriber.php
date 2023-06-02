@@ -2,27 +2,26 @@
 
 namespace App\ChezVous;
 
+use App\ChezVous\Command\DeleteMeasureTypeOnAlgoliaCommand;
+use App\ChezVous\Command\UpdateMeasureTypeOnAlgoliaCommand;
 use App\Events;
-use App\Producer\ChezVous\AlgoliaProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class EventSubscriber implements EventSubscriberInterface
 {
-    private $producer;
-
-    public function __construct(AlgoliaProducerInterface $producer)
+    public function __construct(private MessageBusInterface $bus)
     {
-        $this->producer = $producer;
     }
 
     public function publishMeasureTypeUpdated(MeasureTypeEvent $event): void
     {
-        $this->producer->dispatchMeasureTypeUpdated($event->getMeasureType());
+        $this->bus->dispatch(new UpdateMeasureTypeOnAlgoliaCommand($event->getMeasureType()->getId()));
     }
 
     public function publishMeasureTypeDeleted(MeasureTypeEvent $event): void
     {
-        $this->producer->dispatchMeasureTypeDeleted($event->getMeasureType());
+        $this->bus->dispatch(new DeleteMeasureTypeOnAlgoliaCommand());
     }
 
     public static function getSubscribedEvents(): array
