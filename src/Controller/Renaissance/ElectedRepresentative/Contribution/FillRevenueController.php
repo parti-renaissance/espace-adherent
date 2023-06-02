@@ -44,6 +44,9 @@ class FillRevenueController extends AbstractContributionController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $electedRepresentative->addRevenueDeclaration($command->revenueAmount);
+            $entityManager->flush();
+
             if (!$command->needContribution()) {
                 $this->processor->doNoContributionNeeded($command);
 
