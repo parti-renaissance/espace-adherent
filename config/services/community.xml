@@ -6,7 +6,7 @@
         <!-- Invitation -->
         <service id="App\Invitation\InvitationRequestHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailer.campaign" />
+            <argument type="service" id="app.mailer.transactional" />
         </service>
 
         <!-- Interactives -->

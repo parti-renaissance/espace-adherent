@@ -7,7 +7,6 @@
         <!-- RabbitMQ -->
         <service id="app.consumer.service_locator" public="false">
             <argument type="collection">
-                <argument key="app.mailer.campaign" type="service" id="app.mailer.campaign" />
                 <argument key="app.mailer.transactional" type="service" id="app.mailer.transactional" />
                 <argument key="app.mailer.client" type="service" id="app.mailer.client" />
                 <argument key="manager" type="service" id="doctrine.orm.entity_manager" />
@@ -18,13 +17,6 @@
             </argument>
 
             <tag name="container.service_locator" />
-        </service>
-
-        <service id="App\Consumer\CampaignMailerConsumer" parent="app.consumer.abstract_mailer_consumer">
-            <argument type="service" id="app.consumer.service_locator" />
-            <call method="setEmailClient">
-                <argument type="service" id="app.mailer.client"/>
-            </call>
         </service>
 
         <service id="App\Consumer\TransactionalMailerConsumer" parent="app.consumer.abstract_mailer_consumer">
@@ -38,12 +30,6 @@
             <argument type="service" id="app.consumer.service_locator" />
             <call method="setEmailRepository">
                 <argument type="service" id="App\Repository\EmailRepository"/>
-            </call>
-        </service>
-
-        <service id="App\Consumer\MailerConsumer" parent="app_abstract_consumer">
-            <call method="setMailerService">
-                <argument type="service" id="app.mailer.campaign"/>
             </call>
         </service>
 
