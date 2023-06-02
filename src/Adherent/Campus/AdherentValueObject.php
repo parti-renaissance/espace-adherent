@@ -4,7 +4,6 @@ namespace App\Adherent\Campus;
 
 use App\Entity\Adherent;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 class AdherentValueObject
 {

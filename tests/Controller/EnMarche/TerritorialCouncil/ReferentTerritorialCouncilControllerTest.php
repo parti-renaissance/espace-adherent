@@ -87,7 +87,7 @@ class ReferentTerritorialCouncilControllerTest extends AbstractEnMarcheWebCaseTe
         $form['f[emailSubscription]'] = '';
         $form['f[gender]'] = '';
         $form['f[ageMin]'] = 29;
-        $form['f[ageMax]'] = 41;
+        $form['f[ageMax]'] = 42;
 
         $crawler = $this->client->submit($form);
 
