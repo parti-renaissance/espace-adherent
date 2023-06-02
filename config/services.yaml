@@ -47,7 +47,6 @@ services:
         bind:
             $environment: '%kernel.environment%'
             $projectDir: '%kernel.project_dir%'
-            $appEnvironment: '%env(APP_ENVIRONMENT)%'
             $canaryMode: '%env(ENABLE_CANARY)%'
             $mailchimpClient: '@app.http_client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
@@ -88,6 +87,7 @@ services:
             $emailTemplateUnlayerTemplateId: '%env(EMAIL_TEMPLATE_UNLAYER_TEMPLATE_ID)%'
             $goCardlessApiKey: '%env(GOCARDLESS_API_KEY)%'
             $goCardlessEnvironment: '%env(GOCARDLESS_ENV)%'
+            $campusWebhookHost: '%env(CAMPUS_REGISTRATION_HOST)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
