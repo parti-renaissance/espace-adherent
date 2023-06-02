@@ -25,7 +25,7 @@ class AdherentMembershipSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            UserEvents::USER_VALIDATED => ['onRegistrationComplete', -256],
+            UserEvents::USER_MEMBERSHIP_COMPLETED => ['onRegistrationComplete', -256],
         ];
     }
 

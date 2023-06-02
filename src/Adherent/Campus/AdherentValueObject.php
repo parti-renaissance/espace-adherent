@@ -18,6 +18,7 @@ class AdherentValueObject
     public bool $under35;
     public ?string $postalCode;
     public ?string $countryCode;
+    public ?\DateTimeInterface $lastMembershipDate;
 
     public static function createFromAdherent(Adherent $adherent): self
     {
@@ -34,6 +35,7 @@ class AdherentValueObject
         $valueObject->under35 = 35 > $adherent->getAge();
         $valueObject->postalCode = $adherent->getPostalCode();
         $valueObject->countryCode = $adherent->getCountry();
+        $valueObject->lastMembershipDate = $adherent->getLastMembershipDonation();
 
         return $valueObject;
     }
