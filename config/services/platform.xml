@@ -13,12 +13,12 @@
 
         <!-- Adherents -->
         <service id="App\Contact\ContactMessageHandler">
-            <argument type="service" id="app.mailer.campaign" />
+            <argument type="service" id="app.mailer.transactional" />
         </service>
 
         <!-- Events -->
         <service id="App\Event\EventContactMembersCommandHandler">
-            <argument type="service" id="app.mailer.campaign" />
+            <argument type="service" id="app.mailer.transactional" />
         </service>
 
         <service id="App\BoardMember\BoardMemberMessageNotifier">

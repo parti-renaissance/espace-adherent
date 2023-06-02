@@ -12,11 +12,6 @@ old_sound_rabbit_mq:
             heartbeat: 15
 
     producers:
-        mailer_campaign:
-            connection:       default
-            exchange_options: { name: 'mailer-delayed-campaign', type: direct }
-            class:            App\Producer\MailerProducer
-
         mailer_transactional:
             connection:       default
             exchange_options: { name: 'mailer-delayed-transactional', type: direct }
@@ -28,13 +23,6 @@ old_sound_rabbit_mq:
             class:            App\Producer\ChezVous\AlgoliaProducer
 
     consumers:
-        mailer_campaign:
-            connection:        default
-            exchange_options:  { name: 'mailer-delayed-campaign', type: direct }
-            queue_options:     { name: 'mailer-delayed-campaign', durable: false }
-            callback:          App\Consumer\CampaignMailerConsumer
-            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
-
         mailer_transactional:
             connection:        default
             exchange_options:  { name: 'mailer-delayed-transactional', type: direct }

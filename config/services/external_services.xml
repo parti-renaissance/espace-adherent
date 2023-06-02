@@ -3,8 +3,6 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-
-        <!-- Mailer (transactional) -->
         <service id="app.mailer.transactional" class="App\Mailer\MailerService" public="false">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailer.transport.rabbitmq_transactional"/>
@@ -24,24 +22,6 @@
         <service id="app.mailer.message_factory.transactional" class="App\Mailer\EmailTemplateFactory" public="false">
             <argument>%transactional_sender_email%</argument>
             <argument>%transactional_sender_name%</argument>
-            <argument>App\Mandrill\EmailTemplate</argument>
-        </service>
-
-        <!-- Mailer (campaign) -->
-        <service id="app.mailer.campaign" class="App\Mailer\MailerService" public="false">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.mailer.transport.rabbitmq_campaign"/>
-            <argument type="service" id="app.mailer.message_factory.campaign"/>
-            <argument type="service" id="app.mailer.client"/>
-        </service>
-
-        <service id="app.mailer.transport.rabbitmq_campaign" class="App\Mailer\Transport\RabbitMQTransport" public="false">
-            <argument type="service" id="old_sound_rabbit_mq.mailer_campaign_producer" />
-        </service>
-
-        <service id="app.mailer.message_factory.campaign" class="App\Mailer\EmailTemplateFactory" public="false">
-            <argument>%campaign_sender_email%</argument>
-            <argument>%campaign_sender_name%</argument>
             <argument>App\Mandrill\EmailTemplate</argument>
         </service>
     </services>
