@@ -19,7 +19,7 @@ use Tests\App\Controller\ControllerTestTrait;
  * @group functional
  * @group admin
  */
-class RenaissanceCommitteeControllerCaseTest extends AbstractRenaissanceWebCaseTest
+class CommitteeControllerCaseTest extends AbstractRenaissanceWebCaseTest
 {
     use ControllerTestTrait;
 
