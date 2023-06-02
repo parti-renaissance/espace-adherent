@@ -9,7 +9,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class AdherentMembershipSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private readonly MessageBusInterface $bus, private readonly string $appEnvironment)
+    public function __construct(private readonly MessageBusInterface $bus, private readonly string $campusWebhookHost)
     {
     }
 
@@ -31,6 +31,6 @@ class AdherentMembershipSubscriber implements EventSubscriberInterface
 
     private function isSubscriberEnabled(): bool
     {
-        return 'production' === $this->appEnvironment;
+        return !empty($this->campusWebhookHost);
     }
 }
