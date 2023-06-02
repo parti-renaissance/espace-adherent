@@ -56,19 +56,6 @@
             <argument type="service" id="app.consumer.service_locator" />
         </service>
 
-        <service id="App\Consumer\ChezVous\AlgoliaConsumer" parent="app_abstract_consumer">
-            <argument type="service" id="app.consumer.service_locator" />
-            <call method="setCityRepository">
-                <argument type="service" id="App\Repository\ChezVous\CityRepository"/>
-            </call>
-            <call method="setMeasureTypeRepository">
-                <argument type="service" id="App\Repository\ChezVous\MeasureTypeRepository"/>
-            </call>
-            <call method="setAlgoliaIndexer">
-                <argument type="service" id="App\Algolia\AlgoliaIndexedEntityManager"/>
-            </call>
-        </service>
-
         <!-- Security -->
         <service id="App\Security\AdherentLoginTimestampRecorder">
             <argument type="service" id="doctrine.orm.entity_manager"/>
