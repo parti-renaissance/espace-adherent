@@ -21,7 +21,7 @@ class Client implements LoggerAwareInterface
 
     public function sendRegistrationRequest(Adherent $adherent): void
     {
-        $body = $this->normalizer->normalize(AdherentValueObject::createFromAdherent($adherent), 'array', ['groups' => ['adherent_campus']]);
+        $body = $this->normalizer->normalize(AdherentValueObject::createFromAdherent($adherent));
 
         try {
             $this->client->request('POST', '', ['json' => $body]);
