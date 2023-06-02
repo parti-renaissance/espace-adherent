@@ -47,6 +47,7 @@ services:
         bind:
             $environment: '%kernel.environment%'
             $projectDir: '%kernel.project_dir%'
+            $appEnvironment: '%env(APP_ENVIRONMENT)%'
             $canaryMode: '%env(ENABLE_CANARY)%'
             $mailchimpClient: '@app.http_client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
@@ -463,3 +464,7 @@ services:
     App\Ohme\Client:
         arguments:
             $client: '@app.http_client.ohme_api'
+
+    App\Adherent\Campus\Client:
+        arguments:
+            $client: '@app.http_client.campus_registration_api'
