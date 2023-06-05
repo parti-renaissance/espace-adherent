@@ -183,15 +183,6 @@
             "ref": "4388686329b81291918a948cd42891829fb1de71"
         }
     },
-    "php-amqplib/rabbitmq-bundle": {
-        "version": "2.11",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "1.12",
-            "ref": "ce3ca2e4577270c4f518539aa6b9e878998fcfef"
-        }
-    },
     "phpunit/phpunit": {
         "version": "9.5",
         "recipe": {

@@ -7,7 +7,6 @@ use App\Entity\Event\InstitutionalEventCategory;
 use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Messenger\MessageRecorder\MessageRecorderInterface;
-use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
@@ -17,7 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
-use Tests\App\Test\OldSoundRabbitMq\Connection\DummyConnection;
 use Tests\App\TestHelperTrait;
 
 /**
@@ -166,23 +164,6 @@ trait ControllerTestTrait
         );
 
         self::assertEquals(1, \count($messages), 'Expected message not found.');
-    }
-
-    private function getMessages(string $queue): array
-    {
-        /** @var DummyConnection $connection */
-        $connection = $this->get('old_sound_rabbit_mq.connection.default');
-
-        $channel = $connection->channel();
-
-        $messages = [];
-
-        /** @var AMQPMessage $message */
-        while ($message = $channel->basic_get($queue)) {
-            $messages[] = $message;
-        }
-
-        return $messages;
     }
 
     private function authenticate(KernelBrowser $client, UserInterface $user, string $firewallName): void

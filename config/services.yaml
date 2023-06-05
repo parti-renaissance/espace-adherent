@@ -49,7 +49,6 @@ services:
             $mailchimpClient: '@app.http_client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
-            $transactionalMailer: '@app.mailer.transactional'
             $membershipProcessWorkflow: '@state_machine.membership_request'
             $donationProcessWorkflow: '@state_machine.donation_request'
             $electedRepresentativeContributionProcessWorkflow: '@state_machine.elected_representative_contribution_request'
@@ -76,7 +75,6 @@ services:
             $dynamicLinksHost: '%env(DYNAMIC_LINKS_HOST)%'
             $jemengageAppPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'
             $invalidEmailHashKey: '%env(INVALID_EMAIL_HASH_KEY)%'
-            $transactionalMailProducer: '@old_sound_rabbit_mq.mailer_transactional_producer'
             $articlePreviewAdminKey: '%env(ARTICLE_PREVIEW_ADMIN_KEY)%'
             $unlayerDefaultTemplateId: '%env(UNLAYER_DEFAULT_TEMPLATE_ID)%'
             $dptSiteUnlayerTemplateId: '%env(DPT_SITE_UNLAYER_TEMPLATE_ID)%'
@@ -348,8 +346,6 @@ services:
     Sonata\AdminBundle\Builder\ShowBuilderInterface: '@sonata.admin.builder.orm_show'
     Sonata\Exporter\Exporter: '@sonata.exporter.exporter'
 
-    App\Producer\MailerProducer: '@old_sound_rabbit_mq.mailer_transactional_producer'
-
     Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider: ~
 
     Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
@@ -464,3 +460,14 @@ services:
     App\Adherent\Campus\Client:
         arguments:
             $client: '@app.http_client.campus_registration_api'
+
+    App\Mailer\EmailTemplateFactory:
+        arguments:
+            $senderEmail: '%transactional_sender_email%'
+            $senderName: '%transactional_sender_name%'
+            $templateClass: App\Mandrill\EmailTemplate
+
+    App\Mandrill\EmailClient:
+        arguments:
+            $client: '@app.http_client.mandrill_api'
+            $apiKey: '%env(MANDRILL_API_KEY)%'

@@ -40,7 +40,6 @@ default:
                 - Tests\App\Behat\Context\JsonContext
                 - Tests\App\Behat\Context\ChronosContext
                 - Tests\App\Behat\Context\EmailContext
-                - Tests\App\Behat\Context\RabbitMqContext
                 - Tests\App\Behat\Context\NotificationContext
                 - Tests\App\Behat\Context\ReferentTagContext
                 - Tests\App\Behat\Context\FeatureContext
@@ -61,7 +60,6 @@ default:
                 - Tests\App\Behat\Context\SecurityContext
                 - Tests\App\Behat\Context\JsonContext
                 - Tests\App\Behat\Context\EmailContext
-                - Tests\App\Behat\Context\RabbitMqContext
                 - Tests\App\Behat\Context\NotificationContext
                 - Tests\App\Behat\Context\ReferentTagContext
                 - Tests\App\Behat\Context\FeatureContext
