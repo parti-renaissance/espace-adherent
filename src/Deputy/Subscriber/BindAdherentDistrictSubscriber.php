@@ -2,6 +2,7 @@
 
 namespace App\Deputy\Subscriber;
 
+use App\Adherent\Listener\BindAdherentZoneSubscriber;
 use App\Membership\AdherentEvents;
 use App\Membership\Event\AdherentEvent;
 use App\Repository\DistrictRepository;

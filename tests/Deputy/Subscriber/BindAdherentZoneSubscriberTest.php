@@ -2,7 +2,7 @@
 
 namespace Tests\App\Deputy\Subscriber;
 
-use App\Deputy\Subscriber\BindAdherentZoneSubscriber;
+use App\Adherent\Listener\BindAdherentZoneSubscriber;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Membership\ActivityPositionsEnum;
