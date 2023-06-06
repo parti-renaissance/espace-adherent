@@ -129,7 +129,7 @@ class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, En
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank
-     * @Assert\LessThanOrEqual("today")
+     * @Assert\LessThanOrEqual("now")
      *
      * @Groups({
      *     "general_meeting_report_list_read",
