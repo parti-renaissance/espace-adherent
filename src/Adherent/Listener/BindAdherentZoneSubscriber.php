@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Deputy\Subscriber;
+namespace App\Adherent\Listener;
 
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
@@ -32,14 +32,18 @@ class BindAdherentZoneSubscriber implements EventSubscriberInterface
     {
         $adherent = $event->getAdherent();
         $toAdd = [];
+        $typeForGeoSearch = self::TYPES;
 
         if ($adherent->isForeignResident()) {
             $toAdd = $this->repository->findParent(Zone::FOREIGN_DISTRICT, $adherent->getCountry(), Zone::COUNTRY);
-        } elseif ($adherent->isGeocoded()) {
+            $typeForGeoSearch = [Zone::CUSTOM];
+        }
+
+        if ($adherent->isGeocoded()) {
             $latitude = $adherent->getLatitude();
             $longitude = $adherent->getLongitude();
 
-            $toAdd = $this->repository->findByCoordinatesAndTypes($latitude, $longitude, self::TYPES);
+            $toAdd = array_merge($toAdd, $this->repository->findByCoordinatesAndTypes($latitude, $longitude, $typeForGeoSearch));
         }
 
         $toAdd = $this->cleanFrenchZonesToAdd($adherent, $toAdd);
