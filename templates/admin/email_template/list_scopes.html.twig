@@ -1,8 +1,0 @@
-{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
-
-{% block field %}
-    {{ object.scopes|first|trans }}
-    {% if object.scopes|length > 1 %}
-        (+ {{ object.scopes|length - 1 }})
-    {% endif %}
-{% endblock %}

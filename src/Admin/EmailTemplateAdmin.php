@@ -47,6 +47,10 @@ class EmailTemplateAdmin extends AbstractAdmin
                 'label' => 'Label',
                 'show_filter' => true,
             ])
+            ->add('isStatutory', null, [
+                'label' => 'Statutaire',
+                'show_filter' => true,
+            ])
             ->add('scopes', CallbackFilter::class, [
                 'show_filter' => true,
                 'field_type' => EntityType::class,
@@ -98,17 +102,10 @@ class EmailTemplateAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
-            ->addIdentifier('label', null, [
-                'label' => 'Label',
-            ])
-            ->add('scopes', null, [
-                'label' => 'Scopes',
-                'template' => 'admin/email_template/list_scopes.html.twig',
-            ])
-            ->add('zones', null, [
-                'label' => 'Zones',
-                'template' => 'admin/email_template/list_zones.html.twig',
-            ])
+            ->addIdentifier('label', null, ['label' => 'Label'])
+            ->add('scopes', 'array_list', ['label' => 'Scopes'])
+            ->add('zones', 'array_list', ['label' => 'Zones'])
+            ->add('isStatutory', null, ['label' => 'Statutaire'])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'edit' => [],
@@ -125,6 +122,12 @@ class EmailTemplateAdmin extends AbstractAdmin
                 ->add('label', TextType::class, [
                     'label' => 'Label',
                 ])
+                ->add('isStatutory', null, [
+                    'label' => 'Statutaire',
+                    'required' => false,
+                ])
+            ->end()
+            ->with('Rôle & Périmètre', ['class' => 'col-md-6'])
                 ->add('scopes', EntityType::class, [
                     'label' => 'Scopes',
                     'class' => Scope::class,

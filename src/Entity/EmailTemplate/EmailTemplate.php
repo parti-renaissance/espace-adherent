@@ -115,6 +115,11 @@ class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministr
      */
     private ?array $scopes = null;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    public bool $isStatutory = false;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
