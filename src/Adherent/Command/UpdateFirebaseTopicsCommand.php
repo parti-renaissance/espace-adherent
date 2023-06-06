@@ -2,8 +2,8 @@
 
 namespace App\Adherent\Command;
 
-use App\Messenger\Message\AbstractUuidAsynchronousMessage;
+use App\Messenger\Message\UuidDefaultAsyncMessage;
 
-class UpdateFirebaseTopicsCommand extends AbstractUuidAsynchronousMessage
+class UpdateFirebaseTopicsCommand extends UuidDefaultAsyncMessage
 {
 }

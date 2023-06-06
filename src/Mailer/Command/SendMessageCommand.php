@@ -2,8 +2,8 @@
 
 namespace App\Mailer\Command;
 
-use App\Messenger\Message\AbstractUuidAsynchronousMessage;
+use App\Messenger\Message\AbstractUuidMessage;
 
-class SendMessageCommand extends AbstractUuidAsynchronousMessage
+class SendMessageCommand extends AbstractUuidMessage
 {
 }

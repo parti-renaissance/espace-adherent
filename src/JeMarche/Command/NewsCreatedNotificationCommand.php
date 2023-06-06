@@ -2,8 +2,8 @@
 
 namespace App\JeMarche\Command;
 
-use App\Messenger\Message\AbstractUuidAsynchronousMessage;
+use App\Messenger\Message\UuidDefaultAsyncMessage;
 
-class NewsCreatedNotificationCommand extends AbstractUuidAsynchronousMessage
+class NewsCreatedNotificationCommand extends UuidDefaultAsyncMessage
 {
 }

@@ -2,8 +2,8 @@
 
 namespace App\Membership\Contact;
 
-use App\Messenger\Message\AbstractUuidAsynchronousMessage;
+use App\Messenger\Message\UuidDefaultAsyncMessage;
 
-class ContactRegistrationCommand extends AbstractUuidAsynchronousMessage
+class ContactRegistrationCommand extends UuidDefaultAsyncMessage
 {
 }
