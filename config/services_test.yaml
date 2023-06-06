@@ -29,17 +29,6 @@ services:
     app.glide.cache_adapter:
         class: 'League\Flysystem\Memory\MemoryAdapter'
 
-    old_sound_rabbit_mq.mailer_campaign_producer:
-        class: 'Tests\App\Test\Producer\MailerNullProducer'
-        public: false
-
-    old_sound_rabbit_mq.mailer_transactional_producer:
-        class: 'Tests\App\Test\Producer\MailerNullProducer'
-        public: false
-
-    old_sound_rabbit_mq.chezvous_algolia_producer:
-        class: 'Tests\App\Test\Producer\ChezVous\AlgoliaNullProducer'
-
     Tests\App\Test\Payment\PayboxProvider:
         arguments:
             - '%env(SSL_PRIVATE_KEY)%'

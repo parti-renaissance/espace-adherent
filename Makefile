@@ -27,9 +27,9 @@ help:
 ## Project setup
 ##---------------------------------------------------------------------------
 
-start: build up assets db keys perm cc rabbitmq-fabric ## Install and start the project
+start: build up assets db keys perm cc ## Install and start the project
 
-start-mac: build up web-built-mac db keys.key perm cc rabbitmq-fabric   ## Install and start the project
+start-mac: build up web-built-mac db keys.key perm cc ## Install and start the project
 
 stop:                                                                                                  ## Remove docker containers
 	$(DOCKER_COMPOSE) kill || true
@@ -66,9 +66,6 @@ keys:                                                                           
 
 wait-for-rabbitmq:
 	$(EXEC) php -r "set_time_limit(60);for(;;){if(@fsockopen('rabbitmq',5672)){break;}echo \"Waiting for RabbitMQ\n\";sleep(1);}"
-
-rabbitmq-fabric: wait-for-rabbitmq
-	$(CONSOLE) rabbitmq:setup-fabric
 
 ##
 ## Database
@@ -150,7 +147,6 @@ tfp: assets-prod vendor perm tfp-rabbitmq tfp-db                                
 tfp-rabbitmq: wait-for-rabbitmq                                                                        ## Init RabbitMQ setup for tests
 	$(DOCKER_COMPOSE) exec $(EXEC_ARGS) rabbitmq rabbitmqctl add_vhost /test || true
 	$(DOCKER_COMPOSE) exec $(EXEC_ARGS) rabbitmq rabbitmqctl set_permissions -p /test guest ".*" ".*" ".*"
-	$(CONSOLE) --env=test rabbitmq:setup-fabric
 
 tfp-db-init: wait-for-db                                                                                    ## Init databases for tests
 	$(CONSOLE) doctrine:database:drop --force --if-exists --env=test --no-debug

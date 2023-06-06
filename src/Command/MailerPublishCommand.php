@@ -2,16 +2,17 @@
 
 namespace App\Command;
 
-use App\Producer\MailerProducerInterface;
+use App\Mailer\Command\SendMessageCommand;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class MailerPublishCommand extends Command
 {
-    public function __construct(private readonly MailerProducerInterface $transactionalMailProducer)
+    public function __construct(private readonly MessageBusInterface $bus)
     {
         parent::__construct();
     }
@@ -32,7 +33,7 @@ class MailerPublishCommand extends Command
             throw new \InvalidArgumentException('Invalid UUID');
         }
 
-        $this->transactionalMailProducer->publish(json_encode(['uuid' => $uuid]));
+        $this->bus->dispatch(new SendMessageCommand(Uuid::fromString($uuid)));
 
         return 0;
     }

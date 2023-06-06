@@ -26,7 +26,6 @@ Feature:
     And I fill in hidden field "adherent_registration_mandates" with "regional_councilor"
     And I check "Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de La République En Marche, ainsi qu'aux conditions générales d'utilisation du site"
     And I resolved the captcha
-    And I clean the "api_sync" queue
     When I press "Je rejoins La République En Marche"
     Then the response status code should be 200
     And I should be on "/inscription/centre-interets"

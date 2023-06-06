@@ -11,20 +11,6 @@
             <argument>%env(GMAPS_PRIVATE_API_KEY)%</argument>
         </service>
 
-        <!-- Adherents -->
-        <service id="App\Contact\ContactMessageHandler">
-            <argument type="service" id="app.mailer.transactional" />
-        </service>
-
-        <!-- Events -->
-        <service id="App\Event\EventContactMembersCommandHandler">
-            <argument type="service" id="app.mailer.transactional" />
-        </service>
-
-        <service id="App\BoardMember\BoardMemberMessageNotifier">
-            <argument type="service" id="app.mailer.transactional"/>
-        </service>
-
         <!-- Search -->
         <service id="App\Search\SearchParametersFilter" shared="false">
             <argument type="service" id="App\Geocoder\Geocoder"/>

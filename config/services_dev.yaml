@@ -24,7 +24,7 @@ services:
 
     App\Ohme\ClientInterface: '@Tests\App\Ohme\DummyClient'
 
-    app.mailer.client:
+    App\Mandrill\EmailClient:
         class: 'Tests\App\Test\Mailer\NullEmailClient'
 
     Tests\App\Test\Recaptcha\DummyRecaptchaApiClient: ~

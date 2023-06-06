@@ -76,7 +76,7 @@ class EmailRepository extends ServiceEntityRepository
     {
         $email->delivered($response);
 
-        $this->_em->flush();
+        $this->getEntityManager()->flush();
     }
 
     private function getMessageType(string $messageClass): string

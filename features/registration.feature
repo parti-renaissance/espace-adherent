@@ -24,7 +24,6 @@ Feature:
     And I fill in hidden field "adherent_registration_address_country" with "FR"
     And I check "Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de La République En Marche, ainsi qu'aux conditions générales d'utilisation du site"
     And I resolved the captcha
-    And I clean the "api_sync" queue
     And I press "Je rejoins La République En Marche"
     And the response status code should be 200
     Then I should be on "/inscription/centre-interets"
@@ -253,7 +252,6 @@ Feature:
       }
     }
     """
-    And I clean the "api_sync" queue
 
     Given I am on "/parametres/mon-compte"
     Then the response status code should be 200
