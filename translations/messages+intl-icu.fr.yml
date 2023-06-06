@@ -1367,6 +1367,7 @@ scope.feature.survey: Questionnaires
 scope.feature.department_site: Site départemental
 scope.feature.elected_representative: Élus
 scope.feature.general_meeting_reports: Procès-verbal d'AG
+scope.feature.statutory_message: Message statutaire
 scope.feature.adherent_formations: Formations
 scope.feature.documents: Documents
 scope.feature.committee: Comités locaux

@@ -28,6 +28,7 @@ class FeatureEnum extends Enum
     public const GENERAL_MEETING_REPORTS = 'general_meeting_reports';
     public const DOCUMENTS = 'documents';
     public const DESIGNATION = 'designation';
+    public const STATUTORY_MESSAGE = 'statutory_message';
 
     public const ALL = [
         self::DASHBOARD,
@@ -52,6 +53,7 @@ class FeatureEnum extends Enum
         self::GENERAL_MEETING_REPORTS,
         self::DOCUMENTS,
         self::DESIGNATION,
+        self::STATUTORY_MESSAGE,
     ];
 
     public const DELEGATED_ACCESSES_BY_DEFAULT = [

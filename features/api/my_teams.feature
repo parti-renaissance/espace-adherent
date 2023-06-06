@@ -382,6 +382,7 @@ Feature:
                             "adherent_formations",
                             "committee",
                             "general_meeting_reports",
+                            "statutory_message",
                             "documents",
                             "designation"
                         ],
