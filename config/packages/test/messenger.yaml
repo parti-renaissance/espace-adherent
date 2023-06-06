@@ -9,6 +9,7 @@ framework:
             sync: 'sync://'
 
         routing:
-            App\Messenger\Message\AbstractUuidAsynchronousMessage: sync
+            App\Messenger\Message\UuidDefaultAsyncMessage: sync
+            App\Mailer\Command\SendMessageCommand: sync
             App\Mailchimp\Webhook\Command\CatchMailchimpWebhookCallCommand: sync
             App\Procuration\Command\ProcurationCommandInterface: sync

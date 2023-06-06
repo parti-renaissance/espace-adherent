@@ -2,8 +2,8 @@
 
 namespace App\JeMarche\Command;
 
-use App\Messenger\Message\AbstractUuidAsynchronousMessage;
+use App\Messenger\Message\UuidDefaultAsyncMessage;
 
-class CommitteeEventCreationNotificationCommand extends AbstractUuidAsynchronousMessage
+class CommitteeEventCreationNotificationCommand extends UuidDefaultAsyncMessage
 {
 }
