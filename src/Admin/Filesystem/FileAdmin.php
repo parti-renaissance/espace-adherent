@@ -73,9 +73,9 @@ class FileAdmin extends AbstractAdmin
         return $actions;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('name', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
@@ -155,14 +155,14 @@ class FileAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         /** @var File $file */
         $file = $this->getSubject();
         $isCreation = $this->isCreation();
         $isDir = $file->isDir();
 
-        $formMapper
+        $form
             ->with('Général', ['class' => 'col-md-7'])
                 ->add('name', TextType::class, [
                     'label' => 'Titre',
@@ -180,7 +180,7 @@ class FileAdmin extends AbstractAdmin
         ;
 
         if (!$isDir) {
-            $formMapper
+            $form
                 ->with('Permissions', ['class' => 'col-md-5'])
                     ->add(
                         'permissions',
@@ -210,9 +210,9 @@ class FileAdmin extends AbstractAdmin
         }
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('fullPath', null, [
                 'label' => 'Dossier/Document',
             ])
@@ -243,35 +243,35 @@ class FileAdmin extends AbstractAdmin
         ;
     }
 
-    protected function prePersist(object $file): void
+    protected function prePersist(object $object): void
     {
-        parent::prePersist($file);
+        parent::prePersist($object);
 
-        $this->fileManager->update($file);
+        $this->fileManager->update($object);
     }
 
-    protected function postPersist(object $file): void
+    protected function postPersist(object $object): void
     {
-        parent::postPersist($file);
+        parent::postPersist($object);
 
-        if ($file instanceof File && $file->getFile() instanceof UploadedFile) {
-            $this->fileManager->upload($file);
+        if ($object instanceof File && $object->getFile() instanceof UploadedFile) {
+            $this->fileManager->upload($object);
         }
     }
 
-    protected function preUpdate(object $file): void
+    protected function preUpdate(object $object): void
     {
-        parent::preUpdate($file);
+        parent::preUpdate($object);
 
-        $this->fileManager->update($file);
+        $this->fileManager->update($object);
     }
 
-    protected function postUpdate(object $file): void
+    protected function postUpdate(object $object): void
     {
-        if ($file->getFile() instanceof UploadedFile) {
-            $this->fileManager->upload($file);
-        } elseif ($file->isLink()) {
-            $this->fileManager->removeFromStorage($file);
+        if ($object->getFile() instanceof UploadedFile) {
+            $this->fileManager->upload($object);
+        } elseif ($object->isLink()) {
+            $this->fileManager->removeFromStorage($object);
         }
     }
 

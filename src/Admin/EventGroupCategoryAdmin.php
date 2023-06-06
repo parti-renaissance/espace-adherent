@@ -10,11 +10,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class EventGroupCategoryAdmin extends EventCategoryAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         $group = $this->getSubject();
 
-        $formMapper
+        $form
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])

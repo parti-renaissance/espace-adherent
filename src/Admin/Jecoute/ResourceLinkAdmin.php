@@ -28,9 +28,9 @@ class ResourceLinkAdmin extends AbstractAdmin
         return $query;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
              ->add('label', null, [
                  'label' => 'Label',
                  'show_filter' => true,
@@ -42,9 +42,9 @@ class ResourceLinkAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('label', null, [
                 'label' => 'Label',
             ])
@@ -71,9 +71,9 @@ class ResourceLinkAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Général', ['class' => 'col-md-6'])
                 ->add('label', TextType::class, [
                     'label' => 'Label',

@@ -34,7 +34,7 @@ class PoliticalFunctionAdmin extends AbstractAdmin
         $collection->clearExcept(['create', 'edit', 'delete']);
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         $mandates = [];
         $electedRepresentativeId = $this->getRequest()->attributes->has('id') ? $this->getRequest()->attributes->getInt('id') : $this->getRequest()->query->getInt('objectId');
@@ -42,7 +42,7 @@ class PoliticalFunctionAdmin extends AbstractAdmin
             $mandates = $this->mandateRepository->getMandatesForPoliticalFunction($electedRepresentativeId);
         }
 
-        $formMapper
+        $form
             ->add('mandate', EntityType::class, [
                 'label' => 'Mandat',
                 'placeholder' => '--',

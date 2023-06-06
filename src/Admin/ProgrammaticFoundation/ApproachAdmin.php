@@ -20,9 +20,9 @@ class ApproachAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_BY] = 'position';
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
@@ -30,9 +30,9 @@ class ApproachAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
             ])
@@ -50,9 +50,9 @@ class ApproachAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Grand axe')
                 ->add('title', null, [
                     'label' => 'Titre',

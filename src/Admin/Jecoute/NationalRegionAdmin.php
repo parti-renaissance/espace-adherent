@@ -39,23 +39,23 @@ class NationalRegionAdmin extends AbstractRegionAdmin
         return [Zone::COUNTRY];
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        parent::configureListFields($listMapper);
+        parent::configureListFields($list);
 
-        $listMapper
+        $list
             ->remove('zone.name')
             ->remove('zone.code')
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        parent::configureFormFields($formMapper);
+        parent::configureFormFields($form);
 
-        $formMapper->remove('zone');
+        $form->remove('zone');
 
-        $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
+        $form->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
     }
 
     public function submit(FormEvent $event): void

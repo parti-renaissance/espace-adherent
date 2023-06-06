@@ -17,9 +17,9 @@ class DeepLinkAdmin extends AbstractAdmin
         $collection->remove('edit');
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Général', ['class' => 'col-md-6', 'description' => 'Note: modification du lien est impossible après sa création'])
                 ->add('label', TextType::class, ['label' => 'Libellé'])
                 ->add('link', UrlType::class, [
@@ -39,9 +39,9 @@ class DeepLinkAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('id', null, ['label' => '#'])
             ->add('label', null, ['label' => 'Lien'])
             ->add('link', null, ['label' => 'Lien'])

@@ -8,15 +8,15 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class DeepLinkExtension extends AbstractAdminExtension
 {
-    public function configureListFields(ListMapper $listMapper): void
+    public function configureListFields(ListMapper $list): void
     {
-        $listMapper->add('dynamicLink', null, [
+        $list->add('dynamicLink', null, [
             'label' => 'Lien de partage',
             'template' => 'admin/CRUD/list_dynamic_link.html.twig',
         ]);
 
-        $keys = $listMapper->keys();
-        $admin = $listMapper->getAdmin();
+        $keys = $list->keys();
+        $admin = $list->getAdmin();
 
         foreach ($admin instanceof ReorderableAdminInterface ? array_merge($admin->getListMapperEndColumns(), ['_actions']) : ['_actions'] as $column) {
             if (false !== $actionKey = array_search($column, $keys)) {
@@ -25,6 +25,6 @@ class DeepLinkExtension extends AbstractAdminExtension
             }
         }
 
-        $listMapper->reorder($keys);
+        $list->reorder($keys);
     }
 }

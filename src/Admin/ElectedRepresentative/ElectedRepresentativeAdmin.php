@@ -100,9 +100,9 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         return $query;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('lastName', null, [
                 'label' => 'Nom',
             ])
@@ -139,9 +139,9 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->with('Identité', ['class' => 'col-md-6'])
                 ->add('lastName', null, [
                     'label' => 'Nom',
@@ -182,9 +182,9 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Identité', ['class' => 'col-md-6'])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
@@ -229,7 +229,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         ;
 
         if ($this->isGranted('LABELS')) {
-            $formMapper->add('userListDefinitions', null, [
+            $form->add('userListDefinitions', null, [
                 'label' => 'Labels',
                 'query_builder' => function (EntityRepository $er) {
                     return $er
@@ -245,7 +245,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ]);
         }
 
-        $formMapper
+        $form
                 ->add('hasFollowedTraining', null, [
                     'label' => 'Formation Tous Politiques !',
                 ])
@@ -314,7 +314,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ->end()
         ;
 
-        $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
+        $form->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
     }
 
     public function submit(FormEvent $event): void
@@ -328,9 +328,9 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         }
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('lastName', null, [
                 'label' => 'Nom',
                 'show_filter' => true,

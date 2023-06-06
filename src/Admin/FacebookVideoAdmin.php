@@ -18,9 +18,9 @@ class FacebookVideoAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_BY] = 'position';
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('facebookUrl', UrlType::class, [
                 'label' => 'URL Facebook',
             ])
@@ -43,9 +43,9 @@ class FacebookVideoAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('facebookUrl', null, [
                 'label' => 'URL Facebook',
             ])

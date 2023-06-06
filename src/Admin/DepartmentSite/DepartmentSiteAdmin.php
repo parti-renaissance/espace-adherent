@@ -39,9 +39,9 @@ class DepartmentSiteAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_ORDER] = 'ASC';
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('zone', ModelFilter::class, [
                 'show_filter' => true,
                 'field_type' => ModelAutocompleteType::class,
@@ -66,9 +66,9 @@ class DepartmentSiteAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('slug', null, [
                 'label' => 'Slug',
             ])
@@ -87,9 +87,9 @@ class DepartmentSiteAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Département', ['class' => 'col-md-6'])
                 ->add('zone', ModelAutocompleteType::class, [
                     'property' => ['name', 'code'],

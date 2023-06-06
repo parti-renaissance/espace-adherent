@@ -24,9 +24,9 @@ class LegislativeCandidateAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_BY] = 'position';
     }
 
-    protected function configureDatagridFilters(DatagridMapper $mapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $mapper
+        $filter
             ->add('id', null, [
                 'label' => 'ID',
             ])
@@ -52,9 +52,9 @@ class LegislativeCandidateAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $mapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $mapper
+        $list
             ->addIdentifier('id', null, [
                 'label' => 'ID',
             ])
@@ -86,9 +86,9 @@ class LegislativeCandidateAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $mapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $mapper
+        $form
             ->with('Informations personnelles', ['class' => 'col-md-4'])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
@@ -195,9 +195,9 @@ class LegislativeCandidateAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $mapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $mapper
+        $show
             ->with('Informations générales', ['class' => 'col-md-5'])
                 ->add('id', null, [
                     'label' => 'ID',

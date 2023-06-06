@@ -34,9 +34,9 @@ class UnregistrationAdmin extends AbstractAdmin
         $collection->remove('create');
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('uuid', null, [
                 'label' => 'UUID',
             ])
@@ -72,11 +72,11 @@ class UnregistrationAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $reasonsList = array_merge(Unregistration::REASONS_LIST_ADHERENT, Unregistration::REASONS_LIST_USER);
 
-        $datagridMapper
+        $filter
             ->add('reasons', CallbackFilter::class, [
                 'label' => 'Raisons',
                 'show_filter' => true,
@@ -123,9 +123,9 @@ class UnregistrationAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->add('uuid', null, [
                 'label' => 'UUID',
             ])

@@ -37,9 +37,9 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
         return $query;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Questionnaire', ['class' => 'col-md-6'])
                 ->add('name', TextType::class, [
                     'label' => 'Nom du questionnaire',
@@ -60,9 +60,9 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('name')
             ->add('createdByAdherent.lastName', null, [
                 'label' => "Nom de l'auteur",
@@ -88,9 +88,9 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])
@@ -120,7 +120,7 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
         ;
 
         if ($this->hasAccess('show')) {
-            $listMapper
+            $list
                 ->add('export', null, [
                     'virtual_field' => true,
                     'template' => 'admin/jecoute/_exports.html.twig',

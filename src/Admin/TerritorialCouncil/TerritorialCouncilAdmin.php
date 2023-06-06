@@ -71,9 +71,9 @@ class TerritorialCouncilAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('name', null, [
                 'label' => 'Nom',
             ])
@@ -109,9 +109,9 @@ class TerritorialCouncilAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])

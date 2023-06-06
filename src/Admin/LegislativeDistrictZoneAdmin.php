@@ -20,9 +20,9 @@ class LegislativeDistrictZoneAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_BY] = 'rank';
     }
 
-    protected function configureListFields(ListMapper $mapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $mapper
+        $list
             ->add('areaCode', null, [
                 'label' => 'Code',
             ])
@@ -42,9 +42,9 @@ class LegislativeDistrictZoneAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $mapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $mapper
+        $show
             ->add('id', null, [
                 'label' => 'ID',
             ])
@@ -60,9 +60,9 @@ class LegislativeDistrictZoneAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $mapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $mapper
+        $form
             ->with('Informations générales', ['class' => 'col-md-6'])
                 ->add('areaCode', null, [
                     'label' => 'Code',

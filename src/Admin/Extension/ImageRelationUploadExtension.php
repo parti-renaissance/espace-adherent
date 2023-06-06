@@ -71,18 +71,16 @@ class ImageRelationUploadExtension extends AbstractAdminExtension
         }
     }
 
-    private function removeImageFile(Image $image): bool
+    private function removeImageFile(Image $image): void
     {
         try {
-            return $this->storage->delete($image->getFilePath());
+            $this->storage->delete($image->getFilePath());
         } catch (\Exception $e) {
             $this->logger->warning(
                 sprintf('Cannot delete image [%s], error: %s', $image->getFilePath(), $e->getMessage()),
                 ['exception' => $e]
             );
         }
-
-        return false;
     }
 
     public function postRemove(AdminInterface $admin, object $object): void

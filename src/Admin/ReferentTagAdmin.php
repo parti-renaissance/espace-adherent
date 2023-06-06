@@ -24,9 +24,9 @@ class ReferentTagAdmin extends AbstractAdmin
         $filter->add('name');
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->add('name', null, [
                 'label' => 'Nom',
             ])
@@ -36,9 +36,9 @@ class ReferentTagAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
@@ -49,9 +49,9 @@ class ReferentTagAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('name', null, [
                 'label' => 'Nom',
             ])

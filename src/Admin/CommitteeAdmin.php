@@ -77,9 +77,9 @@ class CommitteeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->with('Comité', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
@@ -148,9 +148,9 @@ class CommitteeAdmin extends AbstractAdmin
         $this->dispatcher->dispatch(new CommitteeEvent($object), Events::COMMITTEE_UPDATED);
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Comité', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
@@ -204,13 +204,13 @@ class CommitteeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $committeeMembershipRepository = $this->committeeMembershipRepository;
         $committeeRepository = $this->committeeRepository;
         $adherentRepository = $this->adherentRepository;
 
-        $datagridMapper
+        $filter
             ->add('id', null, [
                 'label' => 'ID',
                 'show_filter' => true,
@@ -363,9 +363,9 @@ class CommitteeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('id', null, ['label' => 'ID'])
             ->add('version', null, ['label' => 'Version'])
             ->addIdentifier('name', null, ['label' => 'Nom'])

@@ -46,9 +46,9 @@ class DataSurveyAdmin extends AbstractAdmin
         $collection->clearExcept('list');
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('survey', null, [
                 'label' => 'Questionnaire',
                 'show_filter' => true,
@@ -56,9 +56,9 @@ class DataSurveyAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('type', null, [
                 'label' => 'Type',
                 'virtual_field' => true,
@@ -86,7 +86,7 @@ class DataSurveyAdmin extends AbstractAdmin
             $survey = $this->surveyRepository->find($surveyId);
 
             foreach ($survey->getQuestions() as $key => $surveyQuestion) {
-                $listMapper->add("response_$key", null, [
+                $list->add("response_$key", null, [
                     'header_style' => 'min-width: 250px',
                     'label' => $surveyQuestion->getQuestion()->getContent(),
                     'virtual_field' => true,

@@ -52,12 +52,12 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
         $collection->remove('delete');
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         /** @var Region $region */
         $region = $this->getSubject();
 
-        $formMapper
+        $form
             ->with('Informations', ['class' => 'col-md-6'])
                 ->add('zone', ModelAutocompleteType::class, [
                     'multiple' => false,
@@ -120,9 +120,9 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('subtitle', null, [
                 'label' => 'Sous-titre',
             ])
@@ -145,38 +145,38 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
     }
 
     /**
-     * @param Region $region
+     * @param Region $object
      */
-    protected function prePersist(object $region): void
+    protected function prePersist(object $object): void
     {
-        parent::prePersist($region);
+        parent::prePersist($object);
 
-        $this->regionManager->handleFile($region);
+        $this->regionManager->handleFile($object);
 
         /** @var Administrator $administrator */
         $administrator = $this->security->getUser();
 
-        $region->setAdministrator($administrator);
+        $object->setAdministrator($administrator);
     }
 
     /**
-     * @param Region $region
+     * @param Region $object
      */
-    protected function preUpdate(object $region): void
+    protected function preUpdate(object $object): void
     {
-        parent::preUpdate($region);
+        parent::preUpdate($object);
 
-        $this->regionManager->handleFile($region);
+        $this->regionManager->handleFile($object);
     }
 
     /**
-     * @param Region $region
+     * @param Region $object
      */
-    protected function postRemove(object $region): void
+    protected function postRemove(object $object): void
     {
-        parent::postRemove($region);
+        parent::postRemove($object);
 
-        $this->regionManager->removeBanner($region);
+        $this->regionManager->removeBanner($object);
     }
 
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface

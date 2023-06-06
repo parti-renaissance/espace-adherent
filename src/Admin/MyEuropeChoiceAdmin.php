@@ -27,9 +27,9 @@ class MyEuropeChoiceAdmin extends AbstractAdmin
         return $actions;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('contentKey', null, [
                 'label' => 'Clé',
             ])
@@ -48,9 +48,9 @@ class MyEuropeChoiceAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('contentKey', null, [
                 'label' => 'Clé',
             ])

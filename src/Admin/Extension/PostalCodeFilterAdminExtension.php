@@ -11,9 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PostalCodeFilterAdminExtension extends AbstractAdminExtension
 {
-    public function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    public function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('postalCode', CallbackFilter::class, [
                 'label' => 'Code postal (préfixe)',
                 'show_filter' => true,

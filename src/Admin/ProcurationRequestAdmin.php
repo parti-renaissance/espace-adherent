@@ -28,9 +28,9 @@ class ProcurationRequestAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Coordonnées', ['class' => 'col-md-6'])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
@@ -97,9 +97,9 @@ class ProcurationRequestAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->with('Coordonnées', ['class' => 'col-md-4'])
                 ->add('gender', null, [
                     'label' => 'Genre',
@@ -134,12 +134,12 @@ class ProcurationRequestAdmin extends AbstractAdmin
         ;
 
         if (Address::FRANCE != $this->getSubject()->getCountry()) {
-            $showMapper->add('stage', null, ['label' => 'État/Province']);
+            $show->add('stage', null, ['label' => 'État/Province']);
         }
 
-        $showMapper->end();
+        $show->end();
 
-        $showMapper
+        $show
             ->with('Lieu de vote', ['class' => 'col-md-4'])
                 ->add('voteCountry', null, [
                     'label' => 'Pays',
@@ -171,9 +171,9 @@ class ProcurationRequestAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('id', null, [
                 'label' => 'ID',
             ])
@@ -196,9 +196,9 @@ class ProcurationRequestAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('id', null, [
                 'label' => 'ID',
             ])

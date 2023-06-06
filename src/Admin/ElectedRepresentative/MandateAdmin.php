@@ -22,9 +22,9 @@ class MandateAdmin extends AbstractAdmin
         $collection->clearExcept(['create', 'edit', 'delete']);
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('number', TextType::class, [
                 'disabled' => true,
                 'label' => '#',

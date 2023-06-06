@@ -16,9 +16,9 @@ class SocialNetworkLinkAdmin extends AbstractAdmin
         $collection->clearExcept(['create', 'edit', 'delete']);
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('type', ChoiceType::class, [
                 'choices' => SocialLinkTypeEnum::toArray(),
                 'attr' => ['class' => 'col-md-3'],

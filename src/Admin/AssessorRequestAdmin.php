@@ -22,9 +22,9 @@ class AssessorRequestAdmin extends AbstractAdmin
         $collection->clearExcept('list');
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('firstName', null, [
                 'label' => 'Prénom',
             ])
@@ -52,9 +52,9 @@ class AssessorRequestAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('firstName', null, [
                 'label' => 'Prénom',
             ])

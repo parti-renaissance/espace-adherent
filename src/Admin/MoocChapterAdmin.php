@@ -29,9 +29,9 @@ class MoocChapterAdmin extends AbstractAdmin
         return $query;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->tab('Chapitres')
                 ->with('Général', ['class' => 'col-md-6'])
                     ->add('title', TextType::class, [
@@ -55,7 +55,7 @@ class MoocChapterAdmin extends AbstractAdmin
                 ->end()
         ;
         if (!$this->getRequest()->isXmlHttpRequest()) {
-            $formMapper
+            $form
                 ->with('Media', ['class' => 'col-md-6'])
                     ->add('elements', EntityType::class, [
                         'label' => 'Éléments',
@@ -66,14 +66,14 @@ class MoocChapterAdmin extends AbstractAdmin
                 ->end()
             ;
         }
-        $formMapper
+        $form
             ->end()
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
@@ -85,9 +85,9 @@ class MoocChapterAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
             ])

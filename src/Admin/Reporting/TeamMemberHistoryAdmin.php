@@ -29,9 +29,9 @@ class TeamMemberHistoryAdmin extends AbstractAdmin
         $collection->clearExcept('list');
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('team.name', null, [
                 'label' => 'Nom de l\'équipe',
                 'show_filter' => true,
@@ -63,9 +63,9 @@ class TeamMemberHistoryAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('team', null, [
                 'label' => 'Équipe',
             ])

@@ -10,11 +10,11 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class VolunteerRequestAdmin extends AbstractApplicationRequestAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        parent::configureFormFields($formMapper);
+        parent::configureFormFields($form);
 
-        $formMapper
+        $form
             ->with('Candidature')
                 ->add('profession', null, [
                     'label' => 'Quelle est votre profession ?',

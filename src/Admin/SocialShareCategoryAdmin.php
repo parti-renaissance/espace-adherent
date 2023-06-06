@@ -18,9 +18,9 @@ class SocialShareCategoryAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::PER_PAGE] = 128;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
@@ -30,9 +30,9 @@ class SocialShareCategoryAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])

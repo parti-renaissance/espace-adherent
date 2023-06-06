@@ -37,9 +37,9 @@ class CampaignAdmin extends AbstractAdmin
         }
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Informations ⚙️')
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
@@ -63,14 +63,14 @@ class CampaignAdmin extends AbstractAdmin
         ;
 
         if (!$this->isPermanent()) {
-            $formMapper->add('finishAt', DatePickerType::class, [
+            $form->add('finishAt', DatePickerType::class, [
                 'label' => 'Date de fin',
                 'error_bubbling' => true,
                 'attr' => ['class' => 'width-140'],
             ]);
         }
 
-        $formMapper
+        $form
                 ->add('team', EntityType::class, [
                     'label' => 'Équipe phoning',
                     'class' => Team::class,
@@ -98,12 +98,12 @@ class CampaignAdmin extends AbstractAdmin
         ;
 
         if (!$this->isPermanent()) {
-            $formMapper->with('Filtres')
+            $form->with('Filtres')
                 ->add('audience', AudienceSnapshotType::class, ['label' => false])
             ->end()
             ;
 
-            $formMapper->get('audience')
+            $form->get('audience')
                 ->add('zones', AdminZoneAutocompleteType::class, [
                     'required' => false,
                     'multiple' => true,
@@ -150,9 +150,9 @@ class CampaignAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('id', null, [
                 'label' => 'ID',
             ])

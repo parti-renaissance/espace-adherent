@@ -188,9 +188,9 @@ class AdherentAdmin extends AbstractAdmin
         return $actions;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->with('Informations personnelles', ['class' => 'col-md-6'])
                 ->add('gender', null, [
                     'label' => 'Genre',
@@ -294,9 +294,9 @@ class AdherentAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->tab('Informations générales')
                 ->with('Informations personnelles', ['class' => 'col-md-6'])
                     ->add('gender', GenderType::class, [
@@ -542,7 +542,7 @@ class AdherentAdmin extends AbstractAdmin
         ;
 
         if ($this->isGranted('CONSEIL')) {
-            $formMapper
+            $form
                 ->with('Conseil national', ['class' => 'col-md-6'])
                 ->add('instanceQualities', AdherentInstanceQualityType::class, [
                     'by_reference' => false,
@@ -553,7 +553,7 @@ class AdherentAdmin extends AbstractAdmin
             ;
         }
 
-        $formMapper
+        $form
             ->end()
             ->tab('Responsabilités politiques')
                 ->with('Identité de l\'élu', [
@@ -570,7 +570,7 @@ class AdherentAdmin extends AbstractAdmin
             ->end()
         ;
 
-        $formMapper->getFormBuilder()
+        $form->getFormBuilder()
             ->addEventSubscriber(new BoardMemberListener())
             ->addEventSubscriber(new RevokeManagedAreaSubscriber())
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
@@ -588,7 +588,7 @@ class AdherentAdmin extends AbstractAdmin
             })
         ;
 
-        $formMapper
+        $form
             ->get('procurationManagedAreaCodesAsString')
             ->addModelTransformer(new CallbackTransformer(
                 function ($data) {
@@ -600,7 +600,7 @@ class AdherentAdmin extends AbstractAdmin
             ))
         ;
 
-        $formMapper
+        $form
             ->get('assessorManagedAreaCodesAsString')
             ->addModelTransformer(new CallbackTransformer(
                 function ($data) {
@@ -613,9 +613,9 @@ class AdherentAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('id', null, [
                 'label' => 'ID',
             ])
@@ -1077,9 +1077,9 @@ class AdherentAdmin extends AbstractAdmin
         $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED_IN_ADMIN);
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('id', null, [
                 'label' => 'ID',
             ])

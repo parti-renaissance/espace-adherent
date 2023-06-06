@@ -19,9 +19,9 @@ class ThemeAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_BY] = 'name';
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('name', null, [
                 'label' => 'Nom',
             ])
@@ -37,9 +37,9 @@ class ThemeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])

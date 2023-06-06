@@ -19,9 +19,9 @@ class SubscriptionTypeAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_BY] = 'label';
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->add('label', null, [
                 'label' => 'Libélé',
             ])
@@ -34,11 +34,11 @@ class SubscriptionTypeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         $isCreation = null === $this->getSubject() || null === $this->getSubject()->getCode();
 
-        $formMapper
+        $form
             ->add('label', TextType::class, [
                 'label' => 'Libélé',
             ])
@@ -55,9 +55,9 @@ class SubscriptionTypeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('label', null, [
                 'label' => 'Libélé',
             ])

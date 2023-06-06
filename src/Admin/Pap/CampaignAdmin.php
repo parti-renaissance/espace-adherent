@@ -38,9 +38,9 @@ class CampaignAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Informations ⚙️', ['class' => 'col-md-6'])
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
@@ -75,7 +75,7 @@ class CampaignAdmin extends AbstractAdmin
             ->end()
         ;
 
-        $formMapper
+        $form
             ->with('Questionnaire')
                 ->add('survey', EntityType::class, [
                     'label' => 'Questionnaire national',
@@ -129,9 +129,9 @@ class CampaignAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('id', null, [
                 'label' => 'ID',
             ])

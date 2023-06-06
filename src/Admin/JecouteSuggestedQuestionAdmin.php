@@ -24,9 +24,9 @@ class JecouteSuggestedQuestionAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Questions du panier', ['class' => 'col-md-6'])
                 ->add('content', TextType::class, [
                     'label' => 'Question',
@@ -68,9 +68,9 @@ class JecouteSuggestedQuestionAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('content', null, [
                 'label' => 'Question',
             ])

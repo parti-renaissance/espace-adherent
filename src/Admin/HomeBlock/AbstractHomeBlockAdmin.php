@@ -34,11 +34,11 @@ abstract class AbstractHomeBlockAdmin extends AbstractAdmin
         return new Metadata($object->getTitle(), $object->getSubtitle(), $object->getMedia()->getPath());
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         if (null === $this->getSubject()->getId()) {
             // Creation
-            $formMapper
+            $form
                 ->add('position', null, [
                     'label' => 'Position du bloc',
                 ])
@@ -48,7 +48,7 @@ abstract class AbstractHomeBlockAdmin extends AbstractAdmin
             ;
         }
 
-        $formMapper
+        $form
             ->add('media', null, [
                 'label' => 'Image/Vidéo',
             ])
@@ -77,7 +77,7 @@ abstract class AbstractHomeBlockAdmin extends AbstractAdmin
         ;
 
         if ('Bannière - Gauche' === $this->getSubject()->getPositionName()) {
-            $formMapper
+            $form
                 ->add('display_titles', CheckboxType::class, [
                     'label' => 'Afficher le titre et sous-titre',
                     'required' => false,
@@ -86,7 +86,7 @@ abstract class AbstractHomeBlockAdmin extends AbstractAdmin
         }
 
         if (HomeBlock::TYPE_BANNER === $this->getSubject()->getType()) {
-            $formMapper
+            $form
                 ->add('title_cta', TextType::class, [
                     'label' => 'Texte du CTA',
                     'required' => false,
@@ -109,7 +109,7 @@ abstract class AbstractHomeBlockAdmin extends AbstractAdmin
         }
 
         if ($this->getSubject()->getMedia() && $this->getSubject()->getMedia()->isVideo()) {
-            $formMapper
+            $form
                 ->add('video_controls', CheckboxType::class, [
                     'label' => 'Controles de la vidéo',
                     'required' => false,
@@ -122,13 +122,13 @@ abstract class AbstractHomeBlockAdmin extends AbstractAdmin
         }
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('position_name', null, [
                 'label' => 'Bloc',
             ])

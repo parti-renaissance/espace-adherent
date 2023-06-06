@@ -130,9 +130,9 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('adherent', null, [
                 'label' => 'Membre',
                 'template' => 'admin/territorial_council/list_membership_member.html.twig',

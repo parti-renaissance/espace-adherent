@@ -11,10 +11,10 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class HeaderBlockAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         if (!$this->isCreation()) {
-            $formMapper
+            $form
                 ->with('Général', ['class' => 'col-md-6'])
                     ->add('slug', null, [
                         'label' => 'Slug',
@@ -24,7 +24,7 @@ class HeaderBlockAdmin extends AbstractAdmin
             ;
         }
 
-        $formMapper
+        $form
             ->with('Général', ['class' => 'col-md-6'])
                 ->add('name', null, [
                     'label' => 'Nom',
@@ -63,9 +63,9 @@ class HeaderBlockAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('name', null, [
                 'label' => 'Nom',
                 'show_filter' => true,
@@ -77,9 +77,9 @@ class HeaderBlockAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])

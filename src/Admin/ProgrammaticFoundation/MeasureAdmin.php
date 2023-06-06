@@ -28,9 +28,9 @@ class MeasureAdmin extends AbstractAdmin
         return $query;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
             ])
@@ -64,9 +64,9 @@ class MeasureAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
@@ -93,9 +93,9 @@ class MeasureAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Mesure', ['class' => 'col-md-8'])
                 ->add('subApproach', EntityType::class, [
                     'label' => 'Axe secondaire associé associé',

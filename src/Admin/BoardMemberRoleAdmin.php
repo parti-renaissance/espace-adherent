@@ -9,9 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class BoardMemberRoleAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('code', null, [
                 'label' => 'Code',
             ])
@@ -21,9 +21,9 @@ class BoardMemberRoleAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('code', null, [
                 'label' => 'Code',
             ])

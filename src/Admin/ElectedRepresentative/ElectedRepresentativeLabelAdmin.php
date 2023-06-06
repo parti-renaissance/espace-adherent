@@ -19,9 +19,9 @@ class ElectedRepresentativeLabelAdmin extends AbstractAdmin
         $collection->clearExcept(['create', 'edit', 'delete']);
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('name', TextType::class, [
                 'label' => 'Nom',
                 'attr' => [
@@ -55,7 +55,7 @@ class ElectedRepresentativeLabelAdmin extends AbstractAdmin
             ])
         ;
 
-        $formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $form->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
 
             if (isset($data['onGoing']) && '1' === $data['onGoing']) {

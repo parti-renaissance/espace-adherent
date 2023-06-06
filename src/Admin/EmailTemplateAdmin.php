@@ -40,9 +40,9 @@ class EmailTemplateAdmin extends AbstractAdmin
         $this->dataTransformer = $dataTransformer;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('label', null, [
                 'label' => 'Label',
                 'show_filter' => true,
@@ -99,9 +99,9 @@ class EmailTemplateAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('label', null, ['label' => 'Label'])
             ->add('scopes', 'array_list', ['label' => 'Scopes'])
             ->add('zones', 'array_list', ['label' => 'Zones'])
@@ -115,9 +115,9 @@ class EmailTemplateAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Informations', ['class' => 'col-md-6'])
                 ->add('label', TextType::class, [
                     'label' => 'Label',
@@ -151,7 +151,7 @@ class EmailTemplateAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
-        $formMapper->get('scopes')->addModelTransformer($this->dataTransformer);
+        $form->get('scopes')->addModelTransformer($this->dataTransformer);
     }
 
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface

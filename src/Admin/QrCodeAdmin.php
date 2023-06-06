@@ -37,9 +37,9 @@ class QrCodeAdmin extends AbstractAdmin
         $collection->remove('show');
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('name', null, [
                 'label' => 'Nom',
                 'show_filter' => true,
@@ -75,9 +75,9 @@ class QrCodeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('id', null, [
                 'label' => 'ID',
             ])
@@ -115,9 +115,9 @@ class QrCodeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])

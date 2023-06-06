@@ -22,9 +22,9 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin implements ReorderableAdm
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Questionnaire', ['class' => 'col-md-6'])
                 ->add('name', TextType::class, [
                     'label' => 'Nom du questionnaire',
@@ -45,9 +45,9 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin implements ReorderableAdm
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('name', null, [
                 'show_filter' => true,
             ])
@@ -58,9 +58,9 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin implements ReorderableAdm
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])
@@ -83,7 +83,7 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin implements ReorderableAdm
         ;
 
         if ($this->hasAccess('show')) {
-            $listMapper
+            $list
                 ->add('export', null, [
                     'virtual_field' => true,
                     'template' => 'admin/jecoute/_exports.html.twig',

@@ -69,9 +69,9 @@ class NewsAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Informations', ['class' => 'col-md-6'])
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
@@ -148,20 +148,20 @@ class NewsAdmin extends AbstractAdmin
         ;
 
         $zone = $this->getSubject()->getZone();
-        $formMapper->getFormBuilder()->get('global')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($zone) {
+        $form->getFormBuilder()->get('global')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($zone) {
             if (!$this->isCreation() && null === $zone) {
                 $event->setData(true);
             }
         });
         $text = $this->getSubject()->getText();
-        $formMapper->getFormBuilder()->get('enrichedText')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($text) {
+        $form->getFormBuilder()->get('enrichedText')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($text) {
             if (null != $text) {
                 $event->setData($text);
             }
         });
 
-        $formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'preSubmit']);
-        $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
+        $form->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'preSubmit']);
+        $form->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
     }
 
     public function preSubmit(FormEvent $event): void
@@ -183,9 +183,9 @@ class NewsAdmin extends AbstractAdmin
         $this->newsHandler->buildTopic($news);
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('createdAt', DateRangeFilter::class, [
                 'show_filter' => true,
                 'label' => 'Date',
@@ -240,9 +240,9 @@ class NewsAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('title', null, [
                 'label' => 'Titre',
             ])

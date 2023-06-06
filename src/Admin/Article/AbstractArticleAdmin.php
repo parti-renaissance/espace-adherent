@@ -37,9 +37,9 @@ abstract class AbstractArticleAdmin extends AbstractAdmin
         return new Metadata($object->getTitle(), $object->getDescription(), $object->getMedia()->getPath());
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->tab('Contenu')
                 ->with('')
                     ->add('jsonContent', HiddenType::class)
@@ -96,9 +96,9 @@ abstract class AbstractArticleAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
@@ -109,9 +109,9 @@ abstract class AbstractArticleAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('title', null, [
                 'label' => 'Nom',
             ])

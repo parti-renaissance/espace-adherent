@@ -29,13 +29,13 @@ class AdministratorAdmin extends AbstractAdmin
     private $googleAuthenticator;
 
     /**
-     * @param Administrator $admin
+     * @param Administrator $object
      */
-    protected function prePersist(object $admin): void
+    protected function prePersist(object $object): void
     {
-        parent::prePersist($admin);
+        parent::prePersist($object);
 
-        $admin->setGoogleAuthenticatorSecret($this->googleAuthenticator->generateSecret());
+        $object->setGoogleAuthenticatorSecret($this->googleAuthenticator->generateSecret());
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
@@ -46,13 +46,13 @@ class AdministratorAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         /** @var Administrator $admin */
         $admin = $this->getSubject();
         $isCreation = null === $admin->getId();
 
-        $formMapper
+        $form
             ->add('emailAddress', EmailType::class, [
                 'label' => 'Adresse e-mail',
             ])
@@ -147,7 +147,7 @@ class AdministratorAdmin extends AbstractAdmin
             ])
         ;
 
-        $formMapper->getFormBuilder()->get('password')->addModelTransformer(new CallbackTransformer(
+        $form->getFormBuilder()->get('password')->addModelTransformer(new CallbackTransformer(
             function () { return ''; },
             function ($plain) use ($admin) {
                 return \is_string($plain) && '' !== $plain
@@ -157,15 +157,15 @@ class AdministratorAdmin extends AbstractAdmin
         ));
 
         if (!$isCreation) {
-            $formMapper->add('googleAuthenticatorSecret', null, [
+            $form->add('googleAuthenticatorSecret', null, [
                 'label' => 'Clé Google Authenticator',
             ]);
         }
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('emailAddress', null, [
                 'label' => 'E-mail',
                 'show_filter' => true,
@@ -173,9 +173,9 @@ class AdministratorAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('emailAddress', null, [
                 'label' => 'Adresse e-mail',
             ])

@@ -125,7 +125,7 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    /** @var QueryBuilder */
+                    /** @var QueryBuilder $qb */
                     switch ($value->getValue()) {
                         case DesignationStatusEnum::NOT_STARTED:
                             $qb

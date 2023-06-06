@@ -20,9 +20,9 @@ class RedirectionAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::PER_PAGE] = 200;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('from', TextType::class, [
                 'label' => 'Rediriger depuis ...',
                 'help' => 'Uniquement le chemin (sans le domaine) : pour "https://en-marche.fr/marseille", indiquez "/marseille".',
@@ -41,9 +41,9 @@ class RedirectionAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('from', null, [
                 'label' => 'Rediriger depuis ...',
                 'help' => 'Uniquement le chemin (sans le domaine) : pour "https://en-marche.fr/marseille", indiquez "/marseille".',
