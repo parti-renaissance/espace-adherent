@@ -30,6 +30,7 @@ class EmailTemplateExtension implements QueryCollectionExtensionInterface
             return;
         }
 
+        dd($context['filters']);
         $scope = $this->scopeGeneratorResolver->generate();
         $user = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser();
 
@@ -48,7 +49,7 @@ class EmailTemplateExtension implements QueryCollectionExtensionInterface
                 ->add(sprintf('%s.createdByAdherent = :adherent', $rootAlias))
             )
             ->andWhere($rootAlias.'.isStatutory = :statutory_value')
-            ->setParameter('statutory_value', isset($context['filters']['statutory']))
+            ->setParameter('statutory_value', isset($context['filters']['statutory']) && $context['filters']['statutory'] === "1")
             ->setParameter('adherent', $user)
             ->setParameter('scope', $scope->getMainCode())
             ->setParameter('zones', $scope->getZones())
