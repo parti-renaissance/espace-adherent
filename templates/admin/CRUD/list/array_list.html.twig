@@ -3,7 +3,7 @@
 {% block field %}
     <ul>
         {% for item in value %}
-            <li>{{ item }}</li>
+            <li>{{ item|trans|capitalize }}</li>
         {% endfor %}
     </ul>
 {% endblock %}

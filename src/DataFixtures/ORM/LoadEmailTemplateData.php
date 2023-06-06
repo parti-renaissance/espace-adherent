@@ -64,6 +64,16 @@ class LoadEmailTemplateData extends Fixture implements DependentFixtureInterface
         $emailTemplate5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_75'));
         $emailTemplate5->setCreatedByAdministrator($this->getReference('administrator-2'));
 
+        $manager->persist($emailTemplate = $this->createEmailTemplate(
+            Uuid::uuid4()->toString(),
+            'Template email statutaire',
+            file_get_contents(__DIR__.'/../unlayer/content.md'),
+            file_get_contents(__DIR__.'/../unlayer/json_content.json'),
+        ));
+        $emailTemplate->setScopes([ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ScopeEnum::REFERENT]);
+        $emailTemplate->setCreatedByAdministrator($this->getReference('administrator-2'));
+        $emailTemplate->isStatutory = true;
+
         $manager->persist($emailTemplate1);
         $manager->persist($emailTemplate2);
         $manager->persist($emailTemplate3);
