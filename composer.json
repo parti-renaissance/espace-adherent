@@ -85,7 +85,6 @@
         "sabre/dav": "^4.1",
         "scheb/2fa-bundle": "^6.3",
         "scheb/2fa-google-authenticator": "^6.3",
-        "scienta/doctrine-json-functions": "^5.2",
         "sensio/framework-extra-bundle": "^6.0",
         "sentry/sentry-symfony": "^4.2",
         "snc/redis-bundle": "^4.3",
