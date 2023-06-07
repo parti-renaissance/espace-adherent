@@ -135,7 +135,6 @@ class MembershipRequestHandler
 
     public function finishRenaissanceReAdhesion(Adherent $adherent): void
     {
-        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_MEMBERSHIP_COMPLETED);
         $this->notifier->sendReAdhesionConfirmationMessage($adherent);
     }
 
