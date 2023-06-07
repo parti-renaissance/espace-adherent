@@ -1601,24 +1601,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         $excludedAdherentQueryBuilder = $this
             ->createQueryBuilder('exl_adh')
-            ->select('exl_adh.id')
+            ->select('DISTINCT exl_adh.id')
             ->innerJoin('exl_adh.memberships', 'exl_membership', Join::WITH, 'exl_membership.trigger = :manual_trigger')
             ->innerJoin('exl_membership.committee', 'committee', Join::WITH, 'committee.version = 2')
             ->where('exl_adh.source IS NULL OR exl_adh.source = :source')
         ;
-
-        $this->withGeoZones(
-            [$zone],
-            $excludedAdherentQueryBuilder,
-            'exl_adh',
-            Adherent::class,
-            'a3',
-            'zones',
-            'z3',
-            $zoneQueryModifier,
-            $zone->isCityCommunity() || $zone->isBoroughCity(),
-            'zone_parent3'
-        );
 
         $qb
             ->andWhere(sprintf('adherent.id NOT IN (%s)', $excludedAdherentQueryBuilder->getDQL()))
