@@ -159,9 +159,9 @@ class DonatorAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('identifier', null, [
                 'label' => 'Numéro donateur',
                 'show_filter' => true,
@@ -414,9 +414,9 @@ class DonatorAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('identifier', null, [
                 'label' => 'Numéro donateur',
             ])
@@ -493,12 +493,12 @@ class DonatorAdmin extends AbstractAdmin
     }
 
     /**
-     * @param Donator $donator
+     * @param Donator $object
      */
-    protected function prePersist(object $donator): void
+    protected function prePersist(object $object): void
     {
-        parent::prePersist($donator);
+        parent::prePersist($object);
 
-        $donator->setIdentifier($this->donatorManager->incrementIdentifier(false));
+        $object->setIdentifier($this->donatorManager->incrementIdentifier(false));
     }
 }

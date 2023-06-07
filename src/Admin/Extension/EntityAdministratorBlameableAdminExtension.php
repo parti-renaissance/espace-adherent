@@ -20,9 +20,9 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
         $this->security = $security;
     }
 
-    public function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    public function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('createdByAdministrator', null, [
                 'label' => 'Créé par',
             ])
@@ -32,9 +32,9 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
         ;
     }
 
-    public function configureListFields(ListMapper $listMapper): void
+    public function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('_blame', null, [
                 'label' => 'Auteur',
                 'virtual_field' => true,
@@ -42,8 +42,8 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
             ])
         ;
 
-        $keys = $listMapper->keys();
-        $admin = $listMapper->getAdmin();
+        $keys = $list->keys();
+        $admin = $list->getAdmin();
 
         foreach ($admin instanceof ReorderableAdminInterface ? array_merge($admin->getListMapperEndColumns(), ['_actions']) : ['_actions'] as $column) {
             if (false !== $actionKey = array_search($column, $keys)) {
@@ -52,7 +52,7 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
             }
         }
 
-        $listMapper->reorder($keys);
+        $list->reorder($keys);
     }
 
     /**

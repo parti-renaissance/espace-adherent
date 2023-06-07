@@ -14,9 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class EntityScopeVisibilityAdminExtension extends AbstractAdminExtension
 {
-    public function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    public function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('visibility', ChoiceFilter::class, [
                 'label' => 'Visibilité',
                 'show_filter' => true,
@@ -44,9 +44,9 @@ class EntityScopeVisibilityAdminExtension extends AbstractAdminExtension
         ;
     }
 
-    public function configureListFields(ListMapper $listMapper): void
+    public function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('visibility', null, [
                 'label' => 'Visibilité',
                 'template' => 'admin/scope/list_visibility.html.twig',
@@ -57,8 +57,8 @@ class EntityScopeVisibilityAdminExtension extends AbstractAdminExtension
             ])
         ;
 
-        $keys = $listMapper->keys();
-        $admin = $listMapper->getAdmin();
+        $keys = $list->keys();
+        $admin = $list->getAdmin();
 
         foreach ($admin instanceof ReorderableAdminInterface ? array_merge($admin->getListMapperEndColumns(), ['_actions']) : ['_actions'] as $column) {
             if (false !== $actionKey = array_search($column, $keys)) {
@@ -67,6 +67,6 @@ class EntityScopeVisibilityAdminExtension extends AbstractAdminExtension
             }
         }
 
-        $listMapper->reorder($keys);
+        $list->reorder($keys);
     }
 }

@@ -18,9 +18,9 @@ class TagAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_BY] = 'label';
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('label', null, [
                 'label' => 'Label',
                 'show_filter' => true,
@@ -28,9 +28,9 @@ class TagAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('label', null, [
                 'label' => 'Label',
             ])
@@ -43,9 +43,9 @@ class TagAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('label', null, [
                 'label' => 'Label',
             ])

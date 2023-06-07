@@ -16,9 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class MoocAdmin extends AbstractAdmin implements ImageUploadAdminInterface
 {
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->tab('Général')
                 ->with('Général', ['class' => 'col-md-8'])
                     ->add('title', TextType::class, [
@@ -56,7 +56,7 @@ class MoocAdmin extends AbstractAdmin implements ImageUploadAdminInterface
         ;
 
         if (!$this->getRequest()->isXmlHttpRequest()) {
-            $formMapper
+            $form
                 ->with('Chapitres', ['class' => 'col-md-4'])
                     ->add('chapters', EntityType::class, [
                         'class' => Chapter::class,
@@ -68,7 +68,7 @@ class MoocAdmin extends AbstractAdmin implements ImageUploadAdminInterface
             ;
         }
 
-        $formMapper
+        $form
             ->end()
             ->tab('Media')
                 ->with('Liste', ['class' => 'col-md-6'])
@@ -102,9 +102,9 @@ class MoocAdmin extends AbstractAdmin implements ImageUploadAdminInterface
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
@@ -116,9 +116,9 @@ class MoocAdmin extends AbstractAdmin implements ImageUploadAdminInterface
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
             ])

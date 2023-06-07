@@ -52,9 +52,9 @@ class ReportAdmin extends AbstractAdmin
         $collection->clearExcept(['list', 'show']);
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('id', null, [
                 'label' => 'ID',
                 'show_filter' => true,
@@ -215,9 +215,9 @@ class ReportAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('id', null, [
                 'label' => 'ID',
                 'route' => ['name' => 'show'],
@@ -262,9 +262,9 @@ class ReportAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->add('uuid', null, [
                 'label' => 'UUID',
             ])

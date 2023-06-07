@@ -36,9 +36,9 @@ class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterfac
         return $query;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->tab('Général')
                 ->with('Général', ['class' => 'col-md-6'])
                     ->add('title', TextType::class, [
@@ -100,12 +100,12 @@ class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterfac
             ->end()
         ;
 
-        $this->addMediaTab($formMapper);
+        $this->addMediaTab($form);
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
@@ -117,9 +117,9 @@ class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterfac
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
             ])

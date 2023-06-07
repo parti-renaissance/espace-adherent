@@ -18,9 +18,9 @@ class DonationTagAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_BY] = 'label';
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('label', TextType::class, [
                 'label' => 'Label',
             ])
@@ -32,9 +32,9 @@ class DonationTagAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('label', null, [
                 'label' => 'Label',
             ])

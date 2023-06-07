@@ -58,9 +58,9 @@ class EmailAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('uuid', null, [
                 'label' => 'UUID',
                 'show_filter' => true,
@@ -78,9 +78,9 @@ class EmailAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('uuid', null, [
                 'label' => 'UUID',
             ])

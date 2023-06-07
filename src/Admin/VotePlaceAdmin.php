@@ -22,9 +22,9 @@ class VotePlaceAdmin extends AbstractAdmin
         $collection->clearExcept('list');
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('name', null, [
                 'label' => 'Nom',
             ])
@@ -46,9 +46,9 @@ class VotePlaceAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('name', null, [
                 'label' => 'Nom',
             ])

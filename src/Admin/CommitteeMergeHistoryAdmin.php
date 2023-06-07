@@ -56,9 +56,9 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
         return $actions;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('sourceCommittee', CallbackFilter::class, [
                 'label' => 'Comité source',
                 'show_filter' => true,
@@ -116,9 +116,9 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('sourceCommittee', null, [
                 'label' => 'Comité source',
             ])
@@ -140,7 +140,7 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
         ;
 
         if ($this->hasAccess('revert') && $this->hasRoute('revert')) {
-            $listMapper->add(ListMapper::NAME_ACTIONS, null, [
+            $list->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/committee/merge/list_actions.html.twig',
             ]);

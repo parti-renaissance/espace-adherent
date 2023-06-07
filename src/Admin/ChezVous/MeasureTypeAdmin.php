@@ -28,9 +28,9 @@ class MeasureTypeAdmin extends AbstractAdmin
         $this->dispatcher = $dispatcher;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('label', TextType::class, [
                 'label' => 'Label',
             ])
@@ -59,9 +59,9 @@ class MeasureTypeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('label', null, [
                 'label' => 'Label',
                 'show_filter' => true,
@@ -72,9 +72,9 @@ class MeasureTypeAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('label', null, [
                 'label' => 'Label',
             ])

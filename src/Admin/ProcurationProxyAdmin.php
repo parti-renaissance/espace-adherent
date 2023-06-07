@@ -33,13 +33,13 @@ class ProcurationProxyAdmin extends AbstractAdmin
     }
 
     /**
-     * @param ProcurationProxy $procurationProxy
+     * @param ProcurationProxy $object
      */
-    protected function preUpdate(object $procurationProxy): void
+    protected function preUpdate(object $object): void
     {
-        parent::preUpdate($procurationProxy);
+        parent::preUpdate($object);
 
-        $procurationProxy->processAvailabilities();
+        $object->processAvailabilities();
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
@@ -47,9 +47,9 @@ class ProcurationProxyAdmin extends AbstractAdmin
         $collection->remove('create');
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Coordonnées', ['class' => 'col-md-6'])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
@@ -126,9 +126,9 @@ class ProcurationProxyAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->with('Coordonnées', ['class' => 'col-md-4'])
                 ->add('gender', null, [
                     'label' => 'Genre',
@@ -163,16 +163,16 @@ class ProcurationProxyAdmin extends AbstractAdmin
         ;
 
         if (Address::FRANCE !== $this->getSubject()->getCountry()) {
-            $showMapper
+            $show
                 ->add('stage', null, [
                     'label' => 'État/Province',
                 ])
             ;
         }
 
-        $showMapper->end();
+        $show->end();
 
-        $showMapper
+        $show
             ->with('Lieu de vote', ['class' => 'col-md-4'])
                 ->add('voteCountry', null, [
                     'label' => 'Pays',
@@ -203,9 +203,9 @@ class ProcurationProxyAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('id', null, [
                 'label' => 'ID',
             ])
@@ -228,9 +228,9 @@ class ProcurationProxyAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('id', null, [
                 'label' => 'ID',
             ])

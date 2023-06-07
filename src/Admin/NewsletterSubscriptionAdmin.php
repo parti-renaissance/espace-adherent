@@ -28,9 +28,9 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('email', null, [
                 'label' => 'Adresse e-mail',
             ])
@@ -55,9 +55,9 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('email', null, [
                 'label' => 'Adresse e-mail',
                 'show_filter' => true,
@@ -68,9 +68,9 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('email', null, [
                 'label' => 'Adresse e-mail',
             ])

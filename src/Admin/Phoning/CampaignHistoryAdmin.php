@@ -101,9 +101,9 @@ class CampaignHistoryAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('campaign', null, [
                 'label' => 'Campagne',
             ])

@@ -44,9 +44,9 @@ class ReferentAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_BY] = 'lastName';
     }
 
-    protected function configureDatagridFilters(DatagridMapper $mapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $mapper
+        $filter
             ->add('id', null, [
                 'label' => 'ID',
             ])
@@ -72,9 +72,9 @@ class ReferentAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $mapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $mapper
+        $list
             ->addIdentifier('id', null, [
                 'label' => 'ID',
             ])
@@ -116,9 +116,9 @@ class ReferentAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $mapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $mapper
+        $form
             ->with('Informations personnelles', ['class' => 'col-md-4'])
                 ->add('status', ChoiceType::class, [
                     'label' => 'Visibilité',
@@ -202,14 +202,14 @@ class ReferentAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
-        $mapper->get('areas')->addModelTransformer($this->dataTransformer);
+        $form->get('areas')->addModelTransformer($this->dataTransformer);
     }
 
-    protected function configureShowFields(ShowMapper $mapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
         $this->OCItems = $this->organizationalChartItemRepository->getRootNodes();
 
-        $mapper
+        $show
             ->with('Informations générales', ['class' => 'col-md-5'])
                 ->add('id', null, [
                     'label' => 'ID',

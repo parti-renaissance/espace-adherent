@@ -43,9 +43,9 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('id', null, [
                 'label' => 'ID',
             ])
@@ -97,13 +97,13 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $this->setOtherMemberships($formMapper->getFormBuilder()->getDataClass());
+        $this->setOtherMemberships($form->getFormBuilder()->getDataClass());
 
-        $isContactMembership = ContactMembership::class === $formMapper->getFormBuilder()->getDataClass();
+        $isContactMembership = ContactMembership::class === $form->getFormBuilder()->getDataClass();
 
-        $formMapper
+        $form
             ->with('Membre', ['class' => 'col-md-6'])
                 ->add('firstname', TextType::class, [
                     'label' => 'Prénom',

@@ -36,40 +36,40 @@ class MediaAdmin extends AbstractAdmin
     }
 
     /**
-     * @param Media $media
+     * @param Media $object
      */
-    protected function preRemove(object $media): void
+    protected function preRemove(object $object): void
     {
-        parent::preRemove($media);
+        parent::preRemove($object);
 
         try {
-            $this->storage->delete($media->getPathWithDirectory());
-            $this->glide->deleteCache($media->getPathWithDirectory());
+            $this->storage->delete($object->getPathWithDirectory());
+            $this->glide->deleteCache($object->getPathWithDirectory());
         } catch (\Exception $e) {
         }
     }
 
     /**
-     * @param Media $media
+     * @param Media $object
      */
-    protected function prePersist(object $media): void
+    protected function prePersist(object $object): void
     {
-        parent::prePersist($media);
+        parent::prePersist($object);
 
-        $this->storage->put($media->getPathWithDirectory(), file_get_contents($media->getFile()->getPathname()));
-        $this->glide->deleteCache($media->getPathWithDirectory());
+        $this->storage->put($object->getPathWithDirectory(), file_get_contents($object->getFile()->getPathname()));
+        $this->glide->deleteCache($object->getPathWithDirectory());
     }
 
     /**
-     * @param Media $media
+     * @param Media $object
      */
-    protected function preUpdate(object $media): void
+    protected function preUpdate(object $object): void
     {
-        parent::preUpdate($media);
+        parent::preUpdate($object);
 
-        if ($media->getFile()) {
-            $this->storage->put($media->getPathWithDirectory(), file_get_contents($media->getFile()->getPathname()));
-            $this->glide->deleteCache($media->getPathWithDirectory());
+        if ($object->getFile()) {
+            $this->storage->put($object->getPathWithDirectory(), file_get_contents($object->getFile()->getPathname()));
+            $this->glide->deleteCache($object->getPathWithDirectory());
         }
     }
 
@@ -81,11 +81,11 @@ class MediaAdmin extends AbstractAdmin
         return new Metadata($object->getName(), null, $object->getPath());
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         $isCreation = null === $this->getSubject() || null === $this->getSubject()->getSize();
 
-        $formMapper
+        $form
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
@@ -103,9 +103,9 @@ class MediaAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('name', null, [
                 'label' => 'Nom',
                 'show_filter' => true,
@@ -122,9 +122,9 @@ class MediaAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('_thumbnail', null, [
                 'label' => 'Miniature',
                 'virtual_field' => true,

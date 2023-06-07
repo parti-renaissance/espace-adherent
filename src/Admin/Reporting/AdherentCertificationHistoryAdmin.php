@@ -28,9 +28,9 @@ class AdherentCertificationHistoryAdmin extends AbstractAdmin
         $collection->clearExcept('list');
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('adherent.emailAddress', null, [
                 'label' => 'Email adhérent',
                 'show_filter' => true,
@@ -58,9 +58,9 @@ class AdherentCertificationHistoryAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('adherent', null, [
                 'label' => 'Adhérent',
                 'template' => 'admin/reporting/adherent_certification_history/list_adherent.html.twig',

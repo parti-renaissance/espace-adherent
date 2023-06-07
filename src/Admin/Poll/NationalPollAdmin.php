@@ -35,9 +35,9 @@ class NationalPollAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::PER_PAGE] = 128;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('question', null, [
                 'label' => 'Question',
                 'show_filter' => true,
@@ -57,9 +57,9 @@ class NationalPollAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('id', null, [
                 'label' => 'ID',
             ])
@@ -86,13 +86,13 @@ class NationalPollAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         /** @var Poll $poll */
         $poll = $this->getSubject();
         $hasVote = $poll->hasVote();
 
-        $formMapper
+        $form
             ->with('Questionnaire', ['class' => 'col-md-6'])
                 ->add('question', TextType::class, [
                     'label' => 'Question',

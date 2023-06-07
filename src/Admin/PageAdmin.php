@@ -22,10 +22,10 @@ class PageAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::PER_PAGE] = 64;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         if (null === $this->getSubject()->getId()) {
-            $formMapper
+            $form
                 ->with('Title', ['class' => 'col-md-12'])
                 ->add('slug', TextType::class, [
                     'label' => 'URL de publication',
@@ -36,7 +36,7 @@ class PageAdmin extends AbstractAdmin
             ;
         }
 
-        $formMapper
+        $form
             ->with('Title', ['class' => 'col-md-12'])
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
@@ -82,9 +82,9 @@ class PageAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
@@ -96,9 +96,9 @@ class PageAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
             ])

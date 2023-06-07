@@ -85,9 +85,9 @@ class CertificationRequestAdmin extends AbstractAdmin
         return $actions;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('adherent.firstName', null, [
                 'label' => 'Prénom',
                 'show_filter' => true,
@@ -203,9 +203,9 @@ class CertificationRequestAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('id', null, [
                 'label' => 'ID',
             ])

@@ -11,9 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PathAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Module', ['class' => 'col-md-12'])
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
@@ -33,9 +33,9 @@ class PathAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
             ])

@@ -30,9 +30,9 @@ class TerritorialCouncilMembershipLogAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('adherent', ModelFilter::class, [
                 'show_filter' => true,
                 'label' => 'Adhérent',
@@ -96,9 +96,9 @@ class TerritorialCouncilMembershipLogAdmin extends AbstractAdmin
         $collection->clearExcept(['list', 'edit']);
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('type', null, [
                 'label' => 'Type',
                 'template' => 'admin/territorial_council/list_type.html.twig',
@@ -138,9 +138,9 @@ class TerritorialCouncilMembershipLogAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('isResolved', ChoiceType::class, [
                 'required' => true,
                 'label' => 'Résolu',

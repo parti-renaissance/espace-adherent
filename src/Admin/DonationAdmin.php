@@ -214,9 +214,9 @@ class DonationAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('donator', ModelFilter::class, [
                 'label' => 'Donateur',
                 'show_filter' => true,
@@ -484,9 +484,9 @@ class DonationAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('donator', null, [
                 'label' => 'Donateur',
             ])
@@ -581,42 +581,42 @@ class DonationAdmin extends AbstractAdmin
     }
 
     /**
-     * @param Donation $donation
+     * @param Donation $object
      */
-    protected function prePersist(object $donation): void
+    protected function prePersist(object $object): void
     {
-        parent::prePersist($donation);
+        parent::prePersist($object);
 
-        $this->handleFile($donation);
+        $this->handleFile($object);
 
-        $this->dispatcher->dispatch(new DonationWasCreatedEvent($donation), DonationEvents::CREATED);
+        $this->dispatcher->dispatch(new DonationWasCreatedEvent($object), DonationEvents::CREATED);
 
-        $this->handleAdherentMembership($donation);
+        $this->handleAdherentMembership($object);
     }
 
     /**
-     * @param Donation $donation
+     * @param Donation $object
      */
-    protected function preUpdate(object $donation): void
+    protected function preUpdate(object $object): void
     {
-        parent::preUpdate($donation);
+        parent::preUpdate($object);
 
-        $this->handleFile($donation);
+        $this->handleFile($object);
 
-        $this->dispatcher->dispatch(new DonationWasUpdatedEvent($donation), DonationEvents::UPDATED);
+        $this->dispatcher->dispatch(new DonationWasUpdatedEvent($object), DonationEvents::UPDATED);
 
-        $this->handleAdherentMembership($donation);
+        $this->handleAdherentMembership($object);
     }
 
     /**
-     * @param Donation $donation
+     * @param Donation $object
      */
-    protected function postRemove(object $donation): void
+    protected function postRemove(object $object): void
     {
-        parent::postRemove($donation);
+        parent::postRemove($object);
 
-        if ($donation->hasFileUploaded()) {
-            $filePath = $donation->getFilePathWithDirectory();
+        if ($object->hasFileUploaded()) {
+            $filePath = $object->getFilePathWithDirectory();
 
             if ($this->storage->has($filePath)) {
                 $this->storage->delete($filePath);

@@ -15,11 +15,11 @@ class RunningMateRequestAdmin extends AbstractApplicationRequestAdmin
 {
     private $storage;
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        parent::configureListFields($listMapper);
+        parent::configureListFields($list);
 
-        $listMapper
+        $list
             ->remove('_actions')
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
@@ -33,11 +33,11 @@ class RunningMateRequestAdmin extends AbstractApplicationRequestAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        parent::configureFormFields($formMapper);
+        parent::configureFormFields($form);
 
-        $formMapper
+        $form
             ->with('Candidature')
                 ->add('profession', null, [
                     'label' => 'Quelle est votre profession ?',
@@ -86,27 +86,27 @@ class RunningMateRequestAdmin extends AbstractApplicationRequestAdmin
     }
 
     /**
-     * @param RunningMateRequest $runningMateRequest
+     * @param RunningMateRequest $object
      */
-    protected function preUpdate(object $runningMateRequest): void
+    protected function preUpdate(object $object): void
     {
-        parent::preUpdate($runningMateRequest);
+        parent::preUpdate($object);
 
-        if ($runningMateRequest->getRemoveCurriculum()) {
-            $this->storage->delete($runningMateRequest->getPathWithDirectory());
-            $runningMateRequest->removeCurriculumName();
+        if ($object->getRemoveCurriculum()) {
+            $this->storage->delete($object->getPathWithDirectory());
+            $object->removeCurriculumName();
         }
     }
 
     /**
-     * @param RunningMateRequest $runningMateRequest
+     * @param RunningMateRequest $object
      */
-    protected function postRemove(object $runningMateRequest): void
+    protected function postRemove(object $object): void
     {
-        parent::postRemove($runningMateRequest);
+        parent::postRemove($object);
 
-        if ($this->storage->has($runningMateRequest->getPathWithDirectory())) {
-            $this->storage->delete($runningMateRequest->getPathWithDirectory());
+        if ($this->storage->has($object->getPathWithDirectory())) {
+            $this->storage->delete($object->getPathWithDirectory());
         }
     }
 

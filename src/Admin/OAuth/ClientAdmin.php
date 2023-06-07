@@ -30,9 +30,9 @@ class ClientAdmin extends AbstractAdmin
         return $query;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
                 'route' => [
@@ -69,9 +69,9 @@ class ClientAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->with('Informations')
                 ->add('name', null, ['label' => 'Nom'])
                 ->add('code', null, ['label' => 'Code'])
@@ -102,9 +102,9 @@ class ClientAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('name', null, [
                 'label' => 'Nom',
             ])

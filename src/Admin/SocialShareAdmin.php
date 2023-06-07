@@ -69,9 +69,9 @@ class SocialShareAdmin extends AbstractAdmin
         }
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Média', ['class' => 'col-md-6'])
                 ->add('media', AdminType::class, [
                     'label' => 'Média',
@@ -118,9 +118,9 @@ class SocialShareAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])

@@ -23,9 +23,9 @@ class TonMacronFriendInvitationAdmin extends AbstractAdmin
         $collection->remove('create');
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('id', null, [
                 'label' => 'ID',
             ])
@@ -44,9 +44,9 @@ class TonMacronFriendInvitationAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->add('id', null, [
                 'label' => 'ID',
             ])

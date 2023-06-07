@@ -61,9 +61,9 @@ class EventAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->with('Événement', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
@@ -159,11 +159,11 @@ class EventAdmin extends AbstractAdmin
         $this->dispatcher->dispatch($event, Events::EVENT_UPDATED);
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         $event = $this->getSubject();
 
-        $formMapper
+        $form
             ->with('Événement', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
@@ -174,12 +174,12 @@ class EventAdmin extends AbstractAdmin
         ;
 
         if (CommitteeEvent::class === $event::class) {
-            $formMapper->add('committee', null, [
+            $form->add('committee', null, [
                 'label' => 'Comité organisateur',
             ]);
         }
 
-        $formMapper
+        $form
             ->add('description', null, [
                     'label' => 'Description',
                     'attr' => [
@@ -235,9 +235,9 @@ class EventAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('name', null, [
                 'label' => 'Nom',
             ])
@@ -333,9 +333,9 @@ class EventAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('id', null, [
                 'label' => 'Id',
             ])
