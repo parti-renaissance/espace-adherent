@@ -65,7 +65,6 @@ doctrine:
                 json_contains: App\Query\Mysql\JsonContains
                 left: App\Query\Mysql\Left
                 find_in_set: DoctrineExtensions\Query\Mysql\FindInSet
-                json_length: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonLength
                 substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
                 group_concat: DoctrineExtensions\Query\Mysql\GroupConcat
                 concat_ws: DoctrineExtensions\Query\Mysql\ConcatWs
