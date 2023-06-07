@@ -10457,16 +10457,16 @@
         },
         {
             "name": "scienta/doctrine-json-functions",
-            "version": "5.2.0",
+            "version": "5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ScientaNL/DoctrineJsonFunctions.git",
-                "reference": "d2c245b6009ca246d433135aa4c9e94d49ad8932"
+                "reference": "0c1aa4f8ecd96608ee5f4c9cbb33f687d15c6b8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ScientaNL/DoctrineJsonFunctions/zipball/d2c245b6009ca246d433135aa4c9e94d49ad8932",
-                "reference": "d2c245b6009ca246d433135aa4c9e94d49ad8932",
+                "url": "https://api.github.com/repos/ScientaNL/DoctrineJsonFunctions/zipball/0c1aa4f8ecd96608ee5f4c9cbb33f687d15c6b8c",
+                "reference": "0c1aa4f8ecd96608ee5f4c9cbb33f687d15c6b8c",
                 "shasum": ""
             },
             "require": {
@@ -10519,9 +10519,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ScientaNL/DoctrineJsonFunctions/issues",
-                "source": "https://github.com/ScientaNL/DoctrineJsonFunctions/tree/5.2.0"
+                "source": "https://github.com/ScientaNL/DoctrineJsonFunctions/tree/5.3.0"
             },
-            "time": "2022-10-10T13:36:52+00:00"
+            "time": "2023-03-20T12:05:26+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
