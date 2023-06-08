@@ -181,7 +181,7 @@ class ElectionNotifier
             return $this->urlGenerator->generate('app_renaissance_local_election_home', [], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
-        if ($designation->isCommitteeSupervisorType()) {
+        if ($designation->isCommitteeSupervisorType() && $election->getElectionEntity()->getCommittee()) {
             return $this->urlGenerator->generate('app_renaissance_committee_election_candidacies_lists_view', ['uuid' => $election->getElectionEntity()->getCommittee()->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
