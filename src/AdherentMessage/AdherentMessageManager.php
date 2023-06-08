@@ -6,6 +6,8 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\AdherentMessage\Sender\SenderInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\Filter\MessageFilter;
+use App\Entity\AdherentMessage\TransactionalMessageInterface;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -83,6 +85,21 @@ class AdherentMessageManager
     public function getMessageContent(AdherentMessageInterface $message): string
     {
         return ($sender = $this->getSender($message)) ? $sender->renderMessage($message, [$message->getAuthor()]) : '';
+    }
+
+    public function getRecipients(AdherentMessageInterface $message)
+    {
+        if (!$message instanceof TransactionalMessageInterface) {
+            return [];
+        }
+
+        $filter = $message->getFilter();
+
+        if (!$filter instanceof MessageFilter) {
+            return [];
+        }
+
+        return $this->em->getRepository(Adherent::class)->getAllInZones($filter->getZones()->toArray(), true, false);
     }
 
     private function getSender(AdherentMessageInterface $message): ?SenderInterface

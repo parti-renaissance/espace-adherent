@@ -11,11 +11,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 #[Security("is_granted('ROLE_MESSAGE_REDACTOR') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")]
 class SendAdherentMessageController extends AbstractController
 {
-    private $manager;
-
-    public function __construct(AdherentMessageManager $manager)
+    public function __construct(private readonly AdherentMessageManager $manager)
     {
-        $this->manager = $manager;
     }
 
     public function __invoke(AbstractAdherentMessage $message)
@@ -32,7 +29,7 @@ class SendAdherentMessageController extends AbstractController
             throw new BadRequestHttpException('This message has been already sent.');
         }
 
-        $this->manager->send($message);
+        $this->manager->send($message, $this->manager->getRecipients($message));
 
         return $this->json('OK');
     }

@@ -1432,8 +1432,34 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             return 0;
         }
 
-        $qb = $this->createQueryBuilder('adherent')
+        return $this
+            ->createQueryBuilderForZones($zones, $adherentRenaissance, $sympathizerRenaissance)
             ->select('COUNT(1)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function getAllInZones(array $zones, bool $adherentRenaissance, bool $sympathizerRenaissance): array
+    {
+        if (!$zones) {
+            return [];
+        }
+
+        return $this
+            ->createQueryBuilderForZones($zones, $adherentRenaissance, $sympathizerRenaissance)
+            ->select('PARTIAL adherent.{id, uuid, emailAddress, source, firstName, lastName, lastMembershipDonation}')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    private function createQueryBuilderForZones(
+        array $zones,
+        bool $adherentRenaissance,
+        bool $sympathizerRenaissance
+    ): QueryBuilder {
+        $qb = $this->createQueryBuilder('adherent')
             ->where('adherent.source = :source')
             ->andWhere('adherent.status = :status')
             ->setParameters([
@@ -1456,7 +1482,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             'z2'
         );
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return $qb;
     }
 
     private function withAdherentRole(QueryBuilder $qb, string $alias, array $roles): void

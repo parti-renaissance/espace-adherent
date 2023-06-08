@@ -25,7 +25,7 @@ class AdherentMessageTypeVoter extends AbstractAdherentVoter
         }
 
         foreach ((array) $roles as $role) {
-            if ($this->authorizationChecker->isGranted($role)) {
+            if ($this->authorizationChecker->isGranted(...(array) $role)) {
                 return true;
             }
         }
