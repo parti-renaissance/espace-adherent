@@ -24,14 +24,21 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
         QueryBuilder $queryBuilder,
         Adherent $currentUser,
         ScopeGeneratorInterface $scopeGenerator,
-        string $resourceClass
+        string $resourceClass,
+        array $context
     ): void {
         $alias = $queryBuilder->getRootAliases()[0];
         $user = $scopeGenerator->isDelegatedAccess() ? $scopeGenerator->getDelegatedAccess()->getDelegator() : $currentUser;
 
+        $type = AdherentMessageTypeEnum::getMessageTypeFromScopeCode($scopeGenerator->getCode());
+
+        if (isset($context['filters']['statutory']) && '1' === $context['filters']['statutory']) {
+            $type = AdherentMessageTypeEnum::STATUTORY;
+        }
+
         $this
             ->adherentMessageRepository
-            ->withMessageType($queryBuilder, AdherentMessageTypeEnum::getMessageTypeFromScopeCode($scopeGenerator->getCode()), $alias)
+            ->withMessageType($queryBuilder, $type, $alias)
             ->withAuthor($queryBuilder, $user, $alias)
         ;
 

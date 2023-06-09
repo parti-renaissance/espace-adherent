@@ -11,11 +11,15 @@ use App\Entity\AdherentMessage\Filter\LreManagerElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentInstancesFilter;
+use App\Scope\Scope;
 
 abstract class FilterFactory
 {
-    public static function create(Adherent $user, string $messageType): AdherentMessageFilterInterface
-    {
+    public static function create(
+        Adherent $user,
+        string $messageType,
+        ?Scope $scope = null
+    ): AdherentMessageFilterInterface {
         switch ($messageType) {
             case AdherentMessageTypeEnum::REFERENT:
                 return static::createReferentFilter($user);
@@ -41,6 +45,8 @@ abstract class FilterFactory
                 return static::createCorrespondentFilter($user);
             case AdherentMessageTypeEnum::REGIONAL_COORDINATOR:
                 return static::createRegionalCoordinatorFilter($user);
+            case AdherentMessageTypeEnum::STATUTORY:
+                return static::createScopeZonesFilter($scope);
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid message type "%s"', $messageType));
@@ -154,5 +160,14 @@ abstract class FilterFactory
         }
 
         return new MessageFilter($user->getRegionalCoordinatorZone());
+    }
+
+    private static function createScopeZonesFilter(?Scope $scope): MessageFilter
+    {
+        if (!$scope) {
+            throw new \InvalidArgumentException('[AdherentMessage] Scope should not be empty');
+        }
+
+        return new MessageFilter($scope->getZones());
     }
 }

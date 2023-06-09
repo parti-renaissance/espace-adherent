@@ -20,11 +20,12 @@ class UpdateTransactionalAdherentMessageDataListener implements EventSubscriberI
     public static function getSubscribedEvents(): array
     {
         return [
-            Events::MESSAGE_FILTER_PRE_EDIT => 'onFilterPreEdit',
+            Events::MESSAGE_PRE_CREATE => ['applyModifiers', -256],
+            Events::MESSAGE_FILTER_PRE_EDIT => 'applyModifiers',
         ];
     }
 
-    public function onFilterPreEdit(MessageEvent $event): void
+    public function applyModifiers(MessageEvent $event): void
     {
         $message = $event->getMessage();
 

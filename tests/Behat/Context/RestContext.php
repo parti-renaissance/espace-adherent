@@ -17,6 +17,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behatch\Context\RestContext as BehatchRestContext;
+use Behatch\HttpCall\HttpCallResult;
 use Behatch\HttpCall\HttpCallResultPool;
 use Behatch\HttpCall\Request;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,6 +32,7 @@ class RestContext extends BehatchRestContext
     private EntityManagerInterface $entityManager;
     private CryptKey $privateCryptKey;
     private ?string $accessToken = null;
+    private ?HttpCallResult $savedResponse = null;
 
     public function __construct(HttpCallResultPool $httpCallResultPool, Request $request)
     {
@@ -162,8 +164,29 @@ class RestContext extends BehatchRestContext
         return $json['access_token'];
     }
 
+    /**
+     * @Given I save this response
+     */
+    public function iSaveThisResponse(): void
+    {
+        $this->savedResponse = $this->httpCallResultPool->getResult();
+    }
+
     public function iSendARequestTo($method, $url, PyStringNode $body = null, $files = [])
     {
+        $match = [];
+        if (preg_match('/:(last_response|saved_response)\.(\w+):/', $url, $match)) {
+            $result = 'saved_response' === $match[1] ? $this->savedResponse : $this->httpCallResultPool->getResult();
+
+            if ($result) {
+                $responseData = json_decode($result->getValue(), true);
+
+                if (!empty($responseData[$match[2]])) {
+                    $url = str_replace($match[0], $responseData[$match[2]], $url);
+                }
+            }
+        }
+
         $this->addAccessTokenToTheAuthorizationHeader();
 
         $this->setAcceptApplicationJsonHeader($url, $method, $body);

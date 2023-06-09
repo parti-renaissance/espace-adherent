@@ -12,6 +12,7 @@ use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
+use App\Entity\AdherentMessage\StatutoryAdherentMessage;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\ORM\EntityManager;
@@ -65,6 +66,24 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
 
         $manager->persist($message1);
         $manager->persist($message2);
+
+        $manager->persist($message = StatutoryAdherentMessage::createFromAdherent($this->getAuthor(StatutoryAdherentMessage::class)));
+        $message->setSource(AdherentMessageInterface::SOURCE_API);
+        $message->setRecipientCount(10);
+        $message->setFilter(new MessageFilter([$parisZone]));
+        $message->setContent($faker->randomHtml());
+        $message->setSubject($faker->sentence(5));
+        $message->setLabel($faker->sentence(2));
+
+        $manager->persist($message = StatutoryAdherentMessage::createFromAdherent($this->getAuthor(StatutoryAdherentMessage::class)));
+        $message->setSource(AdherentMessageInterface::SOURCE_API);
+        $message->setRecipientCount(2);
+        $message->setFilter(new MessageFilter([$parisZone]));
+        $message->markAsSent();
+        $message->setContent($faker->randomHtml());
+        $message->setSubject($faker->sentence(5));
+        $message->setLabel($faker->sentence(2));
+
         $manager->flush();
 
         foreach ($this->getMessageClasses() as $class) {
@@ -120,6 +139,8 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
                 return $this->getReference('deputy-75-1');
             case SenatorAdherentMessage::class:
                 return $this->getReference('senator-59');
+            case StatutoryAdherentMessage::class:
+                return $this->getReference('president-ad-1');
         }
 
         return $this->getReference('adherent-3');

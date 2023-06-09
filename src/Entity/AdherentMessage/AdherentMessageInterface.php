@@ -41,6 +41,8 @@ interface AdherentMessageInterface extends AuthoredItemsCollectionInterface
 
     public function getRecipientCount(): ?int;
 
+    public function setRecipientCount(?int $recipientCount): void;
+
     public function getSentAt(): ?\DateTimeInterface;
 
     public function getId(): ?int;

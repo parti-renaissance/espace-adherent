@@ -21,7 +21,8 @@ class InZoneOfScopeFilter extends AbstractScopeFilter
         QueryBuilder $queryBuilder,
         Adherent $currentUser,
         ScopeGeneratorInterface $scopeGenerator,
-        string $resourceClass
+        string $resourceClass,
+        array $context
     ): void {
         $alias = $queryBuilder->getRootAliases()[0];
 

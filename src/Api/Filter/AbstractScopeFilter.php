@@ -48,7 +48,7 @@ abstract class AbstractScopeFilter extends AbstractFilter
             return;
         }
 
-        $this->applyFilter($queryBuilder, $currentUser, $scopeGenerator, $resourceClass);
+        $this->applyFilter($queryBuilder, $currentUser, $scopeGenerator, $resourceClass, $context);
     }
 
     abstract protected function needApplyFilter(string $property, string $resourceClass): bool;
@@ -57,7 +57,8 @@ abstract class AbstractScopeFilter extends AbstractFilter
         QueryBuilder $queryBuilder,
         Adherent $currentUser,
         ScopeGeneratorInterface $scopeGenerator,
-        string $resourceClass
+        string $resourceClass,
+        array $context
     ): void;
 
     public function getDescription(string $resourceClass): array
