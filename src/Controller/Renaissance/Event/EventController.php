@@ -4,23 +4,20 @@ namespace App\Controller\Renaissance\Event;
 
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
+use App\Event\EventInvitation;
 use App\Event\EventInvitationHandler;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
 use App\Event\EventRegistrationManager;
-use App\Event\RenaissanceEventInvitation;
 use App\Form\EventInvitationType;
 use App\Repository\EventRegistrationRepository;
-use App\Repository\EventRepository;
 use App\Serializer\Encoder\ICalEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -57,7 +54,7 @@ class EventController extends AbstractController
 
     #[Route(path: '/{slug}/afficher', name: '_show', methods: ['GET'])]
     #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
-    public function showAction(BaseEvent $event, EventRepository $eventRepository): Response
+    public function showAction(BaseEvent $event): Response
     {
         return $this->render('renaissance/adherent/events/show.html.twig', ['event' => $event]);
     }
@@ -115,18 +112,18 @@ class EventController extends AbstractController
         EventInvitationHandler $handler,
         TranslatorInterface $translator
     ): Response {
-        $eventInvitation = RenaissanceEventInvitation::createFromAdherent(
+        $eventInvitation = EventInvitation::createFromAdherent(
             $this->getUser(),
             $request->request->get('frc-captcha-solution')
         );
 
         $form = $this
-            ->createForm(EventInvitationType::class, $eventInvitation, ['data_class' => RenaissanceEventInvitation::class])
+            ->createForm(EventInvitationType::class, $eventInvitation, ['validation_groups' => ['Default', 're_event_invitation']])
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var RenaissanceEventInvitation $invitation */
+            /** @var EventInvitation $invitation */
             $invitation = $form->getData();
 
             $handler->handle($invitation, $event);
@@ -142,24 +139,19 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{slug}/desinscription', name: '_unregistration', methods: ['GET', 'POST'], condition: 'request.isXmlHttpRequest()')]
+    #[Route(path: '/{slug}/desinscription', name: '_unregistration', methods: ['GET'])]
     #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
-    public function unregistrationAction(
-        Request $request,
-        BaseEvent $event,
-        EventRegistrationManager $eventRegistrationManager
-    ): JsonResponse {
-        if (!$this->isCsrfTokenValid('event.unregistration', $request->request->get('token'))) {
-            throw new BadRequestHttpException('Invalid CSRF protection token.');
-        }
-
+    public function unregistrationAction(BaseEvent $event, EventRegistrationManager $eventRegistrationManager): Response
+    {
         if (!$adherentEventRegistration = $eventRegistrationManager->searchRegistration($event, $this->getUser()->getEmailAddress(), null)) {
             throw $this->createNotFoundException('Impossible de se désinscrire à cet évévenement. Inscription non trouvée.');
         }
 
         $eventRegistrationManager->remove($adherentEventRegistration);
 
-        return new JsonResponse();
+        $this->addFlash('success', 'Votre inscription à cet événement a été annulée.');
+
+        return $this->redirectToRoute('app_renaissance_event_show', ['slug' => $event->getSlug()]);
     }
 
     #[Route(path: '/{slug}/ical', name: '_ical', methods: ['GET'])]

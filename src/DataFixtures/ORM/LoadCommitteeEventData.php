@@ -435,8 +435,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory6,
             'description' => 'Tractage sur le marché de la maire de clichy.',
             'address' => $this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684),
-            'begin_at' => (new Chronos('-1 month'))->format('Y-m-d').' 10:30:00',
-            'finish_at' => (new Chronos('-1 month'))->format('Y-m-d').' 19:30:00',
+            'begin_at' => (new Chronos('-1 month'))->format('Y-m-d').' 15:30:00',
+            'finish_at' => (new Chronos('-1 month'))->format('Y-m-d').' 18:30:00',
             'capacity' => 50,
         ]);
         $event22->setPublished(true);

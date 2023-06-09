@@ -78,7 +78,7 @@
         {% endfor %}
     </div>
     {% if events.lastPage > 1 %}
-        {% include 'renaissance/adherent/events/my_events/partials/_pagination.html.twig' with {
+        {% include 'renaissance/partials/pagination.html.twig' with {
             current_page: events.currentPage,
             total_pages: events.lastPage,
             pagination_type: events_type,

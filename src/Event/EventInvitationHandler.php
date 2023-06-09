@@ -26,7 +26,7 @@ class EventInvitationHandler
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function handle(BaseEventInvitation $invitation, BaseEvent $event)
+    public function handle(EventInvitation $invitation, BaseEvent $event)
     {
         $invite = EventInvite::create($event, $invitation);
 

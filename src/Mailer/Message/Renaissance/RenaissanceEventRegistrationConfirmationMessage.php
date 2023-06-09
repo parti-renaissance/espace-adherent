@@ -38,7 +38,7 @@ class RenaissanceEventRegistrationConfirmationMessage extends AbstractRenaissanc
     private static function getRecipientVars(string $firstName): array
     {
         return [
-            'prenom' => self::escape($firstName),
+            'first_name' => self::escape($firstName),
         ];
     }
 }

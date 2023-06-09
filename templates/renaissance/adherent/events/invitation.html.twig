@@ -4,7 +4,7 @@
 
 {% block page_title 'Inviter des amis à un événement' %}
 
-{% block javascripts %}
+{% block final_javascripts %}
     <script type="module" src="{{ asset('js/friendly-challenge.widget.module.min.js') }}" async defer></script>
 {% endblock %}
 
@@ -40,7 +40,7 @@
                             {% elseif event is instanceof('App\\Entity\\Event\\CoalitionEvent') and event.coalition %}
                                 Par <span class="font-medium text-gray-700">{{ event.coalition.name }}</span>
                             {% elseif event.organizer %}
-                                Par <span class="font-medium text-gray-700">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span>
+                                Par <span class="font-medium text-gray-700">{{ event.organizer.fullName }}</span>
                             {% endif %}
                         </span>
                     </p>

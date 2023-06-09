@@ -340,17 +340,17 @@ Feature:
 
   Scenario Outline: As a referent I can get an ordered list of events corresponding to my zones
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/events?scope=<scope>&order[beginAt]=asc"
+    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=3&order[beginAt]=asc"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
             "total_items": 16,
-            "items_per_page": 2,
-            "count": 2,
+            "items_per_page": 3,
+            "count": 3,
             "current_page": 1,
-            "last_page": 8
+            "last_page": 6
         },
         "items": [
             {
@@ -391,7 +391,7 @@ Feature:
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": null
+                "user_registered_at": "@string@||@null@"
             },
             {
                 "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
@@ -431,22 +431,62 @@ Feature:
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": null
+                "user_registered_at": "@string@||@null@"
+            },
+            {
+                "uuid": "65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e",
+                "name": "Événements à Fontainebleau 2",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                    "first_name": "Francis",
+                    "last_name": "Brioul"
+                },
+                "participants_count": 0,
+                "status": "SCHEDULED",
+                "capacity": 50,
+                "post_address": {
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
+                },
+                "created_at": "@string@.isDateTime()",
+                "category": {
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "name": "Conférence-débat",
+                    "slug": "conference-debat"
+                },
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": "@string@||@null@"
             }
         ]
     }
     """
-    When I send a "GET" request to "/api/v3/events?scope=<scope>&order[finishAt]=desc"
+    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=3&order[finishAt]=desc"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
             "total_items": 16,
-            "items_per_page": 2,
-            "count": 2,
+            "items_per_page": 3,
+            "count": 3,
             "current_page": 1,
-            "last_page": 8
+            "last_page": 6
         },
         "items": [
             {
@@ -521,21 +561,54 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "user_registered_at": "@string@||@null@"
+            },
+            {
+                "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
+                "name": "Nouvel événement online",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "participants_count": 0,
+                "status": "SCHEDULED",
+                "capacity": 50,
+                "post_address": {
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
+                },
+                "created_at": "@string@.isDateTime()",
+                "category": null,
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": "online",
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": "@string@||@null@"
             }
         ]
     }
     """
-    When I send a "GET" request to "/api/v3/events?scope=<scope>&order[finish_at]=asc"
+    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=3&order[finish_at]=asc"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
             "total_items": 16,
-            "items_per_page": 2,
-            "count": 2,
+            "items_per_page": 3,
+            "count": 3,
             "current_page": 1,
-            "last_page": 8
+            "last_page": 6
         },
         "items": [
             {
@@ -570,6 +643,46 @@ Feature:
                     "longitude": 5.362377
                 },
                 "created_at": "@string@.isDateTime()",
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            },
+            {
+                "uuid": "5b279c9f-2b1e-4b93-9c34-1669f56e9d64",
+                "name": "Tractage sur le terrain",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "@uuid@",
+                    "first_name": "Adherent 56",
+                    "last_name": "Fa56ke"
+                },
+                "participants_count": 3,
+                "status": "SCHEDULED",
+                "capacity": 50,
+                "post_address": {
+                    "address": "47 rue Martre",
+                    "postal_code": "92110",
+                    "city": "92110-92024",
+                    "city_name": "Clichy",
+                    "country": "FR",
+                    "latitude": 48.9016,
+                    "longitude": 2.305268
+                },
+                "created_at": "@string@.isDateTime()",
+                "category": {
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "name": "Tractage",
+                    "slug": "tractage"
+                },
                 "private": false,
                 "electoral": false,
                 "visio_url": null,
