@@ -45,8 +45,11 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, $className);
     }
 
-    public function countElements(bool $onlyPublished = true, bool $withPrivate = false): int
-    {
+    public function countElements(
+        bool $onlyPublished = true,
+        bool $withPrivate = false,
+        bool $forRenaissance = false
+    ): int {
         $qb = $this
             ->createQueryBuilder('e')
             ->leftJoin('e.category', 'ec')
@@ -64,6 +67,11 @@ class EventRepository extends ServiceEntityRepository
         if (!$withPrivate) {
             $qb->andWhere('e.private = false');
         }
+
+        $qb
+            ->andWhere('e.renaissanceEvent = :for_re')
+            ->setParameter('for_re', $forRenaissance)
+        ;
 
         return (int) $qb->getQuery()
             ->getSingleScalarResult()
@@ -249,18 +257,22 @@ class EventRepository extends ServiceEntityRepository
         return $this->configurePaginator($qb, $page, $limit);
     }
 
-    private function createUpcomingEventsQueryBuilder(bool $withPrivate = false): QueryBuilder
-    {
+    private function createUpcomingEventsQueryBuilder(
+        bool $withPrivate = false,
+        bool $forRenaissance = false
+    ): QueryBuilder {
         $qb = $this->createQueryBuilder('e')->select('e', 'ec', 'c', 'o');
         $qb->leftJoin('e.category', 'ec')
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
             ->where('e.published = :published')
+            ->andWhere('e.renaissanceEvent = :for_re')
             ->andWhere($qb->expr()->in('e.status', BaseEvent::ACTIVE_STATUSES))
             ->andWhere('e.beginAt >= :today')
             ->andWhere('ec.status = :status')
             ->orderBy('e.beginAt', 'ASC')
             ->setParameter('published', true)
+            ->setParameter('for_re', $forRenaissance)
             ->setParameter('today', (new Chronos('now'))->format('Y-m-d'))
             ->setParameter('status', BaseEventCategory::ENABLED)
         ;

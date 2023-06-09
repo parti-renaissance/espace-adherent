@@ -16,7 +16,7 @@ class RenaissanceEventRegistrationConfirmationMessage extends AbstractRenaissanc
             Uuid::uuid4(),
             $registration->getEmailAddress(),
             $firstName,
-            'Confirmation de participation à un événement Renaissance !',
+            'Confirmation de participation à un événement Renaissance',
             static::getTemplateVars(
                 $event->getName(),
                 $event->getOrganizerName(),

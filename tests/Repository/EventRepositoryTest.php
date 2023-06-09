@@ -23,6 +23,10 @@ class EventRepositoryTest extends AbstractKernelTestCase
     {
         $this->assertSame(18, $this->repository->countElements(true, false));
         $this->assertSame(19, $this->repository->countElements(true, true));
+
+        // Renaissance event
+        $this->assertSame(2, $this->repository->countElements(true, false, true));
+        $this->assertSame(2, $this->repository->countElements(true, true, true));
     }
 
     public function testFindUpcomingEvents()

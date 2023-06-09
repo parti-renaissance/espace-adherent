@@ -14,7 +14,7 @@ class RenaissanceEventInvitationMessage extends AbstractRenaissanceMessage
             Uuid::uuid4(),
             $invite->getEmail(),
             self::escape($invite->getFullName()),
-            $invite->getFullName().' vous invite à un événement Renaissance !',
+            $invite->getFullName().' vous invite à un événement Renaissance',
             [
                 'sender_firstname' => self::escape($invite->getFirstName()),
                 'sender_message' => self::escape($invite->getMessage()),

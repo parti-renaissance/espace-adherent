@@ -36,13 +36,6 @@ Feature:
     And the JSON nodes should match:
       | metadata.total_items  | 2 |
 
-  Scenario: As a logged-in Jemarche App user I cannot get events if no event in my department or borough
-    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "J'écoute" with scope "jemarche_app"
-    And I send a "GET" request to "/api/v3/events"
-    Then the response status code should be 200
-    And the JSON nodes should match:
-      | metadata.total_items  | 0 |
-
   Scenario: As a logged-in user I cannot get not published event
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
     When I send a "GET" request to "/api/v3/events/de7f027c-f6c3-439f-b1dd-bf2b110a0fb0"
@@ -53,7 +46,7 @@ Feature:
     When I send a "GET" request to "/api/v3/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 22 |
+      | metadata.total_items  | 26 |
 
   Scenario: As a logged-in user I can get coalitions events
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
@@ -78,14 +71,14 @@ Feature:
     When I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 20 |
+      | metadata.total_items  | 24 |
 
   Scenario: As a logged-in user I can get events
     When I am logged as "jacques.picard@en-marche.fr"
     And I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 22 |
+      | metadata.total_items  | 26 |
 
   Scenario: As a non logged-in user I cannot check if I'm registered for events
     When I send a "POST" request to "/api/v3/events/registered" with body:
@@ -133,7 +126,7 @@ Feature:
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should match:
-      | metadata.total_items  | 20 |
+      | metadata.total_items  | 24 |
 
     When I send a "GET" request to "/api/events?group_source=coalitions"
     Then the response status code should be 200
@@ -244,17 +237,17 @@ Feature:
 
   Scenario Outline: As a (delegated) referent I can get the list of events corresponding to my zones
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=9"
+    When I send a "GET" request to "/api/v3/events?scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
-            "total_items": 11,
-            "items_per_page": 9,
-            "count": 9,
+            "total_items": 16,
+            "items_per_page": 2,
+            "count": 2,
             "current_page": 1,
-            "last_page": 2
+            "last_page": 8
         },
         "items": [
             {
@@ -336,275 +329,6 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "user_registered_at": null
-            },
-            {
-                "uuid": "65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e",
-                "name": "Événements à Fontainebleau 2",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
-                    "first_name": "Francis",
-                    "last_name": "Brioul"
-                },
-                "participants_count": 0,
-                "status": "SCHEDULED",
-                "capacity": 50,
-                "post_address": {
-                    "address": "40 Rue Grande",
-                    "postal_code": "77300",
-                    "city": "77300-77186",
-                    "city_name": "Fontainebleau",
-                    "country": "FR",
-                    "latitude": 48.404766,
-                    "longitude": 2.698759
-                },
-                "created_at": "@string@.isDateTime()",
-                "category": {
-                    "event_group_category": {
-                        "name": "événement",
-                        "slug": "evenement"
-                    },
-                    "name": "Conférence-débat",
-                    "slug": "conference-debat"
-                },
-                "private": false,
-                "electoral": false,
-                "visio_url": null,
-                "mode": null,
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": null
-            },
-            {
-                "uuid": "a6709808-b3fa-40fc-95a4-da49ddc314ff",
-                "name": "Event of non AL",
-                "time_zone": "Europe/Zurich",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                    "first_name": "Michel",
-                    "last_name": "VASSEUR"
-                },
-                "participants_count": 0,
-                "status": "SCHEDULED",
-                "capacity": 5,
-                "post_address": {
-                    "address": "12 Pilgerweg",
-                    "postal_code": "8802",
-                    "city": null,
-                    "city_name": "Kilchberg",
-                    "country": "CH",
-                    "latitude": 47.321568,
-                    "longitude": 8.549969
-                },
-                "created_at": "@string@.isDateTime()",
-                "category": {
-                    "event_group_category": {
-                        "name": "événement",
-                        "slug": "evenement"
-                    },
-                    "name": "Marche",
-                    "slug": "marche"
-                },
-                "private": false,
-                "electoral": false,
-                "visio_url": null,
-                "mode": null,
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": null
-            },
-            {
-                "uuid": "47e5a8bf-8be1-4c38-aae8-b41e6908a1b3",
-                "name": "Réunion de réflexion bellifontaine",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
-                    "first_name": "Francis",
-                    "last_name": "Brioul"
-                },
-                "participants_count": 1,
-                "status": "SCHEDULED",
-                "capacity": 50,
-                "post_address": {
-                    "address": "40 Rue Grande",
-                    "postal_code": "77300",
-                    "city": "77300-77186",
-                    "city_name": "Fontainebleau",
-                    "country": "FR",
-                    "latitude": 48.404766,
-                    "longitude": 2.698759
-                },
-                "created_at": "@string@.isDateTime()",
-                "category": {
-                    "event_group_category": {
-                        "name": "événement",
-                        "slug": "evenement"
-                    },
-                    "name": "Réunion d'équipe",
-                    "slug": "reunion-dequipe"
-                },
-                "private": true,
-                "electoral": true,
-                "visio_url": null,
-                "mode": "meeting",
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": null
-            },
-            {
-                "category": {
-                    "name": "Comité politique",
-                    "slug": "comite-politique"
-                },
-                "uuid": "3f46976e-e76a-476e-86d7-575c6d3bc15e",
-                "name": "Evénement institutionnel numéro 1",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-                    "first_name": "Referent",
-                    "last_name": "Referent"
-                },
-                "participants_count": 0,
-                "status": "SCHEDULED",
-                "capacity": null,
-                "post_address": {
-                    "address": "47 rue Martre",
-                    "postal_code": "92110",
-                    "city": "92110-92024",
-                    "city_name": "Clichy",
-                    "country": "FR",
-                    "latitude": 48.9016,
-                    "longitude": 2.305268
-                },
-                "created_at": "@string@.isDateTime()",
-                "private": false,
-                "electoral": false,
-                "visio_url": null,
-                "mode": null,
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": null
-            },
-            {
-                "uuid": "defd812f-265c-4196-bd33-72fe39e5a2a1",
-                "name": "Réunion de réflexion dammarienne",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
-                    "first_name": "Francis",
-                    "last_name": "Brioul"
-                },
-                "participants_count": 2,
-                "status": "SCHEDULED",
-                "capacity": 50,
-                "post_address": {
-                    "address": "824 Avenue du Lys",
-                    "postal_code": "77190",
-                    "city": "77190-77152",
-                    "city_name": "Dammarie-les-Lys",
-                    "country": "FR",
-                    "latitude": 48.518219,
-                    "longitude": 2.624205
-                },
-                "created_at": "@string@.isDateTime()",
-                "category": {
-                    "event_group_category": {
-                        "name": "événement",
-                        "slug": "evenement"
-                    },
-                    "name": "Kiosque",
-                    "slug": "kiosque"
-                },
-                "private": false,
-                "electoral": false,
-                "visio_url": null,
-                "mode": null,
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": null
-            },
-            {
-                "uuid": "24a01f4f-94ea-43eb-8601-579385c59a82",
-                "name": "Réunion de réflexion marseillaise",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
-                    "first_name": "Francis",
-                    "last_name": "Brioul"
-                },
-                "participants_count": 1,
-                "status": "SCHEDULED",
-                "capacity": 1,
-                "post_address": {
-                    "address": "2 Place de la Major",
-                    "postal_code": "13002",
-                    "city": "13002-13202",
-                    "city_name": "Marseille 2ème",
-                    "country": "FR",
-                    "latitude": 43.298492,
-                    "longitude": 5.362377
-                },
-                "created_at": "@string@.isDateTime()",
-                "category": {
-                    "event_group_category": {
-                        "name": "événement",
-                        "slug": "evenement"
-                    },
-                    "name": "Tractage",
-                    "slug": "tractage"
-                },
-                "private": false,
-                "electoral": false,
-                "visio_url": null,
-                "mode": null,
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": null
-            },
-            {
-                "uuid": "4d962b05-68fe-4888-ab6b-53b96bdbe797",
-                "name": "Un événement du référent annulé",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-                    "first_name": "Referent",
-                    "last_name": "Referent"
-                },
-                "participants_count": 0,
-                "status": "CANCELLED",
-                "capacity": 50,
-                "post_address": {
-                    "address": "40 Rue Grande",
-                    "postal_code": "77300",
-                    "city": "77300-77186",
-                    "city_name": "Fontainebleau",
-                    "country": "FR",
-                    "latitude": 48.404766,
-                    "longitude": 2.698759
-                },
-                "created_at": "@string@.isDateTime()",
-                "category": null,
-                "private": false,
-                "electoral": false,
-                "visio_url": null,
-                "mode": "online",
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": null
             }
         ]
     }
@@ -616,17 +340,17 @@ Feature:
 
   Scenario Outline: As a referent I can get an ordered list of events corresponding to my zones
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=3&order[beginAt]=asc"
+    When I send a "GET" request to "/api/v3/events?scope=<scope>&order[beginAt]=asc"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
-            "total_items": 11,
-            "items_per_page": 3,
-            "count": 3,
+            "total_items": 16,
+            "items_per_page": 2,
+            "count": 2,
             "current_page": 1,
-            "last_page": 4
+            "last_page": 8
         },
         "items": [
             {
@@ -708,29 +432,45 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "user_registered_at": null
-            },
+            }
+        ]
+    }
+    """
+    When I send a "GET" request to "/api/v3/events?scope=<scope>&order[finishAt]=desc"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 16,
+            "items_per_page": 2,
+            "count": 2,
+            "current_page": 1,
+            "last_page": 8
+        },
+        "items": [
             {
-                "uuid": "65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e",
-                "name": "Événements à Fontainebleau 2",
+                "uuid": "e770cda4-b215-4ea2-85e5-03fc3e4423e3",
+                "name": "Un événement de l'assemblée départementale",
                 "time_zone": "Europe/Paris",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
-                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
-                    "first_name": "Francis",
-                    "last_name": "Brioul"
+                    "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+                    "first_name": "Gisele",
+                    "last_name": "Berthoux"
                 },
-                "participants_count": 0,
+                "participants_count": 2,
                 "status": "SCHEDULED",
                 "capacity": 50,
                 "post_address": {
-                    "address": "40 Rue Grande",
-                    "postal_code": "77300",
-                    "city": "77300-77186",
-                    "city_name": "Fontainebleau",
+                    "address": "47 rue Martre",
+                    "postal_code": "92110",
+                    "city": "92110-92024",
+                    "city_name": "Clichy",
                     "country": "FR",
-                    "latitude": 48.404766,
-                    "longitude": 2.698759
+                    "latitude": 48.9016,
+                    "longitude": 2.305268
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": {
@@ -738,33 +478,17 @@ Feature:
                         "name": "événement",
                         "slug": "evenement"
                     },
-                    "name": "Conférence-débat",
-                    "slug": "conference-debat"
+                    "name": "Convivialité",
+                    "slug": "convivialite"
                 },
                 "private": false,
                 "electoral": false,
-                "visio_url": null,
-                "mode": null,
+                "visio_url": "https://parti-renaissance.fr",
+                "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": null
-            }
-        ]
-    }
-    """
-    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=3&order[finishAt]=desc"
-    Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    {
-        "metadata": {
-            "total_items": 11,
-            "items_per_page": 3,
-            "count": 3,
-            "current_page": 1,
-            "last_page": 4
-        },
-        "items": [
+                "user_registered_at": "@string@||@null@"
+            },
             {
                 "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
                 "name": "Nouvel événement online privé et électoral",
@@ -797,87 +521,21 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "user_registered_at": "@string@||@null@"
-            },
-            {
-                "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
-                "name": "Nouvel événement online",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-                    "first_name": "Referent",
-                    "last_name": "Referent"
-                },
-                "participants_count": 0,
-                "status": "SCHEDULED",
-                "capacity": 50,
-                "post_address": {
-                    "address": "40 Rue Grande",
-                    "postal_code": "77300",
-                    "city": "77300-77186",
-                    "city_name": "Fontainebleau",
-                    "country": "FR",
-                    "latitude": 48.404766,
-                    "longitude": 2.698759
-                },
-                "created_at": "@string@.isDateTime()",
-                "category": null,
-                "private": false,
-                "electoral": false,
-                "visio_url": null,
-                "mode": "online",
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": "@string@||@null@"
-            },
-            {
-                "uuid": "4d962b05-68fe-4888-ab6b-53b96bdbe797",
-                "name": "Un événement du référent annulé",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-                    "first_name": "Referent",
-                    "last_name": "Referent"
-                },
-                "participants_count": 0,
-                "status": "CANCELLED",
-                "capacity": 50,
-                "post_address": {
-                    "address": "40 Rue Grande",
-                    "postal_code": "77300",
-                    "city": "77300-77186",
-                    "city_name": "Fontainebleau",
-                    "country": "FR",
-                    "latitude": 48.404766,
-                    "longitude": 2.698759
-                },
-                "created_at": "@string@.isDateTime()",
-                "category": null,
-                "private": false,
-                "electoral": false,
-                "visio_url": null,
-                "mode": "online",
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": null
             }
         ]
     }
     """
-    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=3&order[finish_at]=asc"
+    When I send a "GET" request to "/api/v3/events?scope=<scope>&order[finish_at]=asc"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
-            "total_items": 11,
-            "items_per_page": 3,
-            "count": 3,
+            "total_items": 16,
+            "items_per_page": 2,
+            "count": 2,
             "current_page": 1,
-            "last_page": 4
+            "last_page": 8
         },
         "items": [
             {
@@ -931,46 +589,6 @@ Feature:
                 },
                 "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
                 "name": "Événements à Fontainebleau 1",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
-                    "first_name": "Francis",
-                    "last_name": "Brioul"
-                },
-                "participants_count": 0,
-                "status": "SCHEDULED",
-                "capacity": 50,
-                "post_address": {
-                    "address": "40 Rue Grande",
-                    "postal_code": "77300",
-                    "city": "77300-77186",
-                    "city_name": "Fontainebleau",
-                    "country": "FR",
-                    "latitude": 48.404766,
-                    "longitude": 2.698759
-                },
-                "created_at": "@string@.isDateTime()",
-                "private": false,
-                "electoral": false,
-                "visio_url": null,
-                "mode": null,
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": null
-            },
-            {
-                "category": {
-                    "event_group_category": {
-                        "name": "événement",
-                        "slug": "evenement"
-                    },
-                    "name": "Conférence-débat",
-                    "slug": "conference-debat"
-                },
-                "uuid": "65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e",
-                "name": "Événements à Fontainebleau 2",
                 "time_zone": "Europe/Paris",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
@@ -1504,16 +1122,14 @@ Feature:
     }
     """
     And I should have 1 email
-    And I should have 1 email "EventUpdateMessage" for "francis.brioul@yahoo.com" with payload:
+    And I should have 1 email "RenaissanceEventUpdateMessage" for "francis.brioul@yahoo.com" with payload:
     """
     {
-       "template_name": "event-update",
-       "template_content": [
-
-       ],
+       "template_name": "renaissance-event-update",
+       "template_content": [],
        "message": {
           "subject": "Un événement auquel vous participez a été mis à jour",
-          "from_email": "contact@en-marche.fr",
+          "from_email": "no-reply@parti-renaissance.fr",
           "global_merge_vars": [
              {
                 "name": "event_name",
@@ -1521,7 +1137,7 @@ Feature:
              },
              {
                 "name": "event_url",
-                "content": "http://test.enmarche.code/evenements/2022-12-12-nouvel-evenement-online"
+                "content": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher"
              },
              {
                 "name": "event_date",
@@ -1537,7 +1153,7 @@ Feature:
              },
              {
                 "name": "calendar_url",
-                "content": "http://test.enmarche.code/evenements/2022-12-12-nouvel-evenement-online/ical"
+                "content": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/ical"
              }
           ],
           "merge_vars": [
@@ -1581,7 +1197,7 @@ Feature:
           "headers": {
              "Reply-To": "referent@en-marche-dev.fr"
           },
-          "from_name": "La République En Marche !",
+          "from_name": "Renaissance",
           "to": [
              {
                 "email": "referent@en-marche-dev.fr",
