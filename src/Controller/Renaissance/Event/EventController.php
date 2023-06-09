@@ -2,7 +2,6 @@
 
 namespace App\Controller\Renaissance\Event;
 
-use App\Controller\EnMarche\VotingPlatform\AbstractController;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventInvitationHandler;
@@ -16,6 +15,7 @@ use App\Repository\EventRepository;
 use App\Serializer\Encoder\ICalEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
