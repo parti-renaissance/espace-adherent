@@ -7,7 +7,6 @@ use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\Mandate;
-use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -20,17 +19,6 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, TerritorialCouncil::class);
-    }
-
-    public function findOneByReferentTag(ReferentTag $referentTag): ?TerritorialCouncil
-    {
-        return $this->createQueryBuilder('tc')
-            ->innerJoin('tc.referentTags', 'tag')
-            ->where('tag.id = :tag')
-            ->setParameter('tag', $referentTag)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
     }
 
     /**
