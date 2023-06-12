@@ -80,9 +80,9 @@ class ElectionEntity
     public function getName(): string
     {
         if ($this->election->getDesignation()->isCopolType()) {
-            return $this->territorialCouncil->getName();
+            return $this->territorialCouncil ? $this->territorialCouncil->getName() : '';
         }
 
-        return $this->committee->getName();
+        return $this->committee ? $this->committee->getName() : '';
     }
 }
