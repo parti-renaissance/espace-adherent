@@ -11,7 +11,7 @@
   "dependencies": {
     "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.22.5",
-    "@babel/preset-react": "^7.22.3",
+    "@babel/preset-react": "^7.22.5",
     "@google/markerclusterer": "^2.0.9",
     "@headlessui/react": "^1.7.15",
     "@mapbox/polylabel": "^1.0.2",
