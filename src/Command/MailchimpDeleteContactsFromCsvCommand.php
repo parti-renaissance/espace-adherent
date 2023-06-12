@@ -7,6 +7,7 @@ use App\Mailchimp\Synchronisation\Command\RemoveApplicationRequestCandidateComma
 use App\Mailchimp\Synchronisation\Command\RemoveNewsletterMemberCommand;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,10 +17,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsCommand(
+    name: 'mailchimp:delete:contact',
+)]
 class MailchimpDeleteContactsFromCsvCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:delete:contact';
-
     private $bus;
     /** @var SymfonyStyle */
     private $io;
@@ -33,7 +35,7 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('file', InputArgument::REQUIRED, 'File csv with contact mails')
@@ -43,7 +45,7 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
         ;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -61,7 +63,7 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
         $reader = Reader::createFromStream($this->storage->readStream($input->getArgument('file')));
 
         if (false === $this->io->confirm(sprintf('Are you sure to remove %d contacts?', $count = $reader->count()), false)) {
-            return 1;
+            return self::FAILURE;
         }
 
         $this->io->progressStart($count);
@@ -84,6 +86,6 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 }

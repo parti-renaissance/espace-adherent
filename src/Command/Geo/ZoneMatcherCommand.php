@@ -8,6 +8,7 @@ use App\Entity\ZoneableEntity;
 use App\Geo\ZoneMatcher;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,11 +16,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:geo:zone-matcher',
+    description: 'Assigns zones to entities',
+)]
 class ZoneMatcherCommand extends Command
 {
     private const BULK = 500;
-
-    protected static $defaultName = 'app:geo:zone-matcher';
 
     /**
      * @var EntityManagerInterface
@@ -47,7 +50,6 @@ class ZoneMatcherCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Assigns zones to entities')
             ->addArgument(
                 'entity',
                 InputArgument::REQUIRED,
@@ -116,7 +118,7 @@ class ZoneMatcherCommand extends Command
             $this->io->success('Done');
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function validateEntityClass(string $class): void

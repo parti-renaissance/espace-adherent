@@ -8,16 +8,19 @@ use App\VotingPlatform\Election\ResultCalculator;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOverEvent;
 use App\VotingPlatform\Notifier\Event\VotingPlatformSecondRoundNotificationEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+#[AsCommand(
+    name: 'app:voting-platform:step-3:close-election',
+    description: 'Voting Platform: step 3: close election',
+)]
 class CloseElectionCommand extends Command
 {
-    protected static $defaultName = 'app:voting-platform:step-3:close-election';
-
     private SymfonyStyle $io;
 
     public function __construct(
@@ -29,12 +32,7 @@ class CloseElectionCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
-    {
-        $this->setDescription('Voting Platform: step 3: close election');
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -57,7 +55,7 @@ class CloseElectionCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function doCloseElection(Election $election): void

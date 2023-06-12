@@ -11,15 +11,17 @@ use App\Entity\Jecoute\SurveyQuestion;
 use App\Jecoute\SurveyQuestionTypeEnum;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:jecoute-surveys:import',
+)]
 class ImportJecouteSurveysCommand extends Command
 {
-    protected static $defaultName = 'app:jecoute-surveys:import';
-
     private const QUESTIONS = [
         [
             'content' => 'Quelle est la raison de votre présence à ... ?',
@@ -118,7 +120,7 @@ class ImportJecouteSurveysCommand extends Command
         parent::__construct();
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -139,7 +141,7 @@ class ImportJecouteSurveysCommand extends Command
 
         $this->io->success('Done');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function importSuggestedQuestions(): void

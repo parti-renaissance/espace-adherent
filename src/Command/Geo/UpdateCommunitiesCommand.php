@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -18,10 +19,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[AsCommand(
+    name: 'app:geo:update-communities',
+    description: 'Update french intercommunalities according to INSEE data',
+)]
 final class UpdateCommunitiesCommand extends Command
 {
-    protected static $defaultName = 'app:geo:update-communities';
-
     private const SOURCE = 'https://www.insee.fr/fr/statistiques/fichier/2510634/Intercommunalite-Metropole_au_01-01-2020.zip';
     private const FILENAME = 'Intercommunalité - Métropole au 01-01-2020.xlsx';
     private const SHEET_NAME = 'Composition_communale';
@@ -67,7 +70,6 @@ final class UpdateCommunitiesCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Update french intercommunalities according to INSEE data')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
         ;
     }
@@ -94,7 +96,7 @@ final class UpdateCommunitiesCommand extends Command
         $persister = new Persister($this->io, $this->em);
         $persister->run($this->entities, $input->getOption('dry-run'));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function populateCommunitiesFromDatabase(): void

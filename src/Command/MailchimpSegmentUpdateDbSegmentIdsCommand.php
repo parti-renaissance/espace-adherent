@@ -6,16 +6,19 @@ use App\Entity\Committee;
 use App\Repository\CommitteeRepository;
 use App\Repository\ReferentTagRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[AsCommand(
+    name: 'mailchimp:segment:update-db-segment-ids',
+    description: 'Update Referent tags with Mailchimp external ids',
+)]
 class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:segment:update-db-segment-ids';
-
     private $referentTagRepository;
     private $committeeRepository;
     private $client;
@@ -40,12 +43,7 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
-    {
-        $this->setDescription('Update Referent tags with Mailchimp external ids');
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -66,7 +64,7 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function updateReferentTags(array $segments): void

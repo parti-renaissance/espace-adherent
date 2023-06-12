@@ -7,6 +7,7 @@ use App\Command\Geo\Helper\Summary;
 use App\Entity\Geo\Country;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,10 +15,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Intl\Countries;
 
+#[AsCommand(
+    name: 'app:geo:update-countries',
+)]
 final class UpdateCountriesCommand extends Command
 {
-    protected static $defaultName = 'app:geo:update-countries';
-
     /**
      * @var EntityManagerInterface
      */
@@ -43,7 +45,6 @@ final class UpdateCountriesCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Update countries')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
         ;
     }
@@ -74,6 +75,6 @@ final class UpdateCountriesCommand extends Command
         $persister = new Persister($this->io, $this->em);
         $persister->run($this->entities, $input->getOption('dry-run'));
 
-        return 0;
+        return self::SUCCESS;
     }
 }

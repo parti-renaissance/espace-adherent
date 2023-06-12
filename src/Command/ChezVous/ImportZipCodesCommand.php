@@ -11,17 +11,20 @@ use App\Repository\ChezVous\RegionRepository;
 use Cocur\Slugify\SlugifyInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'app:chez-vous:import-zipcodes',
+    description: 'Import ChezVous zipcodes from CSV files',
+)]
 class ImportZipCodesCommand extends AbstractImportCommand
 {
     private const CSV_DIRECTORY = 'chez-vous/zipcodes';
     private const CSV_REGIONS = 'regions.csv';
     private const CSV_DEPARTMENTS = 'departments.csv';
     private const CSV_CITIES = 'cities.csv';
-
-    protected static $defaultName = 'app:chez-vous:import-zipcodes';
 
     private $slugify;
     private $regionRepository;
@@ -42,11 +45,6 @@ class ImportZipCodesCommand extends AbstractImportCommand
         $this->departmentRepository = $departmentRepository;
     }
 
-    protected function configure()
-    {
-        $this->setDescription('Import ChezVous zipcodes from CSV files');
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io->title('ChezVous zipcodes import.');
@@ -61,7 +59,7 @@ class ImportZipCodesCommand extends AbstractImportCommand
 
         $this->io->success('ChezVous zipcodes imported successfully!');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function importRegions(): void

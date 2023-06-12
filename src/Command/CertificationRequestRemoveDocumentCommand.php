@@ -6,15 +6,18 @@ use App\Adherent\Certification\CertificationRequestDocumentManager;
 use App\Entity\CertificationRequest;
 use App\Repository\CertificationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'app:certification-request:remove-document',
+    description: 'Removes document of Certification Requests.',
+)]
 class CertificationRequestRemoveDocumentCommand extends Command
 {
-    protected static $defaultName = 'app:certification-request:remove-document';
-
     private $em;
     private $certificationRequestRepository;
     private $documentManager;
@@ -31,11 +34,10 @@ class CertificationRequestRemoveDocumentCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Interval in days (default: 14)', 14)
-            ->setDescription('Removes document of Certification Requests.')
         ;
     }
 
@@ -52,7 +54,7 @@ class CertificationRequestRemoveDocumentCommand extends Command
             $this->em->flush();
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function removeDocument(CertificationRequest $certificationRequest): void

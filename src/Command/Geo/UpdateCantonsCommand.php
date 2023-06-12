@@ -10,6 +10,7 @@ use App\Entity\Geo\Department;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -17,10 +18,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[AsCommand(
+    name: 'app:geo:update-cantons',
+    description: 'Update french cantons according to INSEE data',
+)]
 final class UpdateCantonsCommand extends Command
 {
-    protected static $defaultName = 'app:geo:update-cantons';
-
     private const CANTONS_SOURCE = 'https://www.insee.fr/fr/statistiques/fichier/4316069/canton2020-csv.zip';
     private const CANTONS_FILENAME = 'canton2020.csv';
 
@@ -61,7 +64,6 @@ final class UpdateCantonsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Update french cantons according to INSEE data')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
         ;
     }
@@ -87,7 +89,7 @@ final class UpdateCantonsCommand extends Command
         $persister = new Persister($this->io, $this->em);
         $persister->run($this->entities, $input->getOption('dry-run'));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function populateCantonsFromDatabase(): void

@@ -30,7 +30,7 @@ class ImportVotePlacesCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:import:vote-places')
@@ -39,7 +39,7 @@ class ImportVotePlacesCommand extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -51,7 +51,7 @@ class ImportVotePlacesCommand extends Command
         } catch (FileNotFoundException $exception) {
             $this->io->error(sprintf('%s file not found', $input->getArgument('fileUrl')));
 
-            return 1;
+            return self::FAILURE;
         }
 
         $this->em->beginTransaction();
@@ -61,7 +61,7 @@ class ImportVotePlacesCommand extends Command
         $this->io->text('Vote places are loaded');
         $this->io->success('Done');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function parseCSV(string $filename): array

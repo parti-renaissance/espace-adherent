@@ -17,7 +17,7 @@ class MailerPublishCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:mailer:publish')
@@ -35,6 +35,6 @@ class MailerPublishCommand extends Command
 
         $this->bus->dispatch(new SendMessageCommand(Uuid::fromString($uuid)));
 
-        return 0;
+        return self::SUCCESS;
     }
 }

@@ -4,15 +4,18 @@ namespace App\Command;
 
 use App\Repository\Poll\LocalPollRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:polls:unpublish-passed-local',
+    description: 'Unpublish local polls after the finish date has been passed.',
+)]
 class UnpublishLocalPollCommand extends Command
 {
-    protected static $defaultName = 'app:polls:unpublish-passed-local';
-
     private $localPollRepository;
     /** @var SymfonyStyle */
     private $io;
@@ -24,14 +27,7 @@ class UnpublishLocalPollCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
-    {
-        $this
-            ->setDescription('Unpublish local polls after the finish date has been passed.')
-        ;
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -42,7 +38,7 @@ class UnpublishLocalPollCommand extends Command
         if (0 === $total) {
             $this->io->success('No polls to unpublish.');
 
-            return 0;
+            return self::SUCCESS;
         }
 
         $this->io->title('Starting unpublishing local polls.');
@@ -63,7 +59,7 @@ class UnpublishLocalPollCommand extends Command
             $total > 1 ? 'have' : 'has'
         ));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function getPassedLocalPollsCount(): int

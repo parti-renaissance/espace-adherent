@@ -8,17 +8,20 @@ use App\Entity\Reporting\EmailSubscriptionHistoryAction;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:adherent:initialize-email-subscriptions-history',
+    description: 'Create email subscriptions history. The history will be created for both users and adherents even inactives.',
+)]
 class InitializeEmailSubscriptionHistoryCommand extends Command
 {
     private const BATCH_SIZE = 5000;
-
-    protected static $defaultName = 'app:adherent:initialize-email-subscriptions-history';
 
     /**
      * @var SymfonyStyle
@@ -33,14 +36,7 @@ class InitializeEmailSubscriptionHistoryCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
-    {
-        $this
-            ->setDescription('Create email subscriptions history. The history will be created for both users and adherents even inactives.')
-        ;
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -50,7 +46,7 @@ class InitializeEmailSubscriptionHistoryCommand extends Command
         if ($this->isAlreadyInitialize()) {
             $this->io->error('Cannot initialize email subscription history. It already exists.');
 
-            return 1;
+            return self::FAILURE;
         }
 
         $this->io->title('Starting email subscription history initialization.');
@@ -117,7 +113,7 @@ class InitializeEmailSubscriptionHistoryCommand extends Command
         $this->io->newLine(2);
         $this->io->success('Email subscription history initialized successfully!');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function isAlreadyInitialize(): bool

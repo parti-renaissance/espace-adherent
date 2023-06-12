@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventReminderHandler;
 use Cake\Chronos\Chronos;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,10 +13,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:events:remind',
+    description: 'This command finds upcoming events and send reminders',
+)]
 class RemindEventCommand extends Command
 {
-    protected static $defaultName = 'app:events:remind';
-
     private $handler;
 
     /** @var SymfonyStyle */
@@ -28,10 +31,9 @@ class RemindEventCommand extends Command
         $this->handler = $handler;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('This command finds upcoming events and send reminders')
             ->addArgument('mode', InputArgument::REQUIRED, 'Events mode to filter ("online" or "meeting")')
             ->addOption('online-start-after', 'a', InputOption::VALUE_OPTIONAL, 'Minimum number of minutes before the online events begin', 30)
             ->addOption('online-start-before', 'b', InputOption::VALUE_OPTIONAL, 'Maximum number of minutes before the online events begin', 90)
@@ -39,7 +41,7 @@ class RemindEventCommand extends Command
         ;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -70,6 +72,6 @@ class RemindEventCommand extends Command
         $this->io->progressFinish();
         $this->io->success("$total events has been reminded.");
 
-        return 0;
+        return self::SUCCESS;
     }
 }

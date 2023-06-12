@@ -27,7 +27,7 @@ class DonationUpdateReferenceCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:donations:update-reference')
@@ -53,7 +53,7 @@ class DonationUpdateReferenceCommand extends Command
 
         $output->writeln(['', 'Donations reference updated successfully!']);
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function updateDonationsReference(OutputInterface $output): void

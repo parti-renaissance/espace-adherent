@@ -8,17 +8,18 @@ use App\TerritorialCouncil\PoliticalCommitteeManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:territorial-council:update-political-committee-membership',
+    description: 'Update political committee memberships (only qualities that cannot be elected).',
+)]
 class UpdatePoliticalCommitteeMembershipsCommand extends Command
 {
-    private const BATCH_SIZE = 1000;
-
-    protected static $defaultName = 'app:territorial-council:update-political-committee-membership';
-
     private $em;
     private $politicalCommitteeManager;
     private $pcMembershipRepository;
@@ -37,14 +38,7 @@ class UpdatePoliticalCommitteeMembershipsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
-    {
-        $this
-            ->setDescription('Update political committee memberships (only qualities that cannot be elected).')
-        ;
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -80,7 +74,7 @@ class UpdatePoliticalCommitteeMembershipsCommand extends Command
 
         $this->io->success('Political committee memberships have been updated successfully!');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function getTerritorialCouncilMembership(): IterableResult

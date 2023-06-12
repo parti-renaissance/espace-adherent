@@ -3,16 +3,18 @@
 namespace App\Command;
 
 use App\Deputy\DistrictLoader;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:deputy-districts:import',
+)]
 class ImportDistrictsCommand extends Command
 {
-    protected static $defaultName = 'app:deputy-districts:import';
-
     private $loader;
 
     /**
@@ -27,14 +29,14 @@ class ImportDistrictsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('file', InputArgument::REQUIRED, 'CSV file of all districts to load');
         $this->addArgument('districtsFile', InputArgument::REQUIRED, 'GeoJSON file of french districts to load');
         $this->addArgument('countriesFile', InputArgument::REQUIRED, 'GeoJSON file of countries to load');
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -51,6 +53,6 @@ class ImportDistrictsCommand extends Command
 
         $this->io->success('Done');
 
-        return 0;
+        return self::SUCCESS;
     }
 }

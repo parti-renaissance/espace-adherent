@@ -14,16 +14,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:election:import-vote-place-results',
+)]
 class ImportElectionVotePlaceResultsCommand extends Command
 {
-    protected static $defaultName = 'app:election:import-vote-place-results';
-
     /** @var FilesystemInterface */
     private $storage;
     /** @var ElectionManager */
@@ -38,7 +40,7 @@ class ImportElectionVotePlaceResultsCommand extends Command
     private $io;
     private $errors = [];
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('file', InputArgument::REQUIRED, 'CSV file of results')
@@ -46,7 +48,7 @@ class ImportElectionVotePlaceResultsCommand extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -145,7 +147,7 @@ class ImportElectionVotePlaceResultsCommand extends Command
         $this->io->title('VotePlace errors');
         $this->io->table(['Errors'], array_map(function (string $error) { return [$error]; }, $this->errors));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function getVoteResult(ElectionRound $electionRound, VotePlace $votePlace): VotePlaceResult

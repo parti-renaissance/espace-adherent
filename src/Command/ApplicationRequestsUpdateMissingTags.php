@@ -7,15 +7,17 @@ use App\Entity\ApplicationRequest\RunningMateRequest;
 use App\Entity\ApplicationRequest\VolunteerRequest;
 use App\Referent\ReferentTagManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:application-requests:update-missing-tags',
+)]
 class ApplicationRequestsUpdateMissingTags extends Command
 {
-    protected static $defaultName = 'app:application-requests:update-missing-tags';
-
     private $entityManager;
     private $referentTagManager;
 
@@ -32,7 +34,7 @@ class ApplicationRequestsUpdateMissingTags extends Command
         parent::__construct();
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -46,7 +48,7 @@ class ApplicationRequestsUpdateMissingTags extends Command
 
         $this->io->success('Done');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function updateApplicationRequests(string $entityClass): void

@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -18,10 +19,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[AsCommand(
+    name: 'app:geo:update-districts',
+    description: 'Update electoral district according to data.gouv.fr',
+)]
 final class UpdateDistrictsCommand extends Command
 {
-    protected static $defaultName = 'app:geo:update-districts';
-
     private const SOURCE = 'https://www.data.gouv.fr/en/datasets/r/4d0b70e1-7757-43cc-882b-5c3b04fe38b4';
 
     private const IGNORED_DEPARTMENTS = [
@@ -86,7 +89,6 @@ final class UpdateDistrictsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Update electoral district according to data.gouv.fr')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
         ;
     }
@@ -129,7 +131,7 @@ final class UpdateDistrictsCommand extends Command
         $persister = new Persister($this->io, $this->em);
         $persister->run($this->entities, $input->getOption('dry-run'));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function readRow(array $row): void

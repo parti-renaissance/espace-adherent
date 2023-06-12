@@ -8,6 +8,7 @@ use App\Repository\ConsularDistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,10 +17,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Intl\Countries;
 
+#[AsCommand(
+    name: 'app:consular-district:import',
+)]
 class ImportConsularDistrictCommand extends Command
 {
-    protected static $defaultName = 'app:consular-district:import';
-
     /**
      * @var SymfonyStyle
      */
@@ -44,16 +46,15 @@ class ImportConsularDistrictCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Import')
             ->addArgument('file', InputArgument::REQUIRED, 'File CSV to import')
             ->addOption('with-points', null, InputOption::VALUE_NONE, 'Create a geo point for each city')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->countries = Countries::getNames('FR_fr');
@@ -80,7 +81,7 @@ class ImportConsularDistrictCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function buildDistrict(array $row, bool $withPoint = false): ConsularDistrict

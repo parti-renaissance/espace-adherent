@@ -22,16 +22,19 @@ use App\Repository\Geo\ZoneRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:geo:sync-zones',
+    description: 'Create missing zone and link it to its parents',
+)]
 final class SyncZonesCommand extends Command
 {
-    protected static $defaultName = 'app:geo:sync-zones';
-
     private const CLASSES = [
         Zone::COUNTRY => Country::class,
         Zone::REGION => Region::class,
@@ -78,7 +81,6 @@ final class SyncZonesCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Create missing zone and link it to its parents')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
             ->addOption('types', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Types to synchronize')
         ;
@@ -115,7 +117,7 @@ final class SyncZonesCommand extends Command
         $persister = new Persister($this->io, $this->em);
         $persister->run($this->entities, $input->getOption('dry-run'));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

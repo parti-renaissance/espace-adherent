@@ -51,7 +51,7 @@ abstract class ApiScheduleEntityCreationCommand extends Command
 
         $output->writeln(['', 'Successfully scheduled for synchronization!']);
 
-        return 0;
+        return self::SUCCESS;
     }
 
     abstract protected function getEntityClassname(): string;

@@ -7,16 +7,18 @@ use App\Repository\AdherentRepository;
 use App\Repository\Phoning\CampaignRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'phoning-campaign:update:participants-count',
+)]
 class PhoningCampaignUpdateParticipantsCountCommand extends Command
 {
-    protected static $defaultName = 'phoning-campaign:update:participants-count';
-
     private AdherentRepository $adherentRepository;
     private CampaignRepository $campaignRepository;
     private ObjectManager $entityManager;
@@ -34,7 +36,7 @@ class PhoningCampaignUpdateParticipantsCountCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('limit', null, InputOption::VALUE_OPTIONAL)
@@ -42,7 +44,7 @@ class PhoningCampaignUpdateParticipantsCountCommand extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -57,7 +59,7 @@ class PhoningCampaignUpdateParticipantsCountCommand extends Command
         $total = $limit && $limit < $count ? $limit : $count;
 
         if (false === $this->io->confirm(sprintf('Are you sure to update %d phoning campaign(s)?', $total), false)) {
-            return 1;
+            return self::FAILURE;
         }
 
         $paginator->getQuery()->setMaxResults($limit && $limit < 500 ? $limit : 500);
@@ -92,7 +94,7 @@ class PhoningCampaignUpdateParticipantsCountCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

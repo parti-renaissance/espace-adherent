@@ -10,6 +10,7 @@ use App\Entity\ProgrammaticFoundation\Tag;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,10 +18,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:programmatic-foundation:import',
+    description: 'Import Programmatic Foundation',
+)]
 class ImportProgrammaticFoundationCommand extends Command
 {
-    protected static $defaultName = 'app:programmatic-foundation:import';
-
     private $storage;
     private $em;
 
@@ -39,7 +42,7 @@ class ImportProgrammaticFoundationCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('filename', InputArgument::REQUIRED)
@@ -55,11 +58,10 @@ class ImportProgrammaticFoundationCommand extends Command
                 InputOption::VALUE_NONE,
                 'If defined, errors are skipped instead of canceling to whole import.'
             )
-            ->setDescription('Import Programmatic Foundation')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -92,7 +94,7 @@ class ImportProgrammaticFoundationCommand extends Command
             throw $exception;
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function import(InputInterface $input): void

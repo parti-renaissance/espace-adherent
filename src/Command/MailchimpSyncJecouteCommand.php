@@ -7,6 +7,7 @@ use App\Mailchimp\Synchronisation\Command\JemarcheDataSurveyCreateCommand;
 use App\Repository\Jecoute\JemarcheDataSurveyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,10 +15,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsCommand(
+    name: 'mailchimp:sync:jecoute',
+)]
 class MailchimpSyncJecouteCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:sync:jecoute';
-
     private $dataSurveyRepository;
     private $entityManager;
     private $bus;
@@ -36,14 +38,14 @@ class MailchimpSyncJecouteCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
         ;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -58,7 +60,7 @@ class MailchimpSyncJecouteCommand extends Command
         $total = $limit && $limit < $count ? $limit : $count;
 
         if (false === $this->io->confirm(sprintf('Are you sure to sync %d emails from "J\'écoute" ?', $total), false)) {
-            return 1;
+            return self::FAILURE;
         }
 
         $paginator->getQuery()->setMaxResults($limit && $limit < 2 ? $limit : 2);
@@ -87,7 +89,7 @@ class MailchimpSyncJecouteCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function getQueryBuilder(): Paginator

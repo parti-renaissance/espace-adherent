@@ -34,7 +34,7 @@ class ImportBoardMemberCommand extends Command
 
     private $notFoundEmails = [];
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:import:board-member')
@@ -67,7 +67,7 @@ class ImportBoardMemberCommand extends Command
         } catch (FileNotFoundException $e) {
             $output->writeln(sprintf('%s not found', $e->getFile()));
 
-            return 1;
+            return self::FAILURE;
         }
 
         $rows = array_merge($typeFormRows, $otherCSVRows);
@@ -87,7 +87,7 @@ class ImportBoardMemberCommand extends Command
             }
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function parseTypeFormCSV(string $filename): array

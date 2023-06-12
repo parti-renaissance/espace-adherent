@@ -3,17 +3,20 @@
 namespace App\Command;
 
 use App\Repository\CommitteeRepository;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'app:committees:update-memberships-counters',
+    description: '',
+)]
 class UpdateCommitteeMembershipsCountersCommand extends Command
 {
-    protected static $defaultName = 'app:committees:update-memberships-counters';
-
     private CommitteeRepository $committeeRepository;
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->committeeRepository->updateMembershipsCounters();
 

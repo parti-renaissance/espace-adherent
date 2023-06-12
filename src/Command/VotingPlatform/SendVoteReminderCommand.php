@@ -13,6 +13,7 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use App\VotingPlatform\Notifier\Event\VotingPlatformVoteReminderEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,10 +21,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+#[AsCommand(
+    name: 'app:voting-platform:send-vote-reminder',
+    description: 'Send a reminder to vote on committee elections.',
+)]
 class SendVoteReminderCommand extends Command
 {
-    protected static $defaultName = 'app:voting-platform:send-vote-reminder';
-
     private $entityManager;
     private $dispatcher;
     private $electionRepository;
@@ -55,16 +58,15 @@ class SendVoteReminderCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Send a reminder to vote on committee elections.')
             ->addOption('date', null, InputOption::VALUE_REQUIRED, 'date interval, it is used in query to find the election to close (ex: use `--date=3` for 3 days)')
             ->addOption('designation-id', null, InputOption::VALUE_REQUIRED, 'Designation id')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -101,7 +103,7 @@ class SendVoteReminderCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function sendElectionVoteReminders(Election $election): void

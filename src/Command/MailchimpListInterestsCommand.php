@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,10 +10,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[AsCommand(
+    name: 'app:mailchimp:list-interests',
+    description: 'List Mailchimp list interests',
+)]
 class MailchimpListInterestsCommand extends Command
 {
-    protected static $defaultName = 'app:mailchimp:list-interests';
-
     private $mailchimpClient;
 
     /**
@@ -27,15 +30,14 @@ class MailchimpListInterestsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('List Mailchimp list interests')
             ->addArgument('listId', InputArgument::REQUIRED, 'The mailchimp list id')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -49,7 +51,7 @@ class MailchimpListInterestsCommand extends Command
         if (200 !== $response->getStatusCode()) {
             $this->io->error(sprintf('No Mailchimp list found with id "%s".', $listId));
 
-            return 0;
+            return self::SUCCESS;
         }
 
         $listData = $response->toArray();
@@ -71,7 +73,7 @@ class MailchimpListInterestsCommand extends Command
             $this->io->table(['Nom', 'ID'], $rows);
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function getInterestCategories(string $listId): array

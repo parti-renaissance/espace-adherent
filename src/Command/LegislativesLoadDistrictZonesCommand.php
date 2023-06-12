@@ -39,7 +39,7 @@ class LegislativesLoadDistrictZonesCommand extends Command
      */
     private $slugify;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:legislatives:load-district-zones')
@@ -49,7 +49,7 @@ class LegislativesLoadDistrictZonesCommand extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         if (!$this->storage->has($csvPath = $input->getArgument('csv-file'))) {
             throw new \RuntimeException(sprintf('File "%s" does not exists.', $csvPath));
@@ -116,7 +116,7 @@ class LegislativesLoadDistrictZonesCommand extends Command
             $output->writeln('');
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function createCandidate(

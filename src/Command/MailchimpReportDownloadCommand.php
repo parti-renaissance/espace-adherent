@@ -8,6 +8,7 @@ use App\Mailchimp\Manager;
 use App\Repository\MailchimpCampaignRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,10 +16,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
+#[AsCommand(
+    name: 'mailchimp:report:download',
+    description: 'Download Mailchimp campaigns reports',
+)]
 class MailchimpReportDownloadCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:report:download';
-
     private $repository;
     private $entityManager;
     /** @var SymfonyStyle */
@@ -40,16 +43,15 @@ class MailchimpReportDownloadCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Download Mailchimp campaigns reports')
             ->addOption('recent-only', null, InputOption::VALUE_NONE, 'Download campaign reports for only recent messages')
             ->addOption('recent-interval', null, InputOption::VALUE_REQUIRED, 'Duration of recent interval in day (default: 14 days)', 14)
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -82,7 +84,7 @@ class MailchimpReportDownloadCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function createPaginator(?\DateTimeInterface $from): Paginator

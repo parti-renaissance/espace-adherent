@@ -7,16 +7,19 @@ use App\Entity\Contact;
 use App\Repository\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:contact:process',
+    description: 'Dispatch contacts process.',
+)]
 class ContactProcessCommand extends Command
 {
-    protected static $defaultName = 'app:contact:process';
-
     private ContactRepository $contactRepository;
     private ContactHandler $contactHandler;
     private EntityManagerInterface $entityManager;
@@ -35,15 +38,14 @@ class ContactProcessCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
-            ->setDescription('Dispatch contacts process.')
         ;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -60,11 +62,11 @@ class ContactProcessCommand extends Command
         if (0 === $total) {
             $this->io->note('No contact to process.');
 
-            return 0;
+            return self::SUCCESS;
         }
 
         if (false === $this->io->confirm(sprintf('Are you sure to dispatch process of %d contacts?', $total), false)) {
-            return 1;
+            return self::FAILURE;
         }
 
         $paginator->getQuery()->setMaxResults($limit && $limit < 500 ? $limit : 500);
@@ -89,7 +91,7 @@ class ContactProcessCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

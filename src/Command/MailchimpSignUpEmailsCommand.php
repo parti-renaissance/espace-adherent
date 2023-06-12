@@ -9,6 +9,7 @@ use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,10 +17,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsCommand(
+    name: 'mailchimp:signup:emails',
+    description: 'Send SignUp form for each contact from CSV file',
+)]
 class MailchimpSignUpEmailsCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:signup:emails';
-
     private $repository;
     private $bus;
     private $signUpHandler;
@@ -44,15 +47,14 @@ class MailchimpSignUpEmailsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Send SignUp form for each contact from CSV file')
             ->addArgument('file', InputArgument::REQUIRED, 'CSV file with emails on first column')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -70,7 +72,7 @@ class MailchimpSignUpEmailsCommand extends Command
         $total = $csv->count();
 
         if (!$this->io->confirm(sprintf('Are you sure to subscribe %d contacts?', $total))) {
-            return 1;
+            return self::FAILURE;
         }
 
         $this->io->progressStart($total);
@@ -130,6 +132,6 @@ class MailchimpSignUpEmailsCommand extends Command
             );
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 }

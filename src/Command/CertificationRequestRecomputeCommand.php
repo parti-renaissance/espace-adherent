@@ -6,6 +6,7 @@ use App\Adherent\Certification\CertificationRequestProcessCommand;
 use App\Entity\CertificationRequest;
 use App\Repository\CertificationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,10 +14,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsCommand(
+    name: 'app:certification-request:recompute',
+    description: 'Recompute certification requests for a given date.',
+)]
 class CertificationRequestRecomputeCommand extends Command
 {
-    protected static $defaultName = 'app:certification-request:recompute';
-
     private $certificationRequestRepository;
     private $em;
     private $bus;
@@ -35,15 +38,14 @@ class CertificationRequestRecomputeCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('date', null, InputOption::VALUE_REQUIRED, 'Certification request creation date (format: YYYY-MM-DD, default: now)', 'now')
-            ->setDescription('Recompute certification requests for a given date.')
         ;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -73,6 +75,6 @@ class CertificationRequestRecomputeCommand extends Command
 
         $this->io->text('Done.');
 
-        return 0;
+        return self::SUCCESS;
     }
 }

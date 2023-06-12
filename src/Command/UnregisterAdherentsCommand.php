@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,10 +19,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+#[AsCommand(
+    name: 'app:adherent:unregister',
+    description: 'Unregister adherents from CSV file (only the fifth column "email" is taken into account)',
+)]
 class UnregisterAdherentsCommand extends Command
 {
-    protected static $defaultName = 'app:adherent:unregister';
-
     /**
      * @var EntityManager
      */
@@ -56,15 +59,14 @@ class UnregisterAdherentsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('fileUrl', InputArgument::REQUIRED)
-            ->setDescription('Unregister adherents from CSV file (only the fifth column "email" is taken into account)')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->adherentRepository = $this->em->getRepository(Adherent::class);
     }
@@ -95,7 +97,7 @@ class UnregisterAdherentsCommand extends Command
             }
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function parseCSV(string $filename): array

@@ -6,15 +6,18 @@ use App\Entity\RepublicanSilence;
 use App\Event\EventCanceledHandler;
 use App\Repository\EventRepository;
 use App\RepublicanSilence\RepublicanSilenceManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'app:republican-silence:close-event',
+    description: 'This command closes each committee or event when it matches a republican silence criteria',
+)]
 class RepublicanSilenceCloseEventCommand extends Command
 {
-    protected static $defaultName = 'app:republican-silence:close-event';
-
     private $manager;
     private $eventRepository;
     private $eventCanceledHandler;
@@ -32,15 +35,14 @@ class RepublicanSilenceCloseEventCommand extends Command
         $this->eventCanceledHandler = $eventCanceledHandler;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('This command closes each committee or event when it matches a republican silence criteria')
             ->addArgument('interval', InputArgument::OPTIONAL, 'Number of minutes to remove from silence start date for closing the events [x] minutes before (default: 0)', '0')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->interval = (int) $input->getArgument('interval');
     }
@@ -51,7 +53,7 @@ class RepublicanSilenceCloseEventCommand extends Command
             $this->closeEvents($silence);
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

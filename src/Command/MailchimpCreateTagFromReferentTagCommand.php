@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\ReferentTag;
 use App\Repository\ReferentTagRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,10 +14,12 @@ use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[AsCommand(
+    name: 'mailchimp:sync:referent-tag',
+    description: 'Sync Referent tag with Mailchimp (create Mailchimp tag)',
+)]
 class MailchimpCreateTagFromReferentTagCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:sync:referent-tag';
-
     private $referentTagRepository;
     private $client;
     private $entityManager;
@@ -38,12 +41,7 @@ class MailchimpCreateTagFromReferentTagCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
-    {
-        $this->setDescription('Sync Referent tag with Mailchimp (create Mailchimp tag)');
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -85,6 +83,6 @@ class MailchimpCreateTagFromReferentTagCommand extends Command
 
         $this->io->note(sprintf('Synchronized %d/%d tags', $countSyncTags, $countAllTags));
 
-        return 0;
+        return self::SUCCESS;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Mailchimp\Synchronisation\Command\UpdateAdherentCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,10 +12,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsCommand(
+    name: 'mailchimp:update:adherents',
+    description: 'Update adherents from Mailchimp exported data (CSV)',
+)]
 class MailchimpUpdateAdherentCommand extends Command
 {
-    public static $defaultName = 'mailchimp:update:adherents';
-
     /** @var SymfonyStyle */
     private $io;
     private $bus;
@@ -26,7 +29,7 @@ class MailchimpUpdateAdherentCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('file', InputArgument::REQUIRED, 'CSV file path')
@@ -34,11 +37,10 @@ class MailchimpUpdateAdherentCommand extends Command
             ->addOption('email-col-index', null, InputOption::VALUE_OPTIONAL, 'Index of email column in CSV', 0)
             ->addOption('email-pref-col-index', null, InputOption::VALUE_OPTIONAL, 'Index of email preferences column in CSV', 9)
             ->addOption('interest-col-index', null, InputOption::VALUE_OPTIONAL, 'Index of interest column in CSV', 10)
-            ->setDescription('Update adherents from Mailchimp exported data (CSV)')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -76,7 +78,7 @@ class MailchimpUpdateAdherentCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function validateHeaders(
