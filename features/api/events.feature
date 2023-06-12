@@ -391,7 +391,7 @@ Feature:
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@||@null@"
+                "user_registered_at": null
             },
             {
                 "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
@@ -431,7 +431,7 @@ Feature:
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@||@null@"
+                "user_registered_at": null
             },
             {
                 "uuid": "65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e",
@@ -471,7 +471,7 @@ Feature:
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@||@null@"
+                "user_registered_at": null
             }
         ]
     }
@@ -527,7 +527,7 @@ Feature:
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@||@null@"
+                "user_registered_at": null
             },
             {
                 "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
