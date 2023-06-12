@@ -5,7 +5,7 @@
 
     {% if object.designation.isCopolType() %}
         {% set filters = filters|merge({electionRound__election__electionEntity__territorialCouncil: {value: object.electionEntity.territorialCouncil.id}}) %}
-    {% elseif object.designation.isCommitteeTypes() %}
+    {% elseif object.designation.isCommitteeTypes() and object.electionEntity.committee %}
         {% set filters = filters|merge({electionRound__election__electionEntity__committee: {value: object.electionEntity.committee.id}}) %}
     {% endif %}
 
