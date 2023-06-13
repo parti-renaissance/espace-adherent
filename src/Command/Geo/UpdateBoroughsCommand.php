@@ -12,16 +12,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:geo:update-boroughs',
+    description: 'Update french boroughs',
+)]
 final class UpdateBoroughsCommand extends Command
 {
-    protected static $defaultName = 'app:geo:update-boroughs';
-
     private const BOROUGHS = [
         GeoInterface::CITY_PARIS_CODE => [
             ['code' => '75101', 'postalCode' => '75001', 'name' => 'Paris 1er'],
@@ -113,7 +116,6 @@ final class UpdateBoroughsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Update french boroughs')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
         ;
     }
@@ -172,7 +174,7 @@ final class UpdateBoroughsCommand extends Command
         $persister = new Persister($this->io, $this->em);
         $persister->run($this->entities, $input->getOption('dry-run'));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function populateEntities(): void

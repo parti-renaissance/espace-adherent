@@ -10,16 +10,18 @@ use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:departmental-election:send-report-message',
+)]
 class SendReportDepartmentalElectionMessageCommand extends Command
 {
-    protected static $defaultName = 'app:departmental-election:send-report-message';
-
     private SymfonyStyle $io;
 
     public function __construct(
@@ -30,12 +32,12 @@ class SendReportDepartmentalElectionMessageCommand extends Command
         parent::__construct();
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
@@ -60,14 +62,14 @@ class SendReportDepartmentalElectionMessageCommand extends Command
         if (!$count = $this->countAdherents($selectedEmails, $dptCodes, $sentUntil)) {
             $this->io->note('0 adherent to notify');
 
-            return 0;
+            return self::SUCCESS;
         }
 
         $total = $limit && $limit < $count ? $limit : $count;
         $chunkLimit = $limit && $limit < 500 ? $limit : 500;
 
         if (false === $this->io->confirm(sprintf('Are you sure to notify %d adherents ?', $total), false)) {
-            return 1;
+            return self::FAILURE;
         }
 
         $this->io->progressStart($total);
@@ -95,13 +97,13 @@ class SendReportDepartmentalElectionMessageCommand extends Command
             } else {
                 $this->io->error('Error when sending the email');
 
-                return 2;
+                return self::FAILURE;
             }
         }
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function countAdherents(array $emails, array $dptCodes, \DateTime $sentUntil): int

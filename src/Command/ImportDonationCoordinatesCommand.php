@@ -23,7 +23,7 @@ class ImportDonationCoordinatesCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:donations:import-coordinates')
@@ -78,7 +78,7 @@ class ImportDonationCoordinatesCommand extends Command
 
         $output->writeln('Imported Donation coordinates successfully.');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function parseCSV(string $filepath): array

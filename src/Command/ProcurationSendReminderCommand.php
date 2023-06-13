@@ -10,6 +10,7 @@ use App\Repository\ProcurationProxyRepository;
 use App\Repository\ProcurationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,26 +18,27 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:procuration:send-reminder',
+    description: 'Send a reminder to the procuration proxies.',
+)]
 class ProcurationSendReminderCommand extends Command
 {
-    protected static $defaultName = 'app:procuration:send-reminder';
-
     private EntityManagerInterface $manager;
     private ProcurationProxyMessageFactory $factory;
     private MailerService $mailer;
     private SymfonyStyle $io;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Send a reminder to the procuration proxies.')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm without sending any email and without persisting any data.')
             ->addArgument('procuration-mode', InputArgument::REQUIRED, 'Mode : procuration request : 1 or procuration proxy : 2')
             ->addArgument('processed-after', InputArgument::REQUIRED, 'Date - Processed after')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -51,17 +53,17 @@ class ProcurationSendReminderCommand extends Command
         if (!$count = $paginator->count()) {
             $output->writeln('No reminder to send');
 
-            return 0;
+            return self::SUCCESS;
         }
 
         if ($input->getOption('dry-run')) {
             $this->io->note($count.' reminders would be sent');
 
-            return 0;
+            return self::SUCCESS;
         }
 
         if (false === $this->io->confirm(sprintf('Are you sure to send the reminder to %d %s?', $count, 1 === $mode ? 'requests' : 'proxies'), false)) {
-            return 0;
+            return self::SUCCESS;
         }
 
         $this->io->progressStart($count);
@@ -101,7 +103,7 @@ class ProcurationSendReminderCommand extends Command
 
         $this->io->note($offset.' reminders sent');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /** @required */

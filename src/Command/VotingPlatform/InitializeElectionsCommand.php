@@ -13,15 +13,18 @@ use App\Repository\Instance\NationalCouncil\ElectionRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:voting-platform:step-1:initialize-elections',
+    description: 'Voting Platform: step 1: initialize elections for committees, territorial councils, etc...',
+)]
 class InitializeElectionsCommand extends Command
 {
-    protected static $defaultName = 'app:voting-platform:step-1:initialize-elections';
-
     private SymfonyStyle $io;
 
     public function __construct(
@@ -34,12 +37,7 @@ class InitializeElectionsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
-    {
-        $this->setDescription('Voting Platform: step 1: initialize elections for committees, territorial councils, etc...');
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -64,7 +62,7 @@ class InitializeElectionsCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function configureCommitteeElections(Designation $designation): void

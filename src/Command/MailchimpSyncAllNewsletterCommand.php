@@ -7,6 +7,7 @@ use App\Entity\Renaissance\NewsletterSubscription as RenaissanceNewsletterSubscr
 use App\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,12 +15,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsCommand(
+    name: 'mailchimp:sync:all-newsletter',
+    description: 'Send all newsletter subscription to Mailchimp',
+)]
 class MailchimpSyncAllNewsletterCommand extends Command
 {
     private const TYPE_EM = 'en-marche';
     private const TYPE_RENAISSANCE = 'renaissance';
-
-    protected static $defaultName = 'mailchimp:sync:all-newsletter';
 
     private $entityManager;
     private $bus;
@@ -34,15 +37,14 @@ class MailchimpSyncAllNewsletterCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Send all newsletter subscription to Mailchimp')
             ->addArgument('type', InputArgument::REQUIRED, 'Type of newsletters to sync: '.implode(' or ', [self::TYPE_EM, self::TYPE_RENAISSANCE]))
         ;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -59,7 +61,7 @@ class MailchimpSyncAllNewsletterCommand extends Command
         $count = $paginator->count();
 
         if (false === $this->io->confirm(sprintf('Are you sure to sync %d newsletters?', $count), false)) {
-            return 1;
+            return self::FAILURE;
         }
 
         $this->io->progressStart($count);
@@ -81,7 +83,7 @@ class MailchimpSyncAllNewsletterCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function getPaginator(string $type): Paginator

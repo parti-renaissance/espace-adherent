@@ -18,7 +18,7 @@ class ReferentTagInitializeCommitteeEvent extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:referent-tags:init-comittees-events')
@@ -45,7 +45,7 @@ class ReferentTagInitializeCommitteeEvent extends Command
 
         $output->writeln(['', 'Referent Tags imported successfully!']);
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function initializeCommitteeTags(OutputInterface $output): void

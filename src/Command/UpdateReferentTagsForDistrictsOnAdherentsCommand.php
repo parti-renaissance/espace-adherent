@@ -23,7 +23,7 @@ class UpdateReferentTagsForDistrictsOnAdherentsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:referent-tags:update-for-districts')
@@ -37,7 +37,7 @@ class UpdateReferentTagsForDistrictsOnAdherentsCommand extends Command
             $this->bus->dispatch(new UpdateReferentTagOnDistrictCommand($row['id']));
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function getAdherentIds(): array

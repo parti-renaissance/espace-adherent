@@ -12,6 +12,7 @@ use App\Mailchimp\Synchronisation\ElectedRepresentativeTagsBuilder;
 use App\Repository\MailchimpSegmentRepository;
 use App\Repository\ReferentTagRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,10 +21,12 @@ use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[AsCommand(
+    name: 'mailchimp:elected-representative:init-tags',
+    description: 'Sync Referent tag with Mailchimp (create Mailchimp tag)',
+)]
 class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:elected-representative:init-tags';
-
     private $mailchimpSegmentRepository;
     private $referentTagRepository;
     private $tagsBuilder;
@@ -51,12 +54,7 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
-    {
-        $this->setDescription('Sync Referent tag with Mailchimp (create Mailchimp tag)');
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -104,7 +102,7 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
             'mailchimp:sync:segments elected_representative'
         ));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function initTag(string $label): void

@@ -9,6 +9,7 @@ use App\Entity\Election\MinistryListTotalResult;
 use App\Repository\CityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sabre\Xml\Service;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,12 +18,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[AsCommand(
+    name: 'app:election:import-ministry-results-from-xml',
+)]
 class ImportElectionMinistryResultFromXMLCommand extends Command
 {
     private const INDEX_URL = 'https://elections.interieur.gouv.fr/telechargements/MUNICIPALES2020/resultatsT1/index.xml';
     private const CITY_INDEX_URL = 'https://elections.interieur.gouv.fr/telechargements/MUNICIPALES2020/resultatsT1/%s/%s000.xml';
-
-    protected static $defaultName = 'app:election:import-ministry-results-from-xml';
 
     /** @var HttpClientInterface */
     private $httpClient;
@@ -56,12 +58,12 @@ class ImportElectionMinistryResultFromXMLCommand extends Command
         $this->entityManager = $entityManager;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('author-id', InputArgument::REQUIRED, 'Author id (adherent)');
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->httpClient = HttpClient::create(['timeout' => 3600]);
@@ -107,7 +109,7 @@ class ImportElectionMinistryResultFromXMLCommand extends Command
         $this->io->title('City errors');
         $this->io->table(['Errors'], array_map(function (string $error) { return [$error]; }, $this->errors));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function updateResult(string $dptCode, array $cityAttr): void

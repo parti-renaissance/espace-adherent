@@ -6,15 +6,18 @@ use App\Entity\ElectedRepresentative\Payment;
 use App\Ohme\ClientInterface;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:elected-representative:ohme-update',
+    description: 'Update elected representatives from Ohme API',
+)]
 class ElectedRepresentativeOhmeUpdateCommand extends Command
 {
-    protected static $defaultName = 'app:elected-representative:ohme-update';
-
     /** @var SymfonyStyle */
     private $io;
 
@@ -26,14 +29,7 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
-    {
-        $this
-            ->setDescription('Update elected representatives from Ohme API')
-        ;
-    }
-
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -98,7 +94,7 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function pause(): void

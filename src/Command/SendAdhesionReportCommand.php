@@ -13,16 +13,19 @@ use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:report:adhesion',
+    description: 'Send adhesion report to Referents, Senators and Deputies',
+)]
 class SendAdhesionReportCommand extends Command
 {
-    protected static $defaultName = 'app:report:adhesion';
-
     private $repository;
     private $mailer;
 
@@ -38,16 +41,15 @@ class SendAdhesionReportCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Send adhesion report to Referents, Senators and Deputies')
             ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Interval in days (default: 7)', 7)
             ->addOption('dry-run', null, InputOption::VALUE_NONE)
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -108,7 +110,7 @@ class SendAdhesionReportCommand extends Command
             $this->io->table(array_keys($this->reports[0]), $this->reports);
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

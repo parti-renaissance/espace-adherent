@@ -7,16 +7,19 @@ use App\Entity\ApplicationRequest\VolunteerRequest;
 use App\Mailchimp\Synchronisation\Command\AddApplicationRequestCandidateCommand;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsCommand(
+    name: 'mailchimp:sync:all-candidates',
+    description: 'Send all municipal candidates to Mailchimp',
+)]
 class MailchimpSyncAllCandidatesCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:sync:all-candidates';
-
     private $entityManager;
     private $bus;
     /** @var SymfonyStyle */
@@ -30,12 +33,7 @@ class MailchimpSyncAllCandidatesCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
-    {
-        $this->setDescription('Send all municipal candidates to Mailchimp');
-    }
-
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -49,7 +47,7 @@ class MailchimpSyncAllCandidatesCommand extends Command
         $runningMateCount = $runningMatePaginator->count();
 
         if (false === $this->io->confirm(sprintf('Are you sure to sync %d volunteer and %d running mate candidates?', $volunteerCount, $runningMateCount), false)) {
-            return 1;
+            return self::FAILURE;
         }
 
         $this->io->progressStart($volunteerCount + $runningMateCount);
@@ -59,7 +57,7 @@ class MailchimpSyncAllCandidatesCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function getVolunteerPaginator(): Paginator

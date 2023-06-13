@@ -12,16 +12,19 @@ use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:election-city-cards:import',
+    description: 'Import city cards',
+)]
 class ImportElectionCityCardsCommand extends Command
 {
-    protected static $defaultName = 'app:election-city-cards:import';
-
     private const BATCH_SIZE = 100;
 
     private const PRIORITIES_MAPPING = [
@@ -55,15 +58,14 @@ class ImportElectionCityCardsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('filename', InputArgument::REQUIRED)
-            ->setDescription('Import city cards')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -82,7 +84,7 @@ class ImportElectionCityCardsCommand extends Command
             throw $exception;
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function loadFile(InputInterface $input, OutputInterface $output): void

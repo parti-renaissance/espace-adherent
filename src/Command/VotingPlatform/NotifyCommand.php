@@ -16,6 +16,7 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,10 +24,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+#[AsCommand(
+    name: 'app:voting-platform:notify',
+    description: 'Voting Platform: send notification command',
+)]
 class NotifyCommand extends Command
 {
-    protected static $defaultName = 'app:voting-platform:notify';
-
     private SymfonyStyle $io;
 
     public function __construct(
@@ -42,12 +45,7 @@ class NotifyCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
-    {
-        $this->setDescription('Voting Platform: send notification command');
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -59,7 +57,7 @@ class NotifyCommand extends Command
         $this->notifyForEndForCandidacy($date);
         $this->notifyForForElectionResults($date);
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function notifyForEndForCandidacy(\DateTimeInterface $date): void

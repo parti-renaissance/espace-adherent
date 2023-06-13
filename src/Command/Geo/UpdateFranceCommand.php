@@ -13,6 +13,7 @@ use App\Entity\Geo\Region;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,10 +21,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[AsCommand(
+    name: 'app:geo:update-france',
+    description: 'Update french administrative divisions (region, department and cities) according to geo.api.gouv.fr',
+)]
 final class UpdateFranceCommand extends Command
 {
-    protected static $defaultName = 'app:geo:update-france';
-
     private const API_PATH = '/communes?fields=code,nom,codesPostaux,population,departement,region';
 
     private const FRANCE_NAME = 'France';
@@ -76,7 +79,6 @@ final class UpdateFranceCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Update french administrative divisions (region, department and cities) according to geo.api.gouv.fr')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
         ;
     }
@@ -138,7 +140,7 @@ final class UpdateFranceCommand extends Command
         $persister = new Persister($this->io, $this->em);
         $persister->run($this->entities, $input->getOption('dry-run'));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function processEntry(array $entry): void

@@ -8,6 +8,7 @@ use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,10 +17,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsCommand(
+    name: 'mailchimp:sync:all-memberships',
+)]
 class MailchimpSyncAllMembershipsCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:sync:all-memberships';
-
     private const COMMITTEE_TYPE = 'committee';
     private const TERRITORIAL_COUNCIL_TYPE = 'territorial_council';
 
@@ -41,7 +43,7 @@ class MailchimpSyncAllMembershipsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('type', null, InputArgument::REQUIRED, implode('|', static::$allTypes))
@@ -50,7 +52,7 @@ class MailchimpSyncAllMembershipsCommand extends Command
         ;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -72,7 +74,7 @@ class MailchimpSyncAllMembershipsCommand extends Command
         $total = $limit && $limit < $count ? $limit : $count;
 
         if (false === $this->io->confirm(sprintf('Are you sure to sync %d adherents?', $total), false)) {
-            return 1;
+            return self::FAILURE;
         }
 
         $paginator->getQuery()->setMaxResults($limit && $limit < 500 ? $limit : 500);
@@ -115,7 +117,7 @@ class MailchimpSyncAllMembershipsCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function buildPaginator(string $type, int $objectId = null): Paginator

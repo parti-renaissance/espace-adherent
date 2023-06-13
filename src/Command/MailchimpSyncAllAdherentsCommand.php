@@ -8,6 +8,7 @@ use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,10 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsCommand(
+    name: 'mailchimp:sync:all-adherents',
+)]
 class MailchimpSyncAllAdherentsCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:sync:all-adherents';
-
     private $adherentRepository;
     private $entityManager;
     private $bus;
@@ -37,7 +39,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
@@ -50,7 +52,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         ;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -72,7 +74,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         $total = $limit && $limit < $count ? $limit : $count;
 
         if (false === $this->io->confirm(sprintf('Are you sure to sync %d adherents?', $total), false)) {
-            return 1;
+            return self::FAILURE;
         }
 
         $paginator->getQuery()->setMaxResults($limit && $limit < 500 ? $limit : 500);
@@ -100,7 +102,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -17,10 +18,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[AsCommand(
+    name: 'app:geo:update-city-replacements',
+    description: 'Update cities replacements in France according to INSEE',
+)]
 final class UpdateCityReplacementsCommand extends Command
 {
-    protected static $defaultName = 'app:geo:update-city-replacements';
-
     private const SOURCES = [
         'https://www.insee.fr/fr/statistiques/fichier/2549968/communes_nouvelles_2015.xls',
         'https://www.insee.fr/fr/statistiques/fichier/2549968/communes_nouvelles_2016.xls',
@@ -69,7 +72,6 @@ final class UpdateCityReplacementsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Update cities replacements in France according to INSEE')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
         ;
     }
@@ -100,7 +102,7 @@ final class UpdateCityReplacementsCommand extends Command
         $persister = new Persister($this->io, $this->em);
         $persister->run($this->entities, $input->getOption('dry-run'));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function readRow(array $row): void

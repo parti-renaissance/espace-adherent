@@ -79,7 +79,7 @@ class ImportReferentNominationCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:import:referent-nomination')
@@ -99,7 +99,7 @@ class ImportReferentNominationCommand extends Command
                 sprintf('%s file not found', $input->getArgument('fileUrl'))
             );
 
-            return 1;
+            return self::FAILURE;
         }
 
         $this->em->beginTransaction();
@@ -112,7 +112,7 @@ class ImportReferentNominationCommand extends Command
 
         $output->writeln('Referents load OK');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function parseCSV(string $filename): array

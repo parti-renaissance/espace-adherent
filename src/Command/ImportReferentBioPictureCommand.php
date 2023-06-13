@@ -51,7 +51,7 @@ class ImportReferentBioPictureCommand extends Command
     private $imageError = [];
     private $imageAddedOnStorage = [];
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
           ->setName(self::COMMAND_NAME)
@@ -67,7 +67,7 @@ class ImportReferentBioPictureCommand extends Command
         } catch (\Exception $exception) {
             $output->writeln($exception->getMessage().' '.$exception->getCode());
 
-            return 1;
+            return self::FAILURE;
         }
 
         try {
@@ -75,7 +75,7 @@ class ImportReferentBioPictureCommand extends Command
         } catch (FileNotFoundException $exception) {
             $output->writeln($exception->getMessage());
 
-            return 1;
+            return self::FAILURE;
         }
 
         $this->em->beginTransaction();
@@ -104,7 +104,7 @@ class ImportReferentBioPictureCommand extends Command
             $output->writeln('');
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function extractArchive($pahToArchive): string
@@ -236,7 +236,7 @@ class ImportReferentBioPictureCommand extends Command
     public function __destruct()
     {
         if (!\count($this->imageAddedOnStorage)) {
-            return 0;
+            return self::SUCCESS;
         }
 
         foreach ($this->imageAddedOnStorage as $imgePath) {

@@ -7,6 +7,7 @@ use App\Repository\AdherentRepository;
 use App\Repository\Coalition\CauseFollowerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,10 +15,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsCommand(
+    name: 'mailchimp:sync:all-coalitions-members',
+)]
 class MailchimpSyncCoalitionsMembersCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:sync:all-coalitions-members';
-
     private $adherentRepository;
     private $causeFollowerRepository;
     private $entityManager;
@@ -39,7 +41,7 @@ class MailchimpSyncCoalitionsMembersCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
@@ -48,7 +50,7 @@ class MailchimpSyncCoalitionsMembersCommand extends Command
         ;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -67,7 +69,7 @@ class MailchimpSyncCoalitionsMembersCommand extends Command
             $total = $limit && $limit < $count ? $limit : $count;
 
             if (false === $this->io->confirm(sprintf('Are you sure to sync %d adherents from "Colitions" ?', $total), false)) {
-                return 1;
+                return self::FAILURE;
             }
 
             $this->syncContacts(true, $paginator, $count, $total, $limit);
@@ -81,13 +83,13 @@ class MailchimpSyncCoalitionsMembersCommand extends Command
             $total = $limit && $limit < $count ? $limit : $count;
 
             if (false === $this->io->confirm(sprintf('Are you sure to sync %d cause followers from "Colitions" ?', $total), false)) {
-                return 1;
+                return self::FAILURE;
             }
 
             $this->syncContacts(false, $paginator, $count, $total, $limit);
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function syncContacts(bool $isAdherent, Paginator $paginator, int $count, int $total, int $limit): void

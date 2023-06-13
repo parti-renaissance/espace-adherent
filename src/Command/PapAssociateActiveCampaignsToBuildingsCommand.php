@@ -8,30 +8,26 @@ use App\Repository\Pap\CampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:pap:associate-campaigns',
+    description: 'PAP: associate active campaign to building',
+)]
 class PapAssociateActiveCampaignsToBuildingsCommand extends Command implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-
-    protected static $defaultName = 'app:pap:associate-campaigns';
 
     private ?SymfonyStyle $io = null;
     private ?CampaignRepository $campaignRepository = null;
     private ?EntityManagerInterface $entityManager = null;
     private ?AddressRepository $addressRepository = null;
 
-    protected function configure()
-    {
-        $this
-            ->setDescription('PAP: associate active campaign to building')
-        ;
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -62,7 +58,7 @@ class PapAssociateActiveCampaignsToBuildingsCommand extends Command implements L
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /** @required */

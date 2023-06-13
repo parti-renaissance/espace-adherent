@@ -6,15 +6,18 @@ use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Entity\CertificationRequest;
 use App\Repository\CertificationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'app:certification-request:process-timeout',
+    description: 'Refuse unprocessed Certification Requests.',
+)]
 class CertificationRequestProcessTimeoutCommand extends Command
 {
-    protected static $defaultName = 'app:certification-request:process-timeout';
-
     private $em;
     private $certificationRequestRepository;
 
@@ -28,11 +31,10 @@ class CertificationRequestProcessTimeoutCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Interval in days (default: 14)', 14)
-            ->setDescription('Refuse unprocessed Certification Requests.')
         ;
     }
 
@@ -49,7 +51,7 @@ class CertificationRequestProcessTimeoutCommand extends Command
             $this->em->flush();
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function processTimeout(CertificationRequest $certificationRequest): void

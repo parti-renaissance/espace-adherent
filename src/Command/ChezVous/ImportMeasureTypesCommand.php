@@ -4,15 +4,18 @@ namespace App\Command\ChezVous;
 
 use App\Entity\ChezVous\MeasureType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:chez-vous:import-measure-types',
+    description: 'Import ChezVous measure types',
+)]
 class ImportMeasureTypesCommand extends Command
 {
-    protected static $defaultName = 'app:chez-vous:import-measure-types';
-
     private const TYPES = [
         [
             'code' => 'mission_bern',
@@ -132,12 +135,7 @@ class ImportMeasureTypesCommand extends Command
         $this->em = $em;
     }
 
-    protected function configure()
-    {
-        $this->setDescription('Import ChezVous measure types');
-    }
-
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -154,7 +152,7 @@ class ImportMeasureTypesCommand extends Command
 
         $this->io->success('ChezVous measure types imported successfully!');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function importMeasureTypes(): void

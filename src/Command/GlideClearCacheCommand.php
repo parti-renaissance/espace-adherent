@@ -13,7 +13,7 @@ class GlideClearCacheCommand extends Command
     /** @var Server */
     private $glide;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:glide:purge')
@@ -28,7 +28,7 @@ class GlideClearCacheCommand extends Command
 
         $output->writeln('Done');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /** @required */

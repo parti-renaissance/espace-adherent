@@ -6,15 +6,18 @@ use App\Entity\Adherent;
 use App\Membership\MembershipNotifier;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'app:membership:remind-activated',
+    description: 'This command finds activated adherents and send an email reminder',
+)]
 class RemindActivatedMembershipCommand extends Command
 {
-    protected static $defaultName = 'app:membership:remind-activated';
-
     private $membershipNotifier;
     private $adherentRepository;
     private $em;
@@ -31,10 +34,9 @@ class RemindActivatedMembershipCommand extends Command
         $this->em = $em;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('This command finds activated adherents and send an email reminder')
             ->addArgument('hours', InputArgument::REQUIRED, 'Number of hours before sending an email reminder')
         ;
     }
@@ -55,7 +57,7 @@ class RemindActivatedMembershipCommand extends Command
             $this->em->clear();
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

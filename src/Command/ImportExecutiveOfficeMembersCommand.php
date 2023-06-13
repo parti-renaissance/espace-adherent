@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,10 +18,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+#[AsCommand(
+    name: 'app:executive-office-members:import',
+    description: 'Import Executive Office Members from CSV file',
+)]
 class ImportExecutiveOfficeMembersCommand extends Command
 {
-    protected static $defaultName = 'app:executive-office-members:import';
-
     private const BATCH_SIZE = 250;
 
     private FilesystemInterface $storage;
@@ -41,17 +44,15 @@ class ImportExecutiveOfficeMembersCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('filename', InputArgument::REQUIRED)
             ->addOption('renaissance', null, InputOption::VALUE_NONE, 'Import for Renaissance.')
-
-            ->setDescription('Import Executive Office Members from CSV file')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -73,7 +74,7 @@ class ImportExecutiveOfficeMembersCommand extends Command
             throw $exception;
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function handleImport(string $filename, bool $forRenaissance): void

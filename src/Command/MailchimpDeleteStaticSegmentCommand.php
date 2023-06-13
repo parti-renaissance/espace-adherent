@@ -3,16 +3,19 @@
 namespace App\Command;
 
 use App\Mailchimp\Manager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'mailchimp:segment:delete-static',
+    description: 'Delete static segments',
+)]
 class MailchimpDeleteStaticSegmentCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:segment:delete-static';
-
     /** @var SymfonyStyle */
     private $io;
     private $manager;
@@ -24,10 +27,9 @@ class MailchimpDeleteStaticSegmentCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Delete static segments')
             ->addArgument(
                 'ids',
                 InputArgument::REQUIRED | InputArgument::IS_ARRAY,
@@ -36,7 +38,7 @@ class MailchimpDeleteStaticSegmentCommand extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -71,6 +73,6 @@ class MailchimpDeleteStaticSegmentCommand extends Command
             $this->io->comment(implode(',', $errors));
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 }

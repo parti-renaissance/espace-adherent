@@ -31,6 +31,7 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\Enum\ElectionCancelReasonEnum;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -38,10 +39,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+#[AsCommand(
+    name: 'app:voting-platform:step-2:configure',
+    description: 'Voting Platform: step 2: create Election and voters/candidates lists',
+)]
 class ConfigureCommand extends Command
 {
-    protected static $defaultName = 'app:voting-platform:step-2:configure';
-
     private ?SymfonyStyle $io = null;
 
     private CommitteeElectionRepository $committeeElectionRepository;
@@ -61,15 +64,14 @@ class ConfigureCommand extends Command
         $this->adherentRepository = $this->entityManager->getRepository(Adherent::class);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Voting Platform: step 2: create Election and voters/candidates lists')
             ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Interval in minutes for designation selection (1 min by default)', 1)
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -106,7 +108,7 @@ class ConfigureCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function configureCommitteeSupervisorElections(Designation $designation): void

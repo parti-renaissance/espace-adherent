@@ -9,6 +9,7 @@ use App\TerritorialCouncil\Command\AdherentUpdateTerritorialCouncilMembershipsCo
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,10 +17,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsCommand(
+    name: 'app:territorial-council:update-memberships',
+)]
 class UpdateTerritorialCouncilMembershipsCommand extends Command
 {
-    protected static $defaultName = 'app:territorial-council:update-memberships';
-
     private const BATCH_SIZE = 1000;
 
     /** @var AdherentRepository */
@@ -43,7 +45,7 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
@@ -52,7 +54,7 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -103,7 +105,7 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
         $this->io->progressFinish();
         $this->io->success('Done');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function getAdherentsPaginator(bool $onlyElectedRepresentatives = false): Paginator

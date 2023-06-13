@@ -6,16 +6,19 @@ use App\Entity\MailchimpSegment;
 use App\Mailchimp\Driver;
 use App\Repository\MailchimpSegmentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'mailchimp:sync:segments',
+    description: 'Sync segments of a given list.',
+)]
 class MailchimpUpdateSegmentsFromListCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:sync:segments';
-
     private $entityManager;
     private $driver;
     private $segmentRepository;
@@ -41,15 +44,14 @@ class MailchimpUpdateSegmentsFromListCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('list', null, InputArgument::REQUIRED, implode('|', MailchimpSegment::LISTS))
-            ->setDescription('Sync segments of a given list.')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -88,7 +90,7 @@ class MailchimpUpdateSegmentsFromListCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function findSegment(string $list, string $label): ?MailchimpSegment

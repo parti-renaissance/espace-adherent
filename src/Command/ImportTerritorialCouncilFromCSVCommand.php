@@ -8,14 +8,16 @@ use App\Repository\ChezVous\CityRepository;
 use App\Repository\ReferentTagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'app:territorial-council:import-from-csv',
+)]
 class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
 {
-    protected static $defaultName = 'app:territorial-council:import-from-csv';
-
     protected const BATCH_SIZE = 10;
 
     /** @var ReferentTagRepository */
@@ -33,7 +35,7 @@ class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
         $this->referentTagRepository = $referentTagRepository;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('path', InputArgument::REQUIRED, 'Filename of the CSV file with territorial councils')
@@ -47,7 +49,7 @@ class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
         if (!$this->storage->has($filePath)) {
             $this->io->comment("No CSV found ($filePath).");
 
-            return 0;
+            return self::SUCCESS;
         }
 
         $this->io->text('Start importing territorial councils');
@@ -97,6 +99,6 @@ class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
         $this->io->writeln('');
         $this->io->success('Done');
 
-        return 0;
+        return self::SUCCESS;
     }
 }

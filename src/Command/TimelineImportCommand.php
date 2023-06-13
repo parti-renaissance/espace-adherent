@@ -43,7 +43,7 @@ class TimelineImportCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:timeline:import')
@@ -52,7 +52,7 @@ class TimelineImportCommand extends Command
         ;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -71,7 +71,7 @@ class TimelineImportCommand extends Command
 
         $output->writeln(['', 'Timeline imported successfully!']);
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function importProfiles(): void

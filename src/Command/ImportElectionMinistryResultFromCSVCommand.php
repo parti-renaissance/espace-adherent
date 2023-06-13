@@ -11,16 +11,18 @@ use App\Repository\Election\MinistryVoteResultRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:election:import-ministry-results-from-csv',
+)]
 class ImportElectionMinistryResultFromCSVCommand extends Command
 {
-    protected static $defaultName = 'app:election:import-ministry-results-from-csv';
-
     /** @var FilesystemInterface */
     private $storage;
     /** @var ElectionManager */
@@ -36,7 +38,7 @@ class ImportElectionMinistryResultFromCSVCommand extends Command
 
     private $errors = [];
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('file', InputArgument::REQUIRED, 'CSV file of results')
@@ -44,7 +46,7 @@ class ImportElectionMinistryResultFromCSVCommand extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -146,7 +148,7 @@ class ImportElectionMinistryResultFromCSVCommand extends Command
         $this->io->title('VotePlace errors');
         $this->io->table(['Errors'], array_map(function (string $error) { return [$error]; }, $this->errors));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function extractLists(array $row, int $initialOffset): array

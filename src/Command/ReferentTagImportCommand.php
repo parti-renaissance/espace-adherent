@@ -22,7 +22,7 @@ class ReferentTagImportCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:referent-tags:import')
@@ -52,7 +52,7 @@ class ReferentTagImportCommand extends Command
 
         $output->writeln(['', 'Referent Tags imported successfully!']);
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function importReferentTags(InputInterface $input, OutputInterface $output): void

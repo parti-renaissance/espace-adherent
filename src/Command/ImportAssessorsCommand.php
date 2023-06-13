@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,10 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
+#[AsCommand(
+    name: 'app:assessors:import',
+)]
 class ImportAssessorsCommand extends Command
 {
-    protected static $defaultName = 'app:assessors:import';
-
     private $em;
     private $repository;
 
@@ -31,12 +33,12 @@ class ImportAssessorsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('file', InputArgument::REQUIRED, 'CSV file of all assessors to load');
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -76,7 +78,7 @@ class ImportAssessorsCommand extends Command
         $this->io->writeln('');
         $this->io->success('Done');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function parseCSV(string $filename): array

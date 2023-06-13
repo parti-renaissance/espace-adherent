@@ -13,16 +13,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:donations:import',
+)]
 class ImportDonationsCommand extends Command
 {
-    protected static $defaultName = 'app:donations:import';
-
     private const BATCH_SIZE = 250;
 
     private $storage;
@@ -136,15 +138,14 @@ class ImportDonationsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('filename', InputArgument::REQUIRED)
-            ->setDescription('Import Donations')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -163,7 +164,7 @@ class ImportDonationsCommand extends Command
             throw $exception;
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function handleImport(string $filename): void

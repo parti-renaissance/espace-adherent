@@ -28,24 +28,26 @@ use App\Repository\ChezVous\CityRepository;
 use App\Repository\ChezVous\MeasureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'app:chez-vous:import-measures',
+    description: 'Import ChezVous measures from CSV files',
+)]
 class ImportMeasuresCommand extends AbstractImportCommand
 {
     private const CSV_DIRECTORY = 'chez-vous/measures';
 
-    protected static $defaultName = 'app:chez-vous:import-measures';
-
     private $measureRepository;
     private $measureFactory;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('type', InputArgument::OPTIONAL)
-            ->setDescription('Import ChezVous measures from CSV files')
         ;
     }
 
@@ -82,7 +84,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
 
         $this->io->success('ChezVous measures imported successfully!');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function importMeasureType(string $type): void

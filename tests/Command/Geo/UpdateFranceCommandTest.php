@@ -48,7 +48,7 @@ final class UpdateFranceCommandTest extends AbstractCommandCaseTest
         $application = new Application(self::$kernel);
 
         /* @var UpdateFranceCommand $command */
-        $command = $application->find('app:geo:update-france');
+        $command = $application->find('app:geo:update-france')->getCommand();
 
         // HTTP Client (Mock)
         $reflection = new \ReflectionClass($command::class);
@@ -84,7 +84,7 @@ final class UpdateFranceCommandTest extends AbstractCommandCaseTest
         $application = new Application(self::$kernel);
 
         /* @var UpdateFranceCommand $command */
-        $command = $application->find('app:geo:update-france');
+        $command = $application->find('app:geo:update-france')->getCommand();
 
         // HTTP Client (Mock)
         $reflection = new \ReflectionClass($command::class);

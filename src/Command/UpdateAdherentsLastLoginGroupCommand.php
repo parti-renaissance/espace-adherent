@@ -7,16 +7,18 @@ use App\Entity\Adherent;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'adherents:update:last-login-group',
+)]
 class UpdateAdherentsLastLoginGroupCommand extends Command
 {
-    protected static $defaultName = 'adherents:update:last-login-group';
-
     private $adherentRepository;
     private $entityManager;
     /** @var SymfonyStyle */
@@ -30,14 +32,14 @@ class UpdateAdherentsLastLoginGroupCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
         ;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -80,7 +82,7 @@ class UpdateAdherentsLastLoginGroupCommand extends Command
 
         $this->io->progressFinish();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

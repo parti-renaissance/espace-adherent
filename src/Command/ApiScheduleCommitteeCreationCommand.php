@@ -9,7 +9,7 @@ use App\Events;
 
 class ApiScheduleCommitteeCreationCommand extends ApiScheduleEntityCreationCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:sync:committees')

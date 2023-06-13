@@ -8,14 +8,16 @@ use App\Repository\ChezVous\CityRepository;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'app:geo-zones:add-team-code',
+)]
 class UpdateZoneTeamCodesFromCSVCommand extends AbstractImportCommand
 {
-    protected static $defaultName = 'app:geo-zones:add-team-code';
-
     protected const BATCH_SIZE = 10;
 
     /** @var ZoneRepository */
@@ -33,7 +35,7 @@ class UpdateZoneTeamCodesFromCSVCommand extends AbstractImportCommand
         $this->zoneRepository = $zoneRepository;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('path', InputArgument::REQUIRED, 'Filename of the CSV file team codes and zone information')
@@ -47,7 +49,7 @@ class UpdateZoneTeamCodesFromCSVCommand extends AbstractImportCommand
         if (!$this->storage->has($filePath)) {
             $this->io->comment("No CSV found ($filePath).");
 
-            return 0;
+            return self::SUCCESS;
         }
 
         $this->io->text('Start updating team code of zones');
@@ -61,7 +63,7 @@ class UpdateZoneTeamCodesFromCSVCommand extends AbstractImportCommand
         if (!isset($row['team_code'])) {
             $this->io->error('Impossible to update team codes: file does not contains a column "team_code".');
 
-            return 0;
+            return self::SUCCESS;
         }
 
         foreach ($reader as $index => $row) {
@@ -87,6 +89,6 @@ class UpdateZoneTeamCodesFromCSVCommand extends AbstractImportCommand
         $this->io->writeln('');
         $this->io->success('Done');
 
-        return 0;
+        return self::SUCCESS;
     }
 }

@@ -6,16 +6,19 @@ use App\Donation\PayboxPaymentUnsubscription;
 use App\Exception\PayboxPaymentUnsubscriptionException;
 use App\Repository\DonationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:donation:cancel',
+    description: 'Cancel all monthly donations for a given email.',
+)]
 class DonationCancelCommand extends Command
 {
-    protected static $defaultName = 'app:donation:cancel';
-
     private $em;
     private $donationRepository;
     private $payboxPaymentUnsubscription;
@@ -37,15 +40,14 @@ class DonationCancelCommand extends Command
         $this->payboxPaymentUnsubscription = $payboxPaymentUnsubscription;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('email', InputArgument::REQUIRED)
-            ->setDescription('Cancel all monthly donations for a given email.')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -61,7 +63,7 @@ class DonationCancelCommand extends Command
         if (!$donations) {
             $this->io->error('No recurring donation found for this email.');
 
-            return 1;
+            return self::FAILURE;
         }
 
         foreach ($donations as $donation) {
@@ -92,6 +94,6 @@ class DonationCancelCommand extends Command
             }
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 }

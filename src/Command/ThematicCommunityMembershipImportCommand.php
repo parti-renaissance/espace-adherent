@@ -64,7 +64,7 @@ class ThematicCommunityMembershipImportCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:thematic-community:import-membership')
@@ -72,7 +72,7 @@ class ThematicCommunityMembershipImportCommand extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $userListDefinitions = $this->userListDefinitionRepository->createQueryBuilder('uld')
             ->where('uld.type IN (:ct_types)')
@@ -165,7 +165,7 @@ class ThematicCommunityMembershipImportCommand extends Command
         $this->entityManager->flush();
         $this->entityManager->clear();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     protected function setUserListDefinitions(ThematicCommunityMembership $membership, array $categories): void

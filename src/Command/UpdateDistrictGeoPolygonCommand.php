@@ -8,16 +8,19 @@ use App\Geo\GeometryFactory;
 use App\Repository\DistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:district:update-polygon',
+    description: 'Update GeoJson polygons of all districts',
+)]
 class UpdateDistrictGeoPolygonCommand extends Command
 {
-    protected static $defaultName = 'app:district:update-polygon';
-
     private $em;
     /** @var SymfonyStyle */
     private $io;
@@ -39,16 +42,15 @@ class UpdateDistrictGeoPolygonCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Update GeoJson polygons of all districts')
             ->addOption('districts-file', null, InputOption::VALUE_REQUIRED, 'GeoJSON file of french districts to load')
             ->addOption('countries-file', null, InputOption::VALUE_REQUIRED, 'GeoJSON file of countries to load')
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -86,7 +88,7 @@ class UpdateDistrictGeoPolygonCommand extends Command
             }
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function getNewGeoData(District $district): ?GeoData

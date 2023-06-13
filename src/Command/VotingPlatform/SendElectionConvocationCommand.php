@@ -6,6 +6,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Mailer\MailerService;
 use App\Mailer\Message\TerritorialCouncilElectionConvocationMessage;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -13,10 +14,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+#[AsCommand(
+    name: 'app:voting-platform:send-convocation',
+    description: 'Send convocation',
+)]
 class SendElectionConvocationCommand extends Command
 {
-    protected static $defaultName = 'app:voting-platform:send-convocation';
-
     /** @var EntityManagerInterface */
     private $entityManager;
     /** @var MailerService */
@@ -24,11 +27,10 @@ class SendElectionConvocationCommand extends Command
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('coterr-id', InputArgument::REQUIRED)
-            ->setDescription('Send convocation')
         ;
     }
 
@@ -52,7 +54,7 @@ class SendElectionConvocationCommand extends Command
             $president
         ));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /** @required */
