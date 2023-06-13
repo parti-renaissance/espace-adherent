@@ -85,6 +85,8 @@ RUN test -z "$BUILD_DEV" && ( \
 COPY --link --from=caddy /usr/bin/caddy /usr/bin/caddy
 COPY --link docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
+VOLUME /srv/app/var
+
 EXPOSE 80
 
 CMD ["multirun", "docker-entrypoint php-fpm -F -R", "caddy run --config /etc/caddy/Caddyfile --adapter caddyfile"]

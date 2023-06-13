@@ -86,7 +86,7 @@
         "scheb/2fa-bundle": "^6.3",
         "scheb/2fa-google-authenticator": "^6.3",
         "sensio/framework-extra-bundle": "^6.0",
-        "sentry/sentry-symfony": "^4.2",
+        "sentry/sentry-symfony": "^4.8",
         "snc/redis-bundle": "^4.3",
         "sonata-project/admin-bundle": "^4.0",
         "sonata-project/doctrine-orm-admin-bundle": "^4.0",
