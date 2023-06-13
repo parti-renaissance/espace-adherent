@@ -6,6 +6,7 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventInvite;
 use App\Mailer\MailerService;
 use App\Mailer\Message\EventInvitationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceEventInvitationMessage;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -29,11 +30,15 @@ class EventInvitationHandler
     {
         $invite = EventInvite::create($event, $invitation);
 
-        $url = $this->urlGenerator->generate('app_committee_event_show', [
+        $url = $this->urlGenerator->generate($event->isRenaissanceEvent() ? 'app_renaissance_event_show' : 'app_committee_event_show', [
             'slug' => $event->getSlug(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $this->mailer->sendMessage(EventInvitationMessage::createFromInvite($invite, $event, $url));
+        $this->mailer->sendMessage(
+            $event->isRenaissanceEvent()
+            ? RenaissanceEventInvitationMessage::createFromInvite($invite, $event, $url)
+            : EventInvitationMessage::createFromInvite($invite, $event, $url)
+        );
 
         $this->manager->persist($invite);
         $this->manager->flush();

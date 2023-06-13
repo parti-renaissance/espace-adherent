@@ -15,6 +15,7 @@ use App\Mailer\Message\Coalition\CoalitionsEventUpdateMessage;
 use App\Mailer\Message\EventUpdateMessage;
 use App\Mailer\Message\JeMengage\JeMengageEventUpdateMessage;
 use App\Mailer\Message\Message;
+use App\Mailer\Message\Renaissance\RenaissanceEventUpdateMessage;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -135,6 +136,16 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
                 $event->getOrganizer(),
                 $event,
                 $this->urlGenerator->generate('app_committee_event_export_ical', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
+            );
+        }
+
+        if ($event->isRenaissanceEvent()) {
+            return RenaissanceEventUpdateMessage::create(
+                $recipients,
+                $event->getOrganizer(),
+                $event,
+                $this->urlGenerator->generate('app_renaissance_event_show', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
+                $this->urlGenerator->generate('app_renaissance_event_ical', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
             );
         }
 

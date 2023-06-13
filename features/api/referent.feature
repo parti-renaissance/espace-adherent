@@ -122,6 +122,6 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "cities":["Dammarie-les-Lys","Fontainebleau","Rouen","Z\u00fcrich","Kilchberg","Marseille 2ème"]
+      "cities":["Dammarie-les-Lys","Fontainebleau","Rouen","Z\u00fcrich","Clichy","Kilchberg","Marseille 2ème"]
     }
     """

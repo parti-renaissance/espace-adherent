@@ -9,7 +9,8 @@ use App\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertRecaptcha
+ * @AssertRecaptcha(groups={"em_event_invitation"})
+ * @AssertRecaptcha(api="friendly_captcha", groups={"re_event_invitation"})
  */
 class EventInvitation implements RecaptchaChallengeInterface
 {
@@ -52,6 +53,11 @@ class EventInvitation implements RecaptchaChallengeInterface
      */
     public $guests = [];
 
+    public function filter(): void
+    {
+        $this->guests = array_filter($this->guests);
+    }
+
     public static function createFromAdherent(?Adherent $adherent, ?string $recaptchaAnswer): self
     {
         $dto = new self();
@@ -65,10 +71,5 @@ class EventInvitation implements RecaptchaChallengeInterface
         $dto->setRecaptcha($recaptchaAnswer);
 
         return $dto;
-    }
-
-    public function filter(): void
-    {
-        $this->guests = array_filter($this->guests);
     }
 }

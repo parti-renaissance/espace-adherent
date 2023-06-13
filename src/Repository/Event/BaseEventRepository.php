@@ -56,9 +56,11 @@ class BaseEventRepository extends ServiceEntityRepository
             ->select('event', 'organizer')
             ->leftJoin('event.organizer', 'organizer')
             ->where('event.published = :published')
+            ->where('event.renaissanceEvent = :re_event')
             ->orderBy('event.beginAt', 'DESC')
             ->addOrderBy('event.name', 'ASC')
             ->setParameter('published', true)
+            ->setParameter('re_event', false)
         ;
 
         $this->withGeoZones(

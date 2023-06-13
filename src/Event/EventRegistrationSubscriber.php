@@ -10,6 +10,7 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\Coalition\CoalitionsEventRegistrationConfirmationMessage;
 use App\Mailer\Message\EventRegistrationConfirmationMessage;
 use App\Mailer\Message\JeMengage\JeMengageEventRegistrationConfirmationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceEventRegistrationConfirmationMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -56,10 +57,16 @@ class EventRegistrationSubscriber implements EventSubscriberInterface
                 $this->generateUrl('app_committee_event_show', ['slug' => $event->getSlug()])
             );
         } else {
-            $message = EventRegistrationConfirmationMessage::createFromRegistration(
-                $registration,
-                $this->generateUrl('app_committee_event_show', ['slug' => $event->getSlug()])
-            );
+            $message = $registrationEvent->isRenaissanceEvent()
+                ? RenaissanceEventRegistrationConfirmationMessage::createFromRegistration(
+                    $registration,
+                    $this->generateUrl('app_renaissance_event_show', ['slug' => $event->getSlug()])
+                )
+                : EventRegistrationConfirmationMessage::createFromRegistration(
+                    $registration,
+                    $this->generateUrl('app_committee_event_show', ['slug' => $event->getSlug()])
+                )
+            ;
         }
 
         $this->mailer->sendMessage($message);

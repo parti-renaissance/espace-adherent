@@ -36,7 +36,7 @@
 {%- endblock form_widget_simple %}
 
 {% block textarea_widget -%}
-    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form__field')|trim}) %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' mt-1 block w-full rounded-md border-gray-300 py-1.5  shadow-sm focus:border-re-blue-500 focus:ring-re-blue-500 sm:text-sm sm:leading-6 placeholder:text-gray-400 text-gray-900 disabled:bg-gray-100/80 disabled:opacity-80')|trim}) %}
     {{- parent() -}}
     {{- block('character_count') -}}
 {%- endblock textarea_widget %}

@@ -95,8 +95,8 @@ class EventsControllerTest extends AbstractApiCaseTest
 
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
-        self::assertSame(1, $response['metadata']['total_items']);
-        self::assertSame('1fc69fd0-2b34-4bd4-a0cc-834480480934', $response['items'][0]['uuid']);
+        self::assertSame(5, $response['metadata']['total_items']);
+        self::assertSame('5b279c9f-2b1e-4b93-9c34-1669f56e9d64', $response['items'][0]['uuid']);
     }
 
     public function provideApiEventsCategories(): array
