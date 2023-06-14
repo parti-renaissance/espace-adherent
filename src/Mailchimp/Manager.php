@@ -18,6 +18,8 @@ use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Mailchimp\Event\CampaignEvent;
 use App\Mailchimp\Event\RequestEvent;
 use App\Mailchimp\Exception\InvalidCampaignIdException;
+use App\Mailchimp\Exception\InvalidContactEmailException;
+use App\Mailchimp\Exception\RemovedContactStatusException;
 use App\Mailchimp\MailchimpSegment\SegmentRequestBuilder;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
@@ -87,7 +89,18 @@ class Manager implements LoggerAwareInterface
             ->updateFromAdherent($adherent)
         ;
 
-        $result = $this->driver->editMember($requestBuilder->buildMemberRequest($message->getEmailAddress()), $listId);
+        $result = false;
+        try {
+            $result = $this->driver->editMember(
+                $requestBuilder->buildMemberRequest($message->getEmailAddress()),
+                $listId,
+                true
+            );
+        } catch (InvalidContactEmailException $e) {
+            $adherent->emailStatusComment = 'Email invalid';
+        } catch (RemovedContactStatusException $e) {
+            $adherent->setEmailUnsubscribed(true);
+        }
 
         if ($result && (null === $adherent->getSource() || $adherent->isRenaissanceUser())) {
             $this->updateMemberTags(
