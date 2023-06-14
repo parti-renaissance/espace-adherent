@@ -72,12 +72,14 @@ class Manager implements LoggerAwareInterface
     {
         $listId = $this->mailchimpObjectIdMapping->getListIdFromSource($adherent->getSource());
 
-        if (
-            ($adherentStatus = $this->driver->getMemberStatus($adherent->getEmailAddress(), $listId))
-            && \in_array($adherentStatus, [ContactStatusEnum::SUBSCRIBED, ContactStatusEnum::UNSUBSCRIBED])
-            && $adherentStatus !== $adherent->getMailchimpStatus()
-        ) {
-            $adherent->setEmailUnsubscribed(ContactStatusEnum::UNSUBSCRIBED === $adherentStatus);
+        if ($adherentStatus = $this->driver->getMemberStatus($adherent->getEmailAddress(), $listId)) {
+            if (\in_array($adherentStatus, [ContactStatusEnum::SUBSCRIBED, ContactStatusEnum::UNSUBSCRIBED]) && $adherentStatus !== $adherent->getMailchimpStatus()) {
+                $adherent->setEmailUnsubscribed(ContactStatusEnum::UNSUBSCRIBED === $adherentStatus);
+            } elseif (ContactStatusEnum::CLEANED === $adherentStatus) {
+                $adherent->clean();
+
+                return;
+            }
         }
 
         $requestBuilder = $this->requestBuildersLocator
