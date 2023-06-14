@@ -5,12 +5,16 @@ namespace App\Controller\Renaissance\Event;
 use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Geo\Zone;
 use App\Event\EventInvitation;
 use App\Event\EventInvitationHandler;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
 use App\Event\EventRegistrationManager;
+use App\Event\ListFilter;
+use App\Form\EventFilterType;
 use App\Form\EventInvitationType;
+use App\Repository\Event\BaseEventRepository;
 use App\Repository\EventRegistrationRepository;
 use App\Serializer\Encoder\ICalEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -31,27 +35,58 @@ class EventController extends AbstractController
     use CanaryControllerTrait;
     private const ITEMS_PER_PAGE = 6;
 
+    public function __construct(
+        private readonly BaseEventRepository $baseEventRepository,
+        private readonly EventRegistrationRepository $eventRegistrationRepository,
+        private readonly EventRegistrationManager $manager,
+        private readonly TranslatorInterface $translator
+    ) {
+    }
+
     #[Route(name: '_list', methods: ['GET'])]
     public function listAction(Request $request): Response
     {
         $this->disableInProduction();
 
-        return $this->render('renaissance/adherent/events/list.html.twig', []);
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
+        if ($user->isForeignResident()) {
+            $zones = $user->getParentZonesOfType(Zone::COUNTRY);
+        } else {
+            $zones = $user->getParentZonesOfType(Zone::DEPARTMENT);
+        }
+        $zone = \count($zones) ? current($zones) : null;
+        $filter = new ListFilter($zone);
+
+        $form = $this->createForm(EventFilterType::class, $filter)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $filter = new ListFilter($zone);
+        }
+
+        $results = $this->baseEventRepository->findAllByFilter($filter);
+
+        return $this->render('renaissance/adherent/events/list.html.twig', [
+            'form' => $form->createView(),
+            'results' => $results,
+            'filter' => $filter,
+        ]);
     }
 
     #[Route(path: '/mes-evenements', name: '_my_events_list', methods: ['GET'])]
-    public function myEventsListAction(
-        Request $request,
-        EventRegistrationRepository $eventRegistrationRepository
-    ): Response {
+    public function myEventsListAction(Request $request): Response
+    {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
         $page = $request->query->getInt('page', 1);
         $type = $request->query->get('type');
 
         return $this->render('renaissance/adherent/events/my_events/my_events_list.html.twig', [
-            'past_events' => $eventRegistrationRepository->findActivityPastAdherentRegistrations($adherent, 'past' === $type ? $page : 1, self::ITEMS_PER_PAGE),
-            'upcoming_events' => $eventRegistrationRepository->findActivityUpcomingAdherentRegistrations($adherent, 'upcoming' === $type ? $page : 1, self::ITEMS_PER_PAGE),
+            'past_events' => $this->eventRegistrationRepository->findActivityPastAdherentRegistrations($adherent, 'past' === $type ? $page : 1, self::ITEMS_PER_PAGE),
+            'upcoming_events' => $this->eventRegistrationRepository->findActivityUpcomingAdherentRegistrations($adherent, 'upcoming' === $type ? $page : 1, self::ITEMS_PER_PAGE),
             'type' => $type,
         ]);
     }
@@ -69,8 +104,7 @@ class EventController extends AbstractController
         BaseEvent $event,
         ValidatorInterface $validator,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
-        EventRegistrationManager $manager
-    ): Response {
+        ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
@@ -92,7 +126,7 @@ class EventController extends AbstractController
         if (0 === $errors->count()) {
             $eventRegistrationCommandHandler->handle($command);
 
-            if (!$registration = $manager->findRegistration($uuid = (string) $command->getRegistrationUuid())) {
+            if (!$registration = $this->manager->findRegistration($uuid = (string) $command->getRegistrationUuid())) {
                 throw $this->createNotFoundException(sprintf('Registration with uuid %s not found', $uuid));
             }
 
@@ -110,12 +144,8 @@ class EventController extends AbstractController
 
     #[Route(path: '/{slug}/invitation', name: '_invitation', methods: ['GET', 'POST'])]
     #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
-    public function invitationAction(
-        Request $request,
-        BaseEvent $event,
-        EventInvitationHandler $handler,
-        TranslatorInterface $translator
-    ): Response {
+    public function invitationAction(Request $request, BaseEvent $event, EventInvitationHandler $handler): Response
+    {
         $eventInvitation = EventInvitation::createFromAdherent(
             $this->getUser(),
             $request->request->get('frc-captcha-solution')
@@ -132,7 +162,7 @@ class EventController extends AbstractController
 
             $handler->handle($invitation, $event);
 
-            $this->addFlash('success', $translator->trans('event.invitation.form.invite_sent', ['count' => \count($invitation->guests)]));
+            $this->addFlash('success', $this->translator->trans('event.invitation.form.invite_sent', ['count' => \count($invitation->guests)]));
 
             return $this->redirectToRoute('app_renaissance_event_show', ['slug' => $event->getSlug()]);
         }
@@ -145,13 +175,13 @@ class EventController extends AbstractController
 
     #[Route(path: '/{slug}/desinscription', name: '_unregistration', methods: ['GET'])]
     #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
-    public function unregistrationAction(BaseEvent $event, EventRegistrationManager $eventRegistrationManager): Response
+    public function unregistrationAction(BaseEvent $event): Response
     {
-        if (!$adherentEventRegistration = $eventRegistrationManager->searchRegistration($event, $this->getUser()->getEmailAddress(), null)) {
+        if (!$adherentEventRegistration = $this->manager->searchRegistration($event, $this->getUser()->getEmailAddress(), null)) {
             throw $this->createNotFoundException('Impossible de se désinscrire à cet évévenement. Inscription non trouvée.');
         }
 
-        $eventRegistrationManager->remove($adherentEventRegistration);
+        $this->manager->remove($adherentEventRegistration);
 
         $this->addFlash('success', 'Votre inscription à cet événement a été annulée.');
 

@@ -1,10 +1,10 @@
 {% if events is empty %}
-    {% if is_canary_enabled %}
+    {% if is_canary_enabled() %}
         <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
-            <div class="flex flex-col rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+            <div class="flex flex-col">
                 <h3 class="flex items-center justify-center text-lg font-medium leading-6 text-gray-900 tracking-wider">Participez à un événement proche de chez vous</h3>
                 <div class="mt-6 flex justify-center">
-                    <a href="{{ path('app_renaissance_event_list') }}" class="button button-blue">Participer à un événement</a>
+                    <a href="{{ path('app_renaissance_event_list') }}" class="button button-blue">Rechercher un événement</a>
                 </div>
             </div>
         </div>
