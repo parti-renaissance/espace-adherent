@@ -559,7 +559,7 @@ class RequestBuilder implements LoggerAwareInterface
         }
 
         if (null !== $this->mandateTypes) {
-            $mergeFields[MemberRequest::MERGE_FIELD_MANDATE_TYPE] = !empty($this->mandateTypes) ? implode(',', $this->mandateTypes) : null;
+            $mergeFields[MemberRequest::MERGE_FIELD_MANDATE_TYPE] = implode(',', $this->mandateTypes);
         }
 
         return $mergeFields;
