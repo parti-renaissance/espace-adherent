@@ -55,7 +55,7 @@ class RequestBuilder implements LoggerAwareInterface
     private $isSubscribeRequest = true;
     private $referentTagsCodes = [];
 
-    private array $mandateTypes = [];
+    private ?array $mandateTypes = null;
 
     /** @var Zone[] */
     private array $subZones = [];
@@ -558,8 +558,8 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_LAST_LOGIN_GROUP] = $this->loginGroup;
         }
 
-        if (!empty($this->mandateTypes)) {
-            $mergeFields[MemberRequest::MERGE_FIELD_MANDATE_TYPE] = implode(',', $this->mandateTypes);
+        if (null !== $this->mandateTypes) {
+            $mergeFields[MemberRequest::MERGE_FIELD_MANDATE_TYPE] = !empty($this->mandateTypes) ? implode(',', $this->mandateTypes) : null;
         }
 
         return $mergeFields;
