@@ -97,6 +97,13 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      */
     private ?bool $isCommitteeMember = null;
 
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"adherent_message_update_filter"})
+     */
+    private ?string $mandateType = null;
+
     public function __construct()
     {
         $this->zones = new ArrayCollection();
@@ -196,6 +203,16 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->committee = $committee;
     }
 
+    public function getMandateType(): ?string
+    {
+        return $this->mandateType;
+    }
+
+    public function setMandateType(?string $mandateType): void
+    {
+        $this->mandateType = $mandateType;
+    }
+
     public function reset(): void
     {
         $this->generalFilterTraitReset();
@@ -204,6 +221,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->audienceType = null;
         $this->committee = null;
         $this->isCommitteeMember = null;
+        $this->mandateType = null;
 
         parent::reset();
     }

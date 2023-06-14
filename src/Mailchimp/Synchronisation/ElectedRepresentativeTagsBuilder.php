@@ -2,18 +2,20 @@
 
 namespace App\Mailchimp\Synchronisation;
 
+use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\ElectedRepresentative\MandateTypeEnum;
+use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ElectedRepresentativeTagsBuilder
 {
     public const TRANSLATION_PREFIX = 'elected_representative.mailchimp_tag.';
 
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly ElectedRepresentativeRepository $electedRepresentativeRepository
+    ) {
     }
 
     public function buildTags(ElectedRepresentative $electedRepresentative): array
@@ -47,6 +49,23 @@ class ElectedRepresentativeTagsBuilder
             array_map([$this, 'translateKey'], array_unique($tags)),
             $electedRepresentative->getActiveReferentTagCodes()
         ));
+    }
+
+    public function buildAdherentMandateTypes(Adherent $adherent): array
+    {
+        $types = $this->electedRepresentativeRepository->getAdherentMandateTypes($adherent);
+
+        $mandateTypes = [];
+
+        if (!empty(array_intersect($types, MandateTypeEnum::NATIONAL_MANDATES))) {
+            $mandateTypes[] = MandateTypeEnum::TYPE_NATIONAL;
+        }
+
+        if (!empty(array_intersect($types, MandateTypeEnum::LOCAL_MANDATES))) {
+            $mandateTypes[] = MandateTypeEnum::TYPE_LOCAL;
+        }
+
+        return $mandateTypes;
     }
 
     public function translateKey(string $key): string

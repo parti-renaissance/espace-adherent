@@ -385,6 +385,20 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         ;
     }
 
+    public function getAdherentMandateTypes(Adherent $adherent): array
+    {
+        $mandateTypes = $this->createQueryBuilder('e')
+            ->select('DISTINCT(m.type)')
+            ->innerJoin('e.mandates', 'm')
+            ->andWhere('e.adherent = :adherent')
+            ->setParameter('adherent', $adherent)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_map('current', $mandateTypes);
+    }
+
     private function withRenaissanceMembership(
         QueryBuilder $qb,
         string $renaissanceMembership,
