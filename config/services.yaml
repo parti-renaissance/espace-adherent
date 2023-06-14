@@ -471,3 +471,7 @@ services:
         arguments:
             $client: '@app.http_client.mandrill_api'
             $apiKey: '%env(MANDRILL_API_KEY)%'
+
+    App\Messenger\AmqpTransport\AmqpTransportFactory:
+        decorates: 'messenger.transport.amqp.factory'
+        arguments: ['@App\Messenger\AmqpTransport\AmqpTransportFactory.inner']
