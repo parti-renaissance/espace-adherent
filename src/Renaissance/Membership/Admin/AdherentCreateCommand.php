@@ -20,7 +20,6 @@ class AdherentCreateCommand implements MembershipInterface
      * @Assert\Choice(
      *     choices=App\ValueObject\Genders::CIVILITY_CHOICES,
      *     message="common.gender.invalid_choice",
-     *     strict=true,
      *     groups={"admin_adherent_renaissance_create"}
      * )
      */
@@ -113,7 +112,6 @@ class AdherentCreateCommand implements MembershipInterface
      * @Assert\Choice(
      *     message="admin.adherent.renaissance.membership_type.invalid_choice",
      *     choices=MembershipTypeEnum::CHOICES,
-     *     strict=true,
      *     groups={"admin_adherent_renaissance_create"}
      * )
      */

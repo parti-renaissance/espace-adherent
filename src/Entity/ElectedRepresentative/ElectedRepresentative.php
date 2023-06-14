@@ -117,8 +117,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     strict=true
+     *     message="common.gender.invalid_choice"
      * )
      *
      * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read", "elected_representative_list"})

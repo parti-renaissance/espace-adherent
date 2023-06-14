@@ -63,7 +63,7 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
      * @ORM\Column(nullable=true)
      *
      * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\AdherentSegment\AdherentSegmentTypeEnum", "toArray"}, strict=true)
+     * @Assert\Choice(callback={"App\AdherentSegment\AdherentSegmentTypeEnum", "toArray"})
      *
      * @Groups({"write"})
      */

@@ -51,7 +51,6 @@ class LegislativeCandidate implements EntityMediaInterface
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
-     *     strict=true,
      *     groups="Admin"
      * )
      */

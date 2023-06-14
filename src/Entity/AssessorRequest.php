@@ -37,8 +37,7 @@ class AssessorRequest implements RecaptchaChallengeInterface
      * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     strict=true
+     *     message="common.gender.invalid_choice"
      * )
      */
     private $gender;
@@ -234,8 +233,7 @@ class AssessorRequest implements RecaptchaChallengeInterface
      * @Assert\NotBlank(message="assessor.office.invalid_choice")
      * @Assert\Choice(
      *     callback={"App\Entity\AssessorOfficeEnum", "toArray"},
-     *     message="assessor.office.invalid_choice",
-     *     strict=true
+     *     message="assessor.office.invalid_choice"
      * )
      */
     private $office = AssessorOfficeEnum::HOLDER;
@@ -280,7 +278,6 @@ class AssessorRequest implements RecaptchaChallengeInterface
      * @Assert\Choice(
      *     callback={"App\Assessor\AssessorRequestElectionRoundsEnum", "toArray"},
      *     message="assessor.election_rounds.invalid_choice",
-     *     strict=true,
      *     multiple=true
      * )
      */

@@ -26,7 +26,6 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
-     *     strict=true,
      *     groups={"fill_personal_info"}
      * )
      */
@@ -159,7 +158,6 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
      * @Assert\Choice(
      *     callback={"App\Entity\AssessorOfficeEnum", "toArray"},
      *     message="assessor.office.invalid_choice",
-     *     strict=true,
      *     groups={"fill_assessor_info"}
      * )
      */
@@ -175,7 +173,6 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
      * @Assert\Choice(
      *     callback={"App\Assessor\AssessorRequestElectionRoundsEnum", "toArray"},
      *     message="assessor.election_rounds.invalid_choice",
-     *     strict=true,
      *     multiple=true,
      *     groups={"fill_assessor_info"}
      * )

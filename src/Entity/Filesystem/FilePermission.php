@@ -36,10 +36,7 @@ class FilePermission
      * @ORM\Column(length=50)
      *
      * @Assert\NotBlank
-     * @Assert\Choice(
-     *     callback={"App\Entity\Filesystem\FilePermissionEnum", "toArray"},
-     *     strict=true
-     * )
+     * @Assert\Choice(callback={"App\Entity\Filesystem\FilePermissionEnum", "toArray"})
      */
     private $name;
 

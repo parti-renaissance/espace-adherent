@@ -142,7 +142,7 @@ class HomeBlock
      *
      * @ORM\Column(length=6, nullable=true)
      *
-     * @Assert\Choice(strict=true, callback={"\App\Admin\Color", "all"})
+     * @Assert\Choice(callback={"\App\Admin\Color", "all"})
      */
     private $colorCta;
 
@@ -151,7 +151,7 @@ class HomeBlock
      *
      * @ORM\Column(length=6, nullable=true)
      *
-     * @Assert\Choice(strict=true, callback={"\App\Admin\Color", "all"})
+     * @Assert\Choice(callback={"\App\Admin\Color", "all"})
      */
     private $bgColor;
 

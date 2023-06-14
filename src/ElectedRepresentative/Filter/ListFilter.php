@@ -77,7 +77,7 @@ class ListFilter
     /**
      * @var string|null
      *
-     * @Assert\Choice(choices=ElectedRepresentativeTypeEnum::ALL, strict=true)
+     * @Assert\Choice(choices=ElectedRepresentativeTypeEnum::ALL)
      */
     private $contactType;
 

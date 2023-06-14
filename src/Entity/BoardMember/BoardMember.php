@@ -45,8 +45,7 @@ class BoardMember
      * @Assert\NotBlank(message="board_member.area.invalid_choice", groups={"elections"})
      * @Assert\Choice(
      *     callback={"App\Entity\BoardMember\BoardMember", "getAreas"},
-     *     message="board_member.area.invalid_choice",
-     *     strict=true
+     *     message="board_member.area.invalid_choice"
      * )
      */
     private $area;

@@ -52,8 +52,7 @@ class Building implements CampaignStatisticsOwnerInterface
      *
      * @Assert\Choice(
      *     callback={"App\Pap\BuildingTypeEnum", "toArray"},
-     *     message="pap.building.type.invalid_choice",
-     *     strict=true
+     *     message="pap.building.type.invalid_choice"
      * )
      *
      * @Groups({

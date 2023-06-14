@@ -11,7 +11,7 @@ class CauseFilter
     /**
      * @var string
      *
-     * @Assert\Choice(choices=Cause::STATUSES, strict=true)
+     * @Assert\Choice(choices=Cause::STATUSES)
      */
     private $status;
 

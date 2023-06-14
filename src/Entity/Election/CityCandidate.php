@@ -37,7 +37,7 @@ class CityCandidate
      *
      * @ORM\Column(length=6, nullable=true)
      *
-     * @Assert\Choice(choices=App\ValueObject\Genders::CHOICES, strict=true)
+     * @Assert\Choice(choices=App\ValueObject\Genders::CHOICES)
      */
     private $gender;
 

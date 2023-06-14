@@ -18,7 +18,7 @@ class TerritorialCouncilAdherentMandate extends AbstractAdherentMandate
      * @ORM\Column(nullable=true)
      *
      * @Assert\NotBlank(message="common.quality.invalid_choice")
-     * @Assert\Choice(choices=App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS, strict=true)
+     * @Assert\Choice(choices=App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)
      */
     protected $quality;
 

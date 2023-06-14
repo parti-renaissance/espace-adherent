@@ -48,7 +48,6 @@ class ReferentArea
      * @Assert\Choice(
      *     callback="getAreaTypeChoices",
      *     message="legislative_district_zone.area_type.invalid",
-     *     strict=true,
      *     groups="Admin"
      * )
      */
