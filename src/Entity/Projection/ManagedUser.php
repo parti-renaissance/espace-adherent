@@ -324,8 +324,6 @@ class ManagedUser
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
     private ?array $mandateTypes;
 
