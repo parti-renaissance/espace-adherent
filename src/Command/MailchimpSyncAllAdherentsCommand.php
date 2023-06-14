@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -44,6 +45,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
             ->addOption('ref-tags', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
+            ->addOption('zones', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('disabled-only', null, InputOption::VALUE_NONE)
             ->addOption('certified-only', null, InputOption::VALUE_NONE)
             ->addOption('committee-voter-only', null, InputOption::VALUE_NONE)
@@ -63,6 +65,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
 
         $paginator = $this->getQueryBuilder(
             $input->getOption('ref-tags'),
+            $input->getOption('zones'),
             $input->getOption('disabled-only'),
             $input->getOption('certified-only'),
             $input->getOption('committee-voter-only'),
@@ -110,6 +113,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
      */
     private function getQueryBuilder(
         array $refTags,
+        array $zoneCodes,
         bool $disabledOnly,
         bool $certifiedOnly,
         bool $committeeVoterOnly,
@@ -140,6 +144,22 @@ class MailchimpSyncAllAdherentsCommand extends Command
                 ->andWhere('tag.code IN (:tags)')
                 ->setParameter('tags', $refTags)
             ;
+        }
+
+        if ($zoneCodes) {
+            if ($zones = $this->entityManager->getRepository(Zone::class)->findBy(['code' => $zoneCodes])) {
+                $this->io->note('Search in : '.implode(', ', array_map(fn (Zone $zone) => $zone->getTypeCode(), $zones)));
+
+                $this->adherentRepository->withGeoZones(
+                    $zones,
+                    $queryBuilder,
+                    'adherent',
+                    Adherent::class,
+                    'a2',
+                    'zones',
+                    'z2'
+                );
+            }
         }
 
         if ($certifiedOnly) {
