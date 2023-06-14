@@ -820,6 +820,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     private ?string $authAppCode = null;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $emailStatusComment = null;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();

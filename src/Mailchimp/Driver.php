@@ -4,6 +4,8 @@ namespace App\Mailchimp;
 
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Mailchimp\Campaign\Request\EditCampaignRequest;
+use App\Mailchimp\Exception\InvalidContactEmailException;
+use App\Mailchimp\Exception\RemovedContactStatusException;
 use App\Mailchimp\MailchimpSegment\Request\EditSegmentRequest;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
@@ -30,13 +32,29 @@ class Driver implements LoggerAwareInterface
     /**
      * Create or update a member
      */
-    public function editMember(MemberRequest $request, string $listId): bool
+    public function editMember(MemberRequest $request, string $listId, bool $throw = false): bool
     {
-        return $this->sendRequest(
+        $response = $this->send(
             'PUT',
             sprintf('/lists/%s/members/%s', $listId, $this->createHash($request->getMemberIdentifier())),
             $request->toArray()
         );
+
+        if ($this->isSuccessfulResponse($response)) {
+            return true;
+        }
+
+        if ($throw) {
+            $responseContent = $response->getContent(false);
+
+            if (str_contains($responseContent, 'looks fake or invalid, please enter a real email address')) {
+                throw new InvalidContactEmailException();
+            } elseif (str_contains($responseContent, 'contact must re-subscribe to get back on the list')) {
+                throw new RemovedContactStatusException();
+            }
+        }
+
+        return false;
     }
 
     public function getMemberTags(string $mail, string $listId): array
@@ -205,17 +223,7 @@ class Driver implements LoggerAwareInterface
 
     public function isSuccessfulResponse(?ResponseInterface $response): bool
     {
-        if ($response) {
-            if (200 <= $response->getStatusCode() && $response->getStatusCode() < 300) {
-                return true;
-            } else {
-                $this->logger->error(sprintf('[API] Error: %s', $response->getContent(false)));
-
-                return false;
-            }
-        }
-
-        return false;
+        return $response && 200 <= $response->getStatusCode() && $response->getStatusCode() < 300;
     }
 
     private function sendRequest(string $method, string $uri, array $body = []): bool
