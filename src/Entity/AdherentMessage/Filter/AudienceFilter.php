@@ -101,6 +101,8 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      * @ORM\Column(nullable=true)
      *
      * @Groups({"adherent_message_update_filter"})
+     *
+     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::TYPE_CHOICES_CONTACTS, strict=true)
      */
     private ?string $mandateType = null;
 

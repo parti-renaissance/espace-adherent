@@ -74,6 +74,8 @@ class ManagedUsersFilter
 
     /**
      * @Groups({"filter_write"})
+     *
+     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::TYPE_CHOICES_CONTACTS, strict=true)
      */
     private ?string $mandateType = null;
 

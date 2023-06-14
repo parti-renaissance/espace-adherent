@@ -52,6 +52,8 @@ class ListFilter
 
     /**
      * @Groups({"filter_write"})
+     *
+     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::TYPE_CHOICES, strict=true)
      */
     private ?string $mandateType = null;
 
