@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Adherent;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Geo\Zone;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Repository\AdherentRepository;
@@ -49,6 +50,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             ->addOption('disabled-only', null, InputOption::VALUE_NONE)
             ->addOption('certified-only', null, InputOption::VALUE_NONE)
             ->addOption('committee-voter-only', null, InputOption::VALUE_NONE)
+            ->addOption('active-mandates-only', null, InputOption::VALUE_NONE)
             ->addOption('source', null, InputOption::VALUE_REQUIRED)
             ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
         ;
@@ -69,6 +71,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             $input->getOption('disabled-only'),
             $input->getOption('certified-only'),
             $input->getOption('committee-voter-only'),
+            $input->getOption('active-mandates-only'),
             $input->getOption('source'),
             $input->getOption('emails')
         );
@@ -117,6 +120,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         bool $disabledOnly,
         bool $certifiedOnly,
         bool $committeeVoterOnly,
+        bool $activeMandatesOnly,
         ?string $source,
         array $emails
     ): Paginator {
@@ -174,6 +178,24 @@ class MailchimpSyncAllAdherentsCommand extends Command
                     Join::WITH,
                     'membership.adherent = adherent AND membership.enableVote IS NOT NULL'
                 )
+            ;
+        }
+
+        if ($activeMandatesOnly) {
+            $queryBuilder
+                ->innerJoin(
+                    ElectedRepresentative::class,
+                    'elected_representative',
+                    Join::WITH,
+                    'elected_representative.adherent = adherent.id'
+                )
+                ->innerJoin(
+                    'elected_representative.mandates',
+                    'mandate',
+                    Join::WITH,
+                    '(mandate.finishAt IS NULL OR mandate.finishAt > :now) AND mandate.onGoing = 1 AND mandate.isElected = 1'
+                )
+                ->setParameter('now', new \DateTime())
             ;
         }
 
