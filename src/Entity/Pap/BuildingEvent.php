@@ -24,8 +24,7 @@ class BuildingEvent implements AuthorInterface
      *
      * @Assert\NotBlank
      * @Assert\Choice(
-     *     callback={"App\Pap\BuildingEventActionEnum", "toArray"},
-     *     strict=true
+     *     callback={"App\Pap\BuildingEventActionEnum", "toArray"}
      * )
      *
      * @Groups({"pap_building_event_write"})
@@ -37,8 +36,7 @@ class BuildingEvent implements AuthorInterface
      *
      * @Assert\NotBlank
      * @Assert\Choice(
-     *     callback={"App\Pap\BuildingEventTypeEnum", "toArray"},
-     *     strict=true
+     *     callback={"App\Pap\BuildingEventTypeEnum", "toArray"}
      * )
      *
      * @Groups({"pap_building_event_write"})

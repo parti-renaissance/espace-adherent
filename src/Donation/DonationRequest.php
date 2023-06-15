@@ -43,7 +43,6 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
-     *     strict=true,
      *     groups={"Default", "fill_personal_info"}
      * )
      */

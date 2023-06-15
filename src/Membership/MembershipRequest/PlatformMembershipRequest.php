@@ -30,7 +30,6 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
-     *     strict=true,
      *     groups={"Update"}
      * )
      */
@@ -82,7 +81,6 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
      * @Assert\Choice(
      *     callback={"App\Membership\ActivityPositionsEnum", "all"},
      *     message="adherent.activity_position.invalid_choice",
-     *     strict=true,
      *     groups={"Update"}
      * )
      */

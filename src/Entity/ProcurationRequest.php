@@ -93,7 +93,6 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
-     *     strict=true,
      *     groups={"profile"}
      * )
      */

@@ -54,10 +54,7 @@ class File
      *
      * @ORM\Column(length=20)
      *
-     * @Assert\Choice(
-     *     callback={"App\Entity\Filesystem\FileTypeEnum", "toArray"},
-     *     strict=true
-     * )
+     * @Assert\Choice(callback={"App\Entity\Filesystem\FileTypeEnum", "toArray"})
      */
     private $type = FileTypeEnum::FILE;
 

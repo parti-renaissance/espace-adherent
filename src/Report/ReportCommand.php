@@ -16,7 +16,6 @@ class ReportCommand
     /**
      * @Assert\Choice(
      *     choices=ReportReasonEnum::REASONS_LIST,
-     *     strict=true,
      *     multiple=true,
      *     multipleMessage="report.invalid_reasons",
      *     min=1,

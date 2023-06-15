@@ -114,8 +114,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @Assert\NotNull
      * @Assert\Choice(
      *     choices=App\Pap\CampaignHistoryStatusEnum::ALL,
-     *     message="pap.campaign_history.status.invalid_choice",
-     *     strict=true
+     *     message="pap.campaign_history.status.invalid_choice"
      * )
      *
      * @Groups({"pap_campaign_history_read", "pap_campaign_history_write", "pap_campaign_history_read_list"})
@@ -172,8 +171,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     strict=true
+     *     message="common.gender.invalid_choice"
      * )
      *
      * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list"})

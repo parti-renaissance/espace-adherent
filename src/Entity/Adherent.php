@@ -145,7 +145,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
-     *     strict=true,
      *     groups={"adhesion_complete_profile"}
      * )
      */

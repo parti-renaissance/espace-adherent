@@ -59,7 +59,7 @@ final class MyEuropeProcessor implements RecaptchaChallengeInterface
 
     /**
      * @Assert\NotBlank(groups={"fill_info"})
-     * @Assert\Choice(callback={"App\ValueObject\Genders", "all"}, strict=true, groups={"fill_info"})
+     * @Assert\Choice(callback={"App\ValueObject\Genders", "all"}, groups={"fill_info"})
      */
     public $friendGender;
 

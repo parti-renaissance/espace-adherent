@@ -127,8 +127,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * @ORM\Column
      *
      * @Assert\NotBlank(groups={"Default", "api_designation_write"})
-     * @Assert\Choice(choices=DesignationTypeEnum::MAIN_TYPES, strict=true, groups={"Default"})
-     * @Assert\Choice(choices=DesignationTypeEnum::API_AVAILABLE_TYPES, strict=true, groups={"api_designation_write"})
+     * @Assert\Choice(choices=DesignationTypeEnum::MAIN_TYPES, groups={"Default"})
+     * @Assert\Choice(choices=DesignationTypeEnum::API_AVAILABLE_TYPES, groups={"api_designation_write"})
      *
      * @Groups({"designation_read", "designation_write", "designation_list"})
      */

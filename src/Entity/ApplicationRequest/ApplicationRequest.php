@@ -31,7 +31,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      * @ORM\Column(length=6, nullable=true)
      *
      * @Assert\NotBlank(message="common.gender.not_blank")
-     * @Assert\Choice(choices=App\ValueObject\Genders::CHOICES, strict=true)
+     * @Assert\Choice(choices=App\ValueObject\Genders::CHOICES)
      */
     private $gender;
 

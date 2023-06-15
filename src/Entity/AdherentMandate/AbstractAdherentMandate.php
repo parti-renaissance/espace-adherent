@@ -42,8 +42,7 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
      * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(
      *     choices=Genders::MALE_FEMALE,
-     *     message="common.gender.invalid_choice",
-     *     strict=true
+     *     message="common.gender.invalid_choice"
      * )
      */
     protected $gender;

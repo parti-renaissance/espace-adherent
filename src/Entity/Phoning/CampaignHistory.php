@@ -109,8 +109,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Assert\Choice(
      *     callback={"App\Phoning\CampaignHistoryTypeEnum", "toArray"},
-     *     message="phoning.campaign_history.type.invalid_choice",
-     *     strict=true
+     *     message="phoning.campaign_history.type.invalid_choice"
      * )
      *
      * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
@@ -125,8 +124,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @Assert\NotNull
      * @Assert\Choice(
      *     choices=App\Phoning\CampaignHistoryStatusEnum::AFTER_CALL_STATUS,
-     *     message="phoning.campaign_history.status.invalid_choice",
-     *     strict=true
+     *     message="phoning.campaign_history.status.invalid_choice"
      * )
      *
      * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read", "phoning_campaign_history_read_list"})
@@ -178,8 +176,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Assert\Choice(
      *     callback={"App\Phoning\CampaignHistoryEngagementEnum", "toArray"},
-     *     message="phoning.campaign_history.engagement.invalid_choice",
-     *     strict=true
+     *     message="phoning.campaign_history.engagement.invalid_choice"
      * )
      *
      * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})

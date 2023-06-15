@@ -38,8 +38,7 @@ trait AudienceFieldsTrait
      *
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     strict=true
+     *     message="common.gender.invalid_choice"
      * )
      *
      * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})

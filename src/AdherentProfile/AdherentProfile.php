@@ -24,7 +24,6 @@ class AdherentProfile implements MembershipInterface
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
-     *     strict=true,
      *     groups={"Default", "api_put_validation"}
      * )
      *
@@ -87,8 +86,7 @@ class AdherentProfile implements MembershipInterface
      *
      * @Assert\Choice(
      *     callback={"App\Membership\ActivityPositionsEnum", "all"},
-     *     message="adherent.activity_position.invalid_choice",
-     *     strict=true,
+     *     message="adherent.activity_position.invalid_choice"
      * )
      *
      * @SymfonySerializer\Groups({"profile_write"})
@@ -182,8 +180,7 @@ class AdherentProfile implements MembershipInterface
      *
      * @Assert\Choice(
      *     choices=App\Entity\JobEnum::JOBS,
-     *     message="adherent.job.invalid_choice",
-     *     strict=true,
+     *     message="adherent.job.invalid_choice"
      * )
      *
      * @SymfonySerializer\Groups({"profile_write"})
@@ -195,8 +192,7 @@ class AdherentProfile implements MembershipInterface
      *
      * @Assert\Choice(
      *     choices=App\Entity\ActivityAreaEnum::ACTIVITIES,
-     *     message="adherent.activity_area.invalid_choice",
-     *     strict=true,
+     *     message="adherent.activity_area.invalid_choice"
      * )
      *
      * @SymfonySerializer\Groups({"profile_write"})
@@ -229,8 +225,7 @@ class AdherentProfile implements MembershipInterface
      * @Assert\Choice(
      *     choices=App\Subscription\SubscriptionTypeEnum::ADHERENT_TYPES,
      *     multipleMessage="adherent_profile.subscription_types.invalid_choice",
-     *     multiple=true,
-     *     strict=true
+     *     multiple=true
      * )
      *
      * @SymfonySerializer\Groups({"profile_write"})

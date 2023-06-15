@@ -38,7 +38,7 @@ class QrCode
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Choice(choices=App\QrCode\QrCodeHostEnum::ALL, strict=true)
+     * @Assert\Choice(choices=App\QrCode\QrCodeHostEnum::ALL)
      */
     private ?string $host;
 
