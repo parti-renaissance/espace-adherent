@@ -1,28 +1,25 @@
 name: Remove old unused images from registry
+
 on:
   schedule:
     - cron: "0 6 * * *"
+  workflow_dispatch: # allows for manual invocation
+
 env:
-  INTERVAL_OLD_IMAGES: ${{ secrets.CLEANUP_OLD_IMAGES_TIME_DIFF }}
   IMAGE: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
 
 jobs:
   clean:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/auth@v1
+      - uses: docker/login-action@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
+          registry: ${{ secrets.GCP_HOST_GCR }}
+          username: _json_key
+          password: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
 
-      - run: |
-          limitDate=$(date "+%Y-%m-%d %H:%M:%S" -d "$INTERVAL_OLD_IMAGES")
-
-          digests=$(gcloud container images list-tags $IMAGE \
-          --filter="timestamp.datetime < '$limitDate'" \
-          --format="get(digest)")
-
-          for digest in $digests; do
-          (
-            gcloud container images delete --quiet --force-delete-tags $IMAGE@$digest
-          )
-          done
+      - uses: 'docker://us-docker.pkg.dev/gcr-cleaner/gcr-cleaner/gcr-cleaner-cli'
+        with:
+          args: >-
+            -repo=${{ env.IMAGE }}
+            -grace=${{ secrets.INTERVAL_OLD_IMAGES }}
