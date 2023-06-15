@@ -587,9 +587,27 @@ Feature:
                     "type": "select"
                 }
             ]
+        },
+        {
+            "label": "Élu",
+            "color": "#2563EB",
+            "filters": [
+                {
+                    "code": "mandateTypes",
+                    "label": "Type de mandat",
+                    "options": {
+                        "choices": {
+                            "all": "Tous",
+                            "local_mandate": "Mandat local",
+                            "national_mandate": "Mandat national",
+                            "none": "Aucun"
+                        }
+                    },
+                    "type": "select"
+                }
+            ]
         }
     ]
-
     """
     Examples:
       | user                                    | scope                                           |

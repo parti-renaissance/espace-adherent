@@ -55,6 +55,8 @@ class RequestBuilder implements LoggerAwareInterface
     private $isSubscribeRequest = true;
     private $referentTagsCodes = [];
 
+    private ?array $mandateTypes = null;
+
     /** @var Zone[] */
     private array $subZones = [];
     /** @var Zone[] */
@@ -104,6 +106,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setIsSubscribeRequest($adherent->isEnabled() && $adherent->isEmailSubscribed())
             ->setZones($adherent->getZones())
             ->setCommitteeUuid($adherent->getCommitteeV2Membership()?->getCommitteeUuid())
+            ->setMandateTypes($this->electedRepresentativeTagsBuilder->buildAdherentMandateTypes($adherent))
         ;
 
         if (null === $adherent->getSource() || $adherent->isRenaissanceUser()) {
@@ -406,6 +409,11 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
+    public function setMandateTypes(array $mandateTypes): void
+    {
+        $this->mandateTypes = $mandateTypes;
+    }
+
     public function buildMemberRequest(string $memberIdentifier): MemberRequest
     {
         $request = new MemberRequest($memberIdentifier);
@@ -548,6 +556,10 @@ class RequestBuilder implements LoggerAwareInterface
 
         if ($this->loginGroup) {
             $mergeFields[MemberRequest::MERGE_FIELD_LAST_LOGIN_GROUP] = $this->loginGroup;
+        }
+
+        if (null !== $this->mandateTypes) {
+            $mergeFields[MemberRequest::MERGE_FIELD_MANDATE_TYPE] = implode(',', $this->mandateTypes);
         }
 
         return $mergeFields;

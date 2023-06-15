@@ -52,8 +52,10 @@ class ListFilter
 
     /**
      * @Groups({"filter_write"})
+     *
+     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::TYPE_CHOICES, strict=true)
      */
-    private ?array $mandateTypes = [];
+    private ?string $mandateType = null;
 
     /**
      * @var array|null
@@ -204,14 +206,14 @@ class ListFilter
         $this->mandates = $mandates;
     }
 
-    public function getMandateTypes(): ?array
+    public function getMandateType(): ?string
     {
-        return $this->mandateTypes;
+        return $this->mandateType;
     }
 
-    public function setMandateTypes(?array $mandateTypes): void
+    public function setMandateType(?string $mandateType): void
     {
-        $this->mandateTypes = $mandateTypes;
+        $this->mandateType = $mandateType;
     }
 
     public function getPoliticalFunctions(): ?array
@@ -353,7 +355,7 @@ class ListFilter
             'cities' => array_values($this->cities),
             'labels' => $this->labels,
             'mandates' => $this->mandates,
-            'mandateTypes' => $this->mandateTypes,
+            'mandateType' => $this->mandateType,
             'politicalFunctions' => $this->politicalFunctions,
             'userListDefinitions' => array_map(function (UserListDefinition $label) {
                 return $label->getId();

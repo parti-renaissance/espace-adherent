@@ -229,25 +229,19 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             ;
         }
 
-        if ($mandateTypes = $filter->getMandateTypes()) {
-            $mandateTypesCondition = $qb->expr()->orX();
+        if ($mandateType = $filter->getMandateType()) {
+            switch ($mandateType) {
+                case MandateTypeEnum::TYPE_NATIONAL:
+                    $qb->andWhere('mandate.type IN (:national_mandates)');
+                    $qb->setParameter('national_mandates', MandateTypeEnum::NATIONAL_MANDATES);
 
-            foreach ($mandateTypes as $mandateType) {
-                switch ($mandateType) {
-                    case MandateTypeEnum::TYPE_NATIONAL:
-                        $mandateTypesCondition->add('mandate.type IN (:national_mandates)');
-                        $qb->setParameter('national_mandates', MandateTypeEnum::NATIONAL_MANDATES);
+                    break;
+                case MandateTypeEnum::TYPE_LOCAL:
+                    $qb->andWhere('mandate.type IN (:local_mandates)');
+                    $qb->setParameter('local_mandates', MandateTypeEnum::LOCAL_MANDATES);
 
-                        break;
-                    case MandateTypeEnum::TYPE_LOCAL:
-                        $mandateTypesCondition->add('mandate.type IN (:local_mandates)');
-                        $qb->setParameter('local_mandates', MandateTypeEnum::LOCAL_MANDATES);
-
-                        break;
-                }
+                    break;
             }
-
-            $qb->andWhere($mandateTypesCondition);
         }
 
         if ($politicalFunctions = $filter->getPoliticalFunctions()) {
@@ -389,6 +383,25 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    public function getAdherentMandateTypes(Adherent $adherent): array
+    {
+        $mandateTypes = $this->createQueryBuilder('elected_representative')
+            ->select('DISTINCT(mandate.type)')
+            ->innerJoin(
+                'elected_representative.mandates',
+                'mandate',
+                Join::WITH,
+                '(mandate.finishAt IS NULL OR mandate.finishAt > :now) AND mandate.onGoing = 1 AND mandate.isElected = 1'
+            )
+            ->andWhere('elected_representative.adherent = :adherent')
+            ->setParameter('adherent', $adherent)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_map('current', $mandateTypes);
     }
 
     private function withRenaissanceMembership(

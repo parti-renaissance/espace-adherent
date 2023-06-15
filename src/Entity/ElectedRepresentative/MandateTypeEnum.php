@@ -11,9 +11,13 @@ final class MandateTypeEnum extends Enum
 
     public const TYPE_LOCAL = 'local_mandate';
     public const TYPE_NATIONAL = 'national_mandate';
+    public const TYPE_ALL = 'all';
+    public const TYPE_NONE = 'none';
 
     public const TYPE_LOCAL_LABEL = 'Mandat local';
     public const TYPE_NATIONAL_LABEL = 'Mandat national';
+    public const TYPE_ALL_LABEL = 'Tous';
+    public const TYPE_NONE_LABEL = 'Aucun';
 
     public const CITY_COUNCIL = 'conseiller_municipal';
     public const EPCI_MEMBER = 'membre_EPCI';
@@ -53,6 +57,13 @@ final class MandateTypeEnum extends Enum
     public const TYPE_CHOICES = [
         self::TYPE_LOCAL_LABEL => self::TYPE_LOCAL,
         self::TYPE_NATIONAL_LABEL => self::TYPE_NATIONAL,
+    ];
+
+    public const TYPE_CHOICES_CONTACTS = [
+        self::TYPE_ALL_LABEL => self::TYPE_ALL,
+        self::TYPE_LOCAL_LABEL => self::TYPE_LOCAL,
+        self::TYPE_NATIONAL_LABEL => self::TYPE_NATIONAL,
+        self::TYPE_NONE_LABEL => self::TYPE_NONE,
     ];
 
     public const NATIONAL_MANDATES = [
