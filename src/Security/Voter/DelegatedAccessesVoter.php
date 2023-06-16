@@ -19,7 +19,6 @@ class DelegatedAccessesVoter extends AbstractAdherentVoter
     private const HAS_DELEGATED_ACCESS_JECOUTE_NEWS = 'HAS_DELEGATED_ACCESS_JECOUTE_NEWS';
     private const HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES = 'HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES';
     private const HAS_DELEGATED_ACCESS_FILES = 'HAS_DELEGATED_ACCESS_FILES';
-    private const HAS_DELEGATED_ACCESS_INSTITUTIONAL_EVENTS = 'HAS_DELEGATED_ACCESS_INSTITUTIONAL_EVENTS';
 
     /** @var SessionInterface */
     private $session;
@@ -65,8 +64,6 @@ class DelegatedAccessesVoter extends AbstractAdherentVoter
                 return \in_array(DelegatedAccess::ACCESS_ELECTED_REPRESENTATIVES, $delegatedAccess->getAccesses(), true);
             case self::HAS_DELEGATED_ACCESS_FILES:
                 return \in_array(DelegatedAccess::ACCESS_FILES, $delegatedAccess->getAccesses(), true);
-            case self::HAS_DELEGATED_ACCESS_INSTITUTIONAL_EVENTS:
-                return \in_array(DelegatedAccess::ACCESS_INSTITUTIONAL_EVENTS, $delegatedAccess->getAccesses(), true);
             default:
                 return false;
         }

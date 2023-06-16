@@ -14,10 +14,6 @@ final class Events
     public const EVENT_UPDATED = 'event.updated';
     public const EVENT_DELETED = 'event.deleted';
     public const EVENT_CANCELLED = 'event.cancelled';
-    public const INSTITUTIONAL_EVENT_CREATED = 'institutional_event.created';
-    public const INSTITUTIONAL_EVENT_UPDATED = 'institutional_event.updated';
-    public const INSTITUTIONAL_EVENT_DELETED = 'institutional_event.deleted';
-    public const INSTITUTIONAL_EVENT_CANCELLED = 'institutional_event.cancelled';
     public const EVENT_REGISTRATION_CREATED = 'event_registration_created';
     public const CHEZVOUS_MEASURE_TYPE_UPDATED = 'chezvous_measure_type.updated';
     public const CHEZVOUS_MEASURE_TYPE_DELETED = 'chezvous_measure_type.deleted';

@@ -3,7 +3,6 @@
 namespace Tests\App\Controller;
 
 use App\Entity\Adherent;
-use App\Entity\Event\InstitutionalEventCategory;
 use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Messenger\MessageRecorder\MessageRecorderInterface;
@@ -175,13 +174,6 @@ trait ControllerTestTrait
         $session->save();
 
         $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
-    }
-
-    private function getInstitutionalEventCategoryIdByName(string $categoryName): int
-    {
-        return $this->manager->getRepository(InstitutionalEventCategory::class)
-            ->findOneBy(['name' => $categoryName])->getId()
-        ;
     }
 
     private static function assertAdherentHasReferentTag(Adherent $adherent, string $code): void

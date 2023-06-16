@@ -328,7 +328,6 @@
                 <argument type="collection">
                     <argument>App\Entity\Event\DefaultEvent</argument>
                     <argument>App\Entity\Event\CommitteeEvent</argument>
-                    <argument>App\Entity\Event\InstitutionalEvent</argument>
                     <argument>App\Entity\Event\CauseEvent</argument>
                     <argument>App\Entity\Event\CoalitionEvent</argument>
                 </argument>
@@ -341,16 +340,6 @@
                 <argument>edit</argument>
                 <argument>admin/event/edit.html.twig</argument>
             </call>
-        </service>
-
-        <service id="app.admin.institutional_event" class="App\Admin\InstitutionalEventAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Événements institutionnels" group="Territoires" />
-
-            <argument />
-            <argument>App\Entity\Event\InstitutionalEvent</argument>
-            <argument />
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="App\Referent\ReferentTagManager"/>
         </service>
 
         <service id="app.admin.event_category" class="App\Admin\EventCategoryAdmin">
@@ -366,14 +355,6 @@
 
             <argument />
             <argument>App\Entity\Event\EventGroupCategory</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.institutional_event_category" class="App\Admin\InstitutionalEventCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Catégories d'événements institutionnels" group="Territoires" />
-
-            <argument />
-            <argument>App\Entity\Event\InstitutionalEventCategory</argument>
             <argument />
         </service>
 
