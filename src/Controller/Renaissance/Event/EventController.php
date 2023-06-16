@@ -2,6 +2,7 @@
 
 namespace App\Controller\Renaissance\Event;
 
+use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventInvitation;
@@ -27,11 +28,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[IsGranted('ROLE_RENAISSANCE_USER')]
 class EventController extends AbstractController
 {
+    use CanaryControllerTrait;
     private const ITEMS_PER_PAGE = 6;
 
     #[Route(name: '_list', methods: ['GET'])]
     public function listAction(Request $request): Response
     {
+        $this->disableInProduction();
+
         return $this->render('renaissance/adherent/events/list.html.twig', []);
     }
 
