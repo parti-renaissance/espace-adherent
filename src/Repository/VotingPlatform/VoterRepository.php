@@ -7,6 +7,7 @@ use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
@@ -158,6 +159,25 @@ class VoterRepository extends ServiceEntityRepository
             ->groupBy('voter.id')
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function isInVoterListForCommitteeElection(Adherent $adherent): bool
+    {
+        return 0 < (int) $this->createQueryBuilder('voter')
+            ->select('COUNT(1)')
+            ->innerJoin('voter.votersLists', 'list')
+            ->innerJoin('list.election', 'election')
+            ->innerJoin('election.designation', 'designation', Join::WITH, 'designation.type = :designation_type')
+            ->innerJoin('election.electionEntity', 'election_entity')
+            ->innerJoin('election_entity.committee', 'committee', Join::WITH, 'committee.version = 2')
+            ->where('voter.adherent = :adherent')
+            ->setParameters([
+                'adherent' => $adherent,
+                'designation_type' => DesignationTypeEnum::COMMITTEE_SUPERVISOR,
+            ])
+            ->getQuery()
+            ->getSingleScalarResult()
         ;
     }
 }

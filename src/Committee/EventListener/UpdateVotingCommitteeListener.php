@@ -3,20 +3,26 @@
 namespace App\Committee\EventListener;
 
 use App\Committee\CommitteeManager;
+use App\Committee\Event\CommitteeEventInterface;
+use App\Committee\Event\FollowCommitteeEvent;
+use App\Committee\Event\UnfollowCommitteeEvent;
 use App\Entity\CommitteeCandidacy;
+use App\Membership\UserEvents;
 use App\VotingPlatform\Election\Event\NewVote;
+use App\VotingPlatform\Election\VotersListManager;
 use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Event\CommitteeCandidacyEvent;
 use App\VotingPlatform\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class UpdateVotingCommitteeOnCandidateListener implements EventSubscriberInterface
+class UpdateVotingCommitteeListener implements EventSubscriberInterface
 {
-    private $committeeManager;
-
-    public function __construct(CommitteeManager $committeeManager)
-    {
-        $this->committeeManager = $committeeManager;
+    public function __construct(
+        private readonly CommitteeManager $committeeManager,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly VotersListManager $votersListManager
+        ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -24,6 +30,8 @@ class UpdateVotingCommitteeOnCandidateListener implements EventSubscriberInterfa
         return [
             Events::CANDIDACY_CREATED => 'onCandidacyCreated',
             NewVote::class => 'onVoteCreated',
+            UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE => 'onUpdateCommitteeMembership',
+            \App\Events::COMMITTEE_NEW_FOLLOWER => 'onUpdateCommitteeMembership',
         ];
     }
 
@@ -61,5 +69,24 @@ class UpdateVotingCommitteeOnCandidateListener implements EventSubscriberInterfa
         }
 
         $this->committeeManager->enableVoteInMembership($membership, $adherent);
+    }
+
+    public function onUpdateCommitteeMembership(CommitteeEventInterface $event): void
+    {
+        if (!$this->authorizationChecker->isGranted('ROLE_PREVIOUS_ADMIN')) {
+            return;
+        }
+
+        if (!$committee = $event->getCommittee()) {
+            return;
+        }
+
+        $adherent = $event->getAdherent();
+
+        if ($event instanceof UnfollowCommitteeEvent) {
+            $this->votersListManager->removeFromCommitteeElection($adherent, $committee);
+        } elseif ($event instanceof FollowCommitteeEvent) {
+            $this->votersListManager->addToCommitteeElection($adherent, $committee);
+        }
     }
 }

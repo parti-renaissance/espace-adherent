@@ -1,6 +1,8 @@
 {% extends 'renaissance/adherent/my_committee/_layout.html.twig' %}
 
 {% block content_right_side %}
+    {% set allow_change_committee = is_granted('ABLE_TO_CHANGE_COMMITTEE') or is_previous_admin %}
+
     <section class="space-y-4 md:space-y-6">
         <h1 class="text-3xl font-bold leading-10 text-gray-900">Mon comité local</h1>
 
@@ -17,8 +19,8 @@
                         <div class="mt-6 flex items-center justify-between space-x-1 text-gray-500">
                             <span class="text-sm">Créé le <time datetime="{{ my_committee.getCreatedAt()|date('Y-m-d') }}">{{ my_committee.getCreatedAt|format_datetime('none', 'none', 'd MMM yyyy') }}</time></span>
 
-                            {% if not app.user.isForeignResident() %}
-                                <a href="{{ path('app_my_committee_show_list') }}" class="text-dark-blue hover:underline hover:text-light-blue-500">Changer</a>
+                            {% if allow_change_committee %}
+                                <a href="{{ path('app_my_committee_show_list') }}" class="text-dark-blue hover:underline hover:text-light-blue-500">Changer {{ is_previous_admin ? '[🦸]' }}</a>
                             {% endif %}
                         </div>
                     </div>
@@ -28,8 +30,8 @@
             <p>
                 Vous n'êtes dans aucun comité pour le moment.
 
-                {% if not app.user.isForeignResident() %}
-                    Vous pouvez choisir votre comité <a href="{{ path('app_my_committee_show_list') }}" class="text-sky-500">ici</a>
+                {% if allow_change_committee %}
+                    Vous pouvez choisir votre comité <a href="{{ path('app_my_committee_show_list') }}" class="text-sky-500">ici {{ is_previous_admin ? '[🦸]' }}</a>
                 {% endif %}
             </p>
         {% endif %}

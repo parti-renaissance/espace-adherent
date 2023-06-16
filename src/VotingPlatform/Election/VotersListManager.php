@@ -3,20 +3,20 @@
 namespace App\VotingPlatform\Election;
 
 use App\Entity\Adherent;
+use App\Entity\Committee;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\Voter;
+use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class VotersListManager
 {
-    private $entityManager;
-    private $voterRepository;
-
-    public function __construct(EntityManagerInterface $entityManager, VoterRepository $voterRepository)
-    {
-        $this->entityManager = $entityManager;
-        $this->voterRepository = $voterRepository;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly VoterRepository $voterRepository,
+        private readonly ElectionRepository $electionRepository
+    ) {
     }
 
     public function addToElection(Election $election, Adherent $adherent): Voter
@@ -33,5 +33,40 @@ class VotersListManager
         }
 
         return $voter;
+    }
+
+    public function removeFromCommitteeElection(Adherent $adherent, Committee $committee): void
+    {
+        if (!$election = $this->electionRepository->findOneForCommittee($committee, $committee->getCurrentDesignation())) {
+            return;
+        }
+
+        if ($election->isVotePeriodActive()) {
+            return;
+        }
+
+        if (!$voter = $this->voterRepository->findForAdherent($adherent)) {
+            return;
+        }
+
+        if (!$list = $election->getVotersList()) {
+            return;
+        }
+
+        $list->removeVoter($voter);
+        $this->entityManager->flush();
+    }
+
+    public function addToCommitteeElection(Adherent $adherent, Committee $committee): void
+    {
+        if (!$election = $this->electionRepository->findOneForCommittee($committee, $committee->getCurrentDesignation())) {
+            return;
+        }
+
+        if ($election->isVotePeriodActive()) {
+            return;
+        }
+
+        $this->addToElection($election, $adherent);
     }
 }

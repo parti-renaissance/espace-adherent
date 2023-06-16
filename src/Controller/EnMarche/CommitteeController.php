@@ -11,10 +11,10 @@ use App\Entity\CommitteeFeedItem;
 use App\Form\CommitteeFeedItemMessageType;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Security\Http\Session\AnonymousFollowerSession;
+use App\Security\Voter\Committee\ChangeCommitteeVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -184,7 +184,7 @@ class CommitteeController extends AbstractController
 
     #[Route(path: '/voter', defaults: ['enable' => true], name: 'app_committee_vote', condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
     #[Route(path: '/ne-plus-voter', defaults: ['enable' => false], name: 'app_committee_unvote', condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
-    #[Security("is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') and is_granted('COMMITTEE_IS_NOT_LOCKED', committee)")]
+    #[IsGranted(ChangeCommitteeVoter::PERMISSION)]
     public function toggleCommitteeVoteAction(
         bool $enable,
         Request $request,

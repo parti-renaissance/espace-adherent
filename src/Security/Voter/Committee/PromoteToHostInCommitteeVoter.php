@@ -24,10 +24,10 @@ class PromoteToHostInCommitteeVoter extends Voter
     }
 
     /**
-     * @param Committee $committee
+     * @param Committee $subject
      */
-    protected function voteOnAttribute($attribute, $committee, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        return $committee->isApproved() && $this->committeeManager->countCommitteeHosts($committee, true) < 2;
+        return $subject->isApproved() && $this->committeeManager->countCommitteeHosts($subject, true) < 2;
     }
 }
