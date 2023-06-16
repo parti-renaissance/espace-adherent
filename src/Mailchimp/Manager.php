@@ -96,6 +96,7 @@ class Manager implements LoggerAwareInterface
                 $listId,
                 true
             );
+            $adherent->emailStatusComment = null;
         } catch (InvalidContactEmailException $e) {
             $adherent->emailStatusComment = 'Email invalid';
         } catch (RemovedContactStatusException $e) {
