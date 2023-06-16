@@ -13,9 +13,6 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class CommitteeRuntime implements RuntimeExtensionInterface
 {
-    private const COLOR_STATUS_NOT_FINAL = 'text--gray';
-    private const COLOR_STATUS_ADMINISTRATOR = 'text--bold text--blue--dark';
-
     private $authorizationChecker;
     private $committeeManager;
     private $committeeCandidacyRepository;
@@ -76,19 +73,6 @@ class CommitteeRuntime implements RuntimeExtensionInterface
     public function canSee(Committee $committee): bool
     {
         return $this->authorizationChecker->isGranted(CommitteePermissionEnum::SHOW, $committee);
-    }
-
-    public function getCommitteeColorStatus(Adherent $adherent, Committee $committee): string
-    {
-        if ($adherent->isSupervisorOf($committee) || $adherent->isHostOf($committee)) {
-            return self::COLOR_STATUS_ADMINISTRATOR;
-        }
-
-        if ($committee->isWaitingForApproval()) {
-            return self::COLOR_STATUS_NOT_FINAL;
-        }
-
-        return '';
     }
 
     public function isCandidate(Adherent $adherent, Committee $committee): bool

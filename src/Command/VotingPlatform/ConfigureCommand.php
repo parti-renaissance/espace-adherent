@@ -514,7 +514,11 @@ class ConfigureCommand extends Command
 
         $committee = $election->getElectionEntity()->getCommittee();
 
-        $memberships = $this->entityManager->getRepository(CommitteeMembership::class)->findVotingForElectionMemberships($committee, $designation);
+        $memberships = $this->entityManager->getRepository(CommitteeMembership::class)->findVotingForElectionMemberships(
+            $committee,
+            $designation,
+            false
+        );
 
         $list = $this->createVoterList(
             $election,

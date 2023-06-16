@@ -12,7 +12,6 @@
 
         {% for membership in committee_memberships %}
             {% set committee = membership.committee %}
-            {% set committee_is_locked = not is_granted('COMMITTEE_IS_NOT_LOCKED', committee) %}
 
             <article class="activity-card b__nudge--bottom">
                 <div class="space--30">
@@ -42,11 +41,11 @@
                                     <label class="switch">
                                         <input
                                             type="checkbox"
-                                            class="vote-switcher{{ is_adherent_able_to_change_vote and not committee_is_locked ? ' vote-switcher-enabled'}}"
+                                            class="vote-switcher"
                                             data-committee-title="{{ committee.name }}"
                                             data-committee-slug="{{ committee.slug }}"
                                             data-token="{{ csrf_token('committee.vote') }}"
-                                            {{ not is_adherent_able_to_change_vote or committee_is_locked ? 'disabled="disabled"' }}
+                                            disabled="disabled"
                                             {{ membership.votingCommittee ? 'checked="checked"' }}
                                         >
                                         <span class="slider"></span>
