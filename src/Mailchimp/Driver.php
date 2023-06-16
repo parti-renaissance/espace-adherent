@@ -94,14 +94,14 @@ class Driver implements LoggerAwareInterface
     {
         $response = $this->send('POST', '/campaigns', $request->toArray());
 
-        return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
+        return $this->isSuccessfulResponse($response, true) ? $response->toArray() : [];
     }
 
     public function updateCampaign(string $campaignId, EditCampaignRequest $request): array
     {
         $response = $this->send('PATCH', sprintf('/campaigns/%s', $campaignId), $request->toArray());
 
-        return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
+        return $this->isSuccessfulResponse($response, true) ? $response->toArray() : [];
     }
 
     public function editCampaignContent(string $campaignId, EditCampaignContentRequest $request): ResponseInterface
@@ -116,7 +116,7 @@ class Driver implements LoggerAwareInterface
 
     public function sendCampaign(string $externalId): bool
     {
-        return $this->sendRequest('POST', sprintf('/campaigns/%s/actions/send', $externalId));
+        return $this->sendRequest('POST', sprintf('/campaigns/%s/actions/send', $externalId), [], true);
     }
 
     public function sendTestCampaign(string $externalId, array $emails): bool
@@ -221,16 +221,22 @@ class Driver implements LoggerAwareInterface
         return null;
     }
 
-    public function isSuccessfulResponse(?ResponseInterface $response): bool
+    public function isSuccessfulResponse(?ResponseInterface $response, bool $log = false): bool
     {
-        return $response && 200 <= $response->getStatusCode() && $response->getStatusCode() < 300;
+        $isSuccessful = $response && 200 <= $response->getStatusCode() && $response->getStatusCode() < 300;
+
+        if (!$isSuccessful && $log && $response) {
+            $this->logger->error(sprintf('[API] Error: %s', $response->getContent(false)));
+        }
+
+        return $isSuccessful;
     }
 
-    private function sendRequest(string $method, string $uri, array $body = []): bool
+    private function sendRequest(string $method, string $uri, array $body = [], bool $log = false): bool
     {
         $response = $this->send($method, $uri, $body);
 
-        return $response ? $this->isSuccessfulResponse($response) : false;
+        return $response ? $this->isSuccessfulResponse($response, $log) : false;
     }
 
     private function send(string $method, string $uri, array $body = []): ?ResponseInterface
