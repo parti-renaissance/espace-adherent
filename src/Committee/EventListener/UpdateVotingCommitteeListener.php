@@ -22,7 +22,7 @@ class UpdateVotingCommitteeListener implements EventSubscriberInterface
         private readonly CommitteeManager $committeeManager,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly VotersListManager $votersListManager
-        ) {
+    ) {
     }
 
     public static function getSubscribedEvents(): array
