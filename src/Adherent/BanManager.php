@@ -35,6 +35,6 @@ class BanManager
 
     public function canBan(Adherent $adherent): bool
     {
-        return !$adherent->isToDelete() && [] === array_diff($adherent->getRoles(), ['ROLE_ADHERENT', 'ROLE_USER']);
+        return !$adherent->isToDelete() && [] === array_diff($adherent->getRoles(), ['ROLE_RENAISSANCE_USER', 'ROLE_ADHERENT', 'ROLE_USER']);
     }
 }
