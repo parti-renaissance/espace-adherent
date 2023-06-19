@@ -13,7 +13,7 @@ class ListFilter
 
     private ?EventCategory $category = null;
 
-    private ?Zone $zone =null;
+    private ?Zone $zone = null;
 
     private ?Zone $defaultZone;
 
