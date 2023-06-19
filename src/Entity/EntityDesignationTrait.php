@@ -148,7 +148,7 @@ trait EntityDesignationTrait
     }
 
     /**
-     * @Groups({"committee_election:read"})
+     * @Groups({"committee:read", "committee_election:read"})
      */
     public function getStatus(): string
     {

@@ -100,7 +100,8 @@ Feature:
             "updated_at": "@string@.isDateTime()",
             "name": "Second Comité des 3 communes",
             "committee_election": {
-                "uuid": "@uuid@"
+                "uuid": "@uuid@",
+                "status": "not_started"
             }
         }
         """
@@ -158,7 +159,8 @@ Feature:
             "updated_at": "@string@.isDateTime()",
             "name": "Second Comité des 3 communes",
             "committee_election": {
-                "uuid": "@uuid@"
+                "uuid": "@uuid@",
+                "status": "not_started"
             }
         }
         """
@@ -214,7 +216,8 @@ Feature:
             "updated_at": "@string@.isDateTime()",
             "name": "test 1",
             "committee_election": {
-                "uuid": "@uuid@"
+                "uuid": "@uuid@",
+                "status": "not_started"
             }
         }
         """
@@ -269,7 +272,8 @@ Feature:
             "updated_at": "@string@.isDateTime()",
             "name": "test 1",
             "committee_election": {
-                "uuid": "@uuid@"
+                "uuid": "@uuid@",
+                "status": "not_started"
             }
         }
         """
