@@ -9,10 +9,8 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
-use App\Entity\Event\InstitutionalEvent;
 use App\Geo\ZoneMatcher;
 use App\Image\ImageManager;
-use App\InstitutionalEvent\InstitutionalEventCommand;
 use App\Referent\ReferentTagManager;
 use Ramsey\Uuid\Uuid;
 
@@ -79,40 +77,6 @@ class EventFactory
         return $event;
     }
 
-    public function createInstitutionalEventFromArray(array $data): InstitutionalEvent
-    {
-        foreach (['uuid', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at', 'capacity'] as $key) {
-            if (empty($data[$key])) {
-                throw new \InvalidArgumentException(sprintf('Key "%s" is missing or has an empty value.', $key));
-            }
-        }
-
-        $uuid = Uuid::fromString($data['uuid']);
-
-        $event = new InstitutionalEvent(
-            $uuid,
-            $data['organizer'] ?? null,
-            $data['name'],
-            $data['category'],
-            $data['description'],
-            $data['address'],
-            $data['begin_at'],
-            $data['finish_at']
-        );
-
-        if (!empty($data['time_zone'])) {
-            $event->setTimeZone($data['time_zone']);
-        }
-
-        if (!empty($data['visio_url'])) {
-            $event->setVisioUrl($data['visio_url']);
-        }
-
-        $this->referentTagManager->assignReferentLocalTags($event);
-
-        return $event;
-    }
-
     public function createFromEventCommand(EventCommand $command, string $eventClass): BaseEvent
     {
         if (!is_a($eventClass, BaseEvent::class, true)) {
@@ -167,59 +131,6 @@ class EventFactory
         }
 
         return $event;
-    }
-
-    public function createFromInstitutionalEventCommand(InstitutionalEventCommand $command): InstitutionalEvent
-    {
-        $event = new InstitutionalEvent(
-            $command->getUuid(),
-            $command->getAuthor(),
-            $command->getName(),
-            $command->getCategory(),
-            $command->getDescription(),
-            $this->createPostAddress($command->getAddress()),
-            $command->getBeginAt()->format(\DATE_ATOM),
-            $command->getFinishAt()->format(\DATE_ATOM),
-            $command->getInvitations()
-        );
-
-        $event->setTimeZone($command->getTimeZone());
-        $event->setVisioUrl($command->getVisioUrl());
-        $event->setImage($command->getImage());
-
-        $this->referentTagManager->assignReferentLocalTags($event);
-
-        if ($event->getImage()) {
-            $this->imageManager->saveImage($event);
-        }
-
-        return $event;
-    }
-
-    public function updateFromInstitutionalEventCommand(
-        InstitutionalEventCommand $command,
-        InstitutionalEvent $institutionalEvent
-    ): void {
-        $institutionalEvent->update(
-            $command->getName(),
-            $command->getDescription(),
-            $this->createPostAddress($command->getAddress()),
-            $command->getTimeZone(),
-            $command->getBeginAt(),
-            $command->getFinishAt(),
-            $command->getVisioUrl()
-        );
-
-        $institutionalEvent->setCategory($command->getCategory());
-        $institutionalEvent->setInvitations($command->getInvitations());
-        $institutionalEvent->setImage($command->getImage());
-        $institutionalEvent->setRemoveImage($command->isRemoveImage());
-
-        if ($institutionalEvent->isRemoveImage() && $institutionalEvent->hasImageName()) {
-            $this->imageManager->removeImage($institutionalEvent);
-        } elseif ($institutionalEvent->getImage()) {
-            $this->imageManager->saveImage($institutionalEvent);
-        }
     }
 
     public function updateFromEventCommand(BaseEvent $event, EventCommand $command): void

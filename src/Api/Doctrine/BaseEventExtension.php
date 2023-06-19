@@ -40,11 +40,6 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
             return;
         }
 
-        $queryBuilder
-            ->andWhere($queryBuilder->getRootAliases()[0].' NOT INSTANCE OF :institutional')
-            ->setParameter('institutional', EventTypeEnum::TYPE_INSTITUTIONAL)
-        ;
-
         $this->modifyQuery($queryBuilder, BaseEvent::STATUSES, $operation->getName());
     }
 
@@ -67,18 +62,9 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
                 EventTypeEnum::TYPE_COMMITTEE,
             ];
 
-            if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')) {
-                $allowedTypes[] = EventTypeEnum::TYPE_INSTITUTIONAL;
-            }
-
             $queryBuilder
                 ->andWhere($alias.' INSTANCE OF :allowed_types')
                 ->setParameter('allowed_types', $allowedTypes)
-            ;
-        } else {
-            $queryBuilder
-                ->andWhere($alias.' NOT INSTANCE OF :institutional')
-                ->setParameter('institutional', EventTypeEnum::TYPE_INSTITUTIONAL)
             ;
         }
 

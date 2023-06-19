@@ -23,7 +23,6 @@ use App\Entity\Email;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventCategory;
 use App\Entity\Event\EventRegistration;
-use App\Entity\Event\InstitutionalEvent;
 use App\Entity\Filesystem\File;
 use App\Entity\Invite;
 use App\Entity\JeMarcheReport;
@@ -76,7 +75,6 @@ use App\Repository\EmailSubscriptionHistoryRepository;
 use App\Repository\EventRegistrationRepository;
 use App\Repository\EventRepository;
 use App\Repository\Filesystem\FileRepository;
-use App\Repository\InstitutionalEventRepository;
 use App\Repository\InviteRepository;
 use App\Repository\JeMarcheReportRepository;
 use App\Repository\MyEuropeChoiceRepository;
@@ -220,11 +218,6 @@ trait TestHelperTrait
     public function getEventRepository(): EventRepository
     {
         return $this->getRepository(CommitteeEvent::class);
-    }
-
-    public function getInstitutionalEventRepository(): InstitutionalEventRepository
-    {
-        return $this->getRepository(InstitutionalEvent::class);
     }
 
     public function getCommitteeFeedItemRepository(): CommitteeFeedItemRepository

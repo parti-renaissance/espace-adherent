@@ -76,7 +76,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     EventTypeEnum::TYPE_COMMITTEE: "CommitteeEvent",
  *     EventTypeEnum::TYPE_COALITION: "CoalitionEvent",
  *     EventTypeEnum::TYPE_CAUSE: "CauseEvent",
- *     EventTypeEnum::TYPE_INSTITUTIONAL: "InstitutionalEvent",
  * })
  *
  * @DateRange(
@@ -447,6 +446,10 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     private $mode;
 
     /**
+     * @var EventCategoryInterface|EventCategory|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventCategory")
+     *
      * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_write"})
      */
     protected $category;

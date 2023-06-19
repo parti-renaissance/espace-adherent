@@ -11,7 +11,6 @@ use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\EventRegistration;
-use App\Entity\Event\InstitutionalEvent;
 use App\Entity\Geo\Zone;
 use App\Event\EventTypeEnum;
 use App\Repository\GeoZoneTrait;
@@ -188,7 +187,6 @@ class BaseEventRepository extends ServiceEntityRepository
             ->andWhere((new Orx())
                 ->add(sprintf('event INSTANCE OF %s', DefaultEvent::class))
                 ->add(sprintf('event INSTANCE OF %s', CommitteeEvent::class))
-                ->add(sprintf('event INSTANCE OF %s', InstitutionalEvent::class))
             )
             ->andWhere('event.beginAt >= :start_after')
             ->andWhere('event.beginAt < :start_before')

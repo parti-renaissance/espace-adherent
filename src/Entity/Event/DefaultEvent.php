@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     itemOperations={"get"},
  * )
  */
-class DefaultEvent extends BaseEventWithCategory
+class DefaultEvent extends BaseEvent
 {
     public function getType(): string
     {

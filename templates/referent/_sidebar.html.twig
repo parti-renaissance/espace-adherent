@@ -126,15 +126,9 @@
         {% endif %}
     {% endif %}
 
-    {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_INSTITUTIONAL_EVENTS') %}
+    {% if isReferent %}
         <ul>
             <li class="menu-section">Mon équipe</li>
-
-            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_INSTITUTIONAL_EVENTS') %}
-                <li class="{{ is_active_route(app.request, 'app_referent_institutional_events*') ? 'active' }}">
-                    <a href="{{ path('app_referent_institutional_events_list') }}">Réunions privées</a>
-                </li>
-            {% endif %}
 
             {% if isReferent %}
                 <li class="{{ is_active_route(app.request, ['app_referent_my_team_list', 'app_referent_my_team_delegate_access']) ? 'active' }}">

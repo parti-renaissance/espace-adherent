@@ -243,7 +243,7 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 16,
+            "total_items": 15,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
@@ -346,11 +346,11 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 16,
+            "total_items": 15,
             "items_per_page": 3,
             "count": 3,
             "current_page": 1,
-            "last_page": 6
+            "last_page": 5
         },
         "items": [
             {
@@ -482,11 +482,11 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 16,
+            "total_items": 15,
             "items_per_page": 3,
             "count": 3,
             "current_page": 1,
-            "last_page": 6
+            "last_page": 5
         },
         "items": [
             {
@@ -604,11 +604,11 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 16,
+            "total_items": 15,
             "items_per_page": 3,
             "count": 3,
             "current_page": 1,
-            "last_page": 6
+            "last_page": 5
         },
         "items": [
             {
@@ -747,49 +747,13 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 4,
+            "total_items": 3,
             "items_per_page": 10,
-            "count": 4,
+            "count": 3,
             "current_page": 1,
             "last_page": 1
         },
         "items": [
-            {
-                "category": {
-                    "name": "Comité politique",
-                    "slug": "comite-politique"
-                },
-                "uuid": "3f46976e-e76a-476e-86d7-575c6d3bc15e",
-                "name": "Evénement institutionnel numéro 1",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-                    "first_name": "Referent",
-                    "last_name": "Referent"
-                },
-                "participants_count": 0,
-                "status": "SCHEDULED",
-                "capacity": null,
-                "post_address": {
-                    "address": "47 rue Martre",
-                    "postal_code": "92110",
-                    "city": "92110-92024",
-                    "city_name": "Clichy",
-                    "country": "FR",
-                    "latitude": 48.9016,
-                    "longitude": 2.305268
-                },
-                "created_at": "@string@.isDateTime()",
-                "private": false,
-                "electoral": false,
-                "visio_url": null,
-                "mode": null,
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": null
-            },
             {
                 "uuid": "4d962b05-68fe-4888-ab6b-53b96bdbe797",
                 "name": "Un événement du référent annulé",

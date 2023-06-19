@@ -373,11 +373,6 @@ search.geocoding.exception: Nous ne sommes pas parvenus à reconnaître la ville
 #
 # Referent
 #
-referent.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
-referent.event.creation.success: Le nouvel événement a bien été créé.
-referent.institutional_event.create.success: Le nouvel événement institutionnel a bien été créé.
-referent.institutional_event.update.success: L'événement institutionnel a bien été mis à jour.
-referent.institutional_event.delete.success: L'événement institutionnel a bien été supprimé.
 referent.label.tags: Référent
 referent.button.accept: J'ai lu et j'accepte
 referent.popup.title: Charte de bonne utilisation des outils numériques
@@ -545,7 +540,6 @@ event.personal_data_collect: J’accepte que LaREM traite mes données personnel
 event_type.cause: Cause
 event_type.coalition: Coalition
 event_type.municipal: Municipal
-event_type.institutional: Institutionnel
 event_type.committee: Comité
 event_type.default: Standard
 
@@ -1090,7 +1084,6 @@ delegated_access.form.access.jecoute_region: Campagne
 delegated_access.form.access.jecoute_news: Actualités
 delegated_access.form.access.elected_representatives: Élus
 delegated_access.form.access.files: Documents
-delegated_access.form.access.institutional_events: Mes réunions privées
 delegated_access.created_successfully: L'accès délégué à votre espace a correctement été créé
 delegated_access.updated_successfully: L'accès délégué à votre espace a correctement été mis à jour
 delegated_access.deleted_successfully: L'accès délégué à votre espace a correctement été supprimé

@@ -4,9 +4,7 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\DataFixtures\ORM\LoadDelegatedAccessData;
-use App\Entity\Event\InstitutionalEvent;
 use App\Entity\Geo\Zone;
-use App\Mailer\Message\InstitutionalEventInvitationMessage;
 use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -126,86 +124,6 @@ class ReferentControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertSame(
             'Votre événement est en ligne mais pas encore diffusé. Partagez-le par message en cliquant ci-dessous.',
             trim($this->client->getCrawler()->filter('.box-success .alert--tips')->text())
-        );
-    }
-
-    public function testCreateInstitutionalEventSuccessful()
-    {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
-
-        $this->client->request(Request::METHOD_GET, '/espace-referent/evenements-institutionnels/creer');
-
-        $data = [];
-        $data['institutional_event']['name'] = 'Un événement institutionnel en Suisse';
-        $data['institutional_event']['category'] = $this->getInstitutionalEventCategoryIdByName('Comité politique');
-        $data['institutional_event']['beginAt'] = '2023-06-14 16:00';
-        $data['institutional_event']['finishAt'] = '2023-06-15 23:00';
-        $data['institutional_event']['address']['address'] = 'Pilgerweg 58';
-        $data['institutional_event']['address']['cityName'] = 'Kilchberg';
-        $data['institutional_event']['address']['postalCode'] = '8802';
-        $data['institutional_event']['address']['country'] = 'CH';
-        $data['institutional_event']['description'] = 'Premier événement institutionel en Suisse';
-        $data['institutional_event']['timeZone'] = 'Europe/Zurich';
-        $data['institutional_event']['invitations'] = 'jean@exemple.fr;michel@exemple.fr;marcel@exemple.fr';
-
-        $this->client->submit(
-            $this->client->getCrawler()->selectButton('Créer cette réunion privée')->form(), $data
-        );
-
-        /** @var InstitutionalEvent $event */
-        $event = $this->getInstitutionalEventRepository()->findOneBy(
-            ['name' => 'Un événement institutionnel en Suisse']
-        );
-
-        $this->assertInstanceOf(InstitutionalEvent::class, $event);
-        $this->assertClientIsRedirectedTo('/espace-referent/evenements-institutionnels', $this->client);
-
-        $this->client->followRedirect();
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString(
-            'Le nouvel événement institutionnel a bien été créé.',
-            $this->client->getCrawler()->filter('div.flash--info')->html()
-        );
-
-        $this->assertCountMails(1, InstitutionalEventInvitationMessage::class, 'referent@en-marche-dev.fr');
-    }
-
-    public function testCreateInstitutionalEventFailed()
-    {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
-
-        $this->client->request(Request::METHOD_GET, '/espace-referent/evenements-institutionnels/creer');
-
-        // Submit the form with empty values
-        $this->client->submit($this->client->getCrawler()
-            ->selectButton('Créer cette réunion privée')->form(), [])
-        ;
-
-        $this->assertSame(6, $this->client->getCrawler()->filter('.form__errors')->count());
-
-        $this->assertSame('Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#institutional_event-name-field > .form__errors > li')->text()
-        );
-
-        $this->assertSame('Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#institutional_event-description-field > .form__errors > li')->text()
-        );
-
-        $this->assertSame("L'adresse est obligatoire.",
-            $this->client->getCrawler()->filter(
-                '#institutional_event-address-address-field > .form__errors > li')->text()
-        );
-
-        $this->assertSame('Veuillez sélectionner un pays.',
-            $this->client->getCrawler()->filter('#institutional_event-address-country-field > .form__errors > li')->text()
-        );
-
-        $this->assertSame('Vous devez saisir au moins une adresse email.',
-            $this->client->getCrawler()->filter('#institutional_event-invitations-field > .form__errors > li')->text()
-        );
-
-        $this->assertSame('Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#institutional_event-description-field > .form__errors > li')->text()
         );
     }
 
