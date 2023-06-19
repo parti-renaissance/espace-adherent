@@ -396,7 +396,10 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
                 '(mandate.finishAt IS NULL OR mandate.finishAt > :now) AND mandate.onGoing = 1 AND mandate.isElected = 1'
             )
             ->andWhere('elected_representative.adherent = :adherent')
-            ->setParameter('adherent', $adherent)
+            ->setParameters([
+                'adherent' => $adherent,
+                'now' => new \DateTime(),
+            ])
             ->getQuery()
             ->getArrayResult()
         ;
