@@ -6,7 +6,8 @@ use App\Assessor\Filter\AssessorRequestExportFilter;
 use App\Assessor\Filter\AssessorRequestFilters;
 use App\Entity\Adherent;
 use App\Entity\AssessorRequest;
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
+use App\Repository\Election\VotePlaceRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -15,7 +16,6 @@ use Doctrine\Persistence\ManagerRegistry;
 class AssessorRequestRepository extends ServiceEntityRepository
 {
     use GeoFilterTrait;
-    use AssessorLocationTrait;
 
     private const ALIAS = 'ar';
 
@@ -46,6 +46,26 @@ class AssessorRequestRepository extends ServiceEntityRepository
             ->addOrderBy('vp.code', 'DESC')
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    protected static function addAndWhereAssessorRequestLocation(
+        QueryBuilder $qb,
+        AssessorRequest $assessorRequest,
+        string $alias
+    ): QueryBuilder {
+        if ($assessorRequest->isFrenchAssessorRequest()) {
+            return $qb
+                ->andWhere("FIND_IN_SET(:postalCode, $alias.postAddress.postalCode) > 0")
+                ->setParameter('postalCode', $assessorRequest->getAssessorPostalCode())
+                ->andWhere($alias.'.postAddress.cityName = :city')
+                ->setParameter('city', $assessorRequest->getAssessorCity())
+            ;
+        }
+
+        return $qb
+            ->andWhere("$alias.country = :countryCode")
+            ->setParameter('countryCode', $assessorRequest->getAssessorCountry())
         ;
     }
 
@@ -94,7 +114,6 @@ class AssessorRequestRepository extends ServiceEntityRepository
             $votePlacesCountQuery = clone $qb;
 
             self::addAndWhereAssessorRequestLocation($votePlacesCountQuery, $assessorRequest, $alias);
-            VotePlaceRepository::addAndWhereOfficeAvailability($votePlacesCountQuery, $assessorRequest);
 
             $assessorRequests[$key] = [
                 'data' => $assessorRequest,

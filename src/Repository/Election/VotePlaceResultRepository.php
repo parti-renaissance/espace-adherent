@@ -4,9 +4,9 @@ namespace App\Repository\Election;
 
 use App\Entity\City;
 use App\Entity\Election;
+use App\Entity\Election\VotePlace;
 use App\Entity\Election\VotePlaceResult;
 use App\Entity\ElectionRound;
-use App\Entity\VotePlace;
 use App\Repository\GeoFilterTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
@@ -31,16 +31,6 @@ class VotePlaceResultRepository extends ServiceEntityRepository
         $this->applyGeoFilter($qb, $referentTags, $alias, "$alias.country", "$alias.postalCode");
 
         return $qb->getQuery();
-    }
-
-    public function getExportQueryByInseeCodes(Election $election, array $inseeCodes): Query
-    {
-        return $this
-            ->createElectionQueryBuilder($election, $alias = 'vote_result')
-            ->andWhere('SUBSTRING_INDEX(vote_place.code, \'_\', 1) IN (:insee_codes)')
-            ->setParameter('insee_codes', $inseeCodes)
-            ->getQuery()
-        ;
     }
 
     private function createElectionQueryBuilder(Election $election, string $alias = 'vote_result'): QueryBuilder

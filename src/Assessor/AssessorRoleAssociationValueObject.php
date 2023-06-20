@@ -3,7 +3,7 @@
 namespace App\Assessor;
 
 use App\Entity\Adherent;
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
 
 class AssessorRoleAssociationValueObject
 {

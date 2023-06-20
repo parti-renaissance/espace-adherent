@@ -24,6 +24,7 @@ class VotePlace
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityNullablePostAddressTrait;
+    public const MAX_ASSESSOR_REQUESTS = 2;
 
     /**
      * @ORM\Column

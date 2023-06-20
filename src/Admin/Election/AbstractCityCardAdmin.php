@@ -6,7 +6,7 @@ use App\Entity\Election\CityCard;
 use App\Entity\Election\CityContact;
 use App\Entity\Election\CityVoteResult;
 use App\Entity\Election\MinistryVoteResult;
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
 use App\Form\EventListener\CityCardListener;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;

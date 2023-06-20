@@ -1,5 +1,5 @@
 {% for votePlace in vote_places %}
-    {% set availablePlaces = constant('App\\Entity\\VotePlace::MAX_ASSESSOR_REQUESTS') - availabilities[votePlace.getId()].holder_count - availabilities[votePlace.getId()].substitute_count %}
+    {% set availablePlaces = constant('App\\Entity\\Election\\VotePlace::MAX_ASSESSOR_REQUESTS') - availabilities[votePlace.getId()].holder_count - availabilities[votePlace.getId()].substitute_count %}
     <tr>
         <td class="datagrid__table__col--hide-mobile">
             {{ votePlace.id }}
@@ -30,7 +30,7 @@
             {% endif %}
         </td>
         <td>
-            {% if availablePlaces != constant('App\\Entity\\VotePlace::MAX_ASSESSOR_REQUESTS') %}
+            {% if availablePlaces != constant('App\\Entity\\Election\\VotePlace::MAX_ASSESSOR_REQUESTS') %}
                 {% for row in availabilities[votePlace.getId()].holder_uuids|split(',')|filter(i => i)|merge(availabilities[votePlace.getId()].substitute_uuids|split(',')|filter(i => i)) %}
                     {% set parts = row|split('|') %}
                     Associé à la demande de <a href="{{ path('app_assessor_manager_request', { uuid: parts[0] }) }}">{{ parts[1] }} {{ parts[2] }}</a><br>

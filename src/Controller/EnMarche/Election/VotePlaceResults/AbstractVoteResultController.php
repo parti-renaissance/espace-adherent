@@ -3,8 +3,8 @@
 namespace App\Controller\EnMarche\Election\VotePlaceResults;
 
 use App\Election\ElectionManager;
+use App\Entity\Election\VotePlace;
 use App\Entity\Election\VotePlaceResult;
-use App\Entity\VotePlace;
 use App\Form\Election\VoteResultWithListsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

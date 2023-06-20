@@ -5,7 +5,7 @@ namespace App\Assessor\AssessorRole;
 use App\Assessor\AssessorRoleAssociationValueObject;
 use App\Entity\Adherent;
 use App\Entity\AssessorRoleAssociation;
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 

@@ -2,7 +2,7 @@
 
 namespace App\Controller\EnMarche\Election\VotePlaceResults;
 
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
 use App\Security\Voter\ManageVotePlaceVoter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -4,7 +4,7 @@ namespace App\Security\Voter;
 
 use App\Address\Address;
 use App\Entity\Adherent;
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
 
 class ManageVotePlaceVoter extends AbstractAdherentVoter
 {
