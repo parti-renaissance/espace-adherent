@@ -43,7 +43,7 @@ class AdminAdherentCRUDController extends CRUDController
 
             $this->addFlash(
                 'error',
-                sprintf('Merci de retirer les rôles suivants: %s', implode(', ', array_diff($adherent->getRoles(), ['ROLE_RENAISSANCE_USER', 'ROLE_ADHERENT', 'ROLE_USER'])) )
+                sprintf('Merci de retirer les rôles suivants: %s', implode(', ', array_diff($adherent->getRoles(), ['ROLE_RENAISSANCE_USER', 'ROLE_ADHERENT', 'ROLE_USER'])))
             );
 
             return $this->redirectTo($request, $adherent);
