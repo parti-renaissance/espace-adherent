@@ -6,6 +6,21 @@
     <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
+{% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('js/jquery/jquery-2.2.4.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+    <script type="text/javascript" src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+    <script type="text/javascript">
+        Bootstrap.onLoad(function() {
+            $('.select2entity').select2entity({
+                theme: 'default em-filters',
+                multiple: false,
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block content_right_side %}
     <section class="isolate relative">
         <a href="{{ path('app_renaissance_event_my_events_list') }}" class="inline-flex items-center text-sm leading-5 text-re-blue-500 hover:text-re-blue-400">
@@ -46,22 +61,4 @@
             {{ include('renaissance/adherent/events/partials/_search_result.html.twig') }}
         </div>
     </section>
-{% endblock %}
-
-{% block final_javascripts %}
-    <script type="text/javascript" src={{ asset('js/jquery/jquery-2.2.4.min.js') }}></script>
-    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
-    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
-    <script type="text/javascript">
-        Bootstrap.onLoad(function() {
-            $('.select2entity').each(function () {
-                $(this).select2({
-                    placeholder: this.dataset.placeholder || '',
-                    theme: 'default em-filters',
-                    multiple: false,
-                });
-            });
-
-        });
-    </script>
 {% endblock %}
