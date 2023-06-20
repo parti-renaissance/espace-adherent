@@ -50087,6 +50087,5 @@ class FranceCitiesBundle
             '98890' => [
                 '98821' => 'Paita',
             ],
-        ]
-    ;
+        ];
 }

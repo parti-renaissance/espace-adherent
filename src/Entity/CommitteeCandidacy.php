@@ -167,8 +167,7 @@ class CommitteeCandidacy extends BaseCandidacy
     public function isValid(): bool
     {
         return $this->hasImageName() && !$this->isRemoveImage()
-            || $this->getImage()
-        ;
+            || $this->getImage();
     }
 
     protected function createCandidaciesGroup(): BaseCandidaciesGroup

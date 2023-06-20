@@ -41,8 +41,7 @@ trait FeedItemControllerTrait
                             'id' => $feed->getId(),
                         ]),
                     "{$feedItemType}_delete_feed_item"
-                )->createView()
-                ;
+                )->createView();
             }
         }
 

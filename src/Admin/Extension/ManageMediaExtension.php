@@ -24,9 +24,9 @@ class ManageMediaExtension extends AbstractAdminExtension
         // Cycle through each field
         foreach ($admin->getFormFieldDescriptions() as $fieldName => $fieldDescription) {
             // detect embedded Admins that manage Images
-            if (AdminType::class === $fieldDescription->getType() &&
-                ($associationMapping = $fieldDescription->getAssociationMapping()) &&
-                Media::class === $associationMapping['targetEntity']
+            if (AdminType::class === $fieldDescription->getType()
+                && ($associationMapping = $fieldDescription->getAssociationMapping())
+                && Media::class === $associationMapping['targetEntity']
             ) {
                 $getter = 'get'.$fieldName;
                 $setter = 'set'.$fieldName;

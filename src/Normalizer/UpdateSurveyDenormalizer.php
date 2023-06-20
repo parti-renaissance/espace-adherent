@@ -51,8 +51,7 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
     {
         return !isset($context[self::ALREADY_CALLED])
             && is_a($type, Survey::class, true)
-            && 'api_surveys_put_item' === ($context['operation_name'] ?? null)
-        ;
+            && 'api_surveys_put_item' === ($context['operation_name'] ?? null);
     }
 
     private function handleChanges(Survey $survey, array $question, $format = null, array $context = []): SurveyQuestion

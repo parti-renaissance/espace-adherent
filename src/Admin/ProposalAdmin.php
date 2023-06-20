@@ -36,8 +36,7 @@ class ProposalAdmin extends AbstractAdmin
     {
         $slugEditable =
             null === $this->getSubject()->getTitle()   // Creation
-            || !$this->getSubject()->isPublished()     // Draft
-        ;
+            || !$this->getSubject()->isPublished();     // Draft
 
         $form
             ->with('Méta-données', ['class' => 'col-md-8'])

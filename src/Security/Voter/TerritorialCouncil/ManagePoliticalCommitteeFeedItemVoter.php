@@ -18,8 +18,7 @@ class ManagePoliticalCommitteeFeedItemVoter extends AbstractAdherentVoter
             && $subject->getAuthor()->equals($adherent)
             && $adherent->isTerritorialCouncilPresident()
             && $adherent->isPoliticalCommitteeMember()
-            && $adherent->getPoliticalCommitteeMembership()->getPoliticalCommittee() === $subject->getPoliticalCommittee()
-        ;
+            && $adherent->getPoliticalCommitteeMembership()->getPoliticalCommittee() === $subject->getPoliticalCommittee();
     }
 
     protected function supports(string $attribute, $subject): bool

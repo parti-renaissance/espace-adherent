@@ -21,8 +21,7 @@ class ContactAgeConditionBuilder implements SegmentConditionBuilderInterface
             || $filter instanceof ReferentUserFilter
             || $filter instanceof CommitteeFilter
             || $filter instanceof AudienceFilter
-            || $filter instanceof MessageFilter
-        ;
+            || $filter instanceof MessageFilter;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

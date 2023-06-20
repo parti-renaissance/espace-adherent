@@ -221,7 +221,7 @@ class Donation implements GeoPointInterface
         int $amount = null,
         \DateTimeInterface $donatedAt = null,
         PostAddress $postAddress = null,
-        ?string $clientIp = null,
+        string $clientIp = null,
         int $duration = PayboxPaymentSubscription::NONE,
         string $payboxOrderRef = null,
         string $nationality = null,

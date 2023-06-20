@@ -268,8 +268,8 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         Building $building,
         Campaign $campaign,
         Adherent $createdBy,
-        ?\DateTime $createdAt = null,
-        ?CampaignStatisticsInterface $stats = null
+        \DateTime $createdAt = null,
+        CampaignStatisticsInterface $stats = null
     ): BuildingEvent {
         $event = new BuildingEvent(
             $building,

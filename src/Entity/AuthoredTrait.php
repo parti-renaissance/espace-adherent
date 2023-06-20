@@ -22,8 +22,7 @@ trait AuthoredTrait
     {
         return $this->getAuthor()
             ? $this->getAuthor()->getFirstName().' '.$this->getAuthor()->getLastName()
-            : 'Anonyme'
-        ;
+            : 'Anonyme';
     }
 
     public function makeAnonymous(): void

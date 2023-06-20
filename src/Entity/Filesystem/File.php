@@ -364,8 +364,7 @@ class File
     {
         return $this->isFile()
             ? sprintf('%s.%s', $this->getName(), $this->getExtension())
-            : ''
-        ;
+            : '';
     }
 
     public function getFullname(): ?string

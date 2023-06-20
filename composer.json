@@ -157,7 +157,6 @@
         "friendsofphp/php-cs-fixer": "^3.0",
         "league/flysystem-memory": "^1.0",
         "masterminds/html5": "^2.7",
-        "pedrotroller/php-cs-custom-fixer": "^2.25",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.6",
         "phpstan/phpstan-doctrine": "^1.3",

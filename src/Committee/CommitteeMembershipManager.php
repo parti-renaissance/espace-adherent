@@ -20,7 +20,7 @@ class CommitteeMembershipManager
         private readonly CommitteeRepository $committeeRepository,
         private readonly CommitteeMembershipRepository $committeeMembershipRepository,
         private readonly EntityManagerInterface $entityManager,
-        ) {
+    ) {
     }
 
     public function findCommitteeByAddress(AddressInterface $address): ?Committee

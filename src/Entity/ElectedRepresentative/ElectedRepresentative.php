@@ -406,7 +406,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->gender;
     }
 
-    public function setGender(?string $gender = null): void
+    public function setGender(string $gender = null): void
     {
         $this->gender = $gender;
     }
@@ -436,7 +436,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->contactEmail;
     }
 
-    public function setContactEmail(?string $contactEmail = null): void
+    public function setContactEmail(string $contactEmail = null): void
     {
         $this->contactEmail = $contactEmail;
     }
@@ -456,7 +456,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->hasFollowedTraining;
     }
 
-    public function setHasFollowedTraining(?bool $hasFollowedTraining = null): void
+    public function setHasFollowedTraining(bool $hasFollowedTraining = null): void
     {
         $this->hasFollowedTraining = $hasFollowedTraining;
     }
@@ -474,7 +474,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->adherent;
     }
 
-    public function setAdherent(?Adherent $adherent = null): void
+    public function setAdherent(Adherent $adherent = null): void
     {
         $this->adherent = $adherent;
     }
@@ -872,8 +872,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
         return $this->payments->matching($criteria)->count() > 0
             ? $this->payments->matching($criteria)->first()
-            : null
-        ;
+            : null;
     }
 
     public function getRevenueDeclarations(): Collection

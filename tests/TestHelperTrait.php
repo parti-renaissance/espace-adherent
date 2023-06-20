@@ -131,7 +131,7 @@ trait TestHelperTrait
         $this->assertCount($count, $mail->getRecipients());
     }
 
-    public function assertCountMails(int $count, string $type, ?string $recipient = null): void
+    public function assertCountMails(int $count, string $type, string $recipient = null): void
     {
         $repository = $this->getEmailRepository();
 

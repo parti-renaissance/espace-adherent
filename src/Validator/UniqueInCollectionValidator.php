@@ -36,8 +36,7 @@ class UniqueInCollectionValidator extends ConstraintValidator
         foreach ($value as $key => $item) {
             $propertyValue = $constraint->propertyPath
                 ? $this->propertyAccessor->getValue($item, $constraint->propertyPath)
-                : $item
-            ;
+                : $item;
 
             if (\in_array($propertyValue, $propertyValues, true)) {
                 $this

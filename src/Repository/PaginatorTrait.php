@@ -33,7 +33,6 @@ trait PaginatorTrait
         return new ApiPaginator(
             $useOutputWalkers
             ? new DoctrinePaginator($query)
-            : (new DoctrinePaginator($query))->setUseOutputWalkers(false))
-        ;
+            : (new DoctrinePaginator($query))->setUseOutputWalkers(false));
     }
 }

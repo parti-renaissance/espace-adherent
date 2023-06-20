@@ -120,8 +120,7 @@ class Candidacy extends BaseCandidacy
             || (
                 TerritorialCouncilQualityEnum::CITY_COUNCILOR === $this->quality
                 && str_starts_with($this->membership->getQualitiesWithZones()[$this->quality], 'Paris ')
-            )
-        ;
+            );
     }
 
     public function getType(): string

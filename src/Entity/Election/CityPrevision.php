@@ -74,11 +74,11 @@ class CityPrevision
     private $validatedBy;
 
     public function __construct(
-        ?string $strategy = null,
-        ?string $name = null,
-        ?string $alliances = null,
-        ?string $allies = null,
-        ?string $validatedBy = null
+        string $strategy = null,
+        string $name = null,
+        string $alliances = null,
+        string $allies = null,
+        string $validatedBy = null
     ) {
         $this->strategy = $strategy;
         $this->name = $name;
@@ -147,7 +147,6 @@ class CityPrevision
         return !$this->strategy
             && !$this->name
             && !$this->alliances
-            && !$this->allies
-        ;
+            && !$this->allies;
     }
 }

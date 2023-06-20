@@ -47,8 +47,7 @@ class ZoneMatcher
             $zones[] =
                 $this->repository->findOneBy(['code' => str_pad($address->getInseeCode(), 5, '0', \STR_PAD_LEFT), 'type' => [Zone::BOROUGH, Zone::CITY]])
                     ?: ($this->matchPostalCode($address->getPostalCode()
-                        ?: $this->matchPostalCode($address->getPostalCode(), $address->getCityName())))
-            ;
+                        ?: $this->matchPostalCode($address->getPostalCode(), $address->getCityName())));
 
             // Districts and cantons
             if ($address instanceof GeoPointInterface) {
@@ -76,7 +75,7 @@ class ZoneMatcher
         return array_values(array_filter(array_unique($zones)));
     }
 
-    public function matchPostalCode(?string $postalCode, ?string $cityName = null): ?Zone
+    public function matchPostalCode(?string $postalCode, string $cityName = null): ?Zone
     {
         if (!$postalCode) {
             return null;

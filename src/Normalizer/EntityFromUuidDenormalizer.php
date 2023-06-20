@@ -29,7 +29,6 @@ class EntityFromUuidDenormalizer implements DenormalizerInterface
     {
         return \is_string($data)
             && Uuid::isValid($data)
-            && str_contains($type, 'App\\Entity\\')
-        ;
+            && str_contains($type, 'App\\Entity\\');
     }
 }

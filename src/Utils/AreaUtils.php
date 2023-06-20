@@ -148,8 +148,7 @@ class AreaUtils
             case self::PREFIX_POSTALCODE_CORSICA:
                 return \in_array(mb_substr($postalCode, 0, 3), self::PREFIX_POSTALCODE_CORSICA_A, true)
                     ? self::CODE_CORSICA_A
-                    : self::CODE_CORSICA_B
-                ;
+                    : self::CODE_CORSICA_B;
             default:
                 return $department;
         }

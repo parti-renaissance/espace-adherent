@@ -976,7 +976,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     }
 
     private function createCommitteeHostsQueryBuilder(
-        ?Committee $committee = null,
+        Committee $committee = null,
         bool $withoutSupervisors = false
     ): QueryBuilder {
         $qb = $this->createQueryBuilder('a');

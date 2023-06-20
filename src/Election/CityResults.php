@@ -56,8 +56,7 @@ class CityResults
     {
         return $this->ministryVoteResult instanceof MinistryVoteResult
             || $this->cityVoteResult instanceof CityVoteResult
-            || !empty($this->votePlacesResults)
-        ;
+            || !empty($this->votePlacesResults);
     }
 
     public function isMinistryResult(): bool
@@ -68,16 +67,14 @@ class CityResults
     public function isCityResult(): bool
     {
         return !$this->isMinistryResult()
-            && $this->cityVoteResult instanceof CityVoteResult
-        ;
+            && $this->cityVoteResult instanceof CityVoteResult;
     }
 
     public function isVotePlacesResults(): bool
     {
         return !$this->isMinistryResult()
             && !$this->isCityResult()
-            && !empty($this->votePlacesResults)
-        ;
+            && !empty($this->votePlacesResults);
     }
 
     public function getAggregatedVotePlacesResult(): VotePlacesResult

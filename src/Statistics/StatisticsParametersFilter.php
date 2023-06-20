@@ -15,9 +15,9 @@ class StatisticsParametersFilter
     private const PARAMETER_CITY_NAME = 'city';
     private const PARAMETER_COUNTRY_CODE = 'country';
 
-    private $committee = null;
-    private $cityName = null;
-    private $countryCode = null;
+    private $committee;
+    private $cityName;
+    private $countryCode;
 
     public static function createFromRequest(
         Request $request,

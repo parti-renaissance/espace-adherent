@@ -32,8 +32,7 @@ trait ImageTrait
                     )
                 ),
                 $image->getClientOriginalExtension()
-            )
-        ;
+            );
     }
 
     public function getImageName(): ?string

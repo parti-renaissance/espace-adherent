@@ -15,8 +15,7 @@ class ReferentToAdherentConditionBuilder extends AbstractStaticSegmentConditionB
     {
         return
             ($filter instanceof ReferentUserFilter && false === $filter->getContactOnlyVolunteers() && false === $filter->getContactOnlyRunningMates())
-            || ($filter instanceof ReferentInstancesFilter)
-        ;
+            || ($filter instanceof ReferentInstancesFilter);
     }
 
     protected function getSegmentId(AdherentMessageFilterInterface $filter, MailchimpCampaign $campaign): int

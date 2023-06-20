@@ -128,7 +128,6 @@ class Client implements ClientInterface
     {
         return 'prod' === $this->goCardlessEnvironment
             ? Environment::LIVE
-            : Environment::SANDBOX
-        ;
+            : Environment::SANDBOX;
     }
 }

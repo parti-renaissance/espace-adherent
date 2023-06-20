@@ -229,8 +229,7 @@ class CommitteeController extends AbstractController
                             'slug' => $feed->getCommittee()->getSlug(),
                         ]),
                     'committee_feed_delete'
-                )->createView()
-                ;
+                )->createView();
             }
         }
 

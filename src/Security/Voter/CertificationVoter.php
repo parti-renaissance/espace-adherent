@@ -10,8 +10,7 @@ class CertificationVoter extends AbstractAdherentVoter
     protected function supports(string $attribute, $subject): bool
     {
         return \in_array($attribute, [CertificationPermissions::CERTIFIED, CertificationPermissions::REQUEST], true)
-            && null === $subject
-        ;
+            && null === $subject;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
@@ -27,8 +26,7 @@ class CertificationVoter extends AbstractAdherentVoter
                 $certificationRequests = $adherent->getCertificationRequests();
 
                 return !$certificationRequests->hasBlockedCertificationRequest()
-                    && !$certificationRequests->hasPendingCertificationRequest()
-                ;
+                    && !$certificationRequests->hasPendingCertificationRequest();
             default:
                 return false;
         }

@@ -10,7 +10,7 @@ $finder = PhpCsFixer\Finder::create()
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PHP81Migration' => true,
+        '@PHP82Migration' => true,
         '@PHP80Migration:risky' => true,
         '@Symfony' => true,
         '@DoctrineAnnotation' => true,
@@ -28,19 +28,12 @@ return (new PhpCsFixer\Config())
         'native_function_invocation' => ['include' => ['@compiler_optimized']],
         'array_syntax' => ['syntax' => 'short'],
         'ordered_imports' => ['sort_algorithm' => 'alpha'],
-        'PedroTroller/line_break_between_method_arguments' => ['max-args' => 20],
-        'PedroTroller/line_break_between_statements' => true,
         'App/doctrine_migration_clean' => true,
-        'App/sensio_to_symfony_route' => true,
-        'App/method_to_route_annotation' => true,
     ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)
     ->setCacheFile(__DIR__.'/var/.php_cs.cache')
     ->registerCustomFixers([
         new App\Fixer\DoctrineMigrationCleanFixer(),
-        new App\Fixer\SensioToSymfonyRouteFixer(),
-        new App\Fixer\MethodToRouteAnnotationFixer(),
     ])
-    ->registerCustomFixers(new PedroTroller\CS\Fixer\Fixers())
 ;

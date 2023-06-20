@@ -17,8 +17,7 @@ class ContactCityConditionBuilder implements SegmentConditionBuilderInterface
         return $filter instanceof AdherentZoneFilter
             || $filter instanceof ReferentUserFilter
             || $filter instanceof MessageFilter
-            || $filter instanceof CommitteeFilter
-        ;
+            || $filter instanceof CommitteeFilter;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
@@ -28,8 +27,7 @@ class ContactCityConditionBuilder implements SegmentConditionBuilderInterface
         if ($city = $campaign->getCity()) {
             $field = is_numeric($city[0])
                 ? MemberRequest::MERGE_FIELD_ZIP_CODE
-                : MemberRequest::MERGE_FIELD_CITY
-            ;
+                : MemberRequest::MERGE_FIELD_CITY;
 
             $conditions[] = [
                 'condition_type' => 'TextMerge',

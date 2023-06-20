@@ -127,7 +127,7 @@ class SendVoteInvitationForDepartmentalElectionsCommand extends Command
         private readonly AdherentRepository $adherentRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly MailerService $transactionalMailer,
-        ) {
+    ) {
         parent::__construct();
     }
 

@@ -19,8 +19,7 @@ class CommitteeConditionBuilder extends AbstractStaticSegmentConditionBuilder
         return $filter instanceof CommitteeFilter
             || ($filter instanceof ReferentUserFilter && $filter->getCommittee())
             || ($filter instanceof AdherentZoneFilter && $filter->getCommittee())
-            || ($filter instanceof MessageFilter && $filter->getCommittee())
-        ;
+            || ($filter instanceof MessageFilter && $filter->getCommittee());
     }
 
     /**

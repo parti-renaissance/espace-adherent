@@ -125,7 +125,7 @@ class ElectedRepresentativeLabel
         return $this->finishYear;
     }
 
-    public function setFinishYear(?int $finishYear = null): void
+    public function setFinishYear(int $finishYear = null): void
     {
         $this->finishYear = $finishYear;
     }

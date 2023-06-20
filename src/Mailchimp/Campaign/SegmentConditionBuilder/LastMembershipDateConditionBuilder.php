@@ -13,8 +13,7 @@ class LastMembershipDateConditionBuilder implements SegmentConditionBuilderInter
     public function support(SegmentFilterInterface $filter): bool
     {
         return $filter instanceof AbstractUserFilter
-            || $filter instanceof AudienceFilter
-        ;
+            || $filter instanceof AudienceFilter;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

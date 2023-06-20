@@ -123,8 +123,7 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
         return
             empty($context[self::DATA_SURVEY_ALREADY_CALLED])
             && $data instanceof DataSurvey
-            && array_intersect(['phoning_campaign_replies_list', 'pap_campaign_replies_list', 'survey_replies_list'], $context['groups'] ?? [])
-        ;
+            && array_intersect(['phoning_campaign_replies_list', 'pap_campaign_replies_list', 'survey_replies_list'], $context['groups'] ?? []);
     }
 
     private function getQuestions(?Survey $survey): array

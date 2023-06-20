@@ -23,8 +23,7 @@ class RevokeReferentTeamMemberRolesListener
     {
         $this->needRevokeRoles = $args->hasChangedField('managedArea')
             && $args->getOldValue('managedArea') instanceof ReferentManagedArea
-            && null === $args->getNewValue('managedArea')
-        ;
+            && null === $args->getNewValue('managedArea');
     }
 
     public function preFlush(Adherent $adherent): void

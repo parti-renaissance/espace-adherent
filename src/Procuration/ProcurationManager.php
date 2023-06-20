@@ -89,7 +89,7 @@ class ProcurationManager
         $this->manager->flush();
     }
 
-    public function disableProcurationRequest(ProcurationRequest $request, ?string $reason = null): void
+    public function disableProcurationRequest(ProcurationRequest $request, string $reason = null): void
     {
         $request->disable($reason);
         $this->manager->flush();

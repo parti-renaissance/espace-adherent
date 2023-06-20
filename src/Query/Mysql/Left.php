@@ -9,8 +9,8 @@ use Doctrine\ORM\Query\SqlWalker;
 
 class Left extends FunctionNode
 {
-    private $firstExpression = null;
-    private $secondExpression = null;
+    private $firstExpression;
+    private $secondExpression;
 
     public function parse(Parser $parser)
     {

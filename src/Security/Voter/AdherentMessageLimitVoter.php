@@ -49,7 +49,6 @@ class AdherentMessageLimitVoter extends AbstractAdherentVoter
     protected function supports(string $attribute, $subject): bool
     {
         return self::USER_CAN_SEND_MESSAGE === $attribute
-            && $subject instanceof AdherentMessageInterface
-        ;
+            && $subject instanceof AdherentMessageInterface;
     }
 }

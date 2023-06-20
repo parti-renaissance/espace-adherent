@@ -38,7 +38,6 @@ class EventCanceledHandler
     {
         return $event instanceof CommitteeEvent
             ? new CommitteeEventEvent($event->getOrganizer(), $event, $event->getCommittee())
-            : new EventEvent($event->getOrganizer(), $event)
-        ;
+            : new EventEvent($event->getOrganizer(), $event);
     }
 }

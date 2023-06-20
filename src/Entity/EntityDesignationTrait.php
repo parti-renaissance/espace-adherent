@@ -66,8 +66,7 @@ trait EntityDesignationTrait
             && (
                 null === $this->getCandidacyPeriodEndDate()
                 || $now < $this->getCandidacyPeriodEndDate()
-            )
-        ;
+            );
     }
 
     public function isCandidacyPeriodStarted(): bool
@@ -87,8 +86,7 @@ trait EntityDesignationTrait
             && (
                 null === $this->getVoteEndDate()
                 || $now < $this->getVoteEndDate()
-            )
-        ;
+            );
     }
 
     public function isVotePeriodStarted(): bool
@@ -113,8 +111,7 @@ trait EntityDesignationTrait
             && $this->getVoteEndDate() <= $now
             && $now < (clone $voteEndDate)->modify(
                 sprintf('+%d days', $this->designation->getResultDisplayDelay())
-            )
-        ;
+            );
     }
 
     public function isResultPeriodStarted(): bool

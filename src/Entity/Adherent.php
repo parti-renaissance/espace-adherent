@@ -856,7 +856,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         bool $exclusiveMembership = false,
         bool $territoiresProgresMembership = false,
         bool $agirMembership = false,
-        ?\DateTime $registeredAt = null
+        \DateTime $registeredAt = null
     ): self {
         $adherent = new self();
 
@@ -886,7 +886,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         PostAddress $postAddress,
         string $password,
         string $status = self::DISABLED,
-        ?string $source = null,
+        string $source = null,
         bool $coalitionSubscription = false,
         bool $causeSubscription = false
     ): self {
@@ -1206,8 +1206,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isPresidentDepartmentalAssembly()
             || $this->isDelegatedPresidentDepartmentalAssembly()
             || $this->isAnimator()
-            || $this->isDelegatedAnimator()
-        ;
+            || $this->isDelegatedAnimator();
     }
 
     public function getPassword(): ?string
@@ -1252,7 +1251,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->phone;
     }
 
-    public function setPhone(?PhoneNumber $phone = null): void
+    public function setPhone(PhoneNumber $phone = null): void
     {
         $this->phone = $phone;
     }
@@ -1612,7 +1611,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function followCommittee(
         Committee $committee,
         \DateTimeInterface $subscriptionDate = null,
-        ?CommitteeMembershipTriggerEnum $trigger = null
+        CommitteeMembershipTriggerEnum $trigger = null
     ): CommitteeMembership {
         return $this->joinCommittee(
             $committee,
@@ -1626,7 +1625,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         Committee $committee,
         string $privilege,
         \DateTimeInterface $subscriptionDate,
-        ?CommitteeMembershipTriggerEnum $trigger = null
+        CommitteeMembershipTriggerEnum $trigger = null
     ): CommitteeMembership {
         $committee->updateMembersCount(true, $this->isRenaissanceUser(), $this->isRenaissanceAdherent());
 
@@ -1711,8 +1710,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return $this->getManagedArea()
             ? $this->getManagedArea()->getReferentTagCodes()
-            : []
-        ;
+            : [];
     }
 
     public function getProcurationManagedArea(): ?ProcurationManagedArea
@@ -2088,8 +2086,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             && !$this->isReferent()
             && !$this->isBoardMember()
             && !$this->isDeputy()
-            && !$this->isSenator()
-        ;
+            && !$this->isSenator();
     }
 
     public function isHost(): bool
@@ -2131,8 +2128,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
                 && $mandate->getCommittee() === $committee
                 && null === $mandate->getFinishAt()
                 && CommitteeMandateQualityEnum::SUPERVISOR === $mandate->getQuality()
-                && (null === $isProvisional || $mandate->isProvisional() === $isProvisional)
-            ;
+                && (null === $isProvisional || $mandate->isProvisional() === $isProvisional);
         })->count() > 0;
     }
 
@@ -2391,8 +2387,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isCorrespondent()
             || $this->isRegionalCoordinator()
             || $this->hasDelegatedAccess(DelegatedAccess::ACCESS_MESSAGES)
-            || $this->hasDelegatedScopeFeature(FeatureEnum::MESSAGES)
-        ;
+            || $this->hasDelegatedScopeFeature(FeatureEnum::MESSAGES);
     }
 
     public function __clone()
@@ -2465,8 +2460,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return
             $this->isHost()
             || $this->isSupervisor()
-            || $this->isReferent()
-        ;
+            || $this->isReferent();
     }
 
     public function getCharters(): AdherentCharterCollection
@@ -2970,18 +2964,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) use ($active) {
             return $mandate instanceof NationalCouncilAdherentMandate
-                && (false === $active || null === $mandate->getFinishAt())
-            ;
+                && (false === $active || null === $mandate->getFinishAt());
         })->toArray();
     }
 
-    public function findTerritorialCouncilMandates(?string $quality = null, bool $active = false): array
+    public function findTerritorialCouncilMandates(string $quality = null, bool $active = false): array
     {
         return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) use ($quality, $active) {
             return $mandate instanceof TerritorialCouncilAdherentMandate
                 && (null === $quality || $mandate->getQuality() === $quality)
-                && (false === $active || null === $mandate->getFinishAt())
-            ;
+                && (false === $active || null === $mandate->getFinishAt());
         })->toArray();
     }
 
@@ -3027,8 +3019,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
                 && CommitteeMandateQualityEnum::SUPERVISOR === $mandate->getQuality()
                 && null === $mandate->getFinishAt()
                 && (null === $isProvisional || $mandate->isProvisional() === $isProvisional)
-                && (null === $gender || $mandate->getGender() === $gender)
-            ;
+                && (null === $gender || $mandate->getGender() === $gender);
         });
     }
 
@@ -3259,8 +3250,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             && $this->isAdherent()
             && $this->isEnabled()
             && $this->registeredAt
-            && (clone $this->registeredAt)->modify('+3 months') < new \DateTime('2022-09-16 08:00:00')
-        ;
+            && (clone $this->registeredAt)->modify('+3 months') < new \DateTime('2022-09-16 08:00:00');
     }
 
     public function donatedForMembership(\DateTimeInterface $donatedAt = null): void

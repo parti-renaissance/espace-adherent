@@ -159,7 +159,7 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
         return $this->confirmedAt;
     }
 
-    public function setConfirmedAt(?\DateTimeInterface $confirmedAt = null): void
+    public function setConfirmedAt(\DateTimeInterface $confirmedAt = null): void
     {
         $this->confirmedAt = $confirmedAt;
     }
@@ -174,7 +174,7 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
         return $this->token;
     }
 
-    public function setToken(?UuidInterface $token = null): void
+    public function setToken(UuidInterface $token = null): void
     {
         $this->token = $token;
     }

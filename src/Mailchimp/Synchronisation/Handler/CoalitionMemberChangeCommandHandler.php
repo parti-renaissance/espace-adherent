@@ -42,8 +42,7 @@ class CoalitionMemberChangeCommandHandler implements MessageHandlerInterface, Lo
         $email = $message->getEmail();
         $contact = $message->isAdherent()
             ? $this->adherentRepository->findOneBy(['emailAddress' => $email])
-            : $this->causeFollowerRepository->findLastOne($email)
-        ;
+            : $this->causeFollowerRepository->findLastOne($email);
 
         if (!$contact) {
             $this->logger->warning(sprintf('Coalition contact with email "%s" not found, message skipped', $email));
@@ -61,8 +60,7 @@ class CoalitionMemberChangeCommandHandler implements MessageHandlerInterface, Lo
 
         $valueObject = $message->isAdherent()
             ? CoalitionMemberValueObject::createFromAdherent($contact)
-            : CoalitionMemberValueObject::createFromCauseFollower($contact)
-        ;
+            : CoalitionMemberValueObject::createFromCauseFollower($contact);
 
         $this->manager->editCoalitionMember($valueObject);
 

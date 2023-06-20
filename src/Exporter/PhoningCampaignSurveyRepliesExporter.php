@@ -57,8 +57,7 @@ class PhoningCampaignSurveyRepliesExporter
                             'Prénom' => $adherent->getFirstName(),
                             'Code postal' => $adherent->getPostalCode(),
                         ]
-                        : ['Nom' => null, 'Prénom' => null, 'Code postal' => null]
-                    ;
+                        : ['Nom' => null, 'Prénom' => null, 'Code postal' => null];
                     /** @var SurveyQuestion $surveyQuestion */
                     foreach ($questions as $surveyQuestion) {
                         $questionName = $surveyQuestion->getQuestion()->getContent();

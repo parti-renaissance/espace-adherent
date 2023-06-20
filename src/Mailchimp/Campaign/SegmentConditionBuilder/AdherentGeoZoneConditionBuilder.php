@@ -18,8 +18,7 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
     {
         return $filter instanceof AdherentGeoZoneFilter
             || $filter instanceof AudienceFilter
-            || $filter instanceof MessageFilter
-        ;
+            || $filter instanceof MessageFilter;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

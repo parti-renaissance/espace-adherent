@@ -71,8 +71,7 @@ class MembershipNotifier
                 $this->callbackManager->generateUrl('app_renaissance_donation', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 $this->callbackManager->generateUrl('app_my_committee_show_current', [], UrlGeneratorInterface::ABSOLUTE_URL),
             ))
-            : $this->transactionalMailer->sendMessage(Message\AdherentAccountConfirmationMessage::createFromAdherent($adherent))
-        ;
+            : $this->transactionalMailer->sendMessage(Message\AdherentAccountConfirmationMessage::createFromAdherent($adherent));
     }
 
     public function sendReAdhesionConfirmationMessage(Adherent $adherent): void
@@ -89,8 +88,7 @@ class MembershipNotifier
     {
         MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
             ? $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage::createFromAdherent($adherent))
-            : $this->transactionalMailer->sendMessage(Message\AdherentTerminateMembershipMessage::createFromAdherent($adherent))
-        ;
+            : $this->transactionalMailer->sendMessage(Message\AdherentTerminateMembershipMessage::createFromAdherent($adherent));
     }
 
     private function generateMembershipActivationUrl(Adherent $adherent, AdherentActivationToken $token): string

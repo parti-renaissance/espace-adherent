@@ -79,8 +79,7 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
         return !$this->postAddress->equals($event->getPostAddressModel())
             || $this->eventBeginAt != $event->getBeginAt()
             || $this->eventFinishAt != $event->getFinishAt()
-            || $this->visioUrl != $event->getVisioUrl()
-        ;
+            || $this->visioUrl != $event->getVisioUrl();
     }
 
     private function doPreUpdate(BaseEvent $event): void

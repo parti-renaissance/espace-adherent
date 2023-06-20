@@ -33,8 +33,7 @@ class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
                 case AdherentExtractCommand::FIELD_GENDER:
                     $row[$this->translateField($field)] = $adherent->getGender()
                         ? $this->translator->trans(sprintf('common.gender.%s', $adherent->getGender()))
-                        : null
-                    ;
+                        : null;
 
                     break;
                 case AdherentExtractCommand::FIELD_FIRST_NAME:
@@ -72,15 +71,13 @@ class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
                 case AdherentExtractCommand::FIELD_REGISTERED_AT:
                     $row[$this->translateField($field)] = $adherent->getRegisteredAt()
                         ? $adherent->getRegisteredAt()->format('d/m/Y H:i:s')
-                        : null
-                    ;
+                        : null;
 
                     break;
                 case AdherentExtractCommand::FIELD_BIRTH_DATE:
                     $row[$this->translateField($field)] = $adherent->getBirthdate()
                         ? $adherent->getBirthdate()->format('d/m/Y')
-                        : null
-                    ;
+                        : null;
 
                     break;
                 case AdherentExtractCommand::FIELD_SOURCE:

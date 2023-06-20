@@ -37,7 +37,6 @@ class CoalitionNormalizer implements NormalizerInterface, NormalizerAwareInterfa
         return
             empty($context[self::COALITION_ALREADY_CALLED])
             && $data instanceof Coalition
-            && \in_array('coalition_read', $context['groups'] ?? [])
-        ;
+            && \in_array('coalition_read', $context['groups'] ?? []);
     }
 }

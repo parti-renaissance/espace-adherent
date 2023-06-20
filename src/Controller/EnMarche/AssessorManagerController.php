@@ -150,8 +150,8 @@ class AssessorManagerController extends AbstractController
         ]);
     }
 
-#[Route(path: '/transform/{uuid}/{action}', requirements: ['uuid' => '%pattern_uuid%', 'action' => ActionEnum::ACTIONS_URI_REGEX], name: 'app_assessor_manager_request_transform', methods: ['GET'])]
-#[IsGranted('MANAGE_ASSESSOR', subject: 'assessorRequest')]
+    #[Route(path: '/transform/{uuid}/{action}', requirements: ['uuid' => '%pattern_uuid%', 'action' => ActionEnum::ACTIONS_URI_REGEX], name: 'app_assessor_manager_request_transform', methods: ['GET'])]
+    #[IsGranted('MANAGE_ASSESSOR', subject: 'assessorRequest')]
     public function assessorRequestTransformAction(
         AssessorRequest $assessorRequest,
         string $action,

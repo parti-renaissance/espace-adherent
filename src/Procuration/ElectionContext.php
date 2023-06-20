@@ -40,8 +40,7 @@ class ElectionContext
     {
         return !empty($this->elections)
             ? reset($this->elections)
-            : null
-        ;
+            : null;
     }
 
     public function setElection(Election $election): void

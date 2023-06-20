@@ -155,7 +155,7 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
         return $this->finishAt;
     }
 
-    public function setFinishAt(?\DateTime $finishAt = null): void
+    public function setFinishAt(\DateTime $finishAt = null): void
     {
         $this->finishAt = $finishAt;
     }

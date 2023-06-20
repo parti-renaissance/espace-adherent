@@ -71,8 +71,7 @@ class NewsletterValueObject
 
         $object->type = $newsletter->isFromEvent() ?
             NewsletterTypeEnum::MAIN_SITE_FROM_EVENT
-            : NewsletterTypeEnum::MAIN_SITE
-        ;
+            : NewsletterTypeEnum::MAIN_SITE;
 
         return $object;
     }

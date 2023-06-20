@@ -51,8 +51,7 @@ final class PushTokenDenormalizer implements DenormalizerInterface, Denormalizer
         }
 
         return is_a($type, PushToken::class, true)
-            && $this->security->getUser()
-        ;
+            && $this->security->getUser();
     }
 
     private function isAdherentUser(): bool

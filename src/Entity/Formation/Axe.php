@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="formation_axes")
  * @ORM\Entity
-
  *
  * @UniqueEntity(fields={"title"}, message="Il existe déjà un axe de formation avec ce titre.")
  */

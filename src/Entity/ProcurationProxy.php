@@ -595,7 +595,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
     /**
      * @return ProcurationProxyElectionRound[]|Collection
      */
-    public function getAvailableRounds(?ProcurationRequest $request = null): Collection
+    public function getAvailableRounds(ProcurationRequest $request = null): Collection
     {
         return $this->procurationProxyElectionRounds->filter(function (ProcurationProxyElectionRound $ppElectionRound) use ($request) {
             if ((!$request && ($ppElectionRound->isFrenchRequestAvailable() || $ppElectionRound->isForeignRequestAvailable()))
@@ -732,7 +732,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
         $this->disabled = false;
     }
 
-    public function disable(?string $reason = null): void
+    public function disable(string $reason = null): void
     {
         $this->disabled = true;
         $this->disabledReason = $reason;

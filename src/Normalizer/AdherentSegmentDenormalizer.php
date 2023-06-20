@@ -41,7 +41,6 @@ class AdherentSegmentDenormalizer implements DenormalizerInterface, Denormalizer
         return
             AdherentSegment::class === $type
             && !empty($data['member_ids'])
-            && Uuid::isValid($data['member_ids'][0])
-        ;
+            && Uuid::isValid($data['member_ids'][0]);
     }
 }

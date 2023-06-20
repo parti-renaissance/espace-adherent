@@ -31,12 +31,12 @@ class CommitteeFeedItemRepository extends ServiceEntityRepository
         return new Paginator($qb);
     }
 
-    public function findMostRecentFeedMessage(string $committeeUuid = null, ?bool $published = null): ?CommitteeFeedItem
+    public function findMostRecentFeedMessage(string $committeeUuid = null, bool $published = null): ?CommitteeFeedItem
     {
         return $this->findMostRecentFeedItem(CommitteeFeedItem::MESSAGE, $committeeUuid, $published);
     }
 
-    public function findMostRecentFeedEvent(string $committeeUuid = null, ?bool $published = null): ?CommitteeFeedItem
+    public function findMostRecentFeedEvent(string $committeeUuid = null, bool $published = null): ?CommitteeFeedItem
     {
         return $this->findMostRecentFeedItem(CommitteeFeedItem::EVENT, $committeeUuid, $published);
     }
@@ -44,7 +44,7 @@ class CommitteeFeedItemRepository extends ServiceEntityRepository
     private function findMostRecentFeedItem(
         string $type,
         string $committeeUuid = null,
-        ?bool $published = null
+        bool $published = null
     ): ?CommitteeFeedItem {
         $qb = $this
             ->createQueryBuilder('i')

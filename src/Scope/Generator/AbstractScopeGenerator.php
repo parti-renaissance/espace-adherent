@@ -81,8 +81,7 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
     {
         return $this->delegatedAccess
             ? sprintf('%s%s', self::DELEGATED_SCOPE_PREFIX, $this->delegatedAccess->getUuid()->toString())
-            : $scopeEntity->getCode()
-        ;
+            : $scopeEntity->getCode();
     }
 
     private function getScopeName(ScopeEntity $scopeEntity): string

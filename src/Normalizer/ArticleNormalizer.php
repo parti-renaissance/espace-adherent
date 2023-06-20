@@ -48,7 +48,6 @@ class ArticleNormalizer implements NormalizerInterface, NormalizerAwareInterface
     {
         return !isset($context[self::ALREADY_CALLED])
             && $data instanceof Article
-            && 0 !== \count(array_intersect(['article_list_read', 'article_read'], $context['groups'] ?? []))
-        ;
+            && 0 !== \count(array_intersect(['article_list_read', 'article_read'], $context['groups'] ?? []));
     }
 }

@@ -27,8 +27,7 @@ class CanManageEventVoter extends AbstractAdherentVoter
         if (($scope = $this->scopeGeneratorResolver->generate())
             && ($delegator = $scope->getDelegator())) {
             return $subject->getAuthor() === $delegator
-                && $scope->hasFeature(FeatureEnum::EVENTS)
-            ;
+                && $scope->hasFeature(FeatureEnum::EVENTS);
         }
 
         return false;

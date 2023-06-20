@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="formation_modules")
  * @ORM\Entity(repositoryClass="App\Repository\Formation\ModuleRepository")
-
  *
  * @UniqueEntity(fields={"title", "axe"}, message="module.title.unique_entity")
  * @UniqueEntity(fields={"slug", "axe"}, message="module.slug.unique_entity")

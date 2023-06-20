@@ -27,10 +27,6 @@ class Pager extends BasePager implements PagerInterface
 
         $this->resultsCount = $this->computeNbResult();
 
-//        if (\count($this->get()) > 0) {
-//            $this->getQuery()->setParameters($this->getParameters());
-//        }
-
         if (0 === $this->getPage() || 0 === $this->getMaxPerPage() || 0 === $this->resultsCount) {
             $this->setLastPage(0);
         } else {

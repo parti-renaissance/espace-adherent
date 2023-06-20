@@ -51,7 +51,6 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
         return
             empty($context[self::CAMPAIGN_ALREADY_CALLED])
             && $data instanceof Campaign
-            && 0 !== \count(array_intersect(['phoning_campaign_list', 'phoning_campaign_read'], $context['groups'] ?? []))
-        ;
+            && 0 !== \count(array_intersect(['phoning_campaign_list', 'phoning_campaign_read'], $context['groups'] ?? []));
     }
 }

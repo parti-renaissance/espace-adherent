@@ -47,7 +47,6 @@ class EventUserRegistrationNormalizer implements NormalizerInterface, Normalizer
             empty($context[self::EVENT_USER_REGISTRATION_ALREADY_CALLED])
             && $data instanceof BaseEvent
             && \in_array('with_user_registration', $context['groups'] ?? [])
-            && $this->security->getUser() instanceof Adherent
-        ;
+            && $this->security->getUser() instanceof Adherent;
     }
 }

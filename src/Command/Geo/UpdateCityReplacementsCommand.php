@@ -118,14 +118,12 @@ final class UpdateCityReplacementsCommand extends Command
         $oldName = $row['NomCA'];
         $old = $this->entities->get($oldCode)
             ?: $this->cityRepository->findOneBy(['code' => $oldCode])
-            ?: new City($oldCode, $oldName)
-        ;
+            ?: new City($oldCode, $oldName);
 
         $newName = $row['NomCN'];
         $new = $this->entities->get($newCode)
             ?: $this->cityRepository->findOneBy(['code' => $newCode])
-            ?: new City($newCode, $newName)
-        ;
+            ?: new City($newCode, $newName);
 
         $old->activate(false);
         $old->setName($oldName);
