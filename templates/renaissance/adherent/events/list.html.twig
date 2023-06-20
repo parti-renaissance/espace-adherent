@@ -11,14 +11,6 @@
     <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
     <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
     <script type="text/javascript" src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
-    <script type="text/javascript">
-        Bootstrap.onLoad(function() {
-            $('.select2entity').select2entity({
-                theme: 'default em-filters',
-                multiple: false,
-            });
-        });
-    </script>
 {% endblock %}
 
 {% block content_right_side %}

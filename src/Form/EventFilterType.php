@@ -47,6 +47,8 @@ class EventFilterType extends AbstractType
                 ->add('zone', ZoneAutoCompleteType::class, [
                     'required' => false,
                     'multiple' => false,
+                    'theme' => 'default renaissance-filters',
+                    'autostart' => true,
                     'remote_params' => [
                         'active_only' => true,
                         'types' => [Zone::CITY, Zone::BOROUGH],
