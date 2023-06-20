@@ -68,10 +68,6 @@
             <argument>%image_max_length%</argument>
         </service>
 
-        <service id="App\Adherent\Handler\UpdateReferentTagOnDistrictCommandHandler">
-            <tag name="messenger.message_handler" />
-        </service>
-
         <!-- DoctrineExtension -->
         <service id="App\Api\Doctrine\VisibleStatusesExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />

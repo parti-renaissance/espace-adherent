@@ -7,6 +7,7 @@ use App\Entity\LegislativeDistrictZone;
 use Cocur\Slugify\SlugifyInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,6 +16,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:legislatives:load-district-zones',
+    description: 'Create Legislatives District Zones from a CSV file, and add a default Legislative Candidate.'
+)]
 class LegislativesLoadDistrictZonesCommand extends Command
 {
     private const DISTRICTS_TOTAL = 577;
@@ -42,10 +47,8 @@ class LegislativesLoadDistrictZonesCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:legislatives:load-district-zones')
             ->addArgument('csv-file', InputArgument::REQUIRED, 'CSV to load containing [code_circonscription, department, numero, communes]. Can be found on https://www.data.gouv.fr/fr/datasets/countours-des-circonscriptions-des-legislatives-nd/')
             ->addOption('csv-delimiter', 'd', InputOption::VALUE_OPTIONAL, 'Set the field delimiter (one character only)', ',')
-            ->setDescription('Create Legislatives District Zones from a CSV file, and add a default Legislative Candidate.')
         ;
     }
 

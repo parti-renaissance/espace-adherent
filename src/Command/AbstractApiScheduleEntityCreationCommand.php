@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-abstract class ApiScheduleEntityCreationCommand extends Command
+abstract class AbstractApiScheduleEntityCreationCommand extends Command
 {
     private const BATCH_SIZE = 200;
 
