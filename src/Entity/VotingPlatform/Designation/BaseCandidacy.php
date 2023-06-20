@@ -128,8 +128,7 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     {
         return $this->getImageName() ?
             sprintf('images/candidacies/profile/%s', $this->getImageName())
-            : ''
-        ;
+            : '';
     }
 
     public function getFirstName(): ?string

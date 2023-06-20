@@ -340,9 +340,8 @@ class Zone implements GeoInterface
     public function isInFrance(): bool
     {
         return
-            !\in_array($this->type, [self::COUNTRY, self::FOREIGN_DISTRICT, self::CONSULAR_DISTRICT]) ||
-            (self::COUNTRY === $this->type && Address::FRANCE === $this->code)
-        ;
+            !\in_array($this->type, [self::COUNTRY, self::FOREIGN_DISTRICT, self::CONSULAR_DISTRICT])
+            || (self::COUNTRY === $this->type && Address::FRANCE === $this->code);
     }
 
     /**

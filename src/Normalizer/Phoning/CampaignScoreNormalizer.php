@@ -62,7 +62,6 @@ class CampaignScoreNormalizer implements NormalizerInterface, NormalizerAwareInt
         return
             empty($context[self::CAMPAIGN_SCORE_ALREADY_CALLED])
             && $data instanceof Campaign
-            && \in_array('phoning_campaign_read_with_score', $context['groups'] ?? [])
-        ;
+            && \in_array('phoning_campaign_read_with_score', $context['groups'] ?? []);
     }
 }

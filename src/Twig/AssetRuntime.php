@@ -69,7 +69,7 @@ class AssetRuntime implements RuntimeExtensionInterface
         string $path,
         array $parameters,
         int $referenceType,
-        ?string $appDomain = null
+        string $appDomain = null
     ): string {
         $parameters['fm'] = 'pjpg';
 

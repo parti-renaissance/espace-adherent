@@ -425,8 +425,7 @@ class CommitteeManager
     ): array {
         $postalCodePrefix = \array_key_exists(substr($postalCode, 0, 3), FranceCitiesBundle::DOMTOM_INSEE_CODE)
             ? substr($postalCode, 0, 3)
-            : null
-        ;
+            : null;
 
         return $this->getCommitteeRepository()->findNearbyCommitteesFilteredByCountry(
             $coordinates,

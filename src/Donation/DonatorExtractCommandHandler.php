@@ -39,8 +39,7 @@ class DonatorExtractCommandHandler extends AbstractEmailExtractCommandHandler
                 case DonatorExtractCommand::FIELD_GENDER:
                     $row[$this->translateField($field)] = $donator->getGender()
                         ? $this->translator->trans(sprintf('common.gender.%s', $donator->getGender()))
-                        : null
-                    ;
+                        : null;
 
                     break;
                 case DonatorExtractCommand::FIELD_FIRST_NAME:
@@ -54,43 +53,37 @@ class DonatorExtractCommandHandler extends AbstractEmailExtractCommandHandler
                 case DonatorExtractCommand::FIELD_ADDRESS:
                     $row[$this->translateField($field)] = $lastDonation
                         ? $lastDonation->getAddress()
-                        : null
-                    ;
+                        : null;
 
                     break;
                 case DonatorExtractCommand::FIELD_POSTAL_CODE:
                     $row[$this->translateField($field)] = $lastDonation
                         ? $lastDonation->getPostalCode()
-                        : null
-                    ;
+                        : null;
 
                     break;
                 case DonatorExtractCommand::FIELD_CITY:
                     $row[$this->translateField($field)] = $lastDonation
                         ? $lastDonation->getCityName()
-                        : null
-                    ;
+                        : null;
 
                     break;
                 case DonatorExtractCommand::FIELD_COUNTRY:
                     $row[$this->translateField($field)] = $lastDonation
                         ? $lastDonation->getCountry()
-                        : null
-                    ;
+                        : null;
 
                     break;
                 case DonatorExtractCommand::FIELD_NATIONALITY:
                     $row[$this->translateField($field)] = $lastDonation
                         ? $lastDonation->getNationality()
-                        : null
-                    ;
+                        : null;
 
                     break;
                 case DonatorExtractCommand::FIELD_PHONE:
                     $row[$this->translateField($field)] = $lastDonation
                         ? PhoneNumberUtils::format($lastDonation->getPhone())
-                        : null
-                    ;
+                        : null;
 
                     break;
                 default:

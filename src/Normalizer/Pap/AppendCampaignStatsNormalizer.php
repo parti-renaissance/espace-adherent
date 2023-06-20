@@ -77,7 +77,6 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
         return
             empty($context[self::CAMPAIGN_ALREADY_CALLED])
             && $data instanceof Campaign
-            && array_intersect(['pap_campaign_read', 'pap_campaign_read_list'], $context['groups'] ?? [])
-        ;
+            && array_intersect(['pap_campaign_read', 'pap_campaign_read_list'], $context['groups'] ?? []);
     }
 }

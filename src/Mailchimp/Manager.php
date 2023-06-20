@@ -488,8 +488,7 @@ class Manager implements LoggerAwareInterface
     {
         $listId = MailchimpSegment::LIST_MAIN === $mailchimpSegment->getList()
             ? $this->mailchimpObjectIdMapping->getMainListId()
-            : $this->mailchimpObjectIdMapping->getElectedRepresentativeListId()
-        ;
+            : $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
 
         return $this->createStaticSegment($mailchimpSegment->getLabel(), $listId);
     }

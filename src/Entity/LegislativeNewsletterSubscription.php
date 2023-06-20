@@ -207,7 +207,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         return $this->confirmedAt;
     }
 
-    public function setConfirmedAt(?\DateTimeInterface $confirmedAt = null): void
+    public function setConfirmedAt(\DateTimeInterface $confirmedAt = null): void
     {
         $this->confirmedAt = $confirmedAt;
     }

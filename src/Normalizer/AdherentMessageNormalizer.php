@@ -47,8 +47,7 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
     {
         return
             empty($context[self::ALREADY_CALLED])
-            && $data instanceof AbstractAdherentMessage
-        ;
+            && $data instanceof AbstractAdherentMessage;
     }
 
     private function getZonesFromMessage(AbstractAdherentMessage $message): array

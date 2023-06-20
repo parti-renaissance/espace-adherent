@@ -36,7 +36,6 @@ class JeMengageWebSurveyNormalizer implements NormalizerInterface, NormalizerAwa
     {
         return !isset($context[self::SURVEY_ALREADY_CALLED])
             && $data instanceof Survey
-            && \in_array('survey_list_dc', $context['groups'] ?? [])
-        ;
+            && \in_array('survey_list_dc', $context['groups'] ?? []);
     }
 }

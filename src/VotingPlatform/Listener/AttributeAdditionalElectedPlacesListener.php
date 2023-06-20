@@ -43,8 +43,7 @@ class AttributeAdditionalElectedPlacesListener implements EventSubscriberInterfa
             return
                 $result->getTotal() > 0
                 && !$result->getCandidateGroup()->isElected()
-                && \in_array($election->getAdditionalPlacesGender(), $result->getCandidateGroup()->getGenders(), true)
-            ;
+                && \in_array($election->getAdditionalPlacesGender(), $result->getCandidateGroup()->getGenders(), true);
         });
 
         // sort by total votes

@@ -55,7 +55,7 @@ class ConfigureCommand extends Command
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly EventDispatcherInterface $dispatcher,
-        ) {
+    ) {
         parent::__construct();
 
         $this->committeeElectionRepository = $this->entityManager->getRepository(CommitteeElection::class);

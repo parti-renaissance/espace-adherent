@@ -57,8 +57,8 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
 
     public function __construct(
         UuidInterface $uuid = null,
-        ?Adherent $organizer = null,
-        ?Committee $committee = null,
+        Adherent $organizer = null,
+        Committee $committee = null,
         string $name = null,
         EventCategory $category = null,
         string $description = null,

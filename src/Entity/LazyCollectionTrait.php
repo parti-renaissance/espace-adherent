@@ -11,7 +11,6 @@ trait LazyCollectionTrait
     private function isCollectionLoaded(Collection $collection): bool
     {
         return $collection instanceof ArrayCollection
-            || $collection instanceof PersistentCollection && $collection->isInitialized()
-        ;
+            || $collection instanceof PersistentCollection && $collection->isInitialized();
     }
 }

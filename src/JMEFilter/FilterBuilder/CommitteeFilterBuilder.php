@@ -22,8 +22,7 @@ class CommitteeFilterBuilder implements FilterBuilderInterface
     public function supports(string $scope, string $feature = null): bool
     {
         return \in_array($scope, ScopeEnum::ALL, true)
-            && ScopeEnum::ANIMATOR !== $scope
-        ;
+            && ScopeEnum::ANIMATOR !== $scope;
     }
 
     public function build(string $scope, string $feature = null): array

@@ -71,7 +71,7 @@ class ContributionRequestHandler
     private function createSubscription(
         ContributionRequest $contributionRequest,
         Adherent $adherent,
-        ?string $customerId = null
+        string $customerId = null
     ): Subscription {
         $metadata = $this->createMetadata($adherent);
 
@@ -86,8 +86,7 @@ class ContributionRequestHandler
                 $adherent->getPostalCode(),
                 $adherent->getCountry(),
                 $metadata
-            )
-        ;
+            );
 
         $bankAccount = $this->gocardless->createBankAccount(
             $customer,

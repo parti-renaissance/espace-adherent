@@ -51,8 +51,7 @@ abstract class AbstractDesignationController extends AbstractController
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
                 ? $election->getFirstRound()
-                : $election->getCurrentRound()
-            ;
+                : $election->getCurrentRound();
         }
 
         return $this->renderTemplate('committee_designation/dashboard.html.twig', $request, [
@@ -73,8 +72,7 @@ abstract class AbstractDesignationController extends AbstractController
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
                 ? $election->getFirstRound()
-                : $election->getCurrentRound()
-            ;
+                : $election->getCurrentRound();
         }
 
         if (!$this->hasAccess($election, $electionRound)) {
@@ -99,8 +97,7 @@ abstract class AbstractDesignationController extends AbstractController
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
                 ? $election->getFirstRound()
-                : $election->getCurrentRound()
-            ;
+                : $election->getCurrentRound();
         }
 
         if (!$this->hasAccess($election, $electionRound)) {
@@ -133,8 +130,7 @@ abstract class AbstractDesignationController extends AbstractController
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
                 ? $election->getFirstRound()
-                : $election->getCurrentRound()
-            ;
+                : $election->getCurrentRound();
         }
 
         if (!$this->hasAccess($election, $electionRound)) {

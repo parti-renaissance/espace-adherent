@@ -14,7 +14,7 @@ class ArticleListener
     public function __construct(
         private readonly RedirectionManager $redirectionManager,
         private readonly UrlGeneratorInterface $router,
-        ) {
+    ) {
     }
 
     public function preUpdate(Article $article, PreUpdateEventArgs $preUpdateEventArgs): void

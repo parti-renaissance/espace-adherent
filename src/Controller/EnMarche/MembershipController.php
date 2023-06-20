@@ -26,7 +26,6 @@ use App\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -299,8 +298,7 @@ class MembershipController extends AbstractController
                 $coordinates,
                 $adherent->getCountry(),
                 $adherent->getPostalCode()
-            )
-        ;
+            );
 
         $form = $this
             ->createForm(CommitteeAroundAdherentType::class, null, [

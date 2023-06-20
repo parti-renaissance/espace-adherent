@@ -26,8 +26,7 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
             || $filter instanceof CommitteeFilter
             || $filter instanceof AbstractElectedRepresentativeFilter
             || $filter instanceof CoalitionsFilter
-            || $filter instanceof AudienceFilter
-        ;
+            || $filter instanceof AudienceFilter;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

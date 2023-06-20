@@ -20,8 +20,7 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
                 ($filter instanceof ReferentUserFilter || $filter instanceof MessageFilter)
                 && false === $filter->getContactOnlyVolunteers()
                 && false === $filter->getContactOnlyRunningMates()
-            )
-        ;
+            );
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

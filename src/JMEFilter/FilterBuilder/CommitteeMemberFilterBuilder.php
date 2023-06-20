@@ -15,8 +15,7 @@ class CommitteeMemberFilterBuilder implements FilterBuilderInterface
             && ScopeEnum::ANIMATOR !== $scope
             && FeatureEnum::ELECTED_REPRESENTATIVE !== $feature
             && (ScopeEnum::CORRESPONDENT !== $scope
-                || FeatureEnum::CONTACTS === $feature)
-        ;
+                || FeatureEnum::CONTACTS === $feature);
     }
 
     public function build(string $scope, string $feature = null): array

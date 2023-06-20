@@ -44,7 +44,6 @@ class TeamsCollectionNormalizer implements NormalizerInterface, NormalizerAwareI
         return
             !isset($context[self::ALREADY_CALLED])
             && $data instanceof PaginatorInterface
-            && \in_array('team_list_read', $context['groups'] ?? [])
-        ;
+            && \in_array('team_list_read', $context['groups'] ?? []);
     }
 }

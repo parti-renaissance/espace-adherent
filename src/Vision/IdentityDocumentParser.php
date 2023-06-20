@@ -28,8 +28,7 @@ class IdentityDocumentParser
     {
         return $this->hasFirstName($imageAnnotations, $adherent->getFirstName())
             && $this->hasLastName($imageAnnotations, $adherent->getLastName())
-            && $this->hasDateOfBirth($imageAnnotations, $adherent->getBirthdate())
-        ;
+            && $this->hasDateOfBirth($imageAnnotations, $adherent->getBirthdate());
     }
 
     public function hasFirstName(ImageAnnotations $imageAnnotations, string $firstName): bool

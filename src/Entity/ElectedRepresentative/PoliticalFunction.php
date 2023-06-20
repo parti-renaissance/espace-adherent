@@ -150,7 +150,7 @@ class PoliticalFunction
         return $this->clarification;
     }
 
-    public function setClarification(?string $clarification = null): void
+    public function setClarification(string $clarification = null): void
     {
         $this->clarification = $clarification;
     }
@@ -180,7 +180,7 @@ class PoliticalFunction
         return $this->finishAt;
     }
 
-    public function setFinishAt(?\DateTime $finishAt = null): void
+    public function setFinishAt(\DateTime $finishAt = null): void
     {
         $this->finishAt = $finishAt;
     }

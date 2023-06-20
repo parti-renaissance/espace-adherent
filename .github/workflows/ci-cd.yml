@@ -121,8 +121,6 @@ jobs:
       - uses: ./.github/actions/setup-yarn
 
       - name: PHP Coding Standards Fixer
-        env:
-            PHP_CS_FIXER_IGNORE_ENV: 1
         run: vendor/bin/php-cs-fixer fix --diff --dry-run --no-interaction -v
 
       - name: Lint YAML files

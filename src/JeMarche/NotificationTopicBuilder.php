@@ -44,7 +44,7 @@ class NotificationTopicBuilder
         return array_values(array_unique($topics));
     }
 
-    public function buildTopic(?Zone $zone = null): string
+    public function buildTopic(Zone $zone = null): string
     {
         return sprintf('%s_%s', $this->buildTopicPrefix(), $this->getTopic($zone));
     }
@@ -75,8 +75,7 @@ class NotificationTopicBuilder
     {
         $environmentPrefix = 'prod' === $this->environment && !$this->isCanary()
             ? self::PREFIX_ENVIRONMENT_PRODUCTION
-            : self::PREFIX_ENVIRONMENT_DEV
-        ;
+            : self::PREFIX_ENVIRONMENT_DEV;
 
         return sprintf('%s_%s', $environmentPrefix, self::MAIN_PREFIX);
     }

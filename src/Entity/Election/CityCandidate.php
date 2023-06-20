@@ -114,15 +114,15 @@ class CityCandidate
 
     public function __construct(
         string $name = null,
-        ?string $gender = null,
-        ?string $email = null,
-        ?PhoneNumber $phone = null,
-        ?string $profile = null,
-        ?string $investitureType = null,
-        ?string $politicalScheme = null,
-        ?string $alliances = null,
+        string $gender = null,
+        string $email = null,
+        PhoneNumber $phone = null,
+        string $profile = null,
+        string $investitureType = null,
+        string $politicalScheme = null,
+        string $alliances = null,
         ?bool $agreement = false,
-        ?int $eligibleAdvisersCount = null
+        int $eligibleAdvisersCount = null
     ) {
         $this->name = $name;
         $this->gender = $gender;

@@ -24,7 +24,7 @@ abstract class AbstractManagedUsersController extends AbstractController
     public function __construct(
         private readonly ManagedUserRepository $managedUsersRepository,
         private readonly ManagedZoneProvider $managedZoneProvider,
-        ) {
+    ) {
     }
 
     #[Route(path: '/utilisateurs.{_format}', name: 'list', methods: ['GET'], defaults: ['_format' => 'html'], requirements: ['_format' => 'html|csv|xls'])]

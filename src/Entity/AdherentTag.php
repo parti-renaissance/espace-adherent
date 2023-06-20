@@ -29,7 +29,7 @@ class AdherentTag
      */
     private $name = '';
 
-    public function __construct(?string $name = null)
+    public function __construct(string $name = null)
     {
         if ($name) {
             $this->name = $name;

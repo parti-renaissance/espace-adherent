@@ -620,8 +620,7 @@ class ManagedUser
         if (MembershipSourceEnum::RENAISSANCE === $this->source) {
             return null !== $this->lastMembershipDonation
                 ? RenaissanceMembershipFilterEnum::ADHERENT_RE
-                : RenaissanceMembershipFilterEnum::SYMPATHIZER_RE
-            ;
+                : RenaissanceMembershipFilterEnum::SYMPATHIZER_RE;
         }
 
         return null;

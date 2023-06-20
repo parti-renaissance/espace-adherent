@@ -19,7 +19,6 @@ class LoadTerritorialCouncilElectionPollData extends Fixture implements Dependen
         /** @var Election $election */
         $election = $this->getReference('election_coTerr_75');
         $election->setElectionPoll($electionPoll);
-//        $manager->persist($electionPoll);
 
         $pollChoice0 = new PollChoice($electionPoll, 0);
         $pollChoice1 = new PollChoice($electionPoll, 1);

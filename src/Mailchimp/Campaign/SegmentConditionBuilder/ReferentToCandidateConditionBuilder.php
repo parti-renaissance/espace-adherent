@@ -15,8 +15,7 @@ class ReferentToCandidateConditionBuilder extends AbstractConditionBuilder
     public function support(SegmentFilterInterface $filter): bool
     {
         return ($filter instanceof ReferentUserFilter || $filter instanceof MessageFilter)
-            && ($filter->getContactOnlyVolunteers() || $filter->getContactOnlyRunningMates())
-        ;
+            && ($filter->getContactOnlyVolunteers() || $filter->getContactOnlyRunningMates());
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

@@ -758,7 +758,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         string $timeZone,
         \DateTimeInterface $beginAt,
         \DateTimeInterface $finishAt,
-        ?string $visioUrl = null,
+        string $visioUrl = null,
         int $capacity = null,
         bool $private = false,
         bool $electoral = false

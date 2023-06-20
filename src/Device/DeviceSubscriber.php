@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class DeviceSubscriber implements EventSubscriberInterface
 {
-    private $oldPostalCode = null;
+    private $oldPostalCode;
     private $deviceManager;
 
     public function __construct(DeviceManager $deviceManager)

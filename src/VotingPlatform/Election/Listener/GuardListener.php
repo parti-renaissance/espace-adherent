@@ -12,8 +12,8 @@ use Symfony\Component\Workflow\Event\GuardEvent;
 
 class GuardListener implements EventSubscriberInterface
 {
-    private $isGranted = null;
-    private $isGrantedForInspector = null;
+    private $isGranted;
+    private $isGrantedForInspector;
 
     private $electionRepository;
     private $authorizationChecker;

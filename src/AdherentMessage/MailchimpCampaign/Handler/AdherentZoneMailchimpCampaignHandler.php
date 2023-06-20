@@ -18,8 +18,7 @@ class AdherentZoneMailchimpCampaignHandler extends AbstractMailchimpCampaignHand
                 $message instanceof DeputyAdherentMessage
                 || $message instanceof SenatorAdherentMessage
                 || $message instanceof LegislativeCandidateAdherentMessage
-            )
-        ;
+            );
     }
 
     /**

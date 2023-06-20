@@ -56,8 +56,7 @@ class CertificationRequestNotifier
     {
         $refusalReason = $certificationRequest->isRefusedWithOtherReason()
             ? $certificationRequest->getCustomRefusalReason()
-            : $this->translator->trans($certificationRequest->getRefusalReasonKey())
-        ;
+            : $this->translator->trans($certificationRequest->getRefusalReasonKey());
 
         $certificationRequestUrl = $this->urlGenerator->generate(
             'app_certification_request_form',

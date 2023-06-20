@@ -40,7 +40,6 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
     {
         return
             empty($context[self::MANAGED_USER_NORMALIZER_ALREADY_CALLED])
-            && $data instanceof ManagedUser
-        ;
+            && $data instanceof ManagedUser;
     }
 }

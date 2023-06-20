@@ -46,7 +46,6 @@ class CommitteeElectionNormalizer implements NormalizerInterface, NormalizerAwar
     {
         return !isset($context[self::ALREADY_CALLED])
             && $data instanceof CommitteeElection
-            && \in_array('committee_election:read', $context['groups'] ?? [])
-        ;
+            && \in_array('committee_election:read', $context['groups'] ?? []);
     }
 }

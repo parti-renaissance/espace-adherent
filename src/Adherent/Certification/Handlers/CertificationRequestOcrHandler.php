@@ -45,8 +45,7 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
     public function supports(CertificationRequest $certificationRequest): bool
     {
         return $certificationRequest->isPending()
-            && $this->isDocumentReadableByOcr($certificationRequest)
-        ;
+            && $this->isDocumentReadableByOcr($certificationRequest);
     }
 
     public function handle(CertificationRequest $certificationRequest): void

@@ -276,7 +276,7 @@ class CertificationRequest
         $this->status = self::STATUS_APPROVED;
     }
 
-    public function refuse(?string $reason, ?string $customReason = null, ?string $comment = null): void
+    public function refuse(?string $reason, string $customReason = null, string $comment = null): void
     {
         $this->status = self::STATUS_REFUSED;
         $this->refusalReason = $reason;
@@ -284,7 +284,7 @@ class CertificationRequest
         $this->refusalComment = $comment;
     }
 
-    public function block(?string $reason, ?string $customReason = null, ?string $comment = null): void
+    public function block(?string $reason, string $customReason = null, string $comment = null): void
     {
         $this->status = self::STATUS_BLOCKED;
         $this->blockReason = $reason;

@@ -209,7 +209,6 @@ class ElectionNotifier
         return
             !$election->isCanceled()
             && $election->getDesignation()->isNotificationEnabled($notificationBit)
-            && !$election->isNotificationAlreadySent($notificationBit)
-        ;
+            && !$election->isNotificationAlreadySent($notificationBit);
     }
 }

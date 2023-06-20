@@ -62,8 +62,7 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
         return
             empty($context[self::NORMALIZER_ALREADY_CALLED])
             && $data instanceof News
-            && 0 !== \count(array_intersect(['jecoute_news_read', 'jecoute_news_read_dc'], $context['groups'] ?? []))
-        ;
+            && 0 !== \count(array_intersect(['jecoute_news_read', 'jecoute_news_read_dc'], $context['groups'] ?? []));
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])

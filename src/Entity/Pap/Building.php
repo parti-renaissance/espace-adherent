@@ -155,8 +155,7 @@ class Building implements CampaignStatisticsOwnerInterface
 
         return $this->buildingBlocks->matching($criteria)->count() > 0
             ? $this->buildingBlocks->matching($criteria)->first()
-            : null
-        ;
+            : null;
     }
 
     public function setCurrentCampaign(Campaign $campaign): void

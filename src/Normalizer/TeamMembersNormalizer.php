@@ -41,7 +41,6 @@ class TeamMembersNormalizer implements NormalizerInterface, NormalizerAwareInter
         return
             !isset($context[self::ALREADY_CALLED])
             && $data instanceof Team
-            && \in_array('team_read', $context['groups'] ?? [])
-        ;
+            && \in_array('team_read', $context['groups'] ?? []);
     }
 }

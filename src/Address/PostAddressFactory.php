@@ -13,7 +13,7 @@ class PostAddressFactory
         ?string $postalCode,
         ?string $cityName,
         ?string $address,
-        ?string $region = null
+        string $region = null
     ): PostAddress {
         return PostAddress::createForeignAddress($country, $postalCode, $cityName, $address, $region);
     }

@@ -566,13 +566,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
                 && (
                     (!empty($this->candidacyEndDate) && !empty($this->voteStartDate) && !empty($this->voteEndDate))
                     || (empty($this->candidacyEndDate) && empty($this->voteStartDate) && empty($this->voteEndDate))
-                )
-            ;
+                );
         } else {
             $result = !empty($this->voteStartDate)
                 && !empty($this->voteEndDate)
-                && $this->voteStartDate < $this->voteEndDate
-            ;
+                && $this->voteStartDate < $this->voteEndDate;
         }
 
         if (!$result) {
@@ -603,8 +601,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return
             ($this->isCommitteeTypes() && !empty($this->globalZones))
             || ($this->isCopolType() && !$this->referentTags->isEmpty())
-            || ($this->isLocalElectionTypes() && !$this->zones->isEmpty())
-        ;
+            || ($this->isLocalElectionTypes() && !$this->zones->isEmpty());
     }
 
     public function isOngoing(): bool
@@ -612,8 +609,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         $now = new \DateTime();
 
         return $this->getCandidacyStartDate() <= $now
-            && (null === $this->getVoteEndDate() || $now < $this->getVoteEndDate())
-        ;
+            && (null === $this->getVoteEndDate() || $now < $this->getVoteEndDate());
     }
 
     public function isActive(): bool
@@ -625,8 +621,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
                 null === $this->getVoteEndDate()
                 || $now < $this->getVoteEndDate()
                 || $this->isResultPeriodActive()
-            )
-        ;
+            );
     }
 
     public function getElectionCreationDate(): ?\DateTime
@@ -640,8 +635,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
         return $this->getVoteEndDate()
             && $this->getVoteEndDate() <= $now
-            && $now < $this->getResultEndDate()
-        ;
+            && $now < $this->getResultEndDate();
     }
 
     public function getResultEndDate(): ?\DateTime

@@ -41,8 +41,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
                 ])
                 ->getQuery()
                 ->getArrayResult(),
-            'door'))
-        ;
+            'door'));
     }
 
     public function countDoorsForBuilding(Building $building): int

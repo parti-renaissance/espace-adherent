@@ -68,8 +68,7 @@ trait EntityScopeVisibilityTrait
     {
         $this->visibility = null !== $zone
             ? ScopeVisibilityEnum::LOCAL
-            : ScopeVisibilityEnum::NATIONAL
-        ;
+            : ScopeVisibilityEnum::NATIONAL;
 
         $this->zone = $zone;
     }

@@ -86,8 +86,7 @@ class CampaignRepository extends ServiceEntityRepository
             ->setParameter('now', new \DateTime())
             ->setParameter('true', true)
             ->getQuery()
-            ->getScalarResult(), 'id'))
-        ;
+            ->getScalarResult(), 'id'));
     }
 
     /**

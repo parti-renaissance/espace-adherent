@@ -311,7 +311,7 @@ class Mandate
         return $this->finishAt;
     }
 
-    public function setFinishAt(?\DateTime $finishAt = null): void
+    public function setFinishAt(\DateTime $finishAt = null): void
     {
         $this->finishAt = $finishAt;
     }
@@ -331,7 +331,7 @@ class Mandate
         return $this->laREMSupport;
     }
 
-    public function setLaREMSupport(?string $laREMSupport = null): void
+    public function setLaREMSupport(string $laREMSupport = null): void
     {
         $this->laREMSupport = $laREMSupport;
     }

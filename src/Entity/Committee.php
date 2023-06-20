@@ -377,7 +377,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         string $name,
         string $description,
         AddressInterface $address,
-        ?PhoneNumber $phone = null,
+        PhoneNumber $phone = null,
         string $createdAt = 'now'
     ): self {
         $committee = new self(
@@ -674,7 +674,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     /**
      * @return CommitteeAdherentMandate[]|Collection
      */
-    public function findSupervisorMandates(?string $gender = null, bool $isProvisional = null): Collection
+    public function findSupervisorMandates(string $gender = null, bool $isProvisional = null): Collection
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('quality', CommitteeMandateQualityEnum::SUPERVISOR))

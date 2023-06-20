@@ -37,8 +37,7 @@ class ResultsController extends AbstractController
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
                 ? $election->getFirstRound()
-                : $election->getCurrentRound()
-            ;
+                : $election->getCurrentRound();
         }
 
         return $this->renderElectionTemplate('voting_platform/results.html.twig', $election, $request, [

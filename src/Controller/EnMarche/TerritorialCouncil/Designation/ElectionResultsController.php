@@ -33,8 +33,7 @@ class ElectionResultsController extends AbstractController
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
                 ? $election->getFirstRound()
-                : $election->getCurrentRound()
-            ;
+                : $election->getCurrentRound();
         }
 
         return $this->render('territorial_council_designation/election_results/dashboard.html.twig', [
@@ -53,8 +52,7 @@ class ElectionResultsController extends AbstractController
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
                 ? $election->getFirstRound()
-                : $election->getCurrentRound()
-            ;
+                : $election->getCurrentRound();
         }
 
         if (!$this->hasAccess($election, $electionRound)) {
@@ -78,8 +76,7 @@ class ElectionResultsController extends AbstractController
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
                 ? $election->getFirstRound()
-                : $election->getCurrentRound()
-            ;
+                : $election->getCurrentRound();
         }
 
         if (!$this->hasAccess($election, $electionRound)) {
@@ -108,8 +105,7 @@ class ElectionResultsController extends AbstractController
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
                 ? $election->getFirstRound()
-                : $election->getCurrentRound()
-            ;
+                : $election->getCurrentRound();
         }
 
         if (!$this->hasAccess($election, $electionRound)) {

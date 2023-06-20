@@ -94,21 +94,18 @@ class ImageAnnotations
     public function isFrenchNationalIdentityCard(): bool
     {
         return $this->isIdentityDocument()
-            && 0 < \count(array_intersect($this->labels, self::IDENTITY_CARD_LABELS))
-        ;
+            && 0 < \count(array_intersect($this->labels, self::IDENTITY_CARD_LABELS));
     }
 
     public function isFrenchPassport(): bool
     {
         return $this->isIdentityDocument()
-            && 0 < \count(array_intersect($this->labels, self::PASSPORT_LABELS))
-        ;
+            && 0 < \count(array_intersect($this->labels, self::PASSPORT_LABELS));
     }
 
     public function isSupportedIdentityDocument(): bool
     {
         return $this->isIdentityDocument()
-            && ($this->isFrenchNationalIdentityCard() || $this->isFrenchPassport())
-        ;
+            && ($this->isFrenchNationalIdentityCard() || $this->isFrenchPassport());
     }
 }

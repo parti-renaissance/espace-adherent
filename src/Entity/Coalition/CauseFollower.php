@@ -90,7 +90,7 @@ class CauseFollower extends AbstractFollower
      */
     private $coalitionSubscription;
 
-    public function __construct(?Cause $cause = null, ?Adherent $adherent = null)
+    public function __construct(Cause $cause = null, Adherent $adherent = null)
     {
         $this->uuid = Uuid::uuid4();
         $this->cause = $cause;

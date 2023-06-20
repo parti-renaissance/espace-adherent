@@ -71,7 +71,7 @@ class DonationAdmin extends AbstractAdmin
         $this->dispatcher = $dispatcher;
     }
 
-    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
+    protected function configureActionButtons(array $buttonList, string $action, object $object = null): array
     {
         $actions = parent::configureActionButtons($buttonList, $action, $object);
 
@@ -543,8 +543,7 @@ class DonationAdmin extends AbstractAdmin
 
             $destination = $donation->isNationalVisibility()
                 ? 'Siège'
-                : sprintf('Mixte (%s)', $donation->getZone()->getCode())
-            ;
+                : sprintf('Mixte (%s)', $donation->getZone()->getCode());
 
             return [
                 'id' => $donation->getId(),

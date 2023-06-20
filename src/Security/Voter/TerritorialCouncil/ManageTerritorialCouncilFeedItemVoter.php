@@ -17,8 +17,7 @@ class ManageTerritorialCouncilFeedItemVoter extends AbstractAdherentVoter
         return !$subject->isLocked()
             && $subject->getAuthor()->equals($adherent)
             && $adherent->isTerritorialCouncilPresident()
-            && $adherent->getTerritorialCouncilMembership()->getTerritorialCouncil() === $subject->getTerritorialCouncil()
-        ;
+            && $adherent->getTerritorialCouncilMembership()->getTerritorialCouncil() === $subject->getTerritorialCouncil();
     }
 
     protected function supports(string $attribute, $subject): bool

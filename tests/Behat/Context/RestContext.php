@@ -95,7 +95,7 @@ class RestContext extends BehatchRestContext
      * @Given I am logged with :email via OAuth client :clientName with scope :scopes
      * @Given I am logged with :email via OAuth client :clientName with scopes :scopes
      */
-    public function iAmLoggedViaOAuthWithClientAndScope(string $email, string $clientName, ?string $scopes = null): void
+    public function iAmLoggedViaOAuthWithClientAndScope(string $email, string $clientName, string $scopes = null): void
     {
         $identifier = uniqid();
 

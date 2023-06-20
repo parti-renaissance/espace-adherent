@@ -30,7 +30,7 @@ class AdherentCreateCommandHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly EventDispatcherInterface $dispatcher,
         private readonly MembershipNotifier $notifier,
-        ) {
+    ) {
     }
 
     public function createCommand(): AdherentCreateCommand

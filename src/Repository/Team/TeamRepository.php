@@ -23,7 +23,6 @@ class TeamRepository extends ServiceEntityRepository
             ->where('team.id IN (:ids)')
             ->setParameter('ids', $ids)
             ->getQuery()
-            ->getScalarResult(), 'id'))
-        ;
+            ->getScalarResult(), 'id'));
     }
 }

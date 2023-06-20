@@ -10,5 +10,5 @@ use Symfony\Component\Validator\Constraint;
 class UniqueInCollection extends Constraint
 {
     public $message = 'constraint.unique_in_collection';
-    public $propertyPath = null;
+    public $propertyPath;
 }

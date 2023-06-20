@@ -118,7 +118,7 @@ class CommitteeMembership implements UuidEntityInterface
         Adherent $adherent,
         string $privilege = self::COMMITTEE_FOLLOWER,
         \DateTimeInterface $subscriptionDate = null,
-        ?CommitteeMembershipTriggerEnum $trigger = null
+        CommitteeMembershipTriggerEnum $trigger = null
     ) {
         $this->uuid = $uuid;
         $this->committee = $committee;
@@ -161,7 +161,7 @@ class CommitteeMembership implements UuidEntityInterface
         Adherent $adherent,
         string $privilege,
         \DateTimeInterface $subscriptionDate,
-        ?CommitteeMembershipTriggerEnum $trigger = null
+        CommitteeMembershipTriggerEnum $trigger = null
     ): self {
         return new self(
             self::createUuid($adherent->getUuid(), $committee->getUuid()),

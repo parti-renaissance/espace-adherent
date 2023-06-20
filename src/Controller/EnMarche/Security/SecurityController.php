@@ -94,8 +94,8 @@ class SecurityController extends AbstractController
                 && (
                     $currentApp === $adherent->getSource()
                     || (
-                        \in_array($adherent->getSource(), [null, MembershipSourceEnum::RENAISSANCE]) &&
-                        \in_array($currentApp, [MembershipSourceEnum::JEMENGAGE, MembershipSourceEnum::RENAISSANCE], true)
+                        \in_array($adherent->getSource(), [null, MembershipSourceEnum::RENAISSANCE])
+                        && \in_array($currentApp, [MembershipSourceEnum::JEMENGAGE, MembershipSourceEnum::RENAISSANCE], true)
                     )
                 )
             ) {

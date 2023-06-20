@@ -24,8 +24,8 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AudienceFilter ||
-            \in_array(\get_class($filter->getMessage()), [
+        return $filter instanceof AudienceFilter
+            || \in_array(\get_class($filter->getMessage()), [
             ReferentAdherentMessage::class,
             ReferentInstancesMessage::class,
             DeputyAdherentMessage::class,
