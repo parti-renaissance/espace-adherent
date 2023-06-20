@@ -19,9 +19,9 @@ doctrine:
             uuid:           Ramsey\Uuid\Doctrine\UuidType
             phone_number:   Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
             geo_point:      App\Doctrine\DBAL\Types\GeoPointType
-            geometry:       CrEOF\Spatial\DBAL\Types\GeometryType
-            polygon:        CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
-            multipolygon:   CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
+            geometry:       LongitudeOne\Spatial\DBAL\Types\GeometryType
+            polygon:        LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType
+            multipolygon:   LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
@@ -57,9 +57,9 @@ doctrine:
                 radians: DoctrineExtensions\Query\Mysql\Radians
                 sin: DoctrineExtensions\Query\Mysql\Sin
                 time_to_sec: DoctrineExtensions\Query\Mysql\TimeToSec
-                st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STGeomFromText
-                st_within: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STWithin
-                point: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\Point
+                st_geomfromtext: LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\STGeomFromText
+                st_within: LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\STWithin
+                point: LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\Point
                 round: DoctrineExtensions\Query\Mysql\Round
             string_functions:
                 json_contains: App\Query\Mysql\JsonContains

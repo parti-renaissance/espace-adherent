@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use CrEOF\Spatial\PHP\Types\Geometry\GeometryInterface;
-use CrEOF\Spatial\PHP\Types\Geometry\MultiPolygon;
-use CrEOF\Spatial\PHP\Types\Geometry\Polygon;
+use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
+use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
