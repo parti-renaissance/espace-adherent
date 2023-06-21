@@ -21,17 +21,22 @@ class Registration
     /**
      * @ORM\Column(length=50)
      */
-    public ?string $eventMakerId = null;
+    public ?string $eventMakerUid = null;
+
+    /**
+     * @ORM\Column(length=50)
+     */
+    public ?string $eventMakerOrderUid = null;
 
     /**
      * @ORM\Column
      */
-    public ?string $secret = null;
+    public ?string $status = null;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="datetime")
      */
-    public ?float $price = null;
+    public ?\DateTimeInterface $registeredAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="campusRegistrations")
