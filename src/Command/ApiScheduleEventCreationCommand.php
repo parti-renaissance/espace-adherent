@@ -6,24 +6,21 @@ use App\Entity\Event\CommitteeEvent;
 use App\Entity\SynchronizedEntity;
 use App\Event\CommitteeEventEvent;
 use App\Events;
+use Symfony\Component\Console\Attribute\AsCommand;
 
-class ApiScheduleEventCreationCommand extends ApiScheduleEntityCreationCommand
+#[AsCommand(
+    name: 'app:sync:events',
+    description: 'Schedule Events for synchronization with api'
+)]
+class ApiScheduleEventCreationCommand extends AbstractApiScheduleEntityCreationCommand
 {
-    protected function configure(): void
-    {
-        $this
-            ->setName('app:sync:events')
-            ->setDescription('Schedule Events for synchronization with api')
-        ;
-    }
-
     protected function getEntityClassname(): string
     {
         return CommitteeEvent::class;
     }
 
-    protected function scheduleCreation(SynchronizedEntity $event): void
+    protected function scheduleCreation(SynchronizedEntity $entity): void
     {
-        $this->dispatcher->dispatch(new CommitteeEventEvent($event->getAuthor(), $event), Events::EVENT_CREATED);
+        $this->dispatcher->dispatch(new CommitteeEventEvent($entity->getAuthor(), $entity), Events::EVENT_CREATED);
     }
 }

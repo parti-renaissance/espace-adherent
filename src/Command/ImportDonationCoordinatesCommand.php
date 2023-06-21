@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Donation;
 use App\Geocoder\Coordinates;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -12,6 +13,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
+#[AsCommand(
+    name: 'app:donations:import-coordinates',
+    description: 'Import Donation coordinates'
+)]
 class ImportDonationCoordinatesCommand extends Command
 {
     private $em;
@@ -25,11 +30,7 @@ class ImportDonationCoordinatesCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setName('app:donations:import-coordinates')
-            ->addArgument('filename', InputArgument::REQUIRED)
-            ->setDescription('Import Donation coordinates')
-        ;
+        $this->addArgument('filename', InputArgument::REQUIRED);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

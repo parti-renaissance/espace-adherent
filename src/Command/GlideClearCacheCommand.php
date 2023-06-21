@@ -3,11 +3,16 @@
 namespace App\Command;
 
 use League\Glide\Server;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'app:glide:purge',
+    description: 'Clear the Glide cache for a given path'
+)]
 class GlideClearCacheCommand extends Command
 {
     /** @var Server */
@@ -15,11 +20,7 @@ class GlideClearCacheCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setName('app:glide:purge')
-            ->addArgument('path', InputArgument::REQUIRED)
-            ->setDescription('Clear the Glide cache for a given path')
-        ;
+        $this->addArgument('path', InputArgument::REQUIRED);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

@@ -13,11 +13,6 @@ class ReferentAreaRepository extends ServiceEntityRepository
         parent::__construct($registry, ReferentArea::class);
     }
 
-    public function findReferentArea(string $areaCode): ?ReferentArea
-    {
-        return $this->findOneBy(['areaCode' => $areaCode]);
-    }
-
     /**
      * @return ReferentArea[]
      */
