@@ -14,16 +14,16 @@ use App\OAuth\Model\Scope;
 use App\Repository\Pap\BuildingEventRepository;
 use App\Repository\Pap\BuildingRepository;
 use App\Repository\Pap\CampaignRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class BuildingEventControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class BuildingEventControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;
@@ -32,9 +32,7 @@ class BuildingEventControllerTest extends AbstractApiCaseTest
     private ?CampaignRepository $campaignRepository;
     private ?BuildingRepository $buildingRepository;
 
-    /**
-     * @dataProvider provideActions
-     */
+    #[DataProvider('provideActions')]
     public function testCloseOpenBuilding(string $type, string $action, string $identifier = null): void
     {
         $campaignUuid = LoadPapCampaignData::CAMPAIGN_1_UUID;
@@ -81,7 +79,7 @@ class BuildingEventControllerTest extends AbstractApiCaseTest
         $this->assertSame($type, $buildingEvent->getType());
     }
 
-    public function provideActions(): array
+    public static function provideActions(): array
     {
         return [
             ['building_block', 'open', 'A'],

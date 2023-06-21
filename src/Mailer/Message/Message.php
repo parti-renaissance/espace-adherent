@@ -12,12 +12,12 @@ class Message
     protected $vars;
     protected $subject;
     protected $template;
-    protected $recipients;
+    protected $recipients = [];
     protected $replyTo;
     protected $senderEmail;
     protected $senderName;
-    protected $cc;
-    protected $bcc;
+    protected $cc = [];
+    protected $bcc = [];
     protected $templateContent = [];
 
     /**
@@ -51,12 +51,9 @@ class Message
         array $templateContent = []
     ) {
         $this->uuid = $uuid;
-        $this->recipients = [];
         $this->subject = $subject;
         $this->vars = $commonVars;
         $this->replyTo = $replyTo;
-        $this->cc = [];
-        $this->bcc = [];
         $this->template = $template;
         $this->templateContent = $templateContent;
 

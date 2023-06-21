@@ -4,11 +4,10 @@ namespace Tests\App\Repository;
 
 use App\Entity\TonMacronChoice;
 use App\Repository\TonMacronChoiceRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class TonMacronChoiceRepositoryTest extends AbstractKernelTestCase
 {
     /**

@@ -5,7 +5,7 @@ namespace Tests\App\Mailer\Message;
 use App\Entity\Event\EventRegistration;
 use App\Mailer\Message\EventRegistrationConfirmationMessage;
 
-class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTest
+class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTestCase
 {
     public const EVENT_LINK = 'http://en-marche.fr/evenements/201/2017-12-27-evenement-a-lyon';
 

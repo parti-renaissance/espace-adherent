@@ -12,16 +12,15 @@ use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use App\Repository\MyTeam\MemberRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class MyTeamMemberControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class MyTeamMemberControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

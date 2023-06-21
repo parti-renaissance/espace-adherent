@@ -6,22 +6,22 @@ use App\Form\AdherentRegistrationType;
 use App\Form\BecomeAdherentType;
 use App\Form\DonationRequestType;
 use App\Form\UserRegistrationType;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class FormControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class FormControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;
 
-    public function validateProvider(): iterable
+    public static function validateProvider(): iterable
     {
         yield AdherentRegistrationType::class => [
             urlencode(AdherentRegistrationType::class),
@@ -140,9 +140,7 @@ class FormControllerTest extends AbstractApiCaseTest
         ];
     }
 
-    /**
-     * @dataProvider validateProvider
-     */
+    #[DataProvider('validateProvider')]
     public function testValidate(string $urlKey, array $requestParams, array $expectedResult): void
     {
         $this->client->request(

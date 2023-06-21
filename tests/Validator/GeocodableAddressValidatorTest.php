@@ -8,6 +8,7 @@ use App\Geocoder\GeocodableInterface;
 use App\Geocoder\Geocoder;
 use App\Validator\GeocodableAddress;
 use App\Validator\GeocodableAddressValidator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
@@ -39,16 +40,14 @@ class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    /**
-     * @dataProvider provideGeocodableAddress
-     */
+    #[DataProvider('provideGeocodableAddress')]
     public function testAddressIsValid(GeocodableInterface $address)
     {
         $this->validator->validate($address, new GeocodableAddress());
         $this->assertNoViolation();
     }
 
-    public function provideGeocodableAddress(): array
+    public static function provideGeocodableAddress(): array
     {
         $address = new Address();
         $address->setCountry('CH');

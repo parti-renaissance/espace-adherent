@@ -8,7 +8,7 @@ use App\ValueObject\SHA1;
 use Ramsey\Uuid\UuidInterface;
 use Tests\App\AbstractKernelTestCase;
 
-abstract class AbstractAdherentTokenTest extends AbstractKernelTestCase
+abstract class AbstractAdherentTokenTestCase extends AbstractKernelTestCase
 {
     protected $tokenClass;
 

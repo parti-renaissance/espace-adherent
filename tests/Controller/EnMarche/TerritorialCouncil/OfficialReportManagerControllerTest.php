@@ -4,21 +4,19 @@ namespace Tests\App\Controller\EnMarche\TerritorialCouncil;
 
 use App\Entity\Report\Report;
 use App\Entity\TerritorialCouncil\OfficialReport;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class OfficialReportManagerControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class OfficialReportManagerControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @dataProvider provideAdherentsWithNoAccess
-     */
+    #[DataProvider('provideAdherentsWithNoAccess')]
     public function testCannotListOfficialReports(string $adherentEmail)
     {
         $this->authenticateAsAdherent($this->client, $adherentEmail);
@@ -45,9 +43,7 @@ class OfficialReportManagerControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertStringContainsString('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(5)->text());
     }
 
-    /**
-     * @dataProvider provideAdherentsWithNoAccess
-     */
+    #[DataProvider('provideAdherentsWithNoAccess')]
     public function testCannotCreateOfficialReport(string $adherentEmail)
     {
         $this->authenticateAsAdherent($this->client, $adherentEmail);
@@ -149,9 +145,7 @@ class OfficialReportManagerControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertStringContainsString('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(5)->text());
     }
 
-    /**
-     * @dataProvider provideAdherentsWithNoEditRight
-     */
+    #[DataProvider('provideAdherentsWithNoEditRight')]
     public function testCannotUpdateOfficialReport(string $adherentEmail)
     {
         $this->authenticateAsAdherent($this->client, $adherentEmail);
@@ -219,13 +213,13 @@ class OfficialReportManagerControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertStringContainsString('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(5)->text());
     }
 
-    public function provideAdherentsWithNoAccess(): iterable
+    public static function provideAdherentsWithNoAccess(): iterable
     {
         yield ['benjyd@aol.com'];
         yield ['jacques.picard@en-marche.fr'];
     }
 
-    public function provideAdherentsWithNoEditRight(): iterable
+    public static function provideAdherentsWithNoEditRight(): iterable
     {
         yield ['benjyd@aol.com'];
         yield ['jacques.picard@en-marche.fr'];

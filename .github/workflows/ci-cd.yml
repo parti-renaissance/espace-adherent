@@ -162,6 +162,14 @@ jobs:
           path: vendor/
           key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
 
+      - name: Cache PHPUnit
+        uses: actions/cache@v3
+        with:
+          path: var/.phpunit.cache/
+          key: cache-${{ env.CACHE_KEY }}-phpunit-${{ github.sha }}
+          restore-keys: |
+            cache-${{ env.CACHE_KEY }}-phpunit-
+
       - uses: ./.github/actions/docker-login
 
       - uses: ./.github/actions/docker-pull

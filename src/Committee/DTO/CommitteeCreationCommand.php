@@ -2,7 +2,6 @@
 
 namespace App\Committee\DTO;
 
-use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,23 +11,15 @@ class CommitteeCreationCommand extends CommitteeCommand
     /**
      * @Assert\IsTrue(message="committee.must_accept_confidentiality_terms", groups={"created_by_adherent"})
      */
-    public $acceptConfidentialityTerms;
+    public $acceptConfidentialityTerms = false;
 
     /**
      * @Assert\IsTrue(message="committee.must_accept_contacting_terms", groups={"created_by_adherent"})
      */
-    public $acceptContactingTerms;
+    public $acceptContactingTerms = false;
 
     /** @var Adherent */
     private $adherent;
-
-    protected function __construct(Address $address = null)
-    {
-        parent::__construct($address);
-
-        $this->acceptConfidentialityTerms = false;
-        $this->acceptContactingTerms = false;
-    }
 
     public static function createFromAdherent(Adherent $adherent): self
     {

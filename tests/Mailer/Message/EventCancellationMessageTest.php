@@ -5,7 +5,7 @@ namespace Tests\App\Mailer\Message;
 use App\Mailer\Message\EventCancellationMessage;
 use App\Mailer\Message\MessageRecipient;
 
-class EventCancellationMessageTest extends AbstractEventMessageTest
+class EventCancellationMessageTest extends AbstractEventMessageTestCase
 {
     public const SEARCH_EVENTS_URL = 'https://test.enmarche.code/evenements';
 

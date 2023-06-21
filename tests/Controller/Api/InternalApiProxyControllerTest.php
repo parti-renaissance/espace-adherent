@@ -6,17 +6,16 @@ use App\DataFixtures\ORM\LoadInternalApiApplicationData;
 use App\Event\EventTypeEnum;
 use App\Scope\ScopeEnum;
 use League\OAuth2\Server\CryptKey;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class InternalApiProxyControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class InternalApiProxyControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

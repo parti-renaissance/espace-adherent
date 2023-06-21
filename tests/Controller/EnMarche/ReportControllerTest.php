@@ -7,21 +7,21 @@ use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Report\CommitteeReport;
 use App\Entity\Report\CommunityEventReport;
 use App\Report\ReportType;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group controller
- */
-class ReportControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('controller')]
+class ReportControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    public function provideReportableSubject(): iterable
+    public static function provideReportableSubject(): iterable
     {
         yield 'Committee' => [
             CommitteeReport::class,
@@ -35,9 +35,7 @@ class ReportControllerTest extends AbstractEnMarcheWebCaseTest
         ];
     }
 
-    /**
-     * @dataProvider provideReportableSubject
-     */
+    #[DataProvider('provideReportableSubject')]
     public function testAdherentCanReportSubject($reportClass, $subjectUrl, $subjectUuid): void
     {
         $reportRepository = $this->getRepository($reportClass);

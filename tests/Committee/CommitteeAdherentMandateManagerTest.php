@@ -17,14 +17,14 @@ use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use libphonenumber\PhoneNumber;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group committee
- */
+#[Group('committee')]
 class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
 {
     /** @var MockObject|EntityManagerInterface */
@@ -145,9 +145,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $this->mandateManager->createMandate($adherent, $committee);
     }
 
-    /**
-     * @dataProvider provideGenders
-     */
+    #[DataProvider('provideGenders')]
     public function testCannotCreateMandateIfCommitteeHasActiveMandate(string $gender)
     {
         $this->expectException(CommitteeAdherentMandateException::class);
@@ -167,9 +165,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $this->mandateManager->createMandate($adherent, $committee);
     }
 
-    /**
-     * @dataProvider provideGenders
-     */
+    #[DataProvider('provideGenders')]
     public function testCreateMandate(string $gender)
     {
         $adherent = $this->createNewAdherent($gender);
@@ -188,9 +184,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $this->assertInstanceOf(CommitteeAdherentMandate::class, $committee->getAdherentMandates()->first());
     }
 
-    /**
-     * @dataProvider provideGenders
-     */
+    #[DataProvider('provideGenders')]
     public function testCannotEndMandateBecauseMandateNotFound(string $gender)
     {
         $this->expectException(CommitteeAdherentMandateException::class);
@@ -207,9 +201,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $this->mandateManager->endMandate($adherent, $committee);
     }
 
-    /**
-     * @dataProvider provideGenders
-     */
+    #[DataProvider('provideGenders')]
     public function testEndMandate(string $gender)
     {
         $adherent = $this->createNewAdherent($gender);
@@ -445,7 +437,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         );
     }
 
-    public function provideGenders(): iterable
+    public static function provideGenders(): iterable
     {
         yield [Genders::MALE];
         yield [Genders::FEMALE];

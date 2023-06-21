@@ -8,34 +8,35 @@ use App\Entity\UserDocument;
 use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\FileUploadVoter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class FileUploadVoterTest extends AbstractAdherentVoterTest
+class FileUploadVoterTest extends AbstractAdherentVoterTestCase
 {
-    public function provideAnonymousCases(): iterable
+    public static function provideAnonymousCases(): iterable
     {
         foreach (UserDocument::ALL_TYPES as $type) {
             yield [false, true, DocumentPermissions::FILE_UPLOAD, $type];
         }
     }
 
-    public function provideDocumentTypes(): iterable
+    public static function provideDocumentTypes(): iterable
     {
-        return $this->getUserDocumentTypesDataProvider();
+        return static::getUserDocumentTypesDataProvider();
     }
 
-    public function provideReferentRights(): iterable
+    public static function provideReferentRights(): iterable
     {
-        return $this->getUserDocumentTypesDataProvider([
+        return static::getUserDocumentTypesDataProvider([
             UserDocument::TYPE_REFERENT,
             UserDocument::TYPE_EVENT,
         ]);
     }
 
-    public function provideHostRights(): iterable
+    public static function provideHostRights(): iterable
     {
-        return $this->getUserDocumentTypesDataProvider([
+        return static::getUserDocumentTypesDataProvider([
             UserDocument::TYPE_COMMITTEE_CONTACT,
             UserDocument::TYPE_COMMITTEE_FEED,
             UserDocument::TYPE_EVENT,
@@ -50,9 +51,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTest
         );
     }
 
-    /**
-     * @dataProvider provideDocumentTypes
-     */
+    #[DataProvider('provideDocumentTypes')]
     public function testSimpleAdherentCanNotUploadFile(string $type)
     {
         $adherent = $this->getAdherentMock(false, false);
@@ -60,9 +59,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTest
         $this->assertGrantedForAdherent(false, true, $adherent, DocumentPermissions::FILE_UPLOAD, $type);
     }
 
-    /**
-     * @dataProvider provideReferentRights
-     */
+    #[DataProvider('provideReferentRights')]
     public function testReferentRights(string $type, bool $granted)
     {
         $adherent = $this->getAdherentMock(true, false);
@@ -70,9 +67,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTest
         $this->assertGrantedForAdherent($granted, true, $adherent, DocumentPermissions::FILE_UPLOAD, $type);
     }
 
-    /**
-     * @dataProvider provideHostRights
-     */
+    #[DataProvider('provideHostRights')]
     public function testHostRights(string $type, bool $granted)
     {
         $adherent = $this->getAdherentMock(false, true);
@@ -106,7 +101,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTest
         return $adherent;
     }
 
-    private function getUserDocumentTypesDataProvider(array $allowedTypes = []): \Generator
+    private static function getUserDocumentTypesDataProvider(array $allowedTypes = []): \Generator
     {
         foreach (UserDocument::ALL_TYPES as $type) {
             yield [$type, \in_array($type, $allowedTypes)];

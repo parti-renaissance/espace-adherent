@@ -4,12 +4,12 @@ namespace Tests\App\Procuration;
 
 use App\Entity\ProcurationProxy;
 use App\Procuration\ProcurationReliabilityProcessor;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- * @group procuration
- */
+#[Group('functional')]
+#[Group('procuration')]
 class ProcurationReliabilityProcessorTest extends AbstractKernelTestCase
 {
     /**
@@ -17,9 +17,7 @@ class ProcurationReliabilityProcessorTest extends AbstractKernelTestCase
      */
     private $procurationReliabilityProcessor;
 
-    /**
-     * @dataProvider provideReliabilities
-     */
+    #[DataProvider('provideReliabilities')]
     public function testProcess(string $email, int $expectedReliability): void
     {
         $proxy = new ProcurationProxy();
@@ -32,7 +30,7 @@ class ProcurationReliabilityProcessorTest extends AbstractKernelTestCase
         $this->assertSame($expectedReliability, $proxy->getReliability());
     }
 
-    public function provideReliabilities(): \Generator
+    public static function provideReliabilities(): \Generator
     {
         yield ['unknown@test.com', 1];
         yield ['simple-user@example.ch', 1];

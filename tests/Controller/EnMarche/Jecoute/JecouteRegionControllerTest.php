@@ -2,21 +2,19 @@
 
 namespace Tests\App\Controller\EnMarche\Jecoute;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class JecouteRegionControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class JecouteRegionControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @dataProvider provideAdherentsWithNoAccess
-     */
+    #[DataProvider('provideAdherentsWithNoAccess')]
     public function testCannotEditJecouteRegion(string $adherentEmail)
     {
         $this->authenticateAsAdherent($this->client, $adherentEmail);
@@ -26,9 +24,7 @@ class JecouteRegionControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    /**
-     * @dataProvider provideAdherentsWithAccess
-     */
+    #[DataProvider('provideAdherentsWithAccess')]
     public function testEditJecouteRegion(string $adherentEmail)
     {
         $this->authenticateAsAdherent($this->client, $adherentEmail);
@@ -83,7 +79,7 @@ class JecouteRegionControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertSame('La personnalisation a été modifiée avec succès.', $crawler->filter('.flash div.flash__inner')->text());
     }
 
-    public function provideAdherentsWithNoAccess(): iterable
+    public static function provideAdherentsWithNoAccess(): iterable
     {
         yield ['benjyd@aol.com'];
         yield ['michelle.dufour@example.ch'];
@@ -91,7 +87,7 @@ class JecouteRegionControllerTest extends AbstractEnMarcheWebCaseTest
         yield ['francis.brioul@yahoo.com']; // has a canton as candidate managed area
     }
 
-    public function provideAdherentsWithAccess(): iterable
+    public static function provideAdherentsWithAccess(): iterable
     {
         yield ['jacques.picard@en-marche.fr', 'Espace candidat'];  // has a region as candidate managed area
     }

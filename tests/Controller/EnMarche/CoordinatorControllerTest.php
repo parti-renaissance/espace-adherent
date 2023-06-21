@@ -2,31 +2,27 @@
 
 namespace Tests\App\Controller\EnMarche;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group coordinator
- */
-class CoordinatorControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('coordinator')]
+class CoordinatorControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testCoordinatorBackendIsForbiddenForAnonymous($path)
     {
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testCoordinatorBackendIsForbiddenForAdherentNotCoordinator($path)
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -43,7 +39,7 @@ class CoordinatorControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
-    public function providePages(): array
+    public static function providePages(): array
     {
         return [
             ['/espace-coordinateur/comites/list'],

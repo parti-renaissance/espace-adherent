@@ -15,12 +15,11 @@ use App\Repository\AdherentRepository;
 use App\Repository\DeviceRepository;
 use App\Repository\OAuth\AccessTokenRepository;
 use App\Repository\OAuth\ClientRepository;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @group time-sensitive
- */
+#[Group('time-sensitive')]
 class PersistentTokenFactoryTest extends TestCase
 {
     private const ACCESS_TOKEN_IDENTIFIER = 'ccc1a6a661c35cce8a185a413e4b8c3dd7c9b655cf35e3400d4b571484a6c3f1ab0cd92140ea9978';

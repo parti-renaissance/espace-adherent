@@ -4,15 +4,14 @@ namespace Tests\App\Controller;
 
 use League\Glide\Signatures\Signature;
 use League\Glide\Signatures\SignatureFactory;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 
-/**
- * @group functional
- * @group controller
- */
-class AssetsControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('controller')]
+class AssetsControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

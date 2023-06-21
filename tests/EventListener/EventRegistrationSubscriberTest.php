@@ -9,6 +9,7 @@ use App\Entity\Event\EventRegistration;
 use App\Event\EventRegistrationEvent;
 use App\Event\EventRegistrationSubscriber;
 use App\Mailer\MailerService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tests\App\AbstractKernelTestCase;
@@ -23,9 +24,7 @@ class EventRegistrationSubscriberTest extends AbstractKernelTestCase
     private $urlGenerator;
     private $coalitionUrlGenerator;
 
-    /**
-     * @dataProvider provideEventRegistrationCreated
-     */
+    #[DataProvider('provideEventRegistrationCreated')]
     public function testSendRegistrationEmail(bool $sendMail)
     {
         $eventSubscriber = new EventRegistrationSubscriber($this->mailer, $this->urlGenerator, $this->coalitionUrlGenerator);
@@ -51,7 +50,7 @@ class EventRegistrationSubscriberTest extends AbstractKernelTestCase
         $eventSubscriber->sendRegistrationEmail($eventRegistrationEvent);
     }
 
-    public function provideEventRegistrationCreated(): array
+    public static function provideEventRegistrationCreated(): array
     {
         return [
             [true],

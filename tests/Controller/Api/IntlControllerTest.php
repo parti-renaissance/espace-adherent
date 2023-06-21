@@ -2,16 +2,15 @@
 
 namespace Tests\App\Controller\Api;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class IntlControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class IntlControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
 

@@ -15,14 +15,14 @@ use App\Repository\EmailRepository;
 use App\Repository\EventRegistrationRepository;
 use App\Repository\NewsletterSubscriptionRepository;
 use Cake\Chronos\Chronos;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @group functional
- * @group controller
- */
-class EventControllerTest extends AbstractEventControllerTest
+#[Group('functional')]
+#[Group('controller')]
+class EventControllerTest extends AbstractEventControllerTestCase
 {
     private ?EventRegistrationRepository $repository;
     private ?EmailRepository $emailRepository;
@@ -224,9 +224,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertStringContainsString(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
     }
 
-    /**
-     * @dataProvider dataProviderNearbyEvents
-     */
+    #[DataProvider('dataProviderNearbyEvents')]
     public function testAnonymousCanSeeThreeNearbyEvents(string $name, string $cityName)
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements/2017-02-20-grand-meeting-de-paris');
@@ -238,7 +236,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertStringContainsString($cityName, $crawler->filter('.committee-event-nearby ul')->text());
     }
 
-    public function dataProviderNearbyEvents(): iterable
+    public static function dataProviderNearbyEvents(): iterable
     {
         yield ['Marche Parisienne', 'Paris 8ème'];
         yield ['Événement à Paris 2', 'Paris 8ème'];

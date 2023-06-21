@@ -3,15 +3,14 @@
 namespace Tests\App\Admin\Phoning;
 
 use App\Entity\Phoning\Campaign;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group admin
- */
-class CampaignRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('admin')]
+class CampaignRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

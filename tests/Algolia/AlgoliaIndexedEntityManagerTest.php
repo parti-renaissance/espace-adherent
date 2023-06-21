@@ -40,14 +40,24 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
             ->willReturn(new ArrayCollection($themes))
         ;
 
+        $entityManagerMock = $this->createMock(EntityManagerInterface::class);
+
+        $series = [
+            [$entityManagerMock, $entity, []],
+            [$entityManagerMock, $themes, []],
+        ];
+
         $indexer = $this->createMock(SearchService::class);
         $indexer
             ->expects($this->exactly(2))
             ->method('index')
-            ->withConsecutive([$this->isInstanceOf(EntityManagerInterface::class), $entity], [$this->isInstanceOf(EntityManagerInterface::class), $themes])
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs, $args);
+            })
         ;
 
-        $this->getManager($indexer)->postPersist($entity);
+        $this->getManager($indexer, $entityManagerMock)->postPersist($entity);
     }
 
     public function testPostUpdate()
@@ -55,10 +65,11 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
         $entity = $this->createMock(AlgoliaIndexedEntityInterface::class);
 
         $indexer = $this->createMock(SearchService::class);
-        $indexer->expects($this->once())->method('index')->with(
-            $this->isInstanceOf(EntityManagerInterface::class),
-            $entity
-        );
+        $indexer
+            ->expects($this->once())
+            ->method('index')
+            ->with($this->isInstanceOf(EntityManagerInterface::class), $entity, [])
+        ;
 
         $this->getManager($indexer)->postUpdate($entity);
     }
@@ -77,17 +88,24 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
             ->willReturn(new ArrayCollection($themes))
         ;
 
+        $entityManagerMock = $this->createMock(EntityManagerInterface::class);
+
+        $series = [
+            [$entityManagerMock, $entity, []],
+            [$entityManagerMock, $themes, []],
+        ];
+
         $indexer = $this->createMock(SearchService::class);
         $indexer
             ->expects($this->exactly(2))
             ->method('index')
-            ->withConsecutive(
-                [$this->isInstanceOf(EntityManagerInterface::class), $entity],
-                [$this->isInstanceOf(EntityManagerInterface::class), $themes]
-            )
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs, $args);
+            })
         ;
 
-        $this->getManager($indexer)->postUpdate($entity);
+        $this->getManager($indexer, $entityManagerMock)->postUpdate($entity);
     }
 
     public function testPreRemove()
@@ -130,8 +148,8 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
         $this->getManager($indexer)->preRemove($entity);
     }
 
-    private function getManager(SearchService $indexer): AlgoliaIndexedEntityManager
+    private function getManager(SearchService $indexer, EntityManagerInterface $manager = null): AlgoliaIndexedEntityManager
     {
-        return new AlgoliaIndexedEntityManager($indexer, $this->createMock(EntityManagerInterface::class));
+        return new AlgoliaIndexedEntityManager($indexer, $manager ?? $this->createMock(EntityManagerInterface::class));
     }
 }

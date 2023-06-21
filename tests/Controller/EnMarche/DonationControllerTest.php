@@ -11,19 +11,20 @@ use App\Repository\DonationRepository;
 use App\Repository\DonatorIdentifierRepository;
 use App\Repository\DonatorRepository;
 use App\Repository\TransactionRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Payment\PayboxProvider;
 
-/**
- * @group functional
- * @group donation
- */
-class DonationControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('donation')]
+class DonationControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -47,13 +48,13 @@ class DonationControllerTest extends AbstractEnMarcheWebCaseTest
     /* @var PayboxProvider */
     private $payboxProvider;
 
-    public function getDonationSubscriptions(): iterable
+    public static function getDonationSubscriptions(): iterable
     {
         yield 'None' => [PayboxPaymentSubscription::NONE];
         yield 'Unlimited' => [PayboxPaymentSubscription::UNLIMITED];
     }
 
-    public function getInvalidSubscriptionsUrl(): iterable
+    public static function getInvalidSubscriptionsUrl(): iterable
     {
         yield 'invalid subscription' => ['/don/coordonnees?montant=30&abonnement=42'];
         yield 'without amount' => ['/don/coordonnees?abonnement=-1'];
@@ -70,10 +71,8 @@ class DonationControllerTest extends AbstractEnMarcheWebCaseTest
         }
     }
 
-    /**
-     * @depends testPayboxPreprodIsHealthy
-     * @dataProvider getDonationSubscriptions
-     */
+    #[Depends('testPayboxPreprodIsHealthy')]
+    #[DataProvider('getDonationSubscriptions')]
     public function testSuccessFullProcess(int $duration)
     {
         $this->markTestSkipped('Need update this test for new donation flow');
@@ -225,10 +224,8 @@ class DonationControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertCount(1, $this->getEmailRepository()->findMessages(DonationThanksMessage::class));
     }
 
-    /**
-     * @depends testPayboxPreprodIsHealthy
-     * @dataProvider getDonationSubscriptions
-     */
+    #[Depends('testPayboxPreprodIsHealthy')]
+    #[DataProvider('getDonationSubscriptions')]
     public function testRetryProcess(int $duration)
     {
         $this->markTestSkipped('Paybox preprod is unavailable');
@@ -359,10 +356,8 @@ class DonationControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertStringContainsString('Doe', $crawler->filter('input[name="app_donation[lastName]"]')->attr('value'), 'Retry should be prefilled.');
     }
 
-    /**
-     * @depends testPayboxPreprodIsHealthy
-     * @dataProvider getInvalidSubscriptionsUrl
-     */
+    #[Depends('testPayboxPreprodIsHealthy')]
+    #[DataProvider('getInvalidSubscriptionsUrl')]
     public function testInvalidSubscription(string $url)
     {
         $this->client->request(Request::METHOD_GET, $url);
@@ -370,9 +365,7 @@ class DonationControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertClientIsRedirectedTo('/don', $this->client);
     }
 
-    /**
-     * @dataProvider provideForeignersLivingOutsideFranceCanNotDonate
-     */
+    #[DataProvider('provideForeignersLivingOutsideFranceCanNotDonate')]
     public function testCanForeignersLivingOutsideFranceCanNotDonate(string $nationality, string $country): void
     {
         $this->markTestSkipped('Need update this test for new donation flow');
@@ -417,7 +410,7 @@ class DonationControllerTest extends AbstractEnMarcheWebCaseTest
         );
     }
 
-    public function provideForeignersLivingOutsideFranceCanNotDonate(): iterable
+    public static function provideForeignersLivingOutsideFranceCanNotDonate(): iterable
     {
         yield ['DE', 'DE'];
         yield ['DE', 'GB'];

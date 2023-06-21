@@ -2,16 +2,16 @@
 
 namespace Tests\App\Controller\Admin;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group security
- */
-class SecurityControllerCaseTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('security')]
+class SecurityControllerCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
@@ -84,9 +84,7 @@ class SecurityControllerCaseTest extends AbstractRenaissanceWebCaseTest
         );
     }
 
-    /**
-     * @dataProvider provideInvalidCredentials
-     */
+    #[DataProvider('provideInvalidCredentials')]
     public function testLoginCheckFails(string $username, string $password): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
@@ -109,7 +107,7 @@ class SecurityControllerCaseTest extends AbstractRenaissanceWebCaseTest
         $this->assertSame('L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.', trim($error->text()));
     }
 
-    public function provideInvalidCredentials(): array
+    public static function provideInvalidCredentials(): array
     {
         return [
             'Valid username, invalid password' => [

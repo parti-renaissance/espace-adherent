@@ -7,9 +7,10 @@ use App\Event\EventPermissions;
 use App\Repository\EventRegistrationRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\AttendEventVoter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class AttendEventVoterTest extends AbstractAdherentVoterTest
+class AttendEventVoterTest extends AbstractAdherentVoterTestCase
 {
     /**
      * @var EventRegistrationRepository|MockObject
@@ -35,16 +36,15 @@ class AttendEventVoterTest extends AbstractAdherentVoterTest
         return new AttendEventVoter($this->registrationRepository);
     }
 
-    public function provideAnonymousCases(): iterable
+    public static function provideAnonymousCases(): iterable
     {
-        yield [false, true, EventPermissions::UNREGISTER, $this->createMock(CommitteeEvent::class)];
+        yield [false, true, EventPermissions::UNREGISTER, fn ($_this) => $_this->createMock(CommitteeEvent::class)];
     }
 
-    /**
-     * @dataProvider provideRegisteredEventCases
-     */
-    public function testAdherentIsGrantedToUnregisterIfRegistered(bool $granted, string $attribute, $subject)
+    #[DataProvider('provideRegisteredEventCases')]
+    public function testAdherentIsGrantedToUnregisterIfRegistered(bool $granted, string $attribute)
     {
+        $subject = $this->createMock(CommitteeEvent::class);
         $adherent = $this->createAdherentMock();
         $email = $adherent->getEmailAddress();
 
@@ -62,11 +62,9 @@ class AttendEventVoterTest extends AbstractAdherentVoterTest
         $this->assertGrantedForAdherent($granted, true, $adherent, $attribute, $subject);
     }
 
-    public function provideRegisteredEventCases(): iterable
+    public static function provideRegisteredEventCases(): iterable
     {
-        $event = $this->createMock(CommitteeEvent::class);
-
-        yield [true, EventPermissions::UNREGISTER, $event];
-        yield [false, EventPermissions::UNREGISTER, $event];
+        yield [true, EventPermissions::UNREGISTER];
+        yield [false, EventPermissions::UNREGISTER];
     }
 }

@@ -5,13 +5,12 @@ namespace Tests\App\Api;
 use App\Api\EventProvider;
 use App\Entity\Event\CommitteeEvent;
 use App\Repository\EventRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group api
- */
+#[Group('api')]
 class EventProviderTest extends AbstractKernelTestCase
 {
     public function testGetUpcomingEvents()
@@ -44,9 +43,22 @@ class EventProviderTest extends AbstractKernelTestCase
         $repository = $this->createMock(EventRepository::class);
         $repository->expects($this->once())->method('findUpcomingEvents')->willReturn($events);
 
+        $series = [
+            [['app_committee_event_show', ['slug' => 'evenement-paris'], 1], $event1],
+            [['app_committee_event_show', ['slug' => 'evenement-berlin'], 1], $event2],
+        ];
+
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->expects($this->at(0))->method('generate')->willReturn('/evenements/'.$event1->getSlug());
-        $urlGenerator->expects($this->at(1))->method('generate')->willReturn('/evenements/'.$event2->getSlug());
+        $urlGenerator
+            ->expects($this->exactly(2))
+            ->method('generate')
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs[0], $args);
+
+                return '/evenements/'.$expectedArgs[1]->getSlug();
+            })
+        ;
 
         $provider = new EventProvider($repository, $urlGenerator);
 

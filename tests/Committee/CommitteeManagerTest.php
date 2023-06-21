@@ -14,13 +14,13 @@ use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Exception\CommitteeMembershipException;
 use App\Geocoder\Coordinates;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group committeeManager
- */
+#[Group('functional')]
+#[Group('committeeManager')]
 class CommitteeManagerTest extends AbstractKernelTestCase
 {
     use ControllerTestTrait;
@@ -80,9 +80,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
         ], array_keys($this->committeeManager->getNearbyCommittees($coordinates)));
     }
 
-    /**
-     * @dataProvider provideAdherentUuidsAndCommitteesCount
-     */
+    #[DataProvider('provideAdherentUuidsAndCommitteesCount')]
     public function testGetCommitteesByCoordinatesAndCountry($adherentUuid, $expectedCount)
     {
         $adherent = $this->getAdherent($adherentUuid);
@@ -102,7 +100,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
         }
     }
 
-    public function provideAdherentUuidsAndCommitteesCount(): iterable
+    public static function provideAdherentUuidsAndCommitteesCount(): iterable
     {
         yield [LoadAdherentData::ADHERENT_1_UUID, 1]; // CH
         yield [LoadAdherentData::ADHERENT_3_UUID, 3]; // FR

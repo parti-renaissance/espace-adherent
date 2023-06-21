@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdherentVoterTest
+class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdherentVoterTestCase
 {
     /**
      * @var ElectedRepresentativeRepository|MockObject
@@ -46,9 +46,9 @@ class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdh
         return new ManageUserListDefinitionElectedRepresentativeVoter($this->electedRepresentativeRepository, $this->session);
     }
 
-    public function provideAnonymousCases(): iterable
+    public static function provideAnonymousCases(): iterable
     {
-        yield [false, true, UserListDefinitionPermissions::ABLE_TO_MANAGE_MEMBER, $this->createMock(ElectedRepresentative::class)];
+        yield [false, true, UserListDefinitionPermissions::ABLE_TO_MANAGE_MEMBER, fn (self $_this) => $_this->createMock(ElectedRepresentative::class)];
     }
 
     public function providePermissions(): iterable

@@ -2,15 +2,14 @@
 
 namespace Tests\App\Controller\Legislatives;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractWebTestCase as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group legislatives
- */
+#[Group('functional')]
+#[Group('legislatives')]
 class HomeControllerTest extends WebTestCase
 {
     use ControllerTestTrait;

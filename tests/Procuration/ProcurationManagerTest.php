@@ -6,13 +6,13 @@ use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
 use App\Procuration\ProcurationManager;
 use App\Repository\ProcurationRequestRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group procuration
- */
+#[Group('functional')]
+#[Group('procuration')]
 class ProcurationManagerTest extends AbstractKernelTestCase
 {
     use ControllerTestTrait;
@@ -27,9 +27,7 @@ class ProcurationManagerTest extends AbstractKernelTestCase
      */
     private $procurationManager;
 
-    /**
-     * @dataProvider provideMatchingProcurationProxies
-     */
+    #[DataProvider('provideMatchingProcurationProxies')]
     public function testGetMatchingProcurationProxies(string $requestEmail, array $expectedMatchingProxies): void
     {
         /** @var ProcurationRequest $request */
@@ -64,7 +62,7 @@ class ProcurationManagerTest extends AbstractKernelTestCase
         }
     }
 
-    public function provideMatchingProcurationProxies(): \Generator
+    public static function provideMatchingProcurationProxies(): \Generator
     {
         yield ['jeanmichel.gastro@example.es', [
             [

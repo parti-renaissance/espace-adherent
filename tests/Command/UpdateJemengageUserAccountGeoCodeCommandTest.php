@@ -2,13 +2,12 @@
 
 namespace Tests\App\Command;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Console\Tester\CommandTester;
-use Tests\App\AbstractCommandCaseTest;
+use Tests\App\AbstractCommandTestCase;
 
-/**
- * @group command
- */
-class UpdateJemengageUserAccountGeoCodeCommandTest extends AbstractCommandCaseTest
+#[Group('command')]
+class UpdateJemengageUserAccountGeoCodeCommandTest extends AbstractCommandTestCase
 {
     public function testCommand(): void
     {

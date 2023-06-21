@@ -6,11 +6,11 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\Repository\AdherentRepository;
 use App\Scope\GeneralScopeGenerator;
 use App\Scope\Scope;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class GeneralScopeGeneratorTest extends AbstractKernelTestCase
 {
     /**
@@ -23,7 +23,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
      */
     private $generalScopeGenerator;
 
-    /** @dataProvider provideAdherent */
+    #[DataProvider('provideAdherent')]
     public function testGenerateScopes(string $adherentUuid, array $expectedScopes): void
     {
         $adherent = $this->adherentRepository->findOneByUuid($adherentUuid);
@@ -35,7 +35,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
         }
     }
 
-    public function provideAdherent(): iterable
+    public static function provideAdherent(): iterable
     {
         yield [LoadAdherentData::DEPUTY_1_UUID, [
             [

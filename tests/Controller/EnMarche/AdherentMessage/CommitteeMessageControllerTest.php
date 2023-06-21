@@ -3,14 +3,13 @@
 namespace Tests\App\Controller\EnMarche\AdherentMessage;
 
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use PHPUnit\Framework\Attributes\Group;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
-/**
- * @group functional
- */
-class CommitteeMessageControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class CommitteeMessageControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
     use MessengerTestTrait;

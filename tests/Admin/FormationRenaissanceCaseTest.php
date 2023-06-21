@@ -2,18 +2,17 @@
 
 namespace Tests\App\Admin;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-class FormationRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
+class FormationRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @dataProvider uriProvider
-     */
+    #[DataProvider('uriProvider')]
     public function testSuperAdminCanAccessFormationAdmin(string $uri): void
     {
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
@@ -22,7 +21,7 @@ class FormationRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function uriProvider(): iterable
+    public static function uriProvider(): iterable
     {
         yield ['/admin/app/formation-path/list'];
         yield ['/admin/app/formation-path/create'];

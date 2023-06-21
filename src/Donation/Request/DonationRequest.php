@@ -79,7 +79,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
      * @Assert\Email(message="common.email.invalid", groups={"Default", "fill_personal_info"})
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Default", "fill_personal_info"})
      */
-    private $emailAddress;
+    private $emailAddress = '';
 
     /**
      * @var Address
@@ -133,7 +133,6 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         string $type = Donation::TYPE_CB
     ) {
         $this->clientIp = $clientIp;
-        $this->emailAddress = '';
         $this->address = new Address();
         $this->setAmount($amount);
         $this->duration = $duration;

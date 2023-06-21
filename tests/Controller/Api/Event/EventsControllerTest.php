@@ -8,17 +8,17 @@ use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Event\EventCategory;
 use App\OAuth\Model\GrantTypeEnum;
 use Cake\Chronos\Chronos;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class EventsControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class EventsControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;
@@ -47,9 +47,7 @@ class EventsControllerTest extends AbstractApiCaseTest
         Chronos::setTestNow();
     }
 
-    /**
-     * @dataProvider provideApiEventsCategories
-     */
+    #[DataProvider('provideApiEventsCategories')]
     public function testApiUpcomingEventsForCategory(string $categoryCode, int $expectedCount, array $exclude = [])
     {
         Chronos::setTestNow('2018-05-18');
@@ -99,7 +97,7 @@ class EventsControllerTest extends AbstractApiCaseTest
         self::assertSame('5b279c9f-2b1e-4b93-9c34-1669f56e9d64', $response['items'][0]['uuid']);
     }
 
-    public function provideApiEventsCategories(): array
+    public static function provideApiEventsCategories(): array
     {
         return [
             ['CE011', 0],

@@ -12,17 +12,16 @@ use App\Repository\Timeline\ManifestoRepository;
 use App\Repository\Timeline\MeasureRepository;
 use App\Repository\Timeline\ProfileRepository;
 use App\Repository\Timeline\ThemeRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Algolia\DummySearchService;
 
-/**
- * @group functional
- * @group admin
- */
-class TimelineMeasureControllerCaseTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('admin')]
+class TimelineMeasureControllerCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

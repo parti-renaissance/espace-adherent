@@ -9,17 +9,16 @@ use App\Entity\Device;
 use App\Entity\OAuth\AuthorizationCode;
 use Defuse\Crypto\Crypto;
 use League\OAuth2\Server\CryptKey;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class OAuthServerControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('api')]
+class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

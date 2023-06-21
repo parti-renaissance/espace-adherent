@@ -2,16 +2,15 @@
 
 namespace Tests\App\Controller\EnMarche;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
 
-/**
- * @group functional
- */
-class CoalitionAuthorAutocompleteControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class CoalitionAuthorAutocompleteControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

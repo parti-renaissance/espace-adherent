@@ -5,13 +5,12 @@ namespace Tests\App\Validator;
 use App\Donation\Request\DonationRequest;
 use App\Validator\MaxMonthDonation;
 use App\Validator\MaxMonthDonationValidator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class MaxMonthDonationValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @dataProvider getDataDonation
-     */
+    #[DataProvider('getDataDonation')]
     public function testValidation($amount, int $subscription, int $violation = 0): void
     {
         $donationRequest = new DonationRequest('123.0.0.1', $amount, $subscription);
@@ -25,7 +24,7 @@ class MaxMonthDonationValidatorTest extends ConstraintValidatorTestCase
         );
     }
 
-    public function getDataDonation(): \Iterator
+    public static function getDataDonation(): \Iterator
     {
         yield [50, 0, 0];
         yield [626, 0, 0];

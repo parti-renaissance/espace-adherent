@@ -3,18 +3,17 @@
 namespace Tests\App\Controller\Api;
 
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
 
-/**
- * @group functional
- * @group api
- */
-class CommitteesControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class CommitteesControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

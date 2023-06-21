@@ -2,16 +2,15 @@
 
 namespace Tests\App\Controller\EnMarche\Designation;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group voting-platform
- */
-class SupervisorDesignationControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('voting-platform')]
+class SupervisorDesignationControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

@@ -15,14 +15,13 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use App\Mailer\Message\CommitteeApprovalReferentMessage;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @group committee
- */
+#[Group('committee')]
 class CommitteeManagementAuthorityTest extends TestCase
 {
     public function testApprove()
@@ -35,13 +34,13 @@ class CommitteeManagementAuthorityTest extends TestCase
         $manager->expects($this->once())->method('approveCommittee')->with($committee);
 
         $mailer = $this->createMock(MailerService::class);
-        $mailer->expects($this->at(0))
+        $mailer->expects($this->once())
             ->method('sendMessage')
             ->with($this->isInstanceOf(CommitteeApprovalConfirmationMessage::class))
         ;
 
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->expects($this->at(0))->method('generate')->willReturn(sprintf(
+        $urlGenerator->expects($this->once())->method('generate')->willReturn(sprintf(
             '/comites/%s',
             'comite-lille-beach'
         ));
@@ -60,7 +59,7 @@ class CommitteeManagementAuthorityTest extends TestCase
         $manager = $this->createManager($creator, $referents);
 
         $mailer = $this->createMock(MailerService::class);
-        $mailer->expects($this->at(0))
+        $mailer->expects($this->once())
             ->method('sendMessage')
             ->with($this->isInstanceOf(CommitteeApprovalReferentMessage::class))
         ;

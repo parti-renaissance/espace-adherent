@@ -3,16 +3,15 @@
 namespace Tests\App\Controller\EnMarche;
 
 use Cake\Chronos\Chronos;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group map
- */
-class MapControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('map')]
+class MapControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

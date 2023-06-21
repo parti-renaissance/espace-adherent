@@ -5,11 +5,11 @@ namespace Tests\App\Entity;
 use App\Entity\ElectionRound;
 use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @group procuration
- */
+#[Group('procuration')]
 class ProcurationRequestTest extends TestCase
 {
     public function testProcessAndUnprocessWithFrenchProxy()
@@ -127,9 +127,7 @@ class ProcurationRequestTest extends TestCase
         $this->assertTrue($ppElectionRound->isForeignRequestAvailable());
     }
 
-    /**
-     * @dataProvider provideProcessTestCases
-     */
+    #[DataProvider('provideProcessTestCases')]
     public function testProcess(
         string $proxyVoteCountry,
         int $proxiesCount,
@@ -159,7 +157,7 @@ class ProcurationRequestTest extends TestCase
         $this->assertEquals($expectedForeignAvailability, $ppElectionRound->isForeignRequestAvailable());
     }
 
-    public function provideProcessTestCases(): \Generator
+    public static function provideProcessTestCases(): \Generator
     {
         yield 'Proxy from france, with 1 slot and only one request from france: should not be available for french nor foreign extra requests' => [
             'FR', 1, [true], false, false,

@@ -5,16 +5,14 @@ namespace Tests\App\Entity;
 use App\Entity\AssessorOfficeEnum;
 use App\Entity\AssessorRequest;
 use App\Entity\Election\VotePlace;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @group assessor
- */
+#[Group('assessor')]
 class AssessorRequestTest extends TestCase
 {
-    /**
-     * @dataProvider provideProcessTestCases
-     */
+    #[DataProvider('provideProcessTestCases')]
     public function testAssessorRequestProcess(
         string $assessorOffice,
         bool $holderOfficeAvailable,
@@ -33,7 +31,7 @@ class AssessorRequestTest extends TestCase
         $this->assertEquals(false, null === $assessorRequest->getVotePlace());
     }
 
-    public function provideProcessTestCases(): \Generator
+    public static function provideProcessTestCases(): \Generator
     {
         yield 'After processing an holder to a vote place, we should have only one substitute office available on the vote place' => [
             AssessorOfficeEnum::HOLDER, false, true, ['assessor_request.office.substitute.label'],
@@ -43,9 +41,7 @@ class AssessorRequestTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideUnprocessTestCases
-     */
+    #[DataProvider('provideUnprocessTestCases')]
     public function testAssessorRequestUnprocess(
         string $assessorOffice,
         bool $holderOfficeAvailable,
@@ -65,7 +61,7 @@ class AssessorRequestTest extends TestCase
         $this->assertEquals(true, null === $assessorRequest->getVotePlace());
     }
 
-    public function provideUnprocessTestCases(): \Generator
+    public static function provideUnprocessTestCases(): \Generator
     {
         yield 'After unprocessing an holder to a vote place, we should have both offices available on the vote place' => [
             AssessorOfficeEnum::HOLDER, true, true, ['assessor_request.office.holder.label', 'assessor_request.office.substitute.label'],

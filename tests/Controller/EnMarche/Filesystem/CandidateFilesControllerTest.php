@@ -2,12 +2,13 @@
 
 namespace Tests\App\Controller\EnMarche\Filesystem;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-class CandidateFilesControllerTest extends AbstractEnMarcheWebCaseTest
+class CandidateFilesControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -131,9 +132,7 @@ class CandidateFilesControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertStringContainsString('dpt link for all', $files->eq(0)->text());
     }
 
-    /**
-     * @dataProvider getFiles
-     */
+    #[DataProvider('getFiles')]
     public function testFilesListIsDisplayedSuccessfully(string $name, string $userEmail, int $statusCode): void
     {
         $this->authenticateAsAdherent($this->client, $userEmail);
@@ -148,7 +147,7 @@ class CandidateFilesControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertResponseStatusCode($statusCode, $this->client->getResponse());
     }
 
-    public function getFiles(): array
+    public static function getFiles(): array
     {
         return [
             ['external hidden link', 'jacques.picard@en-marche.fr', Response::HTTP_FORBIDDEN],

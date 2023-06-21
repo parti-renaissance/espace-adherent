@@ -3,13 +3,12 @@
 namespace Tests\App\ValueObject;
 
 use App\ValueObject\SHA1;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SHA1Test extends TestCase
 {
-    /**
-     * @dataProvider provideInvalidHash
-     */
+    #[DataProvider('provideInvalidHash')]
     public function testCreateSHA1FailsWithInvalidSHA1Hash(string $hash)
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -17,7 +16,7 @@ class SHA1Test extends TestCase
         SHA1::fromString($hash);
     }
 
-    public function provideInvalidHash(): array
+    public static function provideInvalidHash(): array
     {
         return [
             'invalid SHA1 hash' => ['2zzz8079f27fd1fab76b28420f5ff2ccbe57a283'],
@@ -51,9 +50,7 @@ class SHA1Test extends TestCase
         $this->assertFalse($hash5->equals($hash4));
     }
 
-    /**
-     * @dataProvider provideHash
-     */
+    #[DataProvider('provideHash')]
     public function testCreateFromString(string $expectedHash, string $initialHash, bool $preserveCase)
     {
         $sha1 = SHA1::fromString($initialHash, $preserveCase);
@@ -62,7 +59,7 @@ class SHA1Test extends TestCase
         $this->assertSame($expectedHash, (string) $sha1);
     }
 
-    public function provideHash(): array
+    public static function provideHash(): array
     {
         return [
             ['3c5340eca1e0a1ac201e4ae648ba11f2ddddddd9', '3c5340eca1e0a1ac201e4ae648ba11f2ddddddd9', true],

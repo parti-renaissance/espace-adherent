@@ -2,14 +2,13 @@
 
 namespace Tests\App\Controller\EnMarche\CommitteeDesignation;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class ReferentDesignationControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class ReferentDesignationControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

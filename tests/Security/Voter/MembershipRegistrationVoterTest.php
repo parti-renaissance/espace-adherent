@@ -4,6 +4,7 @@ namespace Tests\App\Security\Voter;
 
 use App\Membership\MembershipRegistrationProcess;
 use App\Security\Voter\MembershipRegistrationVoter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -22,9 +23,7 @@ class MembershipRegistrationVoterTest extends TestCase
         $this->token = null;
     }
 
-    /**
-     * @dataProvider voterProvider
-     */
+    #[DataProvider('voterProvider')]
     public function testVoter(bool $isStarted, array $attributes, int $expected)
     {
         $this->assertSame(
@@ -33,7 +32,7 @@ class MembershipRegistrationVoterTest extends TestCase
         );
     }
 
-    public function voterProvider(): iterable
+    public static function voterProvider(): iterable
     {
         yield [true, [MembershipRegistrationVoter::REGISTRATION_IN_PROGRESS], VoterInterface::ACCESS_GRANTED];
         yield [false, [MembershipRegistrationVoter::REGISTRATION_IN_PROGRESS], VoterInterface::ACCESS_DENIED];

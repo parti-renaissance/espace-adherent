@@ -2,17 +2,16 @@
 
 namespace Tests\App\Controller\EnMarche\ManagedUsers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-class ManagedUserControllerTest extends AbstractEnMarcheWebCaseTest
+class ManagedUserControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @dataProvider getSpaceURIPrefixes
-     */
+    #[DataProvider('getSpaceURIPrefixes')]
     public function testManagedUsersListIsDisplayedSuccessfully(
         string $uriPrefix,
         string $userEmail,
@@ -25,7 +24,7 @@ class ManagedUserControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertSame($expectedAdherentNumber, $crawler->filter('tbody tr')->count());
     }
 
-    public function getSpaceURIPrefixes(): array
+    public static function getSpaceURIPrefixes(): array
     {
         return [
             ['/espace-referent', 'referent@en-marche-dev.fr', 4],

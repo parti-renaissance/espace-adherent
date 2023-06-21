@@ -8,12 +8,12 @@ use App\Repository\Geo\ZoneRepository;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Persistence\ObjectRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- * @group referent
- */
+#[Group('functional')]
+#[Group('referent')]
 class ManagedUserRepositoryTest extends AbstractKernelTestCase
 {
     /**
@@ -36,9 +36,7 @@ class ManagedUserRepositoryTest extends AbstractKernelTestCase
         $this->assertCount(3, $this->managedUserRepository->searchByFilter($filter));
     }
 
-    /**
-     * @dataProvider providesOnlyEmailSubscribers
-     */
+    #[DataProvider('providesOnlyEmailSubscribers')]
     public function testSearchWithEmailSubscribersInevitably(?bool $onlyEmailSubscribers, int $count)
     {
         $filter = new ManagedUsersFilter(SubscriptionTypeEnum::REFERENT_EMAIL, [
@@ -50,7 +48,7 @@ class ManagedUserRepositoryTest extends AbstractKernelTestCase
         $this->assertCount($count, $this->managedUserRepository->searchByFilter($filter));
     }
 
-    public function providesOnlyEmailSubscribers(): \Generator
+    public static function providesOnlyEmailSubscribers(): \Generator
     {
         yield [null, 3];
         yield [true, 1];

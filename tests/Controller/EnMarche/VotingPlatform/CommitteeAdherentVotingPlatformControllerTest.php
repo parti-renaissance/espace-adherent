@@ -4,15 +4,14 @@ namespace Tests\App\Controller\EnMarche\VotingPlatform;
 
 use App\DataFixtures\ORM\LoadVotingPlatformElectionData;
 use App\Repository\VotingPlatform\VoteResultRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group voting-platform
- */
-class CommitteeAdherentVotingPlatformControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('voting-platform')]
+class CommitteeAdherentVotingPlatformControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

@@ -2,15 +2,15 @@
 
 namespace Tests\App\Controller\EnMarche;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group home
- */
-class HomeControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('home')]
+class HomeControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -29,9 +29,7 @@ class HomeControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertSame(1, $crawler->filter('html:contains("Le candidat du travail")')->count());
     }
 
-    /**
-     * @dataProvider provideSitemaps
-     */
+    #[DataProvider('provideSitemaps')]
     public function testSitemaps(string $page): void
     {
         $this->client->request(Request::METHOD_GET, $page);
@@ -39,9 +37,7 @@ class HomeControllerTest extends AbstractEnMarcheWebCaseTest
         $this->isSuccessful($this->client->getResponse());
     }
 
-    /**
-     * @dataProvider provideEmptySitemaps
-     */
+    #[DataProvider('provideEmptySitemaps')]
     public function testEmptySitemaps(string $page): void
     {
         $this->client->request(Request::METHOD_GET, $page);
@@ -49,7 +45,7 @@ class HomeControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertClientIsRedirectedTo('/sitemap.xml', $this->client, false, true);
     }
 
-    public function provideSitemaps(): array
+    public static function provideSitemaps(): array
     {
         return [
             ['/sitemap.xml'],
@@ -61,7 +57,7 @@ class HomeControllerTest extends AbstractEnMarcheWebCaseTest
         ];
     }
 
-    public function provideEmptySitemaps(): array
+    public static function provideEmptySitemaps(): array
     {
         return [
             ['/sitemap_committees_42.xml'],
@@ -88,9 +84,7 @@ class HomeControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertClientIsRedirectedTo('/articles', $this->client, false, true);
     }
 
-    /**
-     * @dataProvider provideUrlsAndRedirections
-     */
+    #[DataProvider('provideUrlsAndRedirections')]
     public function testRemoveTrailingSlashAction(string $uri, string $redirectUri)
     {
         $this->client->request(Request::METHOD_GET, $uri);
@@ -102,7 +96,7 @@ class HomeControllerTest extends AbstractEnMarcheWebCaseTest
         $this->isSuccessful($this->client->getResponse());
     }
 
-    public function provideUrlsAndRedirections(): \Generator
+    public static function provideUrlsAndRedirections(): \Generator
     {
         yield 'Emmanuel Macron' => ['/emmanuel-macron/', '/emmanuel-macron'];
         yield 'Le mouvement' => ['/le-mouvement/', '/le-mouvement'];

@@ -6,15 +6,14 @@ use App\Entity\ProcurationRequest;
 use App\Procuration\ElectionContext;
 use App\Procuration\Exception\InvalidProcurationFlowException;
 use App\Procuration\ProcurationSession;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
-/**
- * @group procuration
- */
+#[Group('procuration')]
 class ProcurationSessionTest extends TestCase
 {
     /** @var SessionInterface|MockObject */
@@ -113,17 +112,20 @@ class ProcurationSessionTest extends TestCase
     {
         $procuration = new ProcurationSession($this->session);
 
+        $series = [
+            [['app_procuration_model'], false],
+            [['app_procuration_election_context'], true],
+        ];
+
         $this->session
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('has')
-            ->with('app_procuration_model')
-            ->willReturn(false)
-        ;
-        $this->session
-            ->expects($this->at(1))
-            ->method('has')
-            ->with('app_procuration_election_context')
-            ->willReturn(true)
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs[0], $args);
+
+                return $expectedArgs[1];
+            })
         ;
         $this->session
             ->expects($this->once())
@@ -185,19 +187,34 @@ class ProcurationSessionTest extends TestCase
     {
         $procuration = new ProcurationSession($this->session);
 
+        $series = [
+            ['app_procuration_model'],
+            ['app_procuration_election_context'],
+        ];
         $this->session
             ->expects($this->exactly(2))
             ->method('remove')
-            ->withConsecutive(['app_procuration_model'], ['app_procuration_election_context'])
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs, $args);
+            })
         ;
+
+        $series2 = [
+            [['app_procuration_election_context'], fn ($param) => $this->matchesRegularExpression('~.+"Mock_ElectionContext_.{8}":1:\{i:0;s:4:"test";}~')->evaluate($param)],
+            [['app_procuration_model'], fn ($param) => $this->isInstanceOf(ProcurationRequest::class)->evaluate($param)],
+        ];
+
         // Setting the context should reset the procuration flow
         $this->session
             ->expects($this->exactly(2))
             ->method('set')
-            ->withConsecutive(
-                ['app_procuration_election_context', $this->matchesRegularExpression('~.+"Mock_ElectionContext_.{8}":1:\{i:0;s:4:"test";}~')],
-                ['app_procuration_model', $this->isInstanceOf(ProcurationRequest::class)]
-            )
+            ->willReturnCallback(function (...$args) use (&$series2) {
+                $expectedArgs = array_shift($series2);
+                $this->assertSame($expectedArgs[0][0], $args[0]);
+
+                $expectedArgs[1]($args[1]);
+            })
         ;
         $this->session
             ->expects($this->once())

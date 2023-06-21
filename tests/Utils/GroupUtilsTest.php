@@ -4,12 +4,11 @@ namespace Tests\App\Utils;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Utils\GroupUtils;
+use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class GroupUtilsTest extends AbstractKernelTestCase
 {
     public function testGetUuidsFromJson()

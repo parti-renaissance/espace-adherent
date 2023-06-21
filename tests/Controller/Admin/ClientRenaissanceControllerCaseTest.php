@@ -6,15 +6,14 @@ use App\DataFixtures\ORM\LoadClientData;
 use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\Client;
 use App\Entity\OAuth\RefreshToken;
+use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group admin
- */
-class ClientRenaissanceControllerCaseTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('admin')]
+class ClientRenaissanceControllerCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

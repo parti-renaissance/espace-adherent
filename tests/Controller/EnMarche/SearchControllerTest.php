@@ -6,22 +6,20 @@ use App\Entity\Event\CommitteeEvent;
 use App\Search\SearchParametersFilter;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group controller
- */
-class SearchControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('controller')]
+class SearchControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @dataProvider provideQuery
-     */
+    #[DataProvider('provideQuery')]
     public function testIndex($query)
     {
         $this->client->request(Request::METHOD_GET, '/recherche', $query);
@@ -57,9 +55,7 @@ class SearchControllerTest extends AbstractEnMarcheWebCaseTest
         Chronos::setTestNow();
     }
 
-    /**
-     * @dataProvider providerPathSearchPage
-     */
+    #[DataProvider('providerPathSearchPage')]
     public function testAccessSearchPage(string $path)
     {
         $this->client->request(Request::METHOD_GET, $path);
@@ -67,7 +63,7 @@ class SearchControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function providerPathSearchPage(): array
+    public static function providerPathSearchPage(): array
     {
         return [
             ['/evenements'],
@@ -76,7 +72,7 @@ class SearchControllerTest extends AbstractEnMarcheWebCaseTest
         ];
     }
 
-    public function provideQuery(): \Generator
+    public static function provideQuery(): \Generator
     {
         yield 'No criteria' => [[]];
         yield 'Search committees' => [[SearchParametersFilter::PARAMETER_TYPE => SearchParametersFilter::TYPE_COMMITTEES]];

@@ -6,13 +6,12 @@ use App\Jecoute\GenderEnum;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use App\Validator\CustomGender;
 use App\Validator\CustomGenderValidator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class CustomGenderValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @dataProvider getGender
-     */
+    #[DataProvider('getGender')]
     public function testValidation(string $gender, string $customGender = null, int $violation = 0): void
     {
         $member = new PlatformMembershipRequest();
@@ -28,7 +27,7 @@ class CustomGenderValidatorTest extends ConstraintValidatorTestCase
         );
     }
 
-    public function getGender(): \Iterator
+    public static function getGender(): \Iterator
     {
         yield [GenderEnum::MALE, null, 0];
         yield [GenderEnum::FEMALE, null, 0];

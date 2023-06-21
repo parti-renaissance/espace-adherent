@@ -5,6 +5,7 @@ namespace Tests\App\FranceCities;
 use App\Entity\Geo\Zone;
 use App\FranceCities\CityValueObject;
 use App\FranceCities\FranceCities;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\App\AbstractKernelTestCase;
 
 class FranceCitiesTest extends AbstractKernelTestCase
@@ -25,39 +26,31 @@ class FranceCitiesTest extends AbstractKernelTestCase
         $this->franceCities = null;
     }
 
-    /**
-     * @dataProvider providePostalCodes
-     */
+    #[DataProvider('providePostalCodes')]
     public function testFindCitiesByPostalCode(string $postalCode, array $expectedCities): void
     {
         $this->assertEquals($expectedCities, $this->franceCities->findCitiesByPostalCode($postalCode));
     }
 
-    /**
-     * @dataProvider provideForCityByPostalCodeAndName
-     */
+    #[DataProvider('provideForCityByPostalCodeAndName')]
     public function testGetCityByPostalCodeAndName(string $postalCode, string $name, CityValueObject $expected): void
     {
         $this->assertEquals($expected, $this->franceCities->getCityByPostalCodeAndName($postalCode, $name));
     }
 
-    /**
-     * @dataProvider provideSearchCitiesForZones
-     */
-    public function testSearchCitiesForZones(array $zones, string $search, array $expectedCities): void
+    #[DataProvider('provideSearchCitiesForZones')]
+    public function testSearchCitiesForZones(callable $zonesCallback, string $search, array $expectedCities): void
     {
-        $this->assertEquals($expectedCities, $this->franceCities->searchCitiesForZones($zones, $search));
+        $this->assertEquals($expectedCities, $this->franceCities->searchCitiesForZones($zonesCallback($this), $search));
     }
 
-    /**
-     * @dataProvider provideForCityByInseeCode
-     */
+    #[DataProvider('provideForCityByInseeCode')]
     public function testGetCityByInseeCode(string $inseeCode, CityValueObject $expectedCities): void
     {
         $this->assertEquals($expectedCities, $this->franceCities->getCityByInseeCode($inseeCode));
     }
 
-    public function providePostalCodes(): array
+    public static function providePostalCodes(): array
     {
         return [
             [
@@ -77,7 +70,7 @@ class FranceCitiesTest extends AbstractKernelTestCase
         ];
     }
 
-    public function provideForCityByPostalCodeAndName(): array
+    public static function provideForCityByPostalCodeAndName(): array
     {
         return [
             [
@@ -93,44 +86,32 @@ class FranceCitiesTest extends AbstractKernelTestCase
         ];
     }
 
-    public function provideSearchCitiesForZones(): iterable
+    public static function provideSearchCitiesForZones(): iterable
     {
         yield [
-            [
-                $this->createReferentZone('92'),
-            ],
+            fn (self $_this) => [$_this->createReferentZone('92')],
             'Bois Colom',
-            [
-                CityValueObject::createFromCityArray(['name' => 'Bois-Colombes', 'postal_code' => ['92270'], 'insee_code' => '92009']),
-            ],
+            [CityValueObject::createFromCityArray(['name' => 'Bois-Colombes', 'postal_code' => ['92270'], 'insee_code' => '92009'])],
         ];
         yield [
-            [
-                $this->createReferentZone('77'),
-            ],
+            fn (self $_this) => [$_this->createReferentZone('77')],
             'Bois Colom',
             [],
         ];
 
         yield [
-            [
-                $this->createReferentZone('92'),
-            ],
+            fn (self $_this) => [$_this->createReferentZone('92')],
             'Melun',
             [],
         ];
         yield [
-            [
-                $this->createReferentZone('77'),
-            ],
+            fn (self $_this) => [$_this->createReferentZone('77')],
             'Melun',
-            [
-                CityValueObject::createFromCityArray(['name' => 'Melun', 'postal_code' => ['77000'], 'insee_code' => '77288']),
-            ],
+            [CityValueObject::createFromCityArray(['name' => 'Melun', 'postal_code' => ['77000'], 'insee_code' => '77288'])],
         ];
     }
 
-    public function provideForCityByInseeCode(): array
+    public static function provideForCityByInseeCode(): array
     {
         return [
             [

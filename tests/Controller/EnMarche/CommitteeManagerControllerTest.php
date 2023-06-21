@@ -16,17 +16,17 @@ use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\EventRepository;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group committeeManager
- */
-class CommitteeManagerControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('committeeManager')]
+class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -418,9 +418,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertSeeCommitteeTimelineMessage($crawler, 0, 'Gisele Berthoux', 'co-animateur', 'Première publication !');
     }
 
-    /**
-     * @dataProvider provideFollowerCredentials
-     */
+    #[DataProvider('provideFollowerCredentials')]
     public function testAuthenticatedFollowerCannotSeeCommitteeMembers(string $username)
     {
         // Authenticate as a committee follower
@@ -432,7 +430,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    public function provideFollowerCredentials(): array
+    public static function provideFollowerCredentials(): array
     {
         return [
             'follower 1' => ['carl999@example.fr'],

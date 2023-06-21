@@ -2,21 +2,22 @@
 
 namespace Tests\App\Security;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group time-sensitive
- * @group functional
- */
-class InactiveRenaissanceDisconnectionCaseTest extends AbstractRenaissanceWebCaseTest
+#[Group('time-sensitive')]
+#[Group('functional')]
+class InactiveRenaissanceDisconnectionCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
     public function testLogoutInactiveAdmin()
     {
+        $this->markTestSkipped('Waiting for compatibility of Symfony/phpunit-bridge with PHPUnit 10 @see https://github.com/symfony/symfony/issues/49069');
+
         $this->authenticateAsAdmin($this->client);
 
         $this->client->request(Request::METHOD_GET, '/admin/app/media/list');
@@ -28,12 +29,14 @@ class InactiveRenaissanceDisconnectionCaseTest extends AbstractRenaissanceWebCas
         // go to another page
         $this->client->request(Request::METHOD_GET, '/admin/dashboard');
 
-        // should be redirected to logout
+        // should be redirected to log out
         $this->assertClientIsRedirectedTo('http://test.renaissance.code/deconnexion', $this->client);
     }
 
     public function testNoLogoutInactiveAdherent()
     {
+        $this->markTestSkipped('Waiting for compatibility of Symfony/phpunit-bridge with PHPUnit 10 @see https://github.com/symfony/symfony/issues/49069');
+
         $this->makeEMClient();
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 

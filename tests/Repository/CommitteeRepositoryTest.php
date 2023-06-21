@@ -3,11 +3,10 @@
 namespace Tests\App\Repository;
 
 use App\Repository\CommitteeRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class CommitteeRepositoryTest extends AbstractKernelTestCase
 {
     /**

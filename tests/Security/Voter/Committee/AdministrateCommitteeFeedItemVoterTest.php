@@ -9,13 +9,13 @@ use App\Entity\CommitteeFeedItem;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\Committee\AdministrateCommitteeFeedItemVoter;
 use PHPUnit\Framework\MockObject\MockObject;
-use Tests\App\Security\Voter\AbstractAdherentVoterTest;
+use Tests\App\Security\Voter\AbstractAdherentVoterTestCase;
 
-class AdministrateCommitteeFeedItemVoterTest extends AbstractAdherentVoterTest
+class AdministrateCommitteeFeedItemVoterTest extends AbstractAdherentVoterTestCase
 {
-    public function provideAnonymousCases(): iterable
+    public static function provideAnonymousCases(): iterable
     {
-        yield [false, true, CommitteePermissionEnum::ADMIN_FEED, $this->createMock(CommitteeFeedItem::class)];
+        yield [false, true, CommitteePermissionEnum::ADMIN_FEED, fn ($_this) => $_this->createMock(CommitteeFeedItem::class)];
     }
 
     protected function getVoter(): AbstractAdherentVoter

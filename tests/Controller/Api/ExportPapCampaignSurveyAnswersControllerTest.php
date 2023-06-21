@@ -5,17 +5,17 @@ namespace Tests\App\Controller\Api;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\OAuth\Model\GrantTypeEnum;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;
@@ -99,7 +99,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiCaseTest
         $this->assertSame('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name=ProgId content=Excel.Sheet><meta name=Generator content="https://github.com/sonata-project/exporter"></head><body><table></table></body></html>', $responseContent);
     }
 
-    /** @dataProvider provideReferents */
+    #[DataProvider('provideReferents')]
     public function testExportPapCampaignRepliesInXlsByReferentWithRepliesInManagedZones(
         string $email,
         string $scope
@@ -138,7 +138,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiCaseTest
         $this->assertStringContainsString('<td>75008</td><td>2.318427</td><td>48.879246</td><td>Vie publique, répartition des pouvoirs et démocratie</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td></tr></table></body></html>', $responseContent);
     }
 
-    public function provideReferents(): iterable
+    public static function provideReferents(): iterable
     {
         yield ['referent-75-77@en-marche-dev.fr', 'referent'];
         yield ['francis.brioul@yahoo.com', 'delegated_689757d2-dea5-49d1-95fe-281fc860ff77'];

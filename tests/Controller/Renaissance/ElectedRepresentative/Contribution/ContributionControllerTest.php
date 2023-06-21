@@ -6,15 +6,14 @@ use App\Entity\ElectedRepresentative\Contribution;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Repository\AdherentRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class ContributionControllerTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+class ContributionControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

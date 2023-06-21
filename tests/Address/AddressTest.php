@@ -3,11 +3,10 @@
 namespace Tests\App\Address;
 
 use App\Address\Address;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group address
- */
+#[Group('address')]
 class AddressTest extends AbstractKernelTestCase
 {
     public function testCreateValidForeignAddress()

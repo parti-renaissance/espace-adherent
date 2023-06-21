@@ -4,35 +4,33 @@ namespace Tests\App\Controller\Api\UserListDefinition;
 
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\UserListDefinitionEnum;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
 
-/**
- * @group functional
- */
-class ElectedRepresentativeUserListDefinitionControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+class ElectedRepresentativeUserListDefinitionControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
 
-    public function providePages(): array
+    public static function providePages(): array
     {
         return [
             ['/api/elected-representative/user-list-definitions/%s/members'],
         ];
     }
 
-    public function provideUsers(): iterable
+    public static function provideUsers(): iterable
     {
         yield ['referent@en-marche-dev.fr'];
         yield ['benjyd@aol.com'];
     }
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testForbiddenWithGet($path)
     {
         foreach (UserListDefinitionEnum::TYPES as $type) {
@@ -42,9 +40,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends AbstractApiC
         }
     }
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testForbiddenAsAnonymous($path)
     {
         foreach (UserListDefinitionEnum::TYPES as $type) {

@@ -10,11 +10,10 @@ use App\Entity\Committee;
 use App\Geo\ZoneMatcher;
 use App\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group committee
- */
+#[Group('committee')]
 class CommitteeFactoryTest extends AbstractKernelTestCase
 {
     public function testCreateCommitteeFromCommitteeCreationCommand()

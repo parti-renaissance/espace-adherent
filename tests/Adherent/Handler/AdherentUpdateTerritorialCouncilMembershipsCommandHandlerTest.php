@@ -52,6 +52,7 @@ use App\TerritorialCouncil\Handlers\TerritorialCouncilSenatorHandler;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -73,9 +74,7 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Abst
     private ?TerritorialCouncil $actualTC;
     private ?TerritorialCouncil $newTC;
 
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testInvoke(array $data): void
     {
         $uuid = Uuid::uuid4();
@@ -156,7 +155,7 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Abst
         }
     }
 
-    public function provideData(): \Generator
+    public static function provideData(): \Generator
     {
         yield 'add AL' => [[
             'al' => ['in_new_coterr'],

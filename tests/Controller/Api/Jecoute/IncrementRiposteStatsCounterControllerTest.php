@@ -8,16 +8,16 @@ use App\DataFixtures\ORM\LoadJecouteRiposteData;
 use App\Entity\Jecoute\Riposte;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class IncrementRiposteStatsCounterControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class IncrementRiposteStatsCounterControllerTest extends AbstractApiTestCase
 {
     use ApiControllerTestTrait;
     use ControllerTestTrait;
@@ -26,9 +26,7 @@ class IncrementRiposteStatsCounterControllerTest extends AbstractApiCaseTest
 
     private $riposteRepository;
 
-    /**
-     * @dataProvider provideRiposteActions
-     */
+    #[DataProvider('provideRiposteActions')]
     public function testIncrementRiposteStatsCounterSuccessfully(string $riposteUuid, string $action): void
     {
         $riposte = $this->riposteRepository->findOneBy(['uuid' => $riposteUuid]);
@@ -55,7 +53,7 @@ class IncrementRiposteStatsCounterControllerTest extends AbstractApiCaseTest
         $this->assertRiposteStats($riposte, $action, 1);
     }
 
-    public function provideRiposteActions(): \Generator
+    public static function provideRiposteActions(): \Generator
     {
         yield [LoadJecouteRiposteData::RIPOSTE_3_UUID, Riposte::ACTION_DETAIL_VIEW];
         yield [LoadJecouteRiposteData::RIPOSTE_3_UUID, Riposte::ACTION_SOURCE_VIEW];

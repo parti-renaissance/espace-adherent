@@ -4,11 +4,12 @@ namespace Tests\App\Entity;
 
 use App\Entity\Donation;
 use App\Entity\Transaction;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class TransactionTest extends TestCase
 {
-    public function constructProvider(): iterable
+    public static function constructProvider(): iterable
     {
         yield 'full_success' => [
             [
@@ -64,9 +65,7 @@ class TransactionTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider constructProvider
-     */
+    #[DataProvider('constructProvider')]
     public function testConstruct(array $payload, array $expectations): void
     {
         $transaction = new Transaction($this->createMock(Donation::class), $payload);

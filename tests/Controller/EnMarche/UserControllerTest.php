@@ -4,16 +4,15 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentChangeEmailToken;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group membership
- */
-class UserControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('membership')]
+class UserControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

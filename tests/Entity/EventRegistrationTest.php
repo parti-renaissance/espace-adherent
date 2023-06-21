@@ -85,12 +85,7 @@ class EventRegistrationTest extends TestCase
     {
         $uuid = Uuid::fromString($uuid);
 
-        $event = $this
-            ->getMockBuilder(CommitteeEvent::class)
-            ->setMethodsExcept(['equals'])
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $event = $this->createPartialMock(CommitteeEvent::class, ['getUuid']);
 
         // Hack to ensure the $uuid protected property contains
         // a valid UuidInterface instance.

@@ -38,17 +38,12 @@ class NullableAddress implements AddressInterface, GeocodableInterface
      * @Assert\NotBlank
      * @Assert\Country(message="common.country.invalid")
      */
-    private $country;
+    private $country = Address::FRANCE;
 
     /**
      * @Assert\Length(max=255)
      */
     private $region;
-
-    public function __construct()
-    {
-        $this->country = Address::FRANCE;
-    }
 
     public function getAddress(): ?string
     {

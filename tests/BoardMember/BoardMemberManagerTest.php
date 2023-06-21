@@ -10,13 +10,12 @@ use App\Entity\Adherent;
 use App\Entity\BoardMember\Role;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group boardMember
- */
+#[Group('functional')]
+#[Group('boardMember')]
 class BoardMemberManagerTest extends AbstractKernelTestCase
 {
     use ControllerTestTrait;

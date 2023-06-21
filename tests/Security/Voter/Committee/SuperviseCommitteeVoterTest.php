@@ -8,13 +8,13 @@ use App\Entity\Committee;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\Committee\SuperviseCommitteeVoter;
 use PHPUnit\Framework\MockObject\MockObject;
-use Tests\App\Security\Voter\AbstractAdherentVoterTest;
+use Tests\App\Security\Voter\AbstractAdherentVoterTestCase;
 
-class SuperviseCommitteeVoterTest extends AbstractAdherentVoterTest
+class SuperviseCommitteeVoterTest extends AbstractAdherentVoterTestCase
 {
-    public function provideAnonymousCases(): iterable
+    public static function provideAnonymousCases(): iterable
     {
-        yield [false, true, CommitteePermissionEnum::SUPERVISE, $this->createMock(Committee::class)];
+        yield [false, true, CommitteePermissionEnum::SUPERVISE, fn (self $_this) => $_this->createMock(Committee::class)];
     }
 
     protected function getVoter(): AbstractAdherentVoter

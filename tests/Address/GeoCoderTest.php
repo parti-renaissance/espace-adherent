@@ -6,12 +6,11 @@ use App\Address\GeoCoder;
 use GeoIp2\Exception\GeoIp2Exception;
 use GeoIp2\Model\City;
 use GeoIp2\ProviderInterface;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-/**
- * @group address
- */
+#[Group('address')]
 class GeoCoderTest extends TestCase
 {
     public function testCountryIsoCodeIsReturnedWhenIpHasBeenLocated(): void

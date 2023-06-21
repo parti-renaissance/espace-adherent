@@ -7,11 +7,10 @@ use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationProxyElectionRound;
 use App\Entity\ProcurationRequest;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @group procuration
- */
+#[Group('procuration')]
 class ProcurationProxyTest extends TestCase
 {
     public function testGetAvailableRounds(): void

@@ -9,13 +9,12 @@ use App\Entity\Pap\Floor;
 use App\Pap\CampaignHistoryManager;
 use App\Repository\Pap\CampaignHistoryRepository;
 use Doctrine\Persistence\ObjectRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group pap
- */
+#[Group('functional')]
+#[Group('pap')]
 class CampaignHistoryManagerTest extends AbstractKernelTestCase
 {
     use ControllerTestTrait;

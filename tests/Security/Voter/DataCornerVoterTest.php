@@ -8,13 +8,14 @@ use App\Scope\GeneralScopeGenerator;
 use App\Scope\Scope;
 use App\Scope\ScopeEnum;
 use App\Security\Voter\DataCornerVoter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class DataCornerVoterTest extends AbstractAdherentVoterTest
+class DataCornerVoterTest extends AbstractAdherentVoterTestCase
 {
     private $scopeGeneratorMock;
 
-    public function provideAnonymousCases(): iterable
+    public static function provideAnonymousCases(): iterable
     {
         yield [false, false, DataCornerVoter::DATA_CORNER];
     }
@@ -31,9 +32,7 @@ class DataCornerVoterTest extends AbstractAdherentVoterTest
         return new DataCornerVoter($scopeRepository, $this->scopeGeneratorMock);
     }
 
-    /**
-     * @dataProvider provideAdherent
-     */
+    #[DataProvider('provideAdherent')]
     public function testAdherentIsGranted(bool $isDeputy, bool $isSenator, bool $isGranted): void
     {
         $adherent = $this->getAdherentMock($isDeputy, $isSenator);
@@ -49,7 +48,7 @@ class DataCornerVoterTest extends AbstractAdherentVoterTest
         $this->assertGrantedForAdherent($isGranted, false, $adherent, DataCornerVoter::DATA_CORNER, $adherent);
     }
 
-    public function provideAdherent(): iterable
+    public static function provideAdherent(): iterable
     {
         yield [true, false, true];
         yield [false, true, true];

@@ -6,13 +6,12 @@ use App\Address\Address;
 use App\Donation\Request\DonationRequest;
 use App\Validator\FrenchAddressOrNationalityDonation;
 use App\Validator\FrenchAddressOrNationalityDonationValidator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class FrenchAddressOrNationalityDonationValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @dataProvider noValidateDonationProvider
-     */
+    #[DataProvider('noValidateDonationProvider')]
     public function testNoViolation(string $nationality, string $country): void
     {
         $donationRequest = $this->createDonationRequest($nationality, $country);
@@ -24,7 +23,7 @@ class FrenchAddressOrNationalityDonationValidatorTest extends ConstraintValidato
         $this->assertNoViolation();
     }
 
-    public function noValidateDonationProvider(): iterable
+    public static function noValidateDonationProvider(): iterable
     {
         yield 'No violation if french nationality' => [
             'FR',
@@ -40,9 +39,7 @@ class FrenchAddressOrNationalityDonationValidatorTest extends ConstraintValidato
         ];
     }
 
-    /**
-     * @dataProvider violationProvider
-     */
+    #[DataProvider('violationProvider')]
     public function testViolation(?string $nationality, ?string $country): void
     {
         $donationRequest = $this->createDonationRequest($nationality, $country);
@@ -57,7 +54,7 @@ class FrenchAddressOrNationalityDonationValidatorTest extends ConstraintValidato
         ;
     }
 
-    public function violationProvider(): iterable
+    public static function violationProvider(): iterable
     {
         yield ['DE', 'DE'];
         yield ['DE', 'GB'];

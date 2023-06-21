@@ -4,14 +4,13 @@ namespace Tests\App\Command;
 
 use App\Mailer\Message\Procuration\ProcurationProxyReminderMessage;
 use App\Mailer\Message\Procuration\ProcurationRequestReminderMessage;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Console\Tester\CommandTester;
-use Tests\App\AbstractCommandCaseTest;
+use Tests\App\AbstractCommandTestCase;
 use Tests\App\TestHelperTrait;
 
-/**
- * @group procuration
- */
-class ProcurationSendReminderCommandTest extends AbstractCommandCaseTest
+#[Group('procuration')]
+class ProcurationSendReminderCommandTest extends AbstractCommandTestCase
 {
     use TestHelperTrait;
 

@@ -3,6 +3,7 @@
 namespace Tests\App\Entity;
 
 use App\Entity\LegislativeDistrictZone;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class LegislativeDistrictZoneTest extends TestCase
@@ -18,9 +19,7 @@ class LegislativeDistrictZoneTest extends TestCase
         $this->assertSame('1002 - Amériques et Caraïbes', (string) $zone);
     }
 
-    /**
-     * @dataProvider provideCreateDepartmentDistrictZoneData
-     */
+    #[DataProvider('provideCreateDepartmentDistrictZoneData')]
     public function testCreateDepartmentDistrictZone(
         string $expectedAreaCode,
         string $expectedAreaTypeLabel,
@@ -49,9 +48,7 @@ class LegislativeDistrictZoneTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideDefaultRankGenerationFromAreaCodeData
-     */
+    #[DataProvider('provideDefaultRankGenerationFromAreaCodeData')]
     public function testDefaultRankGenerationFromAreaCode(string $areaCode, int $rank)
     {
         $zone = new LegislativeDistrictZone();

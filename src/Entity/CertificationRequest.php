@@ -56,7 +56,7 @@ class CertificationRequest
      *
      * @ORM\Column(length=20)
      */
-    private $status;
+    private $status = self::STATUS_PENDING;
 
     /**
      * @var string|null
@@ -183,7 +183,6 @@ class CertificationRequest
         $this->createdAt = new \DateTime();
         $this->adherent = $adherent;
         $this->uuid = Uuid::uuid4();
-        $this->status = self::STATUS_PENDING;
     }
 
     public function __toString()

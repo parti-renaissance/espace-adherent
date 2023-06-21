@@ -2,21 +2,19 @@
 
 namespace Tests\App\Controller\Admin;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class FileControllerCaseTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+class FileControllerCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @dataProvider provideAdherentsWithNoAccess
-     */
+    #[DataProvider('provideAdherentsWithNoAccess')]
     public function testAdherentCannotDownloadFileIfNoPermission(string $adherentEmail)
     {
         $image = $this->getFileRepository()->findOneBy(['name' => 'Image for all']);
@@ -73,7 +71,7 @@ class FileControllerCaseTest extends AbstractRenaissanceWebCaseTest
         self::assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    public function provideAdherentsWithNoAccess(): iterable
+    public static function provideAdherentsWithNoAccess(): iterable
     {
         yield ['benjyd@aol.com'];
         yield ['jacques.picard@en-marche.fr'];

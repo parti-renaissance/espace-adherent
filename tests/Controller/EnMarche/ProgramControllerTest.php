@@ -2,21 +2,19 @@
 
 namespace Tests\App\Controller\EnMarche;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class ProgramControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class ProgramControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @dataProvider provideActions
-     */
+    #[DataProvider('provideActions')]
     public function testSuccessfulActions(string $path)
     {
         $this->client->request(Request::METHOD_GET, $path);
@@ -24,16 +22,14 @@ class ProgramControllerTest extends AbstractEnMarcheWebCaseTest
         $this->isSuccessful($this->client->getResponse());
     }
 
-    public function provideActions(): \Generator
+    public static function provideActions(): \Generator
     {
         yield ['/emmanuel-macron/le-programme'];
         yield ['/emmanuel-macron/le-programme/produire-en-france-et-sauver-la-planete'];
         yield ['/emmanuel-macron/le-programme/eduquer-tous-nos-enfants'];
     }
 
-    /**
-     * @dataProvider provideRedirectActions
-     */
+    #[DataProvider('provideRedirectActions')]
     public function testRedirectActions(string $path)
     {
         $this->client->request(Request::METHOD_GET, $path);
@@ -41,7 +37,7 @@ class ProgramControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertClientIsRedirectedTo('/emmanuel-macron/le-programme', $this->client, false, true);
     }
 
-    public function provideRedirectActions(): \Generator
+    public static function provideRedirectActions(): \Generator
     {
         yield ['/programme'];
         yield ['/le-programme'];

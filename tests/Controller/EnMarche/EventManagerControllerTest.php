@@ -9,23 +9,21 @@ use App\Mailer\Message\EventCancellationMessage;
 use App\Mailer\Message\EventContactMembersMessage;
 use App\Mailer\Message\EventUpdateMessage;
 use Cake\Chronos\Chronos;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group eventManager
- */
-class EventManagerControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('eventManager')]
+class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @dataProvider provideHostProtectedPages
-     */
+    #[DataProvider('provideHostProtectedPages')]
     public function testAnonymousUserCannotEditEvent($path)
     {
         $this->client->request('GET', $path);
@@ -33,9 +31,7 @@ class EventManagerControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
     }
 
-    /**
-     * @dataProvider provideCancelledInaccessiblePages
-     */
+    #[DataProvider('provideCancelledInaccessiblePages')]
     public function testRegisteredAdherentUserCannotFoundPagesOfCancelledEvent($path)
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
@@ -43,9 +39,7 @@ class EventManagerControllerTest extends AbstractEnMarcheWebCaseTest
         $this->redirectionEventNotPublishTest($path);
     }
 
-    /**
-     * @dataProvider provideHostProtectedPages
-     */
+    #[DataProvider('provideHostProtectedPages')]
     public function testRegisteredAdherentUserCannotEditEvent($path)
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
@@ -54,7 +48,7 @@ class EventManagerControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    public function provideHostProtectedPages(): array
+    public static function provideHostProtectedPages(): array
     {
         $slug = self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne';
 
@@ -64,7 +58,7 @@ class EventManagerControllerTest extends AbstractEnMarcheWebCaseTest
         ];
     }
 
-    public function provideCancelledInaccessiblePages(): array
+    public static function provideCancelledInaccessiblePages(): array
     {
         $slug = self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne-annule';
 

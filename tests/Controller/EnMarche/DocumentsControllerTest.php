@@ -2,16 +2,15 @@
 
 namespace Tests\App\Controller\EnMarche;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group documents
- */
-class DocumentsControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('documents')]
+class DocumentsControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

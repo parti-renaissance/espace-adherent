@@ -5,6 +5,7 @@ namespace Tests\App\Geocoder;
 use App\Geocoder\Coordinates;
 use App\Geocoder\Exception\GeocodingException;
 use App\Geocoder\Geocoder;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Tests\App\Test\Geocoder\DummyGeocoder;
 
@@ -17,9 +18,7 @@ class DummyGeocoderTest extends TestCase
         $geocoder->geocode('12 chemin de Bamby, 69003 Lyon, FR');
     }
 
-    /**
-     * @dataProvider provideAddress
-     */
+    #[DataProvider('provideAddress')]
     public function testGeocodeAddress(string $address, float $latitude, float $longitude)
     {
         $geocoder = new Geocoder(new DummyGeocoder());
@@ -30,7 +29,7 @@ class DummyGeocoderTest extends TestCase
         $this->assertSame($longitude, $coordinates->getLongitude());
     }
 
-    public function provideAddress(): array
+    public static function provideAddress(): array
     {
         return [
             [

@@ -5,13 +5,12 @@ namespace Tests\App\Controller\EnMarche;
 use App\DataFixtures\ORM\LoadQrCodeData;
 use App\Entity\QrCode;
 use App\Repository\QrCodeRepository;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use PHPUnit\Framework\Attributes\Group;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class QrCodeControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class QrCodeControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

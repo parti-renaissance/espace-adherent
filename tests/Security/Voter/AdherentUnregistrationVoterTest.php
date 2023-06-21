@@ -5,6 +5,7 @@ namespace Tests\App\Security\Voter;
 use App\Entity\Adherent;
 use App\Repository\AdherentMandate\AdherentMandateRepository;
 use App\Security\Voter\AdherentUnregistrationVoter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -35,9 +36,7 @@ class AdherentUnregistrationVoterTest extends TestCase
         yield [false, true, AdherentUnregistrationVoter::PERMISSION_UNREGISTER];
     }
 
-    /**
-     * @dataProvider provideBasicAdherentCases
-     */
+    #[DataProvider('provideBasicAdherentCases')]
     public function testAdherentIsGrantedIfBasic(bool $granted)
     {
         $adherent = $this->createAdherentMock();
@@ -67,15 +66,13 @@ class AdherentUnregistrationVoterTest extends TestCase
         );
     }
 
-    public function provideBasicAdherentCases(): iterable
+    public static function provideBasicAdherentCases(): iterable
     {
         yield [true];
         yield [false];
     }
 
-    /**
-     * @dataProvider provideUserCases
-     */
+    #[DataProvider('provideUserCases')]
     public function testAdherentIsGrantedIfUser(bool $granted)
     {
         $adherent = $this->createAdherentMock();
@@ -91,15 +88,13 @@ class AdherentUnregistrationVoterTest extends TestCase
         );
     }
 
-    public function provideUserCases(): iterable
+    public static function provideUserCases(): iterable
     {
         yield [true];
         yield [false];
     }
 
-    /**
-     * @dataProvider provideWithActiveMandateCases
-     */
+    #[DataProvider('provideWithActiveMandateCases')]
     public function testAdherentIsGrantedIfActiveMandates(bool $granted)
     {
         $adherent = $this->createAdherentMock();
@@ -122,7 +117,7 @@ class AdherentUnregistrationVoterTest extends TestCase
         );
     }
 
-    public function provideWithActiveMandateCases(): iterable
+    public static function provideWithActiveMandateCases(): iterable
     {
         yield [true];
         yield [false];

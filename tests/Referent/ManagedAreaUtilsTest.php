@@ -4,13 +4,12 @@ namespace Tests\App\Referent;
 
 use App\Entity\Adherent;
 use App\Referent\ManagedAreaUtils;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ManagedAreaUtilsTest extends TestCase
 {
-    /**
-     * @dataProvider provideLocationsAndTags
-     */
+    #[DataProvider('provideLocationsAndTags')]
     public function testGetLocalCodes(
         string $country,
         ?string $postalCode,
@@ -25,7 +24,7 @@ class ManagedAreaUtilsTest extends TestCase
         $this->assertEqualsCanonicalizing($expectedCodes, ManagedAreaUtils::getLocalCodes($adherent));
     }
 
-    public function provideLocationsAndTags(): \Generator
+    public static function provideLocationsAndTags(): \Generator
     {
         yield ['CH', null, ['CH']];
         yield ['DE', null, ['DE']];

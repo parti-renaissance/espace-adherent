@@ -11,9 +11,9 @@ use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\Committee\FollowerCommitteeVoter;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\UuidInterface;
-use Tests\App\Security\Voter\AbstractAdherentVoterTest;
+use Tests\App\Security\Voter\AbstractAdherentVoterTestCase;
 
-class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
+class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
 {
     /**
      * @var AdherentRepository|MockObject
@@ -34,10 +34,10 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
         parent::tearDown();
     }
 
-    public function provideAnonymousCases(): iterable
+    public static function provideAnonymousCases(): iterable
     {
-        yield 'Anonymous cannot follow committees' => [false, true, CommitteePermissionEnum::FOLLOW, $this->getCommitteeMock()];
-        yield 'Anonymous cannot unfollow committees' => [false, true, CommitteePermissionEnum::UNFOLLOW, $this->getCommitteeMock()];
+        yield 'Anonymous cannot follow committees' => [false, true, CommitteePermissionEnum::FOLLOW, fn (self $_this) => $_this->getCommitteeMock()];
+        yield 'Anonymous cannot unfollow committees' => [false, true, CommitteePermissionEnum::UNFOLLOW, fn (self $_this) => $_this->getCommitteeMock()];
     }
 
     protected function getVoter(): AbstractAdherentVoter

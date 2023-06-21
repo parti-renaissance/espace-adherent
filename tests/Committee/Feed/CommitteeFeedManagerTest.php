@@ -8,11 +8,10 @@ use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\CommitteeFeedItem;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group committee
- */
+#[Group('committee')]
 class CommitteeFeedManagerTest extends AbstractKernelTestCase
 {
     /* @var CommitteeFeedManager */

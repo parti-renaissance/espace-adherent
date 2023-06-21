@@ -5,16 +5,15 @@ namespace Tests\App\Controller\EnMarche;
 use App\Entity\Invite;
 use App\Mailer\Message\MovementInvitationMessage;
 use App\Repository\InviteRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group invitation
- */
-class InvitationControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('invitation')]
+class InvitationControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

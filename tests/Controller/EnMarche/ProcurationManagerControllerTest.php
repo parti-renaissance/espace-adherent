@@ -4,17 +4,17 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\Procuration\Filter\ProcurationProxyProposalFilters;
 use App\Procuration\Filter\ProcurationRequestFilters;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group procuration
- */
-class ProcurationManagerControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('procuration')]
+class ProcurationManagerControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -25,18 +25,14 @@ class ProcurationManagerControllerTest extends AbstractEnMarcheWebCaseTest
         self::SUBJECT_PROPOSAL,
     ];
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testProcurationManagerBackendIsForbiddenAsAnonymous(string $path)
     {
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testProcurationManagerBackendIsForbiddenAsAdherentNotReferent(string $path)
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -46,7 +42,7 @@ class ProcurationManagerControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
-    public function providePages(): array
+    public static function providePages(): array
     {
         return [
             ['/espace-responsable-procuration'],

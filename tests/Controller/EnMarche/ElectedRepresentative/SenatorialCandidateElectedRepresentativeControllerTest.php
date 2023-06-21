@@ -2,14 +2,13 @@
 
 namespace Tests\App\Controller\EnMarche\ElectedRepresentative;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class SenatorialCandidateElectedRepresentativeControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class SenatorialCandidateElectedRepresentativeControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

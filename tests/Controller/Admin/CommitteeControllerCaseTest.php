@@ -10,16 +10,16 @@ use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\ValueObject\Genders;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group admin
- */
-class CommitteeControllerCaseTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('admin')]
+class CommitteeControllerCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
@@ -27,9 +27,7 @@ class CommitteeControllerCaseTest extends AbstractRenaissanceWebCaseTest
     private $adherentRepository;
     private $committeeMandateRepository;
 
-    /**
-     * @dataProvider provideActions
-     */
+    #[DataProvider('provideActions')]
     public function testCannotChangeMandateIfCommitteeNotApprovedAction(string $action): void
     {
         $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_2_UUID);
@@ -46,9 +44,7 @@ class CommitteeControllerCaseTest extends AbstractRenaissanceWebCaseTest
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
     }
 
-    /**
-     * @dataProvider provideMandateActions
-     */
+    #[DataProvider('provideMandateActions')]
     public function testCannotChangeMandateIfCommitteeNotApproved(string $action): void
     {
         $mandate = $this->committeeMandateRepository->findOneBy([
@@ -319,9 +315,7 @@ class CommitteeControllerCaseTest extends AbstractRenaissanceWebCaseTest
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    /**
-     * @dataProvider provideMandateUuid
-     */
+    #[DataProvider('provideMandateUuid')]
     public function testCannotAddMandateIfNoAccepted(string $uuid): void
     {
         $committee = $this->committeeRepository->findOneByUuid($uuid);
@@ -532,19 +526,19 @@ class CommitteeControllerCaseTest extends AbstractRenaissanceWebCaseTest
         $this->assertSame(AdherentMandateInterface::REASON_MANUAL, $mandate->getReason());
     }
 
-    public function provideActions(): iterable
+    public static function provideActions(): iterable
     {
         yield [CommitteeAdherentMandateManager::CREATE_ACTION];
         yield [CommitteeAdherentMandateManager::FINISH_ACTION];
     }
 
-    public function provideMandateActions(): iterable
+    public static function provideMandateActions(): iterable
     {
         yield ['close'];
         yield ['replace'];
     }
 
-    public function provideMandateUuid(): iterable
+    public static function provideMandateUuid(): iterable
     {
         yield [LoadCommitteeV1Data::COMMITTEE_11_UUID]; // REFUSED
         yield [LoadCommitteeV1Data::COMMITTEE_16_UUID]; // PENDING

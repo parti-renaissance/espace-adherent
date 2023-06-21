@@ -10,16 +10,16 @@ use App\Mailer\Message\Renaissance\RenaissanceResetPasswordConfirmationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordMessage;
 use App\Repository\AdherentRepository;
 use App\Repository\EmailRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group security
- */
-class SecurityControllerTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('security')]
+class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
@@ -29,9 +29,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebCaseTest
     /* @var EmailRepository */
     private $emailRepository;
 
-    /**
-     * @dataProvider getAdherentEmails
-     */
+    #[DataProvider('getAdherentEmails')]
     public function testAuthenticationIsSuccessful(string $email, string $fullName, bool $isRenaissanceUser): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
@@ -70,7 +68,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebCaseTest
         $this->assertSame(0, $crawler->selectLink($fullName)->count());
     }
 
-    public function getAdherentEmails(): array
+    public static function getAdherentEmails(): array
     {
         return [
             ['renaissance-user-1@en-marche-dev.fr', 'Laure Fenix', true],
@@ -78,9 +76,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebCaseTest
         ];
     }
 
-    /**
-     * @dataProvider provideInvalidCredentials
-     */
+    #[DataProvider('provideInvalidCredentials')]
     public function testLoginCheckFails(string $username, string $password, string $messageExpected): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
@@ -103,7 +99,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebCaseTest
         $this->assertSame($messageExpected, trim($error->text()));
     }
 
-    public function provideInvalidCredentials(): array
+    public static function provideInvalidCredentials(): array
     {
         return [
             'Unregistered adherent account' => [

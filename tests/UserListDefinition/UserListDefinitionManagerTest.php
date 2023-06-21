@@ -271,7 +271,7 @@ class UserListDefinitionManagerTest extends AbstractKernelTestCase
         $electedRepresentativeRepository->expects($this->once())
             ->method('find')
             ->with(1)
-            ->willReturn($this->createMock(ElectedRepresentative::class))
+            ->willReturn($electedRepresentative)
         ;
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects($this->once())
@@ -294,18 +294,22 @@ class UserListDefinitionManagerTest extends AbstractKernelTestCase
             ->with(2)
             ->willReturn($userListDefinition)
         ;
+
+        $series = [
+            [[UserListDefinitionPermissions::ABLE_TO_MANAGE_TYPE, UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE], true],
+            [[UserListDefinitionPermissions::ABLE_TO_MANAGE_MEMBER, $electedRepresentative], false],
+        ];
+
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $authorizationChecker
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('isGranted')
-            ->with(UserListDefinitionPermissions::ABLE_TO_MANAGE_TYPE, UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE)
-            ->willReturn(true)
-        ;
-        $authorizationChecker
-            ->expects($this->at(1))
-            ->method('isGranted')
-            ->with(UserListDefinitionPermissions::ABLE_TO_MANAGE_MEMBER, $electedRepresentative)
-            ->willReturn(false)
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs[0], $args);
+
+                return $expectedArgs[1];
+            })
         ;
 
         $userListDefinitionManager = new UserListDefinitionManager(
@@ -383,21 +387,22 @@ class UserListDefinitionManagerTest extends AbstractKernelTestCase
             ->willReturn(new ArrayCollection())
         ;
 
+        $series = [
+            [1, $electedRepresentative1],
+            [2, $electedRepresentative2],
+            [3, $electedRepresentative3],
+        ];
+
         $electedRepresentativeRepository = $this->createMock(ElectedRepresentativeRepository::class);
-        $electedRepresentativeRepository->expects($this->at(0))
+        $electedRepresentativeRepository
+            ->expects($this->exactly(3))
             ->method('find')
-            ->with(1)
-            ->willReturn($electedRepresentative1)
-        ;
-        $electedRepresentativeRepository->expects($this->at(1))
-            ->method('find')
-            ->with(2)
-            ->willReturn($electedRepresentative2)
-        ;
-        $electedRepresentativeRepository->expects($this->at(2))
-            ->method('find')
-            ->with(3)
-            ->willReturn($electedRepresentative3)
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertContains($expectedArgs[0], $args);
+
+                return $expectedArgs[1];
+            })
         ;
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects($this->once())
@@ -409,31 +414,24 @@ class UserListDefinitionManagerTest extends AbstractKernelTestCase
             ->method('flush')
         ;
 
+        $series2 = [
+            [10, $userListDefinitionSLR],
+            [20, $userListDefinitionIM],
+            [10, $userListDefinitionSLR],
+            [10, $userListDefinitionSLR],
+        ];
         $userListDefinitionRepository = $this->createMock(UserListDefinitionRepository::class);
         $userListDefinitionRepository
-            ->expects($this->at(0))
+            ->expects($this->exactly(4))
             ->method('find')
-            ->with(10)
-            ->willReturn($userListDefinitionSLR)
+            ->willReturnCallback(function (...$args) use (&$series2) {
+                $expectedArgs = array_shift($series2);
+                $this->assertContains($expectedArgs[0], $args);
+
+                return $expectedArgs[1];
+            })
         ;
-        $userListDefinitionRepository
-            ->expects($this->at(1))
-            ->method('find')
-            ->with(20)
-            ->willReturn($userListDefinitionIM)
-        ;
-        $userListDefinitionRepository
-            ->expects($this->at(2))
-            ->method('find')
-            ->with(10)
-            ->willReturn($userListDefinitionSLR)
-        ;
-        $userListDefinitionRepository
-            ->expects($this->at(3))
-            ->method('find')
-            ->with(10)
-            ->willReturn($userListDefinitionSLR)
-        ;
+
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $authorizationChecker
             ->expects($this->any())

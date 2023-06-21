@@ -3,6 +3,7 @@
 namespace Tests\App\Entity;
 
 use App\Entity\ReferentArea;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ReferentAreaTest extends TestCase
@@ -18,9 +19,7 @@ class ReferentAreaTest extends TestCase
         $this->assertSame('USA - Amériques et Caraïbes', (string) $zone);
     }
 
-    /**
-     * @dataProvider provideCreateDepartmentReferentAreaData
-     */
+    #[DataProvider('provideCreateDepartmentReferentAreaData')]
     public function testCreateDepartmentReferentArea(
         string $expectedAreaCode,
         string $expectedAreaTypeLabel,
@@ -49,9 +48,7 @@ class ReferentAreaTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCreateDistrictReferentAreaData
-     */
+    #[DataProvider('provideCreateDistrictReferentAreaData')]
     public function testCreateDistrictReferentArea(
         string $expectedAreaCode,
         string $expectedAreaTypeLabel,

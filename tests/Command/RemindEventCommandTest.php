@@ -3,9 +3,9 @@
 namespace Tests\App\Command;
 
 use App\Entity\Notification;
-use Tests\App\AbstractCommandCaseTest;
+use Tests\App\AbstractCommandTestCase;
 
-class RemindEventCommandTest extends AbstractCommandCaseTest
+class RemindEventCommandTest extends AbstractCommandTestCase
 {
     private $notificationRepository;
 

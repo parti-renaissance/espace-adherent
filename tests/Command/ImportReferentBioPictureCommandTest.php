@@ -5,13 +5,12 @@ namespace Tests\App\Command;
 use App\Command\ImportReferentBioPictureCommand;
 use App\Entity\Media;
 use App\Entity\Referent;
-use Tests\App\AbstractCommandCaseTest;
+use PHPUnit\Framework\Attributes\Group;
+use Tests\App\AbstractCommandTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group command
- */
-class ImportReferentBioPictureCommandTest extends AbstractCommandCaseTest
+#[Group('command')]
+class ImportReferentBioPictureCommandTest extends AbstractCommandTestCase
 {
     use ControllerTestTrait;
     public const VALID_ARCHIVE_NAME = 'correct.zip';

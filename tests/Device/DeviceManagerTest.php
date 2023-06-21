@@ -6,12 +6,12 @@ use App\Device\DeviceManager;
 use App\Entity\Device;
 use App\Entity\Geo\Zone;
 use App\Repository\DeviceRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class DeviceManagerTest extends AbstractKernelTestCase
 {
     use ControllerTestTrait;
@@ -21,9 +21,7 @@ class DeviceManagerTest extends AbstractKernelTestCase
     /** @var DeviceManager */
     private $deviceManager;
 
-    /**
-     * @dataProvider provideDeviceNewPostalCodes
-     */
+    #[DataProvider('provideDeviceNewPostalCodes')]
     public function testRefreshZoneFromPostalCode(string $newPostalCode, string $newZoneName, string $newZoneType): void
     {
         /** @var Device $device */
@@ -44,7 +42,7 @@ class DeviceManagerTest extends AbstractKernelTestCase
         self::assertSame($newZoneType, $zoneAfterUpdate->getType());
     }
 
-    public function provideDeviceNewPostalCodes(): iterable
+    public static function provideDeviceNewPostalCodes(): iterable
     {
         yield ['94300', 'Vincennes', Zone::CITY];
         yield ['06000', 'Nice', Zone::CITY];

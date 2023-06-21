@@ -8,9 +8,9 @@ use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\Committee\CreateCommitteeVoter;
 use PHPUnit\Framework\MockObject\MockObject;
-use Tests\App\Security\Voter\AbstractAdherentVoterTest;
+use Tests\App\Security\Voter\AbstractAdherentVoterTestCase;
 
-class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
+class CreateCommitteeVoterTest extends AbstractAdherentVoterTestCase
 {
     /**
      * @var ElectedRepresentativeRepository|MockObject
@@ -31,7 +31,7 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
         parent::tearDown();
     }
 
-    public function provideAnonymousCases(): iterable
+    public static function provideAnonymousCases(): iterable
     {
         yield [false, true, CommitteePermissionEnum::CREATE];
     }

@@ -3,14 +3,13 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\Mailchimp\Contact\ContactStatusEnum;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class MailchimpWebhookControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class MailchimpWebhookControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

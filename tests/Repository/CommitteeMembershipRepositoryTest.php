@@ -6,11 +6,10 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\CommitteeMembership;
 use App\Repository\CommitteeMembershipRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class CommitteeMembershipRepositoryTest extends AbstractKernelTestCase
 {
     /**

@@ -6,12 +6,11 @@ use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Repository\EventRepository;
 use App\Search\SearchParametersFilter;
 use Cake\Chronos\Chronos;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class EventRepositoryTest extends AbstractKernelTestCase
 {
     /**

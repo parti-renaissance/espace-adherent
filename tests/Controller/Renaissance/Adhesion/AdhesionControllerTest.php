@@ -11,17 +11,16 @@ use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountActivationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage;
 use App\Repository\AdherentRepository;
 use App\Repository\DonationRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Payment\PayboxProvider;
 
-/**
- * @group functional
- */
-class AdhesionControllerTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+class AdhesionControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

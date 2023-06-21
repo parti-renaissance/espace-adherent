@@ -4,11 +4,10 @@ namespace Tests\App\Repository;
 
 use App\Entity\MyEuropeChoice;
 use App\Repository\MyEuropeChoiceRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class MyEuropeChoiceRepositoryTest extends AbstractKernelTestCase
 {
     /**

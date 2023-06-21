@@ -107,7 +107,7 @@ class Donation implements GeoPointInterface
     /**
      * @ORM\Column(length=25)
      */
-    private $status;
+    private $status = self::STATUS_WAITING_CONFIRMATION;
 
     /**
      * @var \DateTimeInterface
@@ -238,7 +238,6 @@ class Donation implements GeoPointInterface
         $this->createdAt = $createdAt ?? new Chronos();
         $this->duration = $duration;
         $this->payboxOrderRef = $payboxOrderRef;
-        $this->status = self::STATUS_WAITING_CONFIRMATION;
         $this->nationality = $nationality;
         $this->code = $code;
         $this->donator = $donator;

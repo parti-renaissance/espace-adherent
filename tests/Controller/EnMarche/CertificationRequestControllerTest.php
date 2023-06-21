@@ -5,16 +5,15 @@ namespace Tests\App\Controller\EnMarche;
 use App\Adherent\Certification\CertificationRequestProcessCommand;
 use App\Entity\CertificationRequest;
 use App\Mailer\Message\CertificationRequestPendingMessage;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
-/**
- * @group functional
- * @group certification
- */
-class CertificationRequestControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('certification')]
+class CertificationRequestControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
     use MessengerTestTrait;

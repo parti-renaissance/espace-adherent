@@ -2,15 +2,14 @@
 
 namespace Tests\App\Controller\EnMarche\TerritorialCouncil;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class ReferentTerritorialCouncilControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class ReferentTerritorialCouncilControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
