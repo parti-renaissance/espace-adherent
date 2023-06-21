@@ -73,6 +73,11 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
             }
 
             foreach ($this->committeeMembershipManager->getCommitteeMemberships($committee) as $membership) {
+                if ($membership->isManual()) {
+                    $adherentsToSyncMC[] = $membership->getAdherent();
+                    continue;
+                }
+
                 if (!\in_array($membership->getAdherent()->getId(), $committeeAdherentIds[$committee->getId()])) {
                     $this->committeeMembershipManager->unfollowCommittee($membership, $committee);
                 }
