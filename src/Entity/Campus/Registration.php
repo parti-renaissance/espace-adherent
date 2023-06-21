@@ -21,7 +21,7 @@ class Registration
     /**
      * @ORM\Column(length=50)
      */
-    public ?string $eventMakerUid = null;
+    public ?string $eventMakerId = null;
 
     /**
      * @ORM\Column(length=50)

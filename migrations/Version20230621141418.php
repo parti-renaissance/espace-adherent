@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20230620121731 extends AbstractMigration
+final class Version20230621141418 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -13,8 +13,9 @@ final class Version20230620121731 extends AbstractMigration
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           adherent_id INT UNSIGNED NOT NULL,
           event_maker_id VARCHAR(50) NOT NULL,
-          secret VARCHAR(255) NOT NULL,
-          price DOUBLE PRECISION NOT NULL,
+          event_maker_order_uid VARCHAR(50) NOT NULL,
+          status VARCHAR(255) NOT NULL,
+          registered_at DATETIME NOT NULL,
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
           created_at DATETIME NOT NULL,
           updated_at DATETIME NOT NULL,
