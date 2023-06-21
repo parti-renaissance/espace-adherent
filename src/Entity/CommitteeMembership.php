@@ -352,4 +352,9 @@ class CommitteeMembership implements UuidEntityInterface
     {
         return $this->committee->isVersion2();
     }
+
+    public function isManual(): bool
+    {
+        return CommitteeMembershipTriggerEnum::MANUAL === $this->trigger;
+    }
 }
