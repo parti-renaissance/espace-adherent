@@ -38,7 +38,7 @@ class Payment
     public ?string $method = null;
 
     /**
-     * @ORM\Column(length=50)
+     * @ORM\Column(length=50, nullable=true)
      *
      * @Groups({"elected_representative_read"})
      */
