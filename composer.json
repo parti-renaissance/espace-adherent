@@ -47,7 +47,7 @@
         "danhunsaker/flysystem-redis": "^1.0",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.0",
-        "egulias/email-validator": "^3.0",
+        "egulias/email-validator": "^4.0",
         "endroid/qr-code-bundle": "^4.2",
         "enmarche/majority-judgment": "^0.0.3",
         "exercise/htmlpurifier-bundle": "^3.1",
