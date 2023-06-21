@@ -25,11 +25,11 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     use ImageTrait;
 
     /**
-     * @var string
-     *
      * @ORM\Column
+     *
+     * @Assert\NotBlank(groups={"api_committee_candidacy_validation"}, message="Civilité de l'adhérent ne peut pas être vide")
      */
-    private $gender;
+    private ?string $gender;
 
     /**
      * @var string|null
