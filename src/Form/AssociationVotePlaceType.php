@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\VotePlace;
-use App\Repository\VotePlaceRepository;
+use App\Entity\Election\VotePlace;
+use App\Repository\Election\VotePlaceRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

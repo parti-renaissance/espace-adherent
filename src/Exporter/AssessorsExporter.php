@@ -4,7 +4,7 @@ namespace App\Exporter;
 
 use App\Assessor\Filter\AssessorRequestExportFilter;
 use App\Entity\AssessorRequest;
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
 use App\Repository\AssessorRequestRepository;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
@@ -45,7 +45,7 @@ class AssessorsExporter
                         'Bureaux de vote souhaités' => implode(' | ',
                             $request->getVotePlaceWishes()->map(
                                 static function (VotePlace $place) {
-                                    return sprintf('%s (%s)', $place->getName(), $place->getCode());
+                                    return sprintf('%s (%s)', $place->getCityName(), $place->getLocalCode());
                                 })
                                 ->toArray()
                         ),

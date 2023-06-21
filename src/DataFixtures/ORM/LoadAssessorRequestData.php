@@ -5,7 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Assessor\AssessorRequestElectionRoundsEnum;
 use App\Assessor\AssessorRequestFactory;
 use App\Entity\AssessorOfficeEnum;
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

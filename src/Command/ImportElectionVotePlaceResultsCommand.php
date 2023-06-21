@@ -3,13 +3,13 @@
 namespace App\Command;
 
 use App\Election\ElectionManager;
+use App\Entity\Election\VotePlace;
 use App\Entity\Election\VotePlaceResult;
 use App\Entity\Election\VoteResultList;
 use App\Entity\Election\VoteResultListCollection;
 use App\Entity\ElectionRound;
-use App\Entity\VotePlace;
 use App\Repository\CityRepository;
-use App\Repository\VotePlaceRepository;
+use App\Repository\Election\VotePlaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use League\Csv\Reader;

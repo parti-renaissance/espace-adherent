@@ -3,23 +3,27 @@
 namespace App\Repository\Election;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
+use App\Assessor\Filter\AssociationVotePlaceFilter;
 use App\Assessor\Filter\CitiesFilters;
 use App\Assessor\Filter\VotePlaceFilters;
 use App\Entity\Adherent;
 use App\Entity\AssessorOfficeEnum;
 use App\Entity\AssessorRequest;
 use App\Entity\Election\VotePlace;
+use App\Repository\GeoFilterTrait;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class VotePlaceRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
+    use GeoFilterTrait;
 
-    private const ALIAS = 'vote_place';
+    public const ALIAS = 'vote_place';
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -263,5 +267,75 @@ class VotePlaceRepository extends ServiceEntityRepository
         }
 
         $qb->andWhere($codesFilter);
+    }
+
+    /**
+     * @return VotePlace[]|PaginatorInterface
+     */
+    public function findAllForFilter(AssociationVotePlaceFilter $filter, int $page, int $limit): PaginatorInterface
+    {
+        $qb = $this->createQueryBuilder(self::ALIAS);
+
+        if ($tags = $filter->getTags()) {
+            $this->applyGeoFilter($qb, $tags, self::ALIAS, self::ALIAS.'.country', self::ALIAS.'.postalCode');
+        }
+
+        if ($inseeCodes = $filter->getInseeCodes()) {
+            $qb
+                ->andWhere('SUBSTRING_INDEX('.self::ALIAS.'.code, \'_\', 1) IN (:insee_codes)')
+                ->setParameter('insee_codes', $inseeCodes)
+            ;
+        }
+
+        if ($postalCodes = $filter->getPostalCodes()) {
+            $orx = new Orx();
+
+            foreach ($postalCodes as $index => $postalCode) {
+                $orx->add(sprintf('FIND_IN_SET(:postal_code_%s, %s.postalCode) > 0', $index, self::ALIAS));
+                $qb->setParameter('postal_code_'.$index, $postalCode);
+            }
+
+            $qb->andWhere($orx);
+        }
+
+        if ($city = $filter->getCity()) {
+            $qb
+                ->andWhere(self::ALIAS.'.city LIKE :city')
+                ->setParameter('city', sprintf('%s%%', $city))
+            ;
+        }
+
+        if ($country = $filter->getCountry()) {
+            $qb
+                ->andWhere(self::ALIAS.'.country = :country')
+                ->setParameter('country', $country)
+            ;
+        }
+
+        if ($name = $filter->getName()) {
+            $qb
+                ->andWhere(sprintf('%s.name LIKE :name OR %s.alias LIKE :name', self::ALIAS, self::ALIAS))
+                ->setParameter('name', sprintf('%%%s%%', $name))
+            ;
+        }
+
+        $qb
+            ->orderBy(self::ALIAS.'.city', 'ASC')
+            ->addOrderBy(self::ALIAS.'.name', 'ASC')
+        ;
+
+        return $this->configurePaginator($qb, $page, $limit);
+    }
+
+    public function findLastByCodePrefix(string $codePrefix): ?VotePlace
+    {
+        return $this->createQueryBuilder('vp')
+            ->where('vp.code LIKE :code')
+            ->setParameter('code', $codePrefix.'_%')
+            ->setMaxResults(1)
+            ->orderBy('vp.code', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }
