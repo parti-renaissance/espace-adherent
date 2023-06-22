@@ -20,7 +20,7 @@ class CampusRegistrationWebhookController extends AbstractController
     public function __invoke(Request $request, string $key, MessageBusInterface $bus, LoggerInterface $logger): Response
     {
         if ($key === $this->eventmakerWebhookKey && $request->isMethod(Request::METHOD_POST)) {
-            $bus->dispatch(new CatchCampusRegistrationWebhookCommand(json_decode($request->getContent(), true)));
+            $bus->dispatch(new CatchCampusRegistrationWebhookCommand($request->getContent()));
         } else {
             $logger->error(sprintf('[Eventmaker Webhook] invalid webhook key "%s"', $key));
         }

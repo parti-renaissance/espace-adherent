@@ -21,7 +21,7 @@ class CatchCampusRegistrationWebhookCommandHandler implements MessageHandlerInte
 
     public function __invoke(CatchCampusRegistrationWebhookCommand $command): void
     {
-        $payload = $command->getPayload();
+        $payload = json_decode($command->getPayload(), true);
 
         if (isset($payload['status']) && \in_array($payload['status'], RegistrationStatusEnum::toArray(), true)) {
             if (!$registration = $this->registrationRepository->findOneBy(['eventMakerId' => $payload['_id']])) {

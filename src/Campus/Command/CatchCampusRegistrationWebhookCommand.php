@@ -6,14 +6,14 @@ use App\Messenger\Message\AsynchronousMessageInterface;
 
 class CatchCampusRegistrationWebhookCommand implements AsynchronousMessageInterface
 {
-    private array $payload;
+    private string $payload;
 
-    public function __construct(array $payload)
+    public function __construct(string $payload)
     {
         $this->payload = $payload;
     }
 
-    public function getPayload(): array
+    public function getPayload(): string
     {
         return $this->payload;
     }
