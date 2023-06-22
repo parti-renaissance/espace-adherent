@@ -167,6 +167,11 @@ class ManagedUsersFilter
      */
     private ?bool $isNewRenaissanceUser = null;
 
+    /**
+     * @Groups({"filter_write"})
+     */
+    private ?bool $isCampusRegistered = null;
+
     public function __construct(
         string $subscriptionType = null,
         array $managedZones = [],
@@ -577,6 +582,7 @@ class ManagedUsersFilter
                     })
                 ),
                 'mandateType' => $this->mandateType,
+                'campusRegistered' => $this->isCampusRegistered,
             ],
         );
     }
@@ -609,5 +615,15 @@ class ManagedUsersFilter
     public function setMandateType(?string $mandateType): void
     {
         $this->mandateType = $mandateType;
+    }
+
+    public function getIsCampusRegistered(): ?bool
+    {
+        return $this->isCampusRegistered;
+    }
+
+    public function setIsCampusRegistered(?bool $isCampusRegistered): void
+    {
+        $this->isCampusRegistered = $isCampusRegistered;
     }
 }

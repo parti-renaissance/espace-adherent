@@ -165,6 +165,12 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
+        if (null !== $filter->getIsCampusRegistered()) {
+            $qb
+                ->andWhere(sprintf('u.campusRegisteredAt %s NULL', $filter->getIsCampusRegistered() ? 'IS NOT' : 'IS'))
+            ;
+        }
+
         foreach (array_values($filter->getInterests()) as $key => $interest) {
             $qb
                 ->andWhere(sprintf('FIND_IN_SET(:interest_%s, u.interests) > 0', $key))

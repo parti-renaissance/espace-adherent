@@ -585,6 +585,17 @@ Feature:
                         }
                     },
                     "type": "select"
+                },
+                {
+                    "code": "campusRegistered",
+                    "label": "Inscrit au campus",
+                    "options": {
+                        "choices": [
+                            "Non",
+                            "Oui"
+                        ]
+                    },
+                    "type": "select"
                 }
             ]
         },

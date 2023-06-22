@@ -327,6 +327,11 @@ class ManagedUser
      */
     private ?array $mandateTypes;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTime $campusRegisteredAt;
+
     public function __construct(
         int $status,
         ?string $source,
@@ -362,7 +367,8 @@ class ManagedUser
         string $committee = null,
         UuidInterface $committeeUuid = null,
         array $interests = [],
-        array $mandateTypes = null
+        array $mandateTypes = null,
+        \DateTime $campusRegisteredAt = null,
     ) {
         $this->status = $status;
         $this->source = $source;
@@ -399,6 +405,7 @@ class ManagedUser
         $this->committee = $committee;
         $this->committeeUuid = $committeeUuid;
         $this->mandateTypes = $mandateTypes;
+        $this->campusRegisteredAt = $campusRegisteredAt;
     }
 
     public function getId(): int
@@ -698,5 +705,10 @@ class ManagedUser
     public function getMandateTypes(): ?array
     {
         return $this->mandateTypes;
+    }
+
+    public function getCampusRegisteredAt(): ?\DateTime
+    {
+        return $this->campusRegisteredAt;
     }
 }
