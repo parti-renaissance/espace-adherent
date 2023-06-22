@@ -227,12 +227,12 @@ class BaseEventRepository extends ServiceEntityRepository
             )
             ->andWhere($qb->expr()->in('event.status', BaseEvent::ACTIVE_STATUSES))
             ->andWhere('event.beginAt >= CONVERT_TZ(:now, \'Europe/Paris\', event.timeZone)')
-            ->andWhere('category.status = :status')
+            ->andWhere('category IS NULL OR category.status = :status')
             ->orderBy('event.beginAt', 'ASC')
             ->addOrderBy('event.name', 'ASC')
             ->setParameter('published', true)
             ->setParameter('re_event', true)
-            ->setParameter('now', new Chronos('now'))
+            ->setParameter('now', new \DateTime('now'))
             ->setParameter('status', BaseEventCategory::ENABLED)
             ->setMaxResults($limit)
         ;
@@ -246,7 +246,7 @@ class BaseEventRepository extends ServiceEntityRepository
 
         if ($category = $filter->getCategory()) {
             $qb
-                ->andWhere('event.category = :category')
+                ->andWhere('category = :category')
                 ->setParameter('category', $category)
             ;
         }

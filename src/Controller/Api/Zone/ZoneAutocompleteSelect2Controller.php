@@ -25,9 +25,7 @@ class ZoneAutocompleteSelect2Controller extends AbstractZoneAutocompleteControll
         ZoneRepository $repository,
         TranslatorInterface $translator
     ): Response {
-        $isRenaissanceRequest = $request->query->getBoolean('for_re');
-
-        if (empty($spaceType = (string) $request->query->get('space_type')) && !$isRenaissanceRequest) {
+        if (empty($spaceType = (string) $request->query->get('space_type'))) {
             throw new BadRequestException('Space type missing');
         }
 
@@ -37,7 +35,7 @@ class ZoneAutocompleteSelect2Controller extends AbstractZoneAutocompleteControll
 
         $managedZones = [];
 
-        if ($this->getUser() && !$isRenaissanceRequest) {
+        if ($this->getUser()) {
             $user = $this->getMainUser($request->getSession());
             $managedZones = $managedZoneProvider->getManagedZones($user, $spaceType);
         }
