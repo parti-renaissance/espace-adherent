@@ -2,6 +2,7 @@
 
 namespace App\Entity\Campus;
 
+use App\Campus\RegistrationStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -26,17 +27,22 @@ class Registration
     /**
      * @ORM\Column(length=50)
      */
+    public ?string $campusEventId = null;
+
+    /**
+     * @ORM\Column(length=50)
+     */
     public ?string $eventMakerOrderUid = null;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(enumType=RegistrationStatusEnum::class)
      */
-    public ?string $status = null;
+    public ?RegistrationStatusEnum $status = null;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public ?\DateTimeInterface $registeredAt;
+    public ?\DateTimeInterface $registeredAt = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="campusRegistrations")
