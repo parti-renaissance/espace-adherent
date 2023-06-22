@@ -104,7 +104,7 @@ class EventController extends AbstractController
         BaseEvent $event,
         ValidatorInterface $validator,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
-        ): Response {
+    ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
