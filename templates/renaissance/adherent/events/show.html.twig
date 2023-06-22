@@ -133,7 +133,7 @@
                                 </a>
                             {% endif %}
                         {% endif %}
-                        {% if not event.finished and not event.full %}
+                        {% if not event.finished and not event.full and is_event_already_participating(event, app.user) %}
                             <a href="{{ path('app_renaissance_event_invitation', { slug: event.slug }) }}"
                                class="rounded-md bg-blue-50 px-3 py-2 border border-re-blue-200 text-sm font-medium text-blue-600 shadow-sm hover:bg-blue-100">
                                 Inviter des amis

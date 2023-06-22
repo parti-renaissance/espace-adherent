@@ -6,6 +6,7 @@ use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\Coalition\Coalition;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\CauseEvent;
 use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
@@ -13,6 +14,7 @@ use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Geo\Zone;
 use App\Event\EventTypeEnum;
+use App\Event\ListFilter;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
@@ -209,5 +211,60 @@ class BaseEventRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findAllByFilter(ListFilter $filter, int $limit = 50): array
+    {
+        $qb = $this->createQueryBuilder('event');
+
+        $qb
+            ->leftJoin('event.category', 'category')
+            ->where('event.published = :published')
+            ->andWhere('event.renaissanceEvent = :re_event')
+            ->andWhere((new Orx())
+                ->add(sprintf('event INSTANCE OF %s', DefaultEvent::class))
+                ->add(sprintf('event INSTANCE OF %s', CommitteeEvent::class))
+            )
+            ->andWhere($qb->expr()->in('event.status', BaseEvent::ACTIVE_STATUSES))
+            ->andWhere('event.beginAt >= CONVERT_TZ(:now, \'Europe/Paris\', event.timeZone)')
+            ->andWhere('category IS NULL OR category.status = :status')
+            ->orderBy('event.beginAt', 'ASC')
+            ->addOrderBy('event.name', 'ASC')
+            ->setParameter('published', true)
+            ->setParameter('re_event', true)
+            ->setParameter('now', new \DateTime('now'))
+            ->setParameter('status', BaseEventCategory::ENABLED)
+            ->setMaxResults($limit)
+        ;
+
+        if ($name = $filter->getName()) {
+            $qb
+                ->andWhere('event.name LIKE :name')
+                ->setParameter('name', '%'.$name.'%')
+            ;
+        }
+
+        if ($category = $filter->getCategory()) {
+            $qb
+                ->andWhere('category = :category')
+                ->setParameter('category', $category)
+            ;
+        }
+
+        $zone = $filter->getZone() ?? $filter->getDefaultZone();
+        $this->withGeoZones(
+            [$zone],
+            $qb,
+            'event',
+            BaseEvent::class,
+            'e2',
+            'zones',
+            'z2',
+            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                $zoneQueryBuilder->andWhere(sprintf('%s.published = :published', $entityClassAlias));
+            }
+        );
+
+        return $qb->getQuery()->getResult();
     }
 }

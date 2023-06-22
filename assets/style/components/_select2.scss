@@ -1,0 +1,17 @@
+.select2 {
+    &.select2-container--default {
+        &.renaissance-filters {
+            .select2-selection {
+                &--multiple,
+                &--single {
+                    position: relative;
+                    border: 1px solid #cbd5e1;
+                    margin-top: 4px;
+                    padding-top: 0.275rem;
+                    height: 36px;
+                    color: #334155;
+                }
+            }
+        }
+    }
+}

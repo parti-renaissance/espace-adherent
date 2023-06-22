@@ -9,11 +9,17 @@ use App\Entity\ReferentTag;
 
 class ManagedZoneProvider
 {
+    public const PUBLIC_SPACE = 'public';
+
     /**
      * @return Zone[]
      */
     public function getManagedZones(Adherent $adherent, string $spaceType): array
     {
+        if (self::PUBLIC_SPACE === $spaceType) {
+            return [];
+        }
+
         if (AdherentSpaceEnum::DEPUTY === $spaceType) {
             return [$adherent->getDeputyZone()];
         }
