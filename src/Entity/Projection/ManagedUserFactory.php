@@ -40,7 +40,9 @@ class ManagedUserFactory
             isset($data['last_membership_donation']) ? new \DateTime($data['last_membership_donation']) : null,
             $data['committee'] ?? null,
             $data['committee_uuid'] ?? null,
-            $data['interests'] ?? []
+            $data['interests'] ?? [],
+            $data['mandate_types'] ?? [],
+            $data['cotisation_dates'] ?? []
         );
     }
 

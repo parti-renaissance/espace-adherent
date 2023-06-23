@@ -183,6 +183,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'certified_at' => '2017-02-01 10:20:45',
             'interests' => ['europe', 'numerique', 'sante'],
+            'cotisation_dates' => ['2022-02-01 12:00:00', '2023-03-01 12:00:00'],
         ]);
 
         $managedUser6 = $managedUserFactory->createFromArray([
@@ -212,6 +213,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'certified_at' => '2017-06-01 17:55:45',
             'interests' => ['europe', 'numerique'],
+            'cotisation_dates' => ['2022-01-01 12:00:00', '2023-01-01 12:00:00'],
         ]);
 
         $manager->persist($managedUserFactory->createFromArray([
