@@ -603,7 +603,7 @@ Feature:
                     "type": "select"
                 },
                 {
-                    "code": "campusRegistered",
+                    "code": "isCampusRegistered",
                     "label": "Inscrit au campus",
                     "options": {
                         "choices": [
