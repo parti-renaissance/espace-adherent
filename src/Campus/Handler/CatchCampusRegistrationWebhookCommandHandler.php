@@ -50,7 +50,11 @@ class CatchCampusRegistrationWebhookCommandHandler implements MessageHandlerInte
             }
 
             if ($registration->adherent?->getUuid()->toString() !== $payload['company_name']) {
-                $registration->adherent = $payload['company_name'] ? $this->adherentRepository->findOneByUuid($payload['company_name']) : null;
+                if (!$adherent = $this->adherentRepository->findOneByUuid($payload['company_name'])) {
+                    return;
+                }
+
+                $registration->adherent = $adherent;
             }
 
             if (!$registration->getId()) {
