@@ -327,6 +327,13 @@ class ManagedUser
      */
     private ?array $mandateTypes;
 
+    /**
+     * @Groups({"managed_user_read"})
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    public ?array $cotisationDates = null;
+
     public function __construct(
         int $status,
         ?string $source,
@@ -362,7 +369,8 @@ class ManagedUser
         string $committee = null,
         UuidInterface $committeeUuid = null,
         array $interests = [],
-        array $mandateTypes = null
+        array $mandateTypes = null,
+        array $cotisationDates = []
     ) {
         $this->status = $status;
         $this->source = $source;
@@ -399,6 +407,7 @@ class ManagedUser
         $this->committee = $committee;
         $this->committeeUuid = $committeeUuid;
         $this->mandateTypes = $mandateTypes;
+        $this->cotisationDates = $cotisationDates;
     }
 
     public function getId(): int
