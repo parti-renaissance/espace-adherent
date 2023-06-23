@@ -9,13 +9,23 @@
     <div class="bg-gray-50" role="banner">
         <div class="max-w-7xl mx-auto px-4 md:px-6 py-10 lg:py-16">
             <h1 class="text-2xl lg:text-4xl font-bold text-gray-900 font-din">{{ committee.getName() }}</h1>
-            <p class="mt-4 flex items-center space-x-3 text-gray-500">
-                {% include 'icons/map.svg.twig' %}
 
-                <span class="text-gray-600 text-base leading-5">
-                    {{ committee.getZones|join(', ') }}
-                </span>
-            </p>
+            <div class="mt-4 text-gray-500 text-base leading-5" x-data="{open: false}">
+                <p class="flex items-center space-x-3">
+                    {% include 'icons/map.svg.twig' %}
+                    {% if committee.getZones|length > 1 %}
+                        {% set first_zone = committee.getZones()|first %}
+                        {{ first_zone }} <span class="text-blue-500 hover:underline font-medium cursor-pointer" x-on:click="open = ! open">(+ {{ committee.getZones|length - 1 }})</span>
+                    {% else %}
+                        {{ committee.getZones|join(', ') }}
+                    {% endif %}
+                </p>
+
+                {% if first_zone is defined %}
+                    <p x-show="open" class="mt-3 pl-4" style="display: none">
+                        {{ committee.getZones()|filter(z => z != first_zone)|join(', ') }}
+                    </p>
+                {% endif %}
         </div>
     </div>
 
