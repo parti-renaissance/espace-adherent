@@ -3337,8 +3337,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function getValidCampusRegistration(): ?Registration
     {
-        return $this->campusRegistrations->findFirst(function (Registration $registration): bool {
-            return $registration->isValid();
-        });
+        foreach ($this->campusRegistrations as $registration) {
+            if ($registration->isValid()) {
+                return $registration;
+            }
+        }
+
+        return null;
     }
 }
