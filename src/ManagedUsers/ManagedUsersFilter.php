@@ -582,7 +582,7 @@ class ManagedUsersFilter
                     })
                 ),
                 'mandateType' => $this->mandateType,
-                'campusRegistered' => $this->isCampusRegistered,
+                'isCampusRegistered' => $this->isCampusRegistered,
             ],
         );
     }
