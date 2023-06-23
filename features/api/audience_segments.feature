@@ -36,6 +36,7 @@ Feature:
     """
     {
       "filter": {
+        "is_campus_registered": null,
         "is_certified": false,
         "renaissance_membership": null,
         "scope": "deputy",
@@ -173,6 +174,7 @@ Feature:
     """
     {
       "filter": {
+        "is_campus_registered": null,
         "is_certified": false,
         "renaissance_membership": "others_adherent",
         "scope": "deputy",
@@ -216,6 +218,7 @@ Feature:
     """
     {
         "filter": {
+            "is_campus_registered": null,
             "is_certified": false,
             "renaissance_membership": null,
             "zone": {
@@ -261,6 +264,7 @@ Feature:
           "registered_since": "2018-01-01",
           "registered_until": "2019-12-12",
           "is_committee_member": true,
+          "is_campus_registered": null,
           "is_certified": false,
           "renaissance_membership": "adherent_re"
         }
@@ -271,6 +275,7 @@ Feature:
     """
     {
       "filter": {
+        "is_campus_registered": null,
         "is_certified": false,
         "renaissance_membership": "adherent_re",
         "scope": "referent",
