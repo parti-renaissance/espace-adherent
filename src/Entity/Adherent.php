@@ -17,6 +17,7 @@ use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\NationalCouncilAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
+use App\Entity\Campus\Registration;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
 use App\Entity\Filesystem\FilePermissionEnum;
@@ -824,6 +825,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public ?string $emailStatusComment = null;
 
+    /**
+     * @var Registration[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity=Registration::class, mappedBy="adherent", cascade={"all"}, fetch="EXTRA_LAZY")
+     */
+    private Collection $campusRegistrations;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -842,6 +850,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->teamMemberships = new ArrayCollection();
         $this->zoneBasedRoles = new ArrayCollection();
         $this->referentTags = new ArrayCollection();
+        $this->campusRegistrations = new ArrayCollection();
     }
 
     public static function createBlank(
@@ -3307,5 +3316,27 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isFrench(): bool
     {
         return Address::FRANCE === $this->nationality;
+    }
+
+    public function getCampusRegistrations(): Collection
+    {
+        return $this->campusRegistrations;
+    }
+
+    public function addCampusRegistration(Registration $registration): void
+    {
+        if (!$this->campusRegistrations->contains($registration)) {
+            $this->campusRegistrations->add($registration);
+        }
+    }
+
+    public function removeCampusRegistration(Registration $registration): void
+    {
+        $this->campusRegistrations->removeElement($registration);
+    }
+
+    public function hasCampusRegistration(): bool
+    {
+        return !$this->campusRegistrations->isEmpty();
     }
 }

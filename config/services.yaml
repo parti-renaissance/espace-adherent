@@ -82,6 +82,7 @@ services:
             $goCardlessApiKey: '%env(GOCARDLESS_API_KEY)%'
             $goCardlessEnvironment: '%env(GOCARDLESS_ENV)%'
             $campusWebhookHost: '%env(CAMPUS_REGISTRATION_HOST)%'
+            $eventmakerWebhookKey: '%env(EVENTMAKER_WEBHOOK_KEY)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
