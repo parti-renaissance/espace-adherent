@@ -44,20 +44,17 @@ class CatchCampusRegistrationWebhookCommandHandler implements MessageHandlerInte
                 $registration->status = RegistrationStatusEnum::fromStatus($payload['status']);
             }
 
-            if ($registration->registeredAt !== $registeredAt = new \DateTime($payload['registered_at'])) {
+            $registeredAt = isset($payload['registered_at']) ? new \DateTime($payload['registered_at']) : null;
+            if ($registration->registeredAt !== $registeredAt) {
                 $registration->registeredAt = $registeredAt;
             }
 
-            foreach ($payload['guest_metadata'] as $data) {
-                if ('adherent_uuid' === $data['name']) {
-                    $adherent = $this->adherentRepository->findOneByUuid($data['value']);
-
-                    if (null !== $adherent && $registration->adherent !== $adherent) {
-                        $registration->adherent = $adherent;
-                    }
-
-                    break;
+            if ($registration->adherent?->getUuid()->toString() !== $payload['company_name']) {
+                if (!$adherent = $this->adherentRepository->findOneByUuid($payload['company_name'])) {
+                    return;
                 }
+
+                $registration->adherent = $adherent;
             }
 
             if (!$registration->getId()) {

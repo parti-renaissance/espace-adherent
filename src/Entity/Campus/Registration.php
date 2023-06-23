@@ -46,7 +46,7 @@ class Registration
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="campusRegistrations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     public ?Adherent $adherent = null;
 
