@@ -44,6 +44,7 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_LAST_LOGIN_GROUP = 'LOGIN_GRP';
     public const MERGE_FIELD_COMMITTEE = 'COMMITTEE';
     public const MERGE_FIELD_MANDATE_TYPE = 'MANDATES';
+    public const MERGE_FIELD_CAMPUS_REGISTRATION_DATE = 'CAMPUS_REG';
 
     public const ZONE_MERGE_FIELD_BY_ZONE_TYPE = [
         self::MERGE_FIELD_ZONE_BOROUGH => Zone::BOROUGH,
