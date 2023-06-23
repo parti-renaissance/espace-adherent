@@ -3,6 +3,8 @@
 namespace App\Donation;
 
 use App\Entity\Donation;
+use Cocur\Slugify\SlugifyInterface;
+use League\ISO3166\ISO3166;
 use Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request as LexikRequestHandler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -13,7 +15,8 @@ class PayboxFormFactory
         private readonly LexikRequestHandler $requestHandler,
         private readonly LexikRequestHandler $membershipRequestHandler,
         private readonly UrlGeneratorInterface $router,
-        private readonly DonationRequestUtils $donationRequestUtils
+        private readonly DonationRequestUtils $donationRequestUtils,
+        private readonly SlugifyInterface $slugify
     ) {
     }
 
@@ -64,12 +67,30 @@ class PayboxFormFactory
 
         return sprintf(
             '<?xml version="1.0"?><Billing><Address><FirstName>%s</FirstName><LastName>%s</LastName><Address1>%s</Address1><ZipCode>%s</ZipCode><City>%s</City><CountryCode>%s</CountryCode></Address></Billing>',
-            mb_substr($donator->getFirstName(), 0, 22),
-            mb_substr($donator->getLastName(), 0, 22),
-            $donation->getAddress(),
-            $donation->getPostalCode(),
-            $donation->getCityName(),
-            $donation->getCountry()
+            $this->slugify($donator->getFirstName(), 22),
+            $this->slugify($donator->getLastName(), 22),
+            $this->slugify($donation->getAddress(), 50),
+            $this->slugify($donation->getPostalCode(), 16),
+            $this->slugify($donation->getCityName(), 50),
+            $this->getCountryISO3166Numeric($donation->getCountry() ?? 'FR')
         );
+    }
+
+    private function slugify(string $string, int $maxLength = null, string $separator = ' '): string
+    {
+        $slug = $this->slugify->slugify($string, ['separator' => $separator]);
+
+        if ($maxLength) {
+            $slug = mb_substr($slug, 0, $maxLength);
+        }
+
+        return $slug;
+    }
+
+    private function getCountryISO3166Numeric(string $countryCode): int
+    {
+        $data = (new ISO3166())->alpha2($countryCode);
+
+        return $data['numeric'] ? (int) $data['numeric'] : 250;
     }
 }

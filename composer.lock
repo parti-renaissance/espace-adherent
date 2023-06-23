@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "567cbeb89d8724859eda5d6c779ce16f",
+    "content-hash": "69a97255995922e8f22298bf36cc1624",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -6621,6 +6621,64 @@
                 "source": "https://github.com/thephpleague/glide-symfony/tree/1.0.4"
             },
             "time": "2020-03-05T12:38:10+00:00"
+        },
+        {
+            "name": "league/iso3166",
+            "version": "4.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/iso3166.git",
+                "reference": "628f1b4992169917f3f59c14020ea4513c63f6db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/iso3166/zipball/628f1b4992169917f3f59c14020ea4513c63f6db",
+                "reference": "628f1b4992169917f3f59c14020ea4513c63f6db",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\ISO3166\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Bast",
+                    "email": "rob.bast@gmail.com"
+                }
+            ],
+            "description": "ISO 3166-1 PHP Library",
+            "homepage": "https://github.com/thephpleague/iso3166",
+            "keywords": [
+                "3166",
+                "3166-1",
+                "ISO 3166",
+                "countries",
+                "iso",
+                "library"
+            ],
+            "support": {
+                "issues": "https://github.com/thephpleague/iso3166/issues",
+                "source": "https://github.com/thephpleague/iso3166"
+            },
+            "time": "2023-06-05T15:02:58+00:00"
         },
         {
             "name": "league/mime-type-detection",
