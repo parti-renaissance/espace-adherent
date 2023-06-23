@@ -40,7 +40,7 @@ class Registration
     public ?RegistrationStatusEnum $status = null;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     public ?\DateTimeInterface $registeredAt = null;
 
