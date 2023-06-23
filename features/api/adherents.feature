@@ -230,7 +230,8 @@ Feature:
                 "last_membership_donation": null,
                 "committee": null,
                 "committee_uuid": null,
-                "cotisation_dates": []
+                "cotisation_dates": [],
+                "campus_registered_at": null
             },
             {
                 "address": "47 rue Martre",
@@ -253,7 +254,8 @@ Feature:
                 "last_membership_donation": null,
                 "committee": "Second Comité des 3 communes",
                 "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
-                "cotisation_dates": []
+                "cotisation_dates": [],
+                "campus_registered_at": null
             },
             {
                 "address": "2 avenue Jean Jaurès",
@@ -276,7 +278,8 @@ Feature:
                 "last_membership_donation": null,
                 "committee": null,
                 "committee_uuid": null,
-                "cotisation_dates": []
+                "cotisation_dates": [],
+                "campus_registered_at": null
             },
             {
                 "address": "12 Pilgerweg",
@@ -301,7 +304,8 @@ Feature:
                 "last_membership_donation": null,
                 "committee": null,
                 "committee_uuid": null,
-                "cotisation_dates": []
+                "cotisation_dates": [],
+                "campus_registered_at": null
             },
             {
                 "address": "32 Zeppelinstrasse",
@@ -328,7 +332,8 @@ Feature:
                 "last_membership_donation": null,
                 "committee": null,
                 "committee_uuid": null,
-                "cotisation_dates": []
+                "cotisation_dates": [],
+                "campus_registered_at": null
             }
         ]
     }
@@ -367,7 +372,8 @@ Feature:
                 "last_membership_donation": null,
                 "committee": null,
                 "committee_uuid": null,
-                "cotisation_dates": []
+                "cotisation_dates": [],
+                "campus_registered_at": null
             }
         ]
     }
@@ -413,7 +419,8 @@ Feature:
                 "last_membership_donation": null,
                 "committee": null,
                 "committee_uuid": null,
-                "cotisation_dates": []
+                "cotisation_dates": [],
+                "campus_registered_at": null
             },
             {
                 "address": "47 rue Martre",
@@ -436,7 +443,8 @@ Feature:
                 "last_membership_donation": null,
                 "committee": "Second Comité des 3 communes",
                 "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
-                "cotisation_dates": []
+                "cotisation_dates": [],
+                "campus_registered_at": null
             }
         ]
     }
@@ -593,6 +601,17 @@ Feature:
                         }
                     },
                     "type": "select"
+                },
+                {
+                    "code": "campusRegistered",
+                    "label": "Inscrit au campus",
+                    "options": {
+                        "choices": [
+                            "Non",
+                            "Oui"
+                        ]
+                    },
+                    "type": "select"
                 }
             ]
         },
@@ -661,7 +680,8 @@ Feature:
                 "last_membership_donation": null,
                 "committee": null,
                 "committee_uuid": null,
-                "cotisation_dates": ["2022-01-01 12:00:00", "2023-01-01 12:00:00"]
+                "cotisation_dates": ["2022-01-01 12:00:00", "2023-01-01 12:00:00"],
+                "campus_registered_at": null
             },
             {
                 "address": "36 rue de la Paix",
@@ -688,7 +708,8 @@ Feature:
                 "last_membership_donation": null,
                 "committee": null,
                 "committee_uuid": null,
-                "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"]
+                "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
+                "campus_registered_at": null
             }
         ]
     }
@@ -731,7 +752,8 @@ Feature:
                 "last_membership_donation": null,
                 "committee": null,
                 "committee_uuid": null,
-                "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"]
+                "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
+                "campus_registered_at": null
             }
         ]
     }

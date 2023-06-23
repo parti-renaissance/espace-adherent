@@ -54,4 +54,12 @@ class Registration
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
+
+    public function isValid(): bool
+    {
+        return \in_array($this->status, [
+            RegistrationStatusEnum::INVITED,
+            RegistrationStatusEnum::REGISTERED,
+        ], true);
+    }
 }

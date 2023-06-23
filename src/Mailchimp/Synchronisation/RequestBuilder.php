@@ -37,6 +37,7 @@ class RequestBuilder implements LoggerAwareInterface
     private $zipCode;
     private $countryName;
     private $adhesionDate;
+    private ?\DateTime $campusRegisteredAt = null;
     private ?bool $isCertified = null;
     private ?bool $isAdherent = null;
     private ?string $committeeUuid = null;
@@ -107,6 +108,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setZones($adherent->getZones())
             ->setCommitteeUuid($adherent->getCommitteeV2Membership()?->getCommitteeUuid())
             ->setMandateTypes($this->electedRepresentativeTagsBuilder->buildAdherentMandateTypes($adherent))
+            ->setCampusRegisteredAt($adherent)
         ;
 
         if (null === $adherent->getSource() || $adherent->isRenaissanceUser()) {
@@ -265,6 +267,15 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
+    public function setCampusRegisteredAt(Adherent $adherent): self
+    {
+        if ($registration = $adherent->getValidCampusRegistration()) {
+            $this->campusRegisteredAt = $registration->registeredAt;
+        }
+
+        return $this;
+    }
+
     public function setSource(?string $source): self
     {
         $this->source = $source;
@@ -409,9 +420,11 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setMandateTypes(array $mandateTypes): void
+    public function setMandateTypes(array $mandateTypes): self
     {
         $this->mandateTypes = $mandateTypes;
+
+        return $this;
     }
 
     public function buildMemberRequest(string $memberIdentifier): MemberRequest
@@ -560,6 +573,10 @@ class RequestBuilder implements LoggerAwareInterface
 
         if (null !== $this->mandateTypes) {
             $mergeFields[MemberRequest::MERGE_FIELD_MANDATE_TYPE] = implode(',', $this->mandateTypes);
+        }
+
+        if (null !== $this->campusRegisteredAt) {
+            $mergeFields[MemberRequest::MERGE_FIELD_CAMPUS_REGISTRATION_DATE] = $this->campusRegisteredAt->format(MemberRequest::DATE_FORMAT);
         }
 
         return $mergeFields;
