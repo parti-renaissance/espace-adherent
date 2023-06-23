@@ -97,6 +97,7 @@ class Zone implements GeoInterface
         Zone::CITY_COMMUNITY,
         Zone::CANTON,
         Zone::COUNTRY,
+        Zone::CUSTOM,
     ];
 
     public const CANDIDATE_TYPES = [
