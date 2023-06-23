@@ -19,7 +19,7 @@ class CampusRegistrationFilterBuilder implements FilterBuilderInterface
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createBooleanSelect('campusRegistered', 'Inscrit au campus')
+            ->createBooleanSelect('isCampusRegistered', 'Inscrit au campus')
             ->setPosition(12)
             ->getFilters()
         ;
