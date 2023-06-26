@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "69a97255995922e8f22298bf36cc1624",
+    "content-hash": "2269ea3a9b98abc23fd18dbf9b7e0a9b",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -21942,16 +21942,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v5.4.23",
+            "version": "v5.4.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "1572c5b7cad812bdf0414d89a32a33a2dafb38ba"
+                "reference": "ed279c7839967958ee152c32eaa0eaaeac819404"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/1572c5b7cad812bdf0414d89a32a33a2dafb38ba",
-                "reference": "1572c5b7cad812bdf0414d89a32a33a2dafb38ba",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/ed279c7839967958ee152c32eaa0eaaeac819404",
+                "reference": "ed279c7839967958ee152c32eaa0eaaeac819404",
                 "shasum": ""
             },
             "require": {
@@ -22005,7 +22005,7 @@
             "description": "Provides utilities for PHPUnit, especially user deprecation notices management",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/phpunit-bridge/tree/v5.4.23"
+                "source": "https://github.com/symfony/phpunit-bridge/tree/v5.4.25"
             },
             "funding": [
                 {
@@ -22021,7 +22021,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-18T09:42:03+00:00"
+            "time": "2023-06-02T09:36:43+00:00"
         },
         {
             "name": "symfony/process",
