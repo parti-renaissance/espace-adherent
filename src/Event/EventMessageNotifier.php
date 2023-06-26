@@ -18,6 +18,8 @@ use App\Mailer\Message\EventCancellationMessage;
 use App\Mailer\Message\EventNotificationMessage;
 use App\Mailer\Message\JeMengage\JeMengageEventCancellationMessage;
 use App\Mailer\Message\Message;
+use App\Mailer\Message\Renaissance\RenaissanceEventCancellationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -108,11 +110,23 @@ class EventMessageNotifier implements EventSubscriberInterface
         }
     }
 
-    private function createMessage(array $followers, CommitteeEvent $event, Adherent $host): EventNotificationMessage
+    private function createMessage(array $followers, CommitteeEvent $event, Adherent $host): Message
     {
         $params = [
             'slug' => $event->getSlug(),
         ];
+
+        if ($event->isRenaissanceEvent()) {
+            return RenaissanceEventNotificationMessage::create(
+                $followers,
+                $host,
+                $event,
+                $this->generateUrl('app_renaissance_event_show', $params),
+                function (Adherent $adherent) {
+                    return RenaissanceEventNotificationMessage::getRecipientVars($adherent->getFirstName());
+                }
+            );
+        }
 
         return EventNotificationMessage::create(
             $followers,
@@ -147,6 +161,15 @@ class EventMessageNotifier implements EventSubscriberInterface
                 $host,
                 $event,
                 $this->generateUrl('app_search_events')
+            );
+        }
+
+        if ($event->isRenaissanceEvent()) {
+            return RenaissanceEventCancellationMessage::create(
+                $registered,
+                $host,
+                $event,
+                $this->generateUrl('app_renaissance_event_list')
             );
         }
 
