@@ -23,45 +23,51 @@ class CatchCampusRegistrationWebhookCommandHandler implements MessageHandlerInte
     {
         $payload = json_decode($command->getPayload(), true);
 
-        if (isset($payload['status']) && \in_array($payload['status'], RegistrationStatusEnum::toArray(), true)) {
-            if (!$registration = $this->registrationRepository->findOneBy(['eventMakerId' => $payload['_id']])) {
-                $registration = new Registration();
-            }
-
-            if ($registration->eventMakerId !== $payload['_id']) {
-                $registration->eventMakerId = $payload['_id'];
-            }
-
-            if ($registration->campusEventId !== $payload['event_id']) {
-                $registration->campusEventId = $payload['event_id'];
-            }
-
-            if ($registration->eventMakerOrderUid !== $payload['order_uid']) {
-                $registration->eventMakerOrderUid = $payload['order_uid'];
-            }
-
-            if ($registration->status !== $payload['status']) {
-                $registration->status = RegistrationStatusEnum::fromStatus($payload['status']);
-            }
-
-            $registeredAt = isset($payload['registered_at']) ? new \DateTime($payload['registered_at']) : null;
-            if ($registration->registeredAt !== $registeredAt) {
-                $registration->registeredAt = $registeredAt;
-            }
-
-            if ($registration->adherent?->getUuid()->toString() !== $payload['company_name']) {
-                if (!$adherent = $this->adherentRepository->findOneByUuid($payload['company_name'])) {
-                    return;
-                }
-
-                $registration->adherent = $adherent;
-            }
-
-            if (!$registration->getId()) {
-                $this->entityManager->persist($registration);
-            }
-
-            $this->entityManager->flush();
+        if (
+            empty($payload['company_name'])
+            || empty($payload['status'])
+            || !\in_array($payload['status'], RegistrationStatusEnum::toArray(), true)
+        ) {
+            return;
         }
+
+        if (!$registration = $this->registrationRepository->findOneBy(['eventMakerId' => $payload['_id']])) {
+            $registration = new Registration();
+        }
+
+        if ($registration->eventMakerId !== $payload['_id']) {
+            $registration->eventMakerId = $payload['_id'];
+        }
+
+        if ($registration->campusEventId !== $payload['event_id']) {
+            $registration->campusEventId = $payload['event_id'];
+        }
+
+        if ($registration->eventMakerOrderUid !== $payload['order_uid']) {
+            $registration->eventMakerOrderUid = $payload['order_uid'];
+        }
+
+        if ($registration->status !== $payload['status']) {
+            $registration->status = RegistrationStatusEnum::fromStatus($payload['status']);
+        }
+
+        $registeredAt = isset($payload['registered_at']) ? new \DateTime($payload['registered_at']) : null;
+        if ($registration->registeredAt !== $registeredAt) {
+            $registration->registeredAt = $registeredAt;
+        }
+
+        if ($registration->adherent?->getUuid()->toString() !== $payload['company_name']) {
+            if (!$adherent = $this->adherentRepository->findOneByUuid($payload['company_name'])) {
+                return;
+            }
+
+            $registration->adherent = $adherent;
+        }
+
+        if (!$registration->getId()) {
+            $this->entityManager->persist($registration);
+        }
+
+        $this->entityManager->flush();
     }
 }
