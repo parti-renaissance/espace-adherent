@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Donation\PayboxPaymentUnsubscription;
+use App\Donation\Paybox\PayboxPaymentUnsubscription;
 use App\Exception\PayboxPaymentUnsubscriptionException;
 use App\Repository\DonationRepository;
 use Doctrine\ORM\EntityManagerInterface;

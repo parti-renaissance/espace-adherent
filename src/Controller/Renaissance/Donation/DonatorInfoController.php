@@ -2,8 +2,8 @@
 
 namespace App\Controller\Renaissance\Donation;
 
-use App\Donation\DonationRequestUtils;
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentSubscription;
+use App\Donation\Request\DonationRequestUtils;
 use App\Form\Renaissance\Donation\DonationRequestDonatorType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

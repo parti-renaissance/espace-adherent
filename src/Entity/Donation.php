@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Donation\DonationSourceEnum;
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Geocoder\GeoPointInterface;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;

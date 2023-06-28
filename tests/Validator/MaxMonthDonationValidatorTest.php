@@ -2,7 +2,7 @@
 
 namespace Tests\App\Validator;
 
-use App\Donation\DonationRequest;
+use App\Donation\Request\DonationRequest;
 use App\Validator\MaxMonthDonation;
 use App\Validator\MaxMonthDonationValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;

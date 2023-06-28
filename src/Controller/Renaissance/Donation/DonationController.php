@@ -2,7 +2,7 @@
 
 namespace App\Controller\Renaissance\Donation;
 
-use App\Donation\DonationRequestUtils;
+use App\Donation\Request\DonationRequestUtils;
 use App\Form\Renaissance\Donation\DonationRequestAmountType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

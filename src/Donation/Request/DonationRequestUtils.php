@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Request;
 
 use App\Address\GeoCoder;
 use App\Controller\EnMarche\DonationController;
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Transaction;

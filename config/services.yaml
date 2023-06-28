@@ -323,7 +323,7 @@ services:
             $servers: '%lexik_paybox.servers%'
             $factory: '@form.factory'
 
-    App\Donation\PayboxFormFactory:
+    App\Donation\Paybox\PayboxFormFactory:
         arguments:
             $membershipRequestHandler: '@app.paybox.membership_handler'
 
@@ -450,7 +450,7 @@ services:
 
     App\Security\SimpleCsrfTokenManager: ~
 
-    App\Donation\DonationRequestUtils:
+    App\Donation\Request\DonationRequestUtils:
         arguments:
             $tokenManager: '@App\Security\SimpleCsrfTokenManager'
 

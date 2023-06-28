@@ -2,9 +2,9 @@
 
 namespace App\Form\Renaissance\Donation;
 
-use App\Donation\DonationRequest;
-use App\Donation\DonationRequestUtils;
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentSubscription;
+use App\Donation\Request\DonationRequest;
+use App\Donation\Request\DonationRequestUtils;
 use App\Form\AmountType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

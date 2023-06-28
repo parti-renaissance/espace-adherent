@@ -3,9 +3,9 @@
 namespace App\Form;
 
 use App\Address\Address;
-use App\Donation\DonationRequest;
-use App\Donation\DonationRequestUtils;
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentSubscription;
+use App\Donation\Request\DonationRequest;
+use App\Donation\Request\DonationRequestUtils;
 use App\Entity\Adherent;
 use App\Membership\MembershipRegistrationProcess;
 use App\Repository\AdherentRepository;

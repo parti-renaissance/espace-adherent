@@ -2,7 +2,7 @@
 
 namespace Tests\App\Donation;
 
-use App\Donation\DonationRequest;
+use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use libphonenumber\PhoneNumber;
 use Tests\App\AbstractKernelTestCase;

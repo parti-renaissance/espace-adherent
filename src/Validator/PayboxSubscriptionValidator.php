@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

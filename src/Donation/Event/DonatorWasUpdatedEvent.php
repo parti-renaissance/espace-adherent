@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Event;
 
 final class DonatorWasUpdatedEvent extends DonatorEvent
 {

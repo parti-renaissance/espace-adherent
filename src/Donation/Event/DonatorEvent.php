@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Event;
 
 use App\Entity\Donator;
 use Symfony\Contracts\EventDispatcher\Event;

@@ -2,10 +2,10 @@
 
 namespace App\Controller\Admin;
 
-use App\Donation\DonatorExtractCommand;
-use App\Donation\DonatorExtractCommandHandler;
-use App\Donation\DonatorMergeCommand;
-use App\Donation\DonatorMergeCommandHandler;
+use App\Donation\Command\DonatorExtractCommand;
+use App\Donation\Command\DonatorMergeCommand;
+use App\Donation\Handler\DonatorExtractCommandHandler;
+use App\Donation\Handler\DonatorMergeCommandHandler;
 use App\Form\Admin\DonatorMergeType;
 use App\Form\Admin\Extract\DonatorExtractType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;

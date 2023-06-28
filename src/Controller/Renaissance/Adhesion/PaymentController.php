@@ -3,10 +3,10 @@
 namespace App\Controller\Renaissance\Adhesion;
 
 use App\Controller\EnMarche\DonationController;
-use App\Donation\DonationRequest;
-use App\Donation\DonationRequestHandler;
-use App\Donation\PayboxFormFactory;
-use App\Donation\TransactionCallbackHandler;
+use App\Donation\Handler\DonationRequestHandler;
+use App\Donation\Handler\TransactionCallbackHandler;
+use App\Donation\Paybox\PayboxFormFactory;
+use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Form\Renaissance\Adhesion\PrePaymentType;

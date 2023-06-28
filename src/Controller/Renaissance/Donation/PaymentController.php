@@ -2,10 +2,10 @@
 
 namespace App\Controller\Renaissance\Donation;
 
-use App\Donation\DonationRequestUtils;
-use App\Donation\PayboxFormFactory;
-use App\Donation\PayboxPaymentUnsubscription;
-use App\Donation\TransactionCallbackHandler;
+use App\Donation\Handler\TransactionCallbackHandler;
+use App\Donation\Paybox\PayboxFormFactory;
+use App\Donation\Paybox\PayboxPaymentUnsubscription;
+use App\Donation\Request\DonationRequestUtils;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Exception\PayboxPaymentUnsubscriptionException;

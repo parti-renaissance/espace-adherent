@@ -3,7 +3,7 @@
 namespace App\Membership\MembershipRequest;
 
 use App\Address\Address;
-use App\Donation\DonationRequestInterface;
+use App\Donation\Request\DonationRequestInterface;
 use App\Entity\Adherent;
 use App\Membership\MembershipSourceEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;

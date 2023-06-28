@@ -3,7 +3,7 @@
 namespace App\Form\Renaissance\Donation;
 
 use App\Address\Address;
-use App\Donation\DonationRequest;
+use App\Donation\Request\DonationRequest;
 use App\Form\AutocompleteAddressType;
 use App\Form\CivilityType;
 use Symfony\Component\Form\AbstractType;

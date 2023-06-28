@@ -5,7 +5,7 @@ namespace App\Admin;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Donation\DonatorManager;
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Donator;

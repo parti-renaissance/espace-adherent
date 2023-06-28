@@ -4,7 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Address\Address;
 use App\Donation\DonationSourceEnum;
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Donator;

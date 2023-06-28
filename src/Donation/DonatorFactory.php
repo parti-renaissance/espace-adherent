@@ -2,6 +2,7 @@
 
 namespace App\Donation;
 
+use App\Donation\Request\DonationRequest;
 use App\Entity\Donator;
 
 class DonatorFactory

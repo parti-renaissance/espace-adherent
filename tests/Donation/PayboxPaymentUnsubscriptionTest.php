@@ -2,7 +2,7 @@
 
 namespace Tests\App\Donation;
 
-use App\Donation\PayboxPaymentUnsubscription;
+use App\Donation\Paybox\PayboxPaymentUnsubscription;
 use App\Entity\Donation;
 use App\Exception\PayboxPaymentUnsubscriptionException;
 use App\Mailer\MailerService;

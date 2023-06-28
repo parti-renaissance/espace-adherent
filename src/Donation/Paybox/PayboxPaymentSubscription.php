@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Paybox;
 
 final class PayboxPaymentSubscription
 {

@@ -3,7 +3,7 @@
 namespace App\EntityListener;
 
 use App\Donation\DonationEvents;
-use App\Donation\DonatorWasUpdatedEvent;
+use App\Donation\Event\DonatorWasUpdatedEvent;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use Doctrine\ORM\Event\PreUpdateEventArgs;

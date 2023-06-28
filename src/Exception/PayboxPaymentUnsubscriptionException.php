@@ -2,7 +2,7 @@
 
 namespace App\Exception;
 
-use App\Donation\PayboxPaymentUnsubscriptionErrorEnum;
+use App\Donation\Paybox\PayboxPaymentUnsubscriptionErrorEnum;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class PayboxPaymentUnsubscriptionException extends BadRequestHttpException

@@ -2,7 +2,7 @@
 
 namespace App\Renaissance\Donation;
 
-use App\Donation\DonationRequest;
+use App\Donation\Request\DonationRequest;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class DonationRequestStorage
