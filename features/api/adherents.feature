@@ -216,6 +216,7 @@ Feature:
                 "country": "FR",
                 "first_name": "Francis",
                 "last_name": "Brioul",
+                "birthdate": "@string@.isDateTime()",
                 "gender": "male",
                 "interests": [],
                 "tags": [],
@@ -240,6 +241,7 @@ Feature:
                 "country": "FR",
                 "first_name": "Gisele",
                 "last_name": "Berthoux",
+                "birthdate": "@string@.isDateTime()",
                 "gender": "female",
                 "interests": [],
                 "tags": [],
@@ -269,6 +271,7 @@ Feature:
                 "interests": [],
                 "tags": [],
                 "last_name": "Fullstack",
+                "birthdate": "@string@.isDateTime()",
                 "postal_code": "77000",
                 "phone_number": null,
                 "nationality": null,
@@ -288,6 +291,7 @@ Feature:
                 "country": "CH",
                 "first_name": "Michel",
                 "last_name": "VASSEUR",
+                "birthdate": "@string@.isDateTime()",
                 "gender": "male",
                 "interests": [
                     "numerique"
@@ -314,6 +318,7 @@ Feature:
                 "country": "CH",
                 "first_name": "Michelle",
                 "last_name": "Dufour",
+                "birthdate": "@string@.isDateTime()",
                 "gender": "male",
                 "interests": [
                     "europe",
@@ -358,6 +363,7 @@ Feature:
                 "country": "FR",
                 "first_name": "Francis",
                 "last_name": "Brioul",
+                "birthdate": "@string@.isDateTime()",
                 "gender": "male",
                 "interests": [],
                 "tags": [],
@@ -405,6 +411,7 @@ Feature:
                 "country": "FR",
                 "first_name": "Jules",
                 "last_name": "Fullstack",
+                "birthdate": "@string@.isDateTime()",
                 "gender": "male",
                 "interests": [],
                 "tags": [],
@@ -429,6 +436,7 @@ Feature:
                 "country": "FR",
                 "first_name": "Gisele",
                 "last_name": "Berthoux",
+                "birthdate": "@string@.isDateTime()",
                 "gender": "female",
                 "interests": [],
                 "tags": [],
@@ -663,6 +671,7 @@ Feature:
                 "country": "FR",
                 "first_name": "Député",
                 "last_name": "PARIS I",
+                "birthdate": "@string@.isDateTime()",
                 "gender": "male",
                 "interests": [
                     "europe",
@@ -690,6 +699,7 @@ Feature:
                 "country": "FR",
                 "first_name": "Jacques",
                 "last_name": "Picard",
+                "birthdate": "@string@.isDateTime()",
                 "gender": "male",
                 "interests": [
                     "europe",
@@ -734,6 +744,7 @@ Feature:
                 "country": "FR",
                 "first_name": "Jacques",
                 "last_name": "Picard",
+                "birthdate": "@string@.isDateTime()",
                 "gender": "male",
                 "interests": [
                     "europe",

@@ -18,6 +18,7 @@ class ManagedUserFactory
             $data['country'] ?? null,
             $data['first_name'] ?? null,
             $data['last_name'] ?? null,
+            $data['birthday'] ?? null,
             isset($data['birthday']) ? \is_int($data['birthday']) ?: $this->getAge($data['birthday']) : null,
             $data['phone'] ?? null,
             $data['nationality'] ?? null,
