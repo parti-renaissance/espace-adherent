@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Donation\DonationSourceEnum;
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Donator;
@@ -60,6 +60,23 @@ class DonationRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    public function getDonationYearsForAdherent(Adherent $adherent): array
+    {
+        return $this->createQueryBuilder('donation')
+            ->select('DISTINCT(YEAR(donation.donatedAt)) AS year')
+            ->innerJoin('donation.donator', 'donator')
+            ->where('donator.adherent = :adherent')
+            ->andWhere('donation.membership = 0 AND donation.status = :donation_status')
+            ->setParameters([
+                'adherent' => $adherent,
+                'donation_status' => Donation::STATUS_FINISHED,
+            ])
+            ->orderBy('donation.donatedAt')
+            ->getQuery()
+            ->getSingleColumnResult()
         ;
     }
 

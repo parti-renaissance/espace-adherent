@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Address\PostAddressFactory;
 use App\Donation\DonatorManager;
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Repository\DonatorRepository;

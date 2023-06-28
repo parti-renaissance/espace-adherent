@@ -1,7 +1,13 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Handler;
 
+use App\Donation\DonationEvents;
+use App\Donation\DonationFactory;
+use App\Donation\DonatorFactory;
+use App\Donation\DonatorManager;
+use App\Donation\Event\DonationWasCreatedEvent;
+use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Donator;

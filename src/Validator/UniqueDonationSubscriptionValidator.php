@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Donation\DonationRequest;
+use App\Donation\Request\DonationRequest;
 use App\Repository\DonationRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

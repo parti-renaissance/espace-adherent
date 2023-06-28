@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Handler;
 
 use App\Csv\CsvResponseFactory;
+use App\Donation\Command\DonatorExtractCommand;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Extract\AbstractEmailExtractCommandHandler;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Command;
 
 use App\Entity\Donator;
 use Symfony\Component\Validator\Constraints as Assert;

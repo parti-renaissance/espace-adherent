@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Donation\DonationRequestInterface;
+use App\Donation\Request\DonationRequestInterface;
 use App\Repository\TransactionRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

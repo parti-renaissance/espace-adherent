@@ -3,6 +3,8 @@
 namespace App\Donation;
 
 use App\Address\PostAddressFactory;
+use App\Donation\Request\DonationRequest;
+use App\Donation\Request\DonationRequestUtils;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Entity\Geo\Zone;

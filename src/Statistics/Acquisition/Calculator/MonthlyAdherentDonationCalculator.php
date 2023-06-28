@@ -2,7 +2,7 @@
 
 namespace App\Statistics\Acquisition\Calculator;
 
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Donation;
 
 class MonthlyAdherentDonationCalculator extends AbstractDonationCountCalculator

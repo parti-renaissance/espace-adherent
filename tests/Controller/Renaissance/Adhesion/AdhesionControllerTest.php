@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller\Renaissance\Adhesion;
 
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;

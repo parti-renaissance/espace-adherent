@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Handler;
 
+use App\Donation\Command\DonatorMergeCommand;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DonatorMergeCommandHandler

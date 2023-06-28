@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Paybox;
 
 use App\Entity\Adherent;
 use App\Entity\Donation;

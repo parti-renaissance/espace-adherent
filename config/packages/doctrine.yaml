@@ -45,6 +45,7 @@ doctrine:
         dql:
             datetime_functions:
                 year_month: DoctrineExtensions\Query\Mysql\YearMonth
+                year: DoctrineExtensions\Query\Mysql\Year
                 timestampdiff: DoctrineExtensions\Query\Mysql\TimestampDiff
                 convert_tz: DoctrineExtensions\Query\Mysql\ConvertTz
                 now: DoctrineExtensions\Query\Mysql\Now

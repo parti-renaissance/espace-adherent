@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Paybox;
 
+use App\Donation\Request\DonationRequestUtils;
 use App\Entity\Donation;
 use Cocur\Slugify\SlugifyInterface;
 use League\ISO3166\ISO3166;

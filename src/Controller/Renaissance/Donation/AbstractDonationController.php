@@ -2,7 +2,7 @@
 
 namespace App\Controller\Renaissance\Donation;
 
-use App\Donation\DonationRequest;
+use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use App\Renaissance\Donation\DonationRequestProcessor;
 use App\Renaissance\Donation\DonationRequestStorage;

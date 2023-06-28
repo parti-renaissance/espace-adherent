@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Listener;
 
 use App\Entity\Donation;
+use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Mailer\MailerService;
 use App\Mailer\Message\DonationThanksMessage;
 use App\Membership\MembershipRequestHandler;
@@ -14,30 +15,19 @@ use Lexik\Bundle\PayboxBundle\Event\PayboxResponseEvent;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class TransactionSubscriber implements EventSubscriberInterface
 {
-    private MailerService $mailer;
-    private ObjectManager $manager;
-    private TransactionRepository $transactionRepository;
-    private DonationRepository $donationRepository;
-    private MembershipRequestHandler $membershipRequestHandler;
-    private LoggerInterface $logger;
-
     public function __construct(
-        MailerService $transactionalMailer,
-        ObjectManager $manager,
-        TransactionRepository $transactionRepository,
-        DonationRepository $donationRepository,
-        MembershipRequestHandler $membershipRequestHandler,
-        LoggerInterface $logger
+        private readonly MailerService $transactionalMailer,
+        private readonly ObjectManager $manager,
+        private readonly TransactionRepository $transactionRepository,
+        private readonly DonationRepository $donationRepository,
+        private readonly MembershipRequestHandler $membershipRequestHandler,
+        private readonly MessageBusInterface $bus,
+        private readonly LoggerInterface $logger
     ) {
-        $this->mailer = $transactionalMailer;
-        $this->manager = $manager;
-        $this->transactionRepository = $transactionRepository;
-        $this->donationRepository = $donationRepository;
-        $this->membershipRequestHandler = $membershipRequestHandler;
-        $this->logger = $logger;
     }
 
     public static function getSubscribedEvents(): array
@@ -70,6 +60,8 @@ class TransactionSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $adherent = $donation->getDonator()?->getAdherent();
+
         $transaction = $donation->processPayload($payload);
 
         if ($transaction->isSuccessful()) {
@@ -81,7 +73,7 @@ class TransactionSubscriber implements EventSubscriberInterface
 
         if ($transaction->isSuccessful()) {
             if ($donation->isMembership()) {
-                if ($adherent = $donation->getDonator()->getAdherent()) {
+                if ($adherent) {
                     if ($donation->isReAdhesion()) {
                         $this->membershipRequestHandler->finishRenaissanceReAdhesion($adherent);
                     } else {
@@ -90,11 +82,13 @@ class TransactionSubscriber implements EventSubscriberInterface
                 } else {
                     $this->logger->error('Adhesion RE: adherent introuvable pour une cotisation réussie, donation id '.$donation->getId());
                 }
-
-                return;
+            } else {
+                $this->transactionalMailer->sendMessage(DonationThanksMessage::createFromTransaction($transaction));
             }
 
-            $this->mailer->sendMessage(DonationThanksMessage::createFromTransaction($transaction));
+            if ($adherent) {
+                $this->bus->dispatch(new AdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress()));
+            }
         }
     }
 

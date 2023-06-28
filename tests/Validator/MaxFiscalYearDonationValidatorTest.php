@@ -2,7 +2,7 @@
 
 namespace Tests\App\Validator;
 
-use App\Donation\DonationRequest;
+use App\Donation\Request\DonationRequest;
 use App\Repository\TransactionRepository;
 use App\Validator\MaxFiscalYearDonation;
 use App\Validator\MaxFiscalYearDonationValidator;

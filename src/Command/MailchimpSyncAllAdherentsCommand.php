@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Campus\RegistrationStatusEnum;
 use App\Entity\Adherent;
+use App\Entity\Donator;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Geo\Zone;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
@@ -50,6 +51,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             ->addOption('zones', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('disabled-only', null, InputOption::VALUE_NONE)
             ->addOption('certified-only', null, InputOption::VALUE_NONE)
+            ->addOption('donator-only', null, InputOption::VALUE_NONE)
             ->addOption('committee-voter-only', null, InputOption::VALUE_NONE)
             ->addOption('active-mandates-only', null, InputOption::VALUE_NONE)
             ->addOption('campus-registered-only', null, InputOption::VALUE_NONE)
@@ -72,6 +74,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             $input->getOption('zones'),
             $input->getOption('disabled-only'),
             $input->getOption('certified-only'),
+            $input->getOption('donator-only'),
             $input->getOption('committee-voter-only'),
             $input->getOption('active-mandates-only'),
             $input->getOption('source'),
@@ -122,6 +125,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         array $zoneCodes,
         bool $disabledOnly,
         bool $certifiedOnly,
+        bool $donatorOnly,
         bool $committeeVoterOnly,
         bool $activeMandatesOnly,
         ?string $source,
@@ -172,6 +176,10 @@ class MailchimpSyncAllAdherentsCommand extends Command
 
         if ($certifiedOnly) {
             $queryBuilder->andWhere('adherent.certifiedAt IS NOT NULL');
+        }
+
+        if ($donatorOnly) {
+            $queryBuilder->innerJoin(Donator::class, 'donator', Join::WITH, 'donator.adherent = adherent');
         }
 
         if ($committeeVoterOnly) {

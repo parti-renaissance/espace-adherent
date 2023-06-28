@@ -7,6 +7,7 @@ use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
 use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ApplicationRequest\VolunteerRequest;
+use App\Entity\Campus\Registration;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneTagEnum;
@@ -17,6 +18,7 @@ use App\Mailchimp\MailchimpSegment\MailchimpSegmentTagEnum;
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
+use App\Repository\DonationRepository;
 use App\Repository\ReferentTagRepository;
 use Doctrine\Common\Collections\Collection;
 use Psr\Log\LoggerAwareInterface;
@@ -51,8 +53,6 @@ class RequestBuilder implements LoggerAwareInterface
     private $favoriteCities;
     private $favoriteCitiesCodes;
     private $takenForCity = false;
-    private $mailchimpObjectIdMapping;
-    private $electedRepresentativeTagsBuilder;
     private $isSubscribeRequest = true;
     private $referentTagsCodes = [];
 
@@ -62,6 +62,8 @@ class RequestBuilder implements LoggerAwareInterface
     private array $subZones = [];
     /** @var Zone[] */
     private array $zones = [];
+    /** @var int[]|null */
+    private ?array $donationYears = null;
 
     private $teamCode;
 
@@ -72,11 +74,10 @@ class RequestBuilder implements LoggerAwareInterface
     private ?string $loginGroup = null;
 
     public function __construct(
-        MailchimpObjectIdMapping $mailchimpObjectIdMapping,
-        ElectedRepresentativeTagsBuilder $electedRepresentativeTagsBuilder
+        private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
+        private readonly ElectedRepresentativeTagsBuilder $electedRepresentativeTagsBuilder,
+        private readonly DonationRepository $donationRepository
     ) {
-        $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
-        $this->electedRepresentativeTagsBuilder = $electedRepresentativeTagsBuilder;
         $this->logger = new NullLogger();
     }
 
@@ -106,9 +107,10 @@ class RequestBuilder implements LoggerAwareInterface
             ->setInactiveTags($this->getInactiveTags($adherent))
             ->setIsSubscribeRequest($adherent->isEnabled() && $adherent->isEmailSubscribed())
             ->setZones($adherent->getZones())
+            ->setDonationYears($this->findDonationYears($adherent))
             ->setCommitteeUuid($adherent->getCommitteeV2Membership()?->getCommitteeUuid())
             ->setMandateTypes($this->electedRepresentativeTagsBuilder->buildAdherentMandateTypes($adherent))
-            ->setCampusRegisteredAt($adherent)
+            ->setCampusRegisteredAt($adherent->getValidCampusRegistration())
         ;
 
         if (null === $adherent->getSource() || $adherent->isRenaissanceUser()) {
@@ -267,10 +269,10 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setCampusRegisteredAt(Adherent $adherent): self
+    public function setCampusRegisteredAt(?Registration $campusRegistration): self
     {
-        if ($registration = $adherent->getValidCampusRegistration()) {
-            $this->campusRegisteredAt = $registration->registeredAt;
+        if ($campusRegistration) {
+            $this->campusRegisteredAt = $campusRegistration->registeredAt;
         }
 
         return $this;
@@ -360,6 +362,13 @@ class RequestBuilder implements LoggerAwareInterface
                 $this->setZone($parent);
             }
         }
+
+        return $this;
+    }
+
+    public function setDonationYears(array $years): self
+    {
+        $this->donationYears = $years;
 
         return $this;
     }
@@ -579,6 +588,10 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_CAMPUS_REGISTRATION_DATE] = $this->campusRegisteredAt->format(MemberRequest::DATE_FORMAT);
         }
 
+        if (null !== $this->donationYears) {
+            $mergeFields[MemberRequest::MERGE_FIELD_DONATION_YEARS] = implode(',', $this->donationYears);
+        }
+
         return $mergeFields;
     }
 
@@ -661,6 +674,11 @@ class RequestBuilder implements LoggerAwareInterface
         }
 
         return $tags;
+    }
+
+    private function findDonationYears(Adherent $adherent): array
+    {
+        return $this->donationRepository->getDonationYearsForAdherent($adherent);
     }
 
     private function getInactiveTags(Adherent $adherent): array

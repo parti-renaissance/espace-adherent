@@ -2,8 +2,8 @@
 
 namespace App\Form\Admin\Extract;
 
-use App\Donation\DonatorExtractCommand;
-use App\Donation\DonatorExtractCommandHandler;
+use App\Donation\Command\DonatorExtractCommand;
+use App\Donation\Handler\DonatorExtractCommandHandler;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DonatorExtractType extends AbstractEmailExtractType

@@ -2,7 +2,7 @@
 
 namespace App\Form\Renaissance\Donation;
 
-use App\Donation\DonationRequest;
+use App\Donation\Request\DonationRequest;
 use App\Form\AcceptPersonalDataCollectType;
 use App\Form\RequiredCheckboxType;
 use Symfony\Component\Form\AbstractType;

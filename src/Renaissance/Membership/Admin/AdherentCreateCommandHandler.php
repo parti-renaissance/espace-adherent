@@ -2,9 +2,9 @@
 
 namespace App\Renaissance\Membership\Admin;
 
-use App\Donation\DonationRequest;
-use App\Donation\DonationRequestHandler;
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Handler\DonationRequestHandler;
+use App\Donation\Paybox\PayboxPaymentSubscription;
+use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Donation;

@@ -2,13 +2,13 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Donation\DonationRequest;
-use App\Donation\DonationRequestHandler;
-use App\Donation\DonationRequestUtils;
-use App\Donation\PayboxFormFactory;
-use App\Donation\PayboxPaymentSubscription;
-use App\Donation\PayboxPaymentUnsubscription;
-use App\Donation\TransactionCallbackHandler;
+use App\Donation\Handler\DonationRequestHandler;
+use App\Donation\Handler\TransactionCallbackHandler;
+use App\Donation\Paybox\PayboxFormFactory;
+use App\Donation\Paybox\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentUnsubscription;
+use App\Donation\Request\DonationRequest;
+use App\Donation\Request\DonationRequestUtils;
 use App\Entity\Donation;
 use App\Entity\NewsletterSubscription;
 use App\Exception\InvalidPayboxPaymentSubscriptionValueException;

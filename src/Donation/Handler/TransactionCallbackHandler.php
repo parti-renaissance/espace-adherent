@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Handler;
 
+use App\Donation\Request\DonationRequestUtils;
 use App\Repository\DonationRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

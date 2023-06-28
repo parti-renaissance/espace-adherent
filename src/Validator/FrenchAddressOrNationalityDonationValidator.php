@@ -3,7 +3,7 @@
 namespace App\Validator;
 
 use App\Address\Address;
-use App\Donation\DonationRequest;
+use App\Donation\Request\DonationRequest;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

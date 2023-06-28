@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Donation;
+namespace App\Donation\Listener;
 
+use App\Donation\DonationEvents;
+use App\Donation\Event\DonationWasCreatedEvent;
+use App\Donation\Event\DonatorWasUpdatedEvent;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

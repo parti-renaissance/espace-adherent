@@ -2,7 +2,7 @@
 
 namespace Tests\App\Entity;
 
-use App\Donation\PayboxPaymentSubscription;
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Donation;
 use App\Entity\PostAddress;
 use App\Entity\Transaction;

@@ -3,7 +3,7 @@
 namespace Tests\App\Validator;
 
 use App\Address\Address;
-use App\Donation\DonationRequest;
+use App\Donation\Request\DonationRequest;
 use App\Validator\FrenchAddressOrNationalityDonation;
 use App\Validator\FrenchAddressOrNationalityDonationValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;

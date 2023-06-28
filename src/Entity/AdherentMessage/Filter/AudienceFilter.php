@@ -113,6 +113,13 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      */
     protected ?bool $isCampusRegistered = null;
 
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"adherent_message_update_filter"})
+     */
+    private ?string $donatorStatus = null;
+
     public function __construct()
     {
         $this->zones = new ArrayCollection();
@@ -230,6 +237,16 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     public function setIsCampusRegistered(?bool $isCampusRegistered): void
     {
         $this->isCampusRegistered = $isCampusRegistered;
+    }
+
+    public function getDonatorStatus(): ?string
+    {
+        return $this->donatorStatus;
+    }
+
+    public function setDonatorStatus(?string $donatorStatus): void
+    {
+        $this->donatorStatus = $donatorStatus;
     }
 
     public function reset(): void

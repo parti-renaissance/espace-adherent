@@ -2,7 +2,7 @@
 
 namespace App\Renaissance\Donation\Listener;
 
-use App\Donation\DonationRequest;
+use App\Donation\Request\DonationRequest;
 use App\Renaissance\Donation\DonationRequestStateEnum;
 use App\Renaissance\Donation\DonationRequestStorage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
