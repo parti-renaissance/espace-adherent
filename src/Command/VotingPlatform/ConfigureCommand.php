@@ -138,9 +138,16 @@ class ConfigureCommand extends Command
                     continue;
                 }
 
-                if ($designation->getVoteStartDate() < $timeToCheck && !$election->countCandidateGroups()) {
-                    if (0 === \count($committeeElection->getCandidacies())) {
+                if ($designation->getVoteStartDate() < $timeToCheck) {
+                    if (!$election->countCandidateGroups() && 0 === \count($committeeElection->getCandidacies())) {
                         $election->cancel(ElectionCancelReasonEnum::CandidatesMissing);
+                        $this->entityManager->flush();
+
+                        continue;
+                    }
+
+                    if (0 === $election->getVotersList()->countVoters()) {
+                        $election->cancel(ElectionCancelReasonEnum::VotersMissing);
                         $this->entityManager->flush();
 
                         continue;
