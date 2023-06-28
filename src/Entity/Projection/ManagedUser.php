@@ -157,6 +157,13 @@ class ManagedUser
     private $firstName;
 
     /**
+     * @ORM\Column(type="date", nullable=true)
+     *
+     * @Groups({"managed_user_read"})
+     */
+    private $birthdate;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(length=50, nullable=true)
@@ -353,6 +360,7 @@ class ManagedUser
         string $country = null,
         string $firstName = null,
         string $lastName = null,
+        \DateTime $birthdate = null,
         int $age = null,
         PhoneNumber $phone = null,
         string $nationality = null,
@@ -392,6 +400,7 @@ class ManagedUser
         $this->country = $country;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+        $this->birthdate = $birthdate;
         $this->age = $age;
         $this->phone = $phone;
         $this->nationality = $nationality;
@@ -486,6 +495,11 @@ class ManagedUser
     public function getLastName(): ?string
     {
         return $this->lastName;
+    }
+
+    public function getBirthdate(): ?\DateTime
+    {
+        return $this->birthdate;
     }
 
     public function getFullName(): ?string
