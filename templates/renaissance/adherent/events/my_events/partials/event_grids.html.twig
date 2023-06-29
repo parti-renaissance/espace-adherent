@@ -1,14 +1,12 @@
 {% if events is empty %}
-    {% if is_canary_enabled() %}
-        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
-            <div class="flex flex-col">
-                <h3 class="flex items-center justify-center text-lg font-medium leading-6 text-gray-900 tracking-wider">Participez à un événement proche de chez vous</h3>
-                <div class="mt-6 flex justify-center">
-                    <a href="{{ path('app_renaissance_event_list') }}" class="button button-blue">Rechercher un événement</a>
-                </div>
+    <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+        <div class="flex flex-col">
+            <h3 class="flex items-center justify-center text-lg font-medium leading-6 text-gray-900 tracking-wider">Participez à un événement proche de chez vous</h3>
+            <div class="mt-6 flex justify-center">
+                <a href="{{ path('app_renaissance_event_list') }}" class="button button-blue">Rechercher un événement</a>
             </div>
         </div>
-    {% endif %}
+    </div>
 {% else %}
     <div class="grid lg:grid-cols-2 gap-6">
         {% for registration in events %}

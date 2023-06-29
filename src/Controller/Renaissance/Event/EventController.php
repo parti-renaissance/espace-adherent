@@ -2,7 +2,6 @@
 
 namespace App\Controller\Renaissance\Event;
 
-use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Geo\Zone;
@@ -32,7 +31,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[IsGranted('ROLE_RENAISSANCE_USER')]
 class EventController extends AbstractController
 {
-    use CanaryControllerTrait;
     private const ITEMS_PER_PAGE = 6;
 
     public function __construct(
@@ -46,8 +44,6 @@ class EventController extends AbstractController
     #[Route(name: '_list', methods: ['GET'])]
     public function listAction(Request $request): Response
     {
-        $this->disableInProduction();
-
         /** @var Adherent $user */
         $user = $this->getUser();
 
