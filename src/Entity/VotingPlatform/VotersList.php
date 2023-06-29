@@ -32,7 +32,7 @@ class VotersList
     /**
      * @var Voter[]|ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\VotingPlatform\Voter", cascade={"all"}, inversedBy="votersLists")
+     * @ORM\ManyToMany(targetEntity="App\Entity\VotingPlatform\Voter", cascade={"all"}, inversedBy="votersLists", fetch="EXTRA_LAZY")
      * @ORM\JoinTable(name="voting_platform_voters_list_voter", joinColumns={@ORM\JoinColumn(onDelete="CASCADE")})
      */
     private $voters;
@@ -61,6 +61,11 @@ class VotersList
     public function getVoters(): array
     {
         return $this->voters->toArray();
+    }
+
+    public function countVoters(): int
+    {
+        return $this->voters->count();
     }
 
     public function getElection(): Election
