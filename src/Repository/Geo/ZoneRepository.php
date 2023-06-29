@@ -538,9 +538,11 @@ class ZoneRepository extends ServiceEntityRepository
             ->select('zone.name', 'zone.code')
             ->addSelect('site.slug AS site_slug')
             ->leftJoin(DepartmentSite::class, 'site', Join::WITH, 'zone = site.zone')
-            ->where('zone.type = :dpt')
+            ->where('zone.type = :dpt OR (zone.type = :custom AND zone.code = :zone_fde)')
             ->orderBy('zone.name', 'ASC')
             ->setParameter('dpt', Zone::DEPARTMENT)
+            ->setParameter('custom', Zone::CUSTOM)
+            ->setParameter('zone_fde', Zone::FDE_CODE)
             ->getQuery()
             ->getArrayResult()
         ;
