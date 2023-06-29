@@ -45,7 +45,7 @@ class EventFilterType extends AbstractType
                     'autostart' => true,
                     'remote_params' => [
                         'active_only' => true,
-                        'types' => [Zone::CITY, Zone::BOROUGH],
+                        'types' => [Zone::CITY, Zone::BOROUGH, Zone::DEPARTMENT, Zone::COUNTRY, Zone::CUSTOM],
                         'space_type' => ManagedZoneProvider::PUBLIC_SPACE,
                     ],
                 ])

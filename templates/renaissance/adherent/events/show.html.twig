@@ -94,15 +94,17 @@
                             </a>
                         </dd>
                     </div>
-                    <div class="flex items-start space-x-4">
-                        <dt>
-                            {% include 'icons/map.svg.twig' with { svg_class: 'h-5 w-5 text-gray-500' } %}
-                        </dt>
-                        <dd class="text-sm leading-5 space-y-1.5">
-                            <h4 class="text-gray-400">Adresse</h4>
-                            <p class="text-gray-700 font-medium">{{- event.inlineFormattedAddress -}}</p>
-                        </dd>
-                    </div>
+                    {% if event.getAddress() %}
+                        <div class="flex items-start space-x-4">
+                            <dt>
+                                {% include 'icons/map.svg.twig' with { svg_class: 'h-5 w-5 text-gray-500' } %}
+                            </dt>
+                            <dd class="text-sm leading-5 space-y-1.5">
+                                <h4 class="text-gray-400">Adresse</h4>
+                                <p class="text-gray-700 font-medium">{{- event.inlineFormattedAddress -}}</p>
+                            </dd>
+                        </div>
+                    {% endif %}
                     <div class="flex items-start space-x-4">
                         <dt>
                             {% include 'icons/participants.svg.twig' with { svg_class: 'h-5 w-5 text-gray-500' } %}

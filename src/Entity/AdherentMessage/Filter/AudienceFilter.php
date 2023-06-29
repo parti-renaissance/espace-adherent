@@ -3,13 +3,13 @@
 namespace App\Entity\AdherentMessage\Filter;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Collection\ZoneCollection;
 use App\Entity\Committee;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntity;
 use App\Validator\ManagedZone;
 use App\Validator\ValidScope;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -56,10 +56,8 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
 
     /**
      * Managed zone collection, useful for validate selected zone ($zone property)
-     *
-     * @var Collection|Zone[]
      */
-    protected $zones;
+    protected Collection $zones;
 
     /**
      * @var string|null
@@ -115,7 +113,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
 
     public function __construct()
     {
-        $this->zones = new ArrayCollection();
+        $this->zones = new ZoneCollection();
     }
 
     /**

@@ -45,12 +45,14 @@
                                     {% endif %}
                                 </span>
                         </p>
-                        <p class="mt-2 flex items-center">
-                            {% include 'icons/map.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
-                            <span>
-                                    {{ event.postAddress.inlineFormattedAddress }}
-                                </span>
-                        </p>
+                        {% if event.getAddress() %}
+                            <p class="mt-2 flex items-center">
+                                {% include 'icons/map.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
+                                <span>
+                                        {{ event.postAddress.inlineFormattedAddress }}
+                                    </span>
+                            </p>
+                        {% endif %}
                         <p class="mt-2 flex items-center">
                             {% include 'icons/clock.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
                             <span>

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Projection;
 
+use App\Collection\ZoneCollection;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Membership\MembershipSourceEnum;
@@ -9,7 +10,6 @@ use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\PhoneNumberUtils;
 use App\ValueObject\Genders;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
@@ -410,7 +410,7 @@ class ManagedUser
         $this->gender = $gender;
         $this->supervisorTags = $supervisorTags;
         $this->voteCommitteeId = $voteCommitteeId;
-        $this->zones = new ArrayCollection($zones);
+        $this->zones = new ZoneCollection($zones);
         $this->interests = $interests;
         $this->committee = $committee;
         $this->committeeUuid = $committeeUuid;

@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Validator\UpdateDesignationGroupGenerator;
+use App\Collection\ZoneCollection;
 use App\Entity\CmsBlock;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -336,7 +337,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         $this->uuid = $uuid ?? Uuid::uuid4();
 
         $this->referentTags = new ArrayCollection();
-        $this->zones = new ArrayCollection();
+        $this->zones = new ZoneCollection();
     }
 
     public function getLabel(): ?string

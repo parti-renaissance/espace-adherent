@@ -17,6 +17,7 @@ use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Filter\MyCreatedEventsFilter;
 use App\Api\Filter\MySubscribedEventsFilter;
 use App\Api\Filter\OrderEventsBySubscriptionsFilter;
+use App\Collection\ZoneCollection;
 use App\Entity\AddressHolderInterface;
 use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
@@ -488,7 +489,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         $this->uuid = $uuid ?? Uuid::uuid4();
 
         $this->referentTags = new ArrayCollection();
-        $this->zones = new ArrayCollection();
+        $this->zones = new ZoneCollection();
     }
 
     public function __toString(): string

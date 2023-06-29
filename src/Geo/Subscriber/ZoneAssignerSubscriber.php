@@ -5,22 +5,25 @@ namespace App\Geo\Subscriber;
 use App\Address\Address;
 use App\Address\AddressInterface;
 use App\Committee\Event\CommitteeEvent;
+use App\Entity\Event\CommitteeEvent as BaseCommitteeEvent;
+use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntity;
 use App\Event\EventEvent;
 use App\Events;
 use App\Geo\ZoneMatcher;
+use App\Repository\CommitteeRepository;
+use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ZoneAssignerSubscriber implements EventSubscriberInterface
 {
-    private EntityManagerInterface $em;
-    private ZoneMatcher $zoneMatcher;
-
-    public function __construct(EntityManagerInterface $em, ZoneMatcher $zoneMatcher)
-    {
-        $this->em = $em;
-        $this->zoneMatcher = $zoneMatcher;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly ZoneMatcher $zoneMatcher,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly CommitteeRepository $committeeRepository
+    ) {
     }
 
     public function assignZoneToCommittee(CommitteeEvent $event): void
@@ -36,11 +39,28 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
     public function assignZoneToEvent(EventEvent $eventEvent): void
     {
         $event = $eventEvent->getEvent();
-        if (!$event || !$eventEvent->isAddressChanged()) {
+
+        if ($event->getAddress() && !$eventEvent->isAddressChanged()) {
             return;
         }
 
         $this->assignZone($event, $event->getPostAddressModel(), true);
+
+        if ($event->getZones()->isEmpty()) {
+            if ($event instanceof BaseCommitteeEvent) {
+                /** @var Zone $firstZone */
+                $firstZone = $event->getCommittee()->getZones()->first();
+                if ($firstZone->isCountry() || Zone::CUSTOM === $firstZone->getType()) {
+                    $event->setZones($event->getCommittee()->getZones()->getParentOfType(Zone::COUNTRY));
+                } else {
+                    $event->setZones($event->getCommittee()->getZones()->getParentOfType(Zone::DEPARTMENT));
+                }
+            } elseif ($scope = $this->scopeGeneratorResolver->generate()) {
+                $event->setZones($scope->getZones());
+            }
+
+            $this->em->flush();
+        }
     }
 
     public function assignZone(ZoneableEntity $entity, AddressInterface $address, bool $setCity = false): void

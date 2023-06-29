@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Address\AddressInterface;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Api\Filter\InZoneOfScopeFilter;
+use App\Collection\ZoneCollection;
 use App\Committee\Exception\CommitteeProvisionalSupervisorException;
 use App\Committee\Exception\CommitteeSupervisorException;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
@@ -250,8 +251,6 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     public int $version = 2;
 
     /**
-     * @var Collection|Zone[]
-     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
      *
      * @Groups({
@@ -262,7 +261,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
      * @Assert\Count(min=1, minMessage="Le comité doit contenir au moins une zone.", groups={"api_committee_edition"})
      * @AssertZoneType(types=Zone::COMMITTEE_TYPES, groups={"api_committee_edition"})
      */
-    protected $zones;
+    protected Collection $zones;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="animatorCommittees")
@@ -312,7 +311,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         $this->postAddress = $address;
         $this->adherentMandates = new ArrayCollection();
         $this->referentTags = new ArrayCollection();
-        $this->zones = new ArrayCollection();
+        $this->zones = new ZoneCollection();
         $this->committeeElections = new ArrayCollection();
         $this->provisionalSupervisors = new ArrayCollection();
 

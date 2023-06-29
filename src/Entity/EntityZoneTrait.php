@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
+use App\Collection\ZoneCollection;
 use App\Entity\Geo\Zone;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 trait EntityZoneTrait
 {
     /**
-     * @var Collection|Zone[]
+     * @var ZoneCollection|Zone[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
      *
@@ -21,19 +21,23 @@ trait EntityZoneTrait
      *     "read_api",
      * })
      */
-    protected $zones;
+    protected Collection $zones;
 
     /**
-     * @return Collection|Zone[]
+     * @return ZoneCollection|Zone[]
      */
-    public function getZones(): Collection
+    public function getZones(): ZoneCollection
     {
+        if (!$this->zones instanceof ZoneCollection) {
+            return new ZoneCollection($this->zones->toArray());
+        }
+
         return $this->zones;
     }
 
     public function setZones(array $zones): void
     {
-        $this->zones = new ArrayCollection($zones);
+        $this->zones = new ZoneCollection($zones);
     }
 
     public function addZone(Zone $Zone): void

@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
+use App\Collection\ZoneCollection;
 use App\Entity\Geo\Zone;
 use App\Scope\ScopeEnum;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -38,7 +38,7 @@ class AdherentZoneBasedRole
     {
         $this->uuid = Uuid::uuid4();
         $this->type = $type;
-        $this->zones = new ArrayCollection();
+        $this->zones = new ZoneCollection();
     }
 
     public static function createCorrespondent(Zone $zone): self
