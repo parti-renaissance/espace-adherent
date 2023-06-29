@@ -43,12 +43,15 @@ class Scope
      */
     private ?array $attributes = null;
 
+    private ?Adherent $currentUser;
+
     public function __construct(
         string $code,
         string $name,
         array $zones,
         array $apps,
         array $features,
+        Adherent $adherent,
         DelegatedAccess $delegatedAccess = null
     ) {
         $this->code = $code;
@@ -56,6 +59,7 @@ class Scope
         $this->zones = $zones;
         $this->apps = $apps;
         $this->features = $features;
+        $this->currentUser = $adherent;
         $this->delegatedAccess = $delegatedAccess;
     }
 
@@ -105,6 +109,16 @@ class Scope
     public function isNational(): bool
     {
         return \in_array($this->getMainCode(), ScopeEnum::NATIONAL_SCOPES, true);
+    }
+
+    public function getMainUser(): ?Adherent
+    {
+        return $this->getDelegator() ?? $this->currentUser;
+    }
+
+    public function getCurrentUser(): ?Adherent
+    {
+        return $this->currentUser;
     }
 
     public function getMainCode(): ?string

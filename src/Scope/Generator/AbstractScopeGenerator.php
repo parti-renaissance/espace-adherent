@@ -41,6 +41,7 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
             $this->getZones($this->delegatedAccess ? $this->delegatedAccess->getDelegator() : $adherent),
             $scopeEntity->getApps(),
             $this->getFeatures($scopeEntity),
+            $adherent,
             $delegatedAccess
         );
 

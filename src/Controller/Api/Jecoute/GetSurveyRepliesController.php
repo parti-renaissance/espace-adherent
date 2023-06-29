@@ -43,7 +43,7 @@ class GetSurveyRepliesController extends AbstractController
         }
 
         $zoneCodes = [];
-        $user = $scope->getDelegator() ?? $this->getUser();
+        $user = $scope->getMainUser();
 
         if ($survey->isNational() && !$scope->isNational()) {
             /** @var Zone $zone */

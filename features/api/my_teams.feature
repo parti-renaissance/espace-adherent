@@ -204,6 +204,34 @@ Feature:
         ]
     }
     """
+    When I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
+    """
+    {
+        "team": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26",
+        "adherent": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+        "role": "mobilization_manager",
+        "scope_features": [
+          "contacts",
+          "messages"
+        ]
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "adherent: Vous ne pouvez pas ajouter votre compte ou le compte qui vous a délégué l'accès",
+        "violations": [
+            {
+                "code": null,
+                "propertyPath": "adherent",
+                "message": "Vous ne pouvez pas ajouter votre compte ou le compte qui vous a délégué l'accès"
+            }
+        ]
+    }
+    """
 
   Scenario: As a referent I can add a new member in my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
