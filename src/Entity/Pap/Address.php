@@ -4,9 +4,9 @@ namespace App\Entity\Pap;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Collection\ZoneCollection;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityZoneTrait;
-use App\Entity\Geo\Zone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -51,12 +51,10 @@ class Address
     use EntityZoneTrait;
 
     /**
-     * @var Collection|Zone[]
-     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
      * @ORM\JoinTable(name="pap_address_zone")
      */
-    protected $zones;
+    protected Collection $zones;
 
     /**
      * @ORM\Column(nullable=true)
@@ -197,7 +195,7 @@ class Address
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->voters = new ArrayCollection();
-        $this->zones = new ArrayCollection();
+        $this->zones = new ZoneCollection();
     }
 
     public function getNumber(): ?string

@@ -9,6 +9,7 @@ use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
 use App\Collection\CommitteeMembershipCollection;
+use App\Collection\ZoneCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AdherentMandateInterface;
@@ -838,7 +839,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->animatorCommittees = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
         $this->tags = new ArrayCollection();
-        $this->zones = new ArrayCollection();
+        $this->zones = new ZoneCollection();
         $this->charters = new AdherentCharterCollection();
         $this->certificationRequests = new ArrayCollection();
         $this->receivedDelegatedAccesses = new ArrayCollection();

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Collection\ZoneCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -48,7 +48,7 @@ class RepublicanSilence
 
     public function __construct()
     {
-        $this->zones = new ArrayCollection();
+        $this->zones = new ZoneCollection();
     }
 
     public function getId(): int

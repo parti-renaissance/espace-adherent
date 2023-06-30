@@ -32,7 +32,7 @@ trait EntityNullablePostAddressTrait
 
     public function getCountry(): ?string
     {
-        return $this->postAddress ? $this->postAddress->getCountry() : null;
+        return $this->postAddress?->getCountry();
     }
 
     public function getCountryName(): ?string
@@ -42,37 +42,37 @@ trait EntityNullablePostAddressTrait
 
     public function getAddress(): ?string
     {
-        return $this->postAddress ? $this->postAddress->getAddress() : null;
+        return $this->postAddress?->getAddress();
     }
 
     public function getPostalCode(): ?string
     {
-        return $this->postAddress ? $this->postAddress->getPostalCode() : null;
+        return $this->postAddress?->getPostalCode();
     }
 
     public function getCityName(): ?string
     {
-        return $this->postAddress ? $this->postAddress->getCityName() : null;
+        return $this->postAddress?->getCityName();
     }
 
     public function getCity(): ?string
     {
-        return $this->postAddress ? $this->postAddress->getCity() : null;
+        return $this->postAddress?->getCity();
     }
 
     public function getInseeCode(): ?string
     {
-        return $this->postAddress ? $this->postAddress->getInseeCode() : null;
+        return $this->postAddress?->getInseeCode();
     }
 
     public function getLatitude(): ?float
     {
-        return $this->postAddress ? $this->postAddress->getLatitude() : null;
+        return $this->postAddress?->getLatitude();
     }
 
     public function getLongitude(): ?float
     {
-        return $this->postAddress ? $this->postAddress->getLongitude() : null;
+        return $this->postAddress?->getLongitude();
     }
 
     public function isGeocoded(): bool
@@ -102,7 +102,7 @@ trait EntityNullablePostAddressTrait
 
     public function getGeocodableHash(): ?string
     {
-        return $this->postAddress ? $this->postAddress->getGeocodableHash() : null;
+        return $this->postAddress?->getGeocodableHash();
     }
 
     public function setGeocodableHash(string $hash): void

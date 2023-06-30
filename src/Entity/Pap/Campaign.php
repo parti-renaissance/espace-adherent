@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\ScopeVisibilityFilter;
+use App\Collection\ZoneCollection;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -15,7 +16,6 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityScopeVisibilityWithZonesInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
-use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\Survey;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
@@ -329,12 +329,10 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     protected string $visibility = ScopeVisibilityEnum::NATIONAL;
 
     /**
-     * @var Collection|Zone[]
-     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
      * @ORM\JoinTable(name="pap_campaign_zone")
      */
-    protected $zones;
+    protected Collection $zones;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -366,7 +364,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
         $this->votePlaces = new ArrayCollection();
         $this->buildingStatistics = new ArrayCollection();
 
-        $this->zones = new ArrayCollection();
+        $this->zones = new ZoneCollection();
         if ($zones) {
             $this->visibility = ScopeVisibilityEnum::LOCAL;
             $this->setZones($zones);

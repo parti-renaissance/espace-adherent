@@ -252,8 +252,9 @@ class BaseEventRepository extends ServiceEntityRepository
         }
 
         $zone = $filter->getZone() ?? $filter->getDefaultZone();
+
         $this->withGeoZones(
-            [$zone],
+            array_merge([$zone], $zone->isCountry() ? $zone->getParentsOfType(Zone::CUSTOM) : []),
             $qb,
             'event',
             BaseEvent::class,
@@ -262,7 +263,8 @@ class BaseEventRepository extends ServiceEntityRepository
             'z2',
             function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
                 $zoneQueryBuilder->andWhere(sprintf('%s.published = :published', $entityClassAlias));
-            }
+            },
+            !$zone->isCountry()
         );
 
         return $qb->getQuery()->getResult();
