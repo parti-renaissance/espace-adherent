@@ -84,7 +84,7 @@ class DepartmentSite
      *
      * @Assert\NotBlank
      * @Assert\Expression(
-     *     "value and value.getType() === constant('App\\Entity\\Geo\\Zone::DEPARTMENT')",
+     *     "value and (value.getType() === constant('App\\Entity\\Geo\\Zone::DEPARTMENT') or (value.getType() === constant('App\\Entity\\Geo\\Zone::CUSTOM') and value.getCode() === constant('App\\Entity\\Geo\\Zone::FDE_CODE')))",
      *     message="department_site.zone.type.not_valid"
      * )
      * @AssertZoneInScopeZones

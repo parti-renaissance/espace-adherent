@@ -55,8 +55,10 @@ class DepartmentSiteAdmin extends AbstractAdmin
                         $query = $datagrid->getQuery();
                         $rootAlias = $query->getRootAlias();
                         $query
-                            ->andWhere($rootAlias.'.type IN (:types)')
+                            ->andWhere(sprintf('%1$s.type IN (:types) OR (%1$s.type = :custom_type AND %1$s.code = :zone_fde)', $rootAlias))
                             ->setParameter('types', [Zone::DEPARTMENT])
+                            ->setParameter('custom_type', Zone::CUSTOM)
+                            ->setParameter('zone_fde', Zone::FDE_CODE)
                         ;
 
                         $datagrid->setValue($property[0], null, $value);
@@ -124,8 +126,10 @@ class DepartmentSiteAdmin extends AbstractAdmin
         }
         $qb
             ->orWhere($orx)
-            ->andWhere(sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
+            ->andWhere(sprintf('(%1$s.type = :type OR (%1$s.type = :custom_type AND %1$s.code = :code_fde)) AND %1$s.active = 1', $alias))
             ->setParameter('type', Zone::DEPARTMENT)
+            ->setParameter('custom_type', Zone::CUSTOM)
+            ->setParameter('code_fde', Zone::FDE_CODE)
         ;
     }
 
