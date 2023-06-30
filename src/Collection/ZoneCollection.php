@@ -10,18 +10,11 @@ class ZoneCollection extends ArrayCollection
     /**
      * @return Zone[]
      */
-    public function getParentOfType(string $type): array
+    public function getParentsOfType(string $type): array
     {
         $zones = [];
 
         foreach ($this->toArray() as $zone) {
-            /** @var Zone $zone */
-            if ($zone->getType() === $type) {
-                $zones[] = [$zone];
-
-                continue;
-            }
-
             $zones[] = $zone->getParentsOfType($type);
         }
 
