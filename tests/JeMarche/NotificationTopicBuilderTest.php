@@ -4,11 +4,11 @@ namespace Tests\App\JeMarche;
 
 use App\JeMarche\NotificationTopicBuilder;
 use App\Repository\AdherentRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class NotificationTopicBuilderTest extends AbstractKernelTestCase
 {
     private ?AdherentRepository $adherentRepository = null;
@@ -30,9 +30,7 @@ class NotificationTopicBuilderTest extends AbstractKernelTestCase
         $this->notificationTopicBuilder = null;
     }
 
-    /**
-     * @dataProvider provideAdherentTopics
-     */
+    #[DataProvider('provideAdherentTopics')]
     public function testGetTopicsFromAdherent(string $email, array $expectedTopics): void
     {
         $adherent = $this->adherentRepository->findOneByEmail($email);
@@ -42,7 +40,7 @@ class NotificationTopicBuilderTest extends AbstractKernelTestCase
         self::assertSame($expectedTopics, $topics);
     }
 
-    public function provideAdherentTopics(): iterable
+    public static function provideAdherentTopics(): iterable
     {
         yield ['francis.brioul@yahoo.com', [
             'staging_jemarche_department_77',

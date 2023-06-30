@@ -11,16 +11,14 @@ use App\Entity\Timeline\Manifesto;
 use App\Entity\Timeline\Measure;
 use App\Entity\Timeline\Profile;
 use App\Entity\Timeline\Theme;
-use Tests\App\AbstractCommandCaseTest;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use Tests\App\AbstractCommandTestCase;
 
-/**
- * @group command
- */
-class AlgoliaSynchronizeCommandTest extends AbstractCommandCaseTest
+#[Group('command')]
+class AlgoliaSynchronizeCommandTest extends AbstractCommandTestCase
 {
-    /**
-     * @dataProvider dataProviderTestCommand
-     */
+    #[DataProvider('dataProviderTestCommand')]
     public function testCommand(string $indexName, string $className, int $expected)
     {
         $output = $this->runCommand('search:import', ['--indices' => $indexName]);
@@ -31,7 +29,7 @@ class AlgoliaSynchronizeCommandTest extends AbstractCommandCaseTest
         self::assertSame($expected, $indexer->countForIndexByType($className));
     }
 
-    public function dataProviderTestCommand(): array
+    public static function dataProviderTestCommand(): array
     {
         return [
             ['article', Article::class, 191],

@@ -4,13 +4,14 @@ namespace Tests\App\Adherent\Certification;
 
 use App\Adherent\Certification\CertificationManager;
 use App\Repository\AdherentRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- * @group certification
- */
+#[Group('functional')]
+#[Group('certification')]
 class CertificationManagerTest extends AbstractKernelTestCase
 {
     /**
@@ -23,9 +24,7 @@ class CertificationManagerTest extends AbstractKernelTestCase
      */
     private $certificationManager;
 
-    /**
-     * @dataProvider provideCreateRequest
-     */
+    #[DataProvider('provideCreateRequest')]
     public function testCreateRequest(string $email): void
     {
         $adherent = $this->adherentRepository->findOneByEmail($email);
@@ -41,10 +40,8 @@ class CertificationManagerTest extends AbstractKernelTestCase
         self::assertFalse($adherent->isCertified());
     }
 
-    /**
-     * @dataProvider provideCreateRequest
-     * @depends testCreateRequest
-     */
+    #[Depends('testCreateRequest')]
+    #[DataProvider('provideCreateRequest')]
     public function testHandleRequest(string $email): void
     {
         $adherent = $this->adherentRepository->findOneByEmail($email);
@@ -68,7 +65,7 @@ class CertificationManagerTest extends AbstractKernelTestCase
         self::assertTrue($this->getStorage()->has($certificationRequest->getPathWithDirectory()));
     }
 
-    public function provideCreateRequest(): iterable
+    public static function provideCreateRequest(): iterable
     {
         yield ['luciole1989@spambox.fr'];
         yield ['lolodie.dutemps@hotnix.tld'];

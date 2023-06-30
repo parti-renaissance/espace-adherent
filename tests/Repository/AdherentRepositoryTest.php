@@ -15,11 +15,11 @@ use App\Repository\Phoning\CampaignRepository;
 use App\Repository\ReferentTagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class AdherentRepositoryTest extends AbstractKernelTestCase
 {
     /**
@@ -57,9 +57,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         );
     }
 
-    /**
-     * @dataProvider dataProviderSearchBoardMembers
-     */
+    #[DataProvider('dataProviderSearchBoardMembers')]
     public function testSearchBoardMembers(array $filters, array $results)
     {
         $filter = BoardMemberFilter::createFromArray($filters);
@@ -74,9 +72,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         }
     }
 
-    /**
-     * @dataProvider dataProviderSearchBoardMembers
-     */
+    #[DataProvider('dataProviderSearchBoardMembers')]
     public function testPaginateBoardMembers(array $filters, array $results)
     {
         $filter = BoardMemberFilter::createFromArray($filters);
@@ -180,9 +176,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         $this->assertFalse($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID)));
     }
 
-    /**
-     * @dataProvider dataProviderExcludedCampaignAdherents
-     */
+    #[DataProvider('dataProviderExcludedCampaignAdherents')]
     public function testFindOneToCall(
         string $campaignUuid,
         string $excludedAdherent,
@@ -202,7 +196,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         }
     }
 
-    public function dataProviderExcludedCampaignAdherents(): \Generator
+    public static function dataProviderExcludedCampaignAdherents(): \Generator
     {
         yield [LoadPhoningCampaignData::CAMPAIGN_1_UUID, 'jacques.picard@en-marche.fr', 'assertNotContains', [
             'adherent-male-a@en-marche-dev.fr',
@@ -226,7 +220,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         ]];
     }
 
-    public function dataProviderSearchBoardMembers(): array
+    public static function dataProviderSearchBoardMembers(): array
     {
         return [
             // Gender

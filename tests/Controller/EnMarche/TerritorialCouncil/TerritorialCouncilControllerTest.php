@@ -3,15 +3,14 @@
 namespace Tests\App\Controller\EnMarche\TerritorialCouncil;
 
 use App\DataFixtures\ORM\LoadAdherentData;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class TerritorialCouncilControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class TerritorialCouncilControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

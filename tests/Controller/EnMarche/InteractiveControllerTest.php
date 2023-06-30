@@ -8,15 +8,14 @@ use App\Interactive\MyEuropeProcessorHandler;
 use App\Repository\EmailRepository;
 use App\Repository\MyEuropeChoiceRepository;
 use App\Repository\MyEuropeInvitationRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class InteractiveControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class InteractiveControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

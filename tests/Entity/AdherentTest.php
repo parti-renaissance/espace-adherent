@@ -13,6 +13,7 @@ use App\Geocoder\Coordinates;
 use App\Membership\ActivityPositionsEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use libphonenumber\PhoneNumber;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\App\AbstractKernelTestCase;
 
 class AdherentTest extends AbstractKernelTestCase
@@ -151,9 +152,7 @@ class AdherentTest extends AbstractKernelTestCase
         $this->assertFalse($adherent->isBasicAdherent());
     }
 
-    /**
-     * @dataProvider provideInitials
-     */
+    #[DataProvider('provideInitials')]
     public function testInitials(string $firstName, string $lastName, string $initials): void
     {
         $adherent = $this->createNewAdherent('john.smith@example.org', $firstName, $lastName);
@@ -161,7 +160,7 @@ class AdherentTest extends AbstractKernelTestCase
         $this->assertSame($initials, $adherent->getInitials());
     }
 
-    public function provideInitials(): iterable
+    public static function provideInitials(): iterable
     {
         yield ['John', 'Smith', 'JS'];
         yield ['Jean-Pierre', 'Vandamme', 'JV'];

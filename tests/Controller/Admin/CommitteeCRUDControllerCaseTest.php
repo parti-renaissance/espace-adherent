@@ -5,17 +5,16 @@ namespace Tests\App\Controller\Admin;
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use App\Mailer\Message\CommitteeApprovalReferentMessage;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
-/**
- * @group functional
- * @group admin
- */
-class CommitteeCRUDControllerCaseTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('admin')]
+class CommitteeCRUDControllerCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
     use MessengerTestTrait;

@@ -7,17 +7,16 @@ use App\Entity\Geo\City;
 use App\Entity\Geo\Country;
 use App\Entity\Geo\Department;
 use App\Entity\Geo\Region;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
-use Tests\App\AbstractCommandCaseTest;
+use Tests\App\AbstractCommandTestCase;
 
-/**
- * @group command
- * @group geo
- */
-final class UpdateFranceCommandTest extends AbstractCommandCaseTest
+#[Group('command')]
+#[Group('geo')]
+final class UpdateFranceCommandTest extends AbstractCommandTestCase
 {
     private const PAYLOAD = [
         [

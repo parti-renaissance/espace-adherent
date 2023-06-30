@@ -2,10 +2,10 @@
 
 namespace Tests\App\Controller\EnMarche\ThematicCommunity;
 
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-class ThematicCommunitiesChiefMembersControllerTest extends AbstractEnMarcheWebCaseTest
+class ThematicCommunitiesChiefMembersControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

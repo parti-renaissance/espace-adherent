@@ -12,16 +12,16 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class HostEventVoterTest extends AbstractAdherentVoterTest
+class HostEventVoterTest extends AbstractAdherentVoterTestCase
 {
     protected function getVoter(): AbstractAdherentVoter
     {
         return new HostEventVoter($this->createMock(SessionInterface::class));
     }
 
-    public function provideAnonymousCases(): iterable
+    public static function provideAnonymousCases(): iterable
     {
-        yield [false, true, EventPermissions::HOST, $this->createMock(CommitteeEvent::class)];
+        yield [false, true, EventPermissions::HOST, fn (self $_this) => $_this->createMock(CommitteeEvent::class)];
     }
 
     public function testAdherentIsGrantedIfIsOrganizer()

@@ -4,33 +4,29 @@ namespace Tests\App\Controller\EnMarche\Poll;
 
 use App\Entity\Notification;
 use App\Repository\NotificationRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class PollCandidateControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class PollCandidateControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
     /** @var NotificationRepository */
     private $notificationRepository;
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testPollsPageIsForbiddenAsAnonymous(string $path): void
     {
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testPollsPageIsForbiddenAsNotCandidateRegionalHeaded($path): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -44,9 +40,7 @@ class PollCandidateControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testAccessPollsPageAsCandidateRegionalHeaded($path): void
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
@@ -58,9 +52,7 @@ class PollCandidateControllerTest extends AbstractEnMarcheWebCaseTest
         );
     }
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testAccessPollsPageAsDelegatedCandidateRegionalHeaded($path): void
     {
         $this->authenticateAsAdherentWithChoosingSpace(
@@ -75,9 +67,7 @@ class PollCandidateControllerTest extends AbstractEnMarcheWebCaseTest
         );
     }
 
-    /**
-     * @dataProvider provideCandidates
-     */
+    #[DataProvider('provideCandidates')]
     public function testSeePolls(string $email, string $spaceLinkName): void
     {
         $this->authenticateAsAdherentWithChoosingSpace($email, $spaceLinkName);
@@ -108,9 +98,7 @@ class PollCandidateControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertCount(1, $secondPollFields->eq(9)->filter('a:contains("Publier")'));
     }
 
-    /**
-     * @dataProvider provideCandidates
-     */
+    #[DataProvider('provideCandidates')]
     public function testCreatePollFailed(string $email, string $spaceLinkName): void
     {
         $this->authenticateAsAdherentWithChoosingSpace($email, $spaceLinkName);
@@ -131,9 +119,7 @@ class PollCandidateControllerTest extends AbstractEnMarcheWebCaseTest
             $crawler->filter('#poll_finishAt_errors > li')->text());
     }
 
-    /**
-     * @dataProvider provideCandidates
-     */
+    #[DataProvider('provideCandidates')]
     public function testCreatePollSuccessful(string $email, string $spaceLinkName): void
     {
         $notifications = $this->notificationRepository->findAll();
@@ -169,9 +155,7 @@ class PollCandidateControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertEmpty($notification->getTokens());
     }
 
-    /**
-     * @dataProvider provideCandidates
-     */
+    #[DataProvider('provideCandidates')]
     public function testPublishPoll(string $email, string $spaceLinkName): void
     {
         $this->authenticateAsAdherentWithChoosingSpace($email, $spaceLinkName);
@@ -214,9 +198,7 @@ class PollCandidateControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertCount(3, $crawler->filter('.datagrid table tbody tr td span.status__2:contains("Non publiée")'));
     }
 
-    /**
-     * @dataProvider provideCandidates
-     */
+    #[DataProvider('provideCandidates')]
     public function testUnpublishPoll(string $email, string $spaceLinkName): void
     {
         $this->authenticateAsAdherentWithChoosingSpace($email, $spaceLinkName);
@@ -259,7 +241,7 @@ class PollCandidateControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertCount(4, $crawler->filter('.datagrid table tbody tr td span.status__2:contains("Non publiée")'));
     }
 
-    public function providePages(): iterable
+    public static function providePages(): iterable
     {
         return [
             ['/espace-candidat/question-du-jour'],
@@ -270,7 +252,7 @@ class PollCandidateControllerTest extends AbstractEnMarcheWebCaseTest
         ];
     }
 
-    public function provideCandidates(): iterable
+    public static function provideCandidates(): iterable
     {
         yield ['jacques.picard@en-marche.fr', 'Espace candidat'];  // candidate region headed
         yield ['gisele-berthoux@caramail.com', 'Espace candidat partagé (Île-de-France)']; // has a delegated access

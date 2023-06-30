@@ -3,16 +3,16 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\Controller\EnMarche\ArticleController;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group article
- */
-class ArticleControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('article')]
+class ArticleControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -54,23 +54,22 @@ class ArticleControllerTest extends AbstractEnMarcheWebCaseTest
 
     /**
      * For this test, the pagination size is forced to ease understanding.
-     *
-     * @dataProvider dataProviderIsPaginationValid
      */
+    #[DataProvider('dataProviderIsPaginationValid')]
     public function testIsPaginationValid(bool $expected, int $articlesCount, int $requestedPageNumber)
     {
         $reflectionMethod = new \ReflectionMethod(ArticleController::class, 'isPaginationValid');
         $reflectionMethod->setAccessible(true);
 
         $articleController = $this->getMockBuilder(ArticleController::class)->disableOriginalConstructor()
-            ->setMethods(['isPaginationValid'])
+            ->onlyMethods(['isPaginationValid'])
             ->getMock()
         ;
 
         $this->assertEquals($expected, $reflectionMethod->invoke($articleController, $articlesCount, $requestedPageNumber, 5));
     }
 
-    public function dataProviderIsPaginationValid(): array
+    public static function dataProviderIsPaginationValid(): array
     {
         return [
             [false,  0,  1],

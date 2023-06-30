@@ -4,10 +4,10 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-abstract class AbstractGroupControllerTest extends AbstractEnMarcheWebCaseTest
+abstract class AbstractGroupControllerTestCase extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
     use RegistrationTrait;

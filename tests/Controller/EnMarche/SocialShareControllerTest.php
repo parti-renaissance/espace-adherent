@@ -2,16 +2,15 @@
 
 namespace Tests\App\Controller\EnMarche;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group controller
- */
-class SocialShareControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('controller')]
+class SocialShareControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

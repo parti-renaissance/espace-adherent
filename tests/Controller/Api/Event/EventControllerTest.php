@@ -10,16 +10,15 @@ use App\Event\EventTypeEnum;
 use App\Mailer\Message\JeMengage\JeMengageEventUpdateMessage;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class EventControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class EventControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

@@ -4,7 +4,7 @@ namespace Tests\App\Entity;
 
 use App\Entity\AdherentResetPasswordToken;
 
-class AdherentResetPasswordTokenTest extends AbstractAdherentTokenTest
+class AdherentResetPasswordTokenTest extends AbstractAdherentTokenTestCase
 {
     protected $tokenClass = AdherentResetPasswordToken::class;
 

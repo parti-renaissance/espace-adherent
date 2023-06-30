@@ -6,20 +6,19 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Report\Report;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
 class ReportTest extends TestCase
 {
-    public function provideSubjectClass(): iterable
+    public static function provideSubjectClass(): iterable
     {
         yield [Committee::class];
         yield [CommitteeEvent::class];
     }
 
-    /**
-     * @dataProvider provideSubjectClass
-     */
+    #[DataProvider('provideSubjectClass')]
     public function testConstructor(string $subjectClass): void
     {
         $report = $this->createReport($subjectClass, ['other', 'illicit_content', 'commercial_content', 'intellectual_property'], 'One comment');
@@ -33,9 +32,7 @@ class ReportTest extends TestCase
         $this->assertInstanceOf(Adherent::class, $report->getAuthor());
     }
 
-    /**
-     * @dataProvider provideSubjectClass
-     */
+    #[DataProvider('provideSubjectClass')]
     public function testItShouldContainAtLeastOneReason(string $subjectClass): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -43,9 +40,7 @@ class ReportTest extends TestCase
         $this->createReport($subjectClass, []);
     }
 
-    /**
-     * @dataProvider provideSubjectClass
-     */
+    #[DataProvider('provideSubjectClass')]
     public function testItShouldValidateReasons(string $subjectClass): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -53,9 +48,7 @@ class ReportTest extends TestCase
         $this->createReport($subjectClass, ['toto']);
     }
 
-    /**
-     * @dataProvider provideSubjectClass
-     */
+    #[DataProvider('provideSubjectClass')]
     public function testItShouldRequireOtherReasonWhenCommentIsProvided(string $subjectClass): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -63,9 +56,7 @@ class ReportTest extends TestCase
         $this->createReport($subjectClass, ['illicit_content'], 'comment');
     }
 
-    /**
-     * @dataProvider provideSubjectClass
-     */
+    #[DataProvider('provideSubjectClass')]
     public function testItShouldNotBeResolvedTwice(string $subjectClass): void
     {
         $this->expectException(\LogicException::class);
@@ -76,9 +67,7 @@ class ReportTest extends TestCase
         $report->resolve();
     }
 
-    /**
-     * @dataProvider provideSubjectClass
-     */
+    #[DataProvider('provideSubjectClass')]
     public function testStatusCanBeSetToResolved(string $subjectClass): void
     {
         $report = $this->createReport($subjectClass, ['illicit_content']);

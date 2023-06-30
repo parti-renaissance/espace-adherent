@@ -4,16 +4,16 @@ namespace Tests\App\Controller\Admin;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group admin
- */
-class TerritorialCouncilControllerCaseTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('admin')]
+class TerritorialCouncilControllerCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
@@ -47,9 +47,7 @@ class TerritorialCouncilControllerCaseTest extends AbstractRenaissanceWebCaseTes
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
     }
 
-    /**
-     * @dataProvider provideActions
-     */
+    #[DataProvider('provideActions')]
     public function testCannotChangePoliticalCommitteeMembershipIfNotValidToken(string $action): void
     {
         $territorialCouncil = $this->territorialCouncilRepository->findOneBy(['codes' => '75']);
@@ -64,7 +62,7 @@ class TerritorialCouncilControllerCaseTest extends AbstractRenaissanceWebCaseTes
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
     }
 
-    public function provideActions(): iterable
+    public static function provideActions(): iterable
     {
         yield [PoliticalCommitteeManager::CREATE_ACTION];
         yield [PoliticalCommitteeManager::REMOVE_ACTION];

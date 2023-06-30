@@ -5,12 +5,11 @@ namespace Tests\App\Committee;
 use App\Committee\DTO\CommitteeCommand;
 use App\Entity\Committee;
 use libphonenumber\PhoneNumber;
+use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group committee
- */
+#[Group('committee')]
 class CommitteeCommandTest extends AbstractKernelTestCase
 {
     public const CREATOR_UUID = '3966af25-2b09-407c-9283-c4d2103d0448';

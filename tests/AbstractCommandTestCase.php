@@ -5,7 +5,7 @@ namespace Tests\App;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-abstract class AbstractCommandCaseTest extends AbstractKernelTestCase
+abstract class AbstractCommandTestCase extends AbstractKernelTestCase
 {
     /**
      * @var Application

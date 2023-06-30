@@ -7,13 +7,13 @@ use App\Collection\CertificationRequestCollection;
 use App\Entity\Adherent;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\CertificationVoter;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
-/**
- * @group certification
- */
-class CertificationVoterTest extends AbstractAdherentVoterTest
+#[Group('certification')]
+class CertificationVoterTest extends AbstractAdherentVoterTestCase
 {
-    public function provideAnonymousCases(): iterable
+    public static function provideAnonymousCases(): iterable
     {
         yield [false, true, CertificationPermissions::CERTIFIED];
         yield [false, true, CertificationPermissions::REQUEST];
@@ -24,9 +24,7 @@ class CertificationVoterTest extends AbstractAdherentVoterTest
         return new CertificationVoter();
     }
 
-    /**
-     * @dataProvider provideAdherentIsCertified
-     */
+    #[DataProvider('provideAdherentIsCertified')]
     public function testAdherentIsCertified(bool $isCertified, bool $isGranted): void
     {
         $adherent = $this->getAdherentMock($isCertified);
@@ -34,15 +32,13 @@ class CertificationVoterTest extends AbstractAdherentVoterTest
         $this->assertGrantedForAdherent($isGranted, true, $adherent, CertificationPermissions::CERTIFIED);
     }
 
-    public function provideAdherentIsCertified(): iterable
+    public static function provideAdherentIsCertified(): iterable
     {
         yield [true, true];
         yield [false, false];
     }
 
-    /**
-     * @dataProvider provideAdherentCanRequest
-     */
+    #[DataProvider('provideAdherentCanRequest')]
     public function testAdherentCanRequest(
         bool $isCertified,
         bool $hasPendingCertificationRequest,
@@ -54,7 +50,7 @@ class CertificationVoterTest extends AbstractAdherentVoterTest
         $this->assertGrantedForAdherent($isGranted, true, $adherent, CertificationPermissions::REQUEST);
     }
 
-    public function provideAdherentCanRequest(): iterable
+    public static function provideAdherentCanRequest(): iterable
     {
         yield [true, false, false, false];
         yield [false, true, false, false];

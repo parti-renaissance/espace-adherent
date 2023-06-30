@@ -6,14 +6,13 @@ use App\Entity\Adherent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventCategory;
 use App\Entity\PostAddress;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
 class EventTest extends TestCase
 {
-    /**
-     * @dataProvider provideNotFinishedEventDate
-     */
+    #[DataProvider('provideNotFinishedEventDate')]
     public function testEventIsNotConsideredFinished(string $timeZone, string $date)
     {
         $address = $this->createMock(PostAddress::class);
@@ -45,9 +44,7 @@ class EventTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideFinishedEventDate
-     */
+    #[DataProvider('provideFinishedEventDate')]
     public function testEventIsConsideredFinished(string $country, string $date)
     {
         $address = $this->createMock(PostAddress::class);

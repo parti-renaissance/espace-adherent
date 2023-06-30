@@ -11,16 +11,16 @@ use App\Repository\AdherentActivationTokenRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\EmailRepository;
 use App\Subscription\SubscriptionTypeEnum;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group membership
- */
-class MembershipControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('membership')]
+class MembershipControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -39,9 +39,7 @@ class MembershipControllerTest extends AbstractEnMarcheWebCaseTest
      */
     private $emailRepository;
 
-    /**
-     * @dataProvider provideEmailAddress
-     */
+    #[DataProvider('provideEmailAddress')]
     public function testCannotCreateMembershipAccountWithSomeoneElseEmailAddress(string $emailAddress): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription-utilisateur');
@@ -63,7 +61,7 @@ class MembershipControllerTest extends AbstractEnMarcheWebCaseTest
      *
      * @see LoadAdherentData
      */
-    public function provideEmailAddress(): array
+    public static function provideEmailAddress(): array
     {
         return [
             ['michelle.dufour@example.ch'],

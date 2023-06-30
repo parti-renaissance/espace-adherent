@@ -5,17 +5,17 @@ namespace Tests\App\Controller\Api;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\OAuth\Model\GrantTypeEnum;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;
@@ -39,7 +39,7 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiCaseTe
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    /** @dataProvider provideReferents */
+    #[DataProvider('provideReferents')]
     public function testExportPhoningCampaignRepliesInXls(string $email, string $scope): void
     {
         $accessToken = $this->getAccessToken(
@@ -75,7 +75,7 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiCaseTe
         $this->assertStringContainsString('<td>Fa34ke</td><td>Adherent 34</td><td>77000</td><td>le pouvoir d\'achat</td><td>L\'aspect financier, La préservation de l\'environnement</td>', $responseContent);
     }
 
-    public function provideReferents(): iterable
+    public static function provideReferents(): iterable
     {
         yield ['referent@en-marche-dev.fr', 'referent'];
         yield ['senateur@en-marche-dev.fr', 'delegated_08f40730-d807-4975-8773-69d8fae1da74'];

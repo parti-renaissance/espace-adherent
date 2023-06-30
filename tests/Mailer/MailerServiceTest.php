@@ -20,20 +20,24 @@ class MailerServiceTest extends TestCase
     {
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
 
-        $dispatcher->expects($this->at(0))->method('dispatch')->with(
-            $this->isInstanceOf(MailerEvent::class),
-            $this->equalTo(MailerEvents::BEFORE_EMAIL_BUILD),
-        );
+        $series = [
+            [MailerEvents::BEFORE_EMAIL_BUILD],
+            [MailerEvents::DELIVERY_MESSAGE],
+            [MailerEvents::DELIVERY_SUCCESS],
+        ];
 
-        $dispatcher->expects($this->at(1))->method('dispatch')->with(
-            $this->isInstanceOf(MailerEvent::class),
-            $this->equalTo(MailerEvents::DELIVERY_MESSAGE)
-        );
+        $dispatcher
+            ->expects($this->exactly(3))
+            ->method('dispatch')
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
 
-        $dispatcher->expects($this->at(2))->method('dispatch')->with(
-            $this->isInstanceOf(MailerEvent::class),
-            $this->equalTo(MailerEvents::DELIVERY_SUCCESS)
-        );
+                $this->assertInstanceOf(MailerEvent::class, $args[0]);
+                $this->assertSame($expectedArgs[0], $args[1]);
+
+                return $args[0];
+            })
+        ;
 
         $service = new MailerService(
             $dispatcher,
@@ -53,20 +57,24 @@ class MailerServiceTest extends TestCase
     {
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
 
-        $dispatcher->expects($this->at(0))->method('dispatch')->with(
-            $this->isInstanceOf(MailerEvent::class),
-            $this->equalTo(MailerEvents::BEFORE_EMAIL_BUILD)
-        );
+        $series = [
+            [MailerEvents::BEFORE_EMAIL_BUILD],
+            [MailerEvents::DELIVERY_MESSAGE],
+            [MailerEvents::DELIVERY_ERROR],
+        ];
 
-        $dispatcher->expects($this->at(1))->method('dispatch')->with(
-            $this->isInstanceOf(MailerEvent::class),
-            $this->equalTo(MailerEvents::DELIVERY_MESSAGE)
-        );
+        $dispatcher
+            ->expects($this->exactly(3))
+            ->method('dispatch')
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
 
-        $dispatcher->expects($this->at(2))->method('dispatch')->with(
-            $this->isInstanceOf(MailerEvent::class),
-            $this->equalTo(MailerEvents::DELIVERY_ERROR)
-        );
+                $this->assertInstanceOf(MailerEvent::class, $args[0]);
+                $this->assertSame($expectedArgs[0], $args[1]);
+
+                return $args[0];
+            })
+        ;
 
         $service = new MailerService(
             $dispatcher,

@@ -7,12 +7,12 @@ use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ReferentTag;
 use App\Referent\ReferentTagManager;
 use App\Repository\ReferentTagRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class ReferentTagManagerTest extends AbstractKernelTestCase
 {
     /**
@@ -44,9 +44,8 @@ class ReferentTagManagerTest extends AbstractKernelTestCase
     /**
      * @param string[]|array $favoriteCities
      * @param string[]|array $expectedTagCodes
-     *
-     * @dataProvider provideApplicationRequestsReferentTags
      */
+    #[DataProvider('provideApplicationRequestsReferentTags')]
     public function testAssignApplicationRequestReferentTags(array $favoriteCities, array $expectedTagCodes): void
     {
         $applicationRequest = $this->createMock(ApplicationRequest::class);
@@ -64,9 +63,7 @@ class ReferentTagManagerTest extends AbstractKernelTestCase
         $this->referentTagManager->assignApplicationRequestReferentTags($applicationRequest);
     }
 
-    /**
-     * @dataProvider providesTestIsUpdateNeeded
-     */
+    #[DataProvider('providesTestIsUpdateNeeded')]
     public function testIsUpdateNeeded(bool $isUpdateNeeded, string $postalCode, array $referentCodes): void
     {
         $adherent = $this->createAdherentMock($postalCode, $referentCodes);
@@ -74,7 +71,7 @@ class ReferentTagManagerTest extends AbstractKernelTestCase
         $this->assertSame($isUpdateNeeded, $this->referentTagManager->isUpdateNeeded($adherent));
     }
 
-    public function providesTestIsUpdateNeeded(): array
+    public static function providesTestIsUpdateNeeded(): array
     {
         return [
             [false, '73100', ['73']],
@@ -84,7 +81,7 @@ class ReferentTagManagerTest extends AbstractKernelTestCase
         ];
     }
 
-    public function provideApplicationRequestsReferentTags(): array
+    public static function provideApplicationRequestsReferentTags(): array
     {
         return [
             [['11069'], ['11']],

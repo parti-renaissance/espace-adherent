@@ -4,13 +4,14 @@ namespace Tests\App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Security\Voter\AbstractAdherentVoter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-abstract class AbstractAdherentVoterTest extends TestCase
+abstract class AbstractAdherentVoterTestCase extends TestCase
 {
     /**
      * @var AbstractAdherentVoter
@@ -30,29 +31,35 @@ abstract class AbstractAdherentVoterTest extends TestCase
         $this->voter = null;
     }
 
-    abstract public function provideAnonymousCases(): iterable;
+    abstract public static function provideAnonymousCases(): iterable;
 
     abstract protected function getVoter(): VoterInterface;
 
-    /**
-     * @dataProvider provideAnonymousCases
-     */
+    #[DataProvider('provideAnonymousCases')]
     public function testAnonymousIsGranted(
         bool $granted,
         bool $adherentInstanceChecked,
         string $attribute,
-        $subject = null
+        $subjectCallback = null
     ): void {
         if ($granted) {
             $this->assertSame(
                 VoterInterface::ACCESS_GRANTED,
-                $this->voter->vote($this->createTokenMock(null, $adherentInstanceChecked), $subject, [$attribute]),
+                $this->voter->vote(
+                    $this->createTokenMock(null, $adherentInstanceChecked),
+                    \is_callable($subjectCallback) ? $subjectCallback($this) : null,
+                    [$attribute]
+                ),
                 'Anonymous user should be granted.'
             );
         } else {
             $this->assertSame(
                 VoterInterface::ACCESS_DENIED,
-                $this->voter->vote($this->createTokenMock(null, $adherentInstanceChecked), $subject, [$attribute]),
+                $this->voter->vote(
+                    $this->createTokenMock(null, $adherentInstanceChecked),
+                    \is_callable($subjectCallback) ? $subjectCallback($this) : null,
+                    [$attribute]
+                ),
                 'Anonymous user should not be granted'
             );
         }

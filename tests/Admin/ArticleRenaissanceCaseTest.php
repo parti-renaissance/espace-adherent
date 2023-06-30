@@ -3,16 +3,15 @@
 namespace Tests\App\Admin;
 
 use App\Entity\Article;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group admin
- */
-class ArticleRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('admin')]
+class ArticleRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

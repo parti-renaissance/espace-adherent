@@ -58,12 +58,12 @@ class SearchParametersFilter
     ];
 
     private $geocoder;
-    private $query;
-    private $type;
-    private $radius;
-    private $city;
-    private $offset;
-    private $maxResults;
+    private $query = self::DEFAULT_QUERY;
+    private $type = self::DEFAULT_TYPE;
+    private $radius = self::DEFAULT_RADIUS;
+    private $city = self::DEFAULT_CITY;
+    private $offset = 0;
+    private $maxResults = self::DEFAULT_MAX_RESULTS;
     private $eventCategory;
     private $referentEvents = false;
     private $withPrivate = false;
@@ -75,12 +75,6 @@ class SearchParametersFilter
     {
         $this->geocoder = $geocoder;
         $this->cache = $cache;
-        $this->query = self::DEFAULT_QUERY;
-        $this->type = self::DEFAULT_TYPE;
-        $this->radius = self::DEFAULT_RADIUS;
-        $this->city = self::DEFAULT_CITY;
-        $this->offset = 0;
-        $this->maxResults = self::DEFAULT_MAX_RESULTS;
     }
 
     public function handleRequest(Request $request): self

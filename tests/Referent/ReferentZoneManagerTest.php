@@ -5,14 +5,13 @@ namespace Tests\App\Referent;
 use App\Entity\Adherent;
 use App\Referent\ReferentZoneManager;
 use App\Repository\Geo\ZoneRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ReferentZoneManagerTest extends TestCase
 {
-    /**
-     * @dataProvider providesTestIsUpdateNeeded
-     */
+    #[DataProvider('providesTestIsUpdateNeeded')]
     public function testIsUpdateNeeded(
         bool $isUpdateNeeded,
         string $country,
@@ -25,7 +24,7 @@ class ReferentZoneManagerTest extends TestCase
         $this->assertSame($isUpdateNeeded, $referentZoneManager->isUpdateNeeded($adherent));
     }
 
-    public function providesTestIsUpdateNeeded(): iterable
+    public static function providesTestIsUpdateNeeded(): iterable
     {
         yield [false, 'CH', null, ['CH']];
         yield [false, 'FR', '75010', ['75010']];

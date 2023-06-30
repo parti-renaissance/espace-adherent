@@ -5,6 +5,7 @@ namespace Tests\App\OAuth;
 use App\Entity\OAuth\Client;
 use App\OAuth\CallbackManager;
 use App\Repository\OAuth\ClientRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -98,9 +99,7 @@ class CallbackManagerTest extends TestCase
         $this->assertSame('https://enmarche.fr', $this->callbackManager->redirectToClientIfValid('foo')->getTargetUrl());
     }
 
-    /**
-     * @dataProvider providesInvalidClientOrRedirectUri
-     */
+    #[DataProvider('providesInvalidClientOrRedirectUri')]
     public function testItGeneratesUrlWithCallbackInformationWhenRedirectUriOrClientIdIsNotValid(
         string $redirectUri,
         string $clientId
@@ -120,7 +119,7 @@ class CallbackManagerTest extends TestCase
         $this->assertSame('/foo_path', $this->callbackManager->redirectToClientIfValid('foo')->getTargetUrl());
     }
 
-    public function providesInvalidClientOrRedirectUri(): array
+    public static function providesInvalidClientOrRedirectUri(): array
     {
         return [
             'Redirect Uri Not supported by client' => ['https://enmarche.fr/NotSupported', self::KNOWN_CLIENT_UUID],

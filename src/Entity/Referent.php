@@ -113,7 +113,7 @@ class Referent implements EntityMediaInterface
     /**
      * @ORM\Column(length=10, options={"default": "DISABLED"})
      */
-    private $status;
+    private $status = self::ENABLED;
 
     /**
      * @var Collection|ReferentPersonLink[]
@@ -126,7 +126,6 @@ class Referent implements EntityMediaInterface
     {
         $this->areas = new ArrayCollection();
         $this->referentPersonLinks = new ArrayCollection();
-        $this->status = self::ENABLED;
     }
 
     public function getId(): ?int

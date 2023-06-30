@@ -14,12 +14,13 @@ use App\Membership\Event\AdherentAccountWasCreatedEvent;
 use App\Membership\Event\AdherentProfileWasUpdatedEvent;
 use App\Repository\DistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group legacy
- */
+#[Group('legacy')]
 class BindAdherentDistrictSubscriberTest extends AbstractKernelTestCase
 {
     protected $manager;
@@ -27,9 +28,7 @@ class BindAdherentDistrictSubscriberTest extends AbstractKernelTestCase
     private ?DistrictRepository $districtRepository;
     private ?BindAdherentDistrictSubscriber $subscriber;
 
-    /**
-     * @dataProvider provideReferentTagHasCount
-     */
+    #[DataProvider('provideReferentTagHasCount')]
     public function testOnAdherentAccountRegistrationCompletedSucceeds(array $districts, int $count): void
     {
         $adherent = $this->createNewAdherent();
@@ -46,9 +45,7 @@ class BindAdherentDistrictSubscriberTest extends AbstractKernelTestCase
         $this->assertSame($count, $adherent->getReferentTags()->count());
     }
 
-    /**
-     * @dataProvider provideReferentTagHasCount
-     */
+    #[DataProvider('provideReferentTagHasCount')]
     public function testOnAdherentProfileUpdatedSuccessfully(array $referentTags, int $count): void
     {
         $adherent = $this->createNewAdherent();
@@ -80,21 +77,18 @@ class BindAdherentDistrictSubscriberTest extends AbstractKernelTestCase
         );
     }
 
-    public function provideReferentTagHasCount(): array
+    public static function provideReferentTagHasCount(): array
     {
-        /** @var GeoData $geoData */
-        $geoData = $this->createMock(GeoData::class);
-
         $tag1 = new ReferentTag('1ère circonscription, Paris', 'CIRCO_75001', new Zone('district', 'CIRCO_75001', '1ère circonscription, Paris'));
         $tag2 = new ReferentTag('Alpes-Maritimes, 1ère circonscription (06-01)', 'CIRCO_06001', new Zone('district', 'CIRCO_06001', 'Alpes-Maritimes, 1ère circonscription (06-01)'));
         $district1 = new District(
-            ['FR'], 'Ain', '01001', 1, 1, $geoData, $tag1
+            ['FR'], 'Ain', '01001', 1, 1, new GeoData(new Polygon([])), $tag1
         );
         $district2 = new District(
-            ['FR'], 'Ain', '01002', 2, 1, $geoData, $tag2
+            ['FR'], 'Ain', '01002', 2, 1, new GeoData(new Polygon([])), $tag2
         );
         $district3 = new District(
-            ['GB', 'DK', 'EE', 'FI', 'IE', 'IS', 'LV', 'LT', 'NO', 'SE'], 'Français établis hors de France', 'FDE_03', 3, 999, $geoData, $tag2
+            ['GB', 'DK', 'EE', 'FI', 'IE', 'IS', 'LV', 'LT', 'NO', 'SE'], 'Français établis hors de France', 'FDE_03', 3, 999, new GeoData(new Polygon([])), $tag2
         );
 
         return [

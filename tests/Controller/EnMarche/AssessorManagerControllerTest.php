@@ -7,18 +7,18 @@ use App\Assessor\Filter\CitiesFilters;
 use App\Assessor\Filter\VotePlaceFilters;
 use App\Mailer\Message\Assessor\AssessorRequestAssociateMessage;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
 
-/**
- * @group functional
- * @group assessor
- */
-class AssessorManagerControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('assessor')]
+class AssessorManagerControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -35,18 +35,14 @@ class AssessorManagerControllerTest extends AbstractEnMarcheWebCaseTest
         self::SUBJECT_VOTE_PLACE_CITIES,
     ];
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testAssessorManagerBackendIsForbiddenAsAnonymous(string $path)
     {
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testAssessorManagerBackendIsForbiddenAsAdherentNotReferent(string $path)
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -56,7 +52,7 @@ class AssessorManagerControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
-    public function providePages(): \Generator
+    public static function providePages(): \Generator
     {
         yield [self::ASSESSOR_MANAGER_REQUEST_PATH];
         yield [self::ASSESSOR_MANAGER_REQUEST_PATH.'/demande/be61ba07-c8e7-4533-97e1-0ab215cd752c'];

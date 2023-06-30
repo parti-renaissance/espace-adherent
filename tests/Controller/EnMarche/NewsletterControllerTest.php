@@ -9,15 +9,14 @@ use App\Mailer\Message\NewsletterSubscriptionConfirmationMessage;
 use App\Repository\EmailRepository;
 use App\Repository\NewsletterInviteRepository;
 use App\Repository\NewsletterSubscriptionRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractWebTestCase as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group controller
- */
+#[Group('functional')]
+#[Group('controller')]
 class NewsletterControllerTest extends WebTestCase
 {
     use ControllerTestTrait;

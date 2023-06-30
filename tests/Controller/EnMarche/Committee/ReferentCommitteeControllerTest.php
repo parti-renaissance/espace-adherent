@@ -5,15 +5,15 @@ namespace Tests\App\Controller\EnMarche\Committee;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Committee;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class ReferentCommitteeControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class ReferentCommitteeControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -285,9 +285,7 @@ class ReferentCommitteeControllerTest extends AbstractEnMarcheWebCaseTest
         $this->checkCommitteeRequestStatus($crawler, 'Pré-refusé');
     }
 
-    /**
-     * @dataProvider provideAdherents
-     */
+    #[DataProvider('provideAdherents')]
     public function testCanMakePreActions(string $email, string $committeeUuid, string $action, int $statusCode)
     {
         $committee = $this->getCommitteeRepository()->findOneByUuid($committeeUuid);
@@ -362,7 +360,7 @@ class ReferentCommitteeControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertCount(5, $crawler->filter('tbody tr'));
     }
 
-    public function provideAdherents(): array
+    public static function provideAdherents(): array
     {
         return [
             ['referent@en-marche-dev.fr', LoadCommitteeV1Data::COMMITTEE_16_UUID, 'pre-approuver', Response::HTTP_OK],

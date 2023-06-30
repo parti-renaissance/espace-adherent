@@ -2,21 +2,20 @@
 
 namespace Tests\App\Controller\EnMarche;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class PageControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class PageControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testPages(string $path)
     {
         $this->client->request(Request::METHOD_GET, $path);
@@ -24,9 +23,7 @@ class PageControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    /**
-     * @depends testPages
-     */
+    #[Depends('testPages')]
     public function testEmmanuelMacronVideos()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/emmanuel-macron/videos');
@@ -47,7 +44,7 @@ class PageControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertClientIsRedirectedTo('https://legislatives.en-marche.fr', $this->client, false, true);
     }
 
-    public function providePages(): \Generator
+    public static function providePages(): \Generator
     {
         yield ['/emmanuel-macron'];
         yield ['/emmanuel-macron/revolution'];

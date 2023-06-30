@@ -49,14 +49,13 @@ class EventRegistrationCommand
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     private $emailAddress;
-    private $newsletterSubscriber;
+    private $newsletterSubscriber = false;
     private $registrationUuid;
 
     public function __construct(BaseEvent $event, Adherent $adherent = null)
     {
         $this->event = $event;
         $this->registrationUuid = Uuid::uuid4();
-        $this->newsletterSubscriber = false;
 
         if ($adherent) {
             $this->setAdherent($adherent);

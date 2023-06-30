@@ -7,16 +7,17 @@ use App\Entity\UserListDefinitionEnum;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\ManageUserListDefinitionsForTypeVoter;
 use App\UserListDefinition\UserListDefinitionPermissions;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class ManageUserListDefinitionsForTypeVoterTest extends AbstractAdherentVoterTest
+class ManageUserListDefinitionsForTypeVoterTest extends AbstractAdherentVoterTestCase
 {
     protected function getVoter(): AbstractAdherentVoter
     {
         return new ManageUserListDefinitionsForTypeVoter();
     }
 
-    public function provideAnonymousCases(): iterable
+    public static function provideAnonymousCases(): iterable
     {
         yield [false, true, UserListDefinitionPermissions::ABLE_TO_MANAGE_TYPE, UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE];
     }
@@ -26,7 +27,7 @@ class ManageUserListDefinitionsForTypeVoterTest extends AbstractAdherentVoterTes
         yield [UserListDefinitionPermissions::ABLE_TO_MANAGE_TYPE];
     }
 
-    public function provideCorrectTypes(): iterable
+    public static function provideCorrectTypes(): iterable
     {
         foreach (UserListDefinitionEnum::TYPES as $type) {
             yield [$type];
@@ -46,9 +47,7 @@ class ManageUserListDefinitionsForTypeVoterTest extends AbstractAdherentVoterTes
         );
     }
 
-    /**
-     * @dataProvider provideCorrectTypes
-     */
+    #[DataProvider('provideCorrectTypes')]
     public function testAdherentIsGrantedIfCorrectType(string $type)
     {
         $adherent = $this->getAdherentMock();

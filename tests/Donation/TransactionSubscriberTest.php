@@ -5,14 +5,15 @@ namespace Tests\App\Donation;
 use App\Repository\AdherentRepository;
 use App\Repository\DonationRepository;
 use App\Repository\TransactionRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\TestHelperTrait;
 
-/**
- * @group functional
- */
-class TransactionSubscriberTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class TransactionSubscriberTest extends AbstractEnMarcheWebTestCase
 {
     use TestHelperTrait;
 
@@ -20,16 +21,14 @@ class TransactionSubscriberTest extends AbstractEnMarcheWebCaseTest
     private ?AdherentRepository $adherentRepository;
     private ?TransactionRepository $transactionRepository;
 
-    public function payloadProvider(): iterable
+    public static function payloadProvider(): iterable
     {
         yield 'transaction1' => ['424241'];
         yield 'transaction2' => ['424242'];
         yield 'transaction3' => ['424243'];
     }
 
-    /**
-     * @dataProvider payloadProvider
-     */
+    #[DataProvider('payloadProvider')]
     public function testOnPayboxIpnResponse(string $transactionId): void
     {
         static::assertNull($this->transactionRepository->findByPayboxTransactionId($transactionId));
@@ -42,9 +41,7 @@ class TransactionSubscriberTest extends AbstractEnMarcheWebCaseTest
         static::assertNotNull($this->transactionRepository->findByPayboxTransactionId($transactionId));
     }
 
-    /**
-     * @depends testOnPayboxIpnResponse
-     */
+    #[Depends('testOnPayboxIpnResponse')]
     public function testAllTransactionCreated(): void
     {
         $transactions = $this->transactionRepository->findAllSuccessfulTransactionByAdherentIdOrEmail($this->adherentRepository->findOneByEmail('jacques.picard@en-marche.fr'));

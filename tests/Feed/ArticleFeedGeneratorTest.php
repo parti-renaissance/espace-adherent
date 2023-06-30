@@ -7,6 +7,7 @@ use App\Entity\ArticleCategory;
 use App\Feed\ArticleFeedGenerator;
 use App\Feed\Exception\FeedGeneratorException;
 use League\CommonMark\CommonMarkConverter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Suin\RSSWriter\FeedInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -47,11 +48,12 @@ class ArticleFeedGeneratorTest extends TestCase
         $this->feedGenerator = null;
     }
 
-    /**
-     * @dataProvider dataProviderGenerateInvalidInput
-     */
+    #[DataProvider('dataProviderGenerateInvalidInput')]
     public function testGenerateInvalidInput($input)
     {
+        if (\is_callable($input)) {
+            $input = $input($this);
+        }
         $this->expectException(FeedGeneratorException::class);
         $this->feedGenerator->buildFeed($input);
     }
@@ -126,13 +128,13 @@ class ArticleFeedGeneratorTest extends TestCase
         $this->assertInstanceOf(FeedInterface::class, $this->feedGenerator->buildFeed([$article]));
     }
 
-    public function dataProviderGenerateInvalidInput(): array
+    public static function dataProviderGenerateInvalidInput(): array
     {
         return [
             [null],
             [0],
             ['abcd'],
-            [$this->createMock(Article::class)],
+            [fn (self $_this) => $_this->createMock(Article::class)],
         ];
     }
 }

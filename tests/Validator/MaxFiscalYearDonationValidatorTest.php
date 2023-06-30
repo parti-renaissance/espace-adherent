@@ -6,15 +6,15 @@ use App\Donation\Request\DonationRequest;
 use App\Repository\TransactionRepository;
 use App\Validator\MaxFiscalYearDonation;
 use App\Validator\MaxFiscalYearDonationValidator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @dataProvider noValidateDonationProvider
-     */
-    public function testNoValidation(DonationRequest $donationRequest, ?int $value): void
+    #[DataProvider('noValidateDonationProvider')]
+    public function testNoValidation(?string $email, ?int $value): void
     {
+        $donationRequest = $this->createDonationRequest($email);
         $donationRequest->setAmount($value);
 
         $this->validator->validate($donationRequest, new MaxFiscalYearDonation());
@@ -22,27 +22,25 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function noValidateDonationProvider(): iterable
+    public static function noValidateDonationProvider(): iterable
     {
         yield 'No validation if no value' => [
-            $this->createDonationRequest(),
+            'test@test.test',
             null,
         ];
         yield 'No validation if no email' => [
-            $this->createDonationRequest(null),
+            null,
             50,
         ];
     }
 
-    /**
-     * @dataProvider donationProvider
-     */
+    #[DataProvider('donationProvider')]
     public function testValidateWithNoError(
-        DonationRequest $donationRequest,
         ?int $value,
         int $maxDonation,
         int $totalCurrentAmount = 0
     ): void {
+        $donationRequest = $this->createDonationRequest();
         $donationRequest->setAmount($value);
         $this->validator = $this->createCustomValidatorSuccess($totalCurrentAmount);
         $this->validator->initialize($this->context);
@@ -52,43 +50,37 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function donationProvider(): iterable
+    public static function donationProvider(): iterable
     {
         yield 'No violation with no subscription 0 total donation' => [
-            $this->createDonationRequest(),
             50,
             7500 * 100,
         ];
         yield 'No violation with no subscription max possible donation' => [
-            $this->createDonationRequest(),
             50,
             7500 * 100,
             7450 * 100,
         ];
         yield 'No violation with subscription 0 total donation' => [
-            $this->createDonationRequest(),
             50,
             7500 * 100,
             0,
         ];
         yield 'No violation with subscription max possible donation' => [
-            $this->createDonationRequest(),
             50,
             7500 * 100,
             7150 * 100,
         ];
     }
 
-    /**
-     * @dataProvider donationFailProvider
-     */
+    #[DataProvider('donationFailProvider')]
     public function testValidateWithError(
         array $parameters,
-        DonationRequest $donationRequest,
         ?int $value,
         int $maxDonation,
         int $totalCurrentAmount = 0
     ): void {
+        $donationRequest = $this->createDonationRequest();
         $donationRequest->setAmount($value);
         $this->validator = $this->createCustomValidatorSuccess($totalCurrentAmount);
         $this->validator->initialize($this->context);
@@ -102,7 +94,7 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    public function donationFailProvider(): iterable
+    public static function donationFailProvider(): iterable
     {
         yield 'Violation with 0 total donation' => [
             [
@@ -110,7 +102,6 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
                 '{{ max_amount_per_fiscal_year }}' => 7500,
                 '{{ max_donation_remaining_possible }}' => 7500,
             ],
-            $this->createDonationRequest(),
             8000,
             7500 * 100,
         ];
@@ -120,7 +111,6 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
                 '{{ max_amount_per_fiscal_year }}' => 7500,
                 '{{ max_donation_remaining_possible }}' => 0,
             ],
-            $this->createDonationRequest(),
             50,
             7500 * 100,
             7500 * 100,

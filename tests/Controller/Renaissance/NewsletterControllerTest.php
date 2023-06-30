@@ -3,14 +3,13 @@
 namespace Tests\App\Controller\Renaissance;
 
 use App\Entity\Renaissance\NewsletterSubscription;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class NewsletterControllerTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+class NewsletterControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

@@ -4,19 +4,18 @@ namespace Tests\App\Utils;
 
 use App\Entity\EntityPostAddressInterface;
 use App\Utils\AreaUtils;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class AreaUtilsTest extends TestCase
 {
-    /**
-     * @dataProvider providePostalCodes
-     */
+    #[DataProvider('providePostalCodes')]
     public function testGetCodeFromPostalCode($postalCode, $expectedCode): void
     {
         $this->assertEquals($expectedCode, AreaUtils::getCodeFromPostalCode($postalCode));
     }
 
-    public function providePostalCodes(): \Generator
+    public static function providePostalCodes(): \Generator
     {
         yield ['59000', '59'];
         yield ['77000', '77'];
@@ -29,15 +28,13 @@ class AreaUtilsTest extends TestCase
         yield ['98000', 'MC'];
     }
 
-    /**
-     * @dataProvider provideCountries
-     */
+    #[DataProvider('provideCountries')]
     public function testGetCodeFromCountry($country, $expectedCode): void
     {
         $this->assertEquals($expectedCode, AreaUtils::getCodeFromCountry($country));
     }
 
-    public function provideCountries(): \Generator
+    public static function provideCountries(): \Generator
     {
         yield ['DE', 'DE'];
         yield ['IT', 'IT'];
@@ -46,15 +43,13 @@ class AreaUtilsTest extends TestCase
         yield ['unknown', 'unknown'];
     }
 
-    /**
-     * @dataProvider provideRelatedCodes
-     */
+    #[DataProvider('provideRelatedCodes')]
     public function testGetRelatedCodes(string $code, $expectedRelatedCodes): void
     {
         $this->assertEquals($expectedRelatedCodes, AreaUtils::getRelatedCodes($code));
     }
 
-    public function provideRelatedCodes(): \Generator
+    public static function provideRelatedCodes(): \Generator
     {
         yield ['75001', ['75']];
         yield ['75002', ['75']];
@@ -67,9 +62,7 @@ class AreaUtilsTest extends TestCase
         yield ['06', []];
     }
 
-    /**
-     * @dataProvider provideMetropolis
-     */
+    #[DataProvider('provideMetropolis')]
     public function testGetMetropolisCode(?string $expectedCode, string $country, string $inseeCode): void
     {
         $entity = new class($country, $inseeCode) implements EntityPostAddressInterface {
@@ -101,9 +94,7 @@ class AreaUtilsTest extends TestCase
         $this->assertEquals($expectedCode, AreaUtils::getMetropolisCode($entity));
     }
 
-    /**
-     * @dataProvider provideCodes
-     */
+    #[DataProvider('provideCodes')]
     public function testGet69DCode(?string $expectedCode, string $country, string $postalCode, string $inseeCode): void
     {
         $entity = new class($country, $inseeCode, $postalCode) implements EntityPostAddressInterface {
@@ -137,7 +128,7 @@ class AreaUtilsTest extends TestCase
         $this->assertEquals($expectedCode, AreaUtils::get69DCode($entity));
     }
 
-    public function provideMetropolis(): \Generator
+    public static function provideMetropolis(): \Generator
     {
         yield ['34M', 'FR', '34058'];
         yield ['34M', 'FR', '34172'];
@@ -147,7 +138,7 @@ class AreaUtilsTest extends TestCase
         yield [null, 'CH', '57340'];
     }
 
-    public function provideCodes(): \Generator
+    public static function provideCodes(): \Generator
     {
         yield [null, 'FR', '34160', '34058'];
         yield [null, 'FR', '69001', '69123'];
@@ -157,9 +148,7 @@ class AreaUtilsTest extends TestCase
         yield [null, 'CH', '57340', '57662'];
     }
 
-    /**
-     * @dataProvider provideZones
-     */
+    #[DataProvider('provideZones')]
     public function testGetZone(string $country, ?string $inseeCode, string $expectedZone): void
     {
         $entity = new class($country, $inseeCode) implements EntityPostAddressInterface {
@@ -191,7 +180,7 @@ class AreaUtilsTest extends TestCase
         $this->assertEquals($expectedZone, AreaUtils::getZone($entity));
     }
 
-    public function provideZones(): \Generator
+    public static function provideZones(): \Generator
     {
         yield ['CH', null, 'CH'];
         yield ['FR', '75010', '75010'];

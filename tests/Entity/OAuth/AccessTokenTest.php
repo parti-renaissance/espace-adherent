@@ -5,12 +5,11 @@ namespace Tests\App\Entity\OAuth;
 use App\Entity\Adherent;
 use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\Client;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @group time-sensitive
- */
+#[Group('time-sensitive')]
 class AccessTokenTest extends TestCase
 {
     private const IDENTIFIER = 'ccc1a6a661c35cce8a185a413e4b8c3dd7c9b655cf35e3400d4b571484a6c3f1ab0cd92140ea9978';

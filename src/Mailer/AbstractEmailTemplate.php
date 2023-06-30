@@ -14,7 +14,7 @@ abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplate
     protected $subject;
     protected $cc;
     protected $bcc;
-    protected $recipients;
+    protected $recipients = [];
     protected $template;
     protected $vars;
     protected $templateContent;
@@ -44,7 +44,6 @@ abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplate
         $this->replyTo = $replyTo;
         $this->cc = $cc;
         $this->bcc = $bcc;
-        $this->recipients = [];
         $this->vars = $vars;
         $this->templateContent = $templateContent;
     }

@@ -52,7 +52,7 @@ class SocialShare
      * @Assert\NotBlank
      * @Assert\Choice({"image", "video", "pdf"})
      */
-    private $type;
+    private $type = self::TYPE_IMAGE;
 
     /**
      * @ORM\Column(type="text")
@@ -110,7 +110,6 @@ class SocialShare
         $this->name = $name;
         $this->position = $position;
         $this->published = $published;
-        $this->type = self::TYPE_IMAGE;
     }
 
     public function __toString(): string

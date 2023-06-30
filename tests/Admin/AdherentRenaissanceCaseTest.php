@@ -14,16 +14,16 @@ use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountCreatedMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage;
 use App\Repository\AdherentRepository;
 use App\Repository\UnregistrationRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group admin
- */
-class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('admin')]
+class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
@@ -32,9 +32,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
     private ?AdherentRepository $adherentRepository = null;
     private ?UnregistrationRepository $unregistrationRepository = null;
 
-    /**
-     * @dataProvider provideTerminateMembershipForbidden
-     */
+    #[DataProvider('provideTerminateMembershipForbidden')]
     public function testTerminateMembershipForbidden(string $email): void
     {
         $this->authenticateAsAdmin($this->client);
@@ -58,7 +56,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
         );
     }
 
-    public function provideTerminateMembershipForbidden(): \Generator
+    public static function provideTerminateMembershipForbidden(): \Generator
     {
         yield 'Sénateur' => ['senateur@en-marche-dev.fr'];
         yield 'Délégué de circonscription' => ['deputy@en-marche-dev.fr'];
@@ -68,9 +66,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
         yield 'Référent RE' => ['renaissance-user-3@en-marche-dev.fr'];
     }
 
-    /**
-     * @dataProvider provideTerminateMembershipSuccess
-     */
+    #[DataProvider('provideTerminateMembershipSuccess')]
     public function testTerminateMembershipSuccess(
         string $email,
         string $fullName,
@@ -123,7 +119,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
         $this->assertSame($isRenaissance, $unregistration->isRenaissance());
     }
 
-    public function provideTerminateMembershipSuccess(): \Generator
+    public static function provideTerminateMembershipSuccess(): \Generator
     {
         // Simple user
         yield ['simple-test-user@example.ch', 'Simple User', false, false];
@@ -394,9 +390,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
         $this->assertCount(current($myTeams)->getMembers()->count(), $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $adherent]));
     }
 
-    /**
-     * @dataProvider provideCreateRenaissanceAdherent
-     */
+    #[DataProvider('provideCreateRenaissanceAdherent')]
     public function testCreateRenaissanceAdherent(array $submittedValues, float $expectedAmount): void
     {
         self::assertNull($this->adherentRepository->findOneByEmail($submittedValues['email']));
@@ -408,7 +402,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
 
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/app/adherent/create-renaissance');
+        $this->client->request(Request::METHOD_GET, '/admin/app/adherent/create-renaissance');
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertClientIsRedirectedTo('/admin/app/adherent/create-adherent-verify-email', $this->client);
 
@@ -494,7 +488,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
         $this->assertMail(RenaissanceAdherentAccountCreatedMessage::class, $submittedValues['email'], ['template_name' => 'renaissance-adherent-account-created']);
     }
 
-    public function provideCreateRenaissanceAdherent(): \Generator
+    public static function provideCreateRenaissanceAdherent(): \Generator
     {
         yield [
             [
@@ -531,9 +525,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
         ];
     }
 
-    /**
-     * @dataProvider provideCreateRenaissanceAdherentValidation
-     */
+    #[DataProvider('provideCreateRenaissanceAdherentValidation')]
     public function testCreateRenaissanceAdherentValidation(array $submittedValues, array $expectedErrors): void
     {
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
@@ -565,7 +557,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
         }
     }
 
-    public function provideCreateRenaissanceAdherentValidation(): \Generator
+    public static function provideCreateRenaissanceAdherentValidation(): \Generator
     {
         yield 'No gender' => [
             ['gender' => '', 'email' => 'renaissance-user-1@en-marche-dev.fr'],

@@ -6,15 +6,14 @@ use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
 use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\Entity\Adherent;
 use App\Entity\Unregistration;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group controller
- */
-class UnregistrationControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('controller')]
+class UnregistrationControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

@@ -7,21 +7,21 @@ use App\DataFixtures\ORM\LoadCauseData;
 use App\DataFixtures\ORM\LoadCoalitionData;
 use App\Entity\Coalition\Cause;
 use App\Mailer\Message\Coalition\CauseApprovalMessage;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class CausesControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class CausesControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
     private $causeRepository;
 
-    /** @dataProvider providePages */
+    #[DataProvider('providePages')]
     public function testCausesPageIsForbiddenAsNotCoalitionModerator(string $path): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -55,9 +55,7 @@ class CausesControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertSame('En attente', $causeFields->eq(8)->text());
     }
 
-    /**
-     * @dataProvider getCausesFilterParameters
-     */
+    #[DataProvider('getCausesFilterParameters')]
     public function testCausesCanBeFiltered(array $parameters, int $expectedResultCount): void
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
@@ -77,7 +75,7 @@ class CausesControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertCount(8, $crawler->filter('.datagrid table tbody tr'));
     }
 
-    public function getCausesFilterParameters(): iterable
+    public static function getCausesFilterParameters(): iterable
     {
         yield [['name' => 'éducation'], 1];
         yield [['name' => 'cultur'], 3];
@@ -277,7 +275,7 @@ class CausesControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertStringContainsString('1,Approuvée,Inactive,75008,"Paris 8ème",0,"Cause d\'une coalition désactivée","Lorem ipsum dolor sit amet, consectetur adipiscing elit.",Oui,Jacques,Picard,,http://coalitions.code/cause/13814069-1dd2-11b2-98d6-2fdf8179626a,', $responseContent);
     }
 
-    public function providePages(): iterable
+    public static function providePages(): iterable
     {
         yield ['/espace-coalition/causes'];
         yield ['/espace-coalition/causes/cause-pour-la-culture/editer'];

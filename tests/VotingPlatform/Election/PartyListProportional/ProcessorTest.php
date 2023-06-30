@@ -5,13 +5,12 @@ namespace Tests\App\VotingPlatform\Election\PartyListProportional;
 use App\VotingPlatform\Election\PartyListProportional\Model\Election;
 use App\VotingPlatform\Election\PartyListProportional\Model\PartyList;
 use App\VotingPlatform\Election\PartyListProportional\Processor;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ProcessorTest extends TestCase
 {
-    /**
-     * @dataProvider getElectionsData
-     */
+    #[DataProvider('getElectionsData')]
     public function testProcessor(int $nbSeats, array $lists, array $expected): void
     {
         $partyLists = [];
@@ -30,7 +29,7 @@ class ProcessorTest extends TestCase
         );
     }
 
-    public function getElectionsData(): \Generator
+    public static function getElectionsData(): \Generator
     {
         yield 'Norway election 2021' => [
             8,

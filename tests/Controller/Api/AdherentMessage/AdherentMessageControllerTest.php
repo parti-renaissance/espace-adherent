@@ -6,16 +6,15 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCauseData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\OAuth\Model\GrantTypeEnum;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class AdherentMessageControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class AdherentMessageControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

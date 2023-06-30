@@ -4,11 +4,10 @@ namespace Tests\App\Redirection\Dynamic;
 
 use App\Entity\Redirection;
 use App\Redirection\Dynamic\RedirectionManager;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class RedirectionManagerTest extends AbstractKernelTestCase
 {
     public function testSimpleResolveRedirection(): void

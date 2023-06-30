@@ -2,14 +2,13 @@
 
 namespace Tests\App\Controller\EnMarche\Security;
 
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use PHPUnit\Framework\Attributes\Group;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group security
- */
-class JWTAuthenticationTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('security')]
+class JWTAuthenticationTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

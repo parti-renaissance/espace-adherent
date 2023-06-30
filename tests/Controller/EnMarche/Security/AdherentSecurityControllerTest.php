@@ -9,16 +9,16 @@ use App\Mailer\Message\AdherentResetPasswordConfirmationMessage;
 use App\Mailer\Message\AdherentResetPasswordMessage;
 use App\Repository\AdherentRepository;
 use App\Repository\EmailRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group security
- */
-class AdherentSecurityControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('security')]
+class AdherentSecurityControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -28,9 +28,7 @@ class AdherentSecurityControllerTest extends AbstractEnMarcheWebCaseTest
     /* @var EmailRepository */
     private $emailRepository;
 
-    /**
-     * @dataProvider getAdherentEmails
-     */
+    #[DataProvider('getAdherentEmails')]
     public function testAuthenticationIsSuccessful(string $email, string $firstName): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
@@ -61,7 +59,7 @@ class AdherentSecurityControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertSame(0, $crawler->selectLink($firstName)->count());
     }
 
-    public function getAdherentEmails(): array
+    public static function getAdherentEmails(): array
     {
         return [
             ['carl999@example.fr', 'Carl'],
@@ -69,9 +67,7 @@ class AdherentSecurityControllerTest extends AbstractEnMarcheWebCaseTest
         ];
     }
 
-    /**
-     * @dataProvider provideInvalidCredentials
-     */
+    #[DataProvider('provideInvalidCredentials')]
     public function testLoginCheckFails(string $username, string $password, string $messageExpected): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
@@ -94,7 +90,7 @@ class AdherentSecurityControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertSame($messageExpected, trim($error->text()));
     }
 
-    public function provideInvalidCredentials(): array
+    public static function provideInvalidCredentials(): array
     {
         return [
             'Unregistered adherent account' => [

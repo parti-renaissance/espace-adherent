@@ -10,13 +10,12 @@ use App\Mailer\Message\Procuration\ProcurationProxyRegistrationConfirmationMessa
 use App\Mailer\Message\Procuration\ProcurationRequestRegistrationConfirmationMessage;
 use App\Procuration\ProcurationProxyMessageFactory;
 use libphonenumber\PhoneNumberUtil;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @group procuration
- */
+#[Group('procuration')]
 class ProcurationProxyMessageFactoryTest extends TestCase
 {
     /**

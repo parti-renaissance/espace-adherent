@@ -7,15 +7,15 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeArchiveCommand;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
-/**
- * @group functional
- * @group admin
- */
-class ElectedRepresentativeRenaissanceCaseTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('admin')]
+class ElectedRepresentativeRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
     use MessengerTestTrait;
@@ -27,9 +27,7 @@ class ElectedRepresentativeRenaissanceCaseTest extends AbstractRenaissanceWebCas
      */
     private $electedRepresentativeRepository;
 
-    /**
-     * @dataProvider provideUpdateTriggerMessage
-     */
+    #[DataProvider('provideUpdateTriggerMessage')]
     public function testUpdateTriggerMessage(
         array $values,
         bool $isChangeMessageExpected,
@@ -75,7 +73,7 @@ class ElectedRepresentativeRenaissanceCaseTest extends AbstractRenaissanceWebCas
         $this->assertStatusCode(200, $this->client);
     }
 
-    public function provideUpdateTriggerMessage(): iterable
+    public static function provideUpdateTriggerMessage(): iterable
     {
         yield [['lastName' => 'DUFOUR2'], true, false];
         yield [['lastName' => 'DUFOUR'], false, false];

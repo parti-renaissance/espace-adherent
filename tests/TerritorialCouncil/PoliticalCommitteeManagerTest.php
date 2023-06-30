@@ -20,6 +20,7 @@ use App\TerritorialCouncil\PoliticalCommitteeManager;
 use App\ValueObject\Genders;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -137,9 +138,7 @@ class PoliticalCommitteeManagerTest extends AbstractKernelTestCase
         $this->assertSame([$qualityName], $adherent->getPoliticalCommitteeMembership()->getQualityNames());
     }
 
-    /**
-     * @dataProvider provideOfficioQualities
-     */
+    #[DataProvider('provideOfficioQualities')]
     public function tesCanAddOfficioQualities(string $qualityName): void
     {
         $pcMembership = new PoliticalCommitteeMembership(new PoliticalCommittee('PC name', new TerritorialCouncil()));
@@ -153,9 +152,7 @@ class PoliticalCommitteeManagerTest extends AbstractKernelTestCase
         $this->assertTrue($can);
     }
 
-    /**
-     * @dataProvider provideNotPassingQualities
-     */
+    #[DataProvider('provideNotPassingQualities')]
     public function testCannotAddPoliticalCommitteeQualityWhenNotPassingQuality(string $qualityName): void
     {
         $pcMembership = new PoliticalCommitteeMembership(new PoliticalCommittee('PC name', new TerritorialCouncil()));
@@ -167,9 +164,7 @@ class PoliticalCommitteeManagerTest extends AbstractKernelTestCase
         $this->assertFalse($can);
     }
 
-    /**
-     * @dataProvider provideElectedMemberQualities
-     */
+    #[DataProvider('provideElectedMemberQualities')]
     public function testCannotAddElectedMemberQualityWhenNoTcMembership(string $qualityName): void
     {
         $pcMembership = new PoliticalCommitteeMembership(new PoliticalCommittee('PC name', new TerritorialCouncil()));
@@ -181,9 +176,7 @@ class PoliticalCommitteeManagerTest extends AbstractKernelTestCase
         $this->assertFalse($can);
     }
 
-    /**
-     * @dataProvider provideElectedMemberQualities
-     */
+    #[DataProvider('provideElectedMemberQualities')]
     public function testCannotAddElectedMemberQualityButWhenTcMandate(string $qualityName): void
     {
         $pcMembership = new PoliticalCommitteeMembership(new PoliticalCommittee('PC name', new TerritorialCouncil()));
@@ -196,9 +189,7 @@ class PoliticalCommitteeManagerTest extends AbstractKernelTestCase
         $this->assertFalse($can);
     }
 
-    /**
-     * @dataProvider provideElectedMemberQualities
-     */
+    #[DataProvider('provideElectedMemberQualities')]
     public function testCanAddElectedMemberQuality(string $qualityName): void
     {
         $pcMembership = new PoliticalCommitteeMembership(new PoliticalCommittee('PC name', new TerritorialCouncil()));
@@ -545,7 +536,7 @@ class PoliticalCommitteeManagerTest extends AbstractKernelTestCase
         $this->assertFalse($adherent->getPoliticalCommitteeMembership()->hasQuality(TerritorialCouncilQualityEnum::LEADER));
     }
 
-    public function provideOfficioQualities(): iterable
+    public static function provideOfficioQualities(): iterable
     {
         yield [TerritorialCouncilQualityEnum::REFERENT];
         yield [TerritorialCouncilQualityEnum::GOVERNMENT_MEMBER];
@@ -558,13 +549,13 @@ class PoliticalCommitteeManagerTest extends AbstractKernelTestCase
         yield [TerritorialCouncilQualityEnum::DEPARTMENTAL_COUNCIL_PRESIDENT];
     }
 
-    public function provideNotPassingQualities(): iterable
+    public static function provideNotPassingQualities(): iterable
     {
         yield [TerritorialCouncilQualityEnum::MAYOR];
         yield [TerritorialCouncilQualityEnum::LEADER];
     }
 
-    public function provideElectedMemberQualities(): iterable
+    public static function provideElectedMemberQualities(): iterable
     {
         yield [TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR];
         yield [TerritorialCouncilQualityEnum::CORSICA_ASSEMBLY_MEMBER];

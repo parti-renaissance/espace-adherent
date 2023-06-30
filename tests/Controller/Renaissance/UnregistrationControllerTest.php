@@ -6,15 +6,14 @@ use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
 use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\Entity\Adherent;
 use App\Membership\MembershipSourceEnum;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group controller
- */
-class UnregistrationControllerTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('controller')]
+class UnregistrationControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

@@ -18,17 +18,17 @@ use App\Repository\EmailRepository;
 use App\Repository\UnregistrationRepository;
 use App\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group adherent
- */
-class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('adherent')]
+class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -84,9 +84,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         Chronos::setTestNow();
     }
 
-    /**
-     * @dataProvider provideProfilePage
-     */
+    #[DataProvider('provideProfilePage')]
     public function testProfileActionIsSecured(string $profilePage): void
     {
         $this->client->request(Request::METHOD_GET, $profilePage);
@@ -95,9 +93,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
-    /**
-     * @dataProvider provideProfilePage
-     */
+    #[DataProvider('provideProfilePage')]
     public function testProfileActionIsAccessibleForAdherent(string $profilePage): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -109,9 +105,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertStringContainsString('Adhérent depuis le16 novembre 2016 à 20:45', $crawler->filter('.adherent-profile__id .adhesion-date')->text());
     }
 
-    /**
-     * @dataProvider provideProfilePage
-     */
+    #[DataProvider('provideProfilePage')]
     public function testProfileActionIsNotAccessibleForREAdherent(string $profilePage): void
     {
         $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
@@ -125,7 +119,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         );
     }
 
-    public function provideProfilePage(): \Generator
+    public static function provideProfilePage(): \Generator
     {
         yield 'Mes informations personnelles' => ['/parametres/mon-compte'];
         yield 'Mes centres d\'intérêt' => ['/espace-adherent/mon-compte/centres-d-interet'];
@@ -609,9 +603,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         ;
     }
 
-    /**
-     * @dataProvider provideCommitteesHostsAdherentsCredentials
-     */
+    #[DataProvider('provideCommitteesHostsAdherentsCredentials')]
     public function testAdherentsNotAllowedToCreateNewCommittees(string $emailAddress, string $warning): void
     {
         $this->authenticateAsAdherent($this->client, $emailAddress);
@@ -639,7 +631,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertCount(0, $crawler->filter('.committee__warning'));
     }
 
-    public function provideCommitteesHostsAdherentsCredentials(): array
+    public static function provideCommitteesHostsAdherentsCredentials(): array
     {
         return [
             'Benjamin Duroc is a provisional supervisor of a pending committee' => [
@@ -665,9 +657,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         ];
     }
 
-    /**
-     * @dataProvider provideRegularAdherentsCredentials
-     */
+    #[DataProvider('provideRegularAdherentsCredentials')]
     public function testRegularAdherentCanCreateOneNewCommittee(string $emailAddress, string $phone): void
     {
         $this->client->followRedirects();
@@ -730,7 +720,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         $this->seeFlashMessage($crawler, 'Votre comité a été créé avec succès. Il ne manque plus que la validation d\'un référent.');
     }
 
-    public function provideRegularAdherentsCredentials(): array
+    public static function provideRegularAdherentsCredentials(): array
     {
         return [
             ['damien.schmidt@example.ch', '01 11 22 33 45'],
@@ -810,9 +800,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
     }
 
-    /**
-     * @dataProvider dataProviderCannotTerminateMembership
-     */
+    #[DataProvider('dataProviderCannotTerminateMembership')]
     public function testCannotTerminateMembership(string $email): void
     {
         $this->authenticateAsAdherent($this->client, $email);
@@ -830,7 +818,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
-    public function dataProviderCannotTerminateMembership(): \Generator
+    public static function dataProviderCannotTerminateMembership(): \Generator
     {
         yield 'Host' => ['gisele-berthoux@caramail.com'];
         yield 'Referent' => ['referent@en-marche-dev.fr'];
@@ -839,9 +827,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         yield 'TerritorialCouncilCandidate' => ['senatorial-candidate@en-marche-dev.fr'];
     }
 
-    /**
-     * @dataProvider provideAdherentCredentials
-     */
+    #[DataProvider('provideAdherentCredentials')]
     public function testAdherentTerminatesMembership(
         string $userEmail,
         string $uuid,
@@ -933,7 +919,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertEquals($referentTagsBeforeUnregistration, $unregistration->getReferentTags()->toArray());
     }
 
-    public function provideAdherentCredentials(): array
+    public static function provideAdherentCredentials(): array
     {
         return [
             'adherent 1' => ['michel.vasseur@example.ch', LoadAdherentData::ADHERENT_13_UUID, 'en-marche-suisse', 3],

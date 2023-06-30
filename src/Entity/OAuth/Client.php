@@ -78,12 +78,12 @@ class Client implements EntitySoftDeletedInterface
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private $supportedScopes;
+    private $supportedScopes = [];
 
     /**
      * @ORM\Column(type="boolean", nullable=false, options={"default": true})
      */
-    private $askUserForAuthorization;
+    private $askUserForAuthorization = true;
 
     /**
      * @var Collection|WebHook[]
@@ -115,8 +115,6 @@ class Client implements EntitySoftDeletedInterface
         $this->secret = $secret ?: SecretGenerator::generate();
         $this->setAllowedGrantTypes($allowedGrantTypes);
         $this->redirectUris = $redirectUris;
-        $this->supportedScopes = [];
-        $this->askUserForAuthorization = true;
         $this->webHooks = new ArrayCollection();
     }
 

@@ -6,19 +6,17 @@ use App\Entity\Adherent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Scope\ScopeEnum;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class AbstractMessageControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class AbstractMessageControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @dataProvider provideSpaces
-     */
+    #[DataProvider('provideSpaces')]
     public function testDifferentSpaceCanBeDelegated(string $email, string $spaceLabel, string $spacePath)
     {
         $this->authenticateAsAdherent($this->client, $email);
@@ -32,7 +30,7 @@ class AbstractMessageControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertEquals('http://test.enmarche.code/'.$spacePath, $crawler->getUri());
     }
 
-    public function provideSpaces(): \Generator
+    public static function provideSpaces(): \Generator
     {
         yield ['referent@en-marche-dev.fr', 'Espace député partagé (CIRCO_FDE-06)', 'espace-depute/messagerie'];
         yield ['gisele-berthoux@caramail.com', 'Espace sénateur partagé (59)', 'espace-senateur/messagerie'];
@@ -87,9 +85,7 @@ class AbstractMessageControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertCount(1, $crawler->filter('nav.manager-sidebar__menu li a:contains("Événements")'));
     }
 
-    /**
-     * @dataProvider provideTabs
-     */
+    #[DataProvider('provideTabs')]
     public function testDelegatedAccessWithRestrictedTabs(string $tab, int $statusCode)
     {
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
@@ -99,7 +95,7 @@ class AbstractMessageControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertResponseStatusCode($statusCode, $this->client->getResponse());
     }
 
-    public function provideTabs(): \Generator
+    public static function provideTabs(): \Generator
     {
         yield ['messagerie', 403];
         yield ['evenements', 200];
@@ -131,9 +127,7 @@ class AbstractMessageControllerTest extends AbstractEnMarcheWebCaseTest
         self::assertStringNotContainsString('Espace député partagé (CIRCO_FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
     }
 
-    /**
-     * @dataProvider provideMultiAccess
-     */
+    #[DataProvider('provideMultiAccess')]
     public function testIHaveMultipleAccesses(string $delegatedAccessUuid, string $path, int $statusCode)
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
@@ -143,7 +137,7 @@ class AbstractMessageControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertResponseStatusCode($statusCode, $this->client->getResponse());
     }
 
-    public function provideMultiAccess(): \Generator
+    public static function provideMultiAccess(): \Generator
     {
         yield ['96076afb-2243-4251-97fe-8201d50c3256', '/espace-depute/utilisateurs', 403];
         yield ['96076afb-2243-4251-97fe-8201d50c3256', '/espace-depute/messagerie', 200];

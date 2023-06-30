@@ -4,11 +4,11 @@ namespace Tests\App\Vision;
 
 use App\Vision\IdentityDocumentParser;
 use App\Vision\ImageAnnotations;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 class IdentityDocumentParserTest extends AbstractKernelTestCase
 {
     /**
@@ -16,9 +16,7 @@ class IdentityDocumentParserTest extends AbstractKernelTestCase
      */
     private $parser;
 
-    /**
-     * @dataProvider provideCNIMatch
-     */
+    #[DataProvider('provideCNIMatch')]
     public function testMatchingCNI(string $text, string $firstName, string $lastName, string $birthDate): void
     {
         $birthDate = \DateTime::createFromFormat('Y-m-d', $birthDate);
@@ -34,7 +32,7 @@ class IdentityDocumentParserTest extends AbstractKernelTestCase
         self::assertTrue($this->parser->hasDateOfBirth($annotations, $birthDate));
     }
 
-    public function provideCNIMatch(): iterable
+    public static function provideCNIMatch(): iterable
     {
         yield [<<<'TXT'
             Date d'expiration: 10.10.2022
@@ -80,9 +78,7 @@ class IdentityDocumentParserTest extends AbstractKernelTestCase
             TXT, 'Rémi', 'Gardien', '1988-11-27'];
     }
 
-    /**
-     * @dataProvider providePassportMatch
-     */
+    #[DataProvider('providePassportMatch')]
     public function testMatchingPassport(string $text, string $firstName, string $lastName, string $birthDate): void
     {
         $birthDate = \DateTime::createFromFormat('Y-m-d', $birthDate);
@@ -98,7 +94,7 @@ class IdentityDocumentParserTest extends AbstractKernelTestCase
         self::assertTrue($this->parser->hasDateOfBirth($annotations, $birthDate));
     }
 
-    public function providePassportMatch(): iterable
+    public static function providePassportMatch(): iterable
     {
         yield [<<<'TXT'
             Page réservée aux autorités compétentes

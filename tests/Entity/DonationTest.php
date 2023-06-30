@@ -6,12 +6,13 @@ use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Donation;
 use App\Entity\PostAddress;
 use App\Entity\Transaction;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
 class DonationTest extends TestCase
 {
-    public function donationProvider(): iterable
+    public static function donationProvider(): iterable
     {
         yield 'current month' => [
             '2018/05/03 11:51:21',
@@ -40,9 +41,7 @@ class DonationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider donationProvider
-     */
+    #[DataProvider('donationProvider')]
     public function testNextDonationAt(string $donatedAt, string $fromDay, string $expected): void
     {
         $donation = $this->createDonation($donatedAt);
@@ -70,7 +69,7 @@ class DonationTest extends TestCase
         );
     }
 
-    public function processPayloadProvider(): iterable
+    public static function processPayloadProvider(): iterable
     {
         $uuid = Uuid::uuid4();
         yield 'success_without_subscription' => [
@@ -79,7 +78,7 @@ class DonationTest extends TestCase
                 'cb',
                 '10',
                 \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', '2018/02/02 15:16:17'),
-                $this->createMock(PostAddress::class),
+                PostAddress::createEmptyAddress(),
                 '127.0.0.1',
                 PayboxPaymentSubscription::NONE,
                 '10'
@@ -104,7 +103,7 @@ class DonationTest extends TestCase
                 'cb',
                 '10',
                 \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', '2018/02/02 15:16:17'),
-                $this->createMock(PostAddress::class),
+                PostAddress::createEmptyAddress(),
                 '127.0.0.1',
                 PayboxPaymentSubscription::UNLIMITED,
                 '10'
@@ -125,9 +124,7 @@ class DonationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider processPayloadProvider
-     */
+    #[DataProvider('processPayloadProvider')]
     public function testProcessPayload(Donation $donation, array $payload, array $expectations): void
     {
         $donation->processPayload($payload);

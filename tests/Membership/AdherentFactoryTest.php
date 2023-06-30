@@ -9,14 +9,13 @@ use App\Membership\ActivityPositionsEnum;
 use App\Membership\AdherentFactory;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use libphonenumber\PhoneNumber;
+use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group membership
- */
+#[Group('membership')]
 class AdherentFactoryTest extends AbstractKernelTestCase
 {
     public function testCreateNonFrenchAdherentFromArray()

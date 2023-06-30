@@ -6,16 +6,15 @@ use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\MessengerTestTrait;
 
-/**
- * @group functional
- * @group committee
- */
-class CommitteeControllerTest extends AbstractGroupControllerTest
+#[Group('functional')]
+#[Group('committee')]
+class CommitteeControllerTest extends AbstractGroupControllerTestCase
 {
     use MessengerTestTrait;
 

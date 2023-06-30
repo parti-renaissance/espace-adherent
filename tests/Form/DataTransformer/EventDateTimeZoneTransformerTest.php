@@ -5,13 +5,12 @@ namespace Tests\App\Form\DataTransformer;
 use App\Entity\Adherent;
 use App\Event\EventCommand;
 use App\Form\DataTransformer\EventDateTimeZoneTransformer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class EventDateTimeZoneTransformerTest extends TestCase
 {
-    /**
-     * @dataProvider getDatetimeForTransformer
-     */
+    #[DataProvider('getDatetimeForTransformer')]
     public function testTransform(
         string $begintAt,
         string $beginAtTransformed,
@@ -38,9 +37,7 @@ class EventDateTimeZoneTransformerTest extends TestCase
         $this->assertSame($finishAtTransformed, $baseEventCommand->getFinishAt()->format('Y-m-d H:i'));
     }
 
-    /**
-     * @dataProvider getDatetimeForTransformer
-     */
+    #[DataProvider('getDatetimeForTransformer')]
     public function testReverseTransform(
         string $beginAtTransformed,
         string $begintAt,
@@ -67,7 +64,7 @@ class EventDateTimeZoneTransformerTest extends TestCase
         $this->assertSame($finishAtTransformed, $baseEventCommand->getFinishAt()->format('Y-m-d H:i'));
     }
 
-    public function getDatetimeForTransformer(): \Generator
+    public static function getDatetimeForTransformer(): \Generator
     {
         yield ['2019-01-01 01:00', '2019-01-01 01:00', '2019-01-01 03:00', '2019-01-01 03:00', 'Europe/Paris'];
         yield ['2019-07-01 01:00', '2019-07-01 01:00', '2019-07-01 03:00', '2019-07-01 03:00', 'Europe/Paris']; // DST

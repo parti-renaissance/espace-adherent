@@ -10,7 +10,7 @@ use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventRegistration;
 use Tests\App\AbstractKernelTestCase;
 
-abstract class AbstractEventMessageTest extends AbstractKernelTestCase
+abstract class AbstractEventMessageTestCase extends AbstractKernelTestCase
 {
     protected function createEventMock(
         string $name,

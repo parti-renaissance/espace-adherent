@@ -3,16 +3,15 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\Mailer\Message\BoardMemberContactAdherentsMessage;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group boardMember
- */
-class BoardMemberControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('boardMember')]
+class BoardMemberControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

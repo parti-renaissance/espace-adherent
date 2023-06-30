@@ -7,32 +7,24 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\CommitteeShowVoter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\UuidInterface;
 
-class CommitteeShowVoterTest extends AbstractAdherentVoterTest
+class CommitteeShowVoterTest extends AbstractAdherentVoterTestCase
 {
     protected function getVoter(): AbstractAdherentVoter
     {
         return new CommitteeShowVoter();
     }
 
-    public function provideAnonymousCases(): iterable
+    public static function provideAnonymousCases(): iterable
     {
-        // Not approved groups should been shown to anonymous
-        $notApprovedCommittee = $this->getCommitteeMock(false);
-
-        yield [false, true, CommitteePermissionEnum::SHOW, $notApprovedCommittee];
-
-        // Approved groups should be shown to anonymous
-        $approvedCommittee = $this->getCommitteeMock(true);
-
-        yield [true, false, CommitteePermissionEnum::SHOW, $approvedCommittee];
+        yield [false, true, CommitteePermissionEnum::SHOW, fn (self $_this) => $_this->getCommitteeMock(false)];
+        yield [true, false, CommitteePermissionEnum::SHOW, fn (self $_this) => $_this->getCommitteeMock(true)];
     }
 
-    /**
-     * @dataProvider provideGroupCases
-     */
+    #[DataProvider('provideGroupCases')]
     public function testAdherentIsGrantedIfGroupIsApproved(bool $approved, string $attribute)
     {
         $adherent = $this->getAdherentMock(!$approved);
@@ -41,9 +33,7 @@ class CommitteeShowVoterTest extends AbstractAdherentVoterTest
         $this->assertGrantedForAdherent($approved, !$approved, $adherent, $attribute, $group);
     }
 
-    /**
-     * @dataProvider provideGroupCases
-     */
+    #[DataProvider('provideGroupCases')]
     public function testAdherentIsGrantedWhenGroupIsNotApprovedIfCreator(bool $approved, string $attribute)
     {
         $adherent = $this->getAdherentMock(!$approved);
@@ -52,7 +42,7 @@ class CommitteeShowVoterTest extends AbstractAdherentVoterTest
         $this->assertGrantedForAdherent(true, !$approved, $adherent, $attribute, $group);
     }
 
-    public function provideGroupCases(): iterable
+    public static function provideGroupCases(): iterable
     {
         yield [true, CommitteePermissionEnum::SHOW];
         yield [false, CommitteePermissionEnum::SHOW];

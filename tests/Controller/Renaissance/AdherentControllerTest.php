@@ -13,26 +13,24 @@ use App\Mailer\Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage
 use App\Repository\EmailRepository;
 use App\Repository\UnregistrationRepository;
 use App\Subscription\SubscriptionTypeEnum;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group adherent
- */
-class AdherentControllerTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+#[Group('adherent')]
+class AdherentControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
     /* @var EmailRepository */
     private $emailRepository;
 
-    /**
-     * @dataProvider provideProfilePage
-     */
+    #[DataProvider('provideProfilePage')]
     public function testProfileActionIsSecured(string $profilePage): void
     {
         $this->client->request(Request::METHOD_GET, $profilePage);
@@ -41,9 +39,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebCaseTest
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
-    /**
-     * @dataProvider provideProfilePage
-     */
+    #[DataProvider('provideProfilePage')]
     public function testProfileActionIsAccessibleForAdherent(string $profilePage): void
     {
         $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
@@ -55,9 +51,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebCaseTest
         $this->assertStringContainsString('Inscrite depuis le 25 janvier 2017', $crawler->filter('#adherent-since')->text());
     }
 
-    /**
-     * @dataProvider provideProfilePage
-     */
+    #[DataProvider('provideProfilePage')]
     public function testProfileActionIsNotAccessibleForEMAdherent(string $profilePage): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -68,7 +62,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebCaseTest
         $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client, false);
     }
 
-    public function provideProfilePage(): \Generator
+    public static function provideProfilePage(): \Generator
     {
         yield 'Mes informations personnelles' => ['/parametres/mon-compte'];
         yield 'Mot de passe' => ['/parametres/mon-compte/changer-mot-de-passe'];
@@ -325,9 +319,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebCaseTest
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @dataProvider dataProviderCannotTerminateMembership
-     */
+    #[DataProvider('dataProviderCannotTerminateMembership')]
     public function testCannotTerminateMembership(string $email): void
     {
         $this->authenticateAsAdherent($this->client, $email);
@@ -345,14 +337,12 @@ class AdherentControllerTest extends AbstractRenaissanceWebCaseTest
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
-    public function dataProviderCannotTerminateMembership(): \Generator
+    public static function dataProviderCannotTerminateMembership(): \Generator
     {
         yield 'Referent' => ['renaissance-user-3@en-marche-dev.fr'];
     }
 
-    /**
-     * @dataProvider provideAdherentCredentials
-     */
+    #[DataProvider('provideAdherentCredentials')]
     public function testAdherentTerminatesMembership(string $userEmail, string $uuid): void
     {
         /** @var Adherent $adherent */
@@ -415,7 +405,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebCaseTest
         $this->assertResponseStatusCode(200, $this->client->getResponse());
     }
 
-    public function provideAdherentCredentials(): array
+    public static function provideAdherentCredentials(): array
     {
         return [
             'adherent 1' => ['renaissance-user-1@en-marche-dev.fr', LoadAdherentData::RENAISSANCE_USER_1_UUID],

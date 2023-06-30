@@ -9,13 +9,12 @@ use App\Mailer\Message\CertificationRequestApprovedMessage;
 use App\Mailer\Message\CertificationRequestBlockedMessage;
 use App\Mailer\Message\CertificationRequestRefusedMessage;
 use App\Repository\AdherentRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group certification
- */
+#[Group('functional')]
+#[Group('certification')]
 class CertificationAuthorityManagerTest extends AbstractKernelTestCase
 {
     use ControllerTestTrait;

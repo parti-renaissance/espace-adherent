@@ -2,15 +2,14 @@
 
 namespace Tests\App\Controller\Renaissance\Formation;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebCaseTest;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class ListControllerTest extends AbstractRenaissanceWebCaseTest
+#[Group('functional')]
+class ListControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

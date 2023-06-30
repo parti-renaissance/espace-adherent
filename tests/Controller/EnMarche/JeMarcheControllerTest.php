@@ -5,16 +5,15 @@ namespace Tests\App\Controller\EnMarche;
 use App\Entity\JeMarcheReport;
 use App\Mailer\Message\JeMarcheReportMessage;
 use App\Repository\JeMarcheReportRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group jeMarche
- */
-class JeMarcheControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('jeMarche')]
+class JeMarcheControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

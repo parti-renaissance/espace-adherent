@@ -3,15 +3,14 @@
 namespace Tests\App\Controller\EnMarche\Security;
 
 use App\DataFixtures\ORM\LoadAdherentData;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebCaseTest as WebTestCase;
+use Tests\App\AbstractWebTestCase as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group security
- */
+#[Group('functional')]
+#[Group('security')]
 class CoalitionsSecurityControllerTest extends WebTestCase
 {
     use ControllerTestTrait;

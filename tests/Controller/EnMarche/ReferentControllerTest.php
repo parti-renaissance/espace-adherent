@@ -5,34 +5,30 @@ namespace Tests\App\Controller\EnMarche;
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\DataFixtures\ORM\LoadDelegatedAccessData;
 use App\Entity\Geo\Zone;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
-/**
- * @group functional
- * @group referent
- */
-class ReferentControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('referent')]
+class ReferentControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
     use MessengerTestTrait;
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testReferentBackendIsForbiddenAsAnonymous($path)
     {
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testReferentBackendIsForbiddenAsAdherentNotReferent($path)
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -41,9 +37,7 @@ class ReferentControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testReferentBackendIsAccessibleAsReferent($path)
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
@@ -52,9 +46,7 @@ class ReferentControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
-    /**
-     * @dataProvider providePages
-     */
+    #[DataProvider('providePages')]
     public function testChangeOfPageAccessInformationToReferentSpace($path)
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
@@ -127,9 +119,7 @@ class ReferentControllerTest extends AbstractEnMarcheWebCaseTest
         );
     }
 
-    /**
-     * @dataProvider provideUsers
-     */
+    #[DataProvider('provideUsers')]
     public function testSearchUserToSendMail($user)
     {
         $this->authenticateAsAdherent($this->client, $user);
@@ -367,7 +357,7 @@ class ReferentControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertCount(0, $this->client->getCrawler()->filter('tbody tr .adherent-name > img'));
     }
 
-    public function providePages(): array
+    public static function providePages(): array
     {
         return [
             ['/espace-referent/utilisateurs'],
@@ -378,7 +368,7 @@ class ReferentControllerTest extends AbstractEnMarcheWebCaseTest
         ];
     }
 
-    public function provideUsers(): iterable
+    public static function provideUsers(): iterable
     {
         yield ['referent@en-marche-dev.fr'];
     }

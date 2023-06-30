@@ -10,17 +10,17 @@ use App\Procuration\ProcurationSession;
 use App\Repository\ProcurationProxyRepository;
 use App\Repository\ProcurationRequestRepository;
 use libphonenumber\PhoneNumber;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group procuration
- */
-class ProcurationControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('procuration')]
+class ProcurationControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -124,9 +124,7 @@ class ProcurationControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertClientIsRedirectedTo('/je-demande/mon-lieu-de-vote', $this->client, false, true);
     }
 
-    /**
-     * @dataProvider provideStepsRequiringElectionContext
-     */
+    #[DataProvider('provideStepsRequiringElectionContext')]
     public function testProcurationRequestNeedsElectionContext(string $step)
     {
         $this->client->request(Request::METHOD_GET, "/je-demande/$step");
@@ -134,7 +132,7 @@ class ProcurationControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertClientIsRedirectedTo('/choisir/'.ElectionContext::ACTION_REQUEST, $this->client);
     }
 
-    public function provideStepsRequiringElectionContext(): iterable
+    public static function provideStepsRequiringElectionContext(): iterable
     {
         yield [ProcurationRequest::STEP_URI_VOTE];
         yield [ProcurationRequest::STEP_URI_PROFILE];

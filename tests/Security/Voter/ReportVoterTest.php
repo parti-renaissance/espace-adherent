@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Report\ReportPermissions;
 use App\Security\Voter\ReportVoter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -40,17 +41,16 @@ class ReportVoterTest extends TestCase
         $this->voter = null;
     }
 
-    public function provideUsers(): iterable
+    public static function provideUsers(): iterable
     {
         yield [null];
-        yield [$this->createMock(Adherent::class)];
+        yield [Adherent::class];
     }
 
-    /**
-     * @dataProvider provideUsers
-     */
-    public function testGrantedWhenAuthenticatedFully($user)
+    #[DataProvider('provideUsers')]
+    public function testGrantedWhenAuthenticatedFully(?string $userClass)
     {
+        $user = $userClass ? $this->createMock($userClass) : null;
         $token = $this->createMock(TokenInterface::class);
         $token->expects($this->once())
             ->method('getUser')
@@ -69,9 +69,7 @@ class ReportVoterTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provideUsers
-     */
+    #[DataProvider('provideUsers')]
     public function testNotGrantedWhenNotAuthenticatedFully($user)
     {
         $token = $this->createMock(TokenInterface::class);

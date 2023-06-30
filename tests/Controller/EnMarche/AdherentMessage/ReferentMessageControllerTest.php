@@ -4,11 +4,11 @@ namespace Tests\App\Controller\EnMarche\AdherentMessage;
 
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
-class ReferentMessageControllerTest extends AbstractEnMarcheWebCaseTest
+class ReferentMessageControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
     use MessengerTestTrait;

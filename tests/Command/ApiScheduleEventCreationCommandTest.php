@@ -2,12 +2,11 @@
 
 namespace Tests\App\Command;
 
-use Tests\App\AbstractCommandCaseTest;
+use PHPUnit\Framework\Attributes\Group;
+use Tests\App\AbstractCommandTestCase;
 
-/**
- * @group command
- */
-class ApiScheduleEventCreationCommandTest extends AbstractCommandCaseTest
+#[Group('command')]
+class ApiScheduleEventCreationCommandTest extends AbstractCommandTestCase
 {
     public function testCommand(): void
     {

@@ -9,6 +9,7 @@ use App\Membership\ActivityPositionsEnum;
 use App\Membership\Event\AdherentAccountWasCreatedEvent;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Uuid;
 use Tests\App\AbstractKernelTestCase;
 
@@ -22,9 +23,7 @@ class BindAdherentZoneSubscriberTest extends AbstractKernelTestCase
     /* @var BindAdherentZoneSubscriber */
     private $subscriber;
 
-    /**
-     * @dataProvider provideZones
-     */
+    #[DataProvider('provideZones')]
     public function testOnCompletedSucceeds(array $zones): void
     {
         $adherent = Adherent::create(
@@ -61,7 +60,7 @@ class BindAdherentZoneSubscriberTest extends AbstractKernelTestCase
         $this->assertSame(\count($zones), $adherent->getZones()->count());
     }
 
-    public function provideZones(): array
+    public static function provideZones(): array
     {
         $zone1 = new Zone('district', 'CIRCO_75001', '1ère circonscription, Paris');
         $zone2 = new Zone('district', 'CIRCO_06001', 'Alpes-Maritimes, 1ère circonscription (06-01)');

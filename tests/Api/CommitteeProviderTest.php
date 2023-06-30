@@ -5,13 +5,12 @@ namespace Tests\App\Api;
 use App\Api\CommitteeProvider;
 use App\Entity\Committee;
 use App\Repository\CommitteeRepository;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @group api
- */
+#[Group('api')]
 class CommitteeProviderTest extends TestCase
 {
     public function testGetApprovedCommittees()
@@ -42,9 +41,22 @@ class CommitteeProviderTest extends TestCase
         $repository = $this->createMock(CommitteeRepository::class);
         $repository->expects($this->once())->method('findApprovedCommittees')->willReturn($committees);
 
+        $series = [
+            [['app_committee_show', ['slug' => 'comite-paris'], 1], $committee1],
+            [['app_committee_show', ['slug' => 'comite-berlin'], 1], $committee2],
+        ];
+
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->expects($this->at(0))->method('generate')->willReturn('/comites/'.$committee1->getSlug());
-        $urlGenerator->expects($this->at(1))->method('generate')->willReturn('/comites/'.$committee2->getSlug());
+        $urlGenerator
+            ->expects($this->exactly(2))
+            ->method('generate')
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs[0], $args);
+
+                return '/comites/'.$expectedArgs[1]->getSlug();
+            })
+        ;
 
         $provider = new CommitteeProvider($repository, $urlGenerator);
 

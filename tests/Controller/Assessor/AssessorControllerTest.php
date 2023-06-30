@@ -4,15 +4,15 @@ namespace Tests\App\Controller\Assessor;
 
 use App\Entity\AssessorOfficeEnum;
 use App\Mailer\Message\Assessor\AssessorRequestConfirmationMessage;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- */
-class AssessorControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+class AssessorControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
@@ -130,9 +130,7 @@ class AssessorControllerTest extends AbstractEnMarcheWebCaseTest
         $this->assertCount(1, $this->getEmailRepository()->findMessages(AssessorRequestConfirmationMessage::class));
     }
 
-    /**
-     * @dataProvider provideFormValidation
-     */
+    #[DataProvider('provideFormValidation')]
     public function testAssessorRequestFormValidation(array $submittedValues, array $expectedErrors): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_REQUEST_PATH);
@@ -162,7 +160,7 @@ class AssessorControllerTest extends AbstractEnMarcheWebCaseTest
         }
     }
 
-    public function provideFormValidation(): \Generator
+    public static function provideFormValidation(): \Generator
     {
         yield 'Invalid French phone number' => [
             ['phone' => ['country' => 'FR', 'number' => '02']],

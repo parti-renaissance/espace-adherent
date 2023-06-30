@@ -86,54 +86,60 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             'getMailchimpId' => 456,
         ]));
 
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->withConsecutive(
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '3',
-                        'template_id' => 3,
-                        'subject_line' => '[Comité] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'StaticSegment',
-                                    'op' => 'static_is',
-                                    'field' => 'static_segment',
-                                    'value' => 456,
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
+        $series = [
+            ['POST', '/3.0/campaigns', ['json' => [
+                'type' => 'regular',
+                'settings' => [
+                    'folder_id' => '3',
+                    'template_id' => 3,
+                    'subject_line' => '[Comité] Subject',
+                    'title' => 'Full Name - '.date('d/m/Y'),
+                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'from_name' => 'Full Name | Renaissance',
+                ],
+                'recipients' => [
+                    'list_id' => 'main_list_id',
+                    'segment_opts' => [
+                        'match' => 'all',
+                        'conditions' => [
+                            [
+                                'condition_type' => 'StaticSegment',
+                                'op' => 'static_is',
+                                'field' => 'static_segment',
+                                'value' => 456,
+                            ],
+                            [
+                                'condition_type' => 'Interests',
+                                'op' => 'interestcontainsall',
+                                'field' => 'interests-C',
+                                'value' => [],
                             ],
                         ],
                     ],
-                ]]],
-                ['PUT', '/3.0/campaigns/123/content', ['json' => [
-                    'template' => [
-                        'id' => 3,
-                        'sections' => [
-                            'content' => 'Content',
-                            'committee_link' => '<a target="_blank" href="https://committee_url" title="Voir le comité">Committee name</a>',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                        ],
+                ],
+            ]]],
+            ['PUT', '/3.0/campaigns/123/content', ['json' => [
+                'template' => [
+                    'id' => 3,
+                    'sections' => [
+                        'content' => 'Content',
+                        'committee_link' => '<a target="_blank" href="https://committee_url" title="Voir le comité">Committee name</a>',
+                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                     ],
-                ]]]
-            )
-            ->willReturn($this->createMockResponse(json_encode(['id' => 123])))
+                ],
+            ]]],
+        ];
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs, $args);
+
+                return $this->createMockResponse(json_encode(['id' => 123]));
+            })
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -152,103 +158,104 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
         (new ReferentMailchimpCampaignHandler())->handle($message);
 
+        $series = [
+            ['POST', '/3.0/campaigns', ['json' => [
+                'type' => 'regular',
+                'settings' => [
+                    'folder_id' => '1',
+                    'template_id' => 1,
+                    'subject_line' => '[Référent] Subject',
+                    'title' => 'Full Name - '.date('d/m/Y').' - code1',
+                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'from_name' => 'Full Name | Renaissance',
+                ],
+                'recipients' => [
+                    'list_id' => 'main_list_id',
+                    'segment_opts' => [
+                        'match' => 'all',
+                        'conditions' => [
+                            [
+                                'condition_type' => 'StaticSegment',
+                                'op' => 'static_is',
+                                'field' => 'static_segment',
+                                'value' => 123,
+                            ],
+                            [
+                                'condition_type' => 'Interests',
+                                'op' => 'interestcontainsall',
+                                'field' => 'interests-C',
+                                'value' => [1],
+                            ],
+                        ],
+                    ],
+                ],
+            ]]],
+            ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
+                'template' => [
+                    'id' => 1,
+                    'sections' => [
+                        'content' => 'Content',
+                        'full_name' => 'Full Name',
+                        'first_name' => 'First Name',
+                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                    ],
+                ],
+            ]]],
+            ['POST', '/3.0/campaigns', ['json' => [
+                'type' => 'regular',
+                'settings' => [
+                    'folder_id' => '1',
+                    'template_id' => 1,
+                    'subject_line' => '[Référent] Subject',
+                    'title' => 'Full Name - '.date('d/m/Y').' - code2',
+                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'from_name' => 'Full Name | Renaissance',
+                ],
+                'recipients' => [
+                    'list_id' => 'main_list_id',
+                    'segment_opts' => [
+                        'match' => 'all',
+                        'conditions' => [
+                            [
+                                'condition_type' => 'StaticSegment',
+                                'op' => 'static_is',
+                                'field' => 'static_segment',
+                                'value' => 456,
+                            ],
+                            [
+                                'condition_type' => 'Interests',
+                                'op' => 'interestcontainsall',
+                                'field' => 'interests-C',
+                                'value' => [1],
+                            ],
+                        ],
+                    ],
+                ],
+            ]]],
+            ['PUT', '/3.0/campaigns/campaign_id2/content', ['json' => [
+                'template' => [
+                    'id' => 1,
+                    'sections' => [
+                        'content' => 'Content',
+                        'full_name' => 'Full Name',
+                        'first_name' => 'First Name',
+                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                    ],
+                ],
+            ]]],
+        ];
+
         $this->clientMock
             ->expects($this->exactly(4))
             ->method('request')
-            ->withConsecutive(
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '1',
-                        'template_id' => 1,
-                        'subject_line' => '[Référent] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'StaticSegment',
-                                    'op' => 'static_is',
-                                    'field' => 'static_segment',
-                                    'value' => 123,
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [1],
-                                ],
-                            ],
-                        ],
-                    ],
-                ]]],
-                ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
-                    'template' => [
-                        'id' => 1,
-                        'sections' => [
-                            'content' => 'Content',
-                            'first_name' => 'First Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'full_name' => 'Full Name',
-                        ],
-                    ],
-                ]]],
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '1',
-                        'template_id' => 1,
-                        'subject_line' => '[Référent] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y').' - code2',
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'StaticSegment',
-                                    'op' => 'static_is',
-                                    'field' => 'static_segment',
-                                    'value' => 456,
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [1],
-                                ],
-                            ],
-                        ],
-                    ],
-                ]]],
-                ['PUT', '/3.0/campaigns/campaign_id2/content', ['json' => [
-                    'template' => [
-                        'id' => 1,
-                        'sections' => [
-                            'content' => 'Content',
-                            'first_name' => 'First Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'full_name' => 'Full Name',
-                        ],
-                    ],
-                ]]]
-            )
-            ->willReturn(
-                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id2'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id2']))
-            )
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs, $args);
+
+                return $this->createMockResponse(json_encode(['id' => 'campaign_id'.(\count($series) > 1 ? '1' : '2')]));
+            })
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -262,56 +269,62 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
         (new AdherentZoneMailchimpCampaignHandler())->handle($message);
 
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->withConsecutive(
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '2',
-                        'template_id' => 2,
-                        'subject_line' => '[Délégué de circonscription] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'StaticSegment',
-                                    'op' => 'static_is',
-                                    'field' => 'static_segment',
-                                    'value' => 123,
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [7],
-                                ],
+        $series = [
+            ['POST', '/3.0/campaigns', ['json' => [
+                'type' => 'regular',
+                'settings' => [
+                    'folder_id' => '2',
+                    'template_id' => 2,
+                    'subject_line' => '[Délégué de circonscription] Subject',
+                    'title' => 'Full Name - '.date('d/m/Y').' - code1',
+                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'from_name' => 'Full Name | Renaissance',
+                ],
+                'recipients' => [
+                    'list_id' => 'main_list_id',
+                    'segment_opts' => [
+                        'match' => 'all',
+                        'conditions' => [
+                            [
+                                'condition_type' => 'StaticSegment',
+                                'op' => 'static_is',
+                                'field' => 'static_segment',
+                                'value' => 123,
+                            ],
+                            [
+                                'condition_type' => 'Interests',
+                                'op' => 'interestcontainsall',
+                                'field' => 'interests-C',
+                                'value' => [7],
                             ],
                         ],
                     ],
-                ]]],
-                ['PUT', '/3.0/campaigns/123/content', ['json' => [
-                    'template' => [
-                        'id' => 2,
-                        'sections' => [
-                            'content' => 'Content',
-                            'first_name' => 'First Name',
-                            'full_name' => 'Full Name',
-                            'district_name' => 'District1',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                        ],
+                ],
+            ]]],
+            ['PUT', '/3.0/campaigns/123/content', ['json' => [
+                'template' => [
+                    'id' => 2,
+                    'sections' => [
+                        'content' => 'Content',
+                        'full_name' => 'Full Name',
+                        'first_name' => 'First Name',
+                        'district_name' => 'District1',
+                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                     ],
-                ]]]
-            )
-            ->willReturn($this->createMockResponse(json_encode(['id' => 123])))
+                ],
+            ]]],
+        ];
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs, $args);
+
+                return $this->createMockResponse(json_encode(['id' => 123]));
+            })
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -329,67 +342,73 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
         (new AdherentZoneMailchimpCampaignHandler())->handle($message);
 
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->withConsecutive(
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '6',
-                        'template_id' => 6,
-                        'subject_line' => '[Sénateur] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontains',
-                                    'field' => 'interests-A',
-                                    'value' => [4],
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestnotcontains',
-                                    'field' => 'interests-A',
-                                    'value' => [3],
-                                ],
-                                [
-                                    'condition_type' => 'StaticSegment',
-                                    'op' => 'static_is',
-                                    'field' => 'static_segment',
-                                    'value' => 123,
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [8],
-                                ],
+        $series = [
+            ['POST', '/3.0/campaigns', ['json' => [
+                'type' => 'regular',
+                'settings' => [
+                    'folder_id' => '6',
+                    'template_id' => 6,
+                    'subject_line' => '[Sénateur] Subject',
+                    'title' => 'Full Name - '.date('d/m/Y').' - code1',
+                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'from_name' => 'Full Name | Renaissance',
+                ],
+                'recipients' => [
+                    'list_id' => 'main_list_id',
+                    'segment_opts' => [
+                        'match' => 'all',
+                        'conditions' => [
+                            [
+                                'condition_type' => 'Interests',
+                                'op' => 'interestcontains',
+                                'field' => 'interests-A',
+                                'value' => [4],
+                            ],
+                            [
+                                'condition_type' => 'Interests',
+                                'op' => 'interestnotcontains',
+                                'field' => 'interests-A',
+                                'value' => [3],
+                            ],
+                            [
+                                'condition_type' => 'StaticSegment',
+                                'op' => 'static_is',
+                                'field' => 'static_segment',
+                                'value' => 123,
+                            ],
+                            [
+                                'condition_type' => 'Interests',
+                                'op' => 'interestcontainsall',
+                                'field' => 'interests-C',
+                                'value' => [8],
                             ],
                         ],
                     ],
-                ]]],
-                ['PUT', '/3.0/campaigns/123/content', ['json' => [
-                    'template' => [
-                        'id' => 6,
-                        'sections' => [
-                            'content' => 'Content',
-                            'first_name' => 'First Name',
-                            'full_name' => 'Full Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                        ],
+                ],
+            ]]],
+            ['PUT', '/3.0/campaigns/123/content', ['json' => [
+                'template' => [
+                    'id' => 6,
+                    'sections' => [
+                        'content' => 'Content',
+                        'full_name' => 'Full Name',
+                        'first_name' => 'First Name',
+                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                     ],
-                ]]]
-            )
-            ->willReturn($this->createMockResponse(json_encode(['id' => 123])))
+                ],
+            ]]],
+        ];
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs, $args);
+
+                return $this->createMockResponse(json_encode(['id' => 123]));
+            })
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -402,57 +421,60 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
         (new GenericMailchimpCampaignHandler())->handle($message);
 
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->withConsecutive(
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'subject_line' => '[Candidat] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                        'template_id' => 7,
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'TextMerge',
-                                    'op' => 'contains',
-                                    'field' => 'ZONE_DPT',
-                                    'value' => ' (code1)',
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
+        $series = [
+            ['POST', '/3.0/campaigns', ['json' => [
+                'type' => 'regular',
+                'settings' => [
+                    'template_id' => 7,
+                    'subject_line' => '[Candidat] Subject',
+                    'title' => 'Full Name - '.date('d/m/Y'),
+                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'from_name' => 'Full Name | Renaissance',
+                ],
+                'recipients' => [
+                    'list_id' => 'main_list_id',
+                    'segment_opts' => [
+                        'match' => 'all',
+                        'conditions' => [
+                            [
+                                'condition_type' => 'TextMerge',
+                                'op' => 'contains',
+                                'field' => 'ZONE_DPT',
+                                'value' => ' (code1)',
+                            ],
+                            [
+                                'condition_type' => 'Interests',
+                                'op' => 'interestcontainsall',
+                                'field' => 'interests-C',
+                                'value' => [],
                             ],
                         ],
                     ],
-                ]]],
-                ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
-                    'template' => [
-                        'id' => 7,
-                        'sections' => [
-                            'content' => 'Content',
-                            'first_name' => 'First Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'full_name' => 'Full Name',
-                        ],
+                ],
+            ]]],
+            ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
+                'template' => [
+                    'id' => 7,
+                    'sections' => [
+                        'content' => 'Content',
+                        'full_name' => 'Full Name',
+                        'first_name' => 'First Name',
+                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                     ],
-                ]]],
-            )
-            ->willReturn(
-                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
-            )
+                ],
+            ]]],
+        ];
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs, $args);
+
+                return $this->createMockResponse(json_encode(['id' => 'campaign_id1']));
+            })
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -465,47 +487,50 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
         (new GenericMailchimpCampaignHandler())->handle($message);
 
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->withConsecutive(
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'subject_line' => 'Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                        'template_id' => 8,
-                    ],
-                    'recipients' => [
-                        'list_id' => 'jecoute_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'TextMerge',
-                                    'op' => 'is',
-                                    'field' => 'CODE_DPT',
-                                    'value' => 'code1',
-                                ],
+        $series = [
+            ['POST', '/3.0/campaigns', ['json' => [
+                'type' => 'regular',
+                'settings' => [
+                    'template_id' => 8,
+                    'subject_line' => 'Subject',
+                    'title' => 'Full Name - '.date('d/m/Y'),
+                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'from_name' => 'Full Name | Renaissance',
+                ],
+                'recipients' => [
+                    'list_id' => 'jecoute_list_id',
+                    'segment_opts' => [
+                        'match' => 'all',
+                        'conditions' => [
+                            [
+                                'condition_type' => 'TextMerge',
+                                'op' => 'is',
+                                'field' => 'CODE_DPT',
+                                'value' => 'code1',
                             ],
                         ],
                     ],
-                ]]],
-                ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
-                    'template' => [
-                        'id' => 8,
-                        'sections' => [
-                            'content' => 'Content',
-                        ],
+                ],
+            ]]],
+            ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
+                'template' => [
+                    'id' => 8,
+                    'sections' => [
+                        'content' => 'Content',
                     ],
-                ]]],
-            )
-            ->willReturn(
-                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
-            )
+                ],
+            ]]],
+        ];
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs, $args);
+
+                return $this->createMockResponse(json_encode(['id' => 'campaign_id1']));
+            })
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -524,58 +549,61 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
         (new GenericMailchimpCampaignHandler())->handle($message);
 
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->withConsecutive(
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'subject_line' => '✊ Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'contact@pourunecause.fr',
-                        'from_name' => 'Full Name',
-                        'template_id' => 9,
-                    ],
-                    'recipients' => [
-                        'list_id' => 'coalitions_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'StaticSegment',
-                                    'op' => 'static_is',
-                                    'field' => 'static_segment',
-                                    'value' => 123,
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-D',
-                                    'value' => [1],
-                                ],
+        $series = [
+            ['POST', '/3.0/campaigns', ['json' => [
+                'type' => 'regular',
+                'settings' => [
+                    'template_id' => 9,
+                    'subject_line' => '✊ Subject',
+                    'title' => 'Full Name - '.date('d/m/Y'),
+                    'reply_to' => 'contact@pourunecause.fr',
+                    'from_name' => 'Full Name',
+                ],
+                'recipients' => [
+                    'list_id' => 'coalitions_list_id',
+                    'segment_opts' => [
+                        'match' => 'all',
+                        'conditions' => [
+                            [
+                                'condition_type' => 'StaticSegment',
+                                'op' => 'static_is',
+                                'field' => 'static_segment',
+                                'value' => 123,
+                            ],
+                            [
+                                'condition_type' => 'Interests',
+                                'op' => 'interestcontainsall',
+                                'field' => 'interests-D',
+                                'value' => [1],
                             ],
                         ],
                     ],
-                ]]],
-                ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
-                    'template' => [
-                        'id' => 9,
-                        'sections' => [
-                            'content' => 'Content',
-                            'coalition_name' => 'Coalition name',
-                            'cause_name' => 'Cause name',
-                            'author_full_name' => 'Full Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre à Full Name</a>',
-                        ],
+                ],
+            ]]],
+            ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
+                'template' => [
+                    'id' => 9,
+                    'sections' => [
+                        'content' => 'Content',
+                        'coalition_name' => 'Coalition name',
+                        'cause_name' => 'Cause name',
+                        'author_full_name' => 'Full Name',
+                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre à Full Name</a>',
                     ],
-                ]]],
-            )
-            ->willReturn(
-                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
-                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
-            )
+                ],
+            ]]],
+        ];
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs, $args);
+
+                return $this->createMockResponse(json_encode(['id' => 'campaign_id1']));
+            })
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -588,44 +616,56 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
         (new GenericMailchimpCampaignHandler())->handle($message);
 
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->withConsecutive(
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'subject_line' => '[Correspondant] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'ne-pas-repondre@je-mengage.fr',
-                        'from_name' => 'First Name | Campagne 2022',
-                        'template_id' => 10,
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'TextMerge',
-                                    'op' => 'contains',
-                                    'field' => 'ZONE_DPT',
-                                    'value' => ' (code1)',
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [1],
-                                ],
+        $series = [
+            ['POST', '/3.0/campaigns', ['json' => [
+                'type' => 'regular',
+                'settings' => [
+                    'template_id' => 10,
+                    'subject_line' => '[Correspondant] Subject',
+                    'title' => 'Full Name - '.date('d/m/Y'),
+                    'reply_to' => 'ne-pas-repondre@je-mengage.fr',
+                    'from_name' => 'First Name | Campagne 2022',
+                ],
+                'recipients' => [
+                    'list_id' => 'main_list_id',
+                    'segment_opts' => [
+                        'match' => 'all',
+                        'conditions' => [
+                            [
+                                'condition_type' => 'TextMerge',
+                                'op' => 'contains',
+                                'field' => 'ZONE_DPT',
+                                'value' => ' (code1)',
+                            ],
+                            [
+                                'condition_type' => 'Interests',
+                                'op' => 'interestcontainsall',
+                                'field' => 'interests-C',
+                                'value' => [1],
                             ],
                         ],
                     ],
-                ]]],
-            )
-            ->willReturn(
-                $this->createMockResponse(json_encode(['id' => 'id1'])),
-            )
+                ],
+            ]]],
+            ['PUT', '/3.0/campaigns/id1/content', ['json' => [
+                'template' => [
+                    'id' => 10,
+                    'sections' => [
+                        'content' => 'Content',
+                    ],
+                ],
+            ]]],
+        ];
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs, $args);
+
+                return $this->createMockResponse(json_encode(['id' => 'id1']));
+            })
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -638,44 +678,56 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 
         (new GenericMailchimpCampaignHandler())->handle($message);
 
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->withConsecutive(
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'subject_line' => '[Coordinateur Régional] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
-                        'from_name' => 'Full Name | Renaissance',
-                        'template_id' => 11,
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'TextMerge',
-                                    'op' => 'contains',
-                                    'field' => 'ZONE_DPT',
-                                    'value' => ' (code1)',
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [1],
-                                ],
+        $series = [
+            ['POST', '/3.0/campaigns', ['json' => [
+                'type' => 'regular',
+                'settings' => [
+                    'template_id' => 11,
+                    'subject_line' => '[Coordinateur Régional] Subject',
+                    'title' => 'Full Name - '.date('d/m/Y'),
+                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'from_name' => 'Full Name | Renaissance',
+                ],
+                'recipients' => [
+                    'list_id' => 'main_list_id',
+                    'segment_opts' => [
+                        'match' => 'all',
+                        'conditions' => [
+                            [
+                                'condition_type' => 'TextMerge',
+                                'op' => 'contains',
+                                'field' => 'ZONE_DPT',
+                                'value' => ' (code1)',
+                            ],
+                            [
+                                'condition_type' => 'Interests',
+                                'op' => 'interestcontainsall',
+                                'field' => 'interests-C',
+                                'value' => [1],
                             ],
                         ],
                     ],
-                ]]],
-            )
-            ->willReturn(
-                $this->createMockResponse(json_encode(['id' => 'id1'])),
-            )
+                ],
+            ]]],
+            ['PUT', '/3.0/campaigns/id1/content', ['json' => [
+                'template' => [
+                    'id' => 11,
+                    'sections' => [
+                        'content' => 'Content',
+                    ],
+                ],
+            ]]],
+        ];
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(function (...$args) use (&$series) {
+                $expectedArgs = array_shift($series);
+                $this->assertSame($expectedArgs, $args);
+
+                return $this->createMockResponse(json_encode(['id' => 'id1']));
+            })
         ;
 
         $this->createHandler($message)($this->commandDummy);

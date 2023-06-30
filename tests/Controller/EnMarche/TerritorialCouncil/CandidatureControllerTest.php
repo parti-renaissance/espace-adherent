@@ -8,16 +8,15 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationAcceptedMessage;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationCreatedMessage;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationDeclinedMessage;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use PHPUnit\Framework\Attributes\Group;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Mandrill\MailAssertTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
 
-/**
- * @group functional
- * @group designation
- */
-class CandidatureControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('designation')]
+class CandidatureControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
     use MailAssertTrait;

@@ -57,11 +57,10 @@ class FacebookVideo
     /**
      * @ORM\Column(type="integer")
      */
-    private $position;
+    private $position = 1;
 
     public function __construct()
     {
-        $this->position = 1;
         $this->published = false;
     }
 

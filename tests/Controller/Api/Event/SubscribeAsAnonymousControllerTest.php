@@ -5,22 +5,22 @@ namespace Tests\App\Controller\Api\Event;
 use App\DataFixtures\ORM\LoadCauseEventData;
 use App\DataFixtures\ORM\LoadCoalitionEventData;
 use App\DataFixtures\ORM\LoadCommitteeEventData;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class SubscribeAsAnonymousControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class SubscribeAsAnonymousControllerTest extends AbstractApiTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;
 
-    /** @dataProvider provideEvents */
+    #[DataProvider('provideEvents')]
     public function testAnonymousCanSubscribeOnEvent(string $eventUuid, string $messageClass)
     {
         $this->client->request(Request::METHOD_POST, sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
@@ -43,7 +43,7 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiCaseTest
         $this->assertSame('Hey', $registration->getLastName());
     }
 
-    /** @dataProvider provideCancelledEvents */
+    #[DataProvider('provideCancelledEvents')]
     public function testAnonymousCannotSubscribeOnCancelledEvent(string $eventUuid, string $messageClass)
     {
         $this->client->request(Request::METHOD_POST, sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
@@ -56,7 +56,7 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiCaseTest
         $this->assertCountMails(0, $messageClass, 'j.hey@en-marche-dev.fr');
     }
 
-    /** @dataProvider providePrivateEvents */
+    #[DataProvider('providePrivateEvents')]
     public function testAnonymousCannotSubscribeOnPrivateEvent(string $eventUuid, string $messageClass)
     {
         $this->client->request(Request::METHOD_POST, sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
@@ -69,21 +69,21 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiCaseTest
         $this->assertCountMails(0, $messageClass, 'j.hey@en-marche-dev.fr');
     }
 
-    public function provideEvents(): iterable
+    public static function provideEvents(): iterable
     {
         yield [LoadCoalitionEventData::EVENT_1_UUID, 'CoalitionsEventRegistrationConfirmationMessage'];
         yield [LoadCauseEventData::EVENT_1_UUID, 'CoalitionsEventRegistrationConfirmationMessage'];
         yield [LoadCommitteeEventData::EVENT_1_UUID, 'EventRegistrationConfirmationMessage'];
     }
 
-    public function provideCancelledEvents(): iterable
+    public static function provideCancelledEvents(): iterable
     {
         yield [LoadCoalitionEventData::EVENT_6_UUID, 'CoalitionsEventRegistrationConfirmationMessage'];
         yield [LoadCauseEventData::EVENT_4_UUID, 'CoalitionsEventRegistrationConfirmationMessage'];
         yield [LoadCommitteeEventData::EVENT_6_UUID, 'EventRegistrationConfirmationMessage'];
     }
 
-    public function providePrivateEvents(): iterable
+    public static function providePrivateEvents(): iterable
     {
         yield [LoadCommitteeEventData::EVENT_3_UUID, 'EventRegistrationConfirmationMessage'];
     }

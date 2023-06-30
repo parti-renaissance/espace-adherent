@@ -7,16 +7,15 @@ use App\DataFixtures\ORM\LoadClientData;
 use App\Entity\Jecoute\Riposte;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractApiCaseTest;
+use Tests\App\AbstractApiTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group api
- */
-class GetRipostesControllerTest extends AbstractApiCaseTest
+#[Group('functional')]
+#[Group('api')]
+class GetRipostesControllerTest extends AbstractApiTestCase
 {
     use ApiControllerTestTrait;
     use ControllerTestTrait;

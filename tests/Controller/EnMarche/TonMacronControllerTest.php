@@ -11,16 +11,15 @@ use App\Repository\TonMacronFriendInvitationRepository;
 use App\TonMacron\InvitationProcessor;
 use App\TonMacron\InvitationProcessorHandler;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebCaseTest;
+use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-/**
- * @group functional
- * @group controller
- */
-class TonMacronControllerTest extends AbstractEnMarcheWebCaseTest
+#[Group('functional')]
+#[Group('controller')]
+class TonMacronControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 

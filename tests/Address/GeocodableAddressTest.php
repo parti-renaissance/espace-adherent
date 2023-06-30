@@ -4,11 +4,10 @@ namespace Tests\App\Address;
 
 use App\Address\Address;
 use App\Address\GeocodableAddress;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group address
- */
+#[Group('address')]
 class GeocodableAddressTest extends AbstractKernelTestCase
 {
     public function testCreateGeocodableAddressFromAddress()

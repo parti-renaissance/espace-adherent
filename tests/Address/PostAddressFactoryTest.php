@@ -5,11 +5,10 @@ namespace Tests\App\Address;
 use App\Address\Address;
 use App\Address\PostAddressFactory;
 use App\Entity\PostAddress;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group address
- */
+#[Group('address')]
 class PostAddressFactoryTest extends AbstractKernelTestCase
 {
     public function testCreateFrenchAddress()

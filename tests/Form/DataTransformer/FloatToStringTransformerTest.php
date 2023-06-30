@@ -3,28 +3,25 @@
 namespace Tests\App\Form\DataTransformer;
 
 use App\Form\DataTransformer\FloatToStringTransformer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class FloatToStringTransformerTest extends TestCase
 {
-    /**
-     * @dataProvider floatToString
-     */
+    #[DataProvider('floatToString')]
     public function testTransform($float, $string)
     {
         $this->assertSame($string, (new FloatToStringTransformer())->transform($float));
     }
 
-    /**
-     * @dataProvider floatToString
-     */
+    #[DataProvider('floatToString')]
     public function testReverseTransform($float, $string)
     {
         $this->assertSame($float, (new FloatToStringTransformer())->reverseTransform($string));
     }
 
-    public function floatToString(): array
+    public static function floatToString(): array
     {
         return [
             [0.1, '0.10'],
