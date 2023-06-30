@@ -43,6 +43,22 @@ class MyTeamMemberValidator extends ConstraintValidator
             return;
         }
 
+        $currentUser = $scope->getCurrentUser();
+        $delegator = $scope->getDelegator();
+
+        if (
+            ($currentUser && $value->equals($currentUser))
+            || ($delegator && $value->equals($delegator))
+        ) {
+            $this
+                ->context
+                ->buildViolation($constraint->messageCurrentUser)
+                ->addViolation()
+            ;
+
+            return;
+        }
+
         if (!$this->zoneRepository->isInZones($value->getZones()->toArray(), $zones)) {
             $this
                 ->context
