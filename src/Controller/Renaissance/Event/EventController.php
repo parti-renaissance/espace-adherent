@@ -2,6 +2,8 @@
 
 namespace App\Controller\Renaissance\Event;
 
+use App\Contact\ContactMessage;
+use App\Contact\ContactMessageHandler;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Geo\Zone;
@@ -11,6 +13,7 @@ use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
 use App\Event\EventRegistrationManager;
 use App\Event\ListFilter;
+use App\Form\ContactMessageType;
 use App\Form\EventFilterType;
 use App\Form\EventInvitationType;
 use App\Repository\Event\BaseEventRepository;
@@ -19,6 +22,7 @@ use App\Serializer\Encoder\ICalEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -195,5 +199,42 @@ class EventController extends AbstractController
         $response->headers->set('Content-Disposition', $disposition);
 
         return $response;
+    }
+
+    #[Route(path: '/{slug}/contact', name: '_contact_organizer', methods: ['GET', 'POST'])]
+    #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
+    public function contactAction(
+        Request $request,
+        BaseEvent $event,
+        ContactMessageHandler $handler
+    ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+        $message = ContactMessage::createWithCaptcha(
+            $adherent,
+            $event->getOrganizer(),
+            $request->request->get('frc-captcha-solution')
+        );
+
+        $form = $this
+            ->createForm(ContactMessageType::class, $message, ['validation_groups' => ['Default', 're_event_contact_organizer']])
+            ->add('invite', SubmitType::class, [
+                'label' => 'Envoyer',
+                'attr' => ['class' => 'btn btn--blue'],
+            ])
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $handler->handle($message, true);
+            $this->addFlash('success', 'adherent.contact.success');
+
+            return $this->redirectToRoute('app_renaissance_event_show', ['slug' => $event->getSlug()]);
+        }
+
+        return $this->render('renaissance/adherent/events/contact.html.twig', [
+            'event' => $event,
+            'form' => $form->createView(),
+        ]);
     }
 }

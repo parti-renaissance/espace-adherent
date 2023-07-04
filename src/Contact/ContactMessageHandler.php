@@ -4,6 +4,7 @@ namespace App\Contact;
 
 use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentContactMessage;
+use App\Mailer\Message\Renaissance\RenaissanceAdherentContactMessage;
 
 class ContactMessageHandler
 {
@@ -14,8 +15,10 @@ class ContactMessageHandler
         $this->mailer = $transactionalMailer;
     }
 
-    public function handle(ContactMessage $contactMessage)
+    public function handle(ContactMessage $contactMessage, bool $fromRenaissance = false): void
     {
-        $this->mailer->sendMessage(AdherentContactMessage::createFromModel($contactMessage));
+        $fromRenaissance
+            ? $this->mailer->sendMessage(RenaissanceAdherentContactMessage::createFromModel($contactMessage))
+            : $this->mailer->sendMessage(AdherentContactMessage::createFromModel($contactMessage));
     }
 }

@@ -1,0 +1,88 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% form_theme form 'renaissance/forms/form_theme_profile.html.twig' %}
+
+{% block page_title 'Contacter l\'organisateur' %}
+
+{% block final_javascripts %}
+    <script type="module" src="{{ asset('js/friendly-challenge.widget.module.min.js') }}" async defer></script>
+{% endblock %}
+
+{% block content_right_side %}
+    <section class="isolate relative">
+        <a href="{{ path('app_renaissance_event_show', { slug: event.slug }) }}" class="inline-flex items-center text-sm leading-10 text-re-blue-500 hover:text-re-blue-400">
+            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+            </svg>
+            Retourner à l'évènement
+        </a>
+
+        <div class="mt-4 bg-white rounded-lg p-5 md:p-6 shadow overflow-hidden">
+            <div>
+                <span class="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-ms font-medium text-gray-900 ring-1 ring-inset ring-gray-200">
+                    <svg class="h-1.5 w-1.5 fill-teal-600" viewBox="0 0 6 6" aria-hidden="true">
+                        <circle cx="3" cy="3" r="3" />
+                    </svg>
+                    {{ event.categoryName }}
+                </span>
+                <h2 class="text-2xl font-medium text-gray-900 lg:text-3xl tracking-tighter">
+                    {{- event.name -}}
+                </h2>
+            </div>
+            <div class="mt-4 space-y-8 divide-y divide-gray-200">
+                <div class="text-sm leading-5 text-gray-500">
+                    <p class="flex items-center flex-wrap">
+                        {% include 'icons/user.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
+                        <span>
+                            {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
+                                Par le comité <span class="font-medium text-gray-700">{{ event.committee.name }}</span>
+                            {% elseif event is instanceof('App\\Entity\\Event\\CauseEvent') and event.cause %}
+                                Par <span class="font-medium text-gray-700">{{ event.cause.name }}</span>
+                            {% elseif event is instanceof('App\\Entity\\Event\\CoalitionEvent') and event.coalition %}
+                                Par <span class="font-medium text-gray-700">{{ event.coalition.name }}</span>
+                            {% elseif event.organizer %}
+                                Par <span class="font-medium text-gray-700">{{ event.organizer.fullName }}</span>
+                            {% endif %}
+                        </span>
+                    </p>
+                    <p class="mt-2 flex items-center">
+                        {% include 'icons/calendar.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
+                        <span>
+                            {{- event.beginAt|format_datetime('full', 'none')|capitalize }}, {{ event.beginAt|date('G\\hi') -}}{{ event.timeZone|utc_offset }}
+                        </span>
+                    </p>
+                    <p class="mt-2 flex items-center">
+                        {% include 'icons/map.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
+                        <span>
+                            {{ event.postAddress.inlineFormattedAddress }}
+                        </span>
+                    </p>
+                </div>
+
+                <div class="pt-8">
+                    <h3 class="text-xl font-medium leading-6 text-gray-900 uppercase tracking-wider">{{ 'Contacter ' ~ event.organizer.fullName }}</h3>
+
+                    <div>
+                        {{ form_start(form, {attr: {class: 'form'}}) }}
+                        <div class="space-y-5 mb-10">
+                            <div class="space-y-4">
+                                <div class="em-form__group">
+                                    {{ form_errors(form) }}
+                                </div>
+                            </div>
+                            <div class="space-y-8">
+                                <div>
+                                    {{ form_row(form.content, { label: 'Contenu du message', attr: { rows: 4, placeholder: 'Entrez le message que vous souhaitez envoyer à ' ~ event.organizer.fullName}}) }}
+                                </div>
+                                {% include 'renaissance/partials/friendly-captcha.html.twig' with { justify_class: 'justify-between' } %}
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+

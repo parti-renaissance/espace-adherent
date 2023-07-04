@@ -9,7 +9,8 @@ use App\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertRecaptcha
+ * @AssertRecaptcha(groups={"em_event_contact_organizer"})
+ * @AssertRecaptcha(api="friendly_captcha", groups={"re_event_contact_organizer"})
  */
 class ContactMessage implements RecaptchaChallengeInterface
 {
@@ -37,9 +38,9 @@ class ContactMessage implements RecaptchaChallengeInterface
     }
 
     public static function createWithCaptcha(
-        string $recaptcha,
         Adherent $from,
         Adherent $to,
+        string $recaptcha = null,
         string $content = null
     ): self {
         $message = new self($from, $to, $content);
