@@ -163,7 +163,7 @@ class FranceCitiesBundle
     public static function getCountryISOCode(string $postalCode)
     {
         foreach (self::$countries as $prefix => $country) {
-            if (str_starts_with($postalCode, (string) $prefix)) {
+            if (str_starts_with($postalCode, $prefix)) {
                 return $country;
             }
         }
@@ -236,9 +236,11 @@ class FranceCitiesBundle
         '974' => 'RE', // Réunion
         '975' => 'PM', // Saint-Pierre-et-Miquelon
         '976' => 'YT', // Mayotte
+        '977' => 'BL', // Saint-Barthélemy
+        '978' => 'MF', // Saint-Martin
         '986' => 'WF', // Wallis-et-Futuna
         '987' => 'PF', // Polynésie
-        '988' => 'NC', // Nouvelle Calédonie
+        '988' => 'NC', // Nouvelle-Calédonie
     ];
 
     public static $cities = [

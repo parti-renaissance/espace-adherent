@@ -52,6 +52,7 @@ trait EntityIdentityTrait
      *     "riposte_read",
      *     "audience_segment_read",
      *     "adherent_message_update_filter",
+     *     "message_read_content",
      *     "phoning_campaign_call_read",
      *     "phoning_campaign_history_read",
      *     "phoning_campaign_read",
