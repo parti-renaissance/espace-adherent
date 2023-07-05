@@ -192,9 +192,9 @@ class AdherentController extends AbstractController
             throw new BadUuidRequestException($e);
         }
 
-        $message = ContactMessage::createWithCaptcha((string) $request->request->get('g-recaptcha-response'), $this->getUser(), $adherent);
+        $message = ContactMessage::createWithCaptcha($this->getUser(), $adherent, $request->request->get('g-recaptcha-response'));
 
-        $form = $this->createForm(ContactMessageType::class, $message);
+        $form = $this->createForm(ContactMessageType::class, $message, ['validation_groups' => ['Default', 'em_event_contact_organizer']]);
 
         try {
             $form->handleRequest($request);
