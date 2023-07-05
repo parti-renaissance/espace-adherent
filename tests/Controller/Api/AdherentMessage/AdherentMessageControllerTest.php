@@ -59,6 +59,7 @@ class AdherentMessageControllerTest extends AbstractApiTestCase
         $data = json_decode($response->getContent(), true);
 
         self::assertSame([
+            'uuid' => $uuid,
             'json_content' => '{"foo": "bar", "items": [1, 2, true, "hello world"]}',
             'subject' => 'L\'objet du mail',
             'content' => '<table>...</table>',
