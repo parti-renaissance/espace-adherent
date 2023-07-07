@@ -138,6 +138,14 @@
     <span class="label label-default">Utilisateur</span>
 {% endif %}
 
+{% if object.isTerritoireProgresMembership %}
+    <span class="label label-primary">Militant TDP</span>
+{% endif %}
+
+{% if object.isAgirMembership %}
+    <span class="label label-primary">Militant AGIR</span>
+{% endif %}
+
 
 {% if object.hasPrintPrivilege %}
     <span title="Accès LMI">&nbsp;🖨</span>
