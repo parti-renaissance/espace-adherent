@@ -110,7 +110,12 @@ trait EntityPostAddressTrait
         $this->postAddress->updateCoordinates($coordinates);
     }
 
-    public function getGeolocalisation()
+    public function resetCoordinates(): void
+    {
+        $this->postAddress->resetCoordinates();
+    }
+
+    public function getGeolocalisation(): array
     {
         return [
             'lng' => $this->getLongitude(),
