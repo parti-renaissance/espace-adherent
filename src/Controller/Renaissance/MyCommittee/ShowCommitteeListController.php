@@ -20,12 +20,12 @@ class ShowCommitteeListController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if (!$adherent->isRenaissanceUser() || $adherent->isForeignResident()) {
+        if (!$adherent->isRenaissanceUser() || ($adherent->isForeignResident() && !$this->isGranted('ROLE_PREVIOUS_ADMIN'))) {
             return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         return $this->render('renaissance/adherent/my_committee/show_committees_list.html.twig', [
-            'committees' => $committeeRepository->findInZones(!$adherent->isForeignResident() ? $adherent->getParentZonesOfType(Zone::DEPARTMENT) : $adherent->getZonesOfType(Zone::COUNTRY)),
+            'committees' => $committeeRepository->findInZones($adherent->isForeignResident() ? $adherent->getZonesOfType(Zone::COUNTRY) : $adherent->getParentZonesOfType(Zone::DEPARTMENT)),
         ]);
     }
 }
