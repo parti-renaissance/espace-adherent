@@ -187,7 +187,7 @@ jobs:
         run: make tfp
 
       - env:
-          PHPUNIT_ARGS: -v --log-junit ./phpunit/junit.xml
+          PHPUNIT_ARGS: --log-junit ./phpunit/junit.xml
         run: |-
           make test-phpunit
 
