@@ -11,7 +11,7 @@ PHPCSFIXER?=$(EXEC) php -d memory_limit=1024m vendor/bin/php-cs-fixer
 BEHAT=$(EXEC) vendor/bin/behat
 BEHAT_ARGS?=-vvv
 PHPUNIT=$(EXEC) vendor/bin/phpunit
-PHPUNIT_ARGS?=-v
+PHPUNIT_ARGS?=
 DOCKER_FILES=$(shell find ./docker/ -type f -name '*')
 CONTAINERS?=
 
