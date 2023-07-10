@@ -261,6 +261,11 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         $this->longitude = $coordinates->getLongitude();
     }
 
+    public function resetCoordinates(): void
+    {
+        $this->latitude = $this->longitude = null;
+    }
+
     public function getGeocodableAddress(): string
     {
         return (string) GeocodableAddress::createFromAddress($this);
