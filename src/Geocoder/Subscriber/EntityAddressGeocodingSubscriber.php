@@ -33,11 +33,13 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
             if ($coordinates = $this->geocode($address)) {
                 $geocodable->updateCoordinates($coordinates);
                 $geocodable->setGeocodableHash($hash);
-
-                $this->manager->flush();
-
-                return true;
+            } else {
+                $geocodable->resetCoordinates();
             }
+
+            $this->manager->flush();
+
+            return true;
         }
 
         return false;

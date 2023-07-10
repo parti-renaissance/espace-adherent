@@ -10,6 +10,8 @@ interface GeoPointInterface extends GeocodableInterface
      */
     public function updateCoordinates(Coordinates $coordinates): void;
 
+    public function resetCoordinates(): void;
+
     /**
      * Returns the longitude.
      *

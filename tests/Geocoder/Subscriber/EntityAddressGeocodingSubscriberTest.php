@@ -47,7 +47,6 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
 
-        $this->manager->expects($this->never())->method('flush');
         $this->subscriber->updateCoordinates(new AdherentAccountWasCreatedEvent($adherent));
 
         $this->assertNull($adherent->getLatitude());
@@ -109,7 +108,6 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $this->assertNull($committee->getLatitude());
         $this->assertNull($committee->getLongitude());
 
-        $this->manager->expects($this->never())->method('flush');
         $this->subscriber->updateCoordinates(new CommitteeEvent($committee));
 
         $this->assertNull($committee->getLatitude());

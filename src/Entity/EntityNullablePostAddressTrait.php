@@ -92,7 +92,14 @@ trait EntityNullablePostAddressTrait
         }
     }
 
-    public function getGeolocalisation()
+    public function resetCoordinates(): void
+    {
+        if ($this->postAddress) {
+            $this->postAddress->resetCoordinates();
+        }
+    }
+
+    public function getGeolocalisation(): array
     {
         return [
             'lng' => $this->getLongitude(),
