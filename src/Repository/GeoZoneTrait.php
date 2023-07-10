@@ -78,7 +78,7 @@ trait GeoZoneTrait
 
             if ($parents) {
                 if (!\in_array($zoneParentAlias, $queryBuilder->getAllAliases(), true)) {
-                    $zoneQueryBuilder->innerJoin($zoneRelationAlias.'.parents', $zoneParentAlias);
+                    $zoneQueryBuilder->leftJoin($zoneRelationAlias.'.parents', $zoneParentAlias);
                 }
 
                 $orX->add(sprintf('%s IN (:%s_zone_parent_ids)', $zoneParentAlias, $zoneRelationAlias));
