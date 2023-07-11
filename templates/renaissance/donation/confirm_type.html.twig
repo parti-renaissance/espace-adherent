@@ -15,7 +15,7 @@
         </h2>
         {{ form_start(form) }}
             <div class="mb-5">
-                <h2 class="text-lg">vous faites un don de : <span class="font-bold"> {{ donation.amount|format_currency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('App\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</span></h2>
+                <h2 class="text-lg">vous faites un don de : <span class="font-bold"> {{ donation.amount|format_currency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</span></h2>
             </div>
 
             {{ form_errors(form) }}
