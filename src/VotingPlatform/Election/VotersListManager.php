@@ -37,11 +37,15 @@ class VotersListManager
 
     public function removeFromCommitteeElection(Adherent $adherent, Committee $committee): void
     {
-        if (!$election = $this->electionRepository->findOneForCommittee($committee, $committee->getCurrentDesignation())) {
+        if (!$designation = $committee->getCurrentDesignation()) {
             return;
         }
 
-        if ($election->isVotePeriodActive()) {
+        if (!$election = $this->electionRepository->findOneForCommittee($committee, $designation)) {
+            return;
+        }
+
+        if (!$election->isOpen() || $election->isVotePeriodActive()) {
             return;
         }
 
@@ -59,11 +63,15 @@ class VotersListManager
 
     public function addToCommitteeElection(Adherent $adherent, Committee $committee): void
     {
-        if (!$election = $this->electionRepository->findOneForCommittee($committee, $committee->getCurrentDesignation())) {
+        if (!$designation = $committee->getCurrentDesignation()) {
             return;
         }
 
-        if ($election->isVotePeriodActive()) {
+        if (!$election = $this->electionRepository->findOneForCommittee($committee, $designation)) {
+            return;
+        }
+
+        if (!$election->isOpen() || $election->isVotePeriodActive()) {
             return;
         }
 
