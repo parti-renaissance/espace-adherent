@@ -69,7 +69,7 @@ class ManagedUsersExporter
                         'Code postal' => $managedUser->getPostalCode(),
                         'Pays' => $managedUser->getCountry(),
                         'Adhésion le' => $managedUser->getCreatedAt()->format('d/m/Y H:i'),
-                        'Comités' => $managedUser->getCommitteesAsString(),
+                        'Comité' => $managedUser->getCommittee(),
                     ];
                 };
         }
