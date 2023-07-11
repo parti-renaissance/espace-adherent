@@ -677,7 +677,7 @@ Feature:
                     "europe",
                     "numerique"
                 ],
-                "tags": [],
+                "tags": ["new_adherent", "old_adherent_em", "donator_n", "donator_n-x"],
                 "city_code": "75056",
                 "phone_number": null,
                 "nationality": null,
@@ -706,7 +706,7 @@ Feature:
                     "numerique",
                     "sante"
                 ],
-                "tags": [],
+                "tags": ["new_adherent", "donator_n-x"],
                 "city_code": "75056",
                 "phone_number": "+33 1 87 26 42 36",
                 "nationality": "FR",
@@ -751,7 +751,7 @@ Feature:
                     "numerique",
                     "sante"
                 ],
-                "tags": [],
+                "tags": ["new_adherent", "donator_n-x"],
                 "city_code": "75056",
                 "phone_number": "+33 1 87 26 42 36",
                 "nationality": "FR",
