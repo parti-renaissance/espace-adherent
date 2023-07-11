@@ -43,7 +43,7 @@ abstract class AbstractManagedUsersController extends AbstractController
         }
 
         if ('html' !== $_format) {
-            return $exporter->getResponse($_format, $filter, $this->getSpaceType());
+            return $exporter->getResponse($_format, $filter);
         }
 
         $users = $this->managedUsersRepository->searchByFilter($filter, $request->query->getInt('page', 1));
