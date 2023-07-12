@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\ScopeVisibilityFilter;
+use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityAdministratorBlameableInterface;
@@ -17,6 +18,8 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\PositionTrait;
 use App\Validator\AdherentFormation\FormationContent;
 use App\Validator\Scope\ScopeVisibility;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -221,9 +224,18 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      */
     private bool $valid = false;
 
+    /**
+     * @var Collection|Adherent[]
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinTable(name="adherent_formation_print_by_adherents")
+     */
+    private Collection $printByAdherents;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->printByAdherents = new ArrayCollection();
     }
 
     public function __toString()
@@ -334,5 +346,37 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     public function incrementPrintCount(): void
     {
         ++$this->printCount;
+    }
+
+    /**
+     * @return Collection|Adherent[]
+     */
+    public function getPrintByAdherents(): Collection
+    {
+        return $this->printByAdherents;
+    }
+
+    public function setPrintByAdherents(Collection $printByAdherents): void
+    {
+        $this->printByAdherents = $printByAdherents;
+    }
+
+    public function addPrintByAdherent(Adherent $adherent): void
+    {
+        if (!$this->printByAdherents->contains($adherent)) {
+            $this->printByAdherents->add($adherent);
+        }
+    }
+
+    public function removePrintByAdherent(Adherent $adherent): void
+    {
+        if ($this->printByAdherents->contains($adherent)) {
+            $this->printByAdherents->removeElement($adherent);
+        }
+    }
+
+    public function hasPrintByAdherent(Adherent $adherent): bool
+    {
+        return $this->printByAdherents->contains($adherent);
     }
 }
