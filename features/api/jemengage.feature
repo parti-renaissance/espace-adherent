@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to see some Jemengage endpoints
   As a user

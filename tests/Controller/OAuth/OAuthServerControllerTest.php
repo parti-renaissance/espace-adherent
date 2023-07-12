@@ -291,7 +291,7 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
         $this->isSuccessful($response = $this->client->getResponse());
         static::assertSame('application/json', $response->headers->get('Content-Type'));
 
-        $data = \GuzzleHttp\json_decode($response->getContent(), true);
+        $data = json_decode($response->getContent(), true);
 
         $expected = [
             'uuid' => 'e6977a4d-2646-5f6c-9c82-88e58dca8458',

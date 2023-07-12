@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to manage general meeting reports
   As a logged-in user

@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to display articles on legislative websites
   As a software developer

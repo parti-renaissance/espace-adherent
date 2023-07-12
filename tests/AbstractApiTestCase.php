@@ -2,7 +2,7 @@
 
 namespace Tests\App;
 
-abstract class AbstractApiTestCase extends AbstractEnMarcheWebTestCase
+abstract class AbstractApiTestCase extends AbstractRenaissanceWebTestCase
 {
     protected function setUp(): void
     {

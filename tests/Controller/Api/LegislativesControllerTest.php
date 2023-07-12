@@ -26,7 +26,7 @@ class LegislativesControllerTest extends AbstractApiTestCase
         $this->assertJson($content);
 
         // Check the payload
-        $this->assertSame(1, \count(\GuzzleHttp\json_decode($content, true)));
+        $this->assertSame(1, \count(json_decode($content, true)));
         $this->assertEachJsonItemContainsKey('id', $content);
         $this->assertEachJsonItemContainsKey('name', $content);
         $this->assertEachJsonItemContainsKey('district', $content);

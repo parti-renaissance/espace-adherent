@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to see causes
   As a non logged-in user
@@ -538,7 +539,6 @@ Feature:
     """
 
   Scenario Outline: As a non logged-in user I can not follow/unfollow a cause as an adherent
-    Given I add "Accept" header equal to "application/json"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 401
     Examples:

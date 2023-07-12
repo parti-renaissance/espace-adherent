@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to get all news
   With a valid oauth token

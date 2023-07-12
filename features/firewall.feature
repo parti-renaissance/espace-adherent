@@ -32,6 +32,7 @@ Feature:
       | /espace-adherent/accueil      |
       | /espace-referent/utilisateurs |
 
+  @renaissance
   Scenario Outline: As an anonymous user I can not view non-secured API pages
     Given I am on "<uri>"
     Then the response status code should be 401

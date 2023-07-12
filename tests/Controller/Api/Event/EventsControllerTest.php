@@ -63,7 +63,7 @@ class EventsControllerTest extends AbstractApiTestCase
         $this->assertJson($content);
 
         // Check the payload
-        $this->assertCount($expectedCount, \GuzzleHttp\json_decode($content, true));
+        $this->assertCount($expectedCount, json_decode($content, true));
         $this->assertEachJsonItemContainsKey('uuid', $content);
         $this->assertEachJsonItemContainsKey('slug', $content);
         $this->assertEachJsonItemContainsKey('name', $content);

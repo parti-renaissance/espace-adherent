@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to upload documents
   With a valid oauth token
@@ -37,7 +38,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "url": "http://test.enmarche.code/documents-partages/@uuid@/upload",
+        "url": "http://test.renaissance.code/documents-partages/@uuid@/upload",
         "message": "Le document a été téléchargé avec succès."
     }
     """

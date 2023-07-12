@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to see coalition events
   As a non logged-in user
@@ -8,7 +9,6 @@ Feature:
     Given I freeze the clock to "2018-05-18"
 
   Scenario: As a non logged-in user I see coalition events
-    Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/coalitions/d5289058-2a35-4cf0-8f2f-a683d97d8315/events"
     Then the response status code should be 200
     And the response should be in JSON
@@ -510,7 +510,6 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can paginate coalition events
-    Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/coalitions/d5289058-2a35-4cf0-8f2f-a683d97d8315/events?page=2"
     Then the response status code should be 200
     And the response should be in JSON
@@ -529,7 +528,6 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can paginate coalition events and change number events by page
-    Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/coalitions/d5289058-2a35-4cf0-8f2f-a683d97d8315/events?page=2&page_size=5"
     Then the response status code should be 200
     And the response should be in JSON
@@ -1510,7 +1508,6 @@ Feature:
     """
 
   Scenario: As a non logged-in user I see cause events
-    Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/events"
     Then the response status code should be 200
     And the response should be in JSON
@@ -1624,7 +1621,6 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can see cancelled event
-    Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/events/2f36a0b9-ac1d-4bee-b9ef-525bc89a7c8e"
     Then the response status code should be 200
     And the response should be in JSON

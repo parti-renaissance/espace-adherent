@@ -153,7 +153,7 @@ class FormControllerTest extends AbstractApiTestCase
 
         static::assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         static::assertJson($this->client->getResponse()->getContent());
-        $result = \GuzzleHttp\json_decode($this->client->getResponse()->getContent(), true);
+        $result = json_decode($this->client->getResponse()->getContent(), true);
 
         static::assertArrayValues($expectedResult, $result);
     }

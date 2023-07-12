@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to see my teams
   As a logged-in user

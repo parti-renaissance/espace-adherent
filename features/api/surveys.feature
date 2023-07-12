@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to get all surveys
   As a non logged-in user
@@ -373,7 +374,6 @@ Feature:
 
   Scenario: As a logged-in user I can reply to a national survey (new body structure)
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
@@ -442,7 +442,6 @@ Feature:
 
   Scenario Outline: As a logged-in user I can reply to a national survey
     Given I am logged with "<email>" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
@@ -514,7 +513,6 @@ Feature:
 
   Scenario: As a logged-in user I can reply to a national survey without agreeing to join
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
@@ -559,7 +557,6 @@ Feature:
 
   Scenario: As a logged-in user I can reply to a local survey
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
@@ -633,7 +630,6 @@ Feature:
 
   Scenario: As a logged-in user I cannot reply to a local survey with errors
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
@@ -712,7 +708,6 @@ Feature:
 
   Scenario: As a logged-in user I cannot reply to a local survey with errors (new body structure)
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
@@ -787,7 +782,6 @@ Feature:
 
   Scenario: As a logged-in user I can reply to a local survey with custom validations errors
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {

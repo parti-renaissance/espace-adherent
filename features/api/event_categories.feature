@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to see event categories
   As a logged-in user

@@ -106,12 +106,15 @@ app_documents:
 # API
 #
 app_api:
-    host:     "%app_host%"
+    host:     "{app_domain}"
     resource: "../src/Controller/Api"
     type:     "annotation"
     prefix:   "%api_path_prefix%"
     defaults:
         _format: 'json'
+        app_domain: "%renaissance_host%"
+    requirements:
+        app_domain: "%app_host%|%renaissance_host%"
 
 api_login_check:
     path: "%api_path_prefix%/login_check"
@@ -140,7 +143,7 @@ app_legislatives_api:
         _format: 'json'
         app_domain: "%legislatives_host%"
     requirements:
-        app_domain: "%app_host%|%legislatives_host%"
+        app_domain: "%app_host%|%legislatives_host%|%renaissance_host%"
 
 #
 # OAuth
@@ -262,7 +265,7 @@ app_legislative_avecvous:
 
 app_api_intl:
     host: "{app_domain}"
-    prefix: "/api/"
+    prefix: "%api_path_prefix%"
     resource: "../src/Controller/IntlController.php"
     type: "annotation"
     defaults:
@@ -315,7 +318,7 @@ renaissance_qr_code:
 
 app_api_form_validation:
     host: "{app_domain}"
-    prefix: "/api/"
+    prefix: "%api_path_prefix%"
     resource: "../src/Controller/Api/FormController.php"
     type: "annotation"
     defaults:
@@ -335,7 +338,7 @@ app_api_resubscribe_email:
 
 app_api_user_show_me:
     host: "{app_domain}"
-    path: '/api/users/me'
+    path: '%api_path_prefix%/users/me'
     methods: GET
     controller: App\Controller\Api\UserController::showMe
     defaults:

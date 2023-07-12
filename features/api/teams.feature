@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to see teams
   As a logged-in user
@@ -662,8 +663,6 @@ Feature:
 
   Scenario: As a user granted with team feature, I should see validation errors when trying to add an adherent to a team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    And I add "Content-Type" header equal to "application/json"
-
     # Empty request
     When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager"
     Then the response status code should be 400

@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
     I should be able to create and send statutory message
 
