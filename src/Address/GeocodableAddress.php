@@ -21,11 +21,14 @@ final class GeocodableAddress
 
     public static function createFromAddress(AddressInterface $address): self
     {
+        $countryCode = (string) $address->getCountry();
+        $country = FranceCitiesBundle::DROM_COM[$countryCode] ?? $countryCode;
+
         return new self(
             (string) $address->getAddress(),
             (string) $address->getPostalCode(),
             (string) $address->getCityName(),
-            (string) $address->getCountry()
+            $country
         );
     }
 

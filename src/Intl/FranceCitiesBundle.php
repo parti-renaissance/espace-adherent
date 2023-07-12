@@ -243,6 +243,20 @@ class FranceCitiesBundle
         '988' => 'NC', // Nouvelle-Calédonie
     ];
 
+    public const DROM_COM = [
+        'GP' => 'Guadeloupe',
+        'MQ' => 'Martinique',
+        'GF' => 'Guyane',
+        'RE' => 'Réunion',
+        'PM' => 'Saint-Pierre-et-Miquelon',
+        'YT' => 'Mayotte',
+        'BL' => 'Saint-Barthélemy',
+        'MF' => 'Saint-Martin',
+        'WF' => 'Wallis-et-Futuna',
+        'PF' => 'Polynésie',
+        'NC' => 'Nouvelle-Calédonie',
+    ];
+
     public static $cities = [
             '01000' => [
                 '1053' => 'Bourg-en-Bresse',
