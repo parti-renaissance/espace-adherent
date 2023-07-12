@@ -34,6 +34,7 @@ class TransactionSubscriberTest extends AbstractEnMarcheWebTestCase
         static::assertNull($this->transactionRepository->findByPayboxTransactionId($transactionId));
         $params = $this->createPayload($transactionId);
 
+        $this->makeRenaissanceClient();
         $this->client->request(Request::METHOD_POST, '/don/payment-ipn/1528114726', $params);
 
         static::assertSame('OK', $this->client->getResponse()->getContent());
