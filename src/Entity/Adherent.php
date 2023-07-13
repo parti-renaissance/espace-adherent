@@ -21,6 +21,9 @@ use App\Entity\BoardMember\BoardMember;
 use App\Entity\Campus\Registration;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
+use App\Entity\Contribution\Contribution;
+use App\Entity\Contribution\Payment;
+use App\Entity\Contribution\RevenueDeclaration;
 use App\Entity\Filesystem\FilePermissionEnum;
 use App\Entity\Geo\Zone;
 use App\Entity\Instance\AdherentInstanceQuality;
@@ -833,6 +836,57 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private Collection $campusRegistrations;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $contributionStatus = null;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTime $contributedAt = null;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Contribution\Contribution")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private ?Contribution $lastContribution = null;
+
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Contribution\Contribution",
+     *     mappedBy="adherent",
+     *     cascade={"all"},
+     *     orphanRemoval=true,
+     *     fetch="EXTRA_LAZY"
+     * )
+     */
+    private Collection $contributions;
+
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Contribution\Payment",
+     *     mappedBy="adherent",
+     *     cascade={"all"},
+     *     orphanRemoval=true,
+     *     fetch="EXTRA_LAZY"
+     * )
+     * @ORM\OrderBy({"date": "DESC"})
+     */
+    private Collection $payments;
+
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Contribution\RevenueDeclaration",
+     *     mappedBy="adherent",
+     *     cascade={"all"},
+     *     orphanRemoval=true,
+     *     fetch="EXTRA_LAZY"
+     * )
+     * @ORM\OrderBy({"createdAt": "DESC"})
+     */
+    private Collection $revenueDeclarations;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -852,6 +906,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->zoneBasedRoles = new ArrayCollection();
         $this->referentTags = new ArrayCollection();
         $this->campusRegistrations = new ArrayCollection();
+        $this->contributions = new ArrayCollection();
+        $this->payments = new ArrayCollection();
+        $this->revenueDeclarations = new ArrayCollection();
     }
 
     public static function createBlank(
@@ -3345,5 +3402,92 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         return null;
+    }
+
+    public function getContributionStatus(): ?string
+    {
+        return $this->contributionStatus;
+    }
+
+    public function setContributionStatus(?string $contributionStatus): void
+    {
+        $this->contributionStatus = $contributionStatus;
+    }
+
+    public function getContributedAt(): ?\DateTime
+    {
+        return $this->contributedAt;
+    }
+
+    public function setContributedAt(?\DateTime $contributedAt): void
+    {
+        $this->contributedAt = $contributedAt;
+    }
+
+    public function getLastContribution(): ?Contribution
+    {
+        return $this->lastContribution;
+    }
+
+    public function setLastContribution(?Contribution $lastContribution): void
+    {
+        $this->lastContribution = $lastContribution;
+    }
+
+    public function getContributions(): Collection
+    {
+        return $this->contributions;
+    }
+
+    public function addContribution(Contribution $contribution): void
+    {
+        if (!$this->contributions->contains($contribution)) {
+            $contribution->adherent = $this;
+            $this->contributions->add($contribution);
+        }
+    }
+
+    public function removeContribution(Contribution $contribution): void
+    {
+        $this->contributions->removeElement($contribution);
+    }
+
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): void
+    {
+        if (!$this->payments->contains($payment)) {
+            $payment->adherent = $this;
+            $this->payments->add($payment);
+        }
+    }
+
+    public function removePayment(Payment $payment): void
+    {
+        $this->payments->removeElement($payment);
+    }
+
+    public function getPaymentByOhmeId(string $ohmeId): ?Payment
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('ohmeId', $ohmeId))
+        ;
+
+        return $this->payments->matching($criteria)->count() > 0
+            ? $this->payments->matching($criteria)->first()
+            : null;
+    }
+
+    public function getRevenueDeclarations(): Collection
+    {
+        return $this->revenueDeclarations;
+    }
+
+    public function addRevenueDeclaration(int $amount): void
+    {
+        $this->revenueDeclarations->add(RevenueDeclaration::create($this, $amount));
     }
 }
