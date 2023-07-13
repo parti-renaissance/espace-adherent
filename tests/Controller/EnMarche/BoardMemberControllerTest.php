@@ -179,7 +179,7 @@ class BoardMemberControllerTest extends AbstractEnMarcheWebTestCase
         // Statistics
         $stats = $crawler->filter('#saved_board_members_statistics');
         $this->assertStringContainsString('75% femmes / 25% hommes', $stats->html());
-        $this->assertStringContainsString('40 ans de moyenne d\'âge', $stats->html());
+        $this->assertStringContainsString('41 ans de moyenne d\'âge', $stats->html());
         $this->assertStringContainsString('25% Métropole / 0% DOM-TOM / 75% Étranger', $stats->html());
     }
 
