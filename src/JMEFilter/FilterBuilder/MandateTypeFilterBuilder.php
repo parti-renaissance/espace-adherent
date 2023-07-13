@@ -21,7 +21,7 @@ class MandateTypeFilterBuilder implements FilterBuilderInterface
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createSelect('mandateTypes', 'Type de mandat')
+            ->createSelect('mandateType', 'Type de mandat')
             ->setChoices(array_flip(
                 FeatureEnum::ELECTED_REPRESENTATIVE === $feature
                     ? MandateTypeEnum::TYPE_CHOICES

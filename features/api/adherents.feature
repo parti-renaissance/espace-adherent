@@ -628,7 +628,7 @@ Feature:
             "color": "#2563EB",
             "filters": [
                 {
-                    "code": "mandateTypes",
+                    "code": "mandateType",
                     "label": "Type de mandat",
                     "options": {
                         "choices": {
