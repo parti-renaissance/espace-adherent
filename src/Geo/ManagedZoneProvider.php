@@ -24,18 +24,6 @@ class ManagedZoneProvider
             return [$adherent->getDeputyZone()];
         }
 
-        if (AdherentSpaceEnum::LRE === $spaceType) {
-            if (!$adherent->getLreArea()) {
-                return [];
-            }
-
-            if ($adherent->getLreArea()->isAllTags()) {
-                return [];
-            }
-
-            return [$adherent->getLreArea()->getReferentTag()->getZone()];
-        }
-
         if (AdherentSpaceEnum::REFERENT === $spaceType) {
             return $adherent->getManagedArea() ? $adherent->getManagedArea()->getZones()->toArray() : [];
         }

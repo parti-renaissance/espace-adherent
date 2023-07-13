@@ -28,14 +28,12 @@ class LoadTerritorialCouncilElectionPollData extends Fixture implements Dependen
         $electionPoll->addChoice($pollChoice2);
 
         $pollVote1 = new Vote($pollChoice0, $this->getReference('member_1_coTerr_75'));
-        $pollVote2 = new Vote($pollChoice0, $this->getReference('member_2_coTerr_75'));
         $pollVote3 = new Vote($pollChoice1, $this->getReference('member_3_coTerr_75'));
         $pollVote4 = new Vote($pollChoice2, $this->getReference('member_4_coTerr_75'));
         $pollVote5 = new Vote($pollChoice2, $this->getReference('member_5_coTerr_75'));
         $pollVote6 = new Vote($pollChoice2, $this->getReference('member_6_coTerr_75'));
         $pollVote7 = new Vote($pollChoice0, $this->getReference('member_7_coTerr_75'));
         $manager->persist($pollVote1);
-        $manager->persist($pollVote2);
         $manager->persist($pollVote3);
         $manager->persist($pollVote4);
         $manager->persist($pollVote5);

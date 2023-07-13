@@ -7,7 +7,6 @@ use App\Scope\ScopeEnum;
 class AdherentSpaceEnum
 {
     public const DEPUTY = 'deputy';
-    public const LRE = 'lre';
     public const REFERENT = 'referent';
     public const SENATOR = 'senator';
     public const SENATORIAL_CANDIDATE = 'senatorial_candidate';

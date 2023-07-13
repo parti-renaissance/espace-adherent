@@ -264,10 +264,7 @@
             });
 
             {% if arelabelsEditable and elected_representatives.count %}
-                {% set labelType = 'referent' == space_name ?
-                    constant('App\\Entity\\UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE') :
-                    constant('App\\Entity\\UserListDefinitionEnum::TYPE_LRE')
-                %}
+                {% set labelType = 'referent' == space_name ? constant('App\\Entity\\UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE') : '' %}
 
                 App.runUserListDefinitions(
                     '{{ constant('App\\Controller\\Api\\UserListDefinition\\ElectedRepresentativeUserListDefinitionController::MEMBER_TYPE') }}',

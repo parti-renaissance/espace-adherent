@@ -191,12 +191,6 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                     $where->add('zone_based_role.type IN (:zone_based_roles)');
                 }
 
-                // LRE
-                if (\in_array(AdherentRoleEnum::LRE, $value, true)) {
-                    $qb->leftJoin(sprintf('%s.lreArea', $alias), 'lre');
-                    $where->add('lre IS NOT NULL');
-                }
-
                 if (\in_array(AdherentRoleEnum::SENATORIAL_CANDIDATE, $value, true)) {
                     $qb->leftJoin(sprintf('%s.senatorialCandidateManagedArea', $alias), 'senatorialCandidateManagedArea');
                     $where->add('senatorialCandidateManagedArea IS NOT NULL');

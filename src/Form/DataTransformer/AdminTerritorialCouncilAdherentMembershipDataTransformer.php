@@ -13,13 +13,11 @@ class AdminTerritorialCouncilAdherentMembershipDataTransformer implements DataTr
 {
     public const REFERENT_TERRITORIAL_COUNCIL = 'referentTerritorialCouncil';
     public const REFERENT_JAM_TERRITORIAL_COUNCIL = 'referentJamTerritorialCouncil';
-    public const LRE_MANAGER_TERRITORIAL_COUNCIL = 'lreManagerTerritorialCouncil';
     public const GOVERNMENT_MEMBER_TERRITORIAL_COUNCIL = 'governmentMemberTerritorialCouncil';
 
     private const MAP = [
         self::REFERENT_TERRITORIAL_COUNCIL => TerritorialCouncilQualityEnum::REFERENT,
         self::REFERENT_JAM_TERRITORIAL_COUNCIL => TerritorialCouncilQualityEnum::REFERENT_JAM,
-        self::LRE_MANAGER_TERRITORIAL_COUNCIL => TerritorialCouncilQualityEnum::LRE_MANAGER,
         self::GOVERNMENT_MEMBER_TERRITORIAL_COUNCIL => TerritorialCouncilQualityEnum::GOVERNMENT_MEMBER,
     ];
 

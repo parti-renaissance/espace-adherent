@@ -14,9 +14,6 @@ class AdherentTerritorialCouncilMembershipType extends AbstractType
             ->add(AdminTerritorialCouncilAdherentMembershipDataTransformer::REFERENT_TERRITORIAL_COUNCIL, TerritorialCouncilChoiceType::class, [
                 'label' => 'territorial_council.referent',
             ])
-            ->add(AdminTerritorialCouncilAdherentMembershipDataTransformer::LRE_MANAGER_TERRITORIAL_COUNCIL, TerritorialCouncilChoiceType::class, [
-                'label' => 'territorial_council.lre_manager',
-            ])
             ->add(AdminTerritorialCouncilAdherentMembershipDataTransformer::REFERENT_JAM_TERRITORIAL_COUNCIL, TerritorialCouncilChoiceType::class, [
                 'label' => 'territorial_council.referent_jam',
             ])

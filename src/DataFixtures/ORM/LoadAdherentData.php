@@ -15,7 +15,6 @@ use App\Entity\AdherentZoneBasedRole;
 use App\Entity\AssessorRoleAssociation;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
-use App\Entity\LreArea;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTeamMember;
@@ -383,9 +382,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent13->setMandates(['european_deputy']);
         $adherent13->addHandledThematicCommunity($this->getReference('tc-sante'));
         $adherent13->addHandledThematicCommunity($this->getReference('tc-education'));
-        $lreArea = new LreArea();
-        $lreArea->setAllTags(true);
-        $adherent13->setLreArea($lreArea);
         $adherent13->certify();
         $this->addReference('adherent-13', $adherent13);
 
@@ -534,7 +530,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $referent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $referent->addCharter(new ReferentCharter());
         $referent->addCharter(new CommitteeHostCharter());
-        $referent->setLreArea(new LreArea($this->getReference('referent_tag_76')));
         $referent->setPapUserRole(true);
         $this->addReference('adherent-8', $referent);
 

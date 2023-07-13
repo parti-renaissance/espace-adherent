@@ -40,8 +40,6 @@ class AdherentRoleEnum extends Enum
     public const ELECTION_RESULTS_REPORTER = 'election_results_reporter';
 
     public const SENATORIAL_CANDIDATE = 'senatorial_candidate';
-    public const LRE = 'lre';
-
     public const THEMATIC_COMMUNITY_CHIEF = 'thematic_community_chief';
 
     public const CANDIDATE_REGIONAL_HEADED = 'candidate_regional_headed';

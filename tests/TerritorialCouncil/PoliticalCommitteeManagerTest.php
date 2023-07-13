@@ -541,7 +541,6 @@ class PoliticalCommitteeManagerTest extends AbstractKernelTestCase
         yield [TerritorialCouncilQualityEnum::REFERENT];
         yield [TerritorialCouncilQualityEnum::GOVERNMENT_MEMBER];
         yield [TerritorialCouncilQualityEnum::REFERENT_JAM];
-        yield [TerritorialCouncilQualityEnum::LRE_MANAGER];
         yield [TerritorialCouncilQualityEnum::SENATOR];
         yield [TerritorialCouncilQualityEnum::DEPUTY];
         yield [TerritorialCouncilQualityEnum::EUROPEAN_DEPUTY];
