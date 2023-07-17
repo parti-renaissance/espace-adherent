@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\EnMarche;
+namespace App\Controller\Renaissance;
 
 use App\Mailchimp\Webhook\Command\CatchMailchimpWebhookCallCommand;
 use Psr\Log\LoggerInterface;
