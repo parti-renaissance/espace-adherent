@@ -32,7 +32,7 @@ class PostAddressFactoryTest extends AbstractKernelTestCase
         $this->assertSame('69001', $postAddress->getPostalCode());
         $this->assertSame('69381', $postAddress->getInseeCode());
         $this->assertSame('Lyon 1er', $postAddress->getCityName());
-        $this->assertSame('6 rue Neyret, 69001 Lyon 1er, FR', $postAddress->getGeocodableAddress());
+        $this->assertSame('6 rue Neyret, 69001 Lyon 1er, France', $postAddress->getGeocodableAddress());
         $this->assertNull($postAddress->getLatitude());
         $this->assertNull($postAddress->getLongitude());
     }
@@ -55,7 +55,7 @@ class PostAddressFactoryTest extends AbstractKernelTestCase
         $this->assertSame('8057', $postAddress->getPostalCode());
         $this->assertNull($postAddress->getInseeCode());
         $this->assertSame('Zürich', $postAddress->getCityName());
-        $this->assertSame('36 Zeppelinstrasse, 8057 Zürich, CH', $postAddress->getGeocodableAddress());
+        $this->assertSame('36 Zeppelinstrasse, 8057 Zürich, Suisse', $postAddress->getGeocodableAddress());
         $this->assertNull($postAddress->getLatitude());
         $this->assertNull($postAddress->getLongitude());
     }

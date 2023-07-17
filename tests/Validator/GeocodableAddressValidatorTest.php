@@ -11,7 +11,6 @@ use App\Validator\GeocodableAddressValidator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 use Tests\App\Test\Geocoder\DummyGeocoder;
 
 class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase

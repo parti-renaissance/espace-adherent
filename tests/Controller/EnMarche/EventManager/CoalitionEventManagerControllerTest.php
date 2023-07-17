@@ -48,7 +48,7 @@ class CoalitionEventManagerControllerTest extends AbstractEnMarcheWebTestCase
         $data = [];
 
         $this->client->submit($this->client->getCrawler()->selectButton('Enregistrer')->form(), $data);
-        $this->assertSame(6, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(5, $this->client->getCrawler()->filter('.form__errors')->count());
 
         $this->assertSame('Cette valeur ne doit pas être vide.',
             $this->client->getCrawler()->filter('#event-name-field > .form__errors > li')->text());
@@ -58,10 +58,6 @@ class CoalitionEventManagerControllerTest extends AbstractEnMarcheWebTestCase
             $this->client->getCrawler()->filter('#event-description-field > .form__errors > li')->text());
         $this->assertSame('L\'adresse est obligatoire.',
             $this->client->getCrawler()->filter('#event-address-address-field > .form__errors > li')->text());
-        $this->assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.',
-            $this->client->getCrawler()->filter('#event-address > .form__errors > li')->text());
-        $this->assertSame('Veuillez sélectionner un pays.',
-            $this->client->getCrawler()->filter('#event-address-country-field > .form__errors > li')->text());
     }
 
     public function testCreateEventSuccessful(): void

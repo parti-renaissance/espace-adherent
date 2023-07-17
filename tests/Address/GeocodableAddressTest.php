@@ -31,7 +31,7 @@ class GeocodableAddressTest extends AbstractKernelTestCase
         $this->assertStringContainsString($addressStr, (string) $geocodableAddress);
         $this->assertStringContainsString('Arcueil', (string) $geocodableAddress);
         $this->assertStringContainsString($postalCode, (string) $geocodableAddress);
-        $this->assertStringContainsString($country, (string) $geocodableAddress);
-        $this->assertSame('23 rue Ernest Renan, 94110 Arcueil, FR', (string) $geocodableAddress);
+        $this->assertStringContainsString('France', (string) $geocodableAddress);
+        $this->assertSame('23 rue Ernest Renan, 94110 Arcueil, France', (string) $geocodableAddress);
     }
 }

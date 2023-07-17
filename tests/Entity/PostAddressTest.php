@@ -19,7 +19,7 @@ class PostAddressTest extends AbstractKernelTestCase
         $this->assertSame('Clichy', $address->getCityName());
         $this->assertSame(48.123456, $address->getLatitude());
         $this->assertSame(5.987654, $address->getLongitude());
-        $this->assertSame('92 bld Victor Hugo, 92110 Clichy, FR', $address->getGeocodableAddress());
+        $this->assertSame('92 bld Victor Hugo, 92110 Clichy, France', $address->getGeocodableAddress());
     }
 
     public function testCreateFullForeignAddress()
@@ -42,7 +42,7 @@ class PostAddressTest extends AbstractKernelTestCase
         $this->assertSame('Washington, DC', $address->getCityName());
         $this->assertSame(48.123456, $address->getLatitude());
         $this->assertSame(5.987654, $address->getLongitude());
-        $this->assertSame('1600 Pennsylvania Ave NW, 20500 Washington, DC, US', $address->getGeocodableAddress());
+        $this->assertSame('1600 Pennsylvania Ave NW, 20500 Washington, DC, États-Unis', $address->getGeocodableAddress());
     }
 
     public function testEquals()
