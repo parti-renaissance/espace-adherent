@@ -96,7 +96,7 @@
                 Élections
             </h5>
             <ul class="ml-2 space-y-4 lg:space-y-2 border-l border-red-200">
-                {% for designation in designations %}
+                {% for designation in designations|filter(d => not d.isCommitteeSupervisorType() or d.getElectionEntityIdentifier()) %}
                     <li>
                         <a href="{{ path(election_routes[designation.getType()], {uuid: designation.isCommitteeSupervisorType() ? designation.getElectionEntityIdentifier() : designation.getUuid()}) }}" class="block border-l pl-4 -ml-px border-transparent hover:border-red-400 text-slate-700 hover:text-slate-900">
                             {{ designation.getTitle() }}
