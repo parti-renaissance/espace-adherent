@@ -110,9 +110,9 @@ trait EntityZoneTrait
 
     public function getParentZones(): array
     {
-        return array_merge(...array_map(function (Zone $zone) {
+        return array_unique(array_merge(...array_map(function (Zone $zone) {
             return $zone->getParents();
-        }, $this->zones->toArray()));
+        }, $this->zones->toArray())));
     }
 
     public function getParisBoroughOrDepartment(): ?Zone
