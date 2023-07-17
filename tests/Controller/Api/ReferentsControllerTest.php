@@ -26,7 +26,7 @@ class ReferentsControllerTest extends AbstractApiTestCase
         $this->assertJson($content);
 
         // Check the payload
-        $this->assertNotEmpty(\GuzzleHttp\json_decode($content, true));
+        $this->assertNotEmpty(json_decode($content, true));
         $this->assertEachJsonItemContainsKey('postalCode', $content);
         $this->assertEachJsonItemContainsKey('name', $content);
         $this->assertEachJsonItemContainsKey('coordinates', $content);

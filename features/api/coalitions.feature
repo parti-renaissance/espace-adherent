@@ -1,11 +1,11 @@
 @api
+@renaissance
 Feature:
   In order to see coalitions
   As a non logged-in user
   I should be able to access API coalitions
 
   Scenario: As a non logged-in user I can see first page of active coalitions
-    Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/coalitions"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -186,7 +186,6 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can get one coalition by uuid
-    Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/coalitions/d5289058-2a35-4cf0-8f2f-a683d97d8315"
     Then the response status code should be 200
     And the response should be in JSON
@@ -204,12 +203,10 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not get an inactive coalition
-    Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/coalitions/a82ee43a-c68d-4ed2-9cd5-56eb1f72d9c8"
     Then the response status code should be 404
 
   Scenario Outline: As a non logged-in user I can not follow/unfollow a coalition
-    Given I add "Accept" header equal to "application/json"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 401
     Examples:

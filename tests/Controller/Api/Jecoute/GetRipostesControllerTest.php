@@ -39,7 +39,7 @@ class GetRipostesControllerTest extends AbstractApiTestCase
 
         $this->isSuccessful($this->client->getResponse());
         static::assertJson($this->client->getResponse()->getContent());
-        $result = \GuzzleHttp\json_decode($this->client->getResponse()->getContent(), true);
+        $result = json_decode($this->client->getResponse()->getContent(), true);
 
         $this->assertCount(2, $result);
 
@@ -73,7 +73,7 @@ class GetRipostesControllerTest extends AbstractApiTestCase
 
         $this->isSuccessful($this->client->getResponse());
         static::assertJson($this->client->getResponse()->getContent());
-        $result = \GuzzleHttp\json_decode($this->client->getResponse()->getContent(), true);
+        $result = json_decode($this->client->getResponse()->getContent(), true);
 
         $this->assertCount(4, $result);
 

@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to manage designations
   As a logged-in user

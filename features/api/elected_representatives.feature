@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to manage elected representatives
   As a logged-in user

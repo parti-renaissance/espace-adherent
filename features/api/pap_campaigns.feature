@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to see PAP campaigns
   As a non logged-in user

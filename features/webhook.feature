@@ -1,11 +1,9 @@
 @app
+@renaissance
 Feature: Allow some worker to get the list of configured web hooks
   In order to get configured web hooks (list of urls)
   As an authenticated and allowed OAuth client
   I want to get access to web hooks config by event name
-
-  Background:
-    And I add "Accept" header equal to "application/json"
 
   Scenario: Web hook config can be read when oauth client have web_hook scope (web hook does not exist in DB before that call)
     Given I send a "POST" request to "/oauth/v2/token" with parameters:

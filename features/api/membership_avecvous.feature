@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to create a contact
   As a non logged-in user
@@ -26,8 +27,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can get a contact information with its UUID
-    Given I add "Accept" header equal to "application/json"
-    And I send a "GET" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f"
+    When I send a "GET" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

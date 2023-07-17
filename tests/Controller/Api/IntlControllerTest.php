@@ -24,7 +24,7 @@ class IntlControllerTest extends AbstractApiTestCase
             94048 => 'Marolles-en-Brie',
             94070 => 'Santeny',
             94075 => 'Villecresnes',
-        ], \GuzzleHttp\json_decode($this->client->getResponse()->getContent(), true));
+        ], json_decode($this->client->getResponse()->getContent(), true));
     }
 
     public function testGetVoteOffices()
@@ -42,6 +42,6 @@ class IntlControllerTest extends AbstractApiTestCase
             'Nuremberg',
             'Sarrebruck',
             'Stuttgart',
-        ], \GuzzleHttp\json_decode($this->client->getResponse()->getContent(), true));
+        ], json_decode($this->client->getResponse()->getContent(), true));
     }
 }

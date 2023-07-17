@@ -37,7 +37,7 @@ trait ApiControllerTestTrait
 
     protected function assertEachJsonItemContainsKey($key, $json, array $excluding = [])
     {
-        $data = \GuzzleHttp\json_decode($json, true);
+        $data = json_decode($json, true);
 
         foreach ($data as $k => $item) {
             if (\in_array($k, $excluding, true)) {

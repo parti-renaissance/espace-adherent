@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to manage email templates
   As client software developer

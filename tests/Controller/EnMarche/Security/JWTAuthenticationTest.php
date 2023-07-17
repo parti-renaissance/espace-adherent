@@ -19,7 +19,7 @@ class JWTAuthenticationTest extends AbstractEnMarcheWebTestCase
 
         $this->client->request('POST', '/api/login_check', [], [], [
             'CONTENT_TYPE' => 'application/json',
-        ], \GuzzleHttp\json_encode([
+        ], json_encode([
             'username' => 'carl999@example.fr',
             'password' => 'secret!12345',
         ]));
@@ -27,7 +27,7 @@ class JWTAuthenticationTest extends AbstractEnMarcheWebTestCase
         $this->isSuccessful($response);
         $this->assertJson($content = $response->getContent());
 
-        $data = \GuzzleHttp\json_decode($content, true);
+        $data = json_decode($content, true);
         $this->assertArrayHasKey('token', $data);
 
         $this->client->request('GET', '/api/users/me', [], [], [

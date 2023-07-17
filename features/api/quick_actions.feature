@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to see quick actions
   As a user

@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to get a Mooc configuration
   As a non logged-in user

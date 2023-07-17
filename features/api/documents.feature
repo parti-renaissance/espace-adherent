@@ -1,4 +1,5 @@
 @api
+@renaissance
 Feature:
   In order to see documents
   As a logged-in user

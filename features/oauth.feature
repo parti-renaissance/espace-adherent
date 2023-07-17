@@ -43,7 +43,6 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     And the header "Location" should match "#^http://client-oauth.docker:8000/client/receive_authcode\?code=.+$#"
 
   Scenario: Client credentials authentication
-    Given I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx1omA= |
@@ -74,7 +73,6 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
       "scopes": ["read:users"]
     }
     """
-
     Given I add the access token to the Authorization header
     When I send a "GET" request to "/api/me"
     Then the response status code should be 401
@@ -90,7 +88,6 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
 
   Scenario: Client credentials authentication with device id
-    Given I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr  |
