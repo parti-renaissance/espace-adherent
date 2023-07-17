@@ -15,6 +15,11 @@ FROM mlocati/php-extension-installer:2 AS php_extension_installer
 
 FROM php:${PHP_VERSION}-fpm-alpine AS php_caddy
 
+ENV TZ Europe/Paris
+ENV LANG fr_FR.UTF-8
+ENV LANGUAGE fr_FR.UTF-8
+ENV LC_ALL fr_FR.UTF-8
+
 ARG BUILD_DEV
 
 WORKDIR /srv/app
@@ -47,6 +52,11 @@ RUN set -eux; \
         zip \
         sockets \
     ;
+
+RUN apk add --no-cache tzdata && \
+    cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && \
+    echo "Europe/Paris" >  /etc/timezone && \
+    apk del tzdata
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY --link docker/php/conf.d/default.ini $PHP_INI_DIR/conf.d/

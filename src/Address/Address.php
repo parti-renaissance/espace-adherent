@@ -20,6 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Address implements AddressInterface, GeocodableInterface
 {
+    use AddressTrait;
+
     public const FRANCE = 'FR';
 
     /**
@@ -33,7 +35,7 @@ class Address implements AddressInterface, GeocodableInterface
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
-    private $address;
+    protected ?string $address = null;
 
     /**
      * @Assert\Expression(
@@ -45,14 +47,14 @@ class Address implements AddressInterface, GeocodableInterface
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
-    private $postalCode;
+    protected ?string $postalCode = null;
 
     /**
      * @Assert\Length(max=15, groups={"Default", "Update", "fill_personal_info"})
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
-    private $city;
+    protected ?string $city = null;
 
     /**
      * @Assert\Length(max=255, groups={"Default", "Update", "fill_personal_info"})
@@ -64,7 +66,7 @@ class Address implements AddressInterface, GeocodableInterface
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
-    private $cityName;
+    protected ?string $cityName = null;
 
     /**
      * @Assert\NotBlank(message="common.country.not_blank", groups={"Default", "Registration", "Update", "fill_personal_info"})
@@ -72,128 +74,5 @@ class Address implements AddressInterface, GeocodableInterface
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
-    private $country;
-
-    /**
-     * @Assert\Length(max=255)
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
-     */
-    private $region;
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(?string $address): void
-    {
-        $this->address = $address;
-    }
-
-    public function getPostalCode(): ?string
-    {
-        return $this->postalCode;
-    }
-
-    public function setPostalCode(?string $postalCode): void
-    {
-        $this->postalCode = $postalCode;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(?string $city): void
-    {
-        if ($city) {
-            $parts = explode('-', $city);
-            if (2 !== \count($parts)) {
-                throw new \InvalidArgumentException(sprintf('Invalid french city format: %s.', $city));
-            }
-
-            if (!$this->postalCode) {
-                $this->setPostalCode($parts[0]);
-            }
-        }
-
-        $this->city = $city;
-    }
-
-    public function getCityName(): ?string
-    {
-        return $this->cityName;
-    }
-
-    public function setCityName(?string $cityName): void
-    {
-        $this->cityName = $cityName;
-    }
-
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?string $country): void
-    {
-        $this->country = $country;
-    }
-
-    public function isFrenchAddress(): bool
-    {
-        return self::FRANCE === $this->country && $this->city;
-    }
-
-    public static function createFromAddress(AddressInterface $other): self
-    {
-        $address = new self();
-        $address->address = $other->getAddress();
-        $address->postalCode = $other->getPostalCode();
-        $address->city = $other->getCity();
-        $address->cityName = $other->getCityName();
-        $address->country = $other->getCountry();
-        $address->region = $other->getRegion();
-
-        return $address;
-    }
-
-    public function getGeocodableAddress(): string
-    {
-        return (string) GeocodableAddress::createFromAddress($this);
-    }
-
-    public function getRegion(): ?string
-    {
-        return $this->region;
-    }
-
-    public function setRegion(string $region): void
-    {
-        $this->region = $region;
-    }
-
-    public function getFullAddress()
-    {
-        if ($this->address) {
-            return $this->address.', '.$this->postalCode.' '.$this->cityName.', '.$this->country;
-        }
-
-        return '';
-    }
-
-    /**
-     * Returns the french national INSEE code from the city code.
-     */
-    public function getInseeCode(): ?string
-    {
-        $inseeCode = null;
-        if ($this->city && 5 === strpos($this->city, '-')) {
-            [, $inseeCode] = explode('-', $this->city);
-        }
-
-        return $inseeCode;
-    }
+    protected ?string $country = Address::FRANCE;
 }

@@ -15,7 +15,7 @@ class DummyGeocoderTest extends TestCase
     {
         $this->expectException(GeocodingException::class);
         $geocoder = new Geocoder(new DummyGeocoder());
-        $geocoder->geocode('12 chemin de Bamby, 69003 Lyon, FR');
+        $geocoder->geocode('12 chemin de Bamby, 69003 Lyon, france');
     }
 
     #[DataProvider('provideAddress')]
@@ -33,22 +33,22 @@ class DummyGeocoderTest extends TestCase
     {
         return [
             [
-                '6 rue neyret, 69001 lyon 1er, fr',
+                '6 rue neyret, 69001 lyon 1er, france',
                 45.7713288,
                 4.8288758,
             ],
             [
-                '6 rue Neyret, 69001 Lyon 1er, fr',
+                '6 rue Neyret, 69001 Lyon 1er, france',
                 45.7713288,
                 4.8288758,
             ],
             [
-                '92 boulevard victor hugo, 92110 clichy, fr',
+                '92 boulevard victor hugo, 92110 clichy, france',
                 48.901058,
                 2.318325,
             ],
             [
-                '92 Bld Victor Hugo, 92110 Clichy, FR',
+                '92 Bld Victor Hugo, 92110 Clichy, france',
                 48.901058,
                 2.318325,
             ],

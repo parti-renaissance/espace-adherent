@@ -6,7 +6,6 @@ use App\Validator\DateRange;
 use App\Validator\DateRangeValidator;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
-use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class DateRangeValidatorTest extends ConstraintValidatorTestCase
 {
@@ -76,8 +75,6 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
 
     public function testWithInvalidDateRange(): void
     {
-        \Locale::setDefault('fr');
-
         $object = new \stdClass();
         $object->startDate = new \DateTime('2018-05-15 15:00:00+02:00');
         $object->endDate = new \DateTime('2018-05-20 15:00:00+02:00');
@@ -98,8 +95,6 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
 
     public function testWithInvalidInterval(): void
     {
-        \Locale::setDefault('fr');
-
         $object = new \stdClass();
         $object->startDate = new \DateTime('2018-05-15 15:00:00+02:00');
         $object->endDate = new \DateTime('2018-05-16 15:00:00+02:00');

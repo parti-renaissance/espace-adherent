@@ -65,7 +65,7 @@ class AdherentTest extends AbstractKernelTestCase
         $adherent = $this->createNewAdherent();
         $adherent->updateCoordinates(new Coordinates(12.456323, 89.735324));
 
-        $this->assertSame('92 bld du Général Leclerc, 92110 Clichy, FR', $adherent->getGeocodableAddress());
+        $this->assertSame('92 bld du Général Leclerc, 92110 Clichy, France', $adherent->getGeocodableAddress());
         $this->assertSame(12.456323, $adherent->getLatitude());
         $this->assertSame(89.735324, $adherent->getLongitude());
     }
