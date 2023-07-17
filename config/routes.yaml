@@ -182,7 +182,7 @@ app_admin:
 # En Marche app
 #
 lexik_paybox:
-    host:     "%app_host%"
+    host:     "%renaissance_host%"
     resource: "@LexikPayboxBundle/Resources/config/routing.yml"
     prefix:   "/don"
 

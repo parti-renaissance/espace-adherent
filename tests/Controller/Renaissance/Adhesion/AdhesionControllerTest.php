@@ -202,7 +202,6 @@ class AdhesionControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->makeEMClient();
         self::assertSame('OK', $this->simulateIpnCall($donation, '00000'));
 
         $this->assertCount(1, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountActivationMessage::class));
