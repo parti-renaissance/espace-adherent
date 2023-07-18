@@ -906,6 +906,10 @@ elected_representative.filter.email_subscription.subscribed: Abonné(e)
 elected_representative.filter.email_subscription.unsubscribed: Non-abonné(e)
 
 elected_representative:
+    contribution:
+        status:
+            eligible: "Éligible"
+            not_eligible: "Non éligible"
     mailchimp_tag:
         adherent: Adhérent(e)
         # Mandate

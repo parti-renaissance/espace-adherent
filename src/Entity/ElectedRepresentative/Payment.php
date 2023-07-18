@@ -53,7 +53,7 @@ class Payment
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="payments")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     public ?ElectedRepresentative $electedRepresentative = null;
 
