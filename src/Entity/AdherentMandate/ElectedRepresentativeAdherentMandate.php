@@ -2,7 +2,9 @@
 
 namespace App\Entity\AdherentMandate;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,11 +26,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
  *     },
  *     itemOperations={
- *         "get": {
- *             "path": "/elected_adherent_mandates/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
- *         },
  *         "put": {
  *             "path": "/elected_adherent_mandates/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
@@ -41,11 +38,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         }
  *     },
  *     collectionOperations={
+ *         "get": {
+ *             "path": "/elected_adherent_mandates",
+ *         },
  *         "post": {
  *             "path": "/elected_adherent_mandates",
  *         }
  *     }
  * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "adherent.uuid": "exact",
+ * })
  *
  * @ORM\Entity(repositoryClass="App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepository")
  */
