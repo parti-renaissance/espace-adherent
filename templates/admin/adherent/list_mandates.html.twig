@@ -3,11 +3,11 @@
 {% block field %}
     {% for mandate in object.activeAdherentMandates %}
         {% if mandate is instanceof('App\\Entity\\AdherentMandate\\TerritorialCouncilAdherentMandate') %}
-            <span class="label label-warning">{{ ('political_committee.membership.quality.'~mandate.quality)|trans }}</span>
+            <span class="label label-warning">{{ ('political_committee.membership.quality.'~mandate.quality)|trans }}</span><br>
         {% elseif mandate is instanceof('App\\Entity\\AdherentMandate\\CommitteeAdherentMandate') %}
-            <span class="label label-warning">{{ 'territorial_council.membership.quality.elected_candidate_adherent'|trans }}</span>
+            <span class="label label-warning">{{ 'territorial_council.membership.quality.elected_candidate_adherent'|trans }}</span><br>
         {% elseif mandate is instanceof('App\\Entity\\AdherentMandate\\NationalCouncilAdherentMandate') %}
-            <span class="label label-warning">Désigné au Conseil national</span>
+            <span class="label label-warning">Désigné au Conseil national</span><br>
         {% endif %}
     {% endfor %}
 
@@ -16,6 +16,19 @@
     {% if electedRepresentative %}
         {% for mandate in electedRepresentative.currentMandates %}
             <span class="label label-success">{{ mandate.name }}</span>
+            <br>
         {% endfor %}
     {% endif %}
+
+    {% set mandateTypes = constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::CHOICES') %}
+    {% for mandate in object.activeElectedRepresentativeMandates %}
+        <span class="label label-warning">
+            {% for mandateTypeLabel,mandateType in mandateTypes %}
+                {% if mandate.mandateType is same as mandateType %}
+                    {{ mandateTypeLabel }}
+                {% endif %}
+            {% endfor %}
+        </span>
+        <br>
+    {% endfor %}
 {% endblock %}
