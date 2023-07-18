@@ -227,8 +227,8 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     /**
      * @var Collection|Adherent[]
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinTable(name="adherent_formation_print_by_adherents")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Adherent", fetch="EXTRA_LAZY")
+     * @ORM\JoinTable(name="adherent_formation_print_by_adherents", joinColumns={@ORM\JoinColumn(onDelete="CASCADE")})
      */
     private Collection $printByAdherents;
 
@@ -361,18 +361,16 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
         $this->printByAdherents = $printByAdherents;
     }
 
-    public function addPrintByAdherent(Adherent $adherent): void
+    public function addPrintByAdherent(Adherent $adherent): bool
     {
         if (!$this->printByAdherents->contains($adherent)) {
             $this->printByAdherents->add($adherent);
-        }
-    }
+            $this->incrementPrintCount();
 
-    public function removePrintByAdherent(Adherent $adherent): void
-    {
-        if ($this->printByAdherents->contains($adherent)) {
-            $this->printByAdherents->removeElement($adherent);
+            return true;
         }
+
+        return false;
     }
 
     public function hasPrintByAdherent(Adherent $adherent): bool

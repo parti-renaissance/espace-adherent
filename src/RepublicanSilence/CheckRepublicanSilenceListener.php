@@ -46,9 +46,6 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         // Procuration Space
         'app_procuration_manager_*' => ZoneExtractorInterface::ADHERENT_TYPE_PROCURATION_MANAGER,
 
-        // LRE Space
-        'app_lre_*' => ZoneExtractorInterface::NONE,
-
         // All message actions
         'app_message_*' => ZoneExtractorInterface::NONE,
     ];
