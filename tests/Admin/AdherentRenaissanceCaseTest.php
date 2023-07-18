@@ -64,6 +64,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         yield 'Animateur' => ['jacques.picard@en-marche.fr'];
         yield 'Référent' => ['referent@en-marche-dev.fr'];
         yield 'Référent RE' => ['renaissance-user-3@en-marche-dev.fr'];
+        yield 'RE user with active mandate' => ['renaissance-user-2@en-marche-dev.fr'];
     }
 
     #[DataProvider('provideTerminateMembershipSuccess')]
@@ -131,7 +132,6 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         yield ['bernard.morin@example.fr', 'Bernard Morin', true, false];
         // Adhérent RE
         yield ['renaissance-user-1@en-marche-dev.fr', 'Laure Fenix', true, true];
-        yield ['renaissance-user-2@en-marche-dev.fr', 'John Smith', false, true];
     }
 
     public function testAnAdminCantBanAnAdherent()

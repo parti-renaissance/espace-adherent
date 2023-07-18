@@ -51,6 +51,6 @@ class UnregistrationControllerTest extends AbstractRenaissanceWebTestCase
             $handler(new RemoveAdherentAndRelatedDataCommand($adherent->getUuid()));
         }
 
-        self::assertSame(2, $countForbidden);
+        self::assertSame(3, $countForbidden);
     }
 }
