@@ -2,6 +2,7 @@
 
 namespace App\Controller\Renaissance\Formation;
 
+use App\Entity\Adherent;
 use App\Entity\AdherentFormation\Formation;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,8 +29,12 @@ class ContentController extends AbstractController
 
     public function __invoke(Formation $formation): Response
     {
-        $formation->incrementPrintCount();
-        $this->entityManager->flush();
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
+        if (!$formation->hasPrintByAdherent($adherent) && $formation->addPrintByAdherent($adherent)) {
+            $this->entityManager->flush();
+        }
 
         if ($formation->isFileContent()) {
             $filePath = $formation->getFilePath();
