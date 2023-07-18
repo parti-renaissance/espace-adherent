@@ -4,7 +4,10 @@ namespace App\Entity\AdherentMandate;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\EntityAdherentBlameableTrait;
+use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,11 +23,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "committee": "App\Entity\AdherentMandate\CommitteeAdherentMandate",
  *     "territorial_council": "App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate",
  *     "national_council": "App\Entity\AdherentMandate\NationalCouncilAdherentMandate",
+ *     "elected_representative": "App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate"
  * })
  */
 abstract class AbstractAdherentMandate implements AdherentMandateInterface
 {
     use EntityIdentityTrait;
+    use EntityTimestampableTrait;
+    use EntityAdministratorBlameableTrait;
+    use EntityAdherentBlameableTrait;
 
     /**
      * @var Adherent
@@ -37,7 +44,7 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(length=6)
+     * @ORM\Column(length=6, nullable=true)
      *
      * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(
@@ -99,16 +106,16 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
     public $provisional = false;
 
     public function __construct(
-        Adherent $adherent,
-        ?string $gender,
-        \DateTime $beginAt,
+        Adherent $adherent = null,
+        string $gender = null,
+        \DateTime $beginAt = null,
         \DateTime $finishAt = null,
         string $quality = null,
         bool $isProvisional = false
     ) {
         $this->uuid = Uuid::uuid4();
         $this->adherent = $adherent;
-        $this->gender = $gender ?? $adherent->getGender();
+        $this->gender = $gender ?? $adherent?->getGender();
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
         $this->quality = $quality;
