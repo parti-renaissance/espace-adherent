@@ -195,6 +195,13 @@ Feature:
                     "status": "confirmed",
                     "amount": 50,
                     "uuid": "@uuid@"
+                },
+                {
+                    "date": "@string@.isDateTime()",
+                    "method": "IBAN",
+                    "status": "confirmed",
+                    "amount": 50,
+                    "uuid": "@uuid@"
                 }
             ]
         }
@@ -256,6 +263,13 @@ Feature:
             "uuid": "0c62d201-826b-4da7-8424-e8e17935b400",
             "email_address": "renaissance-user-2@en-marche-dev.fr",
             "payments": [
+                {
+                    "date": "@string@.isDateTime()",
+                    "method": "IBAN",
+                    "status": "confirmed",
+                    "amount": 50,
+                    "uuid": "@uuid@"
+                },
                 {
                     "date": "@string@.isDateTime()",
                     "method": "IBAN",
