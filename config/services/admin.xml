@@ -843,7 +843,7 @@
 
             <argument />
             <argument>App\Entity\Email</argument>
-            <argument />
+            <argument>App\Controller\Admin\AdminEmailCRUDController</argument>
         </service>
 
         <service id="app.admin.adherent_tag" class="App\Admin\AdherentTagAdmin">

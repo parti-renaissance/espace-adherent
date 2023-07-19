@@ -472,6 +472,8 @@ services:
         arguments:
             $client: '@app.http_client.mandrill_api'
             $apiKey: '%env(MANDRILL_API_KEY)%'
+            $testApiKey: '%env(MANDRILL_TEST_API_KEY)%'
+            $appEnvironment: '%env(APP_ENVIRONMENT)%'
 
     App\Messenger\AmqpTransport\AmqpTransportFactory:
         decorates: 'messenger.transport.amqp.factory'

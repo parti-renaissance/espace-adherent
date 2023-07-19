@@ -17,11 +17,9 @@ class DummyEmailClient implements EmailClientInterface
         $this->httpClient = $httpClient;
     }
 
-    public function sendEmail(string $email): string
+    public function sendEmail(string $email, bool $resend = false): string
     {
-        $response = $this->httpClient->request('POST', 'send', [
-            'body' => $email,
-        ]);
+        $response = $this->httpClient->request('POST', 'send', ['body' => $email]);
 
         if (Response::HTTP_OK !== $response->getStatusCode()) {
             throw new MailerException('Unable to send email to recipients.');

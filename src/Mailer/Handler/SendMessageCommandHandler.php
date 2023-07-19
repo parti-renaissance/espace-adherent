@@ -21,7 +21,10 @@ class SendMessageCommandHandler implements MessageHandlerInterface
             return;
         }
 
-        if ($delivered = $this->client->sendEmail($email->getRequestPayloadJson())) {
+        if (
+            ($delivered = $this->client->sendEmail($email->getRequestPayloadJson(), $command->resend))
+            && false === $command->resend
+        ) {
             $this->emailRepository->setDelivered($email, $delivered);
         }
     }
