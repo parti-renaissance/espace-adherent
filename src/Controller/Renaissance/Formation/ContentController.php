@@ -32,7 +32,7 @@ class ContentController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if (!$formation->hasPrintByAdherent($adherent) && $formation->addPrintByAdherent($adherent)) {
+        if ($formation->addPrintByAdherent($adherent)) {
             $this->entityManager->flush();
         }
 
