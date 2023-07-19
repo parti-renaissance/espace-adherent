@@ -553,6 +553,10 @@ class ConfigureCommand extends Command
 
         $pool = current($pools);
 
+        if ($pool->countCandidateGroups()) {
+            return;
+        }
+
         foreach ($committeeElection->getCandidaciesGroups() as $candidaciesGroup) {
             if (empty($candidaciesGroup->getCandidacies())) {
                 continue;
