@@ -372,9 +372,4 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
 
         return false;
     }
-
-    public function hasPrintByAdherent(Adherent $adherent): bool
-    {
-        return $this->printByAdherents->contains($adherent);
-    }
 }
