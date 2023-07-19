@@ -12,4 +12,15 @@ class ElectedRepresentativeAdherentMandateRepository extends ServiceEntityReposi
     {
         parent::__construct($registry, ElectedRepresentativeAdherentMandate::class);
     }
+
+    public function findCurrentMandates(int $adherentId): array
+    {
+        return $this->createQueryBuilder('mandate')
+            ->andWhere('mandate.adherent = :adherent')
+            ->setParameter('adherent', $adherentId)
+            ->andWhere('mandate.finishAt IS NULL')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

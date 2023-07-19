@@ -231,7 +231,8 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "current_mandates": []
             },
             {
                 "address": "47 rue Martre",
@@ -256,7 +257,21 @@ Feature:
                 "committee": "Second Comité des 3 communes",
                 "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "current_mandates": [
+                    {
+                        "uuid": "a31bfe33-9d13-4b65-ad6c-653e75c6adb9",
+                        "begin_at": "2019-06-12T00:00:00+02:00",
+                        "delegation": "Conseiller(e) municipal(e)",
+                        "finish_at": null,
+                        "mandate_type": "conseiller_municipal",
+                        "zone": {
+                            "code": "200054781",
+                            "name": "Métropole du Grand Paris",
+                            "uuid": "e3f18016-906e-11eb-a875-0242ac150002"
+                        }
+                    }
+                ]
             },
             {
                 "address": "2 avenue Jean Jaurès",
@@ -281,7 +296,8 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "current_mandates": []
             },
             {
                 "address": "12 Pilgerweg",
@@ -308,7 +324,8 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "current_mandates": []
             },
             {
                 "address": "32 Zeppelinstrasse",
@@ -337,7 +354,8 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "current_mandates": []
             }
         ]
     }
@@ -378,7 +396,8 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "current_mandates": []
             }
         ]
     }
@@ -426,7 +445,8 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "current_mandates": []
             },
             {
                 "address": "47 rue Martre",
@@ -451,7 +471,21 @@ Feature:
                 "committee": "Second Comité des 3 communes",
                 "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "current_mandates": [
+                    {
+                        "uuid": "a31bfe33-9d13-4b65-ad6c-653e75c6adb9",
+                        "begin_at": "2019-06-12T00:00:00+02:00",
+                        "delegation": "Conseiller(e) municipal(e)",
+                        "finish_at": null,
+                        "mandate_type": "conseiller_municipal",
+                        "zone": {
+                            "code": "200054781",
+                            "name": "Métropole du Grand Paris",
+                            "uuid": "e3f18016-906e-11eb-a875-0242ac150002"
+                        }
+                    }
+                ]
             }
         ]
     }
@@ -689,7 +723,8 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": ["2022-01-01 12:00:00", "2023-01-01 12:00:00"],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "current_mandates": []
             },
             {
                 "address": "36 rue de la Paix",
@@ -718,7 +753,8 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "current_mandates": []
             }
         ]
     }
@@ -763,7 +799,8 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "current_mandates": []
             }
         ]
     }

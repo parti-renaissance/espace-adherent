@@ -63,7 +63,8 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
      *
      * @Groups({
      *     "elected_mandate_write",
-     *     "elected_mandate_read"
+     *     "elected_mandate_read",
+     *     "managed_user_read"
      * })
      */
     public string $mandateType;
@@ -73,7 +74,8 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
      *
      * @Groups({
      *     "elected_mandate_write",
-     *     "elected_mandate_read"
+     *     "elected_mandate_read",
+     *     "managed_user_read"
      * })
      */
     public ?string $delegation = null;
@@ -89,7 +91,8 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
      *
      * @Groups({
      *     "elected_mandate_write",
-     *     "elected_mandate_read"
+     *     "elected_mandate_read",
+     *     "managed_user_read"
      * })
      */
     public ?Zone $zone = null;
