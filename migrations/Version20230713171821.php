@@ -14,6 +14,10 @@ final class Version20230713171821 extends AbstractMigration
         $this->addSql('DROP TABLE lre_area');
         $this->addSql('DROP INDEX UNIQ_562C7DA379645AD5 ON adherents');
         $this->addSql('ALTER TABLE adherents DROP lre_area_id');
+
+        $this->addSql('DELETE FROM adherent_messages WHERE type = \'lre_manager_elected_representative\'');
+        $this->addSql('DELETE FROM adherent_message_filters WHERE dtype = \'lremanagerelectedrepresentativefilter\'');
+        $this->addSql('DELETE FROM adherent_charter WHERE dtype = \'lrecharter\'');
     }
 
     public function down(Schema $schema): void
