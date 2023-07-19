@@ -4,6 +4,7 @@ namespace App\Repository\Projection;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\Address;
+use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Projection\ManagedUser;
 use App\FranceCities\FranceCities;
 use App\ManagedUsers\ManagedUsersFilter;
@@ -16,6 +17,7 @@ use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -327,6 +329,21 @@ class ManagedUserRepository extends ServiceEntityRepository
         if ($mandateType = $filter->getMandateType()) {
             $qb->andWhere('FIND_IN_SET(:mandate_type, u.mandateTypes) > 0');
             $qb->setParameter('mandate_type', $mandateType);
+        }
+
+        $mandates = $filter->getMandates();
+        if (!empty($mandates)) {
+            $qb
+                ->innerJoin(
+                    ElectedRepresentativeAdherentMandate::class,
+                    'current_mandate',
+                    Join::WITH,
+                    'u.originalId = current_mandate.adherent'
+                )
+                ->andWhere('current_mandate.finishAt IS NULL')
+                ->andWhere('current_mandate.mandateType IN (:current_mandate_types)')
+                ->setParameter('current_mandate_types', $mandates)
+            ;
         }
 
         return $qb;

@@ -80,6 +80,13 @@ class ManagedUsersFilter
     private ?string $mandateType = null;
 
     /**
+     * @Groups({"filter_write"})
+     *
+     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::CHOICES, strict=true, multiple=true)
+     */
+    private array $mandates = [];
+
+    /**
      * @var Zone[]
      *
      * @Assert\Expression(
@@ -582,6 +589,7 @@ class ManagedUsersFilter
                     })
                 ),
                 'mandateType' => $this->mandateType,
+                'mandates' => $this->mandates,
                 'isCampusRegistered' => $this->isCampusRegistered,
             ],
         );
@@ -615,6 +623,16 @@ class ManagedUsersFilter
     public function setMandateType(?string $mandateType): void
     {
         $this->mandateType = $mandateType;
+    }
+
+    public function getMandates(): array
+    {
+        return $this->mandates;
+    }
+
+    public function setMandates(array $mandates): void
+    {
+        $this->mandates = $mandates;
     }
 
     public function getIsCampusRegistered(): ?bool

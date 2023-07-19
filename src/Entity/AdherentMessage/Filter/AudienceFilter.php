@@ -105,6 +105,15 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     private ?string $mandateType = null;
 
     /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"adherent_message_update_filter"})
+     *
+     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::CHOICES, strict=true, multiple=true)
+     */
+    private array $mandates = [];
+
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      *
      * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
@@ -225,6 +234,16 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     public function setMandateType(?string $mandateType): void
     {
         $this->mandateType = $mandateType;
+    }
+
+    public function getMandates(): array
+    {
+        return $this->mandates;
+    }
+
+    public function setMandates(array $mandates): void
+    {
+        $this->mandates = $mandates;
     }
 
     public function getIsCampusRegistered(): ?bool

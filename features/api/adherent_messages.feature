@@ -453,6 +453,26 @@ Feature:
                           }
                       },
                       "type": "select"
+                  },
+                  {
+                      "code": "mandates",
+                      "label": "Mandats",
+                      "options": {
+                          "choices": {
+                              "conseiller_consulaire": "Conseiller(ère) FDE",
+                              "conseiller_d_arrondissement": "Conseiller(ère) d'arrondissement",
+                              "conseiller_departemental": "Conseiller(e) départemental(e)",
+                              "conseiller_municipal": "Conseiller(e) municipal(e)",
+                              "conseiller_regional": "Conseiller(e) régional(e)",
+                              "depute": "Député(e)",
+                              "euro_depute": "Député(e) européen(ne)",
+                              "membre_EPCI": "Membre d'EPCI",
+                              "membre_assemblee_corse": "Membre de l'Assemblée de Corse",
+                              "senateur": "Sénateur(rice)"
+                          },
+                          "multiple": true
+                      },
+                      "type": "select"
                   }
               ]
           }

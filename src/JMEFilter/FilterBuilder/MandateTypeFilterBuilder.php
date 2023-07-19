@@ -12,7 +12,6 @@ class MandateTypeFilterBuilder implements FilterBuilderInterface
     public function supports(string $scope, string $feature = null): bool
     {
         return \in_array($feature, [
-            FeatureEnum::ELECTED_REPRESENTATIVE,
             FeatureEnum::MESSAGES,
             FeatureEnum::CONTACTS,
         ], true);
@@ -22,11 +21,7 @@ class MandateTypeFilterBuilder implements FilterBuilderInterface
     {
         return (new FilterCollectionBuilder())
             ->createSelect('mandateType', 'Type de mandat')
-            ->setChoices(array_flip(
-                FeatureEnum::ELECTED_REPRESENTATIVE === $feature
-                    ? MandateTypeEnum::TYPE_CHOICES
-                    : MandateTypeEnum::TYPE_CHOICES_CONTACTS
-            ))
+            ->setChoices(array_flip(MandateTypeEnum::TYPE_CHOICES_CONTACTS))
             ->getFilters()
         ;
     }

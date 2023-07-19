@@ -202,98 +202,98 @@ class ReferentControllerTest extends AbstractEnMarcheWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
 
         $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
 
         // filter hosts
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form = $crawler->selectButton('Appliquer')->form();
         $form['f[includeRoles]'] = ['CommitteeHosts'];
         $form['f[excludeRoles]'] = [];
 
-        $this->client->submit($form);
+        $crawler = $this->client->submit($form);
 
-        $this->assertCount(2, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
-        $this->assertStringContainsString('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
-        $this->assertStringContainsString('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertCount(2, $crawler->filter('.status.status__1'));
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item--host'));
+        $this->assertStringContainsString('Gisele', $crawler->filter('tbody tr.referent__item')->text());
+        $this->assertStringContainsString('Berthoux', $crawler->filter('tbody tr.referent__item')->text());
 
         // filter supervisors
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form = $crawler->selectButton('Appliquer')->form();
         $form['f[includeRoles]'] = ['CommitteeSupervisors'];
         $form['f[excludeRoles]'] = [];
 
-        $this->client->submit($form);
+        $crawler = $this->client->submit($form);
 
-        $this->assertCount(0, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
-        $this->assertStringContainsString('Brioul Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertCount(0, $crawler->filter('.status.status__1'));
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item--host'));
+        $this->assertStringContainsString('Brioul Francis', $crawler->filter('tbody tr.referent__item')->text());
 
         // filter newsletter subscriptions
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form = $crawler->selectButton('Appliquer')->form();
         $form['f[includeRoles]'] = [];
         $form['f[excludeRoles]'] = [];
 
-        $this->client->submit($form);
+        $crawler = $this->client->submit($form);
 
-        $this->assertCount(5, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertStringContainsString('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertStringContainsString('92110', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertStringContainsString('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
+        $this->assertCount(5, $crawler->filter('.status.status__1'));
+        $this->assertCount(4, $crawler->filter('tbody tr.referent__item'));
+        $this->assertStringContainsString('77000', $crawler->filter('tbody tr.referent__item')->first()->text());
+        $this->assertStringContainsString('92110', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertStringContainsString('8802', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
 
         // exclude
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form = $crawler->selectButton('Appliquer')->form();
         $form['f[includeRoles]'] = [];
         $form['f[excludeRoles]'] = ['CommitteeSupervisors', 'CommitteeHosts'];
 
-        $this->client->submit($form);
+        $crawler = $this->client->submit($form);
 
-        $this->assertCount(3, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertStringContainsString('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertStringContainsString('8057', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertCount(3, $crawler->filter('.status.status__1'));
+        $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
+        $this->assertStringContainsString('8802', $crawler->filter('tbody tr.referent__item')->first()->text());
+        $this->assertStringContainsString('8057', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
 
         // filter adherents in no committee
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form = $crawler->selectButton('Appliquer')->form();
         $form['f[isCommitteeMember]'] = 0;
         $form['f[includeRoles]'] = [];
         $form['f[excludeRoles]'] = [];
 
-        $this->client->submit($form);
+        $crawler = $this->client->submit($form);
 
-        $this->assertCount(1, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertStringContainsString('Michelle', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertCount(1, $crawler->filter('.status.status__1'));
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
+        $this->assertStringContainsString('Michelle', $crawler->filter('tbody tr.referent__item')->first()->text());
 
         // filter adherents in committees
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form = $crawler->selectButton('Appliquer')->form();
         $form['f[isCommitteeMember]'] = 1;
         $form['f[includeRoles]'] = [];
         $form['f[excludeRoles]'] = [];
 
-        $this->client->submit($form);
+        $crawler = $this->client->submit($form);
 
-        $this->assertCount(4, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(3, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
-        $this->assertStringContainsString('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item--host')->first()->text());
-        $this->assertStringContainsString('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item--host')->eq(1)->text());
-        $this->assertStringContainsString('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item--adherent')->text());
+        $this->assertCount(4, $crawler->filter('.status.status__1'));
+        $this->assertCount(3, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(2, $crawler->filter('tbody tr.referent__item--host'));
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item--adherent'));
+        $this->assertStringContainsString('Francis', $crawler->filter('tbody tr.referent__item--host')->first()->text());
+        $this->assertStringContainsString('Gisele', $crawler->filter('tbody tr.referent__item--host')->eq(1)->text());
+        $this->assertStringContainsString('Michel', $crawler->filter('tbody tr.referent__item--adherent')->text());
 
         // filter certified adherents
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form = $crawler->selectButton('Appliquer')->form();
         $form['f[includeRoles]'] = [];
         $form['f[isCertified]'] = 1;
 
-        $this->client->submit($form);
+        $crawler = $this->client->submit($form);
 
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr .adherent-name > img'));
-        $this->assertStringContainsString('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(1, $crawler->filter('tbody tr .adherent-name > img'));
+        $this->assertStringContainsString('Berthoux', $crawler->filter('tbody tr.referent__item')->first()->text());
     }
 
     public function testReferentCanCreateAdherentMessageSuccessfully(): void
