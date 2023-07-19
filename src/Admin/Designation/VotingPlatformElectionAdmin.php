@@ -164,6 +164,11 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                             break;
                     }
 
+                    $qb
+                        ->andWhere(sprintf('%s.status %s :cancel_status', $alias, DesignationStatusEnum::CANCELED === $value->getValue() ? '=' : '!='))
+                        ->setParameter('cancel_status', ElectionStatusEnum::CANCELED)
+                    ;
+
                     return true;
                 },
             ])
