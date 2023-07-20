@@ -2,14 +2,55 @@
 
 namespace App\Entity\AdherentMandate;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     routePrefix="/v3",
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"elected_mandate_read"}
+ *         },
+ *         "denormalization_context": {
+ *             "groups": {"elected_mandate_write"}
+ *         },
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
+ *     },
+ *     itemOperations={
+ *         "put": {
+ *             "path": "/elected_adherent_mandates/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
+ *         },
+ *         "delete": {
+ *             "path": "/elected_adherent_mandates/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
+ *         }
+ *     },
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/elected_adherent_mandates",
+ *         },
+ *         "post": {
+ *             "path": "/elected_adherent_mandates",
+ *         }
+ *     }
+ * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "adherent.uuid": "exact",
+ * })
+ *
  * @ORM\Entity(repositoryClass="App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepository")
  */
 class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
@@ -19,6 +60,11 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
      *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\MandateTypeEnum", "toArray"})
+     *
+     * @Groups({
+     *     "elected_mandate_write",
+     *     "elected_mandate_read"
+     * })
      */
     public string $mandateType;
 
@@ -26,6 +72,11 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255)
+     *
+     * @Groups({
+     *     "elected_mandate_write",
+     *     "elected_mandate_read"
+     * })
      */
     public ?string $delegation = null;
 
@@ -37,6 +88,11 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
      *     "value !== null or (value == null and this.getType() === constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
      *     message="Le périmètre géographique est obligatoire."
      * )
+     *
+     * @Groups({
+     *     "elected_mandate_write",
+     *     "elected_mandate_read"
+     * })
      */
     public ?Zone $zone = null;
 
