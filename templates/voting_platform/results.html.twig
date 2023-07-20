@@ -13,7 +13,7 @@
 {% block voting_platform_result_header_default %}
     <div class="l__wrapper{{ not designation.isMajorityType ? '--medium' }}">
         <div class="has-voted-header b__nudge--bottom-50">
-            <h1 class="text--larger">Résultats de {{ designation.getDenomination(true) }}</h1>
+            <h1 class="text--larger text-base font-medium lg:text-xl">Résultats de {{ designation.getDenomination(true) }}</h1>
         </div>
 
         {% if election_rounds|length > 1 and not election.isSecondRoundVotePeriodActive %}
