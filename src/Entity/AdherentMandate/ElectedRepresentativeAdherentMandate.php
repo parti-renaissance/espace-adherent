@@ -24,6 +24,8 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255)
      */
     public ?string $delegation = null;
 
