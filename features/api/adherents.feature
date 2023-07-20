@@ -231,7 +231,9 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "mandates": [],
+                "declared_mandates": []
             },
             {
                 "address": "47 rue Martre",
@@ -256,7 +258,13 @@ Feature:
                 "committee": "Second Comité des 3 communes",
                 "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "mandates": [
+                    "Conseiller(e) municipal(e)|Métropole du Grand Paris"
+                ],
+                "declared_mandates": [
+                    "Conseiller(e) municipal(e)"
+                ]
             },
             {
                 "address": "2 avenue Jean Jaurès",
@@ -281,7 +289,9 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "mandates": [],
+                "declared_mandates": []
             },
             {
                 "address": "12 Pilgerweg",
@@ -308,7 +318,11 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "mandates": [],
+                "declared_mandates": [
+                    "Député(e) européen(ne)"
+                ]
             },
             {
                 "address": "32 Zeppelinstrasse",
@@ -337,7 +351,9 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "mandates": [],
+                "declared_mandates": []
             }
         ]
     }
@@ -378,7 +394,9 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "mandates": [],
+                "declared_mandates": []
             }
         ]
     }
@@ -426,7 +444,9 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "mandates": [],
+                "declared_mandates": []
             },
             {
                 "address": "47 rue Martre",
@@ -451,7 +471,13 @@ Feature:
                 "committee": "Second Comité des 3 communes",
                 "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
                 "cotisation_dates": [],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "mandates": [
+                    "Conseiller(e) municipal(e)|Métropole du Grand Paris"
+                ],
+                "declared_mandates": [
+                    "Conseiller(e) municipal(e)"
+                ]
             }
         ]
     }
@@ -689,7 +715,9 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": ["2022-01-01 12:00:00", "2023-01-01 12:00:00"],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "mandates": [],
+                "declared_mandates": []
             },
             {
                 "address": "36 rue de la Paix",
@@ -718,7 +746,9 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "mandates": [],
+                "declared_mandates": []
             }
         ]
     }
@@ -763,7 +793,9 @@ Feature:
                 "committee": null,
                 "committee_uuid": null,
                 "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
-                "campus_registered_at": null
+                "campus_registered_at": null,
+                "mandates": [],
+                "declared_mandates": []
             }
         ]
     }

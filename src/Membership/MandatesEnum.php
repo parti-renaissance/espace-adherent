@@ -6,20 +6,20 @@ use MyCLabs\Enum\Enum;
 
 final class MandatesEnum extends Enum
 {
-    private const REGIONAL_COUNCILOR = 'regional_councilor';
-    private const DEPARTMENTAL_COUNCILOR = 'departmental_councilor';
-    private const CONSULAR_COUNCILOR = 'consular_councilor';
-    private const CORSICA_ASSEMBLY_MEMBER = 'corsica_assembly_member';
-    private const MAYOR = 'mayor';
-    private const MAYOR_ASSISTANT = 'mayor_assistant';
-    private const CITY_COUNCILOR = 'city_councilor';
-    private const BOROUGH_COUNCILOR = 'borough_councilor';
-    private const DEPUTY = 'deputy';
-    private const SENATOR = 'senator';
-    private const EUROPEAN_DEPUTY = 'european_deputy';
-    private const PRESIDENT_OF_EPCI = 'president_of_epci';
-    private const VICE_PRESIDENT_OF_EPCI = 'vice_president_of_epci';
-    private const EPCI_MEMBER = 'epci_member';
+    public const REGIONAL_COUNCILOR = 'regional_councilor';
+    public const DEPARTMENTAL_COUNCILOR = 'departmental_councilor';
+    public const CONSULAR_COUNCILOR = 'consular_councilor';
+    public const CORSICA_ASSEMBLY_MEMBER = 'corsica_assembly_member';
+    public const MAYOR = 'mayor';
+    public const MAYOR_ASSISTANT = 'mayor_assistant';
+    public const CITY_COUNCILOR = 'city_councilor';
+    public const BOROUGH_COUNCILOR = 'borough_councilor';
+    public const DEPUTY = 'deputy';
+    public const SENATOR = 'senator';
+    public const EUROPEAN_DEPUTY = 'european_deputy';
+    public const PRESIDENT_OF_EPCI = 'president_of_epci';
+    public const VICE_PRESIDENT_OF_EPCI = 'vice_president_of_epci';
+    public const EPCI_MEMBER = 'epci_member';
 
     public const ALL = [
         self::REGIONAL_COUNCILOR,
