@@ -5,6 +5,7 @@ namespace App\Normalizer;
 use App\Entity\Projection\ManagedUser;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepository;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -41,9 +42,22 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         $groups = $context['groups'] ?? [];
 
         if (\in_array('managed_user_read', $groups, true)) {
-            $currentMandates = $this->erMandateRepository->findCurrentMandates($object->getOriginalId());
+            $mandates = $this->erMandateRepository->findMandatesForAdherentId($object->getOriginalId());
 
-            $data['current_mandates'] = $this->normalizer->normalize($currentMandates, $format, $context);
+            $currentMandates = $mandates->matching(
+                Criteria::create()
+                    ->andWhere(Criteria::expr()->eq('finishAt', null))
+                    ->orderBy(['beginAt' => 'DESC'])
+            )->toArray();
+
+            $terminatedMandates = $mandates->matching(
+                Criteria::create()
+                    ->andWhere(Criteria::expr()->neq('finishAt', null))
+                    ->orderBy(['beginAt' => 'DESC'])
+            )->toArray();
+
+            $data['current_mandates'] = $this->normalizer->normalize(array_values($currentMandates), $format, $context);
+            $data['terminated_mandates'] = $this->normalizer->normalize(array_values($terminatedMandates), $format, $context);
         }
 
         return $data;

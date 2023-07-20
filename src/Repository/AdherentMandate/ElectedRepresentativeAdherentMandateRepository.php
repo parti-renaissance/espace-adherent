@@ -4,6 +4,7 @@ namespace App\Repository\AdherentMandate;
 
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ElectedRepresentativeAdherentMandateRepository extends ServiceEntityRepository
@@ -13,14 +14,15 @@ class ElectedRepresentativeAdherentMandateRepository extends ServiceEntityReposi
         parent::__construct($registry, ElectedRepresentativeAdherentMandate::class);
     }
 
-    public function findCurrentMandates(int $adherentId): array
+    public function findMandatesForAdherentId(int $adherentId): ArrayCollection
     {
-        return $this->createQueryBuilder('mandate')
+        $mandates = $this->createQueryBuilder('mandate')
             ->andWhere('mandate.adherent = :adherent')
             ->setParameter('adherent', $adherentId)
-            ->andWhere('mandate.finishAt IS NULL')
             ->getQuery()
             ->getResult()
         ;
+
+        return new ArrayCollection($mandates);
     }
 }
