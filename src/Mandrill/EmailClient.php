@@ -11,18 +11,24 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class EmailClient implements EmailClientInterface
 {
-    private HttpClientInterface $client;
-    private string $apiKey;
+    private string $actifKey;
 
-    public function __construct(HttpClientInterface $client, string $apiKey)
-    {
-        $this->client = $client;
-        $this->apiKey = $apiKey;
+    public function __construct(
+        private readonly HttpClientInterface $client,
+        private readonly string $apiKey,
+        private readonly string $testApiKey,
+        private readonly string $appEnvironment
+    ) {
+        if ('production' === $this->appEnvironment) {
+            $this->actifKey = $apiKey;
+        } else {
+            $this->actifKey = $testApiKey;
+        }
     }
 
-    public function sendEmail(string $email): string
+    public function sendEmail(string $email, bool $resend = false): string
     {
-        $response = $this->client->request('POST', 'messages/send-template.json', ['json' => $this->prepareBody($email)]);
+        $response = $this->client->request('POST', 'messages/send-template.json', ['json' => $this->prepareBody($email, $resend)]);
 
         return $this->filterResponse($response, 'Unable to send email to recipients.');
     }
@@ -36,10 +42,10 @@ class EmailClient implements EmailClientInterface
         return $data['html'] ?? '';
     }
 
-    private function prepareBody(string $email): array
+    private function prepareBody(string $email, bool $resend = false): array
     {
         $body = json_decode($email, true);
-        $body['key'] = $this->apiKey;
+        $body['key'] = $resend ? $this->apiKey : $this->actifKey;
 
         return $body;
     }

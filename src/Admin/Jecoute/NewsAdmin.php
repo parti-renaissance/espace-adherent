@@ -28,14 +28,6 @@ use Symfony\Component\Security\Core\Security;
 
 class NewsAdmin extends AbstractAdmin
 {
-    protected function configureDefaultSortValues(array &$sortValues): void
-    {
-        parent::configureDefaultSortValues($sortValues);
-
-        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
-        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
-    }
-
     private $security;
     private $zoneRepository;
     private $newsHandler;
@@ -60,6 +52,14 @@ class NewsAdmin extends AbstractAdmin
         return [
             'pin' => 'PIN',
         ];
+    }
+
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void

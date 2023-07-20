@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class EmailAdmin extends AbstractAdmin
@@ -19,9 +20,19 @@ class EmailAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
+    protected function getAccessMapping(): array
+    {
+        return [
+            'resend' => AdminPermissionMap::PERMISSION_LIST,
+        ];
+    }
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection->remove('create');
+        $collection
+            ->remove('create')
+            ->add('resend', $this->getRouterIdParameter().'/resend')
+        ;
     }
 
     protected function configureShowFields(ShowMapper $show): void
@@ -105,6 +116,9 @@ class EmailAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'actions' => [
                     'show' => [],
+                    'resend' => [
+                        'template' => 'admin/email/list_resend.html.twig',
+                    ],
                 ],
             ])
         ;
