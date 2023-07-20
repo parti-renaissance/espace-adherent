@@ -38,10 +38,9 @@ class TerritorialCouncilControllerTest extends AbstractEnMarcheWebTestCase
 
         $crawler = $this->client->click($crawler->selectLink('Membres')->link());
         $members = $crawler->filter('.instance-page__members .instance-page__member');
-        self::assertCount(8, $members);
+        self::assertCount(7, $members);
         self::assertStringContainsString('Jacques Picard', $members->first()->text());
-        self::assertStringContainsString('Lucie Olivera', $members->eq(1)->text());
-        self::assertStringContainsString('Gisele Berthoux', $members->eq(2)->text());
+        self::assertStringContainsString('Gisele Berthoux', $members->eq(1)->text());
 
         self::assertCount(1, $crawler->filter('.instance-page__aside h5:contains("Président du Conseil territorial")'));
     }

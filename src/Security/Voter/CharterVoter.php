@@ -36,8 +36,7 @@ class CharterVoter extends AbstractAdherentVoter
                 return $adherent->isDeputy();
             case AdherentCharterTypeEnum::TYPE_LEGISLATIVE_CANDIDATE:
                 return $adherent->isLegislativeCandidate();
-            case AdherentCharterTypeEnum::TYPE_LRE:
-                return $adherent->isLre();
+
             case AdherentCharterTypeEnum::TYPE_REFERENT:
                 return $adherent->isReferent();
             case AdherentCharterTypeEnum::TYPE_SENATOR:

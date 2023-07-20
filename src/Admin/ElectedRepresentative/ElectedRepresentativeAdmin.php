@@ -235,10 +235,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     return $er
                         ->createQueryBuilder('uld')
                         ->andWhere('uld.type IN (:type)')
-                        ->setParameter('type', [
-                            UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
-                            UserListDefinitionEnum::TYPE_LRE,
-                        ])
+                        ->setParameter('type', [UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE])
                         ->orderBy('uld.label', 'ASC')
                     ;
                 },
@@ -518,10 +515,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         $alias = $qb->getRootAlias();
                         $qb
                             ->andWhere($alias.'.type IN (:type)')
-                            ->setParameter('type', [
-                                UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
-                                UserListDefinitionEnum::TYPE_LRE,
-                            ])
+                            ->setParameter('type', [UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE])
                             ->orderBy($alias.'.label', 'ASC')
                         ;
                         $datagrid->setValue($property, null, $value);

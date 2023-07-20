@@ -7,7 +7,6 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
-use App\Entity\AdherentMessage\Filter\LreManagerElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentInstancesFilter;
@@ -31,8 +30,6 @@ abstract class FilterFactory
                 return static::createCommitteeFilter();
             case AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE:
                 return static::createReferentElectedRepresentativeFilter($user);
-            case AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE:
-                return static::createLreManagerElectedRepresentativeFilter($user);
             case AdherentMessageTypeEnum::REFERENT_INSTANCES:
                 return static::createReferentTerritorialCouncilFilter($user);
             case AdherentMessageTypeEnum::CANDIDATE:
@@ -92,18 +89,6 @@ abstract class FilterFactory
         }
 
         return new ReferentElectedRepresentativeFilter($managedArea->getTags()->first());
-    }
-
-    private static function createLreManagerElectedRepresentativeFilter(
-        Adherent $user
-    ): LreManagerElectedRepresentativeFilter {
-        $lreArea = $user->getLreArea();
-
-        if (!$lreArea) {
-            throw new \InvalidArgumentException(sprintf('[AdherentMessage] The user "%s" is not a LRE Manager', $user->getEmailAddress()));
-        }
-
-        return new LreManagerElectedRepresentativeFilter($lreArea->getReferentTag());
     }
 
     private static function createReferentTerritorialCouncilFilter(Adherent $user): ReferentInstancesFilter

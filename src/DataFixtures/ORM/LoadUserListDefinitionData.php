@@ -35,9 +35,6 @@ class LoadUserListDefinitionData extends Fixture
             $userListDefinitionInstancesMember
         );
 
-        $manager->persist(new UserListDefinition(UserListDefinitionEnum::TYPE_LRE, 'lre-label-1', 'LRE label 1'));
-        $manager->persist(new UserListDefinition(UserListDefinitionEnum::TYPE_LRE, 'lre-label-2', 'LRE label 2'));
-
         $manager->flush();
     }
 }

@@ -37,13 +37,6 @@ class ManageUserListDefinitionElectedRepresentativeVoter extends AbstractAdheren
             );
         }
 
-        if (!$isGranted && $adherent->isLre()) {
-            $isGranted = $adherent->getLreArea()->isAllTags() || $this->electedRepresentativeRepository->isInReferentManagedArea(
-                $subject,
-                [$adherent->getLreArea()->getReferentTag()->getZone()]
-            );
-        }
-
         return $isGranted;
     }
 

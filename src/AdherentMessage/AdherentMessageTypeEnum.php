@@ -9,7 +9,6 @@ use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
-use App\Entity\AdherentMessage\LreManagerElectedRepresentativeMessage;
 use App\Entity\AdherentMessage\PresidentDepartmentalAssemblyAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
@@ -29,7 +28,6 @@ class AdherentMessageTypeEnum extends Enum
     public const COMMITTEE = 'committee';
     public const SENATOR = 'senator';
     public const REFERENT_ELECTED_REPRESENTATIVE = 'referent_elected_representative';
-    public const LRE_MANAGER_ELECTED_REPRESENTATIVE = 'lre_manager_elected_representative';
     public const REFERENT_INSTANCES = 'referent_instances';
     public const LEGISLATIVE_CANDIDATE = 'legislative_candidate';
     public const CANDIDATE = 'candidate';
@@ -46,7 +44,6 @@ class AdherentMessageTypeEnum extends Enum
         self::COMMITTEE => CommitteeAdherentMessage::class,
         self::SENATOR => SenatorAdherentMessage::class,
         self::REFERENT_ELECTED_REPRESENTATIVE => ReferentElectedRepresentativeMessage::class,
-        self::LRE_MANAGER_ELECTED_REPRESENTATIVE => LreManagerElectedRepresentativeMessage::class,
         self::REFERENT_INSTANCES => ReferentInstancesMessage::class,
         self::LEGISLATIVE_CANDIDATE => LegislativeCandidateAdherentMessage::class,
         self::CANDIDATE => CandidateAdherentMessage::class,
@@ -64,8 +61,6 @@ class AdherentMessageTypeEnum extends Enum
         CommitteeAdherentMessage::class => 'ROLE_ANIMATOR',
 
         SenatorAdherentMessage::class => ['ROLE_SENATOR', 'ROLE_DELEGATED_SENATOR'],
-
-        LreManagerElectedRepresentativeMessage::class => 'ROLE_LRE',
 
         ReferentAdherentMessage::class => ['ROLE_REFERENT', 'ROLE_DELEGATED_REFERENT'],
         ReferentElectedRepresentativeMessage::class => ['ROLE_REFERENT', 'ROLE_DELEGATED_REFERENT'],

@@ -25,7 +25,7 @@ class ElectedRepresentativeMailchimpCampaignHandler extends AbstractMailchimpCam
     public function supports(AdherentMessageInterface $message): bool
     {
         return $message->getFilter() instanceof AbstractElectedRepresentativeFilter
-            && \in_array($message->getType(), [AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE, AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE], true);
+            && AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE === $message->getType();
     }
 
     /**

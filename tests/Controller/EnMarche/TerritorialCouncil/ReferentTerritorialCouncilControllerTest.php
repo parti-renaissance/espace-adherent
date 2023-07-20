@@ -21,8 +21,8 @@ class ReferentTerritorialCouncilControllerTest extends AbstractEnMarcheWebTestCa
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertCount(8, $crawler->filter('tbody tr.referent__item'));
-        $this->assertCount(8, $crawler->filter('.status.status__1'));
+        $this->assertCount(7, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(7, $crawler->filter('.status.status__1'));
         $this->assertStringContainsString('Berthoux Gisele', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('Conseiller(ère) départemental(e) 75', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('Conseiller(ère) FDE 75', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
@@ -32,7 +32,7 @@ class ReferentTerritorialCouncilControllerTest extends AbstractEnMarcheWebTestCa
         $this->assertStringContainsString('+33 1 38 76 43 34', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('Non', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('Non-abonné(e)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertStringContainsString('Président(e) du groupe d\'opposition LaREM', $crawler->filter('tbody tr.referent__item')->eq(5)->text());
+        $this->assertStringContainsString('Président(e) du groupe d\'opposition LaREM', $crawler->filter('tbody tr.referent__item')->eq(4)->text());
     }
 
     public function testFilterTerritorialCouncilMembers()
@@ -41,7 +41,7 @@ class ReferentTerritorialCouncilControllerTest extends AbstractEnMarcheWebTestCa
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/instances/membres');
 
-        $this->assertCount(8, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(7, $crawler->filter('tbody tr.referent__item'));
 
         // filter by lastname
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -69,10 +69,9 @@ class ReferentTerritorialCouncilControllerTest extends AbstractEnMarcheWebTestCa
 
         $crawler = $this->client->submit($form);
 
-        $this->assertCount(3, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
         $this->assertStringContainsString('Berthoux Gisele', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertStringContainsString('Olivera Lucie', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertStringContainsString('Referent75and77', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
+        $this->assertStringContainsString('Referent75and77', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
 
         // filter by email status
         $form['f[emailSubscription]'] = 0;
@@ -90,11 +89,10 @@ class ReferentTerritorialCouncilControllerTest extends AbstractEnMarcheWebTestCa
 
         $crawler = $this->client->submit($form);
 
-        $this->assertCount(4, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(3, $crawler->filter('tbody tr.referent__item'));
         $this->assertStringContainsString('Berthoux Gisele', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('Duroc Benjamin', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertStringContainsString('Olivera Lucie', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
-        $this->assertStringContainsString('PARIS I Député', $crawler->filter('tbody tr.referent__item')->eq(3)->text());
+        $this->assertStringContainsString('PARIS I Député', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
 
         // by territorial council
         $form['f[ageMin]'] = '';
@@ -103,7 +101,7 @@ class ReferentTerritorialCouncilControllerTest extends AbstractEnMarcheWebTestCa
 
         $crawler = $this->client->submit($form);
 
-        $this->assertCount(8, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(7, $crawler->filter('tbody tr.referent__item'));
 
         $form['f[referentTags]'] = [99];
 

@@ -9,8 +9,6 @@ final class UserListDefinitionEnum extends Enum
     public const TYPE_ELECTED_REPRESENTATIVE = 'elected_representative';
     public const TYPE_ADHERENT = 'adherent';
     public const TYPE_THEMATIC_COMMUNITY = 'thematic_community';
-    public const TYPE_LRE = 'lre';
-
     public const TYPE_THEMATIC_COMMUNITY_HEALTH = 'thematic_community_health';
     public const TYPE_THEMATIC_COMMUNITY_EDUCATION = 'thematic_community_education';
     public const TYPE_THEMATIC_COMMUNITY_ECOLOGY = 'thematic_community_ecology';
@@ -25,7 +23,6 @@ final class UserListDefinitionEnum extends Enum
         self::TYPE_ELECTED_REPRESENTATIVE,
         self::TYPE_ADHERENT,
         self::TYPE_THEMATIC_COMMUNITY,
-        self::TYPE_LRE,
         self::TYPE_THEMATIC_COMMUNITY_HEALTH,
         self::TYPE_THEMATIC_COMMUNITY_EDUCATION,
         self::TYPE_THEMATIC_COMMUNITY_ECOLOGY,
@@ -43,7 +40,6 @@ final class UserListDefinitionEnum extends Enum
         'user_list_definition.type.elected_representative.label' => self::TYPE_ELECTED_REPRESENTATIVE,
         'user_list_definition.type.adherent.label' => self::TYPE_ADHERENT,
         'user_list_definition.type.thematic_community.label' => self::TYPE_THEMATIC_COMMUNITY,
-        'user_list_definition.type.lre.label' => self::TYPE_LRE,
         'user_list_definition.type.thematic_community_health.label' => self::TYPE_THEMATIC_COMMUNITY_HEALTH,
         'user_list_definition.type.thematic_community_education.label' => self::TYPE_THEMATIC_COMMUNITY_EDUCATION,
         'user_list_definition.type.thematic_community_ecology.label' => self::TYPE_THEMATIC_COMMUNITY_ECOLOGY,

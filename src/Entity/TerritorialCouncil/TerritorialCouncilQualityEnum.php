@@ -9,7 +9,6 @@ class TerritorialCouncilQualityEnum extends Enum
     public const REFERENT = 'referent';
     public const GOVERNMENT_MEMBER = 'government_member';
     public const REFERENT_JAM = 'referent_jam';
-    public const LRE_MANAGER = 'lre_manager';
     public const SENATOR = 'senator';
     public const DEPUTY = 'deputy';
     public const EUROPEAN_DEPUTY = 'european_deputy';
@@ -30,7 +29,6 @@ class TerritorialCouncilQualityEnum extends Enum
         self::REFERENT,
         self::GOVERNMENT_MEMBER,
         self::REFERENT_JAM,
-        self::LRE_MANAGER,
         self::SENATOR,
         self::DEPUTY,
         self::EUROPEAN_DEPUTY,
@@ -53,28 +51,26 @@ class TerritorialCouncilQualityEnum extends Enum
         self::REFERENT => 0,
         self::GOVERNMENT_MEMBER => 1,
         self::REFERENT_JAM => 2,
-        self::LRE_MANAGER => 3,
-        self::SENATOR => 4,
-        self::DEPUTY => 5,
-        self::EUROPEAN_DEPUTY => 6,
-        self::REGIONAL_COUNCIL_PRESIDENT => 7,
-        self::DEPARTMENTAL_COUNCIL_PRESIDENT => 8,
-        self::MAYOR => 9,
-        self::REGIONAL_COUNCILOR => 10,
-        self::CORSICA_ASSEMBLY_MEMBER => 11,
-        self::DEPARTMENT_COUNCILOR => 12,
-        self::CITY_COUNCILOR => 13,
-        self::BOROUGH_COUNCILOR => 14,
-        self::CONSULAR_COUNCILOR => 15,
-        self::COMMITTEE_SUPERVISOR => 16,
-        self::ELECTED_CANDIDATE_ADHERENT => 17,
+        self::SENATOR => 3,
+        self::DEPUTY => 4,
+        self::EUROPEAN_DEPUTY => 5,
+        self::REGIONAL_COUNCIL_PRESIDENT => 4,
+        self::DEPARTMENTAL_COUNCIL_PRESIDENT => 7,
+        self::MAYOR => 8,
+        self::REGIONAL_COUNCILOR => 9,
+        self::CORSICA_ASSEMBLY_MEMBER => 10,
+        self::DEPARTMENT_COUNCILOR => 11,
+        self::CITY_COUNCILOR => 12,
+        self::BOROUGH_COUNCILOR => 13,
+        self::CONSULAR_COUNCILOR => 14,
+        self::COMMITTEE_SUPERVISOR => 15,
+        self::ELECTED_CANDIDATE_ADHERENT => 16,
     ];
 
     public const ALL = [
         self::REFERENT,
         self::GOVERNMENT_MEMBER,
         self::REFERENT_JAM,
-        self::LRE_MANAGER,
         self::SENATOR,
         self::DEPUTY,
         self::EUROPEAN_DEPUTY,
@@ -95,7 +91,6 @@ class TerritorialCouncilQualityEnum extends Enum
         self::REFERENT,
         self::GOVERNMENT_MEMBER,
         self::REFERENT_JAM,
-        self::LRE_MANAGER,
         self::SENATOR,
         self::DEPUTY,
         self::EUROPEAN_DEPUTY,
@@ -117,7 +112,6 @@ class TerritorialCouncilQualityEnum extends Enum
         self::REFERENT,
         self::GOVERNMENT_MEMBER,
         self::REFERENT_JAM,
-        self::LRE_MANAGER,
         self::SENATOR,
         self::DEPUTY,
         self::EUROPEAN_DEPUTY,
@@ -129,7 +123,6 @@ class TerritorialCouncilQualityEnum extends Enum
         self::REFERENT,
         self::GOVERNMENT_MEMBER,
         self::REFERENT_JAM,
-        self::LRE_MANAGER,
     ];
 
     public const POLITICAL_COMMITTEE_ELECTED_MEMBERS = [
@@ -147,7 +140,6 @@ class TerritorialCouncilQualityEnum extends Enum
         'territorial_council.membership.quality.referent' => self::REFERENT,
         'territorial_council.membership.quality.government_member' => self::GOVERNMENT_MEMBER,
         'territorial_council.membership.quality.referent_jam' => self::REFERENT_JAM,
-        'territorial_council.membership.quality.lre_manager' => self::LRE_MANAGER,
         'territorial_council.membership.quality.senator' => self::SENATOR,
         'territorial_council.membership.quality.deputy' => self::DEPUTY,
         'territorial_council.membership.quality.european_deputy' => self::EUROPEAN_DEPUTY,

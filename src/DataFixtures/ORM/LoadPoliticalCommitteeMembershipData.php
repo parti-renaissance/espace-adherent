@@ -26,10 +26,6 @@ class LoadPoliticalCommitteeMembershipData extends Fixture implements DependentF
         $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::LEADER));
         $manager->persist($membership);
 
-        $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('adherent-4'), new \DateTime('2020-07-07'));
-        $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::LRE_MANAGER));
-        $manager->persist($membership);
-
         $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('adherent-8'), new \DateTime('2020-03-03'));
         $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::REFERENT));
         $manager->persist($membership);

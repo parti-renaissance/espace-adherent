@@ -5,7 +5,6 @@ namespace App\Mailchimp\Campaign\ContentSection;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
-use App\Entity\AdherentMessage\LreManagerElectedRepresentativeMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
@@ -21,7 +20,6 @@ class BasicMessageSectionBuilder implements ContentSectionBuilderInterface
             $message::class,
             [
                 ReferentElectedRepresentativeMessage::class,
-                LreManagerElectedRepresentativeMessage::class,
                 LegislativeCandidateAdherentMessage::class,
                 ReferentAdherentMessage::class,
                 ReferentInstancesMessage::class,

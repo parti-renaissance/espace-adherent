@@ -86,7 +86,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
  * @UniqueMembership(groups={"Admin"})
  *
- * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
+ * @UniqueTerritorialCouncilMember(qualities={"referent", "referent_jam"})
  */
 class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface
 {
@@ -579,14 +579,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\OneToOne(targetEntity="App\Entity\SenatorialCandidateManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $senatorialCandidateManagedArea;
-
-    /**
-     * @var LreArea|null
-     *
-     * @ORM\OneToOne(targetEntity="LreArea", cascade={"all"}, orphanRemoval=true)
-     * @Assert\Valid
-     */
-    private $lreArea;
 
     /**
      * @var CandidateManagedArea|null
@@ -1172,10 +1164,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_CANDIDATE_DEPARTMENTAL';
         }
 
-        if ($this->isLre()) {
-            $roles[] = 'ROLE_LRE';
-        }
-
         if ($this->isThematicCommunityChief()) {
             $roles[] = 'ROLE_THEMATIC_COMMUNITY_CHIEF';
         }
@@ -1266,7 +1254,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isLeaderRegionalCandidate()
             || $this->isDepartmentalCandidate()
             || $this->isDelegatedCandidate()
-            || $this->isLre()
             || $this->isLegislativeCandidate()
             || $this->isThematicCommunityChief()
             || $this->isCorrespondent()
@@ -2865,21 +2852,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getPresidentDepartmentalAssemblyZones(): array
     {
         return $this->isPresidentDepartmentalAssembly() ? $this->findZoneBasedRole(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY)->getZones()->toArray() : [];
-    }
-
-    public function getLreArea(): ?LreArea
-    {
-        return $this->lreArea;
-    }
-
-    public function setLreArea(?LreArea $lreArea): void
-    {
-        $this->lreArea = $lreArea;
-    }
-
-    public function isLre(): bool
-    {
-        return $this->lreArea instanceof LreArea;
     }
 
     public function getFacebookPageUrl(): ?string

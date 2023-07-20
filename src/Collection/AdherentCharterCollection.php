@@ -8,7 +8,6 @@ use App\Entity\AdherentCharter\CandidateCharter;
 use App\Entity\AdherentCharter\CommitteeHostCharter;
 use App\Entity\AdherentCharter\DeputyCharter;
 use App\Entity\AdherentCharter\LegislativeCandidateCharter;
-use App\Entity\AdherentCharter\LreCharter;
 use App\Entity\AdherentCharter\PapCampaignCharter;
 use App\Entity\AdherentCharter\PhoningCampaignCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
@@ -51,13 +50,6 @@ class AdherentCharterCollection extends ArrayCollection
     {
         return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
             return $charter instanceof SenatorialCandidateCharter;
-        });
-    }
-
-    public function hasLreCharterAccepted(): bool
-    {
-        return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
-            return $charter instanceof LreCharter;
         });
     }
 
@@ -113,9 +105,6 @@ class AdherentCharterCollection extends ArrayCollection
 
             case AdherentCharterTypeEnum::TYPE_SENATORIAL_CANDIDATE:
                 return $this->hasSenatorialCandidateCharterAccepted();
-
-            case AdherentCharterTypeEnum::TYPE_LRE:
-                return $this->hasLreCharterAccepted();
 
             case AdherentCharterTypeEnum::TYPE_LEGISLATIVE_CANDIDATE:
                 return $this->hasLegislativeCandidateCharterAccepted();
