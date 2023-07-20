@@ -96,3 +96,47 @@
         }
     }
 }
+
+.voting-platform-theme__local_poll {
+    .voting-platform__results {
+        .results__menu {
+            margin: 15px 0;
+
+            li {
+                display: inline;
+                margin-right: 15px;
+
+                &.active {
+                    font-weight: bold;
+                }
+            }
+        }
+
+        .candidate__box {
+            .pool-name,
+            .candidate-photo {
+                display: none;
+            }
+
+            .candidate-gender {
+                height: auto;
+                width: auto;
+                padding: 0 2px;
+            }
+
+            .elected-tag {
+                display: inline-block;
+                padding: 5px;
+                font-size: 12px !important;
+                line-height: 14px !important;
+                vertical-align: middle;
+                font-weight: bold;
+                background: $yellow;
+
+                &--small {
+                    padding: 2px;
+                }
+            }
+        }
+    }
+}

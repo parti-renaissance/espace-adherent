@@ -6,6 +6,10 @@
     {{ pool.code }}
 {% endblock %}
 
+{% block voting_platform_result_tab_pool_title %}
+    Question {{ loop.index }}
+{% endblock %}
+
 {% block banner %}
     <div class="max-w-8xl mx-auto py-3 px-4 md:px-6">
         <a href="{{ path('app_renaissance_local_election_home') }}" class="text-base text-gray-500 hover:text-gray-900">

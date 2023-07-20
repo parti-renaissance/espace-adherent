@@ -130,7 +130,8 @@ class DesignationRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('designation')
             ->addSelect(
                 'CASE
-                    WHEN (designation.voteStartDate < :now AND designation.voteEndDate > :now) THEN 1
+                    WHEN (designation.voteStartDate < :now AND designation.voteEndDate > :now) THEN 10
+                    WHEN (designation.voteEndDate < :now AND designation.resultDisplayDelay > 0 AND DATE_ADD(designation.voteEndDate, designation.resultDisplayDelay, \'DAY\') > :now) THEN 1
                     ELSE 0
                 END AS HIDDEN score'
             )
@@ -145,7 +146,7 @@ class DesignationRepository extends ServiceEntityRepository
             ->setParameters(['now' => new \DateTime()])
             ->setMaxResults($limit)
             ->orderBy('score', 'DESC')
-            ->addOrderBy('designation.voteStartDate', 'ASC')
+            ->addOrderBy('designation.voteStartDate', 'DESC')
         ;
 
         if ($types) {
