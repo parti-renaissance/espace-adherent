@@ -6,13 +6,15 @@
     <div class="bg-gray-50" role="banner">
         <div class="max-w-7xl mx-auto px-4 md:px-6 py-10 lg:py-16">
             <h1 class="text-2xl lg:text-4xl font-bold text-gray-900 font-din">{{ designation.getTitle() }}</h1>
-            <p class="mt-4 flex items-center space-x-3 text-gray-500">
-                {% include 'icons/map.svg.twig' %}
+            {% if designation.getZones()|length %}
+                <p class="mt-4 flex items-center space-x-3 text-gray-500">
+                    {% include 'icons/map.svg.twig' %}
 
-                <span class="text-gray-600 text-base leading-5">
-                    {{ designation.getZones|join(', ') }}
-                </span>
-            </p>
+                    <span class="text-gray-600 text-base leading-5">
+                        {{ designation.getZones|join(', ') }}
+                    </span>
+                </p>
+            {% endif %}
         </div>
     </div>
 

@@ -24,7 +24,7 @@ class ElectionManager
         DesignationTypeEnum::LOCAL_POLL,
         ]
     ): array {
-        if (!$adherent->isRenaissanceAdherent()) {
+        if (!$adherent->isRenaissanceUser()) {
             return [];
         }
 

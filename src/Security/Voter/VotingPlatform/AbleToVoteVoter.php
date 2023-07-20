@@ -25,7 +25,7 @@ class AbleToVoteVoter extends AbstractAdherentVoter
             return false;
         }
 
-        if ($adherent->isRenaissanceSympathizer()) {
+        if (!$subject->getDesignation()->isLocalPollType() && $adherent->isRenaissanceSympathizer()) {
             return false;
         }
 
