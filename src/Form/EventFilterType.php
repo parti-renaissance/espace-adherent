@@ -48,6 +48,7 @@ class EventFilterType extends AbstractType
                         'types' => [Zone::CITY, Zone::BOROUGH, Zone::DEPARTMENT, Zone::REGION, Zone::COUNTRY, Zone::CUSTOM],
                         'space_type' => ManagedZoneProvider::PUBLIC_SPACE,
                     ],
+                    'data' => $builder->getData()->getDefaultZone(),
                 ])
             ;
         }

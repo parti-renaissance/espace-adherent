@@ -47,7 +47,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(
             $isRenaissanceUser
-                ? '/parametres/mon-compte'
+                ? '/espace-adherent/evenements'
                 : 'http://test.renaissance.code/',
             $this->client
         );
