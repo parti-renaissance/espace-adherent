@@ -15,6 +15,7 @@ use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
+use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\AdherentMandate\NationalCouncilAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
@@ -708,7 +709,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var AdherentMandateInterface[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\AdherentMandate\AbstractAdherentMandate", mappedBy="adherent", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\AdherentMandate\AbstractAdherentMandate",
+     *     mappedBy="adherent",
+     *     fetch="EXTRA_LAZY",
+     *     cascade={"all"},
+     *     orphanRemoval=true
+     * )
      */
     private $adherentMandates;
 
@@ -3461,5 +3468,51 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function addRevenueDeclaration(int $amount): void
     {
         $this->revenueDeclarations->add(RevenueDeclaration::create($this, $amount));
+    }
+
+    public function getElectedRepresentativeMandates(): Collection
+    {
+        return $this->adherentMandates->filter(static function (AdherentMandateInterface $adherentMandate) {
+            return $adherentMandate instanceof ElectedRepresentativeAdherentMandate;
+        });
+    }
+
+    public function getActiveElectedRepresentativeMandates(): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('finishAt', null))
+            ->orderBy(['beginAt' => 'DESC'])
+        ;
+
+        return $this->getElectedRepresentativeMandates()->matching($criteria);
+    }
+
+    public function addAdherentMandate(AdherentMandateInterface $adherentMandate): void
+    {
+        if (!$this->adherentMandates->contains($adherentMandate)) {
+            $this->adherentMandates->add($adherentMandate);
+        }
+    }
+
+    public function removeAdherentMandate(AdherentMandateInterface $adherentMandate): void
+    {
+        $this->adherentMandates->removeElement($adherentMandate);
+    }
+
+    /**
+     * @param ElectedRepresentativeAdherentMandate[]|iterable $adherentMandates
+     */
+    public function setElectedRepresentativeMandates(iterable $adherentMandates): void
+    {
+        foreach ($this->adherentMandates as $adherentMandate) {
+            if ($adherentMandate instanceof ElectedRepresentativeAdherentMandate) {
+                $this->removeAdherentMandate($adherentMandate);
+            }
+        }
+
+        foreach ($adherentMandates as $adherentMandate) {
+            $adherentMandate->setAdherent($this);
+            $this->addAdherentMandate($adherentMandate);
+        }
     }
 }

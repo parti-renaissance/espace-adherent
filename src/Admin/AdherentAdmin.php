@@ -9,6 +9,7 @@ use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\AdherentRoleFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\AdherentTag;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\BoardMember\Role;
@@ -24,6 +25,7 @@ use App\Form\ActivityPositionType;
 use App\Form\Admin\AdherentInstanceQualityType;
 use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AdherentZoneBasedRoleType;
+use App\Form\Admin\ElectedRepresentativeAdherentMandateType;
 use App\Form\Admin\JecouteManagedAreaType;
 use App\Form\EventListener\BoardMemberListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
@@ -61,6 +63,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -284,10 +287,15 @@ class AdherentAdmin extends AbstractAdmin
                     'template' => 'admin/adherent/list_board_member_roles.html.twig',
                 ])
             ->end()
-            ->with('Responsabilités politiques', ['class' => 'col-md-3'])
+            ->with('Responsabilités politiques', ['class' => 'col-md-6'])
                 ->add('electedRepresentative', null, [
                     'label' => 'Identité de l\'élu',
                     'template' => 'admin/adherent/show_elected_representative.html.twig',
+                    'virtual_field' => true,
+                ])
+                ->add('er_adherent_mandates', null, [
+                    'label' => 'Mandats',
+                    'template' => 'admin/adherent/show_er_adherent_mandates.html.twig',
                     'virtual_field' => true,
                 ])
             ->end()
@@ -567,6 +575,23 @@ class AdherentAdmin extends AbstractAdmin
                         'mapped' => false,
                     ])
                 ->end()
+                ->with('Mandats', [
+                    'class' => 'col-md-12',
+                    'box_class' => 'box box-warning',
+                ])
+                    ->add('electedRepresentativeMandates', CollectionType::class, [
+                        'error_bubbling' => false,
+                        'required' => false,
+                        'label' => false,
+                        'entry_type' => ElectedRepresentativeAdherentMandateType::class,
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                        'entry_options' => [
+                            'model_manager' => $this->getModelManager(),
+                        ],
+                        'by_reference' => true,
+                    ])
+                ->end()
             ->end()
         ;
 
@@ -798,8 +823,7 @@ class AdherentAdmin extends AbstractAdmin
                 },
             ])
             ->add('elected_representative_mandates', CallbackFilter::class, [
-                'label' => 'Mandat(s) RNE',
-                'show_filter' => true,
+                'label' => 'Mandat(s) RNE (legacy)',
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => MandateTypeEnum::CHOICES,
@@ -819,6 +843,73 @@ class AdherentAdmin extends AbstractAdmin
                         ->andWhere('mandate.type IN (:types)')
                         ->setParameter('types', $value->getValue())
                     ;
+
+                    return true;
+                },
+            ])
+            ->add('er_adherent_mandate_type', CallbackFilter::class, [
+                'label' => 'Mandat(s) élu',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => MandateTypeEnum::CHOICES,
+                    'multiple' => true,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $qb
+                        ->innerJoin(
+                            ElectedRepresentativeAdherentMandate::class,
+                            'er_adherent_mandate',
+                            Expr\Join::WITH,
+                            sprintf('%s.id = er_adherent_mandate.adherent', $alias)
+                        )
+                        ->andWhere('er_adherent_mandate.finishAt IS NULL')
+                        ->andWhere('er_adherent_mandate.mandateType IN (:er_adherent_mandate_types)')
+                        ->setParameter('er_adherent_mandate_types', $value->getValue())
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('er_adherent_mandate_ongoing', CallbackFilter::class, [
+                'label' => 'Mandat en cours ?',
+                'show_filter' => true,
+                'field_type' => BooleanType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    switch ($value->getValue()) {
+                        case BooleanType::TYPE_YES:
+                            $qb
+                                ->innerJoin(
+                                    ElectedRepresentativeAdherentMandate::class,
+                                    'er_adherent_mandate_ongoing',
+                                    Expr\Join::WITH,
+                                    sprintf('%s.id = er_adherent_mandate_ongoing.adherent', $alias)
+                                )
+                                ->andWhere('er_adherent_mandate_ongoing.finishAt IS NULL')
+                            ;
+
+                            break;
+                        case BooleanType::TYPE_NO:
+                            $qb
+                                ->innerJoin(
+                                    ElectedRepresentativeAdherentMandate::class,
+                                    'er_adherent_mandate_ongoing',
+                                    Expr\Join::WITH,
+                                    sprintf('%s.id = er_adherent_mandate_ongoing.adherent', $alias)
+                                )
+                                ->andWhere('er_adherent_mandate_ongoing.finishAt IS NOT NULL')
+                            ;
+
+                            break;
+                    }
 
                     return true;
                 },
