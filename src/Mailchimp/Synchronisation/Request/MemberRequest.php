@@ -43,7 +43,8 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_CERTIFIED = 'CERTIFIED';
     public const MERGE_FIELD_LAST_LOGIN_GROUP = 'LOGIN_GRP';
     public const MERGE_FIELD_COMMITTEE = 'COMMITTEE';
-    public const MERGE_FIELD_MANDATE_TYPE = 'MANDATES';
+    public const MERGE_FIELD_MANDATE_TYPES = 'TYP_MANDAT';
+    public const MERGE_FIELD_DECLARED_MANDATES = 'DEC_MANDAT';
     public const MERGE_FIELD_CAMPUS_REGISTRATION_DATE = 'CAMPUS_REG';
     public const MERGE_FIELD_DONATION_YEARS = 'DON_YEARS';
 

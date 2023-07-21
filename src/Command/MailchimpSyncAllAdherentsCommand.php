@@ -4,8 +4,8 @@ namespace App\Command;
 
 use App\Campus\RegistrationStatusEnum;
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Donator;
-use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Geo\Zone;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Repository\AdherentRepository;
@@ -54,6 +54,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             ->addOption('donator-only', null, InputOption::VALUE_NONE)
             ->addOption('committee-voter-only', null, InputOption::VALUE_NONE)
             ->addOption('active-mandates-only', null, InputOption::VALUE_NONE)
+            ->addOption('declared-mandates-only', null, InputOption::VALUE_NONE)
             ->addOption('campus-registered-only', null, InputOption::VALUE_NONE)
             ->addOption('source', null, InputOption::VALUE_REQUIRED)
             ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
@@ -77,6 +78,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             $input->getOption('donator-only'),
             $input->getOption('committee-voter-only'),
             $input->getOption('active-mandates-only'),
+            $input->getOption('declared-mandates-only'),
             $input->getOption('source'),
             $input->getOption('emails'),
             $input->getOption('campus-registered-only')
@@ -128,6 +130,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         bool $donatorOnly,
         bool $committeeVoterOnly,
         bool $activeMandatesOnly,
+        bool $declaredMandatesOnly,
         ?string $source,
         array $emails,
         bool $campusRegisteredOnly
@@ -210,19 +213,16 @@ class MailchimpSyncAllAdherentsCommand extends Command
         if ($activeMandatesOnly) {
             $queryBuilder
                 ->innerJoin(
-                    ElectedRepresentative::class,
-                    'elected_representative',
+                    ElectedRepresentativeAdherentMandate::class,
+                    'er_mandate',
                     Join::WITH,
-                    'elected_representative.adherent = adherent.id'
+                    'er_mandate.adherent = adherent.id AND er_mandate.finishAt IS NULL'
                 )
-                ->innerJoin(
-                    'elected_representative.mandates',
-                    'mandate',
-                    Join::WITH,
-                    '(mandate.finishAt IS NULL OR mandate.finishAt > :now) AND mandate.onGoing = 1 AND mandate.isElected = 1'
-                )
-                ->setParameter('now', new \DateTime())
             ;
+        }
+
+        if ($declaredMandatesOnly) {
+            $queryBuilder->andWhere('adherent.mandates IS NOT NULL');
         }
 
         if ($emails) {
