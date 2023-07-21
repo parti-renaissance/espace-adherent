@@ -16,7 +16,10 @@ class DeclaredMandateFilterBuilder implements FilterBuilderInterface
 
     public function supports(string $scope, string $feature = null): bool
     {
-        return FeatureEnum::CONTACTS === $feature;
+        return \in_array($feature, [
+            FeatureEnum::CONTACTS,
+            FeatureEnum::MESSAGES,
+        ], true);
     }
 
     public function build(string $scope, string $feature = null): array
