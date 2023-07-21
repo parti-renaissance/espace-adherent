@@ -7,11 +7,11 @@ use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
-class MandateTypeConditionBuilder implements SegmentConditionBuilderInterface
+class DeclaredMandateConditionBuilder implements SegmentConditionBuilderInterface
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AudienceFilter && !empty($filter->getMandateTypes());
+        return $filter instanceof AudienceFilter && !empty($filter->getDeclaredMandates());
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
@@ -26,12 +26,12 @@ class MandateTypeConditionBuilder implements SegmentConditionBuilderInterface
     {
         $conditions = [];
 
-        foreach ($filter->getMandateTypes() as $mandateType) {
+        foreach ($filter->getDeclaredMandates() as $declaredMandate) {
             $conditions[] = [
                 'condition_type' => 'TextMerge',
                 'op' => 'contains',
-                'value' => $mandateType,
-                'field' => MemberRequest::MERGE_FIELD_MANDATE_TYPES,
+                'value' => $declaredMandate,
+                'field' => MemberRequest::MERGE_FIELD_DECLARED_MANDATES,
             ];
         }
 
