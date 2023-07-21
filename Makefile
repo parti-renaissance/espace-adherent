@@ -131,7 +131,7 @@ test-phpunit:                                                                   
 	$(PHPUNIT) $(PHPUNIT_ARGS)
 
 test-debug:                                                                                            ## Run tests with debug group/tags
-	$(PHPUNIT) -vvv --group debug
+	$(PHPUNIT) --group debug
 	$(BEHAT) -vvv --tags debug
 
 test-phpunit-functional:                                                                               ## Run phpunit fonctional tests
