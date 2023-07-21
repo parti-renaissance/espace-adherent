@@ -74,5 +74,5 @@ class Address implements AddressInterface, GeocodableInterface
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
-    protected ?string $country = Address::FRANCE;
+    protected ?string $country = self::FRANCE;
 }
