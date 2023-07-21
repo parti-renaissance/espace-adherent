@@ -2,7 +2,6 @@
 
 namespace App\Geo\Subscriber;
 
-use App\Address\Address;
 use App\Address\AddressInterface;
 use App\Committee\Event\CommitteeEvent;
 use App\Entity\Event\CommitteeEvent as BaseCommitteeEvent;
@@ -68,7 +67,7 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
         }
 
         $entity->clearZones();
-        $needInsee = method_exists($entity, 'setCity') && Address::FRANCE === $address->getCountry()
+        $needInsee = method_exists($entity, 'setCity') && AddressInterface::FRANCE === $address->getCountry()
             && null == $address->getInseeCode() && null != $address->getPostalCode();
         foreach ($zones as $zone) {
             $entity->addZone($zone);

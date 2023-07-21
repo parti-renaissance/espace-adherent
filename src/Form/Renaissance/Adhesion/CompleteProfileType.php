@@ -2,7 +2,7 @@
 
 namespace App\Form\Renaissance\Adhesion;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Form\CivilityType;
 use Symfony\Component\Form\AbstractType;
@@ -22,7 +22,7 @@ class CompleteProfileType extends AbstractType
         $builder
             ->add('nationality', CountryType::class, [
                 'placeholder' => '',
-                'preferred_choices' => [Address::FRANCE],
+                'preferred_choices' => [AddressInterface::FRANCE],
             ])
             ->add('gender', CivilityType::class, [
                 'disabled' => $fromCertifiedAdherent,

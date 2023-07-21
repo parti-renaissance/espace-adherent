@@ -33,7 +33,7 @@ trait AddressTrait
      * @Assert\NotBlank
      * @Assert\Country(message="common.country.invalid")
      */
-    protected ?string $country = Address::FRANCE;
+    protected ?string $country = AddressInterface::FRANCE;
 
     /**
      * @Assert\Length(max=255)
@@ -120,7 +120,7 @@ trait AddressTrait
 
     public function isFrenchAddress(): bool
     {
-        return Address::FRANCE === $this->country && $this->city;
+        return AddressInterface::FRANCE === $this->country && $this->city;
     }
 
     public function getGeocodableAddress(): string

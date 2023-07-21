@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;
@@ -62,7 +62,7 @@ class PhoneNumberNormalizer implements NormalizerInterface, NormalizerAwareInter
         }
 
         try {
-            return $this->util->parse($data, Address::FRANCE);
+            return $this->util->parse($data, AddressInterface::FRANCE);
         } catch (NumberParseException $e) {
             return null;
         }

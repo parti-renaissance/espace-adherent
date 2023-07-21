@@ -2,7 +2,7 @@
 
 namespace App\Deputy;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\District;
 use App\Entity\GeoData;
 use App\Geo\GeometryFactory;
@@ -70,7 +70,7 @@ class DistrictLoader
 
     private function createOrUpdateDistrict(array $district): District
     {
-        if (Address::FRANCE === $district['code_pays']) {
+        if (AddressInterface::FRANCE === $district['code_pays']) {
             $codeDepartment = $district['code_dpt'];
             $number = (int) $district['num_circo'];
 
@@ -86,7 +86,7 @@ class DistrictLoader
             $geoDistrict = array_shift($geoDistricts);
 
             $geoData = new GeoData(GeometryFactory::createGeometryFromGeoJson($geoDistrict['fields']['geo_shape']));
-            $countries = [Address::FRANCE];
+            $countries = [AddressInterface::FRANCE];
         } else {
             $countries = explode(',', str_replace(' ', '', $district['code_pays']));
             $geoCountries = array_filter($this->geoCountries, function ($country) use ($countries) {

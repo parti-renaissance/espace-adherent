@@ -2,7 +2,7 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
@@ -59,7 +59,7 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
         if (Zone::FDE_CODE === $zone->getCode()) {
             return $this->buildZoneCondition(
                 MemberRequest::MERGE_FIELD_ZONE_COUNTRY,
-                sprintf('(%s)', Address::FRANCE),
+                sprintf('(%s)', AddressInterface::FRANCE),
                 'notcontain'
             );
         }

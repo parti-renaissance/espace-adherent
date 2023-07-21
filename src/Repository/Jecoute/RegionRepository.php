@@ -2,7 +2,7 @@
 
 namespace App\Repository\Jecoute;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Region;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -39,7 +39,7 @@ class RegionRepository extends ServiceEntityRepository
             ->andWhere('campaign.enabled = :enabled')
             ->addOrderBy('priority', 'asc')
             ->setParameters([
-                'code_france' => Address::FRANCE,
+                'code_france' => AddressInterface::FRANCE,
                 'region' => $region,
                 'department' => $department,
                 'postal_code' => $postalCode,
@@ -65,7 +65,7 @@ class RegionRepository extends ServiceEntityRepository
             ->andWhere('zone.code = :code_france')
             ->setParameters([
                 'zone_country' => Zone::COUNTRY,
-                'code_france' => Address::FRANCE,
+                'code_france' => AddressInterface::FRANCE,
             ])
             ->getQuery()
             ->getSingleScalarResult()

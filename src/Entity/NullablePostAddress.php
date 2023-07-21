@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Address\Address;
 use App\Address\AddressInterface;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoPointInterface;
@@ -26,7 +25,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         [$postalCode, $inseeCode] = explode('-', $cityCode);
 
         $address = new self(
-            Address::FRANCE,
+            AddressInterface::FRANCE,
             $postalCode,
             $cityName,
             $street,

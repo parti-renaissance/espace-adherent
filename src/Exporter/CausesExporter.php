@@ -2,7 +2,7 @@
 
 namespace App\Exporter;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Coalition\CoalitionUrlGenerator;
 use App\Coalition\Filter\CauseFilter;
 use App\Entity\Adherent;
@@ -83,7 +83,7 @@ class CausesExporter
             return $adherent->getPostalCode();
         }
 
-        if (Address::FRANCE !== $adherent->getCountry()) {
+        if (AddressInterface::FRANCE !== $adherent->getCountry()) {
             return $adherent->getCountry();
         }
 

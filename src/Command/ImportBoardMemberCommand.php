@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\BoardMember\BoardMember;
 use App\Repository\AdherentRepository;
 use App\Repository\BoardMember\RoleRepository;
@@ -206,11 +206,11 @@ class ImportBoardMemberCommand extends Command
         $areaCode = explode(';', $area)[1] ?? null;
         $type = BoardMember::AREA_ABROAD;
 
-        if (Address::FRANCE === $areaCode && 'France Métropolitaine' === $areaType) {
+        if (AddressInterface::FRANCE === $areaCode && 'France Métropolitaine' === $areaType) {
             $type = BoardMember::AREA_FRANCE_METROPOLITAN;
         }
 
-        if ((Address::FRANCE === $areaCode && 'Outre-Mer' === $areaType) || 'NC' === $areaCode) {
+        if ((AddressInterface::FRANCE === $areaCode && 'Outre-Mer' === $areaType) || 'NC' === $areaCode) {
             $type = BoardMember::AREA_OVERSEAS_FRANCE;
         }
 

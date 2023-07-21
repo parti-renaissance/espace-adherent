@@ -2,7 +2,7 @@
 
 namespace App\Admin;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
@@ -619,7 +619,7 @@ class AdherentAdmin extends AbstractAdmin
                 $adherent = $event->getData();
                 $address = $adherent->getPostAddress();
 
-                if (Address::FRANCE === $address->getCountry() && $address->getCityName() && $address->getPostalCode()) {
+                if (AddressInterface::FRANCE === $address->getCountry() && $address->getCityName() && $address->getPostalCode()) {
                     $city = $this->franceCities->getCityByPostalCodeAndName($address->getPostalCode(), $address->getCityName());
 
                     if ($city) {

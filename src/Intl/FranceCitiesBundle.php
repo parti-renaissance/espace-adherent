@@ -2,7 +2,7 @@
 
 namespace App\Intl;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 
 class FranceCitiesBundle
 {
@@ -168,7 +168,7 @@ class FranceCitiesBundle
             }
         }
 
-        return Address::FRANCE;
+        return AddressInterface::FRANCE;
     }
 
     /**

@@ -6,7 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -342,7 +342,7 @@ class Zone implements GeoInterface
     {
         return
             !\in_array($this->type, [self::COUNTRY, self::FOREIGN_DISTRICT, self::CONSULAR_DISTRICT])
-            || (self::COUNTRY === $this->type && Address::FRANCE === $this->code);
+            || (self::COUNTRY === $this->type && AddressInterface::FRANCE === $this->code);
     }
 
     /**

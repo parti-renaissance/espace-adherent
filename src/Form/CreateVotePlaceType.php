@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Election\VotePlace;
 use App\FranceCities\FranceCities;
 use App\Repository\Election\VotePlaceRepository;
@@ -35,7 +35,7 @@ class CreateVotePlaceType extends AbstractType
             ->add('postalCode', TextType::class)
             ->add('country', CountryType::class, [
                 'placeholder' => 'Sélectionnez un pays',
-                'preferred_choices' => [Address::FRANCE],
+                'preferred_choices' => [AddressInterface::FRANCE],
             ])
         ;
 
@@ -43,13 +43,13 @@ class CreateVotePlaceType extends AbstractType
             /** @var VotePlace $votePlace */
             $votePlace = $event->getData();
 
-            if (!$votePlace->getCountry() || (Address::FRANCE === $votePlace->getCountry() && !$votePlace->getPostalCode())) {
+            if (!$votePlace->getCountry() || (AddressInterface::FRANCE === $votePlace->getCountry() && !$votePlace->getPostalCode())) {
                 return;
             }
 
             $codePrefix = 99999;
 
-            if (Address::FRANCE === $votePlace->getCountry()) {
+            if (AddressInterface::FRANCE === $votePlace->getCountry()) {
                 $codePrefix = array_search(
                     $votePlace->getCity(),
                     $this->getCodesAndCitiesNameFromPostalCode($votePlace->getPostalCode()),

@@ -2,7 +2,7 @@
 
 namespace App\ElectedRepresentative\Contribution;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -37,7 +37,7 @@ class ContributionRequest
      * @Assert\NotBlank(groups={"fill_contribution_informations"})
      * @Assert\Country(message="common.country.invalid", groups={"fill_contribution_informations"})
      */
-    public ?string $accountCountry = Address::FRANCE;
+    public ?string $accountCountry = AddressInterface::FRANCE;
 
     /**
      * @Assert\NotBlank(groups={"fill_contribution_informations"})

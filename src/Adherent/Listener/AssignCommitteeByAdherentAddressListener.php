@@ -2,7 +2,7 @@
 
 namespace App\Adherent\Listener;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\PostAddress;
@@ -76,7 +76,7 @@ class AssignCommitteeByAdherentAddressListener implements EventSubscriberInterfa
             return true;
         }
 
-        if (Address::FRANCE !== $beforeAddress->getCountry()) {
+        if (AddressInterface::FRANCE !== $beforeAddress->getCountry()) {
             return false;
         }
 

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Committee\Filter\CommitteeDesignationsListFilter;
 use App\Committee\Filter\CommitteeListFilter;
 use App\Coordinator\Filter\CommitteeFilter;
@@ -748,7 +749,7 @@ class CommitteeRepository extends ServiceEntityRepository
 
             $qb
                 ->andWhere($zoneCondition)
-                ->setParameter('fr', Address::FRANCE)
+                ->setParameter('fr', AddressInterface::FRANCE)
             ;
         }
 

@@ -2,7 +2,7 @@
 
 namespace App\Assessor;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\AssessorOfficeEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
@@ -95,7 +95,7 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
      * @Assert\NotBlank(groups={"fill_personal_info"})
      * @Assert\Country(message="common.country.invalid", groups={"fill_personal_info"})
      */
-    private $country = Address::FRANCE;
+    private $country = AddressInterface::FRANCE;
 
     /**
      * @Assert\NotBlank(message="assessor.vote_city.not_blank", groups={"fill_personal_info"})
@@ -151,7 +151,7 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
      * @Assert\NotBlank(groups={"fill_assessor_info"})
      * @Assert\Country(message="common.country.invalid", groups={"fill_assessor_info"})
      */
-    private $assessorCountry = Address::FRANCE;
+    private $assessorCountry = AddressInterface::FRANCE;
 
     /**
      * @Assert\NotBlank(message="assessor.office.invalid_choice", groups={"fill_assessor_info"})
@@ -415,7 +415,7 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
 
     public function isFrenchAssessorRequest(): bool
     {
-        return Address::FRANCE === $this->getAssessorCountry();
+        return AddressInterface::FRANCE === $this->getAssessorCountry();
     }
 
     public function isReachable(): bool

@@ -2,7 +2,7 @@
 
 namespace App\SmsCampaign\Handler;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\SmsCampaign\SmsStopHistory;
 use App\Membership\Event\UserEvent;
@@ -40,7 +40,7 @@ class CatchOvhSmsWebhookCallCommandHandler implements MessageHandlerInterface
                 $this->entityManager->flush();
             }
 
-            foreach ($this->entityManager->getRepository(Adherent::class)->findBy(['phone' => PhoneNumberUtils::create($payload['receiver'], Address::FRANCE)]) as $adherent) {
+            foreach ($this->entityManager->getRepository(Adherent::class)->findBy(['phone' => PhoneNumberUtils::create($payload['receiver'], AddressInterface::FRANCE)]) as $adherent) {
                 /** @var Adherent $adherent */
                 $adherent->removeSubscriptionTypeByCode(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
 

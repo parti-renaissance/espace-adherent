@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Procuration\ProcurationDisableReasonEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
@@ -194,7 +194,7 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      * @Assert\NotBlank(groups={"profile"})
      * @Assert\Country(message="common.country.invalid", groups={"profile"})
      */
-    private $country = Address::FRANCE;
+    private $country = AddressInterface::FRANCE;
 
     /**
      * @var PhoneNumber
@@ -283,7 +283,7 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      * @Assert\NotBlank(groups={"vote"})
      * @Assert\Country(message="common.country.invalid", groups={"vote"})
      */
-    private $voteCountry = Address::FRANCE;
+    private $voteCountry = AddressInterface::FRANCE;
 
     /**
      * @var string

@@ -2,7 +2,7 @@
 
 namespace App\Form\Admin\Election;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Election\CityCandidate;
 use App\ValueObject\Genders;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -48,8 +48,8 @@ class CityCandidateType extends AbstractType
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'default_region' => Address::FRANCE,
-                'preferred_country_choices' => [Address::FRANCE],
+                'default_region' => AddressInterface::FRANCE,
+                'preferred_country_choices' => [AddressInterface::FRANCE],
                 'attr' => [
                     'placeholder' => 'Téléphone',
                 ],

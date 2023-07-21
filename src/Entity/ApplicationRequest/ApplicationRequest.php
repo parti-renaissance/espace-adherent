@@ -2,7 +2,7 @@
 
 namespace App\Entity\ApplicationRequest;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityReferentTagTrait;
@@ -140,7 +140,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      * @Assert\NotBlank
      * @Assert\Country(message="common.country.invalid")
      */
-    protected $country = Address::FRANCE;
+    protected $country = AddressInterface::FRANCE;
 
     /**
      * @var PhoneNumber|null

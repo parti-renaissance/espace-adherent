@@ -2,7 +2,7 @@
 
 namespace Tests\App\Validator;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Donation\Request\DonationRequest;
 use App\Validator\FrenchAddressOrNationalityDonation;
 use App\Validator\FrenchAddressOrNationalityDonationValidator;
@@ -71,8 +71,8 @@ class FrenchAddressOrNationalityDonationValidatorTest extends ConstraintValidato
     }
 
     private function createDonationRequest(
-        ?string $nationality = Address::FRANCE,
-        ?string $country = Address::FRANCE
+        ?string $nationality = AddressInterface::FRANCE,
+        ?string $country = AddressInterface::FRANCE
     ): DonationRequest {
         $donationRequest = new DonationRequest('123.0.0.1');
 

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Assessor\AssessorRequestElectionRoundsEnum;
 use App\Entity\Election\VotePlace as ElectionVotePlace;
 use App\Recaptcha\RecaptchaChallengeInterface;
@@ -134,7 +134,7 @@ class AssessorRequest implements RecaptchaChallengeInterface
      * @Assert\NotBlank(message="common.country.not_blank")
      * @Assert\Country(message="common.country.invalid")
      */
-    private $country = Address::FRANCE;
+    private $country = AddressInterface::FRANCE;
 
     /**
      * @var string
@@ -223,7 +223,7 @@ class AssessorRequest implements RecaptchaChallengeInterface
      * @Assert\NotBlank
      * @Assert\Country(message="common.country.invalid")
      */
-    private $assessorCountry = Address::FRANCE;
+    private $assessorCountry = AddressInterface::FRANCE;
 
     /**
      * @var string
@@ -320,12 +320,12 @@ class AssessorRequest implements RecaptchaChallengeInterface
         string $voterNumber,
         ?string $assessorCity,
         ?string $assessorPostalCode,
-        string $country = Address::FRANCE,
+        string $country = AddressInterface::FRANCE,
         string $office = AssessorOfficeEnum::HOLDER,
         array $electionRounds = AssessorRequestElectionRoundsEnum::ALL,
         bool $enabled = true,
         bool $reachable = false,
-        string $assessorCountry = Address::FRANCE,
+        string $assessorCountry = AddressInterface::FRANCE,
         ?array $votePlaceWishes = []
     ): self {
         $assessorRequest = new self();
@@ -640,7 +640,7 @@ class AssessorRequest implements RecaptchaChallengeInterface
 
     public function isFrenchAssessorRequest(): bool
     {
-        return Address::FRANCE === $this->getAssessorCountry();
+        return AddressInterface::FRANCE === $this->getAssessorCountry();
     }
 
     public function getOfficeName(): ?string

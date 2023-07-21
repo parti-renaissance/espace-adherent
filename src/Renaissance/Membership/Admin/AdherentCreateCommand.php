@@ -3,6 +3,7 @@
 namespace App\Renaissance\Membership\Admin;
 
 use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Validator\BannedAdherent;
@@ -61,7 +62,7 @@ class AdherentCreateCommand implements MembershipInterface
      *     groups={"admin_adherent_renaissance_create"}
      * )
      */
-    public ?string $nationality = Address::FRANCE;
+    public ?string $nationality = AddressInterface::FRANCE;
 
     /**
      * @Assert\Valid(groups={"admin_adherent_renaissance_create"})
