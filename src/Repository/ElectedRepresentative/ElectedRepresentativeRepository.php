@@ -222,28 +222,6 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             ;
         }
 
-        if ($mandates = $filter->getMandates()) {
-            $qb
-                ->andWhere('mandate.type in (:mandates)')
-                ->setParameter('mandates', $mandates)
-            ;
-        }
-
-        if ($mandateType = $filter->getMandateType()) {
-            switch ($mandateType) {
-                case MandateTypeEnum::TYPE_NATIONAL:
-                    $qb->andWhere('mandate.type IN (:national_mandates)');
-                    $qb->setParameter('national_mandates', MandateTypeEnum::NATIONAL_MANDATES);
-
-                    break;
-                case MandateTypeEnum::TYPE_LOCAL:
-                    $qb->andWhere('mandate.type IN (:local_mandates)');
-                    $qb->setParameter('local_mandates', MandateTypeEnum::LOCAL_MANDATES);
-
-                    break;
-            }
-        }
-
         if ($politicalFunctions = $filter->getPoliticalFunctions()) {
             $qb
                 ->andWhere('politicalFunction.name in (:politicalFunctions)')

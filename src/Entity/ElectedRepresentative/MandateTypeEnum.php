@@ -9,16 +9,6 @@ final class MandateTypeEnum extends Enum
 {
     private const CORSICA_REGION_CODE = '94';
 
-    public const TYPE_LOCAL = 'local_mandate';
-    public const TYPE_NATIONAL = 'national_mandate';
-    public const TYPE_ALL = 'all';
-    public const TYPE_NONE = 'none';
-
-    public const TYPE_LOCAL_LABEL = 'Mandat local';
-    public const TYPE_NATIONAL_LABEL = 'Mandat national';
-    public const TYPE_ALL_LABEL = 'Tous';
-    public const TYPE_NONE_LABEL = 'Aucun';
-
     public const CITY_COUNCIL = 'conseiller_municipal';
     public const EPCI_MEMBER = 'membre_EPCI';
     public const DEPARTMENTAL_COUNCIL = 'conseiller_departemental';
@@ -52,34 +42,6 @@ final class MandateTypeEnum extends Enum
         self::EURO_DEPUTY_LABEL => self::EURO_DEPUTY,
         self::BOROUGH_COUNCIL_LABEL => self::BOROUGH_COUNCIL,
         self::CONSULAR_COUNCIL_LABEL => self::CONSULAR_COUNCIL,
-    ];
-
-    public const TYPE_CHOICES = [
-        self::TYPE_LOCAL_LABEL => self::TYPE_LOCAL,
-        self::TYPE_NATIONAL_LABEL => self::TYPE_NATIONAL,
-    ];
-
-    public const TYPE_CHOICES_CONTACTS = [
-        self::TYPE_ALL_LABEL => self::TYPE_ALL,
-        self::TYPE_LOCAL_LABEL => self::TYPE_LOCAL,
-        self::TYPE_NATIONAL_LABEL => self::TYPE_NATIONAL,
-        self::TYPE_NONE_LABEL => self::TYPE_NONE,
-    ];
-
-    public const NATIONAL_MANDATES = [
-        self::DEPUTY,
-        self::SENATOR,
-        self::EURO_DEPUTY,
-    ];
-
-    public const LOCAL_MANDATES = [
-        self::CITY_COUNCIL,
-        self::EPCI_MEMBER,
-        self::DEPARTMENTAL_COUNCIL,
-        self::REGIONAL_COUNCIL,
-        self::CORSICA_ASSEMBLY_MEMBER,
-        self::BOROUGH_COUNCIL,
-        self::CONSULAR_COUNCIL,
     ];
 
     public const ZONE_FILTER_BY_MANDATE = [
