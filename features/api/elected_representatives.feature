@@ -393,37 +393,6 @@ Feature:
             "color": "#2563EB",
             "filters": [
                 {
-                    "code": "mandateType",
-                    "label": "Type de mandat",
-                    "options": {
-                        "choices": {
-                            "local_mandate": "Mandat local",
-                            "national_mandate": "Mandat national"
-                        }
-                    },
-                    "type": "select"
-                },
-                {
-                    "code": "mandates",
-                    "label": "Mandats",
-                    "options": {
-                        "choices": {
-                            "conseiller_municipal": "Conseiller(e) municipal(e)",
-                            "membre_EPCI": "Membre d'EPCI",
-                            "conseiller_departemental": "Conseiller(e) départemental(e)",
-                            "conseiller_regional": "Conseiller(e) régional(e)",
-                            "membre_assemblee_corse": "Membre de l'Assemblée de Corse",
-                            "depute": "Député(e)",
-                            "senateur": "Sénateur(rice)",
-                            "euro_depute": "Député(e) européen(ne)",
-                            "conseiller_d_arrondissement": "Conseiller(ère) d'arrondissement",
-                            "conseiller_consulaire": "Conseiller(ère) FDE"
-                        },
-                        "multiple": true
-                    },
-                    "type": "select"
-                },
-                {
                     "code": "political_functions",
                     "label": "Fonctions",
                     "options": {

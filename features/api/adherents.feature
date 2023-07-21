@@ -661,15 +661,46 @@ Feature:
             "color": "#2563EB",
             "filters": [
                 {
-                    "code": "mandateType",
+                    "code": "declaredMandates",
+                    "label": "Déclaration de mandat",
+                    "options": {
+                        "choices": {
+                            "borough_councilor": "Conseiller(e) d'arrondissement",
+                            "city_councilor": "Conseiller(e) municipal(e)",
+                            "consular_councilor": "Conseiller(e) consulaire",
+                            "corsica_assembly_member": "Membre de l'Assemblée de Corse",
+                            "departmental_councilor": "Conseiller(e) départemental(e)",
+                            "deputy": "Député(e)",
+                            "epci_member": "Membre d'EPCI",
+                            "european_deputy": "Député(e) européen(ne)",
+                            "mayor": "Maire",
+                            "mayor_assistant": "Maire adjoint(e)",
+                            "president_of_epci": "Président(e) d'EPCI",
+                            "regional_councilor": "Conseiller(e) régional(e)",
+                            "senator": "Sénateur(rice)",
+                            "vice_president_of_epci": "Vice-président(e) d'EPCI"
+                        },
+                        "multiple": true
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "mandateTypes",
                     "label": "Type de mandat",
                     "options": {
                         "choices": {
-                            "all": "Tous",
-                            "local_mandate": "Mandat local",
-                            "national_mandate": "Mandat national",
-                            "none": "Aucun"
-                        }
+                            "conseiller_municipal": "Conseiller(e) municipal(e)",
+                            "membre_EPCI": "Membre d'EPCI",
+                            "conseiller_departemental": "Conseiller(e) départemental(e)",
+                            "conseiller_regional": "Conseiller(e) régional(e)",
+                            "membre_assemblee_corse": "Membre de l'Assemblée de Corse",
+                            "depute": "Député(e)",
+                            "senateur": "Sénateur(rice)",
+                            "euro_depute": "Député(e) européen(ne)",
+                            "conseiller_d_arrondissement": "Conseiller(ère) d'arrondissement",
+                            "conseiller_consulaire": "Conseiller(ère) FDE"
+                        },
+                        "multiple": true
                     },
                     "type": "select"
                 }
