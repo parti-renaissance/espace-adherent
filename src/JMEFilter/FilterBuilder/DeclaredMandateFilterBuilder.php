@@ -24,10 +24,12 @@ class DeclaredMandateFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, string $feature = null): array
     {
+        $multiple = FeatureEnum::CONTACTS === $feature;
+
         return (new FilterCollectionBuilder())
-            ->createSelect('declaredMandates', 'Déclaration de mandat')
+            ->createSelect($multiple ? 'declaredMandates' : 'declaredMandate', 'Déclaration de mandat')
             ->setChoices($this->getTranslatedChoices())
-            ->setMultiple(true)
+            ->setMultiple($multiple)
             ->getFilters()
         ;
     }

@@ -96,22 +96,22 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     private ?bool $isCommitteeMember = null;
 
     /**
-     * @ORM\Column(type="simple_array", nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Groups({"adherent_message_update_filter"})
      *
-     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::CHOICES, strict=true, multiple=true)
+     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::CHOICES, strict=true)
      */
-    private array $mandateTypes = [];
+    private ?string $mandateType = null;
 
     /**
-     * @ORM\Column(type="simple_array", nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Groups({"adherent_message_update_filter"})
      *
-     * @Assert\Choice(choices=App\Membership\MandatesEnum::CHOICES, strict=true, multiple=true)
+     * @Assert\Choice(choices=App\Membership\MandatesEnum::CHOICES, strict=true)
      */
-    private array $declaredMandates = [];
+    private ?string $declaredMandate = null;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -226,29 +226,29 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->committee = $committee;
     }
 
-    public function getMandateTypes(): array
-    {
-        return $this->mandateTypes;
-    }
-
-    public function setMandateTypes(array $mandateTypes): void
-    {
-        $this->mandateTypes = $mandateTypes;
-    }
-
-    public function getDeclaredMandates(): array
-    {
-        return $this->declaredMandates;
-    }
-
-    public function setDeclaredMandates(array $declaredMandates): void
-    {
-        $this->declaredMandates = $declaredMandates;
-    }
-
     public function getIsCampusRegistered(): ?bool
     {
         return $this->isCampusRegistered;
+    }
+
+    public function getMandateType(): ?string
+    {
+        return $this->mandateType;
+    }
+
+    public function setMandateType(?string $mandateType): void
+    {
+        $this->mandateType = $mandateType;
+    }
+
+    public function getDeclaredMandate(): ?string
+    {
+        return $this->declaredMandate;
+    }
+
+    public function setDeclaredMandate(?string $declaredMandate): void
+    {
+        $this->declaredMandate = $declaredMandate;
     }
 
     public function setIsCampusRegistered(?bool $isCampusRegistered): void
@@ -274,8 +274,8 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->audienceType = null;
         $this->committee = null;
         $this->isCommitteeMember = null;
-        $this->mandateTypes = [];
-        $this->declaredMandates = [];
+        $this->mandateType = null;
+        $this->declaredMandate = null;
         $this->isCampusRegistered = null;
 
         parent::reset();

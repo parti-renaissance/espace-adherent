@@ -442,7 +442,7 @@ Feature:
               "color": "#2563EB",
               "filters": [
                   {
-                      "code": "declaredMandates",
+                      "code": "declaredMandate",
                       "label": "Déclaration de mandat",
                       "options": {
                           "choices": {
@@ -461,12 +461,12 @@ Feature:
                               "senator": "Sénateur(rice)",
                               "vice_president_of_epci": "Vice-président(e) d'EPCI"
                           },
-                          "multiple": true
+                          "multiple": false
                       },
                       "type": "select"
                   },
                   {
-                      "code": "mandateTypes",
+                      "code": "mandateType",
                       "label": "Type de mandat",
                       "options": {
                           "choices": {
@@ -481,7 +481,7 @@ Feature:
                               "conseiller_d_arrondissement": "Conseiller(ère) d'arrondissement",
                               "conseiller_consulaire": "Conseiller(ère) FDE"
                           },
-                          "multiple": true
+                          "multiple": false
                       },
                       "type": "select"
                   }

@@ -11,7 +11,7 @@ class MandateTypeConditionBuilder implements SegmentConditionBuilderInterface
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AudienceFilter && !empty($filter->getMandateTypes());
+        return $filter instanceof AudienceFilter && $filter->getMandateType();
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
@@ -24,17 +24,11 @@ class MandateTypeConditionBuilder implements SegmentConditionBuilderInterface
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
-        $conditions = [];
-
-        foreach ($filter->getMandateTypes() as $mandateType) {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'contains',
-                'value' => $mandateType,
-                'field' => MemberRequest::MERGE_FIELD_MANDATE_TYPES,
-            ];
-        }
-
-        return $conditions;
+        return [[
+            'condition_type' => 'TextMerge',
+            'op' => 'contains',
+            'value' => $filter->getMandateType(),
+            'field' => MemberRequest::MERGE_FIELD_MANDATE_TYPES,
+        ]];
     }
 }

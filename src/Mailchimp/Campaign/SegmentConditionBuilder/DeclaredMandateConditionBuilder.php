@@ -11,7 +11,7 @@ class DeclaredMandateConditionBuilder implements SegmentConditionBuilderInterfac
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AudienceFilter && !empty($filter->getDeclaredMandates());
+        return $filter instanceof AudienceFilter && $filter->getDeclaredMandate();
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
@@ -24,17 +24,11 @@ class DeclaredMandateConditionBuilder implements SegmentConditionBuilderInterfac
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
-        $conditions = [];
-
-        foreach ($filter->getDeclaredMandates() as $declaredMandate) {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'contains',
-                'value' => $declaredMandate,
-                'field' => MemberRequest::MERGE_FIELD_DECLARED_MANDATES,
-            ];
-        }
-
-        return $conditions;
+        return [[
+            'condition_type' => 'TextMerge',
+            'op' => 'contains',
+            'value' => $filter->getDeclaredMandate(),
+            'field' => MemberRequest::MERGE_FIELD_DECLARED_MANDATES,
+        ]];
     }
 }

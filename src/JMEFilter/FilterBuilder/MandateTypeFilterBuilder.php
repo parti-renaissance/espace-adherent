@@ -19,10 +19,12 @@ class MandateTypeFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, string $feature = null): array
     {
+        $multiple = FeatureEnum::CONTACTS === $feature;
+
         return (new FilterCollectionBuilder())
-            ->createSelect('mandateTypes', 'Type de mandat')
+            ->createSelect($multiple ? 'mandateTypes' : 'mandateType', 'Type de mandat')
             ->setChoices(array_flip(MandateTypeEnum::CHOICES))
-            ->setMultiple(true)
+            ->setMultiple($multiple)
             ->getFilters()
         ;
     }
