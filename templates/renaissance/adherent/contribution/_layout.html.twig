@@ -1,0 +1,58 @@
+{% extends 'renaissance/adherent/_layout.html.twig' %}
+
+{% block page_title 'Cotisation élus' %}
+
+{% block content_right_side %}
+    <section class="space-y-4 md:space-y-6" id="elected-representative-contribution">
+        <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold leading-10 text-gray-900">Cotisation élus</h1>
+
+            {% set steps = [
+                'app_renaissance_contribution_fill_revenue',
+                'app_renaissance_contribution_see_amount',
+                'app_renaissance_contribution_fill_informations',
+            ] %}
+
+            {% set current_step_index = null %}
+            {% for step in steps %}
+                {% set current_step_index = is_active_route(app.request, step) ? loop.index : current_step_index %}
+            {% endfor %}
+
+            {% block contribution_navigation %}
+            <nav class="flex items-center justify-center" aria-label="Progress">
+                <p class="text-sm font-medium">Etape {{ current_step_index}} sur {{ steps|length }}</p>
+                <ol role="list" class="ml-8 flex items-center space-x-5">
+                    {% for step in steps %}
+                        <li>
+                            {% if current_step_index is same as null or current_step_index > loop.index %}
+                                <!-- Completed Step -->
+                                <a href="{{ path(step) }}" class="block h-2.5 w-2.5 rounded-full bg-re-blue-600 hover:bg-re-blue-900">
+                                    <span class="sr-only">Etape {{ loop.index }}</span>
+                                </a>
+                            {% elseif current_step_index is same as loop.index %}
+                                <!-- Current Step -->
+                                <a href="#" class="relative flex items-center justify-center" aria-current="step">
+                                    <span class="absolute flex h-5 w-5 p-px" aria-hidden="true">
+                                        <span class="h-full w-full rounded-full bg-re-blue-200"></span>
+                                    </span>
+                                    <span class="relative block h-2.5 w-2.5 rounded-full bg-re-blue-600" aria-hidden="true"></span>
+                                    <span class="sr-only">Etape {{ loop.index }}</span>
+                                </a>
+                            {% else %}
+                                <!-- Upcoming Step -->
+                                <a href="#" class="block h-2.5 w-2.5 rounded-full bg-gray-200 hover:bg-gray-400">
+                                    <span class="sr-only">Step {{ loop.index }}</span>
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ol>
+            </nav>
+            {% endblock contribution_navigation %}
+        </div>
+
+        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+            {% block contribution_content %}{% endblock %}
+        </div>
+    </section>
+{% endblock %}

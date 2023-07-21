@@ -1,0 +1,37 @@
+{% extends 'renaissance/adherent/contribution/_layout.html.twig' %}
+
+{% form_theme form with 'renaissance/forms/form_theme_profile.html.twig' %}
+
+{% block contribution_content %}
+    {{ form_start(form, { attr: { id: 'app_contribution_revenue' } }) }}
+
+    <div class="space-y-4">
+        {{ form_errors(form) }}
+        <p class="text-base leading-6 text-gray-500">
+            {{ cms_block('renaissance-elected-representative-contribution-step-1') }}
+        </p>
+
+        <div>
+            {{ form_label(form.revenueAmount, 'Montant mensuel (€)') }}
+
+            <div class="relative mt-1 max-w-lg">
+                {{ form_widget(form.revenueAmount) }}
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                    <span class="text-gray-500 sm:text-sm" id="price-currency">EUR</span>
+                </div>
+            </div>
+            <p class="mt-2">
+                {{ form_errors(form.revenueAmount) }}
+            </p>
+
+            <p class="text-lg text-gray-500 leading-6">
+                Montant mensuel de l’ensemble des indemnités brutes perçues au titre du ou des mandats locaux et mandats annexes (EPCI, Syndicats intercommunaux)
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <button type="submit" class="button button-blue">Valider</button>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

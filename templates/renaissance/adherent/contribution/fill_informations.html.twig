@@ -1,0 +1,60 @@
+{% extends 'renaissance/adherent/contribution/_layout.html.twig' %}
+
+{% form_theme form with 'renaissance/forms/form_theme_profile.html.twig' %}
+
+{% block contribution_content %}
+    {{ form_start(form, { attr: { id: 'app_contribution_informations' } }) }}
+
+    {{ form_errors(form) }}
+
+    <div class="space-y-5">
+        <div class="space-y-4">
+            <h2 class="text-lg font-medium text-gray-900">1. Mettez à jour vos informations personnelles</h2>
+
+            <p class="text-gray-500 leading-7">
+                {{ cms_block('renaissance-elected-representative-contribution-step-3') }}
+            </p>
+            <div class="text-gray-500">
+                <p><span class="text-gray-700 font-medium">Nom :</span> {{ app.user.lastName }}</p>
+                <p><span class="text-gray-700 font-medium">Prénom :</span> {{ app.user.firstName }}</p>
+                <p><span class="text-gray-700 font-medium">Pays de résidence :</span> {{ app.user.country|countryName }}</p>
+                <p>
+                    <span class="text-gray-700 font-medium">Adresse postale :</span>
+                    {{ app.user.inlineFormattedAddress }}
+                </p>
+                <p><span class="text-gray-700 font-medium">E-mail :</span> {{ app.user.emailAddress }}</p>
+            </div>
+            <a class="inline-flex items-center text-re-blue-500 leading-6 hover:underline" href="{{ path('app_user_edit', { app_domain: renaissance_host }) }}">
+                Éditer les informations personnelles
+                <svg class="w-5 h-5 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                </svg>
+            </a>
+        </div>
+        <div class="space-y-4">
+            <h2 class="text-lg font-medium text-gray-900">2. Saisissez vos informations bancaires</h2>
+
+            {{ form_row(form.accountName, { label: 'Nom du titulaire du compte' }) }}
+
+            {{ form_row(form.accountCountry, { label: 'Pays du compte bancaire' }) }}
+
+            <div>
+                {{ form_row(form.iban, { label: 'IBAN' }) }}
+                <p class="mt-1 text-sm text-gray-500">Identifiant international de compte bancaire (IBAN)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-6">
+        <button type="submit" class="button button-blue">Valider</button>
+    </div>
+
+    {{ form_end(form) }}
+
+    <div class="mt-4 border-t pt-3 border-gray-200">
+        <a class="inline-flex items-center text-base leading-5 font-medium text-re-blue-500 hover:text-re-blue-700 hover:underline" href="{{ path('app_renaissance_elected_representative_contribution_fill_revenue') }}">
+            <span aria-hidden="true">&larr; </span>
+            Retourner au montant de cotisation
+        </a>
+    </div>
+{% endblock %}
