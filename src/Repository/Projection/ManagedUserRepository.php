@@ -4,7 +4,6 @@ namespace App\Repository\Projection;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\AddressInterface;
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Projection\ManagedUser;
 use App\FranceCities\FranceCities;
 use App\ManagedUsers\ManagedUsersFilter;
@@ -325,27 +324,26 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
-        if ($mandateType = $filter->getMandateType()) {
-            switch ($mandateType) {
-                case MandateTypeEnum::TYPE_ALL:
-                    $qb->andWhere('u.mandateTypes IS NOT NULL');
+        if ($mandateTypes = $filter->getMandateTypes()) {
+            $mandateTypesConditions = $qb->expr()->orX();
 
-                    break;
-                case MandateTypeEnum::TYPE_NATIONAL:
-                    $qb->andWhere('FIND_IN_SET(:mandate_type, u.mandateTypes) > 0');
-                    $qb->setParameter('mandate_type', MandateTypeEnum::TYPE_NATIONAL);
-
-                    break;
-                case MandateTypeEnum::TYPE_LOCAL:
-                    $qb->andWhere('FIND_IN_SET(:mandate_type, u.mandateTypes) > 0');
-                    $qb->setParameter('mandate_type', MandateTypeEnum::TYPE_LOCAL);
-
-                    break;
-                case MandateTypeEnum::TYPE_NONE:
-                    $qb->andWhere('u.mandateTypes IS NULL');
-
-                    break;
+            foreach ($mandateTypes as $key => $mandateType) {
+                $mandateTypesConditions->add("FIND_IN_SET(:mandate_type_$key, u.mandateTypes) > 0");
+                $qb->setParameter("mandate_type_$key", $mandateType);
             }
+
+            $qb->andWhere($mandateTypesConditions);
+        }
+
+        if ($declaredMandates = $filter->getDeclaredMandates()) {
+            $declaredMandatesConditions = $qb->expr()->orX();
+
+            foreach ($declaredMandates as $key => $declaredMandate) {
+                $declaredMandatesConditions->add("FIND_IN_SET(:declared_mandate_$key, u.declaredMandates) > 0");
+                $qb->setParameter("declared_mandate_$key", $declaredMandates);
+            }
+
+            $qb->andWhere($declaredMandatesConditions);
         }
 
         return $qb;

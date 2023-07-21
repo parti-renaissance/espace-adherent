@@ -75,9 +75,16 @@ class ManagedUsersFilter
     /**
      * @Groups({"filter_write"})
      *
-     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::TYPE_CHOICES_CONTACTS, strict=true)
+     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::CHOICES, strict=true, multiple=true)
      */
-    private ?string $mandateType = null;
+    private array $mandateTypes = [];
+
+    /**
+     * @Groups({"filter_write"})
+     *
+     * @Assert\Choice(choices=App\Membership\MandatesEnum::CHOICES, strict=true, multiple=true)
+     */
+    private array $declaredMandates = [];
 
     /**
      * @var Zone[]
@@ -581,7 +588,8 @@ class ManagedUsersFilter
                         return false === $role;
                     })
                 ),
-                'mandateType' => $this->mandateType,
+                'mandateTypes' => $this->mandateTypes,
+                'declaredMandates' => $this->declaredMandates,
                 'isCampusRegistered' => $this->isCampusRegistered,
             ],
         );
@@ -607,16 +615,6 @@ class ManagedUsersFilter
         $this->isNewRenaissanceUser = $isNewRenaissanceUser;
     }
 
-    public function getMandateType(): ?string
-    {
-        return $this->mandateType;
-    }
-
-    public function setMandateType(?string $mandateType): void
-    {
-        $this->mandateType = $mandateType;
-    }
-
     public function getIsCampusRegistered(): ?bool
     {
         return $this->isCampusRegistered;
@@ -625,5 +623,25 @@ class ManagedUsersFilter
     public function setIsCampusRegistered(?bool $isCampusRegistered): void
     {
         $this->isCampusRegistered = $isCampusRegistered;
+    }
+
+    public function getMandateTypes(): array
+    {
+        return $this->mandateTypes;
+    }
+
+    public function setMandateTypes(array $mandateTypes): void
+    {
+        $this->mandateTypes = $mandateTypes;
+    }
+
+    public function getDeclaredMandates(): array
+    {
+        return $this->declaredMandates;
+    }
+
+    public function setDeclaredMandates(array $declaredMandates): void
+    {
+        $this->declaredMandates = $declaredMandates;
     }
 }
