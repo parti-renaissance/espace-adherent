@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Address\GeocodableAddress;
 use App\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
@@ -270,6 +270,6 @@ trait EntityAddressTrait
 
     protected function isFrenchAddress(): bool
     {
-        return Address::FRANCE === mb_strtoupper($this->country) && $this->city;
+        return AddressInterface::FRANCE === mb_strtoupper($this->country) && $this->city;
     }
 }

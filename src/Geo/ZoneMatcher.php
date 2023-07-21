@@ -2,7 +2,6 @@
 
 namespace App\Geo;
 
-use App\Address\Address;
 use App\Address\AddressInterface;
 use App\Entity\Geo\City;
 use App\Entity\Geo\Zone;
@@ -40,7 +39,7 @@ class ZoneMatcher
     {
         $zones = [];
 
-        $isFrance = Address::FRANCE === $address->getCountry();
+        $isFrance = AddressInterface::FRANCE === $address->getCountry();
 
         if ($isFrance) {
             // Borough or city

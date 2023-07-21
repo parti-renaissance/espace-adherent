@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -35,7 +35,7 @@ class AdherentRegistrationType extends AbstractType
             ])
             ->add('nationality', CountryType::class, [
                 'placeholder' => 'Nationalité',
-                'preferred_choices' => [Address::FRANCE],
+                'preferred_choices' => [AddressInterface::FRANCE],
             ])
         ;
     }

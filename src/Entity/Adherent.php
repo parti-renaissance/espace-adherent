@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Address\PostAddressFactory;
 use App\Adherent\LastLoginGroupEnum;
 use App\AdherentProfile\AdherentProfile;
@@ -1334,12 +1334,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isForeignResident(): bool
     {
-        return Address::FRANCE !== strtoupper($this->getCountry());
+        return AddressInterface::FRANCE !== strtoupper($this->getCountry());
     }
 
     public function isParisResident(): bool
     {
-        return Address::FRANCE === strtoupper($this->getCountry()) && AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS === substr($this->getPostalCode(), 0, 2);
+        return AddressInterface::FRANCE === strtoupper($this->getCountry()) && AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS === substr($this->getPostalCode(), 0, 2);
     }
 
     public function isFemale(): bool
@@ -3352,7 +3352,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isFrench(): bool
     {
-        return Address::FRANCE === $this->nationality;
+        return AddressInterface::FRANCE === $this->nationality;
     }
 
     public function getCampusRegistrations(): Collection

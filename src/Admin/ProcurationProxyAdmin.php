@@ -2,7 +2,7 @@
 
 namespace App\Admin;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\ElectionRound;
 use App\Entity\ProcurationProxy;
 use App\Form\GenderType;
@@ -162,7 +162,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 ])
         ;
 
-        if (Address::FRANCE !== $this->getSubject()->getCountry()) {
+        if (AddressInterface::FRANCE !== $this->getSubject()->getCountry()) {
             $show
                 ->add('stage', null, [
                     'label' => 'État/Province',

@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Projection\ManagedUser;
 use App\Entity\Projection\ManagedUserFactory;
@@ -41,7 +41,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'last_name' => $this->getReference('adherent-1')->getLastName(),
             'birthday' => $this->getReference('adherent-1')->getBirthdate(),
             'phone' => PhoneNumberUtils::create('+33666666666'),
-            'nationality' => Address::FRANCE,
+            'nationality' => AddressInterface::FRANCE,
             'is_committee_member' => 0,
             'is_committee_host' => 0,
             'is_committee_provisional_supervisor' => 0,
@@ -73,7 +73,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'committees' => $committee10->getName(),
             'committee_uuids' => [$committee10->getUuid()->toString()],
             'phone' => PhoneNumberUtils::create('+33666666666'),
-            'nationality' => Address::FRANCE,
+            'nationality' => AddressInterface::FRANCE,
             'is_committee_member' => 1,
             'is_committee_host' => 0,
             'is_committee_provisional_supervisor' => 0,
@@ -105,7 +105,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'committees' => $committee1->getName(),
             'committee_uuids' => [$committee1->getUuid()->toString()],
             'phone' => PhoneNumberUtils::create('+33666666666'),
-            'nationality' => Address::FRANCE,
+            'nationality' => AddressInterface::FRANCE,
             'is_committee_member' => 1,
             'is_committee_host' => 1,
             'is_committee_provisional_supervisor' => 1,
@@ -174,7 +174,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'last_name' => $this->getReference('adherent-3')->getLastName(),
             'birthday' => $this->getReference('adherent-3')->getBirthdate(),
             'phone' => PhoneNumberUtils::create('+33187264236'),
-            'nationality' => Address::FRANCE,
+            'nationality' => AddressInterface::FRANCE,
             'is_committee_member' => 1,
             'is_committee_host' => 1,
             'is_committee_provisional_supervisor' => 0,

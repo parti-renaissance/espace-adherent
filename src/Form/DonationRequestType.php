@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Donation\Request\DonationRequest;
 use App\Donation\Request\DonationRequestUtils;
@@ -95,7 +95,7 @@ class DonationRequestType extends AbstractType
             ->add('lastName', TextType::class)
             ->add('emailAddress', EmailType::class)
             ->add('nationality', CountryType::class, [
-                'preferred_choices' => [Address::FRANCE],
+                'preferred_choices' => [AddressInterface::FRANCE],
                 'placeholder' => 'Nationalité',
             ])
             ->add('isPhysicalPerson', RequiredCheckboxType::class)

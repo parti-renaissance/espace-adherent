@@ -2,7 +2,7 @@
 
 namespace App\Form\Admin\Election;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Election\CityManager;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
@@ -22,8 +22,8 @@ class CityManagerType extends AbstractType
             ->add('phone', PhoneNumberType::class, [
                 'label' => 'Téléphone',
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'default_region' => Address::FRANCE,
-                'preferred_country_choices' => [Address::FRANCE],
+                'default_region' => AddressInterface::FRANCE,
+                'preferred_country_choices' => [AddressInterface::FRANCE],
             ])
         ;
     }

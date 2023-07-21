@@ -2,7 +2,7 @@
 
 namespace App\Admin\ElectedRepresentative;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\ElectedRepresentative\Contribution\ContributionStatusEnum;
 use App\ElectedRepresentative\ElectedRepresentativeEvent;
@@ -215,8 +215,8 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'required' => false,
                     'label' => 'Autre téléphone de contact',
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                    'default_region' => Address::FRANCE,
-                    'preferred_country_choices' => [Address::FRANCE],
+                    'default_region' => AddressInterface::FRANCE,
+                    'preferred_country_choices' => [AddressInterface::FRANCE],
                     'attr' => ['class' => 'phone'],
                 ])
                 ->add('birthDate', DatePickerType::class, [

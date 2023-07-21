@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Repository\Geo\ZoneRepository;
@@ -53,7 +53,7 @@ class ManagedUserVoter extends AbstractAdherentVoter
         if (!$isGranted && $user->isSenator()) {
             $code = $user->getSenatorArea()->getDepartmentTag()->getCode();
             $isGranted = (bool) array_intersect($adherent->getReferentTagCodes(), [$code])
-                || (ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG === $code && Address::FRANCE !== $adherent->getCountry());
+                || (ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG === $code && AddressInterface::FRANCE !== $adherent->getCountry());
         }
 
         return $isGranted;

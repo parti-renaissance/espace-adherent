@@ -2,7 +2,6 @@
 
 namespace App\Validator;
 
-use App\Address\Address as AddressObject;
 use App\Address\AddressInterface;
 use App\FranceCities\FranceCities;
 use Symfony\Component\Validator\Constraint;
@@ -33,7 +32,7 @@ class FrenchAddressValidator extends ConstraintValidator
             throw new UnexpectedValueException($address, AddressInterface::class);
         }
 
-        if (AddressObject::FRANCE !== $address->getCountry() || !$address->getPostalCode()) {
+        if (AddressInterface::FRANCE !== $address->getCountry() || !$address->getPostalCode()) {
             return;
         }
 

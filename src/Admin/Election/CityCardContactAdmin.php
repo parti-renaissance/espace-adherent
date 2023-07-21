@@ -2,7 +2,7 @@
 
 namespace App\Admin\Election;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -22,8 +22,8 @@ class CityCardContactAdmin extends AbstractAdmin
                 'label' => 'Téléphone',
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'default_region' => Address::FRANCE,
-                'preferred_country_choices' => [Address::FRANCE],
+                'default_region' => AddressInterface::FRANCE,
+                'preferred_country_choices' => [AddressInterface::FRANCE],
             ])
             ->add('caller', TextType::class, [
                 'label' => 'Qui appelle?',

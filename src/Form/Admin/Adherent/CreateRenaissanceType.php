@@ -2,7 +2,7 @@
 
 namespace App\Form\Admin\Adherent;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Form\AddressType;
 use App\Form\BirthdateType;
 use App\Form\CivilityType;
@@ -37,7 +37,7 @@ class CreateRenaissanceType extends AbstractType
                 'disabled' => $fromCertifiedAdherent,
             ])
             ->add('nationality', CountryType::class, [
-                'preferred_choices' => [Address::FRANCE],
+                'preferred_choices' => [AddressInterface::FRANCE],
                 'disabled' => $fromCertifiedAdherent,
                 'invalid_message' => 'common.nationality.invalid',
             ])
@@ -50,7 +50,7 @@ class CreateRenaissanceType extends AbstractType
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'country_options' => [
-                    'preferred_choices' => [Address::FRANCE],
+                    'preferred_choices' => [AddressInterface::FRANCE],
                     'invalid_message' => 'common.country.invalid',
                 ],
             ])

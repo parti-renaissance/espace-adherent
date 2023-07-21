@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -124,7 +124,7 @@ class District
 
     public function isFrenchDistrict(): bool
     {
-        return Address::FRANCE === $this->getCountriesAsString();
+        return AddressInterface::FRANCE === $this->getCountriesAsString();
     }
 
     public function getCode(): string

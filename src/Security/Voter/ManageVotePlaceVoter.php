@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\Election\VotePlace;
 
@@ -20,7 +20,7 @@ class ManageVotePlaceVoter extends AbstractAdherentVoter
                 $adherent->getManagedAreaTagCodes(),
                 array_merge(
                     [$subject->getCountry()],
-                    Address::FRANCE === $subject->getCountry() ? [substr($subject->getPostalCode(), 0, 2)] : []
+                    AddressInterface::FRANCE === $subject->getCountry() ? [substr($subject->getPostalCode(), 0, 2)] : []
                 )
             );
         }

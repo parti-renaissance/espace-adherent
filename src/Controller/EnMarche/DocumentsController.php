@@ -2,7 +2,7 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Documents\DocumentManager;
 use App\Documents\DocumentRepository;
 use App\Entity\Adherent;
@@ -70,7 +70,7 @@ class DocumentsController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        if (DocumentRepository::DIRECTORY_FOREIGN_HOSTS === $type && !($isHost || $isReferent || Address::FRANCE !== strtoupper($adherent->getCountry()))) {
+        if (DocumentRepository::DIRECTORY_FOREIGN_HOSTS === $type && !($isHost || $isReferent || AddressInterface::FRANCE !== strtoupper($adherent->getCountry()))) {
             throw $this->createNotFoundException();
         }
 

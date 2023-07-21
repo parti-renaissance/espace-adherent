@@ -22,8 +22,6 @@ class Address implements AddressInterface, GeocodableInterface
 {
     use AddressTrait;
 
-    public const FRANCE = 'FR';
-
     /**
      * @Assert\NotBlank(message="common.address.required", groups={"Default", "Update"})
      * @Assert\Expression(
@@ -74,5 +72,5 @@ class Address implements AddressInterface, GeocodableInterface
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
-    protected ?string $country = self::FRANCE;
+    protected ?string $country = AddressInterface::FRANCE;
 }

@@ -2,7 +2,7 @@
 
 namespace App\Admin;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Form\GenderType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -133,7 +133,7 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ])
         ;
 
-        if (Address::FRANCE != $this->getSubject()->getCountry()) {
+        if (AddressInterface::FRANCE != $this->getSubject()->getCountry()) {
             $show->add('stage', null, ['label' => 'État/Province']);
         }
 

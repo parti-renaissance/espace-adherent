@@ -2,7 +2,7 @@
 
 namespace App\Command\Geo;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Command\Geo\Helper\Persister;
 use App\Command\Geo\Helper\Summary;
 use App\Entity\Geo\City;
@@ -146,7 +146,7 @@ final class UpdateFranceCommand extends Command
     private function processEntry(array $entry): void
     {
         /* @var Country|null $region */
-        $france = $this->retrieveEntity(Country::class, Address::FRANCE);
+        $france = $this->retrieveEntity(Country::class, AddressInterface::FRANCE);
 
         /* @var Region|null $region */
         $region = null;
@@ -230,8 +230,8 @@ final class UpdateFranceCommand extends Command
         //
 
         /* @var Country|null $france */
-        $france = $this->retrieveEntity(Country::class, Address::FRANCE, static function () {
-            return new Country(Address::FRANCE, self::FRANCE_NAME);
+        $france = $this->retrieveEntity(Country::class, AddressInterface::FRANCE, static function () {
+            return new Country(AddressInterface::FRANCE, self::FRANCE_NAME);
         });
         $france->activate();
 

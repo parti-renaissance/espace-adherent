@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -68,7 +68,7 @@ class Region
      */
     private $departments;
 
-    public function __construct(string $name = null, string $code = null, string $country = Address::FRANCE)
+    public function __construct(string $name = null, string $code = null, string $country = AddressInterface::FRANCE)
     {
         $this->name = $name;
         $this->code = $code;

@@ -2,7 +2,7 @@
 
 namespace App\Assessor;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\AssessorRequest;
 use App\Entity\Election\VotePlace;
 use App\Utils\PhoneNumberUtils;
@@ -37,12 +37,12 @@ class AssessorRequestFactory
             $data['voterNumber'],
             $data['assessorCity'] ?? null,
             $data['assessorPostalCode'] ?? null,
-            $data['country'] ?? Address::FRANCE,
+            $data['country'] ?? AddressInterface::FRANCE,
             $data['office'],
             $data['electionRounds'],
             $data['enabled'] ?? true,
             $data['reachable'] ?? false,
-            $data['assessorCountry'] ?? Address::FRANCE
+            $data['assessorCountry'] ?? AddressInterface::FRANCE
         );
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\NewsletterSubscription;
 use App\Repository\NewsletterSubscriptionRepository;
 use Symfony\Component\Form\AbstractType;
@@ -33,7 +33,7 @@ class NewsletterSubscriptionType extends AbstractType
             ])
             ->add('country', CountryType::class, [
                 'required' => false,
-                'preferred_choices' => [Address::FRANCE],
+                'preferred_choices' => [AddressInterface::FRANCE],
             ])
             ->add('personalDataCollection', AcceptPersonalDataCollectType::class, [
                 'mapped' => true,

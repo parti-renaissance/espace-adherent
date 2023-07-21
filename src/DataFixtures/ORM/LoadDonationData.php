@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Donation\DonationSourceEnum;
 use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Adherent;
@@ -174,7 +174,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
             '127.0.0.1',
             $duration,
             $uuid->toString().'_'.$this->slugify->slugify($donator->getFullName()),
-            Address::FRANCE,
+            AddressInterface::FRANCE,
             $code,
             $donator
         );

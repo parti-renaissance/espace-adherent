@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\AdherentProfile\AdherentProfile;
 use App\Entity\ActivityAreaEnum;
 use App\Entity\JobEnum;
@@ -36,7 +36,7 @@ class AdherentProfileType extends AbstractType
             ])
             ->add('nationality', CountryType::class, [
                 'placeholder' => 'Nationalité',
-                'preferred_choices' => [Address::FRANCE],
+                'preferred_choices' => [AddressInterface::FRANCE],
             ])
             ->add('emailAddress', EmailType::class)
             ->add('position', ActivityPositionType::class, [
@@ -77,7 +77,7 @@ class AdherentProfileType extends AbstractType
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'preferred_country_choices' => $countryCode ? [$countryCode] : [Address::FRANCE],
+                'preferred_country_choices' => $countryCode ? [$countryCode] : [AddressInterface::FRANCE],
             ])
             ->add('facebookPageUrl', UrlType::class, [
                 'required' => false,

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Form\DataTransformer\CityNameDataTransformer;
 use App\FranceCities\FranceCities;
 use Symfony\Component\Form\AbstractType;
@@ -55,7 +56,7 @@ class AddressType extends AbstractType
                 'label' => 'Pays',
                 'disabled' => $options['disable_fields'],
                 'placeholder' => 'Sélectionner un pays',
-                'preferred_choices' => [Address::FRANCE],
+                'preferred_choices' => [AddressInterface::FRANCE],
                 'invalid_message' => 'common.country.invalid',
             ])
             ->add('postalCode', TextType::class, [
@@ -79,7 +80,7 @@ class AddressType extends AbstractType
                 /** @var Address $address */
                 $address = $event->getData();
 
-                if ($address && $address->getCityName() && $address->getPostalCode() && Address::FRANCE === $address->getCountry()) {
+                if ($address && $address->getCityName() && $address->getPostalCode() && AddressInterface::FRANCE === $address->getCountry()) {
                     $city = $this->franceCities->getCityByPostalCodeAndName($address->getPostalCode(), $address->getCityName());
 
                     if ($city) {

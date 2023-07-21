@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Assessor\AssessorRequestCommand;
 use App\Assessor\AssessorRequestElectionRoundsEnum;
 use App\Assessor\AssessorRequestEnum;
@@ -152,7 +152,7 @@ class AssessorRequestType extends AbstractType
             $assessorCity = $command['assessorCity'];
         }
 
-        if ((!empty($assessorPostalCode) && !empty($assessorCity) && Address::FRANCE === $assessorCountry) || Address::FRANCE !== $assessorCountry) {
+        if ((!empty($assessorPostalCode) && !empty($assessorCity) && AddressInterface::FRANCE === $assessorCountry) || AddressInterface::FRANCE !== $assessorCountry) {
             $formEvent->getForm()
                 ->add('votePlaceWishes', ChoiceType::class, [
                     'choice_loader' => new CallbackChoiceLoader(function () use ($assessorCountry, $assessorPostalCode, $assessorCity) {

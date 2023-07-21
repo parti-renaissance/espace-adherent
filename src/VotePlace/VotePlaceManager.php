@@ -2,7 +2,7 @@
 
 namespace App\VotePlace;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Election\VotePlace;
 use App\Repository\Election\VotePlaceRepository;
 
@@ -20,7 +20,7 @@ class VotePlaceManager
         ?string $assessorPostalCode,
         ?string $assessorCity
     ): array {
-        if (null !== $assessorCountry && Address::FRANCE !== $assessorCountry) {
+        if (null !== $assessorCountry && AddressInterface::FRANCE !== $assessorCountry) {
             $this->formatVotePlaceWishes($this->repository->findByCountry($assessorCountry));
         }
 

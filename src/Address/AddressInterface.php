@@ -4,6 +4,8 @@ namespace App\Address;
 
 interface AddressInterface
 {
+    public const FRANCE = 'FR';
+
     /**
      * Returns the street name.
      */

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Geo\Zone;
 use App\Procuration\ProcurationDisableReasonEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
@@ -195,7 +195,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      * @Assert\NotBlank(groups={"front"})
      * @Assert\Country(message="common.country.invalid", groups={"front"})
      */
-    private $country = Address::FRANCE;
+    private $country = AddressInterface::FRANCE;
 
     /**
      * @var PhoneNumber
@@ -274,7 +274,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      * @Assert\NotBlank(groups={"front"})
      * @Assert\Country(message="common.country.invalid", groups={"front"})
      */
-    private $voteCountry = Address::FRANCE;
+    private $voteCountry = AddressInterface::FRANCE;
 
     /**
      * @var string
@@ -814,7 +814,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
 
     private function getForeignRequestsLimit(): int
     {
-        return Address::FRANCE === $this->getVoteCountry()
+        return AddressInterface::FRANCE === $this->getVoteCountry()
             ? self::MAX_FOREIGN_REQUESTS_FROM_FRANCE
             : self::MAX_FOREIGN_REQUESTS_FROM_FOREIGN_COUNTRY;
     }

@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\ApplicationRequest\RunningMateRequest;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -53,14 +53,14 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture implements De
         $runningMateRequest4->setEmailAddress('kill.jac@example.ch');
         $runningMateRequest4->setFavoriteCities(['59411']);
 
-        $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', Address::FRANCE);
+        $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', AddressInterface::FRANCE);
 
         foreach ([$runningMateRequest1, $runningMateRequest2, $runningMateRequest3, $runningMateRequest4] as $i => $runningMateRequest) {
             /** @var RunningMateRequest $runningMateRequest */
             $runningMateRequest->setPostalCode($faker->postcode());
             $runningMateRequest->setCityName($faker->city());
             $runningMateRequest->setCity('75012-75112');
-            $runningMateRequest->setCountry(Address::FRANCE);
+            $runningMateRequest->setCountry(AddressInterface::FRANCE);
             $runningMateRequest->setAddress($faker->streetAddress());
             $runningMateRequest->setPhone($phone);
             $runningMateRequest->setProfession($faker->jobTitle());

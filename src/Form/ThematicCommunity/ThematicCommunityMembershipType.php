@@ -3,6 +3,7 @@
 namespace App\Form\ThematicCommunity;
 
 use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\ThematicCommunity\ThematicCommunityMembership;
 use App\Entity\ThematicCommunity\ThematicCommunityToUserListDefinitionEnum;
 use App\Entity\UserListDefinition;
@@ -74,8 +75,8 @@ class ThematicCommunityMembershipType extends AbstractType
                     'label' => 'Téléphone',
                     'required' => false,
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                    'default_region' => Address::FRANCE,
-                    'preferred_country_choices' => [Address::FRANCE],
+                    'default_region' => AddressInterface::FRANCE,
+                    'preferred_country_choices' => [AddressInterface::FRANCE],
                 ])
                 ->add('birthDate', DatePickerType::class, [
                     'label' => 'Date de naissance',

@@ -2,7 +2,7 @@
 
 namespace App\Form\Renaissance\Adhesion;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Form\BirthdateType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -25,14 +25,14 @@ class AdditionalInfoType extends AbstractType
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'preferred_country_choices' => [Address::FRANCE],
+                'preferred_country_choices' => [AddressInterface::FRANCE],
             ])
         ;
 
         // Use address country for phone by default
         $builder->get('phone')->get('country')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
             if (!$formEvent->getData()) {
-                $formEvent->setData(Address::FRANCE);
+                $formEvent->setData(AddressInterface::FRANCE);
             }
         });
     }

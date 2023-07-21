@@ -2,7 +2,7 @@
 
 namespace App\Scope\Generator;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Repository\Geo\ZoneRepository;
@@ -34,7 +34,7 @@ class PhoningManagerScopeGenerator extends AbstractScopeGenerator
     {
         return [$this->zoneRepository->findOneBy([
             'type' => Zone::COUNTRY,
-            'code' => Address::FRANCE,
+            'code' => AddressInterface::FRANCE,
         ])];
     }
 }

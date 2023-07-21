@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Membership\MandatesEnum;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -38,7 +38,7 @@ class AdherentType extends AbstractType
             ])
             ->add('nationality', CountryType::class, [
                 'placeholder' => 'Nationalité',
-                'preferred_choices' => [Address::FRANCE],
+                'preferred_choices' => [AddressInterface::FRANCE],
             ])
             ->add('emailAddress', EmailType::class)
             ->add('position', ActivityPositionType::class, [
@@ -58,7 +58,7 @@ class AdherentType extends AbstractType
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'preferred_country_choices' => $countryCode ? [$countryCode] : [Address::FRANCE],
+                'preferred_country_choices' => $countryCode ? [$countryCode] : [AddressInterface::FRANCE],
             ])
             ->add('mandates', ChoiceType::class, [
                 'label' => 'adherent.mandate.label',

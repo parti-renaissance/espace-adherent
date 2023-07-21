@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Address\Address;
 use App\Address\AddressInterface;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoPointInterface;
@@ -94,7 +93,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
 
     public static function createEmptyAddress(): self
     {
-        return new self(Address::FRANCE);
+        return new self(AddressInterface::FRANCE);
     }
 
     public static function createCountryAddress(string $country): self
@@ -113,7 +112,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         [$postalCode, $inseeCode] = explode('-', $cityCode);
 
         $address = new self(
-            Address::FRANCE,
+            AddressInterface::FRANCE,
             $postalCode,
             $cityName,
             $street,

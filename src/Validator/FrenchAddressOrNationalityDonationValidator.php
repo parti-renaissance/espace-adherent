@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Donation\Request\DonationRequest;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -29,7 +29,7 @@ class FrenchAddressOrNationalityDonationValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, DonationRequest::class);
         }
 
-        if (Address::FRANCE !== $value->getNationality() && Address::FRANCE !== $value->getAddress()->getCountry()) {
+        if (AddressInterface::FRANCE !== $value->getNationality() && AddressInterface::FRANCE !== $value->getAddress()->getCountry()) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->addViolation()

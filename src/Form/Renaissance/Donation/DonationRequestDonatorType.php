@@ -2,7 +2,7 @@
 
 namespace App\Form\Renaissance\Donation;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Donation\Request\DonationRequest;
 use App\Form\AutocompleteAddressType;
 use App\Form\CivilityType;
@@ -35,7 +35,7 @@ class DonationRequestDonatorType extends AbstractType
                 'disabled' => $fromAdherent,
             ])
             ->add('nationality', CountryType::class, [
-                'preferred_choices' => [Address::FRANCE],
+                'preferred_choices' => [AddressInterface::FRANCE],
                 'placeholder' => '',
             ])
             ->add('address', AutocompleteAddressType::class)
