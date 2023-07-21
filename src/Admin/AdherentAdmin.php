@@ -8,6 +8,7 @@ use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\AdherentRoleFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
+use App\Contribution\ContributionStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\AdherentTag;
@@ -296,6 +297,11 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('er_adherent_mandates', null, [
                     'label' => 'Mandats',
                     'template' => 'admin/adherent/show_er_adherent_mandates.html.twig',
+                    'virtual_field' => true,
+                ])
+                ->add('contribution', null, [
+                    'label' => 'Cotisation',
+                    'template' => 'admin/adherent/show_contribution.html.twig',
                     'virtual_field' => true,
                 ])
             ->end()
@@ -590,6 +596,16 @@ class AdherentAdmin extends AbstractAdmin
                             'model_manager' => $this->getModelManager(),
                         ],
                         'by_reference' => true,
+                    ])
+                ->end()
+                ->with('Cotisation', [
+                    'class' => 'col-md-12',
+                    'box_class' => 'box box-info',
+                ])
+                    ->add('contributionStatus', TextType::class, [
+                        'label' => false,
+                        'required' => false,
+                        'mapped' => false,
                     ])
                 ->end()
             ->end()
@@ -907,6 +923,53 @@ class AdherentAdmin extends AbstractAdmin
                                 )
                                 ->andWhere('er_adherent_mandate_ongoing.finishAt IS NOT NULL')
                             ;
+
+                            break;
+                    }
+
+                    return true;
+                },
+            ])
+            ->add('revenueDeclared', CallbackFilter::class, [
+                'label' => 'Revenus élu déclarés ?',
+                'show_filter' => true,
+                'field_type' => BooleanType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    switch ($value->getValue()) {
+                        case BooleanType::TYPE_YES:
+                            $qb->andWhere("$alias.contributedAt IS NOT NULL");
+
+                            break;
+                        case BooleanType::TYPE_NO:
+                            $qb->andWhere("$alias.contributedAt IS NULL");
+
+                            break;
+                    }
+
+                    return true;
+                },
+            ])
+            ->add('contributionEligible', CallbackFilter::class, [
+                'label' => 'Éligible à la cotisation élu ?',
+                'show_filter' => true,
+                'field_type' => BooleanType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $qb->andWhere("$alias.contributionStatus = :contribution_status");
+                    switch ($value->getValue()) {
+                        case BooleanType::TYPE_YES:
+                            $qb->setParameter('contribution_status', ContributionStatusEnum::ELIGIBLE);
+
+                            break;
+                        case BooleanType::TYPE_NO:
+                            $qb->setParameter('contribution_status', ContributionStatusEnum::NOT_ELIGIBLE);
 
                             break;
                     }
