@@ -3,8 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Address\Address;
+use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Projection\ManagedUser;
 use App\Entity\Projection\ManagedUserFactory;
+use App\Membership\MandatesEnum;
 use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\PhoneNumberUtils;
@@ -84,6 +86,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'male',
             'interests' => ['numerique'],
+            'declared_mandates' => [MandatesEnum::EUROPEAN_DEPUTY],
         ]);
 
         $managedUser3 = $managedUserFactory->createFromArray([
@@ -118,6 +121,9 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'certified_at' => '2018-06-02 10:20:45',
             'committee' => $committee11->getName(),
             'committee_uuid' => $committee11->getUuid(),
+            'mandateTypes' => [MandateTypeEnum::CITY_COUNCIL],
+            'mandates' => ['Conseiller(e) municipal(e)|Métropole du Grand Paris'],
+            'declared_mandates' => [MandatesEnum::CITY_COUNCILOR],
         ]);
 
         $managedUser4 = $managedUserFactory->createFromArray([

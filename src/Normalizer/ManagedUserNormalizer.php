@@ -4,9 +4,11 @@ namespace App\Normalizer;
 
 use App\Entity\Projection\ManagedUser;
 use App\ManagedUsers\ManagedUsersFilter;
+use App\Membership\MandatesEnum;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
@@ -14,6 +16,10 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
     public const FILTER_PARAM = 'filter';
     private const MANAGED_USER_NORMALIZER_ALREADY_CALLED = 'MANAGED_USER_NORMALIZER_ALREADY_CALLED';
+
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
 
     /** @param ManagedUser $object */
     public function normalize($object, $format = null, array $context = [])
@@ -30,6 +36,22 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
             if ($filter->getSubscriptionType()) {
                 $data['email_subscription'] = \in_array($filter->getSubscriptionType(), $object->getSubscriptionTypes(), true);
+            }
+        }
+
+        if (\in_array('managed_user_read', $context['groups'] ?? [])) {
+            if (\array_key_exists('declared_mandates', $data) && !empty($data['declared_mandates'])) {
+                $translatedMandates = [];
+
+                foreach ($data['declared_mandates'] as $mandate) {
+                    $translatedMandate = array_search($mandate, MandatesEnum::CHOICES);
+
+                    $translatedMandates[] = $translatedMandate
+                        ? $this->translator->trans($translatedMandate)
+                        : $mandate;
+                }
+
+                $data['declared_mandates'] = $translatedMandates;
             }
         }
 

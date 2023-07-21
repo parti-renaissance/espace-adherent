@@ -24,6 +24,7 @@ use App\FranceCities\FranceCities;
 use App\Jecoute\GenderEnum;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\AdherentFactory;
+use App\Membership\MandatesEnum;
 use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -218,6 +219,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent5->addCharter(new CandidateCharter());
         $adherent5->addCharter(new CommitteeHostCharter());
         $adherent5->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent5->setMandates([MandatesEnum::CITY_COUNCILOR]);
         $adherent5->donatedForMembership();
         $this->addReference('adherent-5', $adherent5);
 

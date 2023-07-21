@@ -43,6 +43,8 @@ class ManagedUserFactory
             $data['committee_uuid'] ?? null,
             $data['interests'] ?? [],
             $data['mandate_types'] ?? [],
+            $data['mandates'] ?? [],
+            $data['declared_mandates'] ?? [],
             $data['cotisation_dates'] ?? []
         );
     }

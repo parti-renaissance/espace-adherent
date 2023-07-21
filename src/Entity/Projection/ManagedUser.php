@@ -332,7 +332,21 @@ class ManagedUser
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private ?array $mandateTypes;
+    private ?array $mandateTypes = null;
+
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"managed_user_read"})
+     */
+    private ?array $mandates = null;
+
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"managed_user_read"})
+     */
+    private ?array $declaredMandates = null;
 
     /**
      * @Groups({"managed_user_read"})
@@ -384,7 +398,9 @@ class ManagedUser
         string $committee = null,
         UuidInterface $committeeUuid = null,
         array $interests = [],
-        array $mandateTypes = null,
+        array $mandateTypes = [],
+        array $mandates = [],
+        array $declaredMandates = [],
         array $cotisationDates = [],
         \DateTime $campusRegisteredAt = null
     ) {
@@ -424,6 +440,8 @@ class ManagedUser
         $this->committee = $committee;
         $this->committeeUuid = $committeeUuid;
         $this->mandateTypes = $mandateTypes;
+        $this->mandates = $mandates;
+        $this->declaredMandates = $declaredMandates;
         $this->cotisationDates = $cotisationDates;
         $this->campusRegisteredAt = $campusRegisteredAt;
     }
@@ -730,6 +748,16 @@ class ManagedUser
     public function getMandateTypes(): ?array
     {
         return $this->mandateTypes;
+    }
+
+    public function getMandates(): ?array
+    {
+        return $this->mandates;
+    }
+
+    public function getDeclaredMandates(): ?array
+    {
+        return $this->declaredMandates;
     }
 
     public function getCampusRegisteredAt(): ?\DateTime
