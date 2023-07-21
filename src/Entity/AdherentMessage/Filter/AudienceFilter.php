@@ -96,13 +96,22 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     private ?bool $isCommitteeMember = null;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Groups({"adherent_message_update_filter"})
      *
-     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::TYPE_CHOICES_CONTACTS, strict=true)
+     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::CHOICES, strict=true, multiple=true)
      */
-    private ?string $mandateType = null;
+    private array $mandateTypes = [];
+
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"adherent_message_update_filter"})
+     *
+     * @Assert\Choice(choices=App\Membership\MandatesEnum::CHOICES, strict=true, multiple=true)
+     */
+    private array $declaredMandates = [];
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -217,14 +226,24 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->committee = $committee;
     }
 
-    public function getMandateType(): ?string
+    public function getMandateTypes(): array
     {
-        return $this->mandateType;
+        return $this->mandateTypes;
     }
 
-    public function setMandateType(?string $mandateType): void
+    public function setMandateTypes(array $mandateTypes): void
     {
-        $this->mandateType = $mandateType;
+        $this->mandateTypes = $mandateTypes;
+    }
+
+    public function getDeclaredMandates(): array
+    {
+        return $this->declaredMandates;
+    }
+
+    public function setDeclaredMandates(array $declaredMandates): void
+    {
+        $this->declaredMandates = $declaredMandates;
     }
 
     public function getIsCampusRegistered(): ?bool
@@ -255,7 +274,8 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->audienceType = null;
         $this->committee = null;
         $this->isCommitteeMember = null;
-        $this->mandateType = null;
+        $this->mandateTypes = [];
+        $this->declaredMandates = [];
         $this->isCampusRegistered = null;
 
         parent::reset();
