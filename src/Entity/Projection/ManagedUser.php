@@ -90,6 +90,8 @@ class ManagedUser
      * @var UuidInterface|null
      *
      * @ORM\Column(type="uuid", nullable=true)
+     *
+     * @Groups({"managed_user_read"})
      */
     private $adherentUuid;
 
