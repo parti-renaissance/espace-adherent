@@ -442,8 +442,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"adherent_change_diff"})
      */
-    private $mandates;
+    private array $mandates = [];
 
     /**
      * @var Media|null
@@ -990,7 +992,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         string $registeredAt = 'now',
         ?array $tags = [],
         ?array $referentTags = [],
-        array $mandates = null,
+        ?array $mandates = [],
         string $nationality = null,
         string $customGender = null
     ): self {
@@ -1012,7 +1014,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->registeredAt = new \DateTime($registeredAt);
         $adherent->tags = new ArrayCollection($tags);
         $adherent->referentTags = new ArrayCollection($referentTags);
-        $adherent->mandates = $mandates;
+        $adherent->mandates = $mandates ?? [];
         $adherent->nationality = $nationality;
         $adherent->customGender = $customGender;
 
