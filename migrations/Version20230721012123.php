@@ -14,7 +14,12 @@ final class Version20230721012123 extends AbstractMigration
         ADD
           mandate_types LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\',
         ADD
-          declared_mandates LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\',
+          declared_mandates LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\'');
+
+        $this->addSql('UPDATE adherent_message_filters SET mandate_types = mandate_type');
+
+        $this->addSql('ALTER TABLE
+          adherent_message_filters
         DROP
           mandate_type');
     }
@@ -24,7 +29,12 @@ final class Version20230721012123 extends AbstractMigration
         $this->addSql('ALTER TABLE
           adherent_message_filters
         ADD
-          mandate_type VARCHAR(255) DEFAULT NULL,
+          mandate_type VARCHAR(255) DEFAULT NULL');
+
+        $this->addSql('UPDATE adherent_message_filters SET mandate_type = SUBSTRING_INDEX(mandate_types, \',\', 1)');
+
+        $this->addSql('ALTER TABLE
+          adherent_message_filters
         DROP
           mandate_types,
         DROP
