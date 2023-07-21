@@ -324,9 +324,26 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
-        if ($mandateType = $filter->getMandateType()) {
-            $qb->andWhere('FIND_IN_SET(:mandate_type, u.mandateTypes) > 0');
-            $qb->setParameter('mandate_type', $mandateType);
+        if ($mandateTypes = $filter->getMandateTypes()) {
+            $mandateTypesConditions = $qb->expr()->orX();
+
+            foreach ($mandateTypes as $key => $mandateType) {
+                $mandateTypesConditions->add("FIND_IN_SET(:mandate_type_$key, u.mandateTypes) > 0");
+                $qb->setParameter("mandate_type_$key", $mandateType);
+            }
+
+            $qb->andWhere($mandateTypesConditions);
+        }
+
+        if ($declaredMandates = $filter->getDeclaredMandates()) {
+            $declaredMandatesConditions = $qb->expr()->orX();
+
+            foreach ($declaredMandates as $key => $declaredMandate) {
+                $declaredMandatesConditions->add("FIND_IN_SET(:declared_mandate_$key, u.declaredMandates) > 0");
+                $qb->setParameter("declared_mandate_$key", $declaredMandates);
+            }
+
+            $qb->andWhere($declaredMandatesConditions);
         }
 
         return $qb;

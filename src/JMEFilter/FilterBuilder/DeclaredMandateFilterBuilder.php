@@ -3,12 +3,12 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\JMEFilter\FilterCollectionBuilder;
-use App\JMEFilter\FilterGroup\MilitantFilterGroup;
-use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
-use App\Scope\ScopeEnum;
+use App\JMEFilter\FilterGroup\ElectedRepresentativeFilterGroup;
+use App\Membership\MandatesEnum;
+use App\Scope\FeatureEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class RenaissanceMembershipFilterBuilder implements FilterBuilderInterface
+class DeclaredMandateFilterBuilder implements FilterBuilderInterface
 {
     public function __construct(private readonly TranslatorInterface $translator)
     {
@@ -16,27 +16,28 @@ class RenaissanceMembershipFilterBuilder implements FilterBuilderInterface
 
     public function supports(string $scope, string $feature = null): bool
     {
-        return \in_array($scope, ScopeEnum::ALL, true);
+        return FeatureEnum::CONTACTS === $feature;
     }
 
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createSelect('renaissance_membership', 'Renaissance')
+            ->createSelect('declaredMandates', 'Déclaration de mandat')
             ->setChoices($this->getTranslatedChoices())
+            ->setMultiple(true)
             ->getFilters()
         ;
     }
 
     public function getGroup(): string
     {
-        return MilitantFilterGroup::class;
+        return ElectedRepresentativeFilterGroup::class;
     }
 
     private function getTranslatedChoices(): array
     {
         $choices = [];
-        foreach (RenaissanceMembershipFilterEnum::CHOICES as $transKey => $choice) {
+        foreach (MandatesEnum::CHOICES as $transKey => $choice) {
             $choices[$choice] = $this->translator->trans($transKey);
         }
 
