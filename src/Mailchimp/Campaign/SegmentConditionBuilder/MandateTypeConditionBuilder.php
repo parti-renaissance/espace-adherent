@@ -27,7 +27,7 @@ class MandateTypeConditionBuilder implements SegmentConditionBuilderInterface
         return [[
             'condition_type' => 'TextMerge',
             'op' => 'contains',
-            'value' => $filter->getMandateType(),
+            'value' => '"'.$filter->getMandateType().'"',
             'field' => MemberRequest::MERGE_FIELD_MANDATE_TYPES,
         ]];
     }

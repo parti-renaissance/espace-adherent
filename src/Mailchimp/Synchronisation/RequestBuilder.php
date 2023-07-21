@@ -592,11 +592,19 @@ class RequestBuilder implements LoggerAwareInterface
         }
 
         if (null !== $this->mandateTypes) {
-            $mergeFields[MemberRequest::MERGE_FIELD_MANDATE_TYPES] = implode(',', $this->mandateTypes);
+            $mandateTypes = array_map(function (string $mandateType): string {
+                return '"'.$mandateType.'"';
+            }, $this->mandateTypes);
+
+            $mergeFields[MemberRequest::MERGE_FIELD_MANDATE_TYPES] = implode(',', $mandateTypes);
         }
 
         if (null !== $this->declaredMandates) {
-            $mergeFields[MemberRequest::MERGE_FIELD_DECLARED_MANDATES] = implode(',', $this->mandateTypes);
+            $declaredMandates = array_map(function (string $declaredMandate): string {
+                return '"'.$declaredMandate.'"';
+            }, $this->declaredMandates);
+
+            $mergeFields[MemberRequest::MERGE_FIELD_DECLARED_MANDATES] = implode(',', $declaredMandates);
         }
 
         if (null !== $this->campusRegisteredAt) {

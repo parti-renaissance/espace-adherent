@@ -27,7 +27,7 @@ class DeclaredMandateConditionBuilder implements SegmentConditionBuilderInterfac
         return [[
             'condition_type' => 'TextMerge',
             'op' => 'contains',
-            'value' => $filter->getDeclaredMandate(),
+            'value' => '"'.$filter->getDeclaredMandate().'"',
             'field' => MemberRequest::MERGE_FIELD_DECLARED_MANDATES,
         ]];
     }
