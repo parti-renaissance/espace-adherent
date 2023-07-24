@@ -129,7 +129,6 @@ assessors_manager: Responsable assesseurs
 assessor: Assesseur
 user: utilisateur
 election_results_reporter: Rapporteur résultats
-print_privilege: Accès LMI
 role_national: Rôle National
 role_national_communication: Rôle National communication
 senatorial_candidate: Candidat Sénatoriales 2020

@@ -590,15 +590,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $candidateManagedArea;
 
     /**
-     * Access to external services regarding printing
-     *
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": 0})
-     */
-    private $printPrivilege = false;
-
-    /**
      * @ORM\Column(type="boolean", options={"default": 0})
      */
     private bool $nationalRole = false;
@@ -1137,10 +1128,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->canaryTester) {
             $roles[] = 'ROLE_CANARY_TESTER';
-        }
-
-        if ($this->hasPrintPrivilege()) {
-            $roles[] = 'ROLE_PRINT_PRIVILEGE';
         }
 
         if ($this->hasNationalRole()) {
@@ -2472,23 +2459,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             ];
         }
 
-        if ($this->hasPrintPrivilege()) {
-            $roles[] = [
-                'label' => 'ROLE_PRINT_PRIVILEGE',
-            ];
-        }
-
         return $roles;
-    }
-
-    public function hasPrintPrivilege(): bool
-    {
-        return $this->printPrivilege;
-    }
-
-    public function setPrintPrivilege(bool $printPrivilege): void
-    {
-        $this->printPrivilege = $printPrivilege;
     }
 
     public function hasNationalRole(): bool
