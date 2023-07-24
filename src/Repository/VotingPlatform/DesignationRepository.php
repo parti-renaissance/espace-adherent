@@ -146,7 +146,7 @@ class DesignationRepository extends ServiceEntityRepository
             ->setParameters(['now' => new \DateTime()])
             ->setMaxResults($limit)
             ->orderBy('score', 'DESC')
-            ->addOrderBy('designation.voteStartDate', 'DESC')
+            ->addOrderBy('designation.voteStartDate', 'ASC')
         ;
 
         if ($types) {

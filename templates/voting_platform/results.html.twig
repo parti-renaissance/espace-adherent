@@ -16,6 +16,8 @@
             <h1 class="text--larger text-base font-medium lg:text-xl">Résultats de {{ designation.getDenomination(true) }}</h1>
         </div>
 
+        {{ block('results_page_sub_title') ?? '' }}
+
         {% if election_rounds|length > 1 and not election.isSecondRoundVotePeriodActive %}
             <section>
                 <div class="datagrid__table__tabs">
