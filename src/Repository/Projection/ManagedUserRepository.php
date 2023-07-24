@@ -4,6 +4,7 @@ namespace App\Repository\Projection;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\AddressInterface;
+use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Projection\ManagedUser;
 use App\FranceCities\FranceCities;
 use App\ManagedUsers\ManagedUsersFilter;
@@ -325,8 +326,26 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if ($mandateType = $filter->getMandateType()) {
-            $qb->andWhere('FIND_IN_SET(:mandate_type, u.mandateTypes) > 0');
-            $qb->setParameter('mandate_type', $mandateType);
+            switch ($mandateType) {
+                case MandateTypeEnum::TYPE_ALL:
+                    $qb->andWhere('u.mandateTypes IS NOT NULL');
+
+                    break;
+                case MandateTypeEnum::TYPE_NATIONAL:
+                    $qb->andWhere('FIND_IN_SET(:mandate_type, u.mandateTypes) > 0');
+                    $qb->setParameter('mandate_type', MandateTypeEnum::TYPE_NATIONAL);
+
+                    break;
+                case MandateTypeEnum::TYPE_LOCAL:
+                    $qb->andWhere('FIND_IN_SET(:mandate_type, u.mandateTypes) > 0');
+                    $qb->setParameter('mandate_type', MandateTypeEnum::TYPE_LOCAL);
+
+                    break;
+                case MandateTypeEnum::TYPE_NONE:
+                    $qb->andWhere('u.mandateTypes IS NULL');
+
+                    break;
+            }
         }
 
         return $qb;
