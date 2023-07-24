@@ -3848,16 +3848,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.13.15",
+            "version": "8.13.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "b294846e26ea985e6b1fbdfaf15387daca60c2de"
+                "reference": "dee92bfa0782fd5899fe6b295dea40cdb0607476"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/b294846e26ea985e6b1fbdfaf15387daca60c2de",
-                "reference": "b294846e26ea985e6b1fbdfaf15387daca60c2de",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/dee92bfa0782fd5899fe6b295dea40cdb0607476",
+                "reference": "dee92bfa0782fd5899fe6b295dea40cdb0607476",
                 "shasum": ""
             },
             "require": {
@@ -3916,7 +3916,7 @@
                 "issues": "https://github.com/giggsey/libphonenumber-for-php/issues",
                 "source": "https://github.com/giggsey/libphonenumber-for-php"
             },
-            "time": "2023-06-23T07:47:45+00:00"
+            "time": "2023-07-20T10:32:50+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -8176,16 +8176,16 @@
         },
         {
             "name": "odolbeau/phone-number-bundle",
-            "version": "v3.9.1",
+            "version": "v3.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odolbeau/phone-number-bundle.git",
-                "reference": "a4c084d9709a416511234b49d6803d76b64dbc02"
+                "reference": "1564f190551bc275904687facb2af7590d5888d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/a4c084d9709a416511234b49d6803d76b64dbc02",
-                "reference": "a4c084d9709a416511234b49d6803d76b64dbc02",
+                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/1564f190551bc275904687facb2af7590d5888d8",
+                "reference": "1564f190551bc275904687facb2af7590d5888d8",
                 "shasum": ""
             },
             "require": {
@@ -8205,6 +8205,7 @@
                 "phpspec/prophecy-phpunit": "^2.0",
                 "phpunit/phpunit": "^9.5",
                 "symfony/form": "^4.4|^5.3|^6.0",
+                "symfony/phpunit-bridge": "^6.2",
                 "symfony/property-access": "^4.4|^5.3|^6.0",
                 "symfony/serializer": "^4.4|^5.3|^6.0.1",
                 "symfony/twig-bundle": "^4.4|^5.3|^6.0",
@@ -8244,9 +8245,9 @@
             ],
             "support": {
                 "issues": "https://github.com/odolbeau/phone-number-bundle/issues",
-                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.9.1"
+                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.9.2"
             },
-            "time": "2023-01-16T11:06:41+00:00"
+            "time": "2023-07-06T18:41:41+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -14325,16 +14326,16 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v5.4.23",
+            "version": "v5.4.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "962789bbc76c82c266623321ffc24416f574b636"
+                "reference": "4c4cbf57c9623b55e7d19479488bd93fee68450a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/962789bbc76c82c266623321ffc24416f574b636",
-                "reference": "962789bbc76c82c266623321ffc24416f574b636",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/4c4cbf57c9623b55e7d19479488bd93fee68450a",
+                "reference": "4c4cbf57c9623b55e7d19479488bd93fee68450a",
                 "shasum": ""
             },
             "require": {
@@ -14393,7 +14394,7 @@
                 "localization"
             ],
             "support": {
-                "source": "https://github.com/symfony/intl/tree/v5.4.23"
+                "source": "https://github.com/symfony/intl/tree/v5.4.25"
             },
             "funding": [
                 {
@@ -14409,7 +14410,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-13T10:36:25+00:00"
+            "time": "2023-06-19T09:28:43+00:00"
         },
         {
             "name": "symfony/lock",
