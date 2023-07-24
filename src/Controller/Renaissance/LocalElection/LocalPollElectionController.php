@@ -2,11 +2,12 @@
 
 namespace App\Controller\Renaissance\LocalElection;
 
-use App\Entity\Adherent;
+use App\Entity\VotingPlatform\Designation\Designation;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\ElectionManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -14,12 +15,15 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_RENAISSANCE_USER')]
 class LocalPollElectionController extends AbstractController
 {
-    public function __invoke(ElectionManager $electionManager): Response
+    public function __invoke(Request $request, ElectionManager $electionManager): Response
     {
-        /** @var Adherent $adherent */
-        $adherent = $this->getUser();
+        $designations = $electionManager->findActiveDesignations($this->getUser(), [DesignationTypeEnum::LOCAL_POLL]);
 
-        if (!$designations = $electionManager->findActiveDesignations($adherent, [DesignationTypeEnum::LOCAL_POLL])) {
+        if ($designationUuid = $request->query->get('uuid')) {
+            $designations = array_filter($designations, fn (Designation $designation) => $designation->getUuid()->toString() === $designationUuid);
+        }
+
+        if (!$designations) {
             return $this->redirectToRoute('app_renaissance_homepage');
         }
 

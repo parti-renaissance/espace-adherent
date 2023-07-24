@@ -296,7 +296,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
      *
-     * @Assert\Expression("!this.isLocalPollType() or value", message="Vous devez préciser le nombre des sièges à distribuer.")
+     * @Assert\Expression("!this.isLocalElectionType() or value", message="Vous devez préciser le nombre des sièges à distribuer.")
      */
     public ?int $seats = null;
 
@@ -311,7 +311,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @ORM\Column(type="boolean", nullable=true)
      *
-     * @Assert\Expression("!this.isLocalPollType() or !this.majorityPrime or null != value", message="Vous devez préciser le mode d'arrondi pour la prime majoritaire.")
+     * @Assert\Expression("!this.isLocalElectionType() or !this.majorityPrime or null != value", message="Vous devez préciser le mode d'arrondi pour la prime majoritaire.")
      */
     public ?bool $majorityPrimeRoundSupMode = null;
 
@@ -590,7 +590,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      */
     public function hasValidZone(): bool
     {
-        if (\in_array($this->type, [DesignationTypeEnum::EXECUTIVE_OFFICE, DesignationTypeEnum::POLL], true)) {
+        if (\in_array($this->type, [
+            DesignationTypeEnum::EXECUTIVE_OFFICE,
+            DesignationTypeEnum::POLL,
+            DesignationTypeEnum::LOCAL_POLL,
+        ], true)) {
             return true;
         }
 
@@ -602,7 +606,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return
             ($this->isCommitteeTypes() && !empty($this->globalZones))
             || ($this->isCopolType() && !$this->referentTags->isEmpty())
-            || ($this->isLocalElectionTypes() && !$this->zones->isEmpty());
+            || ($this->isLocalElectionType() && !$this->zones->isEmpty());
     }
 
     public function isOngoing(): bool
