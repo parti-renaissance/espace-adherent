@@ -10,7 +10,6 @@ use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Membership\Event\AdherentAccountWasCreatedEvent;
 use App\Membership\Event\UserEvent;
-use App\Membership\MembershipRequest\CoalitionMembershipRequest;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
@@ -58,14 +57,7 @@ class MembershipRequestHandler
 
     public function initialiseMembershipRequest(?string $source): MembershipInterface
     {
-        switch ($source) {
-            case MembershipSourceEnum::JEMENGAGE:
-                return new JeMengageMembershipRequest();
-            case MembershipSourceEnum::COALITIONS:
-                return new CoalitionMembershipRequest();
-        }
-
-        return new PlatformMembershipRequest();
+        return MembershipSourceEnum::JEMENGAGE === $source ? new JeMengageMembershipRequest() : new PlatformMembershipRequest();
     }
 
     public function createAdherent(MembershipInterface $membershipRequest): Adherent

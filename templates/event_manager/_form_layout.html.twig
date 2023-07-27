@@ -31,14 +31,6 @@
             </div>
         {% endif %}
 
-        {% if form.coalition is defined %}
-            <div class="form__row" id="event-coalition-field">
-                {{ form_errors(form.coalition) }}
-                {{ form_label(form.coalition, 'Coalition') }}
-                {{ form_widget(form.coalition, { attr: { class: 'form--full committee_event__form__category' }, placeholder: "Choisissez la coalition" }) }}
-            </div>
-        {% endif %}
-
         <div class="form__row form__date-and-time" id="event-beginat-field">
             {{ form_errors(form.beginAt) }}
             {{ form_label(form.beginAt, 'Début') }}
@@ -150,9 +142,7 @@
         <script type="text/javascript">
             Kernel.onLoad(function() {
                 {{ js.address(form.address) }}
-                {% if form.vars.form_type_class != 'App\\Form\\Coalition\\CoalitionEventType' %}
-                    {{ js.init_event_cropperjs(form.image) }}
-                {% endif %}
+                {{ js.init_event_cropperjs(form.image) }}
                 App.startDateFieldsSynchronisation('{{ form.beginAt.vars.full_name|e('js') }}', '{{ form.finishAt.vars.full_name|e('js') }}')
             });
         </script>

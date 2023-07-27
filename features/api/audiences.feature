@@ -277,29 +277,6 @@ Feature:
     ]
     """
 
-  Scenario: As a logged-in regional headed candidate I can get candidate audiences
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
-    When I send a "GET" request to "/api/v3/audiences?scope=candidate"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    [
-      {
-        "name": "Audience CANDIDATE avec les paramètres nécessaires",
-        "uuid": "6e1a9be9-254d-48f7-a0ab-c26f35cfa783"
-      },
-      {
-        "name": "Audience CANDIDATE avec quelques paramètres",
-        "uuid": "aef77422-0797-40fd-a160-2c5f2ee19260"
-      },
-      {
-        "name": "Audience CANDIDATE, les hommes à Paris",
-        "uuid": "79b2046c-1722-406e-b5b4-4ddcc0827ead"
-      }
-    ]
-    """
-
   Scenario: As a logged-in deputy I can get a candidate audience with all parameters
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c?scope=deputy"

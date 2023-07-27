@@ -5,7 +5,6 @@ namespace App\Admin\Filter;
 use App\Adherent\AdherentRoleEnum;
 use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
-use App\Entity\Coalition\Cause;
 use App\Entity\CommitteeMembership;
 use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccessEnum;
@@ -92,15 +91,6 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                 if (\in_array(AdherentRoleEnum::PROCURATION_MANAGER, $value, true)) {
                     $qb->leftJoin(sprintf('%s.procurationManagedArea', $alias), 'procurationManagedArea');
                     $where->add('procurationManagedArea IS NOT NULL AND procurationManagedArea.codes IS NOT NULL');
-                }
-
-                // Cause author
-                if (\in_array(AdherentRoleEnum::CAUSE_AUTHOR, $value, true)) {
-                    $qb
-                        ->leftJoin(sprintf('%s.causes', $alias), 'cause', Expr\Join::WITH, 'cause.status = :cause_approved')
-                        ->setParameter('cause_approved', Cause::STATUS_APPROVED)
-                    ;
-                    $where->add('cause IS NOT NULL');
                 }
 
                 // Assessor Manager
@@ -245,12 +235,6 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                 if (\in_array(AdherentRoleEnum::THEMATIC_COMMUNITY_CHIEF, $value, true)) {
                     $qb->leftJoin(sprintf('%s.handledThematicCommunities', $alias), 'tc');
                     $where->add('tc IS NOT NULL');
-                }
-
-                // Coalition moderator
-                if (\in_array(AdherentRoleEnum::COALITION_MODERATOR, $value, true)) {
-                    $qb->leftJoin(sprintf('%s.coalitionModeratorRole', $alias), 'coalitionModerator');
-                    $where->add('coalitionModerator IS NOT NULL');
                 }
 
                 if ($where->count()) {

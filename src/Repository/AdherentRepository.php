@@ -891,17 +891,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $result > 0;
     }
 
-    public function createCoalitionSubscribersQueryBuilder(): QueryBuilder
-    {
-        return $this->createQueryBuilder('a')
-            ->where('a.coalitionsCguAccepted = :true OR a.source = :coalitions')
-            ->setParameters([
-                'true' => true,
-                'coalitions' => MembershipSourceEnum::COALITIONS,
-            ])
-        ;
-    }
-
     /** @return Adherent[] */
     public function findAllWithNationalCouncilQualities(): array
     {
@@ -916,50 +905,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ])
             ->getQuery()
             ->getResult()
-        ;
-    }
-
-    public function findEnabledCoalitionUsers(string $search, int $limit = 30): array
-    {
-        $qb = $this->createEnabledCoalitionUserQueryBuilder();
-
-        $values = array_filter(explode(' ', $search));
-        $searchExpression = $qb->expr()->andX();
-
-        foreach ($values as $key => $text) {
-            $searchExpression->add("a.firstName LIKE :value_$key OR a.lastName LIKE :value_$key");
-            $qb->setParameter("value_$key", "$text%");
-        }
-
-        return $qb
-            ->andWhere($searchExpression)
-            ->orderBy('a.firstName', 'ASC')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function findEnabledCoalitionUserByUuid(string $uuid): ?Adherent
-    {
-        return $this->createEnabledCoalitionUserQueryBuilder()
-            ->andWhere('a.uuid = :uuid')
-            ->setParameter('uuid', $uuid)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-
-    public function createEnabledCoalitionUserQueryBuilder(): QueryBuilder
-    {
-        return $this->createQueryBuilder('a')
-            ->where('a.status = :status')
-            ->andWhere('(a.source = :coalitions OR a.adherent = :true)')
-            ->setParameters([
-                'true' => true,
-                'status' => Adherent::ENABLED,
-                'coalitions' => MembershipSourceEnum::COALITIONS,
-            ])
         ;
     }
 

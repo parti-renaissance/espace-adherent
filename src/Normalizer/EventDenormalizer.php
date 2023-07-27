@@ -4,8 +4,6 @@ namespace App\Normalizer;
 
 use ApiPlatform\Metadata\HttpOperation;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CauseEvent;
-use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Event\EventTypeEnum;
@@ -50,15 +48,9 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
 
     private function getEventClassFromType(?string $eventType): ?string
     {
-        switch ($eventType) {
-            case EventTypeEnum::TYPE_COALITION:
-                return CoalitionEvent::class;
-            case EventTypeEnum::TYPE_CAUSE:
-                return CauseEvent::class;
-            case EventTypeEnum::TYPE_COMMITTEE:
-                return CommitteeEvent::class;
-            default:
-                return DefaultEvent::class;
-        }
+        return match ($eventType) {
+            EventTypeEnum::TYPE_COMMITTEE => CommitteeEvent::class,
+            default => DefaultEvent::class,
+        };
     }
 }

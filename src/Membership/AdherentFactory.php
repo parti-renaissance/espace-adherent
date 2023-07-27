@@ -7,7 +7,6 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Membership\MembershipRequest\AvecVousMembershipRequest;
-use App\Membership\MembershipRequest\CoalitionMembershipRequest;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
@@ -33,10 +32,6 @@ class AdherentFactory
             return $this->createFromAvecVousMembershipRequest($membershipRequest);
         }
 
-        if ($membershipRequest instanceof CoalitionMembershipRequest) {
-            return $this->createFromCoalitionMembershipRequest($membershipRequest);
-        }
-
         if ($membershipRequest instanceof JeMengageMembershipRequest) {
             return $this->createFromJeMengageMembershipRequest($membershipRequest);
         }
@@ -46,21 +41,6 @@ class AdherentFactory
         }
 
         throw new \LogicException(sprintf('Missing Adherent factory for membership request "%s"', $membershipRequest::class));
-    }
-
-    private function createFromCoalitionMembershipRequest(CoalitionMembershipRequest $request): Adherent
-    {
-        return Adherent::createLight(
-            Adherent::createUuid($request->getEmailAddress()),
-            $request->getEmailAddress(),
-            $request->firstName,
-            $this->addressFactory->createFromZone($request->zone),
-            $this->encodePassword(Uuid::uuid4()),
-            Adherent::DISABLED,
-            $request->getSource(),
-            $request->coalitionSubscription,
-            $request->causeSubscription
-        );
     }
 
     private function createFromAvecVousMembershipRequest(AvecVousMembershipRequest $request): Adherent

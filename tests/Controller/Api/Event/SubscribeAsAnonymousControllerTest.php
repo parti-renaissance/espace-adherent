@@ -2,8 +2,6 @@
 
 namespace Tests\App\Controller\Api\Event;
 
-use App\DataFixtures\ORM\LoadCauseEventData;
-use App\DataFixtures\ORM\LoadCoalitionEventData;
 use App\DataFixtures\ORM\LoadCommitteeEventData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -71,15 +69,11 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiTestCase
 
     public static function provideEvents(): iterable
     {
-        yield [LoadCoalitionEventData::EVENT_1_UUID, 'CoalitionsEventRegistrationConfirmationMessage'];
-        yield [LoadCauseEventData::EVENT_1_UUID, 'CoalitionsEventRegistrationConfirmationMessage'];
         yield [LoadCommitteeEventData::EVENT_1_UUID, 'EventRegistrationConfirmationMessage'];
     }
 
     public static function provideCancelledEvents(): iterable
     {
-        yield [LoadCoalitionEventData::EVENT_6_UUID, 'CoalitionsEventRegistrationConfirmationMessage'];
-        yield [LoadCauseEventData::EVENT_4_UUID, 'CoalitionsEventRegistrationConfirmationMessage'];
         yield [LoadCommitteeEventData::EVENT_6_UUID, 'EventRegistrationConfirmationMessage'];
     }
 

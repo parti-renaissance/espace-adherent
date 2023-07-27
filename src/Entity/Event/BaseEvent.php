@@ -74,8 +74,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorMap({
  *     EventTypeEnum::TYPE_DEFAULT: "DefaultEvent",
  *     EventTypeEnum::TYPE_COMMITTEE: "CommitteeEvent",
- *     EventTypeEnum::TYPE_COALITION: "CoalitionEvent",
- *     EventTypeEnum::TYPE_CAUSE: "CauseEvent",
  * })
  *
  * @DateRange(
@@ -781,11 +779,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function getReportType(): string
     {
         return ReportType::COMMUNITY_EVENT;
-    }
-
-    public function isCoalitionsEvent(): bool
-    {
-        return false;
     }
 
     public function needNotifyForRegistration(): bool

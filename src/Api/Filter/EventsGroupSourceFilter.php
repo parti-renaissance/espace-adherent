@@ -13,10 +13,8 @@ final class EventsGroupSourceFilter extends AbstractFilter
 {
     public const PROPERTY_NAME = 'group_source';
     private const GROUP_SOURCE_EN_MARCHE = 'en_marche';
-    private const GROUP_SOURCE_COALITIONS = 'coalitions';
     private const GROUP_SOURCES = [
         self::GROUP_SOURCE_EN_MARCHE,
-        self::GROUP_SOURCE_COALITIONS,
     ];
 
     protected function filterProperty(
@@ -39,10 +37,7 @@ final class EventsGroupSourceFilter extends AbstractFilter
 
         $alias = $queryBuilder->getRootAliases()[0];
         $queryBuilder
-            ->andWhere(self::GROUP_SOURCE_COALITIONS === $value
-                ? "$alias INSTANCE OF :types"
-                : "$alias NOT INSTANCE OF :types"
-            )
+            ->andWhere("$alias NOT INSTANCE OF :types")
             ->setParameter('types', [EventTypeEnum::TYPE_CAUSE, EventTypeEnum::TYPE_COALITION])
         ;
     }

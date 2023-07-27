@@ -38,7 +38,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE: "LegislativeCandidateAdherentMessage",
  *     AdherentMessageTypeEnum::CANDIDATE: "CandidateAdherentMessage",
  *     AdherentMessageTypeEnum::CANDIDATE_JECOUTE: "CandidateJecouteMessage",
- *     AdherentMessageTypeEnum::COALITIONS: "CoalitionsMessage",
  *     AdherentMessageTypeEnum::CORRESPONDENT: "CorrespondentAdherentMessage",
  *     AdherentMessageTypeEnum::REGIONAL_COORDINATOR: "RegionalCoordinatorAdherentMessage",
  *     AdherentMessageTypeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY: "PresidentDepartmentalAssemblyAdherentMessage",

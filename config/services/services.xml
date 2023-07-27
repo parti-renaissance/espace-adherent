@@ -75,16 +75,10 @@
         <service id="App\Api\Doctrine\JecouteNewsExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Api\Doctrine\CoalitionExtension">
-            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
-        </service>
         <service id="App\Api\Doctrine\BaseEventExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
         <service id="App\Api\Doctrine\GeoZoneExtension">
-            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
-        </service>
-        <service id="App\Api\Doctrine\CauseExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
         <service id="App\Api\Doctrine\AuthoredItemsCollectionExtension">
@@ -124,7 +118,6 @@
         <service id="app.mailchimp.request_builders_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
             <argument type="collection">
                 <argument key="App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" type="service" id="App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" />
-                <argument key="App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder" type="service" id="App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder" />
                 <argument key="App\Mailchimp\Synchronisation\RequestBuilder" type="service" id="App\Mailchimp\Synchronisation\RequestBuilder" />
                 <argument key="App\Mailchimp\Campaign\CampaignRequestBuilder" type="service" id="App\Mailchimp\Campaign\CampaignRequestBuilder" />
                 <argument key="App\Mailchimp\Campaign\CampaignContentRequestBuilder" type="service" id="App\Mailchimp\Campaign\CampaignContentRequestBuilder" />
@@ -135,7 +128,6 @@
 
         <service id="App\Mailchimp\Synchronisation\RequestBuilder" shared="false"/>
         <service id="App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" shared="false"/>
-        <service id="App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder" shared="false"/>
 
         <!-- Swagger -->
         <service id="App\Swagger\SwaggerDecorator"

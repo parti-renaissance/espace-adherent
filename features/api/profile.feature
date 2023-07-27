@@ -9,8 +9,9 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can retrieve and update my profile information
-    Given I am logged with "carl999@example.fr" via OAuth client "Coalition App" with scopes "read:profile write:profile"
+    Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
     When I send a "GET" request to "/api/v3/profile/me"
+    And print last JSON response
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -71,9 +72,6 @@ Feature:
             }
         ],
         "interests": [],
-        "coalition_subscription": false,
-        "cause_subscription": false,
-        "coalitions_cgu_accepted": false,
         "adherent": true
     }
     """
@@ -526,44 +524,6 @@ Feature:
     }
     """
 
-    # Update coalition & cause subscriptions
-    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
-    """
-    {
-      "coalition_subscription": true,
-      "cause_subscription": true
-    }
-    """
-    Then the response status code should be 200
-    Then I send a "GET" request to "/api/v3/profile/me"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be a superset of:
-    """
-    {
-      "coalition_subscription": true,
-      "cause_subscription": true
-    }
-    """
-
-    # Update coalitions cgu acceptation
-    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
-    """
-    {
-      "coalitions_cgu_accepted": true
-    }
-    """
-    Then the response status code should be 200
-    Then I send a "GET" request to "/api/v3/profile/me"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be a superset of:
-    """
-    {
-      "coalitions_cgu_accepted": true
-    }
-    """
-
     # Update phone number
     When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
     """
@@ -784,9 +744,6 @@ Feature:
     "job": null,
     "activity_area": null,
     "nationality": null,
-    "coalition_subscription": false,
-    "cause_subscription": false,
-    "coalitions_cgu_accepted": false,
     "post_address": {
       "address": "",
       "postal_code": "8057",

@@ -122,9 +122,6 @@ adherent_profile.nationality.not_blank: La nationalité est requise.
 adherent_profile.email.not_blank: L'adresse email est requise.
 adherent_profile.mandates.invalid_choice: Une ou plusieurs des valeurs des mandats sont invalides. Merci de contacter le support.
 adherent_profile.subscription_types.invalid_choice: Une ou plusieurs des valeurs de la suscription aux notifications sont invalides. Merci de contacter le support.
-adherent_profile.coalition_subscription.invalid: La valeur de la suscription à l'actualité des coalitions doit être booléenne.
-adherent_profile.cause_subscription.invalid: La valeur de la suscription à l'actualité des causes doit être booléenne.
-adherent_profile.coalitions_cgu_accepted.invalid: La valeur des CGU de la plateforme pourunecause.fr doit être booléenne.
 
 #
 # Committee
@@ -494,15 +491,6 @@ file.validation.filename_length: Le nom du document (avec l'extension) ne peut p
 file.validation.file_or_link: Vous pouvez ajouter soit un fichier, soit un lien.
 file.validation.name.not_unique: Ce nom de dossier est déjà utilisé.
 
-#
-# Coalition / Cause
-#
-cause_follower.adherent.exists: L'utilisateur avec cette adresse e-mail existe déjà. Veuillez vous connecter pour soutenir la cause.
-cause_follower.exists: Vous avez déjà soutenu cette cause.
-coalition.youtubeid_syntax: La syntaxe est incorrecte, l'ID de la vidéo Youtube ne peut contenir que des chiffres, des lettres, et les caractères "_" et "-".
-coalition_event.coalition.invalid: L'événement peut être lié qu'à une seule coalition.
-cause_event.cause.invalid: L'événement peut être lié qu'à une seule cause.
-coalition.user.invalid: L'utilisateur n'est pas un utilisateur Coalitions actif.
 
 The value {{ value }} is not valid.: Cette valeur n'est pas valide.
 

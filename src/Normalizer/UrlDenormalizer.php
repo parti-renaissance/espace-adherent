@@ -2,7 +2,6 @@
 
 namespace App\Normalizer;
 
-use App\Entity\Coalition\QuickAction;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Jecoute\Riposte;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -40,7 +39,6 @@ class UrlDenormalizer implements DenormalizerInterface, DenormalizerAwareInterfa
         return !isset($context[self::ALREADY_CALLED])
             && (
                 is_a($type, BaseEvent::class, true)
-                || QuickAction::class === $type
                 || Riposte::class === $type
             );
     }

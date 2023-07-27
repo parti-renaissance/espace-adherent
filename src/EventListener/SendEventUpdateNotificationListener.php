@@ -3,15 +3,12 @@
 namespace App\EventListener;
 
 use App\AppCodeEnum;
-use App\Coalition\CoalitionUrlGenerator;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\EventRegistration;
 use App\Entity\PostAddress;
 use App\Event\EventEvent;
 use App\Events;
 use App\Mailer\MailerService;
-use App\Mailer\Message\Coalition\CoalitionsEventUpdateMessage;
 use App\Mailer\Message\EventUpdateMessage;
 use App\Mailer\Message\JeMengage\JeMengageEventUpdateMessage;
 use App\Mailer\Message\Message;
@@ -34,18 +31,15 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
     private $registrationRepository;
     private $mailer;
     private $urlGenerator;
-    private $coalitionUrlGenerator;
 
     public function __construct(
         EventRegistrationRepository $registrationRepository,
         MailerService $transactionalMailer,
-        UrlGeneratorInterface $urlGenerator,
-        CoalitionUrlGenerator $coalitionUrlGenerator
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->registrationRepository = $registrationRepository;
         $this->mailer = $transactionalMailer;
         $this->urlGenerator = $urlGenerator;
-        $this->coalitionUrlGenerator = $coalitionUrlGenerator;
     }
 
     public static function getSubscribedEvents(): array
@@ -119,16 +113,6 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
 
     private function createMessage(BaseEvent $event, array $recipients, ?string $appCode): Message
     {
-        if ($event->isCoalitionsEvent()) {
-            return CoalitionsEventUpdateMessage::create(
-                $recipients,
-                $event,
-                $event instanceof CoalitionEvent
-                    ? $this->coalitionUrlGenerator->generateCoalitionEventLink($event)
-                    : $this->coalitionUrlGenerator->generateCauseEventLink($event),
-            );
-        }
-
         if (AppCodeEnum::isJeMengage($appCode)) {
             return JeMengageEventUpdateMessage::create(
                 $recipients,

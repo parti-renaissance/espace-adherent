@@ -14,7 +14,6 @@ use App\Entity\AdherentResetPasswordToken;
 use App\Entity\AdherentZoneBasedRole;
 use App\Entity\AssessorRoleAssociation;
 use App\Entity\BoardMember\BoardMember;
-use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTeamMember;
@@ -157,7 +156,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent3->addCharter(new CommitteeHostCharter());
         $adherent3->addCharter(new PhoningCampaignCharter());
         $adherent3->addCharter(new PapCampaignCharter());
-        $adherent3->setCoalitionModeratorRole(new CoalitionModeratorRoleAssociation());
         $adherent3->setPapUserRole(true);
         $adherent3->certify();
         $this->addReference('adherent-3', $adherent3);
@@ -211,7 +209,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::CANDIDATE_EMAIL);
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::REFERENT_EMAIL);
         $adherent5->addSubscriptionType($this->getReference('st-militant_action_sms'));
-        $adherent5->setCoalitionsCguAccepted(true);
         $adherent5->addReferentTag($this->getReference('referent_tag_92'));
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_92-4'));
@@ -238,8 +235,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-01-16 18:33:22',
         ]);
         $adherent6->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent6->setCoalitionSubscription(true);
-        $adherent6->setCoalitionsCguAccepted(true);
         $adherent6->addTag($this->getReference('adherent_tag_at001'));
         $adherent6->addTag($this->getReference('adherent_tag_at002'));
         $adherent6->addTag($this->getReference('adherent_tag_at003'));
