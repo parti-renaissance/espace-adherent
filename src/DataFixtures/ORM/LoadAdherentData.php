@@ -558,7 +558,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             -1.6743,
             48.112
         );
-        $referent75and77->setPrintPrivilege(true);
         $referent75and77->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent75and77->addReferentTag($this->getReference('referent_tag_75'));
         $referent75and77->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));

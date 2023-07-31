@@ -477,10 +477,6 @@ class AdherentAdmin extends AbstractAdmin
                         'help' => "Laisser vide si l'adhérent n'est pas responsable des questionnaires. Choisissez un département, un arrondissement de Paris ou une circonscription des Français établis hors de France",
                         'model_manager' => $this->getModelManager(),
                     ])
-                    ->add('printPrivilege', null, [
-                        'label' => 'Accès à "La maison des impressions"',
-                        'required' => false,
-                    ])
                     ->add('nationalRole', null, [
                         'label' => 'Rôle National',
                         'required' => false,

@@ -132,12 +132,6 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                     $where->add(sprintf('%s.adherent = 0', $alias));
                 }
 
-                // Print privilege
-                if (\in_array(AdherentRoleEnum::PRINT_PRIVILEGE, $value, true)) {
-                    $where->add("$alias.printPrivilege = :printPrivilege");
-                    $qb->setParameter('printPrivilege', true);
-                }
-
                 // National Role
                 if (\in_array(AdherentRoleEnum::ROLE_NATIONAL, $value, true)) {
                     $where->add("$alias.nationalRole = :nationalRole");

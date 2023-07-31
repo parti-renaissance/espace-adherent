@@ -43,9 +43,6 @@ Feature:
             "75",
             "77"
           ]
-        },
-        {
-          "label": "ROLE_PRINT_PRIVILEGE"
         }
       ],
       "emailAddress": "referent-75-77@en-marche-dev.fr",
