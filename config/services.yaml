@@ -50,7 +50,7 @@ services:
             $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
             $membershipProcessWorkflow: '@state_machine.membership_request'
             $donationProcessWorkflow: '@state_machine.donation_request'
-            $electedRepresentativeContributionProcessWorkflow: '@state_machine.elected_representative_contribution_request'
+            $electedRepresentativeContributionProcessWorkflow: '@state_machine.contribution_request'
             $votingProcessWorkflow: '@state_machine.voting_process'
             $votingPlatformCache: !service
                 class: Symfony\Component\Cache\Psr16Cache
