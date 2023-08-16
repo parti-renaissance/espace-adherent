@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
     app:
         build:
@@ -61,6 +59,9 @@ services:
     selenium:
         image: selenium/standalone-chrome:90.0
         shm_size: 2g
+
+networks:
+    default:
 
 volumes:
     caddy_data:

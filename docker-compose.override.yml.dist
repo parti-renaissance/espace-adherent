@@ -1,5 +1,3 @@
-version: "3.9"
-
 # You can connect other docker app like api.en-marche.fr by setting up an external network.
 # First, create that network by running `docker network create enmarche`.
 # Then you can uncomment this section and specify networks required by each
