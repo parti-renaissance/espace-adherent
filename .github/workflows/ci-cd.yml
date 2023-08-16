@@ -366,6 +366,8 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
             environment: staging
+            ignore_missing: true
+            ignore_empty: true
 
       - uses: google-github-actions/auth@v1
         with:
