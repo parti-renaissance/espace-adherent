@@ -40,8 +40,11 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="adherentMandates")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
+     * @Assert\NotBlank
+     *
      * @Groups({
-     *     "elected_mandate_write"
+     *     "elected_mandate_write",
+     *     "elected_mandate_read",
      * })
      */
     protected $adherent;
@@ -167,7 +170,7 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
         return $this->beginAt;
     }
 
-    public function setBeginAt(\DateTime $beginAt): void
+    public function setBeginAt(?\DateTime $beginAt): void
     {
         $this->beginAt = $beginAt;
     }

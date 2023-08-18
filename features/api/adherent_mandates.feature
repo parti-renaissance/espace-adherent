@@ -47,6 +47,7 @@ Feature:
                     "name": "Hauts-de-Seine"
                 },
                 "uuid": "d91df367-14df-474d-ac9a-8e2176657f71",
+                "adherent": {"uuid": "@uuid@"},
                 "begin_at": "2019-01-11T00:00:00+01:00",
                 "finish_at": null
             }
@@ -80,6 +81,7 @@ Feature:
           "name": "Hauts-de-Seine"
       },
       "uuid": "d91df367-14df-474d-ac9a-8e2176657f71",
+      "adherent": {"uuid": "@uuid@"},
       "begin_at": "2019-01-11T00:00:00+01:00",
       "finish_at": "2023-07-18T00:00:00+02:00"
     }
@@ -123,6 +125,7 @@ Feature:
           "name": "Hauts-de-Seine"
       },
       "uuid": "@uuid@",
+      "adherent": {"uuid": "@uuid@"},
       "begin_at": "2023-07-18T00:00:00+02:00",
       "finish_at": null
     }
