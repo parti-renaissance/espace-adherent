@@ -182,9 +182,13 @@ app_admin:
 # En Marche app
 #
 lexik_paybox:
-    host:     "%renaissance_host%"
+    host:     "{app_domain}"
     resource: "@LexikPayboxBundle/Resources/config/routing.yml"
     prefix:   "/don"
+    defaults:
+        app_domain: "%renaissance_host%"
+    requirements:
+        app_domain: "%app_host%|%renaissance_host%"
 
 # This route must be loaded first to prevent another route to match his path
 map_events:
