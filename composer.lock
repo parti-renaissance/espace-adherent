@@ -10441,16 +10441,16 @@
         },
         {
             "name": "scheb/2fa-bundle",
-            "version": "v6.8.0",
+            "version": "v6.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-bundle.git",
-                "reference": "4f8e9e87f90cf50c72b0857ea2b88453cf1d2446"
+                "reference": "98fee6bf6ce17514d8f3772d4c7f86e6f7595a85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/4f8e9e87f90cf50c72b0857ea2b88453cf1d2446",
-                "reference": "4f8e9e87f90cf50c72b0857ea2b88453cf1d2446",
+                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/98fee6bf6ce17514d8f3772d4c7f86e6f7595a85",
+                "reference": "98fee6bf6ce17514d8f3772d4c7f86e6f7595a85",
                 "shasum": ""
             },
             "require": {
@@ -10502,13 +10502,13 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-bundle/tree/v6.8.0"
+                "source": "https://github.com/scheb/2fa-bundle/tree/v6.9.0"
             },
-            "time": "2023-01-26T18:47:22+00:00"
+            "time": "2023-08-05T11:13:58+00:00"
         },
         {
             "name": "scheb/2fa-google-authenticator",
-            "version": "v6.8.0",
+            "version": "v6.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-google-authenticator.git",
@@ -10553,7 +10553,7 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v6.8.0"
+                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v6.9.0"
             },
             "time": "2022-12-10T15:20:09+00:00"
         },
@@ -11919,16 +11919,16 @@
         },
         {
             "name": "spomky-labs/otphp",
-            "version": "11.1.0",
+            "version": "11.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/otphp.git",
-                "reference": "4849ac1aa560bfc56c0d1534b0d72532da4665ab"
+                "reference": "9a1569038bb1c8e98040b14b8bcbba54f25e7795"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/otphp/zipball/4849ac1aa560bfc56c0d1534b0d72532da4665ab",
-                "reference": "4849ac1aa560bfc56c0d1534b0d72532da4665ab",
+                "url": "https://api.github.com/repos/Spomky-Labs/otphp/zipball/9a1569038bb1c8e98040b14b8bcbba54f25e7795",
+                "reference": "9a1569038bb1c8e98040b14b8bcbba54f25e7795",
                 "shasum": ""
             },
             "require": {
@@ -11946,7 +11946,7 @@
                 "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^9.5.26",
                 "qossmic/deptrac-shim": "^1.0",
-                "rector/rector": "^0.14",
+                "rector/rector": "^0.15",
                 "symfony/phpunit-bridge": "^6.1",
                 "symplify/easy-coding-standard": "^11.0"
             },
@@ -11983,7 +11983,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Spomky-Labs/otphp/issues",
-                "source": "https://github.com/Spomky-Labs/otphp/tree/11.1.0"
+                "source": "https://github.com/Spomky-Labs/otphp/tree/11.2.0"
             },
             "funding": [
                 {
@@ -11995,7 +11995,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-11-11T12:57:17+00:00"
+            "time": "2023-03-16T19:16:25+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
