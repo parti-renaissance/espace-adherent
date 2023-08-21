@@ -743,7 +743,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
 
     public function getExposedRouteName(): string
     {
-        return 'app_committee_event_show';
+        return 'app_renaissance_event_show';
     }
 
     public function getExposedRouteParams(): array

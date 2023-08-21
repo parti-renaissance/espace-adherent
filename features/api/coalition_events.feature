@@ -63,7 +63,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-1"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-1/afficher"
         },
         {
           "coalition": {
@@ -105,7 +105,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-2"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-2/afficher"
         },
         {
           "coalition": {
@@ -147,7 +147,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-5"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-5/afficher"
         },
         {
           "coalition": {
@@ -189,7 +189,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-3"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-3/afficher"
         },
         {
           "coalition": {
@@ -231,7 +231,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-4"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-4/afficher"
         },
         {
           "coalition": {
@@ -273,7 +273,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-6"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-6/afficher"
         },
         {
           "cause": {
@@ -320,7 +320,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-1-de-la-cause-culturelle-1"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-1-de-la-cause-culturelle-1/afficher"
         },
         {
           "cause": {
@@ -367,7 +367,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-2-de-la-cause-culturelle-1"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-2-de-la-cause-culturelle-1/afficher"
         },
         {
           "cause": {
@@ -414,7 +414,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-3-de-la-cause-culturelle-1"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-3-de-la-cause-culturelle-1/afficher"
         },
         {
           "coalition": {
@@ -456,7 +456,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-passe"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-passe/afficher"
         },
         {
           "cause": {
@@ -503,7 +503,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-passe-de-la-cause"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-passe-de-la-cause/afficher"
         }
       ]
     }
@@ -582,7 +582,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-6"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-6/afficher"
         },
         {
           "cause": {
@@ -629,7 +629,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-1-de-la-cause-culturelle-1"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-1-de-la-cause-culturelle-1/afficher"
         },
         {
           "cause": {
@@ -676,7 +676,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-2-de-la-cause-culturelle-1"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-2-de-la-cause-culturelle-1/afficher"
         },
         {
           "cause": {
@@ -723,7 +723,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-3-de-la-cause-culturelle-1"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-3-de-la-cause-culturelle-1/afficher"
         },
         {
           "coalition": {
@@ -765,7 +765,7 @@ Feature:
           "visio_url": null,
           "mode": null,
           "image_url": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-passe"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-passe/afficher"
         }
       ]
     }
@@ -890,7 +890,7 @@ Feature:
       "visio_url": "https://visio.fr",
       "mode": "online",
       "image_url": null,
-      "link": "http://test.enmarche.code/evenements/@string@-my-coalition-event"
+      "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-my-coalition-event/afficher"
     }
     """
     And I should have 0 email
@@ -987,7 +987,7 @@ Feature:
       "visio_url": "http://visio.fr",
       "mode": "online",
       "image_url": null,
-      "link": "http://test.enmarche.code/evenements/@string@-nouvel-objectif"
+      "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-nouvel-objectif/afficher"
     }
     """
 
@@ -1114,7 +1114,7 @@ Feature:
       "visio_url": "https://visio.fr",
       "mode": "online",
       "image_url": null,
-      "link": "http://test.enmarche.code/evenements/@string@-my-cause-event"
+      "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-my-cause-event/afficher"
     }
     """
     And I should have 1 email
@@ -1343,7 +1343,7 @@ Feature:
       "visio_url": "http://visio.fr",
       "mode": "online",
       "image_url": null,
-      "link": "http://test.enmarche.code/evenements/@string@-nouvel-objectif"
+      "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-nouvel-objectif/afficher"
     }
     """
     And I should have 1 email
@@ -1567,7 +1567,7 @@ Feature:
           "visio_url": null,
           "image_url": null,
           "mode": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-1-de-la-cause-culturelle-1"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-1-de-la-cause-culturelle-1/afficher"
         },
         {
           "cause": {
@@ -1614,7 +1614,7 @@ Feature:
           "visio_url": null,
           "image_url": null,
           "mode": null,
-          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-2-de-la-cause-culturelle-1"
+          "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-2-de-la-cause-culturelle-1/afficher"
         }
       ]
     }
@@ -1666,6 +1666,6 @@ Feature:
       "visio_url": null,
       "mode": null,
       "image_url": null,
-      "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-annule"
+      "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-culturel-annule/afficher"
     }
     """

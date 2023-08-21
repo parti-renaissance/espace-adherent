@@ -910,7 +910,7 @@ Feature:
         "visio_url": null,
         "mode": null,
         "image_url": null,
-        "link": "http://test.enmarche.code/evenements/@string@-evenement-de-la-categorie-masquee",
+        "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
         "user_registered_at": null
     }
     """
@@ -965,7 +965,7 @@ Feature:
         "visio_url": null,
         "mode": null,
         "image_url": null,
-        "link": "http://test.enmarche.code/evenements/@string@-evenement-de-la-categorie-masquee",
+        "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
         "user_registered_at": null
     }
     """
@@ -1132,7 +1132,7 @@ Feature:
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
         "image_url": null,
-        "link": "http://test.enmarche.code/evenements/2023-01-29-nouveau-evenement"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
     }
     """
 
@@ -1196,7 +1196,7 @@ Feature:
         "visio_url": "http://visio.fr",
         "mode": "online",
         "image_url": null,
-        "link": "http://test.enmarche.code/evenements/2022-12-12-nouvel-evenement-online"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher"
     }
     """
     And I should have 1 email
@@ -1530,7 +1530,7 @@ Feature:
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
         "image_url": null,
-        "link": "http://test.enmarche.code/evenements/2023-01-29-nouveau-evenement"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
     }
     """
     Examples:
@@ -1644,7 +1644,7 @@ Feature:
         "visio_url": "http://visio.fr",
         "mode": "online",
         "image_url": null,
-        "link": "http://test.enmarche.code/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives/afficher"
     }
     """
     Examples:
