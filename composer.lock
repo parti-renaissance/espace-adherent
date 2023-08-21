@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e029766dcfeb651a4b0cb0dce73dd0f8",
+    "content-hash": "7042ccea187027d380109488c8bf4ec2",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -11597,32 +11597,31 @@
         },
         {
             "name": "sonata-project/exporter",
-            "version": "3.1.1",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/exporter.git",
-                "reference": "7a6b1dc85efba95461f21fa24d135c71a83def6e"
+                "reference": "2a8f10f6dcc302075969d21bf838e3e21628c00c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/7a6b1dc85efba95461f21fa24d135c71a83def6e",
-                "reference": "7a6b1dc85efba95461f21fa24d135c71a83def6e",
+                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/2a8f10f6dcc302075969d21bf838e3e21628c00c",
+                "reference": "2a8f10f6dcc302075969d21bf838e3e21628c00c",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.0"
             },
             "conflict": {
-                "doctrine/mongodb-odm": "<2.0",
-                "doctrine/orm": "<2.8",
+                "doctrine/mongodb-odm": "<2.3",
+                "doctrine/orm": "<2.14",
                 "phpoffice/phpspreadsheet": "<1.23",
                 "symfony/config": "<5.4"
             },
             "require-dev": {
-                "doctrine/annotations": "^1.13",
                 "doctrine/dbal": "^3.1",
-                "doctrine/mongodb-odm": "^2.0",
-                "doctrine/orm": "^2.9",
+                "doctrine/mongodb-odm": "^2.3",
+                "doctrine/orm": "^2.14",
                 "friendsofphp/php-cs-fixer": "^3.4",
                 "matthiasnoback/symfony-config-test": "^4.2",
                 "matthiasnoback/symfony-dependency-injection-test": "^4.0",
@@ -11633,17 +11632,17 @@
                 "phpstan/phpstan-strict-rules": "^1.0",
                 "phpstan/phpstan-symfony": "^1.0",
                 "phpunit/phpunit": "^9.5",
-                "psalm/plugin-phpunit": "^0.16",
-                "psalm/plugin-symfony": "^3.0",
-                "rector/rector": "^0.15",
-                "symfony/config": "^5.4 || ^6.0",
-                "symfony/dependency-injection": "^5.4 || ^6.0",
-                "symfony/http-foundation": "^5.4 || ^6.0",
-                "symfony/http-kernel": "^5.4 || ^6.0",
-                "symfony/phpunit-bridge": "^6.1",
-                "symfony/property-access": "^5.4 || ^6.0",
-                "symfony/routing": "^5.4 || ^6.0",
-                "vimeo/psalm": "^4.9.2"
+                "psalm/plugin-phpunit": "^0.18",
+                "psalm/plugin-symfony": "^5.0",
+                "rector/rector": "^0.17",
+                "symfony/config": "^5.4 || ^6.2",
+                "symfony/dependency-injection": "^5.4 || ^6.2",
+                "symfony/http-foundation": "^5.4 || ^6.2",
+                "symfony/http-kernel": "^5.4 || ^6.2",
+                "symfony/phpunit-bridge": "^6.2",
+                "symfony/property-access": "^5.4 || ^6.2",
+                "symfony/routing": "^5.4 || ^6.2",
+                "vimeo/psalm": "^5.0"
             },
             "suggest": {
                 "phpoffice/phpspreadsheet": "To be able to export the data in XLSX",
@@ -11682,7 +11681,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/exporter/issues",
-                "source": "https://github.com/sonata-project/exporter/tree/3.1.1"
+                "source": "https://github.com/sonata-project/exporter/tree/3.2.0"
             },
             "funding": [
                 {
@@ -11702,7 +11701,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-02T20:12:43+00:00"
+            "time": "2023-07-22T13:34:14+00:00"
         },
         {
             "name": "sonata-project/form-extensions",
