@@ -48,7 +48,7 @@ RUN set -eux; \
         bcmath \
         pdo \
         pdo_mysql \
-        amqp \
+        amqp-1.11.0 \
         zip \
         sockets \
     ;
