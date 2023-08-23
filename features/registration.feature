@@ -62,7 +62,7 @@ Feature:
               },
               {
                 "name": "activation_link",
-                "content": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
+                "content": "http:\/\/enmarche.code\/inscription\/finaliser\/@string@\/@string@"
               }
             ]
           }
@@ -133,7 +133,7 @@ Feature:
               },
               {
                 "name": "activation_link",
-                "content": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
+                "content": "http:\/\/enmarche.code\/inscription\/finaliser\/@string@\/@string@"
               }
             ]
           }
@@ -328,7 +328,7 @@ Feature:
               },
               {
                 "name": "activation_link",
-                "content": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
+                "content": "http:\/\/enmarche.code\/inscription\/finaliser\/@string@\/@string@"
               }
             ]
           }

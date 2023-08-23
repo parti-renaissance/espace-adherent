@@ -18,7 +18,7 @@ Feature:
         "followers_count": 4,
         "cause_followers_count": 5,
         "youtube_id": "yOuTUbe_",
-        "image_url": "http://test.enmarche.code/assets/images/coalitions/5cd98b474069115622f2f5816014d204.png"
+        "image_url": "http://enmarche.code/assets/images/coalitions/5cd98b474069115622f2f5816014d204.png"
       },
       {
         "name": "Démocratie",
@@ -198,7 +198,7 @@ Feature:
       "followers_count": 4,
       "cause_followers_count": 5,
       "youtube_id": "yOuTUbe_",
-      "image_url": "http://test.enmarche.code/assets/images/coalitions/5cd98b474069115622f2f5816014d204.png"
+      "image_url": "http://enmarche.code/assets/images/coalitions/5cd98b474069115622f2f5816014d204.png"
     }
     """
 
