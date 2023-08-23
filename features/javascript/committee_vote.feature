@@ -54,7 +54,7 @@ Feature:
                 },
                 {
                     "name": "committee_url",
-                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-rouen?anonymous_authentication_intention=\/connexion#committee-toggle-candidacy"
+                    "content": "http:\/\/enmarche.code\/comites\/en-marche-comite-de-rouen?anonymous_authentication_intention=\/connexion#committee-toggle-candidacy"
                 }
             ],
             "from_name": "La R\u00e9publique En Marche !",
@@ -103,7 +103,7 @@ Feature:
                 },
                 {
                     "name": "committee_url",
-                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-rouen"
+                    "content": "http:\/\/enmarche.code\/comites\/en-marche-comite-de-rouen"
                 }
             ],
             "from_name": "La R\u00e9publique En Marche !",
@@ -168,7 +168,7 @@ Feature:
                 },
                 {
                     "name": "committee_url",
-                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-berlin"
+                    "content": "http:\/\/enmarche.code\/comites\/en-marche-comite-de-berlin"
                 }
             ],
             "from_name": "La R\u00e9publique En Marche !",
@@ -217,7 +217,7 @@ Feature:
                 },
                 {
                     "name": "committee_url",
-                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-berlin"
+                    "content": "http:\/\/enmarche.code\/comites\/en-marche-comite-de-berlin"
                 }
             ],
             "from_name": "La R\u00e9publique En Marche !",

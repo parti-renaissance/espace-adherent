@@ -1,5 +1,3 @@
-version: "3.9"
-
 # You can connect other docker app like api.en-marche.fr by setting up an external network.
 # First, create that network by running `docker network create enmarche`.
 # Then you can uncomment this section and specify networks required by each
@@ -26,16 +24,14 @@ version: "3.9"
 #        networks:
 #            default:
 #                aliases:
-#                    - test.enmarche.code
 #                    - enmarche.code
 #            enmarche:
 #                aliases:
-#                    - test.enmarche.code
 #                    - enmarche.code
 #        volumes:
 #            - "~/.composer:/home/enmarche/.composer"
 #        environment:
-#            - VIRTUAL_HOST=enmarche.code,test.enmarche.code,legislatives.enmarche.code,m.enmarche.code,nous-reussirons.enmarche.code,qr.avecvous.code
+#            - VIRTUAL_HOST=enmarche.code,legislatives.enmarche.code,m.enmarche.code,nous-reussirons.enmarche.code,qr.avecvous.code
 #            - VIRTUAL_PORT=80
 
 #    rabbitmq:

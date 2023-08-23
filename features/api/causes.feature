@@ -52,7 +52,7 @@ Feature:
             "last_name": "Mirabeau",
             "last_name_initial": "M."
           },
-          "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
+          "image_url": "http://enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
           "name": "Cause pour l'éducation",
@@ -72,7 +72,7 @@ Feature:
             "last_name": "Picard",
             "last_name_initial": "P."
           },
-          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+          "image_url": "http://enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         }
       ]
     }
@@ -115,7 +115,7 @@ Feature:
             "last_name_initial": "M."
           },
           "followers_count": 0,
-          "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
+          "image_url": "http://enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
         },
         {
           "name": "Cause pour la culture 3",
@@ -178,7 +178,7 @@ Feature:
             "last_name": "Mirabeau",
             "last_name_initial": "M."
           },
-          "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
+          "image_url": "http://enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
           "name": "Cause pour l'éducation",
@@ -198,7 +198,7 @@ Feature:
             "last_name": "Picard",
             "last_name_initial": "P."
           },
-          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+          "image_url": "http://enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         },
         {
           "name": "Cause pour la culture 2",
@@ -222,7 +222,7 @@ Feature:
             "last_name": "Mirabeau",
             "last_name_initial": "M."
           },
-          "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
+          "image_url": "http://enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
         },
         {
           "name": "Cause pour la culture 3",
@@ -301,7 +301,7 @@ Feature:
             "last_name_initial": "P."
           },
           "followers_count": 0,
-          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+          "image_url": "http://enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         }
       ]
     }
@@ -342,7 +342,7 @@ Feature:
             "last_name": "Mirabeau",
             "last_name_initial": "M."
           },
-          "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
+          "image_url": "http://enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
           "name": "Cause pour l'éducation",
@@ -362,7 +362,7 @@ Feature:
             "last_name": "Picard",
             "last_name_initial": "P."
           },
-          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+          "image_url": "http://enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         }
       ]
     }
@@ -392,7 +392,7 @@ Feature:
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
         "followers_count": 0,
-        "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+        "image_url": "http://enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
       }
     """
 
@@ -420,7 +420,7 @@ Feature:
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
         "followers_count": 0,
-        "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+        "image_url": "http://enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
       }
     """
 
@@ -469,7 +469,7 @@ Feature:
             "last_name_initial": "M."
           },
           "followers_count": 5,
-          "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
+          "image_url": "http://enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
           "name": "Cause pour la culture 2",
@@ -493,7 +493,7 @@ Feature:
             "last_name_initial": "M."
           },
           "followers_count": 0,
-          "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
+          "image_url": "http://enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
         }
       ]
     }
@@ -1027,7 +1027,7 @@ Feature:
             "last_name": "Picard",
             "last_name_initial": "P."
           },
-          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+          "image_url": "http://enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         },
         {
           "name": "Cause pour la justice",
@@ -1088,7 +1088,7 @@ Feature:
             "last_name": "Mirabeau",
             "last_name_initial": "M."
           },
-          "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
+          "image_url": "http://enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
           "name": "Cause pour la culture 2",
@@ -1112,7 +1112,7 @@ Feature:
             "last_name": "Mirabeau",
             "last_name_initial": "M."
           },
-          "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
+          "image_url": "http://enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
         }
       ]
     }
@@ -1231,7 +1231,7 @@ Feature:
           "followers_count": 0,
           "slug": "cause-pour-leducation",
           "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
-          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+          "image_url": "http://enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         },
         {
           "name": "Cause pour la justice",
@@ -1275,7 +1275,7 @@ Feature:
           "followers_count": 5,
           "slug": "cause-pour-la-culture",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
-          "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
+          "image_url": "http://enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         }
       ]
     }

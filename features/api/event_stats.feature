@@ -1,5 +1,4 @@
 @api
-@renaissance
 Feature:
   In order to get events count
   As a client passing a referent email

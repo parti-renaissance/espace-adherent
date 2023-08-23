@@ -31,13 +31,13 @@ class LoadInternalApiApplicationData extends Fixture
             ),
             'application-3' => new InternalApiApplication(
                 'app-test',
-                'http://test.enmarche.code',
+                'http://enmarche.code',
                 false,
                 Uuid::fromString(self::INTERNAL_API_APPLICATION_03_UUID)
             ),
             'application-4' => new InternalApiApplication(
                 'app-test-scope',
-                'http://test.enmarche.code',
+                'http://enmarche.code',
                 true,
                 Uuid::fromString(self::INTERNAL_API_APPLICATION_04_UUID)
             ),

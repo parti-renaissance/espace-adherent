@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
     app:
         build:
@@ -11,7 +9,6 @@ services:
         networks:
             default:
                 aliases:
-                    - test.enmarche.code
                     - enmarche.code
         volumes:
             - ./:/srv/app
