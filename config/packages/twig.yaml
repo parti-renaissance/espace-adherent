@@ -20,7 +20,6 @@ twig:
         url_help_en_marche:         "https://aide.en-marche.fr"
         project_dir:                "%kernel.project_dir%"
         mooc_host:                  "%env(MOOC_BASE_URL)%"
-        em_api_host:                "%env(EM_API_HOST)%"
         coalitions_host:            "%env(COALITIONS_HOST)%"
         coalitions_auth_host:       "%env(COALITIONS_AUTH_HOST)%"
         jemengage_host:             "%env(JEMENGAGE_HOST)%"
