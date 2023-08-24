@@ -284,7 +284,7 @@ app_nous_reussirons:
     defaults: { _controller: App\Controller\EnMarche\PageController:showPageAction, slug: 'nous-reussirons' }
 
 app_renaissance:
-#    host:   "{app_domain}"
+    host:   "%renaissance_host%"
     resource: "../src/Controller/Renaissance"
     type: "annotation"
 #    defaults:
@@ -370,13 +370,13 @@ app_article:
         app_domain: "%app_host%|%renaissance_host%|%app_renaissance_host%"
 
 app_profile:
-    host: "{app_domain}"
+#    host: "{app_domain}"
     type: "annotation"
     resource: "../src/Controller/EnMarche/UserController.php"
-    defaults:
-        app_domain: "%app_host%"
-    requirements:
-        app_domain: "%app_host%|%renaissance_host%|%app_renaissance_host%"
+#    defaults:
+#        app_domain: "%app_host%"
+#    requirements:
+#        app_domain: "%app_host%|%renaissance_host%|%app_renaissance_host%"
 
 app_certification:
     host: "{app_domain}"
