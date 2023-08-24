@@ -2,6 +2,7 @@
 
 namespace App\Geo\Http;
 
+use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Geo\Zone;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -28,6 +29,9 @@ class ZoneAutocompleteFilter
     #[Groups(['filter_write'])]
     public bool $usedByCommittees = false;
 
+    #[Groups(['filter_write'])]
+    public ?string $forMandateType = null;
+
     public function getTypes(): array
     {
         if ($this->types) {
@@ -46,6 +50,10 @@ class ZoneAutocompleteFilter
     {
         if ($this->availableForCommittee || $this->usedByCommittees) {
             return Zone::COMMITTEE_TYPES;
+        }
+
+        if ($this->forMandateType && isset(MandateTypeEnum::ZONE_FILTER_BY_MANDATE[$this->forMandateType])) {
+            return MandateTypeEnum::ZONE_FILTER_BY_MANDATE[$this->forMandateType]['types'];
         }
 
         return Zone::TYPES;
