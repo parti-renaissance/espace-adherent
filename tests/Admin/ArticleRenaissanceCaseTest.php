@@ -6,12 +6,12 @@ use App\Entity\Article;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAppRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('admin')]
-class ArticleRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
+class ArticleRenaissanceCaseTest extends AbstractAppRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

@@ -18,12 +18,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAppRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('admin')]
-class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
+class AdherentRenaissanceCaseTest extends AbstractAppRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
@@ -304,7 +304,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         $this->client->request('GET', '/conseil-national');
         $this->assertStatusCode(403, $this->client);
 
-        $this->makeRenaissanceClient();
+        $this->makeAppRenaissanceClient();
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
 
         $crawler = $this->client->request('GET', $editUrl = sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));

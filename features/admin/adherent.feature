@@ -1,5 +1,5 @@
 @app
-@renaissance
+@renaissance_app
 Feature: Manage adherent from admin panel
 
   Background:

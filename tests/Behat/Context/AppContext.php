@@ -12,10 +12,12 @@ class AppContext extends RawMinkContext
 {
     private const TAG_RENAISSANCE = 'renaissance';
     private const TAG_RENAISSANCE_API = 'renaissance_api';
+    private const TAG_RENAISSANCE_APP = 'renaissance_app';
 
     private const RENAISSANCE_TAGS = [
         self::TAG_RENAISSANCE,
         self::TAG_RENAISSANCE_API,
+        self::TAG_RENAISSANCE_APP,
     ];
 
     #[BeforeScenario]
@@ -33,6 +35,7 @@ class AppContext extends RawMinkContext
 
             $baseUrlPrefix = match ($renaissanceTag) {
                 self::TAG_RENAISSANCE_API => 'api.',
+                self::TAG_RENAISSANCE_APP => 'app.',
                 default => '',
             };
             $baseUrl = $baseUrlPrefix.$diContext->getParameter('renaissance_host');

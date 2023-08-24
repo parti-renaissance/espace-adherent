@@ -37,7 +37,7 @@ class UserController extends AbstractController
 {
     private const UNREGISTER_TOKEN = 'unregister_token';
 
-    #[Route(name: 'app_user_edit', requirements: ['app_domain' => '%app_host%'], defaults: ['app_domain' => '%app_host%'], methods: ['GET', 'POST'])]
+    #[Route(name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function profileAction(Request $request, AdherentProfileHandler $handler): Response
     {
         /** @var Adherent $adherent */

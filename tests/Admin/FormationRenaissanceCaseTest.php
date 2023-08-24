@@ -5,10 +5,10 @@ namespace Tests\App\Admin;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAppRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-class FormationRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
+class FormationRenaissanceCaseTest extends AbstractAppRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

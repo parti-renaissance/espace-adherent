@@ -1,5 +1,5 @@
 @app
-@renaissance
+@renaissance_app
 Feature: Merge committees from admin panel
 
   Scenario: A committee can not be merged if it is not approved

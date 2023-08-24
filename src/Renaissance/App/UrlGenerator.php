@@ -33,7 +33,7 @@ class UrlGenerator extends AbstractAppUrlGenerator
     public function generateForLoginSuccess(Adherent $adherent): string
     {
         if ($adherent->isRenaissanceUser()) {
-            return $this->urlGenerator->generate('app_renaissance_event_list');
+            return $this->urlGenerator->generate('app_renaissance_event_list', ['app_domain' => $this->appHost]);
         }
 
         return $this->generateHomepageLink();
@@ -42,7 +42,7 @@ class UrlGenerator extends AbstractAppUrlGenerator
     public function generateSuccessResetPasswordLink(Request $request): string
     {
         if ($request->query->has('is_creation')) {
-            return $this->urlGenerator->generate('app_renaissance_adherent_creation_confirmation');
+            return $this->urlGenerator->generate('app_renaissance_adherent_creation_confirmation', ['app_domain' => $this->appHost]);
         }
 
         return static::generateHomepageLink();
@@ -66,7 +66,7 @@ class UrlGenerator extends AbstractAppUrlGenerator
 
     public function generateLoginLink(): string
     {
-        return $this->urlGenerator->generate('app_renaissance_login');
+        return $this->urlGenerator->generate('app_renaissance_login', ['app_domain' => $this->appHost]);
     }
 
     public function guessAppCodeFromRequest(Request $request): ?string

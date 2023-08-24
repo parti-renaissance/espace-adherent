@@ -32,18 +32,16 @@ class SecurityController extends AbstractController
     public function loginAction(
         Request $request,
         AuthenticationUtils $securityUtils,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        AuthAppUrlManager $appUrlManager
     ): Response {
-        $currentApp = $request->attributes->get('app');
+        $currentApp = $appUrlManager->getAppCodeFromRequest($request);
+        $urlGenerator = $appUrlManager->getUrlGenerator($currentApp);
 
         if ($this->getUser()) {
             $this->addFlash('info', 'Vous êtes déjà connecté(e)');
 
-            if ($currentApp) {
-                return $this->redirect('//'.$this->getParameter($currentApp.'_host'));
-            }
-
-            return $this->redirectToRoute('app_search_events');
+            return $this->redirect($urlGenerator->generateHomepageLink());
         }
 
         $form = $formFactory->createNamed('', LoginType::class, [
