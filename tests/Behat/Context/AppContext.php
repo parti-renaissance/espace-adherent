@@ -31,11 +31,12 @@ class AppContext extends RawMinkContext
             /** @var DIContext $diContext */
             $diContext = $env->getContext(DIContext::class);
 
-            $baseUrlPrefix = match ($renaissanceTag) {
-                self::TAG_RENAISSANCE_API => 'api.',
-                default => '',
+            $paramName = match ($renaissanceTag) {
+                self::TAG_RENAISSANCE_API => 'api_renaissance_host',
+                default => 'renaissance_host',
             };
-            $baseUrl = $baseUrlPrefix.$diContext->getParameter('renaissance_host');
+
+            $baseUrl = $diContext->getParameter($paramName);
 
             /** @var Context[] $contexts */
             $contexts = array_map(fn (string $contextClass) => $env->getContext($contextClass), $env->getContextClasses());
