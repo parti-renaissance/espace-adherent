@@ -1,7 +1,7 @@
 {% extends 'base_renaissance.html.twig' %}
 
 {% block page_title article.title %}
-{% block canonical_url url('article_view', { categorySlug: article.category.slug, articleSlug: article.slug, app_domain: renaissance_host }) %}
+{% block canonical_url url('article_view', { categorySlug: article.category.slug, articleSlug: article.slug }) %}
 
 {% block content %}
     {% include 'renaissance/partials/site-header.html.twig' %}

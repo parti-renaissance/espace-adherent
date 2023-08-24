@@ -42,24 +42,24 @@ app_jemengage_forgot_password:
         app: jemengage
 
 app_user_login_check:
-    host: "{app_domain}"
+#    host: "{app_domain}"
     path: "/connexion/check"
     methods: "POST"
     controller: App\Controller\EnMarche\Security\SecurityController::loginCheckAction
-    defaults:
-        app_domain: '%app_host%'
-    requirements:
-        app_domain: "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%|%renaissance_host%|%app_renaissance_host%"
+#    defaults:
+#        app_domain: '%app_host%'
+#    requirements:
+#        app_domain: "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%|%renaissance_host%|%app_renaissance_host%"
 
 logout:
-    host: "{app_domain}"
+#    host: "{app_domain}"
     path: "/deconnexion"
     methods: "GET"
     controller: App\Controller\EnMarche\Security\SecurityController::logoutAction
-    defaults:
-        app_domain: '%app_host%'
-    requirements:
-        app_domain: "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%|%renaissance_host%|%app_renaissance_host%"
+#    defaults:
+#        app_domain: '%app_host%'
+#    requirements:
+#        app_domain: "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%|%renaissance_host%|%app_renaissance_host%"
 
 app_adherent_reset_password:
     host: "{app_domain}"
@@ -82,11 +82,11 @@ app_jemengage:
 app_assets:
     resource: "../src/Controller/AssetsController.php"
     type:     "annotation"
-    host: "{app_domain}"
-    defaults:
-        app_domain: "%app_host%"
-    requirements:
-        app_domain: "%app_host%|%renaissance_host%|%app_renaissance_host%"
+#    host: "{app_domain}"
+#    defaults:
+#        app_domain: "%app_host%"
+#    requirements:
+#        app_domain: "%app_host%|%renaissance_host%|%app_renaissance_host%"
 
 #
 # Mooc
@@ -284,23 +284,23 @@ app_nous_reussirons:
     defaults: { _controller: App\Controller\EnMarche\PageController:showPageAction, slug: 'nous-reussirons' }
 
 app_renaissance:
-    host:   "{app_domain}"
+#    host:   "{app_domain}"
     resource: "../src/Controller/Renaissance"
     type: "annotation"
-    defaults:
-        app_domain: "%renaissance_host%"
-    requirements:
-        app_domain: "%renaissance_host%|%app_renaissance_host%"
+#    defaults:
+#        app_domain: "%renaissance_host%"
+#    requirements:
+#        app_domain: "%renaissance_host%|%app_renaissance_host%"
 
 app_renaissance_login:
-    host: "{app_domain}"
+#    host: "{app_domain}"
     path: "/connexion"
     controller: App\Controller\EnMarche\Security\SecurityController::loginAction
-    defaults:
-        app: renaissance
-        app_domain: "%renaissance_host%"
-    requirements:
-        app_domain: "%renaissance_host%|%app_renaissance_host%"
+#    defaults:
+#        app: renaissance
+#        app_domain: "%renaissance_host%"
+#    requirements:
+#        app_domain: "%renaissance_host%|%app_renaissance_host%"
 
 app_renaissance_forgot_password:
     host: "{app_domain}"
@@ -361,11 +361,11 @@ app_api_user_show_me:
         app_domain: "%app_host%|%renaissance_host%|%app_renaissance_host%"
 
 app_article:
-    host: "{app_domain}"
+#    host: "{app_domain}"
     type: "annotation"
     resource: "../src/Controller/EnMarche/ArticleController.php"
-    defaults:
-        app_domain: "%app_host%"
+#    defaults:
+#        app_domain: "%app_host%"
     requirements:
         app_domain: "%app_host%|%renaissance_host%|%app_renaissance_host%"
 
@@ -389,12 +389,12 @@ app_certification:
 
 # This route must be loaded the last to prevent an override
 app_static_page:
-    host: "{app_domain}"
+#    host: "{app_domain}"
     path: /{slug}
     methods: GET
     defaults:
         _controller: 'App\Controller\EnMarche\PageController:showPageAction'
-        app_domain: "%app_host%"
+#        app_domain: "%app_host%"
     requirements:
         slug: .+
-        app_domain: "%app_host%|%renaissance_host%|%app_renaissance_host%"
+#        app_domain: "%app_host%|%renaissance_host%|%app_renaissance_host%"

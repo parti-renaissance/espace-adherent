@@ -67,6 +67,7 @@ services:
             $enableAssessorSpace: '%env(bool:ENABLE_ASSESSOR_SPACE)%'
             $timelineMaxItems: '%timeline_max_messages%'
             $renaissanceHost: '%renaissance_host%'
+            $appRenaissanceHost: '%app_renaissance_host%'
             $coalitionsHost: '%coalitions_host%'
             $coalitionsAuthHost: '%coalitions_auth_host%'
             $jemengageHost: '%jemengage_host%'
