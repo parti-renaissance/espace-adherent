@@ -8,13 +8,13 @@ use App\Mailer\Message\CommitteeApprovalReferentMessage;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAppRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
 #[Group('functional')]
 #[Group('admin')]
-class CommitteeCRUDControllerCaseTest extends AbstractRenaissanceWebTestCase
+class CommitteeCRUDControllerCaseTest extends AbstractAppRenaissanceWebTestCase
 {
     use ControllerTestTrait;
     use MessengerTestTrait;

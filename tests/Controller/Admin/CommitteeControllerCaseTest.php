@@ -14,12 +14,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAppRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('admin')]
-class CommitteeControllerCaseTest extends AbstractRenaissanceWebTestCase
+class CommitteeControllerCaseTest extends AbstractAppRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

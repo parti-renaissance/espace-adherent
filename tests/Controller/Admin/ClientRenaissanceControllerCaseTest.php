@@ -8,12 +8,12 @@ use App\Entity\OAuth\Client;
 use App\Entity\OAuth\RefreshToken;
 use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAppRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('admin')]
-class ClientRenaissanceControllerCaseTest extends AbstractRenaissanceWebTestCase
+class ClientRenaissanceControllerCaseTest extends AbstractAppRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

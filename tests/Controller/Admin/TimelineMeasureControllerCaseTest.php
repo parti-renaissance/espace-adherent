@@ -15,13 +15,13 @@ use App\Repository\Timeline\ThemeRepository;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAppRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Algolia\DummySearchService;
 
 #[Group('functional')]
 #[Group('admin')]
-class TimelineMeasureControllerCaseTest extends AbstractRenaissanceWebTestCase
+class TimelineMeasureControllerCaseTest extends AbstractAppRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

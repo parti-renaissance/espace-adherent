@@ -6,11 +6,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAppRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
-class FileControllerCaseTest extends AbstractRenaissanceWebTestCase
+class FileControllerCaseTest extends AbstractAppRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 

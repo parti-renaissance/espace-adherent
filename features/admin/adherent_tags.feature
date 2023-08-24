@@ -1,5 +1,5 @@
 @app
-@renaissance
+@renaissance_app
 Feature: Manage adherent tags from admin panel
 
   Background:

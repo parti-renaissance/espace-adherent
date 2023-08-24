@@ -4,12 +4,12 @@ namespace Tests\App\Admin;
 
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractWebTestCase as WebTestCase;
+use Tests\App\AbstractAppRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('admin')]
-class ArticleCategoryAdminTest extends WebTestCase
+class ArticleCategoryAdminTest extends AbstractAppRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
