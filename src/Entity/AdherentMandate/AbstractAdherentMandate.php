@@ -172,7 +172,7 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
 
     public function setBeginAt(?\DateTime $beginAt): void
     {
-        $this->beginAt = $beginAt;
+        $this->beginAt = $beginAt ?? new \DateTime();
     }
 
     public function getFinishAt(): ?\DateTime
