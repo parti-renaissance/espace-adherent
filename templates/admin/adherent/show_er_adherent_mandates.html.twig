@@ -1,41 +1,43 @@
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
 {% block field_value %}
-    {% set mandates = object.electedRepresentativeMandates %}
+    {% set mandates = object.findElectedRepresentativeMandates(false) %}
 
     {% if mandates is not empty %}
-    <div class="box-body table-responsive no-padding">
-        <table class="table">
-            <thead>
-                <th>Type</th>
-                <th>Zone</th>
-                <th>Délégation</th>
-                <th>Début</th>
-                <th>Fin</th>
-            </thead>
-            <tbody>
-                {% for mandate in mandates %}
-                <tr class="sonata-ba-view-container">
-                    <td>
-                        {{ mandate.mandateType }}
-                    </td>
-                    <td>
-                        {{ mandate.zone }}
-                    </td>
-                    <td>
-                        {{ mandate.delegation }}
-                    </td>
-                    <td>
-                        {{ mandate.beginAt|date('d/m/Y') }}
-                    </td>
-                    <td>
-                        {{ mandate.finishAt ? mandate.finishAt|date('d/m/Y') }}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        <div class="box-body table-responsive no-padding">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Zone</th>
+                        <th>Délégation</th>
+                        <th>Début</th>
+                        <th>Fin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mandate in mandates %}
+                        <tr class="sonata-ba-view-container">
+                            <td>
+                                {{ mandate.mandateType }}
+                            </td>
+                            <td>
+                                {{ mandate.zone }}
+                            </td>
+                            <td>
+                                {{ mandate.delegation }}
+                            </td>
+                            <td>
+                                {{ mandate.beginAt|date('d/m/Y') }}
+                            </td>
+                            <td>
+                                {{ mandate.finishAt ? mandate.finishAt|date('d/m/Y') }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
         Aucun mandat élu.
     {% endif %}

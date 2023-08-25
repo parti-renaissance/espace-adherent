@@ -25,7 +25,7 @@ class ContributionControllerTest extends AbstractRenaissanceWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-elus/cotisation');
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
-        $this->assertClientIsRedirectedTo('/', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
     public function testNonElectedRepresentativeAdherentCanNotSeeFormations(): void
@@ -33,9 +33,7 @@ class ContributionControllerTest extends AbstractRenaissanceWebTestCase
         $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-elus/cotisation');
-        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-
-        $this->assertClientIsRedirectedTo('/', $this->client);
+        $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
     public function testOnGoingElectedRepresentativeCanSeeContributionWorkflow(): void
