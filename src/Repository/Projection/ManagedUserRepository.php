@@ -4,6 +4,8 @@ namespace App\Repository\Projection;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\AddressInterface;
+use App\Entity\Adherent;
+use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Projection\ManagedUser;
 use App\FranceCities\FranceCities;
@@ -17,6 +19,7 @@ use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -380,6 +383,30 @@ class ManagedUserRepository extends ServiceEntityRepository
         return (int) $qb
             ->getQuery()
             ->getSingleScalarResult()
+        ;
+    }
+
+    public function refreshAdherentMandates(Adherent $adherent): void
+    {
+        $subQuery = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select("GROUP_CONCAT(CONCAT(mandate.mandateType, '|', zone.name, ' (', zone.code, ')'))")
+            ->from(Adherent::class, 'adherent')
+            ->innerJoin(ElectedRepresentativeAdherentMandate::class, 'mandate', Join::WITH, 'mandate.adherent = adherent AND mandate.finishAt IS NULL')
+            ->innerJoin('mandate.zone', 'zone')
+            ->where('adherent.id = :adherent_id')
+            ->getDQL()
+        ;
+
+        $this->createQueryBuilder('managed_user')
+            ->update()
+            ->set('managed_user.mandates', sprintf('(%s)', $subQuery))
+            ->where('managed_user.originalId = :adherent_id')
+            ->setParameters([
+                'adherent_id' => $adherent->getId(),
+            ])
+            ->getQuery()
+            ->execute()
         ;
     }
 }

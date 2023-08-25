@@ -3,7 +3,6 @@
 namespace App\DataFixtures\ORM;
 
 use App\Address\AddressInterface;
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Projection\ManagedUser;
 use App\Entity\Projection\ManagedUserFactory;
 use App\Membership\MandatesEnum;
@@ -55,6 +54,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'certified_at' => '2018-06-01 10:20:45',
             'interests' => ['europe', 'numerique', 'sante'],
+            'declared_mandates' => [MandatesEnum::CITY_COUNCILOR, MandatesEnum::MAYOR],
         ]);
 
         $managedUser2 = $managedUserFactory->createFromArray([
@@ -121,8 +121,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'certified_at' => '2018-06-02 10:20:45',
             'committee' => $committee11->getName(),
             'committee_uuid' => $committee11->getUuid(),
-            'mandateTypes' => [MandateTypeEnum::CITY_COUNCIL],
-            'mandates' => ['Conseiller(e) municipal(e)|Métropole du Grand Paris'],
+            'mandates' => [MandatesEnum::CITY_COUNCILOR.'|Métropole du Grand Paris'],
             'declared_mandates' => [MandatesEnum::CITY_COUNCILOR],
         ]);
 
@@ -243,6 +242,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
                LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'), // Nord
             ],
             'created_at' => '2017-06-02 15:34:12',
+            'declared_mandates' => [MandatesEnum::EUROPEAN_DEPUTY, MandatesEnum::CITY_COUNCILOR],
         ]));
 
         $manager->persist($managedUser1);

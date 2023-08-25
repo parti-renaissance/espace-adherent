@@ -259,11 +259,9 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": [
-                    "Conseiller(e) municipal(e)|Métropole du Grand Paris"
+                    "city_councilor|Métropole du Grand Paris"
                 ],
-                "declared_mandates": [
-                    "Conseiller(e) municipal(e)"
-                ]
+                "declared_mandates": ["city_councilor"]
             },
             {
                 "address": "2 avenue Jean Jaurès",
@@ -291,7 +289,7 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": []
+                "declared_mandates": ["european_deputy", "city_councilor"]
             },
             {
                 "address": "12 Pilgerweg",
@@ -321,9 +319,7 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": [
-                    "Député(e) européen(ne)"
-                ]
+                "declared_mandates": ["european_deputy"]
             },
             {
                 "address": "32 Zeppelinstrasse",
@@ -355,7 +351,7 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": []
+                "declared_mandates": ["city_councilor", "mayor"]
             }
         ]
     }
@@ -450,7 +446,7 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": []
+                "declared_mandates": ["european_deputy", "city_councilor"]
             },
             {
                 "address": "47 rue Martre",
@@ -477,12 +473,8 @@ Feature:
                 "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
                 "cotisation_dates": [],
                 "campus_registered_at": null,
-                "mandates": [
-                    "Conseiller(e) municipal(e)|Métropole du Grand Paris"
-                ],
-                "declared_mandates": [
-                    "Conseiller(e) municipal(e)"
-                ]
+                "mandates": ["city_councilor|Métropole du Grand Paris"],
+                "declared_mandates": ["city_councilor"]
             }
         ]
     }

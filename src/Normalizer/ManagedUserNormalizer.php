@@ -4,7 +4,6 @@ namespace App\Normalizer;
 
 use App\Entity\Projection\ManagedUser;
 use App\ManagedUsers\ManagedUsersFilter;
-use App\Membership\MandatesEnum;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -39,29 +38,11 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
             }
         }
 
-        if (\in_array('managed_user_read', $context['groups'] ?? [])) {
-            if (\array_key_exists('declared_mandates', $data) && !empty($data['declared_mandates'])) {
-                $translatedMandates = [];
-
-                foreach ($data['declared_mandates'] as $mandate) {
-                    $translatedMandate = array_search($mandate, MandatesEnum::CHOICES);
-
-                    $translatedMandates[] = $translatedMandate
-                        ? $this->translator->trans($translatedMandate)
-                        : $mandate;
-                }
-
-                $data['declared_mandates'] = $translatedMandates;
-            }
-        }
-
         return $data;
     }
 
     public function supportsNormalization($data, $format = null, array $context = [])
     {
-        return
-            empty($context[self::MANAGED_USER_NORMALIZER_ALREADY_CALLED])
-            && $data instanceof ManagedUser;
+        return empty($context[self::MANAGED_USER_NORMALIZER_ALREADY_CALLED]) && $data instanceof ManagedUser;
     }
 }
