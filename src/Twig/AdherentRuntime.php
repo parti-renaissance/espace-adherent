@@ -99,11 +99,11 @@ class AdherentRuntime implements RuntimeExtensionInterface
         }
 
         if ($adherent->isDeputy()) {
-            $labels[] = $adherent->isFemale() ? 'Députée' : 'Député';
+            $labels[] = $adherent->isFemale() ? 'Déléguée de circonscription' : 'Délégué de circonscription';
         }
 
         if ($adherent->isDelegatedDeputy()) {
-            $labels[] = 'Équipe du député';
+            $labels[] = 'Équipe du délégué de circonscription';
         }
 
         if ($adherent->isSenator()) {
