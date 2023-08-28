@@ -21,6 +21,11 @@
                 {{ form_row(form._login_email, { label: 'E-mail', attr: { autocapitalize: 'off' } }) }}
                 {{ form_row(form._login_password, { label: 'Mot de passe' }) }}
 
+                <div class="flex items-center space-x-2 checkbox">
+                    <input type="checkbox" id="remember_me" name="_remember_me" class="h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500" />
+                    <label class="block text-sm font-medium text-gray-700 uppercase tracking-wider" for="remember_me">Se souvenir de moi</label>
+                </div>
+
                 <p class="mt-4">
                     <a href="{{ path('app_renaissance_forgot_password') }}" class="text-base font-medium leading-6 text-dark-blue hover:underline">Mot de passe oublié ?</a>
                 </p>
