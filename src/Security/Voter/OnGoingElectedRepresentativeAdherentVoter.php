@@ -19,6 +19,6 @@ class OnGoingElectedRepresentativeAdherentVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        return $this->electedRepresentativeRepository->hasActiveMandate($adherent);
+        return (bool) \count($adherent->findElectedRepresentativeMandates(true));
     }
 }

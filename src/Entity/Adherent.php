@@ -2985,6 +2985,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         })->toArray();
     }
 
+    /**
+     * @return ElectedRepresentativeAdherentMandate[]
+     */
+    public function findElectedRepresentativeMandates(bool $active): array
+    {
+        return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) use ($active) {
+            return $mandate instanceof ElectedRepresentativeAdherentMandate
+                && (false === $active || null === $mandate->getFinishAt());
+        })->toArray();
+    }
+
     public function findTerritorialCouncilMandates(string $quality = null, bool $active = false): array
     {
         return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) use ($quality, $active) {
@@ -3441,21 +3452,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->revenueDeclarations->add(RevenueDeclaration::create($this, $amount));
     }
 
-    public function getElectedRepresentativeMandates(): Collection
+    public function getElectedRepresentativeMandates(): array
     {
-        return $this->adherentMandates->filter(static function (AdherentMandateInterface $adherentMandate) {
-            return $adherentMandate instanceof ElectedRepresentativeAdherentMandate;
-        });
-    }
-
-    public function getActiveElectedRepresentativeMandates(): Collection
-    {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('finishAt', null))
-            ->orderBy(['beginAt' => 'DESC'])
-        ;
-
-        return $this->getElectedRepresentativeMandates()->matching($criteria);
+        return $this->findElectedRepresentativeMandates(false);
     }
 
     public function addAdherentMandate(AdherentMandateInterface $adherentMandate): void
