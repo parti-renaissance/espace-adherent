@@ -68,11 +68,11 @@ class PayboxFormFactory
 
         return sprintf(
             '<?xml version="1.0"?><Billing><Address><FirstName>%s</FirstName><LastName>%s</LastName><Address1>%s</Address1><ZipCode>%s</ZipCode><City>%s</City><CountryCode>%s</CountryCode></Address></Billing>',
-            $this->slugify($donator->getFirstName(), 22),
-            $this->slugify($donator->getLastName(), 22),
-            $this->slugify($donation->getAddress(), 50),
-            $this->slugify($donation->getPostalCode(), 16),
-            $this->slugify($donation->getCityName(), 50),
+            $donator->getFirstName() ? $this->slugify($donator->getFirstName(), 22) : '',
+            $donator->getLastName() ? $this->slugify($donator->getLastName(), 22) : '',
+            $donation->getAddress() ? $this->slugify($donation->getAddress(), 50) : '',
+            $donation->getPostalCode() ? $this->slugify($donation->getPostalCode(), 16) : '',
+            $donation->getCityName() ? $this->slugify($donation->getCityName(), 50) : '',
             $this->getCountryISO3166Numeric($donation->getCountry() ?? 'FR')
         );
     }
