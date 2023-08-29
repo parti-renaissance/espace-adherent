@@ -4,40 +4,35 @@ Feature:
   As a logged-in user
   I should be able to access adherent mandates API
 
-  Scenario Outline: As a user granted with local scope, I can not get adherent mandates without adherent.uuid attribute
-    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    And I send a "GET" request to "/api/v3/elected_adherent_mandates?scope=<scope>"
-    Then the response status code should be 400
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-        "detail": "Filter \"adherent.uuid\" is required.",
-        "title": "An error occurred",
-        "type": "https://tools.ietf.org/html/rfc2616#section-10"
-    }
-    """
-    Examples:
-      | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
-      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
-
   Scenario Outline: As a user granted with local scope, I can get adherent mandates of an adherent
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    And I send a "GET" request to "/api/v3/elected_adherent_mandates?scope=<scope>&adherent.uuid=d0a0935f-da7c-4caa-b582-a8c2376e5158"
+    And I send a "GET" request to "/api/v3/adherents/d0a0935f-da7c-4caa-b582-a8c2376e5158/elect?scope=<scope>"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
     """
     {
-        "metadata": {
-            "total_items": 1,
-            "items_per_page": 2,
-            "count": 1,
-            "current_page": 1,
-            "last_page": 1
-        },
-        "items": [
+        "mandates": ["european_deputy"],
+        "contribution_status": "eligible",
+        "contributed_at": "@string@.isDateTime()",
+        "payments": [
+            {
+                "date": "@string@.isDateTime()",
+                "method": "IBAN",
+                "amount": 50,
+                "uuid": "@uuid@",
+                "status_label": "Paiement validé"
+            },
+            {
+                "date": "@string@.isDateTime()",
+                "method": "IBAN",
+                "amount": 50,
+                "uuid": "@uuid@",
+                "status_label": "Paiement validé"
+            }
+        ],
+        "uuid": "d0a0935f-da7c-4caa-b582-a8c2376e5158",
+        "elect_mandates": [
             {
                 "mandate_type": "senateur",
                 "delegation": "Sénatrice",
@@ -46,10 +41,9 @@ Feature:
                     "code": "92",
                     "name": "Hauts-de-Seine"
                 },
-                "uuid": "d91df367-14df-474d-ac9a-8e2176657f71",
-                "adherent": {"uuid": "@uuid@"},
-                "begin_at": "2019-01-11T00:00:00+01:00",
-                "finish_at": null
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": null,
+                "uuid": "@uuid@"
             }
         ]
     }
