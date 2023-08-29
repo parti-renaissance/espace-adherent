@@ -5,9 +5,11 @@ namespace App\Entity\Contribution;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Ohme\PaymentStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -25,11 +27,15 @@ class Payment
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"adherent_elect_read"})
      */
     public ?\DateTime $date = null;
 
     /**
      * @ORM\Column(length=50)
+     *
+     * @Groups({"adherent_elect_read"})
      */
     public ?string $method = null;
 
@@ -40,6 +46,8 @@ class Payment
 
     /**
      * @ORM\Column(type="integer")
+     *
+     * @Groups({"adherent_elect_read"})
      */
     public ?int $amount = null;
 
@@ -66,5 +74,17 @@ class Payment
         $payment->amount = round($data['amount']);
 
         return $payment;
+    }
+
+    /**
+     * @Groups({"adherent_elect_read"})
+     */
+    public function getStatusLabel(): ?string
+    {
+        if ($this->status && isset(PaymentStatusEnum::LABELS[$this->status])) {
+            return PaymentStatusEnum::LABELS[$this->status];
+        }
+
+        return $this->status;
     }
 }

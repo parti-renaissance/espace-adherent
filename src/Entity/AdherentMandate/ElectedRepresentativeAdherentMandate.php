@@ -38,9 +38,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         }
  *     },
  *     collectionOperations={
- *         "get": {
- *             "path": "/elected_adherent_mandates",
- *         },
  *         "post": {
  *             "path": "/elected_adherent_mandates",
  *         }
@@ -63,7 +60,8 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
      *
      * @Groups({
      *     "elected_mandate_write",
-     *     "elected_mandate_read"
+     *     "elected_mandate_read",
+     *     "adherent_elect_read",
      * })
      */
     public string $mandateType;
@@ -75,7 +73,8 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
      *
      * @Groups({
      *     "elected_mandate_write",
-     *     "elected_mandate_read"
+     *     "elected_mandate_read",
+     *     "adherent_elect_read",
      * })
      */
     public ?string $delegation = null;
@@ -91,7 +90,8 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
      *
      * @Groups({
      *     "elected_mandate_write",
-     *     "elected_mandate_read"
+     *     "elected_mandate_read",
+     *     "adherent_elect_read",
      * })
      */
     public ?Zone $zone = null;

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Address\AddressInterface;
 use App\Address\PostAddressFactory;
 use App\Adherent\LastLoginGroupEnum;
@@ -75,6 +76,7 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -88,6 +90,24 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueMembership(groups={"Admin"})
  *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "referent_jam"})
+ *
+ * @ApiResource(
+ *     routePrefix="/v3",
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"adherent_elect_read"},
+ *         },
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'contacts')",
+ *     },
+ *     itemOperations={
+ *         "get_elect": {
+ *             "path": "/adherents/{uuid}/elect",
+ *             "method": "GET",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *         },
+ *     },
+ *     collectionOperations={},
+ * )
  */
 class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface
 {
@@ -442,6 +462,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"adherent_elect_read"})
      */
     private $mandates;
 
@@ -828,11 +850,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @Groups({"adherent_elect_read"})
      */
     private ?string $contributionStatus = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"adherent_elect_read"})
      */
     private ?\DateTime $contributedAt = null;
 
@@ -862,6 +888,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *     fetch="EXTRA_LAZY"
      * )
      * @ORM\OrderBy({"date": "DESC"})
+     *
+     * @Groups({"adherent_elect_read"})
      */
     private Collection $payments;
 
@@ -3452,9 +3480,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->revenueDeclarations->add(RevenueDeclaration::create($this, $amount));
     }
 
+    /**
+     * @Groups({"adherent_elect_read"})
+     * @SerializedName("elect_mandates")
+     */
     public function getElectedRepresentativeMandates(): array
     {
-        return $this->findElectedRepresentativeMandates(false);
+        return array_values($this->findElectedRepresentativeMandates(false));
     }
 
     public function addAdherentMandate(AdherentMandateInterface $adherentMandate): void

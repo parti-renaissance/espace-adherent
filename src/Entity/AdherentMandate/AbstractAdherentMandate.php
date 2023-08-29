@@ -71,7 +71,8 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
      *
      * @Groups({
      *     "elected_mandate_write",
-     *     "elected_mandate_read"
+     *     "elected_mandate_read",
+     *     "adherent_elect_read",
      * })
      */
     protected $beginAt;
@@ -83,7 +84,8 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
      *
      * @Groups({
      *     "elected_mandate_write",
-     *     "elected_mandate_read"
+     *     "elected_mandate_read",
+     *     "adherent_elect_read",
      * })
      */
     protected $finishAt;
