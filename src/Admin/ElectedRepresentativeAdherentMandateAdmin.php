@@ -2,7 +2,7 @@
 
 namespace App\Admin;
 
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
+use App\Adherent\MandateTypeEnum;
 use App\Entity\Geo\Zone;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;

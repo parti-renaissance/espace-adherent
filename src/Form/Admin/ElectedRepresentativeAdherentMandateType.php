@@ -2,9 +2,9 @@
 
 namespace App\Form\Admin;
 
+use App\Adherent\MandateTypeEnum;
 use App\Admin\ElectedRepresentativeAdherentMandateAdmin;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\Form\Type\DatePickerType;
 use Symfony\Component\Form\AbstractType;
@@ -20,7 +20,10 @@ class ElectedRepresentativeAdherentMandateType extends AbstractType
         $builder
             ->add('mandateType', ChoiceType::class, [
                 'label' => 'Type',
-                'choices' => MandateTypeEnum::CHOICES,
+                'choices' => MandateTypeEnum::ALL,
+                'choice_label' => static function (string $choice): string {
+                    return "adherent.mandate.type.$choice";
+                },
             ])
             ->add('zone', AdminZoneAutocompleteType::class, [
                 'label' => 'Zone',

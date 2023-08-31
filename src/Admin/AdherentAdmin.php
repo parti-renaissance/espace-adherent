@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Address\AddressInterface;
+use App\Adherent\MandateTypeEnum;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
@@ -16,7 +17,6 @@ use App\Entity\BoardMember\BoardMember;
 use App\Entity\BoardMember\Role;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Instance\InstanceQuality;
 use App\Entity\SubscriptionType;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
@@ -351,7 +351,10 @@ class AdherentAdmin extends AbstractAdmin
                     ])
                     ->add('mandates', ChoiceType::class, [
                         'label' => 'adherent.mandate.admin.label',
-                        'choices' => MandatesEnum::CHOICES,
+                        'choices' => MandateTypeEnum::ALL,
+                        'choice_label' => static function (string $choice): string {
+                            return "adherent.mandate.type.$choice";
+                        },
                         'required' => false,
                         'multiple' => true,
                     ])
@@ -838,7 +841,10 @@ class AdherentAdmin extends AbstractAdmin
                 'label' => 'Mandat(s) RNE (legacy)',
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => MandateTypeEnum::CHOICES,
+                    'choices' => MandateTypeEnum::ALL,
+                    'choice_label' => static function (string $choice): string {
+                        return "adherent.mandate.type.$choice";
+                    },
                     'multiple' => true,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
@@ -864,7 +870,10 @@ class AdherentAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => MandateTypeEnum::CHOICES,
+                    'choices' => MandateTypeEnum::ALL,
+                    'choice_label' => static function (string $choice): string {
+                        return "adherent.mandate.type.$choice";
+                    },
                     'multiple' => true,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {

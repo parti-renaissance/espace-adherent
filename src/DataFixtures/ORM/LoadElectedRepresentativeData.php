@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Adherent\MandateTypeEnum;
 use App\Election\VoteListNuanceEnum;
 use App\Entity\ElectedRepresentative\CandidateNameEnum;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
@@ -9,7 +10,6 @@ use App\Entity\ElectedRepresentative\ElectedRepresentativeLabel;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\LaREMSupportEnum;
 use App\Entity\ElectedRepresentative\Mandate;
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunction;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\ElectedRepresentative\SocialLinkTypeEnum;
@@ -76,7 +76,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         );
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_1_UUID),
-            MandateTypeEnum::CITY_COUNCIL,
+            MandateTypeEnum::CONSEILLER_MUNICIPAL,
             true,
             VoteListNuanceEnum::REM,
             LaREMSupportEnum::OFFICIAL,
@@ -127,7 +127,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         );
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_2_UUID),
-            MandateTypeEnum::CITY_COUNCIL,
+            MandateTypeEnum::CONSEILLER_MUNICIPAL,
             true,
             VoteListNuanceEnum::NC,
             LaREMSupportEnum::OFFICIAL,
@@ -195,7 +195,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         );
         $mandate1 = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_3_UUID),
-            MandateTypeEnum::CITY_COUNCIL,
+            MandateTypeEnum::CONSEILLER_MUNICIPAL,
             true,
             VoteListNuanceEnum::DIV,
             LaREMSupportEnum::NOT_SUPPORTED,
@@ -214,7 +214,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         );
         $mandate2 = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_4_UUID),
-            MandateTypeEnum::EPCI_MEMBER,
+            MandateTypeEnum::CONSEILLER_COMMUNAUTAIRE,
             false,
             VoteListNuanceEnum::DIV,
             LaREMSupportEnum::NOT_SUPPORTED,
@@ -257,7 +257,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         );
         $mandate1 = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_5_UUID),
-            MandateTypeEnum::SENATOR,
+            MandateTypeEnum::SENATEUR,
             true,
             VoteListNuanceEnum::FN,
             LaREMSupportEnum::INFORMAL,
@@ -268,7 +268,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         );
         $mandate2 = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_6_UUID),
-            MandateTypeEnum::DEPUTY,
+            MandateTypeEnum::DEPUTE,
             true,
             VoteListNuanceEnum::FN,
             LaREMSupportEnum::NOT_SUPPORTED,
@@ -316,7 +316,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         );
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_7_UUID),
-            MandateTypeEnum::EURO_DEPUTY,
+            MandateTypeEnum::DEPUTE_EUROPEEN,
             true,
             VoteListNuanceEnum::ALLI,
             LaREMSupportEnum::INVESTED,
@@ -342,7 +342,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         );
         $mandate1 = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_8_UUID),
-            MandateTypeEnum::DEPUTY,
+            MandateTypeEnum::DEPUTE,
             true,
             VoteListNuanceEnum::RN,
             LaREMSupportEnum::INFORMAL,
@@ -361,7 +361,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         );
         $mandate2 = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_9_UUID),
-            MandateTypeEnum::REGIONAL_COUNCIL,
+            MandateTypeEnum::CONSEILLER_REGIONAL,
             true,
             VoteListNuanceEnum::DIV,
             LaREMSupportEnum::NOT_SUPPORTED,
@@ -406,7 +406,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         );
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_10_UUID),
-            MandateTypeEnum::CORSICA_ASSEMBLY_MEMBER,
+            MandateTypeEnum::CONSEILLER_TERRITORIAL,
             false,
             VoteListNuanceEnum::ALLI,
             LaREMSupportEnum::INFORMAL,
@@ -423,7 +423,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $erParis = $this->createElectedRepresentative('Arrondissement', 'PARIS', new \DateTime('1972-02-02'), 'male');
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_11_UUID),
-            MandateTypeEnum::CITY_COUNCIL,
+            MandateTypeEnum::CONSEILLER_MUNICIPAL,
             true,
             VoteListNuanceEnum::NC,
             null,
@@ -440,7 +440,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $erParis2 = $this->createElectedRepresentative('Circonscription', 'PARISS', new \DateTime('1982-03-03'), 'female');
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_12_UUID),
-            MandateTypeEnum::DEPUTY,
+            MandateTypeEnum::DEPUTE,
             true,
             VoteListNuanceEnum::REM,
             LaREMSupportEnum::OFFICIAL,
@@ -457,7 +457,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $erParis3 = $this->createElectedRepresentative('Département', 'PARIS', new \DateTime('1962-04-04'), 'male');
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_13_UUID),
-            MandateTypeEnum::SENATOR,
+            MandateTypeEnum::SENATEUR,
             true,
             VoteListNuanceEnum::RN,
             null,
@@ -473,7 +473,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $erDepartment59 = $this->createElectedRepresentative('Département', 'Nord', new \DateTime('1962-04-04'), 'male');
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_14_UUID),
-            MandateTypeEnum::SENATOR,
+            MandateTypeEnum::SENATEUR,
             true,
             VoteListNuanceEnum::RN,
             null,
@@ -492,7 +492,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $erDepartment92->setCreatedByAdherent($this->getReference('adherent-8'));
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_15_UUID),
-            MandateTypeEnum::SENATOR,
+            MandateTypeEnum::SENATEUR,
             true,
             VoteListNuanceEnum::REM,
             LaREMSupportEnum::OFFICIAL,

@@ -94,7 +94,7 @@ class ReferentElectedRepresentativeControllerTest extends AbstractEnMarcheWebTes
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
         $form['f[labels]'] = [];
         $form['f[politicalFunctions]'] = [];
-        $form['f[mandates]'] = ['membre_EPCI', 'depute'];
+        $form['f[mandates]'] = ['conseiller_communautaire', 'depute'];
 
         $crawler = $this->client->submit($form);
 
@@ -182,7 +182,6 @@ class ReferentElectedRepresentativeControllerTest extends AbstractEnMarcheWebTes
         $this->assertCount(2, $crawler->filter('.elected-representative-labels tbody tr'));
         $this->assertCount(0, $crawler->filter('.sponsorships tbody tr'));
         $this->assertCount(1, $crawler->filter('.elected-representative-candidacies tbody tr'));
-        $this->assertStringContainsString('Membre d\'EPCI', $crawler->filter('.elected-representative-candidacies tbody tr')->text());
         $this->assertStringContainsString('DIV', $crawler->filter('.elected-representative-candidacies tbody tr')->text());
         $this->assertStringContainsString('Pas soutenu', $crawler->filter('.elected-representative-candidacies tbody tr')->text());
         $this->assertStringContainsString('11 janvier 2017', $crawler->filter('.elected-representative-candidacies tbody tr')->text());

@@ -2,10 +2,10 @@
 
 namespace App\Form\ElectedRepresentative;
 
+use App\Adherent\MandateTypeEnum;
 use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\UserListDefinition;
 use App\Form\GenderType;
@@ -68,7 +68,10 @@ class ElectedRepresentativeFilterType extends AbstractType
                 'multiple' => true,
             ])
             ->add('mandates', ChoiceType::class, [
-                'choices' => MandateTypeEnum::CHOICES,
+                'choices' => MandateTypeEnum::ALL,
+                'choice_label' => static function (string $choice): string {
+                    return "adherent.mandate.type.$choice";
+                },
                 'label' => 'elected_representative.mandates',
                 'required' => false,
                 'multiple' => true,
