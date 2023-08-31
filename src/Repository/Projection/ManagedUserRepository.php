@@ -76,18 +76,16 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
-        $this->withGeoZones(
-            $filter->getZones() ?: $filter->getManagedZones(),
-            $qb,
-            'u',
-            ManagedUser::class,
-            'm2',
-            'zones',
-            'z2',
-            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(sprintf('%s.status = :status', $entityClassAlias));
+        if ($zones = ($filter->getZones() ?: $filter->getManagedZones())) {
+            $zoneCondition = $qb->expr()->orX();
+
+            foreach ($zones as $key => $zone) {
+                $zoneCondition->add(sprintf('FIND_IN_SET(:zone_%s, u.zonesIds) > 0', $key));
+                $qb->setParameter(sprintf(':zone_%s', $key), $zone->getId());
             }
-        );
+
+            $qb->andWhere($zoneCondition);
+        }
 
         if ($queryAreaCode = $filter->getCityAsArray()) {
             $areaCodeExpression = $qb->expr()->orX();

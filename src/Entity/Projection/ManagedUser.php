@@ -23,6 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Table(name="projection_managed_users", indexes={
  *     @ORM\Index(columns={"status"}),
  *     @ORM\Index(columns={"original_id"}),
+ *     @ORM\Index(columns={"zones_ids"}),
  * })
  * @ORM\Entity(readOnly=true, repositoryClass="App\Repository\Projection\ManagedUserRepository")
  * @ORM\AssociationOverrides({
@@ -364,6 +365,11 @@ class ManagedUser
      */
     private ?\DateTime $campusRegisteredAt;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $zonesIds = null;
+
     public function __construct(
         int $status,
         ?string $source,
@@ -438,6 +444,10 @@ class ManagedUser
         $this->supervisorTags = $supervisorTags;
         $this->voteCommitteeId = $voteCommitteeId;
         $this->zones = new ZoneCollection($zones);
+        $this->zonesIds = implode(',', array_unique(array_map(
+            fn (Zone $zone) => $zone->getId(),
+            array_merge(...array_map(fn (Zone $zone) => $zone->getWithParents(), $zones))
+        )));
         $this->interests = $interests;
         $this->committee = $committee;
         $this->committeeUuid = $committeeUuid;

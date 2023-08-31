@@ -241,8 +241,8 @@ class ReferentControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertCount(5, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertStringContainsString('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertStringContainsString('92110', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertStringContainsString('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
+        $this->assertStringContainsString('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertStringContainsString('92110', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
 
         // exclude
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
