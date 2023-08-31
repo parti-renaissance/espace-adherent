@@ -234,36 +234,6 @@ Feature:
                 "declared_mandates": []
             },
             {
-                "address": "47 rue Martre",
-                "postal_code": "92110",
-                "city": "Clichy",
-                "country": "FR",
-                "first_name": "Gisele",
-                "last_name": "Berthoux",
-                "adherent_uuid": "@uuid@",
-                "birthdate": "@string@.isDateTime()",
-                "gender": "female",
-                "interests": [],
-                "tags": [],
-                "city_code": "92024",
-                "phone_number": "+33 6 66 66 66 66",
-                "nationality": "FR",
-                "sms_subscription": true,
-                "email": "gisele-berthoux@caramail.com",
-                "email_subscription": true,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null,
-                "committee": "Second Comité des 3 communes",
-                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
-                "cotisation_dates": [],
-                "campus_registered_at": null,
-                "mandates": [
-                    "city_councilor|Métropole du Grand Paris"
-                ],
-                "declared_mandates": ["city_councilor"]
-            },
-            {
                 "address": "2 avenue Jean Jaurès",
                 "city": "Melun",
                 "city_code": null,
@@ -320,6 +290,36 @@ Feature:
                 "campus_registered_at": null,
                 "mandates": [],
                 "declared_mandates": ["european_deputy"]
+            },
+            {
+                "address": "47 rue Martre",
+                "postal_code": "92110",
+                "city": "Clichy",
+                "country": "FR",
+                "first_name": "Gisele",
+                "last_name": "Berthoux",
+                "adherent_uuid": "@uuid@",
+                "birthdate": "@string@.isDateTime()",
+                "gender": "female",
+                "interests": [],
+                "tags": [],
+                "city_code": "92024",
+                "phone_number": "+33 6 66 66 66 66",
+                "nationality": "FR",
+                "sms_subscription": true,
+                "email": "gisele-berthoux@caramail.com",
+                "email_subscription": true,
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null,
+                "committee": "Second Comité des 3 communes",
+                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
+                "cotisation_dates": [],
+                "campus_registered_at": null,
+                "mandates": [
+                    "city_councilor|Métropole du Grand Paris"
+                ],
+                "declared_mandates": ["city_councilor"]
             },
             {
                 "address": "32 Zeppelinstrasse",

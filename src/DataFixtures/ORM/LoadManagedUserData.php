@@ -48,7 +48,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'subscription_types' => [SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => 'ch',
             'zones' => [
-                LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'), // Suisse
+                LoadGeoZoneData::getZone($manager, 'zone_country_CH'), // Suisse
             ],
             'created_at' => '2017-06-01 09:22:45',
             'gender' => 'male',
@@ -81,7 +81,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => 'ch',
             'zones' => [
-                LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'), // Suisse
+                LoadGeoZoneData::getZone($manager, 'zone_country_CH'), // Suisse
             ],
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'male',
@@ -113,8 +113,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => '92,59',
             'zones' => [
-                LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'), // Hauts-de-Seine
-                LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'), // Clichy
+                LoadGeoZoneData::getZone($manager, 'zone_department_92'), // Hauts-de-Seine
+                LoadGeoZoneData::getZone($manager, 'zone_city_92024'), // Clichy
             ],
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'female',
@@ -149,8 +149,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'subscription_types' => null,
             'subscribedTags' => '77,59',
             'zones' => [
-                LoadGeoZoneData::getZoneReference($manager, 'zone_district_77-1'), // Seine-et-Marne (1)
-                LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'), // Melun
+                LoadGeoZoneData::getZone($manager, 'zone_district_77-1'), // Seine-et-Marne (1)
+                LoadGeoZoneData::getZone($manager, 'zone_city_77288'), // Melun
             ],
             'created_at' => '2017-08-12 16:12:13',
             'gender' => 'male',
@@ -181,8 +181,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'subscription_types' => array_merge(SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES, [SubscriptionTypeEnum::MILITANT_ACTION_SMS]),
             'subscribedTags' => '75,75008,CIRCO_75001',
             'zones' => [
-                LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
-                LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
+                LoadGeoZoneData::getZone($manager, 'zone_borough_75108'),
+                LoadGeoZoneData::getZone($manager, 'zone_district_75-1'),
             ],
             'created_at' => '2017-01-03 08:47:54',
             'gender' => 'male',
@@ -212,8 +212,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'subscription_types' => array_merge(SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES, [SubscriptionTypeEnum::MILITANT_ACTION_SMS]),
             'subscribedTags' => '75,75008,CIRCO_75001',
             'zones' => [
-                LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
-                LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
+                LoadGeoZoneData::getZone($manager, 'zone_borough_75108'),
+                LoadGeoZoneData::getZone($manager, 'zone_district_75-1'),
             ],
             'created_at' => '2017-06-01 09:26:31',
             'gender' => 'male',
@@ -238,8 +238,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'gender' => $user->getGender(),
             'birthday' => $user->getBirthdate(),
             'zones' => [
-               LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'), // Hauts-de-Seine
-               LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'), // Nord
+               LoadGeoZoneData::getZone($manager, 'zone_department_92'), // Hauts-de-Seine
+               LoadGeoZoneData::getZone($manager, 'zone_department_59'), // Nord
             ],
             'created_at' => '2017-06-02 15:34:12',
             'declared_mandates' => [MandatesEnum::EUROPEAN_DEPUTY, MandatesEnum::CITY_COUNCILOR],
