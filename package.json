@@ -22,7 +22,7 @@
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.9",
     "algoliasearch": "^4.19.1",
-    "alpinejs": "^3.12.3",
+    "alpinejs": "^3.13.0",
     "atob": "^2.1.0",
     "autoprefixer": "^10.4.15",
     "babel-loader": "^9.1.3",
