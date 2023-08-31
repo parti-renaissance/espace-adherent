@@ -187,20 +187,23 @@ adherent.contact.success: Votre message a bien été envoyé.
 
 adherent.mandate.admin.label: Mandat(s)
 adherent.mandate.label: Votre ou vos mandats
-adherent.mandate.regional_councilor: Conseiller(e) régional(e)
-adherent.mandate.departmental_councilor: Conseiller(e) départemental(e)
-adherent.mandate.consular_councilor: Conseiller(e) consulaire
-adherent.mandate.corsica_assembly_member: Membre de l'Assemblée de Corse
-adherent.mandate.mayor: Maire
-adherent.mandate.mayor_assistant: Maire adjoint(e)
-adherent.mandate.city_councilor: Conseiller(e) municipal(e)
-adherent.mandate.borough_councilor: Conseiller(e) d'arrondissement
-adherent.mandate.deputy: Député(e)
-adherent.mandate.senator: Sénateur(rice)
-adherent.mandate.european_deputy: Député(e) européen(ne)
-adherent.mandate.president_of_epci: Président(e) d'EPCI
-adherent.mandate.vice_president_of_epci: Vice-président(e) d'EPCI
-adherent.mandate.epci_member: Membre d'EPCI
+adherent.mandate.type.depute_europeen: Député européen
+adherent.mandate.type.senateur: Sénateur
+adherent.mandate.type.depute: Député
+adherent.mandate.type.president_conseil_regional: Président du Conseil régional
+adherent.mandate.type.conseiller_regional: Conseiller régional
+adherent.mandate.type.president_conseil_departemental: Président du Conseil départemental
+adherent.mandate.type.conseiller_departemental: Conseiller départemental
+adherent.mandate.type.conseiller_territorial: Conseiller territorial
+adherent.mandate.type.president_conseil_communautaire: Président du Conseil communautaire
+adherent.mandate.type.conseiller_communautaire: Conseiller communautaire
+adherent.mandate.type.maire: Maire
+adherent.mandate.type.conseiller_municipal: Conseiller municipal
+adherent.mandate.type.conseiller_arrondissement: Conseiller d'arrondissement
+adherent.mandate.type.membre_assemblee_fde: Membre de l'Assemblée des Français de l'étranger
+adherent.mandate.type.conseiller_fde: Conseiller FDE
+adherent.mandate.type.delegue_consulaire: Délégué consulaire
+
 adherent.form.elected: Je suis élu(e)
 adherent.form.mandate.placeholder: Choisissez un ou plusieurs mandats
 
@@ -910,15 +913,22 @@ elected_representative:
     mailchimp_tag:
         adherent: Adhérent(e)
         # Mandate
-        conseiller_municipal: "[M] Conseiller(e) municipal(e)"
-        membre_EPCI: "[M] Membre d'EPCI"
-        conseiller_departemental: "[M] Conseiller(e) départemental(e)"
-        conseiller_regional: "[M] Conseiller(e) régional(e)"
-        membre_assemblee_corse: "[M] Membre de l'Assemblée de Corse"
-        depute: "[M] Député(e)"
-        senateur: "[M] Sénateur(rice)"
-        euro_depute: "[M] Député(e) européen(ne)"
-        conseiller_d_arrondissement: "[M] Conseiller(ère) d'arrondissement"
+        depute_europeen: "[M] Député européen"
+        enateur: "[M] Sénateur"
+        depute: "[M] Député"
+        president_conseil_regional: "[M] Président du Conseil régional"
+        onseiller_regional: "[M] Conseiller régional"
+        president_conseil_departemental: "[M] Président du Conseil départemental"
+        conseiller_departemental: "[M] Conseiller départemental"
+        conseiller_territorial: "[M] Conseiller territorial"
+        president_conseil_communautaire: "[M] Président du Conseil communautaire"
+        conseiller_communautaire: "[M] Conseiller communautaire"
+        maire: "[M] Maire"
+        conseiller_municipal: "[M] Conseiller municipal"
+        conseiller_arrondissement: "[M] Conseiller d'arrondissement"
+        membre_assemblee_fde: "[M] Membre de l'Assemblée des Français de l'étranger"
+        conseiller_fde: "[M] Conseiller FDE"
+        delegue_consulaire: "[M] Délégué consulaire"
         # PoliticalFunction
         mayor: "[F] Maire"
         deputy_mayor: "[F] Maire délégué(e)"

@@ -2,13 +2,18 @@
 
 namespace App\JMEFilter\FilterBuilder;
 
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
+use App\Adherent\MandateTypeEnum;
 use App\JMEFilter\FilterCollectionBuilder;
 use App\JMEFilter\FilterGroup\ElectedRepresentativeFilterGroup;
 use App\Scope\FeatureEnum;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MandatesFilterBuilder implements FilterBuilderInterface
 {
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
+
     public function supports(string $scope, string $feature = null): bool
     {
         return FeatureEnum::ELECTED_REPRESENTATIVE === $feature;
@@ -18,7 +23,7 @@ class MandatesFilterBuilder implements FilterBuilderInterface
     {
         return (new FilterCollectionBuilder())
             ->createSelect('mandates', 'Mandats')
-            ->setChoices(array_flip(MandateTypeEnum::CHOICES))
+            ->setChoices($this->getTranslatedChoices())
             ->setMultiple(true)
             ->getFilters()
         ;
@@ -27,5 +32,15 @@ class MandatesFilterBuilder implements FilterBuilderInterface
     public function getGroup(): string
     {
         return ElectedRepresentativeFilterGroup::class;
+    }
+
+    private function getTranslatedChoices(): array
+    {
+        $choices = [];
+        foreach (MandateTypeEnum::ALL as $mandateType) {
+            $choices[$mandateType] = $this->translator->trans("adherent.mandate.type.$mandateType");
+        }
+
+        return $choices;
     }
 }

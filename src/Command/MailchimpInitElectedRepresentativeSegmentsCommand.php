@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
+use App\Adherent\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\MailchimpSegment;
 use App\Entity\ReferentTag;
@@ -71,8 +71,8 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
             $this->io->progressAdvance();
         }
 
-        foreach (MandateTypeEnum::CHOICES as $mandate) {
-            $this->initTag($this->tagsBuilder->translateKey($mandate));
+        foreach (MandateTypeEnum::ALL as $mandateType) {
+            $this->initTag($this->tagsBuilder->translateKey($mandateType));
 
             $this->io->progressAdvance();
         }

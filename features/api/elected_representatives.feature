@@ -408,16 +408,22 @@ Feature:
                     "label": "Mandats",
                     "options": {
                         "choices": {
-                            "conseiller_municipal": "Conseiller(e) municipal(e)",
-                            "membre_EPCI": "Membre d'EPCI",
-                            "conseiller_departemental": "Conseiller(e) départemental(e)",
-                            "conseiller_regional": "Conseiller(e) régional(e)",
-                            "membre_assemblee_corse": "Membre de l'Assemblée de Corse",
-                            "depute": "Député(e)",
-                            "senateur": "Sénateur(rice)",
-                            "euro_depute": "Député(e) européen(ne)",
-                            "conseiller_d_arrondissement": "Conseiller(ère) d'arrondissement",
-                            "conseiller_consulaire": "Conseiller(ère) FDE"
+                            "conseiller_arrondissement": "Conseiller d'arrondissement",
+                            "conseiller_communautaire": "Conseiller communautaire",
+                            "conseiller_departemental": "Conseiller départemental",
+                            "conseiller_fde": "Conseiller FDE",
+                            "conseiller_municipal": "Conseiller municipal",
+                            "conseiller_regional": "Conseiller régional",
+                            "conseiller_territorial": "Conseiller territorial",
+                            "delegue_consulaire": "Délégué consulaire",
+                            "depute": "Député",
+                            "depute_europeen": "Député européen",
+                            "maire": "Maire",
+                            "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
+                            "president_conseil_communautaire": "Président du Conseil communautaire",
+                            "president_conseil_departemental": "Président du Conseil départemental",
+                            "president_conseil_regional": "Président du Conseil régional",
+                            "senateur": "Sénateur"
                         },
                         "multiple": true
                     },

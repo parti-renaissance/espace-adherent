@@ -2,8 +2,8 @@
 
 namespace App\Form\AdherentMessage;
 
+use App\Adherent\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\UserListDefinition;
 use App\Form\GenderType;
@@ -37,7 +37,7 @@ class ElectedRepresentativeFilterType extends AbstractType
             ->add('lastName', TextType::class, ['required' => false])
             ->add('mandate', ChoiceType::class, [
                 'required' => false,
-                'choices' => MandateTypeEnum::CHOICES,
+                'choices' => MandateTypeEnum::ALL,
                 'choice_label' => function (string $choice) {
                     return "elected_representative.mailchimp_tag.$choice";
                 },

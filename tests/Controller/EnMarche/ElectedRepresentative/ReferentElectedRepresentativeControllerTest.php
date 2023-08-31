@@ -94,7 +94,7 @@ class ReferentElectedRepresentativeControllerTest extends AbstractEnMarcheWebTes
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
         $form['f[labels]'] = [];
         $form['f[politicalFunctions]'] = [];
-        $form['f[mandates]'] = ['membre_EPCI', 'depute'];
+        $form['f[mandates]'] = ['conseiller_communautaire', 'depute'];
 
         $crawler = $this->client->submit($form);
 

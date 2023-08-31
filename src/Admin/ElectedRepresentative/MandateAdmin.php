@@ -2,9 +2,9 @@
 
 namespace App\Admin\ElectedRepresentative;
 
+use App\Adherent\MandateTypeEnum;
 use App\Election\VoteListNuanceEnum;
 use App\Entity\ElectedRepresentative\LaREMSupportEnum;
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Geo\Zone;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -32,7 +32,10 @@ class MandateAdmin extends AbstractAdmin
             ])
             ->add('type', ChoiceType::class, [
                 'placeholder' => '--',
-                'choices' => MandateTypeEnum::CHOICES,
+                'choices' => MandateTypeEnum::ALL,
+                'choice_label' => static function (string $choice): string {
+                    return "adherent.mandate.type.$choice";
+                },
                 'label' => 'Type',
                 'attr' => ['class' => 'width-125'],
             ])

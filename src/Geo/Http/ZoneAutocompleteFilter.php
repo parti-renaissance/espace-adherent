@@ -2,7 +2,7 @@
 
 namespace App\Geo\Http;
 
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
+use App\Adherent\MandateTypeEnum;
 use App\Entity\Geo\Zone;
 use Symfony\Component\Serializer\Annotation\Groups;
 
