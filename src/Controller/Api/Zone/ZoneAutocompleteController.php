@@ -27,21 +27,26 @@ class ZoneAutocompleteController extends AbstractZoneAutocompleteController
         ManagedZoneProvider $managedZoneProvider,
         ScopeGeneratorResolver $scopeGeneratorResolver
     ): Response {
-        if ($scope = $scopeGeneratorResolver->generate()) {
-            $managedZones = $scope->getZones();
-        } else {
-            $scopeCode = $authorizationChecker->getScope($request);
-            $user = $this->getMainUser($request->getSession());
+        $filter = $this->getFilter($request);
+        $managedZones = [];
 
-            if (!\in_array($scopeCode, ScopeEnum::NATIONAL_SCOPES, true)) {
-                $managedZones = $managedZoneProvider->getManagedZones($user, AdherentSpaceEnum::SCOPES[$scopeCode]);
+        if (!$filter->forMandateType) {
+            if ($scope = $scopeGeneratorResolver->generate()) {
+                $managedZones = $scope->getZones();
+            } else {
+                $scopeCode = $authorizationChecker->getScope($request);
+                $user = $this->getMainUser($request->getSession());
+
+                if (!\in_array($scopeCode, ScopeEnum::NATIONAL_SCOPES, true)) {
+                    $managedZones = $managedZoneProvider->getManagedZones($user, AdherentSpaceEnum::SCOPES[$scopeCode]);
+                }
             }
         }
 
         return $this->json(
             $repository->searchByFilterInsideManagedZones(
-                $this->getFilter($request),
-                $managedZones ?? [],
+                $filter,
+                $managedZones,
                 $request->query->has('noLimit') ? null : $request->query->getInt('itemsPerType', 10)
             ),
             Response::HTTP_OK,
