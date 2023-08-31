@@ -108,7 +108,7 @@ Feature:
         "is_committee_member": false,
         "has_sms_subscription": false,
         "zones": [
-          "e3efe563-906e-11eb-a875-0242ac150002"
+          "944057ca-872a-11eb-9419-42010a840019"
         ]
       },
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
@@ -138,7 +138,7 @@ Feature:
         "updated_at": "@string@.isDateTime()",
         "zones": [
           {
-            "uuid": "e3efe563-906e-11eb-a875-0242ac150002",
+            "uuid": "944057ca-872a-11eb-9419-42010a840019",
             "code": "75",
             "name": "Paris",
             "created_at": "@string@.isDateTime()",
@@ -264,11 +264,11 @@ Feature:
         "is_committee_member": false,
         "has_sms_subscription": false,
         "zones": [
-          "e3efe563-906e-11eb-a875-0242ac150002"
+          "944057ca-872a-11eb-9419-42010a840019"
         ]
       },
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-      "zone": "e3f21338-906e-11eb-a875-0242ac150002"
+      "zone": "9477b1d8-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 400
@@ -329,7 +329,7 @@ Feature:
           "uuid": "2c0f981b-4e2a-448a-a0c2-aebca3b3eb1e",
           "visibility": "local",
           "zone": {
-            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+            "uuid": "944062a9-872a-11eb-9419-42010a840019",
             "code": "92",
             "name": "Hauts-de-Seine"
           },
@@ -353,7 +353,7 @@ Feature:
           "uuid": "d687cd2a-0870-49de-ba12-468202f70099",
           "visibility": "local",
           "zone": {
-            "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
+            "uuid": "9477b1d8-872a-11eb-9419-42010a840019",
             "code": "59350",
             "name": "Lille"
           },
@@ -422,7 +422,7 @@ Feature:
       "updated_at": "@string@.isDateTime()",
       "visibility": "local",
       "zone": {
-        "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
+        "uuid": "9477b1d8-872a-11eb-9419-42010a840019",
         "code": "59350",
         "name": "Lille",
         "created_at": "@string@.isDateTime()",
@@ -468,11 +468,11 @@ Feature:
         "is_committee_member": false,
         "has_sms_subscription": false,
         "zones": [
-          "e3efe563-906e-11eb-a875-0242ac150002"
+          "944057ca-872a-11eb-9419-42010a840019"
         ]
       },
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-      "zone": "e3f21338-906e-11eb-a875-0242ac150002"
+      "zone": "9477b1d8-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 201
@@ -502,7 +502,7 @@ Feature:
             "created_at": "@string@.isDateTime()",
             "name": "Paris",
             "updated_at": "@string@.isDateTime()",
-            "uuid": "e3efe563-906e-11eb-a875-0242ac150002"
+            "uuid": "944057ca-872a-11eb-9419-42010a840019"
           }
         ]
       },
@@ -540,7 +540,7 @@ Feature:
         "created_at": "@string@.isDateTime()",
         "name": "Lille",
         "updated_at": "@string@.isDateTime()",
-        "uuid": "e3f21338-906e-11eb-a875-0242ac150002"
+        "uuid": "9477b1d8-872a-11eb-9419-42010a840019"
       }
     }
     """
@@ -614,7 +614,7 @@ Feature:
         "created_at": "@string@.isDateTime()",
         "name": "Hauts-de-Seine",
         "updated_at": "2021-04-22T12:08:51+02:00",
-        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+        "uuid": "944062a9-872a-11eb-9419-42010a840019"
       }
     }
     """
@@ -645,11 +645,11 @@ Feature:
         "is_committee_member": false,
         "has_sms_subscription": false,
         "zones": [
-          "e3efe563-906e-11eb-a875-0242ac150002"
+          "944057ca-872a-11eb-9419-42010a840019"
         ]
       },
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-      "zone": "e3f1a8e8-906e-11eb-a875-0242ac150002"
+      "zone": "944ac8ee-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 400
@@ -710,7 +710,7 @@ Feature:
         "is_committee_member": false,
         "has_sms_subscription": false,
         "zones": [
-          "e3efe563-906e-11eb-a875-0242ac150002"
+          "944057ca-872a-11eb-9419-42010a840019"
         ]
       },
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
@@ -777,7 +777,7 @@ Feature:
         "is_committee_member": false,
         "has_sms_subscription": false,
         "zones": [
-          "e3efe563-906e-11eb-a875-0242ac150002"
+          "944057ca-872a-11eb-9419-42010a840019"
         ]
       },
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
@@ -1561,7 +1561,7 @@ Feature:
         "isCommitteeMember": false,
         "hasSmsSubscription": false,
         "zones": [
-          "e3efe563-906e-11eb-a875-0242ac150002"
+          "944057ca-872a-11eb-9419-42010a840019"
         ]
       },
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
@@ -1590,7 +1590,7 @@ Feature:
         "updated_at": "@string@.isDateTime()",
         "zones": [
           {
-            "uuid": "e3efe563-906e-11eb-a875-0242ac150002",
+            "uuid": "944057ca-872a-11eb-9419-42010a840019",
             "code": "75",
             "name": "Paris",
             "created_at": "@string@.isDateTime()",
@@ -1649,7 +1649,7 @@ Feature:
         "isCommitteeMember": false,
         "hasSmsSubscription": false,
         "zones": [
-          "e3efe563-906e-11eb-a875-0242ac150002"
+          "944057ca-872a-11eb-9419-42010a840019"
         ]
       }
     }
@@ -1702,7 +1702,7 @@ Feature:
           "isCommitteeMember": false,
           "hasSmsSubscription": false,
           "zones": [
-            "e3efe563-906e-11eb-a875-0242ac150002"
+            "944057ca-872a-11eb-9419-42010a840019"
           ]
         },
         "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
@@ -1731,7 +1731,7 @@ Feature:
         "updated_at": "@string@.isDateTime()",
         "zones": [
           {
-            "uuid": "e3efe563-906e-11eb-a875-0242ac150002",
+            "uuid": "944057ca-872a-11eb-9419-42010a840019",
             "code": "75",
             "name": "Paris",
             "created_at": "@string@.isDateTime()",

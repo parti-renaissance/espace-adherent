@@ -65,6 +65,7 @@ class City implements ZoneableInterface
      * @var City|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\City")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $replacement;
 

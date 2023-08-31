@@ -5,11 +5,12 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Region;
 use App\Jecoute\RegionColorEnum;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadJecouteRegionData extends AbstractFixtures implements DependentFixtureInterface
+class LoadJecouteRegionData extends Fixture implements DependentFixtureInterface
 {
     public const REGION_1_UUID = '88275043-adb5-463a-8a62-5248fe7aacbf';
     public const REGION_2_UUID = 'c91391e9-4a08-4d14-8960-6c3508c1dddc';
@@ -20,9 +21,9 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
     {
         $manager->persist($this->createRegion(
             self::REGION_1_UUID,
-            $this->getZoneEntity($manager, 269), // geo_region_28 - Normandie
+            LoadGeoZoneData::getZoneReference($manager, 'zone_region_28'), // Normandie
             'Bienvenue en Normandie',
-            'Description de la normandie',
+            'Description de la Normandie',
             RegionColorEnum::RED,
             'region-logo.jpg',
             'region-banner.jpg',
@@ -31,7 +32,7 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
 
         $manager->persist($this->createRegion(
             self::REGION_2_UUID,
-            $this->getZoneEntity($manager, 265), // geo_region_32 - Hauts-de-France
+            LoadGeoZoneData::getZoneReference($manager, 'zone_region_32'), // Hauts-de-France
             'Bienvenue en Hauts-de-France',
             'Description des Hauts-de-France',
             RegionColorEnum::GREEN,
@@ -42,7 +43,7 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
 
         $manager->persist($this->createRegion(
             self::REGION_3_UUID,
-            $this->getZoneEntity($manager, 266), // geo_region_93 - Provence-Alpes-Côte d'Azur
+            LoadGeoZoneData::getZoneReference($manager, 'zone_region_93'), // Provence-Alpes-Côte d'Azur
             'Bienvenue en PACA',
             'Description PACA',
             RegionColorEnum::BLUE,
@@ -51,7 +52,7 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
 
         $manager->persist($this->createRegion(
             self::REGION_4_UUID,
-            $this->getZoneEntity($manager, 81), // geo_country_FR - France
+            LoadGeoZoneData::getZoneReference($manager, 'zone_country_FR'), // France
             'Campagne nationale',
             'Description de la campagne nationale',
             RegionColorEnum::PURPLE,

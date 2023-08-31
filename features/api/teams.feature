@@ -207,7 +207,7 @@ Feature:
     """
     {
       "name": "Nouvelle équipe locale de phoning",
-      "zone": "e3f21338-906e-11eb-a875-0242ac150002"
+      "zone": "9477b1d8-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 400
@@ -262,7 +262,7 @@ Feature:
           "zone": {
             "code": "59350",
             "name": "Lille",
-            "uuid": "e3f21338-906e-11eb-a875-0242ac150002"
+            "uuid": "9477b1d8-872a-11eb-9419-42010a840019"
           },
           "members_count": 1,
           "creator": "Admin"
@@ -275,7 +275,7 @@ Feature:
           "zone": {
             "code": "92",
             "name": "Hauts-de-Seine",
-            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+            "uuid": "944062a9-872a-11eb-9419-42010a840019"
           },
           "members_count": 1,
           "creator": "Admin"
@@ -302,7 +302,7 @@ Feature:
       "zone": {
         "code": "59350",
         "name": "Lille",
-        "uuid": "e3f21338-906e-11eb-a875-0242ac150002"
+        "uuid": "9477b1d8-872a-11eb-9419-42010a840019"
       },
       "members": [
         {
@@ -327,7 +327,7 @@ Feature:
     """
     {
       "name": "Nouvelle équipe locale de phoning dans le 92 <title>",
-      "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+      "zone": "944062a9-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 201
@@ -341,7 +341,7 @@ Feature:
       "zone": {
         "code": "92",
         "name": "Hauts-de-Seine",
-        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+        "uuid": "944062a9-872a-11eb-9419-42010a840019"
       },
       "creator": "Referent Referent",
       "members": []
@@ -368,7 +368,7 @@ Feature:
       "name": "Equipe d'appel - 59",
       "visibility": "local",
       "zone": {
-        "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
+        "uuid": "9477b1d8-872a-11eb-9419-42010a840019",
         "code": "59350",
         "name": "Lille"
       },
@@ -393,7 +393,7 @@ Feature:
     """
     {
       "name": "Nouvelle équipe locale de phoning dans le 92",
-      "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+      "zone": "944062a9-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 400
@@ -477,7 +477,7 @@ Feature:
     """
     {
       "name": "Nouvelle équipe locale de phoning dans le 92",
-      "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+      "zone": "944062a9-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 401
@@ -531,7 +531,7 @@ Feature:
     """
     {
       "name": "Équipe locale du département 92",
-      "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+      "zone": "944062a9-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 400
@@ -556,7 +556,7 @@ Feature:
     """
     {
       "name": "Première équipe de phoning",
-      "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+      "zone": "944062a9-872a-11eb-9419-42010a840019"
     }
     """
     Then the response status code should be 201

@@ -286,14 +286,14 @@ Feature:
 
     Scenario: As a user granted with local scope, I can get geo zone available for a new committee
         Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        And I send a "GET" request to "/api/v3/zone/autocomplete?scope=referent&q=Hauts&availableForCommittee=true"
+        And I send a "GET" request to "/api/v3/zone/autocomplete?scope=referent&q=Hauts de Flandre&availableForCommittee=true"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
         """
         [
             {
-                "uuid": "e3f17cac-906e-11eb-a875-0242ac150002",
+                "uuid": "94966e3d-872a-11eb-9419-42010a840019",
                 "type": "city_community",
                 "postal_code": [],
                 "code": "200040954",
@@ -311,7 +311,7 @@ Feature:
         """
         [
             {
-                "uuid": "e3f2c5ec-906e-11eb-a875-0242ac150002",
+                "uuid": "94938d80-872a-11eb-9419-42010a840019",
                 "type": "city",
                 "postal_code": ["92260"],
                 "code": "92032",
@@ -325,9 +325,9 @@ Feature:
             "name": "test 1",
             "description": "my desc",
             "zones": [
-                "e3f154b1-906e-11eb-a875-0242ac150002",
-                "e3f2c5ec-906e-11eb-a875-0242ac150002",
-                "e3f2cb17-906e-11eb-a875-0242ac150002"
+                "94463aee-872a-11eb-9419-42010a840019",
+                "94938d80-872a-11eb-9419-42010a840019",
+                "949393bc-872a-11eb-9419-42010a840019"
             ]
         }
         """
@@ -367,7 +367,7 @@ Feature:
             "name": "test 1",
             "description": "my desc",
             "zones": [
-                "e3f0ebd6-906e-11eb-a875-0242ac150002"
+                "94418bb1-872a-11eb-9419-42010a840019"
             ]
         }
         """

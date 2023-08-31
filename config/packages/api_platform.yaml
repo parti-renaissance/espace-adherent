@@ -9,6 +9,7 @@ api_platform:
     metadata_backward_compatibility_layer: false
     exception_to_status:
         ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException: 400
+        ApiPlatform\Exception\ItemNotFoundException: 400
     formats:
         json:
             mime_types: ['application/json']

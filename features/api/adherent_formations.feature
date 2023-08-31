@@ -15,7 +15,7 @@ Feature:
         "content_type": "link",
         "link": "https://renaissance.code/",
         "published": true,
-        "zone": "e3efe5c5-906e-11eb-a875-0242ac150002",
+        "zone": "94405a9c-872a-11eb-9419-42010a840019",
         "position": 4
     }
     """
@@ -34,7 +34,7 @@ Feature:
         "print_count": 0,
         "visibility": "local",
         "zone": {
-            "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+            "uuid": "94405a9c-872a-11eb-9419-42010a840019",
             "code": "77",
             "name": "Seine-et-Marne"
         },
@@ -73,7 +73,7 @@ Feature:
                 "print_count": 0,
                 "visibility": "local",
                 "zone": {
-                    "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                    "uuid": "94405a9c-872a-11eb-9419-42010a840019",
                     "code": "77",
                     "name": "Seine-et-Marne"
                 },
@@ -90,7 +90,7 @@ Feature:
                 "print_count": 0,
                 "visibility": "local",
                 "zone": {
-                    "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                    "uuid": "94405a9c-872a-11eb-9419-42010a840019",
                     "code": "77",
                     "name": "Seine-et-Marne"
                 },

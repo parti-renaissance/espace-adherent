@@ -11,7 +11,7 @@ Feature:
     {
       "first_name": "Rémi",
       "email_address": "new-light-user@en-marche-dev.fr",
-      "zone": "e3f19d3c-906e-11eb-a875-0242ac150002",
+      "zone": "944aa68b-872a-11eb-9419-42010a840019",
       "source": "coalitions",
       "coalition_subscription": false,
       "cause_subscription": true,
@@ -55,7 +55,7 @@ Feature:
     {
       "first_name": "Rémi",
       "email_address": "carl999@example.fr",
-      "zone": "e3f19d3c-906e-11eb-a875-0242ac150002",
+      "zone": "944aa68b-872a-11eb-9419-42010a840019",
       "source": "coalitions"
     }
     """
