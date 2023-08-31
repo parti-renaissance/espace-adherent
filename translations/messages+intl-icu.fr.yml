@@ -914,10 +914,10 @@ elected_representative:
         adherent: Adhérent(e)
         # Mandate
         depute_europeen: "[M] Député européen"
-        enateur: "[M] Sénateur"
+        senateur: "[M] Sénateur"
         depute: "[M] Député"
         president_conseil_regional: "[M] Président du Conseil régional"
-        onseiller_regional: "[M] Conseiller régional"
+        conseiller_regional: "[M] Conseiller régional"
         president_conseil_departemental: "[M] Président du Conseil départemental"
         conseiller_departemental: "[M] Conseiller départemental"
         conseiller_territorial: "[M] Conseiller territorial"
