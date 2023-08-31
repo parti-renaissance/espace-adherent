@@ -6,7 +6,6 @@ use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\Api\Filter\EventsGroupSourceFilter;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
@@ -56,7 +55,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
 
         $alias = $queryBuilder->getRootAliases()[0];
 
-        if (BaseEvent::class === $resourceClass && empty($context['filters'][EventsGroupSourceFilter::PROPERTY_NAME])) {
+        if (BaseEvent::class === $resourceClass) {
             $allowedTypes = [
                 EventTypeEnum::TYPE_DEFAULT,
                 EventTypeEnum::TYPE_COMMITTEE,

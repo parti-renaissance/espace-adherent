@@ -20,7 +20,7 @@ class JeMengageMembershipRequest extends AbstractMembershipRequest
      *     maxMessage="common.first_name.max_length"
      * )
      *
-     * @Groups({"merbership:write"})
+     * @Groups({"membership:write"})
      */
     public ?string $lastName = null;
 
@@ -31,35 +31,35 @@ class JeMengageMembershipRequest extends AbstractMembershipRequest
      *     message="common.gender.invalid_choice",
      * )
      *
-     * @Groups({"merbership:write"})
+     * @Groups({"membership:write"})
      */
     public ?string $gender = null;
 
     /**
      * @Assert\NotBlank(message="common.birthdate.not_blank")
      *
-     * @Groups({"merbership:write"})
+     * @Groups({"membership:write"})
      */
     public ?\DateTimeInterface $birthdate = null;
 
     /**
      * @Assert\Country(message="common.nationality.invalid")
      *
-     * @Groups({"merbership:write"})
+     * @Groups({"membership:write"})
      */
     public ?string $nationality = null;
 
     /**
      * @AssertPhoneNumber
      *
-     * @Groups({"merbership:write"})
+     * @Groups({"membership:write"})
      */
     public ?PhoneNumber $phone = null;
 
     /**
      * @Assert\Valid
      *
-     * @Groups({"merbership:write"})
+     * @Groups({"membership:write"})
      */
     public ?Address $address = null;
 

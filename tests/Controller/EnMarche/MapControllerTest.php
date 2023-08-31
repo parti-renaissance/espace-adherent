@@ -21,7 +21,7 @@ class MapControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("La carte des comités")')->count());
-        $this->assertStringContainsString('75 adhérents', $crawler->filter('#counter-adherents')->text());
+        $this->assertStringContainsString('76 adhérents', $crawler->filter('#counter-adherents')->text());
         $this->assertStringContainsString('13 comités', $crawler->filter('#counter-committees')->text());
         $this->assertStringContainsString('18 événements', $crawler->filter('#counter-events')->text());
     }
@@ -36,7 +36,7 @@ class MapControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("La carte des comités")')->count());
-        $this->assertStringContainsString('75 adhérents', $crawler->filter('#counter-adherents')->text());
+        $this->assertStringContainsString('76 adhérents', $crawler->filter('#counter-adherents')->text());
         $this->assertStringContainsString('13 comités', $crawler->filter('#counter-committees')->text());
         $this->assertStringContainsString('19 événements', $crawler->filter('#counter-events')->text());
 

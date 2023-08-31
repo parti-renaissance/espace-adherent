@@ -10,7 +10,6 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
-use App\Api\Filter\EventsGroupSourceFilter;
 use App\Api\Filter\EventsZipCodeFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Filter\MyCreatedEventsFilter;
@@ -179,7 +178,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ApiFilter(InZoneOfScopeFilter::class)
- * @ApiFilter(EventsGroupSourceFilter::class)
  * @ApiFilter(MyCreatedEventsFilter::class)
  * @ApiFilter(MySubscribedEventsFilter::class)
  * @ApiFilter(OrderEventsBySubscriptionsFilter::class)

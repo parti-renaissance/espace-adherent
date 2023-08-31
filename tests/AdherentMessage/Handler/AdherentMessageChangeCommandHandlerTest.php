@@ -716,7 +716,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'senator' => 6,
                         'candidate' => 7,
                         'candidate_jecoute' => 8,
-                        'coalitions' => 9,
                         'correspondent' => 10,
                         'regional_coordinator' => 11,
                     ],

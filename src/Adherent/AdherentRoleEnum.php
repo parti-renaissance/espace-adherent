@@ -49,9 +49,6 @@ class AdherentRoleEnum extends Enum
     public const DELEGATED_CANDIDATE_REGIONAL_LEADER = 'delegated_candidate_regional_leader';
     public const DELEGATED_CANDIDATE_DEPARTMENTAL = 'delegated_candidate_departmental';
 
-    public const COALITION_MODERATOR = 'coalition_moderator';
-    public const CAUSE_AUTHOR = 'cause_author';
-
     public const ROLE_PHONING_MANAGER = 'role_phoning_manager';
     public const ROLE_PAP_NATIONAL_MANAGER = 'role_pap_national_manager';
     public const ROLE_PAP_USER = 'role_pap_user';

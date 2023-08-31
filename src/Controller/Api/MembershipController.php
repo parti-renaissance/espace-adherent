@@ -33,7 +33,7 @@ class MembershipController extends AbstractController
             throw $this->createAccessDeniedException('Logged in users can not create account.');
         }
 
-        $membershipRequest = $handler->initialiseMembershipRequest($request->query->get('source', MembershipSourceEnum::COALITIONS));
+        $membershipRequest = $handler->initialiseMembershipRequest($request->query->get('source', MembershipSourceEnum::RENAISSANCE));
 
         $serializer->deserialize(
             $request->getContent(),
@@ -41,7 +41,7 @@ class MembershipController extends AbstractController
             JsonEncoder::FORMAT,
             [
                 AbstractNormalizer::OBJECT_TO_POPULATE => $membershipRequest,
-                AbstractNormalizer::GROUPS => ['merbership:write'],
+                AbstractNormalizer::GROUPS => ['membership:write'],
             ]
         );
 

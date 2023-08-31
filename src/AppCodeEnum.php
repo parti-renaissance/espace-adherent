@@ -8,7 +8,6 @@ final class AppCodeEnum extends Enum
 {
     public const PLATFORM = 'platform';
     public const RENAISSANCE = 'renaissance';
-    public const COALITIONS = 'coalitions';
     public const JEMENGAGE = 'jemengage';
     public const JEMENGAGE_WEB = 'jemengage_web';
     public const JEMENGAGE_MOBILE = 'jemengage_mobile';

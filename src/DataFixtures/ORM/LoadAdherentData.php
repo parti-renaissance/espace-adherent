@@ -1056,10 +1056,10 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1942-01-10',
             'registered_at' => '2017-01-25 19:31:45',
-            'is_adherent' => false,
+            'is_adherent' => true,
         ]));
         $adherent->activate(AdherentActivationToken::generate($adherent));
-        $adherent->setSource(MembershipSourceEnum::COALITIONS);
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
         $this->addReference('coalitions-user-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([

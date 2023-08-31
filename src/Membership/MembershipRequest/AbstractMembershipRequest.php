@@ -18,7 +18,7 @@ abstract class AbstractMembershipRequest implements MembershipInterface
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      * @BannedAdherent
      *
-     * @Groups({"merbership:write"})
+     * @Groups({"membership:write"})
      */
     protected ?string $emailAddress = null;
 
@@ -30,24 +30,24 @@ abstract class AbstractMembershipRequest implements MembershipInterface
      *     maxMessage="common.first_name.max_length"
      * )
      *
-     * @Groups({"merbership:write"})
+     * @Groups({"membership:write"})
      */
     public ?string $firstName = null;
 
     /**
      * @Assert\IsTrue(message="common.cgu.not_accepted", groups={"Default", "membership_request_amount"})
      *
-     * @Groups({"merbership:write"})
+     * @Groups({"membership:write"})
      */
     public bool $cguAccepted = false;
 
     /**
-     * @Groups({"merbership:write"})
+     * @Groups({"membership:write"})
      */
     public ?bool $allowEmailNotifications = null;
 
     /**
-     * @Groups({"merbership:write"})
+     * @Groups({"membership:write"})
      */
     public ?bool $allowMobileNotifications = null;
 
