@@ -4,8 +4,6 @@ namespace App\Admin;
 
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CauseEvent;
-use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\EventCategory;
@@ -269,9 +267,7 @@ class EventAdmin extends AbstractAdmin
                     $qb
                         ->leftJoin(CommitteeEvent::class, 'committeeEvent', Join::WITH, 'committeeEvent.id = '.$alias.'.id')
                         ->leftJoin(DefaultEvent::class, 'defaultEvent', Join::WITH, 'defaultEvent.id = '.$alias.'.id')
-                        ->leftJoin(CauseEvent::class, 'causeEvent', Join::WITH, 'causeEvent.id = '.$alias.'.id')
-                        ->leftJoin(CoalitionEvent::class, 'coalitionEvent', Join::WITH, 'coalitionEvent.id = '.$alias.'.id')
-                        ->leftJoin(EventCategory::class, 'eventCategory', Join::WITH, 'eventCategory = committeeEvent.category OR eventCategory = defaultEvent.category OR eventCategory = causeEvent.category OR eventCategory = coalitionEvent.category')
+                        ->leftJoin(EventCategory::class, 'eventCategory', Join::WITH, 'eventCategory = committeeEvent.category OR eventCategory = defaultEvent.category')
                         ->andWhere('eventCategory IN (:category)')
                         ->setParameter('category', $value->getValue())
                     ;

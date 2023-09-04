@@ -143,7 +143,6 @@ correspondent: Correspondant
 regional_coordinator: coordinateur régional
 president_departmental_assembly: Président assemblée départementale
 thematic_community_chief: Responsable Thématique
-coalition_moderator: Responsables des coalitions
 role_phoning_manager: Responsable phoning
 role_pap_national_manager: Responsable National PAP
 role_pap_user: Utilisateur PAP app mobile
@@ -538,8 +537,6 @@ event.cancel: Annuler l'événement
 event.manage_participants: Gérer les participants
 event.back_to_list: Retour à la liste des événements
 event.personal_data_collect: J’accepte que LaREM traite mes données personnelles ci-dessus et les partage avec l’organisateur de l’événement {organisator_name}
-event_type.cause: Cause
-event_type.coalition: Coalition
 event_type.municipal: Municipal
 event_type.committee: Comité
 event_type.default: Standard
@@ -1324,13 +1321,6 @@ file_permission.candidate_departmental: Candidat aux départementales
 file.type.directory: Dossier
 file.type.file: Fichier
 file.type.external_link: Lien externe
-
-#
-# Coalition / Cause
-#
-cause.pending: En attente
-cause.approved: Approuvée
-cause.refused: Refusée
 
 #
 # Procuration

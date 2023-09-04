@@ -3,7 +3,6 @@
 namespace Tests\App\Controller\Api;
 
 use App\DataFixtures\ORM\LoadInternalApiApplicationData;
-use App\Event\EventTypeEnum;
 use App\Scope\ScopeEnum;
 use League\OAuth2\Server\CryptKey;
 use PHPUnit\Framework\Attributes\Group;
@@ -22,13 +21,6 @@ class InternalApiProxyControllerTest extends AbstractApiTestCase
 
     /** @var CryptKey */
     private $privateCryptKey;
-
-    public function testGetCausesWithApiProxyReturnDeniedAccessIfNoToken(): void
-    {
-        $this->client->request(Request::METHOD_GET, sprintf('/api/v3/internal/%s/foo/bar', LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_03_UUID));
-
-        $this->assertResponseStatusCode(Response::HTTP_UNAUTHORIZED, $this->client->getResponse());
-    }
 
     public function testGetEventsReturnValidJsonResponse(): void
     {
@@ -109,29 +101,6 @@ class InternalApiProxyControllerTest extends AbstractApiTestCase
 
         $this->client->request(Request::METHOD_GET, $url, [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
-    }
-
-    public function testAnAdherentCanCreateCoalitionEventWithProxy()
-    {
-        $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
-
-        $url = sprintf('/api/v3/internal/%s/api/v3/events', LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_03_UUID);
-
-        $this->client->request(Request::METHOD_POST, $url, [], [], [
-            'CONTENT_TYPE' => 'application/json',
-            'HTTP_AUTHORIZATION' => "Bearer $accessToken",
-        ], json_encode([
-            'type' => EventTypeEnum::TYPE_COALITION,
-            'name' => 'My event',
-            'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-            'time_zone' => 'Europe/Paris',
-            'begin_at' => (new \DateTime('+5 days'))->format('Y-m-d').' 10:30:00',
-            'finish_at' => (new \DateTime('+5 days'))->format('Y-m-d').' 16:30:00',
-            'visio_url' => 'https://en-marche.fr/reunions/123',
-            'coalition' => 'fc7fd104-71e5-4399-a874-f8fe752f846b',
-        ]));
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
     }
 
     protected function setUp(): void

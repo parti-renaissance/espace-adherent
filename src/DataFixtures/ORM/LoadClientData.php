@@ -160,7 +160,6 @@ class LoadClientData extends Fixture
             [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
-        $client11->setCode(AppCodeEnum::COALITIONS);
         $client11->addSupportedScope(Scope::WRITE_EVENT);
         $client11->addSupportedScope(Scope::READ_PROFILE);
         $client11->addSupportedScope(Scope::WRITE_PROFILE);

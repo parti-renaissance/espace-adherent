@@ -81,13 +81,8 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "adherent: Ce militant ne peut pas être ajouter à l'équipe.\nadherent: Le militant choisi ne fait pas partie de la zone géographique que vous gérez.\nrole: Ce poste n'est pas valide.\nscope_features: Une ou plusieurs des accès délégués ne sont pas valides.",
+        "detail": "adherent: Le militant choisi ne fait pas partie de la zone géographique que vous gérez.\nrole: Ce poste n'est pas valide.\nscope_features: Une ou plusieurs des accès délégués ne sont pas valides.",
         "violations": [
-            {
-                "code": null,
-                "propertyPath": "adherent",
-                "message": "Ce militant ne peut pas être ajouter à l'équipe."
-            },
             {
                 "code": null,
                 "message": "Le militant choisi ne fait pas partie de la zone géographique que vous gérez.",

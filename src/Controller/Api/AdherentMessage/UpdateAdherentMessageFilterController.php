@@ -4,9 +4,7 @@ namespace App\Controller\Api\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageManager;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
-use App\Entity\AdherentMessage\CoalitionsMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
-use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Scope\ScopeGeneratorResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,11 +37,7 @@ class UpdateAdherentMessageFilterController extends AbstractController
         }
 
         if (!$filter = $data->getFilter()) {
-            if ($data instanceof CoalitionsMessage) {
-                $filter = new CoalitionsFilter();
-            } else {
-                $filter = new AudienceFilter();
-            }
+            $filter = new AudienceFilter();
         }
 
         $filter->reset();

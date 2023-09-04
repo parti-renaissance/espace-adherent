@@ -3,7 +3,6 @@
 namespace App\Mailchimp;
 
 use App\AdherentMessage\DynamicSegmentInterface;
-use App\Coalition\CoalitionMemberValueObject;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -24,7 +23,6 @@ use App\Mailchimp\MailchimpSegment\SegmentRequestBuilder;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInterface;
-use App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder;
 use App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
 use App\Mailchimp\Synchronisation\RequestBuilder;
 use App\Newsletter\NewsletterTypeEnum;
@@ -206,29 +204,6 @@ class Manager implements LoggerAwareInterface
             $requestBuilder->buildMemberRequest($emailAddress),
             $listId
         );
-    }
-
-    public function editCoalitionMember(CoalitionMemberValueObject $contact): void
-    {
-        $listId = $this->mailchimpObjectIdMapping->getCoalitionsListId();
-        $requestBuilder = $this->requestBuildersLocator->get(CoalitionMemberRequestBuilder::class);
-        $email = $contact->getEmail();
-
-        $result = $this->driver->editMember(
-            $requestBuilder
-                ->updateFromValueObject($contact)
-                ->build($email),
-            $listId
-        );
-
-        if ($result) {
-            $currentTags = $this->driver->getMemberTags($email, $listId);
-
-            $this->driver->updateMemberTags(
-                $requestBuilder->createMemberTagsRequest($email, $currentTags),
-                $listId
-            );
-        }
     }
 
     public function getCampaignContent(MailchimpCampaign $campaign): string
@@ -448,11 +423,6 @@ class Manager implements LoggerAwareInterface
     public function deleteNewsletterMember(string $mail): void
     {
         $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getNewsletterListId());
-    }
-
-    public function deleteCoalitionMember(string $mail): void
-    {
-        $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getCoalitionsListId());
     }
 
     public function deleteApplicationRequestCandidate(string $mail): void

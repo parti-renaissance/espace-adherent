@@ -10,7 +10,6 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
-use App\Api\Filter\EventsGroupSourceFilter;
 use App\Api\Filter\EventsZipCodeFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Filter\MyCreatedEventsFilter;
@@ -74,8 +73,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorMap({
  *     EventTypeEnum::TYPE_DEFAULT: "DefaultEvent",
  *     EventTypeEnum::TYPE_COMMITTEE: "CommitteeEvent",
- *     EventTypeEnum::TYPE_COALITION: "CoalitionEvent",
- *     EventTypeEnum::TYPE_CAUSE: "CauseEvent",
  * })
  *
  * @DateRange(
@@ -181,7 +178,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ApiFilter(InZoneOfScopeFilter::class)
- * @ApiFilter(EventsGroupSourceFilter::class)
  * @ApiFilter(MyCreatedEventsFilter::class)
  * @ApiFilter(MySubscribedEventsFilter::class)
  * @ApiFilter(OrderEventsBySubscriptionsFilter::class)
@@ -781,11 +777,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function getReportType(): string
     {
         return ReportType::COMMUNITY_EVENT;
-    }
-
-    public function isCoalitionsEvent(): bool
-    {
-        return false;
     }
 
     public function needNotifyForRegistration(): bool

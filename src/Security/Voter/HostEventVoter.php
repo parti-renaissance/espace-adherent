@@ -37,10 +37,6 @@ class HostEventVoter extends AbstractAdherentVoter
             return true;
         }
 
-        if ($event->isCoalitionsEvent()) {
-            return $adherent->isCoalitionModerator();
-        }
-
         if ($event instanceof CommitteeEvent) {
             if (!$committee = $event->getCommittee()) {
                 return false;

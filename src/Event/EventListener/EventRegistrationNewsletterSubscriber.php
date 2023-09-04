@@ -2,8 +2,6 @@
 
 namespace App\Event\EventListener;
 
-use App\Entity\Event\CauseEvent;
-use App\Entity\Event\CoalitionEvent;
 use App\Entity\NewsletterSubscription;
 use App\Event\EventRegistrationEvent;
 use App\Events;
@@ -42,9 +40,6 @@ class EventRegistrationNewsletterSubscriber implements EventSubscriberInterface
         $registration = $event->getRegistration();
 
         $registrationEvent = $registration->getEvent();
-        if ($registrationEvent instanceof CauseEvent || $registrationEvent instanceof CoalitionEvent) {
-            return;
-        }
 
         if (!$registration->isNewsletterSubscriber()) {
             return;

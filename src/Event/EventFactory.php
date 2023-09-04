@@ -6,7 +6,6 @@ use App\Address\Address;
 use App\Address\AddressInterface;
 use App\Address\PostAddressFactory;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Geo\ZoneMatcher;
@@ -99,11 +98,6 @@ class EventFactory
                     $command->getCapacity(),
                     $command->isForLegislatives()
                 );
-                break;
-            case CoalitionEvent::class:
-                /** @var CoalitionEvent $event */
-                $event = new CoalitionEvent($command->getUuid());
-                $event->setCoalition($command->getCoalition());
                 break;
             default:
                 $event = new DefaultEvent($command->getUuid());

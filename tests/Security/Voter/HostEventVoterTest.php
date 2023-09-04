@@ -32,22 +32,6 @@ class HostEventVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(true, true, $adherent, EventPermissions::HOST, $event);
     }
 
-    public function testAdherentIsGrantedIfCoalitionsEventAndCoalitionModerator()
-    {
-        $adherent = $this->getAdherentMock(false, true);
-        $event = $this->getEventMock($adherent, null, null, true);
-
-        $this->assertGrantedForAdherent(true, true, $adherent, EventPermissions::HOST, $event);
-    }
-
-    public function testAdherentIsNotGrantedIfNotCoalitionAndCoalitionModerator()
-    {
-        $adherent = $this->getAdherentMock(false, true);
-        $event = $this->getEventMock($adherent, null, null, true);
-
-        $this->assertGrantedForAdherent(true, true, $adherent, EventPermissions::HOST, $event);
-    }
-
     public function testAdherentIsNotGrantedIfNotCommitteeEvent()
     {
         $adherent = $this->getAdherentMock();
@@ -56,19 +40,10 @@ class HostEventVoterTest extends AbstractAdherentVoterTestCase
         $this->assertGrantedForAdherent(false, true, $adherent, EventPermissions::HOST, $event);
     }
 
-    public function testAdherentIsGranted()
-    {
-        $committee = $this->getCommitteeMock();
-        $adherent = $this->getAdherentMock(null, false, true, $committee);
-        $event = $this->getEventMock(null, true, $committee);
-
-        $this->assertGrantedForAdherent(true, true, $adherent, EventPermissions::HOST, $event);
-    }
-
     public function testAdherentIsNotGranted()
     {
         $committee = $this->getCommitteeMock();
-        $adherent = $this->getAdherentMock(null, false, false, $committee);
+        $adherent = $this->getAdherentMock(null, false, $committee);
         $event = $this->getEventMock(null, true, $committee);
 
         $this->assertGrantedForAdherent(false, true, $adherent, EventPermissions::HOST, $event);
@@ -79,7 +54,6 @@ class HostEventVoterTest extends AbstractAdherentVoterTestCase
      */
     private function getAdherentMock(
         bool $isOrganizer = null,
-        bool $isCoalitionModerator = null,
         bool $isHost = null,
         Committee $committee = null
     ): Adherent {
@@ -105,13 +79,6 @@ class HostEventVoterTest extends AbstractAdherentVoterTestCase
             ;
         }
 
-        if (null !== $isCoalitionModerator) {
-            $adherent->expects($this->any())
-                ->method('isCoalitionModerator')
-                ->willReturn($isCoalitionModerator)
-            ;
-        }
-
         return $adherent;
     }
 
@@ -121,19 +88,13 @@ class HostEventVoterTest extends AbstractAdherentVoterTestCase
     private function getEventMock(
         ?Adherent $organizer,
         bool $committeeEvent = null,
-        Committee $committee = null,
-        bool $isCoalitionsEvent = false
+        Committee $committee = null
     ): CommitteeEvent {
         $event = $this->createMock(CommitteeEvent::class);
 
         $event->expects($organizer ? $this->exactly(2) : $this->once())
             ->method('getOrganizer')
             ->willReturn($organizer ? $organizer : null)
-        ;
-
-        $event->expects($this->any())
-            ->method('isCoalitionsEvent')
-            ->willReturn($isCoalitionsEvent)
         ;
 
         if (null !== $committeeEvent) {

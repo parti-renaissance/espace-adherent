@@ -59,8 +59,7 @@
                 is_granted('ROLE_ASSESSOR_MANAGER') or
                 is_granted('ROLE_JECOUTE_MANAGER') or
                 is_granted('ROLE_ASSESSOR') or
-                is_granted('ROLE_ELECTION_RESULTS_REPORTER') or
-                is_granted('ROLE_COALITION_MODERATOR')
+                is_granted('ROLE_ELECTION_RESULTS_REPORTER')
             %}
                 {% set totalSections =
                     (app.user.isSupervisor or app.user.isHost) +
@@ -72,8 +71,7 @@
                     app.user.isAssessorManager +
                     app.user.isJecouteManager +
                     app.user.isAssessor +
-                    app.user.isElectionResultsReporter +
-                    app.user.isCoalitionModerator
+                    app.user.isElectionResultsReporter
                 %}
                 <div class="em-nav__menu em-nav__menu--mobile">
                     <div class="b__nudge--bottom">

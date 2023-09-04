@@ -11,13 +11,11 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CandidateJecouteMessage;
-use App\Entity\AdherentMessage\CoalitionsMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
-use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
@@ -25,15 +23,12 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
-use App\Entity\Coalition\Cause;
-use App\Entity\Coalition\Coalition;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\ContentSection\BasicMessageSectionBuilder;
-use App\Mailchimp\Campaign\ContentSection\CoalitionMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder;
 use App\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber;
@@ -44,8 +39,6 @@ use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentInterestConditionBuil
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentRegistrationDateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentSegmentConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentZoneConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\CoalitionsConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\CoalitionsNotificationConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\CommitteeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactAgeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactCityConditionBuilder;
@@ -536,79 +529,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
         $this->createHandler($message)($this->commandDummy);
     }
 
-    public function testCoalitionsMessageGeneratesGoodPayloads(): void
-    {
-        $message = $this->preparedMessage(CoalitionsMessage::class);
-        $message->setFilter(new CoalitionsFilter($cause = new Cause()));
-        $cause->setName('Cause name');
-        $cause->setCoalition($this->createConfiguredMock(Coalition::class, [
-            'getName' => 'Coalition name',
-        ]));
-        $cause->setAuthor($this->adherentDummy);
-        $cause->setMailchimpId(123);
-
-        (new GenericMailchimpCampaignHandler())->handle($message);
-
-        $series = [
-            ['POST', '/3.0/campaigns', ['json' => [
-                'type' => 'regular',
-                'settings' => [
-                    'template_id' => 9,
-                    'subject_line' => '✊ Subject',
-                    'title' => 'Full Name - '.date('d/m/Y'),
-                    'reply_to' => 'contact@pourunecause.fr',
-                    'from_name' => 'Full Name',
-                ],
-                'recipients' => [
-                    'list_id' => 'coalitions_list_id',
-                    'segment_opts' => [
-                        'match' => 'all',
-                        'conditions' => [
-                            [
-                                'condition_type' => 'StaticSegment',
-                                'op' => 'static_is',
-                                'field' => 'static_segment',
-                                'value' => 123,
-                            ],
-                            [
-                                'condition_type' => 'Interests',
-                                'op' => 'interestcontainsall',
-                                'field' => 'interests-D',
-                                'value' => [1],
-                            ],
-                        ],
-                    ],
-                ],
-            ]]],
-            ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
-                'template' => [
-                    'id' => 9,
-                    'sections' => [
-                        'content' => 'Content',
-                        'coalition_name' => 'Coalition name',
-                        'cause_name' => 'Cause name',
-                        'author_full_name' => 'Full Name',
-                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre à Full Name</a>',
-                    ],
-                ],
-            ]]],
-        ];
-
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (...$args) use (&$series) {
-                $expectedArgs = array_shift($series);
-                $this->assertSame($expectedArgs, $args);
-
-                return $this->createMockResponse(json_encode(['id' => 'campaign_id1']));
-            })
-        ;
-
-        $this->createHandler($message)($this->commandDummy);
-    }
-
     public function testCorrespondentMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(CorrespondentAdherentMessage::class);
@@ -781,7 +701,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'application_request_candidate_list_id',
                     'jecoute_list_id',
                     'jemengage_list_id',
-                    'coalitions_list_id',
                     'newsletter_legislative_candidate_list_id',
                     'newsletter_renaissance_list_id',
                     [
@@ -797,7 +716,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'senator' => 6,
                         'candidate' => 7,
                         'candidate_jecoute' => 8,
-                        'coalitions' => 9,
                         'correspondent' => 10,
                         'regional_coordinator' => 11,
                     ],
@@ -810,14 +728,9 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'deputy_email' => 7,
                         'senator_email' => 8,
                     ],
-                    [
-                        'cause_subscription' => 1,
-                        'coalition_subscription' => 2,
-                    ],
                     'A',
                     'B',
                     'C',
-                    'D',
                     [
                         'running_mate' => 123,
                         'volunteer' => 345,
@@ -834,8 +747,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     new AdherentRegistrationDateConditionBuilder(),
                     new AdherentSegmentConditionBuilder($this->mailchimpMapping),
                     new AdherentZoneConditionBuilder($this->mailchimpMapping),
-                    new CoalitionsConditionBuilder($this->mailchimpMapping),
-                    new CoalitionsNotificationConditionBuilder($this->mailchimpMapping),
                     new CommitteeConditionBuilder($this->mailchimpMapping),
                     new ContactNameConditionBuilder(),
                     new ContactAgeConditionBuilder(),
@@ -860,7 +771,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             new CommitteeMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://committee_url'])),
             new BasicMessageSectionBuilder(),
             new DeputyMessageSectionBuilder(),
-            new CoalitionMessageSectionBuilder(),
         ];
     }
 

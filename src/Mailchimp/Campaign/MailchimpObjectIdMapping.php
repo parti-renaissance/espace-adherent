@@ -13,17 +13,14 @@ class MailchimpObjectIdMapping
     private $applicationRequestCandidateListId;
     private $jecouteListId;
     private $jeMengageListId;
-    private $coalitionsListId;
     private $newsletterLegislativeCandidateListId;
     private $newsletterRenaissanceListId;
     private $folderIds;
     private $templateIds;
     private $interestIds;
-    private $coalitionsInterestIds;
     private $memberGroupInterestGroupId;
     private $memberInterestInterestGroupId;
     private $subscriptionTypeInterestGroupId;
-    private $coalitionsNotificationInterestGroupId;
     private $applicationRequestTagIds;
     private $newsletterTagIds;
 
@@ -34,17 +31,14 @@ class MailchimpObjectIdMapping
         string $applicationRequestCandidateListId,
         string $jecouteListId,
         string $jeMengageListId,
-        string $coalitionsListId,
         string $newsletterLegislativeCandidateListId,
         string $newsletterRenaissanceListId,
         array $folderIds,
         array $templateIds,
         array $interestIds,
-        array $coalitionsInterestIds,
         string $memberGroupInterestGroupId,
         string $memberInterestInterestGroupId,
         string $subscriptionTypeInterestGroupId,
-        string $coalitionsNotificationInterestGroupId,
         array $applicationRequestTagIds,
         array $newsletterTagIds
     ) {
@@ -54,17 +48,14 @@ class MailchimpObjectIdMapping
         $this->applicationRequestCandidateListId = $applicationRequestCandidateListId;
         $this->jecouteListId = $jecouteListId;
         $this->jeMengageListId = $jeMengageListId;
-        $this->coalitionsListId = $coalitionsListId;
         $this->newsletterLegislativeCandidateListId = $newsletterLegislativeCandidateListId;
         $this->newsletterRenaissanceListId = $newsletterRenaissanceListId;
         $this->folderIds = $folderIds;
         $this->templateIds = $templateIds;
         $this->interestIds = $interestIds;
-        $this->coalitionsInterestIds = $coalitionsInterestIds;
         $this->memberGroupInterestGroupId = $memberGroupInterestGroupId;
         $this->memberInterestInterestGroupId = $memberInterestInterestGroupId;
         $this->subscriptionTypeInterestGroupId = $subscriptionTypeInterestGroupId;
-        $this->coalitionsNotificationInterestGroupId = $coalitionsNotificationInterestGroupId;
         $this->applicationRequestTagIds = $applicationRequestTagIds;
         $this->newsletterTagIds = $newsletterTagIds;
     }
@@ -90,11 +81,6 @@ class MailchimpObjectIdMapping
         return $this->interestIds;
     }
 
-    public function getCoalitionsInterestIds(): array
-    {
-        return $this->coalitionsInterestIds;
-    }
-
     public function getMemberGroupInterestGroupId(): string
     {
         return $this->memberGroupInterestGroupId;
@@ -108,11 +94,6 @@ class MailchimpObjectIdMapping
     public function getSubscriptionTypeInterestGroupId(): string
     {
         return $this->subscriptionTypeInterestGroupId;
-    }
-
-    public function getCoalitionsNotificationInterestGroupId(): string
-    {
-        return $this->coalitionsNotificationInterestGroupId;
     }
 
     public function getMainListId(): string
@@ -150,18 +131,11 @@ class MailchimpObjectIdMapping
         return $this->jecouteListId;
     }
 
-    public function getCoalitionsListId(): string
-    {
-        return $this->coalitionsListId;
-    }
-
     public function getListIdByMessageType(string $messageType): string
     {
         switch ($messageType) {
             case AdherentMessageTypeEnum::CANDIDATE_JECOUTE:
                 return $this->jecouteListId;
-            case AdherentMessageTypeEnum::COALITIONS:
-                return $this->coalitionsListId;
             default:
                 return $this->mainListId;
         }

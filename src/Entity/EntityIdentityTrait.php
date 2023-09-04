@@ -35,7 +35,6 @@ trait EntityIdentityTrait
      *     "user_profile",
      *     "approach_list_read",
      *     "adherent_elect_read",
-     *     "coalition_read",
      *     "cause_read",
      *     "zone_read",
      *     "profile_read",

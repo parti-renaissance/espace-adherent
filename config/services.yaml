@@ -13,8 +13,6 @@ parameters:
     feed_ttl:                             60 # in minutes
     app_host:                             "%env(APP_HOST)%"
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
-    coalitions_host:                      "%env(COALITIONS_HOST)%"
-    coalitions_auth_host:                 "%env(COALITIONS_AUTH_HOST)%"
     jemengage_host:                       "%env(JEMENGAGE_HOST)%"
     jemengage_auth_host:                  "%env(JEMENGAGE_AUTH_HOST)%"
     avecvous_host:                        "%env(AVECVOUS_HOST)%"
@@ -67,8 +65,6 @@ services:
             $enableAssessorSpace: '%env(bool:ENABLE_ASSESSOR_SPACE)%'
             $timelineMaxItems: '%timeline_max_messages%'
             $renaissanceHost: '%renaissance_host%'
-            $coalitionsHost: '%coalitions_host%'
-            $coalitionsAuthHost: '%coalitions_auth_host%'
             $jemengageHost: '%jemengage_host%'
             $jemengageAuthHost: '%jemengage_auth_host%'
             $avecvousHost: '%avecvous_host%'
@@ -221,9 +217,6 @@ services:
                 senator: '%adherent_message_senator_limit%'
 
     App\AdherentMessage\Listener\AdherentMessageChangeSubscriber:
-        tags: ['doctrine.event_subscriber']
-
-    App\Coalition\Listener\FollowerChangeSubscriber:
         tags: ['doctrine.event_subscriber']
 
     App\Normalizer\JecouteAdherentNormalizer:

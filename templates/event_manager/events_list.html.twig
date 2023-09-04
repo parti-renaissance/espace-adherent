@@ -53,21 +53,7 @@
                     {% for event in events %}
                         <tr class="event__item">
                             <td>
-                                {% if event is instanceof('App\\Entity\\Event\\CoalitionEvent') %}
-                                    <a href="{{ coalition_event_link(event) }}" target="_blank">{{ event.name }}</a>
-                                {% elseif event is instanceof('App\\Entity\\Event\\CauseEvent') %}
-                                    <a href="{{ cause_event_link(event) }}" target="_blank">{{ event.name }}</a>
-                                {% else %}
-                                    <a href="{{ path('app_committee_event_show', {slug: event.slug}) }}" target="_blank">{{ event.name }}</a>
-                                {% endif %}
-                                {% if event is not instanceof('App\\Entity\\Event\\CoalitionEvent') %}
-                                    {% if event.isPrivate %}
-                                        <span class="table-label table-label__silver-grey">adhérents</span>
-                                    {% endif %}
-                                    {% if event.isElectoral %}
-                                        <span class="table-label table-label__green">électoral</span>
-                                    {% endif %}
-                                {% endif %}
+                                <a href="{{ path('app_committee_event_show', {slug: event.slug}) }}" target="_blank">{{ event.name }}</a>
                             </td>
                             <td>{{ event.organizer ? event.organizer.fullName : 'un ancien adhérent' }}</td>
                             <td>
@@ -93,8 +79,7 @@
                                     {% set items = [] %}
                                 {% endif %}
 
-                                {% if (is_granted('HOST_EVENT', event) and event.isActive())
-                                    or (event.isCoalitionsEvent and is_granted('ROLE_COALITION_MODERATOR')) %}
+                                {% if (is_granted('HOST_EVENT', event) and event.isActive()) %}
                                     {% set items = items|merge([
                                         {
                                             label: 'Modifier',

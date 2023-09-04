@@ -2,11 +2,8 @@
 
 namespace Tests\App\Controller\Api\Event;
 
-use App\DataFixtures\ORM\LoadAdherentData;
-use App\DataFixtures\ORM\LoadClientData;
 use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Event\EventCategory;
-use App\OAuth\Model\GrantTypeEnum;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -73,28 +70,6 @@ class EventsControllerTest extends AbstractApiTestCase
         $this->assertEachJsonItemContainsKey('committee_url', $content, $exclude);
 
         Chronos::setTestNow();
-    }
-
-    public function testICanRequestMySubscribedEvents()
-    {
-        $accessToken = $this->getAccessToken(
-            LoadClientData::CLIENT_11_UUID,
-            'Ca1#79T6s^kCxqLc9sp$WbtqdOOsdf1iQ',
-            GrantTypeEnum::PASSWORD,
-            null,
-            'gisele-berthoux@caramail.com',
-            LoadAdherentData::DEFAULT_PASSWORD
-        );
-
-        $this->client->request(Request::METHOD_GET, '/api/v3/events?subscribedOnly', [], [], [
-            'HTTP_AUTHORIZATION' => "Bearer $accessToken",
-            'HTTP_ACCEPT' => 'application/json',
-        ]);
-
-        $response = json_decode($this->client->getResponse()->getContent(), true);
-
-        self::assertSame(5, $response['metadata']['total_items']);
-        self::assertSame('5b279c9f-2b1e-4b93-9c34-1669f56e9d64', $response['items'][0]['uuid']);
     }
 
     public static function provideApiEventsCategories(): array

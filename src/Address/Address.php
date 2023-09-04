@@ -31,7 +31,7 @@ class Address implements AddressInterface, GeocodableInterface
      * )
      * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "Update", "fill_personal_info"})
      *
-     * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
+     * @SymfonySerializer\Groups({"profile_write", "membership:write"})
      */
     protected ?string $address = null;
 
@@ -43,14 +43,14 @@ class Address implements AddressInterface, GeocodableInterface
      * )
      * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update", "fill_personal_info"})
      *
-     * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
+     * @SymfonySerializer\Groups({"profile_write", "membership:write"})
      */
     protected ?string $postalCode = null;
 
     /**
      * @Assert\Length(max=15, groups={"Default", "Update", "fill_personal_info"})
      *
-     * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
+     * @SymfonySerializer\Groups({"profile_write", "membership:write"})
      */
     protected ?string $city = null;
 
@@ -62,7 +62,7 @@ class Address implements AddressInterface, GeocodableInterface
      *     groups={"Update", "fill_personal_info"}
      * )
      *
-     * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
+     * @SymfonySerializer\Groups({"profile_write", "membership:write"})
      */
     protected ?string $cityName = null;
 
@@ -70,7 +70,7 @@ class Address implements AddressInterface, GeocodableInterface
      * @Assert\NotBlank(message="common.country.not_blank", groups={"Default", "Registration", "Update", "fill_personal_info"})
      * @Assert\Country(message="common.country.invalid", groups={"Default", "Registration", "Update", "fill_personal_info"})
      *
-     * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
+     * @SymfonySerializer\Groups({"profile_write", "membership:write"})
      */
     protected ?string $country = AddressInterface::FRANCE;
 }

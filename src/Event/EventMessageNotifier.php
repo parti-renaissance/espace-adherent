@@ -3,17 +3,13 @@
 namespace App\Event;
 
 use App\AppCodeEnum;
-use App\Coalition\CoalitionUrlGenerator;
 use App\Committee\CommitteeManager;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CauseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventRegistration;
 use App\Events;
 use App\Mailer\MailerService;
-use App\Mailer\Message\Coalition\CauseEventCreationMessage;
-use App\Mailer\Message\Coalition\CoalitionsEventCancellationMessage;
 use App\Mailer\Message\EventCancellationMessage;
 use App\Mailer\Message\EventNotificationMessage;
 use App\Mailer\Message\JeMengage\JeMengageEventCancellationMessage;
@@ -30,36 +26,23 @@ class EventMessageNotifier implements EventSubscriberInterface
     private $committeeManager;
     private $registrationRepository;
     private $urlGenerator;
-    private $coalitionUrlGenerator;
 
     public function __construct(
         MailerService $transactionalMailer,
         CommitteeManager $committeeManager,
         EventRegistrationRepository $registrationRepository,
-        UrlGeneratorInterface $urlGenerator,
-        CoalitionUrlGenerator $coalitionUrlGenerator
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->mailer = $transactionalMailer;
         $this->committeeManager = $committeeManager;
         $this->registrationRepository = $registrationRepository;
         $this->urlGenerator = $urlGenerator;
-        $this->coalitionUrlGenerator = $coalitionUrlGenerator;
     }
 
     public function onEventCreated(EventEvent $event): void
     {
         // cause event
         $eventEvent = $event->getEvent();
-        if ($eventEvent instanceof CauseEvent) {
-            $chunks = array_chunk(
-                $eventEvent->getCause()->getFollowers(),
-                MailerService::PAYLOAD_MAXSIZE
-            );
-
-            foreach ($chunks as $chunk) {
-                $this->mailer->sendMessage($this->createCauseMessage($chunk, $eventEvent));
-            }
-        }
 
         // committee event
         if (!$event instanceof CommitteeEventEvent || !$committee = $event->getCommittee()) {
@@ -139,22 +122,8 @@ class EventMessageNotifier implements EventSubscriberInterface
         );
     }
 
-    private function createCauseMessage(array $followers, CauseEvent $event): CauseEventCreationMessage
-    {
-        return CauseEventCreationMessage::create(
-            $followers,
-            $event,
-            $this->coalitionUrlGenerator->generateCauseEventLink($event),
-            $this->coalitionUrlGenerator->generateCauseLink($event->getCause())
-        );
-    }
-
     private function createCancelMessage(array $registered, BaseEvent $event, Adherent $host, ?string $appCode): Message
     {
-        if ($event->isCoalitionsEvent()) {
-            return CoalitionsEventCancellationMessage::create($registered, $event);
-        }
-
         if (AppCodeEnum::isJeMengage($appCode)) {
             return JeMengageEventCancellationMessage::create(
                 $registered,

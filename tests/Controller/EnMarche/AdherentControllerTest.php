@@ -58,13 +58,12 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
         // first page
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(5, $crawler->filter('#upcoming-events article')->count());
+        $this->assertSame(4, $crawler->filter('#upcoming-events article')->count());
         $titles = $crawler->filter('#upcoming-events h2');
         $this->assertSame('Meeting de New York City', trim($titles->first()->text()));
         $this->assertSame('Réunion de réflexion parisienne', trim($titles->eq(1)->text()));
-        $this->assertSame('Événement culturel 1', trim($titles->eq(2)->text()));
-        $this->assertSame('Événement culturel 1 de la cause culturelle 1', trim($titles->eq(3)->text()));
-        $this->assertSame('Réunion de réflexion dammarienne', trim($titles->eq(4)->text()));
+        $this->assertSame('Réunion de réflexion dammarienne', trim($titles->eq(2)->text()));
+        $this->assertSame('Réunion de réflexion parisienne annulé', trim($titles->eq(3)->text()));
 
         $this->assertSame(5, $crawler->filter('#past-events article')->count());
         $titles = $crawler->filter('#past-events h2');
@@ -515,8 +514,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertCount(12, $histories);
         $this->assertCount(2, $historiesHost);
         $this->assertCount(2, $historiesReferents);
-        self::assertSame('unsubscribe', $historiesHost[0]->getAction());
-        self::assertSame('unsubscribe', $historiesReferents[0]->getAction());
 
         Chronos::setTestNow('+2 weeks'); // To make sure the date order of the SQL query is correct
         // Re-subscribe to 'subscribed_emails_local_host' and 'subscribed_emails_referents'

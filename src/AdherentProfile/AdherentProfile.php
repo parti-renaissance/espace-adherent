@@ -232,33 +232,6 @@ class AdherentProfile implements MembershipInterface
      */
     private $subscriptionTypes = [];
 
-    /**
-     * @var bool
-     *
-     * @Assert\Type("bool", message="adherent_profile.coalition_subscription.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
-     */
-    private $coalitionSubscription = false;
-
-    /**
-     * @var bool
-     *
-     * @Assert\Type("bool", message="adherent_profile.cause_subscription.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
-     */
-    private $causeSubscription = false;
-
-    /**
-     * @var bool
-     *
-     * @Assert\Type("bool", message="adherent_profile.coalitions_cgu_accepted.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
-     */
-    private $coalitionsCguAccepted = false;
-
     public function __construct()
     {
         $this->address = new Address();
@@ -286,9 +259,6 @@ class AdherentProfile implements MembershipInterface
         $dto->mandates = $adherent->getMandates();
         $dto->interests = $adherent->getInterests();
         $dto->subscriptionTypes = $adherent->getSubscriptionTypeCodes();
-        $dto->coalitionSubscription = $adherent->isCoalitionSubscription();
-        $dto->causeSubscription = $adherent->isCauseSubscription();
-        $dto->coalitionsCguAccepted = $adherent->isCoalitionsCguAccepted();
 
         return $dto;
     }
@@ -481,36 +451,6 @@ class AdherentProfile implements MembershipInterface
     public function setSubscriptionTypes(array $subscriptionTypes): void
     {
         $this->subscriptionTypes = $subscriptionTypes;
-    }
-
-    public function isCoalitionSubscription(): bool
-    {
-        return $this->coalitionSubscription;
-    }
-
-    public function setCoalitionSubscription(bool $coalitionSubscription): void
-    {
-        $this->coalitionSubscription = $coalitionSubscription;
-    }
-
-    public function isCauseSubscription(): bool
-    {
-        return $this->causeSubscription;
-    }
-
-    public function setCauseSubscription(bool $causeSubscription): void
-    {
-        $this->causeSubscription = $causeSubscription;
-    }
-
-    public function isCoalitionsCguAccepted(): bool
-    {
-        return $this->coalitionsCguAccepted;
-    }
-
-    public function setCoalitionsCguAccepted(bool $coalitionsCguAccepted): void
-    {
-        $this->coalitionsCguAccepted = $coalitionsCguAccepted;
     }
 
     public function getSource(): ?string

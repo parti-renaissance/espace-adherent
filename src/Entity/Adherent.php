@@ -21,8 +21,6 @@ use App\Entity\AdherentMandate\NationalCouncilAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\Campus\Registration;
-use App\Entity\Coalition\Cause;
-use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
 use App\Entity\Contribution\Contribution;
 use App\Entity\Contribution\Payment;
 use App\Entity\Contribution\RevenueDeclaration;
@@ -336,13 +334,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $assessorRole;
-
-    /**
-     * @var CoalitionModeratorRoleAssociation|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Coalition\CoalitionModeratorRoleAssociation", cascade={"all"}, orphanRemoval=true)
-     */
-    private $coalitionModeratorRole;
 
     /**
      * @var BoardMember|null
@@ -666,31 +657,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $source;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": 0})
-     *
-     * @Groups({"profile_read", "adherent_change_diff"})
-     */
-    private $coalitionSubscription = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": 0})
-     *
-     * @Groups({"profile_read", "adherent_change_diff"})
-     */
-    private $causeSubscription = false;
-
-    /**
-     * @ORM\Column(type="boolean", options={"default": 0})
-     *
-     * @Groups({"profile_read"})
-     */
-    private $coalitionsCguAccepted = false;
-
-    /**
      * @var CertificationRequest[]|Collection
      *
      * @ORM\OneToMany(targetEntity=CertificationRequest::class, mappedBy="adherent", cascade={"all"}, fetch="EXTRA_LAZY")
@@ -731,13 +697,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * )
      */
     private $adherentMandates;
-
-    /**
-     * @var Cause[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Coalition\Cause", mappedBy="author", fetch="EXTRA_LAZY")
-     */
-    private $causes;
 
     /**
      * @var bool
@@ -918,7 +877,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->handledThematicCommunities = new ArrayCollection();
         $this->adherentMandates = new ArrayCollection();
         $this->provisionalSupervisors = new ArrayCollection();
-        $this->causes = new ArrayCollection();
         $this->instanceQualities = new ArrayCollection();
         $this->teamMemberships = new ArrayCollection();
         $this->zoneBasedRoles = new ArrayCollection();
@@ -972,8 +930,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         string $password,
         string $status = self::DISABLED,
         string $source = null,
-        bool $coalitionSubscription = false,
-        bool $causeSubscription = false
     ): self {
         $adherent = new self();
 
@@ -986,8 +942,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->nicknameUsed = false;
         $adherent->registeredAt = new \DateTime('now');
         $adherent->source = $source;
-        $adherent->coalitionSubscription = $coalitionSubscription;
-        $adherent->causeSubscription = $causeSubscription;
 
         return $adherent;
     }
@@ -1188,14 +1142,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isThematicCommunityChief()) {
             $roles[] = 'ROLE_THEMATIC_COMMUNITY_CHIEF';
-        }
-
-        if ($this->isCoalitionModerator()) {
-            $roles[] = 'ROLE_COALITION_MODERATOR';
-        }
-
-        if ($this->isApprovedCauseAuthor()) {
-            $roles[] = 'ROLE_CAUSE_AUTHOR';
         }
 
         if ($this->hasNationalCouncilQualities()) {
@@ -1596,9 +1542,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->activityArea = $adherentProfile->getActivityArea();
         $this->mandates = $adherentProfile->getMandates();
         $this->interests = $adherentProfile->getInterests();
-        $this->coalitionSubscription = $adherentProfile->isCoalitionSubscription();
-        $this->causeSubscription = $adherentProfile->isCauseSubscription();
-        $this->coalitionsCguAccepted = $adherentProfile->isCoalitionsCguAccepted();
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
@@ -1817,26 +1760,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setAssessorRole(?AssessorRoleAssociation $assessorRole): void
     {
         $this->assessorRole = $assessorRole;
-    }
-
-    public function getCoalitionModeratorRole(): ?CoalitionModeratorRoleAssociation
-    {
-        return $this->coalitionModeratorRole;
-    }
-
-    public function setCoalitionModeratorRole(?CoalitionModeratorRoleAssociation $coalitionModeratorRole): void
-    {
-        $this->coalitionModeratorRole = $coalitionModeratorRole;
-    }
-
-    public function revokeCoalitionModeratorRole(): void
-    {
-        $this->coalitionModeratorRole = null;
-    }
-
-    public function isCoalitionModerator(): bool
-    {
-        return $this->coalitionModeratorRole instanceof CoalitionModeratorRoleAssociation;
     }
 
     public function getBoardMember(): ?BoardMember
@@ -2455,7 +2378,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
                 'ROLE_ANIMATOR',
                 'ROLE_SENATOR',
                 'ROLE_LEGISLATIVE_CANDIDATE',
-                'ROLE_CAUSE_AUTHOR',
                 'ROLE_PRESIDENT_DEPARTMENTAL_ASSEMBLY',
             ])
             || $this->isCandidate()
@@ -3089,11 +3011,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->source = $source;
     }
 
-    public function isCoalitionUser(): bool
-    {
-        return MembershipSourceEnum::COALITIONS === $this->source;
-    }
-
     public function isJemengageUser(): bool
     {
         return MembershipSourceEnum::JEMENGAGE === $this->source;
@@ -3112,43 +3029,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isRenaissanceSympathizer(): bool
     {
         return $this->isRenaissanceUser() && null === $this->lastMembershipDonation;
-    }
-
-    public function isCoalitionSubscription(): bool
-    {
-        return $this->coalitionSubscription;
-    }
-
-    public function setCoalitionSubscription(bool $coalitionSubscription): void
-    {
-        $this->coalitionSubscription = $coalitionSubscription;
-    }
-
-    public function isCauseSubscription(): bool
-    {
-        return $this->causeSubscription;
-    }
-
-    public function setCauseSubscription(bool $causeSubscription): void
-    {
-        $this->causeSubscription = $causeSubscription;
-    }
-
-    public function isCoalitionsCguAccepted(): bool
-    {
-        return $this->coalitionsCguAccepted;
-    }
-
-    public function setCoalitionsCguAccepted(bool $coalitionsCguAccepted): void
-    {
-        $this->coalitionsCguAccepted = $coalitionsCguAccepted;
-    }
-
-    public function isApprovedCauseAuthor(): bool
-    {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq('status', Cause::STATUS_APPROVED));
-
-        return $this->causes->matching($criteria)->count();
     }
 
     public function addInstanceQuality($quality, \DateTime $data = null): AdherentInstanceQuality

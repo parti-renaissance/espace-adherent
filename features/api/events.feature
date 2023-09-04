@@ -5,17 +5,6 @@ Feature:
   As a client of different apps
   I should be able to access events API
 
-  Scenario Outline: As a logged-in user I can get an event
-    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
-    When I send a "GET" request to "/api/v3/events/<uuid>"
-    Then the response status code should be 200
-    Examples:
-      | uuid                                  |
-      # scheduled and published
-      | 0e5f9f02-fa33-4c2c-a700-4235d752315b  |
-      # scheduled and private
-      | 47e5a8bf-8be1-4c38-aae8-b41e6908a1b3  |
-
   Scenario: As a logged-in Jemarche App user I can get events of my borough
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jemarche_app"
     And I send a "GET" request to "/api/v3/events"
@@ -36,25 +25,6 @@ Feature:
     Then the response status code should be 200
     And the JSON nodes should match:
       | metadata.total_items  | 2 |
-
-  Scenario: As a logged-in user I cannot get not published event
-    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
-    When I send a "GET" request to "/api/v3/events/de7f027c-f6c3-439f-b1dd-bf2b110a0fb0"
-    Then the response status code should be 404
-
-  Scenario: As a logged-in user I can get events
-    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
-    When I send a "GET" request to "/api/v3/events"
-    Then the response status code should be 200
-    And the JSON nodes should match:
-      | metadata.total_items  | 26 |
-
-  Scenario: As a logged-in user I can get coalitions events
-    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
-    When I send a "GET" request to "/api/v3/events?group_source=coalitions"
-    Then the response status code should be 200
-    And the JSON nodes should match:
-      | metadata.total_items  | 16 |
 
   Scenario: As a non logged-in user I can get scheduled and published event
     When I send a "GET" request to "/api/events/0e5f9f02-fa33-4c2c-a700-4235d752315b"
@@ -91,150 +61,6 @@ Feature:
     }
     """
     Then the response status code should be 401
-
-  Scenario: As a logged-in user I cannot check if I'm registered for events if no uuids
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
-    When I send a "POST" request to "/api/v3/events/registered" with body:
-    """
-    {
-      "uuids": []
-    }
-    """
-    Then the response status code should be 400
-    And the response should be in JSON
-    And the JSON nodes should match:
-      | detail  | Parameter "uuids" should be an array of uuids.  |
-
-  Scenario: As a logged-in user I can check if I'm registered for events
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
-    When I send a "POST" request to "/api/v3/events/registered" with body:
-    """
-    {
-      "uuids": [
-        "44249b1d-ea10-41e0-b288-5eb74fa886ba"
-      ]
-    }
-    """
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    []
-    """
-
-  Scenario: As a non logged-in user I can get only EnMarche or Coalitions events
-    When I send a "GET" request to "/api/events?group_source=en_marche"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON nodes should match:
-      | metadata.total_items  | 24 |
-
-    When I send a "GET" request to "/api/events?group_source=coalitions"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON nodes should match:
-      | metadata.total_items          | 16                                   |
-      | items[0].organizer.uuid       | a046adbe-9c7b-56a9-a676-6151a6785dda |
-      | items[0].organizer.first_name | Jacques                              |
-      | items[0].organizer.last_name  | Picard                               |
-
-  Scenario: As a logged-in user I cannot delete an event of another adherent
-    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
-    When I send a "DELETE" request to "/api/v3/events/472d1f86-6522-4122-a0f4-abd69d17bb2d"
-    Then the response status code should be 403
-
-  Scenario: As a logged-in user I can delete one of my events
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
-    When I send a "DELETE" request to "/api/v3/events/472d1f86-6522-4122-a0f4-abd69d17bb2d"
-    Then the response status code should be 204
-
-  Scenario: As a logged-in user I cannot cancel an event of another adherent
-    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
-    When I send a "PUT" request to "/api/v3/events/462d7faf-09d2-4679-989e-287929f50be8/cancel"
-    Then the response status code should be 403
-
-  Scenario: As a logged-in user I can cancel my event
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
-    When I send a "PUT" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8/cancel"
-    Then the response status code should be 200
-    And I should have 1 email
-    And I should have 1 email "CoalitionsEventCancellationMessage" for "jacques.picard@en-marche.fr" with payload:
-    """
-    {
-      "template_name": "coalitions-event-cancellation",
-      "template_content": [],
-      "message": {
-        "subject": "✊ Événement annulé",
-        "from_email": "contact@pourunecause.fr",
-        "global_merge_vars": [
-          {
-            "name": "event_name",
-            "content": "Événement culturel 1 de la cause culturelle 1"
-          }
-        ],
-        "merge_vars": [
-          {
-            "rcpt": "jacques.picard@en-marche.fr",
-            "vars": [
-              {
-                "name": "first_name",
-                "content": "Jacques"
-              }
-            ]
-          },
-          {
-            "rcpt": "francis.brioul@yahoo.com",
-            "vars": [
-              {
-                "name": "first_name",
-                "content": "Francis"
-              }
-            ]
-          }
-        ],
-        "from_name": "Pour une cause",
-        "to": [
-          {
-            "email": "jacques.picard@en-marche.fr",
-            "type": "to",
-            "name": "Jacques"
-          },
-          {
-            "email": "francis.brioul@yahoo.com",
-            "type": "to",
-            "name": "Francis"
-          }
-        ]
-      }
-    }
-    """
-
-  Scenario: As a logged-in user I can update the image of my event
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
-    When I send a "POST" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8/image" with body:
-    """
-    {
-        "content": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
-    }
-    """
-    Then the response status code should be 200
-    And the JSON node "image_url" should match "http://enmarche.code/assets/images/events/@string@.png"
-    When I send a "DELETE" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8/image"
-    Then the response status code should be 200
-    When I send a "GET" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8"
-    Then the JSON should be a superset of:
-    """
-    {"image_url": null}
-    """
-
-  Scenario: As logged-in user I cannot cancel an already cancelled event
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
-    When I send a "PUT" request to "/api/v3/events/2f36a0b9-ac1d-4bee-b9ef-525bc89a7c8e/cancel"
-    Then the response status code should be 400
-    And the response should be in JSON
-    And the JSON nodes should match:
-      | title   | An error occurred               |
-      | detail  | this event is already cancelled |
 
   Scenario Outline: As a (delegated) referent I can get the list of events corresponding to my zones
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -1410,11 +1236,6 @@ Feature:
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a logged-in user I can delete my event with no participants
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
-    When I send a "DELETE" request to "/api/v3/events/462d7faf-09d2-4679-989e-287929f50be8"
-    Then the response status code should be 204
-
   Scenario Outline: As a (delegated) referent I can get the list of event participants
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/participants?scope=<scope>&page_size=10"
@@ -1698,13 +1519,13 @@ Feature:
     Then the response status code should be 403
     Examples:
       | user                                    | scope                                           | method  | url                                           |
-      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | PUT     | /462d7faf-09d2-4679-989e-287929f50be8         |
-      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | PUT     | /462d7faf-09d2-4679-989e-287929f50be8/cancel  |
-      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | DELETE  | /462d7faf-09d2-4679-989e-287929f50be8         |
-      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | POST    | /462d7faf-09d2-4679-989e-287929f50be8/image   |
-      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | DELETE  | /462d7faf-09d2-4679-989e-287929f50be8/image   |
-      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | PUT     | /462d7faf-09d2-4679-989e-287929f50be8         |
-      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | PUT     | /462d7faf-09d2-4679-989e-287929f50be8/cancel  |
-      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | DELETE  | /462d7faf-09d2-4679-989e-287929f50be8         |
-      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | POST    | /462d7faf-09d2-4679-989e-287929f50be8/image   |
-      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | DELETE  | /462d7faf-09d2-4679-989e-287929f50be8/image   |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | PUT     | /0e5f9f02-fa33-4c2c-a700-4235d752315b         |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | PUT     | /0e5f9f02-fa33-4c2c-a700-4235d752315b/cancel  |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | DELETE  | /0e5f9f02-fa33-4c2c-a700-4235d752315b         |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | POST    | /0e5f9f02-fa33-4c2c-a700-4235d752315b/image   |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | DELETE  | /0e5f9f02-fa33-4c2c-a700-4235d752315b/image   |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | PUT     | /0e5f9f02-fa33-4c2c-a700-4235d752315b         |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | PUT     | /0e5f9f02-fa33-4c2c-a700-4235d752315b/cancel  |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | DELETE  | /0e5f9f02-fa33-4c2c-a700-4235d752315b         |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | POST    | /0e5f9f02-fa33-4c2c-a700-4235d752315b/image   |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | DELETE  | /0e5f9f02-fa33-4c2c-a700-4235d752315b/image   |

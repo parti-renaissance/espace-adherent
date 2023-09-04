@@ -3,14 +3,9 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\DataFixtures\ORM\LoadAdherentData;
-use App\Entity\Adherent;
-use App\Entity\AdherentActivationToken;
-use App\Entity\Coalition\CauseFollower;
-use App\Mailer\Message\AdherentAccountActivationMessage;
 use App\Repository\AdherentActivationTokenRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\EmailRepository;
-use App\Subscription\SubscriptionTypeEnum;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,94 +62,6 @@ class MembershipControllerTest extends AbstractEnMarcheWebTestCase
             ['michelle.dufour@example.ch'],
             ['carl999@example.fr'],
         ];
-    }
-
-    public function testCreateMembershipAccountForFrenchAdherentIsSuccessful(): void
-    {
-        $follower = $this->getCauseFollowerRepository()->findOneBy(['emailAddress' => 'jean-paul@dupont.tld']);
-
-        $this->assertInstanceOf(CauseFollower::class, $follower);
-
-        $followerId = $follower->getId();
-
-        $this->client->request(Request::METHOD_GET, '/inscription-utilisateur');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), static::createFormData());
-
-        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
-
-        $adherent = $this->adherentRepository->findOneByEmail('jean-paul@dupont.tld');
-        $this->assertInstanceOf(Adherent::class, $adherent);
-        $this->assertNull($adherent->getGender());
-        $this->assertSame('Jean-Paul', $adherent->getFirstName());
-        $this->assertSame('Dupont', $adherent->getLastName());
-        $this->assertEmpty($adherent->getAddress());
-        $this->assertEmpty($adherent->getCityName());
-        $this->assertSame('FR', $adherent->getCountry());
-        $this->assertNull($adherent->getBirthdate());
-        $this->assertNull($adherent->getLatitude());
-        $this->assertNull($adherent->getLongitude());
-        $this->assertNull($adherent->getPosition());
-        $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL));
-        $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL));
-        $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::MILITANT_ACTION_SMS));
-        $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
-
-        /** @var Adherent $adherent */
-        $this->assertInstanceOf(
-            Adherent::class,
-            $adherent = $this->adherentRepository->findOneByEmail('jean-paul@dupont.tld')
-        );
-        $this->assertSame('Jean-Paul', $adherent->getFirstName());
-        $this->assertSame('Dupont', $adherent->getLastName());
-        $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountActivationMessage::class, 'paul@dupont.tld'));
-
-        // Activate the user account
-        $activateAccountUrl = sprintf('/inscription/finaliser/%s/%s', $adherent->getUuid(), $activationToken->getValue());
-        $this->client->request(Request::METHOD_GET, $activateAccountUrl);
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/adhesion', $this->client);
-
-        $this->client->followRedirect();
-
-        // User is automatically logged-in
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        // check follower
-        $this->manager->clear();
-        $follower = $this->getCauseFollowerRepository()->findOneBy(['emailAddress' => 'jean-paul@dupont.tld']);
-
-        $this->assertNull($follower);
-
-        $follower = $this->getCauseFollowerRepository()->findOneBy(['id' => $followerId]);
-
-        $this->assertInstanceOf(CauseFollower::class, $follower);
-        $this->assertSame('jean-paul@dupont.tld', $follower->getAdherent()->getEmailAddress());
-
-        // Activate user account twice
-        $this->logout($this->client);
-        $this->client->request(Request::METHOD_GET, $activateAccountUrl);
-
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString('Votre compte est déjà actif.', $crawler->filter('.flash')->text());
-
-        // Try to authenticate with credentials
-        $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => 'jean-paul@dupont.tld',
-            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
-        ]));
-
-        $this->assertClientIsRedirectedTo('/evenements', $this->client);
-
-        $this->client->followRedirect();
     }
 
     public function testAdherentSubscriptionTypesArePersistedCorrectly(): void

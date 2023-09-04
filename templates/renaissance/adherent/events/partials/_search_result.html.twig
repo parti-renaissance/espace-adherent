@@ -36,10 +36,6 @@
                             <span>
                                     {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
                                         Par le comité <span class="font-medium text-gray-700">{{ event.committee.name }}</span>
-                                    {% elseif event is instanceof('App\\Entity\\Event\\CauseEvent') and event.cause %}
-                                        Par <span class="font-medium text-gray-700">{{ event.cause.name }}</span>
-                                    {% elseif event is instanceof('App\\Entity\\Event\\CoalitionEvent') and event.coalition %}
-                                        Par <span class="font-medium text-gray-700">{{ event.coalition.name }}</span>
                                     {% elseif event.organizer %}
                                         Par <span class="font-medium text-gray-700">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span>
                                     {% endif %}

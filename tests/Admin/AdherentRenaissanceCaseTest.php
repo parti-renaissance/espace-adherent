@@ -125,7 +125,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         // Simple user
         yield ['simple-test-user@example.ch', 'Simple User', false, false];
         yield ['simple-user@example.ch', 'Simple User', true, false];
-        yield ['coalitions-user-1@en-marche-dev.fr', 'Luis Phplover', false, false];
+        yield ['coalitions-user-1@en-marche-dev.fr', 'Luis Phplover', false, true];
         yield ['je-mengage-user-2@en-marche-dev.fr', 'Jerome Musk', true, false];
         // Adhérent EM
         yield ['michelle.dufour@example.ch', 'Michelle Dufour', false, false];
