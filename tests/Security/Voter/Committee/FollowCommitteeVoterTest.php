@@ -192,8 +192,6 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
     }
 
     /**
-     * @param bool $approved
-     *
      * @return Committee|MockObject
      */
     private function getCommitteeMock(bool $approved = null): Committee
