@@ -8,7 +8,7 @@ use App\JMEFilter\FilterGroup\ElectedRepresentativeFilterGroup;
 use App\Scope\FeatureEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class MandatesFilterBuilder implements FilterBuilderInterface
+class DeclaredMandateFilterBuilder implements FilterBuilderInterface
 {
     public function __construct(private readonly TranslatorInterface $translator)
     {
@@ -16,7 +16,10 @@ class MandatesFilterBuilder implements FilterBuilderInterface
 
     public function supports(string $scope, string $feature = null): bool
     {
-        return FeatureEnum::ELECTED_REPRESENTATIVE === $feature;
+        return \in_array($feature, [
+            FeatureEnum::CONTACTS,
+            FeatureEnum::MESSAGES,
+        ], true);
     }
 
     public function build(string $scope, string $feature = null): array
@@ -24,7 +27,7 @@ class MandatesFilterBuilder implements FilterBuilderInterface
         $multiple = FeatureEnum::CONTACTS === $feature;
 
         return (new FilterCollectionBuilder())
-            ->createSelect($multiple ? 'mandateTypes' : 'mandateType', 'Type de mandat')
+            ->createSelect($multiple ? 'declaredMandates' : 'declaredMandate', 'Déclaration de mandat')
             ->setChoices($this->getTranslatedChoices())
             ->setMultiple($multiple)
             ->getFilters()

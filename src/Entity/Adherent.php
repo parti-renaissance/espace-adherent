@@ -456,7 +456,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @Groups({"adherent_elect_read"})
      */
-    private $mandates;
+    private array $mandates = [];
 
     /**
      * @var Media|null
@@ -963,7 +963,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         string $registeredAt = 'now',
         ?array $tags = [],
         ?array $referentTags = [],
-        array $mandates = null,
+        ?array $mandates = [],
         string $nationality = null,
         string $customGender = null
     ): self {
@@ -985,7 +985,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->registeredAt = new \DateTime($registeredAt);
         $adherent->tags = new ArrayCollection($tags);
         $adherent->referentTags = new ArrayCollection($referentTags);
-        $adherent->mandates = $mandates;
+        $adherent->mandates = $mandates ?? [];
         $adherent->nationality = $nationality;
         $adherent->customGender = $customGender;
 

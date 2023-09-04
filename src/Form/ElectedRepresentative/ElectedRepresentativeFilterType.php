@@ -2,7 +2,6 @@
 
 namespace App\Form\ElectedRepresentative;
 
-use App\Adherent\MandateTypeEnum;
 use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
@@ -64,15 +63,6 @@ class ElectedRepresentativeFilterType extends AbstractType
                 'choice_label' => function (string $choice) {
                     return $choice;
                 },
-                'required' => false,
-                'multiple' => true,
-            ])
-            ->add('mandates', ChoiceType::class, [
-                'choices' => MandateTypeEnum::ALL,
-                'choice_label' => static function (string $choice): string {
-                    return "adherent.mandate.type.$choice";
-                },
-                'label' => 'elected_representative.mandates',
                 'required' => false,
                 'multiple' => true,
             ])

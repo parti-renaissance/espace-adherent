@@ -90,20 +90,10 @@ class ReferentElectedRepresentativeControllerTest extends AbstractEnMarcheWebTes
         $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
         $this->assertStringContainsString('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
 
-        // filter by mandates
+        // filter by gender
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
         $form['f[labels]'] = [];
         $form['f[politicalFunctions]'] = [];
-        $form['f[mandates]'] = ['conseiller_communautaire', 'depute'];
-
-        $crawler = $this->client->submit($form);
-
-        $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
-        $this->assertStringContainsString('LOBELL André', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-
-        // filter by gender
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[mandates]'] = [];
         $form['f[gender]'] = 'female';
 
         $crawler = $this->client->submit($form);

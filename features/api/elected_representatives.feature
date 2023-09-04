@@ -397,17 +397,6 @@ Feature:
                     "label": "Type de mandat",
                     "options": {
                         "choices": {
-                            "local_mandate": "Mandat local",
-                            "national_mandate": "Mandat national"
-                        }
-                    },
-                    "type": "select"
-                },
-                {
-                    "code": "mandates",
-                    "label": "Mandats",
-                    "options": {
-                        "choices": {
                             "conseiller_arrondissement": "Conseiller d'arrondissement",
                             "conseiller_communautaire": "Conseiller communautaire",
                             "conseiller_departemental": "Conseiller départemental",
@@ -425,7 +414,7 @@ Feature:
                             "president_conseil_regional": "Président du Conseil régional",
                             "senateur": "Sénateur"
                         },
-                        "multiple": true
+                        "multiple": false
                     },
                     "type": "select"
                 },

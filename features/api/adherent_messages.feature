@@ -442,15 +442,28 @@ Feature:
               "color": "#2563EB",
               "filters": [
                   {
-                      "code": "mandateType",
-                      "label": "Type de mandat",
+                      "code": "declaredMandate",
+                      "label": "Déclaration de mandat",
                       "options": {
                           "choices": {
-                              "all": "Tous",
-                              "local_mandate": "Mandat local",
-                              "national_mandate": "Mandat national",
-                              "none": "Aucun"
-                          }
+                              "conseiller_arrondissement": "Conseiller d'arrondissement",
+                              "conseiller_communautaire": "Conseiller communautaire",
+                              "conseiller_departemental": "Conseiller départemental",
+                              "conseiller_fde": "Conseiller FDE",
+                              "conseiller_municipal": "Conseiller municipal",
+                              "conseiller_regional": "Conseiller régional",
+                              "conseiller_territorial": "Conseiller territorial",
+                              "delegue_consulaire": "Délégué consulaire",
+                              "depute": "Député",
+                              "depute_europeen": "Député européen",
+                              "maire": "Maire",
+                              "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
+                              "president_conseil_communautaire": "Président du Conseil communautaire",
+                              "president_conseil_departemental": "Président du Conseil départemental",
+                              "president_conseil_regional": "Président du Conseil régional",
+                              "senateur": "Sénateur"
+                          },
+                          "multiple": false
                       },
                       "type": "select"
                   }
