@@ -55,7 +55,7 @@ class AdherentMessageTypeEnum extends Enum
     public const ROLES = [
         DeputyAdherentMessage::class => ['ROLE_DEPUTY', 'ROLE_DELEGATED_DEPUTY'],
 
-        CommitteeAdherentMessage::class => 'ROLE_ANIMATOR',
+        CommitteeAdherentMessage::class => ['ROLE_ANIMATOR', 'ROLE_DELEGATED_ANIMATOR'],
 
         SenatorAdherentMessage::class => ['ROLE_SENATOR', 'ROLE_DELEGATED_SENATOR'],
 
