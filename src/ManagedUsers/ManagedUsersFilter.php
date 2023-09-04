@@ -75,9 +75,16 @@ class ManagedUsersFilter
     /**
      * @Groups({"filter_write"})
      *
-     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::TYPE_CHOICES_CONTACTS, strict=true)
+     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, strict=true, multiple=true)
      */
-    private ?string $mandateType = null;
+    private array $mandateTypes = [];
+
+    /**
+     * @Groups({"filter_write"})
+     *
+     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, strict=true, multiple=true)
+     */
+    private array $declaredMandates = [];
 
     /**
      * @var Zone[]
@@ -581,7 +588,8 @@ class ManagedUsersFilter
                         return false === $role;
                     })
                 ),
-                'mandateType' => $this->mandateType,
+                'mandateTypes' => $this->mandateTypes,
+                'declaredMandates' => $this->declaredMandates,
                 'isCampusRegistered' => $this->isCampusRegistered,
             ],
         );
@@ -607,14 +615,24 @@ class ManagedUsersFilter
         $this->isNewRenaissanceUser = $isNewRenaissanceUser;
     }
 
-    public function getMandateType(): ?string
+    public function getMandateTypes(): array
     {
-        return $this->mandateType;
+        return $this->mandateTypes;
     }
 
-    public function setMandateType(?string $mandateType): void
+    public function setMandateTypes(array $mandateTypes): void
     {
-        $this->mandateType = $mandateType;
+        $this->mandateTypes = $mandateTypes;
+    }
+
+    public function getDeclaredMandates(): array
+    {
+        return $this->declaredMandates;
+    }
+
+    public function setDeclaredMandates(array $declaredMandates): void
+    {
+        $this->declaredMandates = $declaredMandates;
     }
 
     public function getIsCampusRegistered(): ?bool

@@ -100,9 +100,18 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      *
      * @Groups({"adherent_message_update_filter"})
      *
-     * @Assert\Choice(choices=App\Entity\ElectedRepresentative\MandateTypeEnum::TYPE_CHOICES_CONTACTS, strict=true)
+     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, strict=true)
      */
     private ?string $mandateType = null;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"adherent_message_update_filter"})
+     *
+     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, strict=true)
+     */
+    private ?string $declaredMandate = null;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -227,6 +236,16 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->mandateType = $mandateType;
     }
 
+    public function getDeclaredMandate(): ?string
+    {
+        return $this->declaredMandate;
+    }
+
+    public function setDeclaredMandate(?string $declaredMandate): void
+    {
+        $this->declaredMandate = $declaredMandate;
+    }
+
     public function getIsCampusRegistered(): ?bool
     {
         return $this->isCampusRegistered;
@@ -256,6 +275,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->committee = null;
         $this->isCommitteeMember = null;
         $this->mandateType = null;
+        $this->declaredMandate = null;
         $this->isCampusRegistered = null;
 
         parent::reset();

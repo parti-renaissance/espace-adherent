@@ -18,6 +18,7 @@ use App\Mailchimp\MailchimpSegment\MailchimpSegmentTagEnum;
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
+use App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepository;
 use App\Repository\DonationRepository;
 use App\Repository\ReferentTagRepository;
 use Doctrine\Common\Collections\Collection;
@@ -57,6 +58,7 @@ class RequestBuilder implements LoggerAwareInterface
     private $referentTagsCodes = [];
 
     private ?array $mandateTypes = null;
+    private ?array $declaredMandates = null;
 
     /** @var Zone[] */
     private array $subZones = [];
@@ -76,6 +78,7 @@ class RequestBuilder implements LoggerAwareInterface
     public function __construct(
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         private readonly ElectedRepresentativeTagsBuilder $electedRepresentativeTagsBuilder,
+        private readonly ElectedRepresentativeAdherentMandateRepository $mandateRepository,
         private readonly DonationRepository $donationRepository
     ) {
         $this->logger = new NullLogger();
@@ -109,7 +112,8 @@ class RequestBuilder implements LoggerAwareInterface
             ->setZones($adherent->getZones())
             ->setDonationYears($this->findDonationYears($adherent))
             ->setCommitteeUuid($adherent->getCommitteeV2Membership()?->getCommitteeUuid())
-            ->setMandateTypes($this->electedRepresentativeTagsBuilder->buildAdherentMandateTypes($adherent))
+            ->setMandateTypes($this->mandateRepository->getAdherentMandateTypes($adherent))
+            ->setDeclaredMandates($adherent->getMandates() ?? [])
             ->setCampusRegisteredAt($adherent->getValidCampusRegistration())
         ;
 
@@ -436,6 +440,13 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
+    public function setDeclaredMandates(array $declaredMandates): self
+    {
+        $this->declaredMandates = $declaredMandates;
+
+        return $this;
+    }
+
     public function buildMemberRequest(string $memberIdentifier): MemberRequest
     {
         $request = new MemberRequest($memberIdentifier);
@@ -581,7 +592,19 @@ class RequestBuilder implements LoggerAwareInterface
         }
 
         if (null !== $this->mandateTypes) {
-            $mergeFields[MemberRequest::MERGE_FIELD_MANDATE_TYPE] = implode(',', $this->mandateTypes);
+            $mandateTypes = array_map(function (string $mandateType): string {
+                return '"'.$mandateType.'"';
+            }, $this->mandateTypes);
+
+            $mergeFields[MemberRequest::MERGE_FIELD_MANDATE_TYPES] = implode(',', $mandateTypes);
+        }
+
+        if (null !== $this->declaredMandates) {
+            $declaredMandates = array_map(function (string $declaredMandate): string {
+                return '"'.$declaredMandate.'"';
+            }, $this->declaredMandates);
+
+            $mergeFields[MemberRequest::MERGE_FIELD_DECLARED_MANDATES] = implode(',', $declaredMandates);
         }
 
         if (null !== $this->campusRegisteredAt) {
