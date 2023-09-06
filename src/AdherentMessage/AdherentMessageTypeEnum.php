@@ -13,6 +13,7 @@ use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
 use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
+use App\Entity\AdherentMessage\RegionalDelegateAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Entity\AdherentMessage\StatutoryAdherentMessage;
 use App\Scope\FeatureEnum;
@@ -33,6 +34,7 @@ class AdherentMessageTypeEnum extends Enum
     public const CANDIDATE_JECOUTE = 'candidate_jecoute';
     public const CORRESPONDENT = 'correspondent';
     public const REGIONAL_COORDINATOR = 'regional_coordinator';
+    public const REGIONAL_DELEGATE = 'regional_delegate';
     public const PRESIDENT_DEPARTMENTAL_ASSEMBLY = 'president_departmental_assembly';
     public const STATUTORY = 'statutory';
 
@@ -48,6 +50,7 @@ class AdherentMessageTypeEnum extends Enum
         self::CANDIDATE_JECOUTE => CandidateJecouteMessage::class,
         self::CORRESPONDENT => CorrespondentAdherentMessage::class,
         self::REGIONAL_COORDINATOR => RegionalCoordinatorAdherentMessage::class,
+        self::REGIONAL_DELEGATE => RegionalDelegateAdherentMessage::class,
         self::PRESIDENT_DEPARTMENTAL_ASSEMBLY => PresidentDepartmentalAssemblyAdherentMessage::class,
         self::STATUTORY => StatutoryAdherentMessage::class,
     ];
@@ -71,6 +74,8 @@ class AdherentMessageTypeEnum extends Enum
         CorrespondentAdherentMessage::class => ['ROLE_CORRESPONDENT', 'ROLE_DELEGATED_CORRESPONDENT'],
 
         RegionalCoordinatorAdherentMessage::class => ['ROLE_REGIONAL_COORDINATOR', 'ROLE_DELEGATED_REGIONAL_COORDINATOR'],
+
+        RegionalDelegateAdherentMessage::class => ['ROLE_REGIONAL_DELEGATE', 'ROLE_DELEGATED_REGIONAL_DELEGATE'],
 
         PresidentDepartmentalAssemblyAdherentMessage::class => ['ROLE_PRESIDENT_DEPARTMENTAL_ASSEMBLY', 'ROLE_DELEGATED_PRESIDENT_DEPARTMENTAL_ASSEMBLY'],
 

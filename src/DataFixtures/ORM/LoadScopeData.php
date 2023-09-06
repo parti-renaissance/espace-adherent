@@ -40,6 +40,7 @@ class LoadScopeData extends Fixture
         ScopeEnum::CORRESPONDENT => 'Correspondant',
         ScopeEnum::LEGISLATIVE_CANDIDATE => 'Candidat aux législatives',
         ScopeEnum::REGIONAL_COORDINATOR => 'Coordinateur régional',
+        ScopeEnum::REGIONAL_DELEGATE => 'Délégué régional',
         ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Président assemblée départementale',
         ScopeEnum::ANIMATOR => 'Responsable comité local',
     ];
