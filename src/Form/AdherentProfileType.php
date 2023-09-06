@@ -6,7 +6,6 @@ use App\Address\AddressInterface;
 use App\AdherentProfile\AdherentProfile;
 use App\Entity\ActivityAreaEnum;
 use App\Entity\JobEnum;
-use App\Membership\MandatesEnum;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -111,8 +110,7 @@ class AdherentProfileType extends AbstractType
                 'placeholder' => 'Mon secteur d\'activité',
                 'required' => false,
             ])
-            ->add('mandates', ChoiceType::class, [
-                'choices' => MandatesEnum::CHOICES,
+            ->add('mandates', AdherentMandateType::class, [
                 'required' => false,
                 'multiple' => true,
                 'expanded' => $options['is_renaissance'],

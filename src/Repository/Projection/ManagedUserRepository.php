@@ -335,7 +335,7 @@ class ManagedUserRepository extends ServiceEntityRepository
 
             foreach ($declaredMandates as $key => $declaredMandate) {
                 $declaredMandatesConditions->add("FIND_IN_SET(:declared_mandate_$key, u.declaredMandates) > 0");
-                $qb->setParameter("declared_mandate_$key", $declaredMandates);
+                $qb->setParameter("declared_mandate_$key", $declaredMandate);
             }
 
             $qb->andWhere($declaredMandatesConditions);

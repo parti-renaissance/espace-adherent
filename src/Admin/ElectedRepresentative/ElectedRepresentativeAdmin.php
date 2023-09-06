@@ -3,7 +3,6 @@
 namespace App\Admin\ElectedRepresentative;
 
 use App\Address\AddressInterface;
-use App\Adherent\MandateTypeEnum;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\ElectedRepresentative\Contribution\ContributionStatusEnum;
 use App\ElectedRepresentative\ElectedRepresentativeEvent;
@@ -17,6 +16,7 @@ use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\UserListDefinition;
 use App\Entity\UserListDefinitionEnum;
 use App\Form\AdherentEmailType;
+use App\Form\AdherentMandateType;
 use App\Form\ElectedRepresentative\SponsorshipType;
 use App\Form\GenderType;
 use App\ValueObject\Genders;
@@ -339,12 +339,8 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ->add('mandatesType', CallbackFilter::class, [
                 'label' => 'Mandats',
                 'show_filter' => true,
-                'field_type' => ChoiceType::class,
+                'field_type' => AdherentMandateType::class,
                 'field_options' => [
-                    'choices' => MandateTypeEnum::ALL,
-                    'choice_label' => static function (string $choice): string {
-                        return "adherent.mandate.type.$choice";
-                    },
                     'multiple' => true,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
