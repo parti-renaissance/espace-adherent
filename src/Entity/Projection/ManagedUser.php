@@ -334,11 +334,6 @@ class ManagedUser
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     */
-    private ?array $mandateTypes = null;
-
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Groups({"managed_user_read"})
      */
@@ -406,7 +401,6 @@ class ManagedUser
         string $committee = null,
         UuidInterface $committeeUuid = null,
         array $interests = [],
-        array $mandateTypes = [],
         array $mandates = [],
         array $declaredMandates = [],
         array $cotisationDates = [],
@@ -451,7 +445,6 @@ class ManagedUser
         $this->interests = $interests;
         $this->committee = $committee;
         $this->committeeUuid = $committeeUuid;
-        $this->mandateTypes = $mandateTypes;
         $this->mandates = $mandates;
         $this->declaredMandates = $declaredMandates;
         $this->cotisationDates = $cotisationDates;
@@ -755,11 +748,6 @@ class ManagedUser
     public function getTags(): ?array
     {
         return $this->tags;
-    }
-
-    public function getMandateTypes(): ?array
-    {
-        return $this->mandateTypes;
     }
 
     public function getMandates(): ?array

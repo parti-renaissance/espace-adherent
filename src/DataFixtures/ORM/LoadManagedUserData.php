@@ -3,9 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Address\AddressInterface;
+use App\Adherent\MandateTypeEnum;
 use App\Entity\Projection\ManagedUser;
 use App\Entity\Projection\ManagedUserFactory;
-use App\Membership\MandatesEnum;
 use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\PhoneNumberUtils;
@@ -54,7 +54,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'certified_at' => '2018-06-01 10:20:45',
             'interests' => ['europe', 'numerique', 'sante'],
-            'declared_mandates' => [MandatesEnum::CITY_COUNCILOR, MandatesEnum::MAYOR],
+            'declared_mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL, MandateTypeEnum::MAIRE],
         ]);
 
         $managedUser2 = $managedUserFactory->createFromArray([
@@ -86,7 +86,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'male',
             'interests' => ['numerique'],
-            'declared_mandates' => [MandatesEnum::EUROPEAN_DEPUTY],
+            'declared_mandates' => [MandateTypeEnum::DEPUTE_EUROPEEN],
         ]);
 
         $managedUser3 = $managedUserFactory->createFromArray([
@@ -121,8 +121,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'certified_at' => '2018-06-02 10:20:45',
             'committee' => $committee11->getName(),
             'committee_uuid' => $committee11->getUuid(),
-            'mandates' => [MandatesEnum::CITY_COUNCILOR.'|Métropole du Grand Paris'],
-            'declared_mandates' => [MandatesEnum::CITY_COUNCILOR],
+            'mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL.'|Métropole du Grand Paris'],
+            'declared_mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL],
         ]);
 
         $managedUser4 = $managedUserFactory->createFromArray([
@@ -242,7 +242,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
                LoadGeoZoneData::getZone($manager, 'zone_department_59'), // Nord
             ],
             'created_at' => '2017-06-02 15:34:12',
-            'declared_mandates' => [MandatesEnum::EUROPEAN_DEPUTY, MandatesEnum::CITY_COUNCILOR],
+            'declared_mandates' => [MandateTypeEnum::DEPUTE_EUROPEEN, MandateTypeEnum::CONSEILLER_MUNICIPAL],
         ]));
 
         $manager->persist($managedUser1);
