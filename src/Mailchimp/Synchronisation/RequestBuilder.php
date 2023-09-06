@@ -678,7 +678,7 @@ class RequestBuilder implements LoggerAwareInterface
 
     private function getAdherentActiveTags(Adherent $adherent): array
     {
-        $tags = $adherent->getReferentTagCodes();
+        $tags = [];
 
         if (AddressInterface::FRANCE !== $adherent->getCountry()) {
             $tags[] = ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG;
@@ -690,10 +690,6 @@ class RequestBuilder implements LoggerAwareInterface
 
         if ($adherent->hasVotingCommitteeMembership()) {
             $tags[] = MailchimpSegmentTagEnum::COMMITTEE_VOTER;
-        }
-
-        if ($adherent->hasTerritorialCouncilMembership()) {
-            $tags[] = $adherent->getTerritorialCouncilMembership()->getTerritorialCouncil()->getUuid()->toString();
         }
 
         return $tags;
