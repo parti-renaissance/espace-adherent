@@ -12,6 +12,7 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::LEGISLATIVE_CANDIDATE,
         ScopeEnum::DEPUTY,
         ScopeEnum::REGIONAL_COORDINATOR,
+        ScopeEnum::REGIONAL_DELEGATE,
         ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
     ];
 
@@ -32,6 +33,9 @@ final class ZoneBasedRoleTypeEnum
             Zone::FOREIGN_DISTRICT,
         ],
         ScopeEnum::REGIONAL_COORDINATOR => [
+            Zone::REGION,
+        ],
+        ScopeEnum::REGIONAL_DELEGATE => [
             Zone::REGION,
         ],
     ];

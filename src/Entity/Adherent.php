@@ -1072,6 +1072,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_REGIONAL_COORDINATOR';
         }
 
+        if ($this->isRegionalDelegate()) {
+            $roles[] = 'ROLE_REGIONAL_DELEGATE';
+        }
+
         if ($this->isHost()) {
             $roles[] = 'ROLE_HOST';
         }
@@ -2766,12 +2770,25 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasZoneBasedRole(ScopeEnum::REGIONAL_COORDINATOR);
     }
 
+    public function isRegionalDelegate(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::REGIONAL_DELEGATE);
+    }
+
     /**
      * @return Zone[]
      */
     public function getRegionalCoordinatorZone(): array
     {
         return $this->isRegionalCoordinator() ? $this->findZoneBasedRole(ScopeEnum::REGIONAL_COORDINATOR)->getZones()->toArray() : [];
+    }
+
+    /**
+     * @return Zone[]
+     */
+    public function getRegionalDelegateZones(): array
+    {
+        return $this->isRegionalDelegate() ? $this->findZoneBasedRole(ScopeEnum::REGIONAL_DELEGATE)->getZones()->toArray() : [];
     }
 
     /**

@@ -16,6 +16,7 @@ use App\Entity\AdherentMessage\PresidentDepartmentalAssemblyAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
 use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
+use App\Entity\AdherentMessage\RegionalDelegateAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
@@ -62,6 +63,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
             case DeputyAdherentMessage::class:
+            case RegionalDelegateAdherentMessage::class:
                 $interestKeys[] = SubscriptionTypeEnum::DEPUTY_EMAIL;
                 break;
 
