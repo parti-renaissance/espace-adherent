@@ -12,7 +12,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "mandates": ["european_deputy"],
+        "mandates": ["depute_europeen"],
         "contribution_status": "eligible",
         "contributed_at": "@string@.isDateTime()",
         "payments": [

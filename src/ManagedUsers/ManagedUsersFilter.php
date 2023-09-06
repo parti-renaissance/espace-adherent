@@ -77,7 +77,7 @@ class ManagedUsersFilter
      *
      * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, strict=true, multiple=true)
      */
-    private array $mandateTypes = [];
+    private array $mandates = [];
 
     /**
      * @Groups({"filter_write"})
@@ -588,7 +588,7 @@ class ManagedUsersFilter
                         return false === $role;
                     })
                 ),
-                'mandateTypes' => $this->mandateTypes,
+                'mandates' => $this->mandates,
                 'declaredMandates' => $this->declaredMandates,
                 'isCampusRegistered' => $this->isCampusRegistered,
             ],
@@ -615,14 +615,14 @@ class ManagedUsersFilter
         $this->isNewRenaissanceUser = $isNewRenaissanceUser;
     }
 
-    public function getMandateTypes(): array
+    public function getMandates(): array
     {
-        return $this->mandateTypes;
+        return $this->mandates;
     }
 
-    public function setMandateTypes(array $mandateTypes): void
+    public function setMandates(array $mandates): void
     {
-        $this->mandateTypes = $mandateTypes;
+        $this->mandates = $mandates;
     }
 
     public function getDeclaredMandates(): array

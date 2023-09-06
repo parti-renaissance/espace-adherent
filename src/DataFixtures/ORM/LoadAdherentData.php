@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Address\AddressInterface;
+use App\Adherent\MandateTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentCharter\CandidateCharter;
@@ -23,7 +24,6 @@ use App\FranceCities\FranceCities;
 use App\Jecoute\GenderEnum;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\AdherentFactory;
-use App\Membership\MandatesEnum;
 use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -216,7 +216,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent5->addCharter(new CandidateCharter());
         $adherent5->addCharter(new CommitteeHostCharter());
         $adherent5->setSource(MembershipSourceEnum::RENAISSANCE);
-        $adherent5->setMandates([MandatesEnum::CITY_COUNCILOR]);
+        $adherent5->setMandates([MandateTypeEnum::CONSEILLER_MUNICIPAL]);
         $adherent5->donatedForMembership();
         $this->addReference('adherent-5', $adherent5);
 
@@ -376,7 +376,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent13->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent13->addReferentTag($this->getReference('referent_tag_ch'));
         $adherent13->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
-        $adherent13->setMandates(['european_deputy']);
+        $adherent13->setMandates([MandateTypeEnum::DEPUTE_EUROPEEN]);
         $adherent13->addHandledThematicCommunity($this->getReference('tc-sante'));
         $adherent13->addHandledThematicCommunity($this->getReference('tc-education'));
         $adherent13->certify();
@@ -998,7 +998,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+330699008800',
             'is_adherent' => false,
         ]));
-        $adherent->setMandates([MandatesEnum::CITY_COUNCILOR, MandatesEnum::EUROPEAN_DEPUTY]);
+        $adherent->setMandates([MandateTypeEnum::DEPUTE_EUROPEEN, MandateTypeEnum::CONSEILLER_MUNICIPAL]);
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::JEMENGAGE);
@@ -1098,7 +1098,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
         $adherent->donatedForMembership();
-        $adherent->setMandates(['european_deputy']);
+        $adherent->setMandates([MandateTypeEnum::DEPUTE_EUROPEEN]);
         $adherent->certify();
         $this->addReference('renaissance-user-2', $adherent);
 

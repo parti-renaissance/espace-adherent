@@ -27,7 +27,7 @@ class MandatesFilterBuilder implements FilterBuilderInterface
         $multiple = FeatureEnum::CONTACTS === $feature;
 
         return (new FilterCollectionBuilder())
-            ->createSelect($multiple ? 'mandateTypes' : 'mandateType', 'Type de mandat')
+            ->createSelect($multiple ? 'mandates' : 'mandateType', 'Type de mandat')
             ->setChoices($this->getTranslatedChoices())
             ->setMultiple($multiple)
             ->getFilters()
