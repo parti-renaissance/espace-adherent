@@ -203,7 +203,7 @@ class AdherentProfile implements MembershipInterface
      * @var array
      *
      * @Assert\Choice(
-     *     callback={"App\Membership\MandatesEnum", "all"},
+     *     choices=App\Adherent\MandateTypeEnum::ALL,
      *     multipleMessage="adherent_profile.mandates.invalid_choice",
      *     multiple=true
      * )

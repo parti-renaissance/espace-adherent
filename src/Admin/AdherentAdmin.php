@@ -3,7 +3,6 @@
 namespace App\Admin;
 
 use App\Address\AddressInterface;
-use App\Adherent\MandateTypeEnum;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
@@ -23,6 +22,7 @@ use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Form\ActivityPositionType;
+use App\Form\AdherentMandateType;
 use App\Form\Admin\AdherentInstanceQualityType;
 use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AdherentZoneBasedRoleType;
@@ -349,12 +349,8 @@ class AdherentAdmin extends AbstractAdmin
                     ->add('position', ActivityPositionType::class, [
                         'label' => 'Statut',
                     ])
-                    ->add('mandates', ChoiceType::class, [
+                    ->add('mandates', AdherentMandateType::class, [
                         'label' => 'adherent.mandate.admin.label',
-                        'choices' => MandateTypeEnum::ALL,
-                        'choice_label' => static function (string $choice): string {
-                            return "adherent.mandate.type.$choice";
-                        },
                         'required' => false,
                         'multiple' => true,
                     ])
@@ -839,12 +835,8 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('elected_representative_mandates', CallbackFilter::class, [
                 'label' => 'Mandat(s) RNE (legacy)',
-                'field_type' => ChoiceType::class,
+                'field_type' => AdherentMandateType::class,
                 'field_options' => [
-                    'choices' => MandateTypeEnum::ALL,
-                    'choice_label' => static function (string $choice): string {
-                        return "adherent.mandate.type.$choice";
-                    },
                     'multiple' => true,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
@@ -868,12 +860,8 @@ class AdherentAdmin extends AbstractAdmin
             ->add('er_adherent_mandate_type', CallbackFilter::class, [
                 'label' => 'Mandat(s) élu',
                 'show_filter' => true,
-                'field_type' => ChoiceType::class,
+                'field_type' => AdherentMandateType::class,
                 'field_options' => [
-                    'choices' => MandateTypeEnum::ALL,
-                    'choice_label' => static function (string $choice): string {
-                        return "adherent.mandate.type.$choice";
-                    },
                     'multiple' => true,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
