@@ -676,7 +676,7 @@ Feature:
                     "type": "select"
                 },
                 {
-                    "code": "mandateTypes",
+                    "code": "mandates",
                     "label": "Type de mandat",
                     "options": {
                         "choices": {
