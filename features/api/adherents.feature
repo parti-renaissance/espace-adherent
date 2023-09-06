@@ -674,6 +674,32 @@ Feature:
                         "multiple": true
                     },
                     "type": "select"
+                },
+                {
+                    "code": "mandateTypes",
+                    "label": "Type de mandat",
+                    "options": {
+                        "choices": {
+                            "conseiller_arrondissement": "Conseiller d'arrondissement",
+                            "conseiller_communautaire": "Conseiller communautaire",
+                            "conseiller_departemental": "Conseiller départemental",
+                            "conseiller_fde": "Conseiller FDE",
+                            "conseiller_municipal": "Conseiller municipal",
+                            "conseiller_regional": "Conseiller régional",
+                            "conseiller_territorial": "Conseiller territorial",
+                            "delegue_consulaire": "Délégué consulaire",
+                            "depute": "Député",
+                            "depute_europeen": "Député européen",
+                            "maire": "Maire",
+                            "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
+                            "president_conseil_communautaire": "Président du Conseil communautaire",
+                            "president_conseil_departemental": "Président du Conseil départemental",
+                            "president_conseil_regional": "Président du Conseil régional",
+                            "senateur": "Sénateur"
+                        },
+                        "multiple": true
+                    },
+                    "type": "select"
                 }
             ]
         }
