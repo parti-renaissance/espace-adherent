@@ -7,12 +7,12 @@ use Ramsey\Uuid\Uuid;
 
 class RenaissanceDeclaredMandateNotificationMessage extends AbstractRenaissanceMessage
 {
-    public static function createForAdministrator(Administrator $administrator, array $mandates): self
+    public static function createForAdministrator(Administrator $administrator, array $mandates, string $buttonUrl): self
     {
-        return self::create($administrator->getEmailAddress(), $mandates);
+        return self::create($administrator->getEmailAddress(), $mandates, $buttonUrl);
     }
 
-    private static function create(string $recipientEmail, array $mandates): self
+    private static function create(string $recipientEmail, array $mandates, string $buttonUrl): self
     {
         return new self(
             Uuid::uuid4(),
@@ -21,6 +21,8 @@ class RenaissanceDeclaredMandateNotificationMessage extends AbstractRenaissanceM
             'Nouvelles déclarations de mandats',
             [
                 'mandates' => $mandates,
+                'mandates_count' => \count($mandates),
+                'button_url' => $buttonUrl,
             ]
         );
     }

@@ -6,11 +6,12 @@ use App\Entity\Administrator;
 use App\Entity\Reporting\DeclaredMandateHistory;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceDeclaredMandateNotificationMessage;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DeclaredMandateHistoryNotifier
 {
-    public function __construct(private readonly MailerService $transactionalMailer, private readonly TranslatorInterface $translator)
+    public function __construct(private readonly MailerService $transactionalMailer, private readonly TranslatorInterface $translator, private readonly UrlGeneratorInterface $urlGenerator)
     {
     }
 
@@ -21,7 +22,8 @@ class DeclaredMandateHistoryNotifier
     {
         $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::createForAdministrator(
             $administrator,
-            $this->formatMandates($declaredMandateHistories)
+            $this->formatMandates($declaredMandateHistories),
+            $this->urlGenerator->generate('admin_app_adherent_list', [], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
     }
 
