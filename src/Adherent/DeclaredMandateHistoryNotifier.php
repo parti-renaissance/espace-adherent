@@ -33,7 +33,7 @@ class DeclaredMandateHistoryNotifier
         $formattedMandates = [];
 
         foreach ($declaredMandateHistories as $declaredMandateHistory) {
-            $formattedMandates = [
+            $formattedMandates[] = [
                 'adherent_name' => $declaredMandateHistory->getAdherent()->getFullName(),
                 'added_mandates' => implode(', ', $this->translateMandates($declaredMandateHistory->getAddedMandates())),
                 'removed_mandates' => implode(', ', $this->translateMandates($declaredMandateHistory->getRemovedMandates())),
