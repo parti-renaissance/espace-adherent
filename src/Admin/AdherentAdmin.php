@@ -38,7 +38,6 @@ use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\AdherentEvents;
 use App\Membership\Event\AdherentProfileWasUpdatedEvent;
 use App\Membership\Event\UserEvent;
-use App\Membership\MandatesEnum;
 use App\Membership\UserEvents;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Repository\Helper\MembershipFilterHelper;
@@ -810,10 +809,9 @@ class AdherentAdmin extends AbstractAdmin
                 'label' => 'common.role',
             ])
             ->add('mandates', CallbackFilter::class, [
-                'label' => 'Mandat(s) (legacy)',
-                'field_type' => ChoiceType::class,
+                'label' => 'Mandat(s) déclaré(s)',
+                'field_type' => AdherentMandateType::class,
                 'field_options' => [
-                    'choices' => MandatesEnum::CHOICES,
                     'multiple' => true,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
@@ -824,8 +822,8 @@ class AdherentAdmin extends AbstractAdmin
                     $where = new Expr\Orx();
 
                     foreach ($value->getValue() as $mandate) {
-                        $where->add("$alias.mandates LIKE :mandate_".$mandate);
-                        $qb->setParameter('mandate_'.$mandate, "%$mandate%");
+                        $where->add("FIND_IN_SET(:mandate_$mandate, $alias.mandates) > 0");
+                        $qb->setParameter("mandate_$mandate", $mandate);
                     }
 
                     $qb->andWhere($where);
