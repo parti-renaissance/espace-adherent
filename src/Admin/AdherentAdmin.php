@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Address\AddressInterface;
+use App\Adherent\MandateTypeEnum;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
@@ -810,10 +811,13 @@ class AdherentAdmin extends AbstractAdmin
                 'label' => 'common.role',
             ])
             ->add('mandates', CallbackFilter::class, [
-                'label' => 'Mandat(s) (legacy)',
+                'label' => 'Mandat(s) déclaré(s)',
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => MandatesEnum::CHOICES,
+                    'choices' => MandateTypeEnum::ALL,
+                    'choice_label' => static function (string $choice): string {
+                        return "adherent.mandate.type.$choice";
+                    },
                     'multiple' => true,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
@@ -824,8 +828,8 @@ class AdherentAdmin extends AbstractAdmin
                     $where = new Expr\Orx();
 
                     foreach ($value->getValue() as $mandate) {
-                        $where->add("$alias.mandates LIKE :mandate_".$mandate);
-                        $qb->setParameter('mandate_'.$mandate, "%$mandate%");
+                        $where->add("FIND_IN_SET(:mandate_$mandate, $alias.mandates) > 0");
+                        $qb->setParameter("mandate_$mandate", $mandate);
                     }
 
                     $qb->andWhere($where);
