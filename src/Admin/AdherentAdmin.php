@@ -3,7 +3,6 @@
 namespace App\Admin;
 
 use App\Address\AddressInterface;
-use App\Adherent\MandateTypeEnum;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
@@ -39,7 +38,6 @@ use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\AdherentEvents;
 use App\Membership\Event\AdherentProfileWasUpdatedEvent;
 use App\Membership\Event\UserEvent;
-use App\Membership\MandatesEnum;
 use App\Membership\UserEvents;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Repository\Helper\MembershipFilterHelper;
