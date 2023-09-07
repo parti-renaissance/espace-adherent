@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Administrator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -27,13 +28,34 @@ class AdministratorRepository extends ServiceEntityRepository implements UserLoa
     public function loadUserByUsername($username)
     {
         $query = $this
-            ->createQueryBuilder('a')
-            ->where('a.emailAddress = :username')
-            ->andWhere('a.activated = true')
+            ->createActivatedQueryBuilder('a')
+            ->andWhere('a.emailAddress = :username')
             ->setParameter('username', $username)
             ->getQuery()
         ;
 
         return $query->getOneOrNullResult();
+    }
+
+    /**
+     * @return array|Administrator[]
+     */
+    public function findWithRole(string $role): array
+    {
+        return $this
+            ->createActivatedQueryBuilder('a')
+            ->andWhere('FIND_IN_SET(:role, a.roles) > 0')
+            ->setParameter('role', $role)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    private function createActivatedQueryBuilder(string $alias): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder($alias)
+            ->where("$alias.activated = true")
+        ;
     }
 }
