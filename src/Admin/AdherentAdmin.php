@@ -812,12 +812,8 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('mandates', CallbackFilter::class, [
                 'label' => 'Mandat(s) déclaré(s)',
-                'field_type' => ChoiceType::class,
+                'field_type' => AdherentMandateType::class,
                 'field_options' => [
-                    'choices' => MandateTypeEnum::ALL,
-                    'choice_label' => static function (string $choice): string {
-                        return "adherent.mandate.type.$choice";
-                    },
                     'multiple' => true,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
