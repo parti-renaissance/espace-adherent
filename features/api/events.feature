@@ -962,6 +962,95 @@ Feature:
     }
     """
 
+  Scenario: As a Animator I can create a committee event
+    Given I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "POST" request to "/api/v3/events" with body:
+    """
+    {
+        "name": "Nouveau événement",
+        "category": "kiosque",
+        "description": "Une description de l'événement",
+        "begin_at": "2023-01-29 16:30:30",
+        "finish_at": "2023-01-30 16:30:30",
+        "capacity": 100,
+        "committee": "5e00c264-1d4b-43b8-862e-29edc38389b3",
+        "mode": "online",
+        "visio_url": "https://en-marche.fr/reunions/123",
+        "post_address": {
+            "address": "",
+            "postal_code": "",
+            "city_name": "",
+            "country": ""
+        },
+        "time_zone": "Europe/Paris",
+        "electoral": false,
+        "private": false
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "@uuid@",
+        "name": "Nouveau événement",
+        "slug": "2023-01-29-nouveau-evenement",
+        "description": "Une description de l'événement",
+        "time_zone": "Europe/Paris",
+        "begin_at": "2023-01-29T16:30:30+01:00",
+        "finish_at": "2023-01-30T16:30:30+01:00",
+        "organizer": {
+            "uuid": "@uuid@",
+            "first_name": "Adherent 55",
+            "last_name": "Fa55ke"
+        },
+        "participants_count": 1,
+        "status": "SCHEDULED",
+        "capacity": 100,
+        "post_address": {
+            "address": "",
+            "postal_code": "",
+            "city": null,
+            "city_name": "",
+            "country": "",
+            "latitude": null,
+            "longitude": null
+        },
+        "category": {
+            "event_group_category": {
+                "name": "événement",
+                "slug": "evenement"
+            },
+            "name": "Kiosque",
+            "slug": "kiosque"
+        },
+        "visio_url": "https://en-marche.fr/reunions/123",
+        "mode": "online",
+        "image_url": null,
+        "link": "http://renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
+    }
+    """
+    When I save this response
+    And I send a "PUT" request to "/api/v3/events/:last_response.uuid:?scope=animator" with body:
+    """
+    {
+      "description": "Nouvelle description",
+      "category": "kiosque",
+      "begin_at": "2023-01-29T16:30:30+01:00",
+      "finish_at": "2023-01-30T16:30:30+01:00",
+      "mode": "online",
+      "visio_url": "http://visio.fr",
+      "post_address": {
+          "address": "",
+          "postal_code": "",
+          "city_name": "",
+          "country": ""
+      },
+      "committee": null
+    }
+    """
+    Then the response status code should be 200
+
   Scenario Outline: As a (delegated) referent I can edit my (delegator's) default event
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5?scope=<scope>" with body:

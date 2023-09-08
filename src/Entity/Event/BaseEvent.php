@@ -172,6 +172,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "post": {
  *             "security": "is_granted('ROLE_USER')",
  *             "path": "/v3/events",
+ *             "denormalization_context": {"groups": {"event_write", "event_write_creation"}},
  *             "validation_groups": {"Default", "api_put_validation", "event_creation"},
  *         },
  *     },
