@@ -78,7 +78,8 @@ class AdherentCreateCommandHandler
 
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(new UserEvent($adherent, true, true), UserEvents::USER_CREATED);
+        $this->dispatcher->dispatch($event = new UserEvent($adherent, true, true), UserEvents::USER_CREATED);
+        $this->dispatcher->dispatch($event, UserEvents::USER_MEMBERSHIP_COMPLETED);
         $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
 
         if (!$adherent->isEnabled()) {
