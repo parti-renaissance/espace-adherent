@@ -19,11 +19,7 @@ class ContributionRequest
 
     /**
      * @Assert\NotBlank(groups={"fill_revenue"})
-     * @Assert\GreaterThanOrEqual(
-     *     value=1,
-     *     message="elected_representative.contributation.amount.greater_than_1",
-     *     groups={"fill_revenue"}
-     * )
+     * @Assert\GreaterThanOrEqual(value=0, groups={"fill_revenue"})
      */
     public ?int $revenueAmount = null;
 
