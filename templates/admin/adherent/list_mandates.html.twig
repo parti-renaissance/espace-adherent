@@ -11,23 +11,9 @@
         {% endif %}
     {% endfor %}
 
-    {% set electedRepresentative = get_elected_representative(object) %}
-
-    {% if electedRepresentative %}
-        {% for mandate in electedRepresentative.currentMandates %}
-            <span class="label label-success">{{ mandate.name }}</span>
-            <br>
-        {% endfor %}
-    {% endif %}
-
-    {% set mandateTypes = constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::CHOICES') %}
     {% for mandate in object.findElectedRepresentativeMandates(true) %}
-        <span class="label label-warning">
-            {% for mandateTypeLabel,mandateType in mandateTypes %}
-                {% if mandate.mandateType is same as mandateType %}
-                    {{ mandateTypeLabel }}
-                {% endif %}
-            {% endfor %}
+        <span class="label label-success">
+            {{ ('adherent.mandate.type.'~mandate.mandateType)|trans }}
         </span>
         <br>
     {% endfor %}
