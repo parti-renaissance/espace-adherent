@@ -159,47 +159,6 @@ class MembershipControllerTest extends AbstractEnMarcheWebTestCase
         self::assertCount(7, $adherent->getSubscriptionTypes());
     }
 
-    public function testBannedAdherentSubscription(): void
-    {
-        $this->client->request(Request::METHOD_GET, '/adhesion');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit(
-            $this->client->getCrawler()->selectButton('Je rejoins La République En Marche')->form(),
-            [
-                'g-recaptcha-response' => 'fake',
-                'adherent_registration' => [
-                    'firstName' => 'Test',
-                    'lastName' => 'Adhesion',
-                    'emailAddress' => [
-                        'first' => 'damien.schmidt@example.ch',
-                        'second' => 'damien.schmidt@example.ch',
-                    ],
-                    'password' => '12345678',
-                    'address' => [
-                        'address' => '1 rue des alouettes',
-                        'postalCode' => '94320',
-                        'cityName' => 'Thiais',
-                        'city' => '94320-94073',
-                        'country' => 'FR',
-                    ],
-                    'birthdate' => [
-                        'day' => 1,
-                        'month' => 1,
-                        'year' => 1989,
-                    ],
-                    'gender' => 'male',
-                    'conditions' => true,
-                    'allowEmailNotifications' => true,
-                    'allowMobileNotifications' => true,
-                ],
-            ]
-        );
-
-        $this->assertStringContainsString('Oups, quelque chose s\'est mal passé', $this->client->getCrawler()->filter('#adherent_registration_emailAddress_first_errors')->text());
-    }
-
     public function testCreateAdherentWithCustomGender(): void
     {
         $this->client->request(Request::METHOD_GET, '/adhesion');

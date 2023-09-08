@@ -78,7 +78,7 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
      * @var Adherent|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank
      */

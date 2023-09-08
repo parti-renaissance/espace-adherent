@@ -33,8 +33,18 @@ class BanManager
         $this->entityManager->flush();
     }
 
+    public function getBlockedRoles(): array
+    {
+        return [
+            'ROLE_DEPUTY',
+            'ROLE_ANIMATOR',
+            'ROLE_REGIONAL_DELEGATE',
+            'ROLE_PRESIDENT_DEPARTMENTAL_ASSEMBLY',
+        ];
+    }
+
     public function canBan(Adherent $adherent): bool
     {
-        return !$adherent->isToDelete() && [] === array_diff($adherent->getRoles(), ['ROLE_RENAISSANCE_USER', 'ROLE_ADHERENT', 'ROLE_USER']);
+        return !$adherent->isToDelete() && empty(array_intersect($adherent->getRoles(), $this->getBlockedRoles()));
     }
 }
