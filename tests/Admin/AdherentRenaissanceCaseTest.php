@@ -279,6 +279,49 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         $this->assertStringContainsString('Oups, quelque chose s\'est mal passé', $crawler->text());
     }
 
+    public function testASuperAdminCanBanAllAdherentWithoutMainRoles(): void
+    {
+        $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
+
+        $this->client->followRedirects();
+
+        $countError = 0;
+
+        /** @var Adherent $adherent */
+        foreach ($this->adherentRepository->findAll() as $adherent) {
+            $this->client->request(Request::METHOD_GET, sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
+            $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+            $this->client->clickLink('Exclure cet adhérent ⚠️');
+
+            if (!str_ends_with($this->client->getRequest()->getPathInfo(), '/ban')) {
+                ++$countError;
+                continue;
+            }
+
+            $this->assertSame(
+                sprintf('/admin/app/adherent/%s/ban', $adherent->getId()),
+                $this->client->getRequest()->getPathInfo()
+            );
+
+            $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+            $crawler = $this->client->submitForm('Confirmer');
+
+            $this->assertSame(
+                '/admin/app/adherent/list',
+                $this->client->getRequest()->getPathInfo()
+            );
+
+            $this->assertStringContainsString(
+                sprintf('L\'adhérent %s a bien été exclu.', $adherent->getFullName()),
+                $crawler->filter('.alert.alert-success ')->text()
+            );
+        }
+
+        self::assertSame(6, $countError);
+    }
+
     public function testAnAdminWithoutRoleCannotUpdateCustomInstanceQuality()
     {
         $this->authenticateAsAdmin($this->client);

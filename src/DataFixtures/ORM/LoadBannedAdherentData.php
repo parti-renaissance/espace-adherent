@@ -11,8 +11,7 @@ class LoadBannedAdherentData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $adherentBanned = new BannedAdherent(Uuid::fromString(LoadAdherentData::ADHERENT_14_UUID));
-        $manager->persist($adherentBanned);
+        $manager->persist(new BannedAdherent(Uuid::uuid4()));
         $manager->flush();
     }
 }
