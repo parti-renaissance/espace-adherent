@@ -1168,10 +1168,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_CORRESPONDENT';
         }
 
-        if ($this->isStatusesVoter()) {
-            $roles[] = 'ROLE_STATUSES_VOTER';
-        }
-
         if ($this->isRenaissanceUser()) {
             $roles[] = 'ROLE_RENAISSANCE_USER';
         }
@@ -3196,15 +3192,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getActivismZone(): ?Zone
     {
         return $this->activismZone;
-    }
-
-    public function isStatusesVoter(): bool
-    {
-        return $this->isCertified()
-            && $this->isAdherent()
-            && $this->isEnabled()
-            && $this->registeredAt
-            && (clone $this->registeredAt)->modify('+3 months') < new \DateTime('2022-09-16 08:00:00');
     }
 
     public function donatedForMembership(\DateTimeInterface $donatedAt = null): void

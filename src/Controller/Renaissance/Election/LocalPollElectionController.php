@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Renaissance\LocalElection;
+namespace App\Controller\Renaissance\Election;
 
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\VotingPlatform\Designation\DesignationTypeEnum;

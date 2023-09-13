@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Renaissance\LocalElection\Summary;
+namespace App\Controller\Renaissance\Election\Summary;
 
 use App\LocalElection\LocalElectionCollection;
 use App\Repository\LocalElection\LocalElectionRepository;

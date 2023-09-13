@@ -51,32 +51,33 @@
             Consultations
         </a>
     </div>
+{% endif %}
 
-    {% set designations = find_active_local_designations(app.user) %}
+{% set designations = find_active_designations(app.user) %}
 
-    {% if designations|length %}
-        {% set election_routes  = {
-            'local_election': 'app_renaissance_departmental_election_lists',
-            'local_poll': 'app_renaissance_local_election_home',
-            'committee_supervisor': 'app_renaissance_committee_election_candidacies_lists_view'
-        } %}
+{% if designations|length %}
+    {% set election_routes  = {
+        'local_election': 'app_renaissance_departmental_election_lists',
+        'local_poll': 'app_renaissance_local_election_home',
+        'poll': 'app_poll_election_index',
+        'committee_supervisor': 'app_renaissance_committee_election_candidacies_lists_view'
+    } %}
 
-        <div>
-            <h5 class="inline-flex items-center mb-4 text-sm leading-5 font-medium uppercase tracking-wider lg:mb-3 text-red-500">
-                {% include 'icons/archive.svg.twig' with { svg_class: 'text-red-500 w-5 h-5 mr-2' } %}
-                Élections
-            </h5>
-            <ul class="ml-2 space-y-4 lg:space-y-2 border-l border-red-200">
-                {% for designation in designations|filter(d => not d.isCommitteeSupervisorType() or d.getElectionEntityIdentifier()) %}
-                    <li>
-                        <a href="{{ path(election_routes[designation.getType()], {uuid: designation.isCommitteeSupervisorType() ? designation.getElectionEntityIdentifier() : designation.getUuid()}) }}" class="block border-l pl-4 -ml-px border-transparent hover:border-red-400 text-slate-700 hover:text-slate-900">
-                            {{ designation.getTitle() }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
+    <div>
+        <h5 class="inline-flex items-center mb-4 text-sm leading-5 font-medium uppercase tracking-wider lg:mb-3 text-red-500">
+            {% include 'icons/archive.svg.twig' with { svg_class: 'text-red-500 w-5 h-5 mr-2' } %}
+            Élections
+        </h5>
+        <ul class="ml-2 space-y-4 lg:space-y-2 border-l border-red-200">
+            {% for designation in designations|filter(d => not d.isCommitteeSupervisorType() or d.getElectionEntityIdentifier()) %}
+                <li>
+                    <a href="{{ path(election_routes[designation.getType()], {uuid: designation.isCommitteeSupervisorType() ? designation.getElectionEntityIdentifier() : designation.getUuid()}) }}" class="block border-l pl-4 -ml-px border-transparent hover:border-red-400 text-slate-700 hover:text-slate-900">
+                        {{ designation.getTitle() }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endif %}
 
 <div>

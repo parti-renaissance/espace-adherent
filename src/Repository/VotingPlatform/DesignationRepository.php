@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Repository\GeoZoneTrait;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -157,6 +158,9 @@ class DesignationRepository extends ServiceEntityRepository
         }
 
         $conditions = $queryBuilder->expr()->orX();
+
+        $conditions->add('designation.type = :poll_type');
+        $queryBuilder->setParameter('poll_type', DesignationTypeEnum::POLL);
 
         if ($zones = $adherent->getParentZones()) {
             $zoneQueryBuilder = $this->createGeoZonesQueryBuilder(

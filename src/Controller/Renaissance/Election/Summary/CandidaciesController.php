@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Renaissance\LocalElection\Summary;
+namespace App\Controller\Renaissance\Election\Summary;
 
 use App\Entity\LocalElection\LocalElection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
