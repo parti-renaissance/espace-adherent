@@ -151,6 +151,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @Groups({"message_read", "message_read_list", "message_write"})
      *
      * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $label;
 
@@ -162,6 +163,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @Groups({"message_read", "message_read_list", "message_write", "message_read_content"})
      *
      * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $subject;
 
