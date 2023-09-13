@@ -15,20 +15,6 @@
                         <li>{{ role }}</li>
                     {% endfor %}
                 </ul>
-                {#                    <div class="adherent-profile__completion b__nudge--bottom">#}
-                {#                        <div class="text--body text--small b__nudge--bottom-small">#}
-                {#                            <!-- If is not completed -->#}
-                {#                            Complétion du profil : 50%#}
-                {#                            <!-- If is completed TODO#}
-                {#                            👏 Profil complété ! -->#}
-                {#                        </div>#}
-                {#                        <div class="gauge">#}
-                {#                            <span></span>#}
-                {#                        </div>#}
-                {#                        <div class="b__nudge--top-10">#}
-                {#                            <a href="{{ path('app_funnel_general') }}" class="text--body text--small text--blue--dark link--no-decor">Compléter mon profil</a>#}
-                {#                        </div>#}
-                {#                    </div>#}
                 <ul class="">
                     {% if is_granted('ROLE_FORMATION_SPACE') %}
                         <li class="space--5-0"><a href="{{ path('app_formation_home') }}" class="text--body text--small link--no-decor">Formation</a></li>
@@ -70,12 +56,6 @@
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'events'}) }}">Mes événements</a></li>
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'donations'}) }}">Mes dons</a></li>
-                        {% if is_granted('ROLE_STATUSES_VOTER') %}
-                            {% set designation = find_active_poll_designation() %}
-                            {% if designation and designation.isActive() %}
-                                <li><a href="{{ path('app_vote_statuses_index') }}">Vote des statuts</a></li>
-                            {% endif %}
-                        {% endif %}
                     </ul>
                 </div>
             </div>

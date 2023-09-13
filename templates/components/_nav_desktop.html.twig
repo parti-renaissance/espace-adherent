@@ -151,14 +151,6 @@
                     </li>
                 {% endif %}
             </ul>
-            {% if is_granted('ROLE_STATUSES_VOTER') %}
-                {% set designation = find_active_poll_designation() %}
-                {% if designation and designation.isActive() %}
-                    <div class="space--10-0 b__nudge--left-medium">
-                        <a href="{{ path('app_vote_statuses_index') }}" class="link--no--decor text--blue text--hover--white text--bold">Votez !</a>
-                    </div>
-                {% endif %}
-            {% endif %}
         </div>
     </div>
 {% endif %}

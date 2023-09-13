@@ -170,7 +170,7 @@ class ElectionNotifier
         }
 
         if ($designation->isPollType()) {
-            return $this->urlGenerator->generate('app_vote_statuses_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+            return $this->urlGenerator->generate('app_poll_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         if ($designation->isLocalElectionType()) {
