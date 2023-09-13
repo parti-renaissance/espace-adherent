@@ -56,7 +56,7 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\MandateTypeEnum", "toArray"})
+     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL)
      *
      * @Groups({
      *     "elected_mandate_write",
