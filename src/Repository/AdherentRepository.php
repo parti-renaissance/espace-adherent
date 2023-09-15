@@ -30,6 +30,7 @@ use App\Membership\MembershipSourceEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
 use App\Repository\Helper\MembershipFilterHelper;
+use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
 use Cake\Chronos\Chronos;
@@ -1508,6 +1509,21 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->leftJoin($alias.'.commitment', 'commitment')
             ->leftJoin($alias.'.adherentMandates', 'mandates')
             ->leftJoin($alias.'.zoneBasedRoles', 'zone_based_role')
+        ;
+    }
+
+    public function findPadForDepartmentCode(string $code): ?Adherent
+    {
+        return $this
+            ->createQueryBuilder('adherent')
+            ->innerJoin('adherent.zoneBasedRoles', 'zone_based_role')
+            ->andWhere('zone_based_role.type = :role_pad')
+            ->setParameter('role_pad', ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY)
+            ->innerJoin('zone_based_role.zones', 'zone')
+            ->andWhere('zone.code = :department_code')
+            ->setParameter('department_code', $code)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 

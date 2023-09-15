@@ -3,6 +3,8 @@
 namespace App\Command;
 
 use App\Adherent\DeclaredMandateHistoryNotifier;
+use App\Entity\Geo\Zone;
+use App\Repository\AdherentRepository;
 use App\Repository\AdministratorRepository;
 use App\Repository\Reporting\DeclaredMandateHistoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,6 +27,7 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
     public function __construct(
         private readonly DeclaredMandateHistoryRepository $declaredMandateHistoryRepository,
         private readonly AdministratorRepository $administratorRepository,
+        private readonly AdherentRepository $adherentRepository,
         private readonly DeclaredMandateHistoryNotifier $declaredMandateHistoryNotifier,
         private readonly EntityManagerInterface $entityManager
     ) {
@@ -38,18 +41,18 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $administrators = $this->administratorRepository->findWithRole(self::ADMIN_ROLE_TO_NOTIFY);
-
-        if (!$administrators) {
-            $this->io->text('No administrator to notify.');
-
-            return self::SUCCESS;
-        }
-
         $notNotifiedHistories = $this->declaredMandateHistoryRepository->findNotNotified();
 
         if (!$notNotifiedHistories) {
             $this->io->text('No new declared mandate history.');
+
+            return self::SUCCESS;
+        }
+
+        $administrators = $this->administratorRepository->findWithRole(self::ADMIN_ROLE_TO_NOTIFY);
+
+        if (!$administrators) {
+            $this->io->text('No administrator to notify.');
 
             return self::SUCCESS;
         }
@@ -63,6 +66,42 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
 
         foreach ($administrators as $administrator) {
             $this->declaredMandateHistoryNotifier->notifyAdministrator($administrator, $notNotifiedHistories);
+
+            $this->io->progressAdvance();
+        }
+
+        $this->io->progressFinish();
+
+        $historiesByDepartment = [];
+        foreach ($notNotifiedHistories as $history) {
+            $departments = $history->getAdherent()->getZonesOfType(Zone::DEPARTMENT, true);
+            $department = !empty($departments) ? reset($departments) : null;
+
+            if (!$department) {
+                continue;
+            }
+
+            $historiesByDepartment[$department->getCode()][] = $history;
+        }
+
+        $this->io->text(sprintf(
+            'Will notify %d PADs about %d new declared mandate histories',
+            \count(array_keys($historiesByDepartment)),
+            \count($notNotifiedHistories)
+        ));
+
+        $this->io->progressStart(\count(array_keys($historiesByDepartment)));
+
+        foreach ($historiesByDepartment as $departmentCode => $histories) {
+            $pad = $this->adherentRepository->findPadForDepartmentCode($departmentCode);
+
+            if (!$pad) {
+                $this->io->progressAdvance();
+
+                continue;
+            }
+
+            $this->declaredMandateHistoryNotifier->notifyAdherent($pad, $histories);
 
             $this->io->progressAdvance();
         }

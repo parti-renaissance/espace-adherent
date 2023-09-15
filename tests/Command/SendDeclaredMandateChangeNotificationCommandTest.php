@@ -25,7 +25,7 @@ class SendDeclaredMandateChangeNotificationCommandTest extends AbstractCommandTe
 
         self::assertEmpty($this->declaredMandateHistoryRepository->findNotNotified());
 
-        $this->assertCountMails(2, RenaissanceDeclaredMandateNotificationMessage::class);
+        $this->assertCountMails(3, RenaissanceDeclaredMandateNotificationMessage::class);
     }
 
     protected function setUp(): void

@@ -2,6 +2,7 @@
 
 namespace App\Adherent;
 
+use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Reporting\DeclaredMandateHistory;
 use App\Mailer\MailerService;
@@ -11,8 +12,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DeclaredMandateHistoryNotifier
 {
-    public function __construct(private readonly MailerService $transactionalMailer, private readonly TranslatorInterface $translator, private readonly UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private readonly MailerService $transactionalMailer,
+        private readonly TranslatorInterface $translator,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly string $jemengageHost
+    ) {
     }
 
     /**
@@ -24,6 +29,18 @@ class DeclaredMandateHistoryNotifier
             $administrator,
             $this->formatMandates($declaredMandateHistories),
             $this->urlGenerator->generate('admin_app_adherent_list', [], UrlGeneratorInterface::ABSOLUTE_URL)
+        ));
+    }
+
+    /**
+     * @param array|DeclaredMandateHistory[] $declaredMandateHistories
+     */
+    public function notifyAdherent(Adherent $adherent, array $declaredMandateHistories): void
+    {
+        $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::createForAdherent(
+            $adherent,
+            $this->formatMandates($declaredMandateHistories),
+            '//'.$this->jemengageHost.'/adherents'
         ));
     }
 
