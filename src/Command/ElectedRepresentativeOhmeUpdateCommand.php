@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
-use App\Entity\ElectedRepresentative\Payment;
+use App\Entity\Contribution\Payment;
 use App\Ohme\ClientInterface;
-use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
+use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -23,7 +23,7 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
 
     public function __construct(
         private readonly ClientInterface $ohme,
-        private readonly ElectedRepresentativeRepository $electedRepresentativeRepository,
+        private readonly AdherentRepository $adherentRepository,
         private readonly EntityManagerInterface $entityManager
     ) {
         parent::__construct();
@@ -60,24 +60,20 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
                     continue;
                 }
 
-                $electedRepresentative = $this->electedRepresentativeRepository->findOneByAdherentUuid($contact['uuid_adherent']);
-
-                if (!$electedRepresentative) {
-                    $this->io->warning(sprintf('ElectedRepresentative with uuid_adherent "%s" has not been found.', $contact['uuid_adherent']));
+                if (!$adherent = $this->adherentRepository->findByUuid($contact['uuid_adherent'])) {
+                    $this->io->warning(sprintf('Adherent with uuid "%s" has not been found.', $contact['uuid_adherent']));
 
                     continue;
                 }
 
-                $payments = $this->ohme->getPayments(100, 0, [
-                    'contact_id' => $contact['id'],
-                ]);
+                $payments = $this->ohme->getPayments(100, 0, ['contact_id' => $contact['id']]);
 
                 foreach ($payments['data'] as $payment) {
-                    if ($electedRepresentative->getPaymentByOhmeId($payment['id'])) {
+                    if ($adherent->getPaymentByOhmeId($payment['id'])) {
                         continue;
                     }
 
-                    $electedRepresentative->addPayment(Payment::fromArray($electedRepresentative, $payment));
+                    $adherent->addPayment(Payment::fromArray($adherent, $payment));
                 }
 
                 $this->entityManager->flush();
