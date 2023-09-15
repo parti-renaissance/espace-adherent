@@ -102,6 +102,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/adherents/{uuid}/elect",
  *             "method": "GET",
  *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')",
  *         },
  *     },
  *     collectionOperations={},
