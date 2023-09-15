@@ -55,7 +55,7 @@
                                 Je donne
                             </a>
                         {% elseif app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() %}
-                            <a href="{{ path('app_renaissance_adhesion_pre_payment', {is_re_adhesion: true}) }}" class="button button-green">
+                            <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="button button-green">
                                 Je mets à jour ma cotisation
                             </a>
                         {% else %}
@@ -119,7 +119,7 @@
                                     Je donne
                                 </a>
                             {% elseif app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() %}
-                                <a href="{{ path('app_renaissance_adhesion_pre_payment', {is_re_adhesion: true}) }}" class="flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
+                                <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
                                     Je mets à jour ma cotisation
                                 </a>
                             {% else %}
