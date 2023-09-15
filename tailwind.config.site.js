@@ -64,7 +64,7 @@ module.exports = {
                 yellow: {
                     DEFAULT: colors.yellow[500],
                     ...colors.yellow,
-                }
+                },
             },
             fontFamily: {
                 maax: ['Maax', ...defaultTheme.fontFamily.sans],

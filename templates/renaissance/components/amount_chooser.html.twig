@@ -1,12 +1,16 @@
+{% set is_readhesion = is_re_adhesion ?? false %}
 <div>
     {{ form_errors(form.amount) }}
-    {{ form_row(form.amount, {attr: { class: 'renaissance-amount-chooser', 'data-display-label': 'true', 'data-adhesion': 'true' } }) }}
+    {{ form_row(form.amount, {attr: { class: 'renaissance-amount-chooser', 'data-display-label': 'true', 'data-adhesion': 'true', 'data-readhesion': is_readhesion } }) }}
     {{ form_rest(form.amount) }}
 
     <p class="mt-4 text-gray-500">
         <span class="text-red-500">(1)</span> Tarif réservé aux étudiants, personnes bénéficiant des minimas sociaux, sans emploi.
     </p>
-    <p class="mt-2 text-gray-500">
-        <span class="text-red-500">(2)</span> Tarif normal plus don.
-    </p>
+
+    {% if not is_readhesion %}
+        <p class="mt-2 text-gray-500">
+            <span class="text-red-500">(2)</span> Tarif normal plus don.
+        </p>
+    {% endif %}
 </div>

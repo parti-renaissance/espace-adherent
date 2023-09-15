@@ -1,14 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const defaultAmounts = [
-    { label: 'Tarif réduit <sup class="text-red-500">(1)</sup>', amount: 10 },
-    { label: 'Tarif normal', amount: 30 },
-    { label: 'Tarif normal<br>avec don <sup class="text-red-500">(2)</sup>', amount: 60 },
-    { label: 'Tarif normal<br>avec don <sup class="text-red-500">(2)</sup>', amount: 120 },
-    { label: 'Tarif normal<br>avec don <sup class="text-red-500">(2)</sup>', amount: 500 },
-];
-
 const amountAfterTaxReturn = (amount) => {
     amount = parseInt(amount, 10);
 
@@ -143,13 +135,12 @@ export default class AmountChooser extends React.Component {
 AmountChooser.defaultProps = {
     minValue: 1.0,
     maxValue: 7500,
-    amounts: defaultAmounts,
     displayLabel: false,
 };
 
 AmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
-    amounts: PropTypes.arrayOf(PropTypes.object),
+    amounts: PropTypes.arrayOf(PropTypes.object).isRequired,
     value: PropTypes.number,
     maxValue: PropTypes.number,
     displayLabel: PropTypes.bool,
