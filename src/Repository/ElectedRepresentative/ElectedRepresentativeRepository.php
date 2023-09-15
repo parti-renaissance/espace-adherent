@@ -36,18 +36,6 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         parent::__construct($registry, ElectedRepresentative::class);
     }
 
-    public function findOneByAdherentUuid(string $uuid): ?ElectedRepresentative
-    {
-        return $this
-            ->createQueryBuilder('elected_representative')
-            ->innerJoin('elected_representative.adherent', 'adherent')
-            ->andWhere('adherent.uuid = :adherent_uuid')
-            ->setParameter('adherent_uuid', $uuid)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-
     public function findByEmail(string $email): array
     {
         return $this
