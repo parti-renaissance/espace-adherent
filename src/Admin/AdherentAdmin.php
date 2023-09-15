@@ -82,22 +82,22 @@ class AdherentAdmin extends AbstractAdmin
 {
     use IterableCallbackDataSourceTrait;
 
-    private $dispatcher;
-    private $emailSubscriptionHistoryManager;
+    protected $dispatcher;
+    protected $emailSubscriptionHistoryManager;
     /** @var PoliticalCommitteeManager */
-    private $politicalCommitteeManager;
+    protected $politicalCommitteeManager;
     /** @var InstanceQualityRepository */
-    private $instanceQualityRepository;
-    private AdherentProfileHandler $adherentProfileHandler;
-    private LoggerInterface $logger;
-    private FranceCities $franceCities;
+    protected $instanceQualityRepository;
+    protected AdherentProfileHandler $adherentProfileHandler;
+    protected LoggerInterface $logger;
+    protected FranceCities $franceCities;
 
     /**
      * State of adherent data before update
      *
      * @var Adherent
      */
-    private $beforeUpdate;
+    protected $beforeUpdate;
 
     public function __construct(
         $code,
@@ -195,114 +195,114 @@ class AdherentAdmin extends AbstractAdmin
     {
         $show
             ->with('Informations personnelles', ['class' => 'col-md-6'])
-                ->add('gender', null, [
-                    'label' => 'Genre',
-                ])
-                ->add('customGender', null, [
-                    'label' => 'Personnalisez votre genre',
-                ])
-                ->add('lastName', null, [
-                    'label' => 'Nom',
-                ])
-                ->add('firstName', null, [
-                    'label' => 'Prénom',
-                ])
-                ->add('emailAddress', null, [
-                    'label' => 'Adresse e-mail',
-                ])
-                ->add('nationality', null, [
-                    'label' => 'Nationalité',
-                ])
-                ->add('phone', null, [
-                    'label' => 'Téléphone',
-                    'template' => 'admin/adherent/show_phone.html.twig',
-                ])
-                ->add('birthdate', null, [
-                    'label' => 'Date de naissance',
-                ])
-                ->add('position', null, [
-                    'label' => 'Statut',
-                ])
-                ->add('mandates', null, [
-                    'label' => 'adherent.mandate.admin.label',
-                    'template' => 'admin/adherent/show_mandates.html.twig',
-                ])
+            ->add('gender', null, [
+                'label' => 'Genre',
+            ])
+            ->add('customGender', null, [
+                'label' => 'Personnalisez votre genre',
+            ])
+            ->add('lastName', null, [
+                'label' => 'Nom',
+            ])
+            ->add('firstName', null, [
+                'label' => 'Prénom',
+            ])
+            ->add('emailAddress', null, [
+                'label' => 'Adresse e-mail',
+            ])
+            ->add('nationality', null, [
+                'label' => 'Nationalité',
+            ])
+            ->add('phone', null, [
+                'label' => 'Téléphone',
+                'template' => 'admin/adherent/show_phone.html.twig',
+            ])
+            ->add('birthdate', null, [
+                'label' => 'Date de naissance',
+            ])
+            ->add('position', null, [
+                'label' => 'Statut',
+            ])
+            ->add('mandates', null, [
+                'label' => 'adherent.mandate.admin.label',
+                'template' => 'admin/adherent/show_mandates.html.twig',
+            ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-3'])
-                ->add('postAddress.address', null, [
-                    'label' => 'Rue',
-                ])
-                ->add('postAddress.postalCode', null, [
-                    'label' => 'Code postal',
-                ])
-                ->add('postAddress.cityName', null, [
-                    'label' => 'Ville',
-                ])
-                ->add('postAddress.country', null, [
-                    'label' => 'Pays',
-                ])
-                ->add('postAddress.latitude', null, [
-                    'label' => 'Latitude',
-                ])
-                ->add('postAddress.longitude', null, [
-                    'label' => 'Longitude',
-                ])
+            ->add('postAddress.address', null, [
+                'label' => 'Rue',
+            ])
+            ->add('postAddress.postalCode', null, [
+                'label' => 'Code postal',
+            ])
+            ->add('postAddress.cityName', null, [
+                'label' => 'Ville',
+            ])
+            ->add('postAddress.country', null, [
+                'label' => 'Pays',
+            ])
+            ->add('postAddress.latitude', null, [
+                'label' => 'Latitude',
+            ])
+            ->add('postAddress.longitude', null, [
+                'label' => 'Longitude',
+            ])
             ->end()
             ->with('Information de compte', ['class' => 'col-md-3'])
-                ->add('status', null, [
-                    'label' => 'Etat du compte',
-                ])
-                ->add('tags', null, [
-                    'label' => 'Tags admin',
-                ])
-                ->add('certifiedAt', null, [
-                    'label' => 'Certifié le',
-                ])
-                ->add('lastMembershipDonation', null, [
-                    'label' => 'Statut de la cotisation',
-                    'template' => 'admin/adherent/show_last_membership_donation_date.html.twig',
-                ])
+            ->add('status', null, [
+                'label' => 'Etat du compte',
+            ])
+            ->add('tags', null, [
+                'label' => 'Tags admin',
+            ])
+            ->add('certifiedAt', null, [
+                'label' => 'Certifié le',
+            ])
+            ->add('lastMembershipDonation', null, [
+                'label' => 'Statut de la cotisation',
+                'template' => 'admin/adherent/show_last_membership_donation_date.html.twig',
+            ])
             ->end()
             ->with('Abonnement', ['class' => 'col-md-6'])
-                ->add('subscriptionTypes', null, [
-                    'label' => 'Abonné aux notifications via e-mail et mobile',
-                    'associated_property' => 'label',
-                ])
+            ->add('subscriptionTypes', null, [
+                'label' => 'Abonné aux notifications via e-mail et mobile',
+                'associated_property' => 'label',
+            ])
             ->end()
             ->with('Responsabilités locales', ['class' => 'col-md-3'])
-                ->add('type', null, [
-                    'label' => 'Rôles',
-                    'template' => 'admin/adherent/show_statuses.html.twig',
-                ])
+            ->add('type', null, [
+                'label' => 'Rôles',
+                'template' => 'admin/adherent/show_statuses.html.twig',
+            ])
             ->end()
             ->with('Membre du Conseil', ['class' => 'col-md-3'])
-                ->add('isBoardMember', 'boolean', [
-                    'label' => 'Est membre du Conseil ?',
-                ])
-                ->add('boardMember.area', null, [
-                    'label' => 'Région',
-                ])
-                ->add('boardMember.roles', null, [
-                    'label' => 'Rôles',
-                    'template' => 'admin/adherent/list_board_member_roles.html.twig',
-                ])
+            ->add('isBoardMember', 'boolean', [
+                'label' => 'Est membre du Conseil ?',
+            ])
+            ->add('boardMember.area', null, [
+                'label' => 'Région',
+            ])
+            ->add('boardMember.roles', null, [
+                'label' => 'Rôles',
+                'template' => 'admin/adherent/list_board_member_roles.html.twig',
+            ])
             ->end()
             ->with('Responsabilités politiques', ['class' => 'col-md-6'])
-                ->add('electedRepresentative', null, [
-                    'label' => 'Identité de l\'élu',
-                    'template' => 'admin/adherent/show_elected_representative.html.twig',
-                    'virtual_field' => true,
-                ])
-                ->add('er_adherent_mandates', null, [
-                    'label' => 'Mandats',
-                    'template' => 'admin/adherent/show_er_adherent_mandates.html.twig',
-                    'virtual_field' => true,
-                ])
-                ->add('contribution', null, [
-                    'label' => 'Cotisation',
-                    'template' => 'admin/adherent/show_contribution.html.twig',
-                    'virtual_field' => true,
-                ])
+            ->add('electedRepresentative', null, [
+                'label' => 'Identité de l\'élu',
+                'template' => 'admin/adherent/show_elected_representative.html.twig',
+                'virtual_field' => true,
+            ])
+            ->add('er_adherent_mandates', null, [
+                'label' => 'Mandats',
+                'template' => 'admin/adherent/show_er_adherent_mandates.html.twig',
+                'virtual_field' => true,
+            ])
+            ->add('contribution', null, [
+                'label' => 'Cotisation',
+                'template' => 'admin/adherent/show_contribution.html.twig',
+                'virtual_field' => true,
+            ])
             ->end()
         ;
     }
@@ -311,242 +311,242 @@ class AdherentAdmin extends AbstractAdmin
     {
         $form
             ->tab('Informations générales')
-                ->with('Informations personnelles', ['class' => 'col-md-6'])
-                    ->add('gender', GenderType::class, [
-                        'label' => 'Genre',
-                    ])
-                    ->add('customGender', TextType::class, [
-                        'required' => false,
-                        'label' => 'Personnaliser le genre',
-                        'attr' => [
-                            'max' => 80,
-                        ],
-                    ])
-                    ->add('lastName', TextType::class, [
-                        'label' => 'Nom',
-                        'format_identity_case' => true,
-                    ])
-                    ->add('firstName', TextType::class, [
-                        'label' => 'Prénom',
-                        'format_identity_case' => true,
-                    ])
-                    ->add('emailAddress', null, [
-                        'label' => 'Adresse e-mail',
-                    ])
-                    ->add('nationality', CountryType::class, [
-                        'label' => 'Nationalité',
-                    ])
-                    ->add('phone', PhoneNumberType::class, [
-                        'label' => 'Téléphone',
-                        'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                        'required' => false,
-                    ])
-                    ->add('birthdate', DatePickerType::class, [
-                        'label' => 'Date de naissance',
-                        'required' => false,
-                    ])
-                    ->add('position', ActivityPositionType::class, [
-                        'label' => 'Statut',
-                    ])
-                    ->add('mandates', AdherentMandateType::class, [
-                        'label' => 'adherent.mandate.admin.label',
-                        'required' => false,
-                        'multiple' => true,
-                    ])
-                    ->add('exclusiveMembership', null, [
-                        'label' => 'Je certifie sur l’honneur que je n’appartiens à aucun autre parti politique',
-                        'required' => false,
-                    ])
-                    ->add('territoireProgresMembership', null, [
-                        'label' => 'Je suis membre de territoires de progrès',
-                        'required' => false,
-                    ])
-                    ->add('agirMembership', null, [
-                        'label' => 'Je suis membre d’agir, la droite constructive’',
-                        'required' => false,
-                    ])
-                ->end()
-                ->with('Adresse', ['class' => 'col-md-6'])
-                    ->add('postAddress.address', TextType::class, [
-                        'label' => 'Rue',
-                    ])
-                    ->add('postAddress.postalCode', TextType::class, [
-                        'label' => 'Code postal',
-                    ])
-                    ->add('postAddress.cityName', TextType::class, [
-                        'label' => 'Ville',
-                    ])
-                    ->add('postAddress.country', CountryType::class, [
-                        'label' => 'Pays',
-                    ])
-                    ->add('postAddress.latitude', NumberType::class, [
-                        'label' => 'Latitude',
-                        'html5' => true,
-                    ])
-                    ->add('postAddress.longitude', NumberType::class, [
-                        'label' => 'Longitude',
-                        'html5' => true,
-                    ])
-                ->end()
-                ->with('Information de compte', ['class' => 'col-md-6'])
-                    ->add('status', ChoiceType::class, [
-                        'label' => 'Etat du compte',
-                        'choices' => [
-                            'Activé' => Adherent::ENABLED,
-                            'Désactivé' => Adherent::DISABLED,
-                        ],
-                    ])
-                    ->add('tags', ModelType::class, [
-                        'label' => 'Tags admin',
-                        'multiple' => true,
-                        'by_reference' => false,
-                        'btn_add' => false,
-                    ])
-                    ->add('lastMembershipDonationDate', HiddenType::class, [
-                        'label' => false,
-                        'required' => false,
-                        'mapped' => false,
-                    ])
-                ->end()
-                ->with('Abonnement', ['class' => 'col-md-6'])
-                    ->add('subscriptionTypes', null, [
-                        'label' => 'Notifications via e-mail et mobile :',
-                        'choice_label' => 'label',
-                        'required' => false,
-                        'multiple' => true,
-                    ])
-                ->end()
-                ->with('Réseaux Sociaux', ['class' => 'col-md-6'])
-                    ->add('twitterPageUrl', UrlType::class, [
-                        'label' => 'Page Twitter',
-                        'required' => false,
-                        'attr' => [
-                            'placeholder' => 'https://twitter.com/alexandredumoulin',
-                        ],
-                    ])
-                    ->add('facebookPageUrl', UrlType::class, [
-                        'label' => 'Page Facebook',
-                        'required' => false,
-                        'attr' => [
-                            'placeholder' => 'https://facebook.com/alexandre-dumoulin',
-                        ],
-                    ])
-                    ->add('linkedinPageUrl', UrlType::class, [
-                        'label' => 'Page LinkedIn',
-                        'required' => false,
-                        'attr' => [
-                            'placeholder' => 'https://linkedin.com/in/alexandre-dumoulin',
-                        ],
-                    ])
-                    ->add('telegramPageUrl', UrlType::class, [
-                        'label' => 'Telegram',
-                        'required' => false,
-                        'attr' => [
-                            'placeholder' => 'https://t.me/alexandre-dumoulin',
-                        ],
-                    ])
+            ->with('Informations personnelles', ['class' => 'col-md-6'])
+            ->add('gender', GenderType::class, [
+                'label' => 'Genre',
+            ])
+            ->add('customGender', TextType::class, [
+                'required' => false,
+                'label' => 'Personnaliser le genre',
+                'attr' => [
+                    'max' => 80,
+                ],
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Nom',
+                'format_identity_case' => true,
+            ])
+            ->add('firstName', TextType::class, [
+                'label' => 'Prénom',
+                'format_identity_case' => true,
+            ])
+            ->add('emailAddress', null, [
+                'label' => 'Adresse e-mail',
+            ])
+            ->add('nationality', CountryType::class, [
+                'label' => 'Nationalité',
+            ])
+            ->add('phone', PhoneNumberType::class, [
+                'label' => 'Téléphone',
+                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                'required' => false,
+            ])
+            ->add('birthdate', DatePickerType::class, [
+                'label' => 'Date de naissance',
+                'required' => false,
+            ])
+            ->add('position', ActivityPositionType::class, [
+                'label' => 'Statut',
+            ])
+            ->add('mandates', AdherentMandateType::class, [
+                'label' => 'adherent.mandate.admin.label',
+                'required' => false,
+                'multiple' => true,
+            ])
+            ->add('exclusiveMembership', null, [
+                'label' => 'Je certifie sur l’honneur que je n’appartiens à aucun autre parti politique',
+                'required' => false,
+            ])
+            ->add('territoireProgresMembership', null, [
+                'label' => 'Je suis membre de territoires de progrès',
+                'required' => false,
+            ])
+            ->add('agirMembership', null, [
+                'label' => 'Je suis membre d’agir, la droite constructive’',
+                'required' => false,
+            ])
             ->end()
-                ->with('Zone expérimentale 🚧', [
-                    'class' => 'col-md-6',
-                    'box_class' => 'box box-warning',
-                ])
-                    ->add('canaryTester')
-                ->end()
+            ->with('Adresse', ['class' => 'col-md-6'])
+            ->add('postAddress.address', TextType::class, [
+                'label' => 'Rue',
+            ])
+            ->add('postAddress.postalCode', TextType::class, [
+                'label' => 'Code postal',
+            ])
+            ->add('postAddress.cityName', TextType::class, [
+                'label' => 'Ville',
+            ])
+            ->add('postAddress.country', CountryType::class, [
+                'label' => 'Pays',
+            ])
+            ->add('postAddress.latitude', NumberType::class, [
+                'label' => 'Latitude',
+                'html5' => true,
+            ])
+            ->add('postAddress.longitude', NumberType::class, [
+                'label' => 'Longitude',
+                'html5' => true,
+            ])
+            ->end()
+            ->with('Information de compte', ['class' => 'col-md-6'])
+            ->add('status', ChoiceType::class, [
+                'label' => 'Etat du compte',
+                'choices' => [
+                    'Activé' => Adherent::ENABLED,
+                    'Désactivé' => Adherent::DISABLED,
+                ],
+            ])
+            ->add('tags', ModelType::class, [
+                'label' => 'Tags admin',
+                'multiple' => true,
+                'by_reference' => false,
+                'btn_add' => false,
+            ])
+            ->add('lastMembershipDonationDate', HiddenType::class, [
+                'label' => false,
+                'required' => false,
+                'mapped' => false,
+            ])
+            ->end()
+            ->with('Abonnement', ['class' => 'col-md-6'])
+            ->add('subscriptionTypes', null, [
+                'label' => 'Notifications via e-mail et mobile :',
+                'choice_label' => 'label',
+                'required' => false,
+                'multiple' => true,
+            ])
+            ->end()
+            ->with('Réseaux Sociaux', ['class' => 'col-md-6'])
+            ->add('twitterPageUrl', UrlType::class, [
+                'label' => 'Page Twitter',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'https://twitter.com/alexandredumoulin',
+                ],
+            ])
+            ->add('facebookPageUrl', UrlType::class, [
+                'label' => 'Page Facebook',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'https://facebook.com/alexandre-dumoulin',
+                ],
+            ])
+            ->add('linkedinPageUrl', UrlType::class, [
+                'label' => 'Page LinkedIn',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'https://linkedin.com/in/alexandre-dumoulin',
+                ],
+            ])
+            ->add('telegramPageUrl', UrlType::class, [
+                'label' => 'Telegram',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'https://t.me/alexandre-dumoulin',
+                ],
+            ])
+            ->end()
+            ->with('Zone expérimentale 🚧', [
+                'class' => 'col-md-6',
+                'box_class' => 'box box-warning',
+            ])
+            ->add('canaryTester')
+            ->end()
             ->end()
             ->tab('Responsabilités internes')
-                ->with('Rôles', ['class' => 'col-md-6'])
-                    ->add('zoneBasedRoles', CollectionType::class, [
-                        'error_bubbling' => false,
-                        'required' => false,
-                        'label' => false,
-                        'entry_type' => AdherentZoneBasedRoleType::class,
-                        'allow_add' => true,
-                        'allow_delete' => true,
-                        'entry_options' => [
-                            'model_manager' => $this->getModelManager(),
-                        ],
-                        'by_reference' => false,
-                    ])
-                ->end()
-                ->with('Responsabilités locales', ['class' => 'col-md-6'])
-                    ->add('jecouteManagedArea', JecouteManagedAreaType::class, [
-                        'label' => 'jecoute_manager',
-                        'required' => false,
-                        'help' => "Laisser vide si l'adhérent n'est pas responsable des questionnaires. Choisissez un département, un arrondissement de Paris ou une circonscription des Français établis hors de France",
-                        'model_manager' => $this->getModelManager(),
-                    ])
-                    ->add('nationalRole', null, [
-                        'label' => 'Rôle National',
-                        'required' => false,
-                    ])
-                    ->add('nationalCommunicationRole', null, [
-                        'label' => 'Rôle National communication',
-                        'required' => false,
-                    ])
-                    ->add('procurationManagedAreaCodesAsString', TextType::class, [
-                        'label' => 'coordinator.label.codes',
-                        'required' => false,
-                        'help_html' => true,
-                        'help' => <<<HELP
-                            Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
-                            Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
-                            HELP
-                        ,
-                    ])
-                    ->add('assessorManagedAreaCodesAsString', TextType::class, [
-                        'label' => 'assessors_manager',
-                        'required' => false,
-                        'help_html' => true,
-                        'help' => <<<HELP
-                            Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
-                            Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
-                            HELP
-                        ,
-                    ])
-                ->end()
-                ->with('Responsable d\'appel', ['class' => 'col-md-6'])
-                    ->add('phoningManagerRole', null, [
-                        'label' => 'Rôle Responsable phoning',
-                        'required' => false,
-                    ])
-                ->end()
-                ->with('Porte-à-porte', ['class' => 'col-md-6'])
-                    ->add('papNationalManagerRole', null, [
-                        'label' => 'Responsable National PAP',
-                        'required' => false,
-                    ])
-                    ->add('papUserRole', null, [
-                        'label' => 'Utilisateur PAP app mobile',
-                        'required' => false,
-                    ])
-                ->end()
-                ->with('Membre du Conseil', ['class' => 'col-md-6'])
-                    ->add('boardMemberArea', ChoiceType::class, [
-                        'label' => 'Région',
-                        'choices' => BoardMember::AREAS_CHOICES,
-                        'required' => false,
-                        'mapped' => false,
-                        'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
-                    ])
-                    ->add('boardMemberRoles', ModelType::class, [
-                        'label' => 'Rôles',
-                        'expanded' => true,
-                        'multiple' => true,
-                        'btn_add' => false,
-                        'class' => Role::class,
-                        'mapped' => false,
-                        'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
-                    ])
-                ->end()
-                ->with('Membre du Conseil territorial et CoPol', [
-                    'class' => 'col-md-6 territorial-council-member-info',
-                    'description' => 'territorial_council.admin.description',
-                ])
-                    ->add('territorialCouncilMembership', AdherentTerritorialCouncilMembershipType::class, [
-                        'label' => false,
-                        'invalid_message' => 'Un adhérent ne peut être membre que d\'un seul Conseil territorial.',
-                    ])
-                ->end()
+            ->with('Rôles', ['class' => 'col-md-6'])
+            ->add('zoneBasedRoles', CollectionType::class, [
+                'error_bubbling' => false,
+                'required' => false,
+                'label' => false,
+                'entry_type' => AdherentZoneBasedRoleType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_options' => [
+                    'model_manager' => $this->getModelManager(),
+                ],
+                'by_reference' => false,
+            ])
+            ->end()
+            ->with('Responsabilités locales', ['class' => 'col-md-6'])
+            ->add('jecouteManagedArea', JecouteManagedAreaType::class, [
+                'label' => 'jecoute_manager',
+                'required' => false,
+                'help' => "Laisser vide si l'adhérent n'est pas responsable des questionnaires. Choisissez un département, un arrondissement de Paris ou une circonscription des Français établis hors de France",
+                'model_manager' => $this->getModelManager(),
+            ])
+            ->add('nationalRole', null, [
+                'label' => 'Rôle National',
+                'required' => false,
+            ])
+            ->add('nationalCommunicationRole', null, [
+                'label' => 'Rôle National communication',
+                'required' => false,
+            ])
+            ->add('procurationManagedAreaCodesAsString', TextType::class, [
+                'label' => 'coordinator.label.codes',
+                'required' => false,
+                'help_html' => true,
+                'help' => <<<HELP
+                    Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
+                    Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
+                    HELP
+                ,
+            ])
+            ->add('assessorManagedAreaCodesAsString', TextType::class, [
+                'label' => 'assessors_manager',
+                'required' => false,
+                'help_html' => true,
+                'help' => <<<HELP
+                    Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
+                    Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
+                    HELP
+                ,
+            ])
+            ->end()
+            ->with('Responsable d\'appel', ['class' => 'col-md-6'])
+            ->add('phoningManagerRole', null, [
+                'label' => 'Rôle Responsable phoning',
+                'required' => false,
+            ])
+            ->end()
+            ->with('Porte-à-porte', ['class' => 'col-md-6'])
+            ->add('papNationalManagerRole', null, [
+                'label' => 'Responsable National PAP',
+                'required' => false,
+            ])
+            ->add('papUserRole', null, [
+                'label' => 'Utilisateur PAP app mobile',
+                'required' => false,
+            ])
+            ->end()
+            ->with('Membre du Conseil', ['class' => 'col-md-6'])
+            ->add('boardMemberArea', ChoiceType::class, [
+                'label' => 'Région',
+                'choices' => BoardMember::AREAS_CHOICES,
+                'required' => false,
+                'mapped' => false,
+                'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
+            ])
+            ->add('boardMemberRoles', ModelType::class, [
+                'label' => 'Rôles',
+                'expanded' => true,
+                'multiple' => true,
+                'btn_add' => false,
+                'class' => Role::class,
+                'mapped' => false,
+                'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
+            ])
+            ->end()
+            ->with('Membre du Conseil territorial et CoPol', [
+                'class' => 'col-md-6 territorial-council-member-info',
+                'description' => 'territorial_council.admin.description',
+            ])
+            ->add('territorialCouncilMembership', AdherentTerritorialCouncilMembershipType::class, [
+                'label' => false,
+                'invalid_message' => 'Un adhérent ne peut être membre que d\'un seul Conseil territorial.',
+            ])
+            ->end()
         ;
 
         if ($this->isGranted('CONSEIL')) {
@@ -564,44 +564,44 @@ class AdherentAdmin extends AbstractAdmin
         $form
             ->end()
             ->tab('Responsabilités politiques')
-                ->with('Identité de l\'élu', [
-                    'class' => 'col-md-6',
-                    'description' => 'adherent.admin.elected_representative.description',
-                    'box_class' => 'box box-success',
-                ])
-                    ->add('electedRepresentative', TextType::class, [
-                        'label' => false,
-                        'required' => false,
-                        'mapped' => false,
-                    ])
-                ->end()
-                ->with('Mandats', [
-                    'class' => 'col-md-12',
-                    'box_class' => 'box box-warning',
-                ])
-                    ->add('electedRepresentativeMandates', CollectionType::class, [
-                        'error_bubbling' => false,
-                        'required' => false,
-                        'label' => false,
-                        'entry_type' => ElectedRepresentativeAdherentMandateType::class,
-                        'allow_add' => true,
-                        'allow_delete' => true,
-                        'entry_options' => [
-                            'model_manager' => $this->getModelManager(),
-                        ],
-                        'by_reference' => true,
-                    ])
-                ->end()
-                ->with('Cotisation', [
-                    'class' => 'col-md-12',
-                    'box_class' => 'box box-info',
-                ])
-                    ->add('contributionStatus', TextType::class, [
-                        'label' => false,
-                        'required' => false,
-                        'mapped' => false,
-                    ])
-                ->end()
+            ->with('Identité de l\'élu', [
+                'class' => 'col-md-6',
+                'description' => 'adherent.admin.elected_representative.description',
+                'box_class' => 'box box-success',
+            ])
+            ->add('electedRepresentative', TextType::class, [
+                'label' => false,
+                'required' => false,
+                'mapped' => false,
+            ])
+            ->end()
+            ->with('Mandats', [
+                'class' => 'col-md-12',
+                'box_class' => 'box box-warning',
+            ])
+            ->add('electedRepresentativeMandates', CollectionType::class, [
+                'error_bubbling' => false,
+                'required' => false,
+                'label' => false,
+                'entry_type' => ElectedRepresentativeAdherentMandateType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_options' => [
+                    'model_manager' => $this->getModelManager(),
+                ],
+                'by_reference' => true,
+            ])
+            ->end()
+            ->with('Cotisation', [
+                'class' => 'col-md-12',
+                'box_class' => 'box box-info',
+            ])
+            ->add('contributionStatus', TextType::class, [
+                'label' => false,
+                'required' => false,
+                'mapped' => false,
+            ])
+            ->end()
             ->end()
         ;
 
