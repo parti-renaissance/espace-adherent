@@ -43,7 +43,7 @@
     "file-loader": "^6.2.0",
     "flatpickr": "^4.6.13",
     "growl": "^1.10.5",
-    "interactjs": "^1.10.18",
+    "interactjs": "^1.10.19",
     "js-base64": "^3.7.5",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",

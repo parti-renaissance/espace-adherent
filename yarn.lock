@@ -1249,10 +1249,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@interactjs/types@1.10.18":
-  version "1.10.18"
-  resolved "https://registry.yarnpkg.com/@interactjs/types/-/types-1.10.18.tgz#807411b3e460f856e26e7ba988dab6abb14da15f"
-  integrity sha512-3a+2Kx6PhA60ekxImRQJl+EyT4lD0/kd3/PveyaLtgfNxkxnSWdUq7Ixo3Y/t1lon4EqVGZQgp+qj/QNaEs6qA==
+"@interactjs/types@1.10.19":
+  version "1.10.19"
+  resolved "https://registry.yarnpkg.com/@interactjs/types/-/types-1.10.19.tgz#74ce9c9d528eb73db0d9ee8e7e407c47c1c5703f"
+  integrity sha512-oEqGmt9/Ob+jz0FUaBzpDXBmf+2dfdhPuEwQcMGH6nQTR2ETGtYIlAnQtADHvnCin+cVkrmqVohfHBysyQr4Lw==
 
 "@jest/schemas@^29.4.3":
   version "29.4.3"
@@ -3522,12 +3522,12 @@ inline-style-parser@0.1.1:
   resolved "https://registry.yarnpkg.com/inline-style-parser/-/inline-style-parser-0.1.1.tgz#ec8a3b429274e9c0a1f1c4ffa9453a7fef72cea1"
   integrity sha512-7NXolsK4CAS5+xvdj5OMMbI962hU/wvwoxk+LWR9Ek9bVtyuuYScDN6eS0rUm6TxApFpw7CX1o4uJzcd4AyD3Q==
 
-interactjs@^1.10.18:
-  version "1.10.18"
-  resolved "https://registry.yarnpkg.com/interactjs/-/interactjs-1.10.18.tgz#6e5db48389f22d3b0499124bc84ebdeaa5107fb6"
-  integrity sha512-ho+Qgr5U3b3oz23Iv7MkIZGoWaTsSCRnrCL34Dtjzs5eFghwpESJeiPj9RhYKc/SgRJL9anR+2OQxFsCg4PmLA==
+interactjs@^1.10.19:
+  version "1.10.19"
+  resolved "https://registry.yarnpkg.com/interactjs/-/interactjs-1.10.19.tgz#b0029a3a8f1e11224fce1c7a44bd6d1f4d5753db"
+  integrity sha512-5zWXBrfLnXAyhrxKlhRiud/JxWd3GvZkvdTf8bqjeHWDx9zgiu+qFNA3nnJMszadFCig2GU5zKx9PYrkT87OKA==
   dependencies:
-    "@interactjs/types" "1.10.18"
+    "@interactjs/types" "1.10.19"
 
 internal-slot@^1.0.3:
   version "1.0.3"
