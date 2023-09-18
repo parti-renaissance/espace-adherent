@@ -6,6 +6,7 @@ use App\Collection\AdherentCollection;
 use App\Committee\CommitteeManager;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
+use App\DataFixtures\ORM\LoadCommitteeV2Data;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
@@ -46,17 +47,10 @@ class CommitteeManagerTest extends AbstractKernelTestCase
 
     public function testGetOptinCommitteeFollowers()
     {
-        // Approved committees
-        $committee = $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID);
-
-        $this->assertInstanceOf(AdherentCollection::class, $followers = $this->committeeManager->getOptinCommitteeFollowers($committee));
-        $this->assertCount(3, $followers, 'One follower has disabled the committees notifications');
-        $this->assertCount(3, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)));
-        $this->assertCount(3, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_4_UUID)));
-        $this->assertCount(5, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_5_UUID)));
-
-        // Unapproved committees
-        $this->assertCount(2, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_2_UUID)));
+        $this->assertCount(2, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
+        $this->assertCount(1, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)));
+        $this->assertCount(10, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV2Data::COMMITTEE_1_UUID)));
+        $this->assertCount(3, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV2Data::COMMITTEE_2_UUID)));
     }
 
     public function testGetNearbyCommittees()

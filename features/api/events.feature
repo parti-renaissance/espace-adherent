@@ -964,10 +964,11 @@ Feature:
 
   Scenario: As a Animator I can create a committee event
     Given I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/events" with body:
+    When I send a "POST" request to "/api/v3/events?scope=animator" with body:
     """
     {
         "name": "Nouveau événement",
+        "type": "committee",
         "category": "kiosque",
         "description": "Une description de l'événement",
         "begin_at": "2023-01-29 16:30:30",
@@ -1004,6 +1005,12 @@ Feature:
             "first_name": "Adherent 55",
             "last_name": "Fa55ke"
         },
+        "committee": {
+            "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3",
+            "name": "Comité des 3 communes",
+            "slug": "comite-des-3-communes",
+            "link": "http://enmarche.code/comites/comite-des-3-communes"
+        },
         "participants_count": 1,
         "status": "SCHEDULED",
         "capacity": 100,
@@ -1028,6 +1035,199 @@ Feature:
         "mode": "online",
         "image_url": null,
         "link": "http://renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
+    }
+    """
+    And I should have 1 email "RenaissanceEventNotificationMessage" for "@en-marche-dev.fr" with payload:
+    """
+    {
+        "template_name": "renaissance-event-notification",
+        "template_content": [],
+        "message": {
+            "subject": "29 janvier - 16h30 : Nouvel événement de Comité des 3 communes : Nouveau événement",
+            "from_email": "no-reply@parti-renaissance.fr",
+            "global_merge_vars": [
+                {
+                    "name": "animator_firstname",
+                    "content": "Adherent 55"
+                },
+                {
+                    "name": "event_name",
+                    "content": "Nouveau événement"
+                },
+                {
+                    "name": "event_date",
+                    "content": "dimanche 29 janvier 2023"
+                },
+                {
+                    "name": "event_hour",
+                    "content": "16h30"
+                },
+                {
+                    "name": "event_address",
+                    "content": ""
+                },
+                {
+                    "name": "event_slug",
+                    "content": "http:\/\/renaissance.code\/espace-adherent\/evenements\/2023-01-29-nouveau-evenement\/afficher"
+                },
+                {
+                    "name": "event_description",
+                    "content": "Une description de l'événement"
+                },
+                {
+                    "name": "committee_name",
+                    "content": "Comit\u00e9 des 3 communes"
+                }
+            ],
+            "merge_vars": [
+                {
+                    "rcpt": "adherent-male-51@en-marche-dev.fr",
+                    "vars": [
+                        {
+                            "name": "target_firstname",
+                            "content": "Adherent 51"
+                        }
+                    ]
+                },
+                {
+                    "rcpt": "adherent-female-52@en-marche-dev.fr",
+                    "vars": [
+                        {
+                            "name": "target_firstname",
+                            "content": "Adherent 52"
+                        }
+                    ]
+                },
+                {
+                    "rcpt": "adherent-male-53@en-marche-dev.fr",
+                    "vars": [
+                        {
+                            "name": "target_firstname",
+                            "content": "Adherent 53"
+                        }
+                    ]
+                },
+                {
+                    "rcpt": "adherent-female-54@en-marche-dev.fr",
+                    "vars": [
+                        {
+                            "name": "target_firstname",
+                            "content": "Adherent 54"
+                        }
+                    ]
+                },
+                {
+                    "rcpt": "adherent-male-55@en-marche-dev.fr",
+                    "vars": [
+                        {
+                            "name": "target_firstname",
+                            "content": "Adherent 55"
+                        }
+                    ]
+                },
+                {
+                    "rcpt": "adherent-female-56@en-marche-dev.fr",
+                    "vars": [
+                        {
+                            "name": "target_firstname",
+                            "content": "Adherent 56"
+                        }
+                    ]
+                },
+                {
+                    "rcpt": "adherent-male-57@en-marche-dev.fr",
+                    "vars": [
+                        {
+                            "name": "target_firstname",
+                            "content": "Adherent 57"
+                        }
+                    ]
+                },
+                {
+                    "rcpt": "adherent-female-58@en-marche-dev.fr",
+                    "vars": [
+                        {
+                            "name": "target_firstname",
+                            "content": "Adherent 58"
+                        }
+                    ]
+                },
+                {
+                    "rcpt": "adherent-male-59@en-marche-dev.fr",
+                    "vars": [
+                        {
+                            "name": "target_firstname",
+                            "content": "Adherent 59"
+                        }
+                    ]
+                },
+                {
+                    "rcpt": "adherent-female-60@en-marche-dev.fr",
+                    "vars": [
+                        {
+                            "name": "target_firstname",
+                            "content": "Adherent 60"
+                        }
+                    ]
+                }
+            ],
+            "headers": {
+                "Reply-To": "adherent-male-55@en-marche-dev.fr"
+            },
+            "from_name": "Renaissance",
+            "to": [
+                {
+                    "email": "adherent-male-51@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Adherent 51 Fa51ke"
+                },
+                {
+                    "email": "adherent-female-52@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Adherent 52 Fa52ke"
+                },
+                {
+                    "email": "adherent-male-53@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Adherent 53 Fa53ke"
+                },
+                {
+                    "email": "adherent-female-54@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Adherent 54 Fa54ke"
+                },
+                {
+                    "email": "adherent-male-55@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Adherent 55 Fa55ke"
+                },
+                {
+                    "email": "adherent-female-56@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Adherent 56 Fa56ke"
+                },
+                {
+                    "email": "adherent-male-57@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Adherent 57 Fa57ke"
+                },
+                {
+                    "email": "adherent-female-58@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Adherent 58 Fa58ke"
+                },
+                {
+                    "email": "adherent-male-59@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Adherent 59 Fa59ke"
+                },
+                {
+                    "email": "adherent-female-60@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Adherent 60 Fa60ke"
+                }
+            ]
+        }
     }
     """
     When I save this response

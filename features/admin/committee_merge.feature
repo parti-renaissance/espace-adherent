@@ -38,7 +38,7 @@ Feature: Merge committees from admin panel
   Scenario: A committee merge and revert must trigger events in RabbitMQ
     Given I am logged as "superadmin@en-marche-dev.fr" admin
     And I am on "/admin/committee/1/members"
-    Then I should see 4 ".committee-members tbody tr" elements
+    Then I should see 5 ".committee-members tbody tr" elements
     And I should see 1 ".label-primary:contains('Co-animateur')" elements
     And I should not see "francis.brioul@yahoo.com"
     When I am on "/admin/committee/3/mandates"
@@ -68,7 +68,7 @@ Feature: Merge committees from admin panel
     Then I should see 1 ".committee-active-mandates tbody tr" elements
     And I should see 5 ".committee-inactive-mandates tbody tr" elements
     When I am on "/admin/committee/1/members"
-    Then I should see 5 ".committee-members tbody tr" elements
+    Then I should see 6 ".committee-members tbody tr" elements
     And I should see "francis.brioul@yahoo.com"
     And I should see 0 ".label-primary:contains('Co-animateur')" elements
     When I am on "/admin/committee/1/mandates"
@@ -84,7 +84,7 @@ Feature: Merge committees from admin panel
     And I should see "La fusion de comités a bien été annulée."
 
     Then I am on "/admin/committee/1/members"
-    And I should see 4 ".committee-members tbody tr" elements
+    And I should see 5 ".committee-members tbody tr" elements
     And I should not see "francis.brioul@yahoo.com"
 
   Scenario: All candidacies of merged committee should be transferred to the new committee

@@ -86,6 +86,24 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
+    public function findForCommittee(Committee $committee): array
+    {
+        return $this->createQueryBuilder('adherent')
+            ->select('PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}')
+            ->innerJoin('adherent.memberships', 'membership', Join::WITH, 'membership.committee = :committee')
+            ->andWhere('adherent.source = :source')
+            ->andWhere('adherent.status = :status')
+            ->andWhere('adherent.lastMembershipDonation IS NOT NULL')
+            ->setParameters([
+                'committee' => $committee,
+                'status' => Adherent::ENABLED,
+                'source' => MembershipSourceEnum::RENAISSANCE,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /**
      * Finds an Adherent instance by its email address.
      */
