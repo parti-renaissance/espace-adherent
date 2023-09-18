@@ -70,9 +70,4 @@ class AppUrlGenerator extends AbstractAppUrlGenerator
             UrlGeneratorInterface::ABSOLUTE_URL
         );
     }
-
-    public function generateAdherentListLink(): string
-    {
-        return sprintf('//%s/adherents', $this->appAuthHost);
-    }
 }

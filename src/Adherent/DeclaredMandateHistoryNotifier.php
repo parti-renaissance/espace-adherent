@@ -2,7 +2,6 @@
 
 namespace App\Adherent;
 
-use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Reporting\DeclaredMandateHistory;
 use App\Mailer\MailerService;
@@ -25,22 +24,22 @@ class DeclaredMandateHistoryNotifier
      */
     public function notifyAdministrator(Administrator $administrator, array $declaredMandateHistories): void
     {
-        $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::createForAdministrator(
-            $administrator,
+        $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::create(
+            $administrator->getEmailAddress(),
             $this->formatMandates($declaredMandateHistories),
-            $this->urlGenerator->generate('admin_app_adherent_list', [], UrlGeneratorInterface::ABSOLUTE_URL)
+            $this->generateAdminAdherentsUrl()
         ));
     }
 
     /**
      * @param array|DeclaredMandateHistory[] $declaredMandateHistories
      */
-    public function notifyAdherent(Adherent $adherent, array $declaredMandateHistories): void
+    public function notifyAdherent(string $emailAddress, array $declaredMandateHistories): void
     {
-        $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::createForAdherent(
-            $adherent,
+        $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::create(
+            $emailAddress,
             $this->formatMandates($declaredMandateHistories),
-            '//'.$this->jemengageHost.'/adherents'
+            $this->generateJMEMilitantsUrl()
         ));
     }
 
@@ -67,5 +66,15 @@ class DeclaredMandateHistoryNotifier
         return array_map(function (string $mandate): string {
             return $this->translator->trans("adherent.mandate.type.$mandate");
         }, $mandates);
+    }
+
+    private function generateAdminAdherentsUrl(): string
+    {
+        return $this->urlGenerator->generate('admin_app_adherent_list', [], UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    private function generateJMEMilitantsUrl(): string
+    {
+        return '//'.$this->jemengageHost.'/militants';
     }
 }

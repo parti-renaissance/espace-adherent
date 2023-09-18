@@ -58,7 +58,7 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
         }
 
         $this->io->text(sprintf(
-            'Will notify %d administrators about %d new declared mandate histories',
+            'Will notify %d administrators about %d new declared mandate historie(s)',
             \count($administrators),
             \count($notNotifiedHistories)
         ));
@@ -84,29 +84,46 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
             $historiesByDepartment[$department->getCode()][] = $history;
         }
 
-        $this->io->text(sprintf(
-            'Will notify %d PADs about %d new declared mandate histories',
-            \count(array_keys($historiesByDepartment)),
-            \count($notNotifiedHistories)
-        ));
+        $electedRepresentativeManagers = $this->adherentRepository->findElectedRepresentativeManagersForDepartmentCodes(array_keys($historiesByDepartment));
 
-        $this->io->progressStart(\count(array_keys($historiesByDepartment)));
+        $notifiedPads = [];
+        foreach ($electedRepresentativeManagers as $electedRepresentativeManager) {
+            if (!$departmentCode = $electedRepresentativeManager['department_code']) {
+                continue;
+            }
 
-        foreach ($historiesByDepartment as $departmentCode => $histories) {
-            $pad = $this->adherentRepository->findPadForDepartmentCode($departmentCode);
-
-            if (!$pad) {
-                $this->io->progressAdvance();
+            if (!\array_key_exists($departmentCode, $historiesByDepartment)) {
+                $this->io->text(sprintf('No history to notify for department code: %s', $departmentCode));
 
                 continue;
             }
 
-            $this->declaredMandateHistoryNotifier->notifyAdherent($pad, $histories);
+            if (!$padEmail = $electedRepresentativeManager['pad_email']) {
+                continue;
+            }
 
-            $this->io->progressAdvance();
+            if (!\array_key_exists($departmentCode, $notifiedPads) || !\in_array($padEmail, $notifiedPads[$departmentCode])) {
+                $this->io->text(sprintf(
+                    'Will notify PAD of department %s about %d new declared mandate historie(s)',
+                    $departmentCode,
+                    \count($historiesByDepartment[$departmentCode])
+                ));
+
+                $this->declaredMandateHistoryNotifier->notifyAdherent($padEmail, $historiesByDepartment[$departmentCode]);
+
+                $notifiedPads[$departmentCode][] = $padEmail;
+            }
+
+            if ($memberEmail = $electedRepresentativeManager['member_email']) {
+                $this->io->text(sprintf(
+                    'Will notify PAD delegated member of department %s about %d new declared mandate historie(s)',
+                    $departmentCode,
+                    \count($historiesByDepartment[$departmentCode])
+                ));
+
+                $this->declaredMandateHistoryNotifier->notifyAdherent($memberEmail, $historiesByDepartment[$departmentCode]);
+            }
         }
-
-        $this->io->progressFinish();
 
         $this->io->text(sprintf('Will mark %d new declared mandate histories as notified', \count($notNotifiedHistories)));
         $this->io->progressStart(\count($notNotifiedHistories));
