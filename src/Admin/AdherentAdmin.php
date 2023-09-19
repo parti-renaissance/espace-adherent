@@ -62,6 +62,41 @@ class AdherentAdmin extends AbstractAdherentAdmin
         ;
     }
 
+    protected function configureActionButtons(array $buttonList, string $action, object $object = null): array
+    {
+        if (\in_array($action, ['ban', 'certify', 'uncertify'], true)) {
+            $actions = parent::configureActionButtons($buttonList, 'show', $object);
+        } else {
+            $actions = parent::configureActionButtons($buttonList, $action, $object);
+        }
+
+        if (\in_array($action, ['edit', 'show', 'ban', 'certify', 'uncertify'], true)) {
+            $actions['switch_user'] = ['template' => 'admin/adherent/action_button_switch_user.html.twig'];
+        }
+
+        if (\in_array($action, ['edit', 'show'], true)) {
+            if ($this->hasAccess('ban', $object) && $this->hasRoute('ban')) {
+                $actions['ban'] = ['template' => 'admin/adherent/action_button_ban.html.twig'];
+            }
+
+            if ($this->hasAccess('terminate_membership', $object) && $this->hasRoute('terminate_membership')) {
+                $actions['terminate_membership'] = ['template' => 'admin/adherent/action_button_terminate_membership.html.twig'];
+            }
+
+            if ($this->hasAccess('certify', $object) && $this->hasRoute('certify')) {
+                $actions['certify'] = ['template' => 'admin/adherent/action_button_certify.html.twig'];
+            }
+
+            if ($this->hasAccess('uncertify', $object) && $this->hasRoute('uncertify')) {
+                $actions['uncertify'] = ['template' => 'admin/adherent/action_button_uncertify.html.twig'];
+            }
+        }
+
+        $actions['extract'] = ['template' => 'admin/adherent/extract/extract_button.html.twig'];
+
+        return $actions;
+    }
+
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         parent::configureDatagridFilters($filter);
