@@ -22,40 +22,31 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventMessageNotifier implements EventSubscriberInterface
 {
-    private $mailer;
-    private $committeeManager;
-    private $registrationRepository;
-    private $urlGenerator;
-
     public function __construct(
-        MailerService $transactionalMailer,
-        CommitteeManager $committeeManager,
-        EventRegistrationRepository $registrationRepository,
-        UrlGeneratorInterface $urlGenerator
+        private readonly MailerService $transactionalMailer,
+        private readonly CommitteeManager $committeeManager,
+        private readonly EventRegistrationRepository $registrationRepository,
+        private readonly UrlGeneratorInterface $urlGenerator
     ) {
-        $this->mailer = $transactionalMailer;
-        $this->committeeManager = $committeeManager;
-        $this->registrationRepository = $registrationRepository;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function onEventCreated(EventEvent $event): void
     {
-        // cause event
-        $eventEvent = $event->getEvent();
+        // @var BaseEvent $event
+        $event = $event->getEvent();
 
         // committee event
-        if (!$event instanceof CommitteeEventEvent || !$committee = $event->getCommittee()) {
+        if (!$event instanceof CommitteeEvent || !$committee = $event->getCommittee()) {
             return;
         }
 
         $chunks = array_chunk(
-            $this->committeeManager->getOptinCommitteeFollowers($committee)->toArray(),
+            $this->committeeManager->getOptinCommitteeFollowers($committee),
             MailerService::PAYLOAD_MAXSIZE
         );
 
         foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage($this->createMessage($chunk, $event->getEvent(), $event->getAuthor()));
+            $this->transactionalMailer->sendMessage($this->createMessage($chunk, $event, $event->getAuthor()));
         }
     }
 
@@ -83,7 +74,7 @@ class EventMessageNotifier implements EventSubscriberInterface
             });
 
             foreach (array_chunk($recipients, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
-                $this->mailer->sendMessage($this->createCancelMessage(
+                $this->transactionalMailer->sendMessage($this->createCancelMessage(
                     $chunk,
                     $event->getEvent(),
                     $event->getAuthor(),

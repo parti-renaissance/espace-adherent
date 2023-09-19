@@ -280,6 +280,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
         $adherent12 = $this->getReference('adherent-12');
         $adherent13 = $this->getReference('adherent-13');
         $adherent14 = $this->getReference('adherent-14');
+        $adherent16 = $this->getReference('adherent-16');
         $adherent19 = $this->getReference('adherent-19');
         $adherent20 = $this->getReference('senatorial-candidate');
         $adherent21 = $this->getReference('adherent-20');
@@ -294,6 +295,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
         $membership->enableVote();
         $manager->persist($adherent2->followCommittee($committee1));
         $manager->persist($adherent4->followCommittee($committee1));
+        $manager->persist($adherent16->followCommittee($committee1));
 
         // Committee 2
         $committee2->addProvisionalSupervisor($adherent6);

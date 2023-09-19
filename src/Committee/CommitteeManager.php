@@ -94,9 +94,9 @@ class CommitteeManager
         return $this->getAdherentRepository()->findReferentsByCommittee($committee);
     }
 
-    public function getOptinCommitteeFollowers(Committee $committee): AdherentCollection
+    public function getOptinCommitteeFollowers(Committee $committee): array
     {
-        return $this->getMembershipRepository()->findForHostEmail($committee);
+        return $this->getAdherentRepository()->findForCommittee($committee);
     }
 
     /**

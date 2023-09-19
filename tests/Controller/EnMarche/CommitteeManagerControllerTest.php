@@ -270,9 +270,8 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertSame("♻ débat sur l'agriculture écologique ♻", $event->getName());
         $this->assertSame("♻ Cette journée sera consacrée à un grand débat sur la question de l'agriculture écologique. ♻", $event->getDescription());
         $this->assertFalse($event->isForLegislatives());
-        $this->assertCountMails(1, EventNotificationMessage::class, 'jacques.picard@en-marche.fr');
         $this->assertCountMails(1, EventNotificationMessage::class, 'gisele-berthoux@caramail.com');
-        $this->assertCountMails(1, EventNotificationMessage::class, 'luciole1989@spambox.fr');
+        $this->assertCountMails(1, EventNotificationMessage::class, 'commissaire.biales@example.fr');
         $this->assertCountMails(0, EventNotificationMessage::class, 'carl999@example.fr');
         $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
 
@@ -330,9 +329,8 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertSame("♻ débat sur l'agriculture écologique à Singapore", $event->getName());
         $this->assertSame("♻ Cette journée sera consacrée à un grand débat sur la question de l'agriculture écologique. ♻", $event->getDescription());
         $this->assertFalse($event->isForLegislatives());
-        $this->assertCountMails(1, EventNotificationMessage::class, 'jacques.picard@en-marche.fr');
+        $this->assertCountMails(1, EventNotificationMessage::class, 'commissaire.biales@example.fr');
         $this->assertCountMails(1, EventNotificationMessage::class, 'gisele-berthoux@caramail.com');
-        $this->assertCountMails(1, EventNotificationMessage::class, 'luciole1989@spambox.fr');
         $this->assertCountMails(0, EventNotificationMessage::class, 'carl999@example.fr');
         $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
 
@@ -449,14 +447,14 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertTrue($this->seeMembersList($crawler, 5));
+        $this->seeMembersList($crawler, 6);
         self::assertSame('Jacques P.', trim($crawler->filter('.member-name')->eq(0)->text()));
         self::assertCount(0, $crawler->filter('.member-name img.b__nudge--left-nano'));
         self::assertCount(0, $crawler->filter('.member-phone'));
         self::assertSame('75008', $crawler->filter('.member-postal-code')->eq(0)->text());
         self::assertSame('Paris 8ème', $crawler->filter('.member-city-name')->eq(0)->text());
         self::assertSame('12/01/2017', $crawler->filter('.member-subscription-date')->eq(0)->text());
-        self::assertCount(4, $crawler->filter('.member-status .em-tooltip'));
+        self::assertCount(5, $crawler->filter('.member-status .em-tooltip'));
         self::assertSame('Abonné Email', $crawler->filter('.member-status .em-tooltip .em-tooltip--content p')->eq(0)->text());
     }
 
@@ -468,7 +466,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertTrue($this->seeMembersList($crawler, 7));
+        $this->seeMembersList($crawler, 7);
         self::assertSame('Francis B.', trim($crawler->filter('.member-name')->eq(0)->text()));
         self::assertCount(0, $crawler->filter('.member-name img.b__nudge--left-nano'));
         self::assertCount(6, $crawler->filter('.member-phone'));
@@ -485,7 +483,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertCount(4, $crawler->filter('table tbody tr'));
+        $this->assertCount(5, $crawler->filter('table tbody tr'));
         $this->assertCount(1, $crawler->filter('.filter__row:contains("Certifié")'));
         $this->assertCount(1, $crawler->filter('.filter__row:contains("A choisi son comité de vote")'));
 
@@ -560,14 +558,14 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertTrue($this->seeMembersList($crawler, 5));
+        $this->seeMembersList($crawler, 6);
         self::assertSame('Jacques Picard', trim($crawler->filter('.member-name')->eq(0)->text()));
         self::assertCount(1, $crawler->filter('.member-name img.b__nudge--left-nano'));
         self::assertSame('+33 1 87 26 42 36', trim($crawler->filter('.member-phone')->eq(0)->text()));
         self::assertSame('75008', $crawler->filter('.member-postal-code')->eq(0)->text());
         self::assertSame('Paris 8ème', $crawler->filter('.member-city-name')->eq(0)->text());
         self::assertSame('12/01/2017', $crawler->filter('.member-subscription-date')->eq(0)->text());
-        self::assertCount(8, $crawler->filter('.member-status .em-tooltip'));
+        self::assertCount(10, $crawler->filter('.member-status .em-tooltip'));
         self::assertSame('Vote dans ce comité', $crawler->filter('.member-status .em-tooltip .em-tooltip--content p')->eq(0)->text());
         self::assertSame('Abonné Email', $crawler->filter('.member-status .em-tooltip .em-tooltip--content p')->eq(1)->text());
     }
@@ -583,7 +581,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertSame(2, $crawler->filter('.promote-host-link')->count());
+        $this->assertSame(3, $crawler->filter('.promote-host-link')->count());
         $this->assertSame(1, $crawler->filter('.demote-host-link')->count());
 
         $crawler = $this->client->click($crawler->filter('.promote-host-link')->link());
@@ -601,7 +599,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->client->submit($crawler->selectButton('Oui, définir comme simple membre')->form());
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame(2, $crawler->filter('.promote-host-link')->count());
+        $this->assertSame(3, $crawler->filter('.promote-host-link')->count());
         $this->assertSame(1, $crawler->filter('.demote-host-link')->count());
         $this->seeFlashMessage($crawler, 'Le membre a été redéfini simple membre du comité avec succès.');
     }
@@ -632,7 +630,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->client->request(Request::METHOD_GET, $this->client->getRequest()->getPathInfo().'?export=1');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(5, $this->transformToArray($this->client->getResponse()->getContent()));
+        $this->assertCount(6, $this->transformToArray($this->client->getResponse()->getContent()));
     }
 
     public function testAllowToCreateCommittee()
@@ -680,10 +678,10 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         ;
     }
 
-    private function seeMembersList(Crawler $crawler, int $count): bool
+    private function seeMembersList(Crawler $crawler, int $count): void
     {
         // Header row is part of the count
-        return $count === \count($crawler->filter('table tr'));
+        self::assertCount($count, $crawler->filter('table tr'));
     }
 
     private function seeMessageForm(Crawler $crawler, array $errorMessages = []): bool

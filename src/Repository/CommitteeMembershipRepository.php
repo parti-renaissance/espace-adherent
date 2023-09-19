@@ -137,31 +137,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         return $this->findPrivilegedMemberships($committee, [CommitteeMembership::COMMITTEE_HOST]);
     }
 
-    public function findForHostEmail(Committee $committee): AdherentCollection
-    {
-        return $this->createAdherentCollection(
-            $this->createQueryBuilder('cm')
-                ->select('cm', 'adherent')
-                ->leftJoin('cm.adherent', 'adherent')
-                ->leftJoin('adherent.adherentMandates', 'am')
-                ->leftJoin('adherent.subscriptionTypes', 'st')
-                ->where('cm.committee = :committee')
-                ->andWhere((new Orx())
-                    ->add('cm.privilege = :host')
-                    ->add('am.committee = :committee AND am.quality = :supervisor AND am.finishAt IS NULL')
-                    ->add('st.code = :subscription_code')
-                )
-                ->setParameter('committee', $committee)
-                ->setParameter('host', CommitteeMembership::COMMITTEE_HOST)
-                ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
-                ->setParameter('subscription_code', SubscriptionTypeEnum::LOCAL_HOST_EMAIL)
-                ->orderBy('am.quality', 'DESC')
-                ->addOrderBy('cm.privilege', 'DESC')
-                ->addOrderBy('cm.joinedAt', 'ASC')
-                ->getQuery()
-        );
-    }
-
     public function findPushTokenIdentifiers(Committee $committee): array
     {
         $tokens = $this->createQueryBuilder('cm')
