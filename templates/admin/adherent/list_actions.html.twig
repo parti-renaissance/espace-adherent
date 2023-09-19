@@ -31,13 +31,13 @@
 
     <div style="width: 160px; margin-top: 5px;">
         {% if admin.hasAccess('edit') %}
-        <a href="{{ path('admin_app_adherent_edit', { id: object.id }) }}" class="btn btn-xs btn-default" title="Éditer">
+        <a href="{{ admin.generateObjectUrl('edit', object) }}" class="btn btn-xs btn-default" title="Éditer">
             <i class="fa fa-pencil" aria-hidden="true"></i>
             Éditer
         </a>
         {% endif %}
 
-        <a href="{{ path('admin_app_adherent_show', { id: object.id }) }}" class="btn btn-xs btn-default" title="Afficher">
+        <a href="{{ admin.generateObjectUrl('show', object) }}" class="btn btn-xs btn-default" title="Afficher">
             <i class="fa fa-search-plus" aria-hidden="true"></i>
             Afficher
         </a>

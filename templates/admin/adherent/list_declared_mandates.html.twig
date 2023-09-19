@@ -1,0 +1,10 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% for mandate in object.mandates %}
+        <span class="label label-warning">
+            {{ ('adherent.mandate.type.'~mandate)|trans }}
+        </span>
+        <br>
+    {% endfor %}
+{% endblock %}

@@ -234,7 +234,16 @@
         -->
 
         <service id="app.admin.adherent" class="App\Admin\AdherentAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Adhérents" group="Adhérents" />
+            <tag name="sonata.admin" manager-type="orm" label="Adhérents" group="Adhérents" default="true" />
+
+            <argument />
+            <argument>App\Entity\Adherent</argument>
+            <argument>App\Controller\Admin\AdminAdherentCRUDController</argument>
+            <argument type="service" id="event_dispatcher"/>
+        </service>
+
+        <service id="app.admin.adherent_elected_representative" class="App\Admin\AdherentElectedRepresentativeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Élus" group="Politique" />
 
             <argument />
             <argument>App\Entity\Adherent</argument>
