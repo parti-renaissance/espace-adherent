@@ -348,11 +348,6 @@ class AdherentAdmin extends AbstractAdmin
             ->add('position', ActivityPositionType::class, [
                 'label' => 'Statut',
             ])
-            ->add('mandates', AdherentMandateType::class, [
-                'label' => 'adherent.mandate.admin.label',
-                'required' => false,
-                'multiple' => true,
-            ])
             ->add('exclusiveMembership', null, [
                 'label' => 'Je certifie sur l’honneur que je n’appartiens à aucun autre parti politique',
                 'required' => false,
@@ -579,10 +574,15 @@ class AdherentAdmin extends AbstractAdmin
                 'class' => 'col-md-12',
                 'box_class' => 'box box-warning',
             ])
+            ->add('mandates', AdherentMandateType::class, [
+                'label' => 'Mandat(s) déclaré(s)',
+                'required' => false,
+                'multiple' => true,
+            ])
             ->add('electedRepresentativeMandates', CollectionType::class, [
                 'error_bubbling' => false,
                 'required' => false,
-                'label' => false,
+                'label' => 'Mandat(s) actif(s)',
                 'entry_type' => ElectedRepresentativeAdherentMandateType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
