@@ -49,31 +49,45 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
             return self::SUCCESS;
         }
 
+        $this->notifyAdministrators($notNotifiedHistories);
+        $this->notifyElectedRepresentativeManagers($notNotifiedHistories);
+        $this->markHistoriesAsNotified($notNotifiedHistories);
+
+        $this->io->success('Notifications sent!');
+
+        return self::SUCCESS;
+    }
+
+    private function notifyAdministrators(array $histories): void
+    {
         $administrators = $this->administratorRepository->findWithRole(self::ADMIN_ROLE_TO_NOTIFY);
 
         if (!$administrators) {
             $this->io->text('No administrator to notify.');
 
-            return self::SUCCESS;
+            return;
         }
 
         $this->io->text(sprintf(
             'Will notify %d administrators about %d new declared mandate historie(s)',
             \count($administrators),
-            \count($notNotifiedHistories)
+            \count($histories)
         ));
         $this->io->progressStart(\count($administrators));
 
         foreach ($administrators as $administrator) {
-            $this->declaredMandateHistoryNotifier->notifyAdministrator($administrator, $notNotifiedHistories);
+            $this->declaredMandateHistoryNotifier->notifyAdministrator($administrator, $histories);
 
             $this->io->progressAdvance();
         }
 
         $this->io->progressFinish();
+    }
 
+    private function notifyElectedRepresentativeManagers(array $histories): void
+    {
         $historiesByDepartment = [];
-        foreach ($notNotifiedHistories as $history) {
+        foreach ($histories as $history) {
             $departments = $history->getAdherent()->getZonesOfType(Zone::DEPARTMENT, true);
             $department = !empty($departments) ? reset($departments) : null;
 
@@ -124,11 +138,14 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
                 $this->declaredMandateHistoryNotifier->notifyAdherent($memberEmail, $historiesByDepartment[$departmentCode]);
             }
         }
+    }
 
-        $this->io->text(sprintf('Will mark %d new declared mandate histories as notified', \count($notNotifiedHistories)));
-        $this->io->progressStart(\count($notNotifiedHistories));
+    private function markHistoriesAsNotified(array $histories): void
+    {
+        $this->io->text(sprintf('Will mark %d new declared mandate histories as notified', \count($histories)));
+        $this->io->progressStart(\count($histories));
 
-        foreach ($notNotifiedHistories as $declaredMandateHistory) {
+        foreach ($histories as $declaredMandateHistory) {
             $declaredMandateHistory->setNotified();
 
             $this->io->progressAdvance();
@@ -138,9 +155,5 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
 
         $this->entityManager->flush();
         $this->entityManager->clear();
-
-        $this->io->success('Notifications sent!');
-
-        return self::SUCCESS;
     }
 }
