@@ -20,24 +20,28 @@ class DeclaredMandateHistoryNotifier
     }
 
     /**
+     * @param array|Administrator[]          $administrators
      * @param array|DeclaredMandateHistory[] $declaredMandateHistories
      */
-    public function notifyAdministrator(Administrator $administrator, array $declaredMandateHistories): void
+    public function notifyAdministrators(array $administrators, array $declaredMandateHistories): void
     {
         $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::create(
-            $administrator->getEmailAddress(),
+            array_map(function (Administrator $administrator): string {
+                return $administrator->getEmailAddress();
+            }, $administrators),
             $this->formatMandates($declaredMandateHistories),
             $this->generateAdminAdherentsUrl()
         ));
     }
 
     /**
+     * @param array|string[]                 $recipients
      * @param array|DeclaredMandateHistory[] $declaredMandateHistories
      */
-    public function notifyAdherent(string $emailAddress, array $declaredMandateHistories): void
+    public function notifyAdherents(array $recipients, array $declaredMandateHistories): void
     {
         $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::create(
-            $emailAddress,
+            $recipients,
             $this->formatMandates($declaredMandateHistories),
             $this->generateJMEMilitantsUrl()
         ));
