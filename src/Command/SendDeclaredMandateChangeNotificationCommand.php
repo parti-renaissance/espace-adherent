@@ -102,19 +102,8 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
 
         $notifiedPads = [];
         foreach ($electedRepresentativeManagers as $electedRepresentativeManager) {
-            if (!$departmentCode = $electedRepresentativeManager['department_code']) {
-                continue;
-            }
-
-            if (!\array_key_exists($departmentCode, $historiesByDepartment)) {
-                $this->io->text(sprintf('No history to notify for department code: %s', $departmentCode));
-
-                continue;
-            }
-
-            if (!$padEmail = $electedRepresentativeManager['pad_email']) {
-                continue;
-            }
+            $departmentCode = $electedRepresentativeManager['department_code'];
+            $padEmail = $electedRepresentativeManager['pad_email'];
 
             if (!\array_key_exists($departmentCode, $notifiedPads) || !\in_array($padEmail, $notifiedPads[$departmentCode])) {
                 $this->io->text(sprintf(
