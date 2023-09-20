@@ -90,6 +90,8 @@ class ZoneRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('zone')
             ->andWhere('zone.type = :type')
             ->setParameter(':type', $type)
+            ->orderBy('LENGTH(zone.code)')
+            ->addOrderBy('zone.name')
         ;
 
         if ($filter->activeOnly) {
