@@ -2,21 +2,19 @@
 
 namespace App\Mailer\Message\Renaissance;
 
-use App\Entity\Administrator;
 use Ramsey\Uuid\Uuid;
 
 class RenaissanceDeclaredMandateNotificationMessage extends AbstractRenaissanceMessage
 {
-    public static function createForAdministrator(Administrator $administrator, array $mandates, string $buttonUrl): self
+    public static function create(array $recipients, array $mandates, string $buttonUrl): self
     {
-        return self::create($administrator->getEmailAddress(), $mandates, $buttonUrl);
-    }
+        if (!$recipients) {
+            throw new \InvalidArgumentException('At least one recipient is required.');
+        }
 
-    private static function create(string $recipientEmail, array $mandates, string $buttonUrl): self
-    {
-        return new self(
+        $message = new self(
             Uuid::uuid4(),
-            $recipientEmail,
+            reset($recipients),
             null,
             'Nouvelles déclarations de mandats',
             [
@@ -25,5 +23,11 @@ class RenaissanceDeclaredMandateNotificationMessage extends AbstractRenaissanceM
                 'button_url' => $buttonUrl,
             ]
         );
+
+        foreach ($recipients as $recipient) {
+            $message->addRecipient($recipient);
+        }
+
+        return $message;
     }
 }

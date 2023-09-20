@@ -11,19 +11,39 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DeclaredMandateHistoryNotifier
 {
-    public function __construct(private readonly MailerService $transactionalMailer, private readonly TranslatorInterface $translator, private readonly UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private readonly MailerService $transactionalMailer,
+        private readonly TranslatorInterface $translator,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly string $jemengageHost
+    ) {
     }
 
     /**
+     * @param array|Administrator[]          $administrators
      * @param array|DeclaredMandateHistory[] $declaredMandateHistories
      */
-    public function notifyAdministrator(Administrator $administrator, array $declaredMandateHistories): void
+    public function notifyAdministrators(array $administrators, array $declaredMandateHistories): void
     {
-        $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::createForAdministrator(
-            $administrator,
+        $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::create(
+            array_map(function (Administrator $administrator): string {
+                return $administrator->getEmailAddress();
+            }, $administrators),
             $this->formatMandates($declaredMandateHistories),
-            $this->urlGenerator->generate('admin_app_adherent_list', [], UrlGeneratorInterface::ABSOLUTE_URL)
+            $this->generateAdminAdherentsUrl()
+        ));
+    }
+
+    /**
+     * @param array|string[]                 $recipients
+     * @param array|DeclaredMandateHistory[] $declaredMandateHistories
+     */
+    public function notifyAdherents(array $recipients, array $declaredMandateHistories): void
+    {
+        $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::create(
+            $recipients,
+            $this->formatMandates($declaredMandateHistories),
+            $this->generateJMEMilitantsUrl()
         ));
     }
 
@@ -50,5 +70,15 @@ class DeclaredMandateHistoryNotifier
         return array_map(function (string $mandate): string {
             return $this->translator->trans("adherent.mandate.type.$mandate");
         }, $mandates);
+    }
+
+    private function generateAdminAdherentsUrl(): string
+    {
+        return $this->urlGenerator->generate('admin_app_adherent_list', [], UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    private function generateJMEMilitantsUrl(): string
+    {
+        return '//'.$this->jemengageHost.'/militants';
     }
 }

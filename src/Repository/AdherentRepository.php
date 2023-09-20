@@ -17,6 +17,7 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Geo\Zone;
+use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
 use App\Entity\Phoning\Campaign;
@@ -30,6 +31,8 @@ use App\Membership\MembershipSourceEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
 use App\Repository\Helper\MembershipFilterHelper;
+use App\Scope\FeatureEnum;
+use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
 use Cake\Chronos\Chronos;
@@ -1508,6 +1511,44 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->leftJoin($alias.'.commitment', 'commitment')
             ->leftJoin($alias.'.adherentMandates', 'mandates')
             ->leftJoin($alias.'.zoneBasedRoles', 'zone_based_role')
+        ;
+    }
+
+    public function findElectedRepresentativeManagersForDepartmentCodes(array $departmentCodes): array
+    {
+        return $this
+            ->createQueryBuilder('adherent')
+            ->select([
+                'zone.code AS department_code',
+                'adherent.emailAddress AS pad_email',
+                'delegated.emailAddress AS member_email',
+            ])
+            ->innerJoin(
+                'adherent.zoneBasedRoles',
+                'zone_based_role',
+                Join::WITH,
+                'zone_based_role.type = :type_pad'
+            )
+            ->innerJoin(
+                'zone_based_role.zones',
+                'zone',
+                Join::WITH,
+                'zone.code IN (:department_codes)'
+            )
+            ->leftJoin(
+                DelegatedAccess::class,
+                'rda',
+                Join::WITH,
+                'rda.delegator = adherent AND rda.type = :type_pad AND FIND_IN_SET(:feature_elected_representative, rda.scopeFeatures) > 0'
+            )
+            ->leftJoin('rda.delegated', 'delegated')
+            ->setParameters([
+                'department_codes' => $departmentCodes,
+                'type_pad' => ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+                'feature_elected_representative' => FeatureEnum::ELECTED_REPRESENTATIVE,
+            ])
+            ->getQuery()
+            ->getArrayResult()
         ;
     }
 

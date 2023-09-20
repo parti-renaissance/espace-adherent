@@ -19,7 +19,8 @@ class SendDeclaredMandateChangeNotificationCommandTest extends AbstractCommandTe
 
         $output = $this->runCommand('app:declared-mandates:notify-changes');
         $output = $output->getDisplay();
-        self::assertStringContainsString('Will notify 2 administrators about 3 new declared mandate histories', $output);
+        self::assertStringContainsString('Will notify 2 administrator(s) about 3 new declared mandate historie(s)', $output);
+        self::assertStringContainsString('Will notify 3 manager(s) of department 92 about 1 new declared mandate historie(s)', $output);
         self::assertStringContainsString('Will mark 3 new declared mandate histories as notified', $output);
         self::assertStringContainsString('Notifications sent!', $output);
 

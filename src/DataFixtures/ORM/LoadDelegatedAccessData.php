@@ -29,6 +29,8 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
     public const ACCESS_UUID_14 = '2c6134f7-4312-45c4-9ab7-89f2b0731f86';
     public const ACCESS_UUID_15 = '689757d2-dea5-49d1-95fe-281fc860ff77';
     public const ACCESS_UUID_16 = 'b24fea43-ecd8-4bf4-b500-6f97886ab77c';
+    public const ACCESS_UUID_17 = '1d29b80c-a308-441c-9d7d-a333c366fdb1';
+    public const ACCESS_UUID_18 = 'fab73b77-1470-4e93-a1ff-85b649f8fb72';
 
     public function load(ObjectManager $manager)
     {
@@ -159,6 +161,27 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
             DelegatedAccess::ACCESS_MESSAGES,
         ]);
         $manager->persist($delegatedAccess9);
+
+        // access from PAD
+        $delegatedAccess17 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_17));
+        $delegatedAccess17->setDelegated($this->getReference('adherent-5')); // gisele-berthoux@caramail.com
+        $delegatedAccess17->setDelegator($this->getReference('president-ad-1')); // president-ad@renaissance-dev.fr
+        $delegatedAccess17->setRole('Responsable élus délégué #1');
+        $delegatedAccess17->setType('president_departmental_assembly');
+        $delegatedAccess17->setScopeFeatures([
+            FeatureEnum::ELECTED_REPRESENTATIVE,
+        ]);
+        $manager->persist($delegatedAccess17);
+
+        $delegatedAccess18 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_18));
+        $delegatedAccess18->setDelegated($this->getReference('municipal-manager-lille')); // jean-claude.dusse@example.fr
+        $delegatedAccess18->setDelegator($this->getReference('president-ad-1')); // president-ad@renaissance-dev.fr
+        $delegatedAccess18->setRole('Responsable élus délégué #2');
+        $delegatedAccess18->setType('president_departmental_assembly');
+        $delegatedAccess18->setScopeFeatures([
+            FeatureEnum::ELECTED_REPRESENTATIVE,
+        ]);
+        $manager->persist($delegatedAccess18);
 
         // access for MyTeam members
         $members = [
