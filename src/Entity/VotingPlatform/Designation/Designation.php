@@ -180,7 +180,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * @Assert\GreaterThan(
      *     "now",
      *     message="La date de début doit être dans le futur.",
-     *     groups={"Default", "api_designation_write"}
+     *     groups={"Admin_creation", "api_designation_write"}
      * )
      */
     private $voteStartDate;
@@ -284,7 +284,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Poll\Poll")
      *
-     * @Assert\Expression("!this.isLocalPollType() or value", message="Vous devez préciser le questionnaire qui sera utilisé pour cette élection.")
+     * @Assert\Expression("!(this.isLocalPollType() || this.isConsultationType()) or value", message="Vous devez préciser le questionnaire qui sera utilisé pour cette élection.")
      */
     public ?Poll $poll = null;
 
@@ -292,6 +292,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * @ORM\ManyToOne(targetEntity="App\Entity\CmsBlock")
      */
     public ?CmsBlock $wordingWelcomePage = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CmsBlock")
+     */
+    public ?CmsBlock $wordingRegulationPage = null;
 
     /**
      * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
@@ -594,6 +599,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             DesignationTypeEnum::EXECUTIVE_OFFICE,
             DesignationTypeEnum::POLL,
             DesignationTypeEnum::LOCAL_POLL,
+            DesignationTypeEnum::CONSULTATION,
         ], true)) {
             return true;
         }
@@ -727,6 +733,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return DesignationTypeEnum::LOCAL_POLL === $this->type;
     }
 
+    public function isConsultationType(): bool
+    {
+        return DesignationTypeEnum::CONSULTATION === $this->type;
+    }
+
     public function isExecutiveOfficeType(): bool
     {
         return DesignationTypeEnum::EXECUTIVE_OFFICE === $this->type;
@@ -739,7 +750,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     public function isRenaissanceElection(): bool
     {
-        return $this->isLocalElectionTypes() || $this->isCommitteeSupervisorType();
+        return \in_array($this->type, DesignationTypeEnum::RENAISSANCE_TYPES, true);
     }
 
     public function getDenomination(bool $withDeterminer = false, bool $ucfirst = false): string
@@ -768,7 +779,10 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     public function isDenominationEditable(): bool
     {
-        return !$this->isLocalElectionTypes() && !$this->isCommitteeSupervisorType();
+        return
+            !$this->isLocalElectionTypes()
+            && !$this->isCommitteeSupervisorType()
+            && !$this->isConsultationType();
     }
 
     public function equals(self $other): bool

@@ -1,0 +1,99 @@
+<div class="relative rounded-xl px-4 py-5 md:p-6 lg:p-8 transition shadow-[0_1px_3px_rgba(15,23,42,0.03),0_1px_2px_rgba(15,23,42,0.06)] ring-1 ring-slate-600/[0.04]">
+    <h2 class="text-base font-medium lg:text-xl text-[#CF0822]">{{ designation.getTitle() }}</h2>
+
+    <div class="mt-4 prose-sm prose-re-blue lg:prose-base text-gray-500 lg:max-w-none">
+        {% if designation.wordingWelcomePage %}
+            {{ designation.wordingWelcomePage.content|markdown }}
+        {% endif %}
+    </div>
+
+    <p class="mt-5 inline-block text-base leading-6 text-re-blue-600 rounded-md px-4 py-3 border border-dashed border-re-blue-300 bg-re-blue-50">
+        Le vote sera ouvert du <span class="text-re-blue-900 font-medium">{{ designation.voteStartDate|format_datetime('none', 'none', "dd/MM/y à HH'h'mm") }}</span> au
+        <span class="text-re-blue-900 font-medium">{{ designation.voteEndDate|format_datetime('none', 'none', "dd/MM/y à HH'h'mm") }}</span>.
+    </p>
+
+    <div class="mt-6 border-t border-gray-200 pt-6">
+        {% set voting_platform_election = get_voting_platform_election_for_designation(designation) %}
+
+        {% if not designation.isVotePeriodStarted %}
+            <div class="em-countdown-clock l__col--full text-base leading-6 text-gray-600" data-event-timestamp="{{ designation.voteStartDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
+                <span class="text--dark text--small">Le vote ouvrira dans :</span>
+                <span class="clock-container text-re-blue-600 font-medium"></span>
+            </div>
+        {% elseif not voting_platform_election %}
+            <p class="lg:text-lg font-medium text-gray-700 text-center">Le vote commencera dans quelques instants.</p>
+        {% else %}
+            {% if voting_platform_election.isVotePeriodActive %}
+                {% if is_granted('ABLE_TO_VOTE', voting_platform_election) %}
+                    <div class="em-countdown-clock l__col--full text-base leading-6 text-gray-600" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
+                        <span class="text--dark text--small">Il vous reste</span>
+                        <span class="clock-container text-re-blue-600 font-medium"></span>
+                        <span class="text--dark text--small">pour participer au vote.</span>
+                    </div>
+
+                    <p class="mt-6">
+                        <a href="{{ path('app_voting_platform_index', {uuid: voting_platform_election.uuid}) }}" class="button button--blue">
+                            J'accède au vote
+                        </a>
+                    </p>
+                {% else %}
+                    {% set my_vote = get_my_vote_for_election(app.user, voting_platform_election.currentRound) %}
+
+                    {% if my_vote %}
+                        <h3 class="text-lg font-medium text-gray-900">Votre choix a bien été enregistré le {{ my_vote.votedAt|format_datetime('none', 'none', "dd/MM/yyyy à HH'h'mm") }}.</h3>
+
+                        <p class="mt-6">
+                            <button type="button" class="button button--blue disabled:opacity-75 cursor-not-allowed disabled:bg-re-blue-500/75 disabled:text-white" disabled>J'accède au vote</button>
+                        </p>
+                    {% endif %}
+                {% endif %}
+            {% elseif voting_platform_election.isResultPeriodActive %}
+                <p class="text-gray-600 text-base leading-6">
+                    {% if voting_platform_election.isResultsDisplayable() %}
+                        Consulter les <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" class="underline font-medium text-re-blue-600 decoration-2 decoration-red-500">résultats détaillés</a>
+                    {% else %}
+                        Le dépouillement est en cours, encore quelques secondes !
+                    {% endif %}
+                </p>
+            {% endif %}
+        {% endif %}
+    </div>
+    <svg viewBox="0 0 384 12" fill="none" aria-hidden="true" class="absolute top-full right-0 w-2/3 transition">
+        <mask id=":r1:-a" maskUnits="userSpaceOnUse" x="48" y="0" width="269" height="4" style="mask-type: alpha;">
+            <path transform="rotate(180 316.656 4)" fill="#C4C4C4" d="M316.656 4h268v4h-268z"/>
+        </mask>
+        <g filter="url(#:r1:-b)" mask="url(#:r1:-a)">
+            <path transform="rotate(180 292.656 1)" fill="url(#:r1:-c)" d="M292.656 1h220v2h-220z"/>
+        </g>
+        <mask id=":r1:-d" maskUnits="userSpaceOnUse" x="116" y="0" width="268" height="12" style="mask-type: alpha;">
+            <path transform="rotate(180 384 12)" fill="#C4C4C4" d="M384 12h268v12H384z"/>
+        </mask>
+        <g filter="url(#:r1:-e)" mask="url(#:r1:-d)">
+            <path transform="rotate(180 360 1)" fill="url(#:r1:-f)" d="M360 1h220v2H360z"/>
+        </g>
+        <defs>
+            <linearGradient id=":r1:-c" x1="292.656" y1="1" x2="512.656" y2="1" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#002153" stop-opacity="0"/>
+                <stop offset=".323" stop-color="#002153"/>
+                <stop offset=".672" stop-color="#CF0822" stop-opacity=".3"/>
+                <stop offset="1" stop-color="#CF0822" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id=":r1:-f" x1="360" y1="1" x2="580" y2="1" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#002153" stop-opacity="0"/>
+                <stop offset=".323" stop-color="#002153"/>
+                <stop offset=".672" stop-color="#CF0822" stop-opacity=".3"/>
+                <stop offset="1" stop-color="#CF0822" stop-opacity="0"/>
+            </linearGradient>
+            <filter id=":r1:-b" x="71.656" y="-2" width="222" height="4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                <feGaussianBlur stdDeviation=".5" result="effect1_foregroundBlur_311_43467"/>
+            </filter>
+            <filter id=":r1:-e" x="131" y="-10" width="238" height="20" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                <feGaussianBlur stdDeviation="4.5" result="effect1_foregroundBlur_311_43467"/>
+            </filter>
+        </defs>
+    </svg>
+</div>

@@ -40,6 +40,7 @@ class VotingPlatformExtension extends AbstractExtension
                 $key = 'common.';
                 break;
             case DesignationTypeEnum::LOCAL_POLL:
+            case DesignationTypeEnum::CONSULTATION:
                 $key = '';
                 break;
         }

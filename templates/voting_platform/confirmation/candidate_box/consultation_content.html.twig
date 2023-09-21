@@ -1,0 +1,24 @@
+<div class="ballot-paper basis-2/5">
+    <div class="ballot-paper__content text--center">
+        <div class="b__nudge--bottom-small">
+            <div class="text--gray b__nudge--bottom">
+                {{ pool.code }} {{ pool.code }} {{ pool.code }}
+            </div>
+
+            <div class="text-gray-500 font-bold text-center my-4"></div>
+            {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
+            {% if candidate_group %}
+                {% set candidates = candidate_group.getCandidatesSorted() %}
+
+                {% for candidate in candidates %}
+                    <h3>{{ candidate.fullName }}</h3>
+                {% endfor %}
+            {% else %}
+                <h3>{{ vote_blanc_label }}</h3>
+            {% endif %}
+        </div>
+        <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid, s: loop.index}) }}" class="inline-block mt-2 text-re-blue-400 hover:text-re-blue-600">
+            Modifier mon choix
+        </a>
+    </div>
+</div>

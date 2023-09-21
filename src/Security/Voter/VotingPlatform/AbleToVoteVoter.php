@@ -24,18 +24,28 @@ class AbleToVoteVoter extends AbstractAdherentVoter
         if (!$subject->isVotePeriodActive()) {
             return false;
         }
+        $designation = $subject->getDesignation();
 
-        if (!$subject->getDesignation()->isLocalPollType() && $adherent->isRenaissanceSympathizer()) {
+        if (!$designation->isLocalPollType() && $adherent->isRenaissanceSympathizer()) {
+            return false;
+        }
+
+        if ($this->voteRepository->alreadyVoted($adherent, $subject->getCurrentRound())) {
             return false;
         }
 
         $adherentIsInVotersList = $this->voterRepository->existsForElection($adherent, $subject->getUuid()->toString());
 
         if (!$adherentIsInVotersList) {
+            // Allow to vote adherent who are not on the list for CONSULTATION election
+            if ($designation->isConsultationType()) {
+                return true;
+            }
+
             return false;
         }
 
-        return !$this->voteRepository->alreadyVoted($adherent, $subject->getCurrentRound());
+        return true;
     }
 
     protected function supports(string $attribute, $subject): bool

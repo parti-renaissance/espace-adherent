@@ -13,7 +13,6 @@ use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Repository\CommitteeRepository;
 use App\Repository\VotingPlatform\CandidateGroupRepository;
-use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoteRepository;
 use App\Repository\VotingPlatform\VoteResultRepository;
@@ -28,7 +27,6 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
         private readonly VoteRepository $voteRepository,
         private readonly VoteResultRepository $voteResultRepository,
         private readonly CommitteeRepository $committeeRepository,
-        private readonly DesignationRepository $designationRepository,
         private readonly CandidateGroupRepository $candidateGroupRepository,
         private readonly ElectionManager $electionManager
     ) {
@@ -41,6 +39,7 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
             DesignationTypeEnum::LOCAL_POLL,
             DesignationTypeEnum::POLL,
             DesignationTypeEnum::COMMITTEE_SUPERVISOR,
+            DesignationTypeEnum::CONSULTATION,
         ]);
     }
 
