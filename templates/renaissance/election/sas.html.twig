@@ -1,1 +1,36 @@
 {% extends 'renaissance/election/_layout.html.twig' %}
+
+{% block sub_content %}
+    {% set candidacies_groups = [] %}
+
+    {% set poll = designation.poll %}
+
+    {% if poll is defined %}
+        <h3 class="my-5 font-bold text-xl">Questions</h3>
+        <ul class="mt-5 pt-5 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {% for question in poll.questions %}
+                <li>
+                    <div class="relative flex items-start space-x-5 rounded-lg border border-gray-300 bg-white p-4 md:px-6 md:py-5 shadow-sm focus-within:ring-2 focus-within:ring-re-blue-500 focus-within:ring-offset-2 hover:border-gray-400">
+                        <div class="min-w-0 flex-1">
+                            <div class="focus:outline-none group space-y-2">
+                                <p class="text-sm font-medium text-gray-900">
+                                    {{ question.content }}
+                                </p>
+
+                                <p class="text-sm text-gray-900">
+                                    {% for choice in question.choices %}
+                                        <span>{{ choice.label }}</span>
+                                        {% if not loop.last %}
+                                            <span class="font-medium text-black" aria-hidden="true">·</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
+
