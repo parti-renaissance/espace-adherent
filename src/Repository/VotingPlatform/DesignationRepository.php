@@ -159,8 +159,8 @@ class DesignationRepository extends ServiceEntityRepository
 
         $conditions = $queryBuilder->expr()->orX();
 
-        $conditions->add('designation.type = :poll_type');
-        $queryBuilder->setParameter('poll_type', DesignationTypeEnum::POLL);
+        $conditions->add('designation.type IN (:other_types)');
+        $queryBuilder->setParameter('other_types', [DesignationTypeEnum::POLL, DesignationTypeEnum::CONSULTATION]);
 
         if ($zones = $adherent->getParentZones()) {
             $zoneQueryBuilder = $this->createGeoZonesQueryBuilder(

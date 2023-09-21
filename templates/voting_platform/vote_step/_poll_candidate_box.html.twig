@@ -1,12 +1,12 @@
 <div class="candidate__box l__row {{ not designation.isPollType() ? 'l__row--v-stretch' }} b__nudge--bottom-medium">
     {{ form_widget(form) }}
-    <label for="{{ form.vars.id }}" class="candidate-pool text--medium b__nudge--left-medium cursor--pointer">
+    <label for="{{ form.vars.id }}" class="candidate-pool text--medium b__nudge--left-medium cursor--pointer flex p-4 lg:px-6 lg:py-5 h-full">
         {% if candidate_group %}
             {% for candidate in candidate_group.getCandidatesSorted() %}
-                {{ candidate.fullName }}
+                <span class="text-gray-500">{{ candidate.fullName }}</span>
             {% endfor %}
         {% else %}
-            {{ vote_blanc_label }}
+            <span class="text-gray-500">{{ vote_blanc_label }}</span>
         {% endif %}
     </label>
 </div>

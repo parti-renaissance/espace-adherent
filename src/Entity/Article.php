@@ -131,7 +131,7 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
         $this->themes = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

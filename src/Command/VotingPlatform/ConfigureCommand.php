@@ -103,6 +103,8 @@ class ConfigureCommand extends Command
                 $this->configureLocalElection($designation);
             } elseif ($designation->isLocalPollType()) {
                 $this->configureLocalPoll($designation);
+            } elseif ($designation->isConsultationType()) {
+                $this->configureConsultation($designation);
             }
         }
 
@@ -449,6 +451,48 @@ class ConfigureCommand extends Command
         $this->io->progressAdvance();
     }
 
+    private function configureConsultation(Designation $designation): void
+    {
+        if ($election = $this->electionRepository->findOneByDesignation($designation)) {
+            if (
+                !$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)
+                && $election->isVotePeriodStarted()
+            ) {
+                $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+            }
+
+            return;
+        }
+
+        if (!$designation->poll || !$designation->poll->getQuestions()) {
+            return;
+        }
+
+        $election = $this->createNewElection($designation);
+
+        foreach ($designation->poll->getQuestions() as $question) {
+            $election->getCurrentRound()->addElectionPool($pool = new ElectionPool($question->content));
+            $election->addElectionPool($pool);
+
+            foreach ($question->getChoices() as $choice) {
+                $pool->addCandidateGroup($group = new CandidateGroup());
+                $group->addCandidate(new Candidate($choice->label, '', ''));
+            }
+        }
+
+        $this->entityManager->persist($this->createVoterList($election));
+        $this->entityManager->persist($election);
+        $this->entityManager->flush();
+
+        if ($election->isVotePeriodStarted()) {
+            $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+        }
+
+        $this->entityManager->clear();
+
+        $this->io->progressAdvance();
+    }
+
     private function configureNewElectionForTerritorialCouncil(
         Election $election,
         TerritorialCouncilElection $coTerrElection
@@ -680,7 +724,7 @@ class ConfigureCommand extends Command
         );
     }
 
-    private function createVoterList(Election $election, array $adherents): VotersList
+    private function createVoterList(Election $election, array $adherents = []): VotersList
     {
         $list = new VotersList($election);
 

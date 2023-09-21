@@ -9,7 +9,10 @@ class AbstractAdmin extends SonataAdmin
 {
     protected function configureFormOptions(array &$formOptions): void
     {
-        $formOptions['validation_groups'] = ['Default', 'Admin'];
+        $formOptions['validation_groups'] = array_merge(
+            ['Default', 'Admin'],
+            $this->isCreation() ? ['Admin_creation'] : ['Admin_modification']
+        );
     }
 
     protected function isCreation(): bool

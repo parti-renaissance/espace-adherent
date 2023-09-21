@@ -128,6 +128,7 @@ class DesignationAdmin extends AbstractAdmin
                         'widget' => 'single_text',
                         'with_seconds' => true,
                         'attr' => ['step' => 30],
+                        'disabled' => !$this->isCreation(),
                     ])
                     ->add('voteEndDate', DateTimeType::class, [
                         'label' => 'Clôture du vote',
@@ -153,8 +154,15 @@ class DesignationAdmin extends AbstractAdmin
                 ->end()
             ->end()
             ->tab('Wording 🌐')
-                ->with('Wording')
+                ->with('Description de l\'élection', ['class' => 'col-md-6'])
                     ->add('wordingWelcomePage', ModelType::class, [
+                        'label' => false,
+                        'required' => false,
+                        'btn_add' => 'Créer',
+                    ])
+                ->end()
+                ->with('Règlement', ['class' => 'col-md-6'])
+                    ->add('wordingRegulationPage', ModelType::class, [
                         'label' => false,
                         'required' => false,
                         'btn_add' => 'Créer',
