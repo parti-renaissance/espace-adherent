@@ -4,7 +4,7 @@ description: Authenticate with docker on registry
 runs:
   using: composite
   steps:
-    - uses: google-github-actions/auth@v0
+    - uses: google-github-actions/auth@v1
       with:
         credentials_json: ${{ env.GCP_SA_KEY_GCR_PUSHER }}
 
