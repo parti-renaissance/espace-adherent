@@ -93,6 +93,7 @@ Feature:
                     "first_name": "Referent",
                     "last_name": "Referent"
                 },
+                "preview_link": null,
                 "statistics": {
                     "click_rate": 0,
                     "clicks": 0,
@@ -101,8 +102,7 @@ Feature:
                     "sent": 0,
                     "unsubscribe": 0,
                     "unsubscribe_rate": 0
-                },
-                "zones": "@array@"
+                }
             },
             {
                 "uuid": "@uuid@",
@@ -112,6 +112,7 @@ Feature:
                 "recipient_count": 0,
                 "source": "platform",
                 "synchronized": false,
+                "preview_link": null,
                 "from_name": "Referent Referent | Renaissance",
                 "created_at": "@string@.isDateTime()",
                 "sent_at": "@string@.isDateTime()",
@@ -128,8 +129,7 @@ Feature:
                     "sent": 0,
                     "unsubscribe": 0,
                     "unsubscribe_rate": 0
-                },
-                "zones": "@array@"
+                }
             }
         ]
     }

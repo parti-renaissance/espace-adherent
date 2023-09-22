@@ -473,6 +473,17 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return $scope === $this->getScope();
     }
 
+    public function getMailchimpId(): ?string
+    {
+        foreach ($this->mailchimpCampaigns as $campaign) {
+            if ($campaign->isSynchronized() && $campaign->getExternalId()) {
+                return $campaign->getExternalId();
+            }
+        }
+
+        return null;
+    }
+
     protected function getScope(): ?string
     {
         return null;

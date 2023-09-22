@@ -7,57 +7,25 @@ use App\Entity\AdherentMessage\AdherentMessageInterface;
 
 class MailchimpObjectIdMapping
 {
-    private $mainListId;
-    private $newsletterListId;
-    private $electedRepresentativeListId;
-    private $applicationRequestCandidateListId;
-    private $jecouteListId;
-    private $jeMengageListId;
-    private $newsletterLegislativeCandidateListId;
-    private $newsletterRenaissanceListId;
-    private $folderIds;
-    private $templateIds;
-    private $interestIds;
-    private $memberGroupInterestGroupId;
-    private $memberInterestInterestGroupId;
-    private $subscriptionTypeInterestGroupId;
-    private $applicationRequestTagIds;
-    private $newsletterTagIds;
-
     public function __construct(
-        string $mainListId,
-        string $newsletterListId,
-        string $electedRepresentativeListId,
-        string $applicationRequestCandidateListId,
-        string $jecouteListId,
-        string $jeMengageListId,
-        string $newsletterLegislativeCandidateListId,
-        string $newsletterRenaissanceListId,
-        array $folderIds,
-        array $templateIds,
-        array $interestIds,
-        string $memberGroupInterestGroupId,
-        string $memberInterestInterestGroupId,
-        string $subscriptionTypeInterestGroupId,
-        array $applicationRequestTagIds,
-        array $newsletterTagIds
+        private readonly string $mainListId,
+        private readonly string $newsletterListId,
+        private readonly string $electedRepresentativeListId,
+        private readonly string $applicationRequestCandidateListId,
+        private readonly string $jecouteListId,
+        private readonly string $jeMengageListId,
+        private readonly string $newsletterLegislativeCandidateListId,
+        private readonly string $newsletterRenaissanceListId,
+        private readonly array $folderIds,
+        private readonly array $templateIds,
+        private readonly array $interestIds,
+        private readonly string $memberGroupInterestGroupId,
+        private readonly string $memberInterestInterestGroupId,
+        private readonly string $subscriptionTypeInterestGroupId,
+        private readonly array $applicationRequestTagIds,
+        private readonly string $mailchimpCampaignUrl,
+        private readonly string $mailchimpOrg,
     ) {
-        $this->mainListId = $mainListId;
-        $this->newsletterListId = $newsletterListId;
-        $this->electedRepresentativeListId = $electedRepresentativeListId;
-        $this->applicationRequestCandidateListId = $applicationRequestCandidateListId;
-        $this->jecouteListId = $jecouteListId;
-        $this->jeMengageListId = $jeMengageListId;
-        $this->newsletterLegislativeCandidateListId = $newsletterLegislativeCandidateListId;
-        $this->newsletterRenaissanceListId = $newsletterRenaissanceListId;
-        $this->folderIds = $folderIds;
-        $this->templateIds = $templateIds;
-        $this->interestIds = $interestIds;
-        $this->memberGroupInterestGroupId = $memberGroupInterestGroupId;
-        $this->memberInterestInterestGroupId = $memberInterestInterestGroupId;
-        $this->subscriptionTypeInterestGroupId = $subscriptionTypeInterestGroupId;
-        $this->applicationRequestTagIds = $applicationRequestTagIds;
-        $this->newsletterTagIds = $newsletterTagIds;
     }
 
     public function getFolderIdByType(string $messageType): ?string
@@ -146,11 +114,6 @@ class MailchimpObjectIdMapping
         return $this->applicationRequestTagIds;
     }
 
-    public function getNewsletterTagIds(): array
-    {
-        return $this->newsletterTagIds;
-    }
-
     public function getJeMengageListId(): string
     {
         return $this->jeMengageListId;
@@ -166,6 +129,15 @@ class MailchimpObjectIdMapping
             default:
                 return $this->getMainListId();
         }
+    }
+
+    public function generateMailchimpPreviewLink(?string $campaignId): ?string
+    {
+        if (!$campaignId) {
+            return null;
+        }
+
+        return sprintf('%s?u=%s&id=%s', $this->mailchimpCampaignUrl, $this->mailchimpOrg, $campaignId);
     }
 
     private function findTemplateId(string $key): ?int

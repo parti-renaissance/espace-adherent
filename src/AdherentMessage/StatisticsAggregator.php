@@ -36,8 +36,8 @@ class StatisticsAggregator
         return $data;
     }
 
-    private static function calculateRate(int $part, int $total, int $precision = 1): float
+    private static function calculateRate(int $part, int $total): float
     {
-        return round($part * 100.00 / $total, $precision, \PHP_ROUND_HALF_UP);
+        return round($part * 100.00 / $total, 1);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Controller\EnMarche\AdherentMessage;
 use App\AdherentMessage\AdherentMessageManager;
 use App\AdherentMessage\StatisticsAggregator;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,15 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_MESSAGE_REDACTOR')]
 class CommonMessageController extends AbstractController
 {
-    private $mailchimpCampaignUrl;
-    private $mailchimpOrgId;
-
-    public function __construct(string $mailchimpCampaignUrl, string $mailchimpOrgId)
-    {
-        $this->mailchimpCampaignUrl = $mailchimpCampaignUrl;
-        $this->mailchimpOrgId = $mailchimpOrgId;
-    }
-
     #[Route(path: '/{uuid}/statistics', requirements: ['uuid' => '%pattern_uuid%'], condition: 'request.isXmlHttpRequest()', name: 'statistics', methods: ['GET'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     public function getStatisticsAction(AbstractAdherentMessage $message, StatisticsAggregator $aggregator): Response
@@ -45,7 +37,7 @@ class CommonMessageController extends AbstractController
 
     #[Route(path: '/{uuid}/preview-on-mailchimp', requirements: ['uuid' => '%pattern_uuid%'], name: 'preview-on-mailchimp', methods: ['GET'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
-    public function previewOnMailchimpAction(AbstractAdherentMessage $message): Response
+    public function previewOnMailchimpAction(AbstractAdherentMessage $message, MailchimpObjectIdMapping $mailchimpObjectIdMapping): Response
     {
         if (!$message->isMailchimp()) {
             throw $this->createNotFoundException();
@@ -55,11 +47,6 @@ class CommonMessageController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        return $this->redirect(sprintf(
-            '%s?u=%s&id=%s',
-            $this->mailchimpCampaignUrl,
-            $this->mailchimpOrgId,
-            current($message->getMailchimpCampaigns())->getExternalId())
-        );
+        return $this->redirect($mailchimpObjectIdMapping->generateMailchimpPreviewLink($message->getMailchimpId()));
     }
 }
