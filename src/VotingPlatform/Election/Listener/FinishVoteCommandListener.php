@@ -8,6 +8,7 @@ use App\Entity\VotingPlatform\ElectionPool;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\VoteChoice;
+use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VoteResult;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformLocalElectionVoteConfirmationMessage;
@@ -82,8 +83,14 @@ class FinishVoteCommandListener implements EventSubscriberInterface
 
         $electionRound = $election->getCurrentRound();
 
+        /** @var Adherent $adherent */
+        $adherent = $this->security->getUser();
+
+        // 0. generate voter profil
+        $voter = $this->getVoter($adherent, $election);
+
         // 1. create vote history for the current voter
-        $vote = $this->generateVote($electionRound);
+        $vote = new Vote($voter, $electionRound);
 
         // 2. generate a unique key to save the vote result with
         $voterKey = VoteResult::generateVoterKey();
@@ -114,13 +121,17 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $this->eventDispatcher->dispatch(new NewVote($election, $voter));
     }
 
-    private function generateVote(ElectionRound $electionRound): Vote
+    private function getVoter(Adherent $adherent, Election $election): Voter
     {
-        /** @var Adherent $adherent */
-        $adherent = $this->security->getUser();
-        $voter = $this->voterRepository->findForAdherent($adherent);
+        if (!$voter = $this->voterRepository->findForAdherent($adherent)) {
+            $voter = new Voter($adherent);
+        }
 
-        return new Vote($voter, $electionRound);
+        if ($voterList = $election->getVotersList()) {
+            $voterList->addVoter($voter);
+        }
+
+        return $voter;
     }
 
     private function createVoteResult(ElectionRound $electionRound, VoteCommand $command, string $voterKey): VoteResult
