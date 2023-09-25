@@ -25,11 +25,17 @@ class DeclaredMandateHistoryNotifier
      */
     public function notifyAdministrators(array $administrators, array $declaredMandateHistories): void
     {
+        $notifications = $this->aggregateHistories($declaredMandateHistories);
+
+        if (empty($notifications)) {
+            return;
+        }
+
         $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::create(
             array_map(function (Administrator $administrator): string {
                 return $administrator->getEmailAddress();
             }, $administrators),
-            $this->formatMandates($declaredMandateHistories),
+            $this->formatMandates($notifications),
             $this->generateAdminAdherentsUrl()
         ));
     }
@@ -40,25 +46,72 @@ class DeclaredMandateHistoryNotifier
      */
     public function notifyAdherents(array $recipients, array $declaredMandateHistories): void
     {
+        $notifications = $this->aggregateHistories($declaredMandateHistories);
+
+        if (empty($notifications)) {
+            return;
+        }
+
         $this->transactionalMailer->sendMessage(RenaissanceDeclaredMandateNotificationMessage::create(
             $recipients,
-            $this->formatMandates($declaredMandateHistories),
+            $this->formatMandates($notifications),
             $this->generateJMEMilitantsUrl()
         ));
     }
 
+    private function aggregateHistories(array $declaredMandatesHistories): array
+    {
+        $groupedByAdherent = [];
+        foreach ($declaredMandatesHistories as $declaredMandatesHistory) {
+            $adherent = $declaredMandatesHistory->getAdherent();
+
+            $groupedByAdherent[$adherent->getId()][] = $declaredMandatesHistory;
+        }
+
+        $aggregated = [];
+        /** @var array|DeclaredMandateHistory[] $adherentHistories */
+        foreach ($groupedByAdherent as $adherentHistories) {
+            $adherent = null;
+            $addedMandates = [];
+            $removedMandates = [];
+
+            foreach ($adherentHistories as $adherentHistory) {
+                if (!$adherent) {
+                    $adherent = $adherentHistory->getAdherent();
+                }
+
+                if (empty($addedMandates)) {
+                    $addedMandates = $adherentHistory->getAddedMandates();
+                }
+
+                if (empty($removedMandates)) {
+                    $removedMandates = $adherentHistory->getRemovedMandates();
+                }
+
+                $addedMandates = array_diff($addedMandates, $adherentHistory->getRemovedMandates());
+                $removedMandates = array_diff($removedMandates, $adherentHistory->getAddedMandates());
+            }
+
+            if ($adherent && !empty($addedMandates) || !empty($removedMandates)) {
+                $aggregated[] = new DeclaredMandateNotification($adherent, $addedMandates, $removedMandates);
+            }
+        }
+
+        return $aggregated;
+    }
+
     /**
-     * @param array|DeclaredMandateHistory[] $declaredMandateHistories
+     * @param array|DeclaredMandateNotification[] $declaredMandateNotifications
      */
-    private function formatMandates(array $declaredMandateHistories): array
+    private function formatMandates(array $declaredMandateNotifications): array
     {
         $formattedMandates = [];
 
-        foreach ($declaredMandateHistories as $declaredMandateHistory) {
+        foreach ($declaredMandateNotifications as $declaredMandateNotification) {
             $formattedMandates[] = [
-                'adherent_name' => $declaredMandateHistory->getAdherent()->getFullName(),
-                'added_mandates' => implode(', ', $this->translateMandates($declaredMandateHistory->getAddedMandates())),
-                'removed_mandates' => implode(', ', $this->translateMandates($declaredMandateHistory->getRemovedMandates())),
+                'adherent_name' => $declaredMandateNotification->adherent->getFullName(),
+                'added_mandates' => implode(', ', $this->translateMandates($declaredMandateNotification->addedMandates)),
+                'removed_mandates' => implode(', ', $this->translateMandates($declaredMandateNotification->removedMandates)),
             ];
         }
 
