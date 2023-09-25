@@ -80,14 +80,6 @@ class DeclaredMandateHistoryNotifier
                     $adherent = $adherentHistory->getAdherent();
                 }
 
-                if (empty($addedMandates)) {
-                    $addedMandates = $adherentHistory->getAddedMandates();
-                }
-
-                if (empty($removedMandates)) {
-                    $removedMandates = $adherentHistory->getRemovedMandates();
-                }
-
                 $addedMandates = array_diff(
                     array_merge($addedMandates, $adherentHistory->getAddedMandates()),
                     $adherentHistory->getRemovedMandates()
