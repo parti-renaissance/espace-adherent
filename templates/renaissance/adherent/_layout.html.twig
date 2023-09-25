@@ -227,9 +227,21 @@
             <!-- Right side -->
             <div class="lg:min-w-0 lg:flex-1">
                 <div class="lg:pl-8 pointer-events-auto" tabindex="-1">
+                    {% include 'renaissance/adherent/_banner.html.twig' %}
+
                     {% block content_right_side '' %}
                 </div>
             </div>
         </main>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        Bootstrap.onLoad(function() {
+            Main.runCountdownClock('.em-countdown-clock', true);
+        });
+    </script>
 {% endblock %}

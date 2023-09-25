@@ -20,9 +20,8 @@ class ElectionManager
      */
     public function findActiveDesignations(
         Adherent $adherent,
-        array $types = [DesignationTypeEnum::LOCAL_ELECTION,
-        DesignationTypeEnum::LOCAL_POLL,
-        ]
+        array $types = [DesignationTypeEnum::LOCAL_ELECTION, DesignationTypeEnum::LOCAL_POLL],
+        int $limit = null
     ): array {
         if (!$adherent->isRenaissanceUser()) {
             return [];
@@ -34,6 +33,6 @@ class ElectionManager
             return $this->cache[$cacheKey];
         }
 
-        return $this->cache[$cacheKey] = $this->designationRepository->findAllActiveForAdherent($adherent, $types);
+        return $this->cache[$cacheKey] = $this->designationRepository->findAllActiveForAdherent($adherent, $types, $limit);
     }
 }

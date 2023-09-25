@@ -32,15 +32,15 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
     ) {
     }
 
-    public function findActiveDesignations(Adherent $adherent): array
+    public function findActiveDesignations(Adherent $adherent, array $types = null, int $limit = null): array
     {
-        return $this->electionManager->findActiveDesignations($adherent, [
+        return $this->electionManager->findActiveDesignations($adherent, $types ?? [
             DesignationTypeEnum::LOCAL_ELECTION,
             DesignationTypeEnum::LOCAL_POLL,
             DesignationTypeEnum::POLL,
             DesignationTypeEnum::COMMITTEE_SUPERVISOR,
             DesignationTypeEnum::CONSULTATION,
-        ]);
+        ], $limit);
     }
 
     public function findElectionForCommittee(Committee $committee): ?Election

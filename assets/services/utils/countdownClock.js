@@ -59,5 +59,5 @@ function initializeTimer(element, refreshPage) {
 }
 
 export default (selector, refreshPage = false) => {
-    findAll(document, selector).forEach(element => initializeTimer(element, refreshPage));
+    findAll(document, selector).forEach((element) => initializeTimer(element, refreshPage));
 };
