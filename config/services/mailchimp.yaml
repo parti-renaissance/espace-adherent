@@ -97,4 +97,5 @@ services:
             $subscriptionTypeInterestGroupId:       '%env(MAILCHIMP_SUBSCRIPTION_TYPE_INTEREST_GROUP_ID)%'
 
             $applicationRequestTagIds:              '%env(json:MAILCHIMP_APPLICATION_REQUEST_TAG_IDS)%'
-            $newsletterTagIds:                      '%env(json:MAILCHIMP_NEWSLETTER_TAG_IDS)%'
+            $mailchimpCampaignUrl:                  '%env(MAILCHIMP_CAMPAIGN_URL)%'
+            $mailchimpOrg:                          '%env(MAILCHIMP_ORG_ID)%'

@@ -54,6 +54,7 @@ Feature:
                     "uuid": "@string@",
                     "created_at": "@string@.isDateTime()",
                     "synchronized": true,
+                    "preview_link": null,
                     "author": {
                         "uuid": "@string@",
                         "first_name": "Damien",
@@ -74,13 +75,13 @@ Feature:
                         "click_rate": 0,
                         "unsubscribe": 0,
                         "unsubscribe_rate": 0
-                    },
-                    "zones": []
+                    }
                 },
                 {
                     "uuid": "@string@",
                     "created_at": "@string@.isDateTime()",
                     "synchronized": true,
+                    "preview_link": null,
                     "author": {
                         "uuid": "@string@",
                         "first_name": "Damien",
@@ -101,8 +102,7 @@ Feature:
                         "click_rate": 0,
                         "unsubscribe": 0,
                         "unsubscribe_rate": 0
-                    },
-                    "zones": []
+                    }
                 }
             ]
         }

@@ -2,9 +2,9 @@
 
 namespace App\Normalizer;
 
-use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\StatisticsAggregator;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -15,11 +15,10 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 
     private const ALREADY_CALLED = 'ADHERENT_MESSAGE_NORMALIZER_ALREADY_CALLED';
 
-    private StatisticsAggregator $statisticsAggregator;
-
-    public function __construct(StatisticsAggregator $statisticsAggregator)
-    {
-        $this->statisticsAggregator = $statisticsAggregator;
+    public function __construct(
+        private readonly StatisticsAggregator $statisticsAggregator,
+        private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
+    ) {
     }
 
     /** @var AbstractAdherentMessage */
@@ -33,11 +32,7 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 
         if (\in_array('message_read_list', $groups, true)) {
             $data['statistics'] = $this->statisticsAggregator->aggregateData($object);
-            $data['zones'] = $this->normalizer->normalize(
-                $this->getZonesFromMessage($object),
-                $format,
-                array_merge($context, ['groups' => ['zone_read']])
-            );
+            $data['preview_link'] = $this->mailchimpObjectIdMapping->generateMailchimpPreviewLink($object->getMailchimpId());
         }
 
         return $data;
@@ -48,27 +43,5 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
         return
             empty($context[self::ALREADY_CALLED])
             && $data instanceof AbstractAdherentMessage;
-    }
-
-    private function getZonesFromMessage(AbstractAdherentMessage $message): array
-    {
-        $author = $message->getAuthor();
-
-        switch ($message->getType()) {
-            case AdherentMessageTypeEnum::REFERENT && $author->isReferent():
-                return $author->getManagedArea()->getZones()->toArray();
-            case AdherentMessageTypeEnum::CANDIDATE && $author->isCandidate():
-                return [$author->getCandidateManagedArea()->getZone()];
-            case AdherentMessageTypeEnum::SENATOR && $author->isSenator():
-                return [$author->getSenatorArea()->getDepartmentTag()->getZone()];
-            case AdherentMessageTypeEnum::DEPUTY && $author->isDeputy():
-                return [$author->getDeputyZone()];
-            case AdherentMessageTypeEnum::CORRESPONDENT && $author->isCorrespondent():
-                return [$author->getCorrespondentZone()];
-            case AdherentMessageTypeEnum::REGIONAL_COORDINATOR && $author->isRegionalCoordinator():
-                return $author->getRegionalCoordinatorZone();
-            default:
-                return [];
-        }
     }
 }

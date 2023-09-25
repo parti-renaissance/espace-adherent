@@ -735,11 +735,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'running_mate' => 123,
                         'volunteer' => 345,
                     ],
-                    [
-                        'site_departmental' => 123,
-                        'site_municipal' => 456,
-                        'main_site' => 789,
-                    ]
+                    'https://mailchimp.com',
+                    'xyz'
                 ),
                 new SegmentConditionsBuilder($this->mailchimpMapping, [
                     new AdherentGeoZoneConditionBuilder(),
