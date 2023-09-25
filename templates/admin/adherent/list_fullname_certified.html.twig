@@ -1,9 +1,23 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {{ object.fullName }}
+    {% if admin.hasAccess('edit') %}
+        <a href="{{ admin.generateObjectUrl('edit', object) }}" class="sonata-link-identifier">
+            {{ object.fullName }}
+        </a>
+    {% else %}
+        {{ object.fullName }}
+    {% endif %}
 
     {% if object.isCertified %}
         {% include('components/_certification_logo.html.twig') %}
+    {% endif %}
+
+    <br>
+    {{ object.emailAddress }}
+
+    {% if object.phone %}
+        <br>
+        {{ object.phone|phone_number_format }}
     {% endif %}
 {% endblock %}

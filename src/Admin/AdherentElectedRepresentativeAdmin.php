@@ -39,5 +39,17 @@ class AdherentElectedRepresentativeAdmin extends AbstractAdherentAdmin
                 'template' => 'admin/adherent/list_declared_mandates.html.twig',
             ])
         ;
+
+        $list->reorder([
+            'id',
+            'lastName',
+            'registeredAt',
+            'lastMembershipDonation',
+            'lastLoggedAt',
+            'mandates',
+            'allMandates',
+            'mailchimpStatus',
+            ListMapper::NAME_ACTIONS,
+        ]);
     }
 }
