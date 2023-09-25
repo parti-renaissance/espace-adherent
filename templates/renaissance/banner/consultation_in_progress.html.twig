@@ -1,0 +1,47 @@
+<div class="adherent-banner adherent-banner-consultation bg-neutral-100 rounded-2xl mb-10 pb-10 text-black">
+    {% if app.user.isRenaissanceSympathizer() %}
+        <div class="alert alert-danger flex px-10 w-full justify-between py-3 rounded-t-2xl">
+            <span class="flex flex-grow-1 items-center font-medium">
+                <img src="{{ asset('/images/icons/icn_warning.svg') }}" alt="Information" class="mr-3" />
+                Vous devez adhérer pour participer à la consultation
+            </span>
+
+            <a class="flex flex-nowrap px-4 py-1 border bg-white border-black rounded text-black font-medium hover:border-re-blue-500 hover:text-re-blue-500" href="{{ path('app_renaissance_adhesion_pre_payment') }}">
+                <img src="{{ asset('/images/icons/icn_cotisation.svg') }}" alt="Cotisation" class="mr-3" /> Je cotise
+            </a>
+        </div>
+    {% elseif not app.user.hasActiveMembership() %}
+        <div class="alert alert-warning flex px-10 w-full justify-between py-3 rounded-t-2xl">
+            <span class="flex flex-grow-1 items-center font-medium">
+                <img src="{{ asset('/images/icons/icn_warning.svg') }}" alt="Information" class="mr-3" />
+                Vous n’êtes pas à jour de cotisation
+            </span>
+
+            <a class="flex flex-nowrap px-4 py-1 border bg-white border-black rounded text-black font-medium hover:border-re-blue-500 hover:text-re-blue-500" href="{{ path('app_renaissance_adhesion_pre_payment') }}">
+                <img src="{{ asset('/images/icons/icn_cotisation.svg') }}" alt="Cotisation" class="mr-3" /> Je recotise pour {{ 'now'|date('Y') }}
+            </a>
+        </div>
+    {% endif %}
+
+    <div class="adherent-banner__inner mx-10 mt-10">
+        <div class="w-2/3 flex flex-col">
+            <h2 class="text-3xl">{{ consultation_designation.getTitle() }}</h2>
+
+            {% if consultation_designation.getDescription() %}
+                <p class="mt-6 text-justify">{{ consultation_designation.getDescription() }}</p>
+            {% endif %}
+
+            <div class="flex mt-6 items-center justify-between">
+                <a class="flex px-4 py-1 border border-black rounded font-medium hover:border-re-blue-500 hover:text-re-blue-500" href="{{ path('app_sas_election_index', {uuid: consultation_designation.getUuid()}) }}">
+                    <img src="{{ asset('/images/icons/icn_vote-hand.svg') }}" alt="Main vote" class="mr-3" /> Je participe !
+                </a>
+
+                <span class="font-medium">Fin de la consultation</span>
+
+                <span class="em-countdown-clock bg-white rounded py-1" data-event-timestamp="{{ consultation_designation.voteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
+                    <span class="clock-container font-medium"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

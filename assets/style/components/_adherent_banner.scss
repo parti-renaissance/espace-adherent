@@ -1,0 +1,26 @@
+.adherent-banner {
+    .alert {
+        &-warning {
+            background-color: #F5C518;
+        }
+
+        &-danger {
+            background-color: #FADCD9;
+            color: #A1160A;
+
+            span img {
+                filter: invert(17%) sepia(64%) saturate(3812%) hue-rotate(355deg) brightness(81%) contrast(99%);
+            }
+        }
+    }
+
+    &__inner {
+        background-position: right;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    &-consultation .adherent-banner__inner {
+        background-image: url("/images/icons/consultation-banner-bg.svg");
+    }
+}
