@@ -88,8 +88,14 @@ class DeclaredMandateHistoryNotifier
                     $removedMandates = $adherentHistory->getRemovedMandates();
                 }
 
-                $addedMandates = array_diff($addedMandates, $adherentHistory->getRemovedMandates());
-                $removedMandates = array_diff($removedMandates, $adherentHistory->getAddedMandates());
+                $addedMandates = array_diff(
+                    array_merge($addedMandates, $adherentHistory->getAddedMandates()),
+                    $adherentHistory->getRemovedMandates()
+                );
+                $removedMandates = array_diff(
+                    array_merge($removedMandates, $adherentHistory->getRemovedMandates()),
+                    $adherentHistory->getAddedMandates()
+                );
             }
 
             if ($adherent && !empty($addedMandates) || !empty($removedMandates)) {
