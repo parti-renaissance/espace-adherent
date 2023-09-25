@@ -2,17 +2,16 @@
 
 namespace App\Adherent\Listener;
 
-use App\Entity\Reporting\DeclaredMandateHistory;
+use App\Adherent\DeclaredMandateHistoryHandler;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DeclaredMandateChangeListener implements EventSubscriberInterface
 {
     private array $oldDeclaredMandates = [];
 
-    public function __construct(private readonly EntityManagerInterface $entityManager)
+    public function __construct(private readonly DeclaredMandateHistoryHandler $declaredMandateHistoryHandler)
     {
     }
 
@@ -38,9 +37,7 @@ class DeclaredMandateChangeListener implements EventSubscriberInterface
         $removedMandates = array_diff($this->oldDeclaredMandates, $newDeclaredMandates);
 
         if ($addedMandates || $removedMandates) {
-            $this->entityManager->persist(new DeclaredMandateHistory($adherent, $addedMandates, $removedMandates));
-
-            $this->entityManager->flush();
+            $this->declaredMandateHistoryHandler->handle($adherent, $addedMandates, $removedMandates);
         }
     }
 }

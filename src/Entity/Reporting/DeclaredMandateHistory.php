@@ -70,9 +70,19 @@ class DeclaredMandateHistory
         return $this->addedMandates;
     }
 
+    public function setAddedMandates(array $addedMandates): void
+    {
+        $this->addedMandates = $addedMandates;
+    }
+
     public function getRemovedMandates(): array
     {
         return $this->removedMandates;
+    }
+
+    public function setRemovedMandates(array $removedMandates): void
+    {
+        $this->removedMandates = $removedMandates;
     }
 
     public function getDate(): \DateTimeImmutable
