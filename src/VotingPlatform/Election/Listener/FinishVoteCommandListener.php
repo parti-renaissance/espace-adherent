@@ -11,6 +11,7 @@ use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VoteResult;
 use App\Mailer\MailerService;
+use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformConsultationVoteConfirmationMessage;
 use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformLocalElectionVoteConfirmationMessage;
 use App\Mailer\Message\VotingPlatformElectionVoteConfirmationMessage;
 use App\Mailer\Message\VotingPlatformVoteStatusesVoteConfirmationMessage;
@@ -184,6 +185,9 @@ class FinishVoteCommandListener implements EventSubscriberInterface
             case DesignationTypeEnum::LOCAL_ELECTION:
             case DesignationTypeEnum::LOCAL_POLL:
                 $message = VotingPlatformLocalElectionVoteConfirmationMessage::create($vote, $voterKey);
+                break;
+            case DesignationTypeEnum::CONSULTATION:
+                $message = VotingPlatformConsultationVoteConfirmationMessage::create($vote);
                 break;
             default:
                 $message = VotingPlatformElectionVoteConfirmationMessage::create($vote, $voterKey);
