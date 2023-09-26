@@ -81,11 +81,11 @@ class DeclaredMandateHistoryNotifier
                 }
 
                 $addedMandates = array_diff(
-                    array_merge($addedMandates, $adherentHistory->getAddedMandates()),
+                    array_unique(array_merge($addedMandates, $adherentHistory->getAddedMandates())),
                     $adherentHistory->getRemovedMandates()
                 );
                 $removedMandates = array_diff(
-                    array_merge($removedMandates, $adherentHistory->getRemovedMandates()),
+                    array_unique(array_merge($removedMandates, $adherentHistory->getRemovedMandates())),
                     $adherentHistory->getAddedMandates()
                 );
             }
