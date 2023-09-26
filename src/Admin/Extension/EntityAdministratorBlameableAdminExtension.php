@@ -2,7 +2,6 @@
 
 namespace App\Admin\Extension;
 
-use App\Admin\ReorderableAdminInterface;
 use App\Entity\Administrator;
 use App\Entity\EntityAdministratorBlameableInterface;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
@@ -41,18 +40,6 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
                 'template' => 'admin/list/list_administrator_blameable.html.twig',
             ])
         ;
-
-        $keys = $list->keys();
-        $admin = $list->getAdmin();
-
-        foreach ($admin instanceof ReorderableAdminInterface ? array_merge($admin->getListMapperEndColumns(), ['_actions']) : ['_actions'] as $column) {
-            if (false !== $actionKey = array_search($column, $keys)) {
-                unset($keys[$actionKey]);
-                $keys[] = $column;
-            }
-        }
-
-        $list->reorder($keys);
     }
 
     /**
