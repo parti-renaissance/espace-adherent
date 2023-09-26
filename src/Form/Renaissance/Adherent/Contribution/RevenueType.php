@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Renaissance\ElectedRepresentative\Contribution;
+namespace App\Form\Renaissance\Adherent\Contribution;
 
-use App\ElectedRepresentative\Contribution\ContributionRequest;
+use App\Adherent\Contribution\ContributionRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,6 +29,6 @@ class RevenueType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'app_renaissance_elected_representative_contribution';
+        return 'app_renaissance_contribution';
     }
 }

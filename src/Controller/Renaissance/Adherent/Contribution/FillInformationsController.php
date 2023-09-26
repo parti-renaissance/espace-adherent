@@ -3,8 +3,8 @@
 namespace App\Controller\Renaissance\Adherent\Contribution;
 
 use App\Adherent\AdherentRoleEnum;
-use App\ElectedRepresentative\Contribution\ContributionRequestHandler;
-use App\Form\Renaissance\ElectedRepresentative\Contribution\InformationsType;
+use App\Adherent\Contribution\ContributionRequestHandler;
+use App\Form\Renaissance\Adherent\Contribution\InformationsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

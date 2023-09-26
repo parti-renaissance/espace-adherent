@@ -2,15 +2,18 @@
 
 namespace App\Controller\Renaissance\Adherent\Contribution;
 
+use App\Adherent\AdherentRoleEnum;
 use App\Adherent\Contribution\ContributionStatusEnum;
 use App\Entity\Adherent;
-use App\Form\Renaissance\ElectedRepresentative\Contribution\RevenueType;
+use App\Form\Renaissance\Adherent\Contribution\RevenueType;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/espace-elus/cotisation', name: 'app_renaissance_contribution_fill_revenue', methods: ['GET|POST'])]
+#[IsGranted(AdherentRoleEnum::ONGOING_ELECTED_REPRESENTATIVE)]
 class FillRevenueController extends AbstractContributionController
 {
     public function __invoke(
