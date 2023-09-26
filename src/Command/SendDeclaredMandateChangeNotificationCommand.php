@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Adherent\DeclaredMandateHistoryNotifier;
 use App\Entity\Geo\Zone;
+use App\Entity\Reporting\DeclaredMandateHistory;
 use App\Repository\AdherentRepository;
 use App\Repository\AdministratorRepository;
 use App\Repository\Reporting\DeclaredMandateHistoryRepository;
@@ -120,6 +121,9 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
         }
     }
 
+    /**
+     * @param array|DeclaredMandateHistory[] $histories
+     */
     private function markHistoriesAsNotified(array $histories): void
     {
         $this->io->text(sprintf('Will mark %d new declared mandate histories as notified', \count($histories)));

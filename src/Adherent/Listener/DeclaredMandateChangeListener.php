@@ -31,6 +31,10 @@ class DeclaredMandateChangeListener implements EventSubscriberInterface
 
     public function afterUpdate(UserEvent $event): void
     {
+        if ($event->isAdminEvent()) {
+            return;
+        }
+
         $adherent = $event->getUser();
         $newDeclaredMandates = $adherent->getMandates();
 

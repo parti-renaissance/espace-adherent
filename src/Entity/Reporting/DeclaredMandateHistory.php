@@ -27,12 +27,12 @@ class DeclaredMandateHistory
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private array $addedMandates = [];
+    private array $addedMandates;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private array $removedMandates = [];
+    private array $removedMandates;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -42,7 +42,7 @@ class DeclaredMandateHistory
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    private ?\DateTimeInterface $notifiedAt;
+    private ?\DateTimeInterface $notifiedAt = null;
 
     public function __construct(
         Adherent $adherent,
