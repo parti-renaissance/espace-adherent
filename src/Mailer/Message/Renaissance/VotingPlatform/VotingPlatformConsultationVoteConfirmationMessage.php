@@ -16,7 +16,7 @@ class VotingPlatformConsultationVoteConfirmationMessage extends AbstractRenaissa
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Merci pour votre participation !',
+            '[Consultation] Merci pour votre participation !',
             [
                 'consultation_name' => $designation->getTitle(),
                 'first_name' => $adherent->getFirstName(),
