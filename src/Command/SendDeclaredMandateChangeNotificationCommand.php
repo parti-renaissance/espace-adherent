@@ -42,7 +42,7 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $notNotifiedHistories = $this->declaredMandateHistoryRepository->findNotNotified();
+        $notNotifiedHistories = $this->declaredMandateHistoryRepository->findToNotify();
 
         if (!$notNotifiedHistories) {
             $this->io->text('No new declared mandate history.');

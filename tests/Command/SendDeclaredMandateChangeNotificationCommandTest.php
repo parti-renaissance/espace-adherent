@@ -15,7 +15,7 @@ class SendDeclaredMandateChangeNotificationCommandTest extends AbstractCommandTe
 
     public function testCommandSuccess(): void
     {
-        self::assertCount(3, $this->declaredMandateHistoryRepository->findNotNotified());
+        self::assertCount(3, $this->declaredMandateHistoryRepository->findToNotify());
 
         $output = $this->runCommand('app:declared-mandates:notify-changes');
         $output = $output->getDisplay();
@@ -24,7 +24,7 @@ class SendDeclaredMandateChangeNotificationCommandTest extends AbstractCommandTe
         self::assertStringContainsString('Will mark 3 new declared mandate histories as notified', $output);
         self::assertStringContainsString('Notifications sent!', $output);
 
-        self::assertEmpty($this->declaredMandateHistoryRepository->findNotNotified());
+        self::assertEmpty($this->declaredMandateHistoryRepository->findToNotify());
 
         $this->assertCountMails(2, RenaissanceDeclaredMandateNotificationMessage::class);
     }

@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Adherent\MandateTypeEnum;
 use App\Entity\Adherent;
+use App\Entity\Administrator;
 use App\Entity\Reporting\DeclaredMandateHistory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -16,6 +17,7 @@ class LoadDeclaredMandateHistoryData extends Fixture implements DependentFixture
         $adherent5 = $this->getReference('adherent-5');
         $adherent13 = $this->getReference('adherent-13');
         $renaissanceUser2 = $this->getReference('renaissance-user-2');
+        $admin = $this->getReference('administrator-2');
 
         $manager->persist($this->createHistory(
             $adherent5,
@@ -35,15 +37,29 @@ class LoadDeclaredMandateHistoryData extends Fixture implements DependentFixture
             []
         ));
 
+        $manager->persist($this->createHistory(
+            $renaissanceUser2,
+            [MandateTypeEnum::CONSEILLER_MUNICIPAL],
+            [],
+            $admin
+        ));
+
         $manager->flush();
     }
 
     public function createHistory(
         Adherent $adherent,
         array $addedMandates,
-        array $removedMandates
+        array $removedMandates,
+        Administrator $administrator = null
     ): DeclaredMandateHistory {
-        return new DeclaredMandateHistory($adherent, $addedMandates, $removedMandates);
+        $history = new DeclaredMandateHistory($adherent, $addedMandates, $removedMandates);
+
+        if ($administrator) {
+            $history->setAdministrator($administrator);
+        }
+
+        return $history;
     }
 
     public function getDependencies()

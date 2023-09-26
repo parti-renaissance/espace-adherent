@@ -798,7 +798,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
         $this->politicalCommitteeManager->handleTerritorialCouncilMembershipUpdate($object, $this->beforeUpdate->getTerritorialCouncilMembership());
 
         $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
-        $this->dispatcher->dispatch(new UserEvent($object, null, null, true), UserEvents::USER_UPDATED);
+        $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED);
         $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED_IN_ADMIN);
     }
 

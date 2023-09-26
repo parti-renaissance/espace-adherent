@@ -3,6 +3,7 @@
 namespace App\Entity\Reporting;
 
 use App\Entity\Adherent;
+use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,6 +44,12 @@ class DeclaredMandateHistory
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private ?\DateTimeInterface $notifiedAt = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Administrator::class)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private ?Administrator $administrator = null;
 
     public function __construct(
         Adherent $adherent,
@@ -88,5 +95,15 @@ class DeclaredMandateHistory
     public function setNotified(): void
     {
         $this->notifiedAt = new \DateTimeImmutable();
+    }
+
+    public function getAdministrator(): ?Administrator
+    {
+        return $this->administrator;
+    }
+
+    public function setAdministrator(?Administrator $administrator): void
+    {
+        $this->administrator = $administrator;
     }
 }
