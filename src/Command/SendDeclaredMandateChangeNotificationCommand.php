@@ -130,7 +130,7 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
         $this->io->progressStart(\count($histories));
 
         foreach ($histories as $declaredMandateHistory) {
-            $declaredMandateHistory->setNotified();
+            $declaredMandateHistory->setNotifiedAt(new \DateTimeImmutable());
 
             $this->io->progressAdvance();
         }

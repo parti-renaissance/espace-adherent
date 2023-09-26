@@ -92,9 +92,9 @@ class DeclaredMandateHistory
         return null !== $this->notifiedAt;
     }
 
-    public function setNotified(): void
+    public function setNotifiedAt(\DateTimeInterface $notifiedAt): void
     {
-        $this->notifiedAt = new \DateTimeImmutable();
+        $this->notifiedAt = $notifiedAt;
     }
 
     public function getAdministrator(): ?Administrator
