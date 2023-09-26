@@ -479,5 +479,19 @@ class AdherentAdmin extends AbstractAdherentAdmin
                 'template' => 'admin/adherent/list_status.html.twig',
             ])
         ;
+
+        $list->reorder([
+            'id',
+            'lastName',
+            'postAddress',
+            'referentTags',
+            'registeredAt',
+            'lastMembershipDonation',
+            'lastLoggedAt',
+            'type',
+            'allMandates',
+            'mailchimpStatus',
+            ListMapper::NAME_ACTIONS,
+        ]);
     }
 }

@@ -16,11 +16,12 @@ class DeclaredMandateHistoryRepository extends ServiceEntityRepository
     /**
      * @return DeclaredMandateHistory[]
      */
-    public function findNotNotified(): array
+    public function findToNotify(): array
     {
         return $this
             ->createQueryBuilder('history')
-            ->where('history.notified = false')
+            ->where('history.notifiedAt IS NULL')
+            ->andWhere('history.administrator IS NULL')
             ->getQuery()
             ->getResult()
         ;

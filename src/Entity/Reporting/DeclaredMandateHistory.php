@@ -3,6 +3,7 @@
 namespace App\Entity\Reporting;
 
 use App\Entity\Adherent;
+use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,12 +28,12 @@ class DeclaredMandateHistory
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private array $addedMandates = [];
+    private array $addedMandates;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private array $removedMandates = [];
+    private array $removedMandates;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -40,9 +41,15 @@ class DeclaredMandateHistory
     private \DateTimeInterface $date;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    private bool $notified = false;
+    private ?\DateTimeInterface $notifiedAt = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Administrator::class)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private ?Administrator $administrator = null;
 
     public function __construct(
         Adherent $adherent,
@@ -82,11 +89,21 @@ class DeclaredMandateHistory
 
     public function isNotified(): bool
     {
-        return $this->notified;
+        return null !== $this->notifiedAt;
     }
 
-    public function setNotified(): void
+    public function setNotifiedAt(\DateTimeInterface $notifiedAt): void
     {
-        $this->notified = true;
+        $this->notifiedAt = $notifiedAt;
+    }
+
+    public function getAdministrator(): ?Administrator
+    {
+        return $this->administrator;
+    }
+
+    public function setAdministrator(?Administrator $administrator): void
+    {
+        $this->administrator = $administrator;
     }
 }

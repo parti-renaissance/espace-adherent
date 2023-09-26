@@ -80,25 +80,17 @@ class DeclaredMandateHistoryNotifier
                     $adherent = $adherentHistory->getAdherent();
                 }
 
-                if (empty($addedMandates)) {
-                    $addedMandates = $adherentHistory->getAddedMandates();
-                }
-
-                if (empty($removedMandates)) {
-                    $removedMandates = $adherentHistory->getRemovedMandates();
-                }
-
                 $addedMandates = array_diff(
-                    array_merge($addedMandates, $adherentHistory->getAddedMandates()),
+                    array_unique(array_merge($addedMandates, $adherentHistory->getAddedMandates())),
                     $adherentHistory->getRemovedMandates()
                 );
                 $removedMandates = array_diff(
-                    array_merge($removedMandates, $adherentHistory->getRemovedMandates()),
+                    array_unique(array_merge($removedMandates, $adherentHistory->getRemovedMandates())),
                     $adherentHistory->getAddedMandates()
                 );
             }
 
-            if ($adherent && !empty($addedMandates) || !empty($removedMandates)) {
+            if ($adherent && (!empty($addedMandates) || !empty($removedMandates))) {
                 $aggregated[] = new DeclaredMandateNotification($adherent, $addedMandates, $removedMandates);
             }
         }
