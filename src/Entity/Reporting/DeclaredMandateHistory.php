@@ -40,9 +40,9 @@ class DeclaredMandateHistory
     private \DateTimeInterface $date;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    private bool $notified = false;
+    private ?\DateTimeInterface $notifiedAt;
 
     public function __construct(
         Adherent $adherent,
@@ -82,11 +82,11 @@ class DeclaredMandateHistory
 
     public function isNotified(): bool
     {
-        return $this->notified;
+        return null !== $this->notifiedAt;
     }
 
     public function setNotified(): void
     {
-        $this->notified = true;
+        $this->notifiedAt = new \DateTimeImmutable();
     }
 }

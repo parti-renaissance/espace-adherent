@@ -20,7 +20,7 @@ class DeclaredMandateHistoryRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('history')
-            ->where('history.notified = false')
+            ->where('history.notifiedAt IS NULL')
             ->getQuery()
             ->getResult()
         ;
