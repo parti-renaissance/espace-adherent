@@ -20,16 +20,23 @@ class ContributionRequestHandler
     ) {
     }
 
-    public function handle(ContributionRequest $contributionRequest, Adherent $adherent): void
+    public function cancelLastContribution(Adherent $adherent): ?Contribution
     {
         $lastContribution = $this->contributionRepository->findLastAdherentContribution($adherent);
 
         if ($lastContribution) {
             try {
-                $this->cancelPreviousSubscription($lastContribution);
+                $this->cancelContributionSubscription($lastContribution);
             } catch (InvalidStateException $exception) {
             }
         }
+
+        return $lastContribution;
+    }
+
+    public function handle(ContributionRequest $contributionRequest, Adherent $adherent): void
+    {
+        $lastContribution = $this->cancelLastContribution($adherent);
 
         $subscription = $this->createSubscription($contributionRequest, $adherent, $lastContribution?->gocardlessCustomerId);
 
@@ -43,7 +50,7 @@ class ContributionRequestHandler
         $this->entityManager->flush();
     }
 
-    private function cancelPreviousSubscription(Contribution $contribution): void
+    private function cancelContributionSubscription(Contribution $contribution): void
     {
         if ($bankAccountId = $contribution->gocardlessBankAccountId) {
             $lastBankAccount = $this->gocardless->disableBankAccount($bankAccountId);
