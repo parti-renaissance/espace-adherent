@@ -90,7 +90,7 @@ class DeclaredMandateHistoryNotifier
                 );
             }
 
-            if ($adherent && !empty($addedMandates) || !empty($removedMandates)) {
+            if ($adherent && (!empty($addedMandates) || !empty($removedMandates))) {
                 $aggregated[] = new DeclaredMandateNotification($adherent, $addedMandates, $removedMandates);
             }
         }
