@@ -23,6 +23,7 @@ final class DesignationTypeEnum extends Enum
     public const LOCAL_ELECTION = 'local_election';
 
     public const CONSULTATION = 'consultation';
+    public const TERRITORIAL_ASSEMBLY = 'territorial_assembly';
 
     public const TITLES = [
         self::COMMITTEE_SUPERVISOR => 'Élection du binôme paritaire d’Animateurs locaux',
@@ -38,6 +39,7 @@ final class DesignationTypeEnum extends Enum
         self::LOCAL_ELECTION => 'Élection départementale',
         self::LOCAL_POLL => 'Élection locale',
         self::CONSULTATION => 'Consultation nationale',
+        self::TERRITORIAL_ASSEMBLY => 'Élection du Bureau de l’Assemblée des territoires',
     ];
 
     public const MAIN_TYPES = [
@@ -50,12 +52,20 @@ final class DesignationTypeEnum extends Enum
         self::LOCAL_ELECTION,
         self::LOCAL_POLL,
         self::CONSULTATION,
+        self::TERRITORIAL_ASSEMBLY,
     ];
 
     public const RENAISSANCE_TYPES = [
         self::CONSULTATION,
         self::LOCAL_ELECTION,
         self::COMMITTEE_SUPERVISOR,
+        self::TERRITORIAL_ASSEMBLY,
+    ];
+
+    public const NATIONAL_TYPES = [
+        self::POLL,
+        self::CONSULTATION,
+        self::TERRITORIAL_ASSEMBLY,
     ];
 
     public const API_AVAILABLE_TYPES = [

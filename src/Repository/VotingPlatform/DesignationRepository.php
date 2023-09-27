@@ -150,17 +150,19 @@ class DesignationRepository extends ServiceEntityRepository
             ->addOrderBy('designation.voteStartDate', 'ASC')
         ;
 
+        $conditions = $queryBuilder->expr()->orX();
+
         if ($types) {
             $queryBuilder
                 ->andWhere('designation.type IN (:types)')
                 ->setParameter('types', $types)
             ;
+
+            if ($nationalTypes = array_intersect($types, DesignationTypeEnum::NATIONAL_TYPES)) {
+                $conditions->add('designation.type IN (:national_types)');
+                $queryBuilder->setParameter('national_types', $nationalTypes);
+            }
         }
-
-        $conditions = $queryBuilder->expr()->orX();
-
-        $conditions->add('designation.type IN (:other_types)');
-        $queryBuilder->setParameter('other_types', [DesignationTypeEnum::POLL, DesignationTypeEnum::CONSULTATION]);
 
         if ($zones = $adherent->getParentZones()) {
             $zoneQueryBuilder = $this->createGeoZonesQueryBuilder(

@@ -27,7 +27,7 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     /**
      * @ORM\Column
      *
-     * @Assert\NotBlank(groups={"api_committee_candidacy_validation"}, message="Civilité de l'adhérent ne peut pas être vide")
+     * @Assert\NotBlank(groups={"Admin", "api_committee_candidacy_validation"}, message="Civilité de l'adhérent ne peut pas être vide")
      */
     private ?string $gender;
 

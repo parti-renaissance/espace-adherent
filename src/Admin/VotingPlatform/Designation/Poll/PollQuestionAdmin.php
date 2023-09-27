@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\VotingPlatform\Designation;
+namespace App\Admin\VotingPlatform\Designation\Poll;
 
 use App\Admin\AbstractAdmin;
 use App\Form\Admin\VotingPlatform\Poll\QuestionChoiceType;

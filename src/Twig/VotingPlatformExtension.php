@@ -41,6 +41,7 @@ class VotingPlatformExtension extends AbstractExtension
                 break;
             case DesignationTypeEnum::LOCAL_POLL:
             case DesignationTypeEnum::CONSULTATION:
+            case DesignationTypeEnum::TERRITORIAL_ASSEMBLY:
                 $key = '';
                 break;
         }

@@ -12,10 +12,6 @@
     </div>
 {% endblock %}
 
-{% block voting_platform_subtitle %}
-    {{ designation.getZones()|join(', ') }}
-{% endblock %}
-
 {% block election_sub_title %}
     <p class="text-gray-500">
         Le vote est ouvert du {{ election.voteStartDate|date('d/m/Y \à H:i') }}

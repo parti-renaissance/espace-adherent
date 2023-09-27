@@ -17,6 +17,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
     public const DESIGNATION_COMMITTEE_3_UUID = '9ab307ac-100a-4a3a-819a-bee2b800e3d4';
     public const DESIGNATION_COMMITTEE_4_UUID = '95da3939-f178-4d67-9237-61d4ea57e33c';
     public const DESIGNATION_15_UUID = '18341df4-1654-432b-90f1-a432cda56d08';
+    public const DESIGNATION_16_UUID = 'aa7b270a-51e7-4d74-8140-57a516da3084';
 
     public function load(ObjectManager $manager)
     {
@@ -254,19 +255,29 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $this->setReference('designation-committee-03', $designation);
         $manager->persist($designation);
 
-        $manager->persist($designation = new Designation(null, Uuid::fromString(self::DESIGNATION_15_UUID)));
+        $manager->persist($designation = new Designation('Consultation de test', Uuid::fromString(self::DESIGNATION_15_UUID)));
         $designation->customTitle = 'Consultation nationale';
-        $designation->setLabel('Consultation de test');
         $designation->setType(DesignationTypeEnum::CONSULTATION);
         $designation->setCandidacyStartDate(new \DateTime('-2 months'));
         $designation->setCandidacyEndDate(new \DateTime('-1 month'));
         $designation->setVoteStartDate(new \DateTime('-1 day'));
         $designation->setVoteEndDate(new \DateTime('+10 days'));
-        $designation->wordingWelcomePage = $this->getReference('cms-block-local-election-welcome-page');
+        $designation->wordingWelcomePage = $this->getReference('cms-block-national-consultation-welcome-page');
         $designation->poll = $this->getReference('designation-poll-2');
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
 
         $this->setReference('designation-15', $designation);
+
+        $manager->persist($designation = new Designation('Bureau de l\'ADT', Uuid::fromString(self::DESIGNATION_16_UUID)));
+        $designation->setType(DesignationTypeEnum::TERRITORIAL_ASSEMBLY);
+        $designation->setCandidacyStartDate(new \DateTime('-2 months'));
+        $designation->setCandidacyEndDate(new \DateTime('-1 month'));
+        $designation->setVoteStartDate(new \DateTime('-1 day'));
+        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->wordingWelcomePage = $this->getReference('cms-block-territorial-assembly-election-welcome-page');
+        $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+
+        $this->setReference('designation-16', $designation);
 
         $manager->flush();
     }
