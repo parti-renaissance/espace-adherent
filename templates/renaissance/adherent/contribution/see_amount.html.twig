@@ -1,4 +1,4 @@
-{% extends 'renaissance/elected_representative/contribution/_layout.html.twig' %}
+{% extends 'renaissance/adherent/contribution/_layout.html.twig' %}
 
 {% block contribution_content %}
     <div class="rounded-md bg-blue-50 p-4">
@@ -26,6 +26,6 @@
     </p>
 
     <div class="mt-5">
-        <a class="button button-blue" href="{{ path('app_renaissance_elected_representative_contribution_fill_informations') }}">Valider</a>
+        <a class="button button-blue" href="{{ path('app_renaissance_contribution_fill_informations') }}">Valider</a>
     </div>
 {% endblock %}

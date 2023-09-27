@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Form\Renaissance\ElectedRepresentative\Contribution;
+namespace App\Form\Renaissance\Adherent\Contribution;
 
 use App\Address\AddressInterface;
-use App\ElectedRepresentative\Contribution\ContributionRequest;
+use App\Adherent\Contribution\ContributionRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -35,6 +35,6 @@ class InformationsType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'app_renaissance_elected_representative_contribution';
+        return 'app_renaissance_contribution';
     }
 }

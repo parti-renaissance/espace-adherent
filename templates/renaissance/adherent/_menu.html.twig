@@ -30,7 +30,7 @@
 
 {% if is_granted(constant('App\\Adherent\\AdherentRoleEnum::ONGOING_ELECTED_REPRESENTATIVE')) %}
     <div>
-        <a href="{{ path('app_renaissance_elected_representative_contribution_fill_revenue') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_renaissance_elected_representative_contribution_*') ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
+        <a href="{{ path('app_renaissance_contribution_fill_revenue') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_renaissance_elected_representative_contribution_*') ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
             {% include 'icons/credit-card.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
             Cotisation élus
         </a>

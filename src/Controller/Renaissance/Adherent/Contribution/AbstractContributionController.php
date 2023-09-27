@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller\Renaissance\ElectedRepresentative\Contribution;
+namespace App\Controller\Renaissance\Adherent\Contribution;
 
-use App\ElectedRepresentative\Contribution\ContributionRequest;
-use App\ElectedRepresentative\Contribution\ContributionRequestProcessor;
-use App\ElectedRepresentative\Contribution\ContributionRequestStorage;
+use App\Adherent\Contribution\ContributionRequest;
+use App\Adherent\Contribution\ContributionRequestProcessor;
+use App\Adherent\Contribution\ContributionRequestStorage;
 use App\Entity\Adherent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

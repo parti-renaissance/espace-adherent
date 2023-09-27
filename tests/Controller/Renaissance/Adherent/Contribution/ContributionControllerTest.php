@@ -1,11 +1,10 @@
 <?php
 
-namespace Tests\App\Controller\Renaissance\ElectedRepresentative\Contribution;
+namespace Tests\App\Controller\Renaissance\Adherent\Contribution;
 
-use App\Entity\ElectedRepresentative\Contribution;
-use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\Adherent;
+use App\Entity\Contribution\Contribution;
 use App\Repository\AdherentRepository;
-use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +17,6 @@ class ContributionControllerTest extends AbstractRenaissanceWebTestCase
     use ControllerTestTrait;
 
     private ?AdherentRepository $adherentRepository = null;
-    private ?ElectedRepresentativeRepository $electedRepresentativeRepository = null;
 
     public function testAnonymousCanNotAccessContributionWorkflow(): void
     {
@@ -39,10 +37,9 @@ class ContributionControllerTest extends AbstractRenaissanceWebTestCase
     public function testOnGoingElectedRepresentativeCanSeeContributionWorkflow(): void
     {
         $adherent = $this->adherentRepository->findOneByEmail($email = 'gisele-berthoux@caramail.com');
-        $electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
 
-        $this->assertInstanceOf(ElectedRepresentative::class, $electedRepresentative);
-        $this->assertNull($electedRepresentative->getLastContribution());
+        $this->assertInstanceOf(Adherent::class, $adherent);
+        $this->assertNull($adherent->getLastContribution());
 
         $this->authenticateAsAdherent($this->client, $email);
 
@@ -51,7 +48,7 @@ class ContributionControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->client->submitForm('Valider', [
-            'app_renaissance_elected_representative_contribution' => [
+            'app_renaissance_contribution' => [
                 'revenueAmount' => 2000,
             ],
         ]);
@@ -69,7 +66,7 @@ class ContributionControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $crawler = $this->client->submitForm('Valider', [
-            'app_renaissance_elected_representative_contribution' => [
+            'app_renaissance_contribution' => [
                 'accountName' => 'John DOE',
                 'accountCountry' => 'FR',
                 'iban' => 'FR7630056009271234567890182',
@@ -82,10 +79,10 @@ class ContributionControllerTest extends AbstractRenaissanceWebTestCase
             $crawler->filter('#elected-representative-contribution')->text()
         );
 
-        $electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
+        $adherent = $this->adherentRepository->findOneByEmail($email);
 
-        $this->assertNotNull($electedRepresentative->getLastContribution());
-        $this->assertInstanceOf(Contribution::class, $electedRepresentative->getLastContribution());
+        $this->assertNotNull($adherent->getLastContribution());
+        $this->assertInstanceOf(Contribution::class, $adherent->getLastContribution());
     }
 
     protected function setUp(): void
@@ -93,7 +90,6 @@ class ContributionControllerTest extends AbstractRenaissanceWebTestCase
         parent::setUp();
 
         $this->adherentRepository = $this->getAdherentRepository();
-        $this->electedRepresentativeRepository = $this->getElectedRepresentativeRepository();
     }
 
     protected function tearDown(): void
@@ -101,6 +97,5 @@ class ContributionControllerTest extends AbstractRenaissanceWebTestCase
         parent::tearDown();
 
         $this->adherentRepository = null;
-        $this->electedRepresentativeRepository = null;
     }
 }

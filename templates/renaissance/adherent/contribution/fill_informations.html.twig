@@ -1,9 +1,9 @@
-{% extends 'renaissance/elected_representative/contribution/_layout.html.twig' %}
+{% extends 'renaissance/adherent/contribution/_layout.html.twig' %}
 
 {% form_theme form with 'renaissance/forms/form_theme_profile.html.twig' %}
 
 {% block contribution_content %}
-    {{ form_start(form, { attr: { id: 'app_elected_representative_contribution_informations' } }) }}
+    {{ form_start(form, { attr: { id: 'app_contribution_informations' } }) }}
 
     {{ form_errors(form) }}
 
