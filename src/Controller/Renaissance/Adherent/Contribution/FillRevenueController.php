@@ -3,6 +3,7 @@
 namespace App\Controller\Renaissance\Adherent\Contribution;
 
 use App\Adherent\AdherentRoleEnum;
+use App\Adherent\Contribution\ContributionRequestHandler;
 use App\Adherent\Contribution\ContributionStatusEnum;
 use App\Entity\Adherent;
 use App\Form\Renaissance\Adherent\Contribution\RevenueType;
@@ -18,7 +19,8 @@ class FillRevenueController extends AbstractContributionController
 {
     public function __invoke(
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ContributionRequestHandler $contributionRequestHandler
     ): Response {
         $command = $this->getCommand($request);
 
@@ -48,6 +50,8 @@ class FillRevenueController extends AbstractContributionController
 
             if (!$command->needContribution()) {
                 $this->processor->doNoContributionNeeded($command);
+
+                $contributionRequestHandler->cancelLastContribution($adherent);
 
                 $adherent->setContributionStatus(ContributionStatusEnum::NOT_ELIGIBLE);
                 $adherent->setContributedAt(new \DateTime());
