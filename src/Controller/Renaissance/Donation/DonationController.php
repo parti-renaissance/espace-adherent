@@ -21,6 +21,14 @@ class DonationController extends AbstractDonationController
 
         $this->processor->doChooseDonationAmount($command);
 
+        if ($amount = abs($request->query->getInt('amount'))) {
+            $command->setAmount($amount / 100.0);
+        }
+
+        if (null !== ($duration = $request->query->get('duration'))) {
+            $command->setDuration($duration);
+        }
+
         $form = $this
             ->createForm(DonationRequestAmountType::class, $command)
             ->handleRequest($request)
