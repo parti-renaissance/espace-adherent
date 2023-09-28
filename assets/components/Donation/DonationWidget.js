@@ -7,7 +7,7 @@ export default class DonationWidget extends React.Component {
         super(props);
 
         this.state = {
-            amount: null,
+            amount: props.defaultAmount ?? null,
             destination: false,
         };
 
@@ -19,7 +19,7 @@ export default class DonationWidget extends React.Component {
     render() {
         return (
             <div className={'renaissance-donation'}>
-                <DonationAmountChooser name={'amount'} abonnement={false} onChange={this.handleAmountChange} />
+                <DonationAmountChooser name={'amount'} abonnement={'-1' === this.props.defaultDuration} value={this.state.amount} onChange={this.handleAmountChange} />
                 <DonationDestinationChooser destination={false} onChange={this.handleDestinationChange} />
                 <button
                     className="button button-green button-full donation-button mt-20"
