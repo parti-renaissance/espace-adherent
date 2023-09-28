@@ -112,10 +112,7 @@ Feature:
             "has_followed_training": false,
             "adherent": {
                 "email_address": "referent@en-marche-dev.fr",
-                "phone": {
-                    "country": "FR",
-                    "number": "06 73 65 43 49"
-                },
+                "phone": "+33 6 73 65 43 49",
                 "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                 "first_name": "Referent",
                 "last_name": "Referent"

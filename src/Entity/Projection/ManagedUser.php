@@ -8,7 +8,6 @@ use App\Entity\Geo\Zone;
 use App\Membership\MembershipSourceEnum;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Subscription\SubscriptionTypeEnum;
-use App\Utils\PhoneNumberUtils;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
@@ -186,6 +185,8 @@ class ManagedUser
      * @var PhoneNumber|null
      *
      * @ORM\Column(type="phone_number", nullable=true)
+     *
+     * @Groups({"managed_user_read"})
      */
     private $phone;
 
@@ -725,14 +726,6 @@ class ManagedUser
     public function getSmsSubscription(): bool
     {
         return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
-    }
-
-    /**
-     * @Groups({"managed_user_read"})
-     */
-    public function getPhoneNumber(): ?string
-    {
-        return $this->getPhone() ? PhoneNumberUtils::format($this->getPhone()) : null;
     }
 
     public function getCommittee(): ?string

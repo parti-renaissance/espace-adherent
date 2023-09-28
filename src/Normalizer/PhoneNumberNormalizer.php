@@ -7,18 +7,11 @@ use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
-use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class PhoneNumberNormalizer implements NormalizerInterface, NormalizerAwareInterface, DenormalizerInterface, DenormalizerAwareInterface
+class PhoneNumberNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    use NormalizerAwareTrait;
-    use DenormalizerAwareTrait;
-
     private $util;
 
     public function __construct()
@@ -28,10 +21,14 @@ class PhoneNumberNormalizer implements NormalizerInterface, NormalizerAwareInter
 
     public function normalize($object, $format = null, array $context = [])
     {
-        return [
-            'country' => $this->util->getRegionCodeForNumber($object),
-            'number' => $this->util->format($object, PhoneNumberFormat::NATIONAL),
-        ];
+        if (array_intersect(['profile_read', 'phoning_campaign_call_read'], $context['groups'] ?? [])) {
+            return [
+                'country' => $this->util->getRegionCodeForNumber($object),
+                'number' => $this->util->format($object, PhoneNumberFormat::NATIONAL),
+            ];
+        }
+
+        return $this->util->format($object, PhoneNumberFormat::INTERNATIONAL);
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])
