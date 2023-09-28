@@ -104,14 +104,15 @@ class Candidate
         string $lastName,
         string $gender,
         Adherent $adherent = null,
-        UuidInterface $uuid = null
+        UuidInterface $uuid = null,
+        bool $isSubstitute = false,
     ) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->gender = $gender;
         $this->adherent = $adherent;
-
         $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->isSubstitute = $isSubstitute;
     }
 
     public function setCandidateGroup(CandidateGroup $candidateGroup): void

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Admin\VotingPlatform;
+namespace App\Admin\VotingPlatform\Designation;
 
 use App\Admin\AbstractAdmin;
 use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
+use App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Form\Admin\DesignationGlobalZoneType;
 use App\Form\Admin\DesignationTypeType;
@@ -15,6 +16,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\Form\Type\BooleanType;
@@ -150,6 +152,22 @@ class DesignationAdmin extends AbstractAdmin
                         'label' => false,
                         'required' => false,
                         'btn_add' => 'Créer',
+                    ])
+                ->end()
+            ->end()
+            ->tab('Candidatures 🎎')
+                ->with('Candidatures')
+                    ->add('candidacyPools', CollectionType::class, [
+                        'label' => false,
+                        'required' => false,
+                        'by_reference' => false,
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                        'entry_type' => ModelType::class,
+                        'entry_options' => [
+                            'class' => CandidacyPool::class,
+                            'model_manager' => $this->getModelManager(),
+                        ],
                     ])
                 ->end()
             ->end()

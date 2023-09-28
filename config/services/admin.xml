@@ -741,7 +741,7 @@
             </call>
         </service>
 
-        <service id="app.admin.voting_platform.designation" class="App\Admin\VotingPlatform\DesignationAdmin">
+        <service id="app.admin.voting_platform.designation" class="App\Admin\VotingPlatform\Designation\DesignationAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Désignations statutaires" group="Instances" />
 
             <argument />
@@ -749,7 +749,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.voting_platform.designation_poll" class="App\Admin\VotingPlatform\Designation\DesignationPollAdmin">
+        <service id="app.admin.voting_platform.designation_poll" class="App\Admin\VotingPlatform\Designation\Poll\DesignationPollAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Designation » Questionnaires" group="Instances" />
 
             <argument />
@@ -757,11 +757,35 @@
             <argument />
         </service>
 
-        <service id="app.admin.voting_platform.designation_poll_question_choice" class="App\Admin\VotingPlatform\Designation\PollQuestionAdmin">
+        <service id="app.admin.voting_platform.designation_poll_question_choice" class="App\Admin\VotingPlatform\Designation\Poll\PollQuestionAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Designation questionnaires choix" group="Instances" show_in_dashboard="false" />
 
             <argument />
             <argument>App\Entity\VotingPlatform\Designation\Poll\PollQuestion</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.voting_platform.designation_candidacy_pool" class="App\Admin\VotingPlatform\Designation\CandidacyPool\CandidacyPoolAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Designation » Candidatures" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.voting_platform.designation_candidacy_pool_candidacies_groups" class="App\Admin\VotingPlatform\Designation\CandidacyPool\CandidaciesGroupAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Designation » Candidatures" group="Instances" show_in_dashboard="false" />
+
+            <argument />
+            <argument>App\Entity\VotingPlatform\Designation\CandidacyPool\CandidaciesGroup</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.voting_platform.designation_candidacy_pool_candidacy" class="App\Admin\VotingPlatform\Designation\CandidacyPool\CandidacyAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Designation » Candidature" group="Instances" show_in_dashboard="false" />
+
+            <argument />
+            <argument>App\Entity\VotingPlatform\Designation\CandidacyPool\Candidacy</argument>
             <argument />
         </service>
 

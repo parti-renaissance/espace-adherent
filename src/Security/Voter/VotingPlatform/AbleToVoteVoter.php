@@ -38,7 +38,7 @@ class AbleToVoteVoter extends AbstractAdherentVoter
 
         if (!$adherentIsInVotersList) {
             // Allow to vote adherent who are not on the list for CONSULTATION election
-            if ($designation->isConsultationType()) {
+            if ($designation->isConsultationType() || $designation->isTerritorialAssemblyType()) {
                 return true;
             }
 

@@ -3,7 +3,7 @@
 namespace App\Admin\LocalElection;
 
 use App\Admin\AbstractAdmin;
-use App\Admin\VotingPlatform\DesignationAdmin;
+use App\Admin\VotingPlatform\Designation\DesignationAdmin;
 use App\Entity\Geo\Zone;
 use App\Entity\LocalElection\LocalElection;
 use App\Entity\VotingPlatform\Designation\Designation;

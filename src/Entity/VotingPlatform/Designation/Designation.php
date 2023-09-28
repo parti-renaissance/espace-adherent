@@ -16,6 +16,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
 use App\Entity\ReferentTag;
+use App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool;
 use App\Entity\VotingPlatform\Designation\Poll\Poll;
 use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\Entity\ZoneableEntity;
@@ -289,6 +290,13 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public ?Poll $poll = null;
 
     /**
+     * @var CandidacyPool[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool", mappedBy="designation", cascade={"persist"}, fetch="EXTRA_LAZY")
+     */
+    private $candidacyPools;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CmsBlock")
      */
     public ?CmsBlock $wordingWelcomePage = null;
@@ -343,6 +351,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
         $this->referentTags = new ArrayCollection();
         $this->zones = new ZoneCollection();
+        $this->candidacyPools = new ArrayCollection();
     }
 
     public function getLabel(): ?string
@@ -600,6 +609,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             DesignationTypeEnum::POLL,
             DesignationTypeEnum::LOCAL_POLL,
             DesignationTypeEnum::CONSULTATION,
+            DesignationTypeEnum::TERRITORIAL_ASSEMBLY,
         ], true)) {
             return true;
         }
@@ -738,6 +748,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return DesignationTypeEnum::CONSULTATION === $this->type;
     }
 
+    public function isTerritorialAssemblyType(): bool
+    {
+        return DesignationTypeEnum::TERRITORIAL_ASSEMBLY === $this->type;
+    }
+
     public function isExecutiveOfficeType(): bool
     {
         return DesignationTypeEnum::EXECUTIVE_OFFICE === $this->type;
@@ -782,7 +797,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return
             !$this->isLocalElectionTypes()
             && !$this->isCommitteeSupervisorType()
-            && !$this->isConsultationType();
+            && !$this->isConsultationType()
+            && !$this->isTerritorialAssemblyType();
     }
 
     public function equals(self $other): bool
@@ -895,5 +911,29 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public function cancel(): void
     {
         $this->isCanceled = true;
+    }
+
+    /** @return CandidacyPool[] */
+    public function getCandidacyPools(): array
+    {
+        return $this->candidacyPools->toArray();
+    }
+
+    public function addCandidacyPool(CandidacyPool $candidacyPool): void
+    {
+        if (!$this->candidacyPools->contains($candidacyPool)) {
+            $candidacyPool->designation = $this;
+            $this->candidacyPools->add($candidacyPool);
+        }
+    }
+
+    public function removeCandidacyPool(CandidacyPool $candidacyPool): void
+    {
+        $this->candidacyPools->remove($candidacyPool);
+    }
+
+    public function __toString(): string
+    {
+        return $this->getTitle();
     }
 }

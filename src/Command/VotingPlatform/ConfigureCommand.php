@@ -87,7 +87,7 @@ class ConfigureCommand extends Command
         $this->io->progressStart();
 
         foreach ($designations as $designation) {
-            $this->entityManager->merge($designation);
+            $this->entityManager->detach($designation);
 
             if ($designation->isCommitteeSupervisorType()) {
                 $this->configureCommitteeSupervisorElections($designation);
@@ -105,7 +105,13 @@ class ConfigureCommand extends Command
                 $this->configureLocalPoll($designation);
             } elseif ($designation->isConsultationType()) {
                 $this->configureConsultation($designation);
+            } elseif ($designation->isTerritorialAssemblyType()) {
+                $this->configureTerritorialAssembly($designation);
             }
+
+            $this->entityManager->clear();
+
+            $this->io->progressAdvance();
         }
 
         $this->io->progressFinish();
@@ -161,13 +167,7 @@ class ConfigureCommand extends Command
                 if ($election->isVotePeriodStarted() && !$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)) {
                     $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
                 }
-
-                $this->io->progressAdvance();
             }
-
-            $this->entityManager->clear();
-
-            $designation = $this->entityManager->merge($designation);
 
             $offset += \count($committeeElections);
         }
@@ -189,17 +189,11 @@ class ConfigureCommand extends Command
                     continue;
                 }
 
-                $this->io->progressAdvance();
-
                 $election = $this->createNewElection($designation, $electionEntity = new ElectionEntity());
                 $electionEntity->setCommittee($committee);
 
                 $this->configureNewElectionForCommittee($election);
             }
-
-            $this->entityManager->clear();
-
-            $designation = $this->entityManager->merge($designation);
 
             $offset += \count($committeeElections);
         }
@@ -221,8 +215,6 @@ class ConfigureCommand extends Command
                     continue;
                 }
 
-                $this->io->progressAdvance();
-
                 $election = $this->createNewElection($designation, $electionEntity = new ElectionEntity());
                 $electionEntity->setTerritorialCouncil($coTerr);
 
@@ -233,10 +225,6 @@ class ConfigureCommand extends Command
 
                 $this->configureNewElectionForTerritorialCouncil($election, $coTerrElection);
             }
-
-            $this->entityManager->clear();
-
-            $designation = $this->entityManager->merge($designation);
 
             $offset += \count($territorialCouncilElections);
         }
@@ -295,10 +283,6 @@ class ConfigureCommand extends Command
         $this->entityManager->flush();
 
         $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
-
-        $this->entityManager->clear();
-
-        $this->io->progressAdvance();
     }
 
     private function configurePoll(Designation $designation): void
@@ -329,10 +313,6 @@ class ConfigureCommand extends Command
         $this->adherentRepository->associateWithVoterList($designation, $list);
 
         $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
-
-        $this->entityManager->clear();
-
-        $this->io->progressAdvance();
     }
 
     private function configureLocalElection(Designation $designation): void
@@ -400,10 +380,6 @@ class ConfigureCommand extends Command
         if ($election->isVotePeriodStarted()) {
             $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
         }
-
-        $this->entityManager->clear();
-
-        $this->io->progressAdvance();
     }
 
     private function configureLocalPoll(Designation $designation): void
@@ -445,10 +421,6 @@ class ConfigureCommand extends Command
         if ($election->isVotePeriodStarted()) {
             $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
         }
-
-        $this->entityManager->clear();
-
-        $this->io->progressAdvance();
     }
 
     private function configureConsultation(Designation $designation): void
@@ -487,10 +459,47 @@ class ConfigureCommand extends Command
         if ($election->isVotePeriodStarted()) {
             $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
         }
+    }
 
-        $this->entityManager->clear();
+    private function configureTerritorialAssembly(Designation $designation): void
+    {
+        if ($election = $this->electionRepository->findOneByDesignation($designation)) {
+            if (
+                !$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)
+                && $election->isVotePeriodStarted()
+            ) {
+                $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+            }
 
-        $this->io->progressAdvance();
+            return;
+        }
+
+        if (!\count($designation->getCandidacyPools())) {
+            return;
+        }
+
+        $election = $this->createNewElection($designation);
+
+        foreach ($designation->getCandidacyPools() as $candidacyPool) {
+            $election->getCurrentRound()->addElectionPool($pool = new ElectionPool(''));
+            $election->addElectionPool($pool);
+
+            foreach ($candidacyPool->getCandidaciesGroups() as $candidaciesGroup) {
+                $pool->addCandidateGroup($group = new CandidateGroup());
+
+                foreach ($candidaciesGroup->getCandidacies() as $candidacy) {
+                    $group->addCandidate(new Candidate($candidacy->getFirstName(), $candidacy->getLastName(), $candidacy->getGender(), null, null, $candidacy->isSubstitute));
+                }
+            }
+        }
+
+        $this->entityManager->persist($this->createVoterList($election));
+        $this->entityManager->persist($election);
+        $this->entityManager->flush();
+
+        if ($election->isVotePeriodStarted()) {
+            $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+        }
     }
 
     private function configureNewElectionForTerritorialCouncil(
