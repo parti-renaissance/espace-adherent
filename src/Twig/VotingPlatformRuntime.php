@@ -43,7 +43,7 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
                 DesignationTypeEnum::CONSULTATION,
             ];
 
-            if (\count($adherent->findElectedRepresentativeMandates(true))) {
+            if (\count($adherent->findActifLocalMandates())) {
                 $types[] = DesignationTypeEnum::TERRITORIAL_ASSEMBLY;
             }
         }

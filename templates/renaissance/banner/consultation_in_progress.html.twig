@@ -4,23 +4,23 @@
     {% if block_alert_exists %}
         {% if app.user.isRenaissanceSympathizer() %}
             <div class="alert alert-danger flex px-10 w-full justify-between py-3 rounded-t-2xl">
-            <span class="flex flex-grow-1 items-center font-medium">
-                <img src="{{ asset('/images/icons/icn_warning.svg') }}" alt="Information" class="mr-3" />
-                Vous devez adhérer pour participer à la consultation
-            </span>
+                <span class="flex flex-grow-1 items-center font-medium">
+                    <img src="{{ asset('/images/icons/icn_warning.svg') }}" alt="Information" class="mr-3" />
+                    Vous devez adhérer pour participer à la consultation
+                </span>
 
-                <a class="flex flex-nowrap px-4 py-1 border bg-white border-black rounded text-black font-medium hover:border-re-blue-500 hover:text-re-blue-500" href="{{ path('app_renaissance_adhesion_pre_payment') }}">
+                <a class="banner-btn" href="{{ path('app_renaissance_adhesion_pre_payment') }}">
                     <img src="{{ asset('/images/icons/icn_cotisation.svg') }}" alt="Cotisation" class="mr-3" /> Je cotise
                 </a>
             </div>
         {% elseif not app.user.hasActiveMembership() %}
             <div class="alert alert-warning flex px-10 w-full justify-between py-3 rounded-t-2xl">
-            <span class="flex flex-grow-1 items-center font-medium">
-                <img src="{{ asset('/images/icons/icn_warning.svg') }}" alt="Information" class="mr-3" />
-                Vous n’êtes pas à jour de cotisation
-            </span>
+                <span class="flex flex-grow-1 items-center font-medium">
+                    <img src="{{ asset('/images/icons/icn_warning.svg') }}" alt="Information" class="mr-3" />
+                    Vous n’êtes pas à jour de cotisation
+                </span>
 
-                <a class="flex flex-nowrap px-4 py-1 border bg-white border-black rounded text-black font-medium hover:border-re-blue-500 hover:text-re-blue-500" href="{{ path('app_renaissance_adhesion_pre_payment') }}">
+                <a class="banner-btn" href="{{ path('app_renaissance_adhesion_pre_payment') }}">
                     <img src="{{ asset('/images/icons/icn_cotisation.svg') }}" alt="Cotisation" class="mr-3" /> Je recotise pour {{ 'now'|date('Y') }}
                 </a>
             </div>
@@ -36,7 +36,7 @@
             {% endif %}
 
             <div class="flex mt-6 items-center justify-between">
-                <a class="flex flex-shrink-0 px-4 py-1 border rounded font-medium {{ consultation_designation.isVotePeriodStarted() ? 'border-black hover:border-re-blue-500 hover:text-re-blue-500' : 'border-gray-500 text-gray-500 cursor-not-allowed' }}" href="{{ consultation_designation.isVotePeriodStarted() ? path('app_sas_election_index', {uuid: consultation_designation.getUuid()}) : '#' }}">
+                <a class="banner-btn {{ not consultation_designation.isVotePeriodStarted() ? 'banner-btn-disabled' }}" href="{{ consultation_designation.isVotePeriodStarted() ? path('app_sas_election_index', {uuid: consultation_designation.getUuid()}) : '#' }}">
                     <img src="{{ asset('/images/icons/icn_vote-hand.svg') }}" alt="Main vote" class="mr-3" /> Je participe !
                 </a>
 

@@ -5,6 +5,8 @@ namespace App\Controller\EnMarche\VotingPlatform;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Repository\VotingPlatform\VoteResultRepository;
+use App\Security\Voter\VotingPlatform\AbleToVoteVoter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/resultats/{election_round_uuid}', name: 'app_voting_platform_results', methods: ['GET'], defaults: ['election_round_uuid' => null])]
 #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
+#[IsGranted(AbleToVoteVoter::PERMISSION_RESULTS, subject: 'election')]
 class ResultsController extends AbstractController
 {
     public function __invoke(

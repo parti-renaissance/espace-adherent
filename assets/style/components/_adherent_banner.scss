@@ -23,4 +23,42 @@
     &-consultation .adherent-banner__inner {
         background-image: url("/images/icons/consultation-banner-bg.svg");
     }
+
+    .banner-btn {
+        display: flex;
+        flex-wrap: nowrap;
+        padding: 0.625rem 1.135rem;
+        border: 1px solid black;
+        background: white;
+        border-radius: 8px;
+        color: black;
+        font-weight: 500;
+        line-height: 1rem;
+
+        &-disabled {
+            border-color: #8F8F8F;
+            color: #8F8F8F;
+            cursor: not-allowed;
+
+            img {
+                filter: invert(49%) sepia(0%) saturate(5558%) hue-rotate(184deg) brightness(113%) contrast(112%);
+            }
+        }
+
+        &:not(.banner-btn-disabled) {
+            &:hover,
+            &:active {
+                background: black;
+                color: white;
+
+                img {
+                    filter: invert(77%) sepia(93%) saturate(0%) hue-rotate(250deg) brightness(113%) contrast(100%);
+                }
+            }
+
+            &:active {
+                background: #303030;
+            }
+        }
+    }
 }

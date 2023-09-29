@@ -11,6 +11,7 @@ use App\Security\Voter\AbstractAdherentVoter;
 class AbleToVoteVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'ABLE_TO_VOTE';
+    public const PERMISSION_RESULTS = 'ABLE_TO_SEE_RESULTS';
 
     public function __construct(
         private readonly VoterRepository $voterRepository,
@@ -21,16 +22,19 @@ class AbleToVoteVoter extends AbstractAdherentVoter
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
         /** @var Election $subject */
-        if (!$subject->isVotePeriodActive()) {
-            return false;
+        if (self::PERMISSION === $attribute) {
+            if (!$subject->isVotePeriodActive()) {
+                return false;
+            }
+
+            if ($this->voteRepository->alreadyVoted($adherent, $subject->getCurrentRound())) {
+                return false;
+            }
         }
+
         $designation = $subject->getDesignation();
 
         if (!$designation->isLocalPollType() && $adherent->isRenaissanceSympathizer()) {
-            return false;
-        }
-
-        if ($this->voteRepository->alreadyVoted($adherent, $subject->getCurrentRound())) {
             return false;
         }
 
@@ -38,7 +42,11 @@ class AbleToVoteVoter extends AbstractAdherentVoter
 
         if (!$adherentIsInVotersList) {
             // Allow to vote adherent who are not on the list for CONSULTATION election
-            if ($designation->isConsultationType() || $designation->isTerritorialAssemblyType()) {
+            if ($designation->isConsultationType()) {
+                return true;
+            }
+
+            if ($designation->isTerritorialAssemblyType() && $adherent->findActifLocalMandates()) {
                 return true;
             }
 
@@ -50,6 +58,6 @@ class AbleToVoteVoter extends AbstractAdherentVoter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return self::PERMISSION === $attribute && $subject instanceof Election;
+        return (self::PERMISSION === $attribute || self::PERMISSION_RESULTS === $attribute) && $subject instanceof Election;
     }
 }

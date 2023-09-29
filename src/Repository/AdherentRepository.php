@@ -6,11 +6,13 @@ use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\AddressInterface;
 use App\Adherent\AdherentAutocompleteFilter;
 use App\Adherent\AdherentRoleEnum;
+use App\Adherent\MandateTypeEnum;
 use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
+use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Audience\AudienceInterface;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\Committee;
@@ -1641,5 +1643,19 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findAllWithActifLocalMandat(): array
+    {
+        return $this->createQueryBuilder('adherent')
+            ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
+            ->innerJoin(ElectedRepresentativeAdherentMandate::class, 'mandate', Join::WITH, 'mandate.adherent = adherent')
+            ->where('mandate.finishAt IS NULL AND mandate.mandateType IN (:types)')
+            ->setParameters([
+                'types' => MandateTypeEnum::LOCAL_TYPES,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

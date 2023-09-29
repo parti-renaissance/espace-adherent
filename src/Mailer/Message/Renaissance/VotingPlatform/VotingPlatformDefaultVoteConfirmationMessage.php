@@ -5,7 +5,7 @@ namespace App\Mailer\Message\Renaissance\VotingPlatform;
 use App\Entity\VotingPlatform\Vote;
 use Ramsey\Uuid\Uuid;
 
-class VotingPlatformLocalElectionVoteConfirmationMessage extends AbstractRenaissanceVotingPlatformMessages
+class VotingPlatformDefaultVoteConfirmationMessage extends AbstractRenaissanceVotingPlatformMessages
 {
     public static function create(Vote $vote, string $voterKey): self
     {

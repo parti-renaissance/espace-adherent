@@ -53,7 +53,15 @@ class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministrat
     /**
      * @return Candidacy[]
      */
-    public function getCandidacies(bool $substituteCandidates = false): array
+    public function getCandidacies(): array
+    {
+        return $this->candidacies->toArray();
+    }
+
+    /**
+     * @return Candidacy[]
+     */
+    public function getCandidaciesByType(bool $substituteCandidates = false): array
     {
         return $this->candidacies->filter(
             function (Candidacy $candidacy) use ($substituteCandidates) {

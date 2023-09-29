@@ -12,7 +12,7 @@ use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VoteResult;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformConsultationVoteConfirmationMessage;
-use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformLocalElectionVoteConfirmationMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformDefaultVoteConfirmationMessage;
 use App\Mailer\Message\VotingPlatformElectionVoteConfirmationMessage;
 use App\Mailer\Message\VotingPlatformVoteStatusesVoteConfirmationMessage;
 use App\Repository\VotingPlatform\CandidateGroupRepository;
@@ -177,20 +177,22 @@ class FinishVoteCommandListener implements EventSubscriberInterface
 
     private function sendVoteConfirmationEmail(Vote $vote, string $voterKey): void
     {
-        switch ($vote->getElection()->getDesignationType()) {
+        $designation = $vote->getElection()->getDesignation();
+
+        switch ($designation->getType()) {
             case DesignationTypeEnum::POLL:
                 $message = VotingPlatformVoteStatusesVoteConfirmationMessage::create($vote, $voterKey);
-                break;
-            case DesignationTypeEnum::COMMITTEE_SUPERVISOR:
-            case DesignationTypeEnum::LOCAL_ELECTION:
-            case DesignationTypeEnum::LOCAL_POLL:
-                $message = VotingPlatformLocalElectionVoteConfirmationMessage::create($vote, $voterKey);
                 break;
             case DesignationTypeEnum::CONSULTATION:
                 $message = VotingPlatformConsultationVoteConfirmationMessage::create($vote);
                 break;
             default:
-                $message = VotingPlatformElectionVoteConfirmationMessage::create($vote, $voterKey);
+                if ($designation->isRenaissanceElection()) {
+                    $message = VotingPlatformDefaultVoteConfirmationMessage::create($vote, $voterKey);
+                } else {
+                    $message = VotingPlatformElectionVoteConfirmationMessage::create($vote, $voterKey);
+                }
+                break;
         }
 
         $this->mailer->sendMessage($message);

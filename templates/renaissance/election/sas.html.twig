@@ -64,7 +64,7 @@
                                     <div class="border-b border-gray-200 pb-3">
                                         <h3 class="text-lg font-medium leading-6 text-gray-500">Titulaires</h3>
                                     </div>
-                                    {% for candidacy in group.getCandidacies(false) %}
+                                    {% for candidacy in group.getCandidaciesByType(false) %}
                                         <div class="py-1.5">
                                             <span class="text-gray-400">{{ candidacy.gender == 'male' ? 'M' : 'Mme' }}</span>
                                             <span class="inline-block ml-0.5 text-gray-700 font-medium">
@@ -72,12 +72,12 @@
                                         </span>
                                         </div>
                                     {% endfor %}
-                                    {%if group.getCandidacies(true) %}
+                                    {%if group.getCandidaciesByType(true) %}
                                         <div class="border-b border-gray-200 mt-2 pb-3">
                                             <h3 class="text-lg font-medium leading-6 text-gray-500">Suppléants</h3>
                                         </div>
                                         <ul class="!my-0">
-                                            {% for substitute in group.getCandidacies(true) %}
+                                            {% for substitute in group.getCandidaciesByType(true) %}
                                                 <li class="py-1.5">
                                                     <span class="text-gray-400">{{ substitute.gender == 'male' ? 'M' : 'Mme' }}</span>
                                                     <span class="inline-block ml-0.5 text-gray-700 font-medium">
@@ -137,7 +137,7 @@
                                                         <h3 class="text-lg font-medium leading-6 text-gray-500">Titulaires</h3>
                                                     </div>
                                                     <ul class="!my-0">
-                                                        {% for candidacy in group.getCandidacies() %}
+                                                        {% for candidacy in group.getCandidaciesByType(false) %}
                                                             <li class="px-4 py-1.5">
                                                                 <span class="text-gray-400">{{ candidacy.gender == 'male' ? 'M' : 'Mme' }}</span>
                                                                 <span class="inline-block ml-0.5 text-gray-700 font-medium">
@@ -146,12 +146,12 @@
                                                             </li>
                                                         {% endfor %}
                                                     </ul>
-                                                    {%if group.getCandidacies(true) %}
+                                                    {%if group.getCandidaciesByType(true) %}
                                                         <div class="border-b border-gray-200 mt-2 pb-3">
                                                             <h3 class="text-lg font-medium leading-6 text-gray-500">Suppléants</h3>
                                                         </div>
                                                         <ul class="!my-0">
-                                                            {% for substitute in group.getCandidacies(true) %}
+                                                            {% for substitute in group.getCandidaciesByType(true) %}
                                                                 <li class="px-4 py-1.5">
                                                                     <span class="text-gray-400">{{ substitute.gender == 'male' ? 'M' : 'Mme' }}</span>
                                                                     <span class="inline-block ml-0.5 text-gray-700 font-medium">

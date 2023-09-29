@@ -19,7 +19,7 @@
 
 {% block vote_finish_action_block %}
     <div class="b__nudge--bottom-large b__nudge--top-large">
-        <a href="{{ path('app_renaissance_departmental_election_lists', {uuid: designation.getUuid()}) }}" class="btn btn--blue">
+        <a href="{{ path('app_sas_election_index', {uuid: designation.getUuid()}) }}" class="btn btn--blue">
             Retour à l’accueil
         </a>
     </div>
@@ -27,7 +27,7 @@
 
 {% block voting_platform_result_tab_votes_list_title 'Détails des résultats' %}
 
-{% block voting_platform_result_tab_pool_title '' %}
+{% block voting_platform_result_tab_pool_title 'Listes' %}
 
 {% block voting_platform_result_header %}
     <h1 class="text-xl text-center font-bold">Résultats de {{ designation.getDenomination(true) }}</h1>
@@ -51,12 +51,6 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
-                            <tr>
-                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Participation</td>
-                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (voters == 0 ? 0 : participated / voters * 100)|number_format(2, ',') }}%</td>
-                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ participated }} votant{{ participated > 1 ? 's' }}</td>
-                            </tr>
-
                             {% if designation.isBlankVoteEnabled() %}
                                 <tr>
                                     <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Blancs</td>
