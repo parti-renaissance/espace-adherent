@@ -32,13 +32,13 @@ class CandidacyPoolAdmin extends AbstractAdmin
             ->with('Libellé')
                 ->add('label', null, ['label' => false])
             ->end()
-            ->with('Groupe de candidats')
+            ->with('Listes de candidats')
                 ->add('candidaciesGroups', CollectionType::class, [
                     'label' => false,
                     'by_reference' => false,
                     'error_bubbling' => false,
                     'required' => false,
-                    'btn_add' => 'Groupe',
+                    'btn_add' => 'Liste',
                 ], [
                     'edit' => 'inline',
                     'inline' => 'table',

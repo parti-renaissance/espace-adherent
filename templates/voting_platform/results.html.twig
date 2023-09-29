@@ -52,14 +52,14 @@
         <div>
             <div class="l__wrapper{{ not designation.isMajorityType ? '--medium' }}">
                 <nav class="tabs-nav border-on results__menu b__nudge--bottom-larger">
-                    <ul>
+                    <ul class="my-5">
                         {% for pool_result in election_round_result.getElectionPoolResults() %}
                             <li {{ loop.index == 1 ? 'class="active"' }}>
                                 <a href="#" class="tabs-nav__item results-tab--toggle">{{ block('voting_platform_result_tab_pool_title') }}</a>
                             </li>
                         {% endfor %}
 
-                        {% if not (designation.isLocalElectionTypes() or designation.isCommitteeSupervisorType()) %}
+                        {% if not designation.isLimitedResultsView() %}
                             <li>
                                 <a href="#" class="tabs-nav__item results-tab--toggle">
                                     {{ block('voting_platform_result_tab_votes_list_title') }}
@@ -77,14 +77,14 @@
                             <div class="tab--container">
                                 {% include 'voting_platform/results/' ~ (designation.isMajorityType ? '_majority_vote') ~ '_candidates_list.html.twig' %}
 
-                                {% if not (designation.isLocalElectionTypes() or designation.isCommitteeSupervisorType()) %}
+                                {% if not designation.isLimitedResultsView() %}
                                     {% include 'voting_platform/results/_stats_block.html.twig' %}
                                 {% endif %}
                             </div>
                         </div>
                     {% endfor %}
 
-                    {% if not designation.isLocalElectionTypes() %}
+                    {% if not designation.isLimitedResultsView() %}
                         <div class="candidate-tab candidate-tab--{{ election_round_result.getElectionPoolResults|length + 1 }}" style="display: none;">
                             <div class="tab--container">
                                 {% include 'voting_platform/results/' ~ (designation.isMajorityType ? '_majority_vote') ~ (designation.isPollType ? '_poll') ~ '_bulletins_list.html.twig' %}

@@ -2961,6 +2961,19 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         })->toArray();
     }
 
+    /**
+     * @return ElectedRepresentativeAdherentMandate[]
+     */
+    public function findActifLocalMandates(): array
+    {
+        return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) {
+            return
+                $mandate instanceof ElectedRepresentativeAdherentMandate
+                && null === $mandate->getFinishAt()
+                && $mandate->isLocal();
+        })->toArray();
+    }
+
     public function findTerritorialCouncilMandates(string $quality = null, bool $active = false): array
     {
         return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) use ($quality, $active) {

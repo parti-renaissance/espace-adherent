@@ -342,6 +342,11 @@ class Election
         return $this->votersList;
     }
 
+    public function setVotersList(VotersList $list): void
+    {
+        $this->votersList = $list;
+    }
+
     public function hasElected(): bool
     {
         return $this->hasResult() && \count($this->electionResult->getElectedCandidateGroups()) > 0;

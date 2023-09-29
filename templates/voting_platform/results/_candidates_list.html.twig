@@ -2,7 +2,7 @@
     {% for candidate_group_result in pool_result.candidateGroupResultsSorted %}
         {% if designation.isPollType() %}
             {% include 'voting_platform/results/_poll_candidate_box.html.twig' %}
-        {% elseif designation.isLocalElectionType() or designation.isCommitteeSupervisorType() %}
+        {% elseif designation.isLocalElectionType() or designation.isCommitteeSupervisorType() or designation.isTerritorialAssemblyType() %}
             {% include 'voting_platform/results/_local_election_candidate_box.html.twig' %}
         {% else %}
             {% include 'voting_platform/results/_candidate_box.html.twig' %}

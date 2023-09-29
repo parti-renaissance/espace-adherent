@@ -87,7 +87,7 @@ class ConfigureCommand extends Command
         $this->io->progressStart();
 
         foreach ($designations as $designation) {
-            $this->entityManager->detach($designation);
+            $this->entityManager->merge($designation);
 
             if ($designation->isCommitteeSupervisorType()) {
                 $this->configureCommitteeSupervisorElections($designation);
@@ -493,7 +493,9 @@ class ConfigureCommand extends Command
             }
         }
 
-        $this->entityManager->persist($this->createVoterList($election));
+        $adherents = $this->adherentRepository->findAllWithActifLocalMandat();
+
+        $this->entityManager->persist($this->createVoterList($election, $adherents));
         $this->entityManager->persist($election);
         $this->entityManager->flush();
 
@@ -584,6 +586,8 @@ class ConfigureCommand extends Command
             $election,
             array_map(fn (CommitteeMembership $membership) => $membership->getAdherent(), $memberships)
         );
+
+        $election->setVotersList($list);
 
         $this->entityManager->persist($list);
         $this->entityManager->persist($election);

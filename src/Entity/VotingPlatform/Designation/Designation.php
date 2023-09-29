@@ -936,4 +936,14 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     {
         return $this->getTitle();
     }
+
+    public function isLimitedResultsView(): bool
+    {
+        return \in_array($this->type, [
+            DesignationTypeEnum::LOCAL_POLL,
+            DesignationTypeEnum::LOCAL_ELECTION,
+            DesignationTypeEnum::TERRITORIAL_ASSEMBLY,
+            DesignationTypeEnum::COMMITTEE_SUPERVISOR,
+        ], true);
+    }
 }

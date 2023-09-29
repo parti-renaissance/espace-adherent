@@ -109,4 +109,20 @@ class MandateTypeEnum
             'types' => [Zone::CONSULAR_DISTRICT],
         ],
     ];
+
+    public const LOCAL_TYPES = [
+        self::PRESIDENT_CONSEIL_REGIONAL,
+        self::CONSEILLER_REGIONAL,
+        self::PRESIDENT_CONSEIL_DEPARTEMENTAL,
+        self::CONSEILLER_DEPARTEMENTAL,
+        self::CONSEILLER_TERRITORIAL,
+        self::PRESIDENT_CONSEIL_COMMUNAUTAIRE,
+        self::CONSEILLER_COMMUNAUTAIRE,
+        self::MAIRE,
+        self::CONSEILLER_MUNICIPAL,
+        self::CONSEILLER_ARRONDISSEMENT,
+        self::MEMBRE_ASSEMBLEE_FDE,
+        self::CONSEILLER_FDE,
+        self::DELEGUE_CONSULAIRE,
+    ];
 }

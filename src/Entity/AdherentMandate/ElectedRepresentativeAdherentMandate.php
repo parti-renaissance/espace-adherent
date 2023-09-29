@@ -5,6 +5,7 @@ namespace App\Entity\AdherentMandate;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Adherent\MandateTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
@@ -112,5 +113,10 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
         $mandate->zone = $zone;
 
         return $mandate;
+    }
+
+    public function isLocal(): bool
+    {
+        return \in_array($this->mandateType, MandateTypeEnum::LOCAL_TYPES, true);
     }
 }
