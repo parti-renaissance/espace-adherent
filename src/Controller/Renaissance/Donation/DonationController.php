@@ -2,6 +2,7 @@
 
 namespace App\Controller\Renaissance\Donation;
 
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Donation\Request\DonationRequestUtils;
 use App\Form\Renaissance\Donation\DonationRequestAmountType;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +27,7 @@ class DonationController extends AbstractDonationController
         }
 
         if (null !== ($duration = $request->query->get('duration'))) {
-            $command->setDuration($duration);
+            $command->setDuration(PayboxPaymentSubscription::UNLIMITED === \intval($duration) ? PayboxPaymentSubscription::UNLIMITED : PayboxPaymentSubscription::NONE);
         }
 
         $form = $this
