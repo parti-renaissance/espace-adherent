@@ -869,6 +869,14 @@
             </call>
         </service>
 
+        <service id="app.admin.administrator_role" class="App\Admin\AdministratorRoleAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Rôles Administrateur" group="Tech" />
+
+            <argument />
+            <argument>App\Entity\AdministratorRole</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.email" class="App\Admin\EmailAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Logs Mailer" group="Tech" />
 

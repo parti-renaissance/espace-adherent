@@ -1,0 +1,13 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+
+    {% for role in object.administratorRoles|filter(role => role.enabled is same as true) %}
+        {% if not loop.first %}<br>{% endif %}
+
+        <span class="badge bg-blue">
+            {{ role.label }}
+        </span>
+    {% endfor %}
+
+{% endblock %}

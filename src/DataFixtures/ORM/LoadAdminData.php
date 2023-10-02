@@ -4,92 +4,20 @@ namespace App\DataFixtures\ORM;
 
 use App\Admin\AdministratorFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadAdminData extends Fixture
+class LoadAdminData extends Fixture implements DependentFixtureInterface
 {
-    private $administratorFactory;
-
-    public function __construct(AdministratorFactory $administratorFactory)
+    public function __construct(private readonly AdministratorFactory $administratorFactory)
     {
-        $this->administratorFactory = $administratorFactory;
     }
 
     public function load(ObjectManager $manager)
     {
-        $adminRoles = [
-            'ROLE_ADMIN_DASHBOARD',
-            'ROLE_ADMIN_MEDIAS',
-            'ROLE_ADMIN_CONTENT',
-            'ROLE_ADMIN_HOME',
-            'ROLE_ADMIN_PROPOSALS',
-            'ROLE_ADMIN_ORDERS',
-            'ROLE_ADMIN_FACEBOOK_PROFILES',
-            'ROLE_ADMIN_REDIRECTIONS',
-            'ROLE_ADMIN_NEWSLETTER',
-            'ROLE_ADMIN_JE_MARCHE',
-            'ROLE_ADMIN_UNREGISTRATIONS',
-            'ROLE_ADMIN_TON_MACRON',
-            'ROLE_ADMIN_MY_EUROPE',
-            'ROLE_ADMIN_LEGISLATIVES',
-            'ROLE_ADMIN_ADHERENTS',
-            'ROLE_ADMIN_ADHERENT_ELECTED_REPRESENTATIVES',
-            'ROLE_ADMIN_COMMITTEES',
-            'ROLE_ADMIN_COMMITTEES_MERGE',
-            'ROLE_ADMIN_COMMITTEE_DESIGNATION',
-            'ROLE_ADMIN_EVENTS',
-            'ROLE_ADMIN_REPORTS',
-            'ROLE_ADMIN_PROCURATIONS',
-            'ROLE_ADMIN_ELECTIONS',
-            'ROLE_ADMIN_DONATIONS',
-            'ROLE_ADMIN_EMAIL',
-            'ROLE_ADMIN_REFERENT_TAGS',
-            'ROLE_ADMIN_REFERENTS',
-            'ROLE_ADMIN_REFERENTS_AREAS',
-            'ROLE_ADMIN_TIMELINE',
-            'ROLE_ADMIN_CLIENTS',
-            'ROLE_ADMIN_SCOPES',
-            'ROLE_ADMIN_ORGANIGRAMM',
-            'ROLE_ADMIN_MOOC',
-            'ROLE_ADMIN_EMAIL_SUBSCRIPTION_TYPES',
-            'ROLE_ADMIN_LABEL',
-            'ROLE_ADMIN_BIOGRAPHY',
-            'ROLE_ADMIN_JECOUTE',
-            'ROLE_ADMIN_ASSESSOR',
-            'ROLE_ADMIN_APPLICATION_REQUEST',
-            'ROLE_ADMIN_CHEZ_VOUS',
-            'ROLE_ADMIN_FINANCE',
-            'ROLE_ADMIN_CREATE_RENAISSANCE_ADHERENT',
-            'ROLE_ADMIN_PROGRAMMATIC_FOUNDATION',
-            'ROLE_ADMIN_ELECTION_CITY_CARD',
-            'ROLE_ADMIN_ELECTION_CITY_CARD_MANAGERS',
-            'ROLE_ADMIN_ELECTED_REPRESENTATIVE',
-            'ROLE_ADMIN_TERRITORIAL_COUNCIL',
-            'ROLE_ADMIN_FILES',
-            'ROLE_ADMIN_RIPOSTES',
-            'ROLE_ADMIN_TEAMS',
-            'ROLE_ADMIN_PHONING_CAMPAIGNS',
-            'ROLE_ADMIN_PAP_CAMPAIGNS',
-            'ROLE_ADMIN_QR_CODES',
-            'ROLE_ADMIN_CMS_BLOCKS',
-            'ROLE_ADMIN_JEMENGAGE_COM',
-            'ROLE_ADMIN_LOCAL_ELECTION',
-            'ROLE_ADMIN_JME_DOCUMENTS',
-            'ROLE_ADMIN_JME_GENERAL_MEETING_REPORT',
-            'ROLE_ADMIN_JME_EMAIL_TEMPLATE',
-            'ROLE_ADMIN_ELUS_NOTIFICATION',
-        ];
-
-        $writerRoles = [
-            'ROLE_ADMIN_DASHBOARD',
-            'ROLE_ADMIN_MEDIAS',
-            'ROLE_ADMIN_CONTENT',
-            'ROLE_ADMIN_HOME',
-            'ROLE_ADMIN_PROPOSALS',
-            'ROLE_ADMIN_ORDERS',
-            'ROLE_ADMIN_FACEBOOK_PROFILES',
-            'ROLE_ADMIN_REDIRECTIONS',
-        ];
+        $adminRoles = $writerRoles = $this->getRoles([
+            'ROLE_SUPER_ADMIN',
+        ]);
 
         $superAdmin2fa = $this->administratorFactory->createFromArray([
             'email' => 'titouan.galopin@en-marche.fr',
@@ -121,7 +49,7 @@ class LoadAdminData extends Fixture
         $manager->persist($superadmin = $this->administratorFactory->createFromArray([
             'email' => 'superadmin@en-marche-dev.fr',
             'password' => 'superadmin',
-            'roles' => ['ROLE_SUPER_ADMIN'],
+            'roles' => $this->getRoles(['ROLE_SUPER_ADMIN']),
         ]));
         $this->setReference('administrator-2', $superadmin);
 
@@ -134,10 +62,14 @@ class LoadAdminData extends Fixture
         $manager->persist($renaissanceAdmin = $this->administratorFactory->createFromArray([
             'email' => 'admin@renaissance.code',
             'password' => 'renaissance',
-            'roles' => [
-                'ROLE_ADMIN_DASHBOARD',
-                'ROLE_ADMIN_RENAISSANCE',
-            ],
+            'roles' => $this->getRoles([
+                'ROLE_ADMIN_RENAISSANCE_COMMITMENTS',
+                'ROLE_ADMIN_RENAISSANCE_ARTICLES',
+                'ROLE_ADMIN_RENAISSANCE_HOME_BLOCKS',
+                'ROLE_ADMIN_RENAISSANCE_BIOGRAPHY_EXECUTIVE_OFFICE_MEMBERS',
+                'ROLE_ADMIN_RENAISSANCE_ADHERENT_FORMATIONS',
+                'ROLE_ADMIN_RENAISSANCE_DEPARTMENT_SITES',
+            ]),
         ]));
         $this->setReference('administrator-renaissance', $renaissanceAdmin);
 
@@ -145,5 +77,23 @@ class LoadAdminData extends Fixture
         $manager->persist($admin);
         $manager->persist($writer);
         $manager->flush();
+    }
+
+    private function getRoles(array $roleCodes): array
+    {
+        $roles = [];
+
+        foreach ($roleCodes as $roleCode) {
+            $roles[] = $this->getReference("administrator-role-$roleCode");
+        }
+
+        return $roles;
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadAdministratorRoleData::class,
+        ];
     }
 }

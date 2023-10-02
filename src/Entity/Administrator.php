@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -52,11 +54,25 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
     private $googleAuthenticatorSecret;
 
     /**
-     * @var array
-     *
      * @ORM\Column(type="simple_array")
      */
-    private $roles;
+    public array $roles = [];
+
+    /**
+     * @var AdministratorRole[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity=AdministratorRole::class)
+     * @ORM\JoinTable(
+     *     name="administrators_roles",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="administrator_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="administrator_role_id", referencedColumnName="id", onDelete="CASCADE")
+     *     }
+     * )
+     */
+    private Collection $administratorRoles;
 
     /**
      * @var bool
@@ -67,7 +83,7 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
 
     public function __construct()
     {
-        $this->roles[] = 'ROLE_ADMIN_DASHBOARD';
+        $this->administratorRoles = new ArrayCollection();
     }
 
     public function __toString()
@@ -77,22 +93,17 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
 
     public function getRoles()
     {
-        return $this->roles;
-    }
+        $roles = ['ROLE_ADMIN_DASHBOARD'];
 
-    public function addRole(string $role)
-    {
-        if (!\in_array($role, $this->roles, true)) {
-            $this->roles[] = $role;
+        foreach ($this->administratorRoles as $administratorRole) {
+            if (!$administratorRole->enabled) {
+                continue;
+            }
+
+            $roles[] = $administratorRole->code;
         }
-    }
 
-    /**
-     * @param string[] $roles
-     */
-    public function setRoles(array $roles): void
-    {
-        $this->roles = $roles;
+        return $roles;
     }
 
     public function getSalt()
@@ -174,5 +185,22 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
     public function getGoogleAuthenticatorUsername(): string
     {
         return $this->emailAddress;
+    }
+
+    public function addAdministratorRole(AdministratorRole $administratorRole): void
+    {
+        if (!$this->administratorRoles->contains($administratorRole)) {
+            $this->administratorRoles->add($administratorRole);
+        }
+    }
+
+    public function removeAdministratorRole(AdministratorRole $administratorRole): void
+    {
+        $this->administratorRoles->removeElement($administratorRole);
+    }
+
+    public function getAdministratorRoles(): Collection
+    {
+        return $this->administratorRoles;
     }
 }
