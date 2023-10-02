@@ -1651,8 +1651,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
             ->innerJoin(ElectedRepresentativeAdherentMandate::class, 'mandate', Join::WITH, 'mandate.adherent = adherent')
             ->where('mandate.finishAt IS NULL AND mandate.mandateType IN (:types)')
+            ->andWhere('adherent.source = :source AND adherent.lastMembershipDonation IS NOT NULL')
+            ->andWhere('adherent.status = :status')
             ->setParameters([
                 'types' => MandateTypeEnum::LOCAL_TYPES,
+                'source' => MembershipSourceEnum::RENAISSANCE,
+                'status' => Adherent::ENABLED,
             ])
             ->getQuery()
             ->getResult()

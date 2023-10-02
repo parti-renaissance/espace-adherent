@@ -34,7 +34,7 @@ class CandidacyPool
     /**
      * @var CandidaciesGroup[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\Designation\CandidacyPool\CandidaciesGroup", mappedBy="candidacyPool", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\Designation\CandidacyPool\CandidaciesGroup", mappedBy="candidacyPool", fetch="EAGER", cascade={"persist"})
      *
      * @Assert\Valid
      * @Assert\Count(min=1)
