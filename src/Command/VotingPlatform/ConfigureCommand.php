@@ -489,7 +489,7 @@ class ConfigureCommand extends Command
             }
         }
 
-        $adherents = $this->adherentRepository->findAllWithActifLocalMandat();
+        $adherents = $this->adherentRepository->findAllWithActifLocalMandates();
 
         $this->entityManager->persist($this->createVoterList($election, $adherents));
         $this->entityManager->persist($election);

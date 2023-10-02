@@ -1645,7 +1645,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $qb->getQuery()->getResult();
     }
 
-    public function findAllWithActifLocalMandat(): array
+    public function findAllWithActifLocalMandates(): array
     {
         return $this->createQueryBuilder('adherent')
             ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
