@@ -31,7 +31,7 @@ class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministrat
     /**
      * @var CandidacyInterface[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\Designation\CandidacyPool\Candidacy", mappedBy="candidaciesGroup", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\Designation\CandidacyPool\Candidacy", mappedBy="candidaciesGroup", fetch="EAGER", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"position": "ASC"})
      *
      * @Assert\Valid
