@@ -87,8 +87,6 @@ class ConfigureCommand extends Command
         $this->io->progressStart();
 
         foreach ($designations as $designation) {
-            $this->entityManager->merge($designation);
-
             if ($designation->isCommitteeSupervisorType()) {
                 $this->configureCommitteeSupervisorElections($designation);
             } elseif ($designation->isCommitteeTypes()) {
@@ -108,8 +106,6 @@ class ConfigureCommand extends Command
             } elseif ($designation->isTerritorialAssemblyType()) {
                 $this->configureTerritorialAssembly($designation);
             }
-
-            $this->entityManager->clear();
 
             $this->io->progressAdvance();
         }
