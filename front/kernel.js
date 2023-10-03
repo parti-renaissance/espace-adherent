@@ -6,7 +6,6 @@ import 'utils/text';
 import 'utils/url';
 import { decode } from 'js-base64';
 import * as Sentry from '@sentry/browser';
-import { BrowserTracing } from '@sentry/tracing';
 
 import './style/app.scss';
 
@@ -24,7 +23,7 @@ window.Kernel = class {
                         dsn: sentryDsn,
                         release,
                         environment,
-                        integrations: [new BrowserTracing()],
+                        integrations: [new Sentry.BrowserTracing()],
                         ignoreErrors: ['Non-Error promise rejection captured'],
                         tracesSampleRate: 0.025,
                         denyUrls: ['axept.io'],

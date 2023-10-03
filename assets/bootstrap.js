@@ -3,7 +3,6 @@ import 'utils/sharer';
 import 'utils/css';
 
 import * as Sentry from '@sentry/browser';
-import { Integrations } from '@sentry/tracing';
 
 import './style/main.scss';
 
@@ -20,7 +19,7 @@ window.Bootstrap = class {
                         dsn: sentryDsn,
                         release,
                         environment,
-                        integrations: [new Integrations.BrowserTracing()],
+                        integrations: [new Sentry.BrowserTracing()],
                         ignoreErrors: ['Non-Error promise rejection captured'],
                         tracesSampleRate: 0.025,
                         denyUrls: ['axept.io'],
