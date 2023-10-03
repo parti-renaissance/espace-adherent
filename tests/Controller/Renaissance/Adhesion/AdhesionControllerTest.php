@@ -33,8 +33,6 @@ class AdhesionControllerTest extends AbstractRenaissanceWebTestCase
 
     public function testRenaissanceMembershipRequest(): void
     {
-        self::markTestSkipped('Fix paybox url availability');
-
         $crawler = $this->client->request(Request::METHOD_GET, '/adhesion?utm_source=test&utm_campaign=let_CI_be_green_again');
 
         $this->assertCount(0, $this->getEmailRepository()->findMessages(AdherentAccountActivationMessage::class));
