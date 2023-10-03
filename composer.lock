@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1084ba229235e4fcfe9e7d4e2fd7f3ff",
+    "content-hash": "8b6416b54e4b58e847ff3005ad52c1fd",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -2891,16 +2891,16 @@
         },
         {
             "name": "endroid/qr-code",
-            "version": "4.8.4",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/qr-code.git",
-                "reference": "a122b85d4a5a3257d471257a43ac3e5676a27ffe"
+                "reference": "3601a9df66f6c526e4bb6dc2261e1ce03064e7d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/qr-code/zipball/a122b85d4a5a3257d471257a43ac3e5676a27ffe",
-                "reference": "a122b85d4a5a3257d471257a43ac3e5676a27ffe",
+                "url": "https://api.github.com/repos/endroid/qr-code/zipball/3601a9df66f6c526e4bb6dc2261e1ce03064e7d2",
+                "reference": "3601a9df66f6c526e4bb6dc2261e1ce03064e7d2",
                 "shasum": ""
             },
             "require": {
@@ -2925,7 +2925,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.x-dev"
+                    "dev-master": "5.x-dev"
                 }
             },
             "autoload": {
@@ -2954,7 +2954,7 @@
             ],
             "support": {
                 "issues": "https://github.com/endroid/qr-code/issues",
-                "source": "https://github.com/endroid/qr-code/tree/4.8.4"
+                "source": "https://github.com/endroid/qr-code/tree/5.0.1"
             },
             "funding": [
                 {
@@ -2962,25 +2962,25 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-08-28T18:12:07+00:00"
+            "time": "2023-10-02T22:39:22+00:00"
         },
         {
             "name": "endroid/qr-code-bundle",
-            "version": "4.3.3",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/qr-code-bundle.git",
-                "reference": "0d2471e81dbb2e6a527273bfb68d361a4b75d52a"
+                "reference": "aa42fbfe654134ac2ec58896ce19379ba9da4d9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/qr-code-bundle/zipball/0d2471e81dbb2e6a527273bfb68d361a4b75d52a",
-                "reference": "0d2471e81dbb2e6a527273bfb68d361a4b75d52a",
+                "url": "https://api.github.com/repos/endroid/qr-code-bundle/zipball/aa42fbfe654134ac2ec58896ce19379ba9da4d9d",
+                "reference": "aa42fbfe654134ac2ec58896ce19379ba9da4d9d",
                 "shasum": ""
             },
             "require": {
                 "endroid/installer": "^1.2.2",
-                "endroid/qr-code": "^4.8.4",
+                "endroid/qr-code": "^5.0",
                 "php": "^8.1",
                 "symfony/framework-bundle": "^5.4||^6.0",
                 "symfony/twig-bundle": "^5.4||^6.0",
@@ -3025,7 +3025,7 @@
             ],
             "support": {
                 "issues": "https://github.com/endroid/qr-code-bundle/issues",
-                "source": "https://github.com/endroid/qr-code-bundle/tree/4.3.3"
+                "source": "https://github.com/endroid/qr-code-bundle/tree/5.0.0"
             },
             "funding": [
                 {
@@ -3033,7 +3033,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-08-28T18:13:42+00:00"
+            "time": "2023-10-02T22:43:57+00:00"
         },
         {
             "name": "enmarche/majority-judgment",
@@ -13196,27 +13196,30 @@
         },
         {
             "name": "symfony/error-handler",
-            "version": "v5.4.29",
+            "version": "v6.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/error-handler.git",
-                "reference": "328c6fcfd2f90b64c16efaf0ea67a311d672f078"
+                "reference": "1f69476b64fb47105c06beef757766c376b548c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/error-handler/zipball/328c6fcfd2f90b64c16efaf0ea67a311d672f078",
-                "reference": "328c6fcfd2f90b64c16efaf0ea67a311d672f078",
+                "url": "https://api.github.com/repos/symfony/error-handler/zipball/1f69476b64fb47105c06beef757766c376b548c4",
+                "reference": "1f69476b64fb47105c06beef757766c376b548c4",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
+                "php": ">=8.1",
                 "psr/log": "^1|^2|^3",
-                "symfony/var-dumper": "^4.4|^5.0|^6.0"
+                "symfony/var-dumper": "^5.4|^6.0"
+            },
+            "conflict": {
+                "symfony/deprecation-contracts": "<2.5"
             },
             "require-dev": {
-                "symfony/deprecation-contracts": "^2.1|^3",
-                "symfony/http-kernel": "^4.4|^5.0|^6.0",
-                "symfony/serializer": "^4.4|^5.0|^6.0"
+                "symfony/deprecation-contracts": "^2.5|^3",
+                "symfony/http-kernel": "^5.4|^6.0",
+                "symfony/serializer": "^5.4|^6.0"
             },
             "bin": [
                 "Resources/bin/patch-type-declarations"
@@ -13247,7 +13250,7 @@
             "description": "Provides tools to manage errors and ease debugging PHP code",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/error-handler/tree/v5.4.29"
+                "source": "https://github.com/symfony/error-handler/tree/v6.3.5"
             },
             "funding": [
                 {
@@ -13263,7 +13266,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-06T21:54:06+00:00"
+            "time": "2023-09-12T06:57:20+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
