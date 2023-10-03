@@ -22,6 +22,7 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
 {
     use RecaptchaChallengeTrait;
 
+    public const EMAIL = 'email';
     public const UTM_SOURCE = 'utm_source';
     public const UTM_CAMPAIGN = 'utm_campaign';
 
@@ -86,6 +87,7 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
 
     public ?string $utmSource = null;
     public ?string $utmCampaign = null;
+    public bool $emailFromRequest = false;
 
     public function __construct()
     {

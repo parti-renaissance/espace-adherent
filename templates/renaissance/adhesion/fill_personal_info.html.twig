@@ -34,7 +34,7 @@
         </div>
 
 
-        {{ form_start(form) }}
+        {{ form_start(form, {action: '?'}) }}
             {% if app.user and app.user.certified %}
                 <div class="rounded-md bg-sky-50 p-4 mb-4">
                     <div class="flex">

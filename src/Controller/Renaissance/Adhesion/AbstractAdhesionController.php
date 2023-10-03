@@ -41,6 +41,11 @@ abstract class AbstractAdhesionController extends AbstractController
             $command->utmCampaign = $this->filterUtmParameter((string) $request->query->get(RenaissanceMembershipRequest::UTM_CAMPAIGN));
         }
 
+        if (!$user && $request && $request->query->has(RenaissanceMembershipRequest::EMAIL)) {
+            $command->emailFromRequest = true;
+            $command->setEmailAddress($request->query->get(RenaissanceMembershipRequest::EMAIL));
+        }
+
         return $command;
     }
 

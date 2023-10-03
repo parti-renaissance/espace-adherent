@@ -24,6 +24,7 @@ class AdhesionController extends AbstractAdhesionController
         $form = $this
             ->createForm(PersonalInfoType::class, $command, [
                 'from_adherent' => (bool) $command->getAdherentId(),
+                'disable_duplicate' => $command->emailFromRequest,
                 'from_certified_adherent' => $command->isCertified(),
             ])
             ->handleRequest($request)
