@@ -16,7 +16,7 @@
     "@headlessui/react": "^1.7.17",
     "@mapbox/polylabel": "^1.0.2",
     "@sentry/browser": "^7.72.0",
-    "@sentry/tracing": "^7.72.0",
+    "@sentry/tracing": "^7.73.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.6",
     "@tailwindcss/line-clamp": "^0.4.4",
