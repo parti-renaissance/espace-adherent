@@ -100,6 +100,20 @@ class AdherentRequest
         return $object;
     }
 
+    public static function createForEmail(string $email, string $source): self
+    {
+        $object = new self();
+
+        $object->firstName = '';
+        $object->lastName = '';
+        $object->password = '';
+        $object->email = $email;
+        $object->amount = 0;
+        $object->utmSource = $source;
+
+        return $object;
+    }
+
     public function getFullName(): string
     {
         return sprintf('%s %s', $this->firstName, $this->lastName);

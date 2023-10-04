@@ -35,7 +35,7 @@ class PersonalInfoType extends AbstractType
             $builder->add('emailAddress', EmailType::class, ['disabled' => true]);
         } else {
             $builder
-                ->add('emailAddress', RepeatedEmailType::class, [])
+                ->add('emailAddress', RepeatedEmailType::class, ['disable_duplicate' => $options['disable_duplicate']])
                 ->add('password', PasswordType::class)
             ;
         }
@@ -49,9 +49,11 @@ class PersonalInfoType extends AbstractType
                 'validation_groups' => ['fill_personal_info'],
                 'from_adherent' => false,
                 'from_certified_adherent' => false,
+                'disable_duplicate' => false,
             ])
             ->setAllowedTypes('from_adherent', 'bool')
             ->setAllowedTypes('from_certified_adherent', 'bool')
+            ->setAllowedTypes('disable_duplicate', 'bool')
         ;
     }
 
