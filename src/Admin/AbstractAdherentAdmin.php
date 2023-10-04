@@ -662,12 +662,12 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     $qb
                         ->innerJoin(
                             ElectedRepresentativeAdherentMandate::class,
-                            'er_adherent_mandate',
+                            'eam',
                             Expr\Join::WITH,
-                            sprintf('%s.id = er_adherent_mandate.adherent', $alias)
+                            sprintf('%s.id = eam.adherent', $alias)
                         )
-                        ->andWhere('er_adherent_mandate.finishAt IS NULL')
-                        ->andWhere('er_adherent_mandate.mandateType IN (:er_adherent_mandate_types)')
+                        ->andWhere('eam.finishAt IS NULL')
+                        ->andWhere('eam.mandateType IN (:er_adherent_mandate_types)')
                         ->setParameter('er_adherent_mandate_types', $value->getValue())
                     ;
 
