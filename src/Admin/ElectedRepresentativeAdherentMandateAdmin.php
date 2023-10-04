@@ -12,7 +12,7 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 
 class ElectedRepresentativeAdherentMandateAdmin extends AbstractAdmin
 {
-    public const SERVICE_ID = 'app.admin.elected_representative_adherent_mandate_admin';
+    public const SERVICE_ID = 'app.admin.elected_representative_adherent_mandate';
 
     protected function configureDefaultSortValues(array &$sortValues): void
     {

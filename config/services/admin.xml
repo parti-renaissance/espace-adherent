@@ -1096,7 +1096,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.elected_representative_adherent_mandate_admin" class="App\Admin\ElectedRepresentativeAdherentMandateAdmin">
+        <service id="app.admin.elected_representative_adherent_mandate" class="App\Admin\ElectedRepresentativeAdherentMandateAdmin">
             <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
 
             <argument />
