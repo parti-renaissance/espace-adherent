@@ -696,6 +696,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
+     *
+     * @Assert\Valid
      */
     private $adherentMandates;
 
