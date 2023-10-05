@@ -155,6 +155,9 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
     public function setAdherent(Adherent $adherent): void
     {
         $this->adherent = $adherent;
+        if (!$this->gender) {
+            $this->gender = $adherent->getGender();
+        }
     }
 
     public function getGender(): ?string

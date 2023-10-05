@@ -77,26 +77,16 @@ class ContributionRequest
 
     public function needContribution(): bool
     {
-        return $this->revenueAmount >= self::CONTRIBUTION_MIN_REVENUE_AMOUNT;
+        return ContributionAmountUtils::needContribution($this->revenueAmount);
     }
 
     public function getContributionAmount(): int
     {
-        if (!$this->needContribution()) {
-            return 0;
-        }
-
-        $contributionAmount = round($this->revenueAmount * 2 / 100);
-
-        if ($contributionAmount > self::CONTRIBUTION_MAX_AMOUNT) {
-            return self::CONTRIBUTION_MAX_AMOUNT;
-        }
-
-        return $contributionAmount;
+        return ContributionAmountUtils::getContributionAmount($this->revenueAmount);
     }
 
-    public function getContributionAmountAfterTax(): float
+    public function getContributionAmountAfterTax(): int
     {
-        return round($this->getContributionAmount() / 3);
+        return ContributionAmountUtils::getContributionAmountAfterTax($this->revenueAmount);
     }
 }

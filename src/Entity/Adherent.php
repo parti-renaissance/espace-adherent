@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Address\AddressInterface;
 use App\Address\PostAddressFactory;
+use App\Adherent\Contribution\ContributionAmountUtils;
 use App\Adherent\LastLoginGroupEnum;
 use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
@@ -102,6 +103,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/adherents/{uuid}/elect",
  *             "method": "GET",
  *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')",
+ *         },
+ *         "put_elect": {
+ *             "path": "/adherents/{uuid}/elect",
+ *             "method": "PUT",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "denormalization_context": {
+ *                 "groups": {"adherent_elect_update"},
+ *             },
+ *             "validation_groups": {"adherent_elect_update"},
  *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')",
  *         },
  *     },
@@ -816,6 +827,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Groups({"adherent_elect_read"})
      */
     private ?string $contributionStatus = null;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Groups({"adherent_elect_read", "adherent_elect_update"})
+     *
+     * @Assert\Expression("!value || (!this.findActifNationalMandates() and this.findActifLocalMandates())", message="adherent.elect.exempt_invalid_status", groups={"adherent_elect_update"})
+     */
+    public bool $exemptFromCotisation = false;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -2976,6 +2996,19 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         })->toArray();
     }
 
+    /**
+     * @return ElectedRepresentativeAdherentMandate[]
+     */
+    public function findActifNationalMandates(): array
+    {
+        return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) {
+            return
+                $mandate instanceof ElectedRepresentativeAdherentMandate
+                && null === $mandate->getFinishAt()
+                && !$mandate->isLocal();
+        })->toArray();
+    }
+
     public function findTerritorialCouncilMandates(string $quality = null, bool $active = false): array
     {
         return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) use ($quality, $active) {
@@ -3342,6 +3375,20 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->contributions->removeElement($contribution);
     }
 
+    /**
+     * @Groups({"adherent_elect_read"})
+     */
+    public function getContributionAmount(): ?int
+    {
+        $lastRevenueDeclaration = $this->getLastRevenueDeclaration();
+
+        if ($lastRevenueDeclaration) {
+            return ContributionAmountUtils::getContributionAmount($lastRevenueDeclaration->amount);
+        }
+
+        return null;
+    }
+
     public function getPayments(): Collection
     {
         return $this->payments;
@@ -3417,5 +3464,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $adherentMandate->setAdherent($this);
             $this->addAdherentMandate($adherentMandate);
         }
+    }
+
+    /**
+     * @Groups({"adherent_elect_read"})
+     */
+    public function getLastRevenueDeclaration(): ?RevenueDeclaration
+    {
+        return $this->revenueDeclarations->first() ?: null;
     }
 }
