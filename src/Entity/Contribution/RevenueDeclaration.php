@@ -8,6 +8,7 @@ use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -20,6 +21,8 @@ class RevenueDeclaration
 
     /**
      * @ORM\Column(type="integer")
+     *
+     * @Groups({"adherent_elect_read"})
      */
     public int $amount;
 

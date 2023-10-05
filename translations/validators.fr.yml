@@ -107,7 +107,7 @@ adherent.nickname.invalid_syntax: La syntaxe est incorrecte, le pseudo ne peut c
 adherent.nickname.invalid_extended_syntax: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres (contenant des accents aussi), et les caractères _, -, ! et .
 
 adherent.unknown_id: Il n'existe aucun adhérent correspondant à cet ID.
-
+adherent.elect.exempt_invalid_status: Vous ne pouvez pas activer l'option exonération de cotisation pour cet élu
 adherent_formation.zone_title.unique_entity: Il existe déjà une formation portant ce titre dans cette zone.
 
 

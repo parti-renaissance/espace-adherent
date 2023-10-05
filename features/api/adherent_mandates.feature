@@ -15,6 +15,9 @@ Feature:
         "mandates": ["depute_europeen"],
         "contribution_status": "eligible",
         "contributed_at": "@string@.isDateTime()",
+        "contribution_amount": null,
+        "exempt_from_cotisation": false,
+        "last_revenue_declaration": null,
         "payments": [
             {
                 "date": "@string@.isDateTime()",
@@ -128,3 +131,97 @@ Feature:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a user granted with local scope, I can update exemptFromCotisation property
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        And I send a "GET" request to "/api/v3/adherents/b4219d47-3138-5efd-9762-2ef9f9495084/elect?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "mandates": ["conseiller_municipal"],
+            "contribution_status": null,
+            "contributed_at": null,
+            "contribution_amount": null,
+            "exempt_from_cotisation": false,
+            "last_revenue_declaration": null,
+            "payments": [],
+            "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+            "elect_mandates": [
+                {
+                    "mandate_type": "conseiller_municipal",
+                    "delegation": "Conseiller(e) municipal(e)",
+                    "zone": {
+                        "uuid": "@uuid@",
+                        "code": "200054781",
+                        "name": "Métropole du Grand Paris"
+                    },
+                    "begin_at": "@string@.isDateTime()",
+                    "finish_at": "@string@.isDateTime()",
+                    "uuid": "@uuid@"
+                },
+                {
+                    "mandate_type": "conseiller_municipal",
+                    "delegation": "Conseiller(e) municipal(e)",
+                    "zone": {
+                        "uuid": "@uuid@",
+                        "code": "200054781",
+                        "name": "Métropole du Grand Paris"
+                    },
+                    "begin_at": "@string@.isDateTime()",
+                    "finish_at": null,
+                    "uuid": "@uuid@"
+                }
+            ]
+        }
+        """
+        And I send a "PUT" request to "/api/v3/adherents/b4219d47-3138-5efd-9762-2ef9f9495084/elect?scope=<scope>" with body:
+        """
+        {"exempt_from_cotisation": true}
+        """
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "mandates": ["conseiller_municipal"],
+            "contribution_status": null,
+            "contributed_at": null,
+            "contribution_amount": null,
+            "exempt_from_cotisation": true,
+            "last_revenue_declaration": null,
+            "payments": [],
+            "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+            "elect_mandates": [
+                {
+                    "mandate_type": "conseiller_municipal",
+                    "delegation": "Conseiller(e) municipal(e)",
+                    "zone": {
+                        "uuid": "@uuid@",
+                        "code": "200054781",
+                        "name": "Métropole du Grand Paris"
+                    },
+                    "begin_at": "@string@.isDateTime()",
+                    "finish_at": "@string@.isDateTime()",
+                    "uuid": "@uuid@"
+                },
+                {
+                    "mandate_type": "conseiller_municipal",
+                    "delegation": "Conseiller(e) municipal(e)",
+                    "zone": {
+                        "uuid": "@uuid@",
+                        "code": "200054781",
+                        "name": "Métropole du Grand Paris"
+                    },
+                    "begin_at": "@string@.isDateTime()",
+                    "finish_at": null,
+                    "uuid": "@uuid@"
+                }
+            ]
+        }
+        """
+        Examples:
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | referent                                       |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
