@@ -182,9 +182,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 ->add('status', null, [
                     'label' => 'Etat du compte',
                 ])
-                ->add('tags', null, [
-                    'label' => 'Tags admin',
-                ])
                 ->add('certifiedAt', null, [
                     'label' => 'Certifié le',
                 ])
@@ -321,12 +318,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
                                 'Activé' => Adherent::ENABLED,
                                 'Désactivé' => Adherent::DISABLED,
                             ],
-                        ])
-                        ->add('tags', ModelType::class, [
-                            'label' => 'Tags admin',
-                            'multiple' => true,
-                            'by_reference' => false,
-                            'btn_add' => false,
                         ])
                         ->add('lastMembershipDonationDate', HiddenType::class, [
                             'label' => false,

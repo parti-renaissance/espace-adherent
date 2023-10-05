@@ -4,7 +4,6 @@ namespace App\Admin;
 
 use App\Admin\Filter\AdherentRoleFilter;
 use App\Entity\Adherent;
-use App\Entity\AdherentTag;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Instance\InstanceQuality;
@@ -176,14 +175,6 @@ class AdherentAdmin extends AbstractAdherentAdmin
 
                     return true;
                 },
-            ])
-            ->add('tags', ModelFilter::class, [
-                'label' => 'Tags admin',
-                'field_options' => [
-                    'class' => AdherentTag::class,
-                    'multiple' => true,
-                ],
-                'mapping_type' => ClassMetadata::MANY_TO_MANY,
             ])
             ->add('subscriptionTypes', ModelFilter::class, [
                 'label' => 'Types de souscriptions',

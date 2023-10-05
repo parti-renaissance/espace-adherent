@@ -102,7 +102,6 @@ class AdherentFactory
             Adherent::DISABLED,
             'now',
             [],
-            [],
             $request->getMandates(),
             $request->nationality,
             $request->customGender
@@ -188,7 +187,6 @@ class AdherentFactory
             $data['nickname_used'] ?? false,
             Adherent::DISABLED,
             $data['registered_at'] ?? 'now',
-            [],
             [],
             null,
             $data['nationality'] ?? null,

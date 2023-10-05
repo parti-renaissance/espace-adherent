@@ -149,7 +149,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
         $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
-        $adherent3->addTag($this->getReference('adherent_tag_at007'));
         $adherent3->setCandidateManagedArea($candidateManagedAreaRegion = new CandidateManagedArea());
         $candidateManagedAreaRegion->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'));
         $adherent3->addCharter(new CandidateCharter());
@@ -235,10 +234,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-01-16 18:33:22',
         ]);
         $adherent6->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent6->addTag($this->getReference('adherent_tag_at001'));
-        $adherent6->addTag($this->getReference('adherent_tag_at002'));
-        $adherent6->addTag($this->getReference('adherent_tag_at003'));
-        $adherent6->addTag($this->getReference('adherent_tag_at007'));
         $adherent6->addReferentTag($this->getReference('referent_tag_13'));
         $adherent6->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_13055'));
         $adherent6->certify();
@@ -1313,7 +1308,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     {
         return [
             LoadBoardMemberRoleData::class,
-            LoadAdherentTagData::class,
             LoadReferentTagData::class,
             LoadSubscriptionTypeData::class,
             LoadElectionVotePlaceData::class,

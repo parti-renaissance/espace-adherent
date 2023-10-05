@@ -303,7 +303,6 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
             'nickname' => 'pont',
             'use_nickname' => false,
             'elected' => false,
-            'larem' => false,
             'emailAddress' => 'carl999@example.fr',
             'firstName' => 'Carl',
             'lastName' => 'Mirabeau',
