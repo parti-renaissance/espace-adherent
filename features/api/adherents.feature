@@ -32,7 +32,6 @@ Feature:
       "nickname": null,
       "use_nickname": false,
       "elected": false,
-      "larem": false,
       "certified": false,
       "detailed_roles": [
         {
@@ -76,7 +75,6 @@ Feature:
       "nickname":"kikouslove",
       "use_nickname":true,
       "elected": false,
-      "larem": true,
       "certified": true,
       "detailed_roles": [],
       "emailAddress":"jacques.picard@en-marche.fr",

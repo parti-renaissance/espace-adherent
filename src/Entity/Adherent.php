@@ -406,11 +406,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $committeeFeedItems;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\AdherentTag")
-     */
-    private $tags;
-
-    /**
      * @var District|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\District", cascade={"persist"})
@@ -433,23 +428,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var string[]
      */
     private $roles = [];
-
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    public $localHostEmailsSubscription = false;
-
-    /**
-     * @var string[]
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
-    public $emailsSubscriptions;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    public $comMobile;
 
     /**
      * Activation token was already sent after 48h of registration
@@ -892,7 +870,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->memberships = new ArrayCollection();
         $this->animatorCommittees = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
-        $this->tags = new ArrayCollection();
         $this->zones = new ZoneCollection();
         $this->charters = new AdherentCharterCollection();
         $this->certificationRequests = new ArrayCollection();
@@ -945,30 +922,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $adherent;
     }
 
-    public static function createLight(
-        UuidInterface $uuid,
-        string $emailAddress,
-        string $firstName,
-        PostAddress $postAddress,
-        string $password,
-        string $status = self::DISABLED,
-        string $source = null,
-    ): self {
-        $adherent = new self();
-
-        $adherent->uuid = $uuid;
-        $adherent->firstName = $firstName;
-        $adherent->postAddress = $postAddress;
-        $adherent->emailAddress = $emailAddress;
-        $adherent->password = $password;
-        $adherent->status = $status;
-        $adherent->nicknameUsed = false;
-        $adherent->registeredAt = new \DateTime('now');
-        $adherent->source = $source;
-
-        return $adherent;
-    }
-
     public static function create(
         UuidInterface $uuid,
         string $emailAddress,
@@ -984,7 +937,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         bool $nicknameUsed = false,
         string $status = self::DISABLED,
         string $registeredAt = 'now',
-        ?array $tags = [],
         ?array $referentTags = [],
         ?array $mandates = [],
         string $nationality = null,
@@ -1006,7 +958,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->phone = $phone;
         $adherent->status = $status;
         $adherent->registeredAt = new \DateTime($registeredAt);
-        $adherent->tags = new ArrayCollection($tags);
         $adherent->referentTags = new ArrayCollection($referentTags);
         $adherent->mandates = $mandates ?? [];
         $adherent->nationality = $nationality;
@@ -1043,16 +994,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isElected(): bool
     {
         return $this->getMandates() && \count($this->getMandates()) > 0;
-    }
-
-    /**
-     * @Groups({"user_profile"})
-     */
-    public function isLarem(): bool
-    {
-        return $this->getTags()->filter(function (AdherentTag $tag) {
-            return AdherentTagEnum::LAREM === $tag->getName();
-        })->count() > 0;
     }
 
     public function getRoles()
@@ -2204,30 +2145,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getCommitteeFeedItems(): iterable
     {
         return $this->committeeFeedItems;
-    }
-
-    public function getTags(): Collection
-    {
-        return $this->tags;
-    }
-
-    public function setTags(iterable $tags): void
-    {
-        foreach ($tags as $tag) {
-            $this->addTag($tag);
-        }
-    }
-
-    public function addTag(AdherentTag $adherentTag): void
-    {
-        if (!$this->tags->contains($adherentTag)) {
-            $this->tags->add($adherentTag);
-        }
-    }
-
-    public function removeTag(AdherentTag $adherentTag): void
-    {
-        $this->tags->removeElement($adherentTag);
     }
 
     /**

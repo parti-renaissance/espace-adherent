@@ -27,7 +27,6 @@ Feature:
       "use_nickname": false,
       "certified": false,
       "elected": false,
-      "larem": false,
       "detailed_roles": [],
       "surveys": {
         "total": 0,
@@ -49,7 +48,6 @@ Feature:
         "first_name": "Jacques",
         "last_name": "Picard",
         "elected": false,
-        "larem": true,
         "use_nickname": true,
         "detailed_roles": [],
         "certified": true,
