@@ -865,6 +865,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private Collection $revenueDeclarations;
 
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    public array $tags = [];
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();

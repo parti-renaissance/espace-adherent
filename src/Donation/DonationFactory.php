@@ -52,6 +52,10 @@ class DonationFactory
             $donation->setReAdhesion(true);
         }
 
+        if ($request->getDonatedAt()) {
+            $donation->setDonatedAt($request->getDonatedAt());
+        }
+
         return $donation;
     }
 

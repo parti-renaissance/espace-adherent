@@ -1428,3 +1428,8 @@ executive_office.title.member_by_right: Membres de droit
 #
 admin.new.renaissance_adherent.label: Nouvel Adhérent
 admin.new.renaissance_adherent.create.label: Créer
+
+adherent.tag.adherent:cotisation_ok: Adhérent - à jour de cotisation
+adherent.tag.adherent:cotisation_nok: Adhérent - non à jour de cotisation
+adherent.tag.sympathisant:compte_em: Sympathisant - ancien adhérent EM
+adherent.tag.sympathisant:compte_re: Sympathisant - adhésion incomplète

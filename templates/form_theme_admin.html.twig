@@ -699,16 +699,22 @@
 
 {% block app_admin_adherent_lastMembershipDonationDate_hidden_row %}
     {% set object = form.parent.vars.data %}
-    <span class="text-bold">Statut de la cotisation</span>
-    <p>
-        {% if object.hasActiveMembership() %}
-            <span class="label" style="background-color:#166534;">A jour de cotisation</span>
-        {% else %}
-            <span class="label" style="background-color:#c11e1e;">Non à jour de cotisation</span>
-        {% endif %}
-    </p>
+    {% if object.isRenaissanceAdherent() %}
+        <p>
+            <span class="text-bold">Dernière cotisation :</span> {{ object.getLastMembershipDonation()|date('d/m/Y') }}
+        </p>
+    {% endif %}
+{% endblock %}
 
-    {% if object.isRenaissanceAdherent() %}<span class="text-bold">Dernière cotisation: {{ object.getLastMembershipDonation()|date('d-m-Y') }}</span>{% endif %}
+{% block app_admin_adherent_tags_hidden_widget %}
+    {% set object = form.parent.vars.data %}
+
+    <label>Tags</label><br/>
+    {% for tag in object.tags %}
+        <span class="label label-success">{{ ('adherent.tag.'~tag)|trans }}</span>
+    {% else %}
+        ~
+    {% endfor %}
 {% endblock %}
 
 {% block unlayer_content_widget %}
