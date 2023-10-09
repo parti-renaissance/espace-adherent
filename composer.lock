@@ -3253,16 +3253,16 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v6.8.1",
+            "version": "v6.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "5dbc8959427416b8ee09a100d7a8588c00fb2e26"
+                "reference": "f03270e63eaccf3019ef0f32849c497385774e11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/5dbc8959427416b8ee09a100d7a8588c00fb2e26",
-                "reference": "5dbc8959427416b8ee09a100d7a8588c00fb2e26",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/f03270e63eaccf3019ef0f32849c497385774e11",
+                "reference": "f03270e63eaccf3019ef0f32849c497385774e11",
                 "shasum": ""
             },
             "require": {
@@ -3310,9 +3310,9 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v6.8.1"
+                "source": "https://github.com/firebase/php-jwt/tree/v6.9.0"
             },
-            "time": "2023-07-14T18:33:00+00:00"
+            "time": "2023-10-05T00:24:42+00:00"
         },
         {
             "name": "friendsofphp/proxy-manager-lts",
@@ -4047,16 +4047,16 @@
         },
         {
             "name": "google/auth",
-            "version": "v1.30.0",
+            "version": "v1.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "6028b072aa444d7edecbed603431322026704627"
+                "reference": "22209fddd0c06f3f8e3cb4aade0b352aa00f9888"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/6028b072aa444d7edecbed603431322026704627",
-                "reference": "6028b072aa444d7edecbed603431322026704627",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/22209fddd0c06f3f8e3cb4aade0b352aa00f9888",
+                "reference": "22209fddd0c06f3f8e3cb4aade0b352aa00f9888",
                 "shasum": ""
             },
             "require": {
@@ -4099,9 +4099,9 @@
             "support": {
                 "docs": "https://googleapis.github.io/google-auth-library-php/main/",
                 "issues": "https://github.com/googleapis/google-auth-library-php/issues",
-                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.30.0"
+                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.31.0"
             },
-            "time": "2023-09-07T19:13:44+00:00"
+            "time": "2023-10-05T20:39:00+00:00"
         },
         {
             "name": "google/cloud-core",
@@ -4170,16 +4170,16 @@
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
-            "version": "v1.4.2",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise.git",
-                "reference": "79d07476560ab6252f20d6657a6bb103c8d59f0e"
+                "reference": "d42314d5f1c8288ad6ca0560806cb57facc60ddf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/79d07476560ab6252f20d6657a6bb103c8d59f0e",
-                "reference": "79d07476560ab6252f20d6657a6bb103c8d59f0e",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/d42314d5f1c8288ad6ca0560806cb57facc60ddf",
+                "reference": "d42314d5f1c8288ad6ca0560806cb57facc60ddf",
                 "shasum": ""
             },
             "require": {
@@ -4214,9 +4214,9 @@
             ],
             "description": "Google Cloud Recaptcha Enterprise Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.4.2"
+                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.5.0"
             },
-            "time": "2023-07-07T20:46:38+00:00"
+            "time": "2023-10-06T21:49:26+00:00"
         },
         {
             "name": "google/cloud-storage",
@@ -4333,16 +4333,16 @@
         },
         {
             "name": "google/common-protos",
-            "version": "v4.3.0",
+            "version": "v4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/common-protos-php.git",
-                "reference": "4ab56787c4f7c34277055ea7bd9982ad758b2c67"
+                "reference": "04b6c213e0add963dab058329caf2d2d9014129a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/4ab56787c4f7c34277055ea7bd9982ad758b2c67",
-                "reference": "4ab56787c4f7c34277055ea7bd9982ad758b2c67",
+                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/04b6c213e0add963dab058329caf2d2d9014129a",
+                "reference": "04b6c213e0add963dab058329caf2d2d9014129a",
                 "shasum": ""
             },
             "require": {
@@ -4379,9 +4379,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/common-protos-php/issues",
-                "source": "https://github.com/googleapis/common-protos-php/tree/v4.3.0"
+                "source": "https://github.com/googleapis/common-protos-php/tree/v4.4.0"
             },
-            "time": "2023-08-22T18:10:13+00:00"
+            "time": "2023-10-02T18:14:18+00:00"
         },
         {
             "name": "google/gax",
@@ -4529,16 +4529,16 @@
         },
         {
             "name": "google/protobuf",
-            "version": "v3.24.3",
+            "version": "v3.24.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "2fc191fc5e137829081b8700086ac6ed7003b925"
+                "reference": "672d69e25f71b9364fdf1810eb8a8573defdc404"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/2fc191fc5e137829081b8700086ac6ed7003b925",
-                "reference": "2fc191fc5e137829081b8700086ac6ed7003b925",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/672d69e25f71b9364fdf1810eb8a8573defdc404",
+                "reference": "672d69e25f71b9364fdf1810eb8a8573defdc404",
                 "shasum": ""
             },
             "require": {
@@ -4567,9 +4567,9 @@
                 "proto"
             ],
             "support": {
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.24.3"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.24.4"
             },
-            "time": "2023-09-07T15:39:13+00:00"
+            "time": "2023-10-04T17:22:47+00:00"
         },
         {
             "name": "grpc/grpc",
