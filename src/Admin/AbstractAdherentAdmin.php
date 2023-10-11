@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Address\AddressInterface;
+use App\Adherent\Tag\TagEnum;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
@@ -321,6 +322,11 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         ])
                         ->add('lastMembershipDonationDate', HiddenType::class, [
                             'label' => false,
+                            'required' => false,
+                            'mapped' => false,
+                        ])
+                        ->add('tags', HiddenType::class, [
+                            'label' => 'Tags',
                             'required' => false,
                             'mapped' => false,
                         ])
@@ -761,6 +767,18 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     return MembershipFilterHelper::withMembershipFilter($qb, $alias, $value->getValue());
                 },
+            ])
+            ->add('tags', ChoiceFilter::class, [
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => TagEnum::values(),
+                    'choice_label' => function (string $label) {
+                        return 'adherent.tag.'.$label;
+                    },
+                    'multiple' => true,
+                ],
+                'label' => 'Tags',
             ])
         ;
     }

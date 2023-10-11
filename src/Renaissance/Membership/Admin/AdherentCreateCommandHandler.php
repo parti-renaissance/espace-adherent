@@ -72,7 +72,6 @@ class AdherentCreateCommandHandler
         $donationRequest->setDonatedAt($command->cotisationDate);
 
         $donation = $this->donationRequestHandler->handle($donationRequest, $adherent, $forReAdhesion);
-        $donation->setDonatedAt($command->cotisationDate);
         $donation->markAsFinished();
         $donation->markAsLastSuccessfulDonation();
 

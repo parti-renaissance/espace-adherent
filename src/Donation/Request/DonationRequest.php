@@ -345,7 +345,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         return $this->type;
     }
 
-    public function forMembership()
+    public function forMembership(): void
     {
         $this->source = DonationSourceEnum::MEMBERSHIP;
     }
