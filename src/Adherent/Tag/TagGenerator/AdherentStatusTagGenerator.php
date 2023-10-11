@@ -7,24 +7,22 @@ use App\Entity\Adherent;
 
 class AdherentStatusTagGenerator extends AbstractTagGenerator
 {
-    public function generate(Adherent $adherent): ?string
+    public function generate(Adherent $adherent): array
     {
         if (!$adherent->isRenaissanceUser()) {
-            return null;
+            return [];
         }
 
         if ($adherent->isRenaissanceAdherent()) {
-            if ($adherent->hasActiveMembership()) {
-                return TagEnum::ADHERENT_COTISATION_OK;
-            }
-
-            return TagEnum::ADHERENT_COTISATION_NOK;
+            return [
+                TagEnum::ADHERENT,
+                $adherent->hasActiveMembership() ? TagEnum::ADHERENT_COTISATION_OK : TagEnum::ADHERENT_COTISATION_NOK,
+            ];
         }
 
-        if ($adherent->getActivatedAt() && $adherent->getActivatedAt() < new \DateTime('2022-09-17')) {
-            return TagEnum::SYMPATHISANT_COMPTE_EM;
-        }
-
-        return TagEnum::SYMPATHISANT_COMPTE_RE;
+        return [
+            TagEnum::SYMPATHISANT,
+            $adherent->getActivatedAt() && $adherent->getActivatedAt() < new \DateTime('2022-09-17') ? TagEnum::SYMPATHISANT_COMPTE_EM : TagEnum::SYMPATHISANT_COMPTE_RE,
+        ];
     }
 }

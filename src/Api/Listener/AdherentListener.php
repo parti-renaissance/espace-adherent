@@ -4,15 +4,14 @@ namespace App\Api\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
-use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
-use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
+use App\Entity\Adherent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class ElectedRepresentativeAdherentMandateListener implements EventSubscriberInterface
+class AdherentListener implements EventSubscriberInterface
 {
     public function __construct(private readonly MessageBusInterface $bus)
     {
@@ -25,25 +24,21 @@ class ElectedRepresentativeAdherentMandateListener implements EventSubscriberInt
 
     public function onPostWrite(ViewEvent $viewEvent): void
     {
+        $adherent = $viewEvent->getControllerResult();
+
+        if (!$adherent instanceof Adherent) {
+            return;
+        }
+
         $request = $viewEvent->getRequest();
 
-        if (!\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT, Request::METHOD_DELETE])) {
+        if (
+            !\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT])
+            || 'api_adherents_put_elect_item' !== $request->attributes->get('_api_operation_name')
+        ) {
             return;
         }
 
-        if (Request::METHOD_DELETE === $request->getMethod()) {
-            $mandate = $request->attributes->get('data');
-        } else {
-            $mandate = $viewEvent->getControllerResult();
-        }
-
-        if (!$mandate instanceof ElectedRepresentativeAdherentMandate) {
-            return;
-        }
-
-        $adherent = $mandate->getAdherent();
-
-        $this->bus->dispatch(new AdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress()));
         $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
     }
 }

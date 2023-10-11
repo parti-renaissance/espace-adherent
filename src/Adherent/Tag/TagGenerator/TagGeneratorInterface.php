@@ -6,5 +6,5 @@ use App\Entity\Adherent;
 
 interface TagGeneratorInterface
 {
-    public function generate(Adherent $adherent): ?string;
+    public function generate(Adherent $adherent): array;
 }

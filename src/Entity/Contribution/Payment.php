@@ -87,4 +87,9 @@ class Payment
 
         return $this->status;
     }
+
+    public function isConfirmed(): bool
+    {
+        return \in_array($this->status, PaymentStatusEnum::CONFIRMED_PAYMENT_STATUSES, true);
+    }
 }
