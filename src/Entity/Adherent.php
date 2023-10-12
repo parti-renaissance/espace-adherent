@@ -3316,6 +3316,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->payments;
     }
 
+    /**
+     * @return Payment[]
+     */
+    public function getConfirmedPayments(): array
+    {
+        return $this->payments->filter(fn (Payment $p) => $p->isConfirmed())->toArray();
+    }
+
     public function addPayment(Payment $payment): void
     {
         if (!$this->payments->contains($payment)) {

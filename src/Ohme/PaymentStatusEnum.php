@@ -31,6 +31,12 @@ class PaymentStatusEnum
         self::CHEQUE_CASHED => 'Chèque encaissé',
         self::CHEQUE_RECEIVED => 'Chèque reçu',
         self::CHEQUE_DEPOSITED => 'Chèque déposé',
-        self::CHEQUE_REJECTED => 'Chèque déposé',
+        self::CHEQUE_REJECTED => 'Chèque refusé',
+    ];
+
+    public const CONFIRMED_PAYMENT_STATUSES = [
+        self::CONFIRMED,
+        self::PAID_OUT,
+        self::CHEQUE_CASHED,
     ];
 }

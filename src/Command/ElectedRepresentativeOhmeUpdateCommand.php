@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Entity\Contribution\Payment;
 use App\Ohme\ClientInterface;
 use App\Repository\AdherentRepository;
@@ -11,6 +12,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
     name: 'app:elected-representative:ohme-update',
@@ -24,7 +26,8 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
     public function __construct(
         private readonly ClientInterface $ohme,
         private readonly AdherentRepository $adherentRepository,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MessageBusInterface $bus,
     ) {
         parent::__construct();
     }
@@ -77,6 +80,7 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
                 }
 
                 $this->entityManager->flush();
+                $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
 
                 $this->pause();
             }

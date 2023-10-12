@@ -1429,7 +1429,14 @@ executive_office.title.member_by_right: Membres de droit
 admin.new.renaissance_adherent.label: Nouvel Adhérent
 admin.new.renaissance_adherent.create.label: Créer
 
+adherent.tag.adherent: Adhérent
 adherent.tag.adherent:cotisation_ok: Adhérent - à jour de cotisation
 adherent.tag.adherent:cotisation_nok: Adhérent - non à jour de cotisation
+adherent.tag.sympathisant: Sympathisant
 adherent.tag.sympathisant:compte_em: Sympathisant - ancien adhérent EM
 adherent.tag.sympathisant:compte_re: Sympathisant - adhésion incomplète
+adherent.tag.elu: Élu
+adherent.tag.elu:declaration_ok: Élu - avec la déclaration
+adherent.tag.elu:cotisation_eligible: Élu - soumis à cotisation
+adherent.tag.elu:cotisation_ok: Élu - à jour de cotisation
+adherent.tag.elu:exempte: Élu - exempté

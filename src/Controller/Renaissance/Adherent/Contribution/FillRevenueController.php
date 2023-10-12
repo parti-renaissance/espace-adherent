@@ -5,12 +5,14 @@ namespace App\Controller\Renaissance\Adherent\Contribution;
 use App\Adherent\AdherentRoleEnum;
 use App\Adherent\Contribution\ContributionRequestHandler;
 use App\Adherent\Contribution\ContributionStatusEnum;
+use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Entity\Adherent;
 use App\Form\Renaissance\Adherent\Contribution\RevenueType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/espace-elus/cotisation', name: 'app_renaissance_contribution_fill_revenue', methods: ['GET|POST'])]
@@ -20,7 +22,8 @@ class FillRevenueController extends AbstractContributionController
     public function __invoke(
         Request $request,
         EntityManagerInterface $entityManager,
-        ContributionRequestHandler $contributionRequestHandler
+        ContributionRequestHandler $contributionRequestHandler,
+        MessageBusInterface $bus
     ): Response {
         $command = $this->getCommand($request);
 
@@ -47,6 +50,8 @@ class FillRevenueController extends AbstractContributionController
         if ($form->isSubmitted() && $form->isValid()) {
             $adherent->addRevenueDeclaration($command->revenueAmount);
             $entityManager->flush();
+
+            $bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
 
             if (!$command->needContribution()) {
                 $this->processor->doNoContributionNeeded($command);
