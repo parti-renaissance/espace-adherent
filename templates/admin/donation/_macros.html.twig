@@ -29,6 +29,8 @@
                 bg-green
             {% elseif type is constant('App\\Entity\\Donation::TYPE_TRANSFER') %}
                 bg-purple
+            {% elseif type is constant('App\\Entity\\Donation::TYPE_TPE') %}
+                bg-red
             {% endif %}
             ">
             {{ ('donation.type.'~type)|trans }}

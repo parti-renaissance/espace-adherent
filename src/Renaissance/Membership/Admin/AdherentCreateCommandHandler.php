@@ -66,7 +66,7 @@ class AdherentCreateCommandHandler
             null,
             $command->getCotisationAmount(),
             PayboxPaymentSubscription::NONE,
-            Donation::TYPE_CHECK
+            $command->isCotisationTypeTPE() ? Donation::TYPE_TPE : Donation::TYPE_CHECK
         );
         $donationRequest->forMembership();
         $donationRequest->setDonatedAt($command->cotisationDate);

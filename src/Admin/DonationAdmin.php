@@ -683,6 +683,7 @@ class DonationAdmin extends AbstractAdmin
         $choices = [
             Donation::TYPE_CHECK,
             Donation::TYPE_TRANSFER,
+            Donation::TYPE_TPE,
         ];
 
         if (!$this->isCurrentRoute('create')) {
