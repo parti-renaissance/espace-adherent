@@ -113,7 +113,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertStringContainsString(
-            'Rendez vous sur renaissance.code pour modifier votre profil!',
+            'Rendez vous sur app.renaissance.code pour modifier votre profil!',
             $crawler->filter('.adherent-profile__section')->text()
         );
     }

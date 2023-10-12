@@ -736,7 +736,7 @@ Feature:
         "visio_url": null,
         "mode": null,
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
+        "link": "http://app.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
         "user_registered_at": null
     }
     """
@@ -791,7 +791,7 @@ Feature:
         "visio_url": null,
         "mode": null,
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
+        "link": "http://app.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
         "user_registered_at": null
     }
     """
@@ -958,7 +958,7 @@ Feature:
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
+        "link": "http://app.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
     }
     """
 
@@ -1034,7 +1034,7 @@ Feature:
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
+        "link": "http://app.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
     }
     """
     And I should have 1 email "RenaissanceEventNotificationMessage" for "@en-marche-dev.fr" with payload:
@@ -1068,7 +1068,7 @@ Feature:
                 },
                 {
                     "name": "event_slug",
-                    "content": "http:\/\/renaissance.code\/espace-adherent\/evenements\/2023-01-29-nouveau-evenement\/afficher"
+                    "content": "http:\/\/app.renaissance.code\/espace-adherent\/evenements\/2023-01-29-nouveau-evenement\/afficher"
                 },
                 {
                     "name": "event_description",
@@ -1311,7 +1311,7 @@ Feature:
         "visio_url": "http://visio.fr",
         "mode": "online",
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher"
+        "link": "http://app.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher"
     }
     """
     And I should have 1 email
@@ -1330,7 +1330,7 @@ Feature:
              },
              {
                 "name": "event_url",
-                "content": "http://renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher"
+                "content": "http://app.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher"
              },
              {
                 "name": "event_date",
@@ -1346,7 +1346,7 @@ Feature:
              },
              {
                 "name": "calendar_url",
-                "content": "http://renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/ical"
+                "content": "http://app.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/ical"
              }
           ],
           "merge_vars": [
@@ -1640,7 +1640,7 @@ Feature:
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
+        "link": "http://app.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
     }
     """
     Examples:
@@ -1754,7 +1754,7 @@ Feature:
         "visio_url": "http://visio.fr",
         "mode": "online",
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives/afficher"
+        "link": "http://app.renaissance.code/espace-adherent/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives/afficher"
     }
     """
     Examples:

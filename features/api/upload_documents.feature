@@ -38,7 +38,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "url": "http://renaissance.code/documents-partages/@uuid@/upload",
+        "url": "http://app.renaissance.code/documents-partages/@uuid@/upload",
         "message": "Le document a été téléchargé avec succès."
     }
     """

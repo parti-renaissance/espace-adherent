@@ -214,7 +214,7 @@ class LoadHomeBlockData extends Fixture
             'title' => 'Rejoignez Renaissance, le parti d\'Emmanuel Macron.',
             'path' => 'bain-foule-macron.jpg',
             'pathTitle' => 'Emmanuel Macron',
-            'link' => 'https://renaissance.code/adhesion',
+            'link' => 'https://app.renaissance.code/adhesion',
             'titleCta' => '(Re)Adhérez',
             'colorCta' => 'black',
             'bgColor' => 'green',

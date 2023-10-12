@@ -64,7 +64,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
 
         $formation = $this->createLocalFormation(self::FORMATION_5_UUID, $referent77, $zoneDepartment77, 'Deuxième formation du 77');
         $formation->setContentType(FormationContentTypeEnum::LINK);
-        $formation->setLink('http://renaissance.code/');
+        $formation->setLink('http://app.renaissance.code/');
         $manager->persist($formation);
 
         /** @var Adherent $referent06 */
