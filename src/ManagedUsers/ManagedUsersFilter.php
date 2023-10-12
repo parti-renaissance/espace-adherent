@@ -75,14 +75,28 @@ class ManagedUsersFilter
     /**
      * @Groups({"filter_write"})
      *
-     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, strict=true, multiple=true)
+     * @Assert\Choice(callback={"App\Adherent\Tag\TagEnum", "getAdherentTags"}, multiple=true)
+     */
+    public array $adherentTags = [];
+
+    /**
+     * @Groups({"filter_write"})
+     *
+     * @Assert\Choice(callback={"App\Adherent\Tag\TagFilterEnum", "getFiltersTags"}, multiple=true)
+     */
+    public array $electTags = [];
+
+    /**
+     * @Groups({"filter_write"})
+     *
+     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, multiple=true)
      */
     private array $mandates = [];
 
     /**
      * @Groups({"filter_write"})
      *
-     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, strict=true, multiple=true)
+     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, multiple=true)
      */
     private array $declaredMandates = [];
 

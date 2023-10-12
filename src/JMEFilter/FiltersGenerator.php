@@ -3,7 +3,7 @@
 namespace App\JMEFilter;
 
 use App\JMEFilter\FilterBuilder\FilterBuilderInterface;
-use App\JMEFilter\FilterGroup\AbstractFilterGroup;
+use App\JMEFilter\FilterGroup\FilterGroupInterface;
 
 class FiltersGenerator
 {
@@ -30,7 +30,7 @@ class FiltersGenerator
                     $filters[$groupClass] = new $groupClass();
                 }
 
-                /** @var AbstractFilterGroup $filterGroup */
+                /** @var FilterGroupInterface $filterGroup */
                 $filterGroup = $filters[$groupClass];
 
                 foreach ($builder->build($scope, $feature) as $filter) {
@@ -38,6 +38,8 @@ class FiltersGenerator
                 }
             }
         }
+
+        usort($filters, fn (FilterGroupInterface $a, FilterGroupInterface $b) => $a->getPosition() <=> $b->getPosition());
 
         return array_values($filters);
     }

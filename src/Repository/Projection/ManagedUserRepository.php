@@ -4,6 +4,7 @@ namespace App\Repository\Projection;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\AddressInterface;
+use App\Adherent\Tag\TagFilterEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Projection\ManagedUser;
@@ -178,6 +179,26 @@ class ManagedUserRepository extends ServiceEntityRepository
                 ->andWhere('FIND_IN_SET(:committee_uuid, u.committeeUuids) > 0')
                 ->setParameter('committee_uuid', $committee->getUuidAsString())
             ;
+        }
+
+        if ($filter->adherentTags) {
+            $adherentTagsExpression = $qb->expr()->orX();
+            foreach ($filter->adherentTags as $index => $tag) {
+                $adherentTagsExpression->add('FIND_IN_SET(:adherent_tag_'.$index.', u.adherentTags) > 0');
+                $qb->setParameter('adherent_tag_'.$index, $tag);
+            }
+            $qb->andWhere($adherentTagsExpression);
+        }
+
+        if ($filter->electTags) {
+            $electTagsExpression = $qb->expr()->orX();
+            foreach ($filter->electTags as $index => $filterTag) {
+                foreach (TagFilterEnum::getFiltersTagsMapping()[$filterTag] ?? [] as $tag => $isEnabled) {
+                    $electTagsExpression->add('FIND_IN_SET(:elect_tag_'.$index.'_'.$tag.', u.adherentTags) '.($isEnabled ? '> 0' : '= 0'));
+                    $qb->setParameter('elect_tag_'.$index.'_'.$tag, $tag);
+                }
+            }
+            $qb->andWhere($electTagsExpression);
         }
 
         $restrictionsExpression = $qb->expr()->orX();

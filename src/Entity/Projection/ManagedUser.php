@@ -214,6 +214,13 @@ class ManagedUser
     private $committeeUuids;
 
     /**
+     * @var string[]|null
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    public ?array $adherentTags = null;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
