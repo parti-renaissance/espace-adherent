@@ -107,6 +107,7 @@
                     <h4 class="box-title">Cotisation</h4>
                 </div>
                 <div class="box-body">
+                    {{ form_row(form.cotisationTypeChoice, { label: 'Type' }) }}
                     {{ form_row(form.cotisationAmountChoice, { label: 'Montant' }) }}
                     <div class="row">
                         <div class="col-lg-4">

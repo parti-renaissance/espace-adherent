@@ -230,6 +230,9 @@ cotistation.amount_choice.amount_10: 10€
 cotistation.amount_choice.amount_30: 30€
 cotistation.amount_choice.amount_other: Montant spécifique
 
+cotisation.type_choice.check: Chèque
+cotisation.type_choice.tpe: TPE
+
 #
 # Dashboard
 #
@@ -623,6 +626,7 @@ document.upload.success: Le document a été téléchargé avec succès.
 donation.type.cb: Carte bleue
 donation.type.check: Chèque
 donation.type.transfer: Virement
+donation.type.tpe: TPE
 donation.type.ponctual: Ponctuel
 donation.type.recurrent: Récurrent
 donation.status.waiting_confirmation: En attente de confirmation

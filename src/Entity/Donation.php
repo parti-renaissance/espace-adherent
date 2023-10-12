@@ -42,6 +42,7 @@ class Donation implements GeoPointInterface
     public const TYPE_CB = 'cb';
     public const TYPE_CHECK = 'check';
     public const TYPE_TRANSFER = 'transfer';
+    public const TYPE_TPE = 'tpe';
 
     /**
      * @var string

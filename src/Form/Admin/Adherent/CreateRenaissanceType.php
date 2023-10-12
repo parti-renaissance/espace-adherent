@@ -8,6 +8,7 @@ use App\Form\BirthdateType;
 use App\Form\CivilityType;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
 use App\Renaissance\Membership\Admin\CotisationAmountChoiceEnum;
+use App\Renaissance\Membership\Admin\CotisationTypeChoiceEnum;
 use App\Renaissance\Membership\Admin\MembershipTypeEnum;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
@@ -64,6 +65,13 @@ class CreateRenaissanceType extends AbstractType
                 'invalid_message' => 'admin.adherent.renaissance.membership_type.invalid_choice',
             ])
 
+            ->add('cotisationTypeChoice', ChoiceType::class, [
+                'choices' => CotisationTypeChoiceEnum::CHOICES,
+                'choice_label' => function (string $value): string {
+                    return "cotisation.type_choice.$value";
+                },
+                'expanded' => true,
+            ])
             ->add('cotisationAmountChoice', ChoiceType::class, [
                 'choices' => CotisationAmountChoiceEnum::CHOICES,
                 'choice_label' => function (string $value): string {

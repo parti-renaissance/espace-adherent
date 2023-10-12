@@ -124,6 +124,19 @@ class AdherentCreateCommand implements MembershipInterface
      *     groups={"admin_adherent_renaissance_create"}
      * )
      * @Assert\Choice(
+     *     choices=App\Renaissance\Membership\Admin\CotisationTypeChoiceEnum::CHOICES,
+     *     message="admin.membership.cotisation_type_choice.invalid_choice",
+     *     groups={"admin_adherent_renaissance_create"}
+     * )
+     */
+    public ?string $cotisationTypeChoice = CotisationTypeChoiceEnum::TYPE_CHECK;
+
+    /**
+     * @Assert\NotBlank(
+     *     message="admin.membership.cotisation_amount_choice.not_blank",
+     *     groups={"admin_adherent_renaissance_create"}
+     * )
+     * @Assert\Choice(
      *     choices=App\Renaissance\Membership\Admin\CotisationAmountChoiceEnum::CHOICES,
      *     message="admin.membership.cotisation_amount_choice.invalid_choice",
      *     groups={"admin_adherent_renaissance_create"}
@@ -168,6 +181,11 @@ class AdherentCreateCommand implements MembershipInterface
     public function isAgirMembership(): bool
     {
         return MembershipTypeEnum::AGIR === $this->membershipType;
+    }
+
+    public function isCotisationTypeTPE(): bool
+    {
+        return CotisationTypeChoiceEnum::TYPE_TPE === $this->cotisationTypeChoice;
     }
 
     public function getCotisationAmount(): int
