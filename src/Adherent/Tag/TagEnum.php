@@ -19,4 +19,16 @@ class TagEnum extends Enum
     public const ELU_COTISATION_ELIGIBLE = 'elu:cotisation_eligible';
     public const ELU_COTISATION_OK = 'elu:cotisation_ok';
     public const ELU_EXEMPTE = 'elu:exempte';
+
+    public static function getAdherentTags(): array
+    {
+        return [
+            self::ADHERENT,
+            self::ADHERENT_COTISATION_OK,
+            self::ADHERENT_COTISATION_NOK,
+            self::SYMPATHISANT,
+            self::SYMPATHISANT_COMPTE_EM,
+            self::SYMPATHISANT_COMPTE_RE,
+        ];
+    }
 }

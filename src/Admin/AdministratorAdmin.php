@@ -95,7 +95,6 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_ELECTIONS',
                     'ROLE_ADMIN_DONATIONS',
                     'ROLE_ADMIN_MAILER',
-                    'ROLE_ADMIN_ADHERENT_TAGS',
                     'ROLE_ADMIN_REFERENT_TAGS',
                     'ROLE_ADMIN_REFERENTS',
                     'ROLE_ADMIN_REFERENTS_AREAS',

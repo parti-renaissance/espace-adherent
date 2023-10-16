@@ -5,7 +5,7 @@ namespace App\JMEFilter\FilterGroup;
 use App\JMEFilter\FilterInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-class AbstractFilterGroup
+class AbstractFilterGroup implements FilterGroupInterface
 {
     protected const LABEL = '';
     protected const COLOR = '';
@@ -21,6 +21,11 @@ class AbstractFilterGroup
     {
         $this->label = static::LABEL;
         $this->color = static::COLOR;
+    }
+
+    public function getPosition(): int
+    {
+        return 100;
     }
 
     public function addFilter(FilterInterface $filter): void

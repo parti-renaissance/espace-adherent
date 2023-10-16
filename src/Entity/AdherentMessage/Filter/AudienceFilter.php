@@ -100,7 +100,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      *
      * @Groups({"adherent_message_update_filter"})
      *
-     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, strict=true)
+     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL)
      */
     private ?string $mandateType = null;
 
@@ -109,7 +109,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      *
      * @Groups({"adherent_message_update_filter"})
      *
-     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, strict=true)
+     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL)
      */
     private ?string $declaredMandate = null;
 
