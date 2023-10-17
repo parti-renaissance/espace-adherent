@@ -48,6 +48,7 @@ class RequestBuilder implements LoggerAwareInterface
     private $interests;
     private ?\DateTime $lastMembershipDonation = null;
     private ?string $source = null;
+    private ?array $adherentTags = null;
 
     private $activeTags = [];
     private $inactiveTags = [];
@@ -106,6 +107,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setAdhesionDate($adherent->getRegisteredAt())
             ->setLastMembershipDonation($adherent->getLastMembershipDonation())
             ->setSource($adherent->getSource())
+            ->setAdherentTags($adherent->tags)
             ->setActiveTags($this->getAdherentActiveTags($adherent))
             ->setInactiveTags($this->getInactiveTags($adherent))
             ->setIsSubscribeRequest($adherent->isEnabled() && $adherent->isEmailSubscribed())
@@ -285,6 +287,13 @@ class RequestBuilder implements LoggerAwareInterface
     public function setSource(?string $source): self
     {
         $this->source = $source;
+
+        return $this;
+    }
+
+    public function setAdherentTags(?array $tags): self
+    {
+        $this->adherentTags = $tags;
 
         return $this;
     }
@@ -521,6 +530,10 @@ class RequestBuilder implements LoggerAwareInterface
 
         if ($this->source) {
             $mergeFields[MemberRequest::MERGE_FIELD_SOURCE] = $this->source;
+        }
+
+        if ($this->adherentTags) {
+            $mergeFields[MemberRequest::MERGE_FIELD_ADHERENT_TAGS] = $this->source;
         }
 
         if ($this->city) {

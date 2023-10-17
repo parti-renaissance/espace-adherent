@@ -577,7 +577,6 @@ Feature:
                     "code": "adherent_tags",
                     "label": "Tags adhérent",
                     "options": {
-                        "multiple": true,
                         "choices": {
                             "adherent": "Adhérent",
                             "adherent:cotisation_nok": "Adhérent - non à jour de cotisation",
@@ -693,7 +692,6 @@ Feature:
                     "code": "elect_tags",
                     "label": "Tags élu",
                     "options": {
-                        "multiple": true,
                         "choices": {
                             "cotisation_eligible": "À jour, soumis à cotisation",
                             "cotisation_exempt": "À jour, exempté de cotisation",

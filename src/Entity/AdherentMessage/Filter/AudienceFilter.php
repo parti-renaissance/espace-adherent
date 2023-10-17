@@ -127,6 +127,20 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      */
     private ?string $donatorStatus = null;
 
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"adherent_message_update_filter"})
+     */
+    public ?string $adherentTags = null;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"adherent_message_update_filter"})
+     */
+    public ?string $electTags = null;
+
     public function __construct()
     {
         $this->zones = new ZoneCollection();

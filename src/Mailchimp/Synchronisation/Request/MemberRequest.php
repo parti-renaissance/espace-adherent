@@ -40,6 +40,7 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_ZONE = 'ZONE';
     public const MERGE_FIELD_ZONE_CODES = 'ZONE_CODES';
     public const MERGE_FIELD_SOURCE = 'SOURCE';
+    public const MERGE_FIELD_ADHERENT_TAGS = 'ADRNT_TAGS';
     public const MERGE_FIELD_CERTIFIED = 'CERTIFIED';
     public const MERGE_FIELD_LAST_LOGIN_GROUP = 'LOGIN_GRP';
     public const MERGE_FIELD_COMMITTEE = 'COMMITTEE';
