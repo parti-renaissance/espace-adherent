@@ -5,7 +5,6 @@ namespace App\JMEFilter\FilterBuilder;
 use App\Adherent\Tag\TagEnum;
 use App\JMEFilter\FilterCollectionBuilder;
 use App\JMEFilter\FilterGroup\MilitantFilterGroup;
-use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -17,14 +16,13 @@ class AdherentTagsFilterBuilder implements FilterBuilderInterface
 
     public function supports(string $scope, string $feature = null): bool
     {
-        return \in_array($scope, ScopeEnum::ALL, true) && FeatureEnum::CONTACTS === $feature;
+        return \in_array($scope, ScopeEnum::ALL, true);
     }
 
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
             ->createSelect('adherent_tags', 'Tags adhérent')
-            ->setMultiple(true)
             ->setChoices($this->getTranslatedChoices())
             ->getFilters()
         ;
