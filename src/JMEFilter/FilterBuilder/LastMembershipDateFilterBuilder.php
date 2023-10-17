@@ -16,7 +16,7 @@ class LastMembershipDateFilterBuilder implements FilterBuilderInterface
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createDateInterval('last_membership', 'Dernière cotisation')
+            ->createDateInterval('lastMembership', 'Dernière cotisation')
             ->getFilters()
         ;
     }

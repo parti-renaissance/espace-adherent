@@ -206,6 +206,20 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         }
     }
 
+    /**
+     * @Groups({"audience_segment_write", "adherent_message_update_filter"})
+     */
+    public function setLastMembership(array $startEnd): void
+    {
+        if (!empty($startEnd['start'])) {
+            $this->setLastMembershipSince(new \DateTime($startEnd['start']));
+        }
+
+        if (!empty($startEnd['end'])) {
+            $this->setLastMembershipBefore(new \DateTime($startEnd['end']));
+        }
+    }
+
     public function getAudienceType(): ?string
     {
         return $this->audienceType;
