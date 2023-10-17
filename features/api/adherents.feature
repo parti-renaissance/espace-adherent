@@ -611,7 +611,7 @@ Feature:
                     "type": "select"
                 },
                 {
-                    "code": "last_membership",
+                    "code": "lastMembership",
                     "label": "Dernière cotisation",
                     "options": null,
                     "type": "date_interval"
