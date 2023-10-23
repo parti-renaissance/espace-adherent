@@ -24,7 +24,7 @@ class ElectionPool
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(length=500)
      */
     private $code;
 

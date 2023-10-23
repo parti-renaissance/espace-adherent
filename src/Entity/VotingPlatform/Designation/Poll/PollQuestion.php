@@ -20,7 +20,7 @@ class PollQuestion
     use Sortable;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(length=500)
      *
      * @Assert\NotBlank
      */
