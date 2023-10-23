@@ -18,12 +18,11 @@ class RefreshTagsListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            UserEvents::USER_MEMBERSHIP_COMPLETED => 'onUserCreation',
-            UserEvents::USER_VALIDATED => 'onUserCreation',
+            UserEvents::USER_VALIDATED => 'updateAdherentTags',
         ];
     }
 
-    public function onUserCreation(UserEvent $event): void
+    public function updateAdherentTags(UserEvent $event): void
     {
         $this->bus->dispatch(new RefreshAdherentTagCommand($event->getUser()->getUuid()));
     }
