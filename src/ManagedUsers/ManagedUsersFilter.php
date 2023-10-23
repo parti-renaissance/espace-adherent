@@ -75,16 +75,16 @@ class ManagedUsersFilter
     /**
      * @Groups({"filter_write"})
      *
-     * @Assert\Choice(callback={"App\Adherent\Tag\TagEnum", "getAdherentTags"}, multiple=true)
+     * @Assert\Choice(callback={"App\Adherent\Tag\TagEnum", "getAdherentTags"})
      */
-    public array $adherentTags = [];
+    public ?string $adherentTags = null;
 
     /**
      * @Groups({"filter_write"})
      *
-     * @Assert\Choice(callback={"App\Adherent\Tag\TagFilterEnum", "getFiltersTags"}, multiple=true)
+     * @Assert\Choice(callback={"App\Adherent\Tag\TagFilterEnum", "getFiltersTags"})
      */
-    public array $electTags = [];
+    public ?string $electTags = null;
 
     /**
      * @Groups({"filter_write"})
