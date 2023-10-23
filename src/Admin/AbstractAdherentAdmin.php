@@ -46,6 +46,7 @@ use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelType;
+use Sonata\AdminBundle\Form\Type\Operator\ContainsOperatorType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -768,7 +769,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     return MembershipFilterHelper::withMembershipFilter($qb, $alias, $value->getValue());
                 },
             ])
-            ->add('tags', ChoiceFilter::class, [
+            ->add('tags', CallbackFilter::class, [
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
@@ -779,6 +780,28 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     'multiple' => true,
                 ],
                 'label' => 'Tags',
+                'operator_type' => ContainsOperatorType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $orX = $qb->expr()->orX();
+
+                    $condition = match ($value->getType()) {
+                        ContainsOperatorType::TYPE_NOT_CONTAINS => '=',
+                        default => '>',
+                    };
+
+                    foreach ($value->getValue() as $index => $choice) {
+                        $orX->add('FIND_IN_SET(:tag_'.$index.', '.$alias.'.tags) '.$condition.' 0');
+                        $qb->setParameter('tag_'.$index, $choice);
+                    }
+
+                    $qb->andWhere($orX);
+
+                    return true;
+                },
             ])
         ;
     }
