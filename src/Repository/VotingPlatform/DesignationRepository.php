@@ -151,7 +151,7 @@ class DesignationRepository extends ServiceEntityRepository
         ;
 
         if ($withVoteActiveOnly) {
-            $queryBuilder->andWhere('designation.voteStartDate < :now AND designation.voteEndDate > :now');
+            $queryBuilder->andWhere('designation.voteEndDate > :now');
         }
 
         $conditions = $queryBuilder->expr()->orX();
