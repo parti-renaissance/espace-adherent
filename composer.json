@@ -91,7 +91,7 @@
         "snc/redis-bundle": "^4.3",
         "sonata-project/admin-bundle": "^4.0",
         "sonata-project/doctrine-orm-admin-bundle": "^4.0",
-        "sonata-project/exporter": "3.2.0",
+        "sonata-project/exporter": "3.3.0",
         "stof/doctrine-extensions-bundle": "~1.7.0",
         "suin/php-rss-writer": "^1.5",
         "superbalist/flysystem-google-storage": "^7.2",
