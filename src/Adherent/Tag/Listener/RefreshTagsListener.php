@@ -19,6 +19,7 @@ class RefreshTagsListener implements EventSubscriberInterface
     {
         return [
             UserEvents::USER_VALIDATED => 'updateAdherentTags',
+            UserEvents::USER_UPDATED_IN_ADMIN => 'updateAdherentTags',
         ];
     }
 
