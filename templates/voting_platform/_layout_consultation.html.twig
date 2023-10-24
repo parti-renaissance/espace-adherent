@@ -12,15 +12,19 @@
     </div>
 {% endblock %}
 
-{% block election_sub_title %}
-    <p class="text-gray-500">
-        Le vote est ouvert du {{ election.voteStartDate|date('d/m/Y \à H:i') }}
-        au {{ election.voteEndDate|date('d/m/Y \à H:i') }}
-    </p>
-{% endblock %}
+{% block election_sub_title '' %}
 
 {% block vote_step_pool_title %}
     {{ pool.code }}
+{% endblock %}
+
+{% block voting_platform_subtitle %}
+    La consultation est ouverte du
+    {% if election.isSecondRoundVotePeriodActive %}
+        {{ election.voteEndDate|date('d/m/Y \à H:i') }} au {{ election.secondRoundEndDate|date('d/m/Y \à H:i') }}
+    {% else %}
+        {{ election.voteStartDate|date('d/m/Y \à H:i') }} au {{ election.voteEndDate|date('d/m/Y \à H:i') }}
+    {% endif %}
 {% endblock %}
 
 {% block vote_finish_action_block %}
@@ -30,6 +34,10 @@
             Retour à l’accueil
         </a>
     </div>
+{% endblock %}
+
+{% block header_actions %}
+    <a href="{{ path('app_voting_platform_index', {uuid: election.uuid}) }}" class="return-home text--body link--no-decor">Revenir à l'accueil</a>
 {% endblock %}
 
 {% block voting_platform_result_tab_votes_list_title 'Détails des résultats' %}
