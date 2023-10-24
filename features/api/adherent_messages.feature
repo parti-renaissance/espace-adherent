@@ -376,21 +376,6 @@ Feature:
               "color": "#0F766E",
               "filters": [
                   {
-                    "code": "adherent_tags",
-                    "label": "Tags adhérent",
-                    "options": {
-                        "choices": {
-                            "adherent": "Adhérent",
-                            "adherent:cotisation_nok": "Adhérent - non à jour de cotisation",
-                            "adherent:cotisation_ok": "Adhérent - à jour de cotisation",
-                            "sympathisant": "Sympathisant",
-                            "sympathisant:compte_em": "Sympathisant - ancien adhérent EM",
-                            "sympathisant:compte_re": "Sympathisant - adhésion incomplète"
-                        }
-                    },
-                    "type": "select"
-                  },
-                  {
                       "code": "committee",
                       "label": "Comités",
                       "options": {
@@ -481,21 +466,6 @@ Feature:
                           "multiple": false
                       },
                       "type": "select"
-                  },
-                  {
-                    "code": "elect_tags",
-                    "label": "Tags élu",
-                    "options": {
-                        "choices": {
-                            "cotisation_eligible": "À jour, soumis à cotisation",
-                            "cotisation_exempt": "À jour, exempté de cotisation",
-                            "cotisation_nok": "Pas à jour de cotisation élu",
-                            "cotisation_not_eligible": "À jour, non soumis à cotisation",
-                            "cotisation_ok": "À jour de cotisation élu",
-                            "undeclared_revenue": "En attente de déclaration"
-                        }
-                    },
-                    "type": "select"
                   },
                   {
                       "code": "mandateType",
