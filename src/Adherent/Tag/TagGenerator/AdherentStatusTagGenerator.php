@@ -13,10 +13,17 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
             return [];
         }
 
-        if ($adherent->isRenaissanceAdherent()) {
+        if (\count($adherent->getConfirmedPayments())) {
             return [
                 TagEnum::ADHERENT,
-                $adherent->hasActiveMembership() ? TagEnum::ADHERENT_COTISATION_OK : TagEnum::ADHERENT_COTISATION_NOK,
+                TagEnum::ADHERENT_COTISATION_OK,
+            ];
+        }
+
+        if ($contributedAt = $adherent->getLastMembershipDonation()) {
+            return [
+                TagEnum::ADHERENT,
+                $contributedAt->format('Y') === date('Y') ? TagEnum::ADHERENT_COTISATION_OK : TagEnum::ADHERENT_COTISATION_NOK,
             ];
         }
 

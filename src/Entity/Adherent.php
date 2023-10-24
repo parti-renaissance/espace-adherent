@@ -7,6 +7,7 @@ use App\Address\AddressInterface;
 use App\Address\PostAddressFactory;
 use App\Adherent\Contribution\ContributionAmountUtils;
 use App\Adherent\LastLoginGroupEnum;
+use App\Adherent\Tag\TagEnum;
 use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
@@ -3008,12 +3009,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isRenaissanceAdherent(): bool
     {
-        return $this->isRenaissanceUser() && null !== $this->lastMembershipDonation;
+        return $this->isRenaissanceUser() && $this->hasTag(TagEnum::ADHERENT);
     }
 
     public function isRenaissanceSympathizer(): bool
     {
-        return $this->isRenaissanceUser() && null === $this->lastMembershipDonation;
+        return $this->isRenaissanceUser() && $this->hasTag(TagEnum::SYMPATHISANT);
     }
 
     public function addInstanceQuality($quality, \DateTime $data = null): AdherentInstanceQuality
@@ -3178,7 +3179,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function hasActiveMembership(): bool
     {
-        return $this->isRenaissanceAdherent() && $this->lastMembershipDonation->format('Y') === date('Y');
+        return $this->isRenaissanceAdherent() && $this->hasTag(TagEnum::ADHERENT_COTISATION_OK);
     }
 
     public function getLastMembershipDonation(): ?\DateTimeInterface
@@ -3402,5 +3403,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getLastRevenueDeclaration(): ?RevenueDeclaration
     {
         return $this->revenueDeclarations->first() ?: null;
+    }
+
+    public function hasTag(string $tag): bool
+    {
+        return \in_array($tag, $this->tags, true);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Membership;
 
 use App\Address\PostAddressFactory;
+use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
@@ -135,6 +136,7 @@ class AdherentFactory
 
         $adherent->join();
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent->tags = [TagEnum::SYMPATHISANT, TagEnum::SYMPATHISANT_COMPTE_RE];
         $adherent->setPapUserRole(true);
 
         return $adherent;
