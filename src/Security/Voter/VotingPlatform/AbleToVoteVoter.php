@@ -38,6 +38,10 @@ class AbleToVoteVoter extends AbstractAdherentVoter
             return false;
         }
 
+        if ($designation->isConsultationType() && !$adherent->hasActiveMembership()) {
+            return false;
+        }
+
         $adherentIsInVotersList = $this->voterRepository->existsForElection($adherent, $subject->getUuid()->toString());
 
         if (!$adherentIsInVotersList) {

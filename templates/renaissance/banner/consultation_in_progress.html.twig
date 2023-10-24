@@ -17,7 +17,7 @@
             <div class="alert alert-warning flex px-10 w-full justify-between py-3 rounded-t-2xl">
                 <span class="flex flex-grow-1 items-center font-medium">
                     <img src="{{ asset('/images/icons/icn_warning.svg') }}" alt="Information" class="mr-3" />
-                    Vous n’êtes pas à jour de cotisation
+                    Vous devez être à jour de cotisation pour participer à la consultation
                 </span>
 
                 <a class="banner-btn" href="{{ path('app_renaissance_adhesion_pre_payment') }}">
@@ -26,6 +26,8 @@
             </div>
         {% endif %}
     {% endif %}
+
+    {% set disable_vote_button = not consultation_designation.isVotePeriodStarted() or not app.user.hasActiveMembership() or app.user.isRenaissanceSympathizer() %}
 
     <div class="adherent-banner__inner mx-10 {{ block_alert_exists ? 'mt-10' }}">
         <div class="w-2/3 flex flex-col">
@@ -36,7 +38,7 @@
             {% endif %}
 
             <div class="flex mt-6 items-center justify-between">
-                <a class="banner-btn {{ not consultation_designation.isVotePeriodStarted() ? 'banner-btn-disabled' }}" href="{{ consultation_designation.isVotePeriodStarted() ? path('app_sas_election_index', {uuid: consultation_designation.getUuid()}) : '#' }}">
+                <a class="banner-btn {{ disable_vote_button ? 'banner-btn-disabled' }}" href="{{ disable_vote_button ? '#' : path('app_sas_election_index', {uuid: consultation_designation.getUuid()}) }}">
                     <img src="{{ asset('/images/icons/icn_vote-hand.svg') }}" alt="Main vote" class="mr-3" /> Je participe !
                 </a>
 

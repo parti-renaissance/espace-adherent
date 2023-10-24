@@ -47,6 +47,8 @@
                         </p>
                     {% elseif app.user.isRenaissanceSympathizer() %}
                         Vous devez <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="text-re-blue-500 font-medium">adhérer</a> pour participer à la consultation
+                    {% elseif not app.user.hasActiveMembership() %}
+                        Vous devez être à <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="text-re-blue-500 font-medium">jour de cotisation</a> pour participer à la consultation
                     {% endif %}
                 {% endif %}
             {% elseif voting_platform_election.isResultPeriodActive %}

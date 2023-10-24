@@ -126,7 +126,7 @@ class DesignationRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllActiveForAdherent(Adherent $adherent, array $types = [], int $limit = null): array
+    public function findAllActiveForAdherent(Adherent $adherent, array $types = [], int $limit = null, bool $withVoteActiveOnly = false): array
     {
         $queryBuilder = $this->createQueryBuilder('designation')
             ->addSelect(
@@ -149,6 +149,10 @@ class DesignationRepository extends ServiceEntityRepository
             ->orderBy('score', 'DESC')
             ->addOrderBy('designation.voteStartDate', 'ASC')
         ;
+
+        if ($withVoteActiveOnly) {
+            $queryBuilder->andWhere('designation.voteStartDate < :now AND designation.voteEndDate > :now');
+        }
 
         $conditions = $queryBuilder->expr()->orX();
 

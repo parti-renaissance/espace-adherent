@@ -21,18 +21,19 @@ class ElectionManager
     public function findActiveDesignations(
         Adherent $adherent,
         array $types = [DesignationTypeEnum::LOCAL_ELECTION, DesignationTypeEnum::LOCAL_POLL],
-        int $limit = null
+        int $limit = null,
+        bool $withVoteActiveOnly = false
     ): array {
         if (!$adherent->isRenaissanceUser()) {
             return [];
         }
 
-        $cacheKey = implode('-', array_merge([$adherent->getId()], $types));
+        $cacheKey = implode('-', array_merge([$adherent->getId(), $withVoteActiveOnly], $types));
 
         if (!empty($this->cache[$cacheKey])) {
             return $this->cache[$cacheKey];
         }
 
-        return $this->cache[$cacheKey] = $this->designationRepository->findAllActiveForAdherent($adherent, $types, $limit);
+        return $this->cache[$cacheKey] = $this->designationRepository->findAllActiveForAdherent($adherent, $types, $limit, $withVoteActiveOnly);
     }
 }
