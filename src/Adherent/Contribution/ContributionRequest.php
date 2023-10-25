@@ -8,9 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ContributionRequest
 {
-    private const CONTRIBUTION_MIN_REVENUE_AMOUNT = 250;
-    private const CONTRIBUTION_MAX_AMOUNT = 200;
-
     private string $state = ContributionRequestStateEnum::STATE_START;
 
     private ?int $adherentId = null;
@@ -19,11 +16,7 @@ class ContributionRequest
 
     /**
      * @Assert\NotBlank(groups={"fill_revenue"})
-     * @Assert\GreaterThanOrEqual(
-     *     value=1,
-     *     message="elected_representative.contributation.amount.greater_than_1",
-     *     groups={"fill_revenue"}
-     * )
+     * @Assert\GreaterThanOrEqual(value=0, groups={"fill_revenue"})
      */
     public ?int $revenueAmount = null;
 

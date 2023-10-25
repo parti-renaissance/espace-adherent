@@ -47,6 +47,16 @@ class ContributionControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
+        $crawler = $this->client->submitForm('Valider', [
+            'app_renaissance_contribution' => [
+                'revenueAmount' => 0,
+            ],
+        ]);
+
+        $this->assertStringContainsString('Pas de cotisation nécessaire', $crawler->filter('body')->text());
+
+        $this->client->request(Request::METHOD_GET, '/espace-elus/cotisation?redeclare=1');
+
         $this->client->submitForm('Valider', [
             'app_renaissance_contribution' => [
                 'revenueAmount' => 2000,
