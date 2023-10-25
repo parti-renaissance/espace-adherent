@@ -3222,23 +3222,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return AddressInterface::FRANCE === $this->nationality;
     }
 
-    public function getCampusRegistrations(): Collection
-    {
-        return $this->campusRegistrations;
-    }
-
-    public function addCampusRegistration(Registration $registration): void
-    {
-        if (!$this->campusRegistrations->contains($registration)) {
-            $this->campusRegistrations->add($registration);
-        }
-    }
-
-    public function removeCampusRegistration(Registration $registration): void
-    {
-        $this->campusRegistrations->removeElement($registration);
-    }
-
     public function getValidCampusRegistration(): ?Registration
     {
         foreach ($this->campusRegistrations as $registration) {

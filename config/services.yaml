@@ -77,8 +77,6 @@ services:
             $emailTemplateUnlayerTemplateId: '%env(EMAIL_TEMPLATE_UNLAYER_TEMPLATE_ID)%'
             $goCardlessApiKey: '%env(GOCARDLESS_API_KEY)%'
             $goCardlessEnvironment: '%env(GOCARDLESS_ENV)%'
-            $campusWebhookHost: '%env(CAMPUS_REGISTRATION_HOST)%'
-            $eventmakerWebhookKey: '%env(EVENTMAKER_WEBHOOK_KEY)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
@@ -456,10 +454,6 @@ services:
     App\Ohme\Client:
         arguments:
             $client: '@app.http_client.ohme_api'
-
-    App\Adherent\Campus\Client:
-        arguments:
-            $client: '@app.http_client.campus_registration_api'
 
     App\Mailer\EmailTemplateFactory:
         arguments:

@@ -12,14 +12,4 @@ enum RegistrationStatusEnum: string
     {
         return array_column(RegistrationStatusEnum::cases(), 'value');
     }
-
-    public static function fromStatus(string $status): ?RegistrationStatusEnum
-    {
-        return match ($status) {
-            'invited' => RegistrationStatusEnum::INVITED,
-            'registered' => RegistrationStatusEnum::REGISTERED,
-            'cancelled' => RegistrationStatusEnum::CANCELLED,
-            default => null,
-        };
-    }
 }
