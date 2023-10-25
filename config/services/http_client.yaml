@@ -65,9 +65,3 @@ services:
                 timeout: 60,
                 headers: {'client-name': '%env(OHME_CLIENT_NAME)%', 'client-secret': '%env(OHME_CLIENT_SECRET)%', 'accept': 'application/json'}
             }
-
-    app.http_client.campus_registration_api:
-        class: Symfony\Contracts\HttpClient\HttpClientInterface
-        factory: [ 'Symfony\Component\HttpClient\HttpClient', 'create' ]
-        arguments:
-            - {base_uri: '%env(CAMPUS_REGISTRATION_HOST)%', timeout: 15}

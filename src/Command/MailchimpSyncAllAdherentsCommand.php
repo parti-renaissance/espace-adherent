@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Campus\RegistrationStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Donator;
@@ -55,7 +54,6 @@ class MailchimpSyncAllAdherentsCommand extends Command
             ->addOption('committee-voter-only', null, InputOption::VALUE_NONE)
             ->addOption('active-mandates-only', null, InputOption::VALUE_NONE)
             ->addOption('declared-mandates-only', null, InputOption::VALUE_NONE)
-            ->addOption('campus-registered-only', null, InputOption::VALUE_NONE)
             ->addOption('source', null, InputOption::VALUE_REQUIRED)
             ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
         ;
@@ -80,8 +78,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             $input->getOption('active-mandates-only'),
             $input->getOption('declared-mandates-only'),
             $input->getOption('source'),
-            $input->getOption('emails'),
-            $input->getOption('campus-registered-only')
+            $input->getOption('emails')
         );
 
         $count = $paginator->count();
@@ -132,8 +129,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         bool $activeMandatesOnly,
         bool $declaredMandatesOnly,
         ?string $source,
-        array $emails,
-        bool $campusRegisteredOnly
+        array $emails
     ): Paginator {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
@@ -193,20 +189,6 @@ class MailchimpSyncAllAdherentsCommand extends Command
                     Join::WITH,
                     'membership.adherent = adherent AND membership.enableVote IS NOT NULL'
                 )
-            ;
-        }
-        if ($campusRegisteredOnly) {
-            $queryBuilder
-                ->innerJoin(
-                    'adherent.campusRegistrations',
-                    'campus_registration',
-                    Join::WITH,
-                    'campus_registration.status IN (:campus_registration_valid_status)'
-                )
-                ->setParameter('campus_registration_valid_status', [
-                    RegistrationStatusEnum::INVITED,
-                    RegistrationStatusEnum::REGISTERED,
-                ])
             ;
         }
 
