@@ -48,10 +48,6 @@
 
         <title>{% block title %}{% apply spaceless %}{% block page_title '' %}{% endapply %} | {% block app_title 'La République En Marche !' %}{% endblock %}</title>
 
-        {% if app.environment == 'prod' %}
-            <script async defer data-website-id="0c4ed75f-e3ea-4bd2-84dc-ad006c571beb" src="https://s.abla.io/abla.js"></script>
-        {% endif %}
-
         <link rel="canonical" href="{% block canonical_url homepage_url %}" />
         <meta name="description" content="{% block meta_description %}Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, du risque, qui vivent pour la liberté, l'égalité, et l'Europe.{% endblock %}" />
 
