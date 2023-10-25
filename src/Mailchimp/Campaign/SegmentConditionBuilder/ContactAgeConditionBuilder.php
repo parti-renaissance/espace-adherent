@@ -10,6 +10,7 @@ use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Mailchimp\Campaign\DateUtils;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class ContactAgeConditionBuilder implements SegmentConditionBuilderInterface
@@ -47,7 +48,7 @@ class ContactAgeConditionBuilder implements SegmentConditionBuilderInterface
                 'condition_type' => 'DateMerge',
                 'op' => 'less',
                 'field' => MemberRequest::MERGE_FIELD_BIRTHDATE,
-                'value' => $now->modify(sprintf('-%d years', $minAge))->format(MemberRequest::DATE_FORMAT),
+                'value' => DateUtils::adjustDate($now, true)->modify(sprintf('-%d years', $minAge))->format(MemberRequest::DATE_FORMAT),
             ];
         }
 
@@ -56,7 +57,7 @@ class ContactAgeConditionBuilder implements SegmentConditionBuilderInterface
                 'condition_type' => 'DateMerge',
                 'op' => 'greater',
                 'field' => MemberRequest::MERGE_FIELD_BIRTHDATE,
-                'value' => $now->modify(sprintf('-%d years', $maxAge))->format(MemberRequest::DATE_FORMAT),
+                'value' => DateUtils::adjustDate($now, false)->modify(sprintf('-%d years', $maxAge))->format(MemberRequest::DATE_FORMAT),
             ];
         }
 

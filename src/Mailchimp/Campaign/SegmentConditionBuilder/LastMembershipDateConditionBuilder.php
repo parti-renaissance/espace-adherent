@@ -6,6 +6,7 @@ use App\Entity\AdherentMessage\Filter\AbstractUserFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Mailchimp\Campaign\DateUtils;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class LastMembershipDateConditionBuilder implements SegmentConditionBuilderInterface
@@ -37,16 +38,16 @@ class LastMembershipDateConditionBuilder implements SegmentConditionBuilderInter
                 'condition_type' => 'DateMerge',
                 'op' => 'greater',
                 'field' => MemberRequest::MERGE_FIELD_LAST_MEMBERSHIP_DONATION,
-                'value' => $lastMembershipSince->format(MemberRequest::DATE_FORMAT),
+                'value' => DateUtils::adjustDate($lastMembershipSince, false)->format(MemberRequest::DATE_FORMAT),
             ];
         }
 
-        if ($lastMembershipbefore = $filter->getLastMembershipBefore()) {
+        if ($lastMembershipBefore = $filter->getLastMembershipBefore()) {
             $conditions[] = [
                 'condition_type' => 'DateMerge',
                 'op' => 'less',
                 'field' => MemberRequest::MERGE_FIELD_LAST_MEMBERSHIP_DONATION,
-                'value' => $lastMembershipbefore->format(MemberRequest::DATE_FORMAT),
+                'value' => DateUtils::adjustDate($lastMembershipBefore, true)->format(MemberRequest::DATE_FORMAT),
             ];
         }
 

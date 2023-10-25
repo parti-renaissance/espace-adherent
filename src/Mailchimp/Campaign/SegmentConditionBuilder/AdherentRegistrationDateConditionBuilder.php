@@ -6,6 +6,7 @@ use App\Entity\AdherentMessage\Filter\AbstractUserFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Mailchimp\Campaign\DateUtils;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class AdherentRegistrationDateConditionBuilder implements SegmentConditionBuilderInterface
@@ -37,7 +38,7 @@ class AdherentRegistrationDateConditionBuilder implements SegmentConditionBuilde
                 'condition_type' => 'DateMerge',
                 'op' => 'greater',
                 'field' => MemberRequest::MERGE_FIELD_ADHESION_DATE,
-                'value' => $registeredSince->format(MemberRequest::DATE_FORMAT),
+                'value' => DateUtils::adjustDate($registeredSince, false)->format(MemberRequest::DATE_FORMAT),
             ];
         }
 
@@ -46,7 +47,7 @@ class AdherentRegistrationDateConditionBuilder implements SegmentConditionBuilde
                 'condition_type' => 'DateMerge',
                 'op' => 'less',
                 'field' => MemberRequest::MERGE_FIELD_ADHESION_DATE,
-                'value' => $registeredUntil->format(MemberRequest::DATE_FORMAT),
+                'value' => DateUtils::adjustDate($registeredUntil, true)->format(MemberRequest::DATE_FORMAT),
             ];
         }
 
