@@ -47,12 +47,13 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(
             $isRenaissanceUser
-                ? '/espace-adherent/evenements'
+                ? '/espace-adherent'
                 : 'http://renaissance.code/',
             $this->client
         );
         $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
 
+        $this->client->followRedirects();
         $crawler = $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -60,6 +61,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
             $this->assertSame($fullName, trim($crawler->filter('h6')->first()->text()));
         }
 
+        $this->client->followRedirects(false);
         $this->client->click($crawler->selectLink('Me déconnecter')->link());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('http://renaissance.code/', $this->client);

@@ -81,9 +81,9 @@ class CommitteeAdherentVotingPlatformControllerTest extends AbstractEnMarcheWebT
             'poolChoice' => '-1',
         ]]);
 
-        self::assertStringContainsString('Confirmez-vous votre bulletin ?', $this->client->getResponse()->getContent());
+        self::assertStringContainsString('Confirmez-vous votre choix ?', $this->client->getResponse()->getContent());
 
-        $this->client->submit($crawler->selectButton('Confirmer mon vote')->form());
+        $this->client->submit($crawler->selectButton('Confirmer mon choix')->form());
 
         self::assertStringContainsString('Félicitations, vos bulletins sont dans l\'urne !', $this->client->getResponse()->getContent());
 

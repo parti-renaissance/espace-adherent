@@ -189,7 +189,7 @@ class ElectionNotifier
             return $this->urlGenerator->generate('app_renaissance_committee_election_candidacies_lists_view', ['uuid' => $election->getElectionEntity()->getCommittee()->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
-        return $this->urlGenerator->generate($designation->isRenaissanceElection() ? 'app_renaissance_homepage' : 'homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->urlGenerator->generate($designation->isRenaissanceElection() ? 'app_renaissance_adherent_space' : 'homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     private function batchSendEmail(callable $getRecipientsCallback, callable $createMessageCallback): void

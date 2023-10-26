@@ -229,6 +229,13 @@ app_redirect_inscription:
         route: app_membership_join
         permanent: true
 
+app_renaissance_adherent_space:
+    host: "%renaissance_host%"
+    path: /espace-adherent
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: app_renaissance_event_list
+
 app_voting_platform:
     resource: "../src/Controller/EnMarche/VotingPlatform"
     type:     "annotation"

@@ -28,7 +28,7 @@ class FillRevenueController extends AbstractContributionController
         $command = $this->getCommand($request);
 
         if (!$this->processor->canFillRevenue($command)) {
-            return $this->redirectToRoute('app_renaissance_homepage');
+            return $this->redirectToRoute('app_renaissance_adherent_space');
         }
 
         $this->processor->doFillRevenue($command);
