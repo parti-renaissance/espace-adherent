@@ -62,7 +62,7 @@
     "select2": "^4.0.13",
     "stackblur-canvas": "^2.6.0",
     "style-loader": "^3.3.3",
-    "tailwindcss": "^3.3.4",
+    "tailwindcss": "^3.3.5",
     "terser-webpack-plugin": "^5.3.9",
     "tippy.js": "^6.3.7",
     "webpack": "^5.89.0",
