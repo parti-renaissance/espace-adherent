@@ -5531,16 +5531,16 @@
         },
         {
             "name": "knplabs/knp-time-bundle",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpTimeBundle.git",
-                "reference": "974625dd3d92a7bd3b3992afbf2f89cb446e8bf7"
+                "reference": "b69625f43a3a5969e6f791e3712634861ba7a674"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpTimeBundle/zipball/974625dd3d92a7bd3b3992afbf2f89cb446e8bf7",
-                "reference": "974625dd3d92a7bd3b3992afbf2f89cb446e8bf7",
+                "url": "https://api.github.com/repos/KnpLabs/KnpTimeBundle/zipball/b69625f43a3a5969e6f791e3712634861ba7a674",
+                "reference": "b69625f43a3a5969e6f791e3712634861ba7a674",
                 "shasum": ""
             },
             "require": {
@@ -5600,9 +5600,9 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/KnpTimeBundle/issues",
-                "source": "https://github.com/KnpLabs/KnpTimeBundle/tree/v2.1.0"
+                "source": "https://github.com/KnpLabs/KnpTimeBundle/tree/v2.1.1"
             },
-            "time": "2023-09-07T14:32:32+00:00"
+            "time": "2023-10-25T20:38:46+00:00"
         },
         {
             "name": "kreait/firebase-bundle",
