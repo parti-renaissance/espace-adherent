@@ -240,6 +240,9 @@ app_voting_platform:
     resource: "../src/Controller/EnMarche/VotingPlatform"
     type:     "annotation"
     prefix:   "/elections/{uuid}"
+    trailing_slash_on_root: false
+    requirements:
+        uuid: "%pattern_uuid%"
 
 app_procuration:
     host: "%procuration_host%"

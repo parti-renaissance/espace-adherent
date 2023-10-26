@@ -15,7 +15,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends AbstractEnMarcheWebT
 {
     use ControllerTestTrait;
 
-    private const ELECTION_URI_1 = '/elections/'.LoadVotingPlatformElectionData::ELECTION_UUID2.'/';
+    private const ELECTION_URI_1 = '/elections/'.LoadVotingPlatformElectionData::ELECTION_UUID2;
 
     private const VOTER_1 = 'assesseur@en-marche-dev.fr';
 
@@ -56,7 +56,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends AbstractEnMarcheWebT
 
         $crawler = $this->client->click($crawler->selectLink('Soumettre mon vote')->link());
 
-        $this->assertStringEndsWith(self::ELECTION_URI_1.'vote', $crawler->getUri());
+        $this->assertStringEndsWith(self::ELECTION_URI_1.'/vote', $crawler->getUri());
 
         $this->assertCount(6, $crawler->filter('.candidate__box'));
 
