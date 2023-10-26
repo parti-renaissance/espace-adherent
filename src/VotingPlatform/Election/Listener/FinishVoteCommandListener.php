@@ -91,7 +91,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $voter = $this->getVoter($adherent, $election);
 
         // 1. create vote history for the current voter
-        $vote = new Vote($voter, $electionRound);
+        $vote = new Vote($voter, $electionRound, $adherent->getZoneCode());
 
         // 2. generate a unique key to save the vote result with
         $voterKey = VoteResult::generateVoterKey();
