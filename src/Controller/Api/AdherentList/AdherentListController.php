@@ -22,14 +22,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route(path: '/v3/adherents.{_format}', name: 'app_adherents_list_get', methods: ['GET'], requirements: ['_format' => 'json|csv|xls'], defaults: ['_format' => 'json'])]
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class AdherentListController extends AbstractController
 {
     public function __construct(
-        private readonly ValidatorInterface $validator,
         private readonly AuthorizationChecker $authorizationChecker,
         private readonly ManagedUserRepository $repository,
         private readonly DenormalizerInterface $denormalizer,
@@ -63,12 +61,6 @@ class AdherentListController extends AbstractController
             AbstractNormalizer::GROUPS => ['filter_write'],
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
         ]);
-
-        $errors = $this->validator->validate($filter);
-
-        if ($errors->count()) {
-            return $this->json($errors, Response::HTTP_BAD_REQUEST);
-        }
 
         if ('json' !== $_format) {
             try {
