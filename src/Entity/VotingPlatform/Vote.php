@@ -45,11 +45,17 @@ class Vote
      */
     private $votedAt;
 
-    public function __construct(Voter $voter, ElectionRound $electionRound)
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $zoneCode = null;
+
+    public function __construct(Voter $voter, ElectionRound $electionRound, string $zoneCode = null)
     {
         $this->voter = $voter;
         $this->electionRound = $electionRound;
         $this->votedAt = new \DateTime();
+        $this->zoneCode = $zoneCode;
     }
 
     public function getId(): ?int
