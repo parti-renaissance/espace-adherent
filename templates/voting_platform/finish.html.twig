@@ -37,6 +37,8 @@
                     Félicitations, votre bulletin est dans l'urne !
                 {% elseif designation.isPollType() %}
                     Félicitations, votre vote est bien enregistré !
+                {% elseif designation.isConsultationType() %}
+                    Félicitations, votre participation a été enregistrée !
                 {% else %}
                     Félicitations, vos bulletins sont dans l'urne !
                 {% endif %}
@@ -49,29 +51,6 @@
 
 {% block voting_platform_content %}
     <div class="l__wrapper--600 text--center">
-        <p class="text--body text--dark">
-            {% if designation.isExecutiveOfficeType() or designation.isPollType() or designation.isCommitteeSupervisorType() %}
-                Votre bulletin a été anonymisé.<br/><br/>
-                Le numéro ci-dessous, connu de vous seul, est l'unique moyen de tracer votre
-                bulletin de votre choix au dépouillement. Retrouvez-le dans le détail des résultats.
-            {% elseif designation.isLocalElectionTypes() %}
-                Votre bulletin a été anonymisé.<br/><br/>
-                Le numéro ci-dessous, connu de vous seul, est l'unique moyen de tracer votre bulletin.
-            {% else %}
-                Vos bulletins ont été anonymisés.<br/><br/>
-                Le numéro ci-dessous, connu de vous seul, est l'unique moyen de tracer vos
-                bulletins de votre choix au dépouillement. Retrouvez-le dans le détail des résultats.
-            {% endif %}
-        </p>
-        <div class="b__nudge--bottom-large b__nudge--top-large">
-            <div class="text--on-white text--body inline-block space--20">{{ voter_key }}</div>
-        </div>
-        <p class="text--body text--smallest text--gray">
-            Attention. Une fois cette page fermée, vous ne pourrez retrouver le numéro anonyme de vos bulletins que dans le mail
-            de confirmation que vous venez de recevoir. Aucun lien entre vous et ce numéro n'étant enregistré, nous ne serons pas
-            en mesure de vous le redonner.
-        </p>
-
         {{ block('vote_finish_action_block') }}
     </div>
 {% endblock %}

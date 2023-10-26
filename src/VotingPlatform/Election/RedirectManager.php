@@ -19,7 +19,7 @@ class RedirectManager
         $designation = $election->getDesignation();
 
         if ($designation->isRenaissanceElection()) {
-            return $this->urlGenerator->generate('app_renaissance_homepage');
+            return $this->urlGenerator->generate('app_renaissance_adherent_space');
         }
 
         if ($designation->isCommitteeTypes()) {

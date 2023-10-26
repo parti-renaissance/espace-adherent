@@ -21,7 +21,7 @@ class ShowCommitteeListController extends AbstractController
         $adherent = $this->getUser();
 
         if (!$adherent->isRenaissanceUser() || ($adherent->isForeignResident() && !$this->isGranted('ROLE_PREVIOUS_ADMIN'))) {
-            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirect($this->generateUrl('app_renaissance_adherent_space', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         return $this->render('renaissance/adherent/my_committee/show_committees_list.html.twig', [

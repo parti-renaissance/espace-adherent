@@ -17,7 +17,7 @@ class ShowMyCurrentCommitteeController extends AbstractController
         $adherent = $this->getUser();
 
         if (!$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirect($this->generateUrl('app_renaissance_adherent_space', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         return $this->render('renaissance/adherent/my_committee/show_my_current_committee.html.twig');
