@@ -9,6 +9,7 @@ framework:
             sync: 'sync://'
 
         routing:
+            App\Donation\Command\ReceivePayboxIpnResponseCommand: sync
             App\Messenger\Message\UuidDefaultAsyncMessage: sync
             App\Mailer\Command\SendMessageCommand: sync
             App\Mailchimp\Webhook\Command\CatchMailchimpWebhookCallCommand: sync
