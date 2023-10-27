@@ -71,12 +71,12 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
 
                 $payments = $this->ohme->getPayments(100, 0, ['contact_id' => $contact['id']]);
 
-                foreach ($payments['data'] as $payment) {
-                    if ($adherent->getPaymentByOhmeId($payment['id'])) {
-                        continue;
+                foreach ($payments['data'] as $paymentData) {
+                    if (!$payment = $adherent->getPaymentByOhmeId($paymentData['id'])) {
+                        $adherent->addPayment($payment = Payment::fromArray($adherent, $paymentData));
                     }
 
-                    $adherent->addPayment(Payment::fromArray($adherent, $payment));
+                    $payment->status = $paymentData['payment_status'];
                 }
 
                 $this->entityManager->flush();
