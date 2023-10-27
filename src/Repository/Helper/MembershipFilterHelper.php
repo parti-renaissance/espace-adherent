@@ -2,6 +2,7 @@
 
 namespace App\Repository\Helper;
 
+use App\Adherent\Tag\TagEnum;
 use App\Membership\MembershipSourceEnum;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Doctrine\ORM\QueryBuilder;
@@ -24,15 +25,15 @@ final class MembershipFilterHelper
                 return true;
             case RenaissanceMembershipFilterEnum::ADHERENT_RE:
                 $qb
-                    ->andWhere("$alias.source = :source_renaissance AND $alias.lastMembershipDonation IS NOT NULL")
-                    ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                    ->andWhere("FIND_IN_SET(:adherent_tag, $alias.tags) > 0")
+                    ->setParameter('adherent_tag', TagEnum::ADHERENT)
                 ;
 
                 return true;
             case RenaissanceMembershipFilterEnum::SYMPATHIZER_RE:
                 $qb
-                    ->andWhere("$alias.source = :source_renaissance AND $alias.lastMembershipDonation IS NULL")
-                    ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                    ->andWhere("FIND_IN_SET(:adherent_tag, $alias.tags) > 0")
+                    ->setParameter('adherent_tag', TagEnum::SYMPATHISANT)
                 ;
 
                 return true;

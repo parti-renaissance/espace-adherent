@@ -414,35 +414,6 @@ class AdherentAdmin extends AbstractAdherentAdmin
                     return true;
                 },
             ])
-            ->add('activeMembership', CallbackFilter::class, [
-                'label' => 'Cotisation à jour',
-                'show_filter' => true,
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => [
-                        'yes',
-                        'no',
-                    ],
-                    'choice_label' => function (string $choice) {
-                        return "global.$choice";
-                    },
-                ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    switch ($value->getValue()) {
-                        case 'yes':
-                            $qb->andWhere("$alias.lastMembershipDonation IS NOT NULL");
-
-                            return true;
-
-                        case 'no':
-                            $qb->andWhere("$alias.lastMembershipDonation IS NULL");
-
-                            return true;
-                        default:
-                            return false;
-                    }
-                },
-            ])
             ->add('lastMembershipDonation', DateRangeFilter::class, [
                 'label' => 'Date de dernière cotisation',
                 'show_filter' => true,
