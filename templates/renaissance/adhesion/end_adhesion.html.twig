@@ -13,11 +13,17 @@
 {% block adhesion_content %}
     <section>
         {% if app.request.query.has('from_re_adhesion') %}
-            <div>
+            <div class="w-3/4">
                 <h1 class="text-2xl leading-10 font-medium text-gray-900">Re-adhésion réussie !</h1>
                 <p class="mt-2 text-lg text-gray-500 leading-8">
-                    Votre adhésion a été prolongée pour l'année {{ 'now'|date('Y') }}.<br/>
-                    Nous sommes ravis de vous avoir parmi nous.
+                    Votre adhésion a été prolongée pour l’année {{ 'now'|date('Y') }} : vous êtes à jour de cotisation et pouvez ainsi participer aux évènements du parti réservés aux adhérents ainsi qu’à toutes les consultations nationales ou locales.
+                    <br/><br/>
+                    Merci pour votre confiance et pour votre fidèle soutien.
+                    <br/>
+                    Au plaisir d’échanger sur le terrain !
+                    <br/>
+                    <br/>
+                    L’équipe de Renaissance
                 </p>
             </div>
         {% else %}
