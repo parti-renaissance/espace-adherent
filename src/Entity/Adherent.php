@@ -3392,20 +3392,4 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return \in_array($tag, $this->tags, true);
     }
-
-    /**
-     * Returns dpt code for french adherent, country code otherwise
-     */
-    public function getZoneCode(): ?string
-    {
-        if ($this->isForeignResident()) {
-            return $this->getCountry();
-        }
-
-        if ($zones = $this->getParentZonesOfType(Zone::DEPARTMENT)) {
-            return $zones[0]->getCode();
-        }
-
-        return null;
-    }
 }
