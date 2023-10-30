@@ -7,6 +7,7 @@ use App\Address\AddressInterface;
 use App\Adherent\AdherentAutocompleteFilter;
 use App\Adherent\AdherentRoleEnum;
 use App\Adherent\MandateTypeEnum;
+use App\Adherent\Tag\TagEnum;
 use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
@@ -96,13 +97,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this->createQueryBuilder('adherent')
             ->select('PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}')
             ->innerJoin('adherent.memberships', 'membership', Join::WITH, 'membership.committee = :committee')
-            ->andWhere('adherent.source = :source')
             ->andWhere('adherent.status = :status')
-            ->andWhere('adherent.lastMembershipDonation IS NOT NULL')
+            ->andWhere('FIND_IN_SET(:adherent_tag, adherent.tags) > 0')
             ->setParameters([
                 'committee' => $committee,
                 'status' => Adherent::ENABLED,
-                'source' => MembershipSourceEnum::RENAISSANCE,
+                'adherent_tag' => TagEnum::ADHERENT,
             ])
             ->getQuery()
             ->getResult()
@@ -1218,12 +1218,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $queryBuilder = $this->createQueryBuilder('adherent')
             ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
             ->where('adherent.status = :status AND adherent.activatedAt IS NOT NULL')
-            ->andWhere('adherent.lastMembershipDonation IS NOT NULL')
-            ->andWhere('adherent.source = :source')
+            ->andWhere('FIND_IN_SET(:adherent_tag, adherent.tags) > 0')
             ->andWhere('adherent.registeredAt <= :date')
             ->setParameters([
                 'status' => Adherent::ENABLED,
-                'source' => MembershipSourceEnum::RENAISSANCE,
+                'adherent_tag' => TagEnum::ADHERENT,
                 'date' => $startDate,
             ])
         ;
@@ -1355,8 +1354,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $qb
                 ->innerJoin('a.memberships', 'membership')
                 ->innerJoin('membership.committee', 'committee', Join::WITH, 'committee.version = 2')
-                ->andWhere('a.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL')
-                ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+                ->andWhere('FIND_IN_SET(:adherent_tag, a.tags) > 0')
+                ->setParameter('adherent_tag', TagEnum::ADHERENT)
             ;
 
             if ($filter->committee) {
@@ -1437,7 +1436,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
 
         if ($adherentRenaissance ^ $sympathizerRenaissance) {
-            $qb->andWhere(sprintf('adherent.lastMembershipDonation %s NULL', $adherentRenaissance ? 'IS NOT' : 'IS'));
+            $qb
+                ->andWhere('FIND_IN_SET(:adherent_tag, adherent.tags) > 0')
+                ->setParameter('adherent_tag', $adherentRenaissance ? TagEnum::ADHERENT : TagEnum::SYMPATHISANT)
+            ;
         }
 
         $this->withGeoZones(
@@ -1651,11 +1653,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
             ->innerJoin(ElectedRepresentativeAdherentMandate::class, 'mandate', Join::WITH, 'mandate.adherent = adherent')
             ->where('mandate.finishAt IS NULL AND mandate.mandateType IN (:types)')
-            ->andWhere('adherent.source = :source AND adherent.lastMembershipDonation IS NOT NULL')
+            ->andWhere('FIND_IN_SET(:adherent_tag, adherent.tags) > 0')
             ->andWhere('adherent.status = :status')
             ->setParameters([
                 'types' => MandateTypeEnum::LOCAL_TYPES,
-                'source' => MembershipSourceEnum::RENAISSANCE,
+                'adherent_tag' => TagEnum::ADHERENT,
                 'status' => Adherent::ENABLED,
             ])
             ->getQuery()

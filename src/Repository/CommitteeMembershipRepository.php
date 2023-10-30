@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
+use App\Adherent\Tag\TagEnum;
 use App\Collection\AdherentCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
@@ -16,7 +17,6 @@ use App\Entity\CommitteeMembership;
 use App\Entity\PushToken;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\Membership\MembershipSourceEnum;
 use App\Repository\Helper\MembershipFilterHelper;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
@@ -614,8 +614,10 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
 
         if ($committee->isVersion2()) {
-            $qb->andWhere('adherent.source = :source AND adherent.lastMembershipDonation IS NOT NULL');
-            $qb->setParameter('source', MembershipSourceEnum::RENAISSANCE);
+            $qb
+                ->andWhere('FIND_IN_SET(:adherent_tag, adherent.tags) > 0')
+                ->setParameter('adherent_tag', TagEnum::ADHERENT)
+            ;
         } else {
             $qb
                 ->andWhere('adherent.registeredAt <= :registered_at_min'.($onlyCertified ? ' AND adherent.certifiedAt IS NOT NULL' : ''))
@@ -662,10 +664,13 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->createQueryBuilder('cm')
             ->innerJoin('cm.adherent', 'a')
             ->where('cm.committee = :committee')
-            ->andWhere('a.uuid = :adherent_uuid AND (a.source = :source_renaissance AND a.lastMembershipDonation IS NOT NULL)')
-            ->setParameter('adherent_uuid', $adherentUuid)
-            ->setParameter('committee', $committee)
-            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+            ->andWhere('a.uuid = :adherent_uuid')
+            ->andWhere('FIND_IN_SET(:adherent_tag, a.tags) > 0')
+            ->setParameters([
+                'adherent_uuid' => $adherentUuid,
+                'committee' => $committee,
+                'adherent_tag' => TagEnum::ADHERENT,
+            ])
             ->getQuery()
             ->getOneOrNullResult()
         ;
