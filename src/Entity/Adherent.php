@@ -1265,12 +1265,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isForeignResident(): bool
     {
-        return AddressInterface::FRANCE !== strtoupper($this->getCountry());
+        return !\in_array(strtoupper($this->getCountry()), AddressInterface::FRENCH_CODES, true);
     }
 
     public function isParisResident(): bool
     {
-        return AddressInterface::FRANCE === strtoupper($this->getCountry()) && AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS === substr($this->getPostalCode(), 0, 2);
+        return !$this->isForeignResident() && AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS === substr($this->getPostalCode(), 0, 2);
     }
 
     public function isFemale(): bool
@@ -1380,6 +1380,22 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->subscriptionTypes->exists(function (int $index, SubscriptionType $type) use ($code) {
             return $type->getCode() === $code;
         });
+    }
+
+    /**
+     * Returns dpt code for France, country code otherwise
+     */
+    public function getMainZoneCode(): ?string
+    {
+        if ($this->isForeignResident()) {
+            return $this->getCountry();
+        }
+
+        if ($zones = $this->getZonesOfType(Zone::DEPARTMENT, true)) {
+            return current($zones)->getCode();
+        }
+
+        return null;
     }
 
     public function hasSubscribedLocalHostEmails(): bool

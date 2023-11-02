@@ -376,7 +376,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
                 continue;
             }
 
-            $result = new VoteResult($electionRound, VoteResult::generateVoterKey());
+            $result = new VoteResult($electionRound, VoteResult::generateVoterKey(), null);
 
             foreach ($pools as $pool) {
                 $candidateGroups = $pool->getCandidateGroups();

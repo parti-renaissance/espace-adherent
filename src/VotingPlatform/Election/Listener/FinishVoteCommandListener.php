@@ -97,7 +97,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $voterKey = VoteResult::generateVoterKey();
 
         // 3. create vote result with unique key
-        $voteResult = $this->createVoteResult($electionRound, $command, $voterKey);
+        $voteResult = $this->createVoteResult($electionRound, $command, $voterKey, $adherent->getMainZoneCode());
 
         // 4. delete voters from other voters lists for the same designation
         $voter = $vote->getVoter();
@@ -135,9 +135,9 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         return $voter;
     }
 
-    private function createVoteResult(ElectionRound $electionRound, VoteCommand $command, string $voterKey): VoteResult
+    private function createVoteResult(ElectionRound $electionRound, VoteCommand $command, string $voterKey, ?string $zoneCode): VoteResult
     {
-        $voteResult = new VoteResult($electionRound, $voterKey);
+        $voteResult = new VoteResult($electionRound, $voterKey, $zoneCode);
 
         foreach ($command->getChoicesByPools() as $poolId => $choice) {
             /** @var ElectionPool $pool */

@@ -53,10 +53,16 @@ class VoteResult
      */
     private $voteChoices;
 
-    public function __construct(ElectionRound $electionRound, string $voterKey)
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $zoneCode;
+
+    public function __construct(ElectionRound $electionRound, string $voterKey, ?string $zoneCode)
     {
         $this->electionRound = $electionRound;
         $this->voterKey = $voterKey;
+        $this->zoneCode = $zoneCode;
         $this->votedAt = new \DateTime();
 
         $this->voteChoices = new ArrayCollection();
