@@ -76,6 +76,8 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
 
     public function __construct(ReferentTag $referentTag = null)
     {
+        parent::__construct();
+
         $this->referentTag = $referentTag;
     }
 

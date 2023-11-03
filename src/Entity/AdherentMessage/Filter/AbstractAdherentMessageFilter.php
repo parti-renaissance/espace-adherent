@@ -4,9 +4,12 @@ namespace App\Entity\AdherentMessage\Filter;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Collection\ZoneCollection;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Segment\AudienceSegment;
+use App\Entity\EntityZoneTrait;
 use App\Validator\ValidMessageFilterSegment;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -23,6 +26,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 abstract class AbstractAdherentMessageFilter extends AbstractAdherentFilter implements AdherentMessageFilterInterface
 {
+    use EntityZoneTrait;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
+     * @ORM\JoinTable(
+     *     name="adherent_message_filter_zone",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="adherent_message_filter_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     * )
+     */
+    protected Collection $zones;
+
     /**
      * @var AdherentMessageInterface
      *
@@ -39,6 +55,11 @@ abstract class AbstractAdherentMessageFilter extends AbstractAdherentFilter impl
      * @Groups({"adherent_message_update_filter"})
      */
     private $segment;
+
+    public function __construct(array $zones = [])
+    {
+        $this->zones = new ZoneCollection($zones);
+    }
 
     public function getExternalId(): ?string
     {

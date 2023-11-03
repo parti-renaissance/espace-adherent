@@ -3,14 +3,11 @@
 namespace App\Entity\AdherentMessage\Filter;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Collection\ZoneCollection;
 use App\Entity\Committee;
-use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntity;
 use App\Validator\ManagedZone;
 use App\Validator\ValidScope;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -32,8 +29,6 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         GeneralFilterTrait::reset as generalFilterTraitReset;
     }
 
-    use EntityZoneTrait;
-
     /**
      * @var bool|null
      *
@@ -53,11 +48,6 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      * @Assert\Expression("this.getSegment() or this.getZone() or this.getCommittee()", message="Cette valeur ne doit pas être vide.")
      */
     private $zone;
-
-    /**
-     * Managed zone collection, useful for validate selected zone ($zone property)
-     */
-    protected Collection $zones;
 
     /**
      * @var string|null
@@ -140,11 +130,6 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      * @Groups({"adherent_message_update_filter"})
      */
     public ?string $electTags = null;
-
-    public function __construct()
-    {
-        $this->zones = new ZoneCollection();
-    }
 
     /**
      * @Groups({"audience_segment_read"})

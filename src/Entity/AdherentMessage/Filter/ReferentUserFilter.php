@@ -40,6 +40,8 @@ class ReferentUserFilter extends AbstractUserFilter
 
     public function __construct(array $referentTags)
     {
+        parent::__construct();
+
         $this->referentTags = new ArrayCollection();
 
         foreach ($referentTags as $tag) {
