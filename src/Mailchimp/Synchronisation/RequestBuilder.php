@@ -738,8 +738,6 @@ class RequestBuilder implements LoggerAwareInterface
         return match ($key) {
             TagEnum::ADHERENT_COTISATION_OK => 'adherent:à jour de cotisation',
             TagEnum::ADHERENT_COTISATION_NOK => 'adherent:non à jour de cotisation',
-            TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE => 'sympathisant:adhésion incomplète',
-            TagEnum::SYMPATHISANT_COMPTE_EM => 'sympathisant:ancien adhérent EM',
             TagEnum::ELU_ATTENTE_DECLARATION => 'elu:en attente de déclaration',
             TagEnum::ELU_COTISATION_OK_EXEMPTE => 'elu:à jour de cotisation:exempté de cotisation',
             TagEnum::ELU_COTISATION_OK_NON_SOUMIS => 'elu:à jour de cotisation:non soumis à cotisation',

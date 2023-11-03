@@ -11,8 +11,6 @@ class TagEnum extends Enum
     public const ADHERENT_COTISATION_NOK = 'adherent:cotisation_nok';
 
     public const SYMPATHISANT = 'sympathisant';
-    public const SYMPATHISANT_COMPTE_EM = 'sympathisant:compte_em';
-    public const SYMPATHISANT_ADHESION_INCOMPLETE = 'sympathisant:adhesion_incomplete';
 
     public const ELU = 'elu';
     public const ELU_ATTENTE_DECLARATION = 'elu:attente_declaration';
@@ -32,8 +30,6 @@ class TagEnum extends Enum
             self::ADHERENT_COTISATION_OK,
             self::ADHERENT_COTISATION_NOK,
             self::SYMPATHISANT,
-            self::SYMPATHISANT_COMPTE_EM,
-            self::SYMPATHISANT_ADHESION_INCOMPLETE,
         ];
     }
 }
