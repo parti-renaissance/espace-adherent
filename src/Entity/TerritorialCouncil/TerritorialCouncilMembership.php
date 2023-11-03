@@ -36,8 +36,6 @@ class TerritorialCouncilMembership implements UuidEntityInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncil", inversedBy="memberships", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Groups({"adherent_change_diff"})
      */
     private $territorialCouncil;
 

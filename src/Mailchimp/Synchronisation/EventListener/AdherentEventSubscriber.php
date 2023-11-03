@@ -2,11 +2,11 @@
 
 namespace App\Mailchimp\Synchronisation\EventListener;
 
+use App\Adherent\Certification\Events as AdherentCertificationEvents;
 use App\AdherentMessage\Command\CreateStaticSegmentCommand;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Committee\Event\CommitteeEventInterface;
 use App\Entity\Adherent;
-use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Events;
 use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
@@ -16,23 +16,16 @@ use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\TerritorialCouncil\Event\MembershipEvent;
 use App\TerritorialCouncil\Events as TerritorialCouncilEvents;
-use App\Utils\ArrayUtils;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AdherentEventSubscriber implements EventSubscriberInterface
 {
-    private $before = [];
-    private $normalizer;
-    private $bus;
+    private $adherentEmail;
 
-    public function __construct(NormalizerInterface $normalizer, MessageBusInterface $bus)
+    public function __construct(private readonly MessageBusInterface $bus)
     {
-        $this->normalizer = $normalizer;
-        $this->bus = $bus;
     }
 
     public static function getSubscribedEvents(): array
@@ -52,12 +45,15 @@ class AdherentEventSubscriber implements EventSubscriberInterface
 
             TerritorialCouncilEvents::TERRITORIAL_COUNCIL_MEMBERSHIP_CREATE => 'onTerritorialCouncilMembershipCreation',
             TerritorialCouncilEvents::TERRITORIAL_COUNCIL_MEMBERSHIP_REMOVE => 'onTerritorialCouncilMembershipDeletion',
+
+            AdherentCertificationEvents::ADHERENT_CERTIFIED => 'onAfterUpdate',
+            AdherentCertificationEvents::ADHERENT_UNCERTIFIED => 'onAfterUpdate',
         ];
     }
 
     public function onBeforeUpdate(UserEvent $event): void
     {
-        $this->before = $this->transformToArray($event->getUser());
+        $this->adherentEmail = $event->getUser()->getEmailAddress();
     }
 
     public function onTerritorialCouncilMembershipCreation(MembershipEvent $event): void
@@ -72,23 +68,8 @@ class AdherentEventSubscriber implements EventSubscriberInterface
 
     public function onAfterUpdate(UserEvent $event): void
     {
-        $after = $this->transformToArray($adherent = $event->getUser());
-
-        $changeFrom = ArrayUtils::arrayDiffRecursive($this->before, $after);
-        $changeTo = ArrayUtils::arrayDiffRecursive($after, $this->before);
-
-        if (isset($changeFrom['territorial_council_membership']) || isset($changeTo['territorial_council_membership'])) {
-            $this->handleUpdateTerritorialMembership($adherent, $changeFrom, $changeTo);
-            unset($changeFrom['territorial_council_membership'], $changeTo['territorial_council_membership']);
-        }
-
-        if ($changeFrom || $changeTo) {
-            $this->dispatchAdherentChangeCommand(
-                $adherent->getUuid(),
-                $changeFrom['emailAddress'] ?? $adherent->getEmailAddress(),
-                isset($changeFrom['referentTagCodes']) ? (array) $changeFrom['referentTagCodes'] : []
-            );
-        }
+        $adherent = $event->getUser();
+        $this->dispatchAdherentChangeCommand($adherent->getUuid(), $this->adherentEmail ?? $adherent->getEmailAddress());
     }
 
     public function onCommitteePrivilegeChange(CommitteeEventInterface $event): void
@@ -110,17 +91,9 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         $this->dispatchAdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress());
     }
 
-    private function transformToArray(Adherent $adherent): array
+    private function dispatchAdherentChangeCommand(UuidInterface $uuid, string $identifier): void
     {
-        return $this->normalizer->normalize($adherent, null, ['groups' => ['adherent_change_diff']]);
-    }
-
-    private function dispatchAdherentChangeCommand(
-        UuidInterface $uuid,
-        string $identifier,
-        array $removedTags = []
-    ): void {
-        $this->dispatch(new AdherentChangeCommand($uuid, $identifier, $removedTags));
+        $this->dispatch(new AdherentChangeCommand($uuid, $identifier));
     }
 
     private function dispatchAddAdherentToStaticSegmentCommand(Adherent $adherent, StaticSegmentInterface $object): void
@@ -154,28 +127,5 @@ class AdherentEventSubscriber implements EventSubscriberInterface
     private function dispatch($command): void
     {
         $this->bus->dispatch($command);
-    }
-
-    private function handleUpdateTerritorialMembership(Adherent $adherent, array $changeFrom, array $changeTo): void
-    {
-        $councilFrom = $councilTo = null;
-
-        if (isset($changeFrom['territorial_council_membership']['territorial_council']['uuid'])) {
-            $councilFrom = $changeFrom['territorial_council_membership']['territorial_council']['uuid'];
-        }
-
-        if (isset($changeTo['territorial_council_membership']['territorial_council']['uuid'])) {
-            $councilTo = $changeTo['territorial_council_membership']['territorial_council']['uuid'];
-        }
-
-        // Remove from static segment
-        if (($councilFrom && !$councilTo) || ($councilFrom && $councilTo && $councilFrom !== $councilTo)) {
-            $this->dispatch(new RemoveAdherentFromStaticSegmentCommand($adherent->getUuid(), Uuid::fromString($councilFrom), TerritorialCouncil::class));
-        }
-
-        // Add to static segment
-        if (($councilTo && !$councilFrom) || ($councilFrom && $councilTo && $councilFrom !== $councilTo)) {
-            $this->dispatch(new AddAdherentToStaticSegmentCommand($adherent->getUuid(), Uuid::fromString($councilTo), TerritorialCouncil::class));
-        }
     }
 }

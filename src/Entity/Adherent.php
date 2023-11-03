@@ -174,7 +174,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *     "pap_campaign_replies_list",
      *     "phoning_campaign_replies_list",
      *     "survey_replies_list",
-     *     "adherent_change_diff",
      *     "committee_candidacy:read",
      *     "committee_election:read",
      * })
@@ -197,7 +196,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(unique=true)
      *
-     * @Groups({"user_profile", "profile_read", "adherent_change_diff", "elected_representative_read", "adherent_autocomplete", "my_team_read_list"})
+     * @Groups({"user_profile", "profile_read", "elected_representative_read", "adherent_autocomplete", "my_team_read_list"})
      */
     private $emailAddress;
 
@@ -218,7 +217,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Groups({"profile_read", "adherent_change_diff"})
+     * @Groups({"profile_read"})
      *
      * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"additional_info"})
      * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"additional_info"})
@@ -234,8 +233,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(length=10, options={"default": "DISABLED"})
-     *
-     * @Groups({"adherent_change_diff"})
      */
     private string $status = self::DISABLED;
 
@@ -271,15 +268,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"adherent_change_diff"})
      */
     private ?string $lastLoginGroup = null;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"adherent_change_diff"})
      */
     private $interests = [];
 
@@ -366,8 +359,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var TerritorialCouncilMembership|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
-     *
-     * @Groups({"adherent_change_diff"})
      */
     private $territorialCouncilMembership;
 
@@ -635,8 +626,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"adherent_change_diff"})
      */
     private $certifiedAt;
 
@@ -1357,9 +1346,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->password = $newPassword;
     }
 
-    /**
-     * @Groups({"adherent_change_diff"})
-     */
     public function getSubscriptionTypeCodes(): array
     {
         return array_values(array_map(static function (SubscriptionType $type) {
@@ -2169,9 +2155,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->committeeFeedItems;
     }
 
-    /**
-     * @Groups({"adherent_change_diff"})
-     */
     public function getReferentTagCodes(): array
     {
         return array_map(function (ReferentTag $tag) { return $tag->getCode(); }, $this->referentTags->toArray());
@@ -2312,7 +2295,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @Groups({"export", "adherent_change_diff"})
+     * @Groups({"export"})
      */
     public function getCityName(): ?string
     {
@@ -2326,7 +2309,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         $this->emailUnsubscribed = $value;
-        $this->mailchimpStatus = $value ? ContactStatusEnum::UNSUBSCRIBED : ContactStatusEnum::SUBSCRIBED;
+
+        if ($value) {
+            $this->mailchimpStatus = ContactStatusEnum::UNSUBSCRIBED;
+        } else {
+            $this->mailchimpStatus = ContactStatusEnum::SUBSCRIBED;
+            $this->emailStatusComment = null;
+        }
     }
 
     private function isAdherentMessageRedactor(array $roles): bool
@@ -3107,6 +3096,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function clean(): void
     {
         $this->mailchimpStatus = ContactStatusEnum::CLEANED;
+        $this->emailStatusComment = ContactStatusEnum::CLEANED;
         $this->subscriptionTypes->clear();
     }
 

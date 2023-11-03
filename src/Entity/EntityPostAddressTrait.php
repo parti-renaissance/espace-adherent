@@ -37,7 +37,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @SymfonySerializer\Groups({"user_profile", "adherent_change_diff"})
+     * @SymfonySerializer\Groups({"user_profile"})
      */
     public function getCountry(): ?string
     {
@@ -56,7 +56,6 @@ trait EntityPostAddressTrait
 
     /**
      * @SymfonySerializer\Groups({
-     *     "adherent_change_diff",
      *     "user_profile",
      *     "export",
      *     "adherent_autocomplete"
@@ -67,9 +66,6 @@ trait EntityPostAddressTrait
         return $this->postAddress->getPostalCode();
     }
 
-    /**
-     * @SymfonySerializer\Groups({"adherent_change_diff"})
-     */
     public function getCityName(): ?string
     {
         return $this->postAddress->getCityName();
