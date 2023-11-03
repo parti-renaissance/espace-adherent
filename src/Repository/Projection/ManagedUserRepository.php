@@ -75,12 +75,23 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
-        if ($zones = ($filter->getZones() ?: $filter->getManagedZones())) {
+        if ($managedZones = $filter->getManagedZones()) {
             $zoneCondition = $qb->expr()->orX();
 
-            foreach ($zones as $key => $zone) {
-                $zoneCondition->add(sprintf('FIND_IN_SET(:zone_%s, u.zonesIds) > 0', $key));
-                $qb->setParameter(sprintf(':zone_%s', $key), $zone->getId());
+            foreach ($managedZones as $key => $zone) {
+                $zoneCondition->add(sprintf('FIND_IN_SET(:managed_zone_%s, u.zonesIds) > 0', $key));
+                $qb->setParameter(sprintf(':managed_zone_%s', $key), $zone->getId());
+            }
+
+            $qb->andWhere($zoneCondition);
+        }
+
+        if ($selectedZones = $filter->getZones()) {
+            $zoneCondition = $qb->expr()->orX();
+
+            foreach ($selectedZones as $key => $zone) {
+                $zoneCondition->add(sprintf('FIND_IN_SET(:selected_zone_%s, u.zonesIds) > 0', $key));
+                $qb->setParameter(sprintf(':selected_zone_%s', $key), $zone->getId());
             }
 
             $qb->andWhere($zoneCondition);
