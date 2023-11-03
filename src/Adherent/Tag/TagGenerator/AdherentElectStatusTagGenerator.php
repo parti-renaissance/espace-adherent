@@ -15,20 +15,28 @@ class AdherentElectStatusTagGenerator extends AbstractTagGenerator
 
         $tags = [TagEnum::ELU];
 
-        if ($adherent->getLastRevenueDeclaration()) {
-            $tags[] = TagEnum::ELU_DECLARATION_OK;
-        }
+        $countPayments = \count($adherent->getConfirmedPayments());
 
-        if ($adherent->getContributionAmount()) {
-            $tags[] = TagEnum::ELU_COTISATION_ELIGIBLE;
-        }
-
-        if ($adherent->getConfirmedPayments()) {
-            $tags[] = TagEnum::ELU_COTISATION_OK;
+        if (null === $adherent->getLastRevenueDeclaration() && 0 === $countPayments) {
+            $tags[] = TagEnum::ELU_ATTENTE_DECLARATION;
+        } elseif (null === $adherent->getContributionAmount()) {
+            $tags[] = TagEnum::ELU_COTISATION_OK_NON_SOUMIS;
+        } elseif ($countPayments) {
+            $tags[] = TagEnum::ELU_COTISATION_OK_SOUMIS;
+        } else {
+            $tags[] = TagEnum::ELU_COTISATION_NOK;
         }
 
         if ($adherent->exemptFromCotisation) {
-            $tags[] = TagEnum::ELU_EXEMPTE;
+            if ($adherent->hasMembershipDonationCurrentYear()) {
+                $tags[] = TagEnum::ELU_COTISATION_OK_EXEMPTE;
+            } else {
+                $tags[] = TagEnum::ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK;
+            }
+        }
+
+        if (array_intersect($tags, [TagEnum::ELU_COTISATION_OK_SOUMIS, TagEnum::ELU_COTISATION_OK_NON_SOUMIS, TagEnum::ELU_COTISATION_OK_EXEMPTE])) {
+            $tags[] = TagEnum::ELU_COTISATION_OK;
         }
 
         return $tags;

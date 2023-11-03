@@ -3,6 +3,7 @@
 namespace App\Mailchimp\Synchronisation;
 
 use App\Address\AddressInterface;
+use App\Adherent\Tag\TagEnum;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
 use App\Entity\ApplicationRequest\ApplicationRequest;
@@ -293,7 +294,7 @@ class RequestBuilder implements LoggerAwareInterface
 
     public function setAdherentTags(?array $tags): self
     {
-        $this->adherentTags = $tags;
+        $this->adherentTags = array_filter(array_map(fn (string $key) => $this->translateAdherentTag($key), $tags));
 
         return $this;
     }
@@ -730,5 +731,22 @@ class RequestBuilder implements LoggerAwareInterface
         }
 
         return $tags;
+    }
+
+    private function translateAdherentTag(string $key): ?string
+    {
+        return match ($key) {
+            TagEnum::ADHERENT_COTISATION_OK => 'adherent:à jour de cotisation',
+            TagEnum::ADHERENT_COTISATION_NOK => 'adherent:non à jour de cotisation',
+            TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE => 'sympathisant:adhésion incomplète',
+            TagEnum::SYMPATHISANT_COMPTE_EM => 'sympathisant:ancien adhérent EM',
+            TagEnum::ELU_ATTENTE_DECLARATION => 'elu:en attente de déclaration',
+            TagEnum::ELU_COTISATION_OK_EXEMPTE => 'elu:à jour de cotisation:exempté de cotisation',
+            TagEnum::ELU_COTISATION_OK_NON_SOUMIS => 'elu:à jour de cotisation:non soumis à cotisation',
+            TagEnum::ELU_COTISATION_OK_SOUMIS => 'elu:à jour de cotisation:soumis à cotisation',
+            TagEnum::ELU_COTISATION_NOK => 'elu:non à jour de cotisation',
+            TagEnum::ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK => 'elu:exempté mais pas à jour de cotisation adhérent',
+            default => null
+        };
     }
 }
