@@ -22,6 +22,6 @@ class TagAggregator
             $tags = array_merge($tags, $generator->generate($adherent));
         }
 
-        return array_values(array_filter(array_unique($tags)));
+        return array_values(array_unique($tags));
     }
 }

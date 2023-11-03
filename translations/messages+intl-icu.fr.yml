@@ -1438,12 +1438,15 @@ adherent.tag.adherent:cotisation_ok: Adhérent - à jour de cotisation
 adherent.tag.adherent:cotisation_nok: Adhérent - non à jour de cotisation
 adherent.tag.sympathisant: Sympathisant
 adherent.tag.sympathisant:compte_em: Sympathisant - ancien adhérent EM
-adherent.tag.sympathisant:compte_re: Sympathisant - adhésion incomplète
+adherent.tag.sympathisant:adhesion_incomplete: Sympathisant - adhésion incomplète
 adherent.tag.elu: Élu
-adherent.tag.elu:declaration_ok: Élu - avec la déclaration
-adherent.tag.elu:cotisation_eligible: Élu - soumis à cotisation
+adherent.tag.elu:attente_declaration: Élu - en attente de déclaration
 adherent.tag.elu:cotisation_ok: Élu - à jour de cotisation
-adherent.tag.elu:exempte: Élu - exempté
+adherent.tag.elu:cotisation_ok:soumis: Élu - à jour de cotisation - soumis à cotisation
+adherent.tag.elu:cotisation_ok:non_soumis: Élu - à jour de cotisation - non soumis à cotisation
+adherent.tag.elu:cotisation_ok:exempte: Élu - à jour de cotisation - exempté de cotisation
+adherent.tag.elu:cotisation_nok: Élu - non à jour de cotisation
+adherent.tag.elu:exempte_et_adherent_cotisation_nok: Élu - exempté mais pas à jour de cotisation adhérent
 
 adherent.filter_tag.undeclared_revenue: En attente de déclaration
 adherent.filter_tag.cotisation_ok: À jour de cotisation élu

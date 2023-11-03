@@ -12,13 +12,18 @@ class TagEnum extends Enum
 
     public const SYMPATHISANT = 'sympathisant';
     public const SYMPATHISANT_COMPTE_EM = 'sympathisant:compte_em';
-    public const SYMPATHISANT_COMPTE_RE = 'sympathisant:compte_re';
+    public const SYMPATHISANT_ADHESION_INCOMPLETE = 'sympathisant:adhesion_incomplete';
 
     public const ELU = 'elu';
-    public const ELU_DECLARATION_OK = 'elu:declaration_ok';
-    public const ELU_COTISATION_ELIGIBLE = 'elu:cotisation_eligible';
+    public const ELU_ATTENTE_DECLARATION = 'elu:attente_declaration';
+
     public const ELU_COTISATION_OK = 'elu:cotisation_ok';
-    public const ELU_EXEMPTE = 'elu:exempte';
+    public const ELU_COTISATION_OK_EXEMPTE = 'elu:cotisation_ok:exempte';
+    public const ELU_COTISATION_OK_SOUMIS = 'elu:cotisation_ok:soumis';
+    public const ELU_COTISATION_OK_NON_SOUMIS = 'elu:cotisation_ok:non_soumis';
+
+    public const ELU_COTISATION_NOK = 'elu:cotisation_nok';
+    public const ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK = 'elu:exempte_et_adherent_cotisation_nok';
 
     public static function getAdherentTags(): array
     {
@@ -28,7 +33,7 @@ class TagEnum extends Enum
             self::ADHERENT_COTISATION_NOK,
             self::SYMPATHISANT,
             self::SYMPATHISANT_COMPTE_EM,
-            self::SYMPATHISANT_COMPTE_RE,
+            self::SYMPATHISANT_ADHESION_INCOMPLETE,
         ];
     }
 }
