@@ -27,9 +27,6 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
             ];
         }
 
-        return [
-            TagEnum::SYMPATHISANT,
-            $adherent->getActivatedAt() && $adherent->getActivatedAt() < new \DateTime('2022-09-17') ? TagEnum::SYMPATHISANT_COMPTE_EM : TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE,
-        ];
+        return [TagEnum::SYMPATHISANT];
     }
 }

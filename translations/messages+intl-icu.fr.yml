@@ -1437,8 +1437,6 @@ adherent.tag.adherent: Adhérent
 adherent.tag.adherent:cotisation_ok: Adhérent - à jour de cotisation
 adherent.tag.adherent:cotisation_nok: Adhérent - non à jour de cotisation
 adherent.tag.sympathisant: Sympathisant
-adherent.tag.sympathisant:compte_em: Sympathisant - ancien adhérent EM
-adherent.tag.sympathisant:adhesion_incomplete: Sympathisant - adhésion incomplète
 adherent.tag.elu: Élu
 adherent.tag.elu:attente_declaration: Élu - en attente de déclaration
 adherent.tag.elu:cotisation_ok: Élu - à jour de cotisation
