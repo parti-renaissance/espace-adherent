@@ -20,36 +20,17 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentProfileHandler
 {
-    private EventDispatcherInterface $dispatcher;
-    private EntityManagerInterface $manager;
-    private PostAddressFactory $addressFactory;
-    private AdherentChangeEmailHandler $emailHandler;
-    private ReferentTagManager $referentTagManager;
-    private ReferentZoneManager $referentZoneManager;
-    private EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler;
-    private SubscriptionTypeRepository $subscriptionTypeRepository;
-    private SubscriptionHandler $subscriptionHandler;
-
     public function __construct(
-        EventDispatcherInterface $dispatcher,
-        EntityManagerInterface $manager,
-        PostAddressFactory $addressFactory,
-        AdherentChangeEmailHandler $emailHandler,
-        ReferentTagManager $referentTagManager,
-        ReferentZoneManager $referentZoneManager,
-        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler,
-        SubscriptionTypeRepository $subscriptionTypeRepository,
-        SubscriptionHandler $subscriptionHandler
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly EntityManagerInterface $manager,
+        private readonly PostAddressFactory $addressFactory,
+        private readonly AdherentChangeEmailHandler $emailHandler,
+        private readonly ReferentTagManager $referentTagManager,
+        private readonly ReferentZoneManager $referentZoneManager,
+        private readonly EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler,
+        private readonly SubscriptionTypeRepository $subscriptionTypeRepository,
+        private readonly SubscriptionHandler $subscriptionHandler,
     ) {
-        $this->dispatcher = $dispatcher;
-        $this->manager = $manager;
-        $this->addressFactory = $addressFactory;
-        $this->emailHandler = $emailHandler;
-        $this->referentTagManager = $referentTagManager;
-        $this->referentZoneManager = $referentZoneManager;
-        $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
-        $this->subscriptionTypeRepository = $subscriptionTypeRepository;
-        $this->subscriptionHandler = $subscriptionHandler;
     }
 
     public function update(Adherent $adherent, AdherentProfile $adherentProfile): void
@@ -72,15 +53,6 @@ class AdherentProfileHandler
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED);
     }
 
-    private function updateSubscriptions(Adherent $adherent, array $subscriptionTypeCodes): void
-    {
-        $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
-
-        $adherent->setSubscriptionTypes($this->findSubscriptionTypes($subscriptionTypeCodes));
-
-        $this->subscriptionHandler->handleChanges($adherent, $oldEmailsSubscriptions);
-    }
-
     public function updateReferentTagsAndSubscriptionHistoryIfNeeded(Adherent $adherent): void
     {
         if ($this->referentTagManager->isUpdateNeeded($adherent)) {
@@ -91,6 +63,17 @@ class AdherentProfileHandler
 
         if ($this->referentZoneManager->isUpdateNeeded($adherent)) {
             $this->referentZoneManager->assignZone($adherent);
+        }
+    }
+
+    private function updateSubscriptions(Adherent $adherent, array $subscriptionTypeCodes): void
+    {
+        $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
+        $newEmailsSubscriptions = $this->findSubscriptionTypes($subscriptionTypeCodes);
+
+        if (array_diff($oldEmailsSubscriptions, $newEmailsSubscriptions)) {
+            $adherent->setSubscriptionTypes($newEmailsSubscriptions);
+            $this->subscriptionHandler->handleChanges($adherent, $oldEmailsSubscriptions);
         }
     }
 

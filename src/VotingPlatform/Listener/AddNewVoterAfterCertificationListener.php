@@ -3,7 +3,7 @@
 namespace App\VotingPlatform\Listener;
 
 use App\Adherent\Certification\Events;
-use App\Membership\Event\AdherentEvent;
+use App\Membership\Event\UserEvent;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\VotersListManager;
@@ -37,12 +37,12 @@ class AddNewVoterAfterCertificationListener implements EventSubscriberInterface
         ];
     }
 
-    public function onAdherentCertifiedChange(AdherentEvent $event): void
+    public function onAdherentCertifiedChange(UserEvent $event): void
     {
         $voter = null;
         $count = 0;
 
-        foreach ($event->getAdherent()->getMemberships() as $membership) {
+        foreach ($event->getUser()->getMemberships() as $membership) {
             $committee = $membership->getCommittee();
 
             if (!$committee->hasActiveElection()) {
