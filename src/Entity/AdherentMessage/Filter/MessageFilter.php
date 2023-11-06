@@ -2,9 +2,6 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
-use App\Collection\ZoneCollection;
-use App\Entity\EntityZoneTrait;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,13 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 class MessageFilter extends AbstractUserFilter
 {
     use BasicUserFiltersTrait;
-    use EntityZoneTrait;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
-     * @ORM\JoinTable(name="adherent_message_filter_zone")
-     */
-    protected Collection $zones;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
@@ -30,11 +20,6 @@ class MessageFilter extends AbstractUserFilter
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private bool $contactOnlyRunningMates = false;
-
-    public function __construct(array $zones = [])
-    {
-        $this->zones = new ZoneCollection($zones);
-    }
 
     public function getContactOnlyVolunteers(): bool
     {

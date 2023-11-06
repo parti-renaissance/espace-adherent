@@ -45,13 +45,24 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
-        if ($filter instanceof MessageFilter) {
-            $zone = $filter->getZones()->first();
-        } else {
-            $zone = $filter->getZone();
+        $zones = [];
+        if (1 === $filter->getZones()->count()) {
+            $zones[] = $filter->getZones()->first();
         }
 
-        return $zone ? $this->buildFromZone($zone) : [];
+        if (!$filter instanceof MessageFilter && ($zone = $filter->getZone())) {
+            $zones[] = $zone;
+        }
+
+        $zones = array_unique($zones);
+
+        $conditions = [];
+
+        foreach ($zones as $zone) {
+            $conditions[] = $this->buildFromZone($zone);
+        }
+
+        return $conditions;
     }
 
     private function buildFromZone(Zone $zone): array
@@ -73,11 +84,11 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
 
     protected function buildZoneCondition(string $field, string $value, string $operator): array
     {
-        return [[
+        return [
             'condition_type' => 'TextMerge',
             'op' => $operator,
             'field' => $field,
             'value' => $value,
-        ]];
+        ];
     }
 }
