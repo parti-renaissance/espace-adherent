@@ -47,10 +47,15 @@ class Driver implements LoggerAwareInterface
         if ($throw) {
             $responseContent = $response->getContent(false);
 
-            if (str_contains($responseContent, 'looks fake or invalid, please enter a real email address')) {
+            if (
+                str_contains($responseContent, 'looks fake or invalid, please enter a real email address')
+                || str_contains($responseContent, 'Please provide a valid email address')
+            ) {
                 throw new InvalidContactEmailException();
             } elseif (str_contains($responseContent, 'contact must re-subscribe to get back on the list')) {
-                throw new RemovedContactStatusException();
+                throw new RemovedContactStatusException('Permanently deleted');
+            } elseif (str_contains($responseContent, 'is already a list member in compliance state due to unsubscribe')) {
+                throw new RemovedContactStatusException('Unsubscribed');
             }
         }
 

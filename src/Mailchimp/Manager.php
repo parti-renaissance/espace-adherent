@@ -99,7 +99,7 @@ class Manager implements LoggerAwareInterface
             $adherent->emailStatusComment = 'Email invalid';
         } catch (RemovedContactStatusException $e) {
             $adherent->setEmailUnsubscribed(true);
-            $adherent->emailStatusComment = 'Permanently deleted';
+            $adherent->emailStatusComment = $e->getMessage();
         }
 
         if ($result && (null === $adherent->getSource() || $adherent->isRenaissanceUser())) {
