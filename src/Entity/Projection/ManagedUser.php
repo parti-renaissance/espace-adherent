@@ -218,7 +218,7 @@ class ManagedUser
      *
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    public ?array $adherentTags = null;
+    public ?array $tags = null;
 
     /**
      * @var bool
@@ -278,7 +278,7 @@ class ManagedUser
      *
      * @Groups({"managed_user_read"})
      */
-    private $interests = [];
+    private $interests;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
@@ -338,21 +338,21 @@ class ManagedUser
      *
      * @Groups({"managed_user_read"})
      */
-    private ?array $tags;
+    private ?array $additionalTags;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Groups({"managed_user_read"})
      */
-    private ?array $mandates = null;
+    private ?array $mandates;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Groups({"managed_user_read"})
      */
-    private ?array $declaredMandates = null;
+    private ?array $declaredMandates;
 
     /**
      * @Groups({"managed_user_read"})
@@ -371,7 +371,7 @@ class ManagedUser
     /**
      * @ORM\Column(nullable=true)
      */
-    private ?string $zonesIds = null;
+    private ?string $zonesIds;
 
     public function __construct(
         int $status,
@@ -392,6 +392,7 @@ class ManagedUser
         string $committees = null,
         array $committeeUuids = null,
         array $tags = null,
+        array $additionalTags = null,
         int $isCommitteeMember = 0,
         int $isCommitteeHost = 0,
         int $isCommitteeProvisionalSupervisor = 0,
@@ -433,6 +434,7 @@ class ManagedUser
         $this->committees = $committees;
         $this->committeeUuids = $committeeUuids;
         $this->tags = $tags;
+        $this->additionalTags = $additionalTags;
         $this->isCommitteeMember = $isCommitteeMember;
         $this->isCommitteeHost = $isCommitteeHost;
         $this->isCommitteeSupervisor = $isCommitteeSupervisor;
@@ -745,9 +747,9 @@ class ManagedUser
         return $this->committeeUuid;
     }
 
-    public function getTags(): ?array
+    public function getAdditionalTags(): ?array
     {
-        return $this->tags;
+        return $this->additionalTags;
     }
 
     public function getMandates(): ?array
