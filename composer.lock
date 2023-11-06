@@ -10475,21 +10475,21 @@
         },
         {
             "name": "scheb/2fa-bundle",
-            "version": "v6.9.0",
+            "version": "v6.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-bundle.git",
-                "reference": "98fee6bf6ce17514d8f3772d4c7f86e6f7595a85"
+                "reference": "493a8712be5461ca90f4ac0eb819cfcf6cf8d009"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/98fee6bf6ce17514d8f3772d4c7f86e6f7595a85",
-                "reference": "98fee6bf6ce17514d8f3772d4c7f86e6f7595a85",
+                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/493a8712be5461ca90f4ac0eb819cfcf6cf8d009",
+                "reference": "493a8712be5461ca90f4ac0eb819cfcf6cf8d009",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
+                "php": "~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0",
                 "symfony/config": "^5.4 || ^6.0",
                 "symfony/dependency-injection": "^5.4 || ^6.0",
                 "symfony/event-dispatcher": "^5.4 || ^6.0",
@@ -10536,27 +10536,27 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-bundle/tree/v6.9.0"
+                "source": "https://github.com/scheb/2fa-bundle/tree/v6.10.0"
             },
-            "time": "2023-08-05T11:13:58+00:00"
+            "time": "2023-11-04T12:54:57+00:00"
         },
         {
             "name": "scheb/2fa-google-authenticator",
-            "version": "v6.9.0",
+            "version": "v6.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-google-authenticator.git",
-                "reference": "20eab4c1814b587cac71c4516a06b192ca838294"
+                "reference": "3ee3fa82bcd579e396b7ed63d9006e8d63a18e67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-google-authenticator/zipball/20eab4c1814b587cac71c4516a06b192ca838294",
-                "reference": "20eab4c1814b587cac71c4516a06b192ca838294",
+                "url": "https://api.github.com/repos/scheb/2fa-google-authenticator/zipball/3ee3fa82bcd579e396b7ed63d9006e8d63a18e67",
+                "reference": "3ee3fa82bcd579e396b7ed63d9006e8d63a18e67",
                 "shasum": ""
             },
             "require": {
                 "paragonie/constant_time_encoding": "^2.4",
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
+                "php": "~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0",
                 "scheb/2fa-bundle": "self.version",
                 "spomky-labs/otphp": "^10.0 || ^11.0"
             },
@@ -10587,9 +10587,9 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v6.9.0"
+                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v6.10.0"
             },
-            "time": "2022-12-10T15:20:09+00:00"
+            "time": "2023-11-04T12:54:57+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
