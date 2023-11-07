@@ -2891,16 +2891,16 @@
         },
         {
             "name": "endroid/qr-code",
-            "version": "5.0.1",
+            "version": "5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/qr-code.git",
-                "reference": "3601a9df66f6c526e4bb6dc2261e1ce03064e7d2"
+                "reference": "e58d34fa0b86a62696144baba9d80ee98845f957"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/qr-code/zipball/3601a9df66f6c526e4bb6dc2261e1ce03064e7d2",
-                "reference": "3601a9df66f6c526e4bb6dc2261e1ce03064e7d2",
+                "url": "https://api.github.com/repos/endroid/qr-code/zipball/e58d34fa0b86a62696144baba9d80ee98845f957",
+                "reference": "e58d34fa0b86a62696144baba9d80ee98845f957",
                 "shasum": ""
             },
             "require": {
@@ -2954,7 +2954,7 @@
             ],
             "support": {
                 "issues": "https://github.com/endroid/qr-code/issues",
-                "source": "https://github.com/endroid/qr-code/tree/5.0.1"
+                "source": "https://github.com/endroid/qr-code/tree/5.0.2"
             },
             "funding": [
                 {
@@ -2962,29 +2962,29 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-02T22:39:22+00:00"
+            "time": "2023-10-04T22:55:54+00:00"
         },
         {
             "name": "endroid/qr-code-bundle",
-            "version": "5.0.0",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/qr-code-bundle.git",
-                "reference": "aa42fbfe654134ac2ec58896ce19379ba9da4d9d"
+                "reference": "9a4e171a44aee363dcaf8def4ddfd999331439fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/qr-code-bundle/zipball/aa42fbfe654134ac2ec58896ce19379ba9da4d9d",
-                "reference": "aa42fbfe654134ac2ec58896ce19379ba9da4d9d",
+                "url": "https://api.github.com/repos/endroid/qr-code-bundle/zipball/9a4e171a44aee363dcaf8def4ddfd999331439fa",
+                "reference": "9a4e171a44aee363dcaf8def4ddfd999331439fa",
                 "shasum": ""
             },
             "require": {
                 "endroid/installer": "^1.2.2",
                 "endroid/qr-code": "^5.0",
                 "php": "^8.1",
-                "symfony/framework-bundle": "^5.4||^6.0",
-                "symfony/twig-bundle": "^5.4||^6.0",
-                "symfony/yaml": "^5.4||^6.0"
+                "symfony/framework-bundle": "^5.4||^6.4||^7.0",
+                "symfony/twig-bundle": "^5.4||^6.4||^7.0",
+                "symfony/yaml": "^5.4||^6.4||^7.0"
             },
             "require-dev": {
                 "endroid/quality": "dev-master"
@@ -3025,7 +3025,7 @@
             ],
             "support": {
                 "issues": "https://github.com/endroid/qr-code-bundle/issues",
-                "source": "https://github.com/endroid/qr-code-bundle/tree/5.0.0"
+                "source": "https://github.com/endroid/qr-code-bundle/tree/5.0.1"
             },
             "funding": [
                 {
@@ -3033,7 +3033,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-02T22:43:57+00:00"
+            "time": "2023-11-07T09:05:08+00:00"
         },
         {
             "name": "enmarche/majority-judgment",
