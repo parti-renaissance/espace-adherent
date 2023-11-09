@@ -36,6 +36,7 @@ class CountAdherentController extends AbstractController
     {
         $scope = $this->resolver->generate();
         $scopeZones = $scope->getZones();
+        $zonesFromRequest = [];
 
         if ($request->isMethod('POST')) {
             try {
@@ -59,8 +60,8 @@ class CountAdherentController extends AbstractController
         }
 
         return $this->json([
-            'adherent' => $this->adherentRepository->countInZones($zonesFromRequest ?? $scopeZones, true, false),
-            'sympathizer' => $this->adherentRepository->countInZones($zonesFromRequest ?? $scopeZones, false, true),
+            'adherent' => $this->adherentRepository->countInZones($zonesFromRequest ?: $scopeZones, true, false),
+            'sympathizer' => $this->adherentRepository->countInZones($zonesFromRequest ?: $scopeZones, false, true),
         ]);
     }
 }

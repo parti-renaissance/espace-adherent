@@ -142,7 +142,7 @@
             <ul class="space--10-0 list__links list__links--row list__links--row-left list__links--no-decor list__links--subnav nav-dropdown__menu__items">
                 {% if app.user.isReferent or app.user.isDeputy or app.user.isSenator %}
                     <li>
-                        <a href="{{ jemengage_host }}" target="_blank">Je m'engage</a>
+                        <a href="{{ jemengage_host }}" target="_blank">Espace cadre</a>
                     </li>
                 {% endif %}
                 {% if is_granted('ROLE_FORMATION_SPACE') %}

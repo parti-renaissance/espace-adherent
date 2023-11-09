@@ -20,7 +20,7 @@ class SetCampaignReplyToSubscriber implements EventSubscriberInterface
     public function preEdit(RequestEvent $event): void
     {
         if ($event->getMessage() instanceof CorrespondentAdherentMessage) {
-            $event->getRequest()->setReplyTo('ne-pas-repondre@je-mengage.fr');
+            $event->getRequest()->setReplyTo('ne-pas-repondre@parti-renaissance.fr');
 
             return;
         }

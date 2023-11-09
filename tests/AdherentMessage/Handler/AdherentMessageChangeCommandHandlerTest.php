@@ -543,7 +543,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'template_id' => 10,
                     'subject_line' => '[Correspondant] Subject',
                     'title' => 'Full Name - '.date('d/m/Y'),
-                    'reply_to' => 'ne-pas-repondre@je-mengage.fr',
+                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
                     'from_name' => 'First Name | Campagne 2022',
                 ],
                 'recipients' => [
