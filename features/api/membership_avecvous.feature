@@ -140,7 +140,7 @@ Feature:
         "template_content": [],
         "message": {
             "subject": "🚀 Activez votre compte Je m’engage",
-            "from_email": "ne-pas-repondre@je-mengage.fr",
+            "from_email": "ne-pas-repondre@parti-renaissance.fr",
             "from_name": "Emmanuel Macron avec vous",
             "global_merge_vars": [
                 {
