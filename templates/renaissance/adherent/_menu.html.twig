@@ -68,7 +68,7 @@
     <div>
         <h5 class="inline-flex items-center mb-4 text-sm leading-5 font-medium uppercase tracking-wider lg:mb-3 text-red-500">
             {% include 'icons/archive.svg.twig' with { svg_class: 'text-red-500 w-5 h-5 mr-2' } %}
-            Élections & Consultations
+            Élections et Consultations
         </h5>
         <ul class="ml-2 space-y-4 lg:space-y-2 border-l border-red-200">
             {% for designation in designations|filter(d => not d.isCommitteeSupervisorType() or d.getElectionEntityIdentifier()) %}

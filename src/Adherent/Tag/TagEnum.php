@@ -32,4 +32,18 @@ class TagEnum extends Enum
             self::SYMPATHISANT,
         ];
     }
+
+    public static function getElectTags(): array
+    {
+        return [
+            self::ELU,
+            self::ELU_ATTENTE_DECLARATION,
+            self::ELU_COTISATION_OK,
+            self::ELU_COTISATION_OK_EXEMPTE,
+            self::ELU_COTISATION_OK_NON_SOUMIS,
+            self::ELU_COTISATION_OK_SOUMIS,
+            self::ELU_COTISATION_NOK,
+            self::ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK,
+        ];
+    }
 }
