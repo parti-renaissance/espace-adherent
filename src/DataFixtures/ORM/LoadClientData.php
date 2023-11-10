@@ -68,7 +68,6 @@ class LoadClientData extends Fixture
             [GrantTypeEnum::CLIENT_CREDENTIALS],
             ['https://en-marche.fr/callback']
         );
-        $client4->addSupportedScope(Scope::WEB_HOOK);
         $client4->addSupportedScope(Scope::READ_USERS);
         $manager->persist($client4);
         $this->setReference('web_hook_client_1', $client4);
@@ -81,7 +80,6 @@ class LoadClientData extends Fixture
             [GrantTypeEnum::CLIENT_CREDENTIALS],
             ['https://en-marche.fr/callback']
         );
-        $client5->addSupportedScope(Scope::WEB_HOOK);
         $client5->addSupportedScope(Scope::READ_USERS);
         $client5->addSupportedScope(Scope::WRITE_USERS);
         $manager->persist($client5);

@@ -6,12 +6,9 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntitySoftDeletableTrait;
 use App\Entity\EntitySoftDeletedInterface;
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\WebHook\WebHook;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use App\OAuth\SecretGenerator;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -86,15 +83,6 @@ class Client implements EntitySoftDeletedInterface
     private $askUserForAuthorization = true;
 
     /**
-     * @var Collection|WebHook[]
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\WebHook\WebHook", mappedBy="client", cascade={"all"}, orphanRemoval=true)
-     *
-     * @Assert\Valid
-     */
-    private $webHooks;
-
-    /**
      * @var string[]|null
      *
      * @ORM\Column(type="simple_array", nullable=true)
@@ -115,7 +103,6 @@ class Client implements EntitySoftDeletedInterface
         $this->secret = $secret ?: SecretGenerator::generate();
         $this->setAllowedGrantTypes($allowedGrantTypes);
         $this->redirectUris = $redirectUris;
-        $this->webHooks = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -238,27 +225,6 @@ class Client implements EntitySoftDeletedInterface
     public function setAskUserForAuthorization(bool $askUserForAuthorization): void
     {
         $this->askUserForAuthorization = $askUserForAuthorization;
-    }
-
-    /**
-     * @return WebHook[]|Collection
-     */
-    public function getWebHooks(): Collection
-    {
-        return $this->webHooks;
-    }
-
-    public function removeWebHook(WebHook $webHook): void
-    {
-        $this->webHooks->removeElement($webHook);
-    }
-
-    public function addWebHook(WebHook $webHook): void
-    {
-        if (!$this->webHooks->contains($webHook)) {
-            $webHook->setClient($this);
-            $this->webHooks->add($webHook);
-        }
     }
 
     public function getRequestedRoles(): ?array

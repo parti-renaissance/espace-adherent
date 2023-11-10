@@ -1,6 +1,5 @@
 read:users: Information de profil, email, coordonnées
 write:users: Modification des informations de profil
 read:unsubscriptions: Liste des uuid des désinscrits
-web_hook: Liste les URLs abonnées à un web hook donné
 read:typeforms: Récupération des données des typeforms
 read:stats: Récupération des données des statistiques des adhérents
