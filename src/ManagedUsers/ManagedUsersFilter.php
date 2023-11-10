@@ -82,7 +82,7 @@ class ManagedUsersFilter
     /**
      * @Groups({"filter_write"})
      *
-     * @Assert\Choice(callback={"App\Adherent\Tag\TagFilterEnum", "getFiltersTags"})
+     * @Assert\Choice(callback={"App\Adherent\Tag\TagEnum", "getElectTags"})
      */
     public ?string $electTags = null;
 

@@ -2,7 +2,7 @@
 
 namespace App\JMEFilter\FilterBuilder;
 
-use App\Adherent\Tag\TagFilterEnum;
+use App\Adherent\Tag\TagEnum;
 use App\JMEFilter\FilterCollectionBuilder;
 use App\JMEFilter\FilterGroup\ElectedRepresentativeFilterGroup;
 use App\Scope\ScopeEnum;
@@ -16,7 +16,7 @@ class ElectTagsFilterBuilder implements FilterBuilderInterface
 
     public function supports(string $scope, string $feature = null): bool
     {
-        return false && \in_array($scope, ScopeEnum::ALL, true);
+        return \in_array($scope, ScopeEnum::ALL, true);
     }
 
     public function build(string $scope, string $feature = null): array
@@ -31,8 +31,8 @@ class ElectTagsFilterBuilder implements FilterBuilderInterface
     public function getTranslatedChoices(): array
     {
         $choices = [];
-        foreach (TagFilterEnum::getFiltersTags() as $tag) {
-            $choices[$tag] = $this->translator->trans('adherent.filter_tag.'.$tag);
+        foreach (TagEnum::getElectTags() as $tag) {
+            $choices[$tag] = $this->translator->trans('adherent.tag.'.$tag);
         }
 
         return $choices;

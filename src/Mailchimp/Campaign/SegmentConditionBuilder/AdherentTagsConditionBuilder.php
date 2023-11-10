@@ -2,7 +2,6 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\Adherent\Tag\TagFilterEnum;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -41,14 +40,12 @@ class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
         }
 
         if ($filter->electTags) {
-            foreach (TagFilterEnum::getFiltersTagsMapping()[$filter->electTags] ?? [] as $tag => $isEnabled) {
-                $conditions[] = [
-                    'condition_type' => 'TextMerge',
-                    'op' => $isEnabled ? 'contains' : 'notcontain',
-                    'field' => MemberRequest::MERGE_FIELD_ADHERENT_TAGS,
-                    'value' => $tag,
-                ];
-            }
+            $conditions[] = [
+                'condition_type' => 'TextMerge',
+                'op' => 'contains',
+                'field' => MemberRequest::MERGE_FIELD_ADHERENT_TAGS,
+                'value' => $filter->electTags,
+            ];
         }
 
         return $conditions;

@@ -376,6 +376,19 @@ Feature:
               "color": "#0F766E",
               "filters": [
                   {
+                    "code": "adherent_tags",
+                    "label": "Tags adhérent",
+                    "options": {
+                        "choices": {
+                            "adherent": "Adhérent",
+                            "adherent:cotisation_nok": "Adhérent - non à jour de cotisation",
+                            "adherent:cotisation_ok": "Adhérent - à jour de cotisation",
+                            "sympathisant": "Sympathisant"
+                        }
+                    },
+                    "type": "select"
+                  },
+                  {
                       "code": "committee",
                       "label": "Comités",
                       "options": {
@@ -466,6 +479,23 @@ Feature:
                           "multiple": false
                       },
                       "type": "select"
+                  },
+                  {
+                    "code": "elect_tags",
+                    "label": "Tags élu",
+                    "options": {
+                      "choices": {
+                        "elu":"Élu",
+                        "elu:attente_declaration": "Élu - en attente de déclaration",
+                        "elu:cotisation_nok": "Élu - non à jour de cotisation",
+                        "elu:cotisation_ok": "Élu - à jour de cotisation",
+                        "elu:cotisation_ok:exempte": "Élu - à jour de cotisation - exempté de cotisation",
+                        "elu:cotisation_ok:non_soumis": "Élu - à jour de cotisation - non soumis à cotisation",
+                        "elu:cotisation_ok:soumis": "Élu - à jour de cotisation - soumis à cotisation",
+                        "elu:exempte_et_adherent_cotisation_nok": "Élu - exempté mais pas à jour de cotisation adhérent"
+                      }
+                    },
+                    "type": "select"
                   },
                   {
                       "code": "mandateType",
