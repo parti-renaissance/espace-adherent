@@ -22,7 +22,7 @@ class ElectTagsFilterBuilder implements FilterBuilderInterface
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createSelect('elect_tags', 'Tags élu')
+            ->createSelect('elect_tags', 'Labels élu')
             ->setChoices($this->getTranslatedChoices())
             ->getFilters()
         ;
