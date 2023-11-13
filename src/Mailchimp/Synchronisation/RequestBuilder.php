@@ -736,15 +736,8 @@ class RequestBuilder implements LoggerAwareInterface
     private function translateAdherentTag(string $key): ?string
     {
         return match ($key) {
-            TagEnum::ADHERENT_COTISATION_OK => 'adherent:à jour de cotisation',
-            TagEnum::ADHERENT_COTISATION_NOK => 'adherent:non à jour de cotisation',
-            TagEnum::ELU_ATTENTE_DECLARATION => 'elu:en attente de déclaration',
-            TagEnum::ELU_COTISATION_OK_EXEMPTE => 'elu:à jour de cotisation:exempté de cotisation',
-            TagEnum::ELU_COTISATION_OK_NON_SOUMIS => 'elu:à jour de cotisation:non soumis à cotisation',
-            TagEnum::ELU_COTISATION_OK_SOUMIS => 'elu:à jour de cotisation:soumis à cotisation',
-            TagEnum::ELU_COTISATION_NOK => 'elu:non à jour de cotisation',
-            TagEnum::ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK => 'elu:exempté mais pas à jour de cotisation adhérent',
-            default => null
+            TagEnum::ADHERENT, TagEnum::SYMPATHISANT => null,
+            default => TagEnum::getMCTagLabels()[$key] ?? null,
         };
     }
 }

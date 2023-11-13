@@ -2,9 +2,11 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
+use App\Adherent\Tag\TagEnum;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Mailchimp\Exception\InvalidAdherentTagValueException;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
@@ -30,24 +32,33 @@ class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
     {
         $conditions = [];
 
-        if ($filter->adherentTags) {
+        if ($filter->adherentTags && $tagValue = $this->transformTagValue($filter->adherentTags)) {
             $conditions[] = [
                 'condition_type' => 'TextMerge',
                 'op' => 'contains',
                 'field' => MemberRequest::MERGE_FIELD_ADHERENT_TAGS,
-                'value' => $filter->adherentTags,
+                'value' => $tagValue,
             ];
         }
 
-        if ($filter->electTags) {
+        if ($filter->electTags && $tagValue = $this->transformTagValue($filter->electTags)) {
             $conditions[] = [
                 'condition_type' => 'TextMerge',
                 'op' => 'contains',
                 'field' => MemberRequest::MERGE_FIELD_ADHERENT_TAGS,
-                'value' => $filter->electTags,
+                'value' => $tagValue,
             ];
         }
 
         return $conditions;
+    }
+
+    private function transformTagValue(string $tag): ?string
+    {
+        if ($tagValue = TagEnum::getMCTagLabels()[$tag]) {
+            return $tagValue;
+        }
+
+        throw new InvalidAdherentTagValueException($tag);
     }
 }
