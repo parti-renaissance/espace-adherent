@@ -377,7 +377,7 @@ Feature:
               "filters": [
                   {
                     "code": "adherent_tags",
-                    "label": "Tags adhérent",
+                    "label": "Labels adhérent",
                     "options": {
                         "choices": {
                             "adherent": "Adhérent",
@@ -471,7 +471,7 @@ Feature:
                   },
                   {
                     "code": "elect_tags",
-                    "label": "Tags élu",
+                    "label": "Labels élu",
                     "options": {
                       "choices": {
                         "elu":"Élu",

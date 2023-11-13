@@ -22,7 +22,7 @@ class AdherentTagsFilterBuilder implements FilterBuilderInterface
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createSelect('adherent_tags', 'Tags adhérent')
+            ->createSelect('adherent_tags', 'Labels adhérent')
             ->setChoices($this->getTranslatedChoices())
             ->getFilters()
         ;
