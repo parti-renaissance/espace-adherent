@@ -46,4 +46,22 @@ class TagEnum extends Enum
             self::ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK,
         ];
     }
+
+    public static function getMCTagLabels(): array
+    {
+        return [
+            self::ADHERENT => 'adherent',
+            self::ADHERENT_COTISATION_OK => 'adherent:à jour de cotisation',
+            self::ADHERENT_COTISATION_NOK => 'adherent:non à jour de cotisation',
+            self::SYMPATHISANT => 'sympathisant',
+            self::ELU => 'elu',
+            self::ELU_ATTENTE_DECLARATION => 'elu:en attente de déclaration',
+            self::ELU_COTISATION_OK => 'elu:à jour de cotisation',
+            self::ELU_COTISATION_OK_EXEMPTE => 'elu:à jour de cotisation:exempté de cotisation',
+            self::ELU_COTISATION_OK_NON_SOUMIS => 'elu:à jour de cotisation:non soumis à cotisation',
+            self::ELU_COTISATION_OK_SOUMIS => 'elu:à jour de cotisation:soumis à cotisation',
+            self::ELU_COTISATION_NOK => 'elu:non à jour de cotisation',
+            self::ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK => 'elu:exempté mais pas à jour de cotisation adhérent',
+        ];
+    }
 }
