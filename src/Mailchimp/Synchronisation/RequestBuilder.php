@@ -534,7 +534,7 @@ class RequestBuilder implements LoggerAwareInterface
         }
 
         if ($this->adherentTags) {
-            $mergeFields[MemberRequest::MERGE_FIELD_ADHERENT_TAGS] = $this->source;
+            $mergeFields[MemberRequest::MERGE_FIELD_ADHERENT_TAGS] = implode(',', $this->adherentTags);
         }
 
         if ($this->city) {
