@@ -6,7 +6,6 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use MyCLabs\Enum\Enum;
 
 /**
- * @method static WEB_HOOK()
  * @method static WRITE_USERS()
  * @method static READ_USERS()
  * @method static READ_UNSUBCRIPTIONS()
@@ -20,8 +19,6 @@ use MyCLabs\Enum\Enum;
  */
 final class Scope extends Enum implements ScopeEntityInterface
 {
-    public const WEB_HOOK = 'web_hook';
-
     public const WRITE_USERS = 'write:users';
     public const WRITE_EVENT = 'write:event';
 

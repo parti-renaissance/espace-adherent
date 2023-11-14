@@ -4,7 +4,6 @@ namespace App\Admin\OAuth;
 
 use App\Admin\AbstractAdmin;
 use App\AppCodeEnum;
-use App\Form\WebHookType;
 use App\OAuth\Form\GrantTypesType;
 use App\OAuth\Form\ScopesType;
 use App\OAuth\TokenRevocationAuthority;
@@ -52,10 +51,6 @@ class ClientAdmin extends AbstractAdmin
             ->add('supportedScopes', 'array', [
                 'label' => 'Scopes autorisés',
                 'template' => 'admin/oauth/client/_list_scopes.html.twig',
-            ])
-            ->add('webHooks', 'array', [
-                'label' => 'Web hooks',
-                'template' => 'admin/oauth/client/_list_webHooks.html.twig',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
@@ -124,14 +119,6 @@ class ClientAdmin extends AbstractAdmin
             ->add('redirectUris', CollectionType::class, [
                 'label' => 'Adresses de redirection',
                 'entry_type' => UrlType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'error_bubbling' => false,
-            ])
-            ->add('webHooks', CollectionType::class, [
-                'label' => 'Web hooks',
-                'entry_type' => WebHookType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
