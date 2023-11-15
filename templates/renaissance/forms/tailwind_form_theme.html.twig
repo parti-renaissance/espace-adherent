@@ -1,0 +1,68 @@
+{% use "form_div_layout.html.twig" %}
+
+{% block form_widget_simple -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-field')|trim}) %}
+    {{- parent() -}}
+{%- endblock form_widget_simple %}
+
+{% block form_row -%}
+    {%- set row_attr = row_attr|merge({class: (row_attr.class|default('') ~ ' form-field-wrapper')|trim}) -%}
+    {{- parent() -}}
+{%- endblock form_row %}
+
+{% block choice_widget_collapsed -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-field')|trim}) %}
+    {{- parent() -}}
+{%- endblock %}
+
+{% block autocomplete_address_row %}
+    <div class="address-autocomplete {% if not form.vars.valid %}has-error{% endif %}" data-form="{{ form.vars.name }}">
+        {{ block('form_errors') }}
+
+        <div class="address-autocomplete-wrapper hidden">
+
+            {{ form_row(form.autocomplete, { label: 'Adresse postale', attr: { placeholder: 'Saisissez et sélectionnez une adresse' } }) }}
+            <p class="text-gray-600 text-sm italic">
+                Commencez à saisir votre adresse puis sélectionnez une proposition dans la liste d'adresses affichée.
+            </p>
+
+            <div class="rounded-md bg-blue-50/30 p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        {% include 'icons/info.svg.twig' %}
+                    </div>
+                    <div class="ml-3 flex-1 text-sm leading-5">
+                        <p class="text-gray-900">
+                            Votre adresse n'apparait pas dans la liste?
+                            <br>
+                            <a href="#" class="text-blue-500 hover:underline font-medium enable-address-fields">Cliquez ici</a> pour saisir manuellement votre adresse.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="address-fields-wrapper">
+            {{ form_row(form.address, { label: 'Adresse' }) }}
+            {{ form_row(form.cityName, { label: 'Ville' }) }}
+
+            <div class="flex space-x-4">
+                {{ form_row(form.postalCode, { label: 'Code postal' }) }}
+                {{ form_row(form.country, { label: 'Pays', attr: { placeholder: 'Sélectionner un pays' } }) }}
+            </div>
+
+            <div class="rounded-md bg-blue-50/30 p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        {% include 'icons/info.svg.twig' %}
+                    </div>
+                    <div class="ml-3 flex-1 text-sm leading-5">
+                        <p class="text-gray-900">
+                            <a href="#" class="text-blue-500 hover:underline font-medium enable-address-autocomplete">Cliquez ici</a> pour retourner à la sélection d'adresse.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
