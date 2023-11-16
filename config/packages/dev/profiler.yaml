@@ -1,6 +1,0 @@
-services:
-    profiler.storage:
-        class: App\Profiler\Storage\RedisProfilerStorage
-        arguments:
-            - '@snc_redis.default'
-            - 3600

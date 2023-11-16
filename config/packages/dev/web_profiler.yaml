@@ -4,3 +4,10 @@ web_profiler:
 
 framework:
     profiler: { only_exceptions: false }
+
+services:
+    profiler.storage:
+        class: App\Profiler\Storage\RedisProfilerStorage
+        arguments:
+            - '@snc_redis.default'
+            - 3600
