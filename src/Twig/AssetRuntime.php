@@ -51,7 +51,13 @@ class AssetRuntime implements RuntimeExtensionInterface
                 unset($parameters['q'], $parameters['w']);
             }
 
-            return $this->generateAssetUrl($media->getPathWithDirectory(), $parameters, $referenceType);
+            $appDomain = null;
+            if (!empty($parameters['app_domain'])) {
+                $appDomain = $parameters['app_domain'];
+                unset($parameters['app_domain']);
+            }
+
+            return $this->generateAssetUrl($media->getPathWithDirectory(), $parameters, $referenceType, $appDomain);
         }
     }
 
@@ -73,7 +79,7 @@ class AssetRuntime implements RuntimeExtensionInterface
     ): string {
         $parameters['fm'] = 'pjpg';
 
-        if ('gif' === substr($path, -3)) {
+        if (str_ends_with($path, 'gif')) {
             $parameters['fm'] = 'gif';
 
             $parameters = array_intersect_key($parameters, array_fill_keys(['fm', 'cache'], true));

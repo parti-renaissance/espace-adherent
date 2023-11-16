@@ -7,7 +7,7 @@
 {% block content %}
     {% set home_block_banner = blocks['Bannière principale accueil'] %}
 
-    <section class="flex flex-col justify-between h-screen pb-12 bg-bottom bg-cover md:pb-15" style="background-image: url('{{ media_asset(home_block_banner.media) }}')">
+    <section class="flex flex-col justify-between h-screen pb-12 bg-bottom bg-cover md:pb-15" style="background-image: url('{{ media_asset(home_block_banner.media, {app_domain: renaissance_host}) }}')">
         <nav x-data="{ open: false }" @keydown.escape="open = false" class="relative flex justify-between items-center w-full border-b border-b-white/10 px-4 py-5 md:px-7 md:py-6">
             <a href="{{ path('app_renaissance_homepage') }}">
                 {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-4 w-auto text-white lg:h-5' } %}
