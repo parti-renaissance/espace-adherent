@@ -1433,7 +1433,6 @@ executive_office.title.member_by_right: Membres de droit
 admin.new.renaissance_adherent.label: Nouvel Adhérent
 admin.new.renaissance_adherent.create.label: Créer
 
-
 adherent.tag.adherent: Adhérent
 adherent.tag.adherent:cotisation_ok: Adhérent - à jour de cotisation
 adherent.tag.adherent:cotisation_nok: Adhérent - non à jour de cotisation
@@ -1446,14 +1445,7 @@ adherent.tag.elu:cotisation_ok:non_soumis: Élu - à jour de cotisation - non so
 adherent.tag.elu:cotisation_ok:exempte: Élu - à jour de cotisation - exempté de cotisation
 adherent.tag.elu:cotisation_nok: Élu - non à jour de cotisation
 adherent.tag.elu:exempte_et_adherent_cotisation_nok: Élu - exempté mais pas à jour de cotisation adhérent
-adherent.tag.elu:exempte: Élu - exempté
 
-adherent.filter_tag.undeclared_revenue: En attente de déclaration
-adherent.filter_tag.cotisation_ok: À jour de cotisation élu
-adherent.filter_tag.cotisation_exempt: À jour, exempté de cotisation
-adherent.filter_tag.cotisation_eligible: À jour, soumis à cotisation
-adherent.filter_tag.cotisation_not_eligible: À jour, non soumis à cotisation
-adherent.filter_tag.cotisation_nok: Pas à jour de cotisation élu
 
 #
 # Administrators

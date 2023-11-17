@@ -2,7 +2,7 @@
 
 {% block field %}
 
-    {% for role in object.administratorRoles|filter(role => role.enabled is same as true) %}
+    {% for role in object.administratorRoles|filter(role => role.enabled) %}
         {% if not loop.first %}<br>{% endif %}
 
         <span class="badge bg-blue">
