@@ -327,7 +327,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                             'mapped' => false,
                         ])
                         ->add('tags', HiddenType::class, [
-                            'label' => 'Tags',
+                            'label' => 'Labels',
                             'required' => false,
                             'mapped' => false,
                         ])
@@ -779,7 +779,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     },
                     'multiple' => true,
                 ],
-                'label' => 'Tags',
+                'label' => 'Labels',
                 'operator_type' => ContainsOperatorType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {
