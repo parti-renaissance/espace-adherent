@@ -3316,7 +3316,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public function getConfirmedPayments(): array
     {
-        return $this->payments->filter(fn (Payment $p) => $p->isConfirmed())->toArray();
+        $date = new \DateTime('-40 days 00:00');
+
+        return $this->payments->filter(function (Payment $p) use ($date) {
+            return $p->isConfirmed() && $p->date >= $date;
+        })->toArray();
     }
 
     public function addPayment(Payment $payment): void
