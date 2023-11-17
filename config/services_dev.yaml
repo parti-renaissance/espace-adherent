@@ -43,5 +43,5 @@ services:
     Tests\App\Test\Firebase\DummyDynamicLinks: ~
     Tests\App\Test\Firebase\DummyMessaging: ~
 
-    kreait_firebase.jemarche_app.dynamic_links: '@Tests\App\Test\Firebase\DummyDynamicLinks'
-    kreait_firebase.jemarche_app.messaging: '@Tests\App\Test\Firebase\DummyMessaging'
+    Kreait\Firebase\Contract\DynamicLinks: '@Tests\App\Test\Firebase\DummyDynamicLinks'
+    Kreait\Firebase\Contract\Messaging: '@Tests\App\Test\Firebase\DummyMessaging'
