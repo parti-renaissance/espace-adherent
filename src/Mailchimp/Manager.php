@@ -262,11 +262,11 @@ class Manager implements LoggerAwareInterface
         );
 
         if (!$this->driver->isSuccessfulResponse($response)) {
-            $this->logger->warning(
+            $this->logger->error(
                 sprintf('Campaign content of "%s" message has not been modified', $message->getUuid()->toString()),
                 [
-                    'message' => $response->getContent(),
-                    'code' => $response->getStatusCode(),
+                    'message' => $response->getContent(false),
+                    'code' => $response->getStatusCode(false),
                 ]
             );
 
@@ -279,7 +279,7 @@ class Manager implements LoggerAwareInterface
     public function deleteCampaign(string $campaignId): void
     {
         if (!$this->driver->deleteCampaign($campaignId)) {
-            $this->logger->warning(sprintf('Campaign "%s" has not be deleted', $campaignId));
+            $this->logger->error(sprintf('Campaign "%s" has not be deleted', $campaignId));
         }
     }
 
