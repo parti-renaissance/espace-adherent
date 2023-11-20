@@ -10,5 +10,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class StrictEmail extends Constraint
 {
-    public $message = 'E-email adresse "{{ email }}" est invalide';
+    public const LEVEL_WARNING = 'warning';
+    public const LEVEL_ERROR = 'error';
+
+    public string $message = 'E-email adresse "{{ email }}" est invalide';
+
+    public bool $disposable = true;
+    public bool $disabledEmail = true;
 }
