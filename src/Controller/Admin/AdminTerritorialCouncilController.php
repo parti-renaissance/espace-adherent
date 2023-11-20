@@ -24,7 +24,7 @@ class AdminTerritorialCouncilController extends AbstractController
     }
 
     #[Route(path: '/{territorialCouncil}/members/{adherent}/{action}-membership', name: 'app_admin_territorial_council_change_political_committee_membership', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN_TERRITORIAL_COUNCIL')]
+    #[IsGranted('ROLE_ADMIN_INSTANCES_TERRITORIAL_COUNCILS')]
     public function changePoliticalCommitteeMembershipAction(
         Request $request,
         TerritorialCouncil $territorialCouncil,

@@ -25,7 +25,8 @@ class AdministratorFactory
         }
 
         foreach ($data['roles'] as $role) {
-            $admin->addRole($role);
+            $admin->addAdministratorRole($role);
+            $admin->roles[] = $role->code;
         }
 
         return $admin;

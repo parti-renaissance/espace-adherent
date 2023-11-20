@@ -49,7 +49,7 @@ class AdminCommitteeController extends AbstractController
      * Refuses the committee.
      */
     #[Route(path: '/{id}/refuse', name: 'app_admin_committee_refuse', methods: ['GET|POST'])]
-    #[IsGranted('ROLE_ADMIN_COMMITTEES')]
+    #[IsGranted('ROLE_ADMIN_TERRITOIRES_COMMITTEES')]
     public function refuseAction(
         Request $request,
         Committee $committee,
@@ -80,7 +80,7 @@ class AdminCommitteeController extends AbstractController
     }
 
     #[Route(path: '/{id}/members', name: 'app_admin_committee_members', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN_COMMITTEES')]
+    #[IsGranted('ROLE_ADMIN_TERRITOIRES_COMMITTEES')]
     public function membersAction(CommitteeManager $manager, Committee $committee): Response
     {
         return $this->render('admin/committee/members.html.twig', [
@@ -92,7 +92,7 @@ class AdminCommitteeController extends AbstractController
     }
 
     #[Route(path: '/{id}/mandates', name: 'app_admin_committee_mandates', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN_COMMITTEES')]
+    #[IsGranted('ROLE_ADMIN_TERRITOIRES_COMMITTEES')]
     public function mandatesAction(Committee $committee): Response
     {
         return $this->render('admin/committee/mandates/list.html.twig', [
@@ -101,7 +101,7 @@ class AdminCommitteeController extends AbstractController
     }
 
     #[Route(path: '/{id}/mandates/add', name: 'app_admin_committee_add_mandate', methods: ['GET|POST'])]
-    #[Security("is_granted('ROLE_ADMIN_COMMITTEES') and is_granted('ADD_MANDATE_TO_COMMITTEE', committee)")]
+    #[Security("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('ADD_MANDATE_TO_COMMITTEE', committee)")]
     public function addMandateAction(
         Request $request,
         Committee $committee,
@@ -138,7 +138,7 @@ class AdminCommitteeController extends AbstractController
     }
 
     #[Route(path: '/mandates/{id}/replace', name: 'app_admin_committee_replace_mandate', methods: ['GET|POST'])]
-    #[Security("is_granted('ROLE_ADMIN_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', mandate.getCommittee())")]
+    #[Security("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', mandate.getCommittee())")]
     public function replaceMandateAction(Request $request, CommitteeAdherentMandate $mandate): Response
     {
         $committee = $mandate->getCommittee();
@@ -181,7 +181,7 @@ class AdminCommitteeController extends AbstractController
     }
 
     #[Route(path: '/mandates/{id}/close', name: 'app_admin_committee_close_mandate', methods: ['GET|POST'])]
-    #[Security("is_granted('ROLE_ADMIN_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', mandate.getCommittee())")]
+    #[Security("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', mandate.getCommittee())")]
     public function closeMandateAction(
         Request $request,
         CommitteeAdherentMandate $mandate,
@@ -219,7 +219,7 @@ class AdminCommitteeController extends AbstractController
     }
 
     #[Route(path: '/{committee}/members/{adherent}/set-privilege/{privilege}', name: 'app_admin_committee_change_privilege', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN_COMMITTEES')]
+    #[IsGranted('ROLE_ADMIN_TERRITOIRES_COMMITTEES')]
     public function changePrivilegeAction(
         CommitteeManager $manager,
         Request $request,
@@ -248,7 +248,7 @@ class AdminCommitteeController extends AbstractController
     }
 
     #[Route(path: '/{committee}/members/{adherent}/{action}-mandate', name: 'app_admin_committee_change_mandate', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN_COMMITTEE_DESIGNATION')]
+    #[IsGranted('ROLE_ADMIN_TERRITOIRES_COMMITTEE_DESIGNATION')]
     public function changeMandateAction(
         Request $request,
         Committee $committee,

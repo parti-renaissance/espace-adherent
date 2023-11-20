@@ -1445,3 +1445,28 @@ adherent.tag.elu:cotisation_ok:non_soumis: Élu - à jour de cotisation - non so
 adherent.tag.elu:cotisation_ok:exempte: Élu - à jour de cotisation - exempté de cotisation
 adherent.tag.elu:cotisation_nok: Élu - non à jour de cotisation
 adherent.tag.elu:exempte_et_adherent_cotisation_nok: Élu - exempté mais pas à jour de cotisation adhérent
+
+
+#
+# Administrators
+#
+administrator:
+    role:
+        group_code:
+            re_site_web: Re site web
+            communication: Communication
+            politique: Politique
+            adherents: Adhérents
+            territoires: Territoires
+            application_mobile: Application mobile
+            phoning: Phoning
+            porte_a_porte: Porte-à-porte
+            instances: Instances
+            finances: Finances
+            tech: Tech
+            idees: Idées
+            formation: Formation
+            socle_programmatique: Socle programmatique
+            communautes_thematiques: Communautés thématiques
+            elections_departementales: Élections départementales
+            archives: Archives

@@ -918,6 +918,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
     protected function isGrantedAdherentAdminRole(): bool
     {
-        return $this->isGranted('ROLE_ADMIN_ADHERENTS');
+        return $this->isGranted('ROLE_ADMIN_ADHERENT_ADHERENTS');
     }
 }

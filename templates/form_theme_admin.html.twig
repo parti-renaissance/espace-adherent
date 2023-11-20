@@ -11,6 +11,64 @@
     </div>
 {% endblock %}
 
+{% block app_admin_administrator_administratorRoles_entity_widget %}
+    <div {{ block('widget_container_attributes') }}>
+        {%- for group_label, group in choices %}
+            {%- if group is iterable -%}
+                <div>
+                    <h4>
+                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                        {{ ('administrator.role.group_code.' ~ group_label)|trans({}, translation_domain) }}
+                    </h4>
+                    {% for key, choice in group %}
+                        <div>
+                            {{- form_widget(form[key], { role: choice.data }) -}}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor -%}
+    </div>
+{% endblock %}
+
+{% block app_admin_administrator_checkbox_administratorRoles_administratorRoles_entry_label %}
+    <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %} style="display: block;">
+        <div class="row">
+            <div class="col-xs-1" style="padding-top: 10px;">
+                {{- widget|raw -}}
+            </div>
+            <div class="col-xs-11">
+                <h4>{{ role.label }}</h4>
+                <code>{{ role.code }}</code>
+            </div>
+        </div>
+    </label>
+
+    <div class="row">
+        <div class="col-xs-11 col-xs-offset-1">
+            <p>{{ role.description }}</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block app_admin_administrator_checkbox_administratorRoles_options_widget %}
+    <div {{ block('widget_container_attributes') }}>
+        {% for group_label, group in choices %}
+            {%- if group is iterable -%}
+                <div>
+                    <label><b>{{ group_label|trans({}, translation_domain) }}</b></label>
+                    {% for key, choice in group %}
+                        <div>
+                            {{- form_widget(form[key]) -}}
+                            {{- form_label(form[key]) -}}
+                        </div>
+                    {% endfor %}
+                </div>
+            {%- endif -%}
+        {% endfor %}
+    </div>
+{% endblock %}
+
 {% block app_admin_donator_referenceDonation_entity_widget %}
     {% import 'admin/donation/_macros.html.twig' as macros %}
 
