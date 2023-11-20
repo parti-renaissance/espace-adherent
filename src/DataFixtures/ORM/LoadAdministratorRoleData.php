@@ -179,6 +179,11 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::ADHERENTS,
         );
         yield $this->createRole(
+            'ROLE_ADMIN_ADHERENT_CONSEIL',
+            'Permet de gérer les informations adhérents du conseil national',
+            AdministratorRoleGroupEnum::ADHERENTS,
+        );
+        yield $this->createRole(
             'ROLE_ADMIN_ADHERENT_UNREGISTER',
             'Désadhésion des adhérents',
             AdministratorRoleGroupEnum::ADHERENTS
@@ -266,8 +271,18 @@ class LoadAdministratorRoleData extends Fixture
         );
         // Territoires
         yield $this->createRole(
+            'ROLE_ADMIN_TERRITOIRES_ELUS_NOTIFICATION',
+            'Administrateur des notifications de déclarations de mandats',
+            AdministratorRoleGroupEnum::TERRITOIRES
+        );
+        yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_COMMITTEES',
             'Administrateur des comités',
+            AdministratorRoleGroupEnum::TERRITOIRES
+        );
+        yield $this->createRole(
+            'ROLE_ADMIN_TERRITOIRES_COMMITTEE_DESIGNATION',
+            'Administrateur des désignations de comités',
             AdministratorRoleGroupEnum::TERRITOIRES
         );
         yield $this->createRole(

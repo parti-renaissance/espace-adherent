@@ -92,6 +92,9 @@ class AdministratorRoleMigrationCommand extends Command
         'ROLE_ADMIN_COMMITTEES' => [
             'ROLE_ADMIN_TERRITOIRES_COMMITTEES',
         ],
+        'ROLE_ADMIN_COMMITTEE_DESIGNATION' => [
+            'ROLE_ADMIN_TERRITOIRES_COMMITTEE_DESIGNATION',
+        ],
         'ROLE_ADMIN_COMMITTEES_MERGE' => [
             'ROLE_ADMIN_TERRITOIRES_COMMITTEE_MERGES',
         ],
@@ -257,6 +260,12 @@ class AdministratorRoleMigrationCommand extends Command
         ],
         'ROLE_ADMIN_JME_EMAIL_TEMPLATE' => [
             'ROLE_ADMIN_TERRITOIRES_JME_EMAIL_TEMPLATES',
+        ],
+        'ROLE_ADMIN_ELUS_NOTIFICATION' => [
+            'ROLE_ADMIN_TERRITOIRES_ELUS_NOTIFICATION',
+        ],
+        'ROLE_APP_ADMIN_ADHERENT_CONSEIL' => [
+            'ROLE_ADMIN_ADHERENT_CONSEIL',
         ],
     ];
 

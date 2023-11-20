@@ -23,7 +23,7 @@ class AdminTerritorialCouncilMembershipLogController extends AbstractController
     ];
 
     #[Route(path: '/{membershipLog}/{status}', name: 'app_admin_territorial_council_membership_log_resolve', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN_TERRITORIAL_COUNCIL_MEMBERSHIP_LOG')]
+    #[IsGranted('ROLE_ADMIN_INSTANCES_TERRITORIAL_COUNCIL_MEMBERSHIP_LOGS')]
     public function changeResolvedAction(
         Request $request,
         TerritorialCouncilMembershipLog $membershipLog,

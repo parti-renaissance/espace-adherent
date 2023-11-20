@@ -21,7 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class SendDeclaredMandateChangeNotificationCommand extends Command
 {
-    private const ADMIN_ROLE_TO_NOTIFY = 'ROLE_ADMIN_ELUS_NOTIFICATION';
+    private const ADMIN_ROLE_TO_NOTIFY = 'ROLE_ADMIN_TERRITOIRES_ELUS_NOTIFICATION';
 
     private ?SymfonyStyle $io = null;
 
