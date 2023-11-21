@@ -12,18 +12,16 @@ class ThematicCommunityMembershipFilter
 {
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"joinedAt", "lastName"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['joinedAt', 'lastName'])]
     private $sort = 'joinedAt';
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"a", "d"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['a', 'd'])]
     private $order = 'd';
 
     /**

@@ -9,9 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="election_rounds")
  * @ORM\Entity(repositoryClass="App\Repository\ElectionRoundRepository")
- *
- * @UniqueEntity({"election", "label"})
  */
+#[UniqueEntity(['election', 'label'])]
 class ElectionRound
 {
     /**
@@ -27,19 +26,17 @@ class ElectionRound
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $label = '';
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     private $description;
 
     /**
@@ -47,19 +44,17 @@ class ElectionRound
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Election", inversedBy="rounds")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $election;
 
     /**
      * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="date")
-     *
-     * @Assert\NotNull
-     * @Assert\GreaterThan("now")
      */
+    #[Assert\NotNull]
+    #[Assert\GreaterThan('now')]
     private $date;
 
     public function __toString(): string

@@ -4,19 +4,20 @@ namespace App\Mailchimp\Webhook\Handler;
 
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractHandler implements WebhookHandlerInterface
 {
     protected MailchimpObjectIdMapping $mailchimpObjectIdMapping;
     protected EntityManagerInterface $entityManager;
 
-    /** @required */
+    #[Required]
     public function setMailchimpObjectIdMapping(MailchimpObjectIdMapping $mailchimpObjectIdMapping): void
     {
         $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
     }
 
-    /** @required */
+    #[Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;

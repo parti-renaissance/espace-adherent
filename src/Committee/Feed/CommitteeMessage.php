@@ -7,19 +7,13 @@ use App\Entity\Committee;
 use App\Validator\WysiwygLength as AssertWysiwygLength;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Assert\Expression(
- *     expression="this.isPublished() != false || this.isSendNotification() != false",
- *     message="Vous devez cocher au moins une des deux cases"
- * )
- */
+#[Assert\Expression(expression: 'this.isPublished() != false || this.isSendNotification() != false', message: 'Vous devez cocher au moins une des deux cases')]
 class CommitteeMessage
 {
     private $author;
     private $committee;
 
     /**
-     * @Assert\NotBlank
      * @AssertWysiwygLength(
      *     min=10,
      *     max=6000,
@@ -27,15 +21,14 @@ class CommitteeMessage
      *     maxMessage="common.message.max_length"
      * )
      */
+    #[Assert\NotBlank]
     private $content;
     private $published;
     private $sendNotification;
     private $createdAt;
 
-    /**
-     * @Assert\NotBlank(groups={"notification"})
-     * @Assert\Length(max=80, groups={"notification"})
-     */
+    #[Assert\NotBlank(groups: ['notification'])]
+    #[Assert\Length(max: 80, groups: ['notification'])]
     private $subject;
 
     public function __construct(

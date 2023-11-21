@@ -35,7 +35,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\String\UnicodeString;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -166,50 +166,39 @@ class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface,
      * @ApiProperty(identifier=true)
      *
      * @ORM\Column(type="uuid", unique=true)
-     *
-     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc"})
      */
+    #[Groups(['jecoute_news_read', 'jecoute_news_read_dc'])]
     private UuidInterface $uuid;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\Length(max=120)
-     * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_write", "jecoute_news_read_dc"})
      */
+    #[Assert\Length(max: 120)]
+    #[Assert\NotBlank]
+    #[Groups(['jecoute_news_read', 'jecoute_news_write', 'jecoute_news_read_dc'])]
     private ?string $title;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_write", "jecoute_news_read_dc"})
      */
+    #[Groups(['jecoute_news_read', 'jecoute_news_write', 'jecoute_news_read_dc'])]
     private ?string $text;
 
     private ?string $enrichedText = null;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
-     *
-     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc", "jecoute_news_write"})
      */
+    #[Assert\Url]
+    #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
     private ?string $externalLink;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
-     * @Assert\Expression(
-     *     "value !== null or (this.isEnriched() === false or null === this.getExternalLink())",
-     *     message="news.link_label.required"
-     * )
-     *
-     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc", "jecoute_news_write"})
      */
+    #[Assert\Length(max: 255)]
+    #[Assert\Expression('value !== null or (this.isEnriched() === false or null === this.getExternalLink())', message: 'news.link_label.required')]
+    #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
     private ?string $linkLabel;
 
     /**
@@ -223,37 +212,31 @@ class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface,
      */
     private ?Administrator $createdBy = null;
 
-    /**
-     * @SymfonySerializer\Groups({"jecoute_news_write_national"})
-     */
+    #[Groups(['jecoute_news_write_national'])]
     private bool $global = false;
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
-     *
-     * @SymfonySerializer\Groups({"jecoute_news_read_dc", "jecoute_news_write"})
      */
+    #[Groups(['jecoute_news_read_dc', 'jecoute_news_write'])]
     private bool $notification;
 
     /**
      * @ORM\Column(type="boolean", options={"default": 1})
-     *
-     * @SymfonySerializer\Groups({"jecoute_news_read_dc", "jecoute_news_write"})
      */
+    #[Groups(['jecoute_news_read_dc', 'jecoute_news_write'])]
     private bool $published;
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
-     *
-     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc", "jecoute_news_write"})
      */
+    #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
     private bool $pinned;
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
-     *
-     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc", "jecoute_news_write"})
      */
+    #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
     private bool $enriched;
 
     /**

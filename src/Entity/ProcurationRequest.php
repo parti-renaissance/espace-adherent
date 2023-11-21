@@ -88,112 +88,79 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      * @var string|null
      *
      * @ORM\Column(length=6)
-     *
-     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"profile"})
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     groups={"profile"}
-     * )
      */
+    #[Assert\NotBlank(message: 'common.gender.invalid_choice', groups: ['profile'])]
+    #[Assert\Choice(callback: ['App\ValueObject\Genders', 'all'], message: 'common.gender.invalid_choice', groups: ['profile'])]
     private $gender;
 
     /**
      * @var string
      *
      * @ORM\Column(length=50)
-     *
-     * @Assert\NotBlank(message="procuration.last_name.not_blank", groups={"profile"})
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     minMessage="procuration.last_name.min_length",
-     *     maxMessage="procuration.last_name.max_length",
-     *     groups={"profile"}
-     * )
      */
+    #[Assert\NotBlank(message: 'procuration.last_name.not_blank', groups: ['profile'])]
+    #[Assert\Length(min: 1, max: 50, minMessage: 'procuration.last_name.min_length', maxMessage: 'procuration.last_name.max_length', groups: ['profile'])]
     private $lastName = '';
 
     /**
      * @var string
      *
      * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank(groups={"profile"})
-     * @Assert\Length(
-     *     min=2,
-     *     max=100,
-     *     minMessage="procuration.first_names.min_length",
-     *     maxMessage="procuration.first_names.max_length",
-     *     groups={"profile"}
-     * )
      */
+    #[Assert\NotBlank(groups: ['profile'])]
+    #[Assert\Length(min: 2, max: 100, minMessage: 'procuration.first_names.min_length', maxMessage: 'procuration.first_names.max_length', groups: ['profile'])]
     private $firstNames = '';
 
     /**
      * @var string
      *
      * @ORM\Column(length=150)
-     *
-     * @Assert\NotBlank(message="common.address.required", groups={"profile"})
-     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"profile"})
      */
+    #[Assert\NotBlank(message: 'common.address.required', groups: ['profile'])]
+    #[Assert\Length(max: 150, maxMessage: 'common.address.max_length', groups: ['profile'])]
     private $address = '';
 
     /**
      * @var string
      *
      * @ORM\Column(length=15, nullable=true)
-     *
-     * @Assert\Length(max=15, groups={"profile"})
-     * @Assert\Expression(
-     *     "this.getCountry() != constant('App\\Address\\Address::FRANCE') or value != null",
-     *     message="procuration.postal_code.not_empty",
-     *     groups={"profile"}
-     * )
      */
+    #[Assert\Length(max: 15, groups: ['profile'])]
+    #[Assert\Expression("this.getCountry() != constant('App\\\\Address\\\\Address::FRANCE') or value != null", message: 'procuration.postal_code.not_empty', groups: ['profile'])]
     private $postalCode = '';
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true, name="city_insee")
-     *
-     * @Assert\Length(max=15, groups={"profile"})
      */
+    #[Assert\Length(max: 15, groups: ['profile'])]
     private $city;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255, groups={"profile"})
      */
+    #[Assert\Length(max: 255, groups: ['profile'])]
     private $cityName;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255, groups={"profile"})
-     * @Assert\Expression(
-     *     "not (this.getCountry() == constant('App\\Address\\Address::FRANCE') and value != null)",
-     *     message="procuration.state.not_empty",
-     *     groups={"profile"}
-     * )
      */
+    #[Assert\Length(max: 255, groups: ['profile'])]
+    #[Assert\Expression("not (this.getCountry() == constant('App\\\\Address\\\\Address::FRANCE') and value != null)", message: 'procuration.state.not_empty', groups: ['profile'])]
     private $state;
 
     /**
      * @var string
      *
      * @ORM\Column(length=2)
-     *
-     * @Assert\NotBlank(groups={"profile"})
-     * @Assert\Country(message="common.country.invalid", groups={"profile"})
      */
+    #[Assert\NotBlank(groups: ['profile'])]
+    #[Assert\Country(message: 'common.country.invalid', groups: ['profile'])]
     private $country = AddressInterface::FRANCE;
 
     /**
@@ -201,98 +168,80 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      *
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @Assert\NotBlank(message="common.phone_number.required", groups={"profile"})
      * @AssertPhoneNumber(options={"groups": {"profile"}})
      */
+    #[Assert\NotBlank(message: 'common.phone_number.required', groups: ['profile'])]
     private $phone;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank(groups={"profile"})
-     * @Assert\Email(message="common.email.invalid", groups={"profile"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"profile"})
      */
+    #[Assert\NotBlank(groups: ['profile'])]
+    #[Assert\Email(message: 'common.email.invalid', groups: ['profile'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['profile'])]
     private $emailAddress = '';
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Assert\NotBlank(message="procuration.birthdate.not_blank", groups={"profile"})
-     * @Assert\Range(
-     *     min="-120 years",
-     *     max="-17 years",
-     *     minMessage="procuration.birthdate.maximum_required_age",
-     *     maxMessage="procuration.birthdate.minimum_required_age",
-     *     groups={"profile"}
-     * )
      */
+    #[Assert\NotBlank(message: 'procuration.birthdate.not_blank', groups: ['profile'])]
+    #[Assert\Range(min: '-120 years', max: '-17 years', minMessage: 'procuration.birthdate.maximum_required_age', maxMessage: 'procuration.birthdate.minimum_required_age', groups: ['profile'])]
     private $birthdate;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\NotBlank(groups={"profile"}, message="procuration.voter_number.not_blank")
-     * @Assert\Length(max=255, groups={"profile"})
      */
+    #[Assert\NotBlank(groups: ['profile'], message: 'procuration.voter_number.not_blank')]
+    #[Assert\Length(max: 255, groups: ['profile'])]
     private $voterNumber;
 
     /**
      * @var string
      *
      * @ORM\Column(length=15, nullable=true)
-     *
-     * @Assert\Length(max=15, groups={"vote"})
-     * @Assert\Expression(
-     *     "(this.getVoteCountry() == constant('App\\Address\\Address::FRANCE') and value != null) or (this.getVoteCountry() != constant('App\\Address\\Address::FRANCE') and value == null)",
-     *     message="procuration.postal_code.not_empty",
-     *     groups={"vote"}
-     * )
      */
+    #[Assert\Length(max: 15, groups: ['vote'])]
+    #[Assert\Expression("(this.getVoteCountry() == constant('App\\\\Address\\\\Address::FRANCE') and value != null) or (this.getVoteCountry() != constant('App\\\\Address\\\\Address::FRANCE') and value == null)", message: 'procuration.postal_code.not_empty', groups: ['vote'])]
     private $votePostalCode = '';
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true, name="vote_city_insee")
-     *
-     * @Assert\Length(max=15, groups={"vote"})
      */
+    #[Assert\Length(max: 15, groups: ['vote'])]
     private $voteCity;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255, groups={"vote"})
      */
+    #[Assert\Length(max: 255, groups: ['vote'])]
     private $voteCityName;
 
     /**
      * @var string
      *
      * @ORM\Column(length=2)
-     *
-     * @Assert\NotBlank(groups={"vote"})
-     * @Assert\Country(message="common.country.invalid", groups={"vote"})
      */
+    #[Assert\NotBlank(groups: ['vote'])]
+    #[Assert\Country(message: 'common.country.invalid', groups: ['vote'])]
     private $voteCountry = AddressInterface::FRANCE;
 
     /**
      * @var string
      *
      * @ORM\Column(length=50)
-     *
-     * @Assert\NotBlank(groups={"vote"})
-     * @Assert\Length(max=50, groups={"vote"})
      */
+    #[Assert\NotBlank(groups: ['vote'])]
+    #[Assert\Length(max: 50, groups: ['vote'])]
     private $voteOffice = '';
 
     /**
@@ -300,9 +249,8 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\ElectionRound")
      * @ORM\JoinTable(name="procuration_requests_to_election_rounds")
-     *
-     * @Assert\Count(min=1, minMessage="procuration.election_rounds.min_count", groups={"election_rounds"})
      */
+    #[Assert\Count(min: 1, minMessage: 'procuration.election_rounds.min_count', groups: ['election_rounds'])]
     private $electionRounds;
 
     /**

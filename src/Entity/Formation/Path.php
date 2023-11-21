@@ -13,9 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Formation\PathRepository")
  * @ORM\Table(name="formation_paths")
- *
- * @UniqueEntity(fields={"title"}, message="path.title.unique_entity")
  */
+#[UniqueEntity(fields: ['title'], message: 'path.title.unique_entity')]
 class Path
 {
     use PositionTrait;
@@ -33,15 +32,9 @@ class Path
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank(message="path.title.not_blank")
-     * @Assert\Length(
-     *     min=2,
-     *     max=150,
-     *     minMessage="path.title.min_length",
-     *     minMessage="path.title.max_length"
-     * )
      */
+    #[Assert\NotBlank(message: 'path.title.not_blank')]
+    #[Assert\Length(min: 2, max: 150, minMessage: 'path.title.max_length')]
     private $title;
 
     /**
@@ -57,10 +50,9 @@ class Path
      * @var string|null
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank(message="path.description.not_blank")
-     * @Assert\Length(allowEmptyString=true, min=2, minMessage="path.description.min_length")
      */
+    #[Assert\NotBlank(message: 'path.description.not_blank')]
+    #[Assert\Length(min: 2, minMessage: 'path.description.min_length')]
     private $description;
 
     /**

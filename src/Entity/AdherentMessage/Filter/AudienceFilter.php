@@ -3,6 +3,7 @@
 namespace App\Entity\AdherentMessage\Filter;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Adherent\MandateTypeEnum;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntity;
@@ -33,20 +34,17 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     protected $isCertified;
 
     /**
      * @var Zone|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     *
-     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
-     *
-     * @Assert\Expression("this.getSegment() or this.getZone() or this.getCommittee()", message="Cette valeur ne doit pas être vide.")
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[Assert\Expression('this.getSegment() or this.getZone() or this.getCommittee()', message: 'Cette valeur ne doit pas être vide.')]
     private $zone;
 
     /**
@@ -54,94 +52,78 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      *
      * @ORM\Column
      *
-     * @Assert\Expression("this.getSegment() or this.getScope()", message="Cette valeur ne doit pas être vide.")
      * @ValidScope
-     *
-     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      */
+    #[Assert\Expression('this.getSegment() or this.getScope()', message: 'Cette valeur ne doit pas être vide.')]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $scope;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"adherent_message_update_filter"})
      */
+    #[Groups(['adherent_message_update_filter'])]
     private $audienceType;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Groups({"adherent_message_update_filter"})
      */
+    #[Groups(['adherent_message_update_filter'])]
     private ?Committee $committee = null;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups({"adherent_message_update_filter"})
      */
+    #[Groups(['adherent_message_update_filter'])]
     private ?bool $isCommitteeMember = null;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"adherent_message_update_filter"})
-     *
-     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL)
      */
+    #[Groups(['adherent_message_update_filter'])]
+    #[Assert\Choice(choices: MandateTypeEnum::ALL)]
     private ?string $mandateType = null;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"adherent_message_update_filter"})
-     *
-     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL)
      */
+    #[Groups(['adherent_message_update_filter'])]
+    #[Assert\Choice(choices: MandateTypeEnum::ALL)]
     private ?string $declaredMandate = null;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     protected ?bool $isCampusRegistered = null;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"adherent_message_update_filter"})
      */
+    #[Groups(['adherent_message_update_filter'])]
     private ?string $donatorStatus = null;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"adherent_message_update_filter"})
      */
+    #[Groups(['adherent_message_update_filter'])]
     public ?string $adherentTags = null;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"adherent_message_update_filter"})
      */
+    #[Groups(['adherent_message_update_filter'])]
     public ?string $electTags = null;
 
-    /**
-     * @Groups({"audience_segment_read"})
-     */
+    #[Groups(['audience_segment_read'])]
     public function getIsCommitteeMember(): ?bool
     {
         return $this->isCommitteeMember;
     }
 
-    /**
-     * @Groups({"audience_segment_write"})
-     */
+    #[Groups(['audience_segment_write'])]
     public function setIsCommitteeMember(?bool $value): void
     {
         $this->isCommitteeMember = $value;
@@ -177,9 +159,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->scope = $scope;
     }
 
-    /**
-     * @Groups({"audience_segment_write", "adherent_message_update_filter"})
-     */
+    #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
     public function setAge(array $minMax): void
     {
         if (!empty($minMax['min'])) {
@@ -191,9 +171,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         }
     }
 
-    /**
-     * @Groups({"audience_segment_write", "adherent_message_update_filter"})
-     */
+    #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
     public function setRegistered(array $startEnd): void
     {
         if (!empty($startEnd['start'])) {
@@ -205,9 +183,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         }
     }
 
-    /**
-     * @Groups({"audience_segment_write", "adherent_message_update_filter"})
-     */
+    #[Groups(['audience_segment_write', 'adherent_message_update_filter'])]
     public function setLastMembership(array $startEnd): void
     {
         if (!empty($startEnd['start'])) {

@@ -4,6 +4,7 @@ namespace App\Entity\AdherentMandate;
 
 use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,10 +17,9 @@ class TerritorialCouncilAdherentMandate extends AbstractAdherentMandate
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\NotBlank(message="common.quality.invalid_choice")
-     * @Assert\Choice(choices=App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)
      */
+    #[Assert\NotBlank(message: 'common.quality.invalid_choice')]
+    #[Assert\Choice(choices: TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)]
     protected $quality;
 
     /**

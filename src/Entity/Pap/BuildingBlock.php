@@ -42,9 +42,8 @@ class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatist
 
     /**
      * @ORM\Column
-     *
-     * @Groups({"pap_building_block_list"})
      */
+    #[Groups(['pap_building_block_list'])]
     private string $name;
 
     /**
@@ -64,9 +63,8 @@ class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatist
      *     fetch="EAGER"
      * )
      * @ORM\OrderBy({"number": "ASC"})
-     *
-     * @Groups({"pap_building_block_list"})
      */
+    #[Groups(['pap_building_block_list'])]
     private Collection $floors;
 
     /**

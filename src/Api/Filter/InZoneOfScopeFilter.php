@@ -7,6 +7,7 @@ use App\Entity\ZoneableEntity;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class InZoneOfScopeFilter extends AbstractScopeFilter
 {
@@ -41,8 +42,8 @@ class InZoneOfScopeFilter extends AbstractScopeFilter
         ;
     }
 
-    /** @required */
-    public function setEntityManager(EntityManagerInterface $entityManager)
+    #[Required]
+    public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
     }

@@ -41,18 +41,16 @@ class Floor implements EntityAdherentBlameableInterface, CampaignStatisticsOwner
     use CampaignStatisticsTrait;
 
     /**
-     * @Assert\NotNull
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\BuildingBlock", inversedBy="floors")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[Assert\NotNull]
     private BuildingBlock $buildingBlock;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
-     * @Groups({"pap_building_block_list"})
      */
+    #[Groups(['pap_building_block_list'])]
     private int $number;
 
     /**

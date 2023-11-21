@@ -34,9 +34,8 @@ class VoteResultListCollection
      * @var VoteResultList[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Election\VoteResultList", mappedBy="listCollection", cascade={"all"}, orphanRemoval=true)
-     *
-     * @Assert\Count(min=1)
      */
+    #[Assert\Count(min: 1)]
     private $lists;
 
     /**

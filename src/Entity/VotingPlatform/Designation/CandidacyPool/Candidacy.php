@@ -42,16 +42,14 @@ class Candidacy extends BaseCandidacy
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private ?string $firstName = null;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private ?string $lastName = null;
 
     /**

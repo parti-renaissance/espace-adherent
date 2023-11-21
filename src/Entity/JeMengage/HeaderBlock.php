@@ -14,9 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="jemengage_header_blocks")
  * @ORM\Entity(repositoryClass="App\Repository\JeMengage\HeaderBlockRepository")
- *
- * @UniqueEntity("name", message="header_block.name.unique")
  */
+#[UniqueEntity('name', message: 'header_block.name.unique')]
 class HeaderBlock implements ExposedImageOwnerInterface
 {
     use EntityTimestampableTrait;
@@ -31,12 +30,10 @@ class HeaderBlock implements ExposedImageOwnerInterface
 
     /**
      * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank(message="header_block.name.not_blank")
-     * @Assert\Length(max="100", maxMessage="header_block.name.max_length")
-     *
-     * @Groups({"header_block_read"})
      */
+    #[Assert\NotBlank(message: 'header_block.name.not_blank')]
+    #[Assert\Length(max: '100', maxMessage: 'header_block.name.max_length')]
+    #[Groups(['header_block_read'])]
     private ?string $name = null;
 
     /**
@@ -47,28 +44,23 @@ class HeaderBlock implements ExposedImageOwnerInterface
 
     /**
      * @ORM\Column(length=50)
-     *
-     * @Assert\NotBlank(message="header_block.prefix.not_blank")
-     * @Assert\Length(max="50", maxMessage="header_block.prefix.max_length")
-     *
-     * @Groups({"header_block_read"})
      */
+    #[Assert\NotBlank(message: 'header_block.prefix.not_blank')]
+    #[Assert\Length(max: '50', maxMessage: 'header_block.prefix.max_length')]
+    #[Groups(['header_block_read'])]
     private ?string $prefix = null;
 
     /**
      * @ORM\Column(length=100, nullable=true)
-     *
-     * @Assert\Length(max="100", maxMessage="header_block.slogan.max_length")
-     *
-     * @Groups({"header_block_read"})
      */
+    #[Assert\Length(max: '100', maxMessage: 'header_block.slogan.max_length')]
+    #[Groups(['header_block_read'])]
     private ?string $slogan = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"header_block_read"})
      */
+    #[Groups(['header_block_read'])]
     private ?string $content = null;
 
     /**

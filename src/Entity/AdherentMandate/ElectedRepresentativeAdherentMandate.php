@@ -55,46 +55,25 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
 {
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL)
-     *
-     * @Groups({
-     *     "elected_mandate_write",
-     *     "elected_mandate_read",
-     *     "adherent_elect_read",
-     * })
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: MandateTypeEnum::ALL)]
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
     public string $mandateType;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
-     *
-     * @Groups({
-     *     "elected_mandate_write",
-     *     "elected_mandate_read",
-     *     "adherent_elect_read",
-     * })
      */
+    #[Assert\Length(max: 255)]
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
     public ?string $delegation = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     *
-     * @Assert\Expression(
-     *     "value !== null or (value == null and this.mandateType === constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
-     *     message="Le périmètre géographique est obligatoire."
-     * )
-     *
-     * @Groups({
-     *     "elected_mandate_write",
-     *     "elected_mandate_read",
-     *     "adherent_elect_read",
-     * })
      */
+    #[Assert\Expression("value !== null or (value == null and this.mandateType === constant('App\\\\Entity\\\\ElectedRepresentative\\\\MandateTypeEnum::EURO_DEPUTY'))", message: 'Le périmètre géographique est obligatoire.')]
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
     public ?Zone $zone = null;
 
     public static function create(

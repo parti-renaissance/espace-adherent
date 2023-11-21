@@ -86,10 +86,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\GeneralMeeting\GeneralMeetingReportRepository");
  * @ORM\Table(name="general_meeting_report")
  *
- * @UniqueEntity(fields={"zone", "title"}, message="general_meeting_report.zone_title.unique_entity")
- *
  * @ScopeVisibility
  */
+#[UniqueEntity(fields: ['zone', 'title'], message: 'general_meeting_report.zone_title.unique_entity')]
 class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
@@ -100,71 +99,28 @@ class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, En
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank(message="Veuillez renseigner un titre.")
-     * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
-     *
-     * @Groups({
-     *     "general_meeting_report_list_read",
-     *     "general_meeting_report_read",
-     *     "general_meeting_report_write",
-     * })
      */
+    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
+    #[Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.')]
+    #[Groups(['general_meeting_report_list_read', 'general_meeting_report_read', 'general_meeting_report_write'])]
     private ?string $title = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
-     *
-     * @Groups({
-     *     "general_meeting_report_list_read",
-     *     "general_meeting_report_read",
-     *     "general_meeting_report_write",
-     * })
      */
+    #[Assert\Length(min: 2, minMessage: 'La description doit faire au moins 2 caractères.')]
+    #[Groups(['general_meeting_report_list_read', 'general_meeting_report_read', 'general_meeting_report_write'])]
     private ?string $description = null;
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotBlank
-     * @Assert\LessThanOrEqual("now")
-     *
-     * @Groups({
-     *     "general_meeting_report_list_read",
-     *     "general_meeting_report_read",
-     *     "general_meeting_report_write",
-     * })
      */
+    #[Assert\NotBlank]
+    #[Assert\LessThanOrEqual('now')]
+    #[Groups(['general_meeting_report_list_read', 'general_meeting_report_read', 'general_meeting_report_write'])]
     private ?\DateTime $date = null;
 
-    /**
-     * @Assert\File(
-     *     maxSize="5M",
-     *     binaryFormat=false,
-     *     mimeTypes={
-     *         "image/*",
-     *         "video/mpeg",
-     *         "video/mp4",
-     *         "video/quicktime",
-     *         "video/webm",
-     *         "application/pdf",
-     *         "application/x-pdf",
-     *         "application/vnd.ms-powerpoint",
-     *         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-     *         "application/msword",
-     *         "application/vnd.ms-excel",
-     *         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-     *         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-     *         "application/rtf",
-     *         "text/plain",
-     *         "text/csv",
-     *         "text/html",
-     *         "text/calendar"
-     *     }
-     * )
-     */
+    #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['image/*', 'video/mpeg', 'video/mp4', 'video/quicktime', 'video/webm', 'application/pdf', 'application/x-pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/rtf', 'text/plain', 'text/csv', 'text/html', 'text/calendar'])]
     private ?UploadedFile $file = null;
 
     /**

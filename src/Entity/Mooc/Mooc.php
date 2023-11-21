@@ -16,13 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MoocRepository")
- *
- * @UniqueEntity("title")
- * @Assert\Expression(
- *     expression="(this.getArticleImage() and null === this.getYoutubeId()) or (this.getYoutubeId() and null === this.getArticleImage())",
- *     message="mooc.two_media"
- * )
  */
+#[UniqueEntity('title')]
+#[Assert\Expression(expression: '(this.getArticleImage() and null === this.getYoutubeId()) or (this.getYoutubeId() and null === this.getArticleImage())', message: 'mooc.two_media')]
 class Mooc
 {
     use EntityTimestampableTrait;
@@ -36,29 +32,25 @@ class Mooc
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     *
-     * @Groups({"mooc_list"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[Groups(['mooc_list'])]
     private $title;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"mooc_list"})
      */
+    #[Groups(['mooc_list'])]
     private $description;
 
     /**
      * @ORM\Column(unique=true)
      * @Gedmo\Slug(fields={"title"}, unique=true)
-     *
-     * @Groups({"mooc_list"})
      */
+    #[Groups(['mooc_list'])]
     private $slug;
 
     /**
@@ -66,67 +58,59 @@ class Mooc
      *
      * @ORM\OneToMany(targetEntity="Chapter", mappedBy="mooc", cascade={"all"})
      * @ORM\OrderBy({"position": "ASC"})
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $chapters;
 
     /**
      * @ORM\Column(length=800, nullable=true)
-     *
-     * @Assert\Length(allowEmptyString=true, min=5, max=800)
      */
+    #[Assert\Length(min: 5, max: 800)]
     private $content;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.youtubeid_syntax")
-     * @Assert\Length(allowEmptyString=true, min=2, max=11)
      */
+    #[Assert\Regex(pattern: '/^[A-Za-z0-9_-]+$/', message: 'mooc.youtubeid_syntax')]
+    #[Assert\Length(min: 2, max: 11)]
     private $youtubeId;
 
     /**
      * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="time", nullable=true)
-     *
-     * @Assert\Time
      */
+    #[Assert\Time]
     private $youtubeDuration;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $shareTwitterText;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $shareFacebookText;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $shareEmailSubject;
 
     /**
      * @ORM\Column(length=500)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min=5, max=500)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 5, max: 500)]
     protected $shareEmailBody;
 
     /**
@@ -228,9 +212,7 @@ class Mooc
         return $this->chapters;
     }
 
-    /**
-     * @Groups({"mooc_list"})
-     */
+    #[Groups(['mooc_list'])]
     public function getChapterCount(): int
     {
         return $this->chapters->count();

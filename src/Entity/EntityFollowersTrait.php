@@ -48,7 +48,7 @@ trait EntityFollowersTrait
     }
 
     /**
-     * @SymfonySerializer\Groups({"cause_read"})
+     * @Groups({"cause_read"})
      */
     public function getFollowersCount(): int
     {

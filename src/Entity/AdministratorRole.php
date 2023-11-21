@@ -8,10 +8,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdministratorRoleRepository")
- *
- * @UniqueEntity(fields={"code"}, message="administrator_role.unique_entity.name")
- * @UniqueEntity(fields={"groupCode", "label"}, message="administrator_role.unique_entity.group_label")
  */
+#[UniqueEntity(fields: ['code'], message: 'administrator_role.unique_entity.name')]
+#[UniqueEntity(fields: ['groupCode', 'label'], message: 'administrator_role.unique_entity.group_label')]
 class AdministratorRole
 {
     /**
@@ -23,18 +22,16 @@ class AdministratorRole
 
     /**
      * @ORM\Column(unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="256")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '256')]
     public ?string $code = null;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="256")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '256')]
     public ?string $label = null;
 
     /**
@@ -44,17 +41,15 @@ class AdministratorRole
 
     /**
      * @ORM\Column(enumType=AdministratorRoleGroupEnum::class)
-     *
-     * @Assert\NotBlank
-     * @Assert\Type(type=AdministratorRoleGroupEnum::class)
      */
+    #[Assert\NotBlank]
+    #[Assert\Type(type: AdministratorRoleGroupEnum::class)]
     public ?AdministratorRoleGroupEnum $groupCode = null;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $description = null;
 
     public function __toString(): string

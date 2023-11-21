@@ -9,19 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="programmatic_foundation_measure")
- *
- * @UniqueEntity(
- *     fields={"position", "subApproach"},
- *     errorPath="position",
- *     message="programmatic_foundation.unique_position.measure"
- * )
  */
+#[UniqueEntity(fields: ['position', 'subApproach'], errorPath: 'position', message: 'programmatic_foundation.unique_position.measure')]
 class Measure
 {
     use EntityIdentityTrait;
@@ -29,41 +24,41 @@ class Measure
 
     /**
      * @ORM\Column(type="smallint")
-     * @Assert\GreaterThan(value=0, message="programmatic_foundation.position.greater_than_zero")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Assert\GreaterThan(value: 0, message: 'programmatic_foundation.position.greater_than_zero')]
+    #[Groups(['approach_list_read'])]
     private $position;
 
     /**
      * @ORM\Column
-     * @Assert\NotBlank(message="programmatic_foundation.title.not_empty")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Assert\NotBlank(message: 'programmatic_foundation.title.not_empty')]
+    #[Groups(['approach_list_read'])]
     private $title;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="programmatic_foundation.content.not_empty")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Assert\NotBlank(message: 'programmatic_foundation.content.not_empty')]
+    #[Groups(['approach_list_read'])]
     private $content;
 
     /**
      * @ORM\Column(type="boolean")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Groups(['approach_list_read'])]
     private $isLeading;
 
     /**
      * @ORM\Column(type="boolean")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Groups(['approach_list_read'])]
     private $isExpanded;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProgrammaticFoundation\SubApproach", inversedBy="measures")
-     * @Assert\NotNull(message="programmatic_foundation.parent.required.measure")
      */
+    #[Assert\NotNull(message: 'programmatic_foundation.parent.required.measure')]
     private $subApproach;
 
     /**
@@ -74,15 +69,15 @@ class Measure
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"position": "ASC"})
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Groups(['approach_list_read'])]
     private $projects;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\ProgrammaticFoundation\Tag")
      * @ORM\JoinTable(name="programmatic_foundation_measure_tag")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Groups(['approach_list_read'])]
     private $tags;
 
     public function __construct(

@@ -18,25 +18,22 @@ class Consultation
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     private ?string $title = null;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private ?string $content = null;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Url(protocols={"https"}, message="Protocole autorisé : https")
      */
+    #[Assert\NotBlank]
+    #[Assert\Url(protocols: ['https'], message: 'Protocole autorisé : https')]
     private ?string $url = null;
 
     /**

@@ -17,6 +17,7 @@ use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class GeneralMeetingReportAdmin extends AbstractAdmin
 {
@@ -123,9 +124,7 @@ class GeneralMeetingReportAdmin extends AbstractAdmin
         ;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setGeneralMeetingReportHandler(GeneralMeetingReportHandler $generalMeetingReportHandler): void
     {
         $this->generalMeetingReportHandler = $generalMeetingReportHandler;

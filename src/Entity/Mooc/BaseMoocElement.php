@@ -18,8 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="mooc_element_slug", columns={"slug", "chapter_id"})}
  * )
  *
- * @UniqueEntity(fields={"slug", "chapter"})
- *
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
@@ -28,6 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     MoocElementTypeEnum::IMAGE: "App\Entity\Mooc\MoocImageElement",
  * })
  */
+#[UniqueEntity(fields: ['slug', 'chapter'])]
 abstract class BaseMoocElement
 {
     use EntityTimestampableTrait;
@@ -44,10 +43,9 @@ abstract class BaseMoocElement
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     protected $title;
 
     /**
@@ -68,9 +66,8 @@ abstract class BaseMoocElement
      *
      * @ORM\ManyToOne(targetEntity="Chapter", inversedBy="elements", cascade={"persist"})
      * @Gedmo\SortableGroup
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     protected $chapter;
 
     /**
@@ -79,9 +76,8 @@ abstract class BaseMoocElement
      * @ORM\ManyToMany(targetEntity="AttachmentLink", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinTable(name="mooc_element_attachment_link")
      * @ORM\OrderBy({"id": "ASC"})
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     protected $links;
 
     /**
@@ -90,41 +86,36 @@ abstract class BaseMoocElement
      * @ORM\ManyToMany(targetEntity="AttachmentFile", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinTable(name="mooc_element_attachment_file")
      * @ORM\OrderBy({"id": "ASC"})
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     protected $files;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $shareTwitterText;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $shareFacebookText;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $shareEmailSubject;
 
     /**
      * @ORM\Column(length=500)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min=5, max=500)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 5, max: 500)]
     protected $shareEmailBody;
 
     public function __construct(

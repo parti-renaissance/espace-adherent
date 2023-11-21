@@ -6,13 +6,14 @@ use App\Form\DeleteEntityType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Service\Attribute\Required;
 
 trait EntityControllerTrait
 {
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    #[\Symfony\Contracts\Service\Attribute\Required]
+    #[Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;

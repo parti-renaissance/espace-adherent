@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class SmsCampaignAdmin extends AbstractAdmin
 {
@@ -135,13 +136,13 @@ class SmsCampaignAdmin extends AbstractAdmin
         $object->setAdherentCount($this->adherentRepository->findForSmsCampaign($object, false)->getTotalItems());
     }
 
-    /** @required */
+    #[Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }
 
-    /** @required */
+    #[Required]
     public function setAdherentRepository(AdherentRepository $adherentRepository): void
     {
         $this->adherentRepository = $adherentRepository;

@@ -42,9 +42,8 @@ class CandidateGroup
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"election_result"})
      */
+    #[Groups(['election_result'])]
     private $elected = false;
 
     /**
@@ -88,10 +87,9 @@ class CandidateGroup
 
     /**
      * @return Candidate[]
-     *
-     * @Groups({"election_result"})
-     * @SerializedName("candidates")
      */
+    #[Groups(['election_result'])]
+    #[SerializedName('candidates')]
     public function getCandidatesSorted(bool $byPosition = false): array
     {
         $candidates = $this->getCandidates();
@@ -157,9 +155,7 @@ class CandidateGroup
         return null;
     }
 
-    /**
-     * @Groups({"election_result"})
-     */
+    #[Groups(['election_result'])]
     public function getTitle(): string
     {
         $labelParts = [];

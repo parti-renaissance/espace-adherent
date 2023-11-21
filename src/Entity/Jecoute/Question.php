@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
 use Doctrine\ORM\Mapping\InheritanceType;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -38,22 +38,18 @@ class Question
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     *
-     * @SymfonySerializer\Groups({"survey_list", "survey_read_dc", "survey_write_dc"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
     private $content;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\Jecoute\SurveyQuestionTypeEnum", "all"})
-     *
-     * @SymfonySerializer\Groups({"survey_list", "survey_read_dc", "survey_write_dc"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: ['App\Jecoute\SurveyQuestionTypeEnum', 'all'])]
+    #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
     private $type;
 
     /**
@@ -61,11 +57,9 @@ class Question
      *
      * @ORM\OneToMany(targetEntity="Choice", mappedBy="question", cascade={"all"}, orphanRemoval=true)
      * @ORM\OrderBy({"position": "ASC"})
-     *
-     * @Assert\Valid
-     *
-     * @SymfonySerializer\Groups({"survey_list", "survey_read_dc", "survey_write_dc"})
      */
+    #[Assert\Valid]
+    #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
     private $choices;
 
     public function __construct(string $content = null, string $type = null)

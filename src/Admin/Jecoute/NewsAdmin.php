@@ -25,6 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class NewsAdmin extends AbstractAdmin
 {
@@ -309,9 +310,7 @@ class NewsAdmin extends AbstractAdmin
         $this->newsHandler->changePinned($object);
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;

@@ -9,58 +9,48 @@ use App\TerritorialCouncil\Designation\DesignationVoteModeEnum;
 use App\Validator\WysiwygLength;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Assert\Expression(
- *     "(this.getTerritorialCouncil() && !this.getPoliticalCommittee()) || (!this.getTerritorialCouncil() && this.getPoliticalCommittee())",
- *     message="Vous devez choisir soit un conseil territorial soit un comité politique."
- * )
- * @Assert\Expression("this.getMeetingEndDate() > this.getMeetingStartDate()", message="La date de fin ne peut pas être inférieure à la date de début.")
- */
+#[Assert\Expression('(this.getTerritorialCouncil() && !this.getPoliticalCommittee()) || (!this.getTerritorialCouncil() && this.getPoliticalCommittee())', message: 'Vous devez choisir soit un conseil territorial soit un comité politique.')]
+#[Assert\Expression('this.getMeetingEndDate() > this.getMeetingStartDate()', message: 'La date de fin ne peut pas être inférieure à la date de début.')]
 class ConvocationObject
 {
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=App\TerritorialCouncil\Designation\DesignationVoteModeEnum::ALL)
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: DesignationVoteModeEnum::ALL)]
     private $mode = DesignationVoteModeEnum::VOTE_MODE_ONLINE;
 
     /**
      * @var Address|null
-     *
-     * @Assert\Expression("this.getAddress() || this.isOnlineMode()", message="Adresse est obligotoire")
-     * @Assert\Valid
      */
+    #[Assert\Expression('this.getAddress() || this.isOnlineMode()', message: 'Adresse est obligotoire')]
+    #[Assert\Valid]
     private $address;
 
     /**
      * @var string|null
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     private $meetingUrl;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $meetingStartDate;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $meetingEndDate;
 
     /**
      * @var string|null
      *
-     * @Assert\NotBlank
      * @WysiwygLength(max=2000)
      */
+    #[Assert\NotBlank]
     private $description;
 
     /**
@@ -163,9 +153,7 @@ class ConvocationObject
         return DesignationVoteModeEnum::VOTE_MODE_ONLINE === $this->mode;
     }
 
-    /**
-     * @Assert\IsTrue(message="La date de début doit être minimum dans 7 jours pour le Conseil territorial ou 5 jours pour le Comité politique")
-     */
+    #[Assert\IsTrue(message: 'La date de début doit être minimum dans 7 jours pour le Conseil territorial ou 5 jours pour le Comité politique')]
     public function isValid(): bool
     {
         if ($this->territorialCouncil) {

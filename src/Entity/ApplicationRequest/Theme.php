@@ -24,9 +24,8 @@ class Theme
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $name;
 
     /**

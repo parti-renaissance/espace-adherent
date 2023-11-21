@@ -14,6 +14,7 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class TeamAdmin extends AbstractAdmin
 {
@@ -113,7 +114,7 @@ class TeamAdmin extends AbstractAdmin
         $this->teamMemberHistoryManager->handleChanges($object, $this->beforeUpdate);
     }
 
-    /** @required */
+    #[Required]
     public function setTeamMemberHistoryManager(TeamMemberHistoryManager $teamMemberHistoryManager): void
     {
         $this->teamMemberHistoryManager = $teamMemberHistoryManager;

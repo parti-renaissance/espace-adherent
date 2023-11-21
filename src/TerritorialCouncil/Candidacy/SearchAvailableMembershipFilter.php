@@ -8,16 +8,14 @@ class SearchAvailableMembershipFilter
 {
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="Vous devez choisir la qualité de votre candidature")
      */
+    #[Assert\NotBlank(message: 'Vous devez choisir la qualité de votre candidature')]
     private $quality;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="Veuillez utiliser la recherche pour retrouver des candidats")
      */
+    #[Assert\NotBlank(message: 'Veuillez utiliser la recherche pour retrouver des candidats')]
     private $query;
 
     public function getQuality(): ?string

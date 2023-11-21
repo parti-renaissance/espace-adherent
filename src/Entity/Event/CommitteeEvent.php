@@ -27,9 +27,8 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Groups({"event_read", "event_write_creation"})
      */
+    #[Groups(['event_read', 'event_write_creation'])]
     private $committee;
 
     private $type;

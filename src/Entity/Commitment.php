@@ -21,33 +21,26 @@ class Commitment implements ImageOwnerInterface
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $title = null;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $shortDescription = null;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $description = null;
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\Image(
-     *     maxSize="5M",
-     *     mimeTypes={"image/jpeg", "image/png"}
-     * )
      */
+    #[Assert\Image(maxSize: '5M', mimeTypes: ['image/jpeg', 'image/png'])]
     protected $image;
 
     public function __construct(UuidInterface $uuid = null)

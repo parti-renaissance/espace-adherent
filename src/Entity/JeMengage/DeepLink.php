@@ -27,18 +27,16 @@ class DeepLink implements EntityAdministratorBlameableInterface, DynamicLinkObje
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $label = null;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Url(protocols={"https"}, message="Protocole autorisé : https")
-     * @Assert\Regex("#^https://.*\.?parti-renaissance\.fr/.+$#", message="Le domaine n'est pas autorisé ou le chemin n'est pas rempli")
      */
+    #[Assert\NotBlank]
+    #[Assert\Url(protocols: ['https'], message: 'Protocole autorisé : https')]
+    #[Assert\Regex('#^https://.*\.?parti-renaissance\.fr/.+$#', message: "Le domaine n'est pas autorisé ou le chemin n'est pas rempli")]
     public ?string $link = null;
 
     /**

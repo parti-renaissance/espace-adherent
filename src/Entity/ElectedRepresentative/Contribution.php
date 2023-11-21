@@ -23,16 +23,14 @@ class Contribution
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"elected_representative_list", "elected_representative_read"})
      */
+    #[Groups(['elected_representative_list', 'elected_representative_read'])]
     public ?\DateTime $startDate = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"elected_representative_list", "elected_representative_read"})
      */
+    #[Groups(['elected_representative_list', 'elected_representative_read'])]
     public ?\DateTime $endDate = null;
 
     /**
@@ -57,10 +55,9 @@ class Contribution
 
     /**
      * @ORM\Column(length=20)
-     *
-     * @Groups({"elected_representative_list", "elected_representative_read"})
-     * @SerializedName("status")
      */
+    #[Groups(['elected_representative_list', 'elected_representative_read'])]
+    #[SerializedName('status')]
     public ?string $gocardlessMandateStatus = null;
 
     /**
@@ -75,9 +72,8 @@ class Contribution
 
     /**
      * @ORM\Column(length=20)
-     *
-     * @Groups({"elected_representative_list", "elected_representative_read"})
      */
+    #[Groups(['elected_representative_list', 'elected_representative_read'])]
     public ?string $type = null;
 
     /**

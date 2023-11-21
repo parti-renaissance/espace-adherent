@@ -30,9 +30,8 @@ class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
      * @var int
      *
      * @ORM\Column(type="smallint")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $position;
 
     /**
@@ -48,9 +47,8 @@ class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
      *         @ORM\JoinColumn(name="order_section_id", referencedColumnName="id", onDelete="CASCADE")
      *     }
      * )
-     *
-     * @Assert\Count(min=1)
      */
+    #[Assert\Count(min: 1)]
     private $sections;
 
     /**

@@ -159,86 +159,48 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     *
-     * @Groups({
-     *     "pap_campaign_read",
-     *     "pap_campaign_read_list",
-     *     "pap_campaign_write",
-     *     "pap_campaign_read_after_write",
-     * })
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
     private $title;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({
-     *     "pap_campaign_read",
-     *     "pap_campaign_read_list",
-     *     "pap_campaign_write",
-     *     "pap_campaign_read_after_write",
-     * })
      */
+    #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
     private $brief;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="integer")
-     *
-     * @Assert\NotBlank
-     * @Assert\GreaterThan(value="0")
-     *
-     * @Groups({
-     *     "pap_campaign_read",
-     *     "pap_campaign_read_list",
-     *     "pap_campaign_write",
-     *     "pap_campaign_read_after_write",
-     * })
      */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(value: '0')]
+    #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
     private $goal;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Assert\NotBlank(groups={"regular_campaign"})
-     * @Assert\GreaterThanOrEqual(
-     *     value="today",
-     *     message="pap.campaign.invalid_start_date",
-     *     groups={"pap_campaign_creation"}
-     * )
-     *
-     * @Groups({
-     *     "pap_campaign_read",
-     *     "pap_campaign_read_list",
-     *     "pap_campaign_write",
-     *     "pap_campaign_read_after_write",
-     * })
      */
+    #[Assert\NotBlank(groups: ['regular_campaign'])]
+    #[Assert\GreaterThanOrEqual(value: 'today', message: 'pap.campaign.invalid_start_date', groups: ['pap_campaign_creation'])]
+    #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
     private $beginAt;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Assert\NotBlank(groups={"regular_campaign"})
-     * @Assert\Expression("value > this.getBeginAt()", message="pap.campaign.invalid_end_date")
-     *
-     * @Groups({
-     *     "pap_campaign_read",
-     *     "pap_campaign_read_list",
-     *     "pap_campaign_write",
-     *     "pap_campaign_read_after_write",
-     * })
      */
+    #[Assert\NotBlank(groups: ['regular_campaign'])]
+    #[Assert\Expression('value > this.getBeginAt()', message: 'pap.campaign.invalid_end_date')]
+    #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
     private $finishAt;
 
     /**
@@ -247,16 +209,10 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      * @ORM\ManyToOne(targetEntity="App\Entity\Jecoute\Survey")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Assert\NotBlank
-     *
      * @ApiSubresource
-     *
-     * @Groups({
-     *     "pap_campaign_write",
-     *     "pap_campaign_read",
-     *     "pap_campaign_read_after_write",
-     * })
      */
+    #[Assert\NotBlank]
+    #[Groups(['pap_campaign_write', 'pap_campaign_read', 'pap_campaign_read_after_write'])]
     private $survey;
 
     /**
@@ -282,10 +238,9 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      * @ORM\ManyToMany(targetEntity="App\Entity\Pap\VotePlace", inversedBy="campaigns")
      * @ORM\JoinTable(name="pap_campaign_vote_place")
      *
-     * @Groups({"pap_campaign_write"})
-     *
      * @ApiSubresource
      */
+    #[Groups(['pap_campaign_write'])]
     private $votePlaces;
 
     /**
@@ -304,28 +259,16 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
 
     /**
      * @ORM\Column(type="boolean", options={"default": true})
-     *
-     * @Groups({
-     *     "pap_campaign_write",
-     *     "pap_campaign_read",
-     *     "pap_campaign_read_after_write",
-     *     "pap_campaign_read_list",
-     * })
      */
+    #[Groups(['pap_campaign_write', 'pap_campaign_read', 'pap_campaign_read_after_write', 'pap_campaign_read_list'])]
     private bool $enabled;
 
     /**
      * @ORM\Column(length=30)
-     *
-     * @Assert\NotBlank(message="scope.visibility.not_blank")
-     * @Assert\Choice(choices=App\Scope\ScopeVisibilityEnum::ALL, message="scope.visibility.choice")
-     *
-     * @Groups({
-     *     "pap_campaign_read",
-     *     "pap_campaign_read_list",
-     *     "pap_campaign_read_after_write",
-     * })
      */
+    #[Assert\NotBlank(message: 'scope.visibility.not_blank')]
+    #[Assert\Choice(choices: ScopeVisibilityEnum::ALL, message: 'scope.visibility.choice')]
+    #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_read_after_write'])]
     protected string $visibility = ScopeVisibilityEnum::NATIONAL;
 
     /**

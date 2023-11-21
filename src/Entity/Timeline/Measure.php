@@ -43,19 +43,17 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     private $link;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=50)
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=Measure::STATUSES)
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: Measure::STATUSES)]
     private $status;
 
     /**

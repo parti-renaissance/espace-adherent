@@ -26,19 +26,17 @@ class SmsCampaign
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $title;
 
     /**
      * @var string
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=149)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 149)]
     private $content;
 
     /**
@@ -46,9 +44,8 @@ class SmsCampaign
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Audience\AudienceSnapshot", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $audience;
 
     /**

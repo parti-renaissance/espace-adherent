@@ -66,12 +66,10 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
      *     orphanRemoval=true
      * )
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Assert\Valid
-     * @Assert\NotNull
-     *
-     * @Groups({"audience_segment_read", "audience_segment_write"})
      */
+    #[Assert\Valid]
+    #[Assert\NotNull]
+    #[Groups(['audience_segment_read', 'audience_segment_write'])]
     private $filter;
 
     /**
@@ -79,9 +77,8 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $author;
 
     public function __construct(UuidInterface $uuid = null)

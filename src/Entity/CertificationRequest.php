@@ -74,14 +74,9 @@ class CertificationRequest
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\NotBlank
-     * @Assert\File(
-     *     maxSize="5M",
-     *     mimeTypes=CertificationRequest::MIME_TYPES,
-     *     mimeTypesMessage="certification_request.document.mime_type"
-     * )
      */
+    #[Assert\NotBlank]
+    #[Assert\File(maxSize: '5M', mimeTypes: CertificationRequest::MIME_TYPES, mimeTypesMessage: 'certification_request.document.mime_type')]
     private $document;
 
     /**

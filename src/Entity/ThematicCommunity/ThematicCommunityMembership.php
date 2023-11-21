@@ -66,9 +66,8 @@ abstract class ThematicCommunityMembership
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $hasJob = false;
 
     /**
@@ -82,9 +81,8 @@ abstract class ThematicCommunityMembership
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $association = false;
 
     /**
@@ -98,9 +96,8 @@ abstract class ThematicCommunityMembership
      * @var array
      *
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $motivations = [];
 
     /**

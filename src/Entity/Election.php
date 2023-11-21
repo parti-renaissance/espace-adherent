@@ -11,9 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="elections")
  * @ORM\Entity(repositoryClass="App\Repository\ElectionRepository")
- *
- * @UniqueEntity("name")
  */
+#[UniqueEntity('name')]
 class Election
 {
     /**
@@ -29,19 +28,17 @@ class Election
      * @var string
      *
      * @ORM\Column(unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $name = '';
 
     /**
      * @var string
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $introduction = '';
 
     /**
@@ -62,9 +59,8 @@ class Election
      * @var ElectionRound[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\ElectionRound", mappedBy="election", cascade={"all"}, orphanRemoval=true)
-     *
-     * @Assert\Count(min=1, minMessage="election.rounds.min_count")
      */
+    #[Assert\Count(min: 1, minMessage: 'election.rounds.min_count')]
     private $rounds;
 
     public function __construct()

@@ -97,11 +97,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="adherent_formation")
  * @ORM\EntityListeners({"App\EntityListener\AdherentFormationListener"})
  *
- * @UniqueEntity(fields={"zone", "title"}, message="adherent_formation.zone_title.unique_entity")
- *
  * @ScopeVisibility
  * @FormationContent
  */
+#[UniqueEntity(fields: ['zone', 'title'], message: 'adherent_formation.zone_title.unique_entity')]
 class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
@@ -113,71 +112,30 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank(message="Veuillez renseigner un titre.")
-     * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Assert\Sequentially([
+        new Assert\NotBlank(message: 'Veuillez renseigner un titre.'),
+        new Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.'),
+    ])]
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private ?string $title = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Assert\Length(min: 2, minMessage: 'La description doit faire au moins 2 caractères.')]
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private ?string $description = null;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=FormationContentTypeEnum::ALL)
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: FormationContentTypeEnum::ALL)]
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private string $contentType = FormationContentTypeEnum::FILE;
 
-    /**
-     * @Assert\File(
-     *     maxSize="5M",
-     *     binaryFormat=false,
-     *     mimeTypes={
-     *         "image/*",
-     *         "video/mpeg",
-     *         "video/mp4",
-     *         "video/quicktime",
-     *         "video/webm",
-     *         "application/pdf",
-     *         "application/x-pdf",
-     *         "application/vnd.ms-powerpoint",
-     *         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-     *         "application/msword",
-     *         "application/vnd.ms-excel",
-     *         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-     *         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-     *         "application/rtf",
-     *         "text/plain",
-     *         "text/csv",
-     *         "text/html",
-     *         "text/calendar"
-     *     }
-     * )
-     */
+    #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['image/*', 'video/mpeg', 'video/mp4', 'video/quicktime', 'video/webm', 'application/pdf', 'application/x-pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/rtf', 'text/plain', 'text/csv', 'text/html', 'text/calendar'])]
     private ?UploadedFile $file = null;
 
     /**
@@ -187,36 +145,21 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Assert\Url]
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private ?string $link = null;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private bool $published = false;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     * })
      */
+    #[Groups(['formation_read', 'formation_list_read'])]
     private int $printCount = 0;
 
     /**

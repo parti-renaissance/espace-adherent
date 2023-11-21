@@ -28,36 +28,27 @@ class Client implements EntitySoftDeletedInterface
     use EntityTimestampableTrait;
 
     /**
-     * @Assert\Length(max=32, maxMessage="client.name.constraint.length.max")
-     *
      * @ORM\Column
      */
+    #[Assert\Length(max: 32, maxMessage: 'client.name.constraint.length.max')]
     private $name;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Choice(callback={"App\AppCodeEnum", "toArray"})
      */
+    #[Assert\Choice(callback: ['App\AppCodeEnum', 'toArray'])]
     private ?string $code = null;
 
     /**
-     * @Assert\Length(
-     *     min=10,
-     *     max=200,
-     *     minMessage="La description doit faire au moins {{ limit }} caractères.",
-     *     maxMessage="La description ne doit pas dépasser {{ limit }} caractères."
-     * )
-     *
      * @ORM\Column
      */
+    #[Assert\Length(min: 10, max: 200, minMessage: 'La description doit faire au moins {{ limit }} caractères.', maxMessage: 'La description ne doit pas dépasser {{ limit }} caractères.')]
     private $description;
 
     /**
-     * @Assert\Count(min=1, minMessage="Veuillez spécifier au moins une adresse de redirection.")
-     *
      * @ORM\Column(type="json")
      */
+    #[Assert\Count(min: 1, minMessage: 'Veuillez spécifier au moins une adresse de redirection.')]
     private $redirectUris;
 
     /**
@@ -67,9 +58,8 @@ class Client implements EntitySoftDeletedInterface
 
     /**
      * @ORM\Column(type="simple_array")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $allowedGrantTypes;
 
     /**

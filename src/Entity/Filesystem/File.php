@@ -12,7 +12,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -21,9 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\Index(columns={"type"}),
  *     @ORM\Index(columns={"name"})
  * })
- *
- * @UniqueEntity(fields={"name"}, repositoryMethod="findDirectoryByName", message="file.validation.name.not_unique")
  */
+#[UniqueEntity(fields: ['name'], repositoryMethod: 'findDirectoryByName', message: 'file.validation.name.not_unique')]
 class File
 {
     use EntityIdentityTrait;
@@ -33,12 +32,10 @@ class File
      * @var string|null
      *
      * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
-     *
-     * @SymfonySerializer\Groups({"autocomplete"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
+    #[Groups(['autocomplete'])]
     private $name;
 
     /**
@@ -53,38 +50,14 @@ class File
      * @var string|null
      *
      * @ORM\Column(length=20)
-     *
-     * @Assert\Choice(callback={"App\Entity\Filesystem\FileTypeEnum", "toArray"})
      */
+    #[Assert\Choice(callback: ['App\Entity\Filesystem\FileTypeEnum', 'toArray'])]
     private $type = FileTypeEnum::FILE;
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\File(
-     *     maxSize="5M",
-     *     mimeTypes={
-     *         "image/*",
-     *         "video/mpeg",
-     *         "video/mp4",
-     *         "video/quicktime",
-     *         "video/webm",
-     *         "application/pdf",
-     *         "application/x-pdf",
-     *         "application/vnd.ms-powerpoint",
-     *         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-     *         "application/msword",
-     *         "application/vnd.ms-excel",
-     *         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-     *         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-     *         "application/rtf",
-     *         "text/plain",
-     *         "text/csv",
-     *         "text/html",
-     *         "text/calendar"
-     *     }
-     * )
      */
+    #[Assert\File(maxSize: '5M', mimeTypes: ['image/*', 'video/mpeg', 'video/mp4', 'video/quicktime', 'video/webm', 'application/pdf', 'application/x-pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/rtf', 'text/plain', 'text/csv', 'text/html', 'text/calendar'])]
     private $file;
 
     /**
@@ -118,9 +91,8 @@ class File
      * @var FilePermission[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Filesystem\FilePermission", mappedBy="file", cascade={"all"}, orphanRemoval=true)
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $permissions;
 
     /**
@@ -128,9 +100,8 @@ class File
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Filesystem\File", inversedBy="children", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $parent;
 
     /**
@@ -144,27 +115,24 @@ class File
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255, maxMessage="file.validation.filename_length")
      */
+    #[Assert\Length(max: 255, maxMessage: 'file.validation.filename_length')]
     private $originalFilename;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=10, nullable=true)
-     *
-     * @Assert\Length(max=10)
      */
+    #[Assert\Length(max: 10)]
     private $extension;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=75, nullable=true)
-     *
-     * @Assert\Length(max=75)
      */
+    #[Assert\Length(max: 75)]
     private $mimeType;
 
     /**
@@ -178,9 +146,8 @@ class File
      * @var string|null
      *
      * @ORM\Column(nullable=true, nullable=true)
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     private $externalLink;
 
     public function __construct()
@@ -429,9 +396,7 @@ class File
         $this->type = FileTypeEnum::EXTERNAL_LINK;
     }
 
-    /**
-     * @Assert\IsTrue(message="file.validation.file_or_link")
-     */
+    #[Assert\IsTrue(message: 'file.validation.file_or_link')]
     public function isValid(): bool
     {
         if ($this->isDir()) {

@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Countries;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityPostAddressTrait
@@ -14,11 +14,9 @@ trait EntityPostAddressTrait
      * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
      *
      * @var PostAddress
-     *
-     * @Assert\Valid(groups={"contact_update"})
-     *
-     * @SymfonySerializer\Groups({"contact_update"})
      */
+    #[Assert\Valid(groups: ['contact_update'])]
+    #[Groups(['contact_update'])]
     protected $postAddress;
 
     public function getPostAddressModel(): PostAddress
@@ -36,9 +34,7 @@ trait EntityPostAddressTrait
         return $this->postAddress ? $this->postAddress->getInlineFormattedAddress($locale) : '';
     }
 
-    /**
-     * @SymfonySerializer\Groups({"user_profile"})
-     */
+    #[Groups(['user_profile'])]
     public function getCountry(): ?string
     {
         return $this->postAddress->getCountry();
@@ -54,13 +50,7 @@ trait EntityPostAddressTrait
         return $this->postAddress->getAddress();
     }
 
-    /**
-     * @SymfonySerializer\Groups({
-     *     "user_profile",
-     *     "export",
-     *     "adherent_autocomplete"
-     * })
-     */
+    #[Groups(['user_profile', 'export', 'adherent_autocomplete'])]
     public function getPostalCode(): ?string
     {
         return $this->postAddress->getPostalCode();

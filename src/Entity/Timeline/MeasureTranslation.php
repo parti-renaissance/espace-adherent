@@ -12,9 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\EntityListeners({"App\Entity\Timeline\MeasureTranslationListener"})
  * @ORM\Table(name="timeline_measure_translations")
- *
- * @UniqueEntity(fields={"locale", "title"}, errorPath="title")
  */
+#[UniqueEntity(fields: ['locale', 'title'], errorPath: 'title')]
 class MeasureTranslation implements TranslationInterface
 {
     use TranslationTrait;
@@ -32,10 +31,9 @@ class MeasureTranslation implements TranslationInterface
      * @var string|null
      *
      * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=Measure::TITLE_MAX_LENGTH)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: Measure::TITLE_MAX_LENGTH)]
     private $title;
 
     public function getTitle(): ?string

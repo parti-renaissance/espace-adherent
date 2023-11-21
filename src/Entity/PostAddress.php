@@ -6,7 +6,7 @@ use App\Address\AddressInterface;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,75 +20,45 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * The address street.
      *
      * @ORM\Column(length=150, nullable=true)
-     *
-     * @Assert\Length(max=150, groups={"contact_update"})
-     *
-     * @SymfonySerializer\Groups({
-     *     "profile_read",
-     *     "contact_read_after_write",
-     *     "contact_update"
-     * })
      */
+    #[Assert\Length(max: 150, groups: ['contact_update'])]
+    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update'])]
     protected ?string $address = null;
 
     /**
      * The address zip code.
      *
      * @ORM\Column(length=15, nullable=true)
-     *
-     * @Assert\Length(max=15, groups={"contact_update"})
-     *
-     * @SymfonySerializer\Groups({
-     *     "profile_read",
-     *     "contact_read_after_write",
-     *     "contact_update"
-     * })
      */
+    #[Assert\Length(max: 15, groups: ['contact_update'])]
+    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update'])]
     protected ?string $postalCode = null;
 
     /**
      * The address city code (postal code + INSEE code).
      *
      * @ORM\Column(length=15, nullable=true, name="city_insee")
-     *
-     * @Assert\Length(max=15, groups={"contact_update"})
-     *
-     * @SymfonySerializer\Groups({
-     *     "contact_read_after_write",
-     *     "contact_update",
-     *     "profile_read",
-     * })
      */
+    #[Assert\Length(max: 15, groups: ['contact_update'])]
+    #[Groups(['contact_read_after_write', 'contact_update', 'profile_read'])]
     protected ?string $city = null;
 
     /**
      * The address city name.
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255, groups={"contact_update"})
-     *
-     * @SymfonySerializer\Groups({
-     *     "profile_read",
-     *     "contact_read_after_write",
-     *     "contact_update"
-     * })
      */
+    #[Assert\Length(max: 255, groups: ['contact_update'])]
+    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update'])]
     protected ?string $cityName = null;
 
     /**
      * The address country code (ISO2).
      *
      * @ORM\Column(length=2, nullable=true)
-     *
-     * @Assert\Country(groups={"contact_update"})
-     *
-     * @SymfonySerializer\Groups({
-     *     "profile_read",
-     *     "contact_read_after_write",
-     *     "contact_update"
-     * })
      */
+    #[Assert\Country(groups: ['contact_update'])]
+    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update'])]
     protected ?string $country = null;
 
     public static function createEmptyAddress(): self

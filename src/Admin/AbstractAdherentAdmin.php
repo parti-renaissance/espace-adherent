@@ -65,6 +65,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AbstractAdherentAdmin extends AbstractAdmin
 {
@@ -910,7 +911,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
         }];
     }
 
-    /** @required */
+    #[Required]
     public function setInstanceQualityRepository(InstanceQualityRepository $instanceQualityRepository): void
     {
         $this->instanceQualityRepository = $instanceQualityRepository;

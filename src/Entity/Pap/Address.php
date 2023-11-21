@@ -58,61 +58,32 @@ class Address
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({
-     *     "pap_address_list",
-     *     "pap_address_read",
-     *     "pap_campaign_history_read_list",
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_address_list', 'pap_address_read', 'pap_campaign_history_read_list', 'pap_building_statistics_read'])]
     private ?string $number;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({
-     *     "pap_address_list",
-     *     "pap_address_read",
-     *     "pap_campaign_history_read_list",
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_address_list', 'pap_address_read', 'pap_campaign_history_read_list', 'pap_building_statistics_read'])]
     private ?string $address;
 
     /**
      * @ORM\Column(length=5, nullable=true)
-     *
-     * @Groups({
-     *     "pap_address_list",
-     *     "pap_address_read",
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
     private ?string $inseeCode;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({
-     *     "pap_address_list",
-     *     "pap_address_read",
-     *     "pap_campaign_history_read_list",
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_address_list', 'pap_address_read', 'pap_campaign_history_read_list', 'pap_building_statistics_read'])]
     private ?array $postalCodes;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({
-     *     "pap_address_list",
-     *     "pap_address_read",
-     *     "pap_campaign_history_read_list",
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_address_list', 'pap_address_read', 'pap_campaign_history_read_list', 'pap_building_statistics_read'])]
     private ?string $cityName;
 
     /**
@@ -127,16 +98,14 @@ class Address
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
-     *
-     * @Groups({"pap_address_list", "pap_address_read"})
      */
+    #[Groups(['pap_address_list', 'pap_address_read'])]
     private ?float $latitude;
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
-     *
-     * @Groups({"pap_address_list", "pap_address_read"})
      */
+    #[Groups(['pap_address_list', 'pap_address_read'])]
     private ?float $longitude;
 
     /**
@@ -148,9 +117,8 @@ class Address
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"pap_address_list", "pap_address_read"})
      */
+    #[Groups(['pap_address_list', 'pap_address_read'])]
     private int $votersCount = 0;
 
     /**
@@ -162,9 +130,8 @@ class Address
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
-     *
-     * @Groups({"pap_address_list", "pap_address_read"})
      */
+    #[Groups(['pap_address_list', 'pap_address_read'])]
     private ?Building $building = null;
 
     /**

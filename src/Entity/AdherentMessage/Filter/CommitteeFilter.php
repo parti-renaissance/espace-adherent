@@ -14,9 +14,8 @@ class CommitteeFilter extends AbstractUserFilter
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private ?Committee $committee = null;
 
     public function __construct(Committee $committee = null)

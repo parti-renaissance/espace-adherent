@@ -19,52 +19,36 @@ class BaseEventCommand
      */
     protected $event;
 
-    /**
-     * @Assert\NotNull(groups="with_category")
-     */
+    #[Assert\NotNull(groups: ['with_category'])]
     protected $category;
 
     private $uuid;
     private $author;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min=5, max=100)
-     */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 5, max: 100)]
     private $name;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min=10)
-     */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 10)]
     private $description;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Timezone
-     */
+    #[Assert\NotBlank]
+    #[Assert\Timezone]
     private $timeZone;
 
-    /**
-     * @Assert\NotBlank
-     */
+    #[Assert\NotBlank]
     private $beginAt;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Expression("value > this.getBeginAt()", message="committee.event.invalid_date_range")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Expression('value > this.getBeginAt()', message: 'committee.event.invalid_date_range')]
     private $finishAt;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Valid
-     */
+    #[Assert\NotBlank]
+    #[Assert\Valid]
     private $address;
 
-    /**
-     * @Assert\Url
-     */
+    #[Assert\Url]
     private $visioUrl;
 
     private $image;
@@ -73,9 +57,8 @@ class BaseEventCommand
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(choices=App\Entity\Event\BaseEvent::MODES)
      */
+    #[Assert\Choice(choices: BaseEvent::MODES)]
     private $mode;
 
     /**

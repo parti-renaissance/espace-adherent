@@ -13,9 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="mooc_chapter")
- *
- * @UniqueEntity(fields={"slug", "mooc"})
  */
+#[UniqueEntity(fields: ['slug', 'mooc'])]
 class Chapter
 {
     use Sortable;
@@ -29,10 +28,9 @@ class Chapter
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $title;
 
     /**
@@ -48,9 +46,8 @@ class Chapter
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $publishedAt;
 
     /**
@@ -66,9 +63,8 @@ class Chapter
      *
      * @ORM\OneToMany(targetEntity="BaseMoocElement", mappedBy="chapter", cascade={"all"})
      * @ORM\OrderBy({"position": "ASC"})
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $elements;
 
     public function __construct(string $title = null, bool $published = false, \DateTime $publishedAt = null)

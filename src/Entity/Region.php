@@ -11,9 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- *
- * @UniqueEntity("code")
  */
+#[UniqueEntity('code')]
 class Region
 {
     /**
@@ -29,30 +28,27 @@ class Region
      * @var string|null
      *
      * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     private $name;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=10, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="10")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '10')]
     private $code;
 
     /**
      * @var string
      *
      * @ORM\Column(length=2)
-     *
-     * @Assert\NotBlank(message="city.country.not_blank")
-     * @Assert\Country(message="city.country.invalid")
      */
+    #[Assert\NotBlank(message: 'city.country.not_blank')]
+    #[Assert\Country(message: 'city.country.invalid')]
     private $country;
 
     /**

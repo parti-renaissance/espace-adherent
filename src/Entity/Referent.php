@@ -12,9 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReferentRepository")
- *
- * @UniqueEntity(fields="slug", groups="Admin")
  */
+#[UniqueEntity(fields: 'slug', groups: ['Admin'])]
 class Referent implements EntityMediaInterface
 {
     use EntityPersonNameTrait;
@@ -32,48 +31,39 @@ class Referent implements EntityMediaInterface
 
     /**
      * @ORM\Column(length=6)
-     *
-     * @Assert\NotBlank(groups="Admin")
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     groups="Admin"
-     * )
      */
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Choice(callback: ['App\ValueObject\Genders', 'all'], message: 'common.gender.invalid_choice', groups: ['Admin'])]
     private $gender;
 
     /**
      * @ORM\Column(length=100, nullable=true)
-     *
-     * @Assert\Email(groups="Admin")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups="Admin")
      */
+    #[Assert\Email(groups: ['Admin'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['Admin'])]
     private $emailAddress;
 
     /**
      * @ORM\Column(length=100, unique=true)
      * @Gedmo\Slug(fields={"firstName", "lastName"})
-     *
-     * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="legislative_candidate.slug.invalid", groups="Admin")
      */
+    #[Assert\Regex(pattern: '/^[a-z0-9-]+$/', message: 'legislative_candidate.slug.invalid', groups: ['Admin'])]
     private $slug;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url(groups="Admin")
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="legislative_candidate.facebook_page_url.invalid", groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
      */
+    #[Assert\Url(groups: ['Admin'])]
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?facebook.com\/#', message: 'legislative_candidate.facebook_page_url.invalid', groups: ['Admin'])]
+    #[Assert\Length(max: 255, groups: ['Admin'])]
     private $facebookPageUrl;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url(groups="Admin")
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="legislative_candidate.twitter_page_url.invalid", groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
      */
+    #[Assert\Url(groups: ['Admin'])]
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?twitter.com\/#', message: 'legislative_candidate.twitter_page_url.invalid', groups: ['Admin'])]
+    #[Assert\Length(max: 255, groups: ['Admin'])]
     private $twitterPageUrl;
 
     /**
@@ -88,8 +78,8 @@ class Referent implements EntityMediaInterface
 
     /**
      * @ORM\Column
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $areaLabel = '';
 
     /**
@@ -105,9 +95,8 @@ class Referent implements EntityMediaInterface
      *         @ORM\JoinColumn(name="area_id", referencedColumnName="id")
      *     }
      * )
-     *
-     * @Assert\Count(min=1, groups={"Admin"})
      */
+    #[Assert\Count(min: 1, groups: ['Admin'])]
     private $areas;
 
     /**

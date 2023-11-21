@@ -14,9 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @MeasurePayload
- *
- * @UniqueEntity(fields={"city", "type"}, errorPath="type")
  */
+#[UniqueEntity(fields: ['city', 'type'], errorPath: 'type')]
 class Measure
 {
     /**
@@ -40,9 +39,8 @@ class Measure
      *
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="measures")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $city;
 
     /**
@@ -50,9 +48,8 @@ class Measure
      *
      * @ORM\ManyToOne(targetEntity=MeasureType::class)
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $type;
 
     public function __construct(City $city = null, MeasureType $type = null, array $payload = null)

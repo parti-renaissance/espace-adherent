@@ -10,10 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="home_blocks")
  * @ORM\Entity(repositoryClass="App\Repository\HomeBlockRepository")
- *
- * @UniqueEntity(fields={"position"})
- * @UniqueEntity(fields={"positionName"})
  */
+#[UniqueEntity(fields: ['position'])]
+#[UniqueEntity(fields: ['positionName'])]
 class HomeBlock
 {
     public const TYPE_ARTICLE = 'article';
@@ -40,57 +39,51 @@ class HomeBlock
      * @var string|null
      *
      * @ORM\Column(length=30, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=30)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 30)]
     private $positionName;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=70)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=70)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 70)]
     private $title;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=100, nullable=true)
-     *
-     * @Assert\Length(max=100)
      */
+    #[Assert\Length(max: 100)]
     private $subtitle;
 
     /**
      * @var string
      *
      * @ORM\Column(length=10)
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice({"video", "article", "banner"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(['video', 'article', 'banner'])]
     private $type = self::TYPE_ARTICLE;
 
     /**
      * @var Media|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Media")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $media;
 
     /**
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $link;
 
     /**
@@ -132,27 +125,24 @@ class HomeBlock
      * @var string|null
      *
      * @ORM\Column(length=70, nullable=true)
-     *
-     * @Assert\Length(max=70)
      */
+    #[Assert\Length(max: 70)]
     private $titleCta;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=6, nullable=true)
-     *
-     * @Assert\Choice(callback={"\App\Admin\Color", "all"})
      */
+    #[Assert\Choice(callback: ['\App\Admin\Color', 'all'])]
     private $colorCta;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=6, nullable=true)
-     *
-     * @Assert\Choice(callback={"\App\Admin\Color", "all"})
      */
+    #[Assert\Choice(callback: ['\App\Admin\Color', 'all'])]
     private $bgColor;
 
     /**

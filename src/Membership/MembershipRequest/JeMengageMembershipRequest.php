@@ -11,56 +11,34 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class JeMengageMembershipRequest extends AbstractMembershipRequest
 {
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *     min=2,
-     *     max=50,
-     *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length"
-     * )
-     *
-     * @Groups({"membership:write"})
-     */
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length'),
+    ])]
+    #[Groups(['membership:write'])]
     public ?string $lastName = null;
 
-    /**
-     * @Assert\NotBlank(message="common.gender.not_blank")
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     * )
-     *
-     * @Groups({"membership:write"})
-     */
+    #[Assert\NotBlank(message: 'common.gender.not_blank')]
+    #[Assert\Choice(callback: ['App\ValueObject\Genders', 'all'], message: 'common.gender.invalid_choice')]
+    #[Groups(['membership:write'])]
     public ?string $gender = null;
 
-    /**
-     * @Assert\NotBlank(message="common.birthdate.not_blank")
-     *
-     * @Groups({"membership:write"})
-     */
+    #[Assert\NotBlank(message: 'common.birthdate.not_blank')]
+    #[Groups(['membership:write'])]
     public ?\DateTimeInterface $birthdate = null;
 
-    /**
-     * @Assert\Country(message="common.nationality.invalid")
-     *
-     * @Groups({"membership:write"})
-     */
+    #[Assert\Country(message: 'common.nationality.invalid')]
+    #[Groups(['membership:write'])]
     public ?string $nationality = null;
 
     /**
      * @AssertPhoneNumber
-     *
-     * @Groups({"membership:write"})
      */
+    #[Groups(['membership:write'])]
     public ?PhoneNumber $phone = null;
 
-    /**
-     * @Assert\Valid
-     *
-     * @Groups({"membership:write"})
-     */
+    #[Assert\Valid]
+    #[Groups(['membership:write'])]
     public ?Address $address = null;
 
     final public function getSource(): string

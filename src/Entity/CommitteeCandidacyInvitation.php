@@ -24,9 +24,8 @@ class CommitteeCandidacyInvitation extends BaseCandidacyInvitation
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeMembership")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     *
-     * @Assert\NotBlank(groups={"Default", "invitation_edit"})
      */
+    #[Assert\NotBlank(groups: ['Default', 'invitation_edit'])]
     protected $membership;
 
     public function getMembership(): ?CommitteeMembership

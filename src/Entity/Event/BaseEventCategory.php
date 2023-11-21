@@ -5,7 +5,7 @@ namespace App\Entity\Event;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -27,12 +27,10 @@ abstract class BaseEventCategory implements EventCategoryInterface
 
     /**
      * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
-     *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_category_read"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
+    #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
     protected $name = '';
 
     /**
@@ -42,12 +40,10 @@ abstract class BaseEventCategory implements EventCategoryInterface
      *
      * @ORM\Column(length=100, unique=true)
      * @Gedmo\Slug(fields={"name"}, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
-     *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_category_read"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
+    #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
     protected $slug;
 
     /**

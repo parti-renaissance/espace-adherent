@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class DataSurveyAdmin extends AbstractAdmin
 {
@@ -96,9 +97,7 @@ class DataSurveyAdmin extends AbstractAdmin
         }
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setSurveyRepository(SurveyRepository $surveyRepository): void
     {
         $this->surveyRepository = $surveyRepository;

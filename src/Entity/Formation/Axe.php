@@ -15,9 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="formation_axes")
  * @ORM\Entity
- *
- * @UniqueEntity(fields={"title"}, message="Il existe déjà un axe de formation avec ce titre.")
  */
+#[UniqueEntity(fields: ['title'], message: 'Il existe déjà un axe de formation avec ce titre.')]
 class Axe implements EntityMediaInterface
 {
     use EntityMediaTrait;
@@ -36,15 +35,9 @@ class Axe implements EntityMediaInterface
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank(message="Veuillez renseigner un titre.")
-     * @Assert\Length(
-     *     min=2,
-     *     max=150,
-     *     minMessage="Le titre doit faire au moins 2 caractères.",
-     *     minMessage="Le titre doit pas faire plus de 150 caractères."
-     * )
      */
+    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
+    #[Assert\Length(min: 2, max: 150, minMessage: 'Le titre doit pas faire plus de 150 caractères.')]
     private $title;
 
     /**
@@ -60,19 +53,17 @@ class Axe implements EntityMediaInterface
      * @var string|null
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank(message="Veuillez renseigner une description.")
-     * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      */
+    #[Assert\NotBlank(message: 'Veuillez renseigner une description.')]
+    #[Assert\Length(min: 2, minMessage: 'La description doit faire au moins 2 caractères.')]
     private $description;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank(message="Veuillez renseigner un contenu.")
      */
+    #[Assert\NotBlank(message: 'Veuillez renseigner un contenu.')]
     private $content;
 
     /**
@@ -80,9 +71,8 @@ class Axe implements EntityMediaInterface
      *
      * @ORM\ManyToOne(targetEntity="Path", inversedBy="axes")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $path;
 
     /**

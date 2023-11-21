@@ -4,7 +4,7 @@ namespace App\Entity\Geo;
 
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Geo\DepartmentRepository")
@@ -20,9 +20,8 @@ class Department implements ZoneableInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Region", inversedBy="departments")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @SymfonySerializer\Groups({"department_read"})
      */
+    #[Groups(['department_read'])]
     private $region;
 
     public function __construct(string $code, string $name, Region $region)

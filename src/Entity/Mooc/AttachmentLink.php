@@ -23,17 +23,15 @@ class AttachmentLink
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $title;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     private $link;
 
     public function __construct(string $title = null, string $link = null)

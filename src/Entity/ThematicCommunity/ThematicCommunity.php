@@ -32,18 +32,16 @@ class ThematicCommunity implements ImageOwnerInterface
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     protected $name;
 
     /**
      * @var string
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $description;
 
     /**

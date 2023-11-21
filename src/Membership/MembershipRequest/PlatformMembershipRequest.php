@@ -25,14 +25,9 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="common.gender.not_blank", groups={"Update"})
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     groups={"Update"}
-     * )
      */
+    #[Assert\NotBlank(message: 'common.gender.not_blank', groups: ['Update'])]
+    #[Assert\Choice(callback: ['App\ValueObject\Genders', 'all'], message: 'common.gender.invalid_choice', groups: ['Update'])]
     public $gender;
 
     /**
@@ -40,81 +35,57 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
      */
     public $customGender;
 
-    /**
-     * @Assert\NotBlank(groups={"Registration", "Update"})
-     * @Assert\Length(
-     *     min=2,
-     *     max=50,
-     *     allowEmptyString=true,
-     *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length",
-     *     groups={"Registration", "Update"}
-     * )
-     */
+    #[Assert\Sequentially([
+        new Assert\NotBlank(groups: ['Registration', 'Update']),
+        new Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length', groups: ['Registration', 'Update']),
+    ])]
     public ?string $firstName = null;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(groups={"Registration", "Update"})
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     allowEmptyString=true,
-     *     minMessage="common.last_name.min_length",
-     *     maxMessage="common.last_name.max_length",
-     *     groups={"Registration", "Update"}
-     * )
      */
+    #[Assert\NotBlank(groups: ['Registration', 'Update'])]
+    #[Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length', groups: ['Registration', 'Update'])]
     public $lastName;
 
     /**
      * @var Address
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $address;
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(
-     *     callback={"App\Membership\ActivityPositionsEnum", "all"},
-     *     message="adherent.activity_position.invalid_choice",
-     *     groups={"Update"}
-     * )
      */
+    #[Assert\Choice(callback: ['App\Membership\ActivityPositionsEnum', 'all'], message: 'adherent.activity_position.invalid_choice', groups: ['Update'])]
     public $position;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(groups="Registration")
-     * @Assert\Length(allowEmptyString=true, min=8, minMessage="adherent.plain_password.min_length", groups={"Registration"})
      */
+    #[Assert\NotBlank(groups: ['Registration'])]
+    #[Assert\Length(min: 8, minMessage: 'adherent.plain_password.min_length', groups: ['Registration'])]
     public $password;
 
     /**
      * @var bool
-     *
-     * @Assert\IsTrue(message="common.conditions.not_accepted", groups={"Conditions"})
      */
+    #[Assert\IsTrue(message: 'common.conditions.not_accepted', groups: ['Conditions'])]
     public $conditions;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(groups={"Registration", "Update"})
-     * @Assert\Country(message="common.nationality.invalid")
      */
+    #[Assert\NotBlank(groups: ['Registration', 'Update'])]
+    #[Assert\Country(message: 'common.nationality.invalid')]
     public $nationality;
 
     /**
-     * @Assert\NotBlank(groups={"Registration", "Update"})
-     * @Assert\Email(message="common.email.invalid", groups={"Registration", "Update"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Registration", "Update"})
      * @BannedAdherent(groups={"Registration"})
      */
+    #[Assert\NotBlank(groups: ['Registration', 'Update'])]
+    #[Assert\Email(message: 'common.email.invalid', groups: ['Registration', 'Update'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['Registration', 'Update'])]
     protected ?string $emailAddress = null;
 
     /**
@@ -126,10 +97,9 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"Update"})
-     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"Update"})
      */
+    #[Assert\NotBlank(message: 'adherent.birthdate.not_blank', groups: ['Update'])]
+    #[Assert\Range(max: '-15 years', maxMessage: 'adherent.birthdate.minimum_required_age', groups: ['Update'])]
     private $birthdate;
 
     /**
@@ -139,9 +109,8 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
 
     /**
      * @var array
-     *
-     * @Assert\Choice(callback={"App\Membership\MandatesEnum", "all"})
      */
+    #[Assert\Choice(callback: ['App\Membership\MandatesEnum', 'all'])]
     private $mandates;
 
     /**

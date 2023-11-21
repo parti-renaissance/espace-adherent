@@ -7,6 +7,7 @@ use App\Entity\Instance\AdherentInstanceQuality;
 use App\Entity\Instance\InstanceQuality;
 use App\Repository\Instance\InstanceQualityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractQualityUpdater implements QualityUpdaterInterface
 {
@@ -17,13 +18,13 @@ abstract class AbstractQualityUpdater implements QualityUpdaterInterface
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @required */
+    #[Required]
     public function setInstanceQualityRepository(InstanceQualityRepository $instanceQualityRepository): void
     {
         $this->instanceQualityRepository = $instanceQualityRepository;
     }
 
-    /** @required */
+    #[Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;

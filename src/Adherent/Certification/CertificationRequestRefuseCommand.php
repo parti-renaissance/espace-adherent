@@ -36,21 +36,16 @@ class CertificationRequestRefuseCommand extends AbstractCertificationRequestMode
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=CertificationRequestRefuseCommand::REFUSAL_REASONS)
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: CertificationRequestRefuseCommand::REFUSAL_REASONS)]
     private $reason;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=500)
-     * @Assert\Expression(
-     *     expression="constant('App\\Adherent\\Certification\\CertificationRequestRefuseCommand::REFUSAL_REASON_OTHER') !== this.getReason() or value",
-     *     message="Veuillez spécifier une raison de refus."
-     * )
      */
+    #[Assert\Length(max: 500)]
+    #[Assert\Expression(expression: "constant('App\\\\Adherent\\\\Certification\\\\CertificationRequestRefuseCommand::REFUSAL_REASON_OTHER') !== this.getReason() or value", message: 'Veuillez spécifier une raison de refus.')]
     private $customReason;
 
     public function getReason(): ?string

@@ -50,27 +50,24 @@ class ElectionPoolResult
      * @var CandidateGroupResult[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionResult\CandidateGroupResult", mappedBy="electionPoolResult", cascade={"all"})
-     *
-     * @Groups({"election_result"})
      */
+    #[Groups(['election_result'])]
     private $candidateGroupResults;
 
     /**
      * @var int
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"election_result"})
      */
+    #[Groups(['election_result'])]
     private $expressed = 0;
 
     /**
      * @var int
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"election_result"})
      */
+    #[Groups(['election_result'])]
     private $blank = 0;
 
     public function __construct(ElectionPool $pool, UuidInterface $uuid = null)
@@ -144,25 +141,19 @@ class ElectionPoolResult
         return $this->blank;
     }
 
-    /**
-     * @Groups({"election_result"})
-     */
+    #[Groups(['election_result'])]
     public function getParticipated(): int
     {
         return $this->electionRoundResult->getElectionResult()->getParticipated();
     }
 
-    /**
-     * @Groups({"election_result"})
-     */
+    #[Groups(['election_result'])]
     public function getAbstentions(): int
     {
         return $this->getParticipated() - $this->getBulletinCount();
     }
 
-    /**
-     * @Groups({"election_result"})
-     */
+    #[Groups(['election_result'])]
     public function getBulletinCount(): int
     {
         return $this->expressed + $this->blank;

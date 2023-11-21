@@ -13,9 +13,8 @@ class MembersListFilter
 {
     /**
      * @var ReferentTag[]
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $referentTags;
 
     /**
@@ -25,16 +24,14 @@ class MembersListFilter
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     private $firstName;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     private $lastName;
 
     /**
@@ -89,17 +86,15 @@ class MembersListFilter
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $sort = 'adherent.lastName';
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"a", "d"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['a', 'd'])]
     private $order = 'a';
 
     public function __construct(array $referentTags, string $subscriptionType)

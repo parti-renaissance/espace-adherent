@@ -17,9 +17,8 @@ class QuestionChoice
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $label = null;
 
     /**

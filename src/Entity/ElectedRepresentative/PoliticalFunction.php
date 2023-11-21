@@ -17,75 +17,54 @@ class PoliticalFunction
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
-     *
-     * @Groups({"elected_mandate_read"})
      */
+    #[Groups(['elected_mandate_read'])]
     private $id;
 
     /**
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum", "toArray"})
-     *
-     * @Groups({
-     *     "elected_mandate_write",
-     *     "elected_mandate_read",
-     *     "elected_representative_read",
-     *     "elected_representative_list"
-     * })
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: ['App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum', 'toArray'])]
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read', 'elected_representative_list'])]
     private $name;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max="255")
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Assert\Length(max: '255')]
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $clarification;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $onGoing = true;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="date")
-     *
-     * @Assert\NotBlank
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Assert\NotBlank]
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $beginAt;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Assert\Expression(
-     *     "value == null or value > this.getBeginAt()",
-     *     message="La date de fin doit être postérieure à la date de début."
-     * )
-     * @Assert\Expression(
-     *     "not (value !== null and this.isOnGoing())",
-     *     message="La date de fin ne peut être saisie que dans le cas où la fonction n'est pas en cours."
-     * )
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Assert\Expression('value == null or value > this.getBeginAt()', message: 'La date de fin doit être postérieure à la date de début.')]
+    #[Assert\Expression('not (value !== null and this.isOnGoing())', message: "La date de fin ne peut être saisie que dans le cas où la fonction n'est pas en cours.")]
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $finishAt;
 
     /**
@@ -93,9 +72,8 @@ class PoliticalFunction
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="politicalFunctions")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $electedRepresentative;
 
     /**
@@ -103,9 +81,8 @@ class PoliticalFunction
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\Mandate", inversedBy="politicalFunctions")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $mandate;
 
     public function __construct(

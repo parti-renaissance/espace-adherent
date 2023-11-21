@@ -39,30 +39,24 @@ class UserDocument
      * @var string|null
      *
      * @ORM\Column(length=200)
-     *
-     * @Assert\Length(max=200, maxMessage="document.validation.filename_length")
      */
+    #[Assert\Length(max: 200, maxMessage: 'document.validation.filename_length')]
     private $originalName;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=10)
-     *
-     * @Assert\Length(max=10)
      */
+    #[Assert\Length(max: 10)]
     private $extension;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="integer")
-     *
-     * @Assert\LessThan(
-     *     value=5242880,
-     *     message="document.validation.max_filesize"
-     * )
      */
+    #[Assert\LessThan(value: 5242880, message: 'document.validation.max_filesize')]
     private $size;
 
     /**
@@ -76,9 +70,8 @@ class UserDocument
      * @var string
      *
      * @ORM\Column(length=25)
-     *
-     * @Assert\Choice(callback="allTypes")
      */
+    #[Assert\Choice(callback: 'allTypes')]
     private $type;
 
     /**

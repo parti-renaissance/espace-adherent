@@ -14,12 +14,10 @@ trait EntityDesignationTrait
      * @var Designation
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation", cascade={"persist"}, fetch="EAGER")
-     *
-     * @Assert\NotBlank(groups={"Admin"})
-     * @Assert\Valid(groups={"Admin"})
-     *
-     * @Groups({"committee_election:read"})
      */
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Valid(groups: ['Admin'])]
+    #[Groups(['committee_election:read'])]
     protected $designation;
 
     public function getDesignation(): ?Designation
@@ -144,9 +142,7 @@ trait EntityDesignationTrait
         return $this->getVoteEndDate();
     }
 
-    /**
-     * @Groups({"committee:read", "committee_election:read"})
-     */
+    #[Groups(['committee:read', 'committee_election:read'])]
     public function getStatus(): string
     {
         if (!$this->designation) {

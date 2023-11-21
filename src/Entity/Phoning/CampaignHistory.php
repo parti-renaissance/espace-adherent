@@ -77,9 +77,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list"})
      */
+    #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list'])]
     private $caller;
 
     /**
@@ -87,9 +86,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Groups({"phoning_campaign_call_read", "phoning_campaign_history_read_list", "phoning_campaign_replies_list"})
      */
+    #[Groups(['phoning_campaign_call_read', 'phoning_campaign_history_read_list', 'phoning_campaign_replies_list'])]
     private $adherent;
 
     /**
@@ -97,136 +95,104 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Phoning\Campaign", inversedBy="campaignHistories")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list"})
      */
+    #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list'])]
     private $campaign;
 
     /**
      * @var string
      *
      * @ORM\Column(length=10, nullable=true)
-     *
-     * @Assert\Choice(
-     *     callback={"App\Phoning\CampaignHistoryTypeEnum", "toArray"},
-     *     message="phoning.campaign_history.type.invalid_choice"
-     * )
-     *
-     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
+    #[Assert\Choice(callback: ['App\Phoning\CampaignHistoryTypeEnum', 'toArray'], message: 'phoning.campaign_history.type.invalid_choice')]
+    #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
     private $type;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=25)
-     *
-     * @Assert\NotNull
-     * @Assert\Choice(
-     *     choices=App\Phoning\CampaignHistoryStatusEnum::AFTER_CALL_STATUS,
-     *     message="phoning.campaign_history.status.invalid_choice"
-     * )
-     *
-     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read", "phoning_campaign_history_read_list"})
      */
+    #[Assert\NotNull]
+    #[Assert\Choice(choices: CampaignHistoryStatusEnum::AFTER_CALL_STATUS, message: 'phoning.campaign_history.status.invalid_choice')]
+    #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read', 'phoning_campaign_history_read_list'])]
     private $status;
 
     /**
      * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
+    #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
     protected $postalCodeChecked;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
-     *
-     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
+    #[Assert\Length(max: 255)]
+    #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
     private $profession;
 
     /**
      * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
+    #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
     private $needEmailRenewal;
 
     /**
      * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
+    #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
     private $needSmsRenewal;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=20, nullable=true)
-     *
-     * @Assert\Choice(
-     *     callback={"App\Phoning\CampaignHistoryEngagementEnum", "toArray"},
-     *     message="phoning.campaign_history.engagement.invalid_choice"
-     * )
-     *
-     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
+    #[Assert\Choice(callback: ['App\Phoning\CampaignHistoryEngagementEnum', 'toArray'], message: 'phoning.campaign_history.engagement.invalid_choice')]
+    #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
     private $engagement;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="smallint", options={"unsigned": true}, nullable=true)
-     *
-     * @Assert\Range(min="1", max="5")
-     *
-     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
+    #[Assert\Range(min: '1', max: '5')]
+    #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
     private $note;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotBlank
-     *
-     * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list", "survey_replies_list"})
      */
+    #[Assert\NotBlank]
+    #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'survey_replies_list'])]
     private $beginAt;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Assert\Expression(
-     *     "value === null or value > this.getBeginAt()",
-     *     message="phoning.campaign_history.finish_at.invalid"
-     * )
-     *
-     * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list", "survey_replies_list"})
      */
+    #[Assert\Expression('value === null or value > this.getBeginAt()', message: 'phoning.campaign_history.finish_at.invalid')]
+    #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'survey_replies_list'])]
     private $finishAt;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="phoningCampaignHistory")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Assert\Valid
-     *
-     * @Groups({"phoning_campaign_history_read_list"})
      */
+    #[Assert\Valid]
+    #[Groups(['phoning_campaign_history_read_list'])]
     private ?DataSurvey $dataSurvey = null;
 
     public function __construct(Campaign $campaign, UuidInterface $uuid = null)

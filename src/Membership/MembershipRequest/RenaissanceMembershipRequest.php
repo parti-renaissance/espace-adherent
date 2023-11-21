@@ -28,58 +28,36 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
 
     private string $state = MembershipRequestStateEnum::STATE_START;
 
-    /**
-     * @Assert\NotBlank(groups={"membership_request_amount"})
-     * @Assert\GreaterThanOrEqual(value=10, message="Le montant de la cotisation est invalid", groups={"membership_request_amount"})
-     */
+    #[Assert\NotBlank(groups: ['membership_request_amount'])]
+    #[Assert\GreaterThanOrEqual(value: 10, message: 'Le montant de la cotisation est invalid', groups: ['membership_request_amount'])]
     public ?float $amount = null;
 
-    /**
-     * @Assert\NotBlank(groups={"fill_personal_info"})
-     * @Assert\Length(
-     *     min=2,
-     *     max=50,
-     *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length",
-     *     groups={"fill_personal_info"}
-     * )
-     */
+    #[Assert\Sequentially([
+        new Assert\NotBlank(groups: ['fill_personal_info']),
+        new Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length', groups: ['fill_personal_info']),
+    ])]
     public ?string $firstName = null;
 
-    /**
-     * @Assert\NotBlank(groups={"fill_personal_info"})
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     minMessage="common.last_name.min_length",
-     *     maxMessage="common.last_name.max_length",
-     *     groups={"fill_personal_info"}
-     * )
-     */
+    #[Assert\NotBlank(groups: ['fill_personal_info'])]
+    #[Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length', groups: ['fill_personal_info'])]
     public ?string $lastName = null;
 
-    /**
-     * @Assert\Valid(groups={"fill_personal_info"})
-     */
+    #[Assert\Valid(groups: ['fill_personal_info'])]
     private Address $address;
 
-    /**
-     * @Assert\Expression("this.getAdherentId() or this.password", groups="fill_personal_info")
-     * @Assert\Length(allowEmptyString=true, min=8, minMessage="adherent.plain_password.min_length", groups={"fill_personal_info"})
-     */
+    #[Assert\Expression('this.getAdherentId() or this.password', groups: ['fill_personal_info'])]
+    #[Assert\Length(min: 8, minMessage: 'adherent.plain_password.min_length', groups: ['fill_personal_info'])]
     public ?string $password = null;
 
-    /**
-     * @Assert\IsTrue(message="common.conditions.not_accepted", groups={"membership_request_amount"})
-     */
+    #[Assert\IsTrue(message: 'common.conditions.not_accepted', groups: ['membership_request_amount'])]
     public bool $conditions = false;
 
     /**
-     * @Assert\NotBlank(groups={"fill_personal_info"})
-     * @Assert\Email(message="common.email.invalid", groups={"fill_personal_info"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"fill_personal_info"})
      * @BannedAdherent(groups={"fill_personal_info"})
      */
+    #[Assert\NotBlank(groups: ['fill_personal_info'])]
+    #[Assert\Email(message: 'common.email.invalid', groups: ['fill_personal_info'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['fill_personal_info'])]
     protected ?string $emailAddress = null;
 
     private ?int $adherentId = null;

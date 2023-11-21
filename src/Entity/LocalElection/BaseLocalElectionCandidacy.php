@@ -30,24 +30,21 @@ abstract class BaseLocalElectionCandidacy extends BaseCandidacy
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private ?string $firstName = null;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private ?string $lastName = null;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Email
      */
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private ?string $email = null;
 
     public function __construct(LocalElection $election = null, string $gender = null, UuidInterface $uuid = null)

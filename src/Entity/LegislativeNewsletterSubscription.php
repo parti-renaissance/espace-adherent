@@ -38,9 +38,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table
  * @ORM\Entity(repositoryClass="App\Repository\LegislativeNewsletterSubscriptionRepository")
  *
- * @AssertUniqueEntity(fields={"emailAddress"}, message="legislative_newsletter.already_registered")
  * @AssertRecaptcha(api="friendly_captcha", groups={"legislative_newsletter_subscriptions_write"})
  */
+#[AssertUniqueEntity(fields: ['emailAddress'], message: 'legislative_newsletter.already_registered')]
 class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
@@ -49,37 +49,26 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
-     *
-     * @Groups({"legislative_newsletter_subscriptions_write"})
      */
+    #[Assert\Length(max: 255)]
+    #[Groups(['legislative_newsletter_subscriptions_write'])]
     private ?string $firstName = null;
 
     /**
      * @ORM\Column(unique=true)
-     *
-     * @Assert\NotBlank(message="newsletter.email.not_blank")
-     * @Assert\Email(message="newsletter.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
-     *
-     * @Groups({"legislative_newsletter_subscriptions_write"})
      */
+    #[Assert\NotBlank(message: 'newsletter.email.not_blank')]
+    #[Assert\Email(message: 'newsletter.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Groups(['legislative_newsletter_subscriptions_write'])]
     private ?string $emailAddress = null;
 
     /**
      * @ORM\Column(type="string", length=11)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *     min=2,
-     *     max=11,
-     *     minMessage="newsletter.postalCode.invalid",
-     *     maxMessage="newsletter.postalCode.invalid"
-     * )
-     *
-     * @Groups({"legislative_newsletter_subscriptions_write"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 11, minMessage: 'newsletter.postalCode.invalid', maxMessage: 'newsletter.postalCode.invalid')]
+    #[Groups(['legislative_newsletter_subscriptions_write'])]
     private ?string $postalCode = null;
 
     /**
@@ -91,11 +80,8 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
      */
     private Collection $fromZones;
 
-    /**
-     * @Assert\IsTrue(message="common.personal_data_collection.required")
-     *
-     * @Groups({"legislative_newsletter_subscriptions_write"})
-     */
+    #[Assert\IsTrue(message: 'common.personal_data_collection.required')]
+    #[Groups(['legislative_newsletter_subscriptions_write'])]
     private bool $personalDataCollection = false;
 
     /**

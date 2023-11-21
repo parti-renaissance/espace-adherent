@@ -3,12 +3,13 @@
 namespace App\Mailchimp\Webhook\Handler;
 
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
+use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractElectedRepresentativeHandler extends AbstractHandler
 {
     private ElectedRepresentativeRepository $repository;
 
-    /** @required */
+    #[Required]
     public function setRepository(ElectedRepresentativeRepository $repository): void
     {
         $this->repository = $repository;

@@ -25,7 +25,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -80,15 +81,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @UniqueEntity(
- *     fields={"name", "zone"},
- *     ignoreNull=false,
- *     message="team.name.already_exists",
- *     errorPath="name"
- * )
- *
  * @ScopeVisibility
  */
+#[UniqueEntity(fields: ['name', 'zone'], message: 'team.name.already_exists', errorPath: 'name', ignoreNull: false)]
 class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, EntityScopeVisibilityWithZoneInterface
 {
     use EntityIdentityTrait;
@@ -99,17 +94,10 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank(message="team.name.not_blank")
-     * @Assert\Length(
-     *     min=2,
-     *     max=255,
-     *     minMessage="team.name.min_length",
-     *     maxMessage="team.name.max_length"
-     * )
-     *
-     * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write", "phoning_campaign_read", "phoning_campaign_list"})
      */
+    #[Assert\NotBlank(message: 'team.name.not_blank')]
+    #[Assert\Length(min: 2, max: 255, minMessage: 'team.name.min_length', maxMessage: 'team.name.max_length')]
+    #[Groups(['team_read', 'team_list_read', 'team_write', 'phoning_campaign_read', 'phoning_campaign_list'])]
     private ?string $name;
 
     /**
@@ -124,14 +112,12 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      * )
      * @ORM\OrderBy({"createdAt": "DESC"})
      *
-     * @Assert\Valid
      * @UniqueInCollection(propertyPath="adherent", message="team.members.adherent_already_in_collection")
      */
+    #[Assert\Valid]
     private Collection $members;
 
-    /**
-     * @SymfonySerializer\Groups({"team_list_read"})
-     */
+    #[Groups(['team_list_read'])]
     public ?bool $isDeletable = null;
 
     public function __construct(UuidInterface $uuid = null, string $name = null, array $members = [], Zone $zone = null)
@@ -183,18 +169,14 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
         $this->members->removeElement($member);
     }
 
-    /**
-     * @SymfonySerializer\Groups({"team_list_read", "phoning_campaign_read", "phoning_campaign_list"})
-     * @SymfonySerializer\SerializedName("members_count")
-     */
+    #[Groups(['team_list_read', 'phoning_campaign_read', 'phoning_campaign_list'])]
+    #[SerializedName('members_count')]
     public function getMembersCount(): int
     {
         return $this->members->count();
     }
 
-    /**
-     * @SymfonySerializer\Groups({"team_read", "team_list_read"})
-     */
+    #[Groups(['team_read', 'team_list_read'])]
     public function getCreator(): string
     {
         return null !== $this->createdByAdherent ? $this->createdByAdherent->getFullName() : 'Admin';

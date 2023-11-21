@@ -34,69 +34,44 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
 
     private string $state = DonationRequestStateEnum::STATE_DONATION_AMOUNT;
 
-    /**
-     * @Assert\NotBlank(groups={"Default", "choose_donation_amount"})
-     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0", groups={"Default", "choose_donation_amount"})
-     */
+    #[Assert\NotBlank(groups: ['Default', 'choose_donation_amount'])]
+    #[Assert\GreaterThan(value: 0, message: 'donation.amount.greater_than_0', groups: ['Default', 'choose_donation_amount'])]
     private $amount;
 
-    /**
-     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"Default", "fill_personal_info"})
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     groups={"Default", "fill_personal_info"}
-     * )
-     */
+    #[Assert\NotBlank(message: 'common.gender.invalid_choice', groups: ['Default', 'fill_personal_info'])]
+    #[Assert\Choice(callback: ['App\ValueObject\Genders', 'all'], message: 'common.gender.invalid_choice', groups: ['Default', 'fill_personal_info'])]
     public $gender;
 
-    /**
-     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
-     * @Assert\Length(
-     *     min=2,
-     *     max=50,
-     *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length",
-     *     groups={"Default", "fill_personal_info"}
-     * )
-     */
+    #[Assert\Sequentially([
+        new Assert\NotBlank(groups: ['Default', 'fill_personal_info']),
+        new Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length', groups: ['Default', 'fill_personal_info']),
+    ])]
     public $firstName;
 
-    /**
-     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     minMessage="common.last_name.min_length",
-     *     maxMessage="common.last_name.max_length",
-     *     groups={"Default", "fill_personal_info"}
-     * )
-     */
+    #[Assert\Sequentially([
+        new Assert\NotBlank(groups: ['Default', 'fill_personal_info']),
+        new Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length', groups: ['Default', 'fill_personal_info']),
+    ])]
     public $lastName;
 
-    /**
-     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
-     * @Assert\Email(message="common.email.invalid", groups={"Default", "fill_personal_info"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Default", "fill_personal_info"})
-     */
+    #[Assert\Sequentially([
+        new Assert\NotBlank(groups: ['Default', 'fill_personal_info']),
+        new Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['Default', 'fill_personal_info']),
+        new Assert\Email(message: 'common.email.invalid', groups: ['Default', 'fill_personal_info']),
+    ])]
     private $emailAddress = '';
 
     /**
      * @var Address
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $address;
 
-    /**
-     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
-     * @Assert\Country(message="common.nationality.invalid", groups={"Default", "fill_personal_info"})
-     */
+    #[Assert\NotBlank(groups: ['Default', 'fill_personal_info'])]
+    #[Assert\Country(message: 'common.nationality.invalid', groups: ['Default', 'fill_personal_info'])]
     private $nationality;
 
-    /**
-     * @Assert\Regex(pattern="/^[\d]{6}$/", message="donation.code.invalid")
-     */
+    #[Assert\Regex(pattern: '/^[\d]{6}$/', message: 'donation.code.invalid')]
     private $code;
 
     private $clientIp;
@@ -108,14 +83,10 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
 
     public $localDestination = false;
 
-    /**
-     * @Assert\Choice(DonationRequestType::CONFIRM_DONATION_TYPE_CHOICES, groups={"donation_confirm_type"})
-     */
+    #[Assert\Choice(DonationRequestType::CONFIRM_DONATION_TYPE_CHOICES, groups: ['donation_confirm_type'])]
     private $confirmDonationType = DonationRequestType::CONFIRM_DONATION_TYPE_UNIQUE;
 
-    /**
-     * @Assert\Range(min=0, max=7500, groups={"donation_confirm_type"})
-     */
+    #[Assert\Range(min: 0, max: 7500, groups: ['donation_confirm_type'])]
     private $confirmSubscriptionAmount;
 
     private ?\DateTime $donatedAt = null;

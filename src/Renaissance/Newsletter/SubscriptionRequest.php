@@ -16,32 +16,22 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
 
-    /**
-     * @Assert\NotBlank
-     */
+    #[Assert\NotBlank]
     public ?string $firstName = null;
 
-    /**
-     * @Assert\NotBlank
-     */
+    #[Assert\NotBlank]
     public ?string $zipCode = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Email
-     */
+    #[Assert\NotBlank]
+    #[Assert\Email]
     public ?string $email = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\IsTrue
-     */
+    #[Assert\NotBlank]
+    #[Assert\IsTrue]
     public ?bool $conditions = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\IsTrue
-     */
+    #[Assert\NotBlank]
+    #[Assert\IsTrue]
     public ?bool $cguAccepted = null;
 
     public static function createFromRecaptcha(?string $recaptchaResponse): self

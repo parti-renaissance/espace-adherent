@@ -11,10 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="timeline_manifesto_translations")
- *
- * @UniqueEntity(fields={"locale", "title"}, errorPath="title")
- * @UniqueEntity(fields={"locale", "slug"}, errorPath="slug")
  */
+#[UniqueEntity(fields: ['locale', 'title'], errorPath: 'title')]
+#[UniqueEntity(fields: ['locale', 'slug'], errorPath: 'slug')]
 class ManifestoTranslation implements TranslationInterface
 {
     use TranslationTrait;
@@ -32,29 +31,26 @@ class ManifestoTranslation implements TranslationInterface
      * @var string|null
      *
      * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private $title;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private $slug;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $description;
 
     public function getTitle(): ?string

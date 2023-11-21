@@ -24,6 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class CampaignAdmin extends AbstractAdmin
 {
@@ -213,13 +214,13 @@ class CampaignAdmin extends AbstractAdmin
         $this->bus->dispatch(new UpdateCampaignAddressInfoCommand($object->getUuid()));
     }
 
-    /** @required */
+    #[Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }
 
-    /** @required */
+    #[Required]
     public function setBus(MessageBusInterface $bus): void
     {
         $this->bus = $bus;

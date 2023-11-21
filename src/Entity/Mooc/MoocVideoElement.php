@@ -13,17 +13,15 @@ class MoocVideoElement extends BaseMoocElement
 {
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.youtubeid_syntax")
-     * @Assert\Length(allowEmptyString=true, min=2, max=11)
      */
+    #[Assert\Regex(pattern: '/^[A-Za-z0-9_-]+$/', message: 'mooc.youtubeid_syntax')]
+    #[Assert\Length(min: 2, max: 11)]
     private $youtubeId;
 
     /**
      * @ORM\Column(type="time", nullable=true)
-     *
-     * @Assert\Time
      */
+    #[Assert\Time]
     private $duration;
 
     public function __construct(

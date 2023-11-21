@@ -39,55 +39,35 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="adherentMandates")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Assert\NotBlank
-     *
-     * @Groups({
-     *     "elected_mandate_write",
-     *     "elected_mandate_read",
-     * })
      */
+    #[Assert\NotBlank]
+    #[Groups(['elected_mandate_write', 'elected_mandate_read'])]
     protected $adherent;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=6, nullable=true)
-     *
-     * @Assert\NotBlank(message="common.gender.invalid_choice")
-     * @Assert\Choice(
-     *     choices=Genders::MALE_FEMALE,
-     *     message="common.gender.invalid_choice"
-     * )
      */
+    #[Assert\NotBlank(message: 'common.gender.invalid_choice')]
+    #[Assert\Choice(choices: Genders::MALE_FEMALE, message: 'common.gender.invalid_choice')]
     protected $gender;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotBlank
-     *
-     * @Groups({
-     *     "elected_mandate_write",
-     *     "elected_mandate_read",
-     *     "adherent_elect_read",
-     * })
      */
+    #[Assert\NotBlank]
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
     protected $beginAt;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({
-     *     "elected_mandate_write",
-     *     "elected_mandate_read",
-     *     "adherent_elect_read",
-     * })
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
     protected $finishAt;
 
     /**

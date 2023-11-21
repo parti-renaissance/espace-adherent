@@ -9,12 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- *
- * @Assert\Expression(
- *     "(this.getTerritorialCouncil() && !this.getPoliticalCommittee()) || (!this.getTerritorialCouncil() && this.getPoliticalCommittee())",
- *     message="Vous ne pouvez pas filtrer sur le conseil territorial et le comité politique en même temps."
- * )
  */
+#[Assert\Expression('(this.getTerritorialCouncil() && !this.getPoliticalCommittee()) || (!this.getTerritorialCouncil() && this.getPoliticalCommittee())', message: 'Vous ne pouvez pas filtrer sur le conseil territorial et le comité politique en même temps.')]
 class ReferentInstancesFilter extends AbstractAdherentMessageFilter
 {
     public const INSTANCE_TYPE_COTERR = 'territorial_council';

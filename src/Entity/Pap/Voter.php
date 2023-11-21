@@ -36,30 +36,26 @@ class Voter
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"pap_address_voter_list"})
      */
+    #[Groups(['pap_address_voter_list'])]
     private ?string $lastName;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"pap_address_voter_list"})
      */
+    #[Groups(['pap_address_voter_list'])]
     private ?string $gender;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Groups({"pap_address_voter_list"})
      */
+    #[Groups(['pap_address_voter_list'])]
     private ?\DateTimeInterface $birthdate;
 
     /**
      * @ORM\Column(length=10, nullable=true)
-     *
-     * @Groups({"pap_address_voter_list"})
      */
+    #[Groups(['pap_address_voter_list'])]
     private ?string $votePlace;
 
     /**

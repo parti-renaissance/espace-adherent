@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,58 +26,38 @@ abstract class BaseFile implements EntityFileInterface
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Assert\NotBlank]
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private $title;
 
     /**
      * @ORM\Column
      * @Gedmo\Slug(fields={"title"})
-     *
-     * @SymfonySerializer\Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private $slug;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @SymfonySerializer\Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     * })
      */
+    #[Groups(['formation_read', 'formation_list_read'])]
     private $path;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @SymfonySerializer\Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     * })
      */
+    #[Groups(['formation_read', 'formation_list_read'])]
     private $extension;
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\File(maxSize="5M")
      */
+    #[Assert\File(maxSize: '5M')]
     protected $file;
 
     public function __construct(

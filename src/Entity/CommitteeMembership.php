@@ -49,9 +49,8 @@ class CommitteeMembership implements UuidEntityInterface
      *
      * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="memberships")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @Groups({"export", "api_candidacy_read", "committee_candidacy:read", "committee_election:read"})
      */
+    #[Groups(['export', 'api_candidacy_read', 'committee_candidacy:read', 'committee_election:read'])]
     private $adherent;
 
     /**
@@ -59,9 +58,8 @@ class CommitteeMembership implements UuidEntityInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Groups({"adherent_committees_modal"})
      */
+    #[Groups(['adherent_committees_modal'])]
     private $committee;
 
     /**
@@ -72,9 +70,8 @@ class CommitteeMembership implements UuidEntityInterface
      * @var string
      *
      * @ORM\Column(length=10)
-     *
-     * @Groups({"adherent_committees_modal"})
      */
+    #[Groups(['adherent_committees_modal'])]
     private $privilege;
 
     /**
@@ -129,9 +126,7 @@ class CommitteeMembership implements UuidEntityInterface
         $this->committeeCandidacies = new ArrayCollection();
     }
 
-    /**
-     * @Groups({"api_candidacy_read"})
-     */
+    #[Groups(['api_candidacy_read'])]
     public function getUuid(): UuidInterface
     {
         return $this->uuid;
@@ -284,9 +279,7 @@ class CommitteeMembership implements UuidEntityInterface
         }
     }
 
-    /**
-     * @Groups({"adherent_committees_modal"})
-     */
+    #[Groups(['adherent_committees_modal'])]
     public function isVotingCommittee(): bool
     {
         return true === $this->enableVote;
@@ -312,9 +305,7 @@ class CommitteeMembership implements UuidEntityInterface
         return $this->isHostMember();
     }
 
-    /**
-     * @Groups({"export", "adherent_committees_modal"})
-     */
+    #[Groups(['export', 'adherent_committees_modal'])]
     public function getSubscriptionDate(): \DateTimeImmutable
     {
         return new \DateTimeImmutable($this->joinedAt->format(\DATE_RFC822), $this->joinedAt->getTimezone());

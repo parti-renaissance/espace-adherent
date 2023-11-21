@@ -90,66 +90,55 @@ class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkO
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     *
-     * @Groups({"riposte_list_read", "riposte_read", "riposte_write"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     private $title;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
-     *
-     * @Groups({"riposte_list_read", "riposte_read", "riposte_write"})
      */
+    #[Assert\NotBlank]
+    #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     private $body;
 
     /**
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Url
-     *
-     * @Groups({"riposte_list_read", "riposte_read", "riposte_write"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Url]
+    #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     private $sourceUrl;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
-     *
-     * @Assert\Type("bool")
-     *
-     * @Groups({"riposte_list_read", "riposte_read", "riposte_write"})
      */
+    #[Assert\Type('bool')]
+    #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     private $withNotification;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
-     *
-     * @Assert\Type("bool")
-     *
-     * @Groups({"riposte_list_read", "riposte_read", "riposte_write"})
      */
+    #[Assert\Type('bool')]
+    #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     private $enabled;
 
     /**
      * @var array|null
      *
      * @ORM\Column(type="json")
-     *
-     * @Groups({"riposte_list_read", "riposte_read"})
      */
+    #[Groups(['riposte_list_read', 'riposte_read'])]
     protected $openGraph;
 
     /**
@@ -164,36 +153,32 @@ class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkO
      * @var int|null
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"riposte_read_dc"})
      */
+    #[Groups(['riposte_read_dc'])]
     private $nbViews = 0;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"riposte_read_dc"})
      */
+    #[Groups(['riposte_read_dc'])]
     private $nbDetailViews = 0;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"riposte_read_dc"})
      */
+    #[Groups(['riposte_read_dc'])]
     private $nbSourceViews = 0;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"riposte_read_dc"})
      */
+    #[Groups(['riposte_read_dc'])]
     private $nbRipostes = 0;
 
     public function __construct(UuidInterface $uuid = null, $withNotification = true, $enabled = true)
@@ -323,9 +308,7 @@ class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkO
         ++$this->nbRipostes;
     }
 
-    /**
-     * @Groups({"riposte_read_dc"})
-     */
+    #[Groups(['riposte_read_dc'])]
     public function getCreator(): string
     {
         return $this->author ? $this->author->getFullName() : 'Admin';
