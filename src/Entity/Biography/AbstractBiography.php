@@ -24,16 +24,14 @@ abstract class AbstractBiography implements ImageOwnerInterface
 
     /**
      * @ORM\Column(length=50)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     protected $firstName;
 
     /**
      * @ORM\Column(length=50)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     protected $lastName;
 
     /**
@@ -50,9 +48,8 @@ abstract class AbstractBiography implements ImageOwnerInterface
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     protected $description;
 
     /**
@@ -62,43 +59,32 @@ abstract class AbstractBiography implements ImageOwnerInterface
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     protected $facebookProfile;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     protected $twitterProfile;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     protected $instagramProfile;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     protected $linkedInProfile;
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\Image(
-     *     mimeTypes={"image/jpeg", "image/png"},
-     *     maxSize="1M",
-     *     maxWidth="1200",
-     *     maxHeight="1200",
-     *     minWidth="300",
-     * )
      */
+    #[Assert\Image(mimeTypes: ['image/jpeg', 'image/png'], maxSize: '1M', maxWidth: '1200', maxHeight: '1200', minWidth: '300')]
     protected $image;
 
     public function __construct(

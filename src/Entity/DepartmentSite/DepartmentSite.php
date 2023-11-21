@@ -59,10 +59,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ORM\Entity(repositoryClass="App\Repository\DepartmentSite\DepartmentSiteRepository")
- *
- * @UniqueEntity(fields={"zone"}, message="department_site.zone.not_unique")
- * @UniqueEntity(fields={"slug"})
  */
+#[UniqueEntity(fields: ['zone'], message: 'department_site.zone.not_unique')]
+#[UniqueEntity(fields: ['slug'])]
 class DepartmentSite
 {
     use EntityIdentityTrait;
@@ -71,26 +70,20 @@ class DepartmentSite
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
-     *
-     * @Groups({"department_site_read", "department_site_write"})
      */
+    #[Assert\NotBlank]
+    #[Groups(['department_site_read', 'department_site_write'])]
     private ?string $content = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
-     * @Assert\NotBlank
-     * @Assert\Expression(
-     *     "value and (value.getType() === constant('App\\Entity\\Geo\\Zone::DEPARTMENT') or (value.getType() === constant('App\\Entity\\Geo\\Zone::CUSTOM') and value.getCode() === constant('App\\Entity\\Geo\\Zone::FDE_CODE')))",
-     *     message="department_site.zone.type.not_valid"
-     * )
      * @AssertZoneInScopeZones
-     *
-     * @Groups({"department_site_read", "department_site_read_list", "department_site_write"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Expression("value and (value.getType() === constant('App\\\\Entity\\\\Geo\\\\Zone::DEPARTMENT') or (value.getType() === constant('App\\\\Entity\\\\Geo\\\\Zone::CUSTOM') and value.getCode() === constant('App\\\\Entity\\\\Geo\\\\Zone::FDE_CODE')))", message: 'department_site.zone.type.not_valid')]
+    #[Groups(['department_site_read', 'department_site_read_list', 'department_site_write'])]
     private ?Zone $zone = null;
 
     /**
@@ -98,13 +91,8 @@ class DepartmentSite
      * @Gedmo\Slug(handlers={
      *     @Gedmo\SlugHandler(class="App\DepartmentSite\DepartmentSiteSlugHandler")
      * }, fields={"content"})
-     *
-     * @Groups({
-     *     "department_site_read",
-     *     "department_site_read_list",
-     *     "department_site_post_write",
-     * })
      */
+    #[Groups(['department_site_read', 'department_site_read_list', 'department_site_post_write'])]
     private ?string $slug = null;
 
     public function __construct(UuidInterface $uuid = null)

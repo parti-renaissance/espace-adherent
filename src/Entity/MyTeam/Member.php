@@ -21,8 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="team_member_unique", columns={"team_id", "adherent_id"}),
  * })
  *
- * @UniqueEntity(fields={"team", "adherent"}, errorPath="adherent", message="my_team.member.adherent.already_in_collection")
- *
  * @ApiResource(
  *     shortName="MyTeamMember",
  *     attributes={
@@ -58,6 +56,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
+#[UniqueEntity(fields: ['team', 'adherent'], errorPath: 'adherent', message: 'my_team.member.adherent.already_in_collection')]
 class Member
 {
     use EntityIdentityTrait;
@@ -66,44 +65,35 @@ class Member
     /**
      * @ORM\ManyToOne(targetEntity=MyTeam::class, inversedBy="members")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Groups({"my_team_member_read", "my_team_member_write"})
      */
+    #[Groups(['my_team_member_read', 'my_team_member_write'])]
     private ?MyTeam $team = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Adherent::class, inversedBy="teamMemberships")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
-     * @Assert\NotBlank(message="my_team.member.adherent.not_blank")
      * @AssertMemberValid
-     *
-     * @Groups({"my_team_member_read", "my_team_member_write", "my_team_read_list"})
      */
+    #[Assert\NotBlank(message: 'my_team.member.adherent.not_blank')]
+    #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     private ?Adherent $adherent;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank(message="my_team.member.role.not_blank")
-     * @Assert\Choice(callback={"App\MyTeam\RoleEnum", "getAll"}, message="my_team.member.role.invalid_choice")
-     *
-     * @Groups({"my_team_member_read", "my_team_member_write", "my_team_read_list"})
      */
+    #[Assert\NotBlank(message: 'my_team.member.role.not_blank')]
+    #[Assert\Choice(callback: ['App\MyTeam\RoleEnum', 'getAll'], message: 'my_team.member.role.invalid_choice')]
+    #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     private ?string $role;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Assert\Choice(
-     *     callback={"App\Scope\FeatureEnum", "getAvailableForDelegatedAccess"},
-     *     multiple=true,
-     *     multipleMessage="my_team.member.scope_features.invalid_choice"
-     * )
      * @AssertScopeFeaturesValid
-     *
-     * @Groups({"my_team_member_read", "my_team_member_write", "my_team_read_list"})
      */
+    #[Assert\Choice(callback: ['App\Scope\FeatureEnum', 'getAvailableForDelegatedAccess'], multiple: true, multipleMessage: 'my_team.member.scope_features.invalid_choice')]
+    #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     private array $scopeFeatures;
 
     public function __construct(

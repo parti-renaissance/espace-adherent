@@ -33,9 +33,8 @@ class OrderSection
      * @var int
      *
      * @ORM\Column(type="smallint")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $position;
 
     /**

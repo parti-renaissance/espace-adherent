@@ -9,9 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="donation_tags")
- *
- * @UniqueEntity("label")
  */
+#[UniqueEntity('label')]
 class DonationTag
 {
     /**
@@ -23,17 +22,15 @@ class DonationTag
 
     /**
      * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     private $label;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $color;
 
     public function __construct(string $label = null, string $color = null)

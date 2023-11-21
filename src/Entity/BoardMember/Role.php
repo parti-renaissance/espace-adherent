@@ -9,10 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BoardMember\RoleRepository")
  * @ORM\Table(name="roles")
- *
- * @UniqueEntity("code")
- * @UniqueEntity("name")
  */
+#[UniqueEntity('code')]
+#[UniqueEntity('name')]
 class Role
 {
     /**
@@ -24,18 +23,16 @@ class Role
 
     /**
      * @ORM\Column(length=20, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="20")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '20')]
     private $code;
 
     /**
      * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     private $name = '';
 
     /**

@@ -29,19 +29,13 @@ class ImageAnnotations
         'carte nationale d identite',
     ];
 
-    /**
-     * @Groups({"ocr"})
-     */
+    #[Groups(['ocr'])]
     private $labels;
 
-    /**
-     * @Groups({"ocr"})
-     */
+    #[Groups(['ocr'])]
     private $webEntities;
 
-    /**
-     * @Groups({"ocr"})
-     */
+    #[Groups(['ocr'])]
     private $text;
 
     public function __construct(array $labels, array $webEntities, ?string $text)

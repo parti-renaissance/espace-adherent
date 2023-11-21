@@ -11,19 +11,18 @@ abstract class AbstractEmailExtractCommand
     /**
      * @var string[]|array
      *
-     * @Assert\NotBlank
      * @Assert\All({
      *     @Assert\Email(message="{{ value }} n'est pas une adresse mail valide.")
      * })
      */
+    #[Assert\NotBlank]
     private $emails = [];
 
     /**
      * @var string[]|array
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback="getFieldChoices", multiple=true)
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: 'getFieldChoices', multiple: true)]
     private $fields = [];
 
     public function getEmails(): array

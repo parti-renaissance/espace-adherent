@@ -51,9 +51,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\DocumentRepository");
  * @ORM\Table
- *
- * @UniqueEntity(fields={"title"}, message="document.title.unique_entity")
  */
+#[UniqueEntity(fields: ['title'], message: 'document.title.unique_entity')]
 class Document implements EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
@@ -62,49 +61,22 @@ class Document implements EntityAdministratorBlameableInterface
 
     /**
      * @ORM\Column(unique=true)
-     *
-     * @Assert\NotBlank(message="Veuillez renseigner un titre.")
-     * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
-     *
-     * @Groups({"document_read"})
      */
+    #[Assert\Sequentially([
+        new Assert\NotBlank(message: 'Veuillez renseigner un titre.'),
+        new Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.'),
+    ])]
+    #[Groups(['document_read'])]
     public ?string $title = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
-     *
-     * @Groups({"document_read"})
      */
+    #[Assert\Length(min: 2, minMessage: 'La description doit faire au moins 2 caractères.')]
+    #[Groups(['document_read'])]
     public ?string $comment = null;
 
-    /**
-     * @Assert\File(
-     *     maxSize="5M",
-     *     binaryFormat=false,
-     *     mimeTypes={
-     *         "image/*",
-     *         "video/mpeg",
-     *         "video/mp4",
-     *         "video/quicktime",
-     *         "video/webm",
-     *         "application/pdf",
-     *         "application/x-pdf",
-     *         "application/vnd.ms-powerpoint",
-     *         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-     *         "application/msword",
-     *         "application/vnd.ms-excel",
-     *         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-     *         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-     *         "application/rtf",
-     *         "text/plain",
-     *         "text/csv",
-     *         "text/html",
-     *         "text/calendar"
-     *     }
-     * )
-     */
+    #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['image/*', 'video/mpeg', 'video/mp4', 'video/quicktime', 'video/webm', 'application/pdf', 'application/x-pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/rtf', 'text/plain', 'text/csv', 'text/html', 'text/calendar'])]
     public ?UploadedFile $file = null;
 
     /**

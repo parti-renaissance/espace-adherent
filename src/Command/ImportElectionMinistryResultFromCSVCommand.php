@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[AsCommand(
     name: 'app:election:import-ministry-results-from-csv',
@@ -191,31 +192,31 @@ class ImportElectionMinistryResultFromCSVCommand extends Command
         return $lists;
     }
 
-    /** @required */
+    #[Required]
     public function setStorage(FilesystemInterface $storage): void
     {
         $this->storage = $storage;
     }
 
-    /** @required */
+    #[Required]
     public function setElectionManager(ElectionManager $electionManager): void
     {
         $this->electionManager = $electionManager;
     }
 
-    /** @required */
+    #[Required]
     public function setCityRepository(CityRepository $cityRepository): void
     {
         $this->cityRepository = $cityRepository;
     }
 
-    /** @required */
+    #[Required]
     public function setEntityManager(ObjectManager $entityManager): void
     {
         $this->entityManager = $entityManager;
     }
 
-    /** @required */
+    #[Required]
     public function setMinistryVoteResultRepository(MinistryVoteResultRepository $ministryVoteResultRepository): void
     {
         $this->ministryVoteResultRepository = $ministryVoteResultRepository;

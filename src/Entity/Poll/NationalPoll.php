@@ -5,7 +5,7 @@ namespace App\Entity\Poll;
 use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -39,9 +39,7 @@ class NationalPoll extends Poll
         return $this->administrator;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"poll_read"})
-     */
+    #[Groups(['poll_read'])]
     public function getType(): string
     {
         return PollTypeEnum::NATIONAL;

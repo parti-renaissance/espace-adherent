@@ -34,9 +34,8 @@ class SocialShare
 
     /**
      * @ORM\Column(length=100)
-     *
-     * @Assert\Length(max=100)
      */
+    #[Assert\Length(max: 100)]
     private $name = '';
 
     /**
@@ -48,56 +47,49 @@ class SocialShare
 
     /**
      * @ORM\Column(length=10)
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice({"image", "video", "pdf"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(['image', 'video', 'pdf'])]
     private $type = self::TYPE_IMAGE;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=200)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 200)]
     private $description;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\Url
-     * @Assert\Length(max=255)
      */
+    #[Assert\Url]
+    #[Assert\Length(max: 255)]
     private $defaultUrl = '';
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
-     * @Assert\Length(max=255)
      */
+    #[Assert\Url]
+    #[Assert\Length(max: 255)]
     private $facebookUrl = '';
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
-     * @Assert\Length(max=255)
      */
+    #[Assert\Url]
+    #[Assert\Length(max: 255)]
     private $twitterUrl = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\SocialShareCategory")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $socialShareCategory;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $media;
 
     /**

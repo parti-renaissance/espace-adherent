@@ -19,9 +19,8 @@ class VolunteerRequest extends ApplicationRequest
      * @var TechnicalSkill[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\ApplicationRequest\TechnicalSkill")
-     *
-     * @Assert\Count(min=1, minMessage="application_request.technical_skills.min")
      */
+    #[Assert\Count(min: 1, minMessage: 'application_request.technical_skills.min')]
     private $technicalSkills;
 
     /**

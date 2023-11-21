@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[AsCommand(
     name: 'app:import:board-member',
@@ -243,13 +244,13 @@ class ImportBoardMemberCommand extends Command
         $this->em = $em;
     }
 
-    /** @required */
+    #[Required]
     public function setAdherentRepository(AdherentRepository $adherentRepository): void
     {
         $this->adherentRepository = $adherentRepository;
     }
 
-    /** @required */
+    #[Required]
     public function setRoleRepository(RoleRepository $roleRepository): void
     {
         $this->roleRepository = $roleRepository;

@@ -25,30 +25,26 @@ class Payment
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"elected_representative_read"})
      */
+    #[Groups(['elected_representative_read'])]
     public ?\DateTime $date = null;
 
     /**
      * @ORM\Column(length=50)
-     *
-     * @Groups({"elected_representative_read"})
      */
+    #[Groups(['elected_representative_read'])]
     public ?string $method = null;
 
     /**
      * @ORM\Column(length=50, nullable=true)
-     *
-     * @Groups({"elected_representative_read"})
      */
+    #[Groups(['elected_representative_read'])]
     public ?string $status = null;
 
     /**
      * @ORM\Column(type="integer")
-     *
-     * @Groups({"elected_representative_read"})
      */
+    #[Groups(['elected_representative_read'])]
     public ?int $amount = null;
 
     /**

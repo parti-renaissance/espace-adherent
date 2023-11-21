@@ -21,9 +21,8 @@ class RevenueDeclaration
 
     /**
      * @ORM\Column(type="integer")
-     *
-     * @Groups({"adherent_elect_read"})
      */
+    #[Groups(['adherent_elect_read'])]
     public int $amount;
 
     /**

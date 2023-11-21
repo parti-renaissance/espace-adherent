@@ -15,6 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException as HttpFileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class ImportReferentBioPictureCommand extends Command
 {
@@ -248,31 +249,31 @@ class ImportReferentBioPictureCommand extends Command
         }
     }
 
-    /** @required */
+    #[Required]
     public function setStorage(FilesystemInterface $storage): void
     {
         $this->storage = $storage;
     }
 
-    /** @required */
+    #[Required]
     public function setEntityManager(EntityManagerInterface $em): void
     {
         $this->em = $em;
     }
 
-    /** @required */
+    #[Required]
     public function setReferentRepository(ReferentRepository $referentRepository): void
     {
         $this->referentRepository = $referentRepository;
     }
 
-    /** @required */
+    #[Required]
     public function setMediaRepository(MediaRepository $mediaRepository): void
     {
         $this->mediaRepository = $mediaRepository;
     }
 
-    /** @required */
+    #[Required]
     public function setMediaFactory(MediaFactory $mediaFactory): void
     {
         $this->mediaFactory = $mediaFactory;

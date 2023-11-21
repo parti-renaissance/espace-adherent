@@ -22,16 +22,8 @@ class RunningMateRequest extends ApplicationRequest
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\File(
-     *     maxSize="5M",
-     *     mimeTypes={
-     *         "application/pdf",
-     *         "application/x-pdf"
-     *     },
-     *     mimeTypesMessage="application_request.curriculum.mime_type"
-     * )
      */
+    #[Assert\File(maxSize: '5M', mimeTypes: ['application/pdf', 'application/x-pdf'], mimeTypesMessage: 'application_request.curriculum.mime_type')]
     private $curriculum;
 
     private $removeCurriculum = false;
@@ -81,28 +73,25 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var string|null
      *
-     * @Assert\NotBlank
-     *
      * @ORM\Column(type="text")
      */
+    #[Assert\NotBlank]
     private $favoriteThemeDetails;
 
     /**
      * @var string|null
      *
-     * @Assert\NotBlank
-     *
      * @ORM\Column(type="text")
      */
+    #[Assert\NotBlank]
     private $projectDetails;
 
     /**
      * @var string|null
      *
-     * @Assert\NotBlank
-     *
      * @ORM\Column(type="text")
      */
+    #[Assert\NotBlank]
     private $professionalAssets;
 
     public function hasCurriculumUploaded(): bool

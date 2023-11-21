@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class QrCodeAdmin extends AbstractAdmin
 {
@@ -147,9 +148,7 @@ class QrCodeAdmin extends AbstractAdmin
         $object->setCreatedBy($administrator);
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;

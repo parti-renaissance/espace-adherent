@@ -5,12 +5,13 @@ namespace App\Mailchimp\Webhook\Handler;
 use App\Entity\Adherent;
 use App\Mailchimp\MailchimpSubscriptionLabelMapping;
 use App\Repository\AdherentRepository;
+use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractAdherentHandler extends AbstractHandler
 {
     private AdherentRepository $adherentRepository;
 
-    /** @required */
+    #[Required]
     public function setAdherentRepository(AdherentRepository $adherentRepository): void
     {
         $this->adherentRepository = $adherentRepository;

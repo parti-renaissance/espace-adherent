@@ -24,10 +24,9 @@ class ElectedRepresentativeLabel
      * @var string|null
      *
      * @ORM\Column(length=50)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=50)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50)]
     private $name;
 
     /**
@@ -41,19 +40,17 @@ class ElectedRepresentativeLabel
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
-     *
-     * @Assert\Choice(callback="getYears")
      */
+    #[Assert\Choice(callback: 'getYears')]
     private $beginYear;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
-     *
-     * @Assert\Expression("value == null or value > this.getBeginYear()", message="La date de fin de l'étiquette doit être postérieure à la date de début.")
-     * @Assert\Choice(callback="getYears")
      */
+    #[Assert\Expression('value == null or value > this.getBeginYear()', message: "La date de fin de l'étiquette doit être postérieure à la date de début.")]
+    #[Assert\Choice(callback: 'getYears')]
     private $finishYear;
 
     /**
@@ -61,9 +58,8 @@ class ElectedRepresentativeLabel
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="labels")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $electedRepresentative;
 
     public function __construct(

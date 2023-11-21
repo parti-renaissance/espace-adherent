@@ -9,9 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ChezVous\MeasureTypeRepository")
  * @ORM\Table(name="chez_vous_measure_types")
- *
- * @UniqueEntity("code")
  */
+#[UniqueEntity('code')]
 class MeasureType
 {
     /**
@@ -27,21 +26,19 @@ class MeasureType
      * @var string|null
      *
      * @ORM\Column(unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     * @Assert\Choice(callback={"App\ChezVous\MeasureChoiceLoader", "getTypeChoices"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[Assert\Choice(callback: ['App\ChezVous\MeasureChoiceLoader', 'getTypeChoices'])]
     private $code;
 
     /**
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $label;
 
     /**
@@ -55,36 +52,32 @@ class MeasureType
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     private $sourceLink;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     private $sourceLabel;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     private $oldolfLink;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     private $eligibilityLink;
 
     public function __construct(string $code, string $label)

@@ -12,9 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="election_city_card")
- *
- * @UniqueEntity("city")
  */
+#[UniqueEntity('city')]
 class CityCard
 {
     public const PRIORITY_HIGH = 'high';
@@ -45,9 +44,8 @@ class CityCard
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Choice(choices=CityCard::PRIORITY_CHOICES)
      */
+    #[Assert\Choice(choices: CityCard::PRIORITY_CHOICES)]
     private $priority;
 
     /**
@@ -70,9 +68,8 @@ class CityCard
      *
      * @ORM\OneToOne(targetEntity=CityCandidate::class, cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $firstCandidate;
 
     /**
@@ -80,9 +77,8 @@ class CityCard
      *
      * @ORM\OneToOne(targetEntity=CityManager::class, cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $headquartersManager;
 
     /**
@@ -90,9 +86,8 @@ class CityCard
      *
      * @ORM\OneToOne(targetEntity=CityManager::class, cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $politicManager;
 
     /**
@@ -100,9 +95,8 @@ class CityCard
      *
      * @ORM\OneToOne(targetEntity=CityManager::class, cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $taskForceManager;
 
     /**
@@ -110,9 +104,8 @@ class CityCard
      *
      * @ORM\OneToOne(targetEntity=CityPrevision::class, cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $candidateOptionPrevision;
 
     /**
@@ -120,9 +113,8 @@ class CityCard
      *
      * @ORM\OneToOne(targetEntity=CityPrevision::class, cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $preparationPrevision;
 
     /**
@@ -130,9 +122,8 @@ class CityCard
      *
      * @ORM\OneToOne(targetEntity=CityPrevision::class, cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $thirdOptionPrevision;
 
     /**
@@ -140,9 +131,8 @@ class CityCard
      *
      * @ORM\OneToOne(targetEntity=CityPrevision::class, cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $candidatePrevision;
 
     /**
@@ -150,27 +140,24 @@ class CityCard
      *
      * @ORM\OneToOne(targetEntity=CityPrevision::class, cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $nationalPrevision;
 
     /**
      * @var CityPartner[]|Collection
      *
      * @ORM\OneToMany(targetEntity=CityPartner::class, mappedBy="city", cascade={"all"}, orphanRemoval=true)
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $partners;
 
     /**
      * @var CityContact[]|Collection
      *
      * @ORM\OneToMany(targetEntity=CityContact::class, mappedBy="city", cascade={"all"}, orphanRemoval=true)
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $contacts;
 
     public function __construct(

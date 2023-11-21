@@ -7,6 +7,7 @@ use App\Algolia\Sonata\Model\ModelManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AbstractAlgoliaAdmin extends AbstractAdmin
 {
@@ -25,13 +26,13 @@ class AbstractAlgoliaAdmin extends AbstractAdmin
         $collection->clearExcept('list');
     }
 
-    /** @required */
+    #[Required]
     final public function setAlgoliaManager(ModelManager $modelManager): void
     {
         parent::setModelManager($modelManager);
     }
 
-    /** @required */
+    #[Required]
     final public function setAlgoliaDatagridBuilder(DatagridBuilder $datagridBuilder): void
     {
         parent::setDatagridBuilder($datagridBuilder);

@@ -53,9 +53,8 @@ class Contribution
 
     /**
      * @ORM\Column(length=20)
-     *
-     * @SerializedName("status")
      */
+    #[SerializedName('status')]
     public ?string $gocardlessMandateStatus = null;
 
     /**

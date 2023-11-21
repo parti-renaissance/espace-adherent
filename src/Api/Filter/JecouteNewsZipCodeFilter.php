@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Operation;
 use App\Entity\Jecoute\News;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Contracts\Service\Attribute\Required;
 
 final class JecouteNewsZipCodeFilter extends AbstractFilter
 {
@@ -66,7 +67,7 @@ final class JecouteNewsZipCodeFilter extends AbstractFilter
         return $description;
     }
 
-    /** @required */
+    #[Required]
     public function setZoneRepository(ZoneRepository $zoneRepository): void
     {
         $this->zoneRepository = $zoneRepository;

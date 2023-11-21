@@ -7,19 +7,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class DelegatedAccess
 {
-    /**
-     * @Groups({"scope"})
-     */
+    #[Groups(['scope'])]
     private Adherent $delegator;
 
-    /**
-     * @Groups({"scope"})
-     */
+    #[Groups(['scope'])]
     private string $role;
 
-    /**
-     * @Groups({"scope"})
-     */
+    #[Groups(['scope'])]
     private string $type;
 
     public function __construct(Adherent $delegator, string $type, string $role)

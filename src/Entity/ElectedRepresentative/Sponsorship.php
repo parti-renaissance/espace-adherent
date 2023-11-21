@@ -24,19 +24,17 @@ class Sponsorship
      * @var int|null
      *
      * @ORM\Column(type="integer")
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback="getYears")
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: 'getYears')]
     private $presidentialElectionYear;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max="255")
      */
+    #[Assert\Length(max: '255')]
     private $candidate;
 
     /**
@@ -44,9 +42,8 @@ class Sponsorship
      *
      * @ORM\ManyToOne(targetEntity="ElectedRepresentative", inversedBy="sponsorships")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $electedRepresentative;
 
     public function __construct(

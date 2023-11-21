@@ -18,18 +18,16 @@ trait DynamicSegmentTrait
      * @var int|null
      *
      * @ORM\Column(type="integer", options={"unsigned": true}, nullable=true)
-     *
-     * @Groups({"audience_segment_read"})
      */
+    #[Groups(['audience_segment_read'])]
     private $recipientCount;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"audience_segment_read"})
      */
+    #[Groups(['audience_segment_read'])]
     private $synchronized = false;
 
     public function getMailchimpId(): ?int

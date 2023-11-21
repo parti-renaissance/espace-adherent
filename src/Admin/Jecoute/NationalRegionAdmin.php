@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class NationalRegionAdmin extends AbstractRegionAdmin
 {
@@ -69,17 +70,13 @@ class NationalRegionAdmin extends AbstractRegionAdmin
         ]));
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setZoneRepository(ZoneRepository $zoneRepository): void
     {
         $this->zoneRepository = $zoneRepository;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setRegionRepository(RegionRepository $regionRepository): void
     {
         $this->regionRepository = $regionRepository;

@@ -36,9 +36,8 @@ class CommitteeElection extends AbstractElectionEntity
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee", inversedBy="committeeElections")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Groups({"committee_election:read"})
      */
+    #[Groups(['committee_election:read'])]
     private $committee;
 
     /**
@@ -53,9 +52,8 @@ class CommitteeElection extends AbstractElectionEntity
      *
      * @ORM\OneToMany(targetEntity="App\Entity\CommitteeCandidaciesGroup", mappedBy="election", cascade={"persist"})
      * @ORM\OrderBy({"createdAt": "ASC"})
-     *
-     * @Groups({"committee_election:read"})
      */
+    #[Groups(['committee_election:read'])]
     private $candidaciesGroups;
 
     /**

@@ -17,6 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[AsCommand(
     name: 'app:election:import-ministry-results-from-xml',
@@ -40,19 +41,19 @@ class ImportElectionMinistryResultFromXMLCommand extends Command
     private $errors = [];
     private $author;
 
-    /** @required */
+    #[Required]
     public function setCityRepository(CityRepository $cityRepository): void
     {
         $this->cityRepository = $cityRepository;
     }
 
-    /** @required */
+    #[Required]
     public function setElectionManager(ElectionManager $electionManager): void
     {
         $this->electionManager = $electionManager;
     }
 
-    /** @required */
+    #[Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;

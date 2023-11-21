@@ -17,6 +17,7 @@ use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class NationalPollAdmin extends AbstractAdmin
 {
@@ -135,17 +136,13 @@ class NationalPollAdmin extends AbstractAdmin
         $this->pollManager->scheduleNotification($object);
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setPollManager(PollManager $pollManager): void
     {
         $this->pollManager = $pollManager;

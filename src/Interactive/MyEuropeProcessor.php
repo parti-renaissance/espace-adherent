@@ -43,87 +43,68 @@ final class MyEuropeProcessor implements RecaptchaChallengeInterface
         self::TRANSITION_SEND,
     ];
 
-    /**
-     * @Assert\NotBlank(groups={"fill_info"})
-     * @Assert\Type("string", groups={"fill_info"})
-     * @Assert\Length(max=50, groups={"fill_info"})
-     */
+    #[Assert\NotBlank(groups: ['fill_info'])]
+    #[Assert\Type('string', groups: ['fill_info'])]
+    #[Assert\Length(max: 50, groups: ['fill_info'])]
     public $friendFirstName = '';
 
-    /**
-     * @Assert\NotBlank(groups={"fill_info"})
-     * @Assert\Type("integer", groups={"fill_info"})
-     * @Assert\Range(min=17, groups={"fill_info"})
-     */
+    #[Assert\NotBlank(groups: ['fill_info'])]
+    #[Assert\Type('integer', groups: ['fill_info'])]
+    #[Assert\Range(min: 17, groups: ['fill_info'])]
     public $friendAge = 0;
 
-    /**
-     * @Assert\NotBlank(groups={"fill_info"})
-     * @Assert\Choice(callback={"App\ValueObject\Genders", "all"}, groups={"fill_info"})
-     */
+    #[Assert\NotBlank(groups: ['fill_info'])]
+    #[Assert\Choice(callback: ['App\ValueObject\Genders', 'all'], groups: ['fill_info'])]
     public $friendGender;
 
     /**
      * @var MyEuropeChoice|null
-     *
-     * @Assert\Type("App\Entity\MyEuropeChoice", groups={"fill_info"})
      */
+    #[Assert\Type('App\Entity\MyEuropeChoice', groups: ['fill_info'])]
     public $friendPosition;
 
     /**
-     * @Assert\Count(min=1, max=2, minMessage="interactive.friend_cases.min", maxMessage="interactive.friend_cases.max", groups={"fill_cases"})
      * @Assert\All({
      *     @Assert\Type("App\Entity\MyEuropeChoice")
      * }, groups={"fill_cases"})
      */
+    #[Assert\Count(min: 1, max: 2, minMessage: 'interactive.friend_cases.min', maxMessage: 'interactive.friend_cases.max', groups: ['fill_cases'])]
     public $friendCases = [];
 
     /**
-     * @Assert\Count(min=1, max=2, minMessage="interactive.friend_appreciations.min", maxMessage="interactive.friend_appreciations.max", groups={"fill_appreciations"})
      * @Assert\All({
      *     @Assert\Type("App\Entity\MyEuropeChoice")
      * }, groups={"fill_appreciations"})
      */
+    #[Assert\Count(min: 1, max: 2, minMessage: 'interactive.friend_appreciations.min', maxMessage: 'interactive.friend_appreciations.max', groups: ['fill_appreciations'])]
     public $friendAppreciations;
 
-    /**
-     * @Assert\NotBlank(groups={"send"})
-     * @Assert\Type("string", groups={"send"})
-     * @Assert\Length(max=100, groups={"send"})
-     */
+    #[Assert\NotBlank(groups: ['send'])]
+    #[Assert\Type('string', groups: ['send'])]
+    #[Assert\Length(max: 100, groups: ['send'])]
     public $messageSubject = '';
 
-    /**
-     * @Assert\NotBlank(groups={"send"})
-     * @Assert\Type("string", groups={"send"})
-     */
+    #[Assert\NotBlank(groups: ['send'])]
+    #[Assert\Type('string', groups: ['send'])]
     public $messageContent = '';
 
-    /**
-     * @Assert\NotBlank(groups={"send"})
-     * @Assert\Type("string", groups={"send"})
-     * @Assert\Length(max=50, groups={"send"})
-     */
+    #[Assert\NotBlank(groups: ['send'])]
+    #[Assert\Type('string', groups: ['send'])]
+    #[Assert\Length(max: 50, groups: ['send'])]
     public $selfFirstName = '';
 
-    /**
-     * @Assert\Type("string", groups={"send"})
-     * @Assert\Length(max=50, groups={"send"})
-     */
+    #[Assert\Type('string', groups: ['send'])]
+    #[Assert\Length(max: 50, groups: ['send'])]
     public $selfLastName = '';
 
-    /**
-     * @Assert\NotBlank(groups={"send"})
-     * @Assert\Email(groups={"send"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"send"})
-     */
+    #[Assert\NotBlank(groups: ['send'])]
+    #[Assert\Email(groups: ['send'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['send'])]
     public $selfEmail = '';
 
-    /**
-     * @Assert\NotBlank(groups={"send"})
-     * @Assert\Email(groups={"send"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"send"})
-     */
+    #[Assert\NotBlank(groups: ['send'])]
+    #[Assert\Email(groups: ['send'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['send'])]
     public $friendEmail = '';
 
     /**

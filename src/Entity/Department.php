@@ -10,9 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- *
- * @UniqueEntity("code")
  */
+#[UniqueEntity('code')]
 class Department
 {
     /**
@@ -28,30 +27,27 @@ class Department
      * @var string|null
      *
      * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     private $name;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=100, nullable=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     private $label;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=10, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="10")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '10')]
     private $code;
 
     /**

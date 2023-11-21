@@ -21,18 +21,16 @@ class Poll
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $label = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\Designation\Poll\PollQuestion", mappedBy="poll", fetch="EAGER", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"position": "ASC"})
-     *
-     * @Assert\Count(min=1)
-     * @Assert\Valid
      */
+    #[Assert\Count(min: 1)]
+    #[Assert\Valid]
     private Collection $questions;
 
     public function __construct()

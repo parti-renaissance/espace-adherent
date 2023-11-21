@@ -14,7 +14,7 @@ class CatchMailchimpWebhookCallCommand implements AsynchronousMessageInterface
         $this->payload = $payload;
     }
 
-    /** @Groups({"command_read"}) */
+    #[Groups(['command_read'])]
     public function getPayload(): array
     {
         return $this->payload;

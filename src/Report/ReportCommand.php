@@ -13,20 +13,10 @@ class ReportCommand
     private $subject;
     private $author;
 
-    /**
-     * @Assert\Choice(
-     *     choices=ReportReasonEnum::REASONS_LIST,
-     *     multiple=true,
-     *     multipleMessage="report.invalid_reasons",
-     *     min=1,
-     *     minMessage="report.invalid_reasons"
-     * )
-     */
+    #[Assert\Choice(choices: ReportReasonEnum::REASONS_LIST, multiple: true, multipleMessage: 'report.invalid_reasons', min: 1, minMessage: 'report.invalid_reasons')]
     private $reasons = [];
 
-    /**
-     * @Assert\Length(max=1000)
-     */
+    #[Assert\Length(max: 1000)]
     private $comment;
 
     public function __construct(ReportableInterface $subject, Adherent $author)
@@ -65,9 +55,7 @@ class ReportCommand
         $this->comment = $comment;
     }
 
-    /**
-     * @Assert\Callback
-     */
+    #[Assert\Callback]
     public function validateComment(ExecutionContextInterface $context): void
     {
         if ($this->comment && !\in_array(ReportReasonEnum::REASON_OTHER, $this->reasons, true)) {

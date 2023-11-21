@@ -13,6 +13,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[AsCommand(
     name: 'app:pap:associate-campaigns',
@@ -61,19 +62,19 @@ class PapAssociateActiveCampaignsToBuildingsCommand extends Command implements L
         return self::SUCCESS;
     }
 
-    /** @required */
+    #[Required]
     public function setCampaignRepository(CampaignRepository $campaignRepository): void
     {
         $this->campaignRepository = $campaignRepository;
     }
 
-    /** @required */
+    #[Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
     }
 
-    /** @required */
+    #[Required]
     public function setAddressRepository(AddressRepository $addressRepository): void
     {
         $this->addressRepository = $addressRepository;

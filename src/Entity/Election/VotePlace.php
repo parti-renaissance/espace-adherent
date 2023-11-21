@@ -16,9 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Election\VotePlaceRepository")
  * @ORM\Table(name="election_vote_place")
- *
- * @UniqueEntity(fields={"code"})
  */
+#[UniqueEntity(fields: ['code'])]
 class VotePlace
 {
     use EntityIdentityTrait;
@@ -28,10 +27,9 @@ class VotePlace
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     public ?string $name = null;
 
     /**
@@ -41,37 +39,32 @@ class VotePlace
 
     /**
      * @ORM\Column(nullable=true, unique=true)
-     *
-     * @Groups({"pap_vote_place_read"})
      */
+    #[Groups(['pap_vote_place_read'])]
     public ?string $code = null;
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
-     *
-     * @Groups({"pap_address_list"})
      */
+    #[Groups(['pap_address_list'])]
     public ?float $latitude = null;
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
-     *
-     * @Groups({"pap_address_list"})
      */
+    #[Groups(['pap_address_list'])]
     public ?float $longitude = null;
 
     /**
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"pap_vote_place_read"})
      */
+    #[Groups(['pap_vote_place_read'])]
     public int $nbAddresses = 0;
 
     /**
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"pap_vote_place_read"})
      */
+    #[Groups(['pap_vote_place_read'])]
     public int $nbVoters = 0;
 
     /**

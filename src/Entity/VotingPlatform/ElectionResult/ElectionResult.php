@@ -34,18 +34,16 @@ class ElectionResult
      * @var ElectionRoundResult[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionResult\ElectionRoundResult", mappedBy="electionResult", cascade={"all"})
-     *
-     * @Groups({"election_result"})
      */
+    #[Groups(['election_result'])]
     private $electionRoundResults;
 
     /**
      * @var int
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"election_result"})
      */
+    #[Groups(['election_result'])]
     private $participated = 0;
 
     public function __construct(Election $election, UuidInterface $uuid = null)

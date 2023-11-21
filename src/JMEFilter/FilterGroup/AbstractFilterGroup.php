@@ -10,9 +10,9 @@ class AbstractFilterGroup implements FilterGroupInterface
     protected const LABEL = '';
     protected const COLOR = '';
 
-    /** @Groups("filter:read") */
+    #[Groups('filter:read')]
     public string $label;
-    /** @Groups("filter:read") */
+    #[Groups('filter:read')]
     public string $color;
 
     private array $filters = [];
@@ -33,7 +33,7 @@ class AbstractFilterGroup implements FilterGroupInterface
         $this->filters[] = $filter;
     }
 
-    /** @Groups("filter:read") */
+    #[Groups('filter:read')]
     public function getFilters(): array
     {
         $filters = $this->filters;

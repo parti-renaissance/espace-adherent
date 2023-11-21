@@ -22,47 +22,41 @@ class CommitteeCommand
     /** @var Committee */
     protected $committee;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min=2, max=50)
-     */
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 2, max: 50),
+    ])]
     public $name;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min=5, max=140, minMessage="committee.description.min_length", maxMessage="committee.description.max_length")
-     */
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 5, max: 140, minMessage: 'committee.description.min_length', maxMessage: 'committee.description.max_length'),
+    ])]
     public $description;
 
     /**
      * The committee address.
      *
      * @var Address
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     protected $address;
 
     /**
      * @AssertPhoneNumber
-     * @Assert\Expression(
-     *     expression="(value == null and this.getCommittee()) or (value != '' and value != null)",
-     *     message="common.phone_number.required",
-     *     groups={"created_by_adherent"}
-     * )
      */
+    #[Assert\Expression(expression: "(value == null and this.getCommittee()) or (value != '' and value != null)", message: 'common.phone_number.required', groups: ['created_by_adherent'])]
     protected $phone;
 
-    /**
-     * @Assert\Url
-     * @Assert\Length(max=255)
-     */
+    #[Assert\Url]
+    #[Assert\Length(max: 255)]
     public $facebookPageUrl;
 
-    /**
-     * @Assert\Length(allowEmptyString=true, min=1, max=15)
-     * @Assert\Regex("/^@?([a-zA-Z0-9_]){1,15}$/", message="common.twitter_nickname.invalid_format")
-     */
+    #[Assert\AtLeastOneOf([
+        new Assert\Blank(),
+        new Assert\Length(min: 1, max: 15),
+    ])]
+    #[Assert\Regex('/^@?([a-zA-Z0-9_]){1,15}$/', message: 'common.twitter_nickname.invalid_format')]
     public $twitterNickname;
 
     /**
@@ -76,12 +70,8 @@ class CommitteeCommand
      * @var Adherent|null
      *
      * @AssertCommitteeProvisionalSupervisorValid(gender="female", errorPath="provisionalSupervisorFemale", groups={"with_provisional_supervisors"})
-     * @Assert\Expression(
-     *     expression="(value == null and this.getProvisionalSupervisorMale() != null) or value != null",
-     *     message="committee.provisional_supervisor.empty",
-     * groups={"with_provisional_supervisors"})
-     * )
      */
+    #[Assert\Expression(expression: '(value == null and this.getProvisionalSupervisorMale() != null) or value != null', message: 'committee.provisional_supervisor.empty', groups: ['with_provisional_supervisors'])]
     protected $provisionalSupervisorFemale;
 
     protected $nameLocked = false;

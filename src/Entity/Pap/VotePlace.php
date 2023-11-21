@@ -47,37 +47,32 @@ class VotePlace
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
-     *
-     * @Groups({"pap_address_list"})
      */
+    #[Groups(['pap_address_list'])]
     public ?float $latitude;
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
-     *
-     * @Groups({"pap_address_list"})
      */
+    #[Groups(['pap_address_list'])]
     public ?float $longitude;
 
     /**
      * @ORM\Column(nullable=true, unique=true)
-     *
-     * @Groups({"pap_vote_place_read"})
      */
+    #[Groups(['pap_vote_place_read'])]
     public ?string $code = null;
 
     /**
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"pap_vote_place_read"})
      */
+    #[Groups(['pap_vote_place_read'])]
     public int $nbAddresses;
 
     /**
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"pap_vote_place_read"})
      */
+    #[Groups(['pap_vote_place_read'])]
     public int $nbVoters;
 
     /**

@@ -25,9 +25,8 @@ class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministrat
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\LocalElection\LocalElection", inversedBy="candidaciesGroups")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?LocalElection $election = null;
 
     /**
@@ -35,9 +34,8 @@ class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministrat
      *
      * @ORM\OneToMany(targetEntity="App\Entity\LocalElection\Candidacy", mappedBy="candidaciesGroup", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"position": "ASC"})
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     protected $candidacies;
 
     /**
@@ -45,9 +43,8 @@ class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministrat
      *
      * @ORM\OneToMany(targetEntity="App\Entity\LocalElection\SubstituteCandidacy", mappedBy="candidaciesGroup", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"position": "ASC"})
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     protected $substituteCandidacies;
 
     /**
@@ -55,9 +52,7 @@ class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministrat
      */
     public ?string $faithStatementFileName = null;
 
-    /**
-     * @Assert\File(maxSize="5M", binaryFormat=false, mimeTypes={"application/pdf"})
-     */
+    #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['application/pdf'])]
     public ?UploadedFile $file = null;
 
     public function __construct()

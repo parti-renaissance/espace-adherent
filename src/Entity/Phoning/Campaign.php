@@ -133,51 +133,37 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     *
-     * @Groups({
-     *     "phoning_campaign_read",
-     *     "phoning_campaign_read_with_score",
-     *     "phoning_campaign_list",
-     *     "phoning_campaign_write",
-     *     "phoning_campaign_history_read_list",
-     *     "phoning_campaign_replies_list",
-     * })
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score', 'phoning_campaign_list', 'phoning_campaign_write', 'phoning_campaign_history_read_list', 'phoning_campaign_replies_list'])]
     private $title;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score", "phoning_campaign_write"})
      */
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score', 'phoning_campaign_write'])]
     private $brief;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="integer")
-     *
-     * @Assert\NotBlank
-     * @Assert\GreaterThan(value="0")
-     *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score", "phoning_campaign_list", "phoning_campaign_write"})
      */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(value: '0')]
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score', 'phoning_campaign_list', 'phoning_campaign_write'])]
     private $goal;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Assert\NotBlank(groups={"regular_campaign"})
-     *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score", "phoning_campaign_list", "phoning_campaign_write"})
      */
+    #[Assert\NotBlank(groups: ['regular_campaign'])]
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score', 'phoning_campaign_list', 'phoning_campaign_write'])]
     private $finishAt;
 
     /**
@@ -185,11 +171,9 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Team\Team")
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\NotBlank(groups={"regular_campaign"})
-     *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_list", "phoning_campaign_write"})
      */
+    #[Assert\NotBlank(groups: ['regular_campaign'])]
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_list', 'phoning_campaign_write'])]
     private $team;
 
     /**
@@ -197,21 +181,17 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Audience\AudienceSnapshot", cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn
-     *
-     * @Assert\NotBlank(groups={"regular_campaign"})
-     *
-     * @Groups({"audience_read", "phoning_campaign_read", "phoning_campaign_write"})
      */
+    #[Assert\NotBlank(groups: ['regular_campaign'])]
+    #[Groups(['audience_read', 'phoning_campaign_read', 'phoning_campaign_write'])]
     private $audience;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Jecoute\Survey")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotBlank
-     *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_write"})
      */
+    #[Assert\NotBlank]
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_write'])]
     private $survey;
 
     /**
@@ -223,16 +203,14 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
      */
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score'])]
     private bool $permanent = false;
 
     /**
      * @ORM\Column(type="integer", options={"default": 0})
-     *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_list"})
      */
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_list'])]
     private int $participantsCount = 0;
 
     public function __construct(
@@ -439,9 +417,7 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
         $this->permanent = $value;
     }
 
-    /**
-     * @Groups({"phoning_campaign_read", "phoning_campaign_list"})
-     */
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_list'])]
     public function getCreator(): string
     {
         return null !== $this->createdByAdherent ? $this->createdByAdherent->getPartialName() : 'Admin';

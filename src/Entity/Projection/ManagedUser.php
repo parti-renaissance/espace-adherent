@@ -90,36 +90,32 @@ class ManagedUser
      * @var UuidInterface|null
      *
      * @ORM\Column(type="uuid", nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $adherentUuid;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $email;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=150, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $address;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $postalCode;
 
     /**
@@ -135,43 +131,38 @@ class ManagedUser
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $city;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=2, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $country;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=50, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $firstName;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $birthdate;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=50, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $lastName;
 
     /**
@@ -185,18 +176,16 @@ class ManagedUser
      * @var PhoneNumber|null
      *
      * @ORM\Column(type="phone_number", nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $phone;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=2, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $nationality;
 
     /**
@@ -259,25 +248,22 @@ class ManagedUser
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime")
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $createdAt;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=6, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $gender;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $interests;
 
     /**
@@ -310,62 +296,54 @@ class ManagedUser
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private $lastMembershipDonation;
 
     /**
      * name of committee v2
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private ?string $committee;
 
     /**
      * uuid of committee v2
      *
      * @ORM\Column(type="uuid", nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private ?UuidInterface $committeeUuid;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private ?array $additionalTags;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private ?array $mandates;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"managed_user_read"})
      */
+    #[Groups(['managed_user_read'])]
     private ?array $declaredMandates;
 
     /**
-     * @Groups({"managed_user_read"})
-     *
      * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[Groups(['managed_user_read'])]
     public ?array $cotisationDates = null;
 
     /**
-     * @Groups({"managed_user_read"})
-     *
      * @ORM\Column(type="datetime", nullable=true)
      */
+    #[Groups(['managed_user_read'])]
     private ?\DateTime $campusRegisteredAt;
 
     /**
@@ -677,9 +655,7 @@ class ManagedUser
         return $this->lastMembershipDonation;
     }
 
-    /**
-     * @Groups({"managed_user_read"})
-     */
+    #[Groups(['managed_user_read'])]
     public function getRenaissanceMembership(): ?string
     {
         if (MembershipSourceEnum::RENAISSANCE === $this->source) {
@@ -691,9 +667,7 @@ class ManagedUser
         return null;
     }
 
-    /**
-     * @Groups({"managed_user_read"})
-     */
+    #[Groups(['managed_user_read'])]
     public function getCityCode(): ?string
     {
         $zones = $this->getZonesOfType(Zone::CITY, true);
@@ -729,9 +703,7 @@ class ManagedUser
         return $zones ? current($zones)->getName() : null;
     }
 
-    /**
-     * @Groups({"managed_user_read"})
-     */
+    #[Groups(['managed_user_read'])]
     public function getSmsSubscription(): bool
     {
         return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);

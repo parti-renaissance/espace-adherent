@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class DocumentAdmin extends AbstractAdmin
 {
@@ -89,9 +90,7 @@ class DocumentAdmin extends AbstractAdmin
         $this->documentHandler->handleFile($document);
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setDocumentHandler(DocumentHandler $documentHandler): void
     {
         $this->documentHandler = $documentHandler;

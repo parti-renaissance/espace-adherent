@@ -10,9 +10,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="clarifications")
  * @ORM\Entity(repositoryClass="App\Repository\ClarificationRepository")
  *
- * @UniqueEntity(fields={"slug"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
+#[UniqueEntity(fields: ['slug'])]
 class Clarification implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface
 {
     use EntityTimestampableTrait;

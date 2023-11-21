@@ -15,10 +15,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="formation_modules")
  * @ORM\Entity(repositoryClass="App\Repository\Formation\ModuleRepository")
- *
- * @UniqueEntity(fields={"title", "axe"}, message="module.title.unique_entity")
- * @UniqueEntity(fields={"slug", "axe"}, message="module.slug.unique_entity")
  */
+#[UniqueEntity(fields: ['title', 'axe'], message: 'module.title.unique_entity')]
+#[UniqueEntity(fields: ['slug', 'axe'], message: 'module.slug.unique_entity')]
 class Module implements EntityMediaInterface
 {
     use EntityMediaTrait;
@@ -37,10 +36,9 @@ class Module implements EntityMediaInterface
      * @var string|null
      *
      * @ORM\Column(unique=true)
-     *
-     * @Assert\NotBlank(message="Veuillez renseigner un titre.")
-     * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
      */
+    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
+    #[Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.')]
     private $title;
 
     /**
@@ -56,28 +54,25 @@ class Module implements EntityMediaInterface
      * @var string|null
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank(message="Veuillez renseigner une description.")
-     * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      */
+    #[Assert\NotBlank(message: 'Veuillez renseigner une description.')]
+    #[Assert\Length(min: 2, minMessage: 'La description doit faire au moins 2 caractères.')]
     private $description;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank(message="Veuillez renseigner un contenu.")
      */
+    #[Assert\NotBlank(message: 'Veuillez renseigner un contenu.')]
     private $content;
 
     /**
      * @var Axe|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Formation\Axe", inversedBy="modules")
-     *
-     * @Assert\NotBlank(message="Veuillez renseigner un axe.")
      */
+    #[Assert\NotBlank(message: 'Veuillez renseigner un axe.')]
     private $axe;
 
     /**
@@ -90,9 +85,8 @@ class Module implements EntityMediaInterface
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"id": "ASC"})
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $files;
 
     public function __construct()
