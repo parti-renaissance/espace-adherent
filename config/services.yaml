@@ -21,6 +21,7 @@ parameters:
     assessor_host:                        "%env(ASSESSOR_HOST)%"
     legislatives_avecvous_host:           "%env(LEGISLATIVES_AVECVOUS_HOST)%"
     renaissance_host:                     "%env(RENAISSANCE_HOST)%"
+    webhook_renaissance_host:             "%env(WEBHOOK_RENAISSANCE_HOST)%"
     api_renaissance_host:                 "%env(API_RENAISSANCE_HOST)%"
     renaissance_qrcode_host:              "%env(RENAISSANCE_QRCODE_HOST)%"
     assessor_path_prefix:                 ""
