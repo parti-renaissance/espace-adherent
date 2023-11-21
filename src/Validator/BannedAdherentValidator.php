@@ -2,7 +2,6 @@
 
 namespace App\Validator;
 
-use App\Entity\Adherent;
 use App\Repository\BannedAdherentRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -11,11 +10,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class BannedAdherentValidator extends ConstraintValidator
 {
-    private $bannedAdherentRepository;
-
-    public function __construct(BannedAdherentRepository $bannedAdherentRepository)
+    public function __construct(private readonly BannedAdherentRepository $bannedAdherentRepository)
     {
-        $this->bannedAdherentRepository = $bannedAdherentRepository;
     }
 
     public function validate($value, Constraint $constraint)
@@ -32,11 +28,7 @@ class BannedAdherentValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        $isBanned = $this->bannedAdherentRepository->findOneBy([
-            'uuid' => Adherent::createUuid($value),
-        ]);
-
-        if ($isBanned) {
+        if ($this->bannedAdherentRepository->countForEmail($value)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ email }}', $value)
                 ->addViolation()

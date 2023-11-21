@@ -43,6 +43,7 @@
                         {{ form_row(form.save) }}
                     </div>
                 </div>
+                <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}" />
             {{ form_end(form) }}
         </div>
     </main>
