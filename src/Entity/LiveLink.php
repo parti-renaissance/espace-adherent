@@ -25,29 +25,26 @@ class LiveLink
      * @var int|null
      *
      * @ORM\Column(type="smallint")
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $position;
 
     /**
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $title;
 
     /**
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $link;
 
     /**

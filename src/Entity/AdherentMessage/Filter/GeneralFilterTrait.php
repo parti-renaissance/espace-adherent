@@ -12,84 +12,54 @@ trait GeneralFilterTrait
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $gender;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
-     *
-     * @Assert\GreaterThanOrEqual(1)
-     * @Assert\LessThanOrEqual(200)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Assert\GreaterThanOrEqual(1)]
+    #[Assert\LessThanOrEqual(200)]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $ageMin;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
-     *
-     * @Assert\GreaterThanOrEqual(1)
-     * @Assert\LessThanOrEqual(200)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Assert\GreaterThanOrEqual(1)]
+    #[Assert\LessThanOrEqual(200)]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $ageMax;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Assert\Length(max: 255)]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $firstName;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Assert\Length(max: 255)]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $lastName;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     private $city;
 
     /**
@@ -103,59 +73,38 @@ trait GeneralFilterTrait
      * @var \DateTime|null
      *
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $registeredSince;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $registeredUntil;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     protected ?string $renaissanceMembership = null;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $lastMembershipSince;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $lastMembershipBefore;
 
     public function getGender(): ?string

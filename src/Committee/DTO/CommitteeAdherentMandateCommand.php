@@ -16,9 +16,8 @@ class CommitteeAdherentMandateCommand
 {
     /**
      * @var Adherent|null
-     *
-     * @Assert\NotNull(message="adherent_mandate.adherent.empty")
      */
+    #[Assert\NotNull(message: 'adherent_mandate.adherent.empty')]
     protected $adherent;
 
     /**

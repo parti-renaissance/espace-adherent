@@ -24,7 +24,6 @@ abstract class AbstractFeedItem
     /**
      * @ORM\Column(type="text")
      *
-     * @Assert\NotBlank
      * @AssertWysiwygLength(
      *     min=10,
      *     max=6000,
@@ -32,6 +31,7 @@ abstract class AbstractFeedItem
      *     maxMessage="common.message.max_length"
      * )
      */
+    #[Assert\NotBlank]
     protected $content;
 
     /**

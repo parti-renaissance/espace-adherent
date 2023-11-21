@@ -26,9 +26,8 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank(groups={"Admin", "api_committee_candidacy_validation"}, message="Civilité de l'adhérent ne peut pas être vide")
      */
+    #[Assert\NotBlank(groups: ['Admin', 'api_committee_candidacy_validation'], message: "Civilité de l'adhérent ne peut pas être vide")]
     private ?string $gender;
 
     /**
@@ -61,12 +60,8 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\Image(
-     *     maxSize="5M",
-     *     mimeTypes={"image/jpeg", "image/png"}
-     * )
      */
+    #[Assert\Image(maxSize: '5M', mimeTypes: ['image/jpeg', 'image/png'])]
     protected $image;
 
     /**

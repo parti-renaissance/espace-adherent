@@ -9,6 +9,7 @@ use App\Entity\Event\BaseEvent;
 use App\Repository\Event\BaseEventRepository;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Contracts\Service\Attribute\Required;
 
 final class EventsZipCodeFilter extends AbstractFilter
 {
@@ -82,17 +83,13 @@ final class EventsZipCodeFilter extends AbstractFilter
         return $description;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setBaseEventRepository(BaseEventRepository $baseEventRepository): void
     {
         $this->baseEventRepository = $baseEventRepository;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setZoneRepository(ZoneRepository $zoneRepository): void
     {
         $this->zoneRepository = $zoneRepository;

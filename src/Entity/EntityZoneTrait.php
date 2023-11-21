@@ -14,13 +14,8 @@ trait EntityZoneTrait
      * @var ZoneCollection|Zone[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
-     *
-     * @Groups({
-     *     "phoning_campaign_read",
-     *     "phoning_campaign_write",
-     *     "read_api",
-     * })
      */
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_write', 'read_api'])]
     protected Collection $zones;
 
     /**

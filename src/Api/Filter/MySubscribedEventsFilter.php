@@ -10,6 +10,7 @@ use App\Entity\Event\EventRegistration;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Service\Attribute\Required;
 
 final class MySubscribedEventsFilter extends AbstractFilter
 {
@@ -53,7 +54,7 @@ final class MySubscribedEventsFilter extends AbstractFilter
         ];
     }
 
-    /** @required */
+    #[Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;

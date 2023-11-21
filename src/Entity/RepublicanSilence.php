@@ -27,23 +27,19 @@ class RepublicanSilence
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotBlank
-     *
-     * @Groups({"read_api"})
      */
+    #[Assert\NotBlank]
+    #[Groups(['read_api'])]
     private $beginAt;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotBlank
-     * @Assert\Expression("value > this.getBeginAt()", message="committee.event.invalid_date_range")
-     *
-     * @Groups({"read_api"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Expression('value > this.getBeginAt()', message: 'committee.event.invalid_date_range')]
+    #[Groups(['read_api'])]
     private $finishAt;
 
     public function __construct()

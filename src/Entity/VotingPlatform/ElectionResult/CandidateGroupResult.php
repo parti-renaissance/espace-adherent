@@ -22,9 +22,8 @@ class CandidateGroupResult
      * @var CandidateGroup
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\CandidateGroup")
-     *
-     * @Groups({"election_result"})
      */
+    #[Groups(['election_result'])]
     private $candidateGroup;
 
     /**
@@ -39,9 +38,8 @@ class CandidateGroupResult
      * @var int
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     *
-     * @Groups({"election_result"})
      */
+    #[Groups(['election_result'])]
     private $total = 0;
 
     /**
@@ -84,9 +82,7 @@ class CandidateGroupResult
         return $this->total;
     }
 
-    /**
-     * @Groups({"election_result"})
-     */
+    #[Groups(['election_result'])]
     public function getRate(): float
     {
         return $this->electionPoolResult->getExpressed() < 1 ? 0 :

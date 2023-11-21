@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[AsCommand(
     name: 'app:legislatives:load-district-zones',
@@ -157,19 +158,19 @@ class LegislativesLoadDistrictZonesCommand extends Command
         return LegislativeDistrictZone::createRegionZone($areaCode, $name);
     }
 
-    /** @required */
+    #[Required]
     public function setManager(EntityManagerInterface $manager): void
     {
         $this->manager = $manager;
     }
 
-    /** @required */
+    #[Required]
     public function setStorage(FilesystemInterface $storage): void
     {
         $this->storage = $storage;
     }
 
-    /** @required */
+    #[Required]
     public function setSlugify(SlugifyInterface $slugify): void
     {
         $this->slugify = $slugify;

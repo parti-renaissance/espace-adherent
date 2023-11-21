@@ -12,9 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="medias")
  * @ORM\Entity(repositoryClass="App\Repository\MediaRepository")
- *
- * @UniqueEntity(fields={"path"})
  */
+#[UniqueEntity(fields: ['path'])]
 class Media
 {
     /**
@@ -30,20 +29,18 @@ class Media
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $name;
 
     /**
      * @var string|null
      *
      * @ORM\Column(unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $path;
 
     /**
@@ -99,21 +96,8 @@ class Media
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\File(
-     *     maxSize="5M",
-     *     binaryFormat=false,
-     *     mimeTypes={
-     *         "image/jpeg",
-     *         "image/gif",
-     *         "image/png",
-     *         "video/mpeg",
-     *         "video/mp4",
-     *         "video/quicktime",
-     *         "video/webm",
-     *     }
-     * )
      */
+    #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['image/jpeg', 'image/gif', 'image/png', 'video/mpeg', 'video/mp4', 'video/quicktime', 'video/webm'])]
     private $file;
 
     public function __toString()

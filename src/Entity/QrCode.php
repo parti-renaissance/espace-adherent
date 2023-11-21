@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\QrCode\QrCodeHostEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -10,9 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QrCodeRepository")
- *
- * @UniqueEntity("name")
  */
+#[UniqueEntity('name')]
 class QrCode
 {
     use EntityIdentityTrait;
@@ -20,26 +20,23 @@ class QrCode
 
     /**
      * @ORM\Column(unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $name;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
-     * @Assert\Url
      */
+    #[Assert\NotBlank]
+    #[Assert\Url]
     private ?string $redirectUrl;
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=App\QrCode\QrCodeHostEnum::ALL)
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: QrCodeHostEnum::ALL)]
     private ?string $host;
 
     /**

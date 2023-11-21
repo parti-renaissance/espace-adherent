@@ -18,10 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  *
- * @Assert\Expression("(this.hasImageName() && !this.isRemoveImage()) || this.getImage()", message="Photo est obligatoire")
- *
  * @ValidTerritorialCouncilCandidacyInvitation(groups={"national_council_election"})
  */
+#[Assert\Expression('(this.hasImageName() && !this.isRemoveImage()) || this.getImage()', message: 'Photo est obligatoire')]
 class Candidacy extends BaseCandidacy
 {
     /**
@@ -44,12 +43,11 @@ class Candidacy extends BaseCandidacy
      * @var CandidacyInvitation[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\TerritorialCouncil\CandidacyInvitation", mappedBy="candidacy", cascade={"all"})
-     *
-     * @Assert\NotBlank
-     * @Assert\Count(value=1, groups={"copol_election"}, exactMessage="This value should not be blank.")
-     * @Assert\Count(value=2, groups={"national_council_election"})
-     * @Assert\Valid(groups={"copol_election", "national_council_election"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Count(exactly: 1, groups: ['copol_election'], exactMessage: 'This value should not be blank.')]
+    #[Assert\Count(exactly: 2, groups: ['national_council_election'])]
+    #[Assert\Valid(groups: ['copol_election', 'national_council_election'])]
     protected $invitations;
 
     /**

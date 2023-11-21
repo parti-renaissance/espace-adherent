@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[AsCommand(
     name: 'app:procuration:send-reminder',
@@ -106,19 +107,19 @@ class ProcurationSendReminderCommand extends Command
         return self::SUCCESS;
     }
 
-    /** @required */
+    #[Required]
     public function setManager(EntityManagerInterface $manager): void
     {
         $this->manager = $manager;
     }
 
-    /** @required */
+    #[Required]
     public function setFactory(ProcurationProxyMessageFactory $factory): void
     {
         $this->factory = $factory;
     }
 
-    /** @required */
+    #[Required]
     public function setMailer(MailerService $transactionalMailer): void
     {
         $this->mailer = $transactionalMailer;

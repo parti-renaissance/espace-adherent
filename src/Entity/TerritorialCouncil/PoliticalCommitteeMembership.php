@@ -15,9 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\PoliticalCommitteeMembershipRepository")
- *
- * @UniqueEntity(fields={"adherent", "politicalCommittee"})
  */
+#[UniqueEntity(fields: ['adherent', 'politicalCommittee'])]
 class PoliticalCommitteeMembership
 {
     use EntityIdentityTrait;
@@ -52,9 +51,8 @@ class PoliticalCommitteeMembership
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $joinedAt;
 
     /**

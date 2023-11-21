@@ -24,7 +24,7 @@ class AdminMenuListener implements EventSubscriberInterface
 
     public function onSidebarConfigure(ConfigureMenuEvent $event): void
     {
-        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN_CREATE_RENAISSANCE_ADHERENT')) {
+        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN_RENAISSANCE_CREATE_ADHERENT')) {
             return;
         }
 

@@ -50,13 +50,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeCandidacyRepository")
  *
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
- *
- * @Assert\Expression(
- *     expression="!this.isVotePeriodStarted()",
- *     message="Vous ne pouvez pas créer de candidature sur une élection en cours",
- *     groups={"api_committee_candidacy_validation"}
- * )
  */
+#[Assert\Expression(expression: '!this.isVotePeriodStarted()', message: 'Vous ne pouvez pas créer de candidature sur une élection en cours', groups: ['api_committee_candidacy_validation'])]
 class CommitteeCandidacy extends BaseCandidacy
 {
     /**
@@ -73,11 +68,10 @@ class CommitteeCandidacy extends BaseCandidacy
      * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeMembership", inversedBy="committeeCandidacies")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
-     * @Assert\NotBlank(message="Cet adhérent n'est pas un membre du comité.", groups={"api_committee_candidacy_validation"})
      * @AssertCommitteeMembershipZoneInScopeZones(groups={"api_committee_candidacy_validation"})
-     *
-     * @Groups({"committee_candidacy:read", "committee_election:read"})
      */
+    #[Assert\NotBlank(message: "Cet adhérent n'est pas un membre du comité.", groups: ['api_committee_candidacy_validation'])]
+    #[Groups(['committee_candidacy:read', 'committee_election:read'])]
     private $committeeMembership;
 
     /**
@@ -91,9 +85,8 @@ class CommitteeCandidacy extends BaseCandidacy
      * @var CommitteeCandidacyInvitation[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\CommitteeCandidacyInvitation", mappedBy="candidacy", cascade={"all"})
-     *
-     * @Assert\Count(value=1, groups={"invitation_edit"}, exactMessage="This value should not be blank.")
      */
+    #[Assert\Count(exactly: 1, exactMessage: 'This value should not be blank.', groups: ['invitation_edit'])]
     protected $invitations;
 
     /**
@@ -101,11 +94,9 @@ class CommitteeCandidacy extends BaseCandidacy
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeCandidaciesGroup", inversedBy="candidacies", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\NotBlank(groups={"api_committee_candidacy_validation"})
-     *
-     * @Groups({"committee_candidacy:write", "committee_candidacy:read"})
      */
+    #[Assert\NotBlank(groups: ['api_committee_candidacy_validation'])]
+    #[Groups(['committee_candidacy:write', 'committee_candidacy:read'])]
     protected $candidaciesGroup;
 
     public function __construct(CommitteeElection $election, string $gender = null, UuidInterface $uuid = null)
@@ -161,9 +152,7 @@ class CommitteeCandidacy extends BaseCandidacy
         return $this->committeeMembership->getAdherent();
     }
 
-    /**
-     * @Assert\IsTrue(groups={"committee_supervisor_candidacy", "accept_invitation"}, message="Photo est obligatoire")
-     */
+    #[Assert\IsTrue(groups: ['committee_supervisor_candidacy', 'accept_invitation'], message: 'Photo est obligatoire')]
     public function isValid(): bool
     {
         return $this->hasImageName() && !$this->isRemoveImage()

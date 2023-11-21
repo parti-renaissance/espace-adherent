@@ -8,6 +8,7 @@ use App\Repository\Geo\ZoneRepository;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Contracts\Service\Attribute\Required;
 
 final class JecouteNewsScopeFilter extends AbstractScopeFilter
 {
@@ -49,9 +50,7 @@ final class JecouteNewsScopeFilter extends AbstractScopeFilter
         return ['_get_private_item', '_get_private_collection'];
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setZoneRepository(ZoneRepository $zoneRepository): void
     {
         $this->zoneRepository = $zoneRepository;

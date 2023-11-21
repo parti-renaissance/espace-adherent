@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class FormationAdmin extends AbstractAdmin
 {
@@ -137,9 +138,7 @@ class FormationAdmin extends AbstractAdmin
         $this->formationHandler->handleFile($formation);
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setFormationHandler(FormationHandler $formationHandler): void
     {
         $this->formationHandler = $formationHandler;

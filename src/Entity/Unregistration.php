@@ -72,17 +72,16 @@ class Unregistration
 
     /**
      * @ORM\Column(type="json", nullable=true)
-     * @Assert\NotBlank(message="adherent.unregistration.reasons")
      */
+    #[Assert\NotBlank(message: 'adherent.unregistration.reasons')]
     private $reasons;
 
     /**
      * @var string
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\Length(allowEmptyString=true, min=10, max=1000)
      */
+    #[Assert\Length(min: 10, max: 1000)]
     private $comment;
 
     /**

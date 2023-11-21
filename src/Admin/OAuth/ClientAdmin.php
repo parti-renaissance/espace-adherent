@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class ClientAdmin extends AbstractAdmin
 {
@@ -138,7 +139,7 @@ class ClientAdmin extends AbstractAdmin
         $this->tokenRevocationAuthority->revokeClientTokens($object);
     }
 
-    /** @required */
+    #[Required]
     public function setTokenRevocationAuthority(TokenRevocationAuthority $tokenRevocationAuthority): void
     {
         $this->tokenRevocationAuthority = $tokenRevocationAuthority;

@@ -21,9 +21,8 @@ class CandidacyPool
 
     /**
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $label = null;
 
     /**
@@ -35,10 +34,9 @@ class CandidacyPool
      * @var CandidaciesGroup[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\Designation\CandidacyPool\CandidaciesGroup", mappedBy="candidacyPool", fetch="EAGER", cascade={"persist"})
-     *
-     * @Assert\Valid
-     * @Assert\Count(min=1)
      */
+    #[Assert\Valid]
+    #[Assert\Count(min: 1)]
     private $candidaciesGroups;
 
     public function __construct(UuidInterface $uuid = null)

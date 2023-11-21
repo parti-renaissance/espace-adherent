@@ -21,9 +21,8 @@ class ExecutiveOfficeMember extends AbstractBiography implements EntitySourceabl
 
     /**
      * @ORM\Column
-     *
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     private $job;
 
     /**

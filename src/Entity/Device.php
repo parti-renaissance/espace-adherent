@@ -7,7 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Collection\ZoneCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -50,9 +50,8 @@ class Device
      * @ORM\Column(type="uuid", unique=true)
      *
      * @ApiProperty(identifier=false)
-     *
-     * @SymfonySerializer\Groups({"user_profile"})
      */
+    #[Groups(['user_profile'])]
     protected $uuid;
 
     /**
@@ -61,20 +60,17 @@ class Device
      * @ORM\Column(unique=true)
      *
      * @ApiProperty(identifier=true)
-     *
-     * @SymfonySerializer\Groups({"user_profile"})
      */
+    #[Groups(['user_profile'])]
     protected $deviceUuid;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
-     *
-     * @SymfonySerializer\Groups({"user_profile", "device_write"})
-     *
-     * @Assert\Length(max=15)
      */
+    #[Groups(['user_profile', 'device_write'])]
+    #[Assert\Length(max: 15)]
     private $postalCode;
 
     /**

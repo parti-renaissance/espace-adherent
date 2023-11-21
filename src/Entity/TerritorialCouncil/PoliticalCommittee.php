@@ -26,10 +26,9 @@ class PoliticalCommittee implements InstanceEntityInterface
 
     /**
      * @ORM\Column(unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $name;
 
     /**

@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -28,15 +28,10 @@ class Choice
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank(message="poll_choice.value.not_blank")
-     * @Assert\Length(
-     *     max=255,
-     *     maxMessage="poll_choice.value.max_length"
-     * )
-     *
-     * @SymfonySerializer\Groups({"poll_read"})
      */
+    #[Assert\NotBlank(message: 'poll_choice.value.not_blank')]
+    #[Assert\Length(max: 255, maxMessage: 'poll_choice.value.max_length')]
+    #[Groups(['poll_read'])]
     private $value;
 
     /**

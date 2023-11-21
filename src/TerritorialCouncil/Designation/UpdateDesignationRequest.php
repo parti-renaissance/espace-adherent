@@ -14,60 +14,53 @@ class UpdateDesignationRequest
 {
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=App\TerritorialCouncil\Designation\DesignationVoteModeEnum::ALL)
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: DesignationVoteModeEnum::ALL)]
     private $voteMode = DesignationVoteModeEnum::VOTE_MODE_ONLINE;
 
     /**
      * @var Address|null
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $address;
 
     /**
      * @var string|null
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     private $meetingUrl;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $meetingStartDate;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $meetingEndDate;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $voteStartDate;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $voteEndDate;
 
     /**
      * @var string|null
      *
-     * @Assert\NotBlank
      * @WysiwygLength(max=2000)
      */
+    #[Assert\NotBlank]
     private $description;
 
     public function getVoteMode(): ?string

@@ -26,29 +26,22 @@ class OfficialReport
      * @var string|null
      *
      * @ORM\Column(length=50)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=50)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50)]
     private $name;
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\File(
-     *     maxSize="5M",
-     *     mimeTypes=OfficialReportDocument::MIME_TYPES,
-     *     mimeTypesMessage="territorail_council.official_report.mime_type"
-     * )
      */
+    #[Assert\File(maxSize: '5M', mimeTypes: OfficialReportDocument::MIME_TYPES, mimeTypesMessage: 'territorail_council.official_report.mime_type')]
     private $file;
 
     /**
-     * @Assert\NotNull
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\PoliticalCommittee")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[Assert\NotNull]
     private $politicalCommittee;
 
     /**

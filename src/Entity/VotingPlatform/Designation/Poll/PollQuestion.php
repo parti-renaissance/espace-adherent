@@ -21,9 +21,8 @@ class PollQuestion
 
     /**
      * @ORM\Column(length=500)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $content = null;
 
     /**
@@ -34,10 +33,9 @@ class PollQuestion
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\Designation\Poll\QuestionChoice", mappedBy="question", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @Assert\Count(min=2)
-     * @Assert\Valid
      */
+    #[Assert\Count(min: 2)]
+    #[Assert\Valid]
     private Collection $choices;
 
     public function __construct()

@@ -51,9 +51,8 @@ abstract class AbstractAdherentMessageFilter extends AbstractAdherentFilter impl
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\AdherentMessage\Segment\AudienceSegment")
      * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Groups({"adherent_message_update_filter"})
      */
+    #[Groups(['adherent_message_update_filter'])]
     private $segment;
 
     public function __construct(array $zones = [])

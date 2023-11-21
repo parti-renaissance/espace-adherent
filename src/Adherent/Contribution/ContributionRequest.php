@@ -14,28 +14,20 @@ class ContributionRequest
 
     private bool $redeclare = false;
 
-    /**
-     * @Assert\NotBlank(groups={"fill_revenue"})
-     * @Assert\GreaterThanOrEqual(value=0, groups={"fill_revenue"})
-     */
+    #[Assert\NotBlank(groups: ['fill_revenue'])]
+    #[Assert\GreaterThanOrEqual(value: 0, groups: ['fill_revenue'])]
     public ?int $revenueAmount = null;
 
-    /**
-     * @Assert\NotBlank(groups={"fill_contribution_informations"})
-     * @Assert\Length(min=2, groups={"fill_contribution_informations"})
-     */
+    #[Assert\NotBlank(groups: ['fill_contribution_informations'])]
+    #[Assert\Length(min: 2, groups: ['fill_contribution_informations'])]
     public ?string $accountName = null;
 
-    /**
-     * @Assert\NotBlank(groups={"fill_contribution_informations"})
-     * @Assert\Country(message="common.country.invalid", groups={"fill_contribution_informations"})
-     */
+    #[Assert\NotBlank(groups: ['fill_contribution_informations'])]
+    #[Assert\Country(message: 'common.country.invalid', groups: ['fill_contribution_informations'])]
     public ?string $accountCountry = Address::FRANCE;
 
-    /**
-     * @Assert\NotBlank(groups={"fill_contribution_informations"})
-     * @Assert\Iban(groups={"fill_contribution_informations"})
-     */
+    #[Assert\NotBlank(groups: ['fill_contribution_informations'])]
+    #[Assert\Iban(groups: ['fill_contribution_informations'])]
     public ?string $iban = null;
 
     public function getState(): string

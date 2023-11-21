@@ -8,7 +8,6 @@ use App\Validator\DateRange as AssertDateRange;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @Assert\GroupSequence({"CreatePartialDesignationCommand", "Strict"})
  * @AssertCommitteePartialDesignation(groups={"Strict"})
  * @AssertDateRange(
  *     startDateField="voteStartDate",
@@ -17,50 +16,45 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     messageInterval="Vous pouvez choisir d'ouvrir le vote dans 2 à 4 semaines et de le cloturer 7 à 14 jours plus tard."
  * )
  */
+#[Assert\GroupSequence(['CreatePartialDesignationCommand', 'Strict'])]
 class CreatePartialDesignationCommand
 {
     /**
      * @var Committee
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $committee;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\VotingPlatform\Designation\DesignationTypeEnum", "toArray"}, message="Le type d'élection est invalide")
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: ['App\VotingPlatform\Designation\DesignationTypeEnum', 'toArray'], message: "Le type d'élection est invalide")]
     private $designationType;
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(callback={"App\Entity\VotingPlatform\ElectionPoolCodeEnum", "toArray"})
      */
+    #[Assert\Choice(callback: ['App\Entity\VotingPlatform\ElectionPoolCodeEnum', 'toArray'])]
     private $pool;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $voteStartDate;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $voteEndDate;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=2000, maxMessage="Oups, votre message semble plus long qu'il n'en a l'air. Essayez de le raccourcir pour continuer.")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 2000, maxMessage: "Oups, votre message semble plus long qu'il n'en a l'air. Essayez de le raccourcir pour continuer.")]
     private $message;
 
     public function __construct(Committee $committee, string $designationType, ?string $pool)

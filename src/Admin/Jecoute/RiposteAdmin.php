@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class RiposteAdmin extends AbstractAdmin
 {
@@ -177,25 +178,19 @@ class RiposteAdmin extends AbstractAdmin
         $this->riposteHandler->handleNotification($riposte);
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setOpenGraphHandler(RiposteOpenGraphHandler $openGraphHandler): void
     {
         $this->openGraphHandler = $openGraphHandler;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setRiposteHandler(RiposteHandler $riposteHandler): void
     {
         $this->riposteHandler = $riposteHandler;

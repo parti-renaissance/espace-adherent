@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[AsCommand(
     name: 'app:voting-platform:send-convocation',
@@ -57,19 +58,19 @@ class SendElectionConvocationCommand extends Command
         return self::SUCCESS;
     }
 
-    /** @required */
+    #[Required]
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
     }
 
-    /** @required */
+    #[Required]
     public function setMailer(MailerService $transactionalMailer): void
     {
         $this->mailer = $transactionalMailer;
     }
 
-    /** @required */
+    #[Required]
     public function setUrlGenerator(UrlGeneratorInterface $urlGenerator): void
     {
         $this->urlGenerator = $urlGenerator;

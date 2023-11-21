@@ -21,50 +21,38 @@ class BuildingEvent implements AuthorInterface
 
     /**
      * @ORM\Column(length=25)
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(
-     *     callback={"App\Pap\BuildingEventActionEnum", "toArray"}
-     * )
-     *
-     * @Groups({"pap_building_event_write"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: ['App\Pap\BuildingEventActionEnum', 'toArray'])]
+    #[Groups(['pap_building_event_write'])]
     private ?string $action = null;
 
     /**
      * @ORM\Column(length=25)
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(
-     *     callback={"App\Pap\BuildingEventTypeEnum", "toArray"}
-     * )
-     *
-     * @Groups({"pap_building_event_write"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: ['App\Pap\BuildingEventTypeEnum', 'toArray'])]
+    #[Groups(['pap_building_event_write'])]
     private ?string $type = null;
 
     /**
      * @ORM\Column(length=50, nullable=true)
-     *
-     * @Groups({"pap_building_event_write"})
      */
+    #[Groups(['pap_building_event_write'])]
     private ?string $identifier = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building")
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private Building $building;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotNull
-     *
-     * @Groups({"pap_building_event_write"})
      */
+    #[Assert\NotNull]
+    #[Groups(['pap_building_event_write'])]
     private ?Campaign $campaign = null;
 
     /**

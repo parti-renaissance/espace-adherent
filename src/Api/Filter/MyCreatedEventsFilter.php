@@ -9,6 +9,7 @@ use App\Entity\Event\BaseEvent;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Service\Attribute\Required;
 
 final class MyCreatedEventsFilter extends AbstractFilter
 {
@@ -55,13 +56,13 @@ final class MyCreatedEventsFilter extends AbstractFilter
         ];
     }
 
-    /** @required */
+    #[Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }
 
-    /** @required */
+    #[Required]
     public function setScopeGeneratorResolver(ScopeGeneratorResolver $scopeGeneratorResolver): void
     {
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;

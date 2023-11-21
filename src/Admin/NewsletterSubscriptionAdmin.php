@@ -13,6 +13,7 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class NewsletterSubscriptionAdmin extends AbstractAdmin
 {
@@ -101,9 +102,7 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
         $this->eventDispatcher->dispatch(new NewsletterEvent($object), Events::UPDATE);
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;

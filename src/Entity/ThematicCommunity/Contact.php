@@ -24,28 +24,25 @@ class Contact
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $firstName;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $lastName;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Email
      */
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private $email;
 
     /**
@@ -66,45 +63,40 @@ class Contact
      * @var \DateTime
      *
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $birthDate;
 
     /**
      * @var PhoneNumber
      *
      * @ORM\Column(type="phone_number", nullable=true)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $phone;
 
     /**
      * @var string
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $activityArea;
 
     /**
      * @var string
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $jobArea;
 
     /**
      * @var string
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $job;
 
     /**

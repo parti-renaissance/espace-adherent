@@ -63,16 +63,14 @@ class ListFilterObject
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(callback="getSortableFields")
      */
+    #[Assert\Choice(callback: 'getSortableFields')]
     private $sort;
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(choices={"DESC", "ASC"})
      */
+    #[Assert\Choice(choices: ['DESC', 'ASC'])]
     private $order;
 
     /**

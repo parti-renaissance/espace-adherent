@@ -12,65 +12,55 @@ trait EntityContentTrait
      * @var string|null
      *
      * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
-     *
-     * @Groups({"article_list_read", "article_read"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
+    #[Groups(['article_list_read', 'article_read'])]
     private $title;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private $slug;
 
     /**
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Assert\Length(allowEmptyString=true, min=10, max=255)
-     * @Assert\NotBlank
-     *
-     * @Groups({"article_read"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 10, max: 255)]
+    #[Groups(['article_read'])]
     private $description;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(allowEmptyString=true, min=10, max=255)
-     *
-     * @Groups({"article_read"})
      */
+    #[Assert\Length(min: 10, max: 255)]
+    #[Groups(['article_read'])]
     private $twitterDescription;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     private $keywords;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
-     *
-     * @Groups({"article_read"})
      */
+    #[Assert\NotBlank]
+    #[Groups(['article_read'])]
     private $content;
 
     public function __toString(): string
