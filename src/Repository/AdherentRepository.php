@@ -1421,7 +1421,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    private function createQueryBuilderForZones(
+    public function createQueryBuilderForZones(
         array $zones,
         bool $adherentRenaissance,
         bool $sympathizerRenaissance
