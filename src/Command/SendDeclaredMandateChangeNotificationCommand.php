@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Adherent\DeclaredMandateHistoryNotifier;
+use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\Reporting\DeclaredMandateHistory;
 use App\Repository\AdherentRepository;
@@ -22,6 +23,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class SendDeclaredMandateChangeNotificationCommand extends Command
 {
     private const ADMIN_ROLE_TO_NOTIFY = 'ROLE_ADMIN_TERRITOIRES_ELUS_NOTIFICATION';
+    private const DEPARTMENT_CODE_EXCEPTIONS = [
+        '64PB',
+        '64B',
+        '2A',
+        '2B',
+    ];
 
     private ?SymfonyStyle $io = null;
 
@@ -82,8 +89,7 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
     {
         $historiesByDepartment = [];
         foreach ($histories as $history) {
-            $departments = $history->getAdherent()->getZonesOfType(Zone::DEPARTMENT, true);
-            $department = !empty($departments) ? reset($departments) : null;
+            $department = $this->getDepartment($history->getAdherent());
 
             if (!$department) {
                 continue;
@@ -110,6 +116,10 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
         }
 
         foreach ($recipients as $departmentCode => $emails) {
+            if (!\array_key_exists($departmentCode, $historiesByDepartment)) {
+                continue;
+            }
+
             $this->io->text(sprintf(
                 'Will notify %d manager(s) of department %s about %d new declared mandate historie(s)',
                 \count($emails),
@@ -139,5 +149,18 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
 
         $this->entityManager->flush();
         $this->entityManager->clear();
+    }
+
+    private function getDepartment(Adherent $adherent): ?Zone
+    {
+        $departments = $adherent->getZonesOfType(Zone::DEPARTMENT, true);
+
+        foreach ($departments as $department) {
+            if (\in_array($department->getCode(), self::DEPARTMENT_CODE_EXCEPTIONS)) {
+                return $department;
+            }
+        }
+
+        return !empty($departments) ? reset($departments) : null;
     }
 }
