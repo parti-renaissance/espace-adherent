@@ -117,6 +117,11 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
 
         foreach ($recipients as $departmentCode => $emails) {
             if (!\array_key_exists($departmentCode, $historiesByDepartment)) {
+                $this->io->note(sprintf(
+                    'Manager of department code "%s" did not match any history during aggregation. Skipping...',
+                    $departmentCode
+                ));
+
                 continue;
             }
 
