@@ -161,17 +161,21 @@ app_admin:
     type:     "annotation"
     prefix:   "/admin"
 
-#
-# En Marche app
-#
-lexik_paybox:
+lexik_paybox_ipn_bc:
     host:     "{app_domain}"
-    resource: "@LexikPayboxBundle/Resources/config/routing.yml"
-    prefix:   "/don"
+    path: /don/payment-ipn/{time}
+    controller: lexik_paybox.controller.default
+    methods: [ GET, POST ]
     defaults:
         app_domain: "%renaissance_host%"
     requirements:
         app_domain: "%app_host%|%renaissance_host%"
+
+lexik_paybox_ipn:
+    host: "%webhook_renaissance_host%"
+    path: /paybox/payment-ipn/{time}
+    controller: lexik_paybox.controller.default
+    methods: [ GET, POST ]
 
 # This route must be loaded first to prevent another route to match his path
 map_events:
