@@ -10484,16 +10484,16 @@
         },
         {
             "name": "scheb/2fa-bundle",
-            "version": "v6.10.0",
+            "version": "v6.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-bundle.git",
-                "reference": "493a8712be5461ca90f4ac0eb819cfcf6cf8d009"
+                "reference": "fc0860b82509753f2efddfed5ade12670753b661"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/493a8712be5461ca90f4ac0eb819cfcf6cf8d009",
-                "reference": "493a8712be5461ca90f4ac0eb819cfcf6cf8d009",
+                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/fc0860b82509753f2efddfed5ade12670753b661",
+                "reference": "fc0860b82509753f2efddfed5ade12670753b661",
                 "shasum": ""
             },
             "require": {
@@ -10545,22 +10545,22 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-bundle/tree/v6.10.0"
+                "source": "https://github.com/scheb/2fa-bundle/tree/v6.11.0"
             },
-            "time": "2023-11-04T12:54:57+00:00"
+            "time": "2023-11-23T15:37:28+00:00"
         },
         {
             "name": "scheb/2fa-google-authenticator",
-            "version": "v6.10.0",
+            "version": "v6.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-google-authenticator.git",
-                "reference": "3ee3fa82bcd579e396b7ed63d9006e8d63a18e67"
+                "reference": "fc3bd28186188a03729ff74f24c51ac51fc69565"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-google-authenticator/zipball/3ee3fa82bcd579e396b7ed63d9006e8d63a18e67",
-                "reference": "3ee3fa82bcd579e396b7ed63d9006e8d63a18e67",
+                "url": "https://api.github.com/repos/scheb/2fa-google-authenticator/zipball/fc3bd28186188a03729ff74f24c51ac51fc69565",
+                "reference": "fc3bd28186188a03729ff74f24c51ac51fc69565",
                 "shasum": ""
             },
             "require": {
@@ -10596,9 +10596,9 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v6.10.0"
+                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v6.11.0"
             },
-            "time": "2023-11-04T12:54:57+00:00"
+            "time": "2023-11-23T15:37:28+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -14938,29 +14938,27 @@
         },
         {
             "name": "symfony/password-hasher",
-            "version": "v5.4.31",
+            "version": "v6.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/password-hasher.git",
-                "reference": "f1a07181f3442836b0aadfd4c65841804d4173c4"
+                "reference": "82161c4bebf77900372083ec6e484b5f055b0cba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/password-hasher/zipball/f1a07181f3442836b0aadfd4c65841804d4173c4",
-                "reference": "f1a07181f3442836b0aadfd4c65841804d4173c4",
+                "url": "https://api.github.com/repos/symfony/password-hasher/zipball/82161c4bebf77900372083ec6e484b5f055b0cba",
+                "reference": "82161c4bebf77900372083ec6e484b5f055b0cba",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
-                "symfony/deprecation-contracts": "^2.1|^3",
-                "symfony/polyfill-php80": "^1.15"
+                "php": ">=8.1"
             },
             "conflict": {
-                "symfony/security-core": "<5.3"
+                "symfony/security-core": "<5.4"
             },
             "require-dev": {
-                "symfony/console": "^5.3|^6.0",
-                "symfony/security-core": "^5.3|^6.0"
+                "symfony/console": "^5.4|^6.0",
+                "symfony/security-core": "^5.4|^6.0"
             },
             "type": "library",
             "autoload": {
@@ -14992,7 +14990,7 @@
                 "password"
             ],
             "support": {
-                "source": "https://github.com/symfony/password-hasher/tree/v5.4.31"
+                "source": "https://github.com/symfony/password-hasher/tree/v6.3.8"
             },
             "funding": [
                 {
@@ -15008,7 +15006,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-02T10:18:11+00:00"
+            "time": "2023-11-06T10:58:05+00:00"
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
