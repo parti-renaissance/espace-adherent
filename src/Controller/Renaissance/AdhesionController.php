@@ -2,6 +2,7 @@
 
 namespace App\Controller\Renaissance;
 
+use App\Controller\CanaryControllerTrait;
 use App\Form\MembershipRequestType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,12 +13,16 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 #[Route('/v2/adhesion', name: 'app_adhesion_index', methods: ['GET', 'POST'])]
 class AdhesionController extends AbstractController
 {
+    use CanaryControllerTrait;
+
     public function __construct(private readonly CsrfTokenManagerInterface $csrfTokenManager)
     {
     }
 
     public function __invoke(Request $request): Response
     {
+        $this->disableInProduction();
+
         $form = $this
             ->createForm(MembershipRequestType::class)
             ->handleRequest($request)
