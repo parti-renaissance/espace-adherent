@@ -14,7 +14,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Renaissance\AdherentRequestRepository")
+ * @ORM\Entity
  */
 class AdherentRequest
 {
@@ -100,7 +100,7 @@ class AdherentRequest
         return $object;
     }
 
-    public static function createForEmail(string $email, string $source): self
+    public static function createForEmail(string $email): self
     {
         $object = new self();
 
@@ -109,7 +109,6 @@ class AdherentRequest
         $object->password = '';
         $object->email = $email;
         $object->amount = 0;
-        $object->utmSource = $source;
 
         return $object;
     }

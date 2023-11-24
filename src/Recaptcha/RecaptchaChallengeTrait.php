@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 trait RecaptchaChallengeTrait
 {
     /**
-     * @Groups({"contact_create", "legislative_newsletter_subscriptions_write"})
+     * @Groups({"contact_create", "legislative_newsletter_subscriptions_write", "adhesion-email:persist"})
      */
     protected ?string $recaptcha = null;
 

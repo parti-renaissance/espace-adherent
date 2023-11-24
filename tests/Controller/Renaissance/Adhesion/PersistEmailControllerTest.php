@@ -1,43 +1,33 @@
 <?php
 
-namespace Tests\App\Controller\Renaissance;
+namespace Controller\Renaissance\Adhesion;
 
+use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('controller')]
-class ValidateEmailControllerTest extends AbstractRenaissanceWebTestCase
+class PersistEmailControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
     /** @dataProvider getEmails */
-    public function testValidateEmailEndpoint(string $email, int $status): void
+    public function testPersistEmailEndpoint(string $email, int $status): void
     {
-        $crawler = $this->client->request('GET', '/v2/adhesion');
-        $token = $crawler->filter('#email-validation-token')->attr('value');
-
-        $this->client->jsonRequest('POST', '/api/validate-email', ['email' => $email, 'token' => $token]);
+        $this->client->jsonRequest('POST', '/api/persist-email', ['email' => $email, 'recaptcha' => 'fake']);
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
-        if (0 === $status) {
+        if ($status < 2) {
             self::assertSame('OK', $response);
+            self::assertNotNull($this->getRepository(AdherentRequest::class)->findOneBy(['email' => $email]));
 
             return;
         }
 
-        if (1 === $status) {
-            self::assertSame('warning', $response['status']);
-        } else {
-            self::assertSame('error', $response['status']);
-        }
-
-        if ($email) {
-            self::assertSame('Adresse e-mail "'.$email.'" est invalide', $response['message']);
-        } else {
-            self::assertSame('Cette valeur ne doit pas être vide.', $response['message']);
-        }
+        $this->assertStatusCode(400, $this->client);
+        self::assertNull($this->getRepository(AdherentRequest::class)->findOneBy(['email' => $email]));
     }
 
     public function getEmails(): \Generator

@@ -22,7 +22,9 @@ class ValidateEmailController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $emailValidationRequest = $this->serializer->deserialize($request->getContent(), EmailValidationRequest::class, JsonEncoder::FORMAT);
+        $emailValidationRequest = $this->serializer->deserialize($request->getContent(), EmailValidationRequest::class, JsonEncoder::FORMAT, [
+            'groups' => ['adhesion-email:validate'],
+        ]);
 
         if (!$this->isCsrfTokenValid('email_validation_token', $emailValidationRequest->token)) {
             return $this->json(['message' => 'Token invalid', 'status' => 'error'], Response::HTTP_BAD_REQUEST);
