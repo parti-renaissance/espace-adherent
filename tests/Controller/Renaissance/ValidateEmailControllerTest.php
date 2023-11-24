@@ -40,7 +40,7 @@ class ValidateEmailControllerTest extends AbstractRenaissanceWebTestCase
         }
     }
 
-    public function getEmails(): \Generator
+    public static function getEmails(): \Generator
     {
         yield current($params = ['techsupport@parti-renaissance.fr', 0]) => $params;
         yield current($params = ['warding-email@parti-renaissance123.fr', 1]) => $params;

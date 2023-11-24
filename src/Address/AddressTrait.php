@@ -33,7 +33,7 @@ trait AddressTrait
      * @Assert\NotBlank
      * @Assert\Country(message="common.country.invalid")
      */
-    protected ?string $country = AddressInterface::FRANCE;
+    protected ?string $country = null;
 
     /**
      * @Assert\Length(max=255)

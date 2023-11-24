@@ -32,6 +32,7 @@ class AutocompleteAddressType extends AbstractType
             ])
             ->add('cityName', TextType::class)
             ->add('country', CountryType::class, [
+                'placeholder' => '',
                 'preferred_choices' => [AddressInterface::FRANCE],
                 'invalid_message' => 'common.country.invalid',
             ])

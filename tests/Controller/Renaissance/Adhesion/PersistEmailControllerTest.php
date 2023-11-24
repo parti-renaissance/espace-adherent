@@ -30,7 +30,7 @@ class PersistEmailControllerTest extends AbstractRenaissanceWebTestCase
         self::assertNull($this->getRepository(AdherentRequest::class)->findOneBy(['email' => $email]));
     }
 
-    public function getEmails(): \Generator
+    public static function getEmails(): \Generator
     {
         yield current($params = ['techsupport@parti-renaissance.fr', 0]) => $params;
         yield current($params = ['warding-email@parti-renaissance123.fr', 1]) => $params;

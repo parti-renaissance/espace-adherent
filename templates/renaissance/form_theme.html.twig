@@ -1,5 +1,10 @@
 {% use "form_div_layout.html.twig" %}
 
+{% block form_label %}
+    {% set label_attr = label_attr|merge({'x-ref': form.vars.id}) %}
+    {{- parent() -}}
+{% endblock %}
+
 {% block form_widget_simple -%}
     {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) %}
     {{- parent() -}}
@@ -38,7 +43,11 @@
 {%- endblock choice_widget_collapsed -%}
 
 {% block form_row -%}
-    {%- set row_attr = row_attr|merge({class: (row_attr.class|default('') ~ ' form-group')|trim}) -%}
+    {%- set row_attr = row_attr|merge({
+        'x-data': "",
+        '@click': "$refs." ~ form.vars.id ~ ".focus()",
+        class: (row_attr.class|default('') ~ ' form-group')|trim,
+    }) -%}
     {{- parent() -}}
 {%- endblock form_row %}
 
