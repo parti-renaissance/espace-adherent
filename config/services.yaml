@@ -61,7 +61,6 @@ services:
             $patternUuid: '%pattern_uuid%'
             $adherentInterests: '%adherent_interests%'
             $mailchimpWebhookKey: '%env(MAILCHIMP_WEBHOOK_KEY)%'
-            $renaissanceWebhookKey: '%env(RENAISSANCE_WEBHOOK_KEY)%'
             $enableAssessorSpace: '%env(bool:ENABLE_ASSESSOR_SPACE)%'
             $timelineMaxItems: '%timeline_max_messages%'
             $renaissanceHost: '%renaissance_host%'
@@ -237,6 +236,11 @@ services:
 
     App\Normalizer\JecouteRegionNormalizer:
         tags: [{name: 'serializer.normalizer', priority: 1}]
+
+    App\Normalizer\ConstraintViolationListNormalizer:
+        decorates: 'serializer.normalizer.constraint_violation_list'
+        arguments:
+            - '@serializer.name_converter.metadata_aware'
 
     App\Normalizer\ItemNormalizerDecorator:
         decorates: 'api_platform.serializer.normalizer.item'

@@ -682,17 +682,12 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "type": "https://symfony.com/errors/validation",
-      "title": "Validation Failed",
-      "detail": "[0].adherent_uuid: Cette valeur ne doit pas être vide.",
+      "status": "error",
+      "message": "Validation Failed",
       "violations": [
         {
-          "propertyPath": "[0].adherent_uuid",
-          "title": "Cette valeur ne doit pas être vide.",
-          "parameters": {
-            "{{ value }}": "null"
-          },
-          "type": "urn:uuid:c1051bb4-d103-4f74-8988-acbcafc7fdc3"
+          "property": "[0].adherent_uuid",
+          "message": "Cette valeur ne doit pas être vide."
         }
       ]
     }
@@ -712,17 +707,12 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "type": "https://symfony.com/errors/validation",
-      "title": "Validation Failed",
-      "detail": "[0].adherent_uuid: Cette valeur ne doit pas être vide.",
+      "status": "error",
+      "message": "Validation Failed",
       "violations": [
         {
-          "propertyPath": "[0].adherent_uuid",
-          "title": "Cette valeur ne doit pas être vide.",
-          "parameters": {
-            "{{ value }}": "null"
-          },
-          "type": "urn:uuid:c1051bb4-d103-4f74-8988-acbcafc7fdc3"
+          "property": "[0].adherent_uuid",
+          "message": "Cette valeur ne doit pas être vide."
         }
       ]
     }
@@ -742,16 +732,12 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "type": "https://symfony.com/errors/validation",
-      "title": "Validation Failed",
-      "detail": "[0].adherent_uuid: Aucun adhérent trouvé pour l'UUID \"c1051bb4-d103-4f74-8988-acbcafc7fdc3\".",
+      "status": "error",
+      "message": "Validation Failed",
       "violations": [
         {
-          "propertyPath": "[0].adherent_uuid",
-          "title": "Aucun adhérent trouvé pour l'UUID \"c1051bb4-d103-4f74-8988-acbcafc7fdc3\".",
-          "parameters": {
-            "{{ value }}": "c1051bb4-d103-4f74-8988-acbcafc7fdc3"
-          }
+          "property": "[0].adherent_uuid",
+          "message": "Aucun adhérent trouvé pour l'UUID \"c1051bb4-d103-4f74-8988-acbcafc7fdc3\"."
         }
       ]
     }

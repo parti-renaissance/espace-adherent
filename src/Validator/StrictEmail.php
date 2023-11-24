@@ -13,8 +13,9 @@ class StrictEmail extends Constraint
     public const LEVEL_WARNING = 'warning';
     public const LEVEL_ERROR = 'error';
 
-    public string $message = 'E-email adresse "{{ email }}" est invalide';
+    public string $message = 'Adresse e-mail "{{ email }}" est invalide';
 
     public bool $disposable = true;
     public bool $disabledEmail = true;
+    public bool $dnsCheck = true;
 }

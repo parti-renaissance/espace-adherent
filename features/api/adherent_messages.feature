@@ -18,14 +18,12 @@ Feature:
     And the JSON should be equal to:
     """
     {
-       "type":"https://symfony.com/errors/validation",
-       "title":"Validation Failed",
-       "detail":"segment: Le segment n'est pas autorisé",
+       "status":"error",
+       "message":"Validation Failed",
        "violations":[
           {
-             "propertyPath":"segment",
-             "title":"Le segment n'est pas autorisé",
-             "parameters":[]
+             "property":"segment",
+             "message":"Le segment n'est pas autorisé"
           }
        ]
     }

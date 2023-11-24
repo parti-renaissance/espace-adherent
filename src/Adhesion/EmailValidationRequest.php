@@ -2,17 +2,29 @@
 
 namespace App\Adhesion;
 
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Validator\Recaptcha;
 use App\Validator\StrictEmail;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EmailValidationRequest
+/**
+ * @Recaptcha(api="friendly_captcha", groups={"adhesion-email:persist"})
+ */
+class EmailValidationRequest implements RecaptchaChallengeInterface
 {
+    use RecaptchaChallengeTrait;
+
     /**
-     * @Assert\NotBlank
-     * @StrictEmail
+     * @Assert\NotBlank(groups={"Default", "adhesion-email:persist"})
+     * @StrictEmail(groups={"Default"})
+     * @StrictEmail(dnsCheck=false, groups={"adhesion-email:persist"})
      */
+    #[Groups(['adhesion-email:validate', 'adhesion-email:persist'])]
     private ?string $email = null;
 
+    #[Groups(['adhesion-email:validate'])]
     public ?string $token = null;
 
     public function setEmail(?string $email): void

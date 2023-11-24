@@ -42,7 +42,7 @@ class FriendlyCaptchaApiClient implements RecaptchaApiClientInterface
             return false;
         }
 
-        $data = $response->toArray();
+        $data = $response->toArray(false);
 
         return $data['success'] ?? false;
     }

@@ -48,7 +48,11 @@ class StrictEmailValidator extends ConstraintValidator
             $emailValidators[] = new DisposableEmailValidation();
         }
 
-        $emailValidators = array_merge($emailValidators, [new SpoofCheckValidation(), new DNSCheckValidation()]);
+        $emailValidators[] = new SpoofCheckValidation();
+
+        if ($constraint->dnsCheck) {
+            $emailValidators[] = new DNSCheckValidation();
+        }
 
         if ($constraint->disabledEmail) {
             $emailValidators[] = $this->disabledEmailValidator;

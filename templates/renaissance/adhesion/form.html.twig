@@ -29,6 +29,10 @@
                     <div class="bg-white rounded-2xl w-1/3 p-10">
                         {{ form_row(form.email, {label: false, attr: {placeholder: 'Adresse mail'}}) }}
                         {{ form_row(form.consentDataCollect, {label: 'Je consent à l’envoie d’e-mail'}) }}
+
+                        <div class="w-full">
+                            {% include 'renaissance/partials/friendly-captcha.html.twig' %}
+                        </div>
                     </div>
 
                     <div class="bg-white rounded-2xl w-1/3 p-10 mt-10">
@@ -50,6 +54,8 @@
 {% endblock %}
 
 {% block final_javascripts %}
+    <script type="module" src="{{ asset('js/friendly-challenge.widget.module.min.js') }}" async defer></script>
+
     <script type="text/javascript">
         Bootstrap.onLoad(function () {
             Main.runAdhesionPage();

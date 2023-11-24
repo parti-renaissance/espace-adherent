@@ -17,58 +17,32 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "type": "https://symfony.com/errors/validation",
-        "title": "Validation Failed",
-        "detail": "last_name: Cette valeur ne doit pas être vide.\ngender: Veuillez renseigner un genre.\nbirthdate: Vous devez spécifier votre date de naissance.\nphone: Cette valeur n'est pas un numéro de téléphone valide.\nemail_address: Cette valeur ne doit pas être vide.\ncgu_accepted: Vous devez accepter les conditions générales d'utilisation.",
+        "status": "error",
+        "message": "Validation Failed",
         "violations": [
             {
-                "propertyPath": "last_name",
-                "title": "Cette valeur ne doit pas être vide.",
-                "parameters": {
-                    "{{ value }}": "null"
-                },
-                "type": "@string@"
+                "property": "last_name",
+                "message": "Cette valeur ne doit pas être vide."
             },
             {
-                "propertyPath": "gender",
-                "title": "Veuillez renseigner un genre.",
-                "parameters": {
-                    "{{ value }}": "null"
-                },
-                "type": "@string@"
+                "property": "gender",
+                "message": "Veuillez renseigner un genre."
             },
             {
-                "propertyPath": "birthdate",
-                "title": "Vous devez spécifier votre date de naissance.",
-                "parameters": {
-                    "{{ value }}": "null"
-                },
-                "type": "@string@"
+                "property": "birthdate",
+                "message": "Vous devez spécifier votre date de naissance."
             },
             {
-                "propertyPath": "phone",
-                "title": "Cette valeur n'est pas un numéro de téléphone valide.",
-                "parameters": {
-                    "{{ types }}": "phone number",
-                    "{{ value }}": "@string@"
-                },
-                "type": "@string@"
+                "property": "phone",
+                "message": "Cette valeur n'est pas un numéro de téléphone valide."
             },
             {
-                "propertyPath": "email_address",
-                "title": "Cette valeur ne doit pas être vide.",
-                "parameters": {
-                    "{{ value }}": "null"
-                },
-                "type": "@string@"
+                "property": "email_address",
+                "message": "Cette valeur ne doit pas être vide."
             },
             {
-                "propertyPath": "cgu_accepted",
-                "title": "Vous devez accepter les conditions générales d'utilisation.",
-                "parameters": {
-                    "{{ value }}": "false"
-                },
-                "type": "@string@"
+                "property": "cgu_accepted",
+                "message": "Vous devez accepter les conditions générales d'utilisation."
             }
         ]
     }
