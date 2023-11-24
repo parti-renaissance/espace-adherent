@@ -7,9 +7,9 @@
 {% block content %}
     {% set home_block_banner = blocks['Bannière principale accueil'] %}
 
-    <section class="flex flex-col justify-between h-screen pb-12 bg-bottom bg-cover md:pb-15" style="background-image: url('{{ media_asset(home_block_banner.media, {app_domain: renaissance_host}) }}')">
+    <section class="flex flex-col justify-between h-screen pb-12 bg-bottom bg-cover md:pb-15" style="background-image: url('{{ media_asset(home_block_banner.media, {app_domain: app_renaissance_host}) }}')">
         <nav x-data="{ open: false }" @keydown.escape="open = false" class="relative flex justify-between items-center w-full border-b border-b-white/10 px-4 py-5 md:px-7 md:py-6">
-            <a href="{{ path('app_renaissance_homepage') }}">
+            <a href="{{ path('renaissance_site') }}">
                 {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-4 w-auto text-white lg:h-5' } %}
             </a>
 
@@ -38,7 +38,7 @@
                             {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                 <a class="button button-white" href="{{ path('admin_app_adherent_list', {'_switch_user': '_exit'}) }}">Quitter l'impersonnification</a>
                             {% else %}
-                                <a class="button button-white" href="{{ path('logout', { app_domain: renaissance_host }) }}">Me déconnecter</a>
+                                <a class="button button-white" href="{{ path('logout', { app_domain: app_renaissance_host }) }}">Me déconnecter</a>
                             {% endif %}
                         {% else %}
                             <a class="button button-blue-lighter" href="{{ path('app_renaissance_login') }}">
@@ -97,7 +97,7 @@
                                     <a class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50" href="{{ path('app_renaissance_event_list') }}">
                                         <span class="text-base font-medium text-gray-900">Mon espace</span>
                                     </a>
-                                    <a class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50" href="{{ path('logout', { app_domain: renaissance_host }) }}">
+                                    <a class="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50" href="{{ path('logout', { app_domain: app_renaissance_host }) }}">
                                         <span class="text-base font-medium text-gray-900">Me déconnecter</span>
                                     </a>
                                 {% else %}
@@ -216,7 +216,7 @@
                         class="{{ not loop.first ? 'mt-8 ' }} h-fit group bg-white border border-gray-100 active:bg-yellow px-4 py-5 cursor-pointer rounded-md p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 hover:border-transparent duration-200 slide-over--trigger break-inside-avoid"
                         data-commitment-title="{{ commitment.title|e('html_attr') }}"
                         data-commitment-slug="{{ slug }}"
-                        data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath(), app_domain: renaissance_host}) }}"
+                        data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath(), app_domain: app_renaissance_host}) }}"
                         data-commitment-description="{{ commitment.description|e('html_attr') }}"
                     >
                         <h3 class="text-re-blue-400 font-medium text-base lg:text-lg mb-2.5 group-hover:text-white">{{ commitment.title }}</h3>
@@ -298,7 +298,7 @@
                            {% for member in executive_office_group %}
                                <div>
                                    <div class="shrink-0 mb-5 lg:mb-6">
-                                       <img src="{{ path('asset_url', {path: member.imagePath, app_domain: renaissance_host}) }}" class="object-cover w-full h-auto transition ease-in-out rounded md:hover:scale-105 lg:h-[350px]" alt="{{ member.fullName }}"/>
+                                       <img src="{{ path('asset_url', {path: member.imagePath, app_domain: app_renaissance_host}) }}" class="object-cover w-full h-auto transition ease-in-out rounded md:hover:scale-105 lg:h-[350px]" alt="{{ member.fullName }}"/>
                                    </div>
                                   <div class="text-center text-sm md:text-base">
                                       <p class="font-medium text-gray-900 md:text-lg">{{ member.fullName }}</p>
@@ -412,7 +412,7 @@
                         {{ form_widget(newsletter_form.cguAccepted, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500' } }) }}
                         <label for="{{ newsletter_form.cguAccepted.vars.id }}">
                             <span>
-                                J’accepte les <a class="font-bold underline" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}" target="_blank">CGU du site</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'Politique-de-protection-des-donnees', app_domain: renaissance_host}) }}" class="font-bold underline" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations accessibles <a class="font-bold underline" href="{{ path('app_static_page', {slug: 'mentions-informations-newsletter', app_domain: renaissance_host}) }}" target="_blank">ici</a>
+                                J’accepte les <a class="font-bold underline" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: app_renaissance_host}) }}" target="_blank">CGU du site</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'Politique-de-protection-des-donnees', app_domain: app_renaissance_host}) }}" class="font-bold underline" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations accessibles <a class="font-bold underline" href="{{ path('app_static_page', {slug: 'mentions-informations-newsletter', app_domain: app_renaissance_host}) }}" target="_blank">ici</a>
                             </span>
                         </label>
                     </div>
@@ -432,7 +432,7 @@
     <!-- Footer -->
     <section class="bg-dark-blue pt-25 md:pt-36">
         <div class="max-w-7xl md:mx-auto mb-12">
-            <a href="{{ path('app_renaissance_homepage') }}">
+            <a href="{{ path('renaissance_site') }}">
                 <img
                     height="35"
                     src="{{ asset('/images/renaissance/logo.svg') }}"
@@ -527,22 +527,22 @@
 
         <!-- Legal notice -->
         <div class="md:bg-dark-gray/10 flex flex-col items-center md:flex-row md:justify-center gap-x-7 py-6 text-white font-normal text-sm">
-            <a href="{{ path('app_static_page', {slug: 're-mentions-legales', app_domain: renaissance_host}) }}" class="hover:underline">
+            <a href="{{ path('app_static_page', {slug: 're-mentions-legales', app_domain: app_renaissance_host}) }}" class="hover:underline">
                 Mentions légales
             </a>
-            <a href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}" class="hover:underline">
+            <a href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: app_renaissance_host}) }}" class="hover:underline">
                 CGU
             </a>
-            <a href="{{ path('app_static_page', {slug: 'politique-de-protection-des-donnees', app_domain: renaissance_host}) }}" class="hover:underline">
+            <a href="{{ path('app_static_page', {slug: 'politique-de-protection-des-donnees', app_domain: app_renaissance_host}) }}" class="hover:underline">
                 Données personnelles
             </a>
             <a href="https://contact.parti-renaissance.fr" class="hover:underline">
                 Contactez-nous
             </a>
-            <a href="{{ static_asset('Statuts-Renaissance.pdf', {}, 0, renaissance_host) }}" class="hover:underline">
+            <a href="{{ static_asset('Statuts-Renaissance.pdf', {}, 0, app_renaissance_host) }}" class="hover:underline">
                 Statuts
             </a>
-            <a href="{{ static_asset('RI-V.AK-24-avril-2023.pdf', {}, 0, renaissance_host) }}" class="hover:underline">
+            <a href="{{ static_asset('RI-V.AK-24-avril-2023.pdf', {}, 0, app_renaissance_host) }}" class="hover:underline">
                 Règlement Intérieur
             </a>
             <a href="https://parti-renaissance.fr/cellule-alerte" class="hover:underline">

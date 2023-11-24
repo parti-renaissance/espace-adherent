@@ -186,7 +186,7 @@ class AdhesionControllerTest extends AbstractRenaissanceWebTestCase
         }
 
         $callbackUrl = $crawler->filter('td#ticketCell div.textCenter a')->attr('href');
-        $callbackUrlRegExp = 'http://'.$this->getParameter('renaissance_host').'/adhesion/callback/(.+)'; // token
+        $callbackUrlRegExp = 'http://'.$this->getParameter('app_renaissance_host').'/adhesion/callback/(.+)'; // token
         $callbackUrlRegExp .= '\?id=(.+)_john-smith';
         $callbackUrlRegExp .= '&authorization=XXXXXX&result=00000';
         $callbackUrlRegExp .= '&transaction=(\d+)&amount=3075&date=(\d+)&time=(.+)';

@@ -22,7 +22,7 @@
 
                 <div class="flex items-center justify-between text-base !text-gray-500">
                     {% if candidate_group.mediaFilePath %}
-                        <a href="{{ path('asset_url', { path: candidate_group.mediaFilePath, app_domain: renaissance_host }) }}" class="inline-flex items-center !hover:text-re-blue-400" target="_blank">
+                        <a href="{{ path('asset_url', { path: candidate_group.mediaFilePath, app_domain: app_renaissance_host }) }}" class="inline-flex items-center !hover:text-re-blue-400" target="_blank">
                             {% include 'icons/download.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' }  %}
                             Profession de foi
                         </a>
@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="mt-5 md:mt-4 md:flex md:flex-row-reverse">
                                     {% if candidate_group.mediaFilePath %}
-                                        <a href="{{ path('asset_url', { path: candidate_group.mediaFilePath, app_domain: renaissance_host }) }}" class="inline-flex w-full justify-center rounded-md border border-transparent bg-re-blue-600 px-4 py-2 text-base font-medium !text-white shadow-sm hover:bg-re-blue-700 focus:outline-none focus:ring-2 focus:ring-re-blue-500 focus:ring-offset-2 md:ml-3 md:w-auto md:text-sm" target="_blank">
+                                        <a href="{{ path('asset_url', { path: candidate_group.mediaFilePath, app_domain: app_renaissance_host }) }}" class="inline-flex w-full justify-center rounded-md border border-transparent bg-re-blue-600 px-4 py-2 text-base font-medium !text-white shadow-sm hover:bg-re-blue-700 focus:outline-none focus:ring-2 focus:ring-re-blue-500 focus:ring-offset-2 md:ml-3 md:w-auto md:text-sm" target="_blank">
                                             {% include 'icons/download.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' }  %}
                                             Profession de foi
                                         </a>

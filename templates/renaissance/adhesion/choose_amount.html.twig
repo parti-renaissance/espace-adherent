@@ -52,7 +52,7 @@
                 <div class="form__checkbox">
                     {{ form_widget(form.conditions, { attr: { class: 'form-checkbox form-checkbox-green' }}) }}
                     <label for="{{ form.conditions.vars.id }}" class="required">
-                        Oui, j'adhère <a class="underline font-bold" href="{{ path('asset_url', {path: 'statuts-renaissance.pdf', mime_type: 'application/pdf', app_domain: renaissance_host}) }}" target="_blank">aux statuts</a> et <a class="underline font-bold" href="{{ path('asset_url', {path: 'corpus-des-valeurs-parti-renaissance.pdf', mime_type: 'application/pdf', app_domain: renaissance_host}) }}" target="_blank">au Corpus des Valeurs de Renaissance</a>
+                        Oui, j'adhère <a class="underline font-bold" href="{{ path('asset_url', {path: 'statuts-renaissance.pdf', mime_type: 'application/pdf', app_domain: app_renaissance_host}) }}" target="_blank">aux statuts</a> et <a class="underline font-bold" href="{{ path('asset_url', {path: 'corpus-des-valeurs-parti-renaissance.pdf', mime_type: 'application/pdf', app_domain: app_renaissance_host}) }}" target="_blank">au Corpus des Valeurs de Renaissance</a>
                     </label>
                 </div>
 
@@ -60,7 +60,7 @@
                 <div class="form__checkbox">
                     {{ form_widget(form.cguAccepted, { attr: { class: 'form-checkbox form-checkbox-green' }}) }}
                     <label for="{{ form.cguAccepted.vars.id }}" class="required">
-                        J’accepte les <a class="underline font-bold" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}" target="_blank">CGU du site Renaissance</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'politique-de-protection-des-donnees', app_domain: renaissance_host}) }}" class="underline font-bold" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations relatives au traitement de mes données ci-dessous
+                        J’accepte les <a class="underline font-bold" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: app_renaissance_host}) }}" target="_blank">CGU du site Renaissance</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'politique-de-protection-des-donnees', app_domain: app_renaissance_host}) }}" class="underline font-bold" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations relatives au traitement de mes données ci-dessous
                     </label>
                 </div>
 

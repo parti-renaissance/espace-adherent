@@ -28,7 +28,7 @@
                             </button>
                             {% if group.hasFaithStatementFile() %}
                                 <span aria-hidden="true">·</span>
-                                <a href="{{ path('asset_url', { path: group.getFaithStatementFilePath(), app_domain: renaissance_host }) }}" class="text-sm flex items-center hover:text-re-blue-400" target="_blank">
+                                <a href="{{ path('asset_url', { path: group.getFaithStatementFilePath(), app_domain: app_renaissance_host }) }}" class="text-sm flex items-center hover:text-re-blue-400" target="_blank">
                                     {% include 'icons/download.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' }  %}
                                     Profession de foi
                                 </a>

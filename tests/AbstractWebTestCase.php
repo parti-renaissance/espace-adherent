@@ -42,6 +42,6 @@ abstract class AbstractWebTestCase extends WebTestCase
 
     protected function makeRenaissanceClient(): void
     {
-        $this->client->setServerParameter('HTTP_HOST', self::$container->getParameter('renaissance_host'));
+        $this->client->setServerParameter('HTTP_HOST', self::$container->getParameter('app_renaissance_host'));
     }
 }

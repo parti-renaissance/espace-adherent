@@ -17,7 +17,7 @@ class DonationController extends AbstractDonationController
         $command = $this->getCommand();
 
         if (!$this->processor->canChooseDonationAmount($command)) {
-            return $this->redirectToRoute('app_renaissance_homepage');
+            return $this->redirectToRoute('renaissance_site');
         }
 
         $this->processor->doChooseDonationAmount($command);

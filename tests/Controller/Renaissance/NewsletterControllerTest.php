@@ -39,10 +39,6 @@ class NewsletterControllerTest extends AbstractRenaissanceWebTestCase
             ],
         ]));
 
-        $crawler = $this->client->followRedirect();
-
-        self::assertStringContainsString('Merci pour votre inscription !', $crawler->filter('div[role="alert"]')->text());
-
         $entities = $this->getEntityManager()->getRepository(NewsletterSubscription::class)->findAll();
         self::assertCount(1, $entities);
 

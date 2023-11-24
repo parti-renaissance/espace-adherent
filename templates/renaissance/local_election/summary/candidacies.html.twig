@@ -52,7 +52,7 @@
                 {% for candidaciesGroup in election.candidaciesGroups %}
                     <div class="border border-gray-300 rounded-md p-4 md:p-5">
                         <h3 class="text-lg font-medium text-gray-900">Liste #{{ loop.index }}</h3>
-                        <a class="inline-flex items-center mt-1 text-re-blue-500 hover:text-re-blue-600" href="{{ path('asset_url', { path: candidaciesGroup.getFaithStatementFilePath(), app_domain: renaissance_host }) }}">
+                        <a class="inline-flex items-center mt-1 text-re-blue-500 hover:text-re-blue-600" href="{{ path('asset_url', { path: candidaciesGroup.getFaithStatementFilePath(), app_domain: app_renaissance_host }) }}">
                             {% include 'icons/download.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
                             Télécharger la profession de foi
                         </a>

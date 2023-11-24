@@ -28,7 +28,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -89,7 +88,7 @@ class UserController extends AbstractController
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirectToRoute('renaissance_site');
         }
 
         $form = $this->createForm(AdherentChangePasswordType::class);
@@ -133,7 +132,7 @@ class UserController extends AbstractController
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirectToRoute('renaissance_site');
         }
 
         $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
@@ -183,7 +182,7 @@ class UserController extends AbstractController
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirectToRoute('renaissance_site');
         }
 
         $unregistrationCommand = new UnregistrationCommand();

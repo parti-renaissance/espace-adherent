@@ -24,7 +24,7 @@ class LocalPollElectionController extends AbstractController
         }
 
         if (!$designations) {
-            return $this->redirectToRoute('app_renaissance_homepage');
+            return $this->redirectToRoute('app_renaissance_adherent_space');
         }
 
         return $this->render('renaissance/local_election/local_poll_index.html.twig', [

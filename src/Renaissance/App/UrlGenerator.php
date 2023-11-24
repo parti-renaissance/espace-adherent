@@ -27,16 +27,16 @@ class UrlGenerator extends AbstractAppUrlGenerator
 
     public function generateHomepageLink(): string
     {
-        return $this->urlGenerator->generate('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->urlGenerator->generate('renaissance_site', [], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     public function generateForLoginSuccess(Adherent $adherent): string
     {
-        if ($adherent->isRenaissanceUser()) {
-            return $this->urlGenerator->generate('app_renaissance_adherent_space');
+        if (!$adherent->isRenaissanceUser()) {
+            return $this->urlGenerator->generate('app_renaissance_adhesion');
         }
 
-        return $this->generateHomepageLink();
+        return $this->urlGenerator->generate('app_renaissance_adherent_space');
     }
 
     public function generateSuccessResetPasswordLink(Request $request): string

@@ -32,7 +32,7 @@ app_user_login_check:
     defaults:
         app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%jemengage_auth_host%|%renaissance_host%"
+        app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%"
 
 logout:
     host: "{app_domain}"
@@ -42,7 +42,7 @@ logout:
     defaults:
         app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%jemengage_auth_host%|%renaissance_host%"
+        app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%"
 
 app_adherent_reset_password:
     host: "{app_domain}"
@@ -52,7 +52,7 @@ app_adherent_reset_password:
     defaults:
         app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%jemengage_auth_host%|%renaissance_host%"
+        app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%"
 
 app_jemengage:
     host: '%jemengage_auth_host%'
@@ -69,7 +69,7 @@ app_assets:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%renaissance_host%"
+        app_domain: "%app_host%|%app_renaissance_host%"
 
 #
 # Mooc
@@ -97,7 +97,7 @@ app_api:
         _format: 'json'
         app_domain: "%api_renaissance_host%"
     requirements:
-        app_domain: "%app_host%|%renaissance_host%|%api_renaissance_host%"
+        app_domain: "%app_host%|%app_renaissance_host%|%api_renaissance_host%"
 
 api_login_check:
     path: "%api_path_prefix%/login_check"
@@ -126,7 +126,7 @@ app_legislatives_api:
         _format: 'json'
         app_domain: "%legislatives_host%"
     requirements:
-        app_domain: "%app_host%|%legislatives_host%|%renaissance_host%"
+        app_domain: "%app_host%|%legislatives_host%|%app_renaissance_host%"
 
 #
 # OAuth
@@ -139,24 +139,24 @@ app_oauth:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%renaissance_host%|%api_renaissance_host%|%jemengage_auth_host%"
+        app_domain: "%app_host%|%app_renaissance_host%|%api_renaissance_host%|%jemengage_auth_host%"
 
 #
 # Admin panel
 #
 admin_dashboard:
-    host:     "%renaissance_host%"
+    host:     "%app_renaissance_host%"
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
     prefix:   "/admin"
 
 admin_crud:
-    host:     "%renaissance_host%"
+    host:     "%app_renaissance_host%"
     resource: .
     type:     sonata_admin
     prefix:   "/admin"
 
 app_admin:
-    host:     "%renaissance_host%"
+    host:     "%app_renaissance_host%"
     resource: "../src/Controller/Admin"
     type:     "annotation"
     prefix:   "/admin"
@@ -167,9 +167,9 @@ lexik_paybox_ipn_bc:
     controller: lexik_paybox.controller.default
     methods: [ GET, POST ]
     defaults:
-        app_domain: "%renaissance_host%"
+        app_domain: "%app_renaissance_host%"
     requirements:
-        app_domain: "%app_host%|%renaissance_host%"
+        app_domain: "%app_host%|%app_renaissance_host%"
 
 lexik_paybox_ipn:
     host: "%webhook_renaissance_host%"
@@ -234,7 +234,7 @@ app_redirect_inscription:
         permanent: true
 
 app_renaissance_adherent_space:
-    host: "%renaissance_host%"
+    host: "%app_renaissance_host%"
     path: /espace-adherent
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
@@ -272,7 +272,7 @@ app_api_intl:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%procuration_host%|%renaissance_host%"
+        app_domain: "%app_host%|%procuration_host%|%app_renaissance_host%"
 
 app_nous_reussirons:
     host:     "%nous_reussirons_host%"
@@ -280,20 +280,24 @@ app_nous_reussirons:
     methods:  GET
     defaults: { _controller: App\Controller\EnMarche\PageController:showPageAction, slug: 'nous-reussirons' }
 
+renaissance_site:
+    host: "%renaissance_host%"
+    path: "/"
+
 app_renaissance:
-    host:   "%renaissance_host%"
+    host:   "%app_renaissance_host%"
     resource: "../src/Controller/Renaissance"
     type: "annotation"
 
 app_renaissance_login:
-    host: "%renaissance_host%"
+    host: "%app_renaissance_host%"
     path: "/connexion"
     controller: App\Controller\EnMarche\Security\SecurityController::loginAction
     defaults:
         app: renaissance
 
 app_renaissance_forgot_password:
-    host: "%renaissance_host%"
+    host: "%app_renaissance_host%"
     path: "/mot-de-passe-oublie"
     controller: App\Controller\EnMarche\Security\SecurityController::retrieveForgotPasswordAction
     defaults:
@@ -307,7 +311,7 @@ user_validate_new_email:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%renaissance_host%"
+        app_domain: "%app_host%|%app_renaissance_host%"
         "adherent_uuid": "%pattern_uuid%"
         "change_email_token": "%pattern_sha1%"
 
@@ -325,7 +329,7 @@ app_api_form_validation:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%renaissance_host%"
+        app_domain: "%app_host%|%app_renaissance_host%"
 
 app_api_resubscribe_email:
     host: "{app_domain}"
@@ -335,7 +339,7 @@ app_api_resubscribe_email:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%renaissance_host%"
+        app_domain: "%app_host%|%app_renaissance_host%"
 
 app_api_user_show_me:
     host: "{app_domain}"
@@ -345,7 +349,7 @@ app_api_user_show_me:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%renaissance_host%"
+        app_domain: "%app_host%|%app_renaissance_host%"
 
 app_article:
     host: "{app_domain}"
@@ -354,7 +358,7 @@ app_article:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%renaissance_host%"
+        app_domain: "%app_host%|%app_renaissance_host%"
 
 app_profile:
     host: "{app_domain}"
@@ -363,7 +367,7 @@ app_profile:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%renaissance_host%"
+        app_domain: "%app_host%|%app_renaissance_host%"
 
 app_certification:
     host: "{app_domain}"
@@ -372,7 +376,7 @@ app_certification:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%renaissance_host%"
+        app_domain: "%app_host%|%app_renaissance_host%"
 
 # This route must be loaded the last to prevent an override
 app_static_page:
@@ -384,4 +388,4 @@ app_static_page:
         app_domain: "%app_host%"
     requirements:
         slug: .+
-        app_domain: "%app_host%|%renaissance_host%"
+        app_domain: "%app_host%|%app_renaissance_host%"
