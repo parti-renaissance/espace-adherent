@@ -73,7 +73,7 @@ class ReferentControllerTest extends AbstractEnMarcheWebTestCase
         $data = [];
 
         $this->client->submit($this->client->getCrawler()->selectButton('Enregistrer')->form(), $data);
-        $this->assertSame(5, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(6, $this->client->getCrawler()->filter('.form__errors')->count());
 
         $this->assertSame('Cette valeur ne doit pas être vide.',
             $this->client->getCrawler()->filter('#event-name-field > .form__errors > li')->text());

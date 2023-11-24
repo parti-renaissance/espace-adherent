@@ -1,3 +1,11 @@
+form[name="app_renaissance_membership"] {
+    .form-group {
+        input, select {
+            font-size: 1rem;
+        }
+    }
+}
+
 .mention-checkbox-container {
     .form__checkbox {
         label {
