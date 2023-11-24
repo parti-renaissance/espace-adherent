@@ -1,6 +1,6 @@
 {% if object.enabled and is_granted('ROLE_ALLOWED_TO_SWITCH') %}
     <li>
-        <a href="{{ path(object.isRenaissanceUser() ? 'app_renaissance_adherent_space' : 'app_renaissance_homepage', {'_switch_user': object.emailAddress}) }}" class="sonata-action-element" title="Impersonnifier">
+        <a href="{{ path(object.isRenaissanceUser() ? 'app_renaissance_adherent_space' : 'app_renaissance_adhesion', {'_switch_user': object.emailAddress}) }}" class="sonata-action-element" title="Impersonnifier">
             <i class="fa fa-user-secret" aria-hidden="true"></i>
             Impersonnifier site Renaissance
         </a>
@@ -9,7 +9,7 @@
     {% if is_granted(constant('App\\Security\\Voter\\DataCornerVoter::DATA_CORNER'), object) %}
         <li>
             <a href="{{ path('app_front_oauth_authorize', {
-                app_domain: renaissance_host,
+                app_domain: app_renaissance_host,
                 '_switch_user': object.emailAddress,
                 response_type: 'code',
                 client_id: get_jme_client_id(),

@@ -31,7 +31,7 @@ class CertificationRequestController extends AbstractController
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirectToRoute('renaissance_site');
         }
 
         return $this->render(AppCodeEnum::isRenaissanceApp($appCode)
@@ -58,7 +58,7 @@ class CertificationRequestController extends AbstractController
         }
 
         if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirect($this->generateUrl('app_renaissance_adherent_space', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         if (!$this->isGranted(CertificationPermissions::REQUEST)) {

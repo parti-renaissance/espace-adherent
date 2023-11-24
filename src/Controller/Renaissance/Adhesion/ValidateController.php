@@ -38,7 +38,7 @@ class ValidateController extends AbstractController
 
             $this->addFlash('error', 'Une erreur s\'est produite.');
 
-            return $this->redirectToRoute('app_renaissance_homepage');
+            return $this->redirectToRoute('app_renaissance_adhesion');
         }
 
         // Step 2 : connect existing adherent

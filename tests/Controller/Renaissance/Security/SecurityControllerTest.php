@@ -46,9 +46,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(
-            $isRenaissanceUser
-                ? '/espace-adherent'
-                : 'http://renaissance.code/',
+            $isRenaissanceUser ? '/espace-adherent' : '/adhesion',
             $this->client
         );
         $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
@@ -59,15 +57,15 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         if ($isRenaissanceUser) {
             $this->assertSame($fullName, trim($crawler->filter('h6')->first()->text()));
+
+            $this->client->followRedirects(false);
+            $this->client->click($crawler->selectLink('Me déconnecter')->link());
+            $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+            $this->assertClientIsRedirectedTo('http://parti-renaissance.fr/', $this->client);
+
+            $crawler = $this->client->followRedirect();
+            $this->assertSame(0, $crawler->selectLink($fullName)->count());
         }
-
-        $this->client->followRedirects(false);
-        $this->client->click($crawler->selectLink('Me déconnecter')->link());
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('http://renaissance.code/', $this->client);
-
-        $crawler = $this->client->followRedirect();
-        $this->assertSame(0, $crawler->selectLink($fullName)->count());
     }
 
     public static function getAdherentEmails(): array
@@ -222,7 +220,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         ]);
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(RenaissanceResetPasswordConfirmationMessage::class, 'michelle.dufour@example.ch'), 'A confirmation email should have been sent.');
-        $this->assertClientIsRedirectedTo('http://renaissance.code/', $this->client);
+        $this->assertClientIsRedirectedTo('http://parti-renaissance.fr/', $this->client);
 
         $this->client->followRedirect();
 

@@ -102,7 +102,7 @@ class PaymentController extends AbstractDonationController
         $adherent = $this->getUser();
 
         if (!$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirectToRoute('renaissance_site');
         }
 
         $donations = $donationRepository->findAllSubscribedDonationByEmail($adherent->getEmailAddress());

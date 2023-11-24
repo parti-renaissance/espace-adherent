@@ -8,7 +8,6 @@ use App\Repository\DonationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route(path: '/espace-adherent/mes-dons', name: 'app_my_donations_show_list', methods: ['GET'])]
 class ShowMyDonationsListController extends AbstractController
@@ -19,7 +18,7 @@ class ShowMyDonationsListController extends AbstractController
         $adherent = $this->getUser();
 
         if (!$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirectToRoute('renaissance_site');
         }
 
         return $this->render('renaissance/adherent/my_donations/list.html.twig', [

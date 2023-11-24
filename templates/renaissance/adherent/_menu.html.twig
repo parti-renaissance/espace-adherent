@@ -39,14 +39,14 @@
 
 {% if is_granted('RENAISSANCE_ADHERENT') %}
     <div>
-        <a href="{{ path('app_renaissance_adherent_formation_list') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_renaissance_adherent_formation_list', { app_domain: renaissance_host }) ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
+        <a href="{{ path('app_renaissance_adherent_formation_list') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_renaissance_adherent_formation_list', { app_domain: app_renaissance_host }) ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
             {% include 'icons/academic.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
             Formations
         </a>
     </div>
 
     <div>
-        <a href="{{ path('app_renaissance_consultation_list') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_renaissance_consultation_*', { app_domain: renaissance_host }) ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
+        <a href="{{ path('app_renaissance_consultation_list') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_renaissance_consultation_*', { app_domain: app_renaissance_host }) ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
             {% include 'icons/clipboard-document.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
             Consultations
         </a>
@@ -94,17 +94,17 @@
             </a>
         </li>
         <li>
-            <a href="{{ path('app_user_change_password', { app_domain: renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_user_change_password') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+            <a href="{{ path('app_user_change_password', { app_domain: app_renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_user_change_password') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
                 Mot de passe
             </a>
         </li>
         <li>
-            <a href="{{ path('app_user_set_email_notifications', { app_domain: renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_user_set_email_notifications') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+            <a href="{{ path('app_user_set_email_notifications', { app_domain: app_renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_user_set_email_notifications') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
                 Communication
             </a>
         </li>
         <li>
-            <a href="{{ path('app_certification_request_home', { app_domain: renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_certification_request_*') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+            <a href="{{ path('app_certification_request_home', { app_domain: app_renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_certification_request_*') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
                 Certification
             </a>
         </li>

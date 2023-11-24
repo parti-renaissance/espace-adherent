@@ -16,7 +16,7 @@
                         </button>
                         <!-- Logo section -->
                         <div class="flex items-center px-4 lg:px-0">
-                            <a href="{{ path('app_renaissance_homepage') }}" class="shrink-0">
+                            <a href="{{ path('renaissance_site') }}" class="shrink-0">
                                 <!-- Logo Renaissance Texte -->
                                 {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-6 w-auto text-white hidden md:block' } %}
                                 <!-- Logo Renaissance Icon -->
@@ -28,7 +28,7 @@
                     <!-- Links section -->
                     <div class="flex items-center space-x-5 md:space-x-4 justify-end">
                         <div class="flex">
-                            <a href="{{ path('app_renaissance_homepage') }}" class="inline-flex items-center rounded-md text-re-blue-100 hover:text-white">
+                            <a href="//{{ renaissance_host }}" class="inline-flex items-center rounded-md text-re-blue-100 hover:text-white">
                                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
                                 </svg>
@@ -73,13 +73,13 @@
                                 </div>
                                 <div class="py-1" role="none">
                                     <a href="{{ path('app_renaissance_adherent_profile') }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Mon compte</a>
-                                    <a href="{{ path('app_certification_request_home', { app_domain: renaissance_host }) }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Certification</a>
+                                    <a href="{{ path('app_certification_request_home', { app_domain: app_renaissance_host }) }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Certification</a>
                                 </div>
                                 <div class="py-1" role="none">
                                     {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                         <a href="{{ path('admin_app_adherent_list', {'_switch_user': '_exit'}) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Quitter l'impersonnification</a>
                                     {% else %}
-                                        <a href="{{ path('logout', { app_domain: renaissance_host }) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Me déconnecter</a>
+                                        <a href="{{ path('logout', { app_domain: app_renaissance_host }) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Me déconnecter</a>
                                     {% endif %}
                                 </div>
                             </div>

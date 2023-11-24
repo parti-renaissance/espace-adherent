@@ -33,7 +33,7 @@ class AppContext extends RawMinkContext
 
             $paramName = match ($renaissanceTag) {
                 self::TAG_RENAISSANCE_API => 'api_renaissance_host',
-                default => 'renaissance_host',
+                default => 'app_renaissance_host',
             };
 
             $baseUrl = $diContext->getParameter($paramName);

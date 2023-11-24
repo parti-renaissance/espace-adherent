@@ -366,13 +366,13 @@
 {% block side_bar_after_nav %}
     <ul class="sidebar-menu">
         <li>
-            <a href="{{ path('app_renaissance_homepage') }}">
+            <a href="{{ path('renaissance_site') }}">
                 <i class="fa fa-reply"></i>
                 <span>Retour au site</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('logout', { app_domain: renaissance_host }) }}">
+            <a href="{{ path('logout', { app_domain: app_renaissance_host }) }}">
                 <i class="fa fa-sign-out"></i>
                 <span>Déconnexion</span>
             </a>

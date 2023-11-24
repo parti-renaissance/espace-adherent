@@ -840,15 +840,15 @@
         <div class="form-group">
             <label>URL</label>
             <div class="sonata-ba-field">
-                <input class="form-control" readonly="readonly" type="text" value="{{ url('asset_url', {path: candidacies_group.getFaithStatementFilePath(), app_domain: renaissance_host}) }}" />
+                <input class="form-control" readonly="readonly" type="text" value="{{ url('asset_url', {path: candidacies_group.getFaithStatementFilePath(), app_domain: app_renaissance_host}) }}" />
             </div>
         </div>
 
         <div>
-            <object type="application/pdf" data="{{ path('asset_url', {path: candidacies_group.getFaithStatementFilePath(), app_domain: renaissance_host}) }}" style="width:100%;height:100vh;max-height:700px">
+            <object type="application/pdf" data="{{ path('asset_url', {path: candidacies_group.getFaithStatementFilePath(), app_domain: app_renaissance_host}) }}" style="width:100%;height:100vh;max-height:700px">
                 <div style="background: #2e2e2e;color:white;text-align:center;padding: 20px 0">
                     <p>Il semble que votre navigateur ne peut pas afficher ce fichier.</p>
-                    <p>Vous pouvez le télécharger en <a href="{{ url('asset_url', {path: candidacies_group.getFaithStatementFilePath(), app_domain: renaissance_host}) }}" target="_blank">cliquant ici</a>.</p>
+                    <p>Vous pouvez le télécharger en <a href="{{ url('asset_url', {path: candidacies_group.getFaithStatementFilePath(), app_domain: app_renaissance_host}) }}" target="_blank">cliquant ici</a>.</p>
                 </div>
             </object>
         </div>
@@ -999,7 +999,7 @@
 
     {% if general_meeting_report.hasFilePath() %}
         <div>
-            <object type="{{ get_asset_mime_type(general_meeting_report.getFilePath()) }}" data="{{ path('asset_url', {path: general_meeting_report.getFilePath(), app_domain: renaissance_host}) }}" style="width:100%;height:100vh;max-height:700px">
+            <object type="{{ get_asset_mime_type(general_meeting_report.getFilePath()) }}" data="{{ path('asset_url', {path: general_meeting_report.getFilePath(), app_domain: app_renaissance_host}) }}" style="width:100%;height:100vh;max-height:700px">
                 <div style="background: #2e2e2e;color:white;text-align:center;padding: 20px 0">
                     <p>Il semble que votre navigateur ne peut pas afficher ce fichier.</p>
                 </div>

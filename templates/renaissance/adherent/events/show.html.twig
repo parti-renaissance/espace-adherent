@@ -57,7 +57,7 @@
                 <div class="aspect-w-4 aspect-h-2">
                     {% if event is defined and event.imageName is not empty %}
                         <img class="object-cover shadow-lg rounded-lg"
-                             src="{{ path('asset_url', { path: event.imagePath, app_domain: renaissance_host }) }}" alt="photo">
+                             src="{{ path('asset_url', { path: event.imagePath, app_domain: app_renaissance_host }) }}" alt="photo">
                     {% else %}
                         <div
                             class="bg-gray-100 rounded-lg border border-gray-200 w-full h-auto flex items-center justify-center">

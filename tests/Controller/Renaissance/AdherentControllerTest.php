@@ -59,7 +59,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         $this->client->request(Request::METHOD_GET, $profilePage);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('http://renaissance.code/', $this->client, false);
+        $this->assertClientIsRedirectedTo('//parti-renaissance.fr/', $this->client);
     }
 
     public static function provideProfilePage(): \Generator
@@ -356,7 +356,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
 
         $crawler = $this->client->submit($crawler->selectButton('Je confirme la suppression de mon adhésion')->form());
 
-        $this->assertEquals('http://'.$this->getParameter('renaissance_host').'/parametres/mon-compte/desadherer', $this->client->getRequest()->getUri());
+        $this->assertEquals('http://'.$this->getParameter('app_renaissance_host').'/parametres/mon-compte/desadherer', $this->client->getRequest()->getUri());
 
         $errors = $crawler->filter('.re-form-error');
 

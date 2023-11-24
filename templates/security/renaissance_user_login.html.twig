@@ -11,7 +11,7 @@
 {% block content_right_side %}
     <section class="flex items-center justify-center flex-grow p-5">
         <div class="w-96">
-            {{ form_start(form, { action: path('app_user_login_check', { app_domain: renaissance_host }) }) }}
+            {{ form_start(form, { action: path('app_user_login_check', { app_domain: app_renaissance_host }) }) }}
                 {% if error %}
                     <div class="py-3 text-red-400">
                         {{- error.messageKey|trans(error.messageData)|raw -}}

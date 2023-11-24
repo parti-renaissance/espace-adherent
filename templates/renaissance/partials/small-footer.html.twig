@@ -1,5 +1,5 @@
 <div class="flex bg-dark-blue justify-center py-15">
-    <a href="{{ path('app_renaissance_homepage') }}" class="h-9">
+    <a href="{{ path('renaissance_site') }}" class="h-9">
         <img
             src="{{ asset('/images/renaissance/logo.svg') }}"
             class="h-full"
@@ -8,13 +8,13 @@
     </a>
 </div>
 <div class="flex flex-col md:flex-row bg-dark-blue items-center md:justify-center gap-x-7 pb-12 md:py-6 text-white text-sm">
-    <a href="{{ path('app_static_page', {slug: 're-mentions-legales', app_domain: renaissance_host}) }}">
+    <a href="{{ path('app_static_page', {slug: 're-mentions-legales', app_domain: app_renaissance_host}) }}">
         Mentions légales
     </a>
-    <a href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}">
+    <a href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: app_renaissance_host}) }}">
         CGU
     </a>
-    <a href="{{ path('app_static_page', {slug: 'politique-de-protection-des-donnees', app_domain: renaissance_host}) }}">
+    <a href="{{ path('app_static_page', {slug: 'politique-de-protection-des-donnees', app_domain: app_renaissance_host}) }}">
         Données personnelles
     </a>
     <a href="https://contact.parti-renaissance.fr">

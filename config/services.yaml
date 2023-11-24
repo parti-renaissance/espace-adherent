@@ -21,6 +21,7 @@ parameters:
     assessor_host:                        "%env(ASSESSOR_HOST)%"
     legislatives_avecvous_host:           "%env(LEGISLATIVES_AVECVOUS_HOST)%"
     renaissance_host:                     "%env(RENAISSANCE_HOST)%"
+    app_renaissance_host:                 "%env(APP_RENAISSANCE_HOST)%"
     webhook_renaissance_host:             "%env(WEBHOOK_RENAISSANCE_HOST)%"
     api_renaissance_host:                 "%env(API_RENAISSANCE_HOST)%"
     renaissance_qrcode_host:              "%env(RENAISSANCE_QRCODE_HOST)%"
@@ -64,7 +65,7 @@ services:
             $renaissanceWebhookKey: '%env(RENAISSANCE_WEBHOOK_KEY)%'
             $enableAssessorSpace: '%env(bool:ENABLE_ASSESSOR_SPACE)%'
             $timelineMaxItems: '%timeline_max_messages%'
-            $renaissanceHost: '%renaissance_host%'
+            $renaissanceHost: '%app_renaissance_host%'
             $jemengageHost: '%jemengage_host%'
             $jemengageAuthHost: '%jemengage_auth_host%'
             $avecvousHost: '%avecvous_host%'
