@@ -50,6 +50,10 @@ class Main {
         import('pages/adhesion_amount_page').catch((error) => { throw error; }).then((module) => module.default());
     }
 
+    runAdhesionPage() {
+        import('pages/adhesion_page').catch((error) => { throw error; }).then((module) => module.default());
+    }
+
     runMailchimpResubscribeEmail({
         redirectUrl = null, signupPayload = null, authenticated = true, callback = null,
     }) {

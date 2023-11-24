@@ -1,0 +1,16 @@
+ol.breadcrumb {
+    @apply flex justify-between;
+
+    li {
+        position: relative;
+
+        &::after {
+            position: absolute;
+            content: 'X';
+            bottom: -100%;
+            left: 50%;
+            background: $light-blue;
+            border-radius: 50%;
+        }
+    }
+}

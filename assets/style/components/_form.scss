@@ -1,4 +1,45 @@
 form {
+    .form-control {
+        @apply border-0 w-full bg-gray text-dark-blue font-medium text-sm placeholder:text-dark-blue placeholder:font-medium focus:ring-0 p-0;
+
+        & option {
+            color: black;
+        }
+    }
+
+    .form-checkbox {
+        @apply h-4 w-4 rounded border-gray-300;
+
+        &-green {
+            @apply text-re-green-600 focus:ring-re-green-500
+        }
+
+        &-blue {
+            @apply text-re-blue-600 focus:ring-re-blue-500
+        }
+    }
+
+    .form-group {
+        @apply flex flex-col gap-x-4 bg-gray w-full rounded-lg border-2 border-gray/20 focus-within:border-dark-blue px-4 py-3 mb-4;
+
+        label {
+            font-size: small;
+            font-weight: 500;
+            text-transform: uppercase;
+            color: theme('colors.re.blue.500');
+        }
+
+        &:focus-within {
+            label {
+                color: theme('colors.dark-blue');
+            }
+        }
+
+        &.custom-amount-donation {
+            padding: 0.75rem 3rem;
+        }
+    }
+
     label {
         cursor: pointer;
 
@@ -49,6 +90,18 @@ form {
         & + label {
             cursor: not-allowed;
             color: $disable-grey;
+        }
+    }
+
+    .form-field-wrapper {
+        @apply mb-8;
+
+        .form-field {
+            @apply px-3 py-2 bg-white border shadow-sm border-gray-300 placeholder-slate-400 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md focus:ring-1 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 disabled:shadow-none;
+
+            &::placeholder {
+                @apply font-bold text-black;
+            }
         }
     }
 }
