@@ -2,6 +2,7 @@
 
 namespace App\Controller\Renaissance\Adhesion;
 
+use App\Entity\Adherent;
 use App\Form\Renaissance\Adhesion\PersonalInfoType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,11 @@ class AdhesionController extends AbstractAdhesionController
 {
     public function __invoke(Request $request): Response
     {
+        /** @var Adherent $user */
+        if (($user = $this->getUser()) && $user->isRenaissanceUser()) {
+            return $this->redirectToRoute('app_renaissance_adherent_space');
+        }
+
         $command = $this->getCommand($request);
         $command->setRecaptcha($request->request->get('frc-captcha-solution'));
 
