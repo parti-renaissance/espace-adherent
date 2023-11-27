@@ -1,0 +1,72 @@
+
+[data-tippy-root] {
+  max-width: calc(100vw - 10px)
+}
+
+
+.tippy-box[data-theme~='re'] {
+  @apply rounded-lg flex-col justify-center items-center gap-2.5 min-w-[100px] min-h-[80px] bg-white border-ui_gray-30 border shadow-xl text-ui_gray-80 p-6;
+  &[data-placement^='bottom'] {
+    @apply -mr-5;
+    & > .tippy-arrow {
+      left: -10px !important;
+
+      &::before {
+        @apply border -z-10;
+        border-bottom-color: white;
+        border-right-color: white;
+        top: -6px;
+        transform-origin: center;
+      }
+    }
+  }
+
+  &[data-placement^='top'] > .tippy-arrow {
+    //left: -10px !important;
+
+    &::before {
+      @apply border -z-10;
+      border-top-color: white;
+      border-left-color: white;
+      bottom: -6px;
+      transform-origin: center;
+    }
+  }
+
+  &[data-placement^='left'] > .tippy-arrow {
+
+    &::before {
+      @apply border -z-10;
+      border-bottom-color: white;
+      border-left-color: white;
+      transform-origin: center;
+    }
+  }
+
+  &[data-placement^='right'] {
+    @apply -mt-5;
+    & > .tippy-arrow {
+
+      top: 10px !important;
+
+      &::before {
+        @apply border -z-10;
+        border-top-color: white;
+        border-right-color: white;
+        left: -6px;
+        transform-origin: center;
+      }
+    }
+  }
+
+  & > {
+    .tippy-arrow::before {
+      @apply border-ui_gray-30 block absolute transform rotate-45 bg-white w-full h-full rounded-l-sm;
+    }
+
+    .tippy-arrow {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}

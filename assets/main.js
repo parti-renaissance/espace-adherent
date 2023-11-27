@@ -5,6 +5,7 @@ import amountChooser from './listeners/amount-chooser';
 import addressAutocomplete from './listeners/address-autocomplete';
 import carousel from './listeners/carousel';
 import confirmModal from './listeners/confirm-modal';
+
 import alpine from './listeners/alpine';
 
 class Main {
@@ -43,33 +44,54 @@ class Main {
     }
 
     runDonationPage() {
-        import('pages/donation_page').catch((error) => { throw error; }).then((module) => module.default());
+        import('pages/donation_page').catch((error) => {
+            throw error;
+        })
+            .then((module) => module.default());
     }
 
     runAdhesionAmountPage() {
-        import('pages/adhesion_amount_page').catch((error) => { throw error; }).then((module) => module.default());
+        import('pages/adhesion_amount_page').catch((error) => {
+            throw error;
+        })
+            .then((module) => module.default());
     }
 
     runAdhesionPage() {
-        import('pages/adhesion_page').catch((error) => { throw error; }).then((module) => module.default());
+        import('pages/adhesion_page').catch((error) => {
+            throw error;
+        })
+            .then((module) => module.default());
     }
 
     runMailchimpResubscribeEmail({
-        redirectUrl = null, signupPayload = null, authenticated = true, callback = null,
+        redirectUrl = null,
+        signupPayload = null,
+        authenticated = true,
+        callback = null,
     }) {
-        import('pages/mc_resubscribe_email').catch((error) => { throw error; }).then((module) => module.default(this.get('api'), redirectUrl, signupPayload, authenticated, callback));
+        import('pages/mc_resubscribe_email').catch((error) => {
+            throw error;
+        })
+            .then((module) => module.default(this.get('api'), redirectUrl, signupPayload, authenticated, callback));
     }
 
     runCountdownClock(clockSelector, refreshPage = false) {
-        import('services/utils/countdownClock').catch((error) => { throw error; }).then((module) => {
-            module.default(clockSelector, refreshPage);
-        });
+        import('services/utils/countdownClock').catch((error) => {
+            throw error;
+        })
+            .then((module) => {
+                module.default(clockSelector, refreshPage);
+            });
     }
 
     runDepartmentMapPage() {
-        import('pages/department_map').catch((error) => { throw error; }).then((module) => {
-            module.default();
-        });
+        import('pages/department_map').catch((error) => {
+            throw error;
+        })
+            .then((module) => {
+                module.default();
+            });
     }
 }
 

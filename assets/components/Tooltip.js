@@ -1,10 +1,16 @@
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 
-export default (el, { modifiers, expression }) => {
+export default (el, {
+    modifiers: [placement, theme = ''],
+    expression,
+}) => {
     tippy(el, {
         content: expression,
-        placement: modifiers[0] ?? 'auto',
+        placement: placement ?? 'auto',
+        theme: theme ?? undefined,
+        trigger: 'click',
     });
-    el.classList.add('tooltips');
+    if (theme) return;
+    el.classList.add('tooltip');
 };

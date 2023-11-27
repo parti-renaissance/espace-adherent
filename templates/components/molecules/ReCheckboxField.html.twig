@@ -1,0 +1,45 @@
+{# src/Twig/components/molecules/ReCheckBoxField.php #}
+
+
+<div {{ attributes.only('class') }} x-data="xValidateField({
+		     status: '{{ status is defined ? 'default' }}',
+		     message: '{{ message is defined ? message : '' }}',
+		     validate: {{ validate is defined ? validate : '[]' }},
+		     onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
+		  })">
+    <div class="relative flex-col flex justify-center">
+        <div class="justify-start items-center gap-2.5 inline-flex">
+            <twig:Atoms:ReCheckbox
+                    {{ ...attributes.without('class').all() }}
+                    status="{{ status }}"
+                    x-bind="validateField"
+                    xSyncStatus="status"
+            />
+            <label for="{{ attributes.all().id }}" class="grow shrink basis-0 text-gray-700 text-sm font-normal">
+                {% block content '' %}
+            </label>
+
+            {% if icon is defined %}
+                {% if iconToolTip is defined %}
+                    <twig:Atoms:ReIcon type="{{ icon }}" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
+                {% else %}
+                    <twig:Atoms:ReIcon type="{{ icon }}"/>
+                {% endif %}
+            {% endif %}
+        </div>
+
+    </div>
+    <div class="flex flex-row mt-2.5">
+        <twig:Atoms:ReIcon
+                x-show="status !== 'default' && message"
+                xSyncType="status"
+                class="mr-1"
+        />
+        <twig:Atoms:ReTextStatus
+                x-show="status !== 'default && message'"
+                value="{{ message is defined ? '' }}"
+                type="{{ status }}"
+                xSyncStatus="status"
+                x-text="message"/>
+    </div>
+</div>

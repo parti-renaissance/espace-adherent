@@ -3,53 +3,216 @@
 {% block page_title 'Adhésion' %}
 
 {% block content %}
-    <main style="background: linear-gradient(180deg, #E9F3FF 0%, #4C7BB2 100%);">
+    <main class="bg-[#F4F4F7]">
         <header class="p-10">
             <a href="{{ path('app_renaissance_homepage') }}">
                 <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
             </a>
         </header>
+        <section class="flex flex-col justify-center items-center gap-8">
+            <twig:Atoms:ReCard class="max-w-[540px] !sticky !rounded-t-0">
+                <nav>
+                    <ol class="breadcrumb">
+                        <li>Adresse e-mail</li>
+                        <li>Mes information</li>
+                        <li>Légalités</li>
+                        <li>Montant</li>
+                    </ol>
+                </nav>
+            </twig:Atoms:ReCard>
+            <h2 class="text-center font-bold text-2xl mb-10">
+                Devenez membre de
+                <span class="text-blue-500">Renaissance</span>
+            </h2>
+            <div class="p-6 bg-white bg-opacity-30 rounded-[32px] border border-zinc-200 flex-col justify-start items-start gap-6 inline-flex">
 
-        <div>
-            <nav class="bg-white rounded-2xl w-2/5 p-10 mb-10 mx-auto">
-                <ol class="breadcrumb">
-                    <li>Adresse e-mail</li>
-                    <li>Mes information</li>
-                    <li>Légalités</li>
-                    <li>Montant</li>
-                </ol>
-            </nav>
+                {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
-            <h2 class="text-center font-bold text-2xl mb-10">Devenez membre de <span class="text-blue-500">Renaissance</span></h2>
+                {{ form_start(form) }}
+                <div class="flex gap-8 flex-col">
+                    <twig:Atoms:ReCard class="max-w-[500px]" x-data="stepOne">
+                        <template x-if="generalNotification">
+                            <twig:Atoms:ReParagraphStatus
+                                    xSyncStatus="generalNotification.status"
+                                    x-text="generalNotification.message"/>
+                        </template>
+                        {{ form_row(form.email, {
+                            attr: {
+                                placeholder: 'Adresse mail',
+                                type:'email',
+                                validate:"['required', 'email']",
+                                autocomplete: 'email',
+                                onCheck:"setFieldValid('email')",
+                            }, label: false}) }}
+                        {{ form_row(form.consentDataCollect, {
+                            attr:{
+                                validate: "['required']",
+                                onCheck:"setFieldValid('consentDataCollect')",
+                            }, label: 'Je consent au traitement de mes données personnelles', icon: 'info', iconToolTip:'Lorem ipsum dolor sit amet consectetur. Diam facilisis nulla ut ut diam cursus auctor mauris nunc. Vel sit orci id at mi aliquam tellus bibendum. Non amet lorem massa est. Netus elit mattis fermentum ornare senectus volutpat et. Lorem pellentesque mattis vel hendrerit morbi ultricies enim sollicitudin. Pretium ante duis tempus nulla quis vulputate tellus.Lectus sed curabitur tortor leo faucibus elit commodo ultrices adipiscing. Felis quis convallis praesent odio orci sollicitudin in pulvinar. Sem convallis urna malesuada ante interdum. Ipsum tellus et sapien congue ac leo enim at risus. Ut mattis congue nunc suspendisse quis ante curabitur nibh. Luctus donec morbi commodo lacinia nulla ullamcorper ut vulputate enim.' }) }}
 
-            {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
-
-            {{ form_start(form) }}
-                <div class="flex flex-col justify-center items-center">
-                    <div class="bg-white rounded-2xl w-1/3 p-10">
-                        {{ form_row(form.email, {label: false, attr: {placeholder: 'Adresse mail'}}) }}
-                        {{ form_row(form.consentDataCollect, {label: 'Je consent à l’envoie d’e-mail'}) }}
-
-                        <div class="w-full">
+                        <div class=" mb-4 w-full re-field-frame !h-auto cursor-pointer"
+                             x-on:click="dom('.frc-button').click()">
                             {% include 'renaissance/partials/friendly-captcha.html.twig' %}
                         </div>
-                    </div>
+                        <twig:Molecules:ReButton
+                                color="blue"
+                                value="J'adhère"
+                                class="w-full"
+                                x-on:click="handleOnSubmit($event, $dispatch)"
+                                x-bind:disabled="!Object.values(fieldsValid).every(x=>x)"/>
 
-                    <div class="bg-white rounded-2xl w-1/3 p-10 mt-10">
-                        {{ form_row(form.civility, {label: false}) }}
+                        <p class="text-center">
+                            Vous préférez adhérer par voie postale ?<br/>
+                            Télécharger le formulaire d’adhésion papier !
+                        </p>
+
+                        <div class="flex justify-center items-center">
+                            <twig:Molecules:ReButton
+                                    tag="a"
+                                    href="https://storage.googleapis.com/parti-renaissance.fr/Renaissance-Bulletin-adhesion.pdf"
+                                    target="_blank"
+                                    color="not-fill"
+                                    value="Télécharger"
+                                    class="!w-auto"
+                                    icon="download"
+                            />
+                        </div>
+                        <hr/>
+
+                        <twig:Atoms:ReParagraphStatus status="info">
+                            Une question relative à l’adhésion ? <br>
+                            Écrivez-nous à <a class="text-ui_blue-50" href="mailto:adherents@parti-renaissance.fr">adherents@parti-renaissance.fr</a>
+                        </twig:Atoms:ReParagraphStatus>
+
+                    </twig:Atoms:ReCard>
+
+                    <twig:Atoms:ReCard class="max-w-[500px]" id="step_2">
+                        {{ form_row(form.civility, {label: 'Civilité'}) }}
                         {{ form_row(form.firstName, {label: false, attr: {placeholder: 'Prénom'}}) }}
                         {{ form_row(form.lastName, {label: false, attr: {placeholder: 'Nom'}}) }}
                         {{ form_row(form.address, {label: false}) }}
-                    </div>
+                    </twig:Atoms:ReCard>
 
-                    <div class="bg-white rounded-2xl w-1/3 p-10 mt-10">
+                    <twig:Atoms:ReCard class="max-w-[500px]">
                         {{ form_row(form.amount) }}
                         {{ form_row(form.save) }}
-                    </div>
+                    </twig:Atoms:ReCard>
                 </div>
-                <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}" />
+                <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
+            </div>
             {{ form_end(form) }}
-        </div>
+        </section>
+
+
+        <twig:Atoms:ReCard class=" justify-center">
+            <h1 class="font-bold">Atoms</h1>
+            <div class="flex-row flex gap-8">
+                <twig:Atoms:ReCard variant="inner" class="items-center">
+                    <h1 class="font-bold">Checkbox</h1>
+                    <twig:Atoms:ReCheckbox name="cbr" id="cbr1"/>
+                    <twig:Atoms:ReCheckbox name="cbr" id="cbr2" status="error"/>
+                    <twig:Atoms:ReCheckbox name="cbr" id="cbr3" checked/>
+                    <twig:Atoms:ReCheckbox name="cbr" id="cbr4" disabled/>
+                </twig:Atoms:ReCard>
+
+                <twig:Atoms:ReCard variant="inner" class="items-center">
+                    <h1 class="font-bold">Radio</h1>
+                    <twig:Atoms:ReCheckbox type="radio" name="cbx" id="cbx1"/>
+                    <twig:Atoms:ReCheckbox type="radio" name="cbx" id="cbx2" status="error"/>
+                    <twig:Atoms:ReCheckbox type="radio" name="cbx" id="cbx3" checked/>
+                    <twig:Atoms:ReCheckbox type="radio" name="cbx" id="cbx4" disabled/>
+                </twig:Atoms:ReCard>
+
+                <twig:Atoms:ReCard variant="inner" class=" bg-gradient-to-t from-ui_gray-20">
+                    <h1 class="font-bold">Icons</h1>
+                    {% for key in [ 'success', 'error', 'warning', 'info', 'valid', 'arrow-up', 'arrow-down','arrow-left','arrow-right', 'chevron', 'star', 'star-fill', 'loading' ] %}
+                        <div class="flex justify-between items-center">
+                            <span>{{ key }}</span>
+                            <twig:Atoms:ReIcon type="{{ key }}"/>
+
+                        </div>
+                    {% endfor %}
+                </twig:Atoms:ReCard>
+
+                <twig:Atoms:ReCard variant="inner">
+                    <h1 class="font-bold">FieldFrame</h1>
+
+                    <div class=" justify-between items-center">
+                        <span>default</span>
+                        <twig:Atoms:ReFieldFrame tag="button"/>
+                    </div>
+                    <div class=" justify-between items-center">
+                        <span>disabled</span>
+                        <twig:Atoms:ReFieldFrame tag="button" disabled/>
+                    </div>
+
+                    {% for key in [ 'success', 'error', 'warning', 'valid'] %}
+                        <div class=" justify-between items-center">
+                            <span>{{ key }}</span>
+                            <twig:Atoms:ReFieldFrame tag="button" status="{{ key }}"/>
+                        </div>
+                    {% endfor %}
+                </twig:Atoms:ReCard>
+
+
+                <twig:Atoms:ReCard variant="inner">
+                    <h1 class="font-bold">TextStatus</h1>
+                    {% for key in [ 'success', 'error', 'warning', 'valid', 'default'] %}
+                        <div class=" justify-between items-center">
+                            <twig:Atoms:ReTextStatus status="{{ key }}" value="{{ key }}"/>
+                        </div>
+                    {% endfor %}
+                </twig:Atoms:ReCard>
+
+            </div>
+
+        </twig:Atoms:ReCard>
+
+
+        <twig:Atoms:ReCard class=" justify-center">
+            <h1 class="font-bold">Molecules</h1>
+            <div class="flex-row flex gap-8">
+                <twig:Atoms:ReCard variant="inner">
+                    <h1 class="font-bold">Buttons</h1>
+                    {% for key in [ 'blue', 'green', 'yellow' ] %}
+                        <div>
+                            <twig:Molecules:ReButton color="{{ key }}" value="{{ key }}" class="mb-4"/>
+                            <twig:Molecules:ReButton color="{{ key }}" value="{{ key }}" disabled/>
+                        </div>
+                    {% endfor %}
+                    <div>
+                        <twig:Molecules:ReButton color="blue" value="blue with star icon" icon="star" class="mb-4"/>
+                    </div>
+                </twig:Atoms:ReCard>
+
+                <twig:Atoms:ReCard variant="inner">
+                    <h1 class="font-bold">TextFields</h1>
+                    <twig:Molecules:ReTextField placeholder="default" message="Un message"/>
+                    <twig:Molecules:ReTextField placeholder="default" disabled/>
+                    {% for key in [ 'success', 'error', 'warning', 'loading'] %}
+                        <twig:Molecules:ReTextField status="{{ key }}" placeholder="{{ key }}"
+                                                    message="Une message de type {{ key }}"/>
+                    {% endfor %}
+                </twig:Atoms:ReCard>
+
+
+                <twig:Atoms:ReCard variant="inner">
+                    <h1 class="font-bold">Switch</h1>
+                    <twig:Atoms:ReLinkedToggle>
+                        <twig:Atoms:ReToggleButton id="sw1" value="test" name="ex">
+                            test 1
+                        </twig:Atoms:ReToggleButton>
+                        <twig:Atoms:ReToggleButton id="sw2" value="test" name="ex">
+                            test 2
+                        </twig:Atoms:ReToggleButton>
+                        <twig:Atoms:ReToggleButton id="sw3" value="test" name="ex">
+                            test 3
+                        </twig:Atoms:ReToggleButton>
+                    </twig:Atoms:ReLinkedToggle>
+                </twig:Atoms:ReCard>
+            </div>
+
+        </twig:Atoms:ReCard>
     </main>
 {% endblock %}
 
@@ -61,4 +224,102 @@
             Main.runAdhesionPage();
         });
     </script>
+
+    <script type="text/javascript" defer>
+        // @ts-check
+        // import { captureException } from '@sentry/browser';
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('stepOne', () => ({
+                fieldsValid: {
+                    email: false,
+                    consentDataCollect: false,
+                    captcha: false,
+                },
+                generalNotification: null,
+                captchaToken: null,
+
+                init() {
+                    this.$nextTick(() => {
+                        friendlyChallenge.autoWidget.opts.doneCallback = (token) => {
+                            this.captchaToken = token;
+                            this.fieldsValid.captcha = true;
+                        };
+                    });
+                },
+
+                setFieldValid: function (field) {
+                    return (value) => {
+                        this.fieldsValid[field] = value;
+                        return this.fieldsValid;
+                    };
+                },
+
+                handleNextStep: function () {
+                    const step2 = dom('#step_2');
+                    step2.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center',
+                        inline: 'nearest'
+                    });
+                },
+
+                _postPersistEmail: async function () {
+                    return fetch('/api/persist-email', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            email: document.querySelector('#membership_request_email').value,
+                            recaptcha: this.captchaToken
+                        }),
+                    });
+                },
+
+                _handleBadRequest: function ($dispatch) {
+                    return (data) => data.violations.forEach(x => {
+                        console.log(x);
+                        if (x.property === 'email') {
+                            console.log($dispatch);
+                            $dispatch('x-validate:membership_request_email', {
+                                status: data.status,
+                                message: x.message
+                            });
+                        }
+
+                        if (x.property === 'recaptcha') {
+                            this.generalNotification = {
+                                status: data.status,
+                                message: x.message
+                            };
+                        }
+                    });
+                },
+
+                handleOnSubmit: async function (e, $dispatch) {
+                    e.preventDefault();
+                    this._postPersistEmail()
+                        .then((response) => {
+                            if (response.ok) {
+                                this.handleNextStep();
+                            } else {
+                                response.json()
+                                    .then(this._handleBadRequest($dispatch));
+                            }
+                        });
+                    // .catch((error) => {
+                    //     captureException(error, {
+                    //         tags: {
+                    //             component: 'membership-request',
+                    //             step: 'persist-email'
+                    //         }
+                    //     });
+                    // });
+                }
+            }));
+        });
+    </script>
+
+
 {% endblock %}
