@@ -59,7 +59,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         $this->client->request(Request::METHOD_GET, $profilePage);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('//parti-renaissance.fr/', $this->client);
+        $this->assertClientIsRedirectedTo('/', $this->client);
     }
 
     public static function provideProfilePage(): \Generator

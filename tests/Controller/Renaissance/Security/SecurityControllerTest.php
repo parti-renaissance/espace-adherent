@@ -61,7 +61,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
             $this->client->followRedirects(false);
             $this->client->click($crawler->selectLink('Me déconnecter')->link());
             $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-            $this->assertClientIsRedirectedTo('http://parti-renaissance.fr/', $this->client);
+            $this->assertClientIsRedirectedTo('http://renaissance.code/', $this->client);
 
             $crawler = $this->client->followRedirect();
             $this->assertSame(0, $crawler->selectLink($fullName)->count());
@@ -220,7 +220,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         ]);
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(RenaissanceResetPasswordConfirmationMessage::class, 'michelle.dufour@example.ch'), 'A confirmation email should have been sent.');
-        $this->assertClientIsRedirectedTo('http://parti-renaissance.fr/', $this->client);
+        $this->assertClientIsRedirectedTo('http://renaissance.code/', $this->client);
 
         $this->client->followRedirect();
 

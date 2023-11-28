@@ -280,14 +280,14 @@ app_nous_reussirons:
     methods:  GET
     defaults: { _controller: App\Controller\EnMarche\PageController:showPageAction, slug: 'nous-reussirons' }
 
-renaissance_site:
-    host: "%renaissance_host%"
-    path: "/"
-
 app_renaissance:
     host:   "%app_renaissance_host%"
     resource: "../src/Controller/Renaissance"
     type: "annotation"
+
+renaissance_site:
+    host: "%renaissance_host%"
+    path: "/"
 
 app_renaissance_login:
     host: "%app_renaissance_host%"
