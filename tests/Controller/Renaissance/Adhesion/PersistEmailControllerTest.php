@@ -25,7 +25,7 @@ class PersistEmailControllerTest extends AbstractRenaissanceWebTestCase
 
             return;
         } elseif (3 === $status) {
-            self::assertSame(['message' => 'Nous vous avons envoyé un email à l\'adresse "'.$email.'". Veuillez cliquer sur le lien contenu dans cet email pour continuer l\'adhésion.', 'status' => 'validation'], $response);
+            self::assertSame(['message' => 'Un email de confirmation vient d’être envoyé à votre adresse email. Cliquer sur le lien de validation qu’il contient pour continuer votre adhésion.', 'status' => 'validation'], $response);
             self::assertNull($this->getRepository(AdherentRequest::class)->findOneBy(['email' => $email]));
 
             return;

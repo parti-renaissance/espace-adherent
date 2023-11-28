@@ -8,21 +8,26 @@ use App\Entity\AdherentResetPasswordToken;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Mailer\MailerService;
 use App\Mailer\Message;
+use App\Mailer\Message\Renaissance\AdhesionAlreadyAdherentMessage;
+use App\Mailer\Message\Renaissance\AdhesionAlreadySympathizerMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountActivationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountCreatedMessage;
-use App\Mailer\Message\Renaissance\RenaissanceConnexionDetailsMessage;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\CallbackManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class MembershipNotifier
+class MembershipNotifier implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private readonly CallbackManager $callbackManager,
         private readonly MailerService $transactionalMailer,
         private readonly EntityManagerInterface $manager,
-        private readonly AuthAppUrlManager $appUrlManager
+        private readonly AuthAppUrlManager $appUrlManager,
     ) {
     }
 
@@ -122,6 +127,17 @@ class MembershipNotifier
 
     public function sendConnexionDetailsMessage(Adherent $adherent): void
     {
-        $this->transactionalMailer->sendMessage(RenaissanceConnexionDetailsMessage::create($adherent));
+        if ($adherent->isRenaissanceAdherent()) {
+            $this->transactionalMailer->sendMessage(AdhesionAlreadyAdherentMessage::create($adherent));
+
+            return;
+        }
+        if ($adherent->isRenaissanceUser() || !$adherent->getSource()) {
+            $this->transactionalMailer->sendMessage(AdhesionAlreadySympathizerMessage::create($adherent));
+
+            return;
+        }
+
+        $this->logger->error(sprintf('[Adhesion] le compte adhérent [%d] existe déjà (source : %s)', $adherent->getId(), $adherent->getSource()));
     }
 }
