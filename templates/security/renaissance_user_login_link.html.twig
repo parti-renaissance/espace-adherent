@@ -1,0 +1,21 @@
+{% extends 'renaissance/double_columns_layout.html.twig' %}
+
+{% block title 'Connectez-vous avec un lien' %}
+
+{% form_theme form 'renaissance/form_theme.html.twig' %}
+
+{% block content_left_side %}
+    {% include 'renaissance/partials/left-side-content.html.twig' %}
+{% endblock %}
+
+{% block content_right_side %}
+    <section class="flex items-center justify-center flex-grow p-5">
+        <div class="w-96">
+            {{ form_start(form) }}
+                {{ form_row(form, { label: 'E-mail' }) }}
+
+                <button type="submit" class="mt-5 button button-blue button-full">M'envoyer le lien</button>
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}

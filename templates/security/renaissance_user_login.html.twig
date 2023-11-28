@@ -30,7 +30,10 @@
                     <a href="{{ path('app_renaissance_forgot_password') }}" class="text-base font-medium leading-6 text-dark-blue hover:underline">Mot de passe oublié ?</a>
                 </p>
 
-                <button type="submit" class="mt-5 button button-blue button-full">Connexion</button>
+                <p class="mt4 flex flex-col">
+                    <button type="submit" class="mt-5 button button-blue button-full">Connexion</button>
+                    <a href="{{ path('app_user_get_login_link') }}" class="button button--blue button-full mt-4">Se connecter avec un lien</a>
+                </p>
             {{ form_end(form) }}
         </div>
     </section>

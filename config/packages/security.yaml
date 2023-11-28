@@ -610,6 +610,13 @@ security:
                     - App\Security\LoginFormGuardAuthenticator
                     - lexik_jwt_authentication.jwt_token_authenticator
             entry_point: App\Security\LoginFormGuardAuthenticator
+            login_link:
+                check_route: app_login_link_check
+                signature_properties: [ 'uuid', 'emailAddress', 'registeredAt' ]
+                max_uses: 10
+                lifetime: 86400
+                used_link_cache: 'cache.app'
+                failure_path: app_renaissance_login
 
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }

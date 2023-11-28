@@ -24,6 +24,9 @@ app_jemengage_forgot_password:
     defaults:
         app: jemengage
 
+app_login_link_check:
+    path: /connexion-lien
+
 app_user_login_check:
     host: "{app_domain}"
     path: "/connexion/check"
