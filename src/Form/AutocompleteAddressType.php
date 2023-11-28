@@ -8,7 +8,6 @@ use App\FranceCities\FranceCities;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -23,27 +22,32 @@ class AutocompleteAddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('autocomplete', TextType::class, [
+            ->add('autocomplete', ReAutoCompleteType::class, [
                 'mapped' => false,
                 'required' => true,
             ])
-            ->add('address', TextType::class, [
+            ->add('address', ReInputType::class, [
                 'required' => false,
             ])
-            ->add('cityName', TextType::class)
+            ->add('cityName', ReInputType::class)
             ->add('country', CountryType::class, [
                 'placeholder' => '',
                 'preferred_choices' => [AddressInterface::FRANCE],
                 'invalid_message' => 'common.country.invalid',
+                'empty_data' => 'FR',
             ])
-            ->add('postalCode', TextType::class)
+            ->add('postalCode', ReInputType::class)
         ;
 
         $builder
             ->get('postalCode')
             ->addModelTransformer(new CallbackTransformer(
-                function ($data) { return $data; },
-                function ($value) { return str_replace(' ', '', $value); }
+                function ($data) {
+                    return $data;
+                },
+                function ($value) {
+                    return str_replace(' ', '', $value);
+                }
             ))
         ;
 
@@ -68,7 +72,6 @@ class AutocompleteAddressType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => Address::class,
-            ])
-        ;
+            ]);
     }
 }

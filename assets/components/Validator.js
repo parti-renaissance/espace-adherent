@@ -105,8 +105,31 @@ const getStatusMessage = (type, status) => {
  * @param { (x:ValidateState)=>void } setState
  */
 const validateField = (validateTypes, domEl, setState) => {
-    const domType = domEl.getAttribute('type');
-    const value = 'checkbox' === domType ? domEl.checked : domEl.value;
+    const domType = domEl.getAttribute('type') || 'text';
+    /** @type {string|boolean|null} */
+    let value = null;
+    switch (domType) {
+    case 'checkbox':
+        value = domEl.checked;
+        break;
+    case 'email':
+    case 'text':
+    case 'password':
+        value = domEl.value;
+        break;
+    case 'radio':
+    case 'radio-group': {
+        console.log('radio-group', domEl);
+        const name = domEl.getAttribute('name');
+        if (!name) throw new Error('Missing name attribute');
+        const allRadios = document.querySelectorAll(`input[name="${name}"]`);
+        const radios = [...allRadios].find((r) => r.checked);
+        value = radios ? radios.value : null;
+    }
+        break;
+    default:
+        throw new Error(`Unknown type ${domType}`);
+    }
     /** @type {ValidateState} */
     const successState = {
         status: 'valid',
@@ -141,6 +164,10 @@ const xValidate = (state) => ({
     validateField: {
         // eslint-disable-next-line func-names
         '@change': function (e) {
+            this.checkField(e);
+        },
+        // eslint-disable-next-line func-names
+        '@blur': function (e) {
             this.checkField(e);
         },
     },

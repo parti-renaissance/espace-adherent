@@ -1,0 +1,13 @@
+.re-input-option {
+  &:hover {
+    div {
+      @apply bg-ui_blue-5;
+    }
+  }
+
+  &--selected {
+    span {
+      @apply text-ui_blue-50;
+    }
+  }
+}
