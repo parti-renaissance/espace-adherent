@@ -20,8 +20,13 @@ class PersistEmailControllerTest extends AbstractRenaissanceWebTestCase
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
         if ($status < 2) {
-            self::assertSame('OK', $response);
+            self::assertSame(['message' => 'OK', 'status' => 'success'], $response);
             self::assertNotNull($this->getRepository(AdherentRequest::class)->findOneBy(['email' => $email]));
+
+            return;
+        } elseif (3 === $status) {
+            self::assertSame(['message' => 'Nous vous avons envoyé un email à l\'adresse "'.$email.'". Veuillez cliquer sur le lien contenu dans cet email pour continuer l\'adhésion.', 'status' => 'validation'], $response);
+            self::assertNull($this->getRepository(AdherentRequest::class)->findOneBy(['email' => $email]));
 
             return;
         }
@@ -40,5 +45,6 @@ class PersistEmailControllerTest extends AbstractRenaissanceWebTestCase
         yield current($params = ['invalid-email@parti-renaissance', 2]) => $params;
         yield current($params = ['invalid-email@parti-renaissance..fr', 2]) => $params;
         yield current($params = ['', 2]) => $params;
+        yield current($params = ['luciole1989@spambox.fr', 3]) => $params;
     }
 }

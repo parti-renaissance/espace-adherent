@@ -10,6 +10,7 @@ use App\Mailer\MailerService;
 use App\Mailer\Message;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountActivationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountCreatedMessage;
+use App\Mailer\Message\Renaissance\RenaissanceConnexionDetailsMessage;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\CallbackManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -117,5 +118,10 @@ class MembershipNotifier
         $this->manager->flush();
 
         $this->transactionalMailer->sendMessage($message);
+    }
+
+    public function sendConnexionDetailsMessage(Adherent $adherent): void
+    {
+        $this->transactionalMailer->sendMessage(RenaissanceConnexionDetailsMessage::create($adherent));
     }
 }
