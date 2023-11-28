@@ -40,9 +40,12 @@ class SendNewMembershipNotificationCommand extends Command
     {
         $managers = $this->getManagersToNotify();
 
-        $this->io->progressStart(\count($managers));
+        $this->io->text(sprintf('Found %d manager(s) to process about new memberships', $count = \count($managers)));
+
+        $this->io->progressStart($count);
 
         foreach ($managers as $manager) {
+            $this->io->text($manager->getEmailAddress());
             $this->bus->dispatch(new NewMembershipNotificationCommand($manager->getUuid()));
         }
 
@@ -63,7 +66,7 @@ class SendNewMembershipNotificationCommand extends Command
                 'adherent.zoneBasedRoles',
                 'zone_based_role',
                 Expr\Join::WITH,
-                'zone_based_role.adherent_id = adherent.id AND zone_based_role.type = :type_pad'
+                'zone_based_role.adherent = adherent AND zone_based_role.type = :type_pad'
             )
             ->andWhere('adherent.status = :status')
             ->andWhere('adherent.adherent = :true')

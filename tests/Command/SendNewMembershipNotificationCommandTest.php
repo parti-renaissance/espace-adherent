@@ -11,8 +11,12 @@ class SendNewMembershipNotificationCommandTest extends AbstractCommandTestCase
 {
     public function testCommandSuccess(): void
     {
-        $this->runCommand('app:membership:send-notification');
+        $output = $this->runCommand('app:membership:send-notification');
 
-        $this->assertCountMails(1, RenaissanceNewAdherentsNotificationMessage::class);
+        $output = $output->getDisplay();
+
+        self::assertStringContainsString('Found 3 manager(s) to process about new memberships', $output);
+
+        $this->assertCountMails(1, RenaissanceNewAdherentsNotificationMessage::class, 'adherent-male-55@en-marche-dev.fr');
     }
 }

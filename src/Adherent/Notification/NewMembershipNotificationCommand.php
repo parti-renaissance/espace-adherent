@@ -2,20 +2,8 @@
 
 namespace App\Adherent\Notification;
 
-use App\Messenger\Message\AsynchronousMessageInterface;
-use Ramsey\Uuid\UuidInterface;
+use App\Messenger\Message\UuidDefaultAsyncMessage;
 
-class NewMembershipNotificationCommand implements AsynchronousMessageInterface
+class NewMembershipNotificationCommand extends UuidDefaultAsyncMessage
 {
-    private $uuid;
-
-    public function __construct(UuidInterface $uuid)
-    {
-        $this->uuid = $uuid;
-    }
-
-    public function getUuid(): UuidInterface
-    {
-        return $this->uuid;
-    }
 }
