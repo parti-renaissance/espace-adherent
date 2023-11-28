@@ -7,6 +7,7 @@ use App\Address\AddressInterface;
 use App\Adherent\AdherentAutocompleteFilter;
 use App\Adherent\AdherentRoleEnum;
 use App\Adherent\MandateTypeEnum;
+use App\Adherent\Notification\NotificationTypeEnum;
 use App\Adherent\Tag\TagEnum;
 use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;
@@ -14,6 +15,7 @@ use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
+use App\Entity\AdherentNotification;
 use App\Entity\Audience\AudienceInterface;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\Committee;
@@ -1416,6 +1418,30 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this
             ->createQueryBuilderForZones($zones, $adherentRenaissance, $sympathizerRenaissance)
             ->select('PARTIAL adherent.{id, uuid, emailAddress, source, firstName, lastName, lastMembershipDonation}')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Adherent[]|array
+     */
+    public function getAdherentsWithoutNotificationType(
+        array $zones,
+        NotificationTypeEnum $notificationType,
+        bool $adherentRenaissance,
+        bool $sympathizerRenaissance
+    ): array {
+        return $this
+            ->createQueryBuilderForZones($zones, $adherentRenaissance, $sympathizerRenaissance)
+            ->leftJoin(
+                AdherentNotification::class,
+                'notification',
+                Join::WITH,
+                'notification.adherent = adherent AND notification.type = :notification_type'
+            )
+            ->andWhere('notification.id IS NULL')
+            ->setParameter('notification_type', $notificationType)
             ->getQuery()
             ->getResult()
         ;
