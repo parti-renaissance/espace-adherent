@@ -3,15 +3,9 @@
 {% block page_title 'Adhésion' %}
 
 {% block content %}
-    <main class="bg-[#F4F4F7]">
-        <header class="p-10">
-            <a href="{{ path('app_renaissance_homepage') }}">
-                <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
-            </a>
-        </header>
-
-        <section class="flex flex-col justify-center items-center gap-8">
-            <twig:Atoms:ReCard class="max-w-[540px] !sticky !rounded-t-0">
+    <main class="bg-[#F4F4F7] re_new_ui">
+        <section class="flex flex-col justify-center items-center gap-10">
+            <twig:Atoms:ReCard class="max-w-[540px] !sticky !rounded-t-0 top-0 z-50">
                 <nav>
                     <ol class="breadcrumb">
                         <li>Adresse e-mail</li>
@@ -22,23 +16,18 @@
                 </nav>
             </twig:Atoms:ReCard>
 
-            <h2 class="text-center font-bold text-2xl mb-10">
-                Devenez membre de
-                <span class="text-blue-500">Renaissance</span>
-            </h2>
 
-            <div
-                class="p-6 bg-white bg-opacity-30 rounded-[32px] border border-zinc-200 flex-col justify-start items-start gap-6 inline-flex">
+            <div class="flex-col justify-start items-start gap-8 inline-flex">
 
                 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
                 {{ form_start(form) }}
-                <div class="flex gap-6 flex-col">
-                    <twig:Atoms:ReCard class="max-w-[500px]" x-data="stepOne" id="step_1">
+                <div class="flex gap-8 flex-col">
+                    <twig:Atoms:ReCard class="max-w-[500px]" x-data="FirstFormStep" id="step_1">
                         <template x-if="generalNotification">
                             <twig:Atoms:ReParagraphStatus
-                                xSyncStatus="generalNotification.status"
-                                x-text="generalNotification.message"/>
+                                    xSyncStatus="generalNotification.status"
+                                    x-text="generalNotification.message"/>
                         </template>
 
                         {{ form_row(form.email, {
@@ -50,15 +39,16 @@
                             }, label: false}) }}
 
                         {{ form_row(form.consentDataCollect, {
-                            attr:{
+                            attr: {
                                 validate: "['required']",
-                                onCheck:"setFieldValid('consentDataCollect')",
+                                onCheck: "setFieldValid('consentDataCollect')",
+                                icon: 'info-blank',
+                                iconToolTip: 'Lorem ipsum dolor sit amet consectetur. Diam facilisis nulla ut ut diam cursus auctor mauris nunc. Vel sit orci id at mi aliquam tellus bibendum. Non amet lorem massa est. Netus elit mattis fermentum ornare senectus volutpat et. Lorem pellentesque mattis vel hendrerit morbi ultricies enim sollicitudin. Pretium ante duis tempus nulla quis vulputate tellus.Lectus sed curabitur tortor leo faucibus elit commodo ultrices adipiscing. Felis quis convallis praesent odio orci sollicitudin in pulvinar. Sem convallis urna malesuada ante interdum. Ipsum tellus et sapien congue ac leo enim at risus. Ut mattis congue nunc suspendisse quis ante curabitur nibh. Luctus donec morbi commodo lacinia nulla ullamcorper ut vulputate enim.'
                             },
-                            label: 'Je consent au traitement de mes données personnelles',
-                            icon: 'info-blank',
-                            iconToolTip:'Lorem ipsum dolor sit amet consectetur. Diam facilisis nulla ut ut diam cursus auctor mauris nunc. Vel sit orci id at mi aliquam tellus bibendum. Non amet lorem massa est. Netus elit mattis fermentum ornare senectus volutpat et. Lorem pellentesque mattis vel hendrerit morbi ultricies enim sollicitudin. Pretium ante duis tempus nulla quis vulputate tellus.Lectus sed curabitur tortor leo faucibus elit commodo ultrices adipiscing. Felis quis convallis praesent odio orci sollicitudin in pulvinar. Sem convallis urna malesuada ante interdum. Ipsum tellus et sapien congue ac leo enim at risus. Ut mattis congue nunc suspendisse quis ante curabitur nibh. Luctus donec morbi commodo lacinia nulla ullamcorper ut vulputate enim.' }) }}
+                            label: 'Je consent au traitement de mes données personnelles'
+                        }) }}
 
-                        <div class=" mb-4 w-full re-field-frame !h-auto cursor-pointer"
+                        <div class="w-full re-field-frame !h-auto cursor-pointer"
                              x-on:click="dom('.frc-button')?.click()">
                             {% include 'renaissance/partials/friendly-captcha.html.twig' %}
                         </div>
@@ -97,7 +87,7 @@
 
                     </twig:Atoms:ReCard>
 
-                    <twig:Atoms:ReCard class="max-w-[500px]" id="step_2" x-data="stepTwo">
+                    <twig:Atoms:ReCard class="max-w-[500px]" id="step_2" x-data="SecondFormStep">
                         {{ form_row(form.civility, {
                             label: 'Mes informations',
                             attr: { onCheck:"setFieldValid('gender')", validate: "['required']" }
@@ -105,14 +95,20 @@
                         <div class="flex-row flex gap-5">
                             {{ form_row(form.lastName, {
                                 label: false,
-                                attr: { placeholder: 'Nom', onCheck:"setFieldValid('lastName')", validate: "['required']" }
+                                attr: { placeholder: 'Nom', onCheck:"setFieldValid('lastName')", validate: "['required', 'min:2', 'max:50']" }
                             }) }}
                             {{ form_row(form.firstName, {
                                 label: false,
-                                attr: { placeholder: 'Prénom', onCheck:"setFieldValid('firstName')", validate: "['required']" }
+                                attr: { placeholder: 'Prénom', onCheck:"setFieldValid('firstName')", validate: "['required', 'min:1', 'max:50']" }
                             }) }}
                         </div>
-                        {{ form_row(form.address, {label: false}) }}
+
+                        {{ form_row(form.nationality, {
+                            label: 'Nationalité',
+                            attr: { onCheck:"setFieldValid('nationality')", validate: "['required']" }
+                        }) }}
+
+                        {{ form_row(form.address, {label: 'Adresse postale'}) }}
 
                         <twig:Molecules:ReButton
                             color="blue"
@@ -122,6 +118,79 @@
                             x-bind:class="{disabled: !checkValidity()}"
                         />
                     </twig:Atoms:ReCard>
+
+                    <twig:Atoms:ReCard class="max-w-[500px]" id="step_3" x-data="ThirdFormStep">
+                             {{ form_row(form.exclusiveMembership, {
+                                 label: 'Autorisation',
+                                 attr:{
+                                     'x-on:change':'handleExclusiveMembershipChange($event)',
+                                     validate:"['required']",
+                                     onCheck: 'setFieldValid("exclusiveMembership")'
+                                 }
+                             }) }}
+                        <div x-show="notExclusiveMember" x-cloak class="flex flex-col gap-8">
+                            <hr>
+                            {{ form_row(form.partyMembership, {
+                                label: "J'appartiens déjà à un parti politique :",
+                                attr:{
+                                    'x-on:change':'handlePartyMembershipChange($event)',
+                                    validate:"['?:notExlusiveMember', 'required']",
+                                    onCheck: 'setFieldValid("partyMembership")'
+                                }
+                            }) }}
+                        </div>
+
+
+                        <hr>
+
+                        <div class="flex flex-col gap-8">
+                            <template x-if="isMemberOfAnotherParty && notExclusiveMember" x-cloak>
+                                <twig:Atoms:ReParagraphStatus status="warning">
+                                    Si vous êtes déjà affilié à un parti politique, il vous est impossible de devenir membre de Renaissance. Toutefois, il vous est tout à fait possible d'exprimer votre soutien en tant que sympathisant.
+                                </twig:Atoms:ReParagraphStatus>
+                                <twig:Atoms:ReLabel>En devenant sympathisant :</twig:Atoms:ReLabel>
+                            </template>
+
+                            <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
+                                <twig:Atoms:ReLabel>En adhérant :</twig:Atoms:ReLabel>
+                            </template>
+
+                            {{ form_row(form.allowNotifications, {
+                                label: 'Je souhaite recevoir les informations sur l’actualité de Renaissance et ses communications politiques par e-mail'
+                            }) }}
+                        </div>
+                        {{ form_row(form.isPhysicalPerson, {
+                            label: 'adhesion.physical_person.label', label_html: true,
+                            attr: { onCheck:"setFieldValid('isPhysicalPerson')", validate: "['required']" }
+                        }) }}
+
+
+                        <template x-if="isMemberOfAnotherParty && notExclusiveMember" x-cloak>
+                            <twig:Molecules:ReButton
+                                color="yellow"
+                                value="Je deviens sympathisant"
+                                class="w-full"
+                                x-on:click="handleOnSubmit($event, $dispatch)"
+                                x-bind:class="{disabled: !checkValidity()}"
+                            />
+                        </template>
+
+                        <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
+                            <twig:Molecules:ReButton
+                                color="blue"
+                                value="J’adhère"
+                                class="w-full"
+                                x-on:click="handleOnSubmit($event, $dispatch)"
+                                x-bind:class="{disabled: !checkValidity()}"
+                            />
+                        </template>
+                    </twig:Atoms:ReCard>
+
+                    <twig:Atoms:ReCard class="max-w-[500px] !h-[30vh]" id="fake_email_validation">
+                       fake  Verification de l'email
+                    </twig:Atoms:ReCard>
+
+                    <div class="spacer h-[50vh]"></div>
                 </div>
                 <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
             </div>
@@ -132,286 +201,7 @@
 
 {% block final_javascripts %}
     <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
-
     <script>
-        window.initPlaces = async function () {
-            const service = new google.maps.places.AutocompleteService();
-            const placesService = new google.maps.places.PlacesService(document.createElement('div'));
-            const sessionToken = new google.maps.places.AutocompleteSessionToken();
-
-            window.autocomplete = service;
-            window.placesService = placesService;
-            window.placeSessionToken = sessionToken;
-
-            window.getPlacesPredictions = (query) => {
-                return new Promise((resolve, reject) => {
-                    service.getPlacePredictions({
-                        input: query,
-                        sessionToken: sessionToken,
-                        // componentRestrictions: {
-                        //     country: 'fr'
-                        // },
-                        types: ['address']
-                    }, (predictions, status) => {
-                        if (status !== google.maps.places.PlacesServiceStatus.OK) {
-                            return reject(status);
-                        }
-                        return resolve(predictions);
-                    });
-                });
-            };
-        };
-    </script>
-
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&callback=initPlaces"></script>
-
-    <script type="text/javascript" defer>
-        /**
-         *
-         * @param {string} query
-         * @returns {Promise<Awaited<*[]>>|Promise<*>}
-         */
-        window.queryGooglePlaces = (query) => {
-            if (!query || !query.trim()) return Promise.resolve([]);
-            if (!window.getPlacesPredictions) console.error('initPlaces not loaded yet');
-            return window.getPlacesPredictions(query)
-                .then((predictions) => {
-                    return predictions.map((prediction) => {
-                        return {
-                            label: prediction.description,
-                            value: prediction.place_id,
-                        };
-                    });
-                })
-                .catch((error) => {
-                    return [];
-                });
-        };
-
-        document.addEventListener(`autocomplete_change:membership_request_address_autocomplete`, ({ detail }) => {
-            window.placesService.getDetails({
-                placeId: detail,
-                sessionToken: window.placeSessionToken,
-            }, (place, status) => {
-                fillInAddress(place.address_components);
-            });
-
-        });
-
-        function fillInAddress(components) {
-            // Get the place details from the autocomplete object.
-            let address1 = '';
-            let postcode = '';
-
-            const cityInput = document.querySelector('#membership_request_address_cityName');
-            const addressInput = document.querySelector('#membership_request_address_address');
-            const postcodeInput = document.querySelector('#membership_request_address_postalCode');
-
-            for (const component of components) {
-                // @ts-ignore remove once typings fixed
-                const componentType = component.types[0];
-
-                switch (componentType) {
-                case 'street_number': {
-                    address1 = `${component.long_name} ${address1}`;
-                    break;
-                }
-
-                case 'route': {
-                    address1 += component.short_name;
-                    break;
-                }
-
-                case 'postal_code': {
-                    postcode = `${component.long_name}${postcode}`;
-                    break;
-                }
-
-                case 'postal_code_suffix': {
-                    postcode = `${postcode}-${component.long_name}`;
-                    break;
-                }
-                case 'locality':
-                    cityInput.value = component.long_name;
-                    break;
-                case 'administrative_area_level_1': {
-                    break;
-                }
-                case 'country':
-                    break;
-                }
-
-                addressInput.value = address1;
-                postcodeInput.value = postcode;
-
-                const inputs = [addressInput, postcodeInput, cityInput];
-
-                inputs.forEach((input) => {
-                    input.dispatchEvent(new Event('change'));
-                });
-
-            }
-        }
-
-        document.addEventListener('alpine:init', async () => {
-            Alpine.data('stepOne', () => ({
-                fieldsValid: {
-                    email: false,
-                    consentDataCollect: false,
-                    captcha: false,
-                },
-                generalNotification: null,
-                captchaToken: null,
-                loading: false,
-
-                init() {
-                    this.$nextTick(() => {
-                        friendlyChallenge.autoWidget.opts.doneCallback = (token) => {
-                            this.captchaToken = token;
-                            this.fieldsValid.captcha = true;
-                        };
-                    });
-                },
-
-                setFieldValid: function (field) {
-                    return (value) => {
-                        this.fieldsValid[field] = value;
-                        return this.fieldsValid;
-                    };
-                },
-
-                handleNextStep: function () {
-                    const step2 = dom('#step_2');
-                    step2.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center',
-                        inline: 'nearest'
-                    });
-                },
-
-                _postPersistEmail: async function () {
-                    return fetch('/api/persist-email', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            email: document.querySelector('#membership_request_email').value,
-                            utm_source: document.querySelector('#membership_request_utmSource').value,
-                            utm_campaign: document.querySelector('#membership_request_utmCampaign').value,
-                            recaptcha: this.captchaToken
-                        }),
-                    });
-                },
-
-                triggerValidateOnAllField() {
-                    document.querySelectorAll('#step_1 input')
-                        .forEach(x => x.dispatchEvent(new Event('change')));
-                },
-
-                _handleBadRequest: function ($dispatch) {
-                    return (data) => data.violations.forEach(x => {
-                        console.log(x);
-                        if (x.property === 'email') {
-                            console.log($dispatch);
-                            $dispatch('x-validate:membership_request_email', {
-                                status: data.status,
-                                message: x.message
-                            });
-                        }
-
-                        if (x.property === 'recaptcha') {
-                            this.generalNotification = {
-                                status: data.status,
-                                message: x.message
-                            };
-                        }
-                    });
-                },
-
-                checkValidity() {
-                    return Object.values(this.fieldsValid)
-                        .every(x => x);
-                },
-
-                handleOnSubmit: async function (e, $dispatch) {
-                    e.preventDefault();
-                    if (!this.checkValidity()) {
-                        this.triggerValidateOnAllField();
-                        return;
-                    }
-                    this.loading = true;
-                    this._postPersistEmail()
-                        .then((response) => {
-                            if (response.ok) {
-                                this.handleNextStep();
-                            } else {
-                                response.json()
-                                    .then(this._handleBadRequest($dispatch));
-                            }
-                        })
-                        .finally(() => {
-                            this.loading = false;
-                        });
-                    // .catch((error) => {
-                    //     captureException(error, {
-                    //         tags: {
-                    //             component: 'membership-request',
-                    //             step: 'persist-email'
-                    //         }
-                    //     });
-                    // });
-                }
-            }));
-
-            Alpine.data('stepTwo', () => ({
-                fieldsValid: {
-                    gender: false,
-                    lastName: false,
-                    firstName: false,
-                    nationality: true,
-                    address: false,
-                    postalCode: false,
-                    cityName: false,
-                },
-                generalNotification: null,
-
-                setFieldValid: function (field) {
-                    return (value) => {
-                        this.fieldsValid[field] = value;
-                        return this.fieldsValid;
-                    };
-                },
-
-                triggerValidateOnAllField() {
-                    document.querySelectorAll('#step_2 input')
-                        .forEach(x => x.dispatchEvent(new Event('change')));
-                },
-
-                handleNextStep: function () {
-                    const step2 = dom('#step_3');
-                    step2.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center',
-                        inline: 'nearest'
-                    });
-                },
-                checkValidity() {
-                    return Object.values(this.fieldsValid)
-                        .every(x => x);
-                },
-
-                handleOnSubmit: async function (e, $dispatch) {
-                    e.preventDefault();
-                    if (!this.checkValidity()) {
-                        this.triggerValidateOnAllField();
-                        return;
-                    }
-                    e.preventDefault();
-                    this.handleNextStep();
-                }
-            }));
-        });
+        Bootstrap.onLoad(() => Main.runAdhesionPage('{{ google_maps_api_key }}'));
     </script>
 {% endblock %}

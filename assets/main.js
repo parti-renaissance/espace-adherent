@@ -24,15 +24,16 @@ class Main {
         this._listeners.push(listener);
     }
 
-    run(parameters) {
+    async run(parameters) {
         this._di = new Container(parameters);
 
         registerServices(this._di);
 
         // Execute the page load listeners
-        this._listeners.forEach((listener) => {
-            listener(this._di);
-        });
+        // eslint-disable-next-line no-restricted-syntax
+        for await (const listener of this._listeners) {
+            await listener(this._di);
+        }
     }
 
     get(key) {
@@ -55,6 +56,13 @@ class Main {
             throw error;
         })
             .then((module) => module.default());
+    }
+
+    runAdhesionPage(props) {
+        return import('pages/adhesion_funnel/index').catch((error) => {
+            throw error;
+        })
+            .then((module) => module.default(props));
     }
 
     runMailchimpResubscribeEmail({

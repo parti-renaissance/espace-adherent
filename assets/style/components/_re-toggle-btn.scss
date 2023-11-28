@@ -4,7 +4,7 @@
     &[type=radio] {
       @apply absolute opacity-0 right-0 bottom-0;
       & + label {
-        @apply w-full h-[51px] relative flex justify-center items-center cursor-pointer px-4 py-2 border border-ui_gray-30 text-ui_gray-80 font-medium;
+        @apply w-full h-[51px] relative flex justify-center items-center cursor-pointer px-4 py-2 border border-ui_gray-30 text-ui_gray-80 font-normal text-base;
       }
 
       &:checked + label {

@@ -1,15 +1,7 @@
 import { captureException } from '@sentry/browser';
+import './typedef';
 
 // @ts-check
-/** @typedef {'error'|'warning'|'valid'|'info'|'default'} ValidateStatus */
-/** @typedef {'required'|'email'} ValidateType */
-/** @typedef {{
- * status:ValidateStatus,
- * message:string,
- * validate:ValidateType,
- * onCheck?: (x:boolean)=>void
- * }} ValidateState */
-/** @typedef {[ValidateType, ValidateState]} ValidateTuple */
 
 /**
  * Check if body payload is correct
@@ -62,27 +54,67 @@ const validateEmail = (email) => {
 };
 
 /**
+ *
+ * @param {ValidateType} type
+ * @return {(bool: boolean, opt?: (Array<string>)) => ValidateTuple}
+ */
+function setSuccessOrError(type) {
+    return (bool, opt) => [
+        type, bool ? 'success' : `error${opt ? (`.${opt.join('.')}`) : ''}`,
+    ];
+}
+
+/**
  * @param {ValidateType} type
  * @param {string|boolean} value
- * @param {(x:ValidateState)=>void} cb
+ * @param {SetNotifyState} cb
  * @returns {ValidateTuple}
  */
 const isTypeConditionPassed = (type, value, cb) => {
-    switch (type) {
-    case 'required': {
-        return /** @type {ValidateTuple} */ value ? ['required', 'success'] : ['required', 'error'];
+    if ('function' === typeof type) {
+        return type(value, cb);
     }
-    case 'email':
+
+    const [typeLabel, ...options] = type.split(':');
+
+    const successOrError = setSuccessOrError(typeLabel);
+
+    if ('required' === typeLabel) {
+        return successOrError(!!value);
+    }
+    if ('email' === typeLabel) {
         validateEmail(value)
             .then(cb);
         return /** @type {ValidateTuple} */ ['email', 'loading'];
     }
+    if ('min' === typeLabel) {
+        const [min] = options;
+        if (!min) throw new Error('Missing min value');
+        return successOrError(value.length >= Number(min), [min]);
+    }
+
+    if ('max' === typeLabel) {
+        const [max] = options;
+        if (!max) throw new Error('Missing max value');
+        return successOrError(value.length <= Number(max), [max]);
+    }
+
+    if ('number' === typeLabel) {
+        return successOrError(!Number.isNaN(Number(value)));
+    }
+
     throw new Error(`Unknown type ${type}`);
 };
 
 const messageLib = {
     required: {
         error: 'Ce champ est requis.',
+    },
+    min: {
+        error: (min) => `Ce champ doit contenir au moins ${min} caractères`,
+    },
+    max: {
+        error: (max) => `Ce champ doit contenir au maximum ${max} caractères`,
     },
     email: {
         loading: 'Vérification de votre email...',
@@ -94,15 +126,34 @@ const messageLib = {
  * @param {ValidateStatus} status
  */
 const getStatusMessage = (type, status) => {
-    const message = messageLib[type][status];
+    const [statusLabel, ...args] = status.split('.');
+    const message = 0 < args.length ? messageLib[type][statusLabel](...args) : messageLib[type][statusLabel];
     if (!message) throw new Error(`Missing message for type ${type} and status ${status}`);
     return message;
 };
 
 /**
+ * Check is first validate type is optional '?:callback' and rip it from the array
+ * @param {ValidateType[]} types
+ * @return {ValidateType[]}
+ */
+function useValidationOptional(types) {
+    const [firstVType, ...tailVTypes] = types;
+    if (!firstVType) return types;
+    const [firstVLabel, callback] = firstVType.split(':');
+    if ('?' === firstVLabel) {
+        if (!callback) throw new Error('Missing callback for ? type');
+        if (!window[callback]) throw new Error(`Unknown callback ${callback}`);
+        const isOptional = window[callback]();
+        return isOptional ? [] : tailVTypes;
+    }
+    return types;
+}
+
+/**
  * @param { ValidateType[] } validateTypes
  * @param { HTMLInputElement } domEl
- * @param { (x:ValidateState)=>void } setState
+ * @param { SetNotifyState } setState
  */
 const validateField = (validateTypes, domEl, setState) => {
     const domType = domEl.getAttribute('type') || 'text';
@@ -126,16 +177,21 @@ const validateField = (validateTypes, domEl, setState) => {
         value = radios ? radios.value : null;
     }
         break;
+    case 'hidden':
+        return;
     default:
         throw new Error(`Unknown type ${domType}`);
     }
     /** @type {ValidateState} */
     const successState = {
-        status: 'valid',
+        status: '' === value ? 'default' : 'valid',
         message: '',
     };
-    const newState = validateTypes.map((t) => isTypeConditionPassed(t, value, setState) ?? []);
-    const path = newState.find(([, s]) => 'error' === s)
+
+    const vTypes = useValidationOptional(validateTypes);
+
+    const newState = vTypes.map((t) => isTypeConditionPassed(t, value, setState) ?? []);
+    const path = newState.find(([, s]) => s.startsWith('error'))
         || newState.find(([, s]) => 'loading' === s)
         || newState.find(([, s]) => 'valid' === s)
         || undefined;
@@ -143,7 +199,7 @@ const validateField = (validateTypes, domEl, setState) => {
         setState(successState);
     } else {
         setState({
-            status: path[1],
+            status: path[1].split('.')[0],
             message: getStatusMessage(path[0], path[1]),
         });
     }

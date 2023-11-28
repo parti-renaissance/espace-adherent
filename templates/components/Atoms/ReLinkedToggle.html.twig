@@ -14,19 +14,17 @@
     }"
     type="radio-group"
 >
+    <twig:Atoms:ReLabel id="{{ id }}">{{ label }}</twig:Atoms:ReLabel>
+
     <div class="re-linked-toggle-content">
         {% block content %}{% endblock %}
     </div>
 
-    {% if status != 'default' and message %}
-        <div class="flex flex-row mt-2.5" x-show="status !== 'default' && message">
-            <twig:Atoms:ReIcon xSyncType="status" class="mr-1" />
-
-            <twig:Atoms:ReTextStatus
+    <div class="flex flex-row mt-2.5" x-show="status !== 'default' && message">
+        <twig:Atoms:ReIcon xSyncType="status" class="mr-1" />
+        <twig:Atoms:ReTextStatus
                 value="{{ message is defined ? '' }}"
                 xSyncStatus="status"
-                x-text="message"
-            />
-        </div>
-    {% endif %}
+                x-text="message"/>
+    </div>
 </div>

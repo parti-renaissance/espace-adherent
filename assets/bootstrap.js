@@ -10,6 +10,7 @@ window.Bootstrap = class {
     static boot(release, sentryDsn, environment, user) {
         let app = false;
 
+        // eslint-disable-next-line consistent-return
         const runIfReady = () => {
             if (app) {
                 const { listeners } = Bootstrap;
@@ -32,13 +33,17 @@ window.Bootstrap = class {
 
                 listeners.forEach((listener) => Main.addListener(listener));
 
-                Main.run({ sentryDsn, release, environment });
+                return Main.run({
+                    sentryDsn,
+                    release,
+                    environment,
+                });
             }
         };
 
         import('./main').then(() => {
             app = true;
-            runIfReady();
+            return runIfReady();
         });
     }
 

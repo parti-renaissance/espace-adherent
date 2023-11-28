@@ -1,5 +1,6 @@
 parameters:
     timeline_max_messages: 10
+    google_maps_api_key: "%env(GMAPS_PUBLIC_API_KEY)%"
 
 services:
     _defaults:

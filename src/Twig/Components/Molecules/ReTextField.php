@@ -9,4 +9,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 class ReTextField
 {
     use StatusAwareTrait;
+
+    public ?string $label;
+    public ?string $id;
 }

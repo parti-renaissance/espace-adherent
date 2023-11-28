@@ -2,26 +2,19 @@
 
 <div {{ attributes.only('class') }}
     x-data="xValidateField({
-            status: '{{ status is defined ? status : 'default' }}',
-            message: '{{ message is defined ? message : '' }}',
-            validate: {{ validate is defined ? validate : '[]' }},
-            onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
-        })"
+        status: '{{ status is defined ? status : 'default' }}',
+        message: '{{ message is defined ? message : '' }}',
+        validate: {{ validate is defined ? validate : '[]' }},
+        onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
+    })"
     {% if attr.id is defined %}
     @x-validate:{{ attr.id }}.window="setData($event.detail)"
-    {% endif %}
->
+    {% endif %}>
     <div class="relative flex-col flex justify-center">
-        {% if label is defined and label|length > 1 %}
-            <label for="{{ attr.id is defined ? attr.id : '' }}"
-                   class="text-ui_gray-80 text-base font-medium mb-4">
-                {{ label }}
-            </label>
-        {% endif %}
-
         <input
             {{ attributes.without('class') }}
             x-bind="validateField"
+            id="{{ id }}"
             class="re-field-frame !ring-0 !flex  {{ (status is defined ? ' re-field-frame--' ~ status) }}"
             :class="status !== 'default' ? 're-field-frame--' + status + ' !pr-12' : ''"
         />

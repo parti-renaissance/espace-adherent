@@ -31,7 +31,7 @@
     &.focus,
     &:active,
     &.active {
-        @apply outline-4 outline-ui_blue-20 outline border-ui_blue-50;
+        @apply outline-4 outline-ui_blue-20 outline border-ui_blue-50 outline-offset-0;
 
         &.re-field-frame--success {
             @apply border-ui_green-50 outline-ui_green-20
