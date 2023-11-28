@@ -47,7 +47,7 @@ class PersistEmailController extends AbstractController
         }
 
         return $this->json([
-            'message' => 'Nous vous avons envoyé un email à l\'adresse "'.$emailValidationRequest->getEmail().'". Veuillez cliquer sur le lien contenu dans cet email pour continuer l\'adhésion.',
+            'message' => 'Un email de confirmation vient d’être envoyé à votre adresse email. Cliquer sur le lien de validation qu’il contient pour continuer votre adhésion.',
             'status' => 'validation',
         ], Response::HTTP_OK);
     }

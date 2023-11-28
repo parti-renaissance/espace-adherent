@@ -5,7 +5,7 @@ namespace App\Mailer\Message\Renaissance;
 use App\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
-class RenaissanceConnexionDetailsMessage extends AbstractRenaissanceMessage
+class AdhesionAlreadyAdherentMessage extends AbstractRenaissanceMessage
 {
     public static function create(Adherent $adherent): self
     {
@@ -13,9 +13,12 @@ class RenaissanceConnexionDetailsMessage extends AbstractRenaissanceMessage
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Détails de connexion à votre compte Renaissance',
+            'Vous êtes déjà adhérent',
             [],
-            ['first_name' => self::escape($adherent->getFirstName())],
+            [
+                'first_name' => self::escape($adherent->getFirstName()),
+                'this_year' => date('Y'),
+            ],
         );
     }
 }
