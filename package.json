@@ -13,6 +13,7 @@
     "@babel/preset-env": "^7.23.5",
     "@babel/preset-react": "^7.23.3",
     "@google/markerclusterer": "^2.0.9",
+    "@googlemaps/js-api-loader": "^1.16.2",
     "@headlessui/react": "^1.7.17",
     "@mapbox/polylabel": "^1.0.2",
     "@sentry/browser": "^7.84.0",
@@ -69,5 +70,9 @@
     "webpack-cli": "^5.1.4",
     "webpack-manifest-plugin": "^5.0.0",
     "webpack-merge": "^5.10.0"
+  },
+  "devDependencies": {
+    "@types/alpinejs": "^3.13.5",
+    "@types/google.maps": "^3.54.10"
   }
 }

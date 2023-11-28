@@ -1,6 +1,5 @@
 {% set attr = attributes.all() %}
 
-
 <div {{ attributes.only('class') }}
     x-data="xValidateField({
             status: '{{ status is defined ? status : 'default' }}',
@@ -11,7 +10,6 @@
     {% if attr.id is defined %}
     @x-validate:{{ attr.id }}.window="setData($event.detail)"
     {% endif %}>
-
     <div class="relative flex-col flex justify-center mb-2.5">
         {% if label is defined and label|length > 1 %}
             <label for="{{ attr.id is defined ? attr.id : '' }}"

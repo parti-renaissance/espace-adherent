@@ -7,10 +7,10 @@
     <div class="relative flex-col flex justify-center">
         <div class="justify-start items-center gap-2.5 inline-flex">
             <twig:Atoms:ReCheckbox
-                {{ ...attributes.without('class').all() }}
-                status="{{ status }}"
-                x-bind="validateField"
-                xSyncStatus="status"
+                    {{ ...attributes.without('class').all() }}
+                    status="{{ status }}"
+                    x-bind="validateField"
+                    xSyncStatus="status"
             />
             <label for="{{ attributes.all().id }}" class="grow shrink basis-0 text-gray-700 text-sm font-normal">
                 {% block content '' %}
@@ -28,15 +28,15 @@
     </div>
     <div class="flex flex-row mt-2.5">
         <twig:Atoms:ReIcon
-            x-show="status !== 'default' && message"
-            xSyncType="status"
-            class="mr-1"
+                x-show="status !== 'default' && message"
+                xSyncType="status"
+                class="mr-1"
         />
         <twig:Atoms:ReTextStatus
-            x-show="status !== 'default && message'"
-            value="{{ message is defined ? '' }}"
-            type="{{ status }}"
-            xSyncStatus="status"
-            x-text="message"/>
+                x-show="status !== 'default && message'"
+                value="{{ message is defined ? '' }}"
+                type="{{ status }}"
+                xSyncStatus="status"
+                x-text="message"/>
     </div>
 </div>

@@ -1,6 +1,7 @@
 // type xReIcon with jsdoc as Alpine.data second argument
 
 /** @typedef {{label:string, value:string}} Option */
+/** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
 
 /**
  * Replace Caps, Diacritics for a string
@@ -28,6 +29,8 @@ const filterOptions = (query, options) => options
  *  placeholder?:string
  *  onQuery: (query:string)=>Promise<Option[]> | null,
  * }} props
+ *
+ * @returns {AlpineComponent}
  */
 const xReSelect = (props) => {
     const options = [
