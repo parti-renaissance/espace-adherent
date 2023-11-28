@@ -8,14 +8,12 @@ use App\Entity\Geo\Zone;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceNewAdherentsNotificationMessage;
 use App\Repository\AdherentRepository;
-use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class NewMembershipNotificationHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly ZoneRepository $zoneRepository,
         private readonly AdherentRepository $adherentRepository,
         private readonly MailerService $transactionalMailer,
         private readonly string $jemengageHost
@@ -25,6 +23,10 @@ class NewMembershipNotificationHandler
     public function handle(Adherent $manager): void
     {
         $zones = $this->getZonesToNotifyForManager($manager);
+
+        if (empty($zones)) {
+            return;
+        }
 
         $newSympathizers = $this->getNewSympathizers($zones);
         $newAdherents = $this->getNewAdherents($zones);
@@ -45,25 +47,6 @@ class NewMembershipNotificationHandler
     private function getZonesToNotifyForManager(Adherent $manager): array
     {
         $zones = [];
-
-        if ($manager->isSenator()) {
-            $zone = $this->zoneRepository->findOneBy([
-                'type' => Zone::DEPARTMENT,
-                'code' => $manager->getSenatorArea()->getDepartmentTag(),
-            ]);
-
-            if ($zone) {
-                $zones[] = $zone;
-            }
-        }
-
-        if ($manager->isDeputy()) {
-            $zone = $manager->getDeputyZone();
-
-            if ($zone) {
-                $zones[] = $zone;
-            }
-        }
 
         if ($manager->isPresidentDepartmentalAssembly()) {
             $zones = array_merge($zones, $manager->getPresidentDepartmentalAssemblyZones());
