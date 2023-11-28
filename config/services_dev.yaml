@@ -1,5 +1,6 @@
 parameters:
     timeline_max_messages: 10
+    google_maps_api_key: "%env(GMAPS_PUBLIC_API_KEY)%"
 
 services:
     _defaults:
@@ -7,7 +8,7 @@ services:
         autoconfigure: true
         public: false
         bind:
-          $environment: "%kernel.environment%"
+            $environment: "%kernel.environment%"
 
     App\DataFixtures\:
         resource: '../src/DataFixtures/'
@@ -31,11 +32,11 @@ services:
 
     App\Validator\RecaptchaValidator:
         arguments:
-            $apiClients: ['@Tests\App\Test\Recaptcha\DummyRecaptchaApiClient']
+            $apiClients: [ '@Tests\App\Test\Recaptcha\DummyRecaptchaApiClient' ]
 
     Tests\App\Test\Algolia\DummySearchService:
         decorates: 'search.service'
-        arguments: ['@Tests\App\Test\Algolia\DummySearchService.inner']
+        arguments: [ '@Tests\App\Test\Algolia\DummySearchService.inner' ]
 
     App\OpenGraph\OpenGraphFetcher:
         class: 'Tests\App\Test\OpenGraph\DummyOpenGraphFetcher'

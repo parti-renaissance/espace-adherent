@@ -16,4 +16,5 @@ class ReButton
     public string $tag = 'button';
     public string $value = '';
     public ?string $icon;
+    public ?string $xSyncLoading;
 }
