@@ -12352,16 +12352,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v5.4.31",
+            "version": "v5.4.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "9c0a3a5d0718e51ff81e0605be38fe1acbee9eeb"
+                "reference": "2553faca77502a4f68dc93cd2f3b9ec650751e40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/9c0a3a5d0718e51ff81e0605be38fe1acbee9eeb",
-                "reference": "9c0a3a5d0718e51ff81e0605be38fe1acbee9eeb",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/2553faca77502a4f68dc93cd2f3b9ec650751e40",
+                "reference": "2553faca77502a4f68dc93cd2f3b9ec650751e40",
                 "shasum": ""
             },
             "require": {
@@ -12429,7 +12429,7 @@
                 "psr6"
             ],
             "support": {
-                "source": "https://github.com/symfony/cache/tree/v5.4.31"
+                "source": "https://github.com/symfony/cache/tree/v5.4.32"
             },
             "funding": [
                 {
@@ -12445,7 +12445,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-06T17:37:55+00:00"
+            "time": "2023-11-24T13:04:07+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -17505,16 +17505,16 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v6.3.6",
+            "version": "v6.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "374d289c13cb989027274c86206ddc63b16a2441"
+                "reference": "a00fd2d47af5c95e95e8e371a74be2e79b95dfae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/374d289c13cb989027274c86206ddc63b16a2441",
-                "reference": "374d289c13cb989027274c86206ddc63b16a2441",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/a00fd2d47af5c95e95e8e371a74be2e79b95dfae",
+                "reference": "a00fd2d47af5c95e95e8e371a74be2e79b95dfae",
                 "shasum": ""
             },
             "require": {
@@ -17559,7 +17559,7 @@
                 "serialize"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-exporter/tree/v6.3.6"
+                "source": "https://github.com/symfony/var-exporter/tree/v6.3.9"
             },
             "funding": [
                 {
@@ -17575,7 +17575,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-13T09:16:49+00:00"
+            "time": "2023-11-28T20:34:48+00:00"
         },
         {
             "name": "symfony/web-link",
