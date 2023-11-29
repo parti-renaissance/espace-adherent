@@ -369,7 +369,7 @@ jobs:
             ignore_missing: true
             ignore_empty: true
 
-      - uses: google-github-actions/auth@v1
+      - uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY_GKE_DEPLOYER }}
 
