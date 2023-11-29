@@ -9,8 +9,6 @@ export default (el, {
         content: expression,
         placement: placement ?? 'auto',
         theme: theme ?? undefined,
-        trigger: 'click',
     });
-    if (theme) return;
     el.classList.add('tooltip');
 };

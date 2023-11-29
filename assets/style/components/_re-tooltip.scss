@@ -22,7 +22,6 @@
   }
 
   &[data-placement^='top'] > .tippy-arrow {
-    //left: -10px !important;
 
     &::before {
       @apply border -z-10;

@@ -4,7 +4,6 @@ import Validator from '../components/Validator';
 import ReIcon from '../components/ReIcon';
 
 window.Alpine = Alpine;
-Alpine.data();
 export default () => {
     Alpine.directive('tooltip', Tooltip);
     document.addEventListener('alpine:init', () => {
