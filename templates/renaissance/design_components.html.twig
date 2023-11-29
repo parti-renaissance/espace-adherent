@@ -1,0 +1,115 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Design components' %}
+
+{% block content %}
+    <header><h1 class="pt-8 text-center font-bold text-2xl mb-10 text-blue-500">Design Components</h1></header>
+
+    <main class="mx-8 flex flex-col justify-center items-center gap-8">
+        <twig:Atoms:ReCard class="justify-center">
+            <h1 class="font-bold">Atoms</h1>
+            <div class="flex-row flex gap-8">
+                <twig:Atoms:ReCard variant="inner" class="items-center">
+                    <h1 class="font-bold">Checkbox</h1>
+                    <twig:Atoms:ReCheckbox name="cbr" id="cbr1"/>
+                    <twig:Atoms:ReCheckbox name="cbr" id="cbr2" status="error"/>
+                    <twig:Atoms:ReCheckbox name="cbr" id="cbr3" checked/>
+                    <twig:Atoms:ReCheckbox name="cbr" id="cbr4" disabled/>
+                </twig:Atoms:ReCard>
+
+                <twig:Atoms:ReCard variant="inner" class="items-center">
+                    <h1 class="font-bold">Radio</h1>
+                    <twig:Atoms:ReCheckbox type="radio" name="cbx" id="cbx1"/>
+                    <twig:Atoms:ReCheckbox type="radio" name="cbx" id="cbx2" status="error"/>
+                    <twig:Atoms:ReCheckbox type="radio" name="cbx" id="cbx3" checked/>
+                    <twig:Atoms:ReCheckbox type="radio" name="cbx" id="cbx4" disabled/>
+                </twig:Atoms:ReCard>
+
+                <twig:Atoms:ReCard variant="inner" class=" bg-gradient-to-t from-ui_gray-20">
+                    <h1 class="font-bold">Icons</h1>
+                    {% for key in [ 'success', 'error', 'warning', 'info', 'valid', 'arrow-up', 'arrow-down','arrow-left','arrow-right', 'chevron', 'star', 'star-fill', 'loading' ] %}
+                        <div class="flex justify-between items-center">
+                            <span>{{ key }}</span>
+                            <twig:Atoms:ReIcon type="{{ key }}"/>
+                        </div>
+                    {% endfor %}
+                </twig:Atoms:ReCard>
+
+                <twig:Atoms:ReCard variant="inner">
+                    <h1 class="font-bold">FieldFrame</h1>
+
+                    <div class=" justify-between items-center">
+                        <span>default</span>
+                        <twig:Atoms:ReFieldFrame tag="button"/>
+                    </div>
+                    <div class=" justify-between items-center">
+                        <span>disabled</span>
+                        <twig:Atoms:ReFieldFrame tag="button" disabled/>
+                    </div>
+
+                    {% for key in [ 'success', 'error', 'warning', 'valid'] %}
+                        <div class=" justify-between items-center">
+                            <span>{{ key }}</span>
+                            <twig:Atoms:ReFieldFrame tag="button" status="{{ key }}"/>
+                        </div>
+                    {% endfor %}
+                </twig:Atoms:ReCard>
+
+                <twig:Atoms:ReCard variant="inner">
+                    <h1 class="font-bold">TextStatus</h1>
+                    {% for key in [ 'success', 'error', 'warning', 'valid', 'default'] %}
+                        <div class=" justify-between items-center">
+                            <twig:Atoms:ReTextStatus status="{{ key }}" value="{{ key }}"/>
+                        </div>
+                    {% endfor %}
+                </twig:Atoms:ReCard>
+            </div>
+        </twig:Atoms:ReCard>
+
+        <twig:Atoms:ReCard class=" justify-center">
+            <h1 class="font-bold">Molecules</h1>
+            <div class="flex-row flex gap-8">
+                <twig:Atoms:ReCard variant="inner">
+                    <h1 class="font-bold">Buttons</h1>
+                    {% for key in [ 'blue', 'green', 'yellow' ] %}
+                        <div>
+                            <twig:Molecules:ReButton color="{{ key }}" value="{{ key }}" class="mb-4"/>
+                            <twig:Molecules:ReButton color="{{ key }}" value="{{ key }}" disabled/>
+                        </div>
+                    {% endfor %}
+                    <div>
+                        <twig:Molecules:ReButton color="blue" value="blue with star icon" icon="star" class="mb-4"/>
+                    </div>
+                </twig:Atoms:ReCard>
+
+                <twig:Atoms:ReCard variant="inner">
+                    <h1 class="font-bold">TextFields</h1>
+                    <twig:Molecules:ReTextField placeholder="default" message="Un message"/>
+                    <twig:Molecules:ReTextField placeholder="default" disabled/>
+                    {% for key in [ 'success', 'error', 'warning', 'loading'] %}
+                        <twig:Molecules:ReTextField
+                            status="{{ key }}"
+                            placeholder="{{ key }}"
+                            message="Une message de type {{ key }}"
+                        />
+                    {% endfor %}
+                </twig:Atoms:ReCard>
+
+                <twig:Atoms:ReCard variant="inner">
+                    <h1 class="font-bold">Switch</h1>
+                    <twig:Atoms:ReLinkedToggle>
+                        <twig:Atoms:ReToggleButton id="sw1" value="test" name="ex">
+                            test 1
+                        </twig:Atoms:ReToggleButton>
+                        <twig:Atoms:ReToggleButton id="sw2" value="test" name="ex">
+                            test 2
+                        </twig:Atoms:ReToggleButton>
+                        <twig:Atoms:ReToggleButton id="sw3" value="test" name="ex">
+                            test 3
+                        </twig:Atoms:ReToggleButton>
+                    </twig:Atoms:ReLinkedToggle>
+                </twig:Atoms:ReCard>
+            </div>
+        </twig:Atoms:ReCard>
+    </main>
+{% endblock %}
