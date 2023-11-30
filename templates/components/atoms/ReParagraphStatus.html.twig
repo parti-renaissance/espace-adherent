@@ -1,0 +1,10 @@
+{# src/Twig/components/atoms/ReParagraphStatus.php #}
+
+<p
+        {{ attributes.defaults({ class: 're-paragraph-status re-paragraph-status--' ~ status }) }}
+        {% if xSyncStatus is defined %}
+    :class="'re-paragraph-status--' + {{ xSyncStatus }}"
+        {% endif %}>
+    {% block content %}{% endblock %}
+</p>
+

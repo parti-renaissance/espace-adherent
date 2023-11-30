@@ -1,0 +1,6 @@
+{# src/Twig/components/atoms/ReLinkedToggle.php #}
+
+<div {{ attributes.defaults({class: 're-linked-toggle' }) }}
+        x-data="{selected: null, setSelected: function(option) { this.selected = option; }}">
+    {% block content %}{% endblock %}
+</div>

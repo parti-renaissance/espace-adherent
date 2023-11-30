@@ -1,0 +1,52 @@
+.re-icon {
+  .re-icon-info, &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down {
+    @apply cursor-pointer;
+    svg path {
+      @apply transition-colors;
+    }
+
+  }
+
+  &.re-icon-info {
+    @apply rounded-full;
+    &:hover {
+      @apply outline outline-ui_blue-20
+    }
+  }
+
+  &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down {
+    &:hover svg path {
+      @apply stroke-ui_gray-60
+    }
+
+    &:active svg path {
+      @apply stroke-ui_gray-80
+    }
+  }
+
+  &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down {
+    @apply h-4 w-4 justify-center items-center flex;
+  }
+
+  &.re-icon-arrow-up {
+    transform: rotate(180deg);
+  }
+
+  &.re-icon-arrow-left {
+    transform: rotate(90deg);
+  }
+
+  &.re-icon-arrow-right {
+    transform: rotate(-90deg);
+  }
+
+  &.re-icon-loading > svg {
+    @apply animate-spin bg-transparent flex justify-center items-center h-6 w-6;
+  }
+
+  &.re-icon-star-fill {
+    svg path {
+      @apply fill-ui_blue-50;
+    }
+  }
+}

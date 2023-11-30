@@ -1,0 +1,69 @@
+.re-button {
+    @apply font-medium;
+    &--not-fill {
+        @apply border border-ui_blue-50 text-ui_blue-50 bg-white font-normal;
+    }
+
+    &--green {
+        @apply bg-ui_green-50 text-ui_green-5
+    }
+
+    &--blue {
+        @apply bg-ui_blue-50 text-ui_blue-5
+    }
+
+    &--yellow {
+        @apply bg-ui_yellow-50 text-ui_yellow-100
+    }
+
+
+    &:disabled {
+        @apply cursor-not-allowed;
+        &.re-button--green {
+            @apply bg-ui_green-30 text-ui_green-5
+        }
+
+        &.re-button--blue {
+            @apply bg-ui_blue-30 text-ui_blue-5
+        }
+
+        &.re-button--yellow {
+            @apply bg-ui_yellow-30 text-ui_yellow-80
+        }
+    }
+
+    &:focus {
+        @apply outline-1 outline-ui_blue-50 outline-offset-4 outline
+    }
+
+    &:hover:not(:disabled) {
+        &.re-button--green {
+            @apply bg-ui_green-60
+        }
+
+        &.re-button--blue {
+            @apply bg-ui_blue-60
+        }
+
+
+        &.re-button--yellow {
+            @apply bg-ui_yellow-45
+        }
+    }
+
+    &:active:not(:disabled) {
+        &.re-button--green {
+            @apply bg-ui_green-70
+        }
+
+        &.re-button--blue {
+            @apply bg-ui_blue-70
+        }
+
+
+        &.re-button--yellow {
+            @apply bg-ui_yellow-70
+        }
+    }
+
+}

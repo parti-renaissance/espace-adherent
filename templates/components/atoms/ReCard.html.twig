@@ -1,0 +1,6 @@
+<div
+    {{ attributes.defaults({
+        class: "w-full h-full p-10 gap-8 flex-col flex bg-white border border-stone-300 #{variant is same as('outer') ? 'rounded-[20px]' : 'rounded-[10px]'}"
+    }) }}>
+    {% block content %}{% endblock %}
+</div>
