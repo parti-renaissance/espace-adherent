@@ -8163,23 +8163,24 @@
         },
         {
             "name": "odolbeau/phone-number-bundle",
-            "version": "v3.9.2",
+            "version": "v3.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odolbeau/phone-number-bundle.git",
-                "reference": "1564f190551bc275904687facb2af7590d5888d8"
+                "reference": "c3237ffdbe8c6b9f62ecc5e658a5eaee27afd17c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/1564f190551bc275904687facb2af7590d5888d8",
-                "reference": "1564f190551bc275904687facb2af7590d5888d8",
+                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/c3237ffdbe8c6b9f62ecc5e658a5eaee27afd17c",
+                "reference": "c3237ffdbe8c6b9f62ecc5e658a5eaee27afd17c",
                 "shasum": ""
             },
             "require": {
                 "giggsey/libphonenumber-for-php": "^8.0",
                 "php": ">=7.4",
                 "symfony/framework-bundle": "^4.4|^5.3|^6.0",
-                "symfony/intl": "^4.4|^5.3|^6.0"
+                "symfony/intl": "^4.4|^5.3|^6.0",
+                "symfony/polyfill-mbstring": "^1.28"
             },
             "conflict": {
                 "symfony/serializer": "6.0.0"
@@ -8209,7 +8210,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.6.x-dev"
+                    "dev-master": "3.9.x-dev"
                 }
             },
             "autoload": {
@@ -8232,9 +8233,9 @@
             ],
             "support": {
                 "issues": "https://github.com/odolbeau/phone-number-bundle/issues",
-                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.9.2"
+                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.9.3"
             },
-            "time": "2023-07-06T18:41:41+00:00"
+            "time": "2023-11-29T14:43:39+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
