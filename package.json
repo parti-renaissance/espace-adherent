@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.23.5",
-    "@babel/preset-env": "^7.23.3",
+    "@babel/preset-env": "^7.23.5",
     "@babel/preset-react": "^7.23.3",
     "@google/markerclusterer": "^2.0.9",
     "@headlessui/react": "^1.7.17",
