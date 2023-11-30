@@ -1421,24 +1421,22 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    /**
-     * @return Adherent[]|array
-     */
-    public function getNewAdherents(
+    public function countNewAdherents(
         array $zones,
         \DateTimeInterface $from,
         \DateTimeInterface $to,
         bool $adherentRenaissance,
         bool $sympathizerRenaissance
-    ): array {
+    ): int {
         return $this
             ->createQueryBuilderForZones($zones, $adherentRenaissance, $sympathizerRenaissance)
+            ->select('COUNT(DISTINCT adherent.id) AS nb')
             ->andWhere('adherent.registeredAt >= :from_date')
             ->andWhere('adherent.registeredAt < :to_date')
             ->setParameter('from_date', $from)
             ->setParameter('to_date', $to)
             ->getQuery()
-            ->getResult()
+            ->getSingleScalarResult()
         ;
     }
 

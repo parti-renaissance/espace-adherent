@@ -25,14 +25,14 @@ class NewMembershipNotificationHandler
             return;
         }
 
-        $newSympathizers = $this->getNewSympathizers($zones, $from, $to);
-        $newAdherents = $this->getNewAdherents($zones, $from, $to);
+        $newSympathizers = $this->countNewSympathizers($zones, $from, $to);
+        $newAdherents = $this->countNewAdherents($zones, $from, $to);
 
-        if (empty($newSympathizers) && empty($newAdherents)) {
+        if (!$newSympathizers && !$newAdherents) {
             return;
         }
 
-        $this->sendNotification($manager, \count($newSympathizers), \count($newAdherents));
+        $this->sendNotification($manager, $newSympathizers, $newAdherents);
     }
 
     /**
@@ -55,25 +55,19 @@ class NewMembershipNotificationHandler
         return $zones;
     }
 
-    /**
-     * @return Adherent[]|array
-     */
-    private function getNewSympathizers(array $zones, \DateTimeInterface $from, \DateTimeInterface $to): array
+    private function countNewSympathizers(array $zones, \DateTimeInterface $from, \DateTimeInterface $to): int
     {
         return $this
             ->adherentRepository
-            ->getNewAdherents($zones, $from, $to, false, true)
+            ->countNewAdherents($zones, $from, $to, false, true)
         ;
     }
 
-    /**
-     * @return Adherent[]|array
-     */
-    private function getNewAdherents(array $zones, \DateTimeInterface $from, \DateTimeInterface $to): array
+    private function countNewAdherents(array $zones, \DateTimeInterface $from, \DateTimeInterface $to): int
     {
         return $this
             ->adherentRepository
-            ->getNewAdherents($zones, $from, $to, true, false)
+            ->countNewAdherents($zones, $from, $to, true, false)
         ;
     }
 
