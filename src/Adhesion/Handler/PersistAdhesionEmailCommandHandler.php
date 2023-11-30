@@ -27,7 +27,11 @@ class PersistAdhesionEmailCommandHandler
             return false;
         }
 
-        $this->entityManager->persist(AdherentRequest::createForEmail($command->email));
+        $this->entityManager->persist($object = AdherentRequest::createForEmail($command->email));
+
+        $object->utmCampaign = $command->utmCampaign;
+        $object->utmSource = $command->utmSource;
+
         $this->entityManager->flush();
 
         return true;

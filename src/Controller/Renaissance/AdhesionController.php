@@ -2,8 +2,10 @@
 
 namespace App\Controller\Renaissance;
 
+use App\Adhesion\MembershipRequest;
 use App\Controller\CanaryControllerTrait;
 use App\Form\MembershipRequestType;
+use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,8 +25,16 @@ class AdhesionController extends AbstractController
     {
         $this->disableInProduction();
 
+        $membershipRequest = new MembershipRequest();
+        $membershipRequest->email = $request->query->get('email');
+
+        if ($request->query->has(RenaissanceMembershipRequest::UTM_SOURCE)) {
+            $membershipRequest->utmSource = $this->filterUtmParameter((string) $request->query->get(RenaissanceMembershipRequest::UTM_SOURCE));
+            $membershipRequest->utmCampaign = $this->filterUtmParameter((string) $request->query->get(RenaissanceMembershipRequest::UTM_CAMPAIGN));
+        }
+
         $form = $this
-            ->createForm(MembershipRequestType::class)
+            ->createForm(MembershipRequestType::class, $membershipRequest)
             ->handleRequest($request)
         ;
 
@@ -36,5 +46,14 @@ class AdhesionController extends AbstractController
             'form' => $form,
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
         ]);
+    }
+
+    private function filterUtmParameter($utmParameter): ?string
+    {
+        if (!$utmParameter) {
+            return null;
+        }
+
+        return mb_substr($utmParameter, 0, 255);
     }
 }

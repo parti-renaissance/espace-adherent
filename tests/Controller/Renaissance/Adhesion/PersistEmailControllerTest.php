@@ -16,12 +16,14 @@ class PersistEmailControllerTest extends AbstractRenaissanceWebTestCase
     /** @dataProvider getEmails */
     public function testPersistEmailEndpoint(string $email, int $status): void
     {
-        $this->client->jsonRequest('POST', '/api/persist-email', ['email' => $email, 'recaptcha' => 'fake']);
+        $this->client->jsonRequest('POST', '/api/persist-email', ['email' => $email, 'recaptcha' => 'fake', 'utm_source' => 'test', 'utm_campaign' => 'phpunit']);
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
         if ($status < 2) {
             self::assertSame(['message' => 'OK', 'status' => 'success'], $response);
-            self::assertNotNull($this->getRepository(AdherentRequest::class)->findOneBy(['email' => $email]));
+            self::assertNotNull($object = $this->getRepository(AdherentRequest::class)->findOneBy(['email' => $email]));
+            self::assertSame('test', $object->utmSource);
+            self::assertSame('phpunit', $object->utmCampaign);
 
             return;
         } elseif (3 === $status) {

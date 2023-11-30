@@ -39,7 +39,10 @@ class PersistEmailController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        if ($this->handle(new PersistAdhesionEmailCommand($emailValidationRequest->getEmail()))) {
+        /** @var PersistAdhesionEmailCommand $command */
+        $command = $this->serializer->deserialize($request->getContent(), PersistAdhesionEmailCommand::class, JsonEncoder::FORMAT);
+
+        if ($this->handle($command)) {
             return $this->json([
                'message' => 'OK',
                'status' => 'success',
