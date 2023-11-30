@@ -129,6 +129,32 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
     }
 
+    public function countNewMembers(Committee $committee, \DateTimeInterface $from, \DateTimeInterface $to, bool $adherentRenaissance, bool $sympathizerRenaissance): int
+    {
+        $qb = $this->createQueryBuilder('cm')
+            ->select('COUNT(DISTINCT cm.id) AS nb')
+            ->andWhere('cm.committee = :committee')
+        ;
+
+        if ($adherentRenaissance ^ $sympathizerRenaissance) {
+            $qb
+                ->innerJoin('cm.adherent', 'adherent')
+                ->andWhere('FIND_IN_SET(:adherent_tag, adherent.tags) > 0')
+                ->setParameter('adherent_tag', $adherentRenaissance ? TagEnum::ADHERENT : TagEnum::SYMPATHISANT)
+            ;
+        }
+
+        return (int) $qb
+            ->andWhere('cm.joinedAt >= :date_from')
+            ->andWhere('cm.joinedAt < :date_to')
+            ->setParameter('committee', $committee)
+            ->setParameter('date_from', $from)
+            ->setParameter('date_to', $to)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     /**
      * Returns the list of all hosts memberships of a committee.
      */
