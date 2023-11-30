@@ -4,11 +4,12 @@ import Validator from '../components/Validator';
 import ReIcon from '../components/ReIcon';
 
 window.Alpine = Alpine;
+
 export default () => {
     Alpine.directive('tooltip', Tooltip);
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('xValidateField', Validator.xValidate);
-        Alpine.data('xReIcon', ReIcon.xReIcon);
-    });
+
+    Alpine.data('xValidateField', Validator.xValidate);
+    Alpine.data('xReIcon', ReIcon.xReIcon);
+
     Alpine.start();
 };

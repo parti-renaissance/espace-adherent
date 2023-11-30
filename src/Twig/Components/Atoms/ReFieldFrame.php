@@ -1,7 +1,5 @@
 <?php
 
-/** @see  templates/components/atoms/ReFieldFrame.php */
-
 namespace App\Twig\Components\Atoms;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
