@@ -7,7 +7,6 @@ use App\Address\AddressInterface;
 use App\Adherent\AdherentAutocompleteFilter;
 use App\Adherent\AdherentRoleEnum;
 use App\Adherent\MandateTypeEnum;
-use App\Adherent\Notification\NotificationTypeEnum;
 use App\Adherent\Tag\TagEnum;
 use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;
@@ -15,7 +14,6 @@ use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
-use App\Entity\AdherentNotification;
 use App\Entity\Audience\AudienceInterface;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\Committee;
@@ -1423,27 +1421,22 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    /**
-     * @return Adherent[]|array
-     */
-    public function getAdherentsWithoutNotificationType(
+    public function countNewAdherents(
         array $zones,
-        NotificationTypeEnum $notificationType,
+        \DateTimeInterface $from,
+        \DateTimeInterface $to,
         bool $adherentRenaissance,
         bool $sympathizerRenaissance
-    ): array {
+    ): int {
         return $this
             ->createQueryBuilderForZones($zones, $adherentRenaissance, $sympathizerRenaissance)
-            ->leftJoin(
-                AdherentNotification::class,
-                'notification',
-                Join::WITH,
-                'notification.adherent = adherent AND notification.type = :notification_type'
-            )
-            ->andWhere('notification.id IS NULL')
-            ->setParameter('notification_type', $notificationType)
+            ->select('COUNT(DISTINCT adherent.id) AS nb')
+            ->andWhere('adherent.registeredAt >= :from_date')
+            ->andWhere('adherent.registeredAt < :to_date')
+            ->setParameter('from_date', $from)
+            ->setParameter('to_date', $to)
             ->getQuery()
-            ->getResult()
+            ->getSingleScalarResult()
         ;
     }
 
