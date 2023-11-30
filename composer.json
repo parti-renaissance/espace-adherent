@@ -149,7 +149,7 @@
         "behatch/contexts": "^3.3",
         "bex/behat-skip-tests": "^1.2",
         "coduo/php-matcher": "^6.0",
-        "dama/doctrine-test-bundle": "^7.2",
+        "dama/doctrine-test-bundle": "^8.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "fakerphp/faker": "^1.13",
         "friends-of-behat/mink": "^1.10",
