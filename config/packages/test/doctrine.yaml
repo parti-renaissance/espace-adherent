@@ -4,3 +4,4 @@ doctrine:
             default:
                 logging: false
                 profiling: false
+                use_savepoints: true
