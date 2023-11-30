@@ -4,8 +4,12 @@ namespace App\Command;
 
 use App\Adherent\Notification\NewMembershipNotificationCommand;
 use App\Entity\Adherent;
+use App\Entity\CommandHistory;
+use App\Entity\CommandHistoryTypeEnum;
 use App\Repository\AdherentRepository;
+use App\Repository\CommandHistoryRepository;
 use App\Scope\ScopeEnum;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\Expr\Orx;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -25,7 +29,9 @@ class SendNewMembershipNotificationCommand extends Command
     private $io;
 
     public function __construct(
+        private readonly CommandHistoryRepository $commandHistoryRepository,
         private readonly AdherentRepository $adherentRepository,
+        private readonly EntityManagerInterface $entityManager,
         private readonly MessageBusInterface $bus
     ) {
         parent::__construct();
@@ -38,6 +44,9 @@ class SendNewMembershipNotificationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $lastCommandDate = $this->getLastCommandDate();
+        $currentDate = new \DateTimeImmutable();
+
         $managers = $this->getManagersToNotify();
 
         $this->io->text(sprintf('Found %d manager(s) to process about new memberships', $count = \count($managers)));
@@ -45,11 +54,12 @@ class SendNewMembershipNotificationCommand extends Command
         $this->io->progressStart($count);
 
         foreach ($managers as $manager) {
-            $this->io->text($manager->getEmailAddress());
-            $this->bus->dispatch(new NewMembershipNotificationCommand($manager->getUuid()));
+            $this->bus->dispatch(new NewMembershipNotificationCommand($manager->getUuid(), $lastCommandDate, $currentDate));
         }
 
         $this->io->progressFinish();
+
+        $this->saveCommandHistory($currentDate);
 
         return self::SUCCESS;
     }
@@ -82,5 +92,18 @@ class SendNewMembershipNotificationCommand extends Command
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    private function getLastCommandDate(): \DateTimeInterface
+    {
+        $lastCommandHistory = $this->commandHistoryRepository->findLastOfType(CommandHistoryTypeEnum::NEW_MEMBERSHIP_NOTIFICATION);
+
+        return $lastCommandHistory ? $lastCommandHistory->createdAt : new \DateTime('1 month ago');
+    }
+
+    private function saveCommandHistory(\DateTimeInterface $createdAt): void
+    {
+        $this->entityManager->persist(new CommandHistory(CommandHistoryTypeEnum::NEW_MEMBERSHIP_NOTIFICATION, $createdAt));
+        $this->entityManager->flush();
     }
 }

@@ -1163,7 +1163,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'last_name' => 'Doe',
             'address' => $this->createPostAddress('3 avenue Jean Jaurès', '92340-92014', null, 48.5278939, 2.6484923),
             'birthdate' => '1978-02-12',
-            'registered_at' => '2019-03-22 18:23:45',
             'is_adherent' => true,
         ]));
         $adherent->tags = [TagEnum::SYMPATHISANT];
