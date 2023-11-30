@@ -3,24 +3,21 @@
 namespace App\Adherent\Notification;
 
 use App\Entity\Adherent;
-use App\Entity\AdherentNotification;
 use App\Entity\Geo\Zone;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceNewAdherentsNotificationMessage;
 use App\Repository\AdherentRepository;
-use Doctrine\ORM\EntityManagerInterface;
 
 class NewMembershipNotificationHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
         private readonly AdherentRepository $adherentRepository,
         private readonly MailerService $transactionalMailer,
         private readonly string $jemengageHost
     ) {
     }
 
-    public function handle(Adherent $manager): void
+    public function handle(Adherent $manager, \DateTimeInterface $from, \DateTimeInterface $to): void
     {
         $zones = $this->getZonesToNotifyForManager($manager);
 
@@ -28,17 +25,14 @@ class NewMembershipNotificationHandler
             return;
         }
 
-        $newSympathizers = $this->getNewSympathizers($zones);
-        $newAdherents = $this->getNewAdherents($zones);
+        $newSympathizers = $this->getNewSympathizers($zones, $from, $to);
+        $newAdherents = $this->getNewAdherents($zones, $from, $to);
 
         if (empty($newSympathizers) && empty($newAdherents)) {
             return;
         }
 
         $this->sendNotification($manager, \count($newSympathizers), \count($newAdherents));
-
-        $this->saveNotificationHistories($newSympathizers, NotificationTypeEnum::NEW_SYMPATHISER);
-        $this->saveNotificationHistories($newAdherents, NotificationTypeEnum::NEW_MEMBERSHIP);
     }
 
     /**
@@ -64,32 +58,22 @@ class NewMembershipNotificationHandler
     /**
      * @return Adherent[]|array
      */
-    private function getNewSympathizers(array $zones): array
+    private function getNewSympathizers(array $zones, \DateTimeInterface $from, \DateTimeInterface $to): array
     {
         return $this
             ->adherentRepository
-            ->getAdherentsWithoutNotificationType(
-                $zones,
-                NotificationTypeEnum::NEW_SYMPATHISER,
-                false,
-                true
-            )
+            ->getNewAdherents($zones, $from, $to, false, true)
         ;
     }
 
     /**
      * @return Adherent[]|array
      */
-    private function getNewAdherents(array $zones): array
+    private function getNewAdherents(array $zones, \DateTimeInterface $from, \DateTimeInterface $to): array
     {
         return $this
             ->adherentRepository
-            ->getAdherentsWithoutNotificationType(
-                $zones,
-                NotificationTypeEnum::NEW_MEMBERSHIP,
-                true,
-                false
-            )
+            ->getNewAdherents($zones, $from, $to, true, false)
         ;
     }
 
@@ -106,14 +90,5 @@ class NewMembershipNotificationHandler
     private function generateJMEMilitantsUrl(): string
     {
         return '//'.$this->jemengageHost.'/militants';
-    }
-
-    private function saveNotificationHistories(array $adherents, NotificationTypeEnum $notificationType): void
-    {
-        foreach ($adherents as $adherent) {
-            $this->entityManager->persist(new AdherentNotification($adherent, $notificationType));
-        }
-
-        $this->entityManager->flush();
     }
 }

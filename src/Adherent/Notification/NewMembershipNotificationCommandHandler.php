@@ -34,8 +34,11 @@ class NewMembershipNotificationCommandHandler implements MessageHandlerInterface
 
         $this->entityManager->refresh($adherent);
 
+        $from = $command->getFrom();
+        $to = $command->getTo();
+
         try {
-            $this->newMembershipNotificationHandler->handle($adherent);
+            $this->newMembershipNotificationHandler->handle($adherent, $from, $to);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage(), ['e' => $e]);
 
