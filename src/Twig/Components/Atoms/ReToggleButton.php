@@ -1,7 +1,5 @@
 <?php
 
-/** templates/components/atoms/ReToggleButton.php */
-
 namespace App\Twig\Components\Atoms;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;

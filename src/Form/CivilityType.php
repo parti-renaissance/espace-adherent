@@ -20,6 +20,6 @@ class CivilityType extends AbstractType
 
     public function getParent()
     {
-        return ChoiceTabType::class;
+        return ReChoiceTabType::class;
     }
 }

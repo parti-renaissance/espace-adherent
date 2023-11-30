@@ -1,50 +1,40 @@
 {% use "form_div_layout.html.twig" %}
 
-{% block form_widget_simple -%}
-    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-field')|trim}) %}
-    {{- parent() -}}
-{%- endblock form_widget_simple %}
-
-{% block form_row -%}
-    {%- set row_attr = row_attr|merge({class: (row_attr.class|default('') ~ ' form-field-wrapper')|trim}) -%}
-    {{- parent() -}}
-{%- endblock form_row %}
-
-{% block choice_widget_collapsed -%}
-    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-field')|trim}) %}
-    {{- parent() -}}
-{%- endblock %}
-
-{% block form_label %}
-    <h2 class="font-bold">{{ label }}</h2>
-{% endblock %}
-
-{% block form_errors %}
-    <ul></ul>
-{% endblock %}
-
-{% block choice_tab_row %}
-    {{ form_label(form) }}
-
+{% block re_choice_tab_widget %}
     <twig:Atoms:ReLinkedToggle>
         {% for child in form.children %}
-            <twig:Atoms:ReToggleButton name="{{ form.vars.full_name }}" id="{{ child.vars.id }}"
-                                       value="{{ child.vars.value }}">{{ child.vars.label|trans }}</twig:Atoms:ReToggleButton>
+            <twig:Atoms:ReToggleButton
+                name="{{ form.vars.full_name }}"
+                id="{{ child.vars.id }}"
+                value="{{ child.vars.value }}"
+            >
+                {{ child.vars.label|trans }}
+            </twig:Atoms:ReToggleButton>
         {% endfor %}
     </twig:Atoms:ReLinkedToggle>
-
-    {{ form_errors(form) }}
 {% endblock %}
 
-
-{% block re_input_row %}
-    <twig:molecules:ReTextField name="{{ form.vars.full_name }}" id="{{ form.vars.id }}"
-                                value="{{ form.vars.value }}" {{ ...attr }} status="default"/>
+{% block form_widget_simple %}
+    {%- set type = type|default('text') -%}
+    <twig:molecules:ReTextField
+        name="{{ form.vars.full_name }}"
+        id="{{ form.vars.id }}"
+        value="{{ form.vars.value }}"
+        status="default"
+        type="{{ type }}"
+        {{ ...attr }}
+    />
 {% endblock %}
 
-{% block re_checkbox_row %}
-    <twig:molecules:ReCheckboxField name="{{ form.vars.full_name }}" id="{{ form.vars.id }}"
-                                    value="{{ form.vars.value }}" icon="{{ icon }}" {{ ...attr }} status="default">
+{% block checkbox_row %}
+    <twig:molecules:ReCheckboxField
+        name="{{ form.vars.full_name }}"
+        id="{{ form.vars.id }}"
+        value="{{ form.vars.value }}"
+        icon="{{ icon }}"
+        status="default"
+        {{ ...attr }}
+    >
         {{ label|trans }}
     </twig:molecules:ReCheckboxField>
 {% endblock %}

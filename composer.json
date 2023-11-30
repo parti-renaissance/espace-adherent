@@ -136,7 +136,6 @@
         "symfony/validator": "^5.4",
         "symfony/workflow": "^5.4",
         "symfony/yaml": "^5.4",
-        "symfony/ux-twig-component": "^2.1",
         "tackk/cartographer": "dev-welcome-php7",
         "tetranz/select2entity-bundle": "^3.1",
         "twig/extra-bundle": "^3.3",
