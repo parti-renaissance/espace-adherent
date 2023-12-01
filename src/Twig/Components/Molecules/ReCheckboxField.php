@@ -1,6 +1,6 @@
 <?php
 
-/** @see templates/components/molecules/ReCheckBoxField.php */
+/** @see templates/components/Molecules/ReCheckBoxField.php */
 
 namespace App\Twig\Components\Molecules;
 

@@ -1,6 +1,6 @@
 <?php
 
-/** @see templates/components/atoms/ReButton.php */
+/** @see templates/components/Atoms/ReButton.php */
 
 namespace App\Twig\Components\Molecules;
 

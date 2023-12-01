@@ -16,7 +16,7 @@
 
 {% block form_widget_simple %}
     {%- set type = type|default('text') -%}
-    <twig:molecules:ReTextField
+    <twig:Molecules:ReTextField
         name="{{ form.vars.full_name }}"
         id="{{ form.vars.id }}"
         value="{{ form.vars.value }}"
@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block checkbox_row %}
-    <twig:molecules:ReCheckboxField
+    <twig:Molecules:ReCheckboxField
         name="{{ form.vars.full_name }}"
         id="{{ form.vars.id }}"
         value="{{ form.vars.value }}"
@@ -36,7 +36,7 @@
         {{ ...attr }}
     >
         {{ label|trans }}
-    </twig:molecules:ReCheckboxField>
+    </twig:Molecules:ReCheckboxField>
 {% endblock %}
 
 {% block autocomplete_address_row %}

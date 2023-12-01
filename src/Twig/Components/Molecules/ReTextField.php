@@ -1,6 +1,6 @@
 <?php
 
-/** @see templates/components/molecules/ReTextField.html.twig */
+/** @see templates/components/Molecules/ReTextField.html.twig */
 
 namespace App\Twig\Components\Molecules;
 
