@@ -98,7 +98,7 @@ class SendNewMembershipNotificationCommand extends Command
     {
         $lastCommandHistory = $this->commandHistoryRepository->findLastOfType(CommandHistoryTypeEnum::NEW_MEMBERSHIP_NOTIFICATION);
 
-        return $lastCommandHistory ? $lastCommandHistory->createdAt : new \DateTime('1 month ago');
+        return $lastCommandHistory ? $lastCommandHistory->createdAt : new \DateTime('1 week ago');
     }
 
     private function saveCommandHistory(\DateTimeInterface $createdAt): void
