@@ -11,7 +11,7 @@ export default () => {
 
     Alpine.data('xValidateField', Validator.xValidate);
     Alpine.data('xReIcon', ReIcon.xReIcon);
-    Alpine.data('xReSelect', ReSelect.xReSelect)
+    Alpine.data('xReSelect', ReSelect.xReSelect);
 
     Alpine.start();
 };

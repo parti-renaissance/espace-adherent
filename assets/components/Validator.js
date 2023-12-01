@@ -119,7 +119,6 @@ const validateField = (validateTypes, domEl, setState) => {
         break;
     case 'radio':
     case 'radio-group': {
-        console.log('radio-group', domEl);
         const name = domEl.getAttribute('name');
         if (!name) throw new Error('Missing name attribute');
         const allRadios = document.querySelectorAll(`input[name="${name}"]`);
