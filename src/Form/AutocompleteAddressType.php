@@ -35,7 +35,6 @@ class AutocompleteAddressType extends AbstractType
                 'placeholder' => '',
                 'preferred_choices' => [AddressInterface::FRANCE],
                 'invalid_message' => 'common.country.invalid',
-                'empty_data' => 'FR',
             ])
             ->add('postalCode', TextType::class)
         ;
@@ -73,7 +72,6 @@ class AutocompleteAddressType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => Address::class,
-            ])
-        ;
+            ]);
     }
 }

@@ -64,7 +64,6 @@ const xReSelect = (props) => {
                 this.setEndValues(defaultOption);
             } else {
                 this.toggle = false;
-                // this.$dispatch(`autocomplete_change:${props.id}`, '');
             }
         },
         async handleInput(text) {

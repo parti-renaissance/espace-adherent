@@ -1,7 +1,5 @@
 <?php
 
-/** @see templates/components/Atoms/ReButton.php */
-
 namespace App\Twig\Components\Molecules;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
