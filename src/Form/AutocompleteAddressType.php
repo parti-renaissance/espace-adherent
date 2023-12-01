@@ -73,6 +73,7 @@ class AutocompleteAddressType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => Address::class,
-            ]);
+            ])
+        ;
     }
 }

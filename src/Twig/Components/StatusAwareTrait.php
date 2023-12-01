@@ -8,5 +8,4 @@ trait StatusAwareTrait
     public ?string $message;
     public ?string $validate;
     public ?string $onCheck;
-
 }
