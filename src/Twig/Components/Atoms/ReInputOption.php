@@ -2,11 +2,11 @@
 
 namespace App\Twig\Components\Atoms;
 
-use App\Twig\Components\StatusAwareTrait;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent]
-class ReLinkedToggle
+class ReInputOption
 {
-    use StatusAwareTrait;
+    public bool $selected = false;
+    public ?string $xSyncSelected;
 }

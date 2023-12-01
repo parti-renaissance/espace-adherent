@@ -1,0 +1,88 @@
+{% set attr = attributes.all() %}
+
+<div {{ attributes.only('class') }}
+    x-data="xValidateField({
+            status: '{{ status is defined ? status : 'default' }}',
+            message: '{{ message is defined ? message : '' }}',
+            validate: {{ validate is defined ? validate : '[]' }},
+            onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
+        })"
+    {% if attr.id is defined %}
+    @x-validate:{{ attr.id }}.window="setData($event.detail)"
+    {% endif %}>
+
+    <div class="relative flex-col flex justify-center mb-2.5">
+        {% if label is defined and label|length > 1 %}
+            <label for="{{ attr.id is defined ? attr.id : '' }}"
+                   class="text-ui_gray-80 text-base font-medium mb-4">
+                {{ label }}
+            </label>
+        {% endif %}
+
+        <script>
+            window.options_{{ attr.id }} = JSON.parse(`{{ options is defined ? options|json_encode|raw: '[]' }}`);
+            window.preferredOptions_{{ attr.id }} = Object.values(JSON.parse(`{{ preferredOptions is defined ? preferredOptions|json_encode|raw: '{}' }}`));
+        </script>
+
+        <div x-data="xReSelect({
+                id:'{{ attr.id is defined ? attr.id : '' }}',
+                options: window.options_{{ attr.id }},
+                preferredOptions: window.preferredOptions_{{ attr.id }},
+                placeholder: '{{ attr.placeholder is defined ? attr.placeholder : '' }}',
+                onQuery: {{ attr.onQuery is defined ? attr.onQuery : 'null' }},
+             })"
+             class="re-field-frame overflow-hidden !p-0 !h-auto !ring-0 !justify-between
+                       {{ (status is defined ? ' re-field-frame--' ~ status) }}"
+             :class="[toggle ? 'active' : '', status ? `re-field-frame--${status}` : '', ].join(' ')"
+             x-on:click.away="handleClickAway"
+             x-on:click="toggle = true"
+        >
+
+            <div class="relative flex flex-col justify-center">
+                <input x-ref="input" type="text"
+                       class="re-field-frame w-full !border-0 !bg-transparent !outline-0 !rounded-none"
+                       x-on:keyDown="handleKeyDown($event)"
+                       x-model="query"
+                       x-on:input.debounce.200ms="handleInput($event.target.value);"
+                       x-bind:disabled="isValueSet"
+                       x-bind:placeholder="placeholder"
+                >
+                <div x-show="isValueSet" @click="handleChangeSetValue"
+                     class="absolute self-end pr-4 flex w-full h-full cursor-pointer justify-end items-center">
+                    <span class="text-ui_blue-50 font-medium">changer</span>
+                </div>
+            </div>
+            <hr>
+            <ul x-show="toggle && filteredOptions.length > 0" class="max-h-[200px] overflow-y-scroll">
+                <template x-for="option in filteredOptions">
+                    <twig:Atoms:ReInputOption
+                        xSyncSelected="selected === option.value"
+                        x-on:click.stop="setEndValues(option)"
+                        x-text="option.label"
+                        x-ref="`option-${option.value}`"
+                        x-effect="option.value === selected ? $el.scrollIntoView({block: 'nearest', inline: 'nearest'}) : ''"
+                    />
+                </template>
+            </ul>
+            <input {{ attributes.without('class', 'options', 'preferredOptions') }}
+                x-ref="select"
+                x-bind="validateField"
+                hidden="hidden">
+        </div>
+
+
+    </div>
+    <div class="flex flex-row mt-2.5">
+        <twig:Atoms:ReIcon
+            x-show="status !== 'default' && message"
+            xSyncType="status"
+            class="mr-1"
+        />
+        <twig:Atoms:ReTextStatus
+            x-show="status !== 'default && message'"
+            value="{{ message is defined ? '' }}"
+            type="{{ status }}"
+            xSyncStatus="status"
+            x-text="message"/>
+    </div>
+</div>

@@ -1,7 +1,5 @@
 <?php
 
-/** @see templates/components/Atoms/ReButton.php */
-
 namespace App\Twig\Components\Molecules;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -16,4 +14,5 @@ class ReButton
     public string $tag = 'button';
     public string $value = '';
     public ?string $icon;
+    public ?string $xSyncLoading;
 }

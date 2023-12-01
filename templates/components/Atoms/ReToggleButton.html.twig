@@ -1,4 +1,4 @@
-<div class="re-toggle-btn" x-data="{ status: '{{ status }}'}" :class="status ? `re-toggle-btn--${status}` : ''">
+<div class="re-toggle-btn" :class="status ? `re-toggle-btn--${status}` : ''">
     <input {{ attributes }} type="radio"/>
     <label for="{{ attributes.all().id }}">{% block content '' %}</label>
 </div>

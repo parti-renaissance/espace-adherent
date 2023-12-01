@@ -2,5 +2,8 @@
 {% if icon is defined %}
     <twig:Atoms:ReIcon type="{{ icon }}"/>
 {% endif %}
-    <span class="text-base font-['Maax']">{{ value }}</span>
+<span class="text-base font-['Maax']">{{ value }}</span>
+{% if xSyncLoading is defined %}
+    <twig:Atoms:ReIcon type="loading" x-show="{{ xSyncLoading }}"/>
+{% endif %}
 </{{ tag }}>

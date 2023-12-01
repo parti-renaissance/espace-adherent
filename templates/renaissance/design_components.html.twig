@@ -63,6 +63,12 @@
                         </div>
                     {% endfor %}
                 </twig:Atoms:ReCard>
+
+                <twig:Atoms:ReCard variant="inner">
+                    <h1 class="font-bold">Item autocomplete || Select Input Item</h1>
+                    <twig:Atoms:ReInputOption>Option</twig:Atoms:ReInputOption>
+                    <twig:Atoms:ReInputOption selected>Option</twig:Atoms:ReInputOption>
+                </twig:Atoms:ReCard>
             </div>
         </twig:Atoms:ReCard>
 
@@ -77,6 +83,14 @@
                             <twig:Molecules:ReButton color="{{ key }}" value="{{ key }}" disabled/>
                         </div>
                     {% endfor %}
+
+                    <div x-data="{loading: true}">
+                        <twig:Molecules:ReButton
+                            color="blue"
+                            value="blue with loader"
+                            class="mb-4"
+                            xSyncLoading="loading"/>
+                    </div>
                     <div>
                         <twig:Molecules:ReButton color="blue" value="blue with star icon" icon="star" class="mb-4"/>
                     </div>
@@ -96,18 +110,46 @@
                 </twig:Atoms:ReCard>
 
                 <twig:Atoms:ReCard variant="inner">
-                    <h1 class="font-bold">Switch</h1>
-                    <twig:Atoms:ReLinkedToggle>
-                        <twig:Atoms:ReToggleButton id="sw1" value="test" name="ex">
-                            test 1
-                        </twig:Atoms:ReToggleButton>
-                        <twig:Atoms:ReToggleButton id="sw2" value="test" name="ex">
-                            test 2
-                        </twig:Atoms:ReToggleButton>
-                        <twig:Atoms:ReToggleButton id="sw3" value="test" name="ex">
-                            test 3
-                        </twig:Atoms:ReToggleButton>
-                    </twig:Atoms:ReLinkedToggle>
+                    <div>
+                        <h1 class="font-bold">Switch</h1>
+                        <twig:Atoms:ReLinkedToggle>
+                            <twig:Atoms:ReToggleButton id="sw1" value="test" name="ex">
+                                test 1
+                            </twig:Atoms:ReToggleButton>
+                            <twig:Atoms:ReToggleButton id="sw2" value="test" name="ex">
+                                test 2
+                            </twig:Atoms:ReToggleButton>
+                            <twig:Atoms:ReToggleButton id="sw3" value="test" name="ex">
+                                test 3
+                            </twig:Atoms:ReToggleButton>
+                        </twig:Atoms:ReLinkedToggle>
+                    </div>
+                    <div>
+                        <h1 class="font-bold">Select</h1>
+                        {% set options = [ { label: 'frontend', value: 'antonin', }, { label: 'backend', value: 'remy', }, { label: 'fullstack', value: 'dimitri', }, ] %}
+                        {% set preferred = [ { label: 'frontend', value: 'antonin', }, { label: 'fullstack', value: 'dimitri', }, ] %}
+
+                        <h2>Placeholder</h2>
+                        <twig:Molecules:ReSelect
+                            id="test"
+                            options="{{ options }}" preferredOptions="{{ preferred }}"
+                            placeholder="Selectionnez un élément"/>
+
+                        <h2>First value as placeholder</h2>
+                        <twig:Molecules:ReSelect
+                            id="test2"
+                            options="{{ options }}"
+                            preferredOptions="{{ preferred }}"
+                        />
+
+
+                        <h2>Autocomplete</h2>
+                        <twig:Molecules:ReSelect
+                            id="test3"
+                            onQuery="(input) => new Promise((resolve) => resolve(input ?[{ label: input, value: input }]:[]))"
+                            placeholder="Saisissez une query"/>
+
+                    </div>
                 </twig:Atoms:ReCard>
             </div>
         </twig:Atoms:ReCard>

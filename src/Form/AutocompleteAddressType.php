@@ -23,7 +23,7 @@ class AutocompleteAddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('autocomplete', TextType::class, [
+            ->add('autocomplete', ReAutoCompleteType::class, [
                 'mapped' => false,
                 'required' => true,
             ])
@@ -42,8 +42,12 @@ class AutocompleteAddressType extends AbstractType
         $builder
             ->get('postalCode')
             ->addModelTransformer(new CallbackTransformer(
-                function ($data) { return $data; },
-                function ($value) { return str_replace(' ', '', $value); }
+                function ($data) {
+                    return $data;
+                },
+                function ($value) {
+                    return str_replace(' ', '', $value);
+                }
             ))
         ;
 

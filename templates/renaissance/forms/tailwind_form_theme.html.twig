@@ -1,10 +1,10 @@
 {% use "form_div_layout.html.twig" %}
 
-{% block re_choice_tab_widget %}
-    <twig:Atoms:ReLinkedToggle>
+{% block re_choice_tab_row %}
+    <twig:Atoms:ReLinkedToggle name="{{ form.vars.full_name }}" {{ ...attr }}>
         {% for child in form.children %}
             <twig:Atoms:ReToggleButton
-                name="{{ form.vars.full_name }}"
+                x-bind="validateField" name="{{ form.vars.full_name }}"
                 id="{{ child.vars.id }}"
                 value="{{ child.vars.value }}"
             >
@@ -26,6 +26,26 @@
     />
 {% endblock %}
 
+{% block choice_row %}
+    <twig:Molecules:ReSelect
+        name="{{ form.vars.full_name }}" id="{{ form.vars.id }}"
+        value="{{ form.vars.value }}" {{ ...attr }}
+        options="{{ form.vars.choices }}"
+        preferredOptions="{{ form.vars.preferred_choices }}"
+        status="default">
+        {{ label|trans }}
+    </twig:Molecules:ReSelect>
+{% endblock %}
+
+{% block re_auto_complete_row %}
+    <twig:Molecules:ReSelect
+        name="{{ form.vars.full_name }}" id="{{ form.vars.id }}"
+        value="{{ form.vars.value }}" {{ ...attr }}
+        status="default">
+        {{ label|trans }}
+    </twig:Molecules:ReSelect>
+{% endblock %}
+
 {% block checkbox_row %}
     <twig:Molecules:ReCheckboxField
         name="{{ form.vars.full_name }}"
@@ -40,54 +60,43 @@
 {% endblock %}
 
 {% block autocomplete_address_row %}
-    <div class="address-autocomplete {% if not form.vars.valid %}has-error{% endif %}" data-form="{{ form.vars.name }}">
+    <div class="{% if not form.vars.valid %}has-error{% endif %}"
+         data-form="{{ form.vars.name }}"
+         x-data="{showAutoComplete: true}"
+    >
         {{ block('form_errors') }}
 
-        <div class="address-autocomplete-wrapper hidden">
 
-            {{ form_row(form.autocomplete, { label: 'Adresse postale', attr: { placeholder: 'Saisissez et sélectionnez une adresse' } }) }}
+        {{ form_row(form.country, { attr: { label: "Nationalité" } }) }}
+
+
+        {# ---- Autocomplete ---- -#}
+
+        <div class="address-autocomplete-wrapper mt-6" x-show="showAutoComplete">
+
+            {{ form_row(form.autocomplete, { label: 'Adresse postale', attr: { placeholder: 'Saisissez et sélectionnez une adresse', onQuery:"queryGooglePlaces",  validate:"['required']", } }) }}
             <p class="text-gray-600 text-sm italic">
                 Commencez à saisir votre adresse puis sélectionnez une proposition dans la liste d'adresses affichée.
             </p>
 
-            <div class="rounded-md bg-blue-50/30 p-4">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        {% include 'icons/info.svg.twig' %}
-                    </div>
-                    <div class="ml-3 flex-1 text-sm leading-5">
-                        <p class="text-gray-900">
-                            Votre adresse n'apparait pas dans la liste?
-                            <br>
-                            <a href="#" class="text-blue-500 hover:underline font-medium enable-address-fields">Cliquez
-                                ici</a> pour saisir manuellement votre adresse.
-                        </p>
-                    </div>
-                </div>
+            <div class="text-gray-700 text-[13px] cursor-pointer my-6" x-on:click="showAutoComplete = false">
+                Un problème ? <span class="text-ui_blue-50"> Cliquez ici</span> pour saisir manuellement votre
+                adresse.
             </div>
         </div>
 
-        <div class="address-fields-wrapper">
-            {{ form_row(form.address, { label: 'Adresse' }) }}
-            {{ form_row(form.cityName, { label: 'Ville' }) }}
+        {# ---- Manuel ---- -#}
 
-            <div class="flex space-x-4">
-                {{ form_row(form.postalCode, { label: 'Code postal' }) }}
-                {{ form_row(form.country, { label: 'Pays', attr: { placeholder: 'Sélectionner un pays' } }) }}
+        <div class="address-fields-wrapper gap-6 flex-col flex mt-6" x-show="!showAutoComplete">
+            {{ form_row(form.address, { label: 'Adresse Postale', attr:{ placeholder: 'Adresse', validate:"['required']",  onCheck:"setFieldValid('address')" } }) }}
+
+            <div class="flex gap-5">
+                {{ form_row(form.postalCode, { attr: { placeholder: 'Code Postal', validate:"['required']", onCheck:"setFieldValid('postalCode')"} }) }}
+                {{ form_row(form.cityName, { attr: { placeholder: 'Ville', validate:"['required']",  onCheck:"setFieldValid('cityName')" } }) }}
             </div>
 
-            <div class="rounded-md bg-blue-50/30 p-4">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        {% include 'icons/info.svg.twig' %}
-                    </div>
-                    <div class="ml-3 flex-1 text-sm leading-5">
-                        <p class="text-gray-900">
-                            <a href="#" class="text-blue-500 hover:underline font-medium enable-address-autocomplete">Cliquez
-                                ici</a> pour retourner à la sélection d'adresse.
-                        </p>
-                    </div>
-                </div>
+            <div class="text-gray-700 text-[13px] cursor-pointer my-6" x-on:click="showAutoComplete = true">
+                <span class="text-ui_blue-50">Revenir</span> à la saisie d’adresse simplifiée
             </div>
         </div>
     </div>

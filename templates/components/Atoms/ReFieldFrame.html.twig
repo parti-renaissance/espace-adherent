@@ -2,7 +2,8 @@
     {{ attributes.defaults({
         class: 're-field-frame transition-colors placeholder:text-ui_gray-60 text-ui_gray-80 w-full h-[51px] px-5 py-4 bg-white rounded-lg border border-ui_gray-30 !ring-0'
         ~ (status is defined ? ' re-field-frame--' ~ status)
-    }) }}
->
-    {% block content %}{% endblock %}
+    }) }}>
+{% block content %}
+{% endblock %}
 </{{ tag }}>
+
