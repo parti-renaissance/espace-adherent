@@ -201,7 +201,7 @@ class ProcurationSessionTest extends TestCase
         ;
 
         $series2 = [
-            [['app_procuration_election_context'], fn ($param) => $this->matchesRegularExpression('~.+"Mock_ElectionContext_.{8}":1:\{i:0;s:4:"test";}~')->evaluate($param)],
+            [['app_procuration_election_context'], fn ($param) => $this->matchesRegularExpression('~.+"MockObject_ElectionContext_.{8}":1:\{i:0;s:4:"test";}~')->evaluate($param)],
             [['app_procuration_model'], fn ($param) => $this->isInstanceOf(ProcurationRequest::class)->evaluate($param)],
         ];
 
