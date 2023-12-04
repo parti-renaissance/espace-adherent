@@ -3,15 +3,9 @@
 {% block page_title 'Adhésion' %}
 
 {% block content %}
-    <main class="bg-[#F4F4F7]">
-        <header class="p-10">
-            <a href="{{ path('app_renaissance_homepage') }}">
-                <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
-            </a>
-        </header>
-
-        <section class="flex flex-col justify-center items-center gap-8">
-            <twig:Atoms:ReCard class="max-w-[540px] !sticky !rounded-t-0">
+    <main class="bg-[#F4F4F7] re_new_ui">
+        <section class="flex flex-col justify-center items-center gap-10">
+            <twig:Atoms:ReCard class="max-w-[540px] !sticky !rounded-t-0 top-0 z-50">
                 <nav>
                     <ol class="breadcrumb">
                         <li>Adresse e-mail</li>
@@ -22,18 +16,13 @@
                 </nav>
             </twig:Atoms:ReCard>
 
-            <h2 class="text-center font-bold text-2xl mb-10">
-                Devenez membre de
-                <span class="text-blue-500">Renaissance</span>
-            </h2>
 
-            <div
-                class="p-6 bg-white bg-opacity-30 rounded-[32px] border border-zinc-200 flex-col justify-start items-start gap-6 inline-flex">
+            <div class="flex-col justify-start items-start gap-8 inline-flex">
 
                 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
                 {{ form_start(form) }}
-                <div class="flex gap-6 flex-col">
+                <div class="flex gap-8 flex-col">
                     <twig:Atoms:ReCard class="max-w-[500px]" x-data="FirstFormStep" id="step_1">
                         <template x-if="generalNotification">
                             <twig:Atoms:ReParagraphStatus
@@ -56,7 +45,7 @@
                             icon: 'info',
                             iconToolTip:'Lorem ipsum dolor sit amet consectetur. Diam facilisis nulla ut ut diam cursus auctor mauris nunc. Vel sit orci id at mi aliquam tellus bibendum. Non amet lorem massa est. Netus elit mattis fermentum ornare senectus volutpat et. Lorem pellentesque mattis vel hendrerit morbi ultricies enim sollicitudin. Pretium ante duis tempus nulla quis vulputate tellus.Lectus sed curabitur tortor leo faucibus elit commodo ultrices adipiscing. Felis quis convallis praesent odio orci sollicitudin in pulvinar. Sem convallis urna malesuada ante interdum. Ipsum tellus et sapien congue ac leo enim at risus. Ut mattis congue nunc suspendisse quis ante curabitur nibh. Luctus donec morbi commodo lacinia nulla ullamcorper ut vulputate enim.' }) }}
 
-                        <div class=" mb-4 w-full re-field-frame !h-auto cursor-pointer"
+                        <div class="w-full re-field-frame !h-auto cursor-pointer"
                              x-on:click="dom('.frc-button').click()">
                             {% include 'renaissance/partials/friendly-captcha.html.twig' %}
                         </div>

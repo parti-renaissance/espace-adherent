@@ -1,0 +1,6 @@
+{% if label is defined and label|length > 1 %}
+    <label for="{{ id is defined ? id : '' }}"
+           class="text-ui_gray-80 text-base font-medium flex mb-6">
+        {{ label }}
+    </label>
+{% endif %}

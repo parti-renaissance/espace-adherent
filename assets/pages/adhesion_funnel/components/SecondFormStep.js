@@ -8,6 +8,7 @@ import CommonFormStep from './CommonFormStep';
 const SecondForm = () => ({
     ...CommonFormStep(),
     nextStepId: 'step_3',
+    id: 'step_2',
     fieldsValid: {
         gender: false,
         lastName: false,
@@ -19,7 +20,9 @@ const SecondForm = () => ({
     },
 
     async handleOnSubmit(e) {
-        this._handleOnSubmitBase(e);
+        if (!this._handleOnSubmitBase(e)) {
+            return;
+        }
         this.handleNextStep();
     },
 });

@@ -12,4 +12,6 @@ class ReSelect
     public array $options = [];
     public ?string $message;
     public ?string $validate;
+    public ?string $label;
+    public ?string $id;
 }

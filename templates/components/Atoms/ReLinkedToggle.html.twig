@@ -1,19 +1,21 @@
 <div {{ attributes.defaults({class: 're-linked-toggle' }) }}
-    x-data="xValidateField({
+        x-data="xValidateField({
             status: '{{ status is defined ? status : 'default' }}',
             message: '{{ message is defined ? message : '' }}',
             validate: {{ validate is defined ? validate : '[]' }},
             onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
         })"
-    :class="{
+        :class="{
             're-linked-toggle--default': status === 'default',
             're-linked-toggle--success': status === 'success',
             're-linked-toggle--error': status === 'error',
             're-linked-toggle--warning': status === 'warning',
             're-linked-toggle--info': status === 'info',
         }"
-    type="radio-group"
+        type="radio-group"
 >
+    <twig:Atoms:ReLabel label="{{ label }}" id="{{ id }}"/>
+
     <div class="re-linked-toggle-content">
         {% block content %}{% endblock %}
     </div>
@@ -21,12 +23,12 @@
 
     <div class="flex flex-row mt-2.5" x-show="status !== 'default' && message">
         <twig:Atoms:ReIcon
-            xSyncType="status"
-            class="mr-1"
+                xSyncType="status"
+                class="mr-1"
         />
         <twig:Atoms:ReTextStatus
-            value="{{ message is defined ? '' }}"
-            xSyncStatus="status"
-            x-text="message"/>
+                value="{{ message is defined ? '' }}"
+                xSyncStatus="status"
+                x-text="message"/>
     </div>
 </div>

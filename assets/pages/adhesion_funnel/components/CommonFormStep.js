@@ -9,6 +9,7 @@ const CommonFormStep = () => ({
     generalNotification: null,
     loading: false,
     nextStepId: '',
+    id: '',
 
     setFieldValid(field) {
         return (value) => {
@@ -18,7 +19,7 @@ const CommonFormStep = () => ({
     },
 
     triggerValidateOnAllField() {
-        this.$el.querySelectorAll('input')
+        document.querySelectorAll(`#${this.id} input`)
             .forEach((x) => x.dispatchEvent(new Event('change')));
     },
 

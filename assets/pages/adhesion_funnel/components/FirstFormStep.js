@@ -16,6 +16,7 @@ const FirstForm = () => ({
     },
     captchaToken: null,
     nextStepId: 'step_2',
+    id: 'step_1',
 
     init() {
         this.$nextTick(() => {
@@ -59,7 +60,10 @@ const FirstForm = () => ({
     },
 
     async handleOnSubmit(e, $dispatch) {
-        this._handleOnSubmitBase(e);
+        if (!this._handleOnSubmitBase(e)) {
+            return new Promise(() => {
+            });
+        }
         this.loading = true;
         return this._postPersistEmail()
             .then((response) => {

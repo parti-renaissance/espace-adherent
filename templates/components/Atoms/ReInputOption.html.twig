@@ -1,9 +1,9 @@
 <div {{ attributes.without('x-text').defaults({ class: "re-input-option w-full h-12 bg-white flex-col justify-center items-center p-1 inline-flex cursor-pointer" ~ (selected ? ' re-input-option--selected') }) }}
-    :class="{'re-input-option--selected': {{ xSyncSelected is defined ? xSyncSelected : 'false' }}}"
+        :class="{'re-input-option--selected': {{ xSyncSelected is defined ? xSyncSelected : 'false' }}}"
 >
     <div class="rounded-[10px] flex items-center w-full h-full box-border px-4 py-2">
         <span {{ attributes.only('x-text') }}
-                class=" text-ui_gray-80 text-sm font-normal font-['Maax']"
+                class=" text-ui_gray-80 text-base font-normal font-['Maax']"
 
         > {% block content '' %} </span>
     </div>

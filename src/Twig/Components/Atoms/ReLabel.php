@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Twig\Components\Molecules;
+namespace App\Twig\Components\Atoms;
 
-use App\Twig\Components\StatusAwareTrait;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent]
-class ReTextField
+class ReLabel
 {
-    use StatusAwareTrait;
-
     public ?string $label;
     public ?string $id;
 }
