@@ -48,7 +48,7 @@
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.7.6",
     "moment": "^2.29.4",
-    "postcss": "^8.4.31",
+    "postcss": "^8.4.32",
     "postcss-loader": "^7.3.3",
     "prop-types": "^15.8.1",
     "qs": "^6.11.2",
