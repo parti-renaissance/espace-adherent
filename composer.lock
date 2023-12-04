@@ -6990,16 +6990,16 @@
         },
         {
             "name": "lexik/jwt-authentication-bundle",
-            "version": "v2.20.0",
+            "version": "v2.20.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lexik/LexikJWTAuthenticationBundle.git",
-                "reference": "a17afb7743e092a65835743bb48cd04c98f8be77"
+                "reference": "8a13662c4e9bed0b1257ab34b193cac3f763c8ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lexik/LexikJWTAuthenticationBundle/zipball/a17afb7743e092a65835743bb48cd04c98f8be77",
-                "reference": "a17afb7743e092a65835743bb48cd04c98f8be77",
+                "url": "https://api.github.com/repos/lexik/LexikJWTAuthenticationBundle/zipball/8a13662c4e9bed0b1257ab34b193cac3f763c8ae",
+                "reference": "8a13662c4e9bed0b1257ab34b193cac3f763c8ae",
                 "shasum": ""
             },
             "require": {
@@ -7093,7 +7093,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lexik/LexikJWTAuthenticationBundle/issues",
-                "source": "https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.20.0"
+                "source": "https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.20.1"
             },
             "funding": [
                 {
@@ -7105,7 +7105,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-01T02:58:56+00:00"
+            "time": "2023-12-01T12:06:26+00:00"
         },
         {
             "name": "lexik/paybox-bundle",
@@ -12728,16 +12728,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v5.4.32",
+            "version": "v5.4.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "d5d48f215ed73f7973d01256b9a2fac729bef759"
+                "reference": "14969a558cd6382b2a12b14b20ef9a851a02da79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/d5d48f215ed73f7973d01256b9a2fac729bef759",
-                "reference": "d5d48f215ed73f7973d01256b9a2fac729bef759",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/14969a558cd6382b2a12b14b20ef9a851a02da79",
+                "reference": "14969a558cd6382b2a12b14b20ef9a851a02da79",
                 "shasum": ""
             },
             "require": {
@@ -12797,7 +12797,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v5.4.32"
+                "source": "https://github.com/symfony/dependency-injection/tree/v5.4.33"
             },
             "funding": [
                 {
@@ -12813,7 +12813,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-29T06:58:28+00:00"
+            "time": "2023-11-30T08:15:37+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -14206,16 +14206,16 @@
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v5.4.32",
+            "version": "v5.4.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "442472752e3adc9810a7e425824497dc22f75acf"
+                "reference": "892636f9279f953dc266dc088f900b03eecb4ffa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/442472752e3adc9810a7e425824497dc22f75acf",
-                "reference": "442472752e3adc9810a7e425824497dc22f75acf",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/892636f9279f953dc266dc088f900b03eecb4ffa",
+                "reference": "892636f9279f953dc266dc088f900b03eecb4ffa",
                 "shasum": ""
             },
             "require": {
@@ -14298,7 +14298,7 @@
             "description": "Provides a structured process for converting a Request into a Response",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-kernel/tree/v5.4.32"
+                "source": "https://github.com/symfony/http-kernel/tree/v5.4.33"
             },
             "funding": [
                 {
@@ -14314,7 +14314,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-29T10:12:28+00:00"
+            "time": "2023-12-01T16:51:11+00:00"
         },
         {
             "name": "symfony/intl",
