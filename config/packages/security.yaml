@@ -611,11 +611,11 @@ security:
                     - lexik_jwt_authentication.jwt_token_authenticator
             entry_point: App\Security\LoginFormGuardAuthenticator
             login_link:
-                check_route: app_login_link_check
+                check_route: app_user_connect_with_magic_link
+                check_post_only: true
                 signature_properties: [ 'uuid', 'emailAddress', 'registeredAt' ]
-                max_uses: 10
-                lifetime: 86400
-                used_link_cache: 'cache.app'
+                max_uses: 1
+                lifetime: 600
                 failure_path: app_renaissance_login
 
     access_control:

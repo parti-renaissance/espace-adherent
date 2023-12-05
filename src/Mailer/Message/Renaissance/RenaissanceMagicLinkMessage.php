@@ -5,7 +5,7 @@ namespace App\Mailer\Message\Renaissance;
 use App\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
-class RenaissanceLoginLinkMessage extends AbstractRenaissanceMessage
+class RenaissanceMagicLinkMessage extends AbstractRenaissanceMessage
 {
     public static function create(Adherent $adherent, string $url): self
     {
@@ -13,12 +13,9 @@ class RenaissanceLoginLinkMessage extends AbstractRenaissanceMessage
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Votre lien de connexion Renaissance',
+            'Votre lien de connexion',
             [],
-            [
-                'first_name' => self::escape($adherent->getFirstName()),
-                'url' => $url,
-            ],
+            ['url' => $url],
         );
     }
 }
