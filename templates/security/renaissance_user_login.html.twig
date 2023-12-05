@@ -1,40 +1,72 @@
-{% extends 'renaissance/double_columns_layout.html.twig' %}
+{% extends 'base_renaissance.html.twig' %}
 
 {% block title 'Connectez-vous avec vos identifiants' %}
 
-{% form_theme form 'renaissance/form_theme.html.twig' %}
+{% block body_classes 'min-h-screen flex justify-center items-center' %}
 
-{% block content_left_side %}
-    {% include 'renaissance/partials/left-side-content.html.twig' %}
-{% endblock %}
+{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
-{% block content_right_side %}
-    <section class="flex items-center justify-center flex-grow p-5">
-        <div class="w-96">
-            {{ form_start(form, { action: path('app_user_login_check', { app_domain: app_renaissance_host }) }) }}
-                {% if error %}
-                    <div class="py-3 text-red-400">
-                        {{- error.messageKey|trans(error.messageData)|raw -}}
-                    </div>
-                {% endif %}
+{% block content %}
+    <section class="flex flex-col bg-white px-[2.5rem] pt-[2rem] pb-[3.25rem] w-fit">
+        <a href="{{ path('renaissance_site') }}" class="flex justify-center items-center self-center rounded-full transition duration-700 delay-200 ease-in-out bg-[#F4F4F7] mb-6 lg:mb-[4.38rem] hover:bg-[#0084FF] hover:scale-110 w-[80px] h-[80px] lg:w-[165px] lg:h-[165px]" title="Site Renaissance">
+            <img src="{{ asset('/images/renaissance/logo-circle-dark.svg') }}" alt="logo" class="w-3/4" />
+        </a>
 
-                {{ form_row(form._login_email, { label: 'E-mail', attr: { autocapitalize: 'off' } }) }}
-                {{ form_row(form._login_password, { label: 'Mot de passe' }) }}
+        <h1 class="mb-[2rem] lg:mb-[4rem] text-center font-maax text-[#3F4951] tracking-tighter font-medium lg:text-[2rem]">Je me connecte à <span class="text-[#0084FF]">mon espace</span></h1>
 
-                <div class="flex items-center space-x-2 checkbox">
-                    <input type="checkbox" id="remember_me" name="_remember_me" class="h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500" />
-                    <label class="block text-sm font-medium text-gray-700 uppercase tracking-wider" for="remember_me">Se souvenir de moi</label>
-                </div>
+        {{ form_start(form, { action: path('app_user_login_check', { app_domain: app_renaissance_host }), attr: { class: 'grid grid-cols-1 gap-6 lg:gap-[1rem] w-[280px] lg:w-[420px]' } }) }}
+            {% if error %}
+                <twig:Atoms:ReParagraphStatus status="error" icon="error">
+                    {{- error.messageKey|trans(error.messageData)|raw -}}
+                </twig:Atoms:ReParagraphStatus>
+            {% endif %}
 
-                <p class="mt-4">
-                    <a href="{{ path('app_renaissance_forgot_password') }}" class="text-base font-medium leading-6 text-dark-blue hover:underline">Mot de passe oublié ?</a>
-                </p>
+            {{ form_row(form._login_email, {
+                attr: {
+                    placeholder: 'Adresse mail',
+                    validate:"['required']",
+                    autocomplete: 'email',
+                }, label: false}) }}
 
-                <p class="mt4 flex flex-col">
-                    <button type="submit" class="mt-5 button button-blue button-full">Connexion</button>
-                    <a href="{{ path('app_user_get_login_link') }}" class="button button--blue button-full mt-4">Se connecter avec un lien</a>
-                </p>
-            {{ form_end(form) }}
+            {{ form_row(form._login_password, { attr: {
+                placeholder: 'Mot de passe',
+                validate:"['required']",
+            }, label: false }) }}
+
+            {{ form_row(form._remember_me, { label: 'Se souvenir de moi' }) }}
+
+            <twig:Molecules:ReButton
+                color="blue"
+                value="Me connecter"
+                class="w-full"
+            />
+        {{ form_end(form) }}
+
+        <div class="grid grid-cols-1 gap-6 lg:gap-[2.5rem] mt-6 lg:mt-[2.5rem]">
+            <div class="flex justify-between">
+                <a href="{{ path('app_adhesion_index') }}" class="font-maax hover:underline text-[#0084FF] text-[13px] lg:text-base font-normal tracking-tight">Devenir adhèrent</a>
+                <a href="{{ path('app_renaissance_forgot_password') }}" class="font-maax hover:underline text-[#0084FF] text-[13px] lg:text-base font-normal tracking-tight">Mot de passe oublié ?</a>
+            </div>
+
+            <hr />
+
+            <twig:Molecules:ReButton
+                tag="a"
+                href="{{ path('app_user_get_login_link') }}"
+                value="Me connecter avec un lien"
+                class="text-sm lg:text-base"
+                color="not-fill"
+                icon="link-circle"
+            />
+
+            <p class="text-center text-[13px] lg:text-base font-normal">
+                Besoin d’aide ?<br/>
+                Écrivez-nous à <span class="text-[#0084FF]">adherents@parti-renaissance.fr</span>.
+            </p>
         </div>
+
+        <footer class="text-center mt-[90px] text-[#B5BDC1]">
+            Renaissance {{ "now"|date('Y') }} ©
+        </footer>
     </section>
 {% endblock %}

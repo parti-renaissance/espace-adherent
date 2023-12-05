@@ -1,7 +1,5 @@
-{% set xStatus = xSyncStatus is defined ? xSyncStatus : '\''~status~'\'' %}
+{% set xStatus = xSyncStatus ?? status %}
 
-<span {{ attributes.defaults({ class: 'text-sm font-normal text-ui_gray-80 font-[Maax]' ~ ' ' ~ 're-text-status--' ~ status }) }}
-    :class="'re-text-status--' + {{ xStatus | raw }}"
-
+<span {{ attributes.defaults({ class: 'text-sm font-normal text-ui_gray-80 font-maax re-text-status--' ~ status }) }}
+    :class="'re-text-status--' + {{ xStatus }}"
 >{{ value }}</span>
-

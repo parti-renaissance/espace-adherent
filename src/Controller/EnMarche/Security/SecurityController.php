@@ -48,7 +48,7 @@ class SecurityController extends AbstractController
 
         $form = $formFactory->createNamed('', LoginType::class, [
             '_login_email' => $securityUtils->getLastUsername(),
-        ]);
+        ], ['remember_me' => true]);
 
         return $this->render($currentApp ? sprintf('security/%s_user_login.html.twig', $currentApp) : 'security/adherent_login.html.twig', [
             'form' => $form->createView(),

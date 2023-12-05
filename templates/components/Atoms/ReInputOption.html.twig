@@ -2,10 +2,8 @@
     :class="{'re-input-option--selected': {{ xSyncSelected is defined ? xSyncSelected : 'false' }}}"
 >
     <div class="rounded-[10px] flex items-center w-full h-full box-border px-4 py-2">
-        <span {{ attributes.only('x-text') }}
-                class=" text-ui_gray-80 text-sm font-normal font-['Maax']"
-
-        > {% block content '' %} </span>
+        <span {{ attributes.only('x-text') }} class="text-ui_gray-80 text-sm font-normal font-maax">
+            {% block content '' %}
+        </span>
     </div>
 </div>
-

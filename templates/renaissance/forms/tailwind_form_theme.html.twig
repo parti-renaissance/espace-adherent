@@ -24,7 +24,7 @@
             id="{{ form.vars.id }}"
             value="{{ form.vars.value }}"
             status="default"
-            type="{{ type }}"
+            type="{{ type|default('text') }}"
             {{ ...attr }}
         />
     {% endif %}
@@ -55,7 +55,7 @@
         name="{{ form.vars.full_name }}"
         id="{{ form.vars.id }}"
         value="{{ form.vars.value }}"
-        icon="{{ icon }}"
+        icon="{{ icon ?? null }}"
         status="default"
         {{ ...attr }}
     >

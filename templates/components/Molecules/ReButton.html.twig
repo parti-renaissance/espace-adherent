@@ -1,9 +1,11 @@
 <{{ tag }} {{ attributes.defaults({class: 're-button--'~color  ~ ' re-button w-full h-10 px-4 py-2 transition-colors rounded-[10px] justify-center items-center gap-2.5 inline-flex'}) }}>
-{% if icon is defined %}
-    <twig:Atoms:ReIcon type="{{ icon }}"/>
-{% endif %}
-<span class="text-base font-['Maax']">{{ value }}</span>
-{% if xSyncLoading is defined %}
-    <twig:Atoms:ReIcon type="loading" x-show="{{ xSyncLoading }}"/>
-{% endif %}
+    {% if icon is defined %}
+        <twig:Atoms:ReIcon type="{{ icon }}"/>
+    {% endif %}
+
+    <span class="font-maax">{{ value }}</span>
+
+    {% if xSyncLoading is defined %}
+        <twig:Atoms:ReIcon type="loading" x-show="{{ xSyncLoading }}"/>
+    {% endif %}
 </{{ tag }}>

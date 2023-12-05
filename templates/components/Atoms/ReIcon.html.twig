@@ -1,9 +1,9 @@
 {% set type = xSyncType is defined ? xSyncType : '\''~type~'\'' %}
 
 <div
-    x-data="xReIcon({ type: {{ type | raw }}})"
+    x-data="xReIcon({ type: {{ type }}})"
     {{ attributes.defaults({ class: 're-icon'  }) }}
-    :class="`re-icon-` + {{ type | raw }}"
-    x-html="getSvg({{ type | raw }})"
+    :class="`re-icon-` + {{ type }}"
+    x-html="getSvg({{ type }})"
 >
 </div>

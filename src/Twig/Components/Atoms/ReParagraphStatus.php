@@ -8,5 +8,6 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 class ReParagraphStatus
 {
     public string $status = 'default';
+    public ?string $icon = null;
     public ?string $xSyncStatus;
 }
