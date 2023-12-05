@@ -131,7 +131,7 @@ const validateField = (validateTypes, domEl, setState) => {
     }
     /** @type {ValidateState} */
     const successState = {
-        status: 'valid',
+        status: '' === value ? 'default' : 'valid',
         message: '',
     };
     const newState = validateTypes.map((t) => isTypeConditionPassed(t, value, setState) ?? []);

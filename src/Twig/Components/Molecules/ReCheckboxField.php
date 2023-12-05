@@ -11,5 +11,5 @@ class ReCheckboxField
     use StatusAwareTrait;
 
     public ?string $iconTooltip;
-    public ?string $icon;
+    public ?string $icon = null;
 }

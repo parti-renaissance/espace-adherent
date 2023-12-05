@@ -39,6 +39,10 @@ class AutocompleteAddressType extends AbstractType
             ->add('postalCode', TextType::class)
         ;
 
+        if ($options['with_additional_address']) {
+            $builder->add('additionalAddress', TextType::class, ['required' => false]);
+        }
+
         $builder
             ->get('postalCode')
             ->addModelTransformer(new CallbackTransformer(
@@ -72,7 +76,10 @@ class AutocompleteAddressType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => Address::class,
+                'with_additional_address' => false,
             ])
+            ->setDefined('with_additional_address')
+            ->setAllowedTypes('with_additional_address', 'bool')
         ;
     }
 }

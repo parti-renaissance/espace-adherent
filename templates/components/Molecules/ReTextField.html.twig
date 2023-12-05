@@ -11,8 +11,6 @@
     @x-validate:{{ attr.id }}.window="setData($event.detail)"
         {% endif %}>
     <div class="relative flex-col flex justify-center">
-        <twig:Atoms:ReLabel label="{{ label is defined ? '' }}" id="{{ id }}"/>
-
         <input
                 {{ attributes.without('class') }}
                 x-bind="validateField"

@@ -1,5 +1,13 @@
 {% use "form_div_layout.html.twig" %}
 
+{% block form_label %}
+    {% if label is not same as(false) %}
+        <twig:Atoms:ReLabel labelHtml="{{ label_html }}" id="{{ form.vars.id }}" class="{{ label_attr|default({}).class ?? '' }}">
+            {{ label|trans|raw }}
+        </twig:Atoms:ReLabel>
+    {% endif %}
+{% endblock %}
+
 {% block re_choice_tab_row %}
     <twig:Atoms:ReLinkedToggle name="{{ form.vars.full_name }}" {{ ...attr }}>
         {% for child in form.children %}
@@ -27,16 +35,14 @@
     />
 {% endblock %}
 
-{% block choice_row %}
+{% block choice_widget_collapsed %}
     <twig:Molecules:ReSelect
-            name="{{ form.vars.full_name }}" id="{{ form.vars.id }}"
-            value="{{ form.vars.value }}" {{ ...attr }}
-            options="{{ form.vars.choices }}"
-            preferredOptions="{{ form.vars.preferred_choices }}"
-
-            status="default">
-        {{ label|trans }}
-    </twig:Molecules:ReSelect>
+        name="{{ form.vars.full_name }}" id="{{ form.vars.id }}"
+        value="{{ form.vars.value }}" {{ ...attr }}
+        options="{{ form.vars.choices }}"
+        preferredOptions="{{ form.vars.preferred_choices }}"
+        status="default"
+    />
 {% endblock %}
 
 {% block re_auto_complete_row %}
@@ -50,33 +56,29 @@
 
 {% block checkbox_row %}
     <twig:Molecules:ReCheckboxField
-            name="{{ form.vars.full_name }}"
-            id="{{ form.vars.id }}"
-            value="{{ form.vars.value }}"
-            icon="{{ icon }}"
-            status="default"
-            {{ ...attr }}
+        name="{{ form.vars.full_name }}"
+        id="{{ form.vars.id }}"
+        value="{{ form.vars.value }}"
+        status="default"
+        {{ ...attr }}
     >
-        {{ label|trans }}
+        {{ form_label(form, label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 text-base font-normal'}}) }}
     </twig:Molecules:ReCheckboxField>
 {% endblock %}
 
 {% block autocomplete_address_row %}
-    <div class="{% if not form.vars.valid %}has-error{% endif %} gap-8 flex flex-col"
+    <div class="flex flex-col {% if not form.vars.valid %}has-error{% endif %}"
          data-form="{{ form.vars.name }}"
          x-data="{showAutoComplete: true}"
     >
+        {{ form_label(form) }}
+
         {{ block('form_errors') }}
-
-
-        {{ form_row(form.country, { attr: { label: "Nationalité" } }) }}
-
 
         {# ---- Autocomplete ---- -#}
 
         <div class="address-autocomplete-wrapper gap-8 flex flex-col" x-show="showAutoComplete">
-
-            {{ form_row(form.autocomplete, { label: 'Adresse postale', attr: { placeholder: 'Saisissez et sélectionnez une adresse', onQuery:"queryGooglePlaces",  validate:"['required']", } }) }}
+            {{ form_row(form.autocomplete, { label: false, attr: { placeholder: 'Saisissez et sélectionnez une adresse', onQuery:"queryGooglePlaces",  validate:"['required']", } }) }}
 
             <div class="text-gray-700 text-base cursor-pointer text-center" x-on:click="showAutoComplete = false">
                 Un problème ? <br/> <span class="text-ui_blue-50"> Cliquez ici</span> pour saisir manuellement votre
@@ -87,20 +89,14 @@
         {# ---- Manuel ---- -#}
 
         <div class="address-fields-wrapper gap-8 flex-col flex" x-show="!showAutoComplete">
-            {{ form_row(form.address, { label: 'Adresse Postale', attr:{ placeholder: 'Adresse', validate:"['required']",  onCheck:"setFieldValid('address')" } }) }}
+            {{ form_row(form.address, { label: false, attr:{ placeholder: 'Adresse', validate:"['required']",  onCheck:"setFieldValid('address')" } }) }}
 
             <div class="flex gap-5">
-                {{ form_row(form.postalCode, { label:'', attr: { placeholder: 'Code Postal', validate:"['required']", onCheck:"setFieldValid('postalCode')"} }) }}
-                {{ form_row(form.cityName, { label:'', attr: { placeholder: 'Ville', validate:"['required']",  onCheck:"setFieldValid('cityName')" } }) }}
+                {{ form_row(form.postalCode, { label: false, attr: { placeholder: 'Code Postal', validate:"['required']", onCheck:"setFieldValid('postalCode')"} }) }}
+                {{ form_row(form.cityName, { label: false, attr: { placeholder: 'Ville', validate:"['required']",  onCheck:"setFieldValid('cityName')" } }) }}
             </div>
 
-            <twig:Molecules:ReTextField
-                    name="lol"
-                    id="lol"
-                    status="default"
-                    type="text"
-                    placeholder="Complément d'adresse"
-            />
+            {{ form_row(form.additionalAddress, { label: false, attr: { placeholder: 'Complément d\'adresse' } }) }}
 
             <div class="text-gray-700 text-base cursor-pointer text-center" x-on:click="showAutoComplete = true">
                 <span class="text-ui_blue-50">Revenir</span> à la saisie d’adresse simplifiée

@@ -12,8 +12,6 @@
         {% endif %}>
 
     <div class="relative flex-col flex justify-center">
-        <twig:Atoms:ReLabel label="{{ label }}" id="{{ id }}"/>
-
         <script>
             window.options_{{ id }} = JSON.parse(`{{ options is defined ? options|json_encode|raw: '[]' }}`);
             window.preferredOptions_{{ id }} = Object.values(JSON.parse(`{{ preferredOptions is defined ? preferredOptions|json_encode|raw: '{}' }}`));
@@ -32,7 +30,6 @@
              x-on:click.away="handleClickAway"
              x-on:click="toggle = true"
         >
-
             <div class="relative flex flex-col justify-center">
                 <textarea x-ref="input" type="text"
                           x-autogrow
@@ -67,9 +64,8 @@
                     x-bind="validateField"
                     hidden="hidden">
         </div>
-
-
     </div>
+
     <div class="flex flex-row mt-2.5" x-show="status !== 'default' && message">
         <twig:Atoms:ReIcon
                 xSyncType="status"

@@ -7,6 +7,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent]
 class ReLabel
 {
-    public ?string $label;
     public ?string $id;
+    public ?string $class = null;
+    public bool $labelHtml = false;
 }

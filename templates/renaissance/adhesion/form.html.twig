@@ -29,6 +29,7 @@
                                     xSyncStatus="generalNotification.status"
                                     x-text="generalNotification.message"/>
                         </template>
+
                         {{ form_row(form.email, {
                             attr: {
                                 placeholder: 'Adresse mail',
@@ -36,14 +37,16 @@
                                 autocomplete: 'email',
                                 onCheck:"setFieldValid('email')",
                             }, label: false}) }}
+
                         {{ form_row(form.consentDataCollect, {
-                            attr:{
+                            attr: {
                                 validate: "['required']",
-                                onCheck:"setFieldValid('consentDataCollect')",
+                                onCheck: "setFieldValid('consentDataCollect')",
+                                icon: 'info',
+                                iconToolTip: 'Lorem ipsum dolor sit amet consectetur. Diam facilisis nulla ut ut diam cursus auctor mauris nunc. Vel sit orci id at mi aliquam tellus bibendum. Non amet lorem massa est. Netus elit mattis fermentum ornare senectus volutpat et. Lorem pellentesque mattis vel hendrerit morbi ultricies enim sollicitudin. Pretium ante duis tempus nulla quis vulputate tellus.Lectus sed curabitur tortor leo faucibus elit commodo ultrices adipiscing. Felis quis convallis praesent odio orci sollicitudin in pulvinar. Sem convallis urna malesuada ante interdum. Ipsum tellus et sapien congue ac leo enim at risus. Ut mattis congue nunc suspendisse quis ante curabitur nibh. Luctus donec morbi commodo lacinia nulla ullamcorper ut vulputate enim.'
                             },
-                            label: 'Je consent au traitement de mes données personnelles',
-                            icon: 'info',
-                            iconToolTip:'Lorem ipsum dolor sit amet consectetur. Diam facilisis nulla ut ut diam cursus auctor mauris nunc. Vel sit orci id at mi aliquam tellus bibendum. Non amet lorem massa est. Netus elit mattis fermentum ornare senectus volutpat et. Lorem pellentesque mattis vel hendrerit morbi ultricies enim sollicitudin. Pretium ante duis tempus nulla quis vulputate tellus.Lectus sed curabitur tortor leo faucibus elit commodo ultrices adipiscing. Felis quis convallis praesent odio orci sollicitudin in pulvinar. Sem convallis urna malesuada ante interdum. Ipsum tellus et sapien congue ac leo enim at risus. Ut mattis congue nunc suspendisse quis ante curabitur nibh. Luctus donec morbi commodo lacinia nulla ullamcorper ut vulputate enim.' }) }}
+                            label: 'Je consent au traitement de mes données personnelles'
+                        }) }}
 
                         <div class="w-full re-field-frame !h-auto cursor-pointer"
                              x-on:click="dom('.frc-button').click()">
@@ -74,21 +77,21 @@
                                     icon="download"
                             />
                         </div>
+
                         <hr/>
 
                         <twig:Atoms:ReParagraphStatus status="info">
                             Une question relative à l’adhésion ? <br>
                             Écrivez-nous à <a class="text-ui_blue-50" href="mailto:adherents@parti-renaissance.fr">adherents@parti-renaissance.fr</a>
                         </twig:Atoms:ReParagraphStatus>
-
                     </twig:Atoms:ReCard>
 
                     <twig:Atoms:ReCard class="max-w-[500px]" id="step_2" x-data="SecondFormStep">
-
                         {{ form_row(form.civility, {
                             label: 'Mes informations',
                             attr: { onCheck:"setFieldValid('gender')", validate: "['required']" }
                         }) }}
+
                         <div class="flex-row flex gap-5">
                             {{ form_row(form.lastName, {
                                 label: false,
@@ -99,15 +102,28 @@
                                 attr: { placeholder: 'Prénom', onCheck:"setFieldValid('firstName')", validate: "['required']" }
                             }) }}
                         </div>
-                        {{ form_row(form.address, {label: false}) }}
+
+                        {{ form_row(form.nationality, {
+                            label: 'Nationalité',
+                            attr: { onCheck:"setFieldValid('nationality')", validate: "['required']" }
+                        }) }}
+
+                        {{ form_row(form.address, {label: 'Adresse postale'}) }}
 
                         <twig:Molecules:ReButton
-                                color="blue"
-                                value="Suivant"
-                                class="w-full"
-                                x-on:click="handleOnSubmit($event, $dispatch)"
-                                x-bind:class="{disabled: !checkValidity()}"/>
+                            color="blue"
+                            value="Suivant"
+                            class="w-full"
+                            x-on:click="handleOnSubmit($event, $dispatch)"
+                            x-bind:class="{disabled: !checkValidity()}"
+                        />
+                    </twig:Atoms:ReCard>
 
+                    <twig:Atoms:ReCard class="max-w-[500px]" id="step_2" x-data="SecondFormStep">
+                        {{ form_row(form.exclusiveMembership, {label: false}) }}
+                        {{ form_row(form.partyMembership, {label: false}) }}
+                        {{ form_row(form.allowNotifications, {label: 'Je souhaite recevoir les informations sur l’actualité de Renaissance et ses communications politiques par e-mail'}) }}
+                        {{ form_row(form.isPhysicalPerson, {label: 'adhesion.physical_person.label', label_html: true}) }}
                     </twig:Atoms:ReCard>
 
                     <twig:Atoms:ReCard class="max-w-[500px]" id="step_3">

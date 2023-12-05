@@ -14,6 +14,11 @@ trait AddressTrait
     protected ?string $address = null;
 
     /**
+     * @Assert\Length(max=150, maxMessage="common.address.max_length")
+     */
+    protected ?string $additionalAddress = null;
+
+    /**
      * @Assert\NotBlank(message="common.postal_code.not_blank")
      * @Assert\Length(max=15)
      */

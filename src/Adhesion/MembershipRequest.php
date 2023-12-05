@@ -10,8 +10,12 @@ class MembershipRequest
     public ?string $civility = null;
     public ?string $firstName = null;
     public ?string $lastName = null;
+    public ?string $nationality = null;
     public ?Address $address = null;
     public ?int $amount = null;
     public ?string $utmSource = null;
     public ?string $utmCampaign = null;
+    public ?bool $exclusiveMembership = null;
+    public ?int $partyMembership = null;
+    public ?bool $allowNotifications = null;
 }

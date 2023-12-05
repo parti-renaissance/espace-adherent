@@ -12,11 +12,10 @@
                     x-bind="validateField"
                     xSyncStatus="status"
             />
-            <label for="{{ attributes.all().id }}" class="grow shrink basis-0 text-gray-700 text-base font-normal">
-                {% block content '' %}
-            </label>
 
-            {% if icon is defined %}
+            {% block content '' %}
+
+            {% if icon %}
                 {% if iconToolTip is defined %}
                     <twig:Atoms:ReIcon type="{{ icon }}" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
                 {% else %}
@@ -24,8 +23,8 @@
                 {% endif %}
             {% endif %}
         </div>
-
     </div>
+
     <div class="flex flex-row mt-2.5">
         <twig:Atoms:ReIcon
                 x-show="status !== 'default' && message"
@@ -33,7 +32,7 @@
                 class="mr-1"
         />
         <twig:Atoms:ReTextStatus
-                x-show="status !== 'default && message'"
+                x-show="status !== 'default' && message"
                 value="{{ message is defined ? '' }}"
                 type="{{ status }}"
                 xSyncStatus="status"
