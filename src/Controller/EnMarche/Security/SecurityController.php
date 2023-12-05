@@ -83,7 +83,7 @@ class SecurityController extends AbstractController
         }
 
         $form = $this->createFormBuilder()
-            ->add('email', EmailType::class, ['constraints' => new NotBlank()])
+            ->add('email', EmailType::class, ['required' => true, 'constraints' => new NotBlank()])
             ->getForm()
             ->handleRequest($request)
         ;

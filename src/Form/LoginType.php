@@ -19,7 +19,7 @@ class LoginType extends AbstractType
         ;
 
         if ($options['remember_me']) {
-            $builder->add($options['remember_me_parameter'], CheckboxType::class);
+            $builder->add($options['remember_me_parameter'], CheckboxType::class, ['required' => false]);
         }
     }
 
