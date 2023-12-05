@@ -96,11 +96,13 @@ const xReSelect = (props) => {
             }
         },
         setEndValues(option) {
+            if (!option && defaultOption.value) {
+                option = defaultOption;
+            }
             if (!option) {
-                option = {
-                    value: 'FR',
-                    label: 'France',
-                };
+                this.$refs.select.value = '';
+                this.$refs.select.dispatchEvent(new Event('change'));
+                return;
             }
             this.selected = option.value;
             this.query = '';

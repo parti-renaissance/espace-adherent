@@ -34,17 +34,19 @@
         >
 
             <div class="relative flex flex-col justify-center">
-                <input x-ref="input" type="text"
-                       class="re-field-frame w-full !border-0 !bg-transparent !outline-0 !rounded-none"
-                       x-on:keyDown="handleKeyDown($event)"
-                       x-model="query"
-                       x-on:input.debounce.200ms="handleInput($event.target.value);"
-                       x-bind:disabled="isValueSet"
-                       x-bind:placeholder="placeholder"
-                >
+                <textarea x-ref="input" type="text"
+                          x-autogrow
+                          class="re-field-frame w-full !border-0  !outline-0 !rounded-none resize-none"
+                          x-on:keyDown="handleKeyDown($event)"
+                          x-model="query"
+                          x-on:input.debounce.200ms="handleInput($event.target.value);"
+                          x-bind:class="{'disabled': isValueSet, '!pr-24': isValueSet}"
+                          x-on:focus="handleChangeSetValue"
+                          x-bind:placeholder="placeholder"
+                ></textarea>
                 <div x-show="isValueSet" @click="handleChangeSetValue"
                      class="absolute self-end pr-4 flex w-full h-full cursor-pointer justify-end items-center">
-                    <span class="text-ui_blue-50 font-medium">changer</span>
+                    <span class="text-ui_blue-50 font-medium">Changer</span>
                 </div>
             </div>
             <hr>

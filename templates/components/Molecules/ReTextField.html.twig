@@ -11,11 +11,12 @@
     @x-validate:{{ attr.id }}.window="setData($event.detail)"
         {% endif %}>
     <div class="relative flex-col flex justify-center">
-        <twig:Atoms:ReLabel label="{{ label is defined ? '' }}" id="{{ attr.id is defined ? null }}"/>
+        <twig:Atoms:ReLabel label="{{ label is defined ? '' }}" id="{{ id }}"/>
 
         <input
                 {{ attributes.without('class') }}
                 x-bind="validateField"
+                id="{{ id }}"
                 class="re-field-frame !ring-0 !flex  {{ (status is defined ? ' re-field-frame--' ~ status) }}"
                 :class="status !== 'default' ? 're-field-frame--' + status + ' !pr-12' : ''"
         />
