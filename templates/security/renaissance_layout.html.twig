@@ -1,0 +1,37 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block body_classes 'min-h-screen flex justify-center items-center' %}
+
+{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
+
+{% block flash_message '' %}
+
+{% block content %}
+    <section class="flex flex-col bg-white px-10 pt-8 pb-[3.25rem] w-[360px] lg:w-[500px]">
+        <a href="{{ path('renaissance_site') }}" class="flex justify-center items-center self-center rounded-full transition duration-700 delay-200 ease-in-out bg-[#F4F4F7] mb-6 lg:mb-[4.38rem] hover:bg-[#0084FF] hover:scale-110 w-[80px] h-[80px] lg:w-[165px] lg:h-[165px]" title="Site Renaissance">
+            <img src="{{ asset('/images/renaissance/logo-circle-dark.svg') }}" alt="logo" class="w-3/4" />
+        </a>
+
+        <h1 class="mb-6 lg:mb-16 text-center font-maax text-[#3F4951] tracking-tighter font-medium lg:text-[2rem]">
+            {% block security_block_title '' %}
+        </h1>
+
+        {% for label, messages in app.flashes(['error', 'info', 'success']) %}
+            {% if messages|length %}
+                {% for message in messages %}
+                    <div class="mb-6 lg:mb-16">
+                        <twig:Atoms:ReParagraphStatus status="{{ label }}" icon="{{ label }}">
+                            {{ message|trans|raw }}
+                        </twig:Atoms:ReParagraphStatus>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+
+        {% block security_content '' %}
+
+        <footer class="text-center mt-[90px] text-[#B5BDC1]">
+            Renaissance {{ "now"|date('Y') }} ©
+        </footer>
+    </section>
+{% endblock %}

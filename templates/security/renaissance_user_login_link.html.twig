@@ -1,21 +1,35 @@
-{% extends 'renaissance/double_columns_layout.html.twig' %}
+{% extends 'security/renaissance_layout.html.twig' %}
 
-{% block title 'Connectez-vous avec un lien' %}
+{% block title 'Connectez-vous avec un lien magique' %}
 
-{% form_theme form 'renaissance/forms/default_form_theme.html.twig' %}
-
-{% block content_left_side %}
-    {% include 'renaissance/partials/left-side-content.html.twig' %}
+{% block security_block_title %}
+    Je me connecte avec <span class="text-[#0084FF]">un lien</span>
 {% endblock %}
 
-{% block content_right_side %}
-    <section class="flex items-center justify-center flex-grow p-5">
-        <div class="w-96">
-            {{ form_start(form) }}
-                {{ form_row(form, { label: 'E-mail' }) }}
+{% block security_content %}
+    {{ form_start(form, { attr: { class: 'grid grid-cols-1 gap-6 lg:gap-[1rem]' } }) }}
+        {% if error is defined %}
+            <twig:Atoms:ReParagraphStatus status="error" icon="error">
+                {{- error.messageKey|trans(error.messageData)|raw -}}
+            </twig:Atoms:ReParagraphStatus>
+        {% endif %}
 
-                <button type="submit" class="mt-5 button button-blue button-full">M'envoyer le lien</button>
-            {{ form_end(form) }}
-        </div>
-    </section>
+        {{ form_row(form, {
+            attr: {
+                placeholder: 'Adresse mail',
+                validate:"['required']",
+                autocomplete: 'email',
+            }, label: false}) }}
+
+        <twig:Molecules:ReButton
+            color="blue"
+            value="M’envoyer un lien"
+            class="w-full"
+            icon="link-circle"
+        />
+    {{ form_end(form) }}
+
+    <hr class="mt-10 hidden lg:block"/>
+
+    <a href="{{ path('app_renaissance_login') }}" class="mt-10 self-center font-maax hover:underline text-[#0084FF] text-[13px] lg:text-base font-normal tracking-tight">← Page précédente</a>
 {% endblock %}

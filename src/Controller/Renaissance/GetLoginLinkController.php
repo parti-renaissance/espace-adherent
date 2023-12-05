@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/connexion/lien', name: 'app_user_get_login_link', methods: ['GET', 'POST'])]
 class GetLoginLinkController extends AbstractController
@@ -20,6 +21,7 @@ class GetLoginLinkController extends AbstractController
         LoginLinkHandlerInterface $loginLinkHandler,
         AdherentRepository $adherentRepository,
         MailerService $transactionalMailer,
+        TranslatorInterface $translator,
     ): Response {
         if ($this->getUser()) {
             $this->addFlash('info', 'Vous êtes déjà connecté(e)');
@@ -40,7 +42,7 @@ class GetLoginLinkController extends AbstractController
                 $transactionalMailer->sendMessage(RenaissanceLoginLinkMessage::create($adherent, $loginLink->getUrl()));
             }
 
-            $this->addFlash('success', 'Si l\'adresse que vous avez saisie est valide, un e-mail vous a été envoyé contenant un lien de connexion.');
+            $this->addFlash('info', $translator->trans('adherent.get_magic_link.email_sent', ['%email%' => $email]));
 
             return $this->redirectToRoute('app_user_get_login_link');
         }
