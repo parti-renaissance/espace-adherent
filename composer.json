@@ -52,7 +52,7 @@
         "enmarche/majority-judgment": "^0.0.3",
         "exercise/htmlpurifier-bundle": "^3.1",
         "fusonic/opengraph": "^2.1",
-        "gedmo/doctrine-extensions": "~3.13.0",
+        "gedmo/doctrine-extensions": "~3.14.0",
         "geocoder-php/google-maps-provider": "^4.5",
         "geoip2/geoip2": "^2.4",
         "giggsey/libphonenumber-for-php": "~8.13.10",
