@@ -28,7 +28,7 @@
              })"
              class="re-field-frame overflow-hidden !p-0 !h-auto !justify-between
                        {{ (status is defined ? ' re-field-frame--' ~ status) }}"
-             :class="[toggle ? 'active' : '', status ? `re-field-frame--${status}` : '', ].join(' ')"
+             x-bind:class="[toggle ? 'active' : '', status ? `re-field-frame--${status}` : '', ].join(' ')"
              x-on:click.away="handleClickAway"
              x-on:click="toggle = true"
         >
@@ -36,10 +36,11 @@
             <div class="relative flex flex-col justify-center">
                 <textarea x-ref="input" type="text"
                           x-autogrow
-                          class="re-field-frame w-full !border-0  !outline-0 !rounded-none resize-none"
+                          rows="1"
+                          class="re-field-frame w-full !border-0 min-h-[51px] !outline-0 !rounded-none resize-none"
                           x-on:keyDown="handleKeyDown($event)"
                           x-model="query"
-                          x-on:input.debounce.200ms="handleInput($event.target.value);"
+                          x-on:input.debounce.200ms="handleInput($event);"
                           x-bind:class="{'disabled': isValueSet, '!pr-24': isValueSet}"
                           x-on:focus="handleChangeSetValue"
                           x-bind:placeholder="placeholder"
@@ -53,11 +54,11 @@
             <ul x-show="toggle && filteredOptions.length > 0" class="max-h-[200px] overflow-y-scroll">
                 <template x-for="option in filteredOptions">
                     <twig:Atoms:ReInputOption
-                            xSyncSelected="selected === option.value"
+                            xSyncSelected="selected.value === option.value"
                             x-on:click.stop="setEndValues(option)"
                             x-text="option.label"
                             x-ref="`option-${option.value}`"
-                            x-effect="option.value === selected ? $el.scrollIntoView({block: 'nearest', inline: 'nearest'}) : ''"
+                            x-effect="isOptionSelected(option) ? $el.scrollIntoView({block: 'nearest', inline: 'nearest'}) : ''"
                     />
                 </template>
             </ul>

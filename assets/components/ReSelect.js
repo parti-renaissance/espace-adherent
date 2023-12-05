@@ -40,61 +40,95 @@ const xReSelect = (props) => {
     const firstOption = options[0];
     const defaultOption = !props.placeholder && firstOption ? firstOption : {
         value: '',
-        label: props.placeholder,
+        label: '',
     };
     const placeholder = props.placeholder || defaultOption.label;
 
     return {
         filteredOptions: options,
-        selected: defaultOption.value,
+        selected: defaultOption,
         selectedIndex: 0,
         query: '',
         placeholder,
         toggle: false,
         isValueSet: !props.placeholder,
+
+        /**
+         * @param {?Event} event
+         */
         handleChangeSetValue(event) {
             this.isValueSet = false;
-            this.filteredOptions = options;
-            this.query = '';
+            this.toggle = true;
             this.$nextTick(() => {
                 this.$refs.input.focus();
+                this.$refs.input.select();
+                this.$refs.input.dispatchEvent(new Event('change'));
             });
         },
+
+        /**
+         * @param {?Event} event
+         */
         handleClickAway(event) {
-            if (!this.isValueSet && this.filteredOptions[0]) {
-                this.setEndValues(this.filteredOptions[0]);
-            } else if (!this.isValueSet && defaultOption.value) {
-                this.setEndValues(defaultOption);
+            if (!this.isValueSet) {
+                if (this.filteredOptions[0]) {
+                    this.setEndValues(this.filteredOptions[0]);
+                } else if (defaultOption.value) {
+                    this.setEndValues(defaultOption);
+                }
+                this.setEndValues(this.selected);
             } else {
-                this.toggle = false;
+                this.setEndValues(null);
             }
         },
-        async handleInput(text) {
-            const newOpts = await this.onQuery(text);
-            this.filteredOptions = newOpts;
+
+        /**
+         * Handle when user type in the input
+         * @param {Event} e
+         * @return {Promise<void>}
+         */
+        async handleInput(e) {
+            if (this.isValueSet) this.isValueSet = false;
+            this.filteredOptions = await this.onQuery(e.target.value);
             this.activeFirst();
         },
+        /**
+         * Handle when user type in the input
+         */
         activeFirst() {
             if (0 === this.filteredOptions.length) {
-                return;
+                this.selected = null;
             }
-            this.selected = this.filteredOptions[0].value;
+            const [first] = this.filteredOptions;
+            this.selected = first;
             this.selectedIndex = 0;
         },
+
         /**
          * @param {KeyboardEvent} event
          */
         handleKeyDown(event) {
             if ('ArrowDown' === event.key) {
                 this.selectedIndex = Math.min(this.selectedIndex + 1, this.filteredOptions.length - 1);
-                this.selected = this.filteredOptions[this.selectedIndex].value;
+                this.selected = this.filteredOptions[this.selectedIndex];
             } else if ('ArrowUp' === event.key) {
                 this.selectedIndex = Math.max(this.selectedIndex - 1, 0);
-                this.selected = this.filteredOptions[this.selectedIndex].value;
+                this.selected = this.filteredOptions[this.selectedIndex];
             } else if ('Enter' === event.key) {
+                event.preventDefault();
                 this.setEndValues(this.filteredOptions[this.selectedIndex]);
             }
         },
+
+        isOptionSelected(option) {
+            if (!option) return false;
+            if (!this.selected) return false;
+            return option.value === this.selected.value;
+        },
+
+        /**
+         * @param {Option | null} option
+         */
         setEndValues(option) {
             if (!option && defaultOption.value) {
                 option = defaultOption;
@@ -104,13 +138,21 @@ const xReSelect = (props) => {
                 this.$refs.select.dispatchEvent(new Event('change'));
                 return;
             }
-            this.selected = option.value;
-            this.query = '';
-            this.placeholder = option.label;
+
+            if (option) {
+                this.selected = option;
+                this.isValueSet = true;
+            }
+
+            this.$refs.select.value = option && option.value ? option.value : '';
+            this.query = option && option.label ? option.label : '';
             this.toggle = false;
-            this.isValueSet = true;
-            this.$refs.select.value = option.value;
+
             this.$refs.select.dispatchEvent(new Event('change'));
+            this.$nextTick(() => {
+                this.$refs.input.dispatchEvent(new Event('change'));
+                this.$refs.input.blur();
+            });
             if (option.value) {
                 this.$dispatch(`autocomplete_change:${props.id}`, option.value);
             }
