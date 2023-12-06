@@ -82,7 +82,7 @@ const isTypeConditionPassed = (type, value, cb) => {
 
 const messageLib = {
     required: {
-        error: 'Ce champ est requis',
+        error: 'Ce champ est requis.',
     },
     email: {
         loading: 'Vérification de votre email...',

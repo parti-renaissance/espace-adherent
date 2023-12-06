@@ -63,10 +63,11 @@ class StrictEmailValidator extends ConstraintValidator
             $error = $validator->getError();
 
             foreach ($error->getReasons() as $reason) {
+                $reasonLevel = $this->getCodeFromReason($reason, $constraint);
                 $this->context
-                    ->buildViolation($constraint->message)
+                    ->buildViolation($reasonLevel === $constraint::LEVEL_ERROR ? $constraint->errorMessage : $constraint->warningMessage)
                     ->setParameter('{{ email }}', $value)
-                    ->setCause($this->getCodeFromReason($reason, $constraint))
+                    ->setCause($reasonLevel)
                     ->addViolation()
                 ;
             }

@@ -34,9 +34,13 @@ class ValidateEmailControllerTest extends AbstractRenaissanceWebTestCase
         }
 
         if ($email) {
-            self::assertSame('Adresse e-mail "'.$email.'" est invalide', $response['message']);
+            if (1 === $status) {
+                self::assertSame('Nous ne sommes pas parvenus à vérifier l\'existence de l\'adresse « '.$email.' ». Vérifiez votre saisie avant de continuer.', $response['message']);
+            } else {
+                self::assertSame('L\'adresse « '.$email.' » n\'est pas valide.', $response['message']);
+            }
         } else {
-            self::assertSame('Cette valeur ne doit pas être vide.', $response['message']);
+            self::assertSame('L\'adresse email est nécessaire pour continuer.', $response['message']);
         }
     }
 

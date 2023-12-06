@@ -16,14 +16,18 @@
 
 {% block form_widget_simple %}
     {%- set type = type|default('text') -%}
-    <twig:Molecules:ReTextField
-        name="{{ form.vars.full_name }}"
-        id="{{ form.vars.id }}"
-        value="{{ form.vars.value }}"
-        status="default"
-        type="{{ type }}"
-        {{ ...attr }}
-    />
+    {% if type == 'hidden' %}
+        {{ parent() }}
+    {% else %}
+        <twig:Molecules:ReTextField
+            name="{{ form.vars.full_name }}"
+            id="{{ form.vars.id }}"
+            value="{{ form.vars.value }}"
+            status="default"
+            type="{{ type }}"
+            {{ ...attr }}
+        />
+    {% endif %}
 {% endblock %}
 
 {% block choice_row %}
