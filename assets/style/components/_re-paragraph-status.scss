@@ -1,8 +1,8 @@
 .re-paragraph-status {
-    @apply border rounded-[10px] px-6 py-4 text-sm lg:text-base font-medium flex items-center;
+    @apply border rounded-[10px] p-6 text-sm lg:text-base font-normal flex items-center;
 
-    & .re-icon {
-        @apply mr-4 lg:mr-6;
+    .re-icon {
+        @apply mr-6;
     }
 
     &--success {

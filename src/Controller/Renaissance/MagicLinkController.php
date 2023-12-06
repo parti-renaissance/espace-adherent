@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MagicLinkController extends AbstractController
@@ -30,7 +31,7 @@ class MagicLinkController extends AbstractController
         }
 
         $form = $this
-            ->createForm(EmailType::class)
+            ->createForm(EmailType::class, null, ['constraints' => new NotBlank()])
             ->handleRequest($request)
         ;
 
