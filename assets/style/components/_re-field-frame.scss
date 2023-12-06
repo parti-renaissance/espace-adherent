@@ -1,59 +1,64 @@
 .re-field-frame {
-  @apply transition-colors placeholder:text-ui_gray-60 text-ui_gray-80 w-full h-[51px] px-5 py-4 bg-white rounded-lg border border-ui_gray-30 ring-0;
-  .frc-captcha {
-    background-color: inherit;
-    border: none;
-  }
+    @apply text-sm lg:text-base transition-colors placeholder:text-ui_gray-60 text-ui_gray-80 w-full h-[51px] px-5 py-4 bg-white rounded-lg border border-ui_gray-30 ring-0;
 
-  &.re-field-frame--success {
-    @apply border-ui_green-50
-  }
+    .frc-captcha {
+        background-color: inherit;
+        border: none;
+    }
 
-  &.re-field-frame--valid {
-    @apply border-ui_blue-50
-  }
-
-  &.re-field-frame--warning {
-    @apply border-ui_yellow-80
-  }
-
-  &.re-field-frame--error {
-    @apply border-ui_red-50
-  }
-
-  &:disabled, &.disabled {
-    @apply cursor-not-allowed;
-    @apply border-ui_gray-30 bg-ui_gray-5;
-  }
-
-  &:focus, &.focus, &:active, &.active {
-    @apply outline-4 outline-ui_blue-20 outline border-ui_blue-50;
     &.re-field-frame--success {
-      @apply border-ui_green-50 outline-ui_green-20
+        @apply border-ui_green-50
+    }
+
+    &.re-field-frame--valid {
+        @apply border-ui_blue-50
     }
 
     &.re-field-frame--warning {
-      @apply border-ui_yellow-80 outline-ui_yellow-20
+        @apply border-ui_yellow-80
     }
 
     &.re-field-frame--error {
-      @apply border-ui_red-50 outline-ui_red-20
-    }
-  }
-
-  &:hover:not(:disabled):not(:focus) {
-    @apply border-ui_gray-40 bg-ui_gray-5;
-    &.re-field-frame--success {
-      @apply bg-ui_green-5 border-ui_green-50
+        @apply border-ui_red-50
     }
 
-    &.re-field-frame--warning {
-      @apply bg-ui_yellow-5 border-ui_yellow-80
+    &:disabled, &.disabled {
+        @apply cursor-not-allowed;
+        @apply border-ui_gray-30 bg-ui_gray-5;
     }
 
-    &.re-field-frame--error {
-      @apply bg-ui_red-5 border-ui_red-50
+    &:focus,
+    &.focus,
+    &:active,
+    &.active {
+        @apply outline-4 outline-ui_blue-20 outline border-ui_blue-50;
+
+        &.re-field-frame--success {
+            @apply border-ui_green-50 outline-ui_green-20
+        }
+
+        &.re-field-frame--warning {
+            @apply border-ui_yellow-80 outline-ui_yellow-20
+        }
+
+        &.re-field-frame--error {
+            @apply border-ui_red-50 outline-ui_red-20
+        }
     }
 
-  }
+    &:hover:not(:disabled):not(:focus) {
+        @apply border-ui_gray-40 bg-ui_gray-5;
+
+        &.re-field-frame--success {
+            @apply bg-ui_green-5 border-ui_green-50
+        }
+
+        &.re-field-frame--warning {
+            @apply bg-ui_yellow-5 border-ui_yellow-80
+        }
+
+        &.re-field-frame--error {
+            @apply bg-ui_red-5 border-ui_red-50
+        }
+    }
 }

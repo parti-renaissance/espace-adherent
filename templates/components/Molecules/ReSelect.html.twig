@@ -37,7 +37,6 @@
              x-on:click.away="handleClickAway"
              x-on:click="toggle = true"
         >
-
             <div class="relative flex flex-col justify-center">
                 <input x-ref="input" type="text"
                        class="re-field-frame w-full !border-0 !bg-transparent !outline-0 !rounded-none"
@@ -69,20 +68,21 @@
                 x-bind="validateField"
                 hidden="hidden">
         </div>
-
-
     </div>
-    <div class="flex flex-row mt-2.5">
-        <twig:Atoms:ReIcon
-            x-show="status !== 'default' && message"
-            xSyncType="status"
-            class="mr-1"
-        />
-        <twig:Atoms:ReTextStatus
-            x-show="status !== 'default && message'"
-            value="{{ message is defined ? '' }}"
-            type="{{ status }}"
-            xSyncStatus="status"
-            x-text="message"/>
-    </div>
+
+    {% if status != 'default' and message %}
+        <div class="flex flex-row mt-2.5">
+            <twig:Atoms:ReIcon
+                x-show="status !== 'default' && message"
+                xSyncType="status"
+                class="mr-1"
+            />
+            <twig:Atoms:ReTextStatus
+                x-show="status !== 'default' && message"
+                value="{{ message is defined ? '' }}"
+                type="{{ status }}"
+                xSyncStatus="status"
+                x-text="message"/>
+        </div>
+    {% endif %}
 </div>

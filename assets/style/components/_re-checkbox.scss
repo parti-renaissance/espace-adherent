@@ -1,7 +1,9 @@
 .re-checkbox {
     input {
-        &[type=checkbox], &[type=radio] {
+        &[type=checkbox],
+        &[type=radio] {
             @apply cursor-pointer;
+
             & + label {
                 @apply border-ui_gray-40;
             }
@@ -24,7 +26,6 @@
             &:checked + label {
                 @apply bg-ui_blue-50 border-ui_blue-50;
             }
-
         }
     }
 
@@ -36,5 +37,3 @@
         }
     }
 }
-
-

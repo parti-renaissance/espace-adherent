@@ -92,6 +92,7 @@ Gender: Genre
 # Adherent
 #
 Invalid credentials.: L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.
+Invalid or expired login link.: Le lien de connexion n'est plus actif ou invalide
 Username could not be found.: L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.
 Max attempts reached.: Vous avez effectué 5 tentatives de connexion erronées. Veuillez attendre 1 minute avant de réessayer.
 adherent.error.must_be_validated: Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez <a href="{url}">cliquer ici</a> pour le recevoir à nouveau.
@@ -170,7 +171,8 @@ adherent.stop_donation: >-
         one {Mettre fin à mon don mensuel}
         other {Mettre fin à mes dons mensuel}
     }
-adherent.reset_password.email_sent: Si l'adresse que vous avez saisie est valide, un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.
+adherent.reset_password.email_sent: Si <strong>{email}</strong> existe, vous recevrez un email dans quelques instants.<br/><br/>Cliquez sur le bouton qu'il contient pour changer votre mot de passe.<br/><br/>Si vous n'avez rien reçu, vérifiez votre saisie avant de réessayer.
+adherent.get_magic_link.email_sent: Si <strong>{email}</strong> existe, vous recevrez un email dans quelques instants.<br/><br/>Cliquez sur le lien qu'il continent pour vous connecter sans mot de passe.<br/><br/>Si vous n'avez rien reçu, vérifiez votre saisie avant de réessayer.
 adherent.reset_password.success: Votre mot de passe a été réinitialisé.
 adherent.reset_password.expired_key: Votre demande de réinitialisation de mot de passe est expirée ! Veuillez faire une nouvelle demande.
 

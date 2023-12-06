@@ -17,7 +17,6 @@ module.exports = {
                     50: '#0084FF',
                     60: '#0077E5',
                     70: '#006ACC',
-
                 },
                 ui_gray: {
                     5: '#F9F9F9',
@@ -53,7 +52,6 @@ module.exports = {
                 },
                 re: {
                     blue: {
-
                         50: '#F3F6FD',
                         100: '#D2DFFB',
                         200: '#A2BEF7',

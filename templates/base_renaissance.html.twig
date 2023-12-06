@@ -41,7 +41,7 @@
     {% block stylesheets '' %}
     {% block head_javascripts '' %}
 </head>
-<body class="font-maax antialiased text-gray-600">
+<body class="font-maax antialiased text-gray-600 {{ block('body_classes') ?? '' }}">
     {% block flash_message %}
         {% for label, messages in app.flashes(['error', 'info', 'success']) %}
             {% if messages|length %}

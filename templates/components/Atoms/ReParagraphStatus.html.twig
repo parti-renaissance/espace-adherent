@@ -1,8 +1,11 @@
-<p
+<div
     {{ attributes.defaults({ class: 're-paragraph-status re-paragraph-status--' ~ status }) }}
     {% if xSyncStatus is defined %}
-    :class="'re-paragraph-status--' + {{ xSyncStatus }}"
+        :class="'re-paragraph-status--' + {{ xSyncStatus }}"
     {% endif %}>
-    {% block content %}{% endblock %}
-</p>
+    {% if icon %}
+        <twig:Atoms:ReIcon type="{{ icon }}"/>
+    {% endif %}
 
+    <div>{% block content '' %}</div>
+</div>

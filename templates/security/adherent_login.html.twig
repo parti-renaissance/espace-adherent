@@ -42,8 +42,7 @@
                 </li>
                 <li>
                     <div class="b__nudge--top text--small form__checkbox form__checkbox--large">
-                        <input type="checkbox" id="remember_me" name="_remember_me"/>
-                        <label class="form form__label" for="remember_me">Se souvenir de moi</label>
+                        {{ form_row(form._remember_me, { label: 'Se souvenir de moi', label_attr: { class: 'form form__label' }}) }}
                     </div>
                 </li>
                 <li>

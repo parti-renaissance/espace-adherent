@@ -1,32 +1,32 @@
 <div {{ attributes.defaults({class: 're-linked-toggle' }) }}
     x-data="xValidateField({
-            status: '{{ status is defined ? status : 'default' }}',
-            message: '{{ message is defined ? message : '' }}',
-            validate: {{ validate is defined ? validate : '[]' }},
-            onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
-        })"
+        status: '{{ status is defined ? status : 'default' }}',
+        message: '{{ message is defined ? message : '' }}',
+        validate: {{ validate is defined ? validate : '[]' }},
+        onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
+    })"
     :class="{
-            're-linked-toggle--default': status === 'default',
-            're-linked-toggle--success': status === 'success',
-            're-linked-toggle--error': status === 'error',
-            're-linked-toggle--warning': status === 'warning',
-            're-linked-toggle--info': status === 'info',
-        }"
+        're-linked-toggle--default': status === 'default',
+        're-linked-toggle--success': status === 'success',
+        're-linked-toggle--error': status === 'error',
+        're-linked-toggle--warning': status === 'warning',
+        're-linked-toggle--info': status === 'info',
+    }"
     type="radio-group"
 >
     <div class="re-linked-toggle-content">
         {% block content %}{% endblock %}
     </div>
 
+    {% if status != 'default' and message %}
+        <div class="flex flex-row mt-2.5" x-show="status !== 'default' && message">
+            <twig:Atoms:ReIcon xSyncType="status" class="mr-1" />
 
-    <div class="flex flex-row mt-2.5" x-show="status !== 'default' && message">
-        <twig:Atoms:ReIcon
-            xSyncType="status"
-            class="mr-1"
-        />
-        <twig:Atoms:ReTextStatus
-            value="{{ message is defined ? '' }}"
-            xSyncStatus="status"
-            x-text="message"/>
-    </div>
+            <twig:Atoms:ReTextStatus
+                value="{{ message is defined ? '' }}"
+                xSyncStatus="status"
+                x-text="message"
+            />
+        </div>
+    {% endif %}
 </div>

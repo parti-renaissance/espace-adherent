@@ -25,6 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
@@ -48,7 +49,7 @@ class SecurityController extends AbstractController
 
         $form = $formFactory->createNamed('', LoginType::class, [
             '_login_email' => $securityUtils->getLastUsername(),
-        ]);
+        ], ['remember_me' => true]);
 
         return $this->render($currentApp ? sprintf('security/%s_user_login.html.twig', $currentApp) : 'security/adherent_login.html.twig', [
             'form' => $form->createView(),
@@ -68,7 +69,8 @@ class SecurityController extends AbstractController
     public function retrieveForgotPasswordAction(
         Request $request,
         AdherentResetPasswordHandler $handler,
-        AdherentRepository $adherentRepository
+        AdherentRepository $adherentRepository,
+        TranslatorInterface $translatable
     ): Response {
         $currentApp = $request->attributes->get('app');
 
@@ -81,7 +83,7 @@ class SecurityController extends AbstractController
         }
 
         $form = $this->createFormBuilder()
-            ->add('email', EmailType::class, ['constraints' => new NotBlank()])
+            ->add('email', EmailType::class, ['required' => true, 'constraints' => new NotBlank()])
             ->getForm()
             ->handleRequest($request)
         ;
@@ -102,10 +104,10 @@ class SecurityController extends AbstractController
                 $handler->handle($adherent, $currentApp);
             }
 
-            $this->addFlash('info', 'adherent.reset_password.email_sent');
+            $this->addFlash('info', $translatable->trans('adherent.reset_password.email_sent', ['%email%' => $email]));
 
             if ($currentApp) {
-                return $this->redirectToRoute(sprintf('app_%s_login', $currentApp));
+                return $this->redirectToRoute(sprintf('app_%s_forgot_password', $currentApp));
             }
 
             return $this->redirectToRoute('app_user_login');

@@ -35,9 +35,9 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(0, $crawler->filter('#auth-error'));
+        $this->assertCount(0, $crawler->filter('.re-paragraph-status--error'));
 
-        $this->client->submit($crawler->selectButton('Connexion')->form([
+        $this->client->submit($crawler->selectButton('Me connecter')->form([
             '_login_email' => $email,
             '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
@@ -82,9 +82,9 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(0, $crawler->filter('#auth-error'));
+        $this->assertCount(0, $crawler->filter('.re-paragraph-status--error'));
 
-        $this->client->submit($crawler->selectButton('Connexion')->form([
+        $this->client->submit($crawler->selectButton('Me connecter')->form([
             '_login_email' => $username,
             '_login_password' => $password,
         ]));
@@ -95,7 +95,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $error = $crawler->filter('.text-red-400'));
+        $this->assertCount(1, $error = $crawler->filter('.re-paragraph-status--error'));
         $this->assertSame($messageExpected, trim($error->text()));
     }
 
@@ -141,12 +141,12 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->submit($crawler->selectButton('Envoyez-moi l\'email')->form(), ['form' => ['email' => '']]);
+        $crawler = $this->client->submit($crawler->selectButton('Réinitialiser')->form(), ['form' => ['email' => '']]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
-        $this->assertCount(1, $error = $crawler->filter('.text-red-500'));
+        $this->assertCount(1, $error = $crawler->filter('.re-text-status--error'));
         $this->assertStringContainsString('Cette valeur ne doit pas être vide.', $error->text(), 'An empty email should be erroneous.');
     }
 
@@ -160,15 +160,15 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
             'form' => ['email' => 'toto@example.org'],
         ];
 
-        $this->client->submit($crawler->selectButton('Envoyez-moi l\'email')->form(), $formData);
+        $this->client->submit($crawler->selectButton('Réinitialiser')->form(), $formData);
 
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/mot-de-passe-oublie', $this->client);
 
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(0, $crawler->filter('.form__error'));
-        $this->assertStringContainsString('Si l\'adresse que vous avez saisie est valide, un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
+        $this->assertCount(0, $crawler->filter('.re-text-status--error'));
+        $this->assertStringContainsString('Si toto@example.org existe, vous recevrez un email dans quelques instants.Cliquez sur le bouton qu\'il contient pour changer votre mot de passe.Si vous n\'avez rien reçu, vérifiez votre saisie avant de réessayer', $crawler->text());
         $this->assertCount(0, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No mail should have been sent to unknown account.');
     }
 
@@ -182,15 +182,15 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
             'form' => ['email' => 'carl999@example.fr'],
         ];
 
-        $this->client->submit($crawler->selectButton('Envoyez-moi l\'email')->form(), $formData);
+        $this->client->submit($crawler->selectButton('Réinitialiser')->form(), $formData);
 
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/mot-de-passe-oublie', $this->client);
 
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(0, $crawler->filter('.form__error'));
-        $this->assertStringContainsString('Si l\'adresse que vous avez saisie est valide, un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
+        $this->assertCount(0, $crawler->filter('.re-text-status--error'));
+        $this->assertStringContainsString("Si carl999@example.fr existe, vous recevrez un email dans quelques instants.Cliquez sur le bouton qu'il contient pour changer votre mot de passe.Si vous n'avez rien reçu, vérifiez votre saisie avant de réessayer.", $crawler->text());
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(RenaissanceResetPasswordMessage::class, 'carl999@example.fr'), 'An email should have been sent.');
     }

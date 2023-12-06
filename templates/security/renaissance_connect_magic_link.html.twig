@@ -1,0 +1,35 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block title 'Connectez-vous avec un lien magique' %}
+
+{% block content %}
+    <header class="p-10">
+        <a href="{{ path('app_renaissance_homepage') }}">
+            <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
+        </a>
+    </header>
+
+    <section class="flex flex-col bg-white px-10 pt-8 pb-[3.25rem] w-[360px] lg:w-[500px] mx-auto items-center">
+        <div class="relative flex h-6 w-6 items-center justify-center">
+            <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></div>
+            <div class="relative inline-flex rounded-full h-5 w-5 bg-sky-500"></div>
+        </div>
+
+        <div class="font-medium text-ui_blue-50 mt-6 lg:mt-16 animate-pulse">Connexion...</div>
+
+        <form x-data x-init="$nextTick(function () {setTimeout(function () {$el.submit()}, 2000)})" action="{{ path('app_user_connect_with_magic_link') }}" method="POST" class="hidden">
+            <input type="hidden" name="expires" value="{{ expires }}">
+            <input type="hidden" name="user" value="{{ user }}">
+            <input type="hidden" name="hash" value="{{ hash }}">
+
+            <button type="submit">Continuer</button>
+        </form>
+
+        <hr class="my-10 w-full" />
+
+        <p class="text-center text-[13px] lg:text-base font-normal">
+            Besoin d’aide ?<br/>
+            Écrivez-nous à <span class="text-[#0084FF]">adherents@parti-renaissance.fr</span>
+        </p>
+    </section>
+{% endblock %}
