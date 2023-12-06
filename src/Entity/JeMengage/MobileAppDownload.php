@@ -15,7 +15,7 @@ class MobileAppDownload
      * @ORM\Id
      * @ORM\GeneratedValue
      */
-    private ?int $id = null;
+    private $id;
 
     /**
      * @ORM\Column(type="date")
@@ -35,7 +35,7 @@ class MobileAppDownload
     /**
      * @ORM\Column(type="bigint")
      */
-    private ?int $uniqueUser = null;
+    private $uniqueUser;
 
     /**
      * @ORM\Column(type="integer")
