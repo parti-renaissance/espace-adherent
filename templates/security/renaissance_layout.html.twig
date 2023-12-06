@@ -7,12 +7,12 @@
 {% block flash_message '' %}
 
 {% block content %}
-    <section class="flex flex-col bg-white px-10 pt-8 pb-[3.25rem] w-[360px] lg:w-[500px]">
-        <a href="{{ path('renaissance_site') }}" class="flex justify-center items-center self-center rounded-full transition duration-700 delay-200 ease-in-out bg-[#F4F4F7] mb-6 lg:mb-[4.38rem] hover:bg-[#0084FF] hover:scale-110 w-[80px] h-[80px] lg:w-[165px] lg:h-[165px]" title="Site Renaissance">
+    <section class="flex flex-col bg-white px-10 pt-8 pb-[3.25rem] w-[380px] lg:w-[500px]">
+        <a href="{{ path('renaissance_site') }}" class="flex justify-center items-center self-center rounded-full bg-[#F4F4F7] mb-6 lg:mb-[4.38rem] w-[80px] h-[80px] lg:w-[120px] lg:h-[120px] hover:animate-pulse" title="Site Renaissance">
             <img src="{{ asset('/images/renaissance/logo-circle-dark.svg') }}" alt="logo" class="w-3/4" />
         </a>
 
-        <h1 class="mb-6 lg:mb-16 text-center font-maax text-[#3F4951] tracking-tighter font-medium lg:text-[2rem]">
+        <h1 class="mb-6 lg:mb-16 text-center font-maax text-ui_gray-80 tracking-tighter font-medium lg:text-2xl">
             {% block security_block_title '' %}
         </h1>
 
@@ -30,7 +30,7 @@
 
         {% block security_content '' %}
 
-        <footer class="text-center mt-[90px] text-[#B5BDC1]">
+        <footer class="text-center mt-24 text-ui_gray-40">
             Renaissance © {{ "now"|date('Y') }}
         </footer>
     </section>

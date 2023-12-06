@@ -11,7 +11,7 @@ module.exports = {
         extend: {
             colors: {
                 ui_blue: {
-                    5: '#F5F9FF',
+                    5: '#EEF5FF',
                     20: '#CBE1FF',
                     30: '#8AC3FF',
                     50: '#0084FF',
