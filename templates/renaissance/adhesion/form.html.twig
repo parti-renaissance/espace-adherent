@@ -300,6 +300,8 @@
                         },
                         body: JSON.stringify({
                             email: document.querySelector('#membership_request_email').value,
+                            utm_source: document.querySelector('#membership_request_utmSource').value,
+                            utm_campaign: document.querySelector('#membership_request_utmCampaign').value,
                             recaptcha: this.captchaToken
                         }),
                     });

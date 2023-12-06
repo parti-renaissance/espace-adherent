@@ -17,7 +17,7 @@ class EmailValidationRequest implements RecaptchaChallengeInterface
     use RecaptchaChallengeTrait;
 
     /**
-     * @Assert\NotBlank(groups={"Default", "adhesion-email:persist"})
+     * @Assert\NotBlank(groups={"Default", "adhesion-email:persist"}, message="L'adresse email est nécessaire pour continuer.")
      * @StrictEmail(groups={"Default"})
      * @StrictEmail(dnsCheck=false, groups={"adhesion-email:persist"})
      */
