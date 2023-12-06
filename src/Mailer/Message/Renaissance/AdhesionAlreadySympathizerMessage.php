@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 class AdhesionAlreadySympathizerMessage extends AbstractRenaissanceMessage
 {
-    public static function create(Adherent $adherent): self
+    public static function create(Adherent $adherent, string $magicLink): self
     {
         return new self(
             Uuid::uuid4(),
@@ -18,7 +18,7 @@ class AdhesionAlreadySympathizerMessage extends AbstractRenaissanceMessage
             [
                 'first_name' => self::escape($adherent->getFirstName()),
                 'created_at' => static::formatDate($adherent->getRegisteredAt(), 'EEEE d MMMM y, HH\'h\'mm'),
-                'adhesion_link' => '#',
+                'magic_link' => $magicLink,
             ],
         );
     }

@@ -53,15 +53,11 @@ class MagicLinkController extends AbstractController
     #[Route(path: '/connexion-avec-un-lien-magique', name: 'app_user_connect_with_magic_link', methods: ['GET', 'POST'])]
     public function connectViaMagicLinkAction(Request $request): Response
     {
-        // get the login link query parameters
-        $expires = $request->query->get('expires');
-        $username = $request->query->get('user');
-        $hash = $request->query->get('hash');
-
         return $this->render('security/renaissance_connect_magic_link.html.twig', [
-            'expires' => $expires,
-            'user' => $username,
-            'hash' => $hash,
+            'expires' => $request->query->get('expires'),
+            'user' => $request->query->get('user'),
+            'hash' => $request->query->get('hash'),
+            'target_path' => $request->query->get('_target_path'),
         ]);
     }
 }

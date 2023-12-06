@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
 class MembershipNotifier implements LoggerAwareInterface
 {
@@ -28,6 +29,8 @@ class MembershipNotifier implements LoggerAwareInterface
         private readonly MailerService $transactionalMailer,
         private readonly EntityManagerInterface $manager,
         private readonly AuthAppUrlManager $appUrlManager,
+        private readonly LoginLinkHandlerInterface $linkHandler,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -127,13 +130,22 @@ class MembershipNotifier implements LoggerAwareInterface
 
     public function sendConnexionDetailsMessage(Adherent $adherent): void
     {
+        $url = $this->linkHandler->createLoginLink($adherent);
+
         if ($adherent->isRenaissanceAdherent()) {
-            $this->transactionalMailer->sendMessage(AdhesionAlreadyAdherentMessage::create($adherent));
+            $this->transactionalMailer->sendMessage(AdhesionAlreadyAdherentMessage::create(
+                $adherent,
+                $url,
+                $this->urlGenerator->generate('app_renaissance_forgot_password', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                $url.'&_target_path='.$this->urlGenerator->generate('app_renaissance_adhesion_pre_payment'),
+            ));
 
             return;
         }
         if ($adherent->isRenaissanceUser() || !$adherent->getSource()) {
-            $this->transactionalMailer->sendMessage(AdhesionAlreadySympathizerMessage::create($adherent));
+            $url .= '&_target_path='.$this->urlGenerator->generate('app_adhesion_index');
+
+            $this->transactionalMailer->sendMessage(AdhesionAlreadySympathizerMessage::create($adherent, $url));
 
             return;
         }

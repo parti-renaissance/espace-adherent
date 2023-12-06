@@ -617,6 +617,7 @@ security:
                 max_uses: 1
                 lifetime: 600
                 failure_path: app_renaissance_login
+                default_target_path: app_renaissance_adherent_space
 
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }
