@@ -21,6 +21,7 @@
             <input type="hidden" name="expires" value="{{ expires }}">
             <input type="hidden" name="user" value="{{ user }}">
             <input type="hidden" name="hash" value="{{ hash }}">
+            <input type="hidden" name="_target_path" value="{{ target_path }}">
 
             <button type="submit">Continuer</button>
         </form>
@@ -29,7 +30,7 @@
 
         <p class="text-center text-[13px] lg:text-base font-normal">
             Besoin d’aide ?<br/>
-            Écrivez-nous à <span class="text-[#0084FF]">adherents@parti-renaissance.fr</span>
+            Écrivez-nous à <a href="mailto:adherents@parti-renaissance.fr" class="text-[#0084FF]">adherents@parti-renaissance.fr</a>
         </p>
     </section>
 {% endblock %}
