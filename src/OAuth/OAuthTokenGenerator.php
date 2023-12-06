@@ -32,7 +32,7 @@ class OAuthTokenGenerator
     }
 
     public function generate(
-        Request $oauthRequest,
+        Request $request,
         UserInterface $user,
         string $clientId,
         string $password
@@ -45,15 +45,16 @@ class OAuthTokenGenerator
         if (null === $client) {
             return null;
         }
-
-        $oauthRequest->request->replace([
-            'client_id' => $clientId,
-            'client_secret' => $client->getSecret(),
-            'grant_type' => GrantTypeEnum::PASSWORD,
-            'username' => $user->getUsername(),
-            'password' => $password,
-        ]);
-        $oauthRequest->setMethod(Request::METHOD_POST);
+        $oauthRequest = new Request(
+            server: $request->server->all(),
+            content: json_encode([
+                'client_id' => $clientId,
+                'client_secret' => $client->getSecret(),
+                'grant_type' => GrantTypeEnum::PASSWORD,
+                'username' => $user->getUsername(),
+                'password' => $password,
+            ])
+        );
 
         try {
             return $this->authorizationServer->respondToAccessTokenRequest(
