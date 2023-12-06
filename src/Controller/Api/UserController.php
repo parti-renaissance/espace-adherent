@@ -116,7 +116,7 @@ class UserController extends AbstractController
             $handler->reset($user, $createPasswordToken, $password->getPassword());
 
             if ($clientId = $request->query->get('client_id')) {
-                $accessTokenResponse = $authTokenGenerator->generate($request->duplicate(), $user, $clientId, $password->getPassword());
+                $accessTokenResponse = $authTokenGenerator->generate($request, $user, $clientId, $password->getPassword());
                 if (null !== $accessTokenResponse) {
                     return $accessTokenResponse;
                 }
