@@ -97,6 +97,15 @@ class AdministratorAdmin extends AbstractAdmin
                 'label' => 'E-mail',
                 'show_filter' => true,
             ])
+            ->add('administratorRoles', null, [
+                'label' => 'Rôles',
+                'show_filter' => true,
+                'field_options' => [
+                    'choice_label' => function (AdministratorRole $role): string {
+                        return $role->label;
+                    },
+                ],
+            ])
         ;
     }
 
