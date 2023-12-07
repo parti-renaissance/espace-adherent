@@ -42,8 +42,6 @@
                             attr: {
                                 validate: "['required']",
                                 onCheck: "setFieldValid('consentDataCollect')",
-                                icon: 'info-blank',
-                                iconToolTip: 'Lorem ipsum dolor sit amet consectetur. Diam facilisis nulla ut ut diam cursus auctor mauris nunc. Vel sit orci id at mi aliquam tellus bibendum. Non amet lorem massa est. Netus elit mattis fermentum ornare senectus volutpat et. Lorem pellentesque mattis vel hendrerit morbi ultricies enim sollicitudin. Pretium ante duis tempus nulla quis vulputate tellus.Lectus sed curabitur tortor leo faucibus elit commodo ultrices adipiscing. Felis quis convallis praesent odio orci sollicitudin in pulvinar. Sem convallis urna malesuada ante interdum. Ipsum tellus et sapien congue ac leo enim at risus. Ut mattis congue nunc suspendisse quis ante curabitur nibh. Luctus donec morbi commodo lacinia nulla ullamcorper ut vulputate enim.'
                             },
                             label: 'Je consent au traitement de mes données personnelles'
                         }) }}
@@ -145,7 +143,7 @@
 
                         <div class="flex flex-col gap-8">
                             <template x-if="isMemberOfAnotherParty && notExclusiveMember" x-cloak>
-                                <twig:Atoms:ReParagraphStatus status="warning">
+                                <twig:Atoms:ReParagraphStatus status="warning" icon="warning">
                                     Si vous êtes déjà affilié à un parti politique, il vous est impossible de devenir membre de Renaissance. Toutefois, il vous est tout à fait possible d'exprimer votre soutien en tant que sympathisant.
                                 </twig:Atoms:ReParagraphStatus>
                                 <twig:Atoms:ReLabel>En devenant sympathisant :</twig:Atoms:ReLabel>

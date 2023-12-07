@@ -35,7 +35,7 @@
                 <textarea x-ref="input" type="text"
                           x-autogrow
                           rows="1"
-                          class="re-field-frame w-full !border-0 min-h-[51px] !outline-0 !rounded-none resize-none"
+                          class="re-field-frame w-full !border-0 min-h-[51px] overflow-hidden !outline-0 !rounded-none resize-none"
                           x-on:keyDown="handleKeyDown($event)"
                           x-model="query"
                           x-on:input.debounce.200ms="handleInput($event);"

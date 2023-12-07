@@ -9,19 +9,15 @@
             <twig:Atoms:ReCheckbox
                 {{ ...attributes.without('class').all() }}
                 status="{{ status }}"
-                class="pt-1"
+                class="mt-1"
                 x-bind="validateField"
                 xSyncStatus="status"
             />
 
             {% block content '' %}
 
-            {% if icon is defined and icon %}
-                {% if iconToolTip is defined %}
-                    <twig:Atoms:ReIcon type="{{ icon }}" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
-                {% else %}
-                    <twig:Atoms:ReIcon type="{{ icon }}"/>
-                {% endif %}
+            {% if iconToolTip is defined and iconToolTip|length > 0 %}
+                <twig:Atoms:ReIcon class="mt-1" type="info-blank" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
             {% endif %}
         </div>
     </div>

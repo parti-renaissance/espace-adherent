@@ -82,6 +82,7 @@
         name="{{ form.vars.full_name }}"
         id="{{ form.vars.id }}"
         value="{{ form.vars.value }}"
+        iconToolTip="{{ form.vars.help|trans }}"
         status="default"
         {{ ...attr }}
     >
@@ -98,6 +99,7 @@
                     id="{{ child.vars.id }}"
                     value="{{ child.vars.value }}"
                     {{ ...attr }}
+                    iconToolTip="{{ child.vars.help|trans }}"
                     type="radio"
                     status="default"
             >

@@ -77,6 +77,7 @@ const xReSelect = (props) => {
          * @param {?Event} event
          */
         handleClickAway(event) {
+            if (false === this.toggle) return;
             if (!this.isValueSet) {
                 if (this.filteredOptions[0]) {
                     this.setEndValues(this.filteredOptions[0]);
