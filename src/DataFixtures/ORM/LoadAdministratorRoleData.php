@@ -199,6 +199,11 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::ADHERENTS
         );
         yield $this->createRole(
+            'ROLE_ADMIN_ADHERENT_DECLARED_MANDATE_HISTORIES',
+            'Administrateur de l\'historique des mandats déclarés',
+            AdministratorRoleGroupEnum::ADHERENTS
+        );
+        yield $this->createRole(
             'ROLE_ADMIN_ADHERENT_INVITATIONS',
             'Administrateur des invitations adhérents',
             AdministratorRoleGroupEnum::ADHERENTS

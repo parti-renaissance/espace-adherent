@@ -273,6 +273,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.reporting.declared_mandate_history" class="App\Admin\Reporting\DeclaredMandateHistoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Historique mandats déclarés" group="Adhérents" />
+
+            <argument />
+            <argument>App\Entity\Reporting\DeclaredMandateHistory</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.invite" class="App\Admin\InviteAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Invitations" group="Adhérents" />
 
