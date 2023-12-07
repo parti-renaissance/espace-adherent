@@ -203,4 +203,11 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
     {
         return $this->administratorRoles;
     }
+
+    public function getAdministratorRoleCodes(): array
+    {
+        return array_map(function (AdministratorRole $administratorRole): string {
+            return $administratorRole->code;
+        }, $this->administratorRoles->toArray());
+    }
 }

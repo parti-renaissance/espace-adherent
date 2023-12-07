@@ -28,6 +28,25 @@ class AdministratorAdmin extends AbstractAdmin
      */
     private $googleAuthenticator;
 
+    private AdministratorRoleHistoryHandler $administratorRoleHistoryHandler;
+
+    private array $rolesBeforeUpdate = [];
+
+    public function __construct(string $code = null, string $class = null, string $baseControllerName = null, AdministratorRoleHistoryHandler $administratorRoleHistoryHandler)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->administratorRoleHistoryHandler = $administratorRoleHistoryHandler;
+    }
+
+    /**
+     * @param Administrator $object
+     */
+    protected function alterObject(object $object): void
+    {
+        $this->rolesBeforeUpdate = $object->getAdministratorRoleCodes();
+    }
+
     /**
      * @param Administrator $object
      */
@@ -36,6 +55,14 @@ class AdministratorAdmin extends AbstractAdmin
         parent::prePersist($object);
 
         $object->setGoogleAuthenticatorSecret($this->googleAuthenticator->generateSecret());
+    }
+
+    /**
+     * @param Administrator $object
+     */
+    protected function postUpdate(object $object): void
+    {
+        $this->administratorRoleHistoryHandler->handleChanges($object, $this->rolesBeforeUpdate);
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
