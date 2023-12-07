@@ -68,15 +68,12 @@
         </div>
     </div>
 
-    <div class="flex flex-row mt-2.5" x-show="status !== 'default' && message">
-        <twig:Atoms:ReIcon
-                xSyncType="status"
-                class="mr-1"
-        />
-        <twig:Atoms:ReTextStatus
-                value="{{ message is defined ? '' }}"
-                type="{{ status }}"
-                xSyncStatus="status"
-                x-text="message"/>
-    </div>
+    <twig:Atoms:ReTextStatus
+            x-show="status !== 'default' && message"
+            value="{{ message is defined ? '' }}"
+            type="{{ status }}"
+            xSyncStatus="status"
+            xSyncValue="message"
+            showIcon="true"
+    />
 </div>

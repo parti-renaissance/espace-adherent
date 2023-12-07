@@ -6,7 +6,6 @@
 })">
     <div class="relative flex-col flex justify-center">
         <div class="justify-start items-start gap-2.5 inline-flex">
-            <div></div>
             <twig:Atoms:ReCheckbox
                 {{ ...attributes.without('class').all() }}
                 status="{{ status }}"
@@ -27,20 +26,12 @@
         </div>
     </div>
 
-    {% if status != 'default' and message %}
-        <div class="flex flex-row mt-2.5">
-            <twig:Atoms:ReIcon
-                x-show="status !== 'default' && message"
-                xSyncType="status"
-                class="mr-1"
-            />
-            <twig:Atoms:ReTextStatus
-                x-show="status !== 'default' && message"
-                value="{{ message is defined ? '' }}"
-                type="{{ status }}"
-                xSyncStatus="status"
-                x-text="message"
-            />
-        </div>
-    {% endif %}
+    <twig:Atoms:ReTextStatus
+        x-show="status !== 'default' && message"
+        value="{{ message is defined ? '' }}"
+        type="{{ status }}"
+        xSyncStatus="status"
+        xSyncValue="message"
+        showIcon="true"
+    />
 </div>
