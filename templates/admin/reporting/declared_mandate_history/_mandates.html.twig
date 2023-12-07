@@ -1,0 +1,7 @@
+{% for mandate in mandates %}
+    {% if not loop.first %}
+        <br>
+    {% endif %}
+
+    {{ ('adherent.mandate.type.'~mandate)|trans({}, 'messages') }}
+{% endfor %}
