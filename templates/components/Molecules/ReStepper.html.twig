@@ -1,0 +1,35 @@
+
+<div
+    x-data="xReStepper({{ this.jsProps() }})"
+    {{ attributes.defaults({
+        class: 're-stepper w-full flex-col flex bg-white relative'
+    }) }}
+    @setcurrentstep:{{ id }}.window="setCurrentStep($event.detail)">
+    <div class="w-full flex-row flex">
+        <template x-for="(step, index) in steps">
+            <div
+                class="flex justify-center items-center flex-col w-full gap-2 cursor-pointer
+                       [&:nth-child(2)>div]:border-l-0
+                       [&:nth-child(2)>span]:pl-0"
+                x-on:click="handleStepClick(index)">
+                <span x-text="step" class="pl-1 w-full text-sm font-medium transition-colors md:text-base" x-bind:class="{
+                    'text-ui_gray-80': isCurrent(index),
+                    'text-ui_blue-50': isBeforeCurrent(index),
+                    'text-ui_gray-40': isAfterCurrent(index),
+                }"></span>
+                <div
+
+                    class="w-full bg-transparent border-l-4 border-transparent h-1 transition-[border-color]"
+                    :class="{
+                        'bg-white/50': isCurrent(index),
+                        'border-l-white': isCurrent(index-1) || isCurrent(index) || isBeforeCurrent(index),
+                        'delay-300': isCurrent(index-1),
+                    }"></div>
+            </div>
+        </template>
+    </div>
+    <progress
+        class="-mt-1 -z-10 progress is-primary w-full h-1"
+        x-bind:value="getProgress()"
+        x-bind:max="steps.length"></progress>
+</div>

@@ -81,14 +81,14 @@ const ThirdForm = () => ({
 
     async handleOnSubmit(e) {
         e.preventDefault();
-        // if (!this._handleOnSubmitBase(e)) {
-        //     return;
-        // }
+        if (!this._handleOnSubmitBase(e)) {
+            return;
+        }
 
         if (this.notExclusiveMember && this.isMemberOfAnotherParty) {
             this.nextStepId = 'fake_email_validation';
         } else {
-            this.nextStepId = 'step_4';
+            this.nextStepId = this.defaultNextStepId;
         }
 
         // this.saveFormToLocalStorage();
@@ -109,6 +109,7 @@ const ThirdForm = () => ({
             .then((payload) => {
                 if (this.isNotifResponse(payload)) {
                     if ('success' === payload.status) {
+                        this.stepToFill = 3;
                         this.handleNextStep();
                         return;
                     }

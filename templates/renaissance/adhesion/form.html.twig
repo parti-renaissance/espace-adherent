@@ -4,17 +4,27 @@
 
 {% block content %}
     <main class="bg-[#F4F4F7] re_new_ui">
-        <section class="flex flex-col justify-center items-center gap-10">
-            <twig:Atoms:ReCard class="max-w-[540px] !sticky !rounded-t-0 top-0 z-50">
-                <nav>
-                    <ol class="breadcrumb">
-                        <li>Adresse e-mail</li>
-                        <li>Mes information</li>
-                        <li>Légalités</li>
-                        <li>Montant</li>
-                    </ol>
-                </nav>
-            </twig:Atoms:ReCard>
+        <section
+            class="flex flex-col justify-center items-center gap-10"
+            x-data="xFunnelPage({initStep:0})"
+            @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
+            <header class="w-full flex flex-col p-6 bg-white sticky top-0 z-50 items-center h-auto
+                            md:p-0 md:grid md:grid-cols-4 md:h-20
+                            lg:grid-cols-3">
+
+                <div class="pb-6 md:pb-0 md:pl-8 md:px-12">
+                    <a href="{{ path('app_renaissance_homepage') }}">
+                        <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
+                    </a>
+                </div>
+                <twig:Molecules:ReStepper
+                        id="adhesion-stepper"
+                        class="relative z-50 md:col-span-2 lg:col-span-1"
+                        steps="{{ ['E-mail', 'Infomations', 'Autorisation', 'Cotisation'] }}"
+                        initStep="currentStep"
+                />
+                <div></div>
+            </header>
 
 
             <div class="flex-col justify-start items-start gap-8 inline-flex" x-data="{formData:{}}">
@@ -22,8 +32,8 @@
                 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
                 {{ form_start(form) }}
-                <div class="flex gap-8 flex-col">
-                    <twig:Atoms:ReCard class="max-w-[500px]" x-data="FirstFormStep" id="step_1">
+                <div class="flex gap-8 flex-col p-5">
+                    <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
                         <template x-if="generalNotification">
                             <twig:Atoms:ReParagraphStatus
                                     x-bind:data-status="generalNotification.status"
@@ -87,7 +97,7 @@
 
                     </twig:Atoms:ReCard>
 
-                    <twig:Atoms:ReCard class="max-w-[500px]" id="step_2" x-data="SecondFormStep">
+                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep">
                         {{ form_row(form.civility, {
                             label: 'Mes informations',
                             attr: { onCheck:"setFieldValid('gender')", validate: "['required']" }
@@ -119,7 +129,7 @@
                         />
                     </twig:Atoms:ReCard>
 
-                    <twig:Atoms:ReCard class="max-w-[500px]" id="step_3" x-data="ThirdFormStep">
+                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3" x-data="ThirdFormStep">
                         <template x-if="generalNotification">
                             <twig:Atoms:ReParagraphStatus
                                     x-bind:data-status="generalNotification.status"
@@ -194,7 +204,7 @@
                         </template>
                     </twig:Atoms:ReCard>
 
-                    <twig:Atoms:ReCard class="max-w-[500px]" id="step_4" x-data="{
+                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_4" x-data="{
                         value: '2',
                         price: 60,
                         isSelected: function (value) {
@@ -265,7 +275,7 @@
                         {% endfor %}
 
                         <template x-if="value === '4'">
-                            <twig:Molecules:ReCheckboxField validate="['required']" status="default">
+                            <twig:Molecules:ReCheckboxField validate="['required']" id="isStudent" status="default">
                                 Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi
                             </twig:Molecules:ReCheckboxField>
                         </template>

@@ -1,3 +1,5 @@
+import { reScrollTo } from '../utils';
+
 /** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
 const camelToSnakeCase = (str) => str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 
@@ -80,25 +82,10 @@ const CommonFormStep = () => ({
     },
 
     handleNextStep() {
-        /** @type {HTMLElement} */
-        const nextStepEl = dom(`#${this.nextStepId}`);
-
-        const { clientHeight } = nextStepEl;
-        const { clientHeight: windowHeight } = document.documentElement;
-        const isHigherOfWindow = clientHeight > windowHeight * 0.8;
-
-        if (isHigherOfWindow) {
-            window.scrollTo({
-                top: nextStepEl.getBoundingClientRect().top + window.scrollY - 136,
-                behavior: 'smooth',
-            });
-        } else {
-            nextStepEl.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-                inline: 'nearest',
-            });
-        }
+        dom(`#${this.nextStepId}`)
+            .classList
+            .remove('re-step--disabled');
+        reScrollTo(this.nextStepId);
     },
     checkValidity() {
         return Object.values(this.fieldsValid)

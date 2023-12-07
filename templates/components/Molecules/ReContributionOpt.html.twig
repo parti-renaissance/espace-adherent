@@ -8,10 +8,8 @@
             </div>
         {% endif %}
         <div class="grow shrink  self-stretch basis-0 justify-between items-center gap-[13px] flex px-7 py-6">
-            <div class="w-[66px] h-[53.06px] relative">
-                <div class="w-[66px] h-[53.06px] left-0 top-0 absolute bg-zinc-300 bg-opacity-0">
+            <div class="h-full max-h-[53.06px] relative">
                     <img class="w-full h-full object-cover" src="{{ this.image.href }}" alt="{{ this.image.alt }}"/>
-                </div>
             </div>
             <div>
                 <div class="grow shrink basis-0 text-ui_gray-80 text-base font-medium">{{ this.title }}</div>
@@ -61,7 +59,7 @@
             </div>
         </template>
         <div class="self-stretch px-6 py-2.5 bg-ui_blue-5 justify-start items-center gap-2.5 inline-flex rounded-b-[10px]">
-            <div class="w-[372px]">
+            <div class="w-full">
                 <span class="text-ui_gray-80 text-base font-medium leading-loose">
                     Après réduction fiscale :
                 </span>
