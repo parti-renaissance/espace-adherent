@@ -37,6 +37,8 @@ const FirstForm = () => ({
             body: JSON.stringify({
                 email: document.querySelector('#membership_request_email').value,
                 recaptcha: this.captchaToken,
+                utm_source: document.querySelector('#membership_request_utmSource').value,
+                utm_campaign: document.querySelector('#membership_request_utmCampaign').value,
             }),
         });
     },
@@ -66,15 +68,34 @@ const FirstForm = () => ({
         }
         this.loading = true;
         return this._postPersistEmail()
-            .then((response) => {
-                if (response.ok) {
-                    this.handleNextStep();
+            .then((response) => response.json())
+            .then((payload) => {
+                if (this.isNotifResponse(payload)) {
+                    if ('success' === payload.status) {
+                        this.generalNotification = null;
+                        this.handleNextStep();
+                        this.setStepData();
+                        return;
+                    }
+                    if (payload.violations) {
+                        this._handleBadRequest($dispatch)(payload);
+                        this.scrollToFirstError();
+                        return;
+                    }
+                    this.generalNotification = payload;
+                    if ('error' === payload.status) {
+                        this.scrollToFirstError();
+                    }
                 } else {
-                    response.json()
-                        .then(this._handleBadRequest($dispatch));
+                    throw new Error('Invalid payload from /api/persist-email');
                 }
             })
             .catch((error) => {
+                this.generalNotification = {
+                    status: 'error',
+                    message: 'Une erreur est survenue lors de la validation de votre email',
+                };
+                this.scrollToFirstError();
                 captureException(error, {
                     tags: {
                         component: 'membership-request',

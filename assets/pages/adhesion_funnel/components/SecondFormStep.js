@@ -31,6 +31,7 @@ const SecondForm = () => ({
             }
             return;
         }
+        this.setStepData(['address']);
         this.handleNextStep();
     },
 

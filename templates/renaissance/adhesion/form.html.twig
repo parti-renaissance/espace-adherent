@@ -17,7 +17,7 @@
             </twig:Atoms:ReCard>
 
 
-            <div class="flex-col justify-start items-start gap-8 inline-flex">
+            <div class="flex-col justify-start items-start gap-8 inline-flex" x-data="{formData:{}}">
 
                 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
@@ -26,6 +26,7 @@
                     <twig:Atoms:ReCard class="max-w-[500px]" x-data="FirstFormStep" id="step_1">
                         <template x-if="generalNotification">
                             <twig:Atoms:ReParagraphStatus
+                                    x-bind:data-status="generalNotification.status"
                                     xSyncStatus="generalNotification.status"
                                     x-text="generalNotification.message"/>
                         </template>
@@ -80,7 +81,8 @@
 
                         <twig:Atoms:ReParagraphStatus status="info">
                             Une question relative à l’adhésion ? <br>
-                            Écrivez-nous à <a class="text-ui_blue-50" href="mailto:adherents@parti-renaissance.fr">adherents@parti-renaissance.fr</a>
+                            Écrivez-nous à <a class="text-ui_blue-50" href="mailto:adherents@parti-renaissance.fr">adherents@parti-renaissance.fr</a> ou <br>
+                            appelez-nous au <a class="text-ui_blue-50" href="tel:+33186950286">01 86 95 02 86</a>
                         </twig:Atoms:ReParagraphStatus>
 
                     </twig:Atoms:ReCard>
@@ -118,6 +120,12 @@
                     </twig:Atoms:ReCard>
 
                     <twig:Atoms:ReCard class="max-w-[500px]" id="step_3" x-data="ThirdFormStep">
+                        <template x-if="generalNotification">
+                            <twig:Atoms:ReParagraphStatus
+                                    x-bind:data-status="generalNotification.status"
+                                    xSyncStatus="generalNotification.status"
+                                    x-text="generalNotification.message"/>
+                        </template>
                              {{ form_row(form.exclusiveMembership, {
                                  label: 'Autorisation',
                                  attr:{
@@ -168,6 +176,7 @@
                                 color="yellow"
                                 value="Je deviens sympathisant"
                                 class="w-full"
+                                xSyncLoading="loading"
                                 x-on:click="handleOnSubmit($event, $dispatch)"
                                 x-bind:class="{disabled: !checkValidity()}"
                             />
@@ -178,10 +187,97 @@
                                 color="blue"
                                 value="J’adhère"
                                 class="w-full"
+                                xSyncLoading="loading"
                                 x-on:click="handleOnSubmit($event, $dispatch)"
                                 x-bind:class="{disabled: !checkValidity()}"
                             />
                         </template>
+                    </twig:Atoms:ReCard>
+
+                    <twig:Atoms:ReCard class="max-w-[500px]" id="step_4" x-data="{
+                        value:'2',
+                        price: 60,
+                        isSelected: function (value) {
+                            return this.value === value;
+                        },
+                    }">
+                        <header>
+                            <twig:Atoms:ReLabel>Cotisation adhérent</twig:Atoms:ReLabel>
+                            <div class="text-ui_gray-80 text-base">
+                                <span class="font-medium">
+                                    Nous avons fait le choix d'une cotisation pour l’année civile.
+                                </span>
+
+                                <br/>
+
+                                <span class=" font-normal">
+                                    Cette contribution finance le fonctionnement des assemblées départementales et leur autonomie.
+                                </span>
+                            </div>
+                        </header>
+
+                        {% set contributions =  [{
+                            'value': '1',
+                            'price': '30',
+                            'type': 'simple',
+                            'checked': false,
+                            'id': 'amount_10',
+                            'name': 'amount',
+                            },
+                            {
+                                'value': '2',
+                                'price': '60',
+                                'type': 'classic',
+                                'checked': true,
+                                'tagged': 'tagged',
+                                'id': 'amount_20',
+                                'name': 'amount',
+                            },
+                            {
+                                'value': '3',
+                                'price': '120',
+                                'type': 'support',
+                                'checked': false,
+                                'id': 'amount_30',
+                                'name': 'amount',
+                            },
+                            {
+                                'value': '4',
+                                'price': '10',
+                                'type': 'united',
+                                'checked': false,
+                                'id': 'amount_40',
+                                'name': 'amount',
+                            },
+                            {
+                                'value': '5',
+                                'price': '60',
+                                'type': 'custom',
+                                'checked': false,
+                                'id': 'amount_50',
+                                'name': 'amount',
+                            },
+                        ] %}
+
+
+
+                        {% for contribution in contributions %}
+                            <twig:Molecules:ReContributionOpt {{ ...contribution }} onChange="(p)=> price = p" />
+                        {% endfor %}
+
+                        <template x-if="value === '4'">
+                            <twig:Molecules:ReCheckBoxField validate="['required']" id="isStudient" status="default">
+                                Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi
+                            </twig:Molecules:ReCheckBoxField>
+                        </template>
+
+                        <twig:Molecules:ReButton
+                                color="green"
+                                x-text="`J'adhére pour ${price}€`"
+                                value="J'adhère"
+                                class="w-full"
+                        />
+
                     </twig:Atoms:ReCard>
 
                     <div class="spacer h-[50vh]"></div>

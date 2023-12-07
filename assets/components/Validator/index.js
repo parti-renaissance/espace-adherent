@@ -150,13 +150,7 @@ function useValidationOptional(types) {
     return types;
 }
 
-/**
- * @param { ValidateType[] } validateTypes
- * @param { HTMLInputElement } domEl
- * @param { SetNotifyState } setState
- */
-const validateField = (validateTypes, domEl, setState) => {
-    const domType = domEl.getAttribute('type') || 'text';
+function getValue(domEl, domType) {
     /** @type {string|boolean|null} */
     let value = null;
     switch (domType) {
@@ -165,6 +159,7 @@ const validateField = (validateTypes, domEl, setState) => {
         break;
     case 'email':
     case 'text':
+    case 'number':
     case 'password':
         value = domEl.value;
         break;
@@ -182,6 +177,19 @@ const validateField = (validateTypes, domEl, setState) => {
     default:
         throw new Error(`Unknown type ${domType}`);
     }
+    // eslint-disable-next-line consistent-return
+    return value;
+}
+
+/**
+ * @param { ValidateType[] } validateTypes
+ * @param { HTMLInputElement } domEl
+ * @param { SetNotifyState } setState
+ */
+const validateField = (validateTypes, domEl, setState) => {
+    const domType = domEl.getAttribute('type') || 'text';
+    const value = getValue(domEl, domType);
+
     /** @type {ValidateState} */
     const successState = {
         status: '' === value ? 'default' : 'valid',
@@ -208,6 +216,11 @@ const validateField = (validateTypes, domEl, setState) => {
 /** @param {ValidateState} state  */
 const xValidate = (state) => ({
     ...state,
+    init() {
+        this.$watch('status', (status) => {
+            this.$el.setAttribute('data-status', status);
+        });
+    },
     setData(data) {
         this.status = data.status;
         this.message = data.message;
