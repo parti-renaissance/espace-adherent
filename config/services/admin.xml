@@ -6,6 +6,7 @@
         <defaults autowire="true" autoconfigure="true"/>
 
         <service id="App\Admin\AdministratorFactory" />
+        <service id="App\Admin\AdministratorRoleHistoryHandler" />
 
         <service id="Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter" alias="sonata.admin.orm.filter.type.callback" />
 
