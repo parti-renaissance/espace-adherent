@@ -54,7 +54,7 @@
         "fusonic/opengraph": "^2.1",
         "gedmo/doctrine-extensions": "^3.14",
         "geocoder-php/google-maps-provider": "^4.5",
-        "geoip2/geoip2": "^2.4",
+        "geoip2/geoip2": "^3.0",
         "giggsey/libphonenumber-for-php": "^8.13",
         "gocardless/gocardless-pro": "^5.2",
         "google/cloud-recaptcha-enterprise": "^1.2",
