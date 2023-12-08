@@ -2,9 +2,10 @@
 
 {% block title 'Félicitations' %}
 
+{% set flashes = app.flashes() %}
+
 {% block content %}
     <section class="success-section">
-        <div id="title">Je m'engage</div>
         <div id="subtitle">Votre mot de passe est créé, connectez-vous à l’application mobile pour continuer.</div>
     </section>
 {% endblock %}

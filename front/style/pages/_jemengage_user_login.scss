@@ -85,21 +85,16 @@ body.jemengage {
             margin-right: 0;
         }
 
-        li:first-child {
+        li {
             margin-bottom: 24px;
         }
 
-        .forgot-password {
-            text-align: right;
-            margin: 32px 0 36px;
-
-            a {
-                color: #2834C3 !important;
-                font-size: 14px;
-                font-weight: 500;
-                line-height: 21px;
-                border: none;
-            }
+        a {
+            color: #2834C3 !important;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 21px;
+            border: none;
         }
 
         @media (max-width: $tablet) {
