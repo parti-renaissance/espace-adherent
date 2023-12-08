@@ -6,7 +6,7 @@ use App\Adherent\Listener\BindAdherentZoneSubscriber;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Membership\ActivityPositionsEnum;
-use App\Membership\Event\AdherentAccountWasCreatedEvent;
+use App\Membership\Event\AdherentEvent;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -55,7 +55,7 @@ class BindAdherentZoneSubscriberTest extends AbstractKernelTestCase
             ->willReturn($zones)
         ;
 
-        $this->subscriber->updateZones(new AdherentAccountWasCreatedEvent($adherent));
+        $this->subscriber->updateZones(new AdherentEvent($adherent));
 
         $this->assertSame(\count($zones), $adherent->getZones()->count());
     }

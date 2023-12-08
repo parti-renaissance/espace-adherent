@@ -10,8 +10,7 @@ use App\Entity\GeoData;
 use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
 use App\Membership\ActivityPositionsEnum;
-use App\Membership\Event\AdherentAccountWasCreatedEvent;
-use App\Membership\Event\AdherentProfileWasUpdatedEvent;
+use App\Membership\Event\AdherentEvent;
 use App\Repository\DistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
@@ -40,7 +39,7 @@ class BindAdherentDistrictSubscriberTest extends AbstractKernelTestCase
             $this->manager->expects($this->once())->method('flush');
         }
         $this->districtRepository->expects($this->once())->method('findDistrictsByCoordinates')->willReturn($districts);
-        $this->subscriber->updateReferentTagWithDistrict(new AdherentAccountWasCreatedEvent($adherent));
+        $this->subscriber->updateReferentTagWithDistrict(new AdherentEvent($adherent));
 
         $this->assertSame($count, $adherent->getReferentTags()->count());
     }
@@ -57,7 +56,7 @@ class BindAdherentDistrictSubscriberTest extends AbstractKernelTestCase
             $this->manager->expects($this->once())->method('flush');
         }
         $this->districtRepository->expects($this->once())->method('findDistrictsByCoordinates')->willReturn($referentTags);
-        $this->subscriber->updateReferentTagWithDistrict(new AdherentProfileWasUpdatedEvent($adherent));
+        $this->subscriber->updateReferentTagWithDistrict(new AdherentEvent($adherent));
 
         $this->assertSame($count, $adherent->getReferentTags()->count());
     }

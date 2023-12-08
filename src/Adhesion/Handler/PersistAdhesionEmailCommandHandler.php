@@ -19,12 +19,12 @@ class PersistAdhesionEmailCommandHandler
     ) {
     }
 
-    public function __invoke(PersistAdhesionEmailCommand $command): bool
+    public function __invoke(PersistAdhesionEmailCommand $command): ?string
     {
         if ($adherent = $this->adherentRepository->findOneByEmail($command->email)) {
             $this->membershipNotifier->sendConnexionDetailsMessage($adherent);
 
-            return false;
+            return null;
         }
 
         $this->entityManager->persist($object = AdherentRequest::createForEmail($command->email));
@@ -34,6 +34,6 @@ class PersistAdhesionEmailCommandHandler
 
         $this->entityManager->flush();
 
-        return true;
+        return $object->email;
     }
 }

@@ -119,13 +119,8 @@
                             value="Suivant"
                             class="w-full"
                             x-on:click="handleOnSubmit($event, $dispatch)"
-                            x-bind:class="{disabled: !checkValidity()}"/>
-
-                    </twig:Atoms:ReCard>
-
-                    <twig:Atoms:ReCard class="max-w-[500px]" id="step_3">
-                        {{ form_row(form.amount) }}
-                        {{ form_row(form.save) }}
+                            x-bind:class="{disabled: !checkValidity()}"
+                        />
                     </twig:Atoms:ReCard>
                 </div>
                 <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>

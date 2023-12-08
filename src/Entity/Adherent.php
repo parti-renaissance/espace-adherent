@@ -9,6 +9,7 @@ use App\Adherent\Contribution\ContributionAmountUtils;
 use App\Adherent\LastLoginGroupEnum;
 use App\Adherent\Tag\TagEnum;
 use App\AdherentProfile\AdherentProfile;
+use App\Adhesion\MembershipRequest;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
 use App\Collection\CommitteeMembershipCollection;
@@ -773,6 +774,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
+    private bool $otherPartyMembership = false;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
     private bool $agirMembership = false;
 
     private ?string $authAppCode = null;
@@ -920,13 +926,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public static function create(
         UuidInterface $uuid,
         string $emailAddress,
-        string $password,
+        ?string $password,
         ?string $gender,
         string $firstName,
         string $lastName,
-        ?\DateTimeInterface $birthDate,
-        ?string $position,
-        PostAddress $postAddress,
+        \DateTimeInterface $birthDate = null,
+        string $position = null,
+        PostAddress $postAddress = null,
         PhoneNumber $phone = null,
         string $nickname = null,
         bool $nicknameUsed = false,
@@ -3228,6 +3234,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->agirMembership = $agirMembership;
     }
 
+    public function getOtherPartyMembership(): bool
+    {
+        return $this->otherPartyMembership;
+    }
+
+    public function setOtherPartyMembership(bool $otherPartyMembership): void
+    {
+        $this->otherPartyMembership = $otherPartyMembership;
+    }
+
     public function isFrench(): bool
     {
         return AddressInterface::FRANCE === $this->nationality;
@@ -3406,5 +3422,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasTag(string $tag): bool
     {
         return \in_array($tag, $this->tags, true);
+    }
+
+    public function updateFromMembershipRequest(MembershipRequest $membershipRequest): void
+    {
+        $this->firstName = $membershipRequest->firstName;
+        $this->lastName = $membershipRequest->lastName;
+        $this->nationality = $membershipRequest->nationality;
+        $this->gender = $membershipRequest->civility;
     }
 }
