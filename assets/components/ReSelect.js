@@ -1,6 +1,7 @@
 // type xReIcon with jsdoc as Alpine.data second argument
 
 /** @typedef {{label:string, value:string}} Option */
+/** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
 
 /**
  * Replace Caps, Diacritics for a string
@@ -28,6 +29,8 @@ const filterOptions = (query, options) => options
  *  placeholder?:string
  *  onQuery: (query:string)=>Promise<Option[]> | null,
  * }} props
+ *
+ * @returns {AlpineComponent}
  */
 const xReSelect = (props) => {
     const options = [
@@ -37,75 +40,130 @@ const xReSelect = (props) => {
     const firstOption = options[0];
     const defaultOption = !props.placeholder && firstOption ? firstOption : {
         value: '',
-        label: props.placeholder,
+        label: '',
     };
+
     const placeholder = props.placeholder || defaultOption.label;
 
     return {
         filteredOptions: options,
-        selected: defaultOption.value,
+        selected: defaultOption,
         selectedIndex: 0,
         query: '',
         placeholder,
         toggle: false,
         isValueSet: !props.placeholder,
+
+        init() {
+            if (defaultOption.value) {
+                this.$refs.select.value = defaultOption.value;
+            }
+        },
+
+        /**
+         * @param {?Event} event
+         */
         handleChangeSetValue(event) {
             this.isValueSet = false;
-            this.filteredOptions = options;
-            this.query = '';
+            this.toggle = true;
             this.$nextTick(() => {
                 this.$refs.input.focus();
+                this.$refs.input.select();
+                this.$refs.input.dispatchEvent(new Event('change'));
             });
         },
+
+        /**
+         * @param {?Event} event
+         */
         handleClickAway(event) {
-            if (!this.isValueSet && this.filteredOptions[0]) {
-                this.setEndValues(this.filteredOptions[0]);
-            } else if (!this.isValueSet && defaultOption.value) {
-                this.setEndValues(defaultOption);
+            if (false === this.toggle) return;
+            if (!this.isValueSet) {
+                if (this.filteredOptions[0]) {
+                    this.setEndValues(this.filteredOptions[0]);
+                } else if (defaultOption.value) {
+                    this.setEndValues(defaultOption);
+                }
             } else {
-                this.toggle = false;
+                this.setEndValues(this.selected, true);
             }
         },
-        async handleInput(text) {
-            const newOpts = await this.onQuery(text);
-            this.filteredOptions = newOpts;
+
+        /**
+         * Handle when user type in the input
+         * @param {Event} e
+         * @return {Promise<void>}
+         */
+        async handleInput(e) {
+            if (this.isValueSet) this.isValueSet = false;
+            this.filteredOptions = await this.onQuery(e.target.value);
             this.activeFirst();
         },
+        /**
+         * Handle when user type in the input
+         */
         activeFirst() {
             if (0 === this.filteredOptions.length) {
-                return;
+                this.selected = null;
             }
-            this.selected = this.filteredOptions[0].value;
+            const [first] = this.filteredOptions;
+            this.selected = first;
             this.selectedIndex = 0;
         },
+
         /**
          * @param {KeyboardEvent} event
          */
         handleKeyDown(event) {
             if ('ArrowDown' === event.key) {
                 this.selectedIndex = Math.min(this.selectedIndex + 1, this.filteredOptions.length - 1);
-                this.selected = this.filteredOptions[this.selectedIndex].value;
+                this.selected = this.filteredOptions[this.selectedIndex];
             } else if ('ArrowUp' === event.key) {
                 this.selectedIndex = Math.max(this.selectedIndex - 1, 0);
-                this.selected = this.filteredOptions[this.selectedIndex].value;
+                this.selected = this.filteredOptions[this.selectedIndex];
             } else if ('Enter' === event.key) {
+                event.preventDefault();
                 this.setEndValues(this.filteredOptions[this.selectedIndex]);
             }
         },
-        setEndValues(option) {
-            if (!option) {
-                option = {
-                    value: 'FR',
-                    label: 'France',
-                };
+
+        isOptionSelected(option) {
+            if (!option) return false;
+            if (!this.selected) return false;
+            return option.value === this.selected.value;
+        },
+
+        /**
+         * @param {Option | null} option
+         * @param {boolean} silent=false
+         */
+        setEndValues(option, silent = false) {
+            if (!option && defaultOption.value) {
+                option = defaultOption;
             }
-            this.selected = option.value;
-            this.query = '';
-            this.placeholder = option.label;
+            if (!option) {
+                this.$refs.select.value = '';
+                this.$refs.select.dispatchEvent(new Event('change'));
+                return;
+            }
+
+            if (option) {
+                this.selected = option;
+                this.isValueSet = true;
+            }
+
+            this.$refs.select.value = option && option.value ? option.value : '';
+            this.query = option && option.label ? option.label : '';
             this.toggle = false;
-            this.isValueSet = true;
-            this.$refs.select.value = option.value;
+
             this.$refs.select.dispatchEvent(new Event('change'));
+            if (!silent) {
+                this.$refs.input.dispatchEvent(new Event('change'));
+                this.$nextTick(() => {
+                    this.$refs.input.blur();
+                    this.$refs.input.dispatchEvent(new Event('change'));
+                });
+            }
             if (option.value) {
                 this.$dispatch(`autocomplete_change:${props.id}`, option.value);
             }

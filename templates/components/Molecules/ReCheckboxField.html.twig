@@ -5,41 +5,29 @@
     onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
 })">
     <div class="relative flex-col flex justify-center">
-        <div class="justify-start items-center gap-2.5 inline-flex">
+        <div class="justify-start items-start gap-2.5 inline-flex">
             <twig:Atoms:ReCheckbox
                 {{ ...attributes.without('class').all() }}
                 status="{{ status }}"
+                class="mt-1"
                 x-bind="validateField"
                 xSyncStatus="status"
             />
-            <label for="{{ attributes.all().id }}" class="grow shrink basis-0 text-gray-700 text-sm lg:text-base font-normal">
-                {% block content '' %}
-            </label>
 
-            {% if icon is defined and icon %}
-                {% if iconToolTip is defined %}
-                    <twig:Atoms:ReIcon type="{{ icon }}" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
-                {% else %}
-                    <twig:Atoms:ReIcon type="{{ icon }}"/>
-                {% endif %}
+            {% block content '' %}
+
+            {% if iconToolTip is defined and iconToolTip|length > 0 %}
+                <twig:Atoms:ReIcon class="mt-1" type="info-blank" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
             {% endif %}
         </div>
     </div>
 
-    {% if status != 'default' and message %}
-        <div class="flex flex-row mt-2.5">
-            <twig:Atoms:ReIcon
-                x-show="status !== 'default' && message"
-                xSyncType="status"
-                class="mr-1"
-            />
-            <twig:Atoms:ReTextStatus
-                x-show="status !== 'default' && message"
-                value="{{ message is defined ? '' }}"
-                type="{{ status }}"
-                xSyncStatus="status"
-                x-text="message"
-            />
-        </div>
-    {% endif %}
+    <twig:Atoms:ReTextStatus
+        x-show="status !== 'default' && message"
+        value="{{ message is defined ? '' }}"
+        type="{{ status }}"
+        xSyncStatus="status"
+        xSyncValue="message"
+        showIcon="true"
+    />
 </div>

@@ -1,5 +1,14 @@
 {% set xStatus = xSyncStatus ?? status %}
+{% set xValue = xSyncValue ?? value %}
 
-<span {{ attributes.defaults({ class: 'text-sm font-normal text-ui_gray-80 font-maax re-text-status--' ~ status }) }}
-    :class="'re-text-status--' + {{ xStatus }}"
->{{ value }}</span>
+<span {{ attributes.defaults({class:"flex flex-row mt-2.5"}) }}>
+    <template x-if="{{ showIcon ?? 'null' }}">
+       <twig:Atoms:ReIcon xSyncType="{{ xStatus }}" type="{{ status }}" class="mr-2" />
+    </template>
+    <span
+        class="text-sm font-normal text-ui_gray-80 font-maax re-text-status--{{ status }}"
+        :class="`re-text-status--${ {{ xStatus }} }`"
+        x-text="{{ xValue }}">
+        {{ xValue }}
+    </span>
+</span>

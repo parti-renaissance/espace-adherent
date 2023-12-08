@@ -96,5 +96,11 @@
     {% endif%}
 
     {% block final_javascripts '' %}
+
+    <script>
+        Bootstrap.onLoad(() => {
+            window.Alpine.start();
+        });
+    </script>
 </body>
 </html>

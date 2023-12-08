@@ -1,39 +1,39 @@
 .re-checkbox {
-    input {
-        &[type=checkbox],
-        &[type=radio] {
-            @apply cursor-pointer;
+  input {
+    &[type=checkbox], &[type=radio] {
+      @apply cursor-pointer;
 
-            & + label {
-                @apply border-ui_gray-40;
-            }
+      & + label {
+        @apply border-ui_gray-40;
+      }
 
-            &:disabled {
-                @apply cursor-not-allowed;
-                & + label {
-                    @apply bg-ui_gray-20 border-ui_gray-20;
-                }
-            }
-
-            &:focus + label {
-                @apply outline-1 outline-ui_blue-50 outline-offset-1 outline border-ui_gray-40;
-            }
-
-            &:hover:not(:disabled) + label {
-                @apply border-ui_gray-60;
-            }
-
-            &:checked + label {
-                @apply bg-ui_blue-50 border-ui_blue-50;
-            }
+      &:disabled {
+        @apply cursor-not-allowed;
+        & + label {
+          @apply bg-ui_gray-20 border-ui_gray-20;
         }
-    }
+      }
 
-    &.re-checkbox--error input {
-        &[type=checkbox], &[type=radio] {
-            & + label {
-                @apply border-ui_red-50;
-            }
-        }
+      &:focus + label {
+        @apply outline-4 outline-ui_blue-20 outline-offset-0 outline border-ui_gray-40;
+      }
+
+      &:hover:not(:disabled):not(:checked) + label {
+        @apply border-ui_gray-60;
+      }
+
+      &:checked + label {
+        @apply bg-ui_blue-50 border-ui_blue-50;
+      }
     }
+  }
+
+
+  &.re-checkbox--error input {
+    &[type=checkbox], &[type=radio] {
+      & + label {
+        @apply border-ui_red-50;
+      }
+    }
+  }
 }

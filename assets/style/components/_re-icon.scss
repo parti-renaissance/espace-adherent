@@ -1,5 +1,5 @@
 .re-icon {
-  .re-icon-info, &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down {
+  .re-icon-info, &.re-icon-info-blank, &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down {
     @apply cursor-pointer;
     svg path {
       @apply transition-colors;
@@ -7,7 +7,7 @@
 
   }
 
-  &.re-icon-info {
+  &.re-icon-info-blank {
     @apply rounded-full;
     &:hover {
       @apply outline outline-ui_blue-20

@@ -9,5 +9,7 @@ class ReTextStatus
 {
     public string $status = 'default';
     public ?string $xSyncStatus;
+    public ?string $xSyncValue;
     public string $value = '';
+    public ?string $showIcon;
 }

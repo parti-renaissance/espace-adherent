@@ -36,6 +36,13 @@ class Address implements AddressInterface, GeocodableInterface
     protected ?string $address = null;
 
     /**
+     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "Update", "fill_personal_info"})
+     *
+     * @SymfonySerializer\Groups({"profile_write", "membership:write"})
+     */
+    protected ?string $additionalAddress = null;
+
+    /**
      * @Assert\Expression(
      *     expression="value or 'FR' != this.getCountry()",
      *     message="common.postal_code.not_blank",

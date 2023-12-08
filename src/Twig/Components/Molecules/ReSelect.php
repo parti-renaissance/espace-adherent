@@ -2,14 +2,16 @@
 
 namespace App\Twig\Components\Molecules;
 
+use App\Twig\Components\StatusAwareTrait;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent]
 class ReSelect
 {
-    public ?string $status = 'default';
+    use StatusAwareTrait;
+
     public array $preferredOptions = [];
     public array $options = [];
-    public ?string $message;
-    public ?string $validate;
+    public ?string $label;
+    public ?string $id;
 }
