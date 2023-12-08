@@ -8171,27 +8171,24 @@
         },
         {
             "name": "odolbeau/phone-number-bundle",
-            "version": "v3.9.3",
+            "version": "v3.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odolbeau/phone-number-bundle.git",
-                "reference": "c3237ffdbe8c6b9f62ecc5e658a5eaee27afd17c"
+                "reference": "d8fccfb56ff012fcc04aa580d60e0bead29df4b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/c3237ffdbe8c6b9f62ecc5e658a5eaee27afd17c",
-                "reference": "c3237ffdbe8c6b9f62ecc5e658a5eaee27afd17c",
+                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/d8fccfb56ff012fcc04aa580d60e0bead29df4b1",
+                "reference": "d8fccfb56ff012fcc04aa580d60e0bead29df4b1",
                 "shasum": ""
             },
             "require": {
-                "giggsey/libphonenumber-for-php": "^8.0",
-                "php": ">=7.4",
-                "symfony/framework-bundle": "^4.4|^5.3|^6.0",
-                "symfony/intl": "^4.4|^5.3|^6.0",
+                "giggsey/libphonenumber-for-php": "^8.9",
+                "php": ">=8.1",
+                "symfony/framework-bundle": "^5.4 || ^6.3 || ^7.0",
+                "symfony/intl": "^5.4 || ^6.3 || ^7.0",
                 "symfony/polyfill-mbstring": "^1.28"
-            },
-            "conflict": {
-                "symfony/serializer": "6.0.0"
             },
             "replace": {
                 "misd/phone-number-bundle": "self.version"
@@ -8199,13 +8196,13 @@
             "require-dev": {
                 "doctrine/doctrine-bundle": "^1.12|^2.0",
                 "phpspec/prophecy-phpunit": "^2.0",
-                "phpunit/phpunit": "^9.5",
-                "symfony/form": "^4.4|^5.3|^6.0",
-                "symfony/phpunit-bridge": "^6.2",
-                "symfony/property-access": "^4.4|^5.3|^6.0",
-                "symfony/serializer": "^4.4|^5.3|^6.0.1",
-                "symfony/twig-bundle": "^4.4|^5.3|^6.0",
-                "symfony/validator": "^4.4|^5.3|^6.0"
+                "phpunit/phpunit": "^9.6.11",
+                "symfony/form": "^5.4 || ^6.3 || ^7.0",
+                "symfony/phpunit-bridge": "^7.0",
+                "symfony/property-access": "^5.4 || ^6.3 || ^7.0",
+                "symfony/serializer": "^5.4 || ^6.3 || ^7.0",
+                "symfony/twig-bundle": "^5.4 || ^6.3 || ^7.0",
+                "symfony/validator": "^5.4 || ^6.3 || ^7.0"
             },
             "suggest": {
                 "doctrine/doctrine-bundle": "Add a DBAL mapping type",
@@ -8218,7 +8215,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.9.x-dev"
+                    "dev-master": "3.10.x-dev"
                 }
             },
             "autoload": {
@@ -8241,9 +8238,9 @@
             ],
             "support": {
                 "issues": "https://github.com/odolbeau/phone-number-bundle/issues",
-                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.9.3"
+                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.10.0"
             },
-            "time": "2023-11-29T14:43:39+00:00"
+            "time": "2023-12-05T17:40:56+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
