@@ -3,7 +3,7 @@
 {% block page_title 'Adhésion' %}
 
 {% block content %}
-    <main class="bg-[#F4F4F7] re_new_ui">
+    <main class="bg-[#F4F4F7]">
         <section class="flex flex-col justify-center items-center gap-10">
             <twig:Atoms:ReCard class="max-w-[540px] !sticky !rounded-t-0 top-0 z-50">
                 <nav>
@@ -182,10 +182,6 @@
                                 x-bind:class="{disabled: !checkValidity()}"
                             />
                         </template>
-                    </twig:Atoms:ReCard>
-
-                    <twig:Atoms:ReCard class="max-w-[500px] !h-[30vh]" id="fake_email_validation">
-                       fake  Verification de l'email
                     </twig:Atoms:ReCard>
 
                     <div class="spacer h-[50vh]"></div>
