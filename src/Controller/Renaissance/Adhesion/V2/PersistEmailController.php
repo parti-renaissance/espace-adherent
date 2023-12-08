@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Renaissance\Adhesion;
+namespace App\Controller\Renaissance\Adhesion\V2;
 
 use App\Adhesion\Command\PersistAdhesionEmailCommand;
 use App\Adhesion\EmailValidationRequest;
@@ -14,10 +14,11 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route(path: '/api/persist-email', name: 'app_persist_email', methods: ['POST'])]
+#[Route(path: '/api/persist-email', name: 'app_adhesion_persist_email', methods: ['POST'])]
 class PersistEmailController extends AbstractController
 {
     use HandleTrait;
+    public const SESSION_KEY = 'adhesion.email_identifier';
 
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -42,10 +43,12 @@ class PersistEmailController extends AbstractController
         /** @var PersistAdhesionEmailCommand $command */
         $command = $this->serializer->deserialize($request->getContent(), PersistAdhesionEmailCommand::class, JsonEncoder::FORMAT);
 
-        if ($this->handle($command)) {
+        if ($emailIdentifier = $this->handle($command)) {
+            $request->getSession()->set(self::SESSION_KEY, $emailIdentifier);
+
             return $this->json([
-               'message' => 'OK',
-               'status' => 'success',
+                'message' => 'OK',
+                'status' => 'success',
             ], Response::HTTP_CREATED);
         }
 

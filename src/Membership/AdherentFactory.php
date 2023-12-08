@@ -4,6 +4,7 @@ namespace App\Membership;
 
 use App\Address\PostAddressFactory;
 use App\Adherent\Tag\TagEnum;
+use App\Adhesion\MembershipRequest;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
@@ -136,6 +137,25 @@ class AdherentFactory
 
         $adherent->join();
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent->tags = [TagEnum::SYMPATHISANT];
+        $adherent->setPapUserRole(true);
+
+        return $adherent;
+    }
+
+    public function createFromRenaissanceMembershipRequest(MembershipRequest $membershipRequest): Adherent
+    {
+        $adherent = Adherent::create(
+            uuid: Uuid::uuid4(),
+            emailAddress: $membershipRequest->email,
+            password: null,
+            gender: $membershipRequest->civility,
+            firstName: $membershipRequest->firstName,
+            lastName: $membershipRequest->lastName,
+            status: Adherent::ENABLED,
+            nationality: $membershipRequest->nationality,
+        );
+
         $adherent->tags = [TagEnum::SYMPATHISANT];
         $adherent->setPapUserRole(true);
 

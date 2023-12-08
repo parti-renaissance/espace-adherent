@@ -13,6 +13,8 @@
 common.gender.not_blank: Veuillez renseigner un genre.
 common.gender.invalid_choice: Ce sexe n'est pas valide.
 
+common.invalid_choice: Ce choix n'est pas valide.
+
 common.first_name.min_length: Votre prénom doit comporter au moins {{ limit }} caractères.
 common.first_name.max_length: Votre prénom ne peut pas dépasser {{ limit }} caractères.
 
@@ -94,7 +96,6 @@ adherent.job.invalid_choice: Le métier n'est pas valide.
 adherent.activity_area.invalid_choice: Le secteur d'activité n'est pas valide.
 
 adherent.exclusive_membership.no_accepted: L'acceptation d'une des mentions suivantes est obligatoire
-
 
 adherent.wrong_password: Le mot de passe est invalide.
 

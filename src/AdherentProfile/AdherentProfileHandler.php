@@ -8,7 +8,7 @@ use App\Entity\SubscriptionType;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentEvents;
-use App\Membership\Event\AdherentProfileWasUpdatedEvent;
+use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Referent\ReferentTagManager;
@@ -49,7 +49,7 @@ class AdherentProfileHandler
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(new AdherentProfileWasUpdatedEvent($adherent), AdherentEvents::PROFILE_UPDATED);
+        $this->dispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::PROFILE_UPDATED);
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED);
     }
 

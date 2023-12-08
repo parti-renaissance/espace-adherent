@@ -27,7 +27,7 @@ use App\FranceCities\FranceCities;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\AdherentEvents;
-use App\Membership\Event\AdherentProfileWasUpdatedEvent;
+use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
@@ -825,7 +825,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
     {
         $this->adherentProfileHandler->updateReferentTagsAndSubscriptionHistoryIfNeeded($object);
 
-        $this->dispatcher->dispatch(new AdherentProfileWasUpdatedEvent($object), AdherentEvents::PROFILE_UPDATED);
+        $this->dispatcher->dispatch(new AdherentEvent($object), AdherentEvents::PROFILE_UPDATED);
         $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $this->beforeUpdate->getSubscriptionTypes());
         $this->politicalCommitteeManager->handleTerritorialCouncilMembershipUpdate($object, $this->beforeUpdate->getTerritorialCouncilMembership());
 

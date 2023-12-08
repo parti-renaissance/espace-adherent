@@ -8,7 +8,7 @@ use App\Adherent\UnregistrationHandler;
 use App\Entity\Adherent;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\History\EmailSubscriptionHistoryHandler;
-use App\Membership\Event\AdherentAccountWasCreatedEvent;
+use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
@@ -79,7 +79,7 @@ class MembershipRequestHandler
             $this->membershipRegistrationProcess->start($adherent->getUuid()->toString());
         }
 
-        $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent, $membershipRequest), AdherentEvents::REGISTRATION_COMPLETED);
+        $this->dispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
 
         return $adherent;
     }
@@ -109,7 +109,7 @@ class MembershipRequestHandler
         $this->manager->flush();
 
         $this->dispatcher->dispatch(new UserEvent($adherent, $adherentRequest->allowEmailNotifications, $adherentRequest->allowMobileNotifications), UserEvents::USER_CREATED);
-        $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
+        $this->dispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
 
         $adherentRequest->activate();
@@ -152,7 +152,7 @@ class MembershipRequestHandler
 
         $this->notifier->sendConfirmationJoinMessage($user);
 
-        $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($user, $membershipRequest), AdherentEvents::REGISTRATION_COMPLETED);
+        $this->dispatcher->dispatch(new AdherentEvent($user), AdherentEvents::REGISTRATION_COMPLETED);
         $this->dispatcher->dispatch(new UserEvent($user), UserEvents::USER_UPDATED);
     }
 

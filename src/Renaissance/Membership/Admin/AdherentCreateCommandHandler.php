@@ -10,7 +10,7 @@ use App\Entity\Administrator;
 use App\Entity\Donation;
 use App\Membership\AdherentEvents;
 use App\Membership\AdherentFactory;
-use App\Membership\Event\AdherentAccountWasCreatedEvent;
+use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\MembershipNotifier;
 use App\Membership\MembershipSourceEnum;
@@ -79,7 +79,7 @@ class AdherentCreateCommandHandler
 
         $this->dispatcher->dispatch(new UserEvent($adherent, true, true), UserEvents::USER_CREATED);
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
-        $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
+        $this->dispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
 
         if (!$adherent->isEnabled()) {
             $this->notifier->sendAccountCreatedEmail($adherent);

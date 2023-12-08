@@ -9,8 +9,7 @@ use App\Geocoder\Geocoder;
 use App\Geocoder\GeoPointInterface;
 use App\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
 use App\Membership\ActivityPositionsEnum;
-use App\Membership\Event\AdherentAccountWasCreatedEvent;
-use App\Membership\Event\AdherentProfileWasUpdatedEvent;
+use App\Membership\Event\AdherentEvent;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -33,7 +32,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $this->assertNull($adherent->getLongitude());
 
         $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->updateCoordinates(new AdherentAccountWasCreatedEvent($adherent));
+        $this->subscriber->updateCoordinates(new AdherentEvent($adherent));
 
         $this->assertSame(48.901058, $adherent->getLatitude());
         $this->assertSame(2.318325, $adherent->getLongitude());
@@ -47,7 +46,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
 
-        $this->subscriber->updateCoordinates(new AdherentAccountWasCreatedEvent($adherent));
+        $this->subscriber->updateCoordinates(new AdherentEvent($adherent));
 
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
@@ -58,13 +57,13 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $adherent = $this->createNewAdherent('92 bld Victor Hugo');
 
         $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->updateCoordinates(new AdherentAccountWasCreatedEvent($adherent));
+        $this->subscriber->updateCoordinates(new AdherentEvent($adherent));
 
         $this->assertSame(48.901058, $adherent->getLatitude());
         $this->assertSame(2.318325, $adherent->getLongitude());
 
         $this->manager->expects($this->never())->method('flush');
-        $this->subscriber->updateCoordinates(new AdherentProfileWasUpdatedEvent($adherent));
+        $this->subscriber->updateCoordinates(new AdherentEvent($adherent));
 
         $this->assertSame(48.901058, $adherent->getLatitude());
         $this->assertSame(2.318325, $adherent->getLongitude());
@@ -79,7 +78,7 @@ class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
         $this->assertNull($adherent->getLongitude());
 
         $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->updateCoordinates(new AdherentProfileWasUpdatedEvent($adherent));
+        $this->subscriber->updateCoordinates(new AdherentEvent($adherent));
 
         $this->assertSame(48.901058, $adherent->getLatitude());
         $this->assertSame(2.318325, $adherent->getLongitude());
