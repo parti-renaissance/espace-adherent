@@ -130,6 +130,6 @@ class DeclaredMandateHistoryNotifier
 
     private function generateJMEMilitantsUrl(): string
     {
-        return '//'.$this->jemengageHost.'/militants';
+        return $this->jemengageHost.'/militants';
     }
 }
