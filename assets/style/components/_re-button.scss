@@ -20,7 +20,6 @@
     @apply bg-ui_yellow-50 text-ui_yellow-100
   }
 
-
   &:disabled, &.disabled {
     @apply cursor-not-allowed;
     &.re-button--green {
@@ -36,7 +35,6 @@
     }
   }
 
-
   &:focus:not(:disabled):not(.disabled) {
     @apply outline outline-4 outline-offset-0 outline-ui_blue-50;
 
@@ -47,7 +45,7 @@
 
   &:hover:not(:disabled):not(.disabled) {
     &.re-button--not-fill {
-      @apply bg-ui_blue-20;
+      @apply bg-ui_blue-5;
     }
 
     &.re-button--green {
@@ -57,7 +55,6 @@
     &.re-button--blue {
       @apply bg-ui_blue-60
     }
-
 
     &.re-button--yellow {
       @apply bg-ui_yellow-45
@@ -72,7 +69,6 @@
     &.re-button--blue {
       @apply bg-ui_blue-70
     }
-
 
     &.re-button--yellow {
       @apply bg-ui_yellow-70
