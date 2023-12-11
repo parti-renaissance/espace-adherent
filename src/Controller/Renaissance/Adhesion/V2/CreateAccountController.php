@@ -41,8 +41,12 @@ class CreateAccountController extends AbstractController
 
         if ($membershipRequest->email !== $emailIdentifier) {
             return $this->json([
-                'message' => 'L’adresse email renseignée ne correspond pas à celle renseignée précédemment.',
-                'status' => 'error',
+                'message' => 'Validation Failed',
+                'status' => 'validation',
+                'violations' => [[
+                    'property' => 'email',
+                    'message' => 'L’adresse email renseignée ne correspond pas à celle renseignée précédemment.',
+                ]],
             ], Response::HTTP_BAD_REQUEST);
         }
 
@@ -75,7 +79,7 @@ class CreateAccountController extends AbstractController
 
         return $this->json([
             'message' => 'Un email de confirmation vient d’être envoyé à votre adresse email. Cliquez sur le lien de validation qu’il contient pour continuer votre adhésion.',
-            'status' => 'validation',
+            'status' => 'warning',
         ], Response::HTTP_OK);
     }
 }
