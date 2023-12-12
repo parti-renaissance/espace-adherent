@@ -279,7 +279,7 @@
                         </template>
 
                         {{ form_errors(form.amount) }}
-                        {{ form_row(form.amount) }}
+                        {{ form_row(form.amount, {attr: {'x-bind:value': 'price'}}) }}
 
                         <twig:Molecules:ReButton
                             color="green"

@@ -10,8 +10,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class MaxFiscalYearDonation extends Constraint
 {
-    public $message = 'donation.max_fiscal_year_donation';
-    public $maxDonationInCents = 750000; // Amount in cents
+    public string $message = 'donation.max_fiscal_year_donation';
+    public int $maxDonationInCents = 750000; // Amount in cents
+    public ?string $path = null;
 
     public function getTargets(): string|array
     {

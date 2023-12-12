@@ -6,9 +6,13 @@ use App\Address\Address;
 use App\Donation\Request\DonationRequestInterface;
 use App\Entity\Adherent;
 use App\Subscription\SubscriptionTypeEnum;
+use App\Validator\MaxFiscalYearDonation;
 use App\Validator\StrictEmail;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @MaxFiscalYearDonation(groups={"adhesion:amount"}, path="amount")
+ */
 class MembershipRequest implements DonationRequestInterface
 {
     /**
