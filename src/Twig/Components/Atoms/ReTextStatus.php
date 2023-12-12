@@ -8,8 +8,8 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 class ReTextStatus
 {
     public string $status = 'default';
-    public ?string $xSyncStatus;
-    public ?string $xSyncValue;
+    public ?string $xSyncStatus = null;
+    public ?string $xSyncValue = null;
     public string $value = '';
     public ?string $showIcon;
 }

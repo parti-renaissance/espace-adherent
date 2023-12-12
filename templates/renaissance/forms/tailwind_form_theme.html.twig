@@ -47,7 +47,7 @@
             name="{{ form.vars.full_name }}"
             id="{{ form.vars.id }}"
             value="{{ form.vars.value }}"
-            status="default"
+            status="{{ form.vars.valid ? 'default' : 'error' }}"
             type="{{ type }}"
             label="{{ label|trans }}"
             {{ ...{
