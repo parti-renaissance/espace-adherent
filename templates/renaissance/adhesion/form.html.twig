@@ -195,7 +195,7 @@
                     </twig:Atoms:ReCard>
 
                     <twig:Atoms:ReCard class="max-w-[500px]" id="step_4" x-data="{
-                        value:'2',
+                        value: '2',
                         price: 60,
                         isSelected: function (value) {
                             return this.value === value;
@@ -216,13 +216,14 @@
                             </div>
                         </header>
 
-                        {% set contributions =  [{
-                            'value': '1',
-                            'price': '30',
-                            'type': 'simple',
-                            'checked': false,
-                            'id': 'amount_10',
-                            'name': 'amount',
+                        {% set contributions =  [
+                            {
+                                'value': '1',
+                                'price': '30',
+                                'type': 'simple',
+                                'checked': false,
+                                'id': 'amount_10',
+                                'name': 'amount',
                             },
                             {
                                 'value': '2',
@@ -259,25 +260,22 @@
                             },
                         ] %}
 
-
-
                         {% for contribution in contributions %}
                             <twig:Molecules:ReContributionOpt {{ ...contribution }} onChange="(p)=> price = p" />
                         {% endfor %}
 
                         <template x-if="value === '4'">
-                            <twig:Molecules:ReCheckBoxField validate="['required']" id="isStudient" status="default">
+                            <twig:Molecules:ReCheckboxField validate="['required']" status="default">
                                 Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi
-                            </twig:Molecules:ReCheckBoxField>
+                            </twig:Molecules:ReCheckboxField>
                         </template>
 
                         <twig:Molecules:ReButton
-                                color="green"
-                                x-text="`J'adhére pour ${price}€`"
-                                value="J'adhère"
-                                class="w-full"
+                            color="green"
+                            x-text="`J'adhère pour ${price}€`"
+                            value="J'adhère"
+                            class="w-full"
                         />
-
                     </twig:Atoms:ReCard>
 
                     <div class="spacer h-[50vh]"></div>
