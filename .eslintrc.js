@@ -48,6 +48,7 @@ module.exports = {
         Bootstrap: true,
         google: true,
         getUrlParameter: true,
+        friendlyChallenge: true,
     },
     rules: {
         indent: ['error', 4],

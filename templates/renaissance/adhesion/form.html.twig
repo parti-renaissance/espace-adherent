@@ -2,6 +2,8 @@
 
 {% block page_title 'Adhésion' %}
 
+{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
+
 {% block content %}
     <main class="bg-[#F4F4F7] re_new_ui">
         <section
@@ -26,11 +28,7 @@
                 <div></div>
             </header>
 
-
             <div class="flex-col justify-start items-start gap-8 inline-flex" x-data="{formData:{}}">
-
-                {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
-
                 {{ form_start(form) }}
                 <div class="flex gap-8 flex-col p-5">
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
@@ -271,7 +269,7 @@
                         ] %}
 
                         {% for contribution in contributions %}
-                            <twig:Molecules:ReContributionOpt {{ ...contribution }} onChange="(p)=> price = p" />
+                            <twig:Molecules:ReContributionOpt {{ ...contribution }} onChange="(p) => price = p" />
                         {% endfor %}
 
                         <template x-if="value === '4'">
@@ -279,6 +277,9 @@
                                 Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi
                             </twig:Molecules:ReCheckboxField>
                         </template>
+
+                        {{ form_errors(form.amount) }}
+                        {{ form_row(form.amount) }}
 
                         <twig:Molecules:ReButton
                             color="green"

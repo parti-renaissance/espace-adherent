@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Renaissance\Adhesion\V2;
+namespace App\Controller\Renaissance\Adhesion\V2\Api;
 
 use App\Adhesion\Command\CreateAccountCommand;
 use App\Adhesion\CreateAdherentResult;
@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateAccountController extends AbstractController
 {
     use HandleTrait;
+    public const SESSION_KEY = 'adhesion.account_identifier';
 
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -32,8 +33,12 @@ class CreateAccountController extends AbstractController
     {
         if (!$emailIdentifier = $request->getSession()->get(PersistEmailController::SESSION_KEY)) {
             return $this->json([
-                'message' => 'Veuillez renseigner votre adresse email pour continuer.',
+                'message' => 'Validation Failed',
                 'status' => 'error',
+                'violations' => [[
+                    'property' => 'email',
+                    'message' => 'Veuillez renseigner votre adresse email pour continuer.',
+                ]],
             ], Response::HTTP_BAD_REQUEST);
         }
 
@@ -42,7 +47,7 @@ class CreateAccountController extends AbstractController
         if ($membershipRequest->email !== $emailIdentifier) {
             return $this->json([
                 'message' => 'Validation Failed',
-                'status' => 'validation',
+                'status' => 'error',
                 'violations' => [[
                     'property' => 'email',
                     'message' => 'L’adresse email renseignée ne correspond pas à celle renseignée précédemment.',
@@ -62,6 +67,8 @@ class CreateAccountController extends AbstractController
             $request->getSession()->remove(PersistEmailController::SESSION_KEY);
 
             if ($result->isNextStepPayment()) {
+                $request->getSession()->set(self::SESSION_KEY, $result->getAccountIdentifier());
+
                 return $this->json([
                     'message' => 'OK',
                     'status' => 'success',
