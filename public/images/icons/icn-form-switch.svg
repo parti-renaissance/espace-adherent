@@ -1,1 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="10" height="14" viewBox="0 0 10 14"><g fill="#D8D8D8" fill-rule="evenodd"><polygon points="8 6 8 12 2 12" transform="rotate(45 5 9)"/><polygon points="8 2 8 8 2 8" transform="rotate(-135 5 5)"/></g></svg>
+<svg viewBox="0 0 10 14"><path fill="#D8D8D8" fill-rule="evenodd" d="M9.243 9L5 13.243.757 9zM.757 5L5 .757 9.243 5z"/></svg>
