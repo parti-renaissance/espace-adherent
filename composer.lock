@@ -4119,16 +4119,16 @@
         },
         {
             "name": "google/cloud-core",
-            "version": "v1.52.8",
+            "version": "v1.52.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-core.git",
-                "reference": "2ebcaa410f7e92dca5677dd9cc4ec1f9f315e83c"
+                "reference": "5e34556498ecadee2161402fd1024bec7ce33186"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/2ebcaa410f7e92dca5677dd9cc4ec1f9f315e83c",
-                "reference": "2ebcaa410f7e92dca5677dd9cc4ec1f9f315e83c",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/5e34556498ecadee2161402fd1024bec7ce33186",
+                "reference": "5e34556498ecadee2161402fd1024bec7ce33186",
                 "shasum": ""
             },
             "require": {
@@ -4178,9 +4178,9 @@
             ],
             "description": "Google Cloud PHP shared dependency, providing functionality useful to all components.",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.52.8"
+                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.52.10"
             },
-            "time": "2023-11-02T19:15:44+00:00"
+            "time": "2023-12-08T22:36:35+00:00"
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
@@ -4234,16 +4234,16 @@
         },
         {
             "name": "google/cloud-storage",
-            "version": "v1.35.0",
+            "version": "v1.36.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-storage.git",
-                "reference": "a96c3bacc162bc9e7cc067433a5086fda63fe42b"
+                "reference": "94215228fd03e548590134d1e521a34ec727460c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/a96c3bacc162bc9e7cc067433a5086fda63fe42b",
-                "reference": "a96c3bacc162bc9e7cc067433a5086fda63fe42b",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/94215228fd03e548590134d1e521a34ec727460c",
+                "reference": "94215228fd03e548590134d1e521a34ec727460c",
                 "shasum": ""
             },
             "require": {
@@ -4284,9 +4284,9 @@
             ],
             "description": "Cloud Storage Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.35.0"
+                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.36.0"
             },
-            "time": "2023-11-10T23:13:52+00:00"
+            "time": "2023-12-08T22:36:35+00:00"
         },
         {
             "name": "google/cloud-vision",
