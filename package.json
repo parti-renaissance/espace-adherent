@@ -9,7 +9,7 @@
     "lint:watch": "npm run lint -- --watch"
   },
   "dependencies": {
-    "@babel/core": "^7.23.5",
+    "@babel/core": "^7.23.6",
     "@babel/preset-env": "^7.23.5",
     "@babel/preset-react": "^7.23.3",
     "@google/markerclusterer": "^2.0.9",
