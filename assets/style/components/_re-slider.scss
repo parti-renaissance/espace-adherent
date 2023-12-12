@@ -1,0 +1,36 @@
+.re-slider {
+  @apply relative flex flex-col justify-center items-center;
+  input[type=range] {
+    -webkit-appearance: none;
+    outline: none;
+    @apply w-full h-10 relative flex justify-center items-center bg-transparent;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+
+      @apply h-4 w-4 outline outline-[6px] outline-ui_blue-20 bg-ui_blue-50 rounded-full;
+    }
+
+  }
+
+  progress {
+    @apply w-full h-1 absolute top-1/2 left-0 transform -translate-y-1/2 -z-10 rounded-full overflow-hidden appearance-none;
+    &::-webkit-progress-bar {
+      @apply bg-ui_gray-40;
+    }
+
+    &::-webkit-progress-value {
+      @apply bg-ui_blue-50;
+    }
+  }
+
+  &__separator {
+    @apply w-full h-1 absolute top-1/2 left-0 transform -translate-y-1/2 -z-[5] flex flex-row overflow-hidden;
+    & > div {
+      @apply w-full h-full border-r border-white;
+    }
+  }
+
+}

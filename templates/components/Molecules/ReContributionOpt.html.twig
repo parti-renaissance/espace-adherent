@@ -1,0 +1,72 @@
+<div class="re-contribution-opt {{ tagged ? '!mt-[20px]' }}" x-data="xReContributionOpt({{ this.jsProps }})">
+    <input {{ attributes }} type="radio" x-model="value" x-on:change="onChange"/>
+
+    <label for="{{ attributes.all().id }}" class="self-stretch bg-white rounded-[10px] items-center flex flex-col">
+        {% if tagged %}
+            <div class="absolute pointer-events-none right-[24px] -top-[20px]">
+                <twig:Molecules:ReButton icon="star-filled" value="Populaire" color="blue" />
+            </div>
+        {% endif %}
+        <div class="grow shrink  self-stretch basis-0 justify-between items-center gap-[13px] flex px-7 py-6">
+            <div class="w-[66px] h-[53.06px] relative">
+                <div class="w-[66px] h-[53.06px] left-0 top-0 absolute bg-zinc-300 bg-opacity-0">
+                    <img class="w-full h-full object-cover" src="{{ this.image.href }}" alt="{{ this.image.alt }}"/>
+                </div>
+            </div>
+            <div>
+                <div class="grow shrink basis-0 text-ui_gray-80 text-base font-medium">{{ this.title }}</div>
+
+                <div
+                    class="text-ui_gray-40 text-xs font-medium"
+                    x-show="{{ price }} > 30"
+                    x-cloak
+                    x-text="`30 € de cotisation + ${(price - 30)} € de don`"
+                ></div>
+
+            </div>
+            <twig:Atoms:ReIcon xSyncType="isSelected('{{ attributes.all().value }}') ? 'valid' : 'arrow-right'" class="justify-center items-center flex" />
+        </div>
+        <template x-if="isSelected('{{ attributes.all().value }}')">
+            <div class="w-full">
+                {% if type == 'custom' %}
+                    <div class="px-7 py-5">
+                        <twig:Atoms:ReSlider
+                            id="custom-price-input"
+                            min="0"
+                            max="100"
+                            stepBy="10"
+                            value="sliderValue"
+                            pipe="logSlider"
+                            onChange="(x) => {price = x; onChange()}" />
+
+                        <twig:Molecules:ReTextField
+                            id="custom-price"
+                            class="mt-5"
+                            type="number"
+                            min="60"
+                            max="7500"
+                            x-bind:value="price"
+                            x-on:input="onInputChange($event.target.value)"
+                             />
+                    </div>
+                {% else %}
+                <hr>
+                <p class="text-ui_gray-80 text-base px-7 py-5">
+                    <span class="font-normal">
+                        C’est concrêt : avec {{ price }} € de don, nous pouvons imprimer
+                    </span>
+                    <span class="font-medium"> {{ this.printedPosters }} affiches.</span>
+                </p>
+                {% endif %}
+            </div>
+        </template>
+        <div class="self-stretch px-6 py-2.5 bg-ui_blue-5 justify-start items-center gap-2.5 inline-flex rounded-b-[10px]">
+            <div class="w-[372px]">
+                <span class="text-ui_gray-80 text-base font-medium leading-loose">
+                    Après réduction fiscale :
+                </span>
+                <span class="text-ui_blue-50 text-base font-medium leading-loose" x-text="`${(price * 0.34).toFixed(2)} €`"> </span>
+            </div>
+        </div>
+    </label>
+</div>

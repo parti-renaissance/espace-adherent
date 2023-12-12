@@ -5,6 +5,9 @@
         validate: {{ validate is defined ? validate : '[]' }},
         onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
     })"
+    {% if id is defined %}
+    @x-validate:{{ id }}.window="setData($event.detail)"
+    {% endif %}
     :class="{
         're-linked-toggle--default': status === 'default',
         're-linked-toggle--success': status === 'success',

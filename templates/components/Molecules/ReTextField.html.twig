@@ -7,8 +7,8 @@
         validate: {{ validate is defined ? validate : '[]' }},
         onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
     })"
-    {% if attr.id is defined %}
-    @x-validate:{{ attr.id }}.window="setData($event.detail)"
+    {% if id is defined %}
+    @x-validate:{{ id }}.window="setData($event.detail)"
     {% endif %}>
     <div class="relative flex-col flex justify-center">
         <input

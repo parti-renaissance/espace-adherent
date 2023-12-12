@@ -1,0 +1,28 @@
+<div x-data="xReSlider({{ this.jsProps() }})" {{ attributes.only('class').defaults({ class: 're-slider' }) }}>
+    <input
+        id="{{ id }}"
+        type="range"
+        x-ref="container"
+        x-bind:min="min"
+        x-bind:max="max"
+        x-bind:step="step"
+
+        x-model="value"
+        x-on:{{ id }}:set-value="setValue($event.detail)"
+        x-on:focus="step = defaultStep"
+        x-on:input="onChange($event)"
+        {{ attributes.without('class') }} />
+    <div class="re-slider__separator">
+        <template x-for="i in stepBy">
+            <div></div>
+        </template>
+    </div>
+    <progress
+        x-bind:value="value"
+        x-bind:max="max"
+        x-bind:min="min"
+        x-bind:step="step"
+        aria-hidden="true"></progress>
+</div>
+
+
