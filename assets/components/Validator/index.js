@@ -135,9 +135,10 @@ const getStatusMessage = (type, status) => {
 /**
  * Check is first validate type is optional '?:callback' and rip it from the array
  * @param {ValidateType[]} types
+ * @param {HTMLInputElement} el
  * @return {ValidateType[]}
  */
-function useValidationOptional(types) {
+function useValidationOptional(types, el) {
     const [firstVType, ...tailVTypes] = types;
     if (!firstVType) return types;
     const [firstVLabel, callback] = firstVType.split(':');
@@ -145,7 +146,13 @@ function useValidationOptional(types) {
         if (!callback) throw new Error('Missing callback for ? type');
         if (!window[callback]) throw new Error(`Unknown callback ${callback}`);
         const isOptional = window[callback]();
-        return isOptional ? [] : tailVTypes;
+        if (isOptional) {
+            if (tailVTypes.includes('required')) {
+                el.toggleAttribute('required', false);
+            }
+            return [];
+        }
+        return tailVTypes;
     }
     return types;
 }
@@ -196,7 +203,7 @@ const validateField = (validateTypes, domEl, setState) => {
         message: '',
     };
 
-    const vTypes = useValidationOptional(validateTypes);
+    const vTypes = useValidationOptional(validateTypes, domEl);
 
     const newState = vTypes.map((t) => isTypeConditionPassed(t, value, setState) ?? []);
     const path = newState.find(([, s]) => s.startsWith('error'))
@@ -234,7 +241,7 @@ const xValidate = (state) => ({
     setData(data) {
         this.status = data.status;
         this.message = data.message;
-        if (this.onCheck) this.onCheck(['valid', 'success', 'warning'].includes(data.status));
+        if (this.onCheck) this.onCheck('error' !== data.status);
     },
     checkField(e) {
         validateField(this.validate, e.currentTarget, this.setData.bind(this));

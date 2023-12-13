@@ -7,7 +7,6 @@ const camelToSnakeCase = (str) => str.replace(/[A-Z]/g, (letter) => `_${letter.t
  * First Step component for funnel
  * @param {{
  *   initStep?: number | null,
- *   isPreviousStepsDisabled?: boolean | null,
  * }} props
  * @returns {AlpineComponent}
  */

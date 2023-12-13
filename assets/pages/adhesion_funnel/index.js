@@ -30,6 +30,10 @@ export default (googleMapApiKey) => {
         .then((services) => {
             window.getPlacePredictions = GooglePlaces.getPlacePredictions(services);
             document.addEventListener('autocomplete_change:membership_request_address_autocomplete', ({ detail }) => {
+                if (!detail) {
+                    GooglePlaces.clearAssociatedFields();
+                    return;
+                }
                 services.placesService.getDetails({
                     placeId: detail,
                     sessionToken: services.sessionToken,

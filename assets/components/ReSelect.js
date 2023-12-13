@@ -91,6 +91,8 @@ const xReSelect = (props) => {
                     this.setEndValues(this.filteredOptions[0]);
                 } else if (defaultOption.value) {
                     this.setEndValues(defaultOption);
+                } else {
+                    this.setEndValues(null);
                 }
             } else {
                 this.setEndValues(this.selected, true);
@@ -152,6 +154,7 @@ const xReSelect = (props) => {
             if (!option) {
                 this.$refs.select.value = '';
                 this.$refs.select.dispatchEvent(new Event('change'));
+                this.$dispatch(`autocomplete_change:${props.id}`, '');
                 return;
             }
 
