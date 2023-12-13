@@ -13,7 +13,9 @@
 
     <div class="relative flex-col flex justify-center">
         <script>
-            window.options_{{ id }} = JSON.parse(`{{ options is defined ? options|json_encode|raw: '[]' }}`);
+            if (!window.options_{{ id }}) {
+                window.options_{{ id }} = JSON.parse(`{{ options is defined ? options|json_encode|raw: '[]' }}`);
+            }
             window.preferredOptions_{{ id }} = Object.values(JSON.parse(`{{ preferredOptions is defined ? preferredOptions|json_encode|raw: '{}' }}`));
         </script>
 

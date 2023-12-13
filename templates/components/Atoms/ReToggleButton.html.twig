@@ -1,4 +1,4 @@
 <div class="re-toggle-btn" :class="status ? `re-toggle-btn--${status}` : ''">
-    <input {{ attributes }} type="radio"/>
+    <input {{ attributes }} type="radio" {% if checked %}checked="checked"{% endif %}/>
     <label for="{{ attributes.all().id }}">{% block content '' %}</label>
 </div>

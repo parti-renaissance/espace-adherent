@@ -8,4 +8,5 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 class ReToggleButton
 {
     public string $status = '';
+    public bool $checked = false;
 }
