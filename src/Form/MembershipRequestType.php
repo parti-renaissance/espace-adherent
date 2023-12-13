@@ -46,6 +46,7 @@ class MembershipRequestType extends AbstractType
             ])
             ->add('allowNotifications', CheckboxType::class, ['required' => false])
             ->add('isPhysicalPerson', RequiredCheckboxType::class)
+            ->add('amount', HiddenType::class, ['error_bubbling' => false])
         ;
     }
 

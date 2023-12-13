@@ -3234,7 +3234,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->agirMembership = $agirMembership;
     }
 
-    public function getOtherPartyMembership(): bool
+    public function isOtherPartyMembership(): bool
     {
         return $this->otherPartyMembership;
     }

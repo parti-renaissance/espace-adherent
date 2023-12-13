@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Renaissance\Adhesion\V2;
+namespace App\Controller\Renaissance\Adhesion\V2\Api;
 
 use App\Adhesion\Command\PersistAdhesionEmailCommand;
 use App\Adhesion\EmailValidationRequest;

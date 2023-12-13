@@ -58,7 +58,7 @@ class CreateAccountCommandHandler
         } else {
             $currentUser->setTerritoireProgresMembership(1 === $membershipRequest->partyMembership);
             $currentUser->setAgirMembership(2 === $membershipRequest->partyMembership);
-            $currentUser->setOtherPartyMembership($otherPartyMembership = 3 === $membershipRequest->partyMembership);
+            $currentUser->setOtherPartyMembership(3 === $membershipRequest->partyMembership);
         }
 
         $currentUser->join();
@@ -72,10 +72,10 @@ class CreateAccountCommandHandler
         $this->eventDispatcher->dispatch(new UserEvent($currentUser, $membershipRequest->allowNotifications, $membershipRequest->allowNotifications), UserEvents::USER_CREATED);
         $this->eventDispatcher->dispatch(new AdherentEvent($currentUser), AdherentEvents::REGISTRATION_COMPLETED);
 
-        if ($currentUser->getOtherPartyMembership()) {
+        if ($currentUser->isOtherPartyMembership()) {
             return CreateAdherentResult::createActivation();
         }
 
-        return CreateAdherentResult::createPayment();
+        return CreateAdherentResult::createPayment()->withAccountIdentifier($currentUser->getUuid());
     }
 }

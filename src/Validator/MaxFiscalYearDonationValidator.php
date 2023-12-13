@@ -44,6 +44,7 @@ class MaxFiscalYearDonationValidator extends ConstraintValidator
                     '{{ max_amount_per_fiscal_year }}' => $constraint->maxDonationInCents / 100,
                     '{{ max_donation_remaining_possible }}' => $maxDonationRemainingPossible / 100,
                 ])
+                ->atPath($constraint->path ?? '')
                 ->addViolation()
             ;
         }

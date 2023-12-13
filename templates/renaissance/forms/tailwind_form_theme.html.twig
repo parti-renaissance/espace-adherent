@@ -2,7 +2,7 @@
 
 {% block form_label %}
     {% if label is not same as(false) %}
-        <twig:Atoms:ReLabel labelHtml="{{ label_html }}" id="{{ form.vars.id }}" class="{{ label_attr|default({}).class ?? '' }}">
+        <twig:Atoms:ReLabel labelHtml="{{ label_html }}" id="{{ id }}" class="{{ label_attr|default({}).class ?? '' }}">
             {{ label|trans|raw }}
         </twig:Atoms:ReLabel>
     {% endif %}
@@ -25,10 +25,10 @@
 {% endblock %}
 
 {% block re_choice_tab_row %}
-    <twig:Atoms:ReLinkedToggle name="{{ form.vars.full_name }}" {{ ...attr }}>
+    <twig:Atoms:ReLinkedToggle name="{{ full_name }}" {{ ...attr }}>
         {% for child in form.children %}
             <twig:Atoms:ReToggleButton
-                x-bind="validateField" name="{{ form.vars.full_name }}"
+                x-bind="validateField" name="{{ full_name }}"
                 id="{{ child.vars.id }}"
                 value="{{ child.vars.value }}"
             >
@@ -44,10 +44,10 @@
         {{ parent() }}
     {% else %}
         <twig:Molecules:ReTextField
-            name="{{ form.vars.full_name }}"
-            id="{{ form.vars.id }}"
-            value="{{ form.vars.value }}"
-            status="{{ form.vars.valid ? 'default' : 'error' }}"
+            name="{{ full_name }}"
+            id="{{ id }}"
+            value="{{ value }}"
+            status="{{ valid ? 'default' : 'error' }}"
             type="{{ type }}"
             label="{{ label|trans }}"
             {{ ...{
@@ -60,18 +60,18 @@
 
 {% block choice_widget_collapsed %}
     <twig:Molecules:ReSelect
-        name="{{ form.vars.full_name }}" id="{{ form.vars.id }}"
-        value="{{ form.vars.value }}" {{ ...attr }}
-        options="{{ form.vars.choices }}"
-        preferredOptions="{{ form.vars.preferred_choices }}"
+        name="{{ full_name }}" id="{{ id }}"
+        value="{{ value }}" {{ ...attr }}
+        options="{{ choices }}"
+        preferredOptions="{{ preferred_choices }}"
         status="default"
     />
 {% endblock %}
 
 {% block re_auto_complete_row %}
     <twig:Molecules:ReSelect
-        name="{{ form.vars.full_name }}" id="{{ form.vars.id }}"
-        value="{{ form.vars.value }}" {{ ...attr }}
+        name="{{ full_name }}" id="{{ id }}"
+        value="{{ value }}" {{ ...attr }}
         status="default">
         {{ label|trans }}
     </twig:Molecules:ReSelect>
@@ -79,10 +79,11 @@
 
 {% block checkbox_row %}
     <twig:Molecules:ReCheckboxField
-        name="{{ form.vars.full_name }}"
-        id="{{ form.vars.id }}"
-        value="{{ form.vars.value }}"
-        iconToolTip="{{ form.vars.help|trans }}"
+        name="{{ full_name }}"
+        id="{{ id }}"
+        value="{{ value }}"
+        checked="{{ checked }}"
+        iconToolTip="{{ help|trans }}"
         status="default"
         {{ ...attr }}
     >
@@ -100,6 +101,7 @@
                     value="{{ child.vars.value }}"
                     {{ ...attr }}
                     iconToolTip="{{ child.vars.help|trans }}"
+                    checked="{{ child.vars.checked }}"
                     type="radio"
                     status="default"
             >
@@ -111,8 +113,8 @@
 {% endblock %}
 
 {% block autocomplete_address_row %}
-    <div class="flex flex-col {% if not form.vars.valid %}has-error{% endif %}"
-         data-form="{{ form.vars.name }}"
+    <div class="flex flex-col {% if not valid %}has-error{% endif %}"
+         data-form="{{ name }}"
     >
         {{ form_label(form) }}
 

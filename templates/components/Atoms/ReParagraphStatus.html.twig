@@ -1,4 +1,4 @@
-<div {{ attributes.defaults({ class: 're-paragraph-status re-paragraph-status--' ~ status }) }}
+<div {{ attributes.defaults({ class: 're-paragraph-status re-paragraph-status--' ~ status ~ (slim == 'true' ? ' re-paragraph-status--slim') }) }}
     {% if xSyncStatus is defined %}
         :class="'re-paragraph-status--' + {{ xSyncStatus }}"
     {% endif %}>

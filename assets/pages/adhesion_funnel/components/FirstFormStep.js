@@ -20,11 +20,17 @@ const FirstForm = () => ({
 
     init() {
         this.$nextTick(() => {
-            // eslint-disable-next-line no-undef
-            friendlyChallenge.autoWidget.opts.doneCallback = (token) => {
-                this.captchaToken = token;
+            const tokenInput = dom('input[name="frc-captcha-solution"]:last-child');
+
+            if (dom('.frc-captcha')) {
+                friendlyChallenge.autoWidget.opts.doneCallback = (token) => {
+                    this.captchaToken = token;
+                    this.fieldsValid.captcha = true;
+                };
+            } else if (tokenInput && tokenInput.value) {
+                this.captchaToken = tokenInput.value;
                 this.fieldsValid.captcha = true;
-            };
+            }
         });
     },
 

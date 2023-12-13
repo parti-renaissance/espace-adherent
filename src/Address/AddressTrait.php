@@ -57,6 +57,16 @@ trait AddressTrait
         $this->address = $address;
     }
 
+    public function getAdditionalAddress(): ?string
+    {
+        return $this->additionalAddress;
+    }
+
+    public function setAdditionalAddress(?string $additionalAddress): void
+    {
+        $this->additionalAddress = $additionalAddress;
+    }
+
     public function getPostalCode(): ?string
     {
         return $this->postalCode;
