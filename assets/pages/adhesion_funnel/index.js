@@ -2,6 +2,7 @@ import { Loader } from '@googlemaps/js-api-loader';
 import FirstFormStep from './components/FirstFormStep';
 import SecondFormStep, { isFranceCountry } from './components/SecondFormStep';
 import ThirdFormStep from './components/ThirdFormStep';
+import Page from './components/Page';
 import ReContributionOpt from './components/ReContributionOpt';
 import * as GooglePlaces from './google_places';
 
@@ -14,6 +15,7 @@ export default (googleMapApiKey) => {
     window.isFranceCountry = isFranceCountry;
     window.Alpine.data('ThirdFormStep', ThirdFormStep);
     window.Alpine.data('xReContributionOpt', ReContributionOpt);
+    window.Alpine.data('xFunnelPage', Page);
 
     const loaderInstance = new Loader({
         apiKey: googleMapApiKey,
