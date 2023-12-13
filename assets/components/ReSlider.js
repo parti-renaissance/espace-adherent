@@ -28,6 +28,10 @@ const xReSlider = ({
         defaultStep: _defaultStep,
         step: _defaultStep,
 
+        init() {
+            this.$el.value = _defaultStep;
+        },
+
         /**
          * @param {InputEvent} e
          */

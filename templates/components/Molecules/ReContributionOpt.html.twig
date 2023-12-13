@@ -43,8 +43,9 @@
                             type="number"
                             min="60"
                             max="7500"
-                            x-bind:value="price"
-                            x-on:input="onInputChange($event.target.value)"
+                            x-on:focus="handleFocus"
+                            x-model="price"
+                            x-on:change="onInputChange($event.target.value)"
                              />
                     </div>
                 {% else %}
