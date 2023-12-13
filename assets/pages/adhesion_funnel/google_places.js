@@ -36,16 +36,39 @@ export function getPlacePredictions(googleServices) {
         .catch(() => []);
 }
 
+/**
+ * @return {{country: Element, address: Element, cityName: Element, autocomplete: Element, postalCode: Element}}
+ */
+const getAssociatedFields = () => ({
+    address: document.querySelector('#membership_request_address_address'),
+    postalCode: document.querySelector('#membership_request_address_postalCode'),
+    cityName: document.querySelector('#membership_request_address_cityName'),
+    country: document.querySelector('#membership_request_address_country'),
+    autocomplete: document.querySelector('#membership_request_address_autocomplete'),
+});
+
+export function clearAssociatedFields() {
+    const {
+        autocomplete,
+        ...fields
+    } = getAssociatedFields();
+    Object.values(fields)
+        .forEach((input) => {
+            input.value = '';
+            input.dispatchEvent(new Event('change'));
+        });
+}
+
 export function initAutocomplete() {
-    const fullAddress = [document.querySelector('#membership_request_address_cityName'),
-        document.querySelector('#membership_request_address_address'),
-        document.querySelector('#membership_request_address_postalCode'),
-        document.querySelector('#membership_request_address_country'),
-    ].map((el) => el.value)
+    const {
+        autocomplete: autocompleteInput,
+        ...fields
+    } = getAssociatedFields();
+    const fullAddress = Object.values(fields)
+        .map((el) => el.value)
         .join(' ')
         .trim();
 
-    const autocompleteInput = document.querySelector('#membership_request_address_autocomplete');
     if (!fullAddress) return;
     autocompleteInput.value = 'prefilled';
     window[`options_${autocompleteInput.id}`] = [{
@@ -58,14 +81,15 @@ export function initAutocomplete() {
  * @param {google.maps.GeocoderAddressComponent[]} components
  */
 export function fillInAddress(components) {
+    clearAssociatedFields();
     // Get the place details from the autocomplete object.
     let address1 = '';
     let postcode = '';
 
-    const cityInput = document.querySelector('#membership_request_address_cityName');
-    const addressInput = document.querySelector('#membership_request_address_address');
-    const postcodeInput = document.querySelector('#membership_request_address_postalCode');
-    const countryInput = document.querySelector('#membership_request_address_country');
+    const {
+        autocomplete,
+        ...fields
+    } = getAssociatedFields();
 
     // eslint-disable-next-line no-restricted-syntax
     for (const component of components) {
@@ -93,7 +117,7 @@ export function fillInAddress(components) {
             break;
         }
         case 'locality':
-            cityInput.value = component.long_name;
+            fields.cityName.value = component.long_name;
             break;
         case 'administrative_area_level_1': {
             break;
@@ -108,13 +132,12 @@ export function fillInAddress(components) {
             break;
         }
 
-        addressInput.value = address1;
-        postcodeInput.value = postcode;
+        fields.address.value = address1;
+        fields.postalCode.value = postcode;
 
-        const inputs = [addressInput, postcodeInput, cityInput];
-
-        inputs.forEach((input) => {
-            input.dispatchEvent(new Event('change'));
-        });
+        Object.values(fields)
+            .forEach((input) => {
+                input.dispatchEvent(new Event('change'));
+            });
     }
 }
