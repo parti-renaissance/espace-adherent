@@ -2,11 +2,10 @@
 
 <div
     {{ attributes.only('class').defaults({ class: 'w4 h4 relative bg-white re-checkbox' ~ ' re-checkbox--' ~ status }) }}
-    id="{{ id }}"
     x-bind:class="'re-checkbox--' + {{ xStatus }}"
 >
     <input {{ attributes.without('type', 'x-bind:class', 'class') }} class="absolute opacity-0" type="{{ type }}" {% if checked %}checked="checked"{% endif %} />
-    <label for="{{ id }}"
+    <label for="{{ attributes.all().id }}"
            class="{{ type == 'checkbox' ? 'rounded-[3px]': 'rounded-full' }} w-4 h-4 bg-white border flex justify-center items-center transition-colors">
         {% if type == 'checkbox' %}
             <img src="{{ asset('/images/icons/atoms/tick.svg') }}" alt="checkbox-tick" class="object-fill"/>

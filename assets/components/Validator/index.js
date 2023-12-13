@@ -150,7 +150,8 @@ function useValidationOptional(types) {
     return types;
 }
 
-function getValue(domEl, domType) {
+function getValue(domEl) {
+    const domType = domEl.getAttribute('type') || 'text';
     /** @type {string|boolean|null} */
     let value = null;
     switch (domType) {
@@ -187,8 +188,7 @@ function getValue(domEl, domType) {
  * @param { SetNotifyState } setState
  */
 const validateField = (validateTypes, domEl, setState) => {
-    const domType = domEl.getAttribute('type') || 'text';
-    const value = getValue(domEl, domType);
+    const value = getValue(domEl);
 
     /** @type {ValidateState} */
     const successState = {
@@ -219,6 +219,16 @@ const xValidate = (state) => ({
     init() {
         this.$watch('status', (status) => {
             this.$el.setAttribute('data-status', status);
+        });
+
+        this.$nextTick(() => {
+            const els = this.$el.querySelectorAll('input, textarea, select');
+            els.forEach((el) => {
+                const value = getValue(el);
+                if (value) {
+                    this.checkField({ currentTarget: el });
+                }
+            });
         });
     },
     setData(data) {

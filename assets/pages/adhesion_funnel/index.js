@@ -23,6 +23,8 @@ export default (googleMapApiKey) => {
         libraries: ['places'],
     });
 
+    GooglePlaces.initAutocomplete();
+
     loaderInstance.importLibrary('places')
         .then((x) => GooglePlaces.initPlaces(x))
         .then((services) => {

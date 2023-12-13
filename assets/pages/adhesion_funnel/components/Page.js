@@ -7,6 +7,7 @@ const camelToSnakeCase = (str) => str.replace(/[A-Z]/g, (letter) => `_${letter.t
  * First Step component for funnel
  * @param {{
  *   initStep?: number | null,
+ *   isPreviousStepsDisabled?: boolean | null,
  * }} props
  * @returns {AlpineComponent}
  */
@@ -34,17 +35,21 @@ const Page = (props) => ({
                 .forEach((el) => {
                     el.classList.add('re-step--disabled');
                 });
-
-            this.$nextTick(() => {
-                reScrollTo(`step_${this.stepToFill + 1}`);
-            });
         }
     },
 
     init() {
-        this.blockStep(this.stepToFill);
+        if (2 < this.stepToFill) {
+            this.blockStep(this.stepToFill);
+        }
+        this.$nextTick(() => {
+            reScrollTo(`step_${this.currentStep + 1}`);
+        });
         this.$watch('stepToFill', (value) => {
             this.blockStep(value);
+            this.$nextTick(() => {
+                reScrollTo(`step_${this.stepToFill + 1}`);
+            });
         });
         const that = this;
         const observer = new IntersectionObserver(

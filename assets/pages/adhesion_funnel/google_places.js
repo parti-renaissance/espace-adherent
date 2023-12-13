@@ -36,6 +36,24 @@ export function getPlacePredictions(googleServices) {
         .catch(() => []);
 }
 
+export function initAutocomplete() {
+    const fullAddress = [document.querySelector('#membership_request_address_cityName'),
+        document.querySelector('#membership_request_address_address'),
+        document.querySelector('#membership_request_address_postalCode'),
+        document.querySelector('#membership_request_address_country'),
+    ].map((el) => el.value)
+        .join(' ')
+        .trim();
+
+    const autocompleteInput = document.querySelector('#membership_request_address_autocomplete');
+    if (!fullAddress) return;
+    autocompleteInput.value = 'prefilled';
+    window[`options_${autocompleteInput.id}`] = [{
+        label: fullAddress,
+        value: 'prefilled',
+    }];
+}
+
 /**
  * @param {google.maps.GeocoderAddressComponent[]} components
  */

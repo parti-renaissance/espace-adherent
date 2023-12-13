@@ -55,9 +55,17 @@ const xReSelect = (props) => {
         isValueSet: !props.placeholder,
 
         init() {
-            if (defaultOption.value) {
-                this.$refs.select.value = defaultOption.value;
-            }
+            this.$nextTick(() => {
+                const selectInput = this.$refs.select;
+                if (!selectInput.value) {
+                    if (defaultOption.value) this.$refs.select.value = defaultOption.value;
+                } else {
+                    this.isValueSet = true;
+                    const option = options.find((o) => o.value === selectInput.value);
+                    this.selected = option;
+                    this.query = option.label;
+                }
+            });
         },
 
         /**
