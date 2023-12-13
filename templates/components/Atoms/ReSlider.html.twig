@@ -6,11 +6,10 @@
         x-bind:min="min"
         x-bind:max="max"
         x-bind:step="step"
-
         x-model="value"
         x-on:{{ id }}:set-value="setValue($event.detail)"
-        x-on:focus="step = defaultStep"
         x-on:input="onChange($event)"
+        x-on:change="onChange($event)"
         {{ attributes.without('class') }} />
     <div class="re-slider__separator">
         <template x-for="i in stepBy">
@@ -24,5 +23,3 @@
         x-bind:step="step"
         aria-hidden="true"></progress>
 </div>
-
-

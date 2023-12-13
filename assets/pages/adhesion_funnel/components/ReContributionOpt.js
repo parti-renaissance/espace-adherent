@@ -17,17 +17,24 @@ const ReContributionOpt = (props) => ({
     },
     price: props.price,
     sliderValue: 0,
-    onInputChange(value) {
-        const lol = document.querySelector('#custom-price-input');
+    onInputChange(_value) {
+        const target = document.querySelector('#custom-price-input');
+        const value = Math.min(Math.max(_value, 60), 7500);
         const event = new CustomEvent('custom-price-input:set-value', {
             detail: this.reverseLogSlider(value),
         });
-        lol.dispatchEvent(event);
-        this.price = Math.min(Math.max(value, 60), 7500);
-        if (props.onChange) {
-            props.onChange(this.price);
-        }
+        target.dispatchEvent(event);
+        this.price = value;
+        if (props.onChange) props.onChange(this.price);
     },
+
+    /**
+     * @param {InputEvent} e
+     */
+    handleFocus: (e) => {
+        e.currentTarget.select();
+    },
+
     logSlider(position) {
         const minp = 0;
         const maxp = 100;
