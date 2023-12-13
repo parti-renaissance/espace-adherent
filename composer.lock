@@ -3411,67 +3411,21 @@
             "time": "2023-05-24T07:17:17+00:00"
         },
         {
-            "name": "fusonic/linq",
-            "version": "v1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fusonic/linq.git",
-                "reference": "63520ef1470ca771acbd26871efb945dd4a7a5d8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fusonic/linq/zipball/63520ef1470ca771acbd26871efb945dd4a7a5d8",
-                "reference": "63520ef1470ca771acbd26871efb945dd4a7a5d8",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Fusonic\\Linq": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fusonic",
-                    "homepage": "http://www.fusonic.net"
-                }
-            ],
-            "description": "LINQ 2 objects class for PHP",
-            "homepage": "http://fusonic.github.io/fusonic-linq/",
-            "keywords": [
-                "linq",
-                "linq2objects"
-            ],
-            "support": {
-                "issues": "https://github.com/fusonic/linq/issues",
-                "source": "https://github.com/fusonic/linq/tree/master"
-            },
-            "time": "2015-02-26T22:49:17+00:00"
-        },
-        {
             "name": "fusonic/opengraph",
-            "version": "v2.2.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fusonic/opengraph.git",
-                "reference": "a63b588fbe56c175ae06e158f1513642653ee3c1"
+                "reference": "09dca70b04b4221c9dc664e1689e876a3faa50c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fusonic/opengraph/zipball/a63b588fbe56c175ae06e158f1513642653ee3c1",
-                "reference": "a63b588fbe56c175ae06e158f1513642653ee3c1",
+                "url": "https://api.github.com/repos/fusonic/opengraph/zipball/09dca70b04b4221c9dc664e1689e876a3faa50c2",
+                "reference": "09dca70b04b4221c9dc664e1689e876a3faa50c2",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
-                "fusonic/linq": "^1.0",
                 "php": "^7.4|^8.0",
                 "psr/http-client": "^1.0",
                 "psr/http-factory": "^1.0",
@@ -3510,9 +3464,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fusonic/opengraph/issues",
-                "source": "https://github.com/fusonic/opengraph/tree/v2.2.0"
+                "source": "https://github.com/fusonic/opengraph/tree/v2.3.0"
             },
-            "time": "2022-01-20T05:47:36+00:00"
+            "time": "2023-12-05T14:26:51+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
