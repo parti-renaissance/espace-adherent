@@ -12,4 +12,5 @@ class ReTextField
 
     public ?string $label;
     public ?string $id;
+    public ?string $prefix = null;
 }

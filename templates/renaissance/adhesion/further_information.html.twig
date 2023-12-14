@@ -1,0 +1,106 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Création de mot de passe' %}
+
+{% block content %}
+    <main class=" re_new_ui bg-gradient-to-b from-slate-600 h-screen flex flex-col items-center md:justify-center to-slate-500">
+        <section class="flex flex-col justify-center items-center gap-10">
+            <div class=" justify-center items-center  flex-col  gap-8 "
+                 x-data="xFurtherInformationForm">
+                <div class="flex gap-8 flex-col p-5">
+                    <twig:Atoms:ReCard class="max-w-[500px]">
+                         <form x-ref="form" action="" method="post" class="flex gap-8 flex-col w-full">
+                                <fieldset>
+                                    <twig:Atoms:ReLabel>Nouveau mot de passe</twig:Atoms:ReLabel>
+                                    <twig:Molecules:ReCheckboxField
+                                        id="is-elu"
+                                        class="w-full "
+                                        x-on:change="handleIsElu($event)"
+                                    > Je suis élu </twig:Molecules:ReCheckboxField>
+                                </fieldset>
+
+                                <twig:Atoms:ReParagraphStatus status="valid" x-show="isElu" x-cloak>
+                                    En déclarant vos mandats ici, nous préviendrons votre
+                                    <span class="font-medium">Président d’Assemblée départementale</span>
+                                    qui pourra, le cas échéant, vous inclure dans les élus de Renaissance.
+                                </twig:Atoms:ReParagraphStatus>
+
+                             <fieldset class="flex flex-col gap-2.5" x-show="isElu" x-cloak>
+                                 <div>
+                                     <twig:Atoms:ReLabel>Déclarations de mandats</twig:Atoms:ReLabel>
+                                     <twig:Molecules:ReCheckboxField id="1l" class="w-full">Députée européenne / Député européen</twig:Molecules:ReCheckboxField>
+                                 </div>
+                                 <twig:Molecules:ReCheckboxField id="2l" class="w-full">Sénatrice / Sénateur</twig:Molecules:ReCheckboxField>
+                                 <twig:Molecules:ReCheckboxField id="3l" class="w-full">Députée / Député</twig:Molecules:ReCheckboxField>
+                                 <twig:Molecules:ReCheckboxField id="4l" class="w-full">Présidente du conseil Régional / Président du conseil Régional</twig:Molecules:ReCheckboxField>
+                                 <twig:Molecules:ReCheckboxField id="5l" class="w-full">Conseillière municipale / Conseiller municipal</twig:Molecules:ReCheckboxField>
+                             </fieldset>
+
+                            <fieldset class="relative w-[400px] h-[100px]">
+                                <twig:Atoms:ReLabel>Date de Naissance</twig:Atoms:ReLabel>
+                                <fieldset class="flex gap-2.5 absolute z-10 ">
+                                    <twig:Molecules:ReSelect
+                                        placeholder="Jour"
+                                        validate="['required']"
+                                        id="birthDay"
+                                        class="w-full"
+                                        options="{{ range(1, 31) | map(v => {label: v|number_format  , value:v }) }}"
+                                   />
+
+                                    <twig:Molecules:ReSelect
+                                        placeholder="Mois"
+                                        validate="['required']"
+                                        id="birthMonth"
+                                        class="w-full"
+                                        options="{{ range(1, 12) | map(v => {label: v|number_format  , value:v }) }}"
+                                    />
+
+                                    <twig:Molecules:ReSelect
+                                        placeholder="Année"
+                                        validate="['required']"
+                                        id="birthYear"
+                                        class="w-full"
+                                        options="{{ range(1900, 2021) | map(v => {label: v|number_format  , value:v }) }}"
+                                    />
+
+                                </fieldset>
+                            </fieldset>
+                             <hr>
+                                <fieldset>
+                                    <twig:Atoms:ReLabel>Numéro de téléphone</twig:Atoms:ReLabel>
+                                    <twig:Molecules:ReTextField
+                                            placeholder="Numéro de téléphone"
+                                            type="tel"
+                                            autocomplete="phone"
+                                            prefix="+33"
+                                            validate="['required']"
+                                            onCheck="setFieldValid('phone')"
+                                            id="password-confirm"
+                                            class="w-full"
+                                    />
+                                </fieldset>
+                                    <twig:Molecules:ReCheckboxField id="optin" class="w-full" >
+                                        Je souhaite recevoir les informations sur l'actualité de Renaissance et ses communications politiques par SMS et téléphone
+                                    </twig:Molecules:ReCheckboxField>
+
+                                <twig:Molecules:ReButton
+                                    color="blue"
+                                    value="Continuer"
+                                    class="w-full"
+                                    xSyncLoading="loading"
+                                    x-on:click="handleSubmit($event)"
+                                    x-bind:class="{disabled: !checkValidity()}"
+                                />
+                        </form>
+                    </twig:Atoms:ReCard>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script>
+        Bootstrap.onLoad(() => Main.runAdhesionFurtherInformationPage());
+    </script>
+{% endblock %}

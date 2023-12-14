@@ -15,12 +15,17 @@
             {{ attributes.without('class') }}
             x-bind="validateField"
             id="{{ id }}"
-            class="re-field-frame !ring-0 !flex  {{ (status is defined ? ' re-field-frame--' ~ status) }}"
+            class="re-field-frame !ring-0 !flex  {{ (status is defined ? ' re-field-frame--' ~ status) }} {{ prefix is defined ? '!pl-20' : '' }}"
             :class="status !== 'default' ? 're-field-frame--' + status + ' !pr-12' : ''"
         />
         <twig:Atoms:ReIcon x-show="status !== 'default'"
                            xSyncType="status"
                            class="flex absolute self-end pr-4 pointer-events-none"/>
+        {% if prefix is defined %}
+            <div class="absolute inset-y-0 left-0 flex items-center px-4 pointer-events-none border-r">
+                {{ prefix }}
+            </div>
+        {% endif %}
     </div>
     <twig:Atoms:ReTextStatus x-show="status !== 'default' && message"
                              value="{{ message is defined ? '' }}"

@@ -79,6 +79,13 @@ class Main {
             .then((module) => module.default());
     }
 
+    runAdhesionFurtherInformationPage() {
+        return import('pages/adhesion_further_information').catch((error) => {
+            throw error;
+        })
+            .then((module) => module.default());
+    }
+
     runMailchimpResubscribeEmail({
         redirectUrl = null,
         signupPayload = null,
