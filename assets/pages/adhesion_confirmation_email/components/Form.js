@@ -49,7 +49,7 @@ const Form = (props) => ({
     },
 
     triggerValidateOnAllField() {
-        this.$el.querySelectorAll('input')
+        this.$refs.form.querySelectorAll('input')
             .forEach((x) => x.dispatchEvent(new Event('change')));
     },
 
