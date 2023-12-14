@@ -1,10 +1,9 @@
 /** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
 
 /**
- * @param {{email: string}} props
  * @returns {AlpineComponent}
  */
-const Form = (props) => ({
+const Form = () => ({
     fieldsValid: {
         code: false,
     },
@@ -19,11 +18,11 @@ const Form = (props) => ({
     },
 
     handlePasswordInput(e) {
-        this.isPasswordChanged = e.target.value !== props.email;
+        this.isPasswordChanged = Boolean(e.target.value);
     },
 
     triggerValidateOnAllField() {
-        document.querySelectorAll(`#${this.id} input`)
+        this.$el.querySelectorAll('input')
             .forEach((x) => x.dispatchEvent(new Event('change')));
     },
 
