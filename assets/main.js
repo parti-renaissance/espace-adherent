@@ -72,6 +72,13 @@ class Main {
             .then((module) => module.default());
     }
 
+    runAdhesionCreatePasswordPage() {
+        return import('pages/adhesion_create_password').catch((error) => {
+            throw error;
+        })
+            .then((module) => module.default());
+    }
+
     runMailchimpResubscribeEmail({
         redirectUrl = null,
         signupPayload = null,
