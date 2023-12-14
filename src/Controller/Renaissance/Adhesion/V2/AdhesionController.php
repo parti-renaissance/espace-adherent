@@ -57,7 +57,7 @@ class AdhesionController extends AbstractController
 
             $donation = $this->donationRequestHandler->handle($donationRequest, $adherent, $adherent->isRenaissanceAdherent());
 
-            return $this->redirectToRoute('app_adhesion_payment', ['uuid' => $donation->getUuid()]);
+            return $this->redirectToRoute('app_payment', ['uuid' => $donation->getUuid()]);
         }
 
         return $this->renderForm('renaissance/adhesion/form.html.twig', [

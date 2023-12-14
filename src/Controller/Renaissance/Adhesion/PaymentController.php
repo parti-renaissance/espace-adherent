@@ -52,7 +52,7 @@ class PaymentController extends AbstractAdhesionController
     #[Route(path: '/adhesion/{uuid}/paiement', requirements: ['uuid' => '%pattern_uuid%'], name: 'app_renaissance_adhesion_payment', methods: ['GET'])]
     public function paymentAction(PayboxFormFactory $payboxFormFactory, Donation $donation): Response
     {
-        $paybox = $payboxFormFactory->createPayboxFormForDonation($donation);
+        $paybox = $payboxFormFactory->createPayboxFormForDonation($donation, 'app_renaissance_adhesion_callback');
 
         return $this->render('renaissance/adhesion/payment.html.twig', [
             'url' => $paybox->getUrl(),
@@ -72,7 +72,7 @@ class PaymentController extends AbstractAdhesionController
             return $this->redirectToRoute('app_renaissance_adhesion');
         }
 
-        return $transactionCallbackHandler->handle($id, $request, $_callback_token, true);
+        return $transactionCallbackHandler->handle($id, $request, $_callback_token, 'app_renaissance_adhesion_payment_result', true);
     }
 
     #[Route(path: '/adhesion/{uuid}/{status}', requirements: ['status' => 'effectue|erreur', 'uuid' => '%pattern_uuid%'], name: 'app_renaissance_adhesion_payment_result', methods: ['GET'])]

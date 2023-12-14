@@ -1,6 +1,6 @@
 {% extends 'base_renaissance.html.twig' %}
 
-{% block title 'Connectez-vous avec un lien magique' %}
+{% block title 'Paiement' %}
 
 {% block content %}
     <header class="p-10">
@@ -10,7 +10,7 @@
     </header>
 
     <section class="flex flex-col bg-white px-10 pt-8 pb-[3.25rem] w-[380px] lg:w-[500px] mx-auto items-center">
-        <div class="hidden flex flex-col items-center" id="app-adhesion-redirect-loader">
+        <div class="hidden flex-col items-center" id="app-adhesion-redirect-loader">
             <twig:Atoms:ReParagraphStatus status="info" class="w-full justify-center" slim="true">
                 Redirection en cours...
             </twig:Atoms:ReParagraphStatus>
@@ -32,11 +32,7 @@
                 />
             {% endfor %}
 
-            <twig:Molecules:ReButton
-                color="not-fill"
-                value="Continuer vers ma banque"
-                class="w-full"
-            />
+            <twig:Molecules:ReButton color="not-fill" value="Continuer vers ma banque" class="w-full" />
         </form>
     </section>
 {% endblock %}

@@ -659,4 +659,19 @@ class Donation implements GeoPointInterface
     {
         $this->reAdhesion = $reAdhesion;
     }
+
+    public function __clone(): void
+    {
+        $this->id = null;
+        $this->uuid = Uuid::uuid4();
+        $this->payboxOrderRef = sprintf('%s_%s', $this->uuid->toString(), explode('_', $this->payboxOrderRef)[1]);
+        $this->donatedAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->transactions = new ArrayCollection();
+    }
+
+    public function isSuccess(): bool
+    {
+        return \in_array($this->status, [self::STATUS_FINISHED, self::STATUS_SUBSCRIPTION_IN_PROGRESS], true);
+    }
 }

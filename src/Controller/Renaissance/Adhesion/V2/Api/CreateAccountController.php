@@ -37,7 +37,7 @@ class CreateAccountController extends AbstractController
                 'status' => 'error',
                 'violations' => [[
                     'property' => 'email',
-                    'message' => 'Veuillez renseigner votre adresse email pour continuer.',
+                    'message' => 'Veuillez valider cette première étape du parcours.',
                 ]],
             ], Response::HTTP_BAD_REQUEST);
         }

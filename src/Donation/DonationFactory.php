@@ -59,6 +59,11 @@ class DonationFactory
         return $donation;
     }
 
+    public function duplicate(Donation $initialDonation): Donation
+    {
+        return clone $initialDonation;
+    }
+
     private function findZone(Donation $donation): ?Zone
     {
         return $this->zoneRepository->findOneDepartmentByPostalCode($donation->getPostalCode());

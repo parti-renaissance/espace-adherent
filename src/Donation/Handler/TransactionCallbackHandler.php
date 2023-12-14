@@ -29,7 +29,8 @@ class TransactionCallbackHandler
         string $donationUuid,
         Request $request,
         string $callbackToken,
-        bool $forMembership = false
+        string $statusRouteName,
+        bool $forMembership = false,
     ): Response {
         $donation = $this->donationRepository->findOneByUuid($donationUuid);
 
@@ -44,7 +45,7 @@ class TransactionCallbackHandler
         $payload = $this->donationRequestUtils->extractPayboxResultFromCallback($request, $callbackToken);
 
         return new RedirectResponse($this->router->generate(
-            $forMembership ? 'app_renaissance_adhesion_payment_result' : 'app_renaissance_donation_payment_result',
+            $statusRouteName,
             $this->donationRequestUtils->createCallbackStatus($payload['result'], $donationUuid)
         ));
     }

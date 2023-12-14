@@ -10,9 +10,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class RefreshTagsListener implements EventSubscriberInterface
 {
-    public function __construct(
-        private readonly MessageBusInterface $bus
-    ) {
+    public function __construct(private readonly MessageBusInterface $bus)
+    {
     }
 
     public static function getSubscribedEvents(): array
