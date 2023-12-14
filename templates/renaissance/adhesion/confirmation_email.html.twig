@@ -1,0 +1,116 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Adhésion' %}
+
+{% block content %}
+    {% set email = 'Albert-dupondominique@gmail.com' %}
+    <main class=" re_new_ui bg-gradient-to-b from-slate-600 h-screen flex flex-col items-center md:justify-center to-slate-500">
+        <section class="flex flex-col justify-center items-center gap-10">
+            <div class=" justify-center items-center  flex-col  gap-8 "
+                 x-data="xEmailVerificationForm({email: '{{ email }}'})">
+
+                <div class="flex gap-8 flex-col p-5">
+                    <twig:Atoms:ReCard class="max-w-[500px]">
+                        <twig:Atoms:ReParagraphStatus status="success" icon="success" slim="true">
+                            Votre paiement a bien été validé !
+                        </twig:Atoms:ReParagraphStatus>
+                        <div>
+                            <twig:Atoms:ReLabel>
+                                Confirmer votre adresse email
+                            </twig:Atoms:ReLabel>
+                            <p class="gap-2.5 flex flex-col">
+                                <span class="text-ui_gray-80">
+                                    La confirmation de votre adresse e-mail est obligatoire pour accéder à votre espace adhérent.
+                                </span>
+                                <span class="text-ui_gray-60">
+                                    Vous venez de recevoir un code de vérification sur l’adresse email :
+                                </span>
+                            </p>
+
+                        </div>
+
+                        <template x-if="!isChangeMailMode" >
+                            <div class="flex gap-8 flex-col">
+                                <div class="flex flex-col justify-center items-center gap-2.5">
+                                    <span class="font-medium text-ui_gray-80 underline">
+                                        {{ email }}
+                                    </span>
+                                    <a @click.prevent="isChangeMailMode=true" class="text-ui_blue-50" href="#">Changer mon adresse mail</a>
+                                </div>
+
+                                <twig:Atoms:ReParagraphStatus class="!w-auto" status="warning" icon="warning" slim="true">
+                                    Code actif pendant 15 minutes
+                                </twig:Atoms:ReParagraphStatus>
+
+                                <twig:Molecules:ReTextField
+                                        label="Code de vérification"
+                                        placeholder="Code de vérification"
+                                        type="text"
+                                        validate="['required', 'min:4', 'max:4']"
+                                        onCheck="setFieldValid('code')"
+                                        id="code"
+                                        class="w-full [&>div>input]:text-center"
+                                        x-on:input="handleCodeInput($event)"
+                                />
+                            </div>
+                        </template>
+
+                        <template x-if="isChangeMailMode" >
+                            <div class="flex gap-8 flex-col">
+                                <div class="flex flex-col justify-center items-center gap-2.5">
+                                    <a @click.prevent="isChangeMailMode=false" class="text-ui_blue-50" href="#">Revenir au code</a>
+                                </div>
+                                <div>
+                                    <twig:Atoms:ReLabel>
+                                        Nouvelle adresse email
+                                    </twig:Atoms:ReLabel>
+
+                                    <twig:Molecules:ReTextField
+                                            placeholder="Adresse mail"
+                                            type="email"
+                                            validate="['required']"
+                                            onCheck="setFieldValid('code')"
+                                            id="email"
+                                            class="w-full"
+                                            x-on:input="handleEmailInput($event)"
+                                    />
+                                </div>
+
+                                <twig:Molecules:ReTextField
+                                        placeholder="Comfirmer mon Adresse mail"
+                                        type="email"
+                                        validate="['required']"
+                                        onCheck="setFieldValid('code')"
+                                        x-bind:disabled="!isMailChanged"
+                                        id="email-confirm"
+                                        class="w-full"
+                                        x-on:input="handleCodeInput($event)"
+                                />
+                            </div>
+                        </template>
+
+                        <twig:Molecules:ReButton
+                            color="blue"
+                            value="Valider"
+                            class="w-full"
+                            xSyncLoading="loading"
+                            x-bind:disabled="!checkValidity()"
+                            x-on:click="loading = true"
+                        />
+
+
+
+                        <a class="text-ui_blue-50 text-center" href="#">Renvoyer le code</a>
+                    </twig:Atoms:ReCard>
+
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script>
+        Bootstrap.onLoad(() => Main.runAdhesionConfirmEmailPage());
+    </script>
+{% endblock %}

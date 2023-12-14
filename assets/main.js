@@ -65,6 +65,13 @@ class Main {
             .then((module) => module.default(props));
     }
 
+    runAdhesionConfirmEmailPage() {
+        return import('pages/adhesion_confirmation_email').catch((error) => {
+            throw error;
+        })
+            .then((module) => module.default());
+    }
+
     runMailchimpResubscribeEmail({
         redirectUrl = null,
         signupPayload = null,
