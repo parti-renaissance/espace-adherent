@@ -1,0 +1,123 @@
+
+<div class="chat-container">
+    <div id="chat-messages"></div>
+    <input type="text" id="user-input" placeholder="Type your message...">
+    <button id="send-btn">Send</button>
+</div>
+
+<style>
+    .chat-container {
+        width: 400px;
+        margin: 50px auto;
+        border: 1px solid #ccc;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    #chat-messages {
+        height: 300px;
+        overflow-y: scroll;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    #user-input {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+
+    #send-btn {
+        padding: 5px 10px;
+    }
+</style>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        // Fonction pour récupérer les derniers messages de la conversation
+        function getConversation() {
+            fetch('{{ path('api_chatbot_get', { code: 'conformite-eu' }) }}', {
+                method: 'GET',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Afficher les messages dans la boîte de dialogue
+                    chatMessages.innerHTML = '';
+                    data.messages.forEach(message => {
+                        const newMessage = document.createElement('p');
+                        let messageText = '';
+                        if (message.role === 'user') {
+                            messageText = '<strong>Me:</strong> ' + message.content;
+                        } else {
+                            messageText = '<strong>Chatbot:</strong> ' + message.content;
+                        }
+                        newMessage.innerHTML = messageText;
+                        chatMessages.appendChild(newMessage);
+                    });
+                });
+        }
+
+        // Fonction pour envoyer un message au chatbot
+        function sendMessage() {
+            const userInputValue = userInput.value.trim();
+            console.log(userInputValue);
+            if (userInputValue !== '') {
+                fetch('{{ path('api_chatbot_post', { code: 'conformite-eu' }) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ content: userInputValue })
+                })
+                    .then(() => {
+                        // Vide le champ de saisie après envoi du message
+                        userInput.value = '';
+                        // Récupère les derniers messages de la conversation
+                        getConversation();
+                    });
+            }
+        }
+
+        // Fonction pour rafraîchir la conversation toutes les 10 secondes
+        function startConversationInterval() {
+            conversationInterval = setInterval(getConversation, 10000);
+        }
+
+        // Fonction pour arrêter le rafraîchissement automatique de la conversation
+        function stopConversationInterval() {
+            clearInterval(conversationInterval);
+        }
+
+        // Fonction pour fermer la conversation
+        function closeConversation() {
+            fetch('{{ path('api_chatbot_delete', { code: 'conformite-eu' }) }}', {
+                method: 'DELETE',
+            });
+            stopConversationInterval();
+        }
+
+        // Événement lors du clic sur le bouton "Send"
+        sendBtn.addEventListener('click', sendMessage);
+
+        // Événement lors de l'appui sur la touche "Enter" dans le champ de saisie
+        userInput.addEventListener('keyup', function(event) {
+            if (event.keyCode === 13) {
+                sendMessage();
+            }
+        });
+
+        // Récupère les derniers messages de la conversation au chargement de la page
+
+        getConversation();
+        // Démarre le rafraîchissement automatique de la conversation
+        startConversationInterval();
+
+        // Ajoute un événement pour fermer la conversation lorsque la fenêtre se ferme
+        window.onbeforeunload = closeConversation;
+    });
+</script>
