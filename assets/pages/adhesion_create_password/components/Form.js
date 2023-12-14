@@ -5,7 +5,8 @@
  */
 const Form = () => ({
     fieldsValid: {
-        code: false,
+        password: false,
+        passwordConfirmation: false,
     },
     isPasswordChanged: false,
     loading: false,
@@ -24,6 +25,15 @@ const Form = () => ({
     triggerValidateOnAllField() {
         this.$el.querySelectorAll('input')
             .forEach((x) => x.dispatchEvent(new Event('change')));
+    },
+
+    handleSubmit(e) {
+        e.preventDefault();
+        this.triggerValidateOnAllField();
+        if (this.checkValidity()) {
+            this.loading = true;
+            this.$refs.form.submit();
+        }
     },
 
     checkValidity() {

@@ -69,7 +69,7 @@
                                             placeholder="Adresse mail"
                                             type="email"
                                             validate="['required']"
-                                            onCheck="setFieldValid('code')"
+                                            onCheck="setFieldValid('email')"
                                             id="email"
                                             class="w-full"
                                             x-on:input="handleEmailInput($event)"
@@ -80,7 +80,7 @@
                                         placeholder="Comfirmer mon Adresse mail"
                                         type="email"
                                         validate="['required']"
-                                        onCheck="setFieldValid('code')"
+                                        onCheck="setFieldValid('confirmEmail')"
                                         x-bind:disabled="!isMailChanged"
                                         id="email-confirm"
                                         class="w-full"
@@ -94,8 +94,8 @@
                             value="Valider"
                             class="w-full"
                             xSyncLoading="loading"
-                            x-bind:disabled="!checkValidity()"
-                            x-on:click="loading = true"
+                            x-on:click="handleSubmit()"
+                            x-bind:class="{disabled: !checkValidity()}"
                         />
 
 
