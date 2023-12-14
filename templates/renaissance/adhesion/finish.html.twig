@@ -1,0 +1,19 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block title 'Félicitations' %}
+
+{% block content %}
+    <header class="p-10">
+        <a href="{{ path('app_renaissance_homepage') }}">
+            <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
+        </a>
+    </header>
+
+    <section class="flex flex-col bg-white gap-10 w-[500px] p-10 mx-auto items-center">
+        <twig:Atoms:ReParagraphStatus status="success" class="w-full justify-center" slim="true">
+            Votre carte d’adhérent est envoyée !
+        </twig:Atoms:ReParagraphStatus>
+
+        <div class="font-medium">Félicitations, {{ app.user.firstName }} ! Votre espace vient d'être créé !</div>
+    </section>
+{% endblock %}

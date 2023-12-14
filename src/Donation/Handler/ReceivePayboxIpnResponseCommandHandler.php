@@ -2,9 +2,9 @@
 
 namespace App\Donation\Handler;
 
+use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Donation\Command\ReceivePayboxIpnResponseCommand;
 use App\Entity\Donation;
-use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Mailer\MailerService;
 use App\Mailer\Message\DonationThanksMessage;
 use App\Membership\MembershipRequestHandler;
@@ -58,7 +58,7 @@ class ReceivePayboxIpnResponseCommandHandler implements MessageHandlerInterface
 
         if ($transaction->isSuccessful()) {
             if ($donation->isMembership()) {
-                if ($adherent) {
+                if ($adherent && !$adherent->isV2()) {
                     if ($donation->isReAdhesion()) {
                         $this->membershipRequestHandler->finishRenaissanceReAdhesion($adherent);
                     } else {
@@ -72,7 +72,7 @@ class ReceivePayboxIpnResponseCommandHandler implements MessageHandlerInterface
             }
 
             if ($adherent) {
-                $this->bus->dispatch(new AdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress()));
+                $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
             }
         }
     }

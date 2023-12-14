@@ -1,0 +1,10 @@
+{% set support_email = 'adherents@parti-renaissance.fr' %}
+
+{% if adhesion is defined %}
+    Une question relative à l’adhésion ? <br>
+    Écrivez-nous à <a href="mailto:{{ support_email }}" class="text-ui_blue-50" >{{ support_email }}</a> ou <br>
+    appelez-nous au <a href="tel:+33186950286" class="text-ui_blue-50">01 86 95 02 86</a>
+{% else %}
+    Besoin d’aide ?<br/>
+    Écrivez-nous à <a href="mailto:{{ support_email }}" class="text-ui_blue-50">{{ support_email }}</a>
+{% endif %}

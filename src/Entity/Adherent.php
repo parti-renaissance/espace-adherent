@@ -866,6 +866,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public array $tags = [];
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $v2 = false;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -3430,5 +3435,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->lastName = $membershipRequest->lastName;
         $this->nationality = $membershipRequest->nationality;
         $this->gender = $membershipRequest->civility;
+    }
+
+    public function isV2(): bool
+    {
+        return $this->v2;
+    }
+
+    public function setV2(bool $value): void
+    {
+        $this->v2 = $value;
     }
 }

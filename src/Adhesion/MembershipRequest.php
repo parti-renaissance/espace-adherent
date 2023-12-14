@@ -70,7 +70,7 @@ class MembershipRequest implements DonationRequestInterface
     /**
      * @Assert\AtLeastOneOf({
      *     @Assert\Expression("this.exclusiveMembership"),
-     *     @Assert\Choice(choices=1, 2, 3),
+     *     @Assert\Choice({1, 2, 3}),
      * }, message="Ce champ est requis.", includeInternalMessages=false)
      */
     public ?int $partyMembership = null;

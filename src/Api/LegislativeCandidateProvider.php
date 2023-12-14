@@ -36,7 +36,7 @@ class LegislativeCandidateProvider
                 'district' => $candidate->getDistrictName(),
                 'picture' => $candidate->getMedia() ? $this->asset->transformedMediaAsset($candidate->getMedia(), ['w' => 200, 'h' => 140, 'q' => 70, 'fit' => 'crop']) : '',
                 'url' => $this->urlGenerator->generate('legislatives_candidate', ['slug' => $candidate->getSlug()]),
-                'geojson' => \GuzzleHttp\json_decode($candidate->getGeojson()),
+                'geojson' => json_decode($candidate->getGeojson()),
             ];
         }
 

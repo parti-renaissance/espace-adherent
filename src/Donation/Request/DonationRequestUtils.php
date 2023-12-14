@@ -138,7 +138,7 @@ class DonationRequestUtils
         $this->session->remove(static::SESSION_KEY);
     }
 
-    public function buildCallbackParameters()
+    public function buildCallbackParameters(): array
     {
         return ['_callback_token' => $this->tokenManager->getToken(self::CALLBACK_TOKEN)];
     }
@@ -149,7 +149,7 @@ class DonationRequestUtils
 
         $data = array_merge($request->query->all(), [
             'authorization' => $request->query->get('authorization'),
-            'result' => $request->query->get('result'),
+            'result' => $request->query->get('result', self::PAYBOX_UNKNOWN),
         ]);
 
         unset($data['id'], $data['Sign']);
@@ -162,7 +162,7 @@ class DonationRequestUtils
         $this->validateCallbackStatus($request);
 
         $payload = $donation->getRetryPayload();
-        $payload['_retry_token'] = (string) $this->tokenManager->getToken(self::RETRY_TOKEN);
+        $payload['_retry_token'] = $this->generateRetryToken();
 
         return [
             self::RETRY_PAYLOAD => json_encode($payload),
@@ -176,24 +176,22 @@ class DonationRequestUtils
         $code = self::PAYBOX_STATUSES[$resultCode] ?? self::PAYBOX_STATUSES[self::PAYBOX_UNKNOWN];
 
         return [
-            'code' => $code,
-            'result' => $resultCode,
-            'uuid' => $donationUuid,
-            'is_registration' => $this->membershipRegistrationProcess->isStarted(),
+            'code' => $code, // error, timeout, invalid-card, paybox, donation_paybox_success
+            'result' => $resultCode, // 00000, 00001, 00002
             'status' => self::PAYBOX_SUCCESS === $code ? DonationController::RESULT_STATUS_EFFECTUE : DonationController::RESULT_STATUS_ERREUR,
+            'uuid' => $donationUuid,
             '_status_token' => (string) $this->tokenManager->getToken(self::STATUS_TOKEN),
+            'is_registration' => $this->membershipRegistrationProcess->isStarted(),
         ];
     }
 
     public function buildDonationReference(UuidInterface $uuid, string $fullName): string
     {
-        $str = sprintf(
+        return sprintf(
             '%s_%s',
             $uuid,
             $this->slugify->slugify($fullName)
         );
-
-        return $str;
     }
 
     public function hydrateFromRetryPayload(DonationRequest $request, string $payload): DonationRequest
@@ -218,6 +216,11 @@ class DonationRequestUtils
         return $request;
     }
 
+    public function validateRetryToken(string $token): bool
+    {
+        return $this->tokenManager->isTokenValid(new CsrfToken(self::RETRY_TOKEN, $token));
+    }
+
     private function validateCallback(string $token): void
     {
         if ($this->tokenManager->isTokenValid(new CsrfToken(self::CALLBACK_TOKEN, $token))) {
@@ -239,15 +242,20 @@ class DonationRequestUtils
 
     private function validateRetryPayload(DonationRequest $retry, string $token): bool
     {
-        if ($this->tokenManager->isTokenValid(new CsrfToken(self::RETRY_TOKEN, $token))) {
+        if ($this->validateRetryToken($token)) {
             return 0 === \count($this->validator->validate($retry));
         }
 
         throw new InvalidDonationPayloadException();
     }
 
-    private function isValidStatus(string $status)
+    private function isValidStatus(string $status): bool
     {
         return \in_array($status, self::PAYBOX_STATUSES, true);
+    }
+
+    public function generateRetryToken(): string
+    {
+        return $this->tokenManager->getToken(self::RETRY_TOKEN)->getValue();
     }
 }

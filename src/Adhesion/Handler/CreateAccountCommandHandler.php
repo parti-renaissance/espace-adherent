@@ -62,6 +62,7 @@ class CreateAccountCommandHandler
         }
 
         $currentUser->join();
+        $currentUser->setV2(true);
 
         if (!$currentUser->tags) {
             $currentUser->tags = [TagEnum::SYMPATHISANT];

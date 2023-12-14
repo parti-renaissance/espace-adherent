@@ -69,30 +69,13 @@
                             xSyncLoading="loading"
                         />
 
-                        <p class="text-center">
-                            Vous préférez adhérer par voie postale ?<br/>
-                            Télécharger le formulaire d’adhésion papier !
-                        </p>
+                        {% include 'renaissance/partials/adhesion_paper.html.twig' %}
 
-                        <div class="flex justify-center items-center">
-                            <twig:Molecules:ReButton
-                                tag="a"
-                                href="https://storage.googleapis.com/parti-renaissance.fr/Renaissance-Bulletin-adhesion.pdf"
-                                target="_blank"
-                                color="not-fill"
-                                value="Télécharger"
-                                class="!w-auto"
-                                icon="download"
-                            />
-                        </div>
                         <hr/>
 
                         <twig:Atoms:ReParagraphStatus status="info">
-                            Une question relative à l’adhésion ? <br>
-                            Écrivez-nous à <a class="text-ui_blue-50" href="mailto:adherents@parti-renaissance.fr">adherents@parti-renaissance.fr</a> ou <br>
-                            appelez-nous au <a class="text-ui_blue-50" href="tel:+33186950286">01 86 95 02 86</a>
+                            {% include 'renaissance/partials/contact_info.html.twig' with { adhesion: true } %}
                         </twig:Atoms:ReParagraphStatus>
-
                     </twig:Atoms:ReCard>
 
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep">

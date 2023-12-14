@@ -1,0 +1,42 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block title 'Statut du paiement' %}
+
+{% block content %}
+    <header class="p-10">
+        <a href="{{ path('app_renaissance_homepage') }}">
+            <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
+        </a>
+    </header>
+
+    <section class="flex flex-col gap-10 w-[500px] p-10 mx-auto items-center">
+        {% if result_code == '00000' %}
+            {% include 'renaissance/payment/status/_success.html.twig' %}
+        {% else %}
+            {% include 'renaissance/payment/status/_error.html.twig' %}
+        {% endif %}
+
+        {% if retry_url %}
+            <twig:Molecules:ReButton
+                class="w-full"
+                tag="a"
+                href="{{ retry_url }}"
+                value="Retourner vers la page de paiement"
+            />
+
+            <hr class="w-full"/>
+
+            {% include 'renaissance/partials/adhesion_paper.html.twig' %}
+
+            <hr class="w-full"/>
+
+            <div>{% include 'renaissance/partials/contact_info.html.twig' with { adhesion: true } %}</div>
+        {% endif %}
+    </section>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript">
+        Bootstrap.onLoad(function() { console.log('{{ uuid }}') });
+    </script>
+{% endblock %}

@@ -11,37 +11,20 @@ use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Donator;
-use App\Repository\AdherentRepository;
 use App\Repository\DonatorRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DonationRequestHandler
 {
-    private $dispatcher;
-    private $manager;
-    private $donationFactory;
-    private $donatorFactory;
-    private $donatorRepository;
-    private $donatorManager;
-    private $adherentRepository;
-
     public function __construct(
-        EventDispatcherInterface $dispatcher,
-        ManagerRegistry $doctrine,
-        DonationFactory $donationFactory,
-        DonatorFactory $donatorFactory,
-        DonatorRepository $donatorRepository,
-        DonatorManager $donatorManager,
-        AdherentRepository $adherentRepository
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly EntityManagerInterface $manager,
+        private readonly DonationFactory $donationFactory,
+        private readonly DonatorFactory $donatorFactory,
+        private readonly DonatorRepository $donatorRepository,
+        private readonly DonatorManager $donatorManager,
     ) {
-        $this->dispatcher = $dispatcher;
-        $this->manager = $doctrine->getManagerForClass(Donation::class);
-        $this->donationFactory = $donationFactory;
-        $this->donatorFactory = $donatorFactory;
-        $this->donatorRepository = $donatorRepository;
-        $this->donatorManager = $donatorManager;
-        $this->adherentRepository = $adherentRepository;
     }
 
     public function handle(
@@ -70,6 +53,20 @@ class DonationRequestHandler
         $this->manager->persist($donator);
         $this->manager->persist($donation);
 
+        $this->manager->flush();
+
+        return $donation;
+    }
+
+    public function handleRetry(Donation $initialDonation): Donation
+    {
+        $donator = $initialDonation->getDonator();
+        $donation = $this->donationFactory->duplicate($initialDonation);
+        $donator->addDonation($donation);
+
+        $this->dispatcher->dispatch(new DonationWasCreatedEvent($donation), DonationEvents::CREATED);
+
+        $this->manager->persist($donation);
         $this->manager->flush();
 
         return $donation;

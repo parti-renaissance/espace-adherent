@@ -92,7 +92,7 @@ class DonationController extends AbstractController
     #[Route(path: '/{uuid}/paiement', requirements: ['uuid' => '%pattern_uuid%'], name: 'donation_pay', methods: ['GET'])]
     public function payboxAction(PayboxFormFactory $payboxFormFactory, Donation $donation): Response
     {
-        $paybox = $payboxFormFactory->createPayboxFormForDonation($donation);
+        $paybox = $payboxFormFactory->createPayboxFormForDonation($donation, 'app_renaissance_donation_callback');
 
         return $this->render('donation/paybox.html.twig', [
             'url' => $paybox->getUrl(),
@@ -112,7 +112,7 @@ class DonationController extends AbstractController
             return $this->redirectToRoute('donation_index');
         }
 
-        return $transactionCallbackHandler->handle($id, $request, $_callback_token);
+        return $transactionCallbackHandler->handle($id, $request, $_callback_token, 'app_renaissance_donation_payment_result');
     }
 
     #[Route(path: '/{uuid}/{status}', requirements: ['status' => 'effectue|erreur', 'uuid' => '%pattern_uuid%'], name: 'donation_result', methods: ['GET'])]

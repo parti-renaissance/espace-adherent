@@ -21,10 +21,10 @@ class PayboxFormFactory
     ) {
     }
 
-    public function createPayboxFormForDonation(Donation $donation): LexikRequestHandler
+    public function createPayboxFormForDonation(Donation $donation, string $callbackRouteName): LexikRequestHandler
     {
         $callbackUrl = $this->router->generate(
-            $donation->isMembership() ? 'app_renaissance_adhesion_callback' : 'app_renaissance_donation_callback',
+            $callbackRouteName,
             $this->donationRequestUtils->buildCallbackParameters(),
             UrlGeneratorInterface::ABSOLUTE_URL
         );

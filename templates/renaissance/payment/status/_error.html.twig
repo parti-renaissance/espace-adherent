@@ -1,0 +1,13 @@
+<twig:Atoms:ReParagraphStatus status="error" class="w-full justify-center" slim="true">
+    Un problème est survenu
+</twig:Atoms:ReParagraphStatus>
+
+<p class="font-medium text-center">
+    Nous n'avons rien reçu ou la banque indique que le<br/>
+    paiement n'a pas eu lieu.<br/>
+    Votre compte bancaire n'a pas été débité.<br/>
+
+    {% if result_code %}
+        <span class="text-sm text-gray-400">(code : {{ result_code }})</span>
+    {% endif %}
+</p>
