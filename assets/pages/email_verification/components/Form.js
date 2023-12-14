@@ -7,8 +7,6 @@
 const Form = (props) => ({
     fieldsValid: {
         code: false,
-        email: false,
-        confirmEmail: false,
     },
     isChangeMailMode: false,
     isMailChanged: false,
@@ -39,24 +37,13 @@ const Form = (props) => ({
         }
     },
 
-    handleSubmit(e) {
-        e.preventDefault();
-        this.triggerValidateOnAllField();
-        if (this.checkValidity()) {
-            this.loading = true;
-            this.$refs.form.submit();
-        }
-    },
-
     triggerValidateOnAllField() {
-        this.$refs.form.querySelectorAll('input')
+        document.querySelectorAll(`#${this.id} input`)
             .forEach((x) => x.dispatchEvent(new Event('change')));
     },
 
     checkValidity() {
-        return this.isChangeMailMode
-            ? this.fieldsValid.email && this.fieldsValid.confirmEmail
-            : this.fieldsValid.code;
+        return this.isChangeMailMode ? this.fieldsValid.email : this.fieldsValid.code;
     },
 
 });

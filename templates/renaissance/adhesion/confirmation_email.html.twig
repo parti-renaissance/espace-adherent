@@ -26,76 +26,76 @@
                                     Vous venez de recevoir un code de vérification sur l’adresse email :
                                 </span>
                             </p>
-
                         </div>
 
-                        <template x-if="!isChangeMailMode" >
-                            <div class="flex gap-8 flex-col">
-                                <div class="flex flex-col justify-center items-center gap-2.5">
-                                    <span class="font-medium text-ui_gray-80 underline">
-                                        {{ email }}
-                                    </span>
-                                    <a @click.prevent="isChangeMailMode=true" class="text-ui_blue-50" href="#">Changer mon adresse mail</a>
-                                </div>
+                        <form x-ref="form" action="" method="post" class="flex gap-8 flex-col">
+                            <template x-if="!isChangeMailMode" >
+                                <div class="flex gap-8 flex-col">
+                                    <div class="flex flex-col justify-center items-center gap-2.5">
+                                        <span class="font-medium text-ui_gray-80 underline">
+                                            {{ email }}
+                                        </span>
+                                        <a @click.prevent="isChangeMailMode=true" class="text-ui_blue-50" href="#">Changer mon adresse mail</a>
+                                    </div>
 
-                                <twig:Atoms:ReParagraphStatus class="!w-auto" status="warning" icon="warning" slim="true">
-                                    Code actif pendant 15 minutes
-                                </twig:Atoms:ReParagraphStatus>
-
-                                <twig:Molecules:ReTextField
-                                        label="Code de vérification"
-                                        placeholder="Code de vérification"
-                                        type="text"
-                                        validate="['required', 'min:4', 'max:4']"
-                                        onCheck="setFieldValid('code')"
-                                        id="code"
-                                        class="w-full [&>div>input]:text-center"
-                                        x-on:input="handleCodeInput($event)"
-                                />
-                            </div>
-                        </template>
-
-                        <template x-if="isChangeMailMode" >
-                            <div class="flex gap-8 flex-col">
-                                <div class="flex flex-col justify-center items-center gap-2.5">
-                                    <a @click.prevent="isChangeMailMode=false" class="text-ui_blue-50" href="#">Revenir au code</a>
-                                </div>
-                                <div>
-                                    <twig:Atoms:ReLabel>
-                                        Nouvelle adresse email
-                                    </twig:Atoms:ReLabel>
+                                    <twig:Atoms:ReParagraphStatus class="!w-auto" status="warning" icon="warning" slim="true">
+                                        Code actif pendant 15 minutes
+                                    </twig:Atoms:ReParagraphStatus>
 
                                     <twig:Molecules:ReTextField
-                                            placeholder="Adresse mail"
-                                            type="email"
-                                            validate="['required']"
+                                            label="Code de vérification"
+                                            placeholder="Code de vérification"
+                                            type="text"
+                                            validate="['required', 'min:4', 'max:4']"
                                             onCheck="setFieldValid('code')"
-                                            id="email"
-                                            class="w-full"
-                                            x-on:input="handleEmailInput($event)"
+                                            id="code"
+                                            class="w-full [&>div>input]:text-center"
+                                            x-on:input="handleCodeInput($event)"
                                     />
                                 </div>
+                            </template>
+                            <template x-if="isChangeMailMode" >
+                                <div class="flex gap-8 flex-col">
+                                    <div class="flex flex-col justify-center items-center gap-2.5">
+                                        <a @click.prevent="isChangeMailMode=false" class="text-ui_blue-50" href="#">Revenir au code</a>
+                                    </div>
+                                    <div>
+                                        <twig:Atoms:ReLabel>
+                                            Nouvelle adresse email
+                                        </twig:Atoms:ReLabel>
 
-                                <twig:Molecules:ReTextField
-                                        placeholder="Comfirmer mon Adresse mail"
-                                        type="email"
-                                        validate="['required']"
-                                        onCheck="setFieldValid('code')"
-                                        x-bind:disabled="!isMailChanged"
-                                        id="email-confirm"
-                                        class="w-full"
-                                        x-on:input="handleCodeInput($event)"
-                                />
-                            </div>
-                        </template>
+                                        <twig:Molecules:ReTextField
+                                                placeholder="Adresse mail"
+                                                type="email"
+                                                validate="['required']"
+                                                onCheck="setFieldValid('email')"
+                                                id="email"
+                                                class="w-full"
+                                                x-on:input="handleEmailInput($event)"
+                                        />
+                                    </div>
+
+                                    <twig:Molecules:ReTextField
+                                            placeholder="Comfirmer mon Adresse mail"
+                                            type="email"
+                                            validate="['required']"
+                                            onCheck="setFieldValid('confirmEmail')"
+                                            x-bind:disabled="!isMailChanged"
+                                            id="email-confirm"
+                                            class="w-full"
+                                            x-on:input="handleCodeInput($event)"
+                                    />
+                                </div>
+                            </template>
+                        </form>
 
                         <twig:Molecules:ReButton
                             color="blue"
                             value="Valider"
                             class="w-full"
                             xSyncLoading="loading"
-                            x-bind:disabled="!checkValidity()"
-                            x-on:click="loading = true"
+                            x-on:click="handleSubmit($event)"
+                            x-bind:class="{disabled: !checkValidity()}"
                         />
 
 
