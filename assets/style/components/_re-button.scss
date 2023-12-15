@@ -36,7 +36,7 @@
   }
 
   &:focus:not(:disabled):not(.disabled) {
-    @apply outline outline-4 outline-offset-0 outline-ui_blue-50;
+    @apply outline outline-4 outline-offset-0 outline-ui_blue-20;
 
     &.re-button--not-fill {
       @apply outline-ui_blue-20;

@@ -7,7 +7,7 @@
         validate: {{ validate is defined ? validate : '[]' }},
         onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
     })"
-    {{ id ? "@x-validate:#{id}.window=\"setData($event.detail)\"" }}>
+    {{ id ? "@x-validate:#{id}.window=\"setData($event.detail)\"" | raw }}>
 
     <div class="relative flex-col flex justify-center">
         <div x-data="{ isActive: false, }"

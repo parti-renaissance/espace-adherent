@@ -77,67 +77,83 @@ export function initAutocomplete() {
     }];
 }
 
+const initPlaceData = () => ({
+    street_number: null,
+    route: null,
+    locality: null,
+    postal_town: null,
+    sublocality_level_1: null,
+    sublocality_level_2: null,
+    sublocality_level_3: null,
+    postal_code: null,
+    postal_code_prefix: null,
+    plus_code: null,
+    country: null,
+    administrative_area_level_1: null,
+});
+
+const getCityName = (placeData) => (
+    (placeData.locality && placeData.locality.long_name)
+    || (placeData.sublocality_level_1 && placeData.sublocality_level_1.long_name)
+    || (placeData.postal_town && placeData.postal_town.long_name)
+    || ''
+);
+
+const getPostalCode = (placeData) => (
+    (placeData.postal_code && placeData.postal_code.long_name)
+    || (placeData.postal_code_prefix && placeData.postal_code_prefix.long_name)
+    || (placeData.plus_code && placeData.plus_code.long_name)
+    || ''
+);
+
+const getAddressValue = (placeData) => [
+    ((placeData.street_number && placeData.street_number.long_name) || ''),
+    ((placeData.route && placeData.route.long_name) || '')].join(' ')
+    .trim()
+    || [((placeData.sublocality_level_3 && placeData.sublocality_level_3.long_name) || ''),
+        ((placeData.sublocality_level_2 && placeData.sublocality_level_2.long_name) || ''),
+        ((placeData.sublocality_level_1 && placeData.sublocality_level_1.long_name) || ''),
+    ].filter((el) => null != el && '' !== el)
+        .join(', ')
+        .trim();
+
 /**
  * @param {google.maps.GeocoderAddressComponent[]} components
  */
 export function fillInAddress(components) {
     clearAssociatedFields();
     // Get the place details from the autocomplete object.
-    let address1 = '';
-    let postcode = '';
-
     const {
         autocomplete,
         ...fields
     } = getAssociatedFields();
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const component of components) {
-        // @ts-ignore remove once typings fixed
-        const componentType = component.types[0];
+    const placeData = initPlaceData();
 
-        switch (componentType) {
-        case 'street_number': {
-            address1 = `${component.long_name} ${address1}`;
-            break;
+    components.forEach((component) => {
+        const type = component.types[0];
+        if (type in placeData) {
+            placeData[type] = component;
         }
+    });
 
-        case 'route': {
-            address1 += component.short_name;
-            break;
-        }
+    fields.address.value = getAddressValue(placeData);
+    fields.cityName.value = getCityName(placeData);
+    fields.postalCode.value = getPostalCode(placeData);
 
-        case 'postal_code': {
-            postcode = `${component.long_name}${postcode}`;
-            break;
-        }
-
-        case 'postal_code_suffix': {
-            postcode = `${postcode}-${component.long_name}`;
-            break;
-        }
-        case 'locality':
-            fields.cityName.value = component.long_name;
-            break;
-        case 'administrative_area_level_1': {
-            break;
-        }
-        case 'country':
-            window.dispatchEvent(new CustomEvent('x-inject-option:membership_request_address_country', {
-                detail: {
-                    label: component.long_name,
-                    value: component.short_name,
-                },
-            }));
-            break;
-        }
-
-        fields.address.value = address1;
-        fields.postalCode.value = postcode;
-
-        Object.values(fields)
-            .forEach((input) => {
-                input.dispatchEvent(new Event('change'));
-            });
+    if (placeData.country && placeData.country.short_name) {
+        window.dispatchEvent(new CustomEvent('x-inject-option:membership_request_address_country', {
+            detail: {
+                label: placeData.country.long_name,
+                value: placeData.country.short_name,
+            },
+        }));
+    } else if (!fields.country.value) {
+        fields.country.value = 'FR';
     }
+
+    Object.values(fields)
+        .forEach((input) => {
+            input.dispatchEvent(new Event('change'));
+        });
 }
