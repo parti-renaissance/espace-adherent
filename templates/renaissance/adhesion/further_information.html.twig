@@ -1,6 +1,6 @@
 {% extends 'base_renaissance.html.twig' %}
 
-{% block page_title 'Informations Complementaires' %}
+{% block page_title 'Informations complémentaires' %}
 
 {% block content %}
     <main class=" re_new_ui bg-gradient-to-b from-slate-600 h-screen flex flex-col items-center md:justify-center to-slate-500">
@@ -11,10 +11,10 @@
                     <twig:Atoms:ReCard class="max-w-[500px]">
                          <form x-ref="form" action="" method="post" class="flex gap-8 flex-col w-full">
                                 <fieldset>
-                                    <twig:Atoms:ReLabel>Nouveau mot de passe</twig:Atoms:ReLabel>
+                                    <twig:Atoms:ReLabel>Informations complémentaires</twig:Atoms:ReLabel>
                                     <twig:Molecules:ReCheckboxField
                                         id="is-elu"
-                                        class="w-full "
+                                        class="w-full"
                                         x-on:change="handleIsElu($event)"
                                     >
                                         <label for="is-elu">
@@ -42,7 +42,7 @@
 
 
                                 <fieldset class="relative w-[400px] h-[100px]">
-                                    <twig:Atoms:ReLabel>Date de Naissance</twig:Atoms:ReLabel>
+                                    <twig:Atoms:ReLabel>Date de naissance</twig:Atoms:ReLabel>
                                     <fieldset class="flex gap-2.5 absolute z-10 ">
                                         <twig:Molecules:ReSelect
                                             placeholder="Jour"
