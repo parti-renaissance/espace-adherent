@@ -30,24 +30,17 @@ const Page = (props) => ({
 
     blockStep(step) {
         if ('number' === typeof step) {
-            const stepsEl = document.querySelectorAll('.re-step');
-            const parseNumberId = (id) => Number(id.split('_')[1]) - 1;
-            if (2 < step) {
-                stepsEl.filter((el) => parseNumberId(el.id) < step)
-                    .forEach((el) => {
-                        el.classList.add('re-step--disabled');
-                    });
-            } else {
-                document.querySelectorAll(`.re-step:not(#step_${step + 1})`)
-                    .forEach((el) => {
-                        el.classList.add('re-step--disabled');
-                    });
-            }
+            document.querySelectorAll(`.re-step:not(#step_${step + 1})`)
+                .forEach((el) => {
+                    el.classList.add('re-step--disabled');
+                });
         }
     },
 
     init() {
-        this.blockStep(this.stepToFill);
+        if (2 < this.stepToFill) {
+            this.blockStep(this.stepToFill);
+        }
         this.$nextTick(() => {
             reScrollTo(`step_${this.currentStep + 1}`);
         });
