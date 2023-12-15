@@ -11,6 +11,8 @@ class FinishController extends AbstractController
 {
     public function __invoke(): Response
     {
-        return $this->render('renaissance/adhesion/finish.html.twig');
+        return $this->render('renaissance/adhesion/finish.html.twig', [
+            'name' => 'John',
+        ]);
     }
 }
