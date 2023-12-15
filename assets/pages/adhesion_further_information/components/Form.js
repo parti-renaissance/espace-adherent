@@ -8,6 +8,17 @@ const Form = () => ({
     isElu: false,
     loading: false,
 
+    init() {
+        // get all fields with validate attribute
+        const fields = this.$refs.form.querySelectorAll('[validate]');
+        // set all is inside this.fieldsValid to false
+        fields.forEach((field) => {
+            this.fieldsValid[field.id] = false;
+        });
+
+        console.log(this.fieldsValid);
+    },
+
     setFieldValid(field) {
         return (value) => {
             this.fieldsValid[field] = value;

@@ -12,11 +12,11 @@
     <div class="relative flex-col flex justify-center">
         <div x-data="{ isActive: false, }"
              class="
-                re-field-frame !p-0 overflow-hidden {{ (status is defined ? ' re-field-frame--' ~ status) }}
+                re-field-frame !p-0 {{ (status is defined ? ' re-field-frame--' ~ status) }}
                 flex flex-row justify-center items-center
             "
              x-bind:class="{ [`re-field-frame--${status}`]: status !== 'default', active: isActive }">
-            
+
             {% block prefix '' %}
 
              <input {{ attributes.without('class') }}

@@ -41,17 +41,17 @@
                           x-on:keyDown="handleKeyDown($event)"
                           x-model="query"
                           x-on:input.debounce.200ms="handleInput($event);"
-                          x-bind:class="{'disabled': isValueSet, '!pr-24': isValueSet}"
+                          x-bind:class="{'disabled': isValueSet {{ blocked ? 'true' : 'false' }}, '!pr-24': isValueSet && {{ blocked ? 'true' : 'false' }}}"
                           x-on:focus="handleChangeSetValue"
                           x-bind:placeholder="placeholder"
                 ></textarea>
-                <div x-show="isValueSet" @click="handleChangeSetValue"
+                <div x-show="isValueSet && {{ blocked ? 'true' : 'false' }}" x-cloak @click="handleChangeSetValue"
                      class="absolute self-end pr-4 flex w-full h-full cursor-pointer justify-end items-center">
                     <span class="text-ui_blue-50 font-medium">Changer</span>
                 </div>
             </div>
-            <hr>
             <ul x-show="toggle && filteredOptions.length > 0" class="max-h-[200px] overflow-y-scroll">
+            <hr>
                 <template x-for="option in filteredOptions">
                     <twig:Atoms:ReInputOption
                             xSyncSelected="selected.value === option.value"
