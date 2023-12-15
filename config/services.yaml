@@ -129,7 +129,6 @@ services:
             - '../src/Kernel.php'
             - '../src/Mailchimp'
             - '../src/Monolog'
-            - '../src/Security'
 
     App\Twig\AssetRuntime:
         arguments:

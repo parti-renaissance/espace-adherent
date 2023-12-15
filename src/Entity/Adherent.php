@@ -9,7 +9,7 @@ use App\Adherent\Contribution\ContributionAmountUtils;
 use App\Adherent\LastLoginGroupEnum;
 use App\Adherent\Tag\TagEnum;
 use App\AdherentProfile\AdherentProfile;
-use App\Adhesion\MembershipRequest;
+use App\Adhesion\Request\MembershipRequest;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
 use App\Collection\CommitteeMembershipCollection;
@@ -1236,6 +1236,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getEmailAddress(): string
     {
         return $this->emailAddress;
+    }
+
+    public function setEmailAddress(string $emailAddress): void
+    {
+        $this->emailAddress = $emailAddress;
     }
 
     public function getPhone(): ?PhoneNumber
@@ -3217,6 +3222,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setExclusiveMembership(bool $exclusiveMembership): void
     {
         $this->exclusiveMembership = $exclusiveMembership;
+
+        if ($exclusiveMembership) {
+            $this->territoireProgresMembership = $this->agirMembership = $this->otherPartyMembership = false;
+        }
     }
 
     public function isTerritoireProgresMembership(): bool
@@ -3445,5 +3454,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setV2(bool $value): void
     {
         $this->v2 = $value;
+    }
+
+    public function isEligibleForMembershipPayment(): bool
+    {
+        return !$this->isOtherPartyMembership();
     }
 }

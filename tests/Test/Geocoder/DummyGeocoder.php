@@ -37,6 +37,10 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.901058,
             'longitude' => 2.318325,
         ],
+        '92 bd victor hugo, 92110 clichy, france' => [
+            'latitude' => 48.901058,
+            'longitude' => 2.318325,
+        ],
         '92 boulevard victor hugo, 92110 clichy, france' => [
             'latitude' => 48.901058,
             'longitude' => 2.318325,

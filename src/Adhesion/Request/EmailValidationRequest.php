@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Adhesion;
+namespace App\Adhesion\Request;
 
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;

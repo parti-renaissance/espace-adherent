@@ -16,17 +16,7 @@
             {% block security_block_title '' %}
         </h1>
 
-        {% for label, messages in app.flashes(['error', 'info', 'success']) %}
-            {% if messages|length %}
-                {% for message in messages %}
-                    <div class="mb-6 lg:mb-16">
-                        <twig:Atoms:ReParagraphStatus status="{{ label }}" icon="{{ label }}">
-                            {{ message|trans|raw }}
-                        </twig:Atoms:ReParagraphStatus>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endfor %}
+        {% include 'renaissance/partials/flashes.html.twig' with { wrapper_class: 'mb-6 lg:mb-16' } %}
 
         {% block security_content '' %}
 

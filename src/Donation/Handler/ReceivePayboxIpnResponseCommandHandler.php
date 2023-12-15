@@ -3,6 +3,7 @@
 namespace App\Donation\Handler;
 
 use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
+use App\Adhesion\Command\GenerateActivationCodeCommand;
 use App\Donation\Command\ReceivePayboxIpnResponseCommand;
 use App\Entity\Donation;
 use App\Mailer\MailerService;
@@ -58,11 +59,17 @@ class ReceivePayboxIpnResponseCommandHandler implements MessageHandlerInterface
 
         if ($transaction->isSuccessful()) {
             if ($donation->isMembership()) {
-                if ($adherent && !$adherent->isV2()) {
-                    if ($donation->isReAdhesion()) {
-                        $this->membershipRequestHandler->finishRenaissanceReAdhesion($adherent);
+                if ($adherent) {
+                    if ($adherent->isV2()) {
+                        if (!$adherent->getActivatedAt()) {
+                            $this->bus->dispatch(new GenerateActivationCodeCommand($adherent, true));
+                        }
                     } else {
-                        $this->membershipRequestHandler->finishRenaissanceAdhesion($adherent);
+                        if ($donation->isReAdhesion()) {
+                            $this->membershipRequestHandler->finishRenaissanceReAdhesion($adherent);
+                        } else {
+                            $this->membershipRequestHandler->finishRenaissanceAdhesion($adherent);
+                        }
                     }
                 } else {
                     $this->logger->error('Adhesion RE: adherent introuvable pour une cotisation réussie, donation id '.$donation->getId());

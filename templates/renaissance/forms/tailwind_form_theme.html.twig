@@ -1,5 +1,14 @@
 {% use "form_div_layout.html.twig" %}
 
+{% block button_widget %}
+    <twig:Molecules:ReButton
+        name="{{ full_name }}"
+        value="{{ label }}"
+        type="{{ type }}"
+        {{ ...attr }}
+    />
+{% endblock %}
+
 {% block form_label %}
     {% if label is not same as(false) %}
         <twig:Atoms:ReLabel labelHtml="{{ label_html }}" id="{{ id }}" class="{{ label_attr|default({}).class ?? '' }}">
@@ -93,8 +102,7 @@
 {% endblock %}
 
 {% block choice_widget_expanded %}
-    <div>
-        <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-8">
         {% for child in form.children %}
             <twig:Molecules:ReCheckboxField
                     name="{{ full_name }}"
@@ -109,7 +117,6 @@
                 {{ form_label(child, child.vars.label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 text-base font-normal'}}) }}
             </twig:Molecules:ReCheckboxField>
         {% endfor %}
-        </div>
     </div>
 {% endblock %}
 

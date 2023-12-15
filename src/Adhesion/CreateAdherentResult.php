@@ -2,7 +2,7 @@
 
 namespace App\Adhesion;
 
-use Ramsey\Uuid\UuidInterface;
+use App\Entity\Adherent;
 
 class CreateAdherentResult
 {
@@ -11,7 +11,7 @@ class CreateAdherentResult
     private const ALREADY_EXISTS = 'already_exists';
 
     private ?string $nextStep = null;
-    private ?UuidInterface $accountIdentifier = null;
+    private ?Adherent $adherent = null;
 
     public static function createAlreadyExists(): self
     {
@@ -45,15 +45,15 @@ class CreateAdherentResult
         return $this;
     }
 
-    public function withAccountIdentifier(UuidInterface $uuid): self
+    public function withAdherent(Adherent $adherent): self
     {
-        $this->accountIdentifier = $uuid;
+        $this->adherent = $adherent;
 
         return $this;
     }
 
-    public function getAccountIdentifier(): ?UuidInterface
+    public function getAdherent(): ?Adherent
     {
-        return $this->accountIdentifier;
+        return $this->adherent;
     }
 }

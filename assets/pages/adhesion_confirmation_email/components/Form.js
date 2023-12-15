@@ -1,16 +1,16 @@
 /** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
 
 /**
- * @param {{email: string}} props
+ * @param {{email: string, step: string}} props
  * @returns {AlpineComponent}
  */
-const Form = (props) => ({
+const Form = ({ email, step }) => ({
     fieldsValid: {
         code: false,
         email: false,
         confirmEmail: false,
     },
-    isChangeMailMode: false,
+    isChangeMailMode: 'email' === step,
     isMailChanged: false,
     loading: false,
 
@@ -20,9 +20,10 @@ const Form = (props) => ({
             return this.fieldsValid;
         };
     },
+
     handleCodeInput(e) {
         const { target } = e;
-        // replace spaces and non numeric characters by empty string
+        // replace spaces and non-numeric characters by empty string
         target.value = target.value.replace(/[^0-9]/g, '');
         if (4 === target.value.length || 4 < target.value.length) {
             target.dispatchEvent(new Event('change'));
@@ -31,12 +32,7 @@ const Form = (props) => ({
     },
 
     handleEmailInput(e) {
-        const { target } = e;
-        if (target.value !== props.email) {
-            this.isMailChanged = true;
-        } else {
-            this.isMailChanged = false;
-        }
+        this.isMailChanged = e.target.value !== email;
     },
 
     handleSubmit(e) {
@@ -58,7 +54,6 @@ const Form = (props) => ({
             ? this.fieldsValid.email && this.fieldsValid.confirmEmail
             : this.fieldsValid.code;
     },
-
 });
 
 export default Form;

@@ -2,9 +2,8 @@
 
 namespace App\Controller\Renaissance\Adhesion\V2;
 
-use App\Adhesion\MembershipRequest;
+use App\Adhesion\Request\MembershipRequest;
 use App\Controller\CanaryControllerTrait;
-use App\Controller\Renaissance\Adhesion\V2\Api\CreateAccountController;
 use App\Controller\Renaissance\Adhesion\V2\Api\PersistEmailController;
 use App\Donation\Handler\DonationRequestHandler;
 use App\Donation\Request\DonationRequest;
@@ -70,12 +69,6 @@ class AdhesionController extends AbstractController
     {
         if ($currentUser) {
             // Create membership from connected user (like a sympathizer or an adherent who wants to renew)
-            $membershipRequest = MembershipRequest::createFromAdherent($currentUser);
-        } elseif (
-            ($accountIdentifier = $request->getSession()->get(CreateAccountController::SESSION_KEY))
-            && ($currentUser = $this->adherentRepository->findOneByValidUuid($accountIdentifier))
-        ) {
-            // Create membership from freshly created account (take account_identifier from session)
             $membershipRequest = MembershipRequest::createFromAdherent($currentUser);
         } else {
             // Create empty membership request otherwise

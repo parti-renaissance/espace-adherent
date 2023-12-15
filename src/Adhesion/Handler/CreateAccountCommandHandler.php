@@ -51,11 +51,8 @@ class CreateAccountCommandHandler
         $currentUser->utmCampaign = $membershipRequest->utmCampaign;
 
         $currentUser->setExclusiveMembership($membershipRequest->exclusiveMembership);
-        if ($membershipRequest->exclusiveMembership) {
-            $currentUser->setTerritoireProgresMembership(false);
-            $currentUser->setAgirMembership(false);
-            $currentUser->setOtherPartyMembership(false);
-        } else {
+
+        if (!$membershipRequest->exclusiveMembership) {
             $currentUser->setTerritoireProgresMembership(1 === $membershipRequest->partyMembership);
             $currentUser->setAgirMembership(2 === $membershipRequest->partyMembership);
             $currentUser->setOtherPartyMembership(3 === $membershipRequest->partyMembership);
@@ -73,10 +70,10 @@ class CreateAccountCommandHandler
         $this->eventDispatcher->dispatch(new UserEvent($currentUser, $membershipRequest->allowNotifications, $membershipRequest->allowNotifications), UserEvents::USER_CREATED);
         $this->eventDispatcher->dispatch(new AdherentEvent($currentUser), AdherentEvents::REGISTRATION_COMPLETED);
 
-        if ($currentUser->isOtherPartyMembership()) {
-            return CreateAdherentResult::createActivation();
+        if (!$currentUser->isEligibleForMembershipPayment()) {
+            return CreateAdherentResult::createActivation()->withAdherent($currentUser);
         }
 
-        return CreateAdherentResult::createPayment()->withAccountIdentifier($currentUser->getUuid());
+        return CreateAdherentResult::createPayment()->withAdherent($currentUser);
     }
 }

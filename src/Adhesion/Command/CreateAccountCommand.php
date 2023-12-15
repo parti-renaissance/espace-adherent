@@ -2,7 +2,7 @@
 
 namespace App\Adhesion\Command;
 
-use App\Adhesion\MembershipRequest;
+use App\Adhesion\Request\MembershipRequest;
 use App\Entity\Adherent;
 
 class CreateAccountCommand
