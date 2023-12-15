@@ -49,7 +49,6 @@
                                         onCheck="setFieldValid('birthDay')"
                                         id="birthDay"
                                         class="w-full"
-                                        blocked="{{ false }}"
                                         options="{{ range(1, 31) | map(v => {label: v|number_format  , value:v }) }}"
                                    />
 
@@ -58,7 +57,6 @@
                                         validate="['required']"
                                         onCheck="setFieldValid('birthMonth')"
                                         id="birthMonth"
-                                        blocked="{{ false }}"
                                         class="w-full"
                                         options="{{ range(1, 12) | map(v => {label: v|number_format  , value:v }) }}"
                                     />
@@ -67,7 +65,6 @@
                                         placeholder="Année"
                                         validate="['required']"
                                         onCheck="setFieldValid('birthYear')"
-                                        blocked="{{ false }}"
                                         id="birthYear"
                                         class="w-full"
                                         options="{{ range(1900, 2021) | map(v => {label: v|number_format  , value:v }) }}"
@@ -97,7 +94,6 @@
                                                             re-textfield-select
 
                                                         ',
-                                                        blocked: false,
                                                         options: [
                                                             {label: '+33', value: '+33'},
                                                             {label: '+32', value: '+32'},

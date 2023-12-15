@@ -25,6 +25,7 @@
                 preferredOptions: window.preferredOptions_{{ id }},
                 placeholder: '{{ attr.placeholder is defined ? attr.placeholder : '' }}',
                 onQuery: {{ attr.onQuery is defined ? attr.onQuery : 'null' }},
+                blocked: {{ blocked ? 'true' : 'false' }},
              })"
              class="re-field-frame overflow-hidden !p-0 !h-auto !justify-between
                        {{ (status is defined ? ' re-field-frame--' ~ status) }}"
@@ -41,11 +42,11 @@
                           x-on:keyDown="handleKeyDown($event)"
                           x-model="query"
                           x-on:input.debounce.200ms="handleInput($event);"
-                          x-bind:class="{'disabled': isValueSet {{ blocked ? 'true' : 'false' }}, '!pr-24': isValueSet && {{ blocked ? 'true' : 'false' }}}"
+                          x-bind:class="{'disabled': isValueSet && blocked, '!pr-24': isValueSet && blocked}"
                           x-on:focus="handleChangeSetValue"
                           x-bind:placeholder="placeholder"
                 ></textarea>
-                <div x-show="isValueSet && {{ blocked ? 'true' : 'false' }}" x-cloak @click="handleChangeSetValue"
+                <div x-show="isValueSet && blocked" x-cloak @click="handleChangeSetValue"
                      class="absolute self-end pr-4 flex w-full h-full cursor-pointer justify-end items-center">
                     <span class="text-ui_blue-50 font-medium">Changer</span>
                 </div>

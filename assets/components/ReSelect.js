@@ -28,6 +28,7 @@ const filterOptions = (query, options) => options
  *  options: Option[],
  *  placeholder?:string
  *  onQuery: (query:string)=>Promise<Option[]> | null,
+ *  blocked?:boolean
  * }} props
  *
  * @returns {AlpineComponent}
@@ -52,6 +53,7 @@ const xReSelect = (props) => {
         query: '',
         placeholder,
         toggle: false,
+        blocked: props.blocked || false,
         isValueSet: !props.placeholder,
 
         init() {

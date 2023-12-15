@@ -232,6 +232,7 @@ const xValidate = (state) => ({
             const els = this.$el.querySelectorAll('input, textarea, select');
             els.forEach((el) => {
                 const value = getValue(el);
+                el.setAttribute('data-tovalidate', true);
                 if (value) {
                     this.checkField({ currentTarget: el });
                 }
