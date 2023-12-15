@@ -1,0 +1,181 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Informations complémentaires' %}
+
+{% block content %}
+    <main class=" re_new_ui bg-gradient-to-b from-slate-600 h-screen flex flex-col items-center md:justify-center to-slate-500">
+        <section class="flex flex-col justify-center items-center gap-10">
+            <div class=" justify-center items-center  flex-col  gap-8 "
+                 x-data="xFurtherInformationForm">
+                <div class="flex gap-8 flex-col p-5">
+                    <twig:Atoms:ReCard class="max-w-[500px]">
+                         <form x-ref="form" action="" method="post" class="flex gap-8 flex-col w-full">
+                                <fieldset>
+                                    <twig:Atoms:ReLabel>Informations complémentaires</twig:Atoms:ReLabel>
+                                    <twig:Molecules:ReCheckboxField
+                                        id="is-elu"
+                                        class="w-full"
+                                        x-on:change="handleIsElu($event)"
+                                    >
+                                        <label for="is-elu">
+                                            Je suis élu(e)
+                                        </label>
+                                    </twig:Molecules:ReCheckboxField>
+                                </fieldset>
+
+                                <twig:Atoms:ReParagraphStatus status="valid" x-show="isElu" x-cloak>
+                                    En déclarant vos mandats ici, nous préviendrons votre
+                                    <span class="font-medium">Président d’Assemblée départementale</span>
+                                    qui pourra, le cas échéant, vous inclure dans les élus de Renaissance.
+                                </twig:Atoms:ReParagraphStatus>
+
+                             <fieldset class="flex flex-col gap-2.5" x-show="isElu" x-cloak>
+                                 <div>
+                                     <twig:Atoms:ReLabel>Déclarations de mandats</twig:Atoms:ReLabel>
+                                     <twig:Molecules:ReCheckboxField id="1l" class="w-full">Députée européenne / Député européen</twig:Molecules:ReCheckboxField>
+                                 </div>
+                                 <twig:Molecules:ReCheckboxField id="2l" class="w-full"><label for="2l">Sénatrice/ Sénateur</label> </twig:Molecules:ReCheckboxField>
+                                 <twig:Molecules:ReCheckboxField id="3l" class="w-full">Députée / Député</twig:Molecules:ReCheckboxField>
+                                 <twig:Molecules:ReCheckboxField id="4l" class="w-full">Présidente du conseil Régional / Président du conseil Régional</twig:Molecules:ReCheckboxField>
+                                 <twig:Molecules:ReCheckboxField id="5l" class="w-full">Conseillière municipale / Conseiller municipal</twig:Molecules:ReCheckboxField>
+                             </fieldset>
+
+
+                                <fieldset class="relative w-[400px] h-[100px]">
+                                    <twig:Atoms:ReLabel>Date de naissance</twig:Atoms:ReLabel>
+                                    <fieldset class="flex gap-2.5 absolute z-10 ">
+                                        <twig:Molecules:ReSelect
+                                            placeholder="Jour"
+                                            validate="['required']"
+                                            onCheck="setFieldValid('birthDay')"
+                                            x-on:change="setDay($event.target.value)"
+                                            id="birthDay"
+                                            class="w-full"
+                                            options="{{ range(1, 31) | map(v => {label: v|number_format  , value:v }) }}"
+                                       />
+
+                                        <twig:Molecules:ReSelect
+                                            placeholder="Mois"
+                                            validate="['required']"
+                                            onCheck="setFieldValid('birthMonth')"
+                                            x-on:change="setMonth($event.target.value)"
+                                            id="birthMonth"
+                                            class="w-full"
+                                            options="{{ range(1, 12) | map(v => {label: v|number_format  , value:v }) }}"
+                                        />
+
+                                        <twig:Molecules:ReSelect
+                                            placeholder="Année"
+                                            validate="['required']"
+                                            onCheck="setFieldValid('birthYear')"
+                                            x-on:change="setYear($event.target.value)"
+                                            id="birthYear"
+                                            class="w-full"
+                                            options="{{ range(1900, 2021) | map(v => {label: v|number_format  , value:v }) }}"
+                                        />
+
+                                    </fieldset>
+                                </fieldset>
+
+                             <twig:Atoms:ReParagraphStatus status="valid" x-show="isJam" x-cloak>
+                                 <p class="pb-2.5 flex flex-col justify-center items-center">
+                                    <img src="{{ asset('images/icons/jeunes-avec-macron.png') }}" alt="Jeunes avec Macron" class="w-20">
+                                 </p>
+                                 Vous avez moins de 35 ans, vous êtes donc automatiquement adhérent des
+                                 <span class="font-medium">Jeunes avec Macron</span>, le mouvement de jeunesse de Renaissance.
+                                 <br>
+                                 <br>
+                                 <twig:Molecules:ReCheckboxField id="notifJam" class="w-full text-ui_gray-80">
+                                     <label for="notifJam">Je ne souhaite pas recevoir les communications des Jeunes avec Macron par email.</label>
+                                 </twig:Molecules:ReCheckboxField>
+                             </twig:Atoms:ReParagraphStatus>
+                             <hr>
+                                <fieldset>
+                                    <twig:Atoms:ReLabel>Numéro de téléphone</twig:Atoms:ReLabel>
+                                    <twig:Molecules:ReTextField
+                                            placeholder="Numéro de téléphone"
+                                            autocomplete="phone"
+                                            validate="['required']"
+                                            onCheck="setFieldValid('phone')"
+                                            id="number"
+                                            class="w-full"
+                                    >
+                                        {% block prefix %}
+                                            <div class="w-20 h-full border-r border-ui_gray-40">
+                                                <div class="relative w-full h-full">
+                                                    {{ component('Molecules:ReSelect', {
+                                                        id: 'phonePrefix',
+                                                        onCheck: 'setFieldValid("phonePrefix")',
+                                                        class: '
+                                                            w-full absolute !max-h-[40px] left-0 top-0  p-0 z-[9] background-transparent
+                                                            re-textfield-select
+
+                                                        ',
+                                                        options: [
+                                                            {label: '+33', value: '+33'},
+                                                            {label: '+32', value: '+32'},
+                                                            {label: '+31', value: '+31'},
+                                                            {label: '+30', value: '+30'},
+                                                            {label: '+29', value: '+29'},
+                                                            {label: '+28', value: '+28'},
+                                                            {label: '+27', value: '+27'},
+                                                            {label: '+26', value: '+26'},
+                                                            {label: '+25', value: '+25'},
+                                                            {label: '+24', value: '+24'},
+                                                            {label: '+23', value: '+23'},
+                                                            {label: '+22', value: '+22'},
+                                                            {label: '+21', value: '+21'},
+                                                            {label: '+20', value: '+20'},
+                                                            {label: '+19', value: '+19'},
+                                                            {label: '+18', value: '+18'},
+                                                            {label: '+17', value: '+17'},
+                                                            {label: '+16', value: '+16'},
+                                                            {label: '+15', value: '+15'},
+                                                            {label: '+14', value: '+14'},
+                                                            {label: '+13', value: '+13'},
+                                                            {label: '+12', value: '+12'},
+                                                            {label: '+11', value: '+11'},
+                                                            {label: '+10', value: '+10'},
+                                                            {label: '+9', value: '+9'},
+                                                            {label: '+8', value: '+8'},
+                                                            {label: '+7', value: '+7'},
+                                                            {label: '+6', value: '+6'},
+                                                            {label: '+5', value: '+5'},
+                                                            {label: '+4', value: '+4'},
+                                                            {label: '+3', value: '+3'},
+                                                            {label: '+2', value: '+2'},
+                                                            {label: '+1', value: '+1'},
+                                                        ],
+                                                    }) }}
+                                                </div>
+                                            </div>
+                                        {% endblock %}
+                                    </twig:Molecules:ReTextField>
+                                </fieldset>
+                                    <twig:Molecules:ReCheckboxField id="optin" class="w-full" >
+                                        <label for="optin">
+                                        Je souhaite recevoir les informations sur l'actualité de Renaissance et ses communications politiques par SMS et téléphone
+                                        </label>
+                                    </twig:Molecules:ReCheckboxField>
+
+                                <twig:Molecules:ReButton
+                                    color="blue"
+                                    value="Continuer"
+                                    class="w-full"
+                                    xSyncLoading="loading"
+                                    x-on:click="handleSubmit($event)"
+                                    x-bind:class="{disabled: !checkValidity()}"
+                                />
+                        </form>
+                    </twig:Atoms:ReCard>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script>
+        Bootstrap.onLoad(() => Main.runAdhesionFurtherInformationPage());
+    </script>
+{% endblock %}

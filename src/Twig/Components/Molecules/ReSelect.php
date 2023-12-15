@@ -14,4 +14,5 @@ class ReSelect
     public array $options = [];
     public ?string $label;
     public ?string $id;
+    public ?string $blocked = null;
 }

@@ -2,7 +2,7 @@
 
 <span
     x-data="xReIcon({ type: {{ type }}})"
-    {{ attributes.defaults({ class: 're-icon'  }) }}
-    :class="`re-icon-` + ({{ type }})"
+    {{ attributes.defaults({ class: 're-icon' }) }}
+    x-bind:class="`re-icon-` + ({{ type }})"
     x-html="getSvg({{ type }})"
 ></span>

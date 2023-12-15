@@ -10,6 +10,7 @@ class ReTextField
 {
     use StatusAwareTrait;
 
-    public ?string $label;
-    public ?string $id;
+    public ?string $label = null;
+    public ?string $id = null;
+    public ?string $icon = null;
 }

@@ -1,5 +1,5 @@
 .re-icon {
-  .re-icon-info, &.re-icon-info-blank, &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down {
+  .re-icon-info, &.re-icon-info-blank, &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down, &.re-icon-lock {
     @apply cursor-pointer;
     svg path {
       @apply transition-colors;
@@ -14,8 +14,8 @@
     }
   }
 
-  &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down {
-    &:hover svg path {
+  &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down, &.re-icon-lock {
+    &:hover svg path, &.hover svg path {
       @apply stroke-ui_gray-60
     }
 
