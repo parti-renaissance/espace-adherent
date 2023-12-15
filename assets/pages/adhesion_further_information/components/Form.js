@@ -6,7 +6,11 @@
 const Form = () => ({
     fieldsValid: {},
     isElu: false,
+    isJam: false,
     loading: false,
+    year: null,
+    day: null,
+    month: null,
 
     init() {
         this.$nextTick(() => {
@@ -24,6 +28,31 @@ const Form = () => ({
             this.fieldsValid[field] = value;
             return this.fieldsValid;
         };
+    },
+
+    setYear(value) {
+        this.year = value;
+        this.setIsJam();
+    },
+
+    setDay(value) {
+        this.day = value;
+        this.setIsJam();
+    },
+
+    setMonth(value) {
+        this.month = value;
+        this.setIsJam();
+    },
+
+    setIsJam() {
+        if (this.day && this.month && this.year) {
+            const date = new Date(this.year, this.month, this.day);
+            // if less than 35 years old
+            this.isJam = date.getTime() > Date.now() - 35 * 365 * 24 * 60 * 60 * 1000;
+            return;
+        }
+        this.isJam = false;
     },
 
     handleIsElu(e) {

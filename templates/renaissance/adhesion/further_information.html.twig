@@ -40,38 +40,52 @@
                                  <twig:Molecules:ReCheckboxField id="5l" class="w-full">Conseillière municipale / Conseiller municipal</twig:Molecules:ReCheckboxField>
                              </fieldset>
 
-                            <fieldset class="relative w-[400px] h-[100px]">
-                                <twig:Atoms:ReLabel>Date de Naissance</twig:Atoms:ReLabel>
-                                <fieldset class="flex gap-2.5 absolute z-10 ">
-                                    <twig:Molecules:ReSelect
-                                        placeholder="Jour"
-                                        validate="['required']"
-                                        onCheck="setFieldValid('birthDay')"
-                                        id="birthDay"
-                                        class="w-full"
-                                        options="{{ range(1, 31) | map(v => {label: v|number_format  , value:v }) }}"
-                                   />
 
-                                    <twig:Molecules:ReSelect
-                                        placeholder="Mois"
-                                        validate="['required']"
-                                        onCheck="setFieldValid('birthMonth')"
-                                        id="birthMonth"
-                                        class="w-full"
-                                        options="{{ range(1, 12) | map(v => {label: v|number_format  , value:v }) }}"
-                                    />
+                                <fieldset class="relative w-[400px] h-[100px]">
+                                    <twig:Atoms:ReLabel>Date de Naissance</twig:Atoms:ReLabel>
+                                    <fieldset class="flex gap-2.5 absolute z-10 ">
+                                        <twig:Molecules:ReSelect
+                                            placeholder="Jour"
+                                            validate="['required']"
+                                            onCheck="setFieldValid('birthDay')"
+                                            x-on:change="setDay($event.target.value)"
+                                            id="birthDay"
+                                            class="w-full"
+                                            options="{{ range(1, 31) | map(v => {label: v|number_format  , value:v }) }}"
+                                       />
 
-                                    <twig:Molecules:ReSelect
-                                        placeholder="Année"
-                                        validate="['required']"
-                                        onCheck="setFieldValid('birthYear')"
-                                        id="birthYear"
-                                        class="w-full"
-                                        options="{{ range(1900, 2021) | map(v => {label: v|number_format  , value:v }) }}"
-                                    />
+                                        <twig:Molecules:ReSelect
+                                            placeholder="Mois"
+                                            validate="['required']"
+                                            onCheck="setFieldValid('birthMonth')"
+                                            x-on:change="setMonth($event.target.value)"
+                                            id="birthMonth"
+                                            class="w-full"
+                                            options="{{ range(1, 12) | map(v => {label: v|number_format  , value:v }) }}"
+                                        />
 
+                                        <twig:Molecules:ReSelect
+                                            placeholder="Année"
+                                            validate="['required']"
+                                            onCheck="setFieldValid('birthYear')"
+                                            x-on:change="setYear($event.target.value)"
+                                            id="birthYear"
+                                            class="w-full"
+                                            options="{{ range(1900, 2021) | map(v => {label: v|number_format  , value:v }) }}"
+                                        />
+
+                                    </fieldset>
                                 </fieldset>
-                            </fieldset>
+
+                             <twig:Atoms:ReParagraphStatus status="valid" x-show="isJam" x-cloak>
+                                 Vous avez moins de 35 ans, vous êtes donc automatiquement adhérent des
+                                 <span class="font-medium">Jeunes avec Macron</span>, le mouvement de jeunesse de Renaissance.
+                                 <br>
+                                 <br>
+                                 <twig:Molecules:ReCheckboxField id="notifJam" class="w-full text-ui_gray-80">
+                                     <label for="notifJam">Je ne souhaite pas recevoir les communications des Jeunes avec Macron par email.</label>
+                                 </twig:Molecules:ReCheckboxField>
+                             </twig:Atoms:ReParagraphStatus>
                              <hr>
                                 <fieldset>
                                     <twig:Atoms:ReLabel>Numéro de téléphone</twig:Atoms:ReLabel>
