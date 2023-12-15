@@ -7,25 +7,42 @@
         validate: {{ validate is defined ? validate : '[]' }},
         onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
     })"
-    {% if id is defined %}
-    @x-validate:{{ id }}.window="setData($event.detail)"
-    {% endif %}>
+    {{ id ? "@x-validate:#{id}.window=\"setData($event.detail)\"" }}>
+
     <div class="relative flex-col flex justify-center">
-        <input
-            {{ attributes.without('class') }}
-            x-bind="validateField"
-            id="{{ id }}"
-            class="re-field-frame !ring-0 !flex  {{ (status is defined ? ' re-field-frame--' ~ status) }} {{ prefix is defined ? '!pl-20' : '' }}"
-            :class="status !== 'default' ? 're-field-frame--' + status + ' !pr-12' : ''"
-        />
-        <twig:Atoms:ReIcon x-show="status !== 'default'"
-                           xSyncType="status"
-                           class="flex absolute self-end pr-4 pointer-events-none"/>
-        {% if prefix is defined %}
-            <div class="absolute inset-y-0 left-0 flex items-center px-4 pointer-events-none border-r">
-                {{ prefix }}
-            </div>
-        {% endif %}
+        <div x-data="{ isActive: false, }"
+             class="
+                re-field-frame !p-0 overflow-hidden {{ (status is defined ? ' re-field-frame--' ~ status) }}
+                flex flex-row justify-center items-center
+            "
+             x-bind:class="{ [`re-field-frame--${status}`]: status !== 'default', active: isActive }">
+            
+            {% block prefix '' %}
+
+             <input {{ attributes.without('class') }}
+                    x-ref="input"
+                    x-bind="validateField"
+                    x-on:focus="isActive = true"
+                    x-on:blur="isActive = false"
+
+                    class="h-full w-full border-0 outline-none focus:outline-none focus:ring-0 focus:border-0 bg-transparent"
+                    id="{{ id }}" />
+
+            <twig:Atoms:ReIcon x-show="status !== 'default'"
+                               xSyncType="status"
+                               x-on:click="$refs.input.focus()"
+                               class="flex pr-4 cursor-text"/>
+            {% if icon %}
+                <twig:Atoms:ReIcon x-show="status === 'default'"
+                                   x-ref="icon"
+                                   x-cloak
+                                   type="{{ icon }}"
+                                   x-on:click="$refs.input.focus()"
+                                   class="flex pr-4 cursor-text"
+                />
+            {% endif %}
+
+        </div>
     </div>
     <twig:Atoms:ReTextStatus x-show="status !== 'default' && message"
                              value="{{ message is defined ? '' }}"
