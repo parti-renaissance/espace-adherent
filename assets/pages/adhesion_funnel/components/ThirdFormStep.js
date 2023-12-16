@@ -26,6 +26,11 @@ const ThirdForm = () => ({
     isMemberOfAnotherParty: false,
 
     init() {
+        const notExclusiveMember = document.querySelector('#membership_request_exclusiveMembership_1');
+        this.notExclusiveMember = notExclusiveMember ? notExclusiveMember.checked : false;
+
+        const isMemberOfAnotherParty = document.querySelector('#membership_request_partyMembership_2');
+        this.isMemberOfAnotherParty = isMemberOfAnotherParty ? isMemberOfAnotherParty.checked : false;
         this.$nextTick(() => {
             window.notExlusiveMember = this.getIsNotExclusiveMember.bind(this);
         });

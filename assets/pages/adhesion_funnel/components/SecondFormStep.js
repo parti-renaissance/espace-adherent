@@ -26,7 +26,7 @@ const SecondForm = () => ({
         if (!this._handleOnSubmitBase(e)) {
             const autocomplete = dom('#membership_request_address_autocomplete');
             const addressFormValidity = ['country', 'address', 'postalCode', 'cityName'].every((x) => true === this.fieldsValid[x]);
-            if (!addressFormValidity && !autocomplete.value) {
+            if (!addressFormValidity) {
                 this.showAutoComplete = false;
             }
             return;
