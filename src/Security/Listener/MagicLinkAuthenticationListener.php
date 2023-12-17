@@ -2,6 +2,7 @@
 
 namespace App\Security\Listener;
 
+use App\Adhesion\AdhesionStepEnum;
 use App\Controller\Renaissance\MagicLinkController;
 use App\Entity\Adherent;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,6 +36,8 @@ class MagicLinkAuthenticationListener implements EventSubscriberInterface
         }
 
         $adherent->enable();
+        $adherent->finishAdhesionStep(AdhesionStepEnum::ACTIVATION);
+
         $this->entityManager->flush();
     }
 }

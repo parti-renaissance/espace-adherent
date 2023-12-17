@@ -2,6 +2,8 @@
 
 {% block page_title 'Informations complémentaires' %}
 
+{% block flash_message '' %}
+
 {% block content %}
     <main class=" re_new_ui bg-gradient-to-b from-slate-600 h-screen flex flex-col items-center md:justify-center to-slate-500">
         <section class="flex flex-col justify-center items-center gap-10">
@@ -9,6 +11,8 @@
                  x-data="xFurtherInformationForm">
                 <div class="flex gap-8 flex-col p-5">
                     <twig:Atoms:ReCard class="max-w-[500px]">
+                        {% include 'renaissance/partials/flashes.html.twig' %}
+
                          <form x-ref="form" action="" method="post" class="flex gap-8 flex-col w-full">
                                 <fieldset>
                                     <twig:Atoms:ReLabel>Informations complémentaires</twig:Atoms:ReLabel>

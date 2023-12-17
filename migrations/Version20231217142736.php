@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20231216091847 extends AbstractMigration
+final class Version20231217142736 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -24,11 +24,16 @@ final class Version20231216091847 extends AbstractMigration
           adherent_activation_code
         ADD
           CONSTRAINT FK_3A628E8F25F06C53 FOREIGN KEY (adherent_id) REFERENCES adherents (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE
+          adherents
+        ADD
+          finished_adhesion_steps LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\'');
     }
 
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE adherent_activation_code DROP FOREIGN KEY FK_3A628E8F25F06C53');
         $this->addSql('DROP TABLE adherent_activation_code');
+        $this->addSql('ALTER TABLE adherents DROP finished_adhesion_steps');
     }
 }

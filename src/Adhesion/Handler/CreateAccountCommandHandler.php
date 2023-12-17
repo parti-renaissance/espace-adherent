@@ -4,6 +4,7 @@ namespace App\Adhesion\Handler;
 
 use App\Address\PostAddressFactory;
 use App\Adherent\Tag\TagEnum;
+use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Command\CreateAccountCommand;
 use App\Adhesion\CreateAdherentResult;
 use App\Membership\AdherentEvents;
@@ -60,6 +61,7 @@ class CreateAccountCommandHandler
 
         $currentUser->join();
         $currentUser->setV2(true);
+        $currentUser->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
 
         if (!$currentUser->tags) {
             $currentUser->tags = [TagEnum::SYMPATHISANT];

@@ -59,6 +59,7 @@ class ActivationCodeManager
         }
 
         $adherent->enable();
+        $adherent->finishAdhesionStep(AdhesionStepEnum::ACTIVATION);
         $code->usedAt = new \DateTime();
 
         $this->entityManager->flush();

@@ -9,6 +9,7 @@ use App\Adherent\Contribution\ContributionAmountUtils;
 use App\Adherent\LastLoginGroupEnum;
 use App\Adherent\Tag\TagEnum;
 use App\AdherentProfile\AdherentProfile;
+use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\MembershipRequest;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
@@ -871,6 +872,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private bool $v2 = false;
 
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private array $finishedAdhesionSteps = [];
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -1002,7 +1008,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->getMandates() && \count($this->getMandates()) > 0;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         $roles = ['ROLE_USER'];
 
@@ -3459,5 +3465,25 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isEligibleForMembershipPayment(): bool
     {
         return !$this->isOtherPartyMembership();
+    }
+
+    public function finishAdhesionStep(string $step): void
+    {
+        $this->finishedAdhesionSteps = array_unique(array_merge($this->finishedAdhesionSteps, [$step]));
+    }
+
+    public function isFullyCompletedAdhesion(): bool
+    {
+        return empty(array_diff(AdhesionStepEnum::all(), $this->finishedAdhesionSteps));
+    }
+
+    public function getFinishedAdhesionSteps(): array
+    {
+        return $this->finishedAdhesionSteps;
+    }
+
+    public function hasFinishedAdhesionStep(string $step): bool
+    {
+        return \in_array($step, $this->finishedAdhesionSteps, true);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controller\Renaissance\Adhesion\V2;
 
 use App\Adhesion\ActivationCodeManager;
+use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Command\GenerateActivationCodeCommand;
 use App\Adhesion\Exception\ActivationCodeExceptionInterface;
 use App\Adhesion\Request\ValidateAccountRequest;
@@ -32,7 +33,7 @@ class ActivateEmailController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if ($adherent->getActivatedAt()) {
+        if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::ACTIVATION)) {
             return $this->redirectToRoute('app_adhesion_password_create');
         }
 
