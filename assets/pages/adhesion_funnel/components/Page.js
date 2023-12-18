@@ -29,7 +29,6 @@ const Page = (props) => ({
     },
 
     blockStep(step) {
-        console.log('blockStep', step);
         if ('number' === typeof step) {
             const stepsEl = Array.from(document.querySelectorAll('.re-step'));
             const parseNumberId = (id) => Number(id.split('_')[1]) - 1;

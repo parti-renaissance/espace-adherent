@@ -22,9 +22,21 @@ const SecondForm = () => ({
         cityName: false,
     },
 
+    init() {
+        const addressInputs = document.querySelectorAll(
+            'input[id^="membership_request_address_"]:not(#membership_request_address_autocomplete)'
+        );
+        addressInputs.forEach((x) => {
+            window.addEventListener(`x-validate:${x.id}`, ({ detail }) => {
+                if ('error' === detail.status && this.showAutoComplete) {
+                    this.showAutoComplete = false;
+                }
+            });
+        });
+    },
+
     async handleOnSubmit(e) {
         if (!this._handleOnSubmitBase(e)) {
-            const autocomplete = dom('#membership_request_address_autocomplete');
             const addressFormValidity = ['country', 'address', 'postalCode', 'cityName'].every((x) => true === this.fieldsValid[x]);
             if (!addressFormValidity) {
                 this.showAutoComplete = false;
