@@ -37,6 +37,11 @@ const Page = (props) => ({
                     .forEach((el) => {
                         el.classList.add('re-step--disabled');
                     });
+            } else if (2 >= step) {
+                stepsEl.filter((el) => 2 <= parseNumberId(el.id))
+                    .forEach((el) => {
+                        el.classList.add('re-step--disabled');
+                    });
             } else {
                 document.querySelectorAll(`.re-step:not(#step_${step + 1})`)
                     .forEach((el) => {

@@ -77,7 +77,8 @@ const ThirdForm = () => ({
     },
     _handleBadRequest(data) {
         data.violations.forEach((x) => {
-            this.$dispatch(`x-validate:membership_request_${snakeToCamel(x.property)}`, {
+            const prop = x.property.startsWith('address') ? `address_${snakeToCamel(x.property)}` : snakeToCamel(x.property);
+            this.$dispatch(`x-validate:membership_request_${prop}`, {
                 status: data.status,
                 message: x.message,
             });
