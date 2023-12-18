@@ -22,6 +22,8 @@ class AdhesionController extends AbstractController
 {
     use CanaryControllerTrait;
 
+    private int $step = 0;
+
     public function __construct(
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly DonationRequestHandler $donationRequestHandler,
@@ -62,6 +64,7 @@ class AdhesionController extends AbstractController
         return $this->renderForm('renaissance/adhesion/form.html.twig', [
             'form' => $form,
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
+            'step' => $this->step,
         ]);
     }
 
@@ -70,12 +73,14 @@ class AdhesionController extends AbstractController
         if ($currentUser) {
             // Create membership from connected user (like a sympathizer or an adherent who wants to renew)
             $membershipRequest = MembershipRequest::createFromAdherent($currentUser);
+            $this->step = 3;
         } else {
             // Create empty membership request otherwise
             $membershipRequest = new MembershipRequest();
 
             if ($emailIdentifier = $request->getSession()->get(PersistEmailController::SESSION_KEY)) {
                 $membershipRequest->email = $emailIdentifier;
+                $this->step = 1;
             } else {
                 $membershipRequest->email = $request->query->get('email');
             }
