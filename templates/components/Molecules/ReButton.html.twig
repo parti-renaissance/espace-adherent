@@ -1,4 +1,4 @@
-<{{ tag }} {{ attributes.defaults({class: 're-button re-button--'~color}) }}>
+<{{ tag }} {{ attributes.defaults({class: this.defaultClass }) }}>
     {% if icon is defined %}
         <twig:Atoms:ReIcon type="{{ icon }}"/>
     {% endif %}
@@ -6,6 +6,6 @@
     {{ value }}
 
     {% if xSyncLoading is defined %}
-        <twig:Atoms:ReIcon type="loading" x-show="{{ xSyncLoading }}"/>
+        <twig:Atoms:ReIcon type="{{ this.loaderType }}" x-show="{{ xSyncLoading }}"/>
     {% endif %}
 </{{ tag }}>

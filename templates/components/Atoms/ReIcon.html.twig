@@ -3,6 +3,6 @@
 <span
     x-data="xReIcon({ type: {{ type }}})"
     {{ attributes.defaults({ class: 're-icon' }) }}
-    x-bind:class="`re-icon-` + ({{ type }})"
+    x-bind:class="getClassName({{ type }})"
     x-html="getSvg({{ type }})"
 ></span>

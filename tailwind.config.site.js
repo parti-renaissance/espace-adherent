@@ -20,6 +20,7 @@ module.exports = {
                 },
                 ui_gray: {
                     5: '#F9F9F9',
+                    10: '#F2F5F7',
                     20: '#E1E5E8',
                     30: '#D1D5DA',
                     40: '#B5BDC1',

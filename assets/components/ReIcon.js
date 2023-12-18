@@ -17,13 +17,19 @@ const xReIcon = (state) => ({
         if (type.startsWith('star')) return 'star';
         return type;
     },
+
+    getClassName(type) {
+        return `re-icon-${type.startsWith('loading') ? 'loading' : type}`;
+    },
+
     getUrl(type) {
         return `/images/icons/re-icons/re-${this.getNameIcon(type)}.svg`;
     },
     async getSvg(type) {
         if ('default' === type) return null;
         const url = this.getUrl(type);
-        return fetch(url).then((response) => response.text());
+        return fetch(url)
+            .then((response) => response.text());
     },
 
 });
