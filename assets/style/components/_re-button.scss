@@ -1,10 +1,15 @@
 .re-button {
   @apply text-base font-maax font-medium px-8 py-2 transition-colors rounded-[10px] justify-center items-center gap-2.5 inline-flex;
 
-  &--not-fill {
+  &--stroke {
     @apply border border-ui_blue-50 text-ui_blue-50 bg-white;
-    &:focus {
-      @apply outline outline-4 outline-offset-0 outline-ui_blue-20
+
+    &:hover {
+      @apply bg-ui_blue-5;
+    }
+
+    &--black {
+      @apply border-ui_gray-30 text-ui_gray-80
     }
   }
 
@@ -37,15 +42,15 @@
 
   &:focus:not(:disabled):not(.disabled) {
     @apply outline outline-4 outline-offset-0 outline-ui_blue-20;
-
-    &.re-button--not-fill {
-      @apply outline-ui_blue-20;
-    }
   }
 
   &:hover:not(:disabled):not(.disabled) {
-    &.re-button--not-fill {
+    &.re-button--stroke {
       @apply bg-ui_blue-5;
+    }
+
+    &.re-button--stroke--black {
+      @apply bg-ui_gray-5;
     }
 
     &.re-button--green {
@@ -62,6 +67,14 @@
   }
 
   &:active:not(:disabled):not(.disabled) {
+    &.re-button--stroke {
+      @apply bg-ui_blue-20;
+    }
+
+    &.re-button--stroke--black {
+      @apply bg-ui_gray-10;
+    }
+
     &.re-button--green {
       @apply bg-ui_green-70
     }
@@ -72,10 +85,6 @@
 
     &.re-button--yellow {
       @apply bg-ui_yellow-70
-    }
-
-    &.re-button--not-fill {
-      @apply bg-ui_blue-20;
     }
   }
 }
