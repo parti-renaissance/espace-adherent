@@ -3,53 +3,47 @@
 {% block page_title "Félicitation #{app.user.firstName} !" %}
 
 {% block content %}
-    <main class="re_new_ui bg-gradient-to-b from-slate-600 h-screen flex flex-col items-center md:justify-center to-slate-500">
-        <section class="flex flex-col justify-center items-center gap-10">
-            <div class="justify-center items-center flex-col gap-8">
-                <div class="flex gap-8 flex-col p-5">
-                    <twig:Atoms:ReCard class="max-w-[500px]">
-                        <twig:Atoms:ReParagraphStatus status="success" icon="success" slim="true">
-                            Votre carte d’adhérent est envoyée !
-                        </twig:Atoms:ReParagraphStatus>
+    <twig:ReStandaloneLayout class="re_new_ui">
+        <twig:Atoms:ReCard class="max-w-[500px]">
+            <twig:Atoms:ReParagraphStatus status="success" icon="success" slim="true">
+                Votre carte d’adhérent est envoyée !
+            </twig:Atoms:ReParagraphStatus>
 
-                        <twig:Atoms:ReCard class="!p-0 overflow-hidden" variant="inner">
-                            <video loop muted autoplay width="100%" poster="{{ asset('videos/adhesion/congrats/congrats.jpg') }}">
-                                <source src="{{ asset('videos/adhesion/congrats/congrats.webm') }}" type="video/webm">
-                                <source src="{{ asset('videos/adhesion/congrats/congrats.mp4') }}" type="video/mp4">
-                                <source src="{{ asset('videos/adhesion/congrats/congrats.ogv') }}" type="video/ogg">
-                            </video>
-                        </twig:Atoms:ReCard>
+            <twig:Atoms:ReCard class="!p-0 overflow-hidden" variant="inner">
+                <video loop muted autoplay width="100%" poster="{{ asset('videos/adhesion/congrats/congrats.jpg') }}">
+                    <source src="{{ asset('videos/adhesion/congrats/congrats.webm') }}" type="video/webm">
+                    <source src="{{ asset('videos/adhesion/congrats/congrats.mp4') }}" type="video/mp4">
+                    <source src="{{ asset('videos/adhesion/congrats/congrats.ogv') }}" type="video/ogg">
+                </video>
+            </twig:Atoms:ReCard>
 
-                        <h1 class="text-ui_gray-80 text-4xl">
-                            <span class="font-medium">Félicitations,</span>
-                            <span class="text-ui_blue-50 font-medium">{{ app.user.firstName }} !</span>
-                            <br>
-                            Votre espace vient d'être créé !
-                        </h1>
+            <h1 class="text-ui_gray-80 text-4xl">
+                <span class="font-medium">Félicitations,</span>
+                <span class="text-ui_blue-50 font-medium">{{ app.user.firstName }} !</span>
+                <br>
+                Votre espace vient d'être créé !
+            </h1>
 
-                        <p class="text-ui_gray-70 text-base">
-                            Vos informations sont complétées, votre adhésion est donc bien validée. Bienvenue chez Renaissance !
-                            <br>
-                            <br>
-                            Vous avez désormais accès à votre <span class="font-medium text-ui_gray-80">espace adhérent</span>.
-                            C’est ici que vous pourrez pleinement participer à la vie du parti.
-                            Des évènements locaux aux consultations nationales, cet espace sera votre meilleur outil.
-                            <br>
-                            <br>
-                            Vous êtes d'ores et déjà rattaché à un <span class="font-medium text-ui_gray-80">comité local</span> et avez la possibilité de participer dès aujourd'hui aux actions militantes.
-                            On compte sur vous !
-                        </p>
+            <p class="text-ui_gray-70 text-base">
+                Vos informations sont complétées, votre adhésion est donc bien validée. Bienvenue chez Renaissance !
+                <br>
+                <br>
+                Vous avez désormais accès à votre <span class="font-medium text-ui_gray-80">espace adhérent</span>.
+                C’est ici que vous pourrez pleinement participer à la vie du parti.
+                Des évènements locaux aux consultations nationales, cet espace sera votre meilleur outil.
+                <br>
+                <br>
+                Vous êtes d'ores et déjà rattaché à un <span class="font-medium text-ui_gray-80">comité local</span> et avez la possibilité de participer dès aujourd'hui aux actions militantes.
+                On compte sur vous !
+            </p>
 
-                        <twig:Molecules:ReButton
-                            color="blue"
-                            tag="a"
-                            href="{{ path('app_renaissance_adherent_space') }}"
-                            value="Accéder à mon espace"
-                            class="w-full"
-                        />
-                    </twig:Atoms:ReCard>
-                </div>
-            </div>
-        </section>
-    </main>
+            <twig:Molecules:ReButton
+                color="blue"
+                tag="a"
+                href="{{ path('app_renaissance_adherent_space') }}"
+                value="Accéder à mon espace"
+                class="w-full"
+            />
+        </twig:Atoms:ReCard>
+    </twig:ReStandaloneLayout>
 {% endblock %}
