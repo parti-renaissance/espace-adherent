@@ -1,7 +1,7 @@
 {% set block_alert_exists = app.user.isRenaissanceSympathizer() or not app.user.hasActiveMembership() %}
 
 <div class="adherent-banner adherent-banner-consultation bg-neutral-100 rounded-2xl mb-10 pb-10 {{ not block_alert_exists ? 'pt-10' }} text-black">
-    {% if block_alert_exists %}
+    {% if block_alert_exists and app.user.isEligibleForMembershipPayment() %}
         {% if app.user.isRenaissanceSympathizer() %}
             <div class="alert alert-danger flex px-10 w-full justify-between py-3 rounded-t-2xl">
                 <span class="flex flex-grow-1 items-center font-medium">

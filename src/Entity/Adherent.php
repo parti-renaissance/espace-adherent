@@ -207,7 +207,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @Groups({"profile_read", "phoning_campaign_call_read", "elected_representative_read"})
      *
-     * @AssertPhoneNumber(message="common.phone_number.invalid", options={"groups": {"additional_info"}})
+     * @AssertPhoneNumber(message="common.phone_number.invalid", options={"groups": {"additional_info", "adhesion:further_information"}})
      */
     private $phone;
 
@@ -221,8 +221,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @Groups({"profile_read"})
      *
-     * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"additional_info"})
-     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"additional_info"})
+     * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"additional_info", "adhesion:further_information"})
+     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"additional_info", "adhesion:further_information"})
      */
     private $birthdate;
 

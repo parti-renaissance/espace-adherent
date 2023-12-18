@@ -70,11 +70,13 @@
 
 {% block choice_widget_collapsed %}
     <twig:Molecules:ReSelect
-        name="{{ full_name }}" id="{{ id }}"
-        value="{{ value }}" {{ ...attr }}
+        id="{{ id }}"
+        name="{{ full_name }}"
+        value="{{ value }}"
         options="{{ choices }}"
         preferredOptions="{{ preferred_choices }}"
         status="default"
+        {{ ...attr }}
     />
 {% endblock %}
 
@@ -87,7 +89,7 @@
     </twig:Molecules:ReSelect>
 {% endblock %}
 
-{% block checkbox_row %}
+{% block checkbox_widget %}
     <twig:Molecules:ReCheckboxField
         name="{{ full_name }}"
         id="{{ id }}"
@@ -104,18 +106,7 @@
 {% block choice_widget_expanded %}
     <div class="flex flex-col gap-8">
         {% for child in form.children %}
-            <twig:Molecules:ReCheckboxField
-                    name="{{ full_name }}"
-                    id="{{ child.vars.id }}"
-                    value="{{ child.vars.value }}"
-                    {{ ...attr }}
-                    iconToolTip="{{ child.vars.help|trans }}"
-                    checked="{{ child.vars.checked }}"
-                    type="radio"
-                    status="default"
-            >
-                {{ form_label(child, child.vars.label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 text-base font-normal'}}) }}
-            </twig:Molecules:ReCheckboxField>
+            {{ form_widget(child) }}
         {% endfor %}
     </div>
 {% endblock %}

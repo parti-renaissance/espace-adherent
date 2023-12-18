@@ -11,7 +11,6 @@ use App\Entity\Adherent;
 use App\Form\ActivateEmailByCodeType;
 use App\Form\ConfirmActionType;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +19,6 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted('ROLE_ADHERENT')]
 class ActivateEmailController extends AbstractController
 {
     public function __construct(private readonly MessageBusInterface $bus)
@@ -30,11 +28,12 @@ class ActivateEmailController extends AbstractController
     #[Route(path: '/v2/adhesion/confirmation-email', name: 'app_adhesion_confirm_email', methods: ['GET', 'POST'])]
     public function validateAction(Request $request, ActivationCodeManager $activationCodeManager, EntityManagerInterface $entityManager): Response
     {
-        /** @var Adherent $adherent */
-        $adherent = $this->getUser();
+        if (!($adherent = $this->getUser()) instanceof Adherent) {
+            return $this->redirectToRoute('app_adhesion_index');
+        }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::ACTIVATION)) {
-            return $this->redirectToRoute('app_adhesion_password_create');
+            return $this->redirectToRoute('app_renaissance_adherent_space');
         }
 
         $validateAccountRequest = new ValidateAccountRequest();
@@ -50,7 +49,7 @@ class ActivateEmailController extends AbstractController
                     $activationCodeManager->validate((string) $validateAccountRequest->code, $adherent);
                     $this->addFlash('success', 'Votre adresse email a bien été validée !');
 
-                    return $this->redirectToRoute('app_adhesion_password_create');
+                    return $this->redirectToRoute('app_renaissance_adherent_space');
                 } catch (ActivationCodeExceptionInterface $e) {
                     $form->get('code')->addError(new FormError($e->getMessage()));
                 }

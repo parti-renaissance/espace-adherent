@@ -2,6 +2,7 @@
 
 namespace App\Controller\Renaissance\Adhesion\V2;
 
+use App\Entity\Adherent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,8 +12,10 @@ class FinishController extends AbstractController
 {
     public function __invoke(): Response
     {
-        return $this->render('renaissance/adhesion/finish.html.twig', [
-            'name' => 'John',
-        ]);
+        if (!$this->getUser() instanceof Adherent) {
+            return $this->redirectToRoute('app_adhesion_index');
+        }
+
+        return $this->render('renaissance/adhesion/finish.html.twig');
     }
 }

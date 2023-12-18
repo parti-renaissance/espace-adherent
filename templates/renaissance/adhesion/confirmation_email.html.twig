@@ -30,7 +30,7 @@
                             </p>
                         </div>
 
-                        {{ form_start(form, { attr: { novalidate: 1, 'x-ref': 'form', class: 'flex gap-8 flex-col'} }) }}
+                        {{ form_start(form, { attr: { 'x-ref': 'form', class: 'flex gap-8 flex-col'} }) }}
                             {{ form_errors(form) }}
 
                             <template x-if="!isChangeMailMode">
