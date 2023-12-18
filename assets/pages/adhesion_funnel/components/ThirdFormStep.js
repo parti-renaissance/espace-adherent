@@ -32,7 +32,7 @@ const ThirdForm = () => ({
         const isMemberOfAnotherParty = document.querySelector('#membership_request_partyMembership_2');
         this.isMemberOfAnotherParty = isMemberOfAnotherParty ? isMemberOfAnotherParty.checked : false;
         this.$nextTick(() => {
-            window.notExlusiveMember = this.getIsNotExclusiveMember.bind(this);
+            window.isExlusiveMember = this.getIsExclusiveMember.bind(this);
         });
     },
 
@@ -50,8 +50,8 @@ const ThirdForm = () => ({
         this.isMemberOfAnotherParty = '3' === value;
     },
 
-    getIsNotExclusiveMember() {
-        return this.notExclusiveMember;
+    getIsExclusiveMember() {
+        return !this.notExclusiveMember;
     },
 
     createAccount(data) {

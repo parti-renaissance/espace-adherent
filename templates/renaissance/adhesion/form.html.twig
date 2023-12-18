@@ -131,12 +131,11 @@
                                 label: "J'appartiens déjà à un parti politique :",
                                 attr:{
                                     'x-on:change':'handlePartyMembershipChange($event)',
-                                    validate:"['?:notExlusiveMember', 'required']",
+                                    validate:"['?:isExlusiveMember', 'required']",
                                     onCheck: 'setFieldValid("partyMembership")'
                                 }
                             }) }}
                         </div>
-
 
                         <hr>
 
@@ -148,13 +147,15 @@
                                 <twig:Atoms:ReLabel>En devenant sympathisant :</twig:Atoms:ReLabel>
                             </template>
 
-                            <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
-                                <twig:Atoms:ReLabel>En adhérant :</twig:Atoms:ReLabel>
-                            </template>
+                            <div>
+                                <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
+                                    <twig:Atoms:ReLabel>En adhérant :</twig:Atoms:ReLabel>
+                                </template>
 
-                            {{ form_row(form.allowNotifications, {
-                                label: 'Je souhaite recevoir les informations sur l’actualité de Renaissance et ses communications politiques par e-mail'
-                            }) }}
+                                {{ form_row(form.allowNotifications, {
+                                    label: 'Je souhaite recevoir les informations sur l’actualité de Renaissance et ses communications politiques par e-mail'
+                                }) }}
+                            </div>
                         </div>
                         {{ form_row(form.isPhysicalPerson, {
                             label: 'adhesion.physical_person.label', label_html: true,
@@ -257,7 +258,9 @@
 
                         <template x-if="value === '4'">
                             <twig:Molecules:ReCheckboxField validate="['required']" id="isStudent" status="default">
-                                Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi
+                                <label for="isStudent">
+                                    Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi
+                                </label>
                             </twig:Molecules:ReCheckboxField>
                         </template>
 

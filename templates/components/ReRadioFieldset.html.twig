@@ -1,0 +1,36 @@
+<fieldset {{ attributes.defaults({class:'flex flex-col gap-8'}) }}
+    x-data="xValidateField({ status: 'default', message: '',
+        validate: {{ validate is defined ? validate : '[]' }},
+        onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
+    })"
+    {% if id is defined %}
+    @x-validate:{{ id }}.window="setData($event.detail)"
+    {% endif %}
+    type="radio-group"
+>
+        {% if errors|length > 0 %}
+            <twig:Atoms:ReParagraphStatus
+                    type="error"
+                    icon="error"
+                    class="flex flex-col gap-2.5"
+                    x-show="status === 'default'"
+            >
+                {% for error in errors %}
+                    <span>- {{ error }}</span>
+                {% endfor %}
+            </twig:Atoms:ReParagraphStatus>
+        {% endif %}
+
+    <twig:Atoms:ReParagraphStatus
+            x-show="status !== 'default' && message"
+            value="{{ message is defined ? '' }}"
+            type="{{ status }}"
+            xSyncStatus="status"
+            x-text="message"
+    />
+
+    <div class="flex flex-col gap-8">
+        {% block content %}{% endblock %}
+    </div>
+
+</fieldset>

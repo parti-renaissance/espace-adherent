@@ -17,6 +17,8 @@
     {% endif %}
 {% endblock %}
 
+
+
 {% block form_row %}
     <div>
         {{ form_label(form) }}
@@ -89,6 +91,11 @@
     </twig:Molecules:ReSelect>
 {% endblock %}
 
+
+{% block checkbox_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
 {% block checkbox_widget %}
     <twig:Molecules:ReCheckboxField
         name="{{ full_name }}"
@@ -104,11 +111,24 @@
 {% endblock %}
 
 {% block choice_widget_expanded %}
-    <div class="flex flex-col gap-8">
+    <twig:ReRadioFieldset
+            errors="{{ errors }}"
+            name="{{ full_name }}"
+            {{ ...attr }}
+    >
         {% for child in form.children %}
-            {{ form_widget(child) }}
+            <twig:ReRadioField
+                    x-bind="validateField"
+                    name="{{ full_name }}"
+                    id="{{ child.vars.id }}"
+                    value="{{ child.vars.value }}"
+                    checked="{{ child.vars.checked }}"
+                    {{ ...child.vars.attr }}
+            >
+                {{ form_label(child, child.vars.label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 text-base font-normal'}}) }}
+            </twig:ReRadioField>
         {% endfor %}
-    </div>
+    </twig:ReRadioFieldset>
 {% endblock %}
 
 {% block autocomplete_address_row %}
