@@ -29,11 +29,17 @@ const Page = (props) => ({
     },
 
     blockStep(step) {
+        console.log('blockStep', step);
         if ('number' === typeof step) {
             const stepsEl = Array.from(document.querySelectorAll('.re-step'));
             const parseNumberId = (id) => Number(id.split('_')[1]) - 1;
             if (3 === step) {
                 stepsEl.filter((el) => parseNumberId(el.id) < step)
+                    .forEach((el) => {
+                        el.classList.add('re-step--disabled');
+                    });
+            } else if (2 >= step) {
+                stepsEl.filter((el) => 2 <= parseNumberId(el.id))
                     .forEach((el) => {
                         el.classList.add('re-step--disabled');
                     });
