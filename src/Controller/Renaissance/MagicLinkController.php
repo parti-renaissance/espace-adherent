@@ -17,6 +17,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MagicLinkController extends AbstractController
 {
+    public const ROUTE_NAME = 'app_user_connect_with_magic_link';
+
     #[Route(path: '/demander-un-lien-magique', name: 'app_user_get_magic_link', methods: ['GET', 'POST'])]
     public function getMagicLinkAction(
         Request $request,
@@ -52,7 +54,7 @@ class MagicLinkController extends AbstractController
         return $this->render('security/renaissance_user_magic_link.html.twig', ['form' => $form->createView()]);
     }
 
-    #[Route(path: '/connexion-avec-un-lien-magique', name: 'app_user_connect_with_magic_link', methods: ['GET', 'POST'])]
+    #[Route(path: '/connexion-avec-un-lien-magique', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
     public function connectViaMagicLinkAction(Request $request): Response
     {
         if ($this->getUser() instanceof Adherent) {

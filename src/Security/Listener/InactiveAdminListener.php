@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security;
+namespace App\Security\Listener;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;

@@ -13,7 +13,7 @@ class ReButton
     public ?string $color = null;
     public ?string $stroke = null;
     public string $tag = 'button';
-    public string $value = '';
+    public ?string $value = null;
     public ?string $icon;
     public ?string $xSyncLoading;
 

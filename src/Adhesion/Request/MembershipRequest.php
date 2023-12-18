@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Adhesion;
+namespace App\Adhesion\Request;
 
 use App\Address\Address;
 use App\Donation\Request\DonationRequestInterface;

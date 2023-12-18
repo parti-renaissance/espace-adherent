@@ -9,7 +9,8 @@ use App\Adherent\Contribution\ContributionAmountUtils;
 use App\Adherent\LastLoginGroupEnum;
 use App\Adherent\Tag\TagEnum;
 use App\AdherentProfile\AdherentProfile;
-use App\Adhesion\MembershipRequest;
+use App\Adhesion\AdhesionStepEnum;
+use App\Adhesion\Request\MembershipRequest;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
 use App\Collection\CommitteeMembershipCollection;
@@ -206,7 +207,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @Groups({"profile_read", "phoning_campaign_call_read", "elected_representative_read"})
      *
-     * @AssertPhoneNumber(message="common.phone_number.invalid", options={"groups": {"additional_info"}})
+     * @AssertPhoneNumber(message="common.phone_number.invalid", options={"groups": {"additional_info", "adhesion:further_information"}})
      */
     private $phone;
 
@@ -220,8 +221,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @Groups({"profile_read"})
      *
-     * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"additional_info"})
-     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"additional_info"})
+     * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"additional_info", "adhesion:further_information"})
+     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"additional_info", "adhesion:further_information"})
      */
     private $birthdate;
 
@@ -871,6 +872,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private bool $v2 = false;
 
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private array $finishedAdhesionSteps = [];
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -1002,7 +1008,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->getMandates() && \count($this->getMandates()) > 0;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         $roles = ['ROLE_USER'];
 
@@ -1236,6 +1242,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getEmailAddress(): string
     {
         return $this->emailAddress;
+    }
+
+    public function setEmailAddress(string $emailAddress): void
+    {
+        $this->emailAddress = $emailAddress;
     }
 
     public function getPhone(): ?PhoneNumber
@@ -3217,6 +3228,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setExclusiveMembership(bool $exclusiveMembership): void
     {
         $this->exclusiveMembership = $exclusiveMembership;
+
+        if ($exclusiveMembership) {
+            $this->territoireProgresMembership = $this->agirMembership = $this->otherPartyMembership = false;
+        }
     }
 
     public function isTerritoireProgresMembership(): bool
@@ -3445,5 +3460,30 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setV2(bool $value): void
     {
         $this->v2 = $value;
+    }
+
+    public function isEligibleForMembershipPayment(): bool
+    {
+        return !$this->isOtherPartyMembership();
+    }
+
+    public function finishAdhesionStep(string $step): void
+    {
+        $this->finishedAdhesionSteps = array_unique(array_merge($this->finishedAdhesionSteps, [$step]));
+    }
+
+    public function isFullyCompletedAdhesion(): bool
+    {
+        return empty(array_diff(AdhesionStepEnum::all(), $this->finishedAdhesionSteps));
+    }
+
+    public function getFinishedAdhesionSteps(): array
+    {
+        return $this->finishedAdhesionSteps;
+    }
+
+    public function hasFinishedAdhesionStep(string $step): bool
+    {
+        return \in_array($step, $this->finishedAdhesionSteps, true);
     }
 }

@@ -15,21 +15,14 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class UniqueMembershipValidator extends ConstraintValidator
 {
-    private $adherentRepository;
-    private $tokenStorage;
-    private $changeEmailTokenRepository;
-
     public function __construct(
-        AdherentRepository $adherentRepository,
-        AdherentChangeEmailTokenRepository $changeEmailTokenRepository,
-        TokenStorageInterface $tokenStorage
+        private readonly AdherentRepository $adherentRepository,
+        private readonly AdherentChangeEmailTokenRepository $changeEmailTokenRepository,
+        private readonly TokenStorageInterface $tokenStorage
     ) {
-        $this->adherentRepository = $adherentRepository;
-        $this->changeEmailTokenRepository = $changeEmailTokenRepository;
-        $this->tokenStorage = $tokenStorage;
     }
 
-    public function validate($member, Constraint $constraint)
+    public function validate($member, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueMembership) {
             throw new UnexpectedTypeException($constraint, UniqueMembership::class);

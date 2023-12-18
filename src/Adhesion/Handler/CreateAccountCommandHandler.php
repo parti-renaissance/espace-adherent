@@ -4,6 +4,7 @@ namespace App\Adhesion\Handler;
 
 use App\Address\PostAddressFactory;
 use App\Adherent\Tag\TagEnum;
+use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Command\CreateAccountCommand;
 use App\Adhesion\CreateAdherentResult;
 use App\Membership\AdherentEvents;
@@ -51,11 +52,8 @@ class CreateAccountCommandHandler
         $currentUser->utmCampaign = $membershipRequest->utmCampaign;
 
         $currentUser->setExclusiveMembership($membershipRequest->exclusiveMembership);
-        if ($membershipRequest->exclusiveMembership) {
-            $currentUser->setTerritoireProgresMembership(false);
-            $currentUser->setAgirMembership(false);
-            $currentUser->setOtherPartyMembership(false);
-        } else {
+
+        if (!$membershipRequest->exclusiveMembership) {
             $currentUser->setTerritoireProgresMembership(1 === $membershipRequest->partyMembership);
             $currentUser->setAgirMembership(2 === $membershipRequest->partyMembership);
             $currentUser->setOtherPartyMembership(3 === $membershipRequest->partyMembership);
@@ -63,6 +61,7 @@ class CreateAccountCommandHandler
 
         $currentUser->join();
         $currentUser->setV2(true);
+        $currentUser->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
 
         if (!$currentUser->tags) {
             $currentUser->tags = [TagEnum::SYMPATHISANT];
@@ -73,10 +72,10 @@ class CreateAccountCommandHandler
         $this->eventDispatcher->dispatch(new UserEvent($currentUser, $membershipRequest->allowNotifications, $membershipRequest->allowNotifications), UserEvents::USER_CREATED);
         $this->eventDispatcher->dispatch(new AdherentEvent($currentUser), AdherentEvents::REGISTRATION_COMPLETED);
 
-        if ($currentUser->isOtherPartyMembership()) {
-            return CreateAdherentResult::createActivation();
+        if (!$currentUser->isEligibleForMembershipPayment()) {
+            return CreateAdherentResult::createActivation()->withAdherent($currentUser);
         }
 
-        return CreateAdherentResult::createPayment()->withAccountIdentifier($currentUser->getUuid());
+        return CreateAdherentResult::createPayment()->withAdherent($currentUser);
     }
 }

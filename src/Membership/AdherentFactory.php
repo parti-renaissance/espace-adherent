@@ -4,7 +4,7 @@ namespace App\Membership;
 
 use App\Address\PostAddressFactory;
 use App\Adherent\Tag\TagEnum;
-use App\Adhesion\MembershipRequest;
+use App\Adhesion\Request\MembershipRequest;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;

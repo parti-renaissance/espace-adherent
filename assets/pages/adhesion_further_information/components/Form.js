@@ -3,9 +3,9 @@
 /**
  * @returns {AlpineComponent}
  */
-const Form = () => ({
+const Form = ({ isElu = false }) => ({
     fieldsValid: {},
-    isElu: false,
+    isElu,
     isJam: false,
     loading: false,
     year: null,

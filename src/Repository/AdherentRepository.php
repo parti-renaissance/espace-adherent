@@ -136,7 +136,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         return $this->createQueryBuilder('adherent')
             ->where('adherent.emailAddress = :email')
-            ->andWhere('adherent.status = :status')
+            ->andWhere('(adherent.status = :status OR adherent.activatedAt IS NULL)')
             ->setParameters([
                 'email' => $email,
                 'status' => Adherent::ENABLED,

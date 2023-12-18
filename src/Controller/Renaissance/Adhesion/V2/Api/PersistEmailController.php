@@ -3,7 +3,7 @@
 namespace App\Controller\Renaissance\Adhesion\V2\Api;
 
 use App\Adhesion\Command\PersistAdhesionEmailCommand;
-use App\Adhesion\EmailValidationRequest;
+use App\Adhesion\Request\EmailValidationRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class PersistEmailController extends AbstractController
 {
     use HandleTrait;
+
     public const SESSION_KEY = 'adhesion.email_identifier';
 
     public function __construct(

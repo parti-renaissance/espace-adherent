@@ -1,11 +1,11 @@
 {% extends 'base_renaissance.html.twig' %}
 
-{% block page_title "Félicitation #{name} !" %}
+{% block page_title "Félicitation #{app.user.firstName} !" %}
 
 {% block content %}
-    <main class=" re_new_ui bg-gradient-to-b from-slate-600 h-screen flex flex-col items-center md:justify-center to-slate-500">
+    <main class="re_new_ui bg-gradient-to-b from-slate-600 h-screen flex flex-col items-center md:justify-center to-slate-500">
         <section class="flex flex-col justify-center items-center gap-10">
-            <div class=" justify-center items-center  flex-col  gap-8 ">
+            <div class="justify-center items-center flex-col gap-8">
                 <div class="flex gap-8 flex-col p-5">
                     <twig:Atoms:ReCard class="max-w-[500px]">
                         <twig:Atoms:ReParagraphStatus status="success" icon="success" slim="true">
@@ -22,10 +22,9 @@
 
                         <h1 class="text-ui_gray-80 text-4xl">
                             <span class="font-medium">Félicitations,</span>
-                            <span class="text-ui_blue-50 font-medium">{{ name }} !</span>
+                            <span class="text-ui_blue-50 font-medium">{{ app.user.firstName }} !</span>
                             <br>
-                            Votre espace vient d'être
-                            créé !
+                            Votre espace vient d'être créé !
                         </h1>
 
                         <p class="text-ui_gray-70 text-base">
@@ -44,12 +43,11 @@
                         <twig:Molecules:ReButton
                             color="blue"
                             tag="a"
-                            href=""
+                            href="{{ path('app_renaissance_adherent_space') }}"
                             value="Accéder à mon espace"
                             class="w-full"
                         />
                     </twig:Atoms:ReCard>
-
                 </div>
             </div>
         </section>

@@ -1,5 +1,14 @@
 {% use "form_div_layout.html.twig" %}
 
+{% block button_widget %}
+    <twig:Molecules:ReButton
+        name="{{ full_name }}"
+        value="{{ label }}"
+        type="{{ type }}"
+        {{ ...attr }}
+    />
+{% endblock %}
+
 {% block form_label %}
     {% if label is not same as(false) %}
         <twig:Atoms:ReLabel labelHtml="{{ label_html }}" id="{{ id }}" class="{{ label_attr|default({}).class ?? '' }}">
@@ -7,6 +16,8 @@
         </twig:Atoms:ReLabel>
     {% endif %}
 {% endblock %}
+
+
 
 {% block form_row %}
     <div>
@@ -61,11 +72,13 @@
 
 {% block choice_widget_collapsed %}
     <twig:Molecules:ReSelect
-        name="{{ full_name }}" id="{{ id }}"
-        value="{{ value }}" {{ ...attr }}
+        id="{{ id }}"
+        name="{{ full_name }}"
+        value="{{ value }}"
         options="{{ choices }}"
         preferredOptions="{{ preferred_choices }}"
         status="default"
+        {{ ...attr }}
     />
 {% endblock %}
 
@@ -78,7 +91,12 @@
     </twig:Molecules:ReSelect>
 {% endblock %}
 
+
 {% block checkbox_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block checkbox_widget %}
     <twig:Molecules:ReCheckboxField
         name="{{ full_name }}"
         id="{{ id }}"
@@ -93,24 +111,24 @@
 {% endblock %}
 
 {% block choice_widget_expanded %}
-    <div>
-        <div class="flex flex-col gap-8">
+    <twig:ReRadioFieldset
+            errors="{{ errors }}"
+            name="{{ full_name }}"
+            {{ ...attr }}
+    >
         {% for child in form.children %}
-            <twig:Molecules:ReCheckboxField
+            <twig:ReRadioField
+                    x-bind="validateField"
                     name="{{ full_name }}"
                     id="{{ child.vars.id }}"
                     value="{{ child.vars.value }}"
-                    {{ ...attr }}
-                    iconToolTip="{{ child.vars.help|trans }}"
                     checked="{{ child.vars.checked }}"
-                    type="radio"
-                    status="default"
+                    {{ ...child.vars.attr }}
             >
                 {{ form_label(child, child.vars.label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 text-base font-normal'}}) }}
-            </twig:Molecules:ReCheckboxField>
+            </twig:ReRadioField>
         {% endfor %}
-        </div>
-    </div>
+    </twig:ReRadioFieldset>
 {% endblock %}
 
 {% block autocomplete_address_row %}
