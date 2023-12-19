@@ -68,7 +68,6 @@ class CreateAccountController extends AbstractController
 
         if ($result instanceof CreateAdherentResult) {
             $this->tokenStorage->setToken(null);
-            $request->getSession()->invalidate();
             $this->authenticationUtils->authenticateAdherent($result->getAdherent());
 
             if ($result->isNextStepPayment()) {
