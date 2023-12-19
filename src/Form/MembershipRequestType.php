@@ -54,7 +54,6 @@ class MembershipRequestType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => MembershipRequest::class,
-            'csrf_protection' => false,
         ]);
     }
 }
