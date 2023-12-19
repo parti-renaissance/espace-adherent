@@ -13,7 +13,6 @@ use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -28,7 +27,6 @@ class CreateAccountController extends AbstractController
         private readonly SerializerInterface $serializer,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly AuthenticationUtils $authenticationUtils,
-        private readonly CsrfTokenManagerInterface $csrfTokenManager,
         MessageBusInterface $messageBus,
     ) {
         $this->messageBus = $messageBus;
@@ -70,14 +68,12 @@ class CreateAccountController extends AbstractController
 
         if ($result instanceof CreateAdherentResult) {
             $this->tokenStorage->setToken(null);
-            $request->getSession()->invalidate();
             $this->authenticationUtils->authenticateAdherent($result->getAdherent());
 
             if ($result->isNextStepPayment()) {
                 return $this->json([
                     'message' => 'OK',
                     'status' => 'success',
-                    'membership-request-token' => $this->csrfTokenManager->getToken('membership_request'),
                 ], Response::HTTP_CREATED);
             }
 
