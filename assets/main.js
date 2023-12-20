@@ -72,6 +72,13 @@ class Main {
             .then((module) => module.default());
     }
 
+    runPaymentStatusPage(...args) {
+        return import('pages/payment_status').catch((error) => {
+            throw error;
+        })
+            .then((module) => module.default(...args));
+    }
+
     runAdhesionCreatePasswordPage() {
         return import('pages/adhesion_create_password').catch((error) => {
             throw error;

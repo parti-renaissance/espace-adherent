@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/paiement/{uuid}/statut', name: 'app_payment_check', methods: ['GET'], condition: 'request.isXmlHttpRequest()')]
+#[Route(path: '/paiement/{uuid}/statut', name: 'app_payment_check', methods: ['GET'])]
 class CheckStatusController extends AbstractController
 {
     public function __invoke(Request $request, Donation $donation): Response
