@@ -32,13 +32,13 @@ async function isBankHasReceivedPayment(paymentCheckUrl, retry = 0) {
                 return wait(3000)
                     .then(() => isBankHasReceivedPayment(paymentCheckUrl, retry + 1));
             }
-            if (payload.redirect_url) {
-                window.location.href = payload.redirect_url;
+            if (payload.redirect_uri) {
+                window.location.href = payload.redirect_uri;
                 return new Promise((resolve) => {
                     resolve(payload);
                 });
             }
-            throw new Error('No redirect url found');
+            throw new Error('No redirect uri found');
         })
         .catch((error) => {
             captureException(error, { extra: { paymentCheckUrl } });
