@@ -37,6 +37,10 @@
 
 {% block final_javascripts %}
     <script type="text/javascript">
-        Bootstrap.onLoad(function() { console.log('{{ uuid }}') });
+        Bootstrap.onLoad(async function() {
+            {% if result_code == '00000' %}
+                await Main.runPaymentStatusPage('{{ path('app_payment_check', { uuid: uuid }) }}');
+            {% endif %}
+        });
     </script>
 {% endblock %}
