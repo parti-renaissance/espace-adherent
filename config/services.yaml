@@ -485,3 +485,7 @@ services:
     App\Messenger\AmqpTransport\AmqpTransportFactory:
         decorates: 'messenger.transport.amqp.factory'
         arguments: ['@App\Messenger\AmqpTransport\AmqpTransportFactory.inner']
+
+    App\Adhesion\Handler\GenerateActivationCodeCommandHandler:
+        arguments:
+            $loginLinkHandler: '@security.authenticator.login_link_handler.main'
