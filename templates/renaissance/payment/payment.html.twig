@@ -3,13 +3,8 @@
 {% block title 'Paiement' %}
 
 {% block content %}
-    <header class="p-10">
-        <a href="{{ path('app_renaissance_homepage') }}">
-            <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
-        </a>
-    </header>
-
-    <section class="flex flex-col bg-white px-10 pt-8 pb-[3.25rem] w-[380px] lg:w-[500px] mx-auto items-center">
+<twig:ReStandaloneLayout class="re_new_ui ">
+    <twig:Atoms:ReCard class="max-w-[500px]">
         <div class="hidden flex-col items-center" id="app-adhesion-redirect-loader">
             <twig:Atoms:ReParagraphStatus status="info" class="w-full justify-center" slim="true">
                 Redirection en cours...
@@ -34,7 +29,8 @@
 
             <twig:Molecules:ReButton stroke value="Continuer vers ma banque" class="w-full" />
         </form>
-    </section>
+    </twig:Atoms:ReCard>
+</twig:ReStandaloneLayout>
 {% endblock %}
 
 {% block final_javascripts %}

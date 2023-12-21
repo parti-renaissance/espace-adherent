@@ -17,8 +17,37 @@ const FirstForm = () => ({
     captchaToken: null,
     nextStepId: 'step_2',
     id: 'step_1',
+    submited: false,
+    submitedValues: null,
+
+    checkIdFieldChangeAfterSubmit(field) {
+        return (e) => {
+            if (this.submited) {
+                const input = e.target;
+                if ('checkbox' === input.type ? input.checked : input.value !== this.submitedValues[field]) {
+                    this.submited = false;
+                    this.submitedValues = null;
+                    this.fieldsValid[field] = false;
+                    this.stepToFill = 10;
+                    this.stepToFill = 0;
+                }
+            }
+        };
+    },
 
     init() {
+        const emailInput = document.querySelector('#membership_request_email');
+        const consentDataCollectInput = document.querySelector('#membership_request_consentDataCollect');
+        if (emailInput.value && consentDataCollectInput.checked) {
+            this.submited = true;
+            this.submitedValues = {
+                email: emailInput.value,
+                consentDataCollect: consentDataCollectInput.checked,
+            };
+        }
+        emailInput.addEventListener('change', this.checkIdFieldChangeAfterSubmit('email'));
+        consentDataCollectInput.addEventListener('change', this.checkIdFieldChangeAfterSubmit('consentDataCollect'));
+
         this.$nextTick(() => {
             const tokenInput = dom('input[name="frc-captcha-solution"]:last-child');
 
@@ -59,6 +88,8 @@ const FirstForm = () => ({
             }
 
             if ('recaptcha' === x.property) {
+                this.captchaToken = null;
+                this.fieldsValid.captcha = false;
                 this.generalNotification = {
                     status: data.status,
                     message: x.message,
@@ -72,6 +103,7 @@ const FirstForm = () => ({
             return new Promise(() => {
             });
         }
+
         this.loading = true;
         return this._postPersistEmail()
             .then((response) => response.json())
@@ -81,6 +113,11 @@ const FirstForm = () => ({
                         this.generalNotification = null;
                         this.handleNextStep();
                         this.setStepData();
+                        this.submited = true;
+                        this.submitedValues = {
+                            email: document.querySelector('#membership_request_email').value,
+                            consentDataCollect: document.querySelector('#membership_request_consentDataCollect').checked,
+                        };
                         return;
                     }
                     if (payload.violations) {

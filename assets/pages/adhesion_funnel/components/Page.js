@@ -37,7 +37,7 @@ const Page = (props) => ({
                     .forEach((el) => {
                         el.classList.add('re-step--disabled');
                     });
-            } else if (2 >= step) {
+            } else if (2 >= step && 0 < step) {
                 stepsEl.filter((el) => 2 <= parseNumberId(el.id))
                     .forEach((el) => {
                         el.classList.add('re-step--disabled');
@@ -51,7 +51,40 @@ const Page = (props) => ({
         }
     },
 
+    retrieveLocalStorage() {
+        const data = localStorage.getItem('membership_request');
+        if (data) {
+            const parsedData = JSON.parse(data);
+            const form = document.querySelector('form[name="membership_request"]');
+            Object.entries(parsedData)
+                .forEach(([key, value]) => {
+                    form.querySelectorAll(`[name="${key}"]`)
+                        .forEach((el) => {
+                            if ('radio' === el.type) {
+                                el.checked = el.value === value;
+                            } else if ('checkbox' === el.type) {
+                                el.checked = value;
+                            } else if (!el.value) {
+                                if ('membership_request_address_autocomplete' === el.id) {
+                                    const fulladress = parsedData['membership_request[address][address]'];
+                                    if (fulladress) {
+                                        el.value = 'prefilled';
+                                        window[`options_${el.id}`] = [{
+                                            label: fulladress,
+                                            value: 'prefilled',
+                                        }];
+                                    }
+                                } else {
+                                    el.value = value;
+                                }
+                            }
+                        });
+                });
+        }
+    },
+
     init() {
+        this.retrieveLocalStorage();
         this.blockStep(this.stepToFill);
         this.$nextTick(() => {
             reScrollTo(`step_${this.currentStep + 1}`);

@@ -188,13 +188,7 @@
                         </template>
                     </twig:Atoms:ReCard>
 
-                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_4" x-data="{
-                        value: '2',
-                        price: 60,
-                        isSelected: function (value) {
-                            return this.value === value;
-                        },
-                    }">
+                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_4" x-data="FourthFormStep">
                         <header>
                             <twig:Atoms:ReLabel>Cotisation adhérent</twig:Atoms:ReLabel>
                             <div class="text-ui_gray-80 text-base">
@@ -259,7 +253,12 @@
                         {% endfor %}
 
                         <template x-if="value === '4'">
-                            <twig:Molecules:ReCheckboxField validate="['required']" id="isStudent" status="default">
+                            <twig:Molecules:ReCheckboxField
+                                validate="['required']"
+                                id="isStudent"
+                                status="default"
+                                onCheck="(b) => confirmStudent = b">
+
                                 <label for="isStudent">
                                     Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi
                                 </label>
@@ -269,11 +268,15 @@
                         {{ form_errors(form.amount) }}
                         {{ form_row(form.amount, {attr: {'x-bind:value': 'price'}}) }}
 
+
                         <twig:Molecules:ReButton
                             color="green"
                             x-text="`J'adhère pour ${price}€`"
                             value="J'adhère"
                             class="w-full"
+                            xSyncLoading="loading"
+                            x-on:click="submitForm($event)"
+                            x-bind:class="{disabled: value === '4' && !confirmStudent}"
                         />
                     </twig:Atoms:ReCard>
 

@@ -5,6 +5,7 @@ import ThirdFormStep from './components/ThirdFormStep';
 import Page from './components/Page';
 import ReContributionOpt from './components/ReContributionOpt';
 import * as GooglePlaces from './google_places';
+import FourthFormStep from './components/FourthFormStep';
 
 /**
  * @param {string} googleMapApiKey
@@ -14,6 +15,7 @@ export default (googleMapApiKey) => {
     window.Alpine.data('SecondFormStep', SecondFormStep);
     window.isFranceCountry = isFranceCountry;
     window.Alpine.data('ThirdFormStep', ThirdFormStep);
+    window.Alpine.data('FourthFormStep', FourthFormStep);
     window.Alpine.data('xReContributionOpt', ReContributionOpt);
     window.Alpine.data('xFunnelPage', Page);
 
