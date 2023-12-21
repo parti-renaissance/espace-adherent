@@ -28,6 +28,7 @@ class AdhesionFurtherInformationType extends AbstractType
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'preferred_country_choices' => [AddressInterface::FRANCE],
+                'default_region' => AddressInterface::FRANCE,
                 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
             ])
 //            ->add('acceptSmsNotification', CheckboxType::class, ['required' => false])
