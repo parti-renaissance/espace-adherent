@@ -194,6 +194,17 @@
                         isSelected: function (value) {
                             return this.value === value;
                         },
+                        confirmStudent: false,
+                        submitForm: function (event) {
+                            event.preventDefault();
+                            if (this.value === '4' && !this.confirmStudent) {
+                                document.getElementById('isStudent').scrollIntoView();
+                                document.getElementById('isStudent').focus();
+                                document.getElementById('isStudent').dispatchEvent(new Event('change'));
+                                return;
+                            }
+                            this.$refs.form.submit();
+                        }
                     }">
                         <header>
                             <twig:Atoms:ReLabel>Cotisation adhérent</twig:Atoms:ReLabel>
@@ -259,7 +270,12 @@
                         {% endfor %}
 
                         <template x-if="value === '4'">
-                            <twig:Molecules:ReCheckboxField validate="['required']" id="isStudent" status="default">
+                            <twig:Molecules:ReCheckboxField
+                                validate="['required']"
+                                id="isStudent"
+                                status="default"
+                                onCheck="(b) => confirmStudent = b">
+
                                 <label for="isStudent">
                                     Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi
                                 </label>
@@ -274,6 +290,8 @@
                             x-text="`J'adhère pour ${price}€`"
                             value="J'adhère"
                             class="w-full"
+                            x-on:click="submitForm($event)"
+                            x-bind:class="{disabled: value === '4' && !confirmStudent}"
                         />
                     </twig:Atoms:ReCard>
 
