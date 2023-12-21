@@ -3,13 +3,8 @@
 {% block title 'Statut du paiement' %}
 
 {% block content %}
-    <header class="p-10">
-        <a href="{{ path('app_renaissance_homepage') }}">
-            <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
-        </a>
-    </header>
-
-    <section class="flex flex-col gap-10 w-[500px] p-10 mx-auto items-center">
+<twig:ReStandaloneLayout class="re_new_ui ">
+    <twig:Atoms:ReCard class="max-w-[500px] items-center">
         {% if result_code == '00000' %}
             {% include 'renaissance/payment/status/_success.html.twig' %}
         {% else %}
@@ -32,7 +27,8 @@
 
             <div>{% include 'renaissance/partials/contact_info.html.twig' with { adhesion: true } %}</div>
         {% endif %}
-    </section>
+    </twig:Atoms:ReCard>
+</twig:ReStandaloneLayout>
 {% endblock %}
 
 {% block final_javascripts %}
