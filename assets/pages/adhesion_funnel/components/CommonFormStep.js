@@ -44,6 +44,13 @@ const CommonFormStep = () => ({
         });
     },
 
+    saveFormToLocalStorage() {
+        const form = document.querySelector('form[name="membership_request"]');
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        localStorage.setItem('membership_request', JSON.stringify(data));
+    },
+
     setStepData(namespaces = [], pipe = (x, y) => y) {
         const data = Array.from(
             document.querySelectorAll(
@@ -87,6 +94,7 @@ const CommonFormStep = () => ({
             .remove('re-step--disabled');
         reScrollTo(this.nextStepId);
     },
+
     checkValidity() {
         return Object.values(this.fieldsValid)
             .every((x) => x);
@@ -104,6 +112,7 @@ const CommonFormStep = () => ({
             this.triggerValidateOnAllField();
             return false;
         }
+        this.saveFormToLocalStorage();
         return true;
     },
 });

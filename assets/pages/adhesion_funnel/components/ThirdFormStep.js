@@ -69,12 +69,6 @@ const ThirdForm = () => ({
         });
     },
 
-    saveFormToLocalStorage() {
-        const form = document.querySelector('form[name="membership_request"]');
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-        localStorage.setItem('membership_request', JSON.stringify(data));
-    },
     _handleBadRequest(data) {
         data.violations.forEach((x) => {
             const prop = x.property.startsWith('address') ? `address_${snakeToCamel(x.property)}` : snakeToCamel(x.property);
@@ -96,8 +90,6 @@ const ThirdForm = () => ({
         } else {
             this.nextStepId = this.defaultNextStepId;
         }
-
-        // this.saveFormToLocalStorage();
 
         this.setStepData([], (name, value) => {
             if (['exclusiveMembership'].includes(name)) {
