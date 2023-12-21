@@ -188,24 +188,7 @@
                         </template>
                     </twig:Atoms:ReCard>
 
-                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_4" x-data="{
-                        value: '2',
-                        price: 60,
-                        isSelected: function (value) {
-                            return this.value === value;
-                        },
-                        confirmStudent: false,
-                        submitForm: function (event) {
-                            event.preventDefault();
-                            if (this.value === '4' && !this.confirmStudent) {
-                                document.getElementById('isStudent').scrollIntoView();
-                                document.getElementById('isStudent').focus();
-                                document.getElementById('isStudent').dispatchEvent(new Event('change'));
-                                return;
-                            }
-                            this.$refs.form.submit();
-                        }
-                    }">
+                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_4" x-data="FourthFormStep">
                         <header>
                             <twig:Atoms:ReLabel>Cotisation adhérent</twig:Atoms:ReLabel>
                             <div class="text-ui_gray-80 text-base">
@@ -285,11 +268,13 @@
                         {{ form_errors(form.amount) }}
                         {{ form_row(form.amount, {attr: {'x-bind:value': 'price'}}) }}
 
+
                         <twig:Molecules:ReButton
                             color="green"
                             x-text="`J'adhère pour ${price}€`"
                             value="J'adhère"
                             class="w-full"
+                            xSyncLoading="loading"
                             x-on:click="submitForm($event)"
                             x-bind:class="{disabled: value === '4' && !confirmStudent}"
                         />
