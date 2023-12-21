@@ -111,24 +111,30 @@
 {% endblock %}
 
 {% block choice_widget_expanded %}
-    <twig:ReRadioFieldset
-            errors="{{ errors }}"
-            name="{{ full_name }}"
-            {{ ...attr }}
-    >
+    {% if not multiple %}
+        <twig:ReRadioFieldset
+                errors="{{ errors }}"
+                name="{{ full_name }}"
+                {{ ...attr }}
+        >
+            {% for child in form.children %}
+                <twig:ReRadioField
+                        x-bind="validateField"
+                        name="{{ full_name }}"
+                        id="{{ child.vars.id }}"
+                        value="{{ child.vars.value }}"
+                        checked="{{ child.vars.checked }}"
+                        {{ ...child.vars.attr }}
+                >
+                    {{ form_label(child, child.vars.label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 text-base font-normal'}}) }}
+                </twig:ReRadioField>
+            {% endfor %}
+        </twig:ReRadioFieldset>
+    {% else %}
         {% for child in form.children %}
-            <twig:ReRadioField
-                    x-bind="validateField"
-                    name="{{ full_name }}"
-                    id="{{ child.vars.id }}"
-                    value="{{ child.vars.value }}"
-                    checked="{{ child.vars.checked }}"
-                    {{ ...child.vars.attr }}
-            >
-                {{ form_label(child, child.vars.label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 text-base font-normal'}}) }}
-            </twig:ReRadioField>
+            {{ form_row(child) }}
         {% endfor %}
-    </twig:ReRadioFieldset>
+    {% endif %}
 {% endblock %}
 
 {% block autocomplete_address_row %}
