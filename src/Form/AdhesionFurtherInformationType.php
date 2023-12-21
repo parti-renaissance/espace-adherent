@@ -16,15 +16,8 @@ class AdhesionFurtherInformationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('mandates', ChoiceType::class, [
+            ->add('mandates', AdherentMandateType::class, [
                 'label' => false,
-                'choices' => [
-                    'Députée européenne / Député européen' => MandateTypeEnum::DEPUTE_EUROPEEN,
-                    'Sénatrice / Sénateur' => MandateTypeEnum::SENATEUR,
-                    'Députée / Député' => MandateTypeEnum::DEPUTE,
-                    'Présidente du conseil Régional / Président du conseil Régional' => MandateTypeEnum::PRESIDENT_CONSEIL_REGIONAL,
-                    'Conseillère municipale / Conseiller municipal' => MandateTypeEnum::CONSEILLER_MUNICIPAL,
-                ],
                 'required' => false,
                 'multiple' => true,
                 'expanded' => true,
