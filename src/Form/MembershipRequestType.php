@@ -32,7 +32,7 @@ class MembershipRequestType extends AbstractType
                 'required' => true,
                 'choices' => [
                     'Je certifie sur l’honneur que je n’appartiens à aucun autre parti politique' => true,
-                    'J’appartiens déja à un parti politique' => false,
+                    'J’appartiens déjà à un parti politique' => false,
                 ],
                 'expanded' => true,
             ])
