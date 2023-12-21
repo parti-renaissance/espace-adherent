@@ -51,6 +51,10 @@ const CommonFormStep = () => ({
         localStorage.setItem('membership_request', JSON.stringify(data));
     },
 
+    clearLocalStorage() {
+        localStorage.removeItem('membership_request');
+    },
+
     setStepData(namespaces = [], pipe = (x, y) => y) {
         const data = Array.from(
             document.querySelectorAll(

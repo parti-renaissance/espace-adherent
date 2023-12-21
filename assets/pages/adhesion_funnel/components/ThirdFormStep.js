@@ -109,6 +109,7 @@ const ThirdForm = () => ({
                     if ('success' === payload.status) {
                         this.stepToFill = 3;
                         this.handleNextStep();
+                        this.clearLocalStorage();
                         return;
                     }
                     if ('redirect' === payload.status) {
