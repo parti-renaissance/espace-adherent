@@ -2,8 +2,6 @@
 
 namespace App\Controller\Renaissance\Adhesion;
 
-use App\Entity\Adherent;
-use App\Form\Renaissance\Adhesion\PersonalInfoType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
