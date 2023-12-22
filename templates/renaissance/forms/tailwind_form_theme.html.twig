@@ -162,7 +162,7 @@
             {{ form_row(form.address, { label: false, attr:{ placeholder: 'Adresse', validate:"['?:isFranceCountry','required']",  onCheck:"setFieldValid('address')" } }) }}
             {{ form_row(form.additionalAddress, { label: false, attr: { placeholder: 'Complément d\'adresse' } }) }}
 
-            <div class="flex gap-5">
+            <div class="flex flex-col xs:flex-row gap-5">
                 {{ form_row(form.postalCode, { label: false, attr: { placeholder: 'Code Postal', validate:"['?:isFranceCountry', 'required', 'max:15']", onCheck:"setFieldValid('postalCode')"} }) }}
                 {{ form_row(form.cityName, { label: false, attr: { placeholder: 'Ville', validate:"['required']",  onCheck:"setFieldValid('cityName')" } })}}
             </div>

@@ -10,7 +10,8 @@
             class="flex flex-col justify-center items-center gap-10"
             x-data="xFunnelPage({initStep: {{ step }}})"
             @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
-            <header class="w-full flex flex-col p-6 bg-white sticky top-0 z-50 items-center h-auto
+            <header class="w-full flex flex-col p-4 bg-white sticky top-0 z-50 items-center h-auto
+                            xs:p-6
                             md:p-0 md:grid md:grid-cols-4 md:h-20
                             lg:grid-cols-3">
 
@@ -32,7 +33,7 @@
                 email: '{{ form.vars.value.email }}',
             }}">
                 {{ form_start(form) }}
-                <div class="flex gap-8 flex-col p-5">
+                <div class="flex gap-8 flex-col p-0 sm:p-5">
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
                         <template x-if="generalNotification">
                             <twig:Atoms:ReParagraphStatus
@@ -85,7 +86,7 @@
                             label: 'Mes informations',
                             attr: { onCheck:"setFieldValid('gender')", validate: "['required']", autocomplete:"civility" }
                         }) }}
-                        <div class="flex-row flex gap-5">
+                        <div class="flex flex-col xs:flex-row gap-5 ">
                             {{ form_row(form.lastName, {
                                 label: false,
                                 attr: { placeholder: 'Nom', onCheck:"setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']" }
