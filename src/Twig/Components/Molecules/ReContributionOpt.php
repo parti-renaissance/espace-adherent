@@ -37,7 +37,7 @@ class ReContributionOpt
         $typeCapitalized = ucfirst($this->translateType($this->type));
         $priceString = 'custom' !== $this->type ? "de {$this->price} €" : '';
 
-        return ($this->isMember ? 'Contribution' : 'Adhésion')." {$typeCapitalized} {$priceString}";
+        return ($this->isMember ? 'Cotisation' : 'Adhésion')." {$typeCapitalized} {$priceString}";
     }
 
     public function getImage()
