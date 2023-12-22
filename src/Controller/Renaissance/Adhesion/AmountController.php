@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/adhesion/cotisation', name: 'app_renaissance_adhesion_amount', methods: ['GET|POST'])]
+#[Route(path: '/v1/adhesion/cotisation', name: 'app_renaissance_adhesion_amount', methods: ['GET|POST'])]
 class AmountController extends AbstractAdhesionController
 {
     public function __invoke(Request $request): Response

@@ -3,7 +3,6 @@
 namespace App\Controller\Renaissance\Adhesion\V2;
 
 use App\Adhesion\Request\MembershipRequest;
-use App\Controller\CanaryControllerTrait;
 use App\Controller\Renaissance\Adhesion\V2\Api\PersistEmailController;
 use App\Donation\Handler\DonationRequestHandler;
 use App\Donation\Request\DonationRequest;
@@ -17,11 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route('/v2/adhesion', name: 'app_adhesion_index', methods: ['GET', 'POST'])]
+#[Route('/adhesion', name: 'app_adhesion_index', methods: ['GET', 'POST'])]
 class AdhesionController extends AbstractController
 {
-    use CanaryControllerTrait;
-
     private int $step = 0;
 
     public function __construct(
@@ -33,8 +30,6 @@ class AdhesionController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $this->disableInProduction();
-
         if (($currentUser = $this->getUser()) instanceof Adherent && $currentUser->hasActiveMembership()) {
             return $this->redirectToRoute('app_renaissance_adherent_space');
         }

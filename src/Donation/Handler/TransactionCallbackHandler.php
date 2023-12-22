@@ -36,7 +36,7 @@ class TransactionCallbackHandler
 
         if (!$donation) {
             if ($forMembership) {
-                return new RedirectResponse($this->router->generate('app_renaissance_adhesion'));
+                return new RedirectResponse($this->router->generate('app_adhesion_index'));
             }
 
             return new RedirectResponse($this->router->generate('app_renaissance_donation'));

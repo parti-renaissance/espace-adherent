@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/adhesion/completer-mon-profil', name: 'app_renaissance_adhesion_complete_profile', methods: ['GET|POST'])]
+#[Route(path: '/v1/adhesion/completer-mon-profil', name: 'app_renaissance_adhesion_complete_profile', methods: ['GET|POST'])]
 #[IsGranted('ROLE_ADHERENT')]
 class CompleteProfileController extends AbstractController
 {

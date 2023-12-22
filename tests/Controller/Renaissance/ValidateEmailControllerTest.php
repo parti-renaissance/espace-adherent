@@ -15,7 +15,7 @@ class ValidateEmailControllerTest extends AbstractRenaissanceWebTestCase
     /** @dataProvider getEmails */
     public function testValidateEmailEndpoint(string $email, int $status): void
     {
-        $crawler = $this->client->request('GET', '/v2/adhesion');
+        $crawler = $this->client->request('GET', '/adhesion');
         $token = $crawler->filter('#email-validation-token')->attr('value');
 
         $this->client->jsonRequest('POST', '/api/validate-email', ['email' => $email, 'token' => $token]);
