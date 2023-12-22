@@ -7,13 +7,14 @@ use App\Entity\Adherent;
 use App\Entity\AdherentExpirableTokenInterface;
 use App\OAuth\App\AbstractAppUrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UrlGenerator extends AbstractAppUrlGenerator
 {
     private string $appHost;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, string $renaissanceHost)
+    public function __construct(UrlGeneratorInterface $urlGenerator, string $renaissanceHost, RequestStack $requestStack)
     {
         parent::__construct($urlGenerator);
 
@@ -30,10 +31,14 @@ class UrlGenerator extends AbstractAppUrlGenerator
         return $this->urlGenerator->generate('renaissance_site', [], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    public function generateForLoginSuccess(Adherent $adherent): string
+    public function generateForLoginSuccess(Adherent $adherent, Request $request): string
     {
         if (!$adherent->isRenaissanceUser()) {
             return $this->urlGenerator->generate('app_renaissance_adhesion');
+        }
+
+        if ($request->request->has('_target_path') && ($targetPath = $request->request->get('_target_path'))) {
+            return $targetPath;
         }
 
         return $this->urlGenerator->generate('app_renaissance_adherent_space');

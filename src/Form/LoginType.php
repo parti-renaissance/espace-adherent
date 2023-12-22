@@ -5,6 +5,7 @@ namespace App\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,6 +17,9 @@ class LoginType extends AbstractType
         $builder
             ->add($options['username_parameter'], EmailType::class)
             ->add($options['password_parameter'], PasswordType::class)
+            ->add('_target_path', HiddenType::class, [
+                'required' => false,
+            ])
         ;
 
         if ($options['remember_me']) {
