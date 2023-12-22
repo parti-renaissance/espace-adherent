@@ -4,7 +4,10 @@
  * @param {{email: string, step: string}} props
  * @returns {AlpineComponent}
  */
-const Form = ({ email, step }) => ({
+const Form = ({
+    email,
+    step,
+}) => ({
     fieldsValid: {
         code: false,
         email: false,
@@ -23,12 +26,13 @@ const Form = ({ email, step }) => ({
 
     handleCodeInput(e) {
         const { target } = e;
-        // replace spaces and non-numeric characters by empty string
-        target.value = target.value.replace(/[^0-9]/g, '');
+        // replace spaces and non-numeric characters by empty string and slice to 4 characters
+        target.value = target.value.replace(/[^0-9]/g, '')
+            .slice(0, 4);
         if (4 === target.value.length || 4 < target.value.length) {
             target.dispatchEvent(new Event('change'));
         }
-        target.dispatchEvent(new Event('input'));
+        // target.dispatchEvent(new Event('input'));
     },
 
     handleEmailInput(e) {
