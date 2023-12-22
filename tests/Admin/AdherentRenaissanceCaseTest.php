@@ -251,7 +251,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         );
 
         $this->client->getCookieJar()->clear();
-        $crawler = $this->client->request('GET', '/adhesion');
+        $crawler = $this->client->request('GET', '/v1/adhesion');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $crawler = $this->client->submit(

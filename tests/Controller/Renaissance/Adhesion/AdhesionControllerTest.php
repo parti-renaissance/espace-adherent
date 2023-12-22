@@ -33,7 +33,7 @@ class AdhesionControllerTest extends AbstractRenaissanceWebTestCase
 
     public function testRenaissanceMembershipRequest(): void
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/adhesion?utm_source=test&utm_campaign=let_CI_be_green_again');
+        $crawler = $this->client->request(Request::METHOD_GET, '/v1/adhesion?utm_source=test&utm_campaign=let_CI_be_green_again');
 
         $this->assertCount(0, $this->getEmailRepository()->findMessages(AdherentAccountActivationMessage::class));
 
@@ -60,7 +60,7 @@ class AdhesionControllerTest extends AbstractRenaissanceWebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/adhesion/cotisation', $this->client);
+        $this->assertClientIsRedirectedTo('/v1/adhesion/cotisation', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -93,7 +93,7 @@ class AdhesionControllerTest extends AbstractRenaissanceWebTestCase
         $this->client->submit($form);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/adhesion/recapitulatif', $this->client);
+        $this->assertClientIsRedirectedTo('/v1/adhesion/recapitulatif', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -120,7 +120,7 @@ class AdhesionControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->assertCount(1, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountActivationMessage::class));
 
-        $this->client->request(Request::METHOD_GET, sprintf('/adhesion/finaliser/%s/%s', $adherentRequest->getUuid(), $adherentRequest->token));
+        $this->client->request(Request::METHOD_GET, sprintf('/v1/adhesion/finaliser/%s/%s', $adherentRequest->getUuid(), $adherentRequest->token));
 
         $this->assertCount(0, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountConfirmationMessage::class));
 
@@ -186,7 +186,7 @@ class AdhesionControllerTest extends AbstractRenaissanceWebTestCase
         }
 
         $callbackUrl = $crawler->filter('td#ticketCell div.textCenter a')->attr('href');
-        $callbackUrlRegExp = 'http://'.$this->getParameter('app_renaissance_host').'/adhesion/callback/(.+)'; // token
+        $callbackUrlRegExp = 'http://'.$this->getParameter('app_renaissance_host').'/v1/adhesion/callback/(.+)'; // token
         $callbackUrlRegExp .= '\?id=(.+)_john-smith';
         $callbackUrlRegExp .= '&authorization=XXXXXX&result=00000';
         $callbackUrlRegExp .= '&transaction=(\d+)&amount=3075&date=(\d+)&time=(.+)';
@@ -223,7 +223,7 @@ class AdhesionControllerTest extends AbstractRenaissanceWebTestCase
         $this->client->submit($form);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/adhesion/fin', $this->client);
+        $this->assertClientIsRedirectedTo('/v1/adhesion/fin', $this->client);
     }
 
     protected function setUp(): void
