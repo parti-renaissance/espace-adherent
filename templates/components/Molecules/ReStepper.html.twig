@@ -12,10 +12,13 @@
                        [&:nth-child(2)>div]:border-l-0
                        [&:nth-child(2)>span]:pl-0"
                 x-on:click="handleStepClick(index)">
-                <span x-text="step" class="pl-1 w-full text-sm font-medium transition-colors md:text-base" x-bind:class="{
-                    'text-ui_gray-80': isCurrent(index),
-                    'text-ui_blue-50': isBeforeCurrent(index),
-                    'text-ui_gray-40': isAfterCurrent(index),
+                <span
+                    x-text="step"
+                    class="pl-1 w-full text-xs xs:text-sm font-medium transition-colors md:text-base"
+                    x-bind:class="{
+                        'text-ui_gray-80': isCurrent(index),
+                        'text-ui_blue-50': isBeforeCurrent(index),
+                        'text-ui_gray-40': isAfterCurrent(index),
                 }"></span>
                 <div
 
