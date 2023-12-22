@@ -1,6 +1,6 @@
 {% if object.enabled and is_granted('ROLE_ALLOWED_TO_SWITCH') %}
     <li>
-        <a href="{{ path(object.isRenaissanceUser() ? 'app_renaissance_adherent_space' : 'app_renaissance_adhesion', {'_switch_user': object.emailAddress}) }}" class="sonata-action-element" title="Impersonnifier">
+        <a href="{{ path(object.isRenaissanceUser() ? 'app_renaissance_adherent_space' : 'app_adhesion_index', {'_switch_user': object.emailAddress}) }}" class="sonata-action-element" title="Impersonnifier">
             <i class="fa fa-user-secret" aria-hidden="true"></i>
             Impersonnifier site Renaissance
         </a>
