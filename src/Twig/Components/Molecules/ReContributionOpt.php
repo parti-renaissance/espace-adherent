@@ -10,6 +10,7 @@ class ReContributionOpt
     public string $status = '';
     public int $price = 0;
     public string $type = '';
+    public ?string $isMember = null;
     public ?string $tagged = null;
     public ?string $onChange = null;
 
@@ -36,7 +37,7 @@ class ReContributionOpt
         $typeCapitalized = ucfirst($this->translateType($this->type));
         $priceString = 'custom' !== $this->type ? "de {$this->price} €" : '';
 
-        return "Adhésion {$typeCapitalized} {$priceString}";
+        return ($this->isMember ? 'Cotisation' : 'Adhésion')." {$typeCapitalized} {$priceString}";
     }
 
     public function getImage()

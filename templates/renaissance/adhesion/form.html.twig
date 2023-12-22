@@ -265,7 +265,19 @@
                         ] %}
 
                         {% for contribution in contributions %}
-                            <twig:Molecules:ReContributionOpt {{ ...contribution }} onChange="(p) => price = p" />
+                            {% if not app.user or app.user.isRenaissanceSympathizer() %}
+                                <twig:Molecules:ReContributionOpt
+                                        {{ ...contribution }}
+                                        onChange="(p) => price = p"
+                                />
+                            {% else %}
+                                <twig:Molecules:ReContributionOpt
+                                        {{ ...contribution }}
+                                        onChange="(p) => price = p"
+                                        isMember
+                                />
+                            {% endif %}
+
                         {% endfor %}
 
                         <template x-if="value === '4'">
