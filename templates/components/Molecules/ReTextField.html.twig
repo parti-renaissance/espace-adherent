@@ -10,7 +10,21 @@
     {{ id ? "@x-validate:#{id}.window=\"setData($event.detail)\"" | raw }}>
 
     <div class="relative flex-col flex justify-center">
-        <div x-data="{ isActive: false, }"
+        <div x-data="{
+                isActive: false,
+                isPassword: {{ attr.type is same as('password') ? 'true' : 'false' }},
+                handleBlur() {
+                    this.isActive = false;
+                    this.$refs.input.setAttribute('type', this.isPassword ? 'password' : this.$refs.input.getAttribute('type'))
+                },
+                handleLockClick() {
+                    if (this.$refs.input.type === 'password') {
+                        this.$refs.input.setAttribute('type', 'text')
+                    } else {
+                        this.$refs.input.setAttribute('type', 'password')
+                    }
+                }
+            }"
              class="
                 re-field-frame !p-0 {{ (status is defined ? ' re-field-frame--' ~ status) }}
                 flex flex-row justify-center items-center
@@ -23,7 +37,7 @@
                     x-ref="input"
                     x-bind="validateField"
                     x-on:focus="isActive = true"
-                    x-on:blur="isActive = false"
+                    x-on:blur="handleBlur()"
 
                     class="h-full w-full border-0 outline-none focus:outline-none focus:ring-0 focus:border-0 bg-transparent"
                     id="{{ id }}" />
@@ -41,6 +55,18 @@
                                    class="flex pr-4 cursor-text"
                 />
             {% endif %}
+
+            {% if attr.type is same as('password') %}
+                <twig:Atoms:ReIcon
+                        x-ref="icon"
+                        x-cloak
+                        type="lock"
+                        x-on:mouseup="handleLockClick()"
+                        class="flex pr-4 cursor-text"
+                />
+            {% endif %}
+
+
 
         </div>
     </div>
