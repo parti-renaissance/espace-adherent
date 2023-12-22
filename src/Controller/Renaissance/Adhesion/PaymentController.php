@@ -21,7 +21,7 @@ class PaymentController extends AbstractAdhesionController
 {
     public const AMOUNT_SESSION_KEY = 'adhesion_amount';
 
-    #[Route(path: '/adhesion/pre-paiement', name: 'app_renaissance_adhesion_pre_payment', methods: ['GET'])]
+    #[Route(path: '/v1/adhesion/pre-paiement', name: 'app_renaissance_adhesion_pre_payment', methods: ['GET'])]
     #[IsGranted('ROLE_ADHERENT')]
     public function prePaymentAction(Request $request, DonationRequestHandler $donationRequestHandler): Response
     {
@@ -49,7 +49,7 @@ class PaymentController extends AbstractAdhesionController
         ]);
     }
 
-    #[Route(path: '/adhesion/{uuid}/paiement', requirements: ['uuid' => '%pattern_uuid%'], name: 'app_renaissance_adhesion_payment', methods: ['GET'])]
+    #[Route(path: '/v1/adhesion/{uuid}/paiement', requirements: ['uuid' => '%pattern_uuid%'], name: 'app_renaissance_adhesion_payment', methods: ['GET'])]
     public function paymentAction(PayboxFormFactory $payboxFormFactory, Donation $donation): Response
     {
         $paybox = $payboxFormFactory->createPayboxFormForDonation($donation, 'app_renaissance_adhesion_callback');
@@ -60,7 +60,7 @@ class PaymentController extends AbstractAdhesionController
         ]);
     }
 
-    #[Route(path: '/adhesion/callback/{_callback_token}', name: 'app_renaissance_adhesion_callback', methods: ['GET'])]
+    #[Route(path: '/v1/adhesion/callback/{_callback_token}', name: 'app_renaissance_adhesion_callback', methods: ['GET'])]
     public function callbackAction(
         Request $request,
         TransactionCallbackHandler $transactionCallbackHandler,
@@ -69,13 +69,13 @@ class PaymentController extends AbstractAdhesionController
         $id = explode('_', $request->query->get('id'))[0];
 
         if (!$id || !Uuid::isValid($id)) {
-            return $this->redirectToRoute('app_renaissance_adhesion');
+            return $this->redirectToRoute('app_adhesion_index');
         }
 
         return $transactionCallbackHandler->handle($id, $request, $_callback_token, 'app_renaissance_adhesion_payment_result', true);
     }
 
-    #[Route(path: '/adhesion/{uuid}/{status}', requirements: ['status' => 'effectue|erreur', 'uuid' => '%pattern_uuid%'], name: 'app_renaissance_adhesion_payment_result', methods: ['GET'])]
+    #[Route(path: '/v1/adhesion/{uuid}/{status}', requirements: ['status' => 'effectue|erreur', 'uuid' => '%pattern_uuid%'], name: 'app_renaissance_adhesion_payment_result', methods: ['GET'])]
     #[ParamConverter('donation', options: ['mapping' => ['uuid' => 'uuid']])]
     public function resultAction(Request $request, Donation $donation, string $status): Response
     {

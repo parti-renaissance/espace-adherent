@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/v2/adhesion/informations-complementaires', name: 'app_adhesion_further_information', methods: ['GET', 'POST'])]
+#[Route(path: '/adhesion/informations-complementaires', name: 'app_adhesion_further_information', methods: ['GET', 'POST'])]
 class FurtherInformationController extends AbstractController
 {
     public function __invoke(Request $request, EntityManagerInterface $entityManager): Response

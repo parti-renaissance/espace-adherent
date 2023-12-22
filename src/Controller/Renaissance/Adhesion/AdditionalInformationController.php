@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/adhesion/informations-additionelles', name: 'app_renaissance_adhesion_additional_informations', methods: ['GET|POST'])]
+#[Route(path: '/v1/adhesion/informations-additionelles', name: 'app_renaissance_adhesion_additional_informations', methods: ['GET|POST'])]
 #[IsGranted('ROLE_ADHERENT')]
 class AdditionalInformationController extends AbstractController
 {

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/v2/adhesion/creation-mot-de-passe', name: 'app_adhesion_password_create', methods: ['GET', 'POST'])]
+#[Route(path: '/adhesion/creation-mot-de-passe', name: 'app_adhesion_password_create', methods: ['GET', 'POST'])]
 class CreatePasswordController extends AbstractController
 {
     public function __invoke(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response

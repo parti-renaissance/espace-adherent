@@ -25,7 +25,7 @@ class ActivateEmailController extends AbstractController
     {
     }
 
-    #[Route(path: '/v2/adhesion/confirmation-email', name: 'app_adhesion_confirm_email', methods: ['GET', 'POST'])]
+    #[Route(path: '/adhesion/confirmation-email', name: 'app_adhesion_confirm_email', methods: ['GET', 'POST'])]
     public function validateAction(Request $request, ActivationCodeManager $activationCodeManager, EntityManagerInterface $entityManager): Response
     {
         if (!($adherent = $this->getUser()) instanceof Adherent) {
@@ -72,7 +72,7 @@ class ActivateEmailController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/v2/adhesion/nouveau-code', name: 'app_adhesion_request_new_activation_code', methods: ['POST'])]
+    #[Route(path: '/adhesion/nouveau-code', name: 'app_adhesion_request_new_activation_code', methods: ['POST'])]
     public function requestNewCodeAction(Request $request): Response
     {
         /** @var Adherent $adherent */

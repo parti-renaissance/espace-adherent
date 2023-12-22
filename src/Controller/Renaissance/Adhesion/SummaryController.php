@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-#[Route(path: '/adhesion/recapitulatif', name: 'app_renaissance_adhesion_summary', methods: ['GET|POST'])]
+#[Route(path: '/v1/adhesion/recapitulatif', name: 'app_renaissance_adhesion_summary', methods: ['GET|POST'])]
 class SummaryController extends AbstractAdhesionController
 {
     public function __invoke(

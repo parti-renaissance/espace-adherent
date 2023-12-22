@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/adhesion/fin', name: 'app_renaissance_adhesion_finish', methods: ['GET'])]
+#[Route(path: '/v1/adhesion/fin', name: 'app_renaissance_adhesion_finish', methods: ['GET'])]
 class FinishController extends AbstractController
 {
     public function __invoke(): Response
