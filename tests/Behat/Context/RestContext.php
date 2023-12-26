@@ -286,7 +286,7 @@ class RestContext extends BehatchRestContext
      *
      * @return \Symfony\Component\BrowserKit\Client
      *
-     * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
+     * @throws UnsupportedDriverActionException
      */
     protected function getClient()
     {
