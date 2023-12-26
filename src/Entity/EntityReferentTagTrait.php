@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @deprecated Use {@see App\Entity\EntityZoneTrait} instead
+ * @deprecated Use {@see EntityZoneTrait} instead
  */
 trait EntityReferentTagTrait
 {
