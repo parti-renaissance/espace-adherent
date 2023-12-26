@@ -32,7 +32,7 @@
                 email: '{{ form.vars.value.email }}'
             }}">
                 {{ form_start(form) }}
-                <div class="flex gap-8 flex-col p-0 sm:p-5">
+                <div class="flex gap-8 flex-col pt-0 p-5">
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
                         <template x-if="generalNotification">
                             <twig:Atoms:ReParagraphStatus
@@ -62,14 +62,13 @@
                             {% include 'renaissance/partials/friendly-captcha.html.twig' %}
                         </div>
 
-                        <twig:Molecules:ReButton
-                            color="blue"
-                            value="J'adhère"
+                        <twig:ReButton
                             class="w-full"
                             x-bind:disabled="!checkValidity()"
                             x-on:click="handleOnSubmit($event, $dispatch)"
-                            xSyncLoading="loading"
-                        />
+                            loading="loading">
+                            J'adhère
+                        </twig:ReButton>
 
                         {% include 'renaissance/partials/adhesion_paper.html.twig' %}
 
@@ -103,13 +102,11 @@
 
                         {{ form_row(form.address, {label: 'Adresse postale'}) }}
 
-                        <twig:Molecules:ReButton
-                            color="blue"
-                            value="Suivant"
+                        <twig:ReButton
                             class="w-full"
                             x-on:click="handleOnSubmit($event, $dispatch)"
                             x-bind:disabled="!checkValidity()"
-                        />
+                        >Suivant</twig:ReButton>
                     </twig:Atoms:ReCard>
 
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3" x-data="ThirdFormStep">
@@ -166,25 +163,22 @@
 
 
                         <template x-if="isMemberOfAnotherParty && notExclusiveMember" x-cloak>
-                            <twig:Molecules:ReButton
+                            <twig:ReButton
                                 color="yellow"
-                                value="Je deviens sympathisant"
                                 class="w-full"
-                                xSyncLoading="loading"
-                                x-on:click="handleOnSubmit($event, $dispatch)"
+                                loading="x:loading"
                                 x-bind:disabled="!checkValidity()"
-                            />
+                                x-on:click="handleOnSubmit($event, $dispatch)"
+                            >Je deviens sympathisant</twig:ReButton>
                         </template>
 
                         <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
-                            <twig:Molecules:ReButton
-                                color="blue"
-                                value="J’adhère"
-                                class="w-full"
-                                xSyncLoading="loading"
-                                x-on:click="handleOnSubmit($event, $dispatch)"
-                                x-bind:disabled="!checkValidity()"
-                            />
+                            <twig:ReButton
+                                    class="w-full"
+                                    loading="x:loading"
+                                    x-on:click="handleOnSubmit($event, $dispatch)"
+                                    x-bind:disabled="!checkValidity()"
+                            >J'adhère</twig:ReButton>
                         </template>
                     </twig:Atoms:ReCard>
 
@@ -206,14 +200,14 @@
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_4" x-data="FourthFormStep">
                         <header>
                             <twig:Atoms:ReLabel>Cotisation adhérent</twig:Atoms:ReLabel>
-                            <div class="text-ui_gray-80 text-base">
+                            <div class="text-ui_gray-80">
                                 <span class="font-medium">
                                     Nous avons fait le choix d'une cotisation pour l’année civile.
                                 </span>
 
                                 <br/>
 
-                                <span class=" font-normal">
+                                <span class="font-normal">
                                     Cette contribution finance le fonctionnement des assemblées départementales et leur autonomie.
                                 </span>
                             </div>
@@ -283,15 +277,14 @@
                         {{ form_errors(form.amount) }}
                         {{ form_row(form.amount, {attr: {'x-bind:value': 'price'}}) }}
 
-                        <twig:Molecules:ReButton
+                        <twig:ReButton
                             color="green"
                             x-text="`J'adhère pour ${price}€`"
-                            value="J'adhère"
                             class="w-full"
-                            xSyncLoading="loading"
+                            loading="x:loading"
                             x-on:click="submitForm($event)"
                             x-bind:disabled="value === '4' && !confirmStudent"
-                        />
+                        >J'adhère</twig:ReButton>
                     </twig:Atoms:ReCard>
 
                     <div class="spacer h-[50vh]"></div>

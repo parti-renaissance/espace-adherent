@@ -12,12 +12,11 @@
         {% endif %}
 
         {% if retry_url %}
-            <twig:Molecules:ReButton
+            <twig:ReButton
                 class="w-full"
                 tag="a"
                 href="{{ retry_url }}"
-                value="Retourner vers la page de paiement"
-            />
+            >Retourner vers la page de paiement</twig:ReButton>
 
             <hr class="w-full"/>
 

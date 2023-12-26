@@ -4,7 +4,9 @@
     <label for="{{ attributes.all().id }}" id="{{ attributes.all().id }}_label" class="self-stretch bg-white rounded-[10px] items-center flex flex-col">
         {% if tagged %}
             <div class="absolute pointer-events-none right-[24px] -top-[20px]">
-                <twig:Molecules:ReButton icon="star-filled" value="Populaire" color="blue" />
+                <twig:ReButton icon="star-filled">
+                    Populaire
+                </twig:ReButton>
             </div>
         {% endif %}
         <div class="grow shrink  self-stretch basis-0 justify-between items-center gap-[13px] flex px-7 py-6">

@@ -1,0 +1,49 @@
+{% set baseStyles = 'text-sm sm:text-base font-medium px-8 py-2 transition-colors rounded-[10px]
+                     justify-center items-center gap-2.5 inline-flex
+                     focus:enabled:outline focus:outline-4 focus:outline-offset-0 focus:outline-ui_blue-20
+                     disabled:cursor-not-allowed' %}
+{% set variantStyle = {
+    'blue': 'bg-ui_blue-50 text-ui_blue-5
+        hover:enabled:bg-ui_blue-60
+        active:enabled:bg-ui_blue-70
+        disabled:bg_ui_blue-30 disabled:text-ui_blue-5',
+
+    'green': 'bg-ui_green-50 text-ui_green-5
+        hover:enabled:bg-ui_green-60
+        active:enabled:bg-ui_green-70
+        disabled:bg_ui_green-30 disabled:text-ui_green-5',
+
+    'yellow': 'bg-ui_yellow-50 text-ui_yellow-100
+        hover:enabled:bg-ui_yellow-45
+        active:enabled:bg-ui_yellow-70
+        disabled:bg_ui_yellow-30 disabled:text-ui_yellow-80',
+} %}
+
+{% set strokeStyle = 'border !bg-white' %}
+{% set strokeVariantStyle = {
+    'blue': 'bg-white text-ui_blue-50
+        hover:enabled:bg-ui_blue-5',
+    'black': 'bg-white border-ui_gray-30 text-ui_gray-80
+        hover:enabled:bg-ui_gray-5',
+} %}
+{% set linkStyle = 'border-0 text-ui_blue-50 bg-transparent
+                    focus:outline-none' %}
+
+{% set typeVariantStyle = stroke ? strokeVariantStyle[color] : variantStyle[color] %}
+
+{% set styles = "#{ baseStyles } #{ stroke ? strokeStyle : '' } #{ link ? linkStyle : '' } #{ typeVariantStyle }" %}
+
+
+<{{ tag }} {{ attributes.without('x-text').defaults({class: styles }) }}>
+    {% if icon is defined %}
+        <twig:Atoms:ReIcon type="{{ icon }}"/>
+    {% endif %}
+
+        <div {{ attributes.only('x-text') }}>
+            {{ block content }}
+        </div>
+
+    {% if loading %}
+        <twig:Atoms:ReIcon type="{{ this.loaderType }}" x-show="{{ loading }}"/>
+    {% endif %}
+</{{ tag }}>

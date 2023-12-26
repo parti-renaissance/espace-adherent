@@ -37,13 +37,9 @@
                 On compte sur vous !
             </p>
 
-            <twig:Molecules:ReButton
-                color="blue"
-                tag="a"
-                href="{{ path('app_renaissance_adherent_space') }}"
-                value="Accéder à mon espace"
-                class="w-full"
-            />
+            <twig:ReButton tag="a" href="{{ path('app_renaissance_adherent_space') }}" class="w-full" >
+                Accéder à mon espace
+            </twig:ReButton>
         </twig:Atoms:ReCard>
     </twig:ReStandaloneLayout>
 {% endblock %}

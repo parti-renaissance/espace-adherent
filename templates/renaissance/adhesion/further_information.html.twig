@@ -76,6 +76,7 @@
                     <span class="font-medium">Jeunes avec Macron</span>, le mouvement de jeunesse de Renaissance.
                     <br>
                     <br>
+{#                    TODO: LINK TO JS ID oldone is-elu#}
                     {{ form_row(form.refuseJamNotification, {label: "Je ne souhaite pas recevoir les communications des Jeunes avec Macron par email.", label_attr: {class: 'w-full text-ui_gray-80'}}) }}
                 </twig:Atoms:ReParagraphStatus>
                 <hr>
@@ -85,14 +86,12 @@
 
                 {{ form_row(form.subscriptionTypes) }}
 
-                <twig:Molecules:ReButton
-                    color="blue"
-                    value="Continuer"
+                <twig:ReButton
                     class="w-full"
-                    xSyncLoading="loading"
+                    loading="x:loading"
                     x-on:click="handleSubmit($event)"
                     x-bind:disabled="!checkValidity()"
-                />
+                >Continuer</twig:ReButton>
             {{ form_end(form) }}
         </twig:Atoms:ReCard>
     </twig:ReStandaloneLayout>
