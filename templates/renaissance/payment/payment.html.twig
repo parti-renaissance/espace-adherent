@@ -6,9 +6,9 @@
 <twig:ReStandaloneLayout class="re_new_ui ">
     <twig:Atoms:ReCard class="max-w-[500px]">
         <div class="hidden flex-col items-center" id="app-adhesion-redirect-loader">
-            <twig:Atoms:ReParagraphStatus status="info" class="w-full justify-center" slim="true">
+            <twig:ReParagraphStatus status="info" class="w-full justify-center" slim="true">
                 Redirection en cours...
-            </twig:Atoms:ReParagraphStatus>
+            </twig:ReParagraphStatus>
 
             <div class="relative flex h-6 w-6 items-center justify-center my-12">
                 <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></div>
@@ -27,7 +27,7 @@
                 />
             {% endfor %}
 
-            <twig:Molecules:ReButton stroke value="Continuer vers ma banque" class="w-full" />
+            <twig:ReButton stroke class="w-full">Continuer vers ma banque</twig:ReButton>
         </form>
     </twig:Atoms:ReCard>
 </twig:ReStandaloneLayout>

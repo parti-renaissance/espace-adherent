@@ -30,7 +30,7 @@
                     {% for key in [ 'success', 'error', 'warning', 'info', 'valid', 'arrow-up', 'arrow-down','arrow-left','arrow-right', 'chevron', 'star', 'star-fill', 'loading' ] %}
                         <div class="flex justify-between items-center">
                             <span>{{ key }}</span>
-                            <twig:Atoms:ReIcon type="{{ key }}"/>
+                            <twig:ReIcon name="{{ key }}"/>
                         </div>
                     {% endfor %}
                 </twig:Atoms:ReCard>
@@ -79,20 +79,21 @@
                     <h1 class="font-bold">Buttons</h1>
                     {% for key in [ 'blue', 'green', 'yellow' ] %}
                         <div>
-                            <twig:Molecules:ReButton color="{{ key }}" value="{{ key }}" class="mb-4"/>
-                            <twig:Molecules:ReButton color="{{ key }}" value="{{ key }}" disabled/>
+                            <twig:ReButton color="{{ key }}" class="mb-4">{{ key }}</twig:ReButton>
+                            <twig:ReButton color="{{ key }}" disabled>{{ key }}</twig:ReButton>
                         </div>
                     {% endfor %}
 
+                    <div>
+                        <twig:ReButton stroke class="mb-4">{{ key }}</twig:ReButton>
+                        <twig:ReButton stroke color="black" >{{ key }}</twig:ReButton>
+                    </div>
+
                     <div x-data="{loading: true}">
-                        <twig:Molecules:ReButton
-                            color="blue"
-                            value="blue with loader"
-                            class="mb-4"
-                            xSyncLoading="loading"/>
+                        <twig:ReButton class="mb-4" loading="x:loading">blue with loader</twig:ReButton>
                     </div>
                     <div>
-                        <twig:Molecules:ReButton color="blue" value="blue with star icon" icon="star" class="mb-4"/>
+                        <twig:ReButton class="mb-4" icon="star" loading="x:loading">blue with loader</twig:ReButton>
                     </div>
                 </twig:Atoms:ReCard>
 

@@ -53,6 +53,7 @@
         "exercise/htmlpurifier-bundle": "^3.1",
         "fusonic/opengraph": "^2.1",
         "gedmo/doctrine-extensions": "^3.14",
+        "gehrisandro/tailwind-merge-php": "^0.0.1",
         "geocoder-php/google-maps-provider": "^4.5",
         "geoip2/geoip2": "^3.0",
         "giggsey/libphonenumber-for-php": "^8.13",

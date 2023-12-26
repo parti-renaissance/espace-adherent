@@ -1,0 +1,8 @@
+<div x-data="{ message: '<h1>one error</h1>' }">
+
+    <twig:ReParagraphStatus status="error" icon x-html="message" />
+
+    <button x-on:click="message='<p class=\'dynamic-content\'>coucou</p>'">
+        change Status Message
+    </button>
+</div>

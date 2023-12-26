@@ -26,11 +26,11 @@
                     </twig:Molecules:ReCheckboxField>
                 </fieldset>
 
-                <twig:Atoms:ReParagraphStatus status="valid" x-show="isElu" x-cloak>
+                <twig:ReParagraphStatus status="valid" x-show="isElu" x-cloak>
                     En déclarant vos mandats ici, nous préviendrons votre
                     <span class="font-medium">Président d’Assemblée départementale</span>
                     qui pourra, le cas échéant, vous inclure dans les élus de Renaissance.
-                </twig:Atoms:ReParagraphStatus>
+                </twig:ReParagraphStatus>
 
                 <fieldset class="flex flex-col gap-2.5" x-show="isElu" x-cloak id="elu-form">
                     {{ form_row(form.mandates) }}
@@ -70,7 +70,7 @@
                     {{ form_errors(form.birthdate) }}
                 </fieldset>
 
-                <twig:Atoms:ReParagraphStatus status="valid" x-show="isJam" x-cloak>
+                <twig:ReParagraphStatus status="valid" x-show="isJam" x-cloak>
                     <p class="pb-2.5 flex flex-col justify-center items-center">
                         <img src="{{ asset('images/icons/jeunes-avec-macron.png') }}" alt="Jeunes avec Macron" class="w-20">
                     </p>
@@ -79,7 +79,7 @@
                     <br>
                     <br>
                     {{ form_row(form.refuseJamNotification, {label: "Je ne souhaite pas recevoir les communications des Jeunes avec Macron par email.", label_attr: {class: 'w-full text-ui_gray-80'}}) }}
-                </twig:Atoms:ReParagraphStatus>
+                </twig:ReParagraphStatus>
                 <hr>
                 <fieldset>
                     {{ form_row(form.phone, {label: 'Numéro de téléphone' }) }}
@@ -87,14 +87,12 @@
 
                 {{ form_row(form.subscriptionTypes) }}
 
-                <twig:Molecules:ReButton
-                    color="blue"
-                    value="Continuer"
+                <twig:ReButton
                     class="w-full"
-                    xSyncLoading="loading"
+                    loading="x:loading"
                     x-on:click="handleSubmit($event)"
                     x-bind:class="{disabled: !checkValidity()}"
-                />
+                >Continuer</twig:ReButton>
             {{ form_end(form) }}
         </twig:Atoms:ReCard>
     </twig:ReStandaloneLayout>
