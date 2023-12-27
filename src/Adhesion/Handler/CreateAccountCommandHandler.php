@@ -69,7 +69,7 @@ class CreateAccountCommandHandler
 
         $this->entityManager->flush();
 
-        $this->eventDispatcher->dispatch(new UserEvent($currentUser, $membershipRequest->allowNotifications, $membershipRequest->allowNotifications), UserEvents::USER_CREATED);
+        $this->eventDispatcher->dispatch(new UserEvent($currentUser, $membershipRequest->allowNotifications), UserEvents::USER_CREATED);
         $this->eventDispatcher->dispatch(new AdherentEvent($currentUser), AdherentEvents::REGISTRATION_COMPLETED);
 
         if (!$currentUser->isEligibleForMembershipPayment()) {

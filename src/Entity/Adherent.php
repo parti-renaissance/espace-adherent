@@ -208,6 +208,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Groups({"profile_read", "phoning_campaign_call_read", "elected_representative_read"})
      *
      * @AssertPhoneNumber(message="common.phone_number.invalid", options={"groups": {"additional_info", "adhesion:further_information"}})
+     * @Assert\Expression("not this.hasSmsSubscriptionType() or this.getPhone()", message="Vous avez accepté de recevoir des informations du parti par SMS ou téléphone, cependant, vous n'avez pas précisé votre numéro de téléphone.", groups={"adhesion:further_information"})
      */
     private $phone;
 
@@ -1416,6 +1417,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasSubscriptionType(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
     }
 
+    public function hasJAMSubscriptionType(): bool
+    {
+        return $this->hasSubscriptionType(SubscriptionTypeEnum::JAM_EMAIL);
+    }
+
     /**
      * Activates the Adherent account with the provided activation token.
      *
@@ -2164,7 +2170,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
     }
 
-    public function setSubscriptionTypes(array $subscriptionTypes)
+    public function setSubscriptionTypes(array $subscriptionTypes): void
     {
         $this->subscriptionTypes = new ArrayCollection();
         foreach ($subscriptionTypes as $type) {

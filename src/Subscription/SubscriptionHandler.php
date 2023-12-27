@@ -93,10 +93,16 @@ class SubscriptionHandler
     private function getEmailDefaultTypes(Adherent $adherent): array
     {
         if ($adherent->isAdherent()) {
-            return SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES;
+            $types = SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES;
+        } else {
+            $types = SubscriptionTypeEnum::USER_TYPES;
         }
 
-        return SubscriptionTypeEnum::USER_TYPES;
+        if ($adherent->getAge() && $adherent->getAge() < 35) {
+            $types[] = SubscriptionTypeEnum::JAM_EMAIL;
+        }
+
+        return $types;
     }
 
     public function handleUpdateSubscription(Adherent $adherent, array $newSubscriptionCodes): void

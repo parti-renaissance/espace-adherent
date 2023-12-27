@@ -15,7 +15,7 @@ class BirthdateType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $years = range((int) date('Y') - 15, (int) date('Y') - 120);
+        $years = range((int) date('Y') - 15, (int) date('Y') - 113);
 
         $resolver->setDefaults([
             'widget' => 'choice',

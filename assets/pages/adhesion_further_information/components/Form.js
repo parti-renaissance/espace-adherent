@@ -3,10 +3,10 @@
 /**
  * @returns {AlpineComponent}
  */
-const Form = ({ isElu = false }) => ({
+const Form = ({ isJam = false, isElu = false }) => ({
     fieldsValid: {},
     isElu,
-    isJam: false,
+    isJam,
     loading: false,
     year: null,
     day: null,

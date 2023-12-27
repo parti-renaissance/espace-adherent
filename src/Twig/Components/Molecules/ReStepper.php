@@ -1,7 +1,5 @@
 <?php
 
-/** @see templates/components/molecules/ReStepper.html.twig */
-
 namespace App\Twig\Components\Molecules;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
