@@ -1,0 +1,2 @@
+ux_components_test:
+    resource: Tests\App\Controller\TestUXComponentController
