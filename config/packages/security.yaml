@@ -620,7 +620,6 @@ security:
                 lifetime: 600
                 failure_path: app_renaissance_login
                 default_target_path: app_renaissance_adherent_space
-                success_handler: App\Security\MagicLinkAuthenticationSuccessHandler
 
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }

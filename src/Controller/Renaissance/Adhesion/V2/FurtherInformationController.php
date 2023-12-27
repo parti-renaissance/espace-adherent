@@ -16,6 +16,7 @@ class FurtherInformationController extends AbstractController
 {
     public function __invoke(Request $request, EntityManagerInterface $entityManager): Response
     {
+        /** @var Adherent $adherent */
         if (!($adherent = $this->getUser()) instanceof Adherent) {
             return $this->redirectToRoute('app_adhesion_index');
         }

@@ -10,29 +10,23 @@ class ReContributionOpt
     public string $status = '';
     public int $price = 0;
     public string $type = '';
-    public ?string $isMember = null;
+    public ?bool $isMember = null;
     public ?string $tagged = null;
     public ?string $onChange = null;
 
-    private function translateType($type)
+    private function translateType($type): string
     {
-        switch ($type) {
-            case 'simple':
-                return 'simple';
-            case 'support':
-                return 'soutien';
-            case 'classic':
-                return 'classique';
-            case 'united':
-                return 'solidaire';
-            case 'custom':
-                return 'personnalisée';
-            default:
-                return '';
-        }
+        return match ($type) {
+            'simple' => 'simple',
+            'support' => 'soutien',
+            'classic' => 'classique',
+            'united' => 'solidaire',
+            'custom' => 'personnalisée',
+            default => '',
+        };
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         $typeCapitalized = ucfirst($this->translateType($this->type));
         $priceString = 'custom' !== $this->type ? "de {$this->price} €" : '';
@@ -40,7 +34,7 @@ class ReContributionOpt
         return ($this->isMember ? 'Cotisation' : 'Adhésion')." {$typeCapitalized} {$priceString}";
     }
 
-    public function getImage()
+    public function getImage(): array
     {
         return [
             'href' => "/images/icons/re-badges/badge-{$this->type}.svg",
@@ -48,12 +42,12 @@ class ReContributionOpt
         ];
     }
 
-    public function getPrintedPosters()
+    public function getPrintedPosters(): float
     {
         return $this->price * 5;
     }
 
-    public function getPriceAfterTaxDeduction()
+    public function getPriceAfterTaxDeduction(): string
     {
         $priceAfterTaxDeduction = $this->price * 0.34;
 
@@ -65,7 +59,7 @@ class ReContributionOpt
         return $this->onChange ?? 'null';
     }
 
-    public function getJsProps()
+    public function getJsProps(): string
     {
         return "{
             price: {$this->price},

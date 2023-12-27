@@ -17,8 +17,6 @@
     {% endif %}
 {% endblock %}
 
-
-
 {% block form_row %}
     <div>
         {{ form_label(form) }}
@@ -93,7 +91,10 @@
 
 
 {% block checkbox_row %}
-    {{ form_widget(form) }}
+    <div>
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
 {% endblock %}
 
 {% block checkbox_widget %}

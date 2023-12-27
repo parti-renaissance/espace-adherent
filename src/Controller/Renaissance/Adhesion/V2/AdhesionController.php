@@ -9,7 +9,6 @@ use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use App\Form\MembershipRequestType;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
-use App\Repository\AdherentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +23,6 @@ class AdhesionController extends AbstractController
     public function __construct(
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly DonationRequestHandler $donationRequestHandler,
-        private readonly AdherentRepository $adherentRepository,
     ) {
     }
 

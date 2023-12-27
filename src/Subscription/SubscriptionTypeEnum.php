@@ -12,6 +12,7 @@ final class SubscriptionTypeEnum extends Enum
     public const MOVEMENT_INFORMATION_EMAIL = 'subscribed_emails_movement_information';
     public const WEEKLY_LETTER_EMAIL = 'subscribed_emails_weekly_letter';
 
+    public const JAM_EMAIL = 'jam_email';
     public const DEPUTY_EMAIL = 'deputy_email';
     public const REFERENT_EMAIL = 'subscribed_emails_referents';
     public const CANDIDATE_EMAIL = 'candidate_email';
