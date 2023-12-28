@@ -6,6 +6,7 @@ module.exports = {
     content: [
         'templates/**/*.html.twig',
         'assets/**/*.js',
+        './src/Twig/Components/**/*.php',
     ],
     theme: {
         container: {
