@@ -24,7 +24,7 @@
                 ></div>
 
             </div>
-            <twig:Atoms:ReIcon xSyncType="isSelected('{{ attributes.all().value }}') ? 'valid' : 'arrow-right'" class="justify-center items-center flex" />
+            <twig:ReIcon name="x:isSelected('{{ attributes.all().value }}') ? 'valid' : 'arrow-right'" class="justify-center items-center flex" />
         </div>
         <template x-if="isSelected('{{ attributes.all().value }}')">
             <div class="w-full">

@@ -3,23 +3,7 @@
 {% block page_title 'Test UX component' %}
 
 {% block content %}
-    <h1>UX Component : {{ component }}</h1>
 
-    {% if component == 'ReCard' %}
-        <twig:Atoms:ReCard {{ ...component_attributes }}>
-            {{ component_attributes.content|raw }}
-        </twig:Atoms:ReCard>
-    {% elseif component == 'ReButton' %}
-        <twig:Molecules:ReButton {{ ...component_attributes }}>
-            {{ component_attributes.content|raw }}
-        </twig:Molecules:ReButton>
-    {% endif %}
+    {% include partial_path %}
 
-{#    {{ component(component, attributes) }}#}
-
-{#    {% component component %}#}
-{#        {% if component_content is not same as(null) %}#}
-{#            {% block content %}{{ component_content|raw }}{% endblock %}#}
-{#        {% endif %}#}
-{#    {% endcomponent %}#}
 {% endblock %}

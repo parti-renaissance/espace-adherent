@@ -9,9 +9,9 @@
 {% block security_content %}
     {{ form_start(form, { action: path('app_user_login_check', { app_domain: app_renaissance_host }), attr: { class: 'grid grid-cols-1 gap-6 lg:gap-4 w-[280px] lg:w-[420px]' } }) }}
         {% if error %}
-            <twig:Atoms:ReParagraphStatus status="error" icon="error">
+            <twig:ReParagraphStatus status="error" icon>
                 {{- error.messageKey|trans(error.messageData)|raw -}}
-            </twig:Atoms:ReParagraphStatus>
+            </twig:ReParagraphStatus>
         {% endif %}
 
         {{ form_row(form._login_email, {

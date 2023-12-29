@@ -35,9 +35,9 @@
                 <div class="flex gap-8 flex-col pt-0 p-5">
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
                         <template x-if="generalNotification">
-                            <twig:Atoms:ReParagraphStatus
+                            <twig:ReParagraphStatus
                                     x-bind:data-status="generalNotification.status"
-                                    xSyncStatus="generalNotification.status"
+                                    status="x:generalNotification.status"
                                     x-text="generalNotification.message"/>
                         </template>
 
@@ -64,9 +64,10 @@
 
                         <twig:ReButton
                             class="w-full"
-                            x-bind:disabled="!checkValidity()"
+                            disabled="x:!checkValidity()"
+                            onDisabledClick="_handleOnSubmitBase($event)"
                             x-on:click="handleOnSubmit($event, $dispatch)"
-                            loading="loading">
+                            loading="x:loading">
                             J'adhère
                         </twig:ReButton>
 
@@ -74,9 +75,9 @@
 
                         <hr/>
 
-                        <twig:Atoms:ReParagraphStatus status="info">
+                        <twig:ReParagraphStatus status="info">
                             {% include 'renaissance/partials/contact_info.html.twig' with { adhesion: true } %}
-                        </twig:Atoms:ReParagraphStatus>
+                        </twig:ReParagraphStatus>
                     </twig:Atoms:ReCard>
 
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep">
@@ -105,15 +106,16 @@
                         <twig:ReButton
                             class="w-full"
                             x-on:click="handleOnSubmit($event, $dispatch)"
-                            x-bind:disabled="!checkValidity()"
+                            onDisabledClick="checkFormValidity($event)"
+                            disabled="x:!checkValidity()"
                         >Suivant</twig:ReButton>
                     </twig:Atoms:ReCard>
 
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3" x-data="ThirdFormStep">
                         <template x-if="generalNotification">
-                            <twig:Atoms:ReParagraphStatus
+                            <twig:ReParagraphStatus
                                     x-bind:data-status="generalNotification.status"
-                                    xSyncStatus="generalNotification.status"
+                                    status="x:generalNotification.status"
                                     x-text="generalNotification.message"/>
                         </template>
                              {{ form_row(form.exclusiveMembership, {
@@ -140,9 +142,9 @@
 
                         <div class="flex flex-col gap-8">
                             <template x-if="isMemberOfAnotherParty && notExclusiveMember" x-cloak>
-                                <twig:Atoms:ReParagraphStatus status="warning" icon="warning">
+                                <twig:ReParagraphStatus status="warning" icon="warning">
                                     Si vous êtes déjà affilié à un parti politique, il vous est impossible de devenir membre de Renaissance. Toutefois, il vous est tout à fait possible d'exprimer votre soutien en tant que sympathisant.
-                                </twig:Atoms:ReParagraphStatus>
+                                </twig:ReParagraphStatus>
                                 <twig:Atoms:ReLabel>En devenant sympathisant :</twig:Atoms:ReLabel>
                             </template>
 
@@ -167,7 +169,8 @@
                                 color="yellow"
                                 class="w-full"
                                 loading="x:loading"
-                                x-bind:disabled="!checkValidity()"
+                                disabled="x:!checkValidity()"
+                                onDisabledClick="_handleOnSubmitBase($event)"
                                 x-on:click="handleOnSubmit($event, $dispatch)"
                             >Je deviens sympathisant</twig:ReButton>
                         </template>
@@ -282,8 +285,9 @@
                             x-text="`J'adhère pour ${price}€`"
                             class="w-full"
                             loading="x:loading"
+                            disabled="x:value === '4' && !confirmStudent"
+                            onDisabledClick="checkFormValidity($event)"
                             x-on:click="submitForm($event)"
-                            x-bind:disabled="value === '4' && !confirmStudent"
                         >J'adhère</twig:ReButton>
                     </twig:Atoms:ReCard>
 

@@ -30,7 +30,7 @@
                     {% for key in [ 'success', 'error', 'warning', 'info', 'valid', 'arrow-up', 'arrow-down','arrow-left','arrow-right', 'chevron', 'star', 'star-fill', 'loading' ] %}
                         <div class="flex justify-between items-center">
                             <span>{{ key }}</span>
-                            <twig:Atoms:ReIcon type="{{ key }}"/>
+                            <twig:ReIcon name="{{ key }}"/>
                         </div>
                     {% endfor %}
                 </twig:Atoms:ReCard>
@@ -90,10 +90,10 @@
                     </div>
 
                     <div x-data="{loading: true}">
-                        <twig:ReButton class="mb-4" loading="loading">blue with loader</twig:ReButton>
+                        <twig:ReButton class="mb-4" loading="x:loading">blue with loader</twig:ReButton>
                     </div>
                     <div>
-                        <twig:ReButton class="mb-4" icon="star" loading="loading">blue with loader</twig:ReButton>
+                        <twig:ReButton class="mb-4" icon="star" loading="x:loading">blue with loader</twig:ReButton>
                     </div>
                 </twig:Atoms:ReCard>
 

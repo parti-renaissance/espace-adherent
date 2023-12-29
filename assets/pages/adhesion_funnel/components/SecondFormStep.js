@@ -35,14 +35,19 @@ const SecondForm = () => ({
         });
     },
 
-    async handleOnSubmit(e) {
+    checkFormValidity(e) {
         if (!this._handleOnSubmitBase(e)) {
             const addressFormValidity = ['country', 'address', 'postalCode', 'cityName'].every((x) => true === this.fieldsValid[x]);
             if (!addressFormValidity) {
                 this.showAutoComplete = false;
             }
-            return;
+            return false;
         }
+        return true;
+    },
+
+    async handleOnSubmit(e) {
+        if (!this.checkFormValidity(e)) return;
         this.setStepData(['address']);
         this.handleNextStep();
     },

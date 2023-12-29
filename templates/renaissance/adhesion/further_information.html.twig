@@ -26,11 +26,11 @@
                     </twig:Molecules:ReCheckboxField>
                 </fieldset>
 
-                <twig:Atoms:ReParagraphStatus status="valid" x-show="isElu" x-cloak>
+                <twig:ReParagraphStatus status="valid" x-show="isElu" x-cloak>
                     En déclarant vos mandats ici, nous préviendrons votre
                     <span class="font-medium">Président d’Assemblée départementale</span>
                     qui pourra, le cas échéant, vous inclure dans les élus de Renaissance.
-                </twig:Atoms:ReParagraphStatus>
+                </twig:ReParagraphStatus>
 
                 <fieldset class="flex flex-col gap-2.5" x-show="isElu" x-cloak>
                     {{ form_row(form.mandates) }}
@@ -68,7 +68,7 @@
                     {{ form_errors(form.birthdate) }}
                 </fieldset>
 
-                <twig:Atoms:ReParagraphStatus status="valid" x-show="isJam" x-cloak>
+                <twig:ReParagraphStatus status="valid" x-show="isJam" x-cloak>
                     <p class="pb-2.5 flex flex-col justify-center items-center">
                         <img src="{{ asset('images/icons/jeunes-avec-macron.png') }}" alt="Jeunes avec Macron" class="w-20">
                     </p>
@@ -76,9 +76,8 @@
                     <span class="font-medium">Jeunes avec Macron</span>, le mouvement de jeunesse de Renaissance.
                     <br>
                     <br>
-{#                    TODO: LINK TO JS ID oldone is-elu#}
                     {{ form_row(form.refuseJamNotification, {label: "Je ne souhaite pas recevoir les communications des Jeunes avec Macron par email.", label_attr: {class: 'w-full text-ui_gray-80'}}) }}
-                </twig:Atoms:ReParagraphStatus>
+                </twig:ReParagraphStatus>
                 <hr>
                 <fieldset>
                     {{ form_row(form.phone, {label: 'Numéro de téléphone'}) }}

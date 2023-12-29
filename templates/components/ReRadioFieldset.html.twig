@@ -9,7 +9,7 @@
     type="radio-group"
 >
         {% if errors|length > 0 %}
-            <twig:Atoms:ReParagraphStatus
+            <twig:ReParagraphStatus
                     type="error"
                     icon="error"
                     class="flex flex-col gap-2.5"
@@ -18,14 +18,14 @@
                 {% for error in errors %}
                     <span>- {{ error }}</span>
                 {% endfor %}
-            </twig:Atoms:ReParagraphStatus>
+            </twig:ReParagraphStatus>
         {% endif %}
 
-    <twig:Atoms:ReParagraphStatus
+    <twig:ReParagraphStatus
             x-show="status !== 'default' && message"
             value="{{ message is defined ? '' }}"
             type="{{ status }}"
-            xSyncStatus="status"
+            status="x:status"
             x-text="message"
     />
 

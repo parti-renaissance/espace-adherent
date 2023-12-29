@@ -2,11 +2,11 @@
 
 namespace App\Twig\Components;
 
-use App\Twig\AbstractTailwindMerge;
+use App\Twig\AbstractComponentsLogic;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent]
-class ReButton extends AbstractTailwindMerge
+class ReButton extends AbstractComponentsLogic
 {
     /**
      * @var string 'blue'|'green'|'yellow'
@@ -17,6 +17,8 @@ class ReButton extends AbstractTailwindMerge
     public string $tag = 'button';
     public ?string $icon;
     public ?string $loading = null;
+    public ?string $disabled = null;
+    public ?string $onDisabledClick = null;
 
     private function getVariantColorClasses(): string
     {
@@ -25,20 +27,20 @@ class ReButton extends AbstractTailwindMerge
                 bg-ui_blue-50 text-ui_blue-5
                 hover:enabled:bg-ui_blue-60
                 active:enabled:bg-ui_blue-70
-                disabled:bg_ui_blue-30 disabled:text-ui_blue-5
+                disabled:bg-ui_blue-30 disabled:text-ui_blue-5
                 backdrop-blur-lg
                 TW,
             'green' => <<<TW
                 bg-ui_green-50 text-ui_green-5
                 hover:enabled:bg-ui_green-60
                 active:enabled:bg-ui_green-70
-                disabled:bg_ui_green-30 disabled:text-ui_green-5
+                disabled:bg-ui_green-30 disabled:text-ui_green-5
                 TW,
             'yellow' => <<<TW
                 bg-ui_yellow-50 text-ui_yellow-100
                 hover:enabled:bg-ui_yellow-45
                 active:enabled:bg-ui_yellow-70
-                disabled:bg_ui_yellow-30 disabled:text-ui_yellow-80
+                disabled:bg-ui_yellow-30 disabled:text-ui_yellow-80
                 TW,
             default => throw new \LogicException(sprintf('Unknown button type "%s"', $this->color))
         };

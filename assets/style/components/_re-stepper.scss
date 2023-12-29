@@ -1,28 +1,28 @@
 .re-stepper {
-    progress {
-        @apply rounded-full overflow-hidden appearance-none;
-        &::-webkit-progress-bar {
-            @apply bg-ui_gray-40;
-        }
-
-        &::-webkit-progress-value {
-            @apply bg-ui_blue-50 transition-all duration-300;
-        }
+  progress {
+    @apply rounded-full overflow-hidden appearance-none;
+    &::-webkit-progress-bar {
+      @apply bg-ui_gray-40;
     }
+
+    &::-webkit-progress-value {
+      @apply bg-ui_blue-50 transition-all duration-300;
+    }
+  }
 
 }
 
 .re-step {
-    transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
 
-    &--active {
-        @apply opacity-100;
-        @apply cursor-pointer;
-    }
+  &--active {
+    @apply opacity-100;
+    @apply cursor-pointer;
+  }
 
-    &--disabled {
-        //@apply opacity-40;
-        //pointer-events: none;
-        //cursor: not-allowed !important;
-    }
+  &--disabled {
+    @apply opacity-40;
+    pointer-events: none;
+    cursor: not-allowed !important;
+  }
 }

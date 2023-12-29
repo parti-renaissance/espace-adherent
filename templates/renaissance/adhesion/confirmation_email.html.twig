@@ -42,9 +42,9 @@
                             <a @click.prevent="isChangeMailMode=true" class="text-ui_blue-50" href="#">Changer mon adresse email</a>
                         </div>
 
-                        <twig:Atoms:ReParagraphStatus class="!w-auto" status="warning" icon="warning" slim="true">
+                        <twig:ReParagraphStatus class="!w-auto" status="warning" icon slim>
                             Code actif pendant {{ code_ttl }} minutes
-                        </twig:Atoms:ReParagraphStatus>
+                        </twig:ReParagraphStatus>
 
                         {{ form_row(form.code, {label: false, attr: {
                             placeholder: 'Votre code de vérification',
@@ -97,7 +97,7 @@
 
             {{ form_start(new_code_form, {action: path('app_adhesion_request_new_activation_code')}) }}
                 {{ form_widget(new_code_form.allow, {attr: {
-                    color: "as-link",
+                    link: 'link',
                     class: "w-full",
                 }}) }}
             {{ form_end(new_code_form) }}
