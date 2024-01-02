@@ -3,7 +3,10 @@
 /**
  * @returns {AlpineComponent}
  */
-const Form = ({ isJam = false, isElu = false }) => ({
+const Form = ({
+    isJam = false,
+    isElu = false,
+}) => ({
     fieldsValid: {},
     isElu,
     isJam,
@@ -57,6 +60,16 @@ const Form = ({ isJam = false, isElu = false }) => ({
 
     handleIsElu(e) {
         this.isElu = Boolean(e.target.checked);
+        if (!e.target.checked) {
+            this.clearEluCheckboxes();
+        }
+    },
+
+    clearEluCheckboxes() {
+        document.querySelectorAll('#elu-form input:checked')
+            .forEach((x) => {
+                x.checked = false;
+            });
     },
 
     handlePasswordInput(e) {
