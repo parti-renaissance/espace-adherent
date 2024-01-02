@@ -242,7 +242,7 @@ const xValidate = (state) => ({
     setData(data) {
         this.status = data.status;
         this.message = data.message;
-        if (this.onCheck) this.onCheck('error' !== data.status);
+        if (this.onCheck) this.onCheck(!['error', 'loading'].includes(data.status));
     },
     checkField(e) {
         validateField(this.validate, e.currentTarget, this.setData.bind(this));
