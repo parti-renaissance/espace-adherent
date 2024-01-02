@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.23.7",
-    "@babel/preset-env": "^7.23.6",
+    "@babel/preset-env": "^7.23.7",
     "@babel/preset-react": "^7.23.3",
     "@google/markerclusterer": "^2.0.9",
     "@googlemaps/js-api-loader": "^1.16.2",
