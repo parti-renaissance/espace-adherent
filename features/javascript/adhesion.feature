@@ -8,19 +8,16 @@ Feature:
 
     Scenario: I can become adherent
         When I am on "/adhesion"
-        Then the element "#step_1 .re-button" should be disabled
-        When I fill in the following:
+        And I fill in the following:
             | membership_request[email] | test@test123.com |
         And I click the "membership_request_consentDataCollect" element
         Then I wait 15 seconds until I see "Nous ne sommes pas parvenus à vérifier l'existence de l'adresse « test@test123.com ». Vérifiez votre saisie avant de continuer."
-        And the element "#step_1 .re-button" should be enabled
         When I fill in the following:
             | membership_request[email] | test@test.com |
         And I wait 1 seconds
         And I press "J'adhère"
         And I wait 3 seconds
-        Then the element "#step_2 .re-button" should be disabled
-        When I click the "membership_request_civility_0_label" element
+        And I click the "membership_request_civility_0_label" element
         And I click the ".aucomplete-fields-toggle" selector
         And I click the "membership_request_nationality_select_widget" element
         And I click the "#membership_request_nationality_select_widget .re-input-option--selected" selector
@@ -32,19 +29,15 @@ Feature:
             | membership_request[address][cityName]     | Clichy |
         And I click the "membership_request_address_country_select_widget" element
         And I click the "#membership_request_address_country_select_widget .re-input-option--selected" selector
-        Then the element "#step_2 .re-button" should be enabled
-        When I press "Suivant"
-        Then the element "#step_3 .re-button" should be disabled
+        And I press "Suivant"
         And I wait 1 second
-        When I click the "membership_request_exclusiveMembership_1" element
+        And I click the "membership_request_exclusiveMembership_1" element
         Then I wait 3 seconds until I see "J’appartiens à un autre parti politique"
         When I click the "membership_request_exclusiveMembership_0" element
         Then I should not see "J’appartiens à un autre parti politique"
         When I click the "membership_request_allowNotifications" element
-        Then the element "#step_3 .re-button" should be disabled
-        When I click the "membership_request_isPhysicalPerson" element
-        Then the element "#step_3 .re-button" should be enabled
-        And I click the "#step_3 .re-button" selector
+        And I click the "membership_request_isPhysicalPerson" element
+        Then I click the "#step_3 .re-button" selector
         And I wait 5 seconds
         And I click the "#step_4 #amount_4_label" selector
         And I should see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"

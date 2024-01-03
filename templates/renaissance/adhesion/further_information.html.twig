@@ -91,7 +91,7 @@
                     class="w-full"
                     xSyncLoading="loading"
                     x-on:click="handleSubmit($event)"
-                    x-bind:disabled="!checkValidity()"
+                    x-bind:class="{disabled: !checkValidity()}"
                 />
             {{ form_end(form) }}
         </twig:Atoms:ReCard>
