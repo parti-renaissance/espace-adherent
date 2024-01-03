@@ -22,7 +22,7 @@ class PoliticalCommitteeControllerTest extends AbstractEnMarcheWebTestCase
         self::assertCount(1, $crawler->filter('header .em-nav-dropdown a:contains("Mes instances")'));
 
         $crawler = $this->client->click($crawler->selectLink('Mes instances')->link());
-        self::assertEquals('http://enmarche.code/parametres/mes-activites#instances', $crawler->getUri());
+        self::assertEquals('http://test.enmarche.code/parametres/mes-activites#instances', $crawler->getUri());
 
         self::assertCount(1, $crawler->filter('#territorial_council'));
         self::assertCount(0, $crawler->filter('#political_committee'));
@@ -38,7 +38,7 @@ class PoliticalCommitteeControllerTest extends AbstractEnMarcheWebTestCase
         self::assertCount(1, $crawler->filter('header .em-nav-dropdown a:contains("Mes instances")'));
 
         $crawler = $this->client->click($crawler->selectLink('Mes instances')->link());
-        self::assertEquals('http://enmarche.code/parametres/mes-activites#instances', $crawler->getUri());
+        self::assertEquals('http://test.enmarche.code/parametres/mes-activites#instances', $crawler->getUri());
 
         self::assertCount(1, $crawler->filter('#territorial_council'));
         self::assertCount(0, $crawler->filter('#political_committee'));
@@ -55,13 +55,13 @@ class PoliticalCommitteeControllerTest extends AbstractEnMarcheWebTestCase
         self::assertCount(1, $crawler->filter('header .em-nav-dropdown a:contains("Mes instances")'));
 
         $crawler = $this->client->click($crawler->selectLink('Mes instances')->link());
-        self::assertEquals('http://enmarche.code/parametres/mes-activites#instances', $crawler->getUri());
+        self::assertEquals('http://test.enmarche.code/parametres/mes-activites#instances', $crawler->getUri());
 
         self::assertCount(1, $crawler->filter('article#territorial_council'));
         self::assertCount(1, $crawler = $crawler->filter('article#political_committee'));
 
         $crawler = $this->client->click($crawler->selectLink('Voir')->link());
-        self::assertEquals('http://enmarche.code/comite-politique', $crawler->getUri());
+        self::assertEquals('http://test.enmarche.code/comite-politique', $crawler->getUri());
 
         self::assertCount(1, $crawler->filter('.instance-page__aside h5:contains("Président du Comité politique")'));
     }

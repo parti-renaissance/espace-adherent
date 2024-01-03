@@ -7,21 +7,21 @@ Feature:
     Given I am on "/sitemap.xml"
     Then the response should be in XML
     And the XML element "//sitemapindex" should have 5 element
-    And the XML element "//sitemap[1]/loc" should be equal to "http://enmarche.code/sitemap_main_1.xml"
-    And the XML element "//sitemap[2]/loc" should be equal to "http://enmarche.code/sitemap_content_1.xml"
-    And the XML element "//sitemap[3]/loc" should be equal to "http://enmarche.code/sitemap_images_1.xml"
-    And the XML element "//sitemap[4]/loc" should be equal to "http://enmarche.code/sitemap_committees_1.xml"
-    And the XML element "//sitemap[5]/loc" should be equal to "http://enmarche.code/sitemap_events_1.xml"
+    And the XML element "//sitemap[1]/loc" should be equal to "http://test.enmarche.code/sitemap_main_1.xml"
+    And the XML element "//sitemap[2]/loc" should be equal to "http://test.enmarche.code/sitemap_content_1.xml"
+    And the XML element "//sitemap[3]/loc" should be equal to "http://test.enmarche.code/sitemap_images_1.xml"
+    And the XML element "//sitemap[4]/loc" should be equal to "http://test.enmarche.code/sitemap_committees_1.xml"
+    And the XML element "//sitemap[5]/loc" should be equal to "http://test.enmarche.code/sitemap_events_1.xml"
 
   Scenario: The main sitemap displays correctly
     Given I am on "/sitemap_main_1.xml"
     Then the response should be in XML
     And the XML element "//urlset" should have 5 element
-    And the XML element "//url[1]/loc" should be equal to "http://enmarche.code/"
-    And the XML element "//url[2]/loc" should be equal to "http://enmarche.code/don"
-    And the XML element "//url[3]/loc" should be equal to "http://enmarche.code/jagis"
-    And the XML element "//url[4]/loc" should be equal to "http://enmarche.code/newsletter"
-    And the XML element "//url[5]/loc" should be equal to "http://enmarche.code/invitation"
+    And the XML element "//url[1]/loc" should be equal to "http://test.enmarche.code/"
+    And the XML element "//url[2]/loc" should be equal to "http://test.enmarche.code/don"
+    And the XML element "//url[3]/loc" should be equal to "http://test.enmarche.code/jagis"
+    And the XML element "//url[4]/loc" should be equal to "http://test.enmarche.code/newsletter"
+    And the XML element "//url[5]/loc" should be equal to "http://test.enmarche.code/invitation"
 
   Scenario: The content sitemap displays correctly
     Given I am on "/sitemap_content_1.xml"
@@ -38,4 +38,4 @@ Feature:
     Given I am on "/sitemap_committees_1.xml"
     Then the response should be in XML
     And the XML element "//urlset" should have 13 element
-    And the XML element "//url[1]/loc" should be equal to "http://enmarche.code/comites/en-marche-paris-8"
+    And the XML element "//url[1]/loc" should be equal to "http://test.enmarche.code/comites/en-marche-paris-8"

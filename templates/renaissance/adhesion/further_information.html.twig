@@ -9,12 +9,12 @@
 {% block content %}
     <twig:ReStandaloneLayout class="re_new_ui "
                            x-data="xFurtherInformationForm({
-                            isJam: {{ (form.vars.data.getAge() < 35 ? 'true' : 'false')|e('js') }},
+                            isJam: {{ (form.vars.data.getAge() and form.vars.data.getAge() < 35 ? 'true' : 'false')|e('js') }},
                             isElu: {{ (form.mandates.vars.value and form.mandates.vars.value|length ? 'true' : 'false')|e('js') }}
                             })"
     >
         <twig:Atoms:ReCard class="max-w-[500px]">
-            {% include 'renaissance/partials/flashes.html.twig' %}
+            {% include 'renaissance/partials/flashes.html.twig' with {slim: true} %}
 
             {{ form_start(form, { attr: { 'x-ref': 'form', class: 'flex gap-8 flex-col'} }) }}
                 {{ form_errors(form) }}
@@ -80,29 +80,7 @@
                 </twig:Atoms:ReParagraphStatus>
                 <hr>
                 <fieldset>
-                    <twig:Atoms:ReLabel>Numéro de téléphone</twig:Atoms:ReLabel>
-                    <div class="flex">
-                        <div class="w-25 h-full border-r border-ui_gray-40">
-                            <div class="relative w-full h-full">
-                                {{ form_widget(form.phone.country, {label: false, attr: {
-                                    class: "w-full absolute !max-h-[40px] left-0 top-0  p-0 z-[9] background-transparent re-textfield-select",
-                                    placeholder: 'Code',
-                                    autocomplete: "phone",
-                                    onCheck: "setFieldValid('phonePrefix')",
-                                    'x-on:change': "setMonth($event.target.value)"
-                                }}) }}
-                            </div>
-                        </div>
-
-                        {{ form_widget(form.phone.number, {label: false, attr: {
-                            class: "w-full",
-                            placeholder: 'Numéro de téléphone',
-                            autocomplete: "phone",
-                            onCheck: "setFieldValid('phone')",
-                            'x-on:change': "setMonth($event.target.value)"
-                        }}) }}
-                    </div>
-                    {{ form_errors(form.phone) }}
+                    {{ form_row(form.phone, {label: 'Numéro de téléphone'}) }}
                 </fieldset>
 
                 {{ form_row(form.subscriptionTypes) }}
@@ -113,7 +91,7 @@
                     class="w-full"
                     xSyncLoading="loading"
                     x-on:click="handleSubmit($event)"
-                    x-bind:class="{disabled: !checkValidity()}"
+                    x-bind:disabled="!checkValidity()"
                 />
             {{ form_end(form) }}
         </twig:Atoms:ReCard>

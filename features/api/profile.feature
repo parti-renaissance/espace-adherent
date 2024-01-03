@@ -908,6 +908,10 @@ Feature:
         {
           "code": "senator_email",
           "label": "Recevoir les e-mails de mon/ma sénateur/trice"
+        },
+        {
+          "code": "jam_email",
+          "label": "Recevoir les e-mails de JAM"
         }
       ],
       "positions": [

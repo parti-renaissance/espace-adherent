@@ -43,7 +43,7 @@ class ThematicCommunityControllerTest extends AbstractEnMarcheWebTestCase
             'thematic_community_membership[motivations]' => ['information', 'thinking'],
         ]));
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertEquals('http://enmarche.code/communautes-thematiques', $crawler->getUri());
+        $this->assertEquals('http://test.enmarche.code/communautes-thematiques', $crawler->getUri());
         $this->assertEquals(
             'Nous vous avons envoyé un email à l\'adresse "referent@en-marche-dev.fr". Veuillez cliquer sur le lien contenu dans cet email pour confirmer votre inscription à la communauté.',
             trim($crawler->filter('.flash.flash--info')->text())
@@ -53,7 +53,7 @@ class ThematicCommunityControllerTest extends AbstractEnMarcheWebTestCase
 
         $crawler = $this->client->click($crawler->selectLink('Modifier mes préférences')->link());
 
-        $this->assertMatchesRegularExpression('#http://enmarche.code/communautes-thematiques/adhesion/.{36}/modifier#', $crawler->getUri());
+        $this->assertMatchesRegularExpression('#http://test.enmarche.code/communautes-thematiques/adhesion/.{36}/modifier#', $crawler->getUri());
     }
 
     public function testICannotEditAMembershipThatIsNotMine()
@@ -77,7 +77,7 @@ class ThematicCommunityControllerTest extends AbstractEnMarcheWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/communautes-thematiques/adhesion/be8b1edb-b958-4054-bcc9-903ff39062dd/quitter');
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertEquals('http://enmarche.code/communautes-thematiques', $crawler->getUri());
+        $this->assertEquals('http://test.enmarche.code/communautes-thematiques', $crawler->getUri());
 
         $this->assertEquals('Vous ne faites plus partie de la communauté Ecole.', trim($crawler->filter('.flash.flash--info')->text()));
     }
@@ -125,7 +125,7 @@ class ThematicCommunityControllerTest extends AbstractEnMarcheWebTestCase
             'thematic_community_membership[motivations]' => ['information', 'thinking'],
         ]));
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertEquals('http://enmarche.code/communautes-thematiques', $crawler->getUri());
+        $this->assertEquals('http://test.enmarche.code/communautes-thematiques', $crawler->getUri());
         $this->assertEquals(
             'Nous vous avons envoyé un email à l\'adresse "pierre.richard@oneblackshoe.com". Veuillez cliquer sur le lien contenu dans cet email pour confirmer votre inscription à la communauté.',
             trim($crawler->filter('.flash.flash--info')->text())
@@ -137,7 +137,7 @@ class ThematicCommunityControllerTest extends AbstractEnMarcheWebTestCase
     public function testContactCannotEditAMembership()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/communautes-thematiques/adhesion/2420524f-f52e-46af-a945-327c48788d37/modifier');
-        $this->assertEquals('http://enmarche.code/connexion', $crawler->getUri());
+        $this->assertEquals('http://test.enmarche.code/connexion', $crawler->getUri());
     }
 
     public function testJoinAsContactButIHaveAnAdherentAccount()
@@ -166,7 +166,7 @@ class ThematicCommunityControllerTest extends AbstractEnMarcheWebTestCase
             'thematic_community_membership[motivations]' => ['information', 'thinking'],
         ]));
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertEquals('http://enmarche.code/communautes-thematiques', $crawler->getUri());
+        $this->assertEquals('http://test.enmarche.code/communautes-thematiques', $crawler->getUri());
         $this->assertEquals(
             'Nous vous avons envoyé un email à l\'adresse "referent@en-marche-dev.fr". Veuillez cliquer sur le lien contenu dans cet email pour confirmer votre inscription à la communauté.',
             trim($crawler->filter('.flash.flash--info')->text())
@@ -199,7 +199,7 @@ class ThematicCommunityControllerTest extends AbstractEnMarcheWebTestCase
             'thematic_community_membership[motivations]' => ['information', 'thinking'],
         ]));
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertEquals('http://enmarche.code/communautes-thematiques', $crawler->getUri());
+        $this->assertEquals('http://test.enmarche.code/communautes-thematiques', $crawler->getUri());
         $this->assertEquals(
             'Cette adresse email est déjà enregistrée dans cette communauté.',
             trim($crawler->filter('.flash.flash--error')->text())

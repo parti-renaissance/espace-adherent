@@ -27,13 +27,13 @@ Feature:
           "label": "On l'a dit, On le fait",
           "url": "https://transformer.en-marche.fr",
           "uuid": "94bc6088-ff8f-4d07-a216-6eebd12f317c",
-          "image_url": "http://enmarche.code/assets/images/jecoute/resources/bb4bb38ba549eea93700225f7be0fbd7.png"
+          "image_url": "http://test.enmarche.code/assets/images/jecoute/resources/bb4bb38ba549eea93700225f7be0fbd7.png"
         },
         {
           "label": "Ce qui a changé près de chez vous",
           "url": "https://chezvous.en-marche.fr",
           "uuid": "8ddd92d7-fc9e-43c0-8d03-57eccdce9547",
-          "image_url": "http://enmarche.code/assets/images/jecoute/resources/caff9632c5627323baee674dcde434fb.png"
+          "image_url": "http://test.enmarche.code/assets/images/jecoute/resources/caff9632c5627323baee674dcde434fb.png"
         }
       ]
     }

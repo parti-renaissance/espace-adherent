@@ -17,16 +17,16 @@ const FirstForm = () => ({
     captchaToken: null,
     nextStepId: 'step_2',
     id: 'step_1',
-    submited: false,
-    submitedValues: null,
+    submitted: false,
+    submittedValues: null,
 
     checkIdFieldChangeAfterSubmit(field) {
         return (e) => {
-            if (this.submited) {
+            if (this.submitted) {
                 const input = e.target;
-                if ('checkbox' === input.type ? input.checked : input.value !== this.submitedValues[field]) {
-                    this.submited = false;
-                    this.submitedValues = null;
+                if ('checkbox' === input.type ? input.checked : input.value !== this.submittedValues[field]) {
+                    this.submitted = false;
+                    this.submittedValues = null;
                     this.fieldsValid[field] = false;
                     this.stepToFill = 10;
                     this.stepToFill = 0;
@@ -39,8 +39,8 @@ const FirstForm = () => ({
         const emailInput = document.querySelector('#membership_request_email');
         const consentDataCollectInput = document.querySelector('#membership_request_consentDataCollect');
         if (emailInput.value && consentDataCollectInput.checked) {
-            this.submited = true;
-            this.submitedValues = {
+            this.submitted = true;
+            this.submittedValues = {
                 email: emailInput.value,
                 consentDataCollect: consentDataCollectInput.checked,
             };
@@ -113,8 +113,8 @@ const FirstForm = () => ({
                         this.generalNotification = null;
                         this.handleNextStep();
                         this.setStepData();
-                        this.submited = true;
-                        this.submitedValues = {
+                        this.submitted = true;
+                        this.submittedValues = {
                             email: document.querySelector('#membership_request_email').value,
                             consentDataCollect: document.querySelector('#membership_request_consentDataCollect').checked,
                         };

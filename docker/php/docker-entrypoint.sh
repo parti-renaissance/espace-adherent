@@ -13,8 +13,8 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
     bin/console cache:warmup --env=prod
   fi
 
-  setfacl -R -m u:www-data:rwX -m u:"$(whoami)":rwX var
-  setfacl -dR -m u:www-data:rwX -m u:"$(whoami)":rwX var
+  setfacl -R -m u:www-data:rwX -m u:"$(whoami)":rwX var/cache var/log
+  setfacl -dR -m u:www-data:rwX -m u:"$(whoami)":rwX var/cache var/log
 fi
 
 exec docker-php-entrypoint "$@"

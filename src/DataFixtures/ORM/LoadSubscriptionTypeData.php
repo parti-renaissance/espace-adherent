@@ -11,9 +11,9 @@ class LoadSubscriptionTypeData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        foreach ($this->getSubscriptionTypes() as ['label' => $label, 'code' => $code, 'externalId' => $externalId]) {
-            $type = new SubscriptionType($label, $code, $externalId);
-            $this->setReference('st-'.$code, $type);
+        foreach ($this->getSubscriptionTypes() as $row) {
+            $type = new SubscriptionType($row['label'], $row['code'], $row['externalId'] ?? null);
+            $this->setReference('st-'.$row['code'], $type);
             $manager->persist($type);
         }
 
@@ -26,7 +26,6 @@ class LoadSubscriptionTypeData extends Fixture
             [
                 'label' => 'Recevoir les informations sur les actions militantes du mouvement par téléphone',
                 'code' => SubscriptionTypeEnum::MILITANT_ACTION_SMS,
-                'externalId' => null,
             ],
             [
                 'label' => 'Recevoir les e-mails nationaux',
@@ -41,27 +40,26 @@ class LoadSubscriptionTypeData extends Fixture
             [
                 'label' => 'Recevoir les e-mails de mes candidat(e)s LaREM',
                 'code' => SubscriptionTypeEnum::CANDIDATE_EMAIL,
-                'externalId' => null,
             ],
             [
                 'label' => 'Recevoir les e-mails de mon/ma député(e)',
                 'code' => SubscriptionTypeEnum::DEPUTY_EMAIL,
-                'externalId' => null,
             ],
             [
                 'label' => 'Recevoir les e-mails de mon animateur(trice) local(e) de comité',
                 'code' => SubscriptionTypeEnum::LOCAL_HOST_EMAIL,
-                'externalId' => null,
             ],
             [
                 'label' => 'Recevoir les e-mails de mon/ma référent(e) territorial(e)',
                 'code' => SubscriptionTypeEnum::REFERENT_EMAIL,
-                'externalId' => null,
             ],
             [
                 'label' => 'Recevoir les e-mails de mon/ma sénateur/trice',
                 'code' => SubscriptionTypeEnum::SENATOR_EMAIL,
-                'externalId' => null,
+            ],
+            [
+                'label' => 'Recevoir les e-mails de JAM',
+                'code' => SubscriptionTypeEnum::JAM_EMAIL,
             ],
         ];
     }
