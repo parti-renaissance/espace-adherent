@@ -1444,10 +1444,10 @@
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
 
-"@types/alpinejs@^3.13.5":
-  version "3.13.5"
-  resolved "https://registry.yarnpkg.com/@types/alpinejs/-/alpinejs-3.13.5.tgz#bfe268249f3fd470c7ce9cc6910d0c28a3d47091"
-  integrity sha512-BSNTroRhmBkNiyd7ELK/5Boja92hnQMST6H4z1BqXKeMVzHjp9o1j5poqd5Tyhjd8oMFwxYC4I00eghfg2xrTA==
+"@types/alpinejs@^3.13.6":
+  version "3.13.6"
+  resolved "https://registry.yarnpkg.com/@types/alpinejs/-/alpinejs-3.13.6.tgz#e0f3aba09cab24a04fe068a5a29137c60588aed3"
+  integrity sha512-BMi1/2uQz7mp30VFn69SzjN7YwQ0QzE4Hn3RMBt4iMpQeasdbMiImv1f5yvK1bYmvjIyG/YFg+CgPxbjIXZk0g==
 
 "@types/debug@^4.0.0":
   version "4.1.7"

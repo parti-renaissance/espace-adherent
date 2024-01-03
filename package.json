@@ -72,7 +72,7 @@
     "webpack-merge": "^5.10.0"
   },
   "devDependencies": {
-    "@types/alpinejs": "^3.13.5",
+    "@types/alpinejs": "^3.13.6",
     "@types/google.maps": "^3.54.10"
   }
 }
