@@ -125,7 +125,7 @@ Feature:
             "global_merge_vars": [
                 {
                     "name": "confirmation_link",
-                    "content": "http://enmarche.code/newsletters/confirmation/@string@/@string@"
+                    "content": "http://test.enmarche.code/newsletters/confirmation/@string@/@string@"
                 }
             ],
             "to": [

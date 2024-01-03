@@ -74,7 +74,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertSame('Marche Parisienne', trim($titles->eq(4)->text()));
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites?page=2&type=past_events#events');
-        self::assertEquals('http://enmarche.code/parametres/mes-activites?page=2&type=past_events#events', $crawler->getUri());
+        self::assertEquals('http://test.enmarche.code/parametres/mes-activites?page=2&type=past_events#events', $crawler->getUri());
         $titles = $crawler->filter('#past-events h2');
         $this->assertSame(2, $crawler->filter('#past-events article')->count());
         $this->assertSame('Grand Meeting de Paris', trim($titles->first()->text()));
@@ -113,7 +113,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertStringContainsString(
-            'Rendez vous sur renaissance.code pour modifier votre profil!',
+            'Rendez vous sur test.renaissance.code pour modifier votre profil!',
             $crawler->filter('.adherent-profile__section')->text()
         );
     }

@@ -41,9 +41,7 @@
                 id="{{ child.vars.id }}"
                 value="{{ child.vars.value }}"
                 checked="{{ child.vars.checked }}"
-            >
-                {{ child.vars.label|trans }}
-            </twig:Atoms:ReToggleButton>
+            >{{ child.vars.label|trans }}</twig:Atoms:ReToggleButton>
         {% endfor %}
     </twig:Atoms:ReLinkedToggle>
 {% endblock %}
@@ -127,7 +125,7 @@
                         checked="{{ child.vars.checked }}"
                         {{ ...child.vars.attr }}
                 >
-                    {{ form_label(child, child.vars.label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 text-base font-normal'}}) }}
+                    {{ form_label(child, child.vars.label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 text-base font-normal', id: child.vars.id~'_label'}}) }}
                 </twig:ReRadioField>
             {% endfor %}
         </twig:ReRadioFieldset>
@@ -151,7 +149,7 @@
         <div class="address-autocomplete-wrapper gap-8 flex flex-col" x-show="showAutoComplete">
             {{ form_row(form.autocomplete, { label: false, attr: { placeholder: 'Saisissez et sélectionnez une adresse', onQuery:"queryGooglePlaces",  validate:"['required']", blocked:"blocked" } }) }}
 
-            <div class="text-gray-700 text-base cursor-pointer text-center" x-on:click="showAutoComplete = false">
+            <div class="text-gray-700 text-base cursor-pointer text-center aucomplete-fields-toggle" x-on:click="showAutoComplete = false">
                 Un problème ? <br/> <span class="text-ui_blue-50"> Cliquez ici</span> pour saisir manuellement votre
                 adresse.
             </div>
@@ -170,9 +168,34 @@
 
             {{ form_row(form.country, { label: false, attr: { validate:"['required']", onCheck:"setFieldValid('country')", blocked:"blocked" } }) }}
 
-            <div class="text-gray-700 text-base cursor-pointer text-center" x-on:click="showAutoComplete = true">
+            <div class="text-gray-700 text-base cursor-pointer text-center aucomplete-fields-toggle" x-on:click="showAutoComplete = true">
                 <span class="text-ui_blue-50">Revenir</span> à la saisie d’adresse simplifiée
             </div>
         </div>
+    </div>
+{% endblock %}
+
+{% block misd_tel_widget %}
+    <div class="flex">
+        <div class="w-25 h-full border-r border-ui_gray-40">
+            <div class="relative w-full h-full">
+                {{ form_widget(form.country, {label: false, attr: {
+                    class: "w-full absolute !max-h-[40px] left-0 top-0  p-0 z-[9] background-transparent re-textfield-select",
+                    placeholder: 'Code',
+                    autocomplete: "phone",
+                    onCheck: "setFieldValid('phonePrefix')",
+                    'x-on:change': "setMonth($event.target.value)",
+                }}) }}
+            </div>
+        </div>
+
+        {{ form_widget(form.number, {label: false, attr: {
+            class: "w-full",
+            placeholder: 'Numéro de téléphone',
+            autocomplete: "phone",
+            onCheck: "setFieldValid('phone')",
+            'x-on:change': "setMonth($event.target.value)",
+            status: valid ? 'default' : 'error',
+        }}) }}
     </div>
 {% endblock %}

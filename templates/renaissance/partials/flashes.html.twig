@@ -2,7 +2,7 @@
     {% if messages|length %}
         {% for message in messages %}
             <div class="{{ wrapper_class ?? '' }}">
-                <twig:Atoms:ReParagraphStatus status="{{ label }}" icon="{{ label }}" slim="{{ slim ?? '0' }}">
+                <twig:Atoms:ReParagraphStatus status="{{ label }}" icon="{{ label }}" slim="{{ slim is defined and slim ? '1' : '0' }}">
                     {{ message|trans|raw }}
                 </twig:Atoms:ReParagraphStatus>
             </div>

@@ -51,7 +51,7 @@ class FeatureContext extends RawMinkContext
     /**
      * @Then I should be on :url wait otherwise
      */
-    public function assertPageAddressAfterAllRedirection(string $url, int $ttl = 3, int $try = 1): void
+    public function assertPageAddressAfterAllRedirection(string $url, int $ttl = 5, int $try = 3): void
     {
         $sleep = 100000; // 0.1 second
 

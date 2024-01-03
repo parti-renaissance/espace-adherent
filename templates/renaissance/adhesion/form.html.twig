@@ -26,11 +26,10 @@
                         steps="{{ ['E-mail', 'Informations', 'Autorisation', 'Cotisation'] }}"
                         initStep="currentStep"
                 />
-                <div></div>
             </header>
 
             <div class="flex-col justify-start items-start gap-8 inline-flex" x-data="{formData:{
-                email: '{{ form.vars.value.email }}',
+                email: '{{ form.vars.value.email }}'
             }}">
                 {{ form_start(form) }}
                 <div class="flex gap-8 flex-col p-0 sm:p-5">
@@ -67,7 +66,7 @@
                             color="blue"
                             value="J'adhère"
                             class="w-full"
-                            x-bind:class="{disabled: !checkValidity()}"
+                            x-bind:disabled="!checkValidity()"
                             x-on:click="handleOnSubmit($event, $dispatch)"
                             xSyncLoading="loading"
                         />
@@ -109,7 +108,7 @@
                             value="Suivant"
                             class="w-full"
                             x-on:click="handleOnSubmit($event, $dispatch)"
-                            x-bind:class="{disabled: !checkValidity()}"
+                            x-bind:disabled="!checkValidity()"
                         />
                     </twig:Atoms:ReCard>
 
@@ -173,7 +172,7 @@
                                 class="w-full"
                                 xSyncLoading="loading"
                                 x-on:click="handleOnSubmit($event, $dispatch)"
-                                x-bind:class="{disabled: !checkValidity()}"
+                                x-bind:disabled="!checkValidity()"
                             />
                         </template>
 
@@ -184,7 +183,7 @@
                                 class="w-full"
                                 xSyncLoading="loading"
                                 x-on:click="handleOnSubmit($event, $dispatch)"
-                                x-bind:class="{disabled: !checkValidity()}"
+                                x-bind:disabled="!checkValidity()"
                             />
                         </template>
                     </twig:Atoms:ReCard>
@@ -226,7 +225,6 @@
                                 'price': '30',
                                 'type': 'simple',
                                 'checked': false,
-                                'id': 'amount_10',
                                 'name': 'amount',
                             },
                             {
@@ -235,7 +233,6 @@
                                 'type': 'classic',
                                 'checked': true,
                                 'tagged': 'tagged',
-                                'id': 'amount_20',
                                 'name': 'amount',
                             },
                             {
@@ -243,7 +240,6 @@
                                 'price': '120',
                                 'type': 'support',
                                 'checked': false,
-                                'id': 'amount_30',
                                 'name': 'amount',
                             },
                             {
@@ -251,7 +247,6 @@
                                 'price': '10',
                                 'type': 'united',
                                 'checked': false,
-                                'id': 'amount_40',
                                 'name': 'amount',
                             },
                             {
@@ -259,7 +254,6 @@
                                 'price': '60',
                                 'type': 'custom',
                                 'checked': false,
-                                'id': 'amount_50',
                                 'name': 'amount',
                             },
                         ] %}
@@ -267,6 +261,7 @@
                         {% for contribution in contributions %}
                             <twig:Molecules:ReContributionOpt
                                 {{ ...contribution }}
+                                id="amount_{{ contribution.value }}"
                                 onChange="(p) => price = p"
                                 isMember="{{ (app.user and app.user.isRenaissanceSympathizer() ? '1' : '0') }}"
                             />
@@ -295,7 +290,7 @@
                             class="w-full"
                             xSyncLoading="loading"
                             x-on:click="submitForm($event)"
-                            x-bind:class="{disabled: value === '4' && !confirmStudent}"
+                            x-bind:disabled="value === '4' && !confirmStudent"
                         />
                     </twig:Atoms:ReCard>
 

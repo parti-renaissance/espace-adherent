@@ -32,7 +32,7 @@ class TerritorialCouncilControllerTest extends AbstractEnMarcheWebTestCase
         self::assertCount(1, $crawler->filter('header .em-nav-dropdown a:contains("Mes instances")'));
 
         $crawler = $this->client->click($crawler->selectLink('Mes instances')->link());
-        self::assertEquals('http://enmarche.code/parametres/mes-activites#instances', $crawler->getUri());
+        self::assertEquals('http://test.enmarche.code/parametres/mes-activites#instances', $crawler->getUri());
 
         $crawler = $this->client->click($crawler->filter('.adherent-profile__section')->first()->selectLink('Voir')->last()->link());
 

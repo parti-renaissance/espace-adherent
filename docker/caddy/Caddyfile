@@ -5,9 +5,19 @@
 	admin off
 }
 
-:80 
-
 {$CADDY_EXTRA_CONFIG}
+
+test.*.code:80 {
+    root * /srv/app/public
+
+    php_fastcgi unix//var/run/php/php-fpm.sock {
+        env APP_ENV test
+        trusted_proxies {$TRUSTED_PROXIES_WITH_SPACE:}
+    }
+    file_server
+}
+
+:80
 
 log
 

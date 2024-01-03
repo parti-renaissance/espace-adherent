@@ -8,6 +8,7 @@
         onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
     })"
     {% if id is defined %}
+    id="{{ id }}_select_widget"
     @x-validate:{{ id }}.window="setData($event.detail)"
     {% endif %}>
 

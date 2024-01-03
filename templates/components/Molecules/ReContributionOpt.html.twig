@@ -1,7 +1,7 @@
 <div class="re-contribution-opt {{ tagged ? '!mt-[20px]' }}" x-data="xReContributionOpt({{ this.jsProps }})">
     <input {{ attributes }} type="radio" x-model="value" x-on:change="onChange"/>
 
-    <label for="{{ attributes.all().id }}" class="self-stretch bg-white rounded-[10px] items-center flex flex-col">
+    <label for="{{ attributes.all().id }}" id="{{ attributes.all().id }}_label" class="self-stretch bg-white rounded-[10px] items-center flex flex-col">
         {% if tagged %}
             <div class="absolute pointer-events-none right-[24px] -top-[20px]">
                 <twig:Molecules:ReButton icon="star-filled" value="Populaire" color="blue" />

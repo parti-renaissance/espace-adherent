@@ -47,4 +47,12 @@ class AppContext extends RawMinkContext
             );
         }
     }
+
+    /**
+     * @When I clean the session cookie
+     */
+    public function cleanSessionCookie(): void
+    {
+        $this->getMink()->getSession()->setCookie('MOCKSESSID');
+    }
 }

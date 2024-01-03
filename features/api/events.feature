@@ -699,7 +699,7 @@ Feature:
             "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
             "name": "En Marche Paris 8",
             "slug": "en-marche-paris-8",
-            "link": "http://enmarche.code/comites/en-marche-paris-8"
+            "link": "http://test.enmarche.code/comites/en-marche-paris-8"
         },
         "uuid": "0e5f9f02-fa33-4c2c-a700-4235d752315b",
         "name": "Événement de la catégorie masquée",
@@ -736,7 +736,7 @@ Feature:
         "visio_url": null,
         "mode": null,
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
+        "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
         "user_registered_at": null
     }
     """
@@ -752,7 +752,7 @@ Feature:
             "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
             "name": "En Marche Paris 8",
             "slug": "en-marche-paris-8",
-            "link": "http://enmarche.code/comites/en-marche-paris-8"
+            "link": "http://test.enmarche.code/comites/en-marche-paris-8"
         },
         "uuid": "0e5f9f02-fa33-4c2c-a700-4235d752315b",
         "name": "Événement de la catégorie masquée",
@@ -791,7 +791,7 @@ Feature:
         "visio_url": null,
         "mode": null,
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
+        "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
         "user_registered_at": null
     }
     """
@@ -958,7 +958,7 @@ Feature:
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
     }
     """
 
@@ -1009,7 +1009,7 @@ Feature:
             "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3",
             "name": "Comité des 3 communes",
             "slug": "comite-des-3-communes",
-            "link": "http://enmarche.code/comites/comite-des-3-communes"
+            "link": "http://test.enmarche.code/comites/comite-des-3-communes"
         },
         "participants_count": 1,
         "status": "SCHEDULED",
@@ -1034,7 +1034,7 @@ Feature:
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
     }
     """
     And I should have 1 email "RenaissanceEventNotificationMessage" for "@en-marche-dev.fr" with payload:
@@ -1068,7 +1068,7 @@ Feature:
                 },
                 {
                     "name": "event_slug",
-                    "content": "http:\/\/renaissance.code\/espace-adherent\/evenements\/2023-01-29-nouveau-evenement\/afficher"
+                    "content": "http:\/\/test.renaissance.code\/espace-adherent\/evenements\/2023-01-29-nouveau-evenement\/afficher"
                 },
                 {
                     "name": "event_description",
@@ -1311,7 +1311,7 @@ Feature:
         "visio_url": "http://visio.fr",
         "mode": "online",
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher"
     }
     """
     And I should have 1 email
@@ -1330,7 +1330,7 @@ Feature:
              },
              {
                 "name": "event_url",
-                "content": "http://renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher"
+                "content": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher"
              },
              {
                 "name": "event_date",
@@ -1346,7 +1346,7 @@ Feature:
              },
              {
                 "name": "calendar_url",
-                "content": "http://renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/ical"
+                "content": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/ical"
              }
           ],
           "merge_vars": [
@@ -1441,7 +1441,7 @@ Feature:
              },
              {
                 "name": "event_slug",
-                "content": "http://enmarche.code/evenements"
+                "content": "http://test.enmarche.code/evenements"
              }
           ],
           "merge_vars": [
@@ -1640,7 +1640,7 @@ Feature:
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
     }
     """
     Examples:
@@ -1754,7 +1754,7 @@ Feature:
         "visio_url": "http://visio.fr",
         "mode": "online",
         "image_url": null,
-        "link": "http://renaissance.code/espace-adherent/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives/afficher"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives/afficher"
     }
     """
     Examples:
@@ -1789,7 +1789,7 @@ Feature:
     }
     """
     Then the response status code should be 200
-    And the JSON node "image_url" should match "http://enmarche.code/assets/images/events/@string@.png"
+    And the JSON node "image_url" should match "http://test.enmarche.code/assets/images/events/@string@.png"
     When I send a "DELETE" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b/image?scope=<scope>"
     Then the response status code should be 200
     When I send a "GET" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b?scope=<scope>"
