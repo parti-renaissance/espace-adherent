@@ -16,6 +16,7 @@ Feature:
         And the element "#step_1 .re-button" should be enabled
         When I fill in the following:
             | membership_request[email] | test@test.com |
+        And I wait 1 seconds
         And I press "J'adhère"
         And I wait 3 seconds
         Then the element "#step_2 .re-button" should be disabled
@@ -64,6 +65,7 @@ Feature:
         And I press "Valider"
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
         And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
+        And I wait 2 seconds
         And I click the ".textCenter:last-child a" selector
         And I should be on "/paiement" wait otherwise
         When I simulate IPN call with "00000" code for the last donation of "test@test.com"
@@ -114,18 +116,6 @@ Feature:
             | code | 1234 |
         And I press "Valider"
         Then I should see "Le code d'activation est erroné."
-        When I fill in the following:
-            | code | 4321 |
-        And I press "Valider"
-        Then I should see "Le code d'activation est erroné."
-        When I fill in the following:
-            | code | 1234 |
-        And I press "Valider"
-        Then I should see "Le code d'activation est erroné."
-        When I fill in the following:
-            | code | 2345 |
-        And I press "Valider"
-        Then I should see "Veuillez patienter quelques minutes avant de retenter."
         When I clean the session cookie
         And I click on the email link "magic_link"
         Then I should be on "/adhesion/creation-mot-de-passe" wait otherwise

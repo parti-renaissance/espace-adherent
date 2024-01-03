@@ -20,7 +20,7 @@ abstract class AbstractWebTestCase extends WebTestCase
         $this->client = static::createClient();
         $this->client->setServerParameter('HTTP_ACCEPT', 'text/html');
 
-        $this->manager = self::$container->get(EntityManagerInterface::class);
+        $this->manager = static::getContainer()->get(EntityManagerInterface::class);
     }
 
     protected function tearDown(): void
@@ -37,11 +37,11 @@ abstract class AbstractWebTestCase extends WebTestCase
 
     protected function makeEMClient(): void
     {
-        $this->client->setServerParameter('HTTP_HOST', self::$container->getParameter('app_host'));
+        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('app_host'));
     }
 
     protected function makeRenaissanceClient(): void
     {
-        $this->client->setServerParameter('HTTP_HOST', self::$container->getParameter('app_renaissance_host'));
+        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('app_renaissance_host'));
     }
 }
