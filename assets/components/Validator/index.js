@@ -199,7 +199,7 @@ const validateField = (validateTypes, domEl, setState) => {
 
     /** @type {ValidateState} */
     const successState = {
-        status: '' === value ? 'default' : 'valid',
+        status: '' === value || 0 === validateTypes.length ? 'default' : 'valid',
         message: '',
     };
 

@@ -8,8 +8,6 @@ const Form = ({
     isElu = false,
 }) => ({
     fieldsValid: {
-        phonePrefix: false,
-        phone: false,
         birthDay: false,
         birthMonth: false,
         birthYear: false,

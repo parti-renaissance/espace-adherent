@@ -82,11 +82,7 @@
                 </twig:Atoms:ReParagraphStatus>
                 <hr>
                 <fieldset>
-                    {{ form_row(form.phone, {label: 'Numéro de téléphone', attr: {
-                        onCheck: "setFieldValid('phone')",
-                        validate: "['required']",
-                        codeAttr: { onCheck: "setFieldValid('phonePrefix')", validate: "['required']" },
-                    }}) }}
+                    {{ form_row(form.phone, {label: 'Numéro de téléphone' }) }}
                 </fieldset>
 
                 {{ form_row(form.subscriptionTypes) }}
