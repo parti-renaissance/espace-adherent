@@ -39,15 +39,17 @@ Feature:
         And I click the "membership_request_isPhysicalPerson" element
         Then I click the "#step_3 .re-button" selector
         And I wait 5 seconds
+        And I scroll element "#step_4 #amount_3_label" into view
         And I click the "#step_4 #amount_4_label" selector
         And I should see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
         And I click the "#step_4 #amount_5_label" selector
         And I should not see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
-        And I press "J'adhère pour 60€"
+        And I press "J'adhère pour 60 €"
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
         And I should see "Numéro de carte"
+        And I should see "60.00 EUR"
         When I fill in the following:
             | NUMERO_CARTE | 1111222233334444 |
             | CVVX         | 123              |
