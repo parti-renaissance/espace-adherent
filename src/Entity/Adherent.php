@@ -3233,7 +3233,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         return range(
             ((int) $this->lastMembershipDonation->format('Y')) + 1,
-            date('Y')
+            (int) date('Y')
         );
     }
 
