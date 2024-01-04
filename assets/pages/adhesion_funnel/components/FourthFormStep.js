@@ -4,9 +4,10 @@ import CommonFormStep from './CommonFormStep';
 
 /**
  * First Step component for funnel
+ * @param {{missingYears: number}} props
  * @return {AlpineComponent}
  */
-const FourthForm = () => ({
+const FourthForm = (props) => ({
     ...CommonFormStep(),
     value: '2',
     price: 60,
@@ -26,6 +27,24 @@ const FourthForm = () => ({
         this.loading = true;
     },
 
+    calcCotisTotal() {
+        const cotis = 30 <= this.price ? 30 : 10;
+        const don = 10 === cotis ? 0 : this.price - cotis;
+        const totalCotis = props.missingYears ? props.missingYears * cotis : cotis;
+        const total = don + totalCotis;
+        if (7500 < total) {
+            return {
+                cotis,
+                don: don - (total - 7500),
+                total: 7500,
+            };
+        }
+        return {
+            cotis,
+            don,
+            total,
+        };
+    },
 });
 
 export default FourthForm;
