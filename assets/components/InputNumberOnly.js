@@ -4,8 +4,13 @@
  * First Step component for funnel
  * @type {AlpineDirectiveCallback}
  */
+
+// const number
 // eslint-disable-next-line no-empty-pattern
-const numberOnly = (el, {}, { cleanup }) => {
+const numberOnly = (el, {
+    modifiers: [type],
+    expression,
+}, { cleanup }) => {
     const handler = (e) => {
         const { value } = e.target;
         e.target.value = value.replace(/\D/g, '');

@@ -7,7 +7,13 @@ const Form = ({
     isJam = false,
     isElu = false,
 }) => ({
-    fieldsValid: {},
+    fieldsValid: {
+        phonePrefix: false,
+        phone: false,
+        birthDay: false,
+        birthMonth: false,
+        birthYear: false,
+    },
     isElu,
     isJam,
     loading: false,

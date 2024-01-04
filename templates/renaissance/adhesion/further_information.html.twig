@@ -83,7 +83,9 @@
                 <hr>
                 <fieldset>
                     {{ form_row(form.phone, {label: 'Numéro de téléphone', attr: {
-                        'x-on:input': 'numberOnly($event.target)'
+                        onCheck: "setFieldValid('phone')",
+                        validate: "['required']",
+                        codeAttr: { onCheck: "setFieldValid('phonePrefix')", validate: "['required']" },
                     }}) }}
                 </fieldset>
 

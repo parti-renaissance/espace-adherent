@@ -233,7 +233,7 @@ const xValidate = (state) => ({
             els.forEach((el) => {
                 const value = getValue(el);
                 el.setAttribute('data-tovalidate', true);
-                if (value) {
+                if (value && 'default' === state.status) {
                     this.checkField({ currentTarget: el });
                 }
             });

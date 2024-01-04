@@ -46,8 +46,8 @@
                           x-bind:class="{'disabled': isValueSet && blocked, '!pr-24': isValueSet && blocked}"
                           x-on:focus="handleChangeSetValue"
                           x-bind:placeholder="placeholder"
-                          {% for key in searchBoxProps|keys %}
-                            {{ key }}="{{ searchBoxProps[key] }}"
+                          {% for key,value in searchBoxProps %}
+                            {{ key }}="{{ value }}"
                           {% endfor %}
                 ></textarea>
                 <div x-show="isValueSet && blocked" x-cloak @click="handleChangeSetValue"
