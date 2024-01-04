@@ -109,9 +109,10 @@ Feature:
             | code | 1234 |
         And I press "Valider"
         Then I should see "Le code d'activation est erroné."
-        When I clean the session cookie
-        And I click on the email link "magic_link"
+        When I fill activation code from email
+        And I press "Valider"
         Then I should be on "/adhesion/creation-mot-de-passe" wait otherwise
+        And I should see "Votre adresse email a bien été validée !"
 
         # Step 7 : password creation
         And I should see "Nouveau mot de passe"
@@ -158,4 +159,4 @@ Feature:
             | adhesion_further_information[phone][number] | 0123456789 |
         And I press "Continuer"
         Then I should be on "/adhesion/felicitations" wait otherwise
-        And I should see "Félicitations, Marine !"
+        And I should see "Vous êtes désormais adhérent, félicitations !"

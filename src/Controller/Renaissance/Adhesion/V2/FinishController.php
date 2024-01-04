@@ -2,20 +2,34 @@
 
 namespace App\Controller\Renaissance\Adhesion\V2;
 
+use App\Controller\Renaissance\Payment\StatusController;
 use App\Entity\Adherent;
+use App\Repository\DonationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/adhesion/felicitations', name: 'app_adhesion_finish', methods: ['GET'])]
 class FinishController extends AbstractController
 {
-    public function __invoke(): Response
+    public function __invoke(Request $request, DonationRepository $donationRepository): Response
     {
         if (!$this->getUser() instanceof Adherent) {
             return $this->redirectToRoute('app_adhesion_index');
         }
 
-        return $this->render('renaissance/adhesion/finish.html.twig');
+        $type = 'sympathizer';
+
+        if (
+            ($lastDonationUuid = $request->getSession()->get(StatusController::SESSION_KEY))
+            && ($donation = $donationRepository->findOneByUuid($lastDonationUuid))
+            && $donation->isSuccess()
+            && $donation->isMembership()
+        ) {
+            $type = $donation->isReAdhesion() ? 'readhesion' : 'adhesion';
+        }
+
+        return $this->render('renaissance/adhesion/finish.html.twig', ['type' => $type]);
     }
 }

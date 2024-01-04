@@ -68,11 +68,24 @@ class EmailContext extends RawMinkContext
      */
     public function iClickOnTheEmailLink($emailVariableName)
     {
+        $this->visitPath($this->getVarFromEmail($emailVariableName));
+    }
+
+    /**
+     * @Then I fill activation code from email
+     */
+    public function iFillActivationCodeFromEmail(): void
+    {
+        $this->getMink()->getSession()->getPage()->fillField('code', $this->getVarFromEmail('code'));
+    }
+
+    private function getVarFromEmail(string $name): string
+    {
         if (!$this->currentEmailPayload) {
             throw new \RuntimeException('No email was previously read');
         }
 
-        $link = null;
+        $value = null;
 
         $vars = array_merge(
             $this->currentEmailPayload['message']['merge_vars'][0]['vars'] ?? [],
@@ -80,16 +93,16 @@ class EmailContext extends RawMinkContext
         );
 
         foreach ($vars as $var) {
-            if ($var['name'] === $emailVariableName) {
-                $link = $var['content'];
+            if ($name === $var['name']) {
+                $value = $var['content'];
                 break;
             }
         }
 
-        if (!$link) {
-            throw new \RuntimeException(sprintf('There is no variable or no data called %s. Variables availables are %s.', $emailVariableName, implode(', ', array_keys($this->currentEmailPayload['Recipients'][0]['Vars'] ?? []))));
+        if (null === $value) {
+            throw new \RuntimeException(sprintf('There is no variable or no data called %s. Variables availables are %s.', $name, implode(', ', array_keys($this->currentEmailPayload['Recipients'][0]['Vars'] ?? []))));
         }
 
-        $this->visitPath($link);
+        return $value;
     }
 }

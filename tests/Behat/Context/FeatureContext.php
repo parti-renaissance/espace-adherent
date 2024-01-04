@@ -80,18 +80,6 @@ class FeatureContext extends RawMinkContext
     }
 
     /**
-     * @Then I accept terms of use
-     */
-    public function acceptTermsOfUse()
-    {
-        $modalElement = '#chart_dialog + .ui-dialog-buttonpane > .ui-dialog-buttonset > button';
-        $termsOfUseModal = $this->getSession()->getPage()->find('css', $modalElement);
-        if (null !== $termsOfUseModal) {
-            $termsOfUseModal->click();
-        }
-    }
-
-    /**
      * Scroll HTML element into view
      *
      * @Then I scroll element :cssSelector into view
