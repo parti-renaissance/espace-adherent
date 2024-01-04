@@ -280,8 +280,7 @@
                             </twig:Molecules:ReCheckboxField>
                         </template>
 
-                        {{ form_errors(form.amount) }}
-                        {{ form_row(form.amount, {attr: {'x-bind:value': 'price'}}) }}
+
 
 
                         {% set missing_membership_years = membership_request.missingMembershipYears %}
@@ -309,6 +308,9 @@
                             </ul>
 
                         {% endif %}
+
+                        {{ form_errors(form.amount) }}
+                        {{ form_row(form.amount, {attr: {'x-bind:value': 'calcCotisTotal(price,' ~ missing_membership_years|length ~ ').total'}}) }}
 
                         <twig:Molecules:ReButton
                             color="green"
