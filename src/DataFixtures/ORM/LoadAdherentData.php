@@ -1144,11 +1144,11 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2019-03-22 18:23:45',
             'is_adherent' => true,
         ]));
-        $adherent->tags = [TagEnum::ADHERENT, TagEnum::ADHERENT_COTISATION_OK];
+        $adherent->tags = [TagEnum::ADHERENT, TagEnum::ADHERENT_COTISATION_NOK];
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
-        $adherent->donatedForMembership();
+        $adherent->donatedForMembership(new \DateTime('2021-02-02'));
         $adherent->certify();
         $this->addReference('renaissance-user-4', $adherent);
 

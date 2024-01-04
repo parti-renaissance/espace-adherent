@@ -4,6 +4,8 @@
 
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
+{% set membership_request = form.vars.data %}
+
 {% block content %}
     <main class="bg-[#F4F4F7] re_new_ui">
         <section
@@ -212,6 +214,27 @@
                                 </span>
 
                                 <br/>
+
+                                {% set missing_membership_years = membership_request.missingMembershipYears %}
+                                {% if missing_membership_years|length > 1 %}
+                                    <span class="font-medium">
+                                        Cette contribution concerne les années manquantes ainsi que l'année courante: {{ missing_membership_years|join(', ') }}
+                                    </span>
+
+                                    <br/>
+                                {% elseif missing_membership_years|length == 1 %}
+                                    <span class="font-medium">
+                                        Cette contribution concerne l'année courante: {{ missing_membership_years|first }}
+                                    </span>
+
+                                    <br/>
+                                {% else %}
+                                    <span class="font-medium">
+                                        Cette contribution concerne l'année courante (première année de cotisation): {{ 'now'|date('Y') }}
+                                    </span>
+
+                                    <br/>
+                                {% endif %}
 
                                 <span class=" font-normal">
                                     Cette contribution finance le fonctionnement des assemblées départementales et leur autonomie.

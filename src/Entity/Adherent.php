@@ -3221,6 +3221,26 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->lastMembershipDonation && $this->lastMembershipDonation->format('Y') === date('Y');
     }
 
+    public function getMissingMembershipYears(): array
+    {
+        if ($this->hasMembershipDonationCurrentYear()) {
+            return [];
+        }
+
+        if (!$this->lastMembershipDonation) {
+            return [date('Y')];
+        }
+
+        $years = range(
+            $this->lastMembershipDonation->format('Y'),
+            date('Y')
+        );
+
+        array_shift($years);
+
+        return $years;
+    }
+
     public function getLastMembershipDonation(): ?\DateTimeInterface
     {
         return $this->lastMembershipDonation;
