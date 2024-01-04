@@ -181,10 +181,7 @@
             <div class="relative w-full h-full">
                 {{ form_widget(form.country, {label: false, attr: {
                     class: "w-full absolute !max-h-[40px] left-0 top-0  p-0 z-[9] background-transparent re-textfield-select",
-                    placeholder: 'Code',
-                    autocomplete: "phone",
-                    onCheck: "setFieldValid('phonePrefix')",
-                    'x-on:change': "setMonth($event.target.value)",
+                    placeholder: 'Code'
                 }}) }}
             </div>
         </div>
@@ -193,9 +190,9 @@
             class: "w-full",
             placeholder: 'Numéro de téléphone',
             autocomplete: "phone",
-            onCheck: "setFieldValid('phone')",
-            'x-on:change': "setMonth($event.target.value)",
             status: valid ? 'default' : 'error',
+            'x-numberonly': '',
+            ...attr
         }}) }}
     </div>
 {% endblock %}

@@ -32,7 +32,6 @@ const Form = ({
         if (4 === target.value.length || 4 < target.value.length) {
             target.dispatchEvent(new Event('change'));
         }
-        // target.dispatchEvent(new Event('input'));
     },
 
     handleEmailInput(e) {

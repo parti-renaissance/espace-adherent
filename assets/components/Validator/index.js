@@ -199,7 +199,7 @@ const validateField = (validateTypes, domEl, setState) => {
 
     /** @type {ValidateState} */
     const successState = {
-        status: '' === value ? 'default' : 'valid',
+        status: '' === value || 0 === validateTypes.length ? 'default' : 'valid',
         message: '',
     };
 
@@ -233,7 +233,7 @@ const xValidate = (state) => ({
             els.forEach((el) => {
                 const value = getValue(el);
                 el.setAttribute('data-tovalidate', true);
-                if (value) {
+                if (value && 'default' === state.status) {
                     this.checkField({ currentTarget: el });
                 }
             });

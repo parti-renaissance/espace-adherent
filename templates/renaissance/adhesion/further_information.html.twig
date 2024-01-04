@@ -45,7 +45,8 @@
                             placeholder: 'Jour',
                             validate: "['required']",
                             onCheck: "setFieldValid('birthDay')",
-                            'x-on:change': "setDay($event.target.value)"
+                            'x-on:change': "setDay($event.target.value)",
+                            searchBoxProps: {'x-numberonly': ''}
                         }}) }}
 
                         {{ form_widget(form.birthdate.month, {label: false, attr: {
@@ -53,7 +54,7 @@
                             placeholder: 'Mois',
                             validate: "['required']",
                             onCheck: "setFieldValid('birthMonth')",
-                            'x-on:change': "setMonth($event.target.value)"
+                            'x-on:change': "setMonth($event.target.value)",
                         }}) }}
 
                         {{ form_widget(form.birthdate.year, {label: false, attr: {
@@ -61,7 +62,8 @@
                             placeholder: 'Année',
                             validate: "['required']",
                             onCheck: "setFieldValid('birthYear')",
-                            'x-on:change': "setYear($event.target.value)"
+                            'x-on:change': "setYear($event.target.value)",
+                            searchBoxProps: {'x-numberonly': ''}
                         }}) }}
                     </fieldset>
 
@@ -80,7 +82,7 @@
                 </twig:Atoms:ReParagraphStatus>
                 <hr>
                 <fieldset>
-                    {{ form_row(form.phone, {label: 'Numéro de téléphone'}) }}
+                    {{ form_row(form.phone, {label: 'Numéro de téléphone' }) }}
                 </fieldset>
 
                 {{ form_row(form.subscriptionTypes) }}

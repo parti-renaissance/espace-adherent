@@ -44,6 +44,7 @@
 
             <twig:Atoms:ReIcon x-show="status !== 'default'"
                                xSyncType="status"
+                               type="{{ status }}"
                                x-on:click="$refs.input.focus()"
                                class="flex pr-4 cursor-text"/>
             {% if icon %}
