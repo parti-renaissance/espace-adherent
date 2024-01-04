@@ -23,7 +23,7 @@ class StatusController extends AbstractController
                 $request->getSession()->set(self::SESSION_KEY, $uuid);
             } else {
                 $retryUrl = $this->generateUrl('app_payment_retry', [
-                    'uuid' => $request->query->get('uuid'),
+                    'uuid' => $uuid,
                     '_retry_token' => $donationRequestUtils->generateRetryToken(),
                 ]);
             }
