@@ -80,8 +80,6 @@ class MembershipRequest implements DonationRequestInterface
      */
     public bool $isPhysicalPerson = false;
 
-    public array $missingMembershipYears = [];
-
     /**
      * @Assert\NotBlank(groups={"adhesion:amount"}, message="Afin d'adhérer à Renaissance vous devez payer la valeur minimale de notre adhésion.")
      * @Assert\GreaterThanOrEqual(value=10, message="Le montant de la cotisation n'est pas valide", groups={"adhesion:amount"})
@@ -106,7 +104,6 @@ class MembershipRequest implements DonationRequestInterface
         $request->exclusiveMembership = $adherent->isExclusiveMembership();
         $request->partyMembership = $adherent->isTerritoireProgresMembership() ? 1 : ($adherent->isAgirMembership() ? 2 : ($adherent->isOtherPartyMembership() ? 3 : null));
         $request->allowNotifications = $adherent->hasSubscriptionType(SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL);
-        $request->missingMembershipYears = $adherent->getMissingMembershipYears();
 
         return $request;
     }
