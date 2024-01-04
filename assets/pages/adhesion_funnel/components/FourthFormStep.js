@@ -34,6 +34,7 @@ const FourthForm = (props) => ({
         const total = don + totalCotis;
         if (7500 < total) {
             return {
+                cotis,
                 don: don - (total - 7500),
                 total: 7500,
             };
