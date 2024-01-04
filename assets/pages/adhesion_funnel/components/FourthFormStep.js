@@ -26,6 +26,21 @@ const FourthForm = () => ({
         this.loading = true;
     },
 
+    calcCotisTotal(price, missingYears) {
+        const don = 30 > price ? 0 : price - 30;
+        const missing = missingYears * 30;
+        const total = don + missing;
+        if (7500 < total) {
+            return {
+                don: don - (total - 7500),
+                total: 7500,
+            };
+        }
+        return {
+            don,
+            total,
+        };
+    },
 });
 
 export default FourthForm;
