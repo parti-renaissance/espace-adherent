@@ -3231,14 +3231,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             return [date('Y')];
         }
 
-        $years = range(
-            $this->lastMembershipDonation->format('Y'),
+        return range(
+            ((int) $this->lastMembershipDonation->format('Y')) + 1,
             date('Y')
         );
-
-        array_shift($years);
-
-        return $years;
     }
 
     public function getLastMembershipDonation(): ?\DateTimeInterface
