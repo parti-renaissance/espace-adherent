@@ -4,8 +4,6 @@
 
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
-{% set membership_request = form.vars.data %}
-
 {% block content %}
     <main class="bg-[#F4F4F7] re_new_ui">
         <section
@@ -280,16 +278,14 @@
                             </twig:Molecules:ReCheckboxField>
                         </template>
 
+                        {% set missing_membership_years = app.user ? app.user.missingMembershipYears : [ "now"|date("Y") ] %}
 
-
-
-                        {% set missing_membership_years = membership_request.missingMembershipYears %}
-                        {% if missing_membership_years|length > 0 %}
+                        {% if missing_membership_years|length > 1 %}
                             <hr>
                             <twig:Atoms:ReParagraphStatus status="info">
                                 Quel plaisir de vous revoir ! <br>
                                 <br>
-                                Votre dernière cotisation a été enregistrée en {{ missing_membership_years[0] -1 }}.
+                                Votre dernière cotisation a été enregistrée en {{ app.user.lastMembershipDonation|date('Y') }}.
                                 Afin de régulariser votre situation pour {{ "now"|date('Y') }}, nous vous remercions de procéder à son règlement.
                             </twig:Atoms:ReParagraphStatus>
 
@@ -306,7 +302,6 @@
                                     <span class="text-ui_gray-80">Cotisation total</span> <span class="text-ui_green-80" x-text="`${calcCotisTotal(price, {{ missing_membership_years|length }}).total} €`"></span>
                                 </li>
                             </ul>
-
                         {% endif %}
 
                         {{ form_errors(form.amount) }}
