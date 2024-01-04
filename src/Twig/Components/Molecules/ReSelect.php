@@ -15,4 +15,5 @@ class ReSelect
     public ?string $label;
     public ?string $id;
     public ?string $blocked = null;
+    public array $searchBoxProps = [];
 }

@@ -184,7 +184,7 @@
                     placeholder: 'Code',
                     autocomplete: "phone",
                     onCheck: "setFieldValid('phonePrefix')",
-                    'x-on:change': "setMonth($event.target.value)",
+
                 }}) }}
             </div>
         </div>
@@ -194,8 +194,8 @@
             placeholder: 'Numéro de téléphone',
             autocomplete: "phone",
             onCheck: "setFieldValid('phone')",
-            'x-on:change': "setMonth($event.target.value)",
             status: valid ? 'default' : 'error',
+            'x-numberonly': '1'
         }}) }}
     </div>
 {% endblock %}
