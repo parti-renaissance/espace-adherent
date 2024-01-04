@@ -27,9 +27,10 @@ const FourthForm = () => ({
     },
 
     calcCotisTotal(price, missingYears) {
-        const don = 30 > price ? 0 : price - 30;
-        const missing = missingYears * 30;
-        const total = don + missing;
+        const cotis = 30 <= price ? 30 : 10;
+        const don = 10 === cotis ? 0 : price - cotis;
+        const totalCotis = missingYears ? missingYears * cotis : cotis;
+        const total = don + totalCotis;
         if (7500 < total) {
             return {
                 don: don - (total - 7500),
@@ -37,6 +38,7 @@ const FourthForm = () => ({
             };
         }
         return {
+            cotis,
             don,
             total,
         };
