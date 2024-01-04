@@ -18,7 +18,12 @@ class CheckStatusController extends AbstractController
             $isSuccess = true;
 
             if ($donation->isMembership()) {
-                $redirectUri = $this->generateUrl($donation->isReAdhesion() ? 'app_adhesion_finish' : 'app_adhesion_confirm_email');
+                if ($donation->isReAdhesion()) {
+                    $redirectUri = $this->generateUrl('app_adhesion_finish');
+                } else {
+                    $this->addFlash('success', 'Votre paiement a bien été validé !');
+                    $redirectUri = $this->generateUrl('app_adhesion_confirm_email');
+                }
             }
         }
 

@@ -111,12 +111,12 @@ trait TestHelperTrait
 
     public function get(string $id): ?object
     {
-        return self::$container->get($id);
+        return static::getContainer()->get($id);
     }
 
     public function getParameter(string $name)
     {
-        return self::$container->getParameter($name);
+        return static::getContainer()->getParameter($name);
     }
 
     public function assertMailCountRecipients(int $count, ?Email $mail): void

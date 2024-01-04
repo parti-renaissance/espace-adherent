@@ -62,7 +62,8 @@ class SecurityContext extends RawMinkContext
             $this->visitPath('/connexion');
             $page->findField('_login_email')->setValue($user->getUsername());
             $page->findField('_login_password')->setValue(LoadAdherentData::DEFAULT_PASSWORD);
-            $page->findButton('Connexion')->press();
+            $loginButton = $page->findButton('Connexion') ?? $page->findButton('Me connecter');
+            $loginButton->press();
 
             return;
         }

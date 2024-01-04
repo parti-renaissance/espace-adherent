@@ -1221,7 +1221,7 @@ Feature:
                          "name": "first_name"
                      },
                      {
-                         "content": "http://enmarche.code/reabonnement-email/@uuid@/@string@",
+                         "content": "http://test.enmarche.code/reabonnement-email/@uuid@/@string@",
                          "name": "email_subscribe_url"
                      },
                      {

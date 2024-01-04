@@ -24,7 +24,7 @@ Feature:
             "title": "La Rentrée des Territoires",
             "description": "Description du MOOC, la Rentrée des Territoires",
             "slug": "la-rentree-des-territoires",
-            "image": "http://enmarche.code/assets/images/745a98fd-a55c-4168-bb26-a5db550b844c.jpg"
+            "image": "http://test.enmarche.code/assets/images/745a98fd-a55c-4168-bb26-a5db550b844c.jpg"
         }
     ]
     """

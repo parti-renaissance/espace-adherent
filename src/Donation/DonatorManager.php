@@ -46,6 +46,14 @@ class DonatorManager
 
     public function findLastIdentifier(): DonatorIdentifier
     {
-        return $this->donatorIdentifierRepository->findLastIdentifier();
+        if (!$identifier = $this->donatorIdentifierRepository->findLastIdentifier()) {
+            $identifier = new DonatorIdentifier();
+            $identifier->setIdentifier('000001');
+
+            $this->manager->persist($identifier);
+            $this->manager->flush();
+        }
+
+        return $identifier;
     }
 }

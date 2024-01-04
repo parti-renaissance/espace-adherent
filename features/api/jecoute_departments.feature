@@ -25,7 +25,7 @@ Feature:
         "campaign" : {
           "subtitle": "Bienvenue en PACA",
           "description": "Description PACA",
-          "logo": "http://enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
+          "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
           "banner": null,
           "primary_color": "blue",
           "external_link": null
@@ -47,8 +47,8 @@ Feature:
         "campaign": {
           "subtitle": "Bienvenue en Hauts-de-France",
           "description": "Description des Hauts-de-France",
-          "logo": "http://enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
-          "banner": "http://enmarche.code/assets/files/jemarche/regions/region-banner.jpg",
+          "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
+          "banner": "http://test.enmarche.code/assets/files/jemarche/regions/region-banner.jpg",
           "primary_color": "green",
           "external_link": "https://en-marche.fr"
         }

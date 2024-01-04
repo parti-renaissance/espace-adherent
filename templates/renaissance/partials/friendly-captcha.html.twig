@@ -7,7 +7,7 @@
              data-puzzle-endpoint="https://eu-api.friendlycaptcha.eu/api/v1/puzzle"
              data-lang="fr"
         ></div>
-    {% elseif app.debug %}
+    {% elseif app.environment != 'prod' %}
         <input type="hidden" name="frc-captcha-solution" value="fake" />
     {% endif %}
 </div>

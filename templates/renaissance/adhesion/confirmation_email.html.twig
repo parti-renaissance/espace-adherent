@@ -15,7 +15,7 @@
                            })"
     >
         <twig:Atoms:ReCard class="max-w-[500px]">
-            {% include 'renaissance/partials/flashes.html.twig' %}
+            {% include 'renaissance/partials/flashes.html.twig' with {slim: true} %}
 
             <div>
                 <twig:Atoms:ReLabel>Confirmer votre adresse email</twig:Atoms:ReLabel>

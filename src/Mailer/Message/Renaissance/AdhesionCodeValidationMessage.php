@@ -14,7 +14,6 @@ class AdhesionCodeValidationMessage extends AbstractRenaissanceMessage
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Confirmez votre adresse email',
-            [],
             [
                 'first_name' => self::escape($adherent->getFirstName()),
                 'code' => $code,

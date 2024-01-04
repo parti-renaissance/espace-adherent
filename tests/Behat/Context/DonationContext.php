@@ -5,29 +5,15 @@ namespace Tests\App\Behat\Context;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Repository\DonatorRepository;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpClient\HttpClient;
 use Tests\App\Test\Payment\PayboxProvider;
 
 class DonationContext extends RawMinkContext
 {
     private const DEFAULT_SESSION_NAME = 'default';
-
-    /**
-     * @var RestContext
-     */
-    private $restContext;
-
-    /**
-     * @BeforeScenario
-     */
-    public function before(BeforeScenarioScope $scope)
-    {
-        $this->restContext = $scope->getEnvironment()->getContext(RestContext::class);
-    }
 
     /**
      * @When I simulate IPN call with :status code for the last donation of :email
@@ -45,14 +31,9 @@ class DonationContext extends RawMinkContext
         $payboxProvider = $this->getService(PayboxProvider::class);
         $data = $payboxProvider->prepareCallbackParameters($donation->getUuid()->toString(), $status);
 
-        $preparedData = [['key', 'value']];
-
-        array_walk($data, function ($value, string $key) use (&$preparedData) {
-            $preparedData[] = [$key, $value];
-        });
-
-        $data = new TableNode($preparedData);
-        $this->restContext->iSendARequestToWithParameters('POST', $payboxProvider->getIpnUri(), $data);
+        HttpClient::create()->request('POST', 'http://'.$this->getParameter('webhook_renaissance_host').'/paybox/payment-ipn/'.time(), [
+            'body' => $data,
+        ]);
 
         $this->getMink()->setDefaultSessionName($sessionName);
     }
@@ -60,6 +41,11 @@ class DonationContext extends RawMinkContext
     private function getService(string $name)
     {
         return $this->getContainer()->get($name);
+    }
+
+    private function getParameter(string $name)
+    {
+        return $this->getContainer()->getParameter($name);
     }
 
     private function getDonation(string $email): ?Donation

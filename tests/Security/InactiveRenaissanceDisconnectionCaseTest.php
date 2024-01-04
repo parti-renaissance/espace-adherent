@@ -30,7 +30,7 @@ class InactiveRenaissanceDisconnectionCaseTest extends AbstractRenaissanceWebTes
         $this->client->request(Request::METHOD_GET, '/admin/dashboard');
 
         // should be redirected to log out
-        $this->assertClientIsRedirectedTo('http://renaissance.code/deconnexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://test.renaissance.code/deconnexion', $this->client);
     }
 
     public function testNoLogoutInactiveAdherent()

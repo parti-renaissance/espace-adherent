@@ -10,9 +10,13 @@ services:
             default:
                 aliases:
                     - enmarche.code
+                    - renaissance.code
+                    - test.enmarche.code
+                    - test.renaissance.code
         volumes:
             - ./:/srv/app
-            - /srv/app/var
+            - /srv/app/var/cache
+            - /srv/app/var/log
             - ./docker/php/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.ini:ro
             - caddy_data:/data
             - caddy_config:/config

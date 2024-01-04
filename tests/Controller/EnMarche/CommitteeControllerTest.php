@@ -87,7 +87,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('Mes comités')->link());
-        $this->assertEquals('http://enmarche.code/parametres/mes-activites#committees', $crawler->getUri());
+        $this->assertEquals('http://test.enmarche.code/parametres/mes-activites#committees', $crawler->getUri());
 
         $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
 
