@@ -15,11 +15,12 @@ class FinishController extends AbstractController
 {
     public function __invoke(Request $request, DonationRepository $donationRepository): Response
     {
-        if (!$this->getUser() instanceof Adherent) {
+        $user = $this->getUser();
+        if (!$user instanceof Adherent) {
             return $this->redirectToRoute('app_adhesion_index');
         }
 
-        $type = 'sympathizer';
+        $type = $user->isRenaissanceAdherent() ? 'adhesion' : 'sympathizer';
 
         if (
             ($lastDonationUuid = $request->getSession()->get(StatusController::SESSION_KEY))
