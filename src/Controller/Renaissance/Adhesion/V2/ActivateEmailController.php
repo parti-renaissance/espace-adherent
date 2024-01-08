@@ -17,18 +17,24 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ActivateEmailController extends AbstractController
 {
-    public function __construct(private readonly MessageBusInterface $bus)
-    {
+    public function __construct(
+        private readonly MessageBusInterface $bus,
+        private readonly ActivationCodeManager $activationCodeManager,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly RateLimiterFactory $changeEmailLimiter,
+    ) {
     }
 
     #[Route(path: '/adhesion/confirmation-email', name: 'app_adhesion_confirm_email', methods: ['GET', 'POST'])]
-    public function validateAction(Request $request, ActivationCodeManager $activationCodeManager, EntityManagerInterface $entityManager): Response
+    public function validateAction(Request $request): Response
     {
-        if (!($adherent = $this->getUser()) instanceof Adherent) {
+        $adherent = $this->getUser();
+        if (!$adherent instanceof Adherent) {
             return $this->redirectToRoute('app_adhesion_index');
         }
 
@@ -46,7 +52,7 @@ class ActivateEmailController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('validate')->isClicked()) {
                 try {
-                    $activationCodeManager->validate((string) $validateAccountRequest->code, $adherent);
+                    $this->activationCodeManager->validate((string) $validateAccountRequest->code, $adherent);
                     $this->addFlash('success', 'Votre adresse email a bien été validée !');
 
                     return $this->redirectToRoute('app_renaissance_adherent_space');
@@ -54,8 +60,16 @@ class ActivateEmailController extends AbstractController
                     $form->get('code')->addError(new FormError($e->getMessage()));
                 }
             } elseif ($form->get('changeEmail')->isClicked()) {
+                $limiter = $this->changeEmailLimiter->create('change_email.'.$adherent->getId());
+
+                if (!$limiter->consume()->isAccepted()) {
+                    $this->addFlash('error', 'Veuillez patienter quelques minutes avant de retenter.');
+
+                    return $this->redirectToRoute('app_adhesion_confirm_email');
+                }
+
                 $adherent->setEmailAddress($validateAccountRequest->emailAddress);
-                $entityManager->flush();
+                $this->entityManager->flush();
                 $this->bus->dispatch(new GenerateActivationCodeCommand($adherent, true));
 
                 $this->addFlash('success', 'Votre adresse email a bien été modifiée ! Veuillez saisir le nouveau code reçu par email.');
