@@ -17,10 +17,13 @@ const resizeTextArea = (el) => (e) => {
 // eslint-disable-next-line no-empty-pattern
 const autogrow = (el, {}, { cleanup }) => {
     const handler = resizeTextArea(el);
-    handler();
+    const onMount = setTimeout(handler, 100);
     el.addEventListener('input', handler);
     el.addEventListener('change', handler);
-    cleanup(() => el.removeEventListener('input', handler));
+    cleanup(() => {
+        el.removeEventListener('input', handler);
+        clearTimeout(onMount);
+    });
 };
 
 export default autogrow;
