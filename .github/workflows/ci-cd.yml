@@ -237,6 +237,7 @@ jobs:
           - '@javascript1'
           - '@javascript2'
           - '@javascript3'
+          - '@ux-component'
 
     steps:
       - uses: actions/checkout@v4

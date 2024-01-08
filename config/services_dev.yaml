@@ -12,6 +12,8 @@ services:
   App\DataFixtures\:
     resource: '../src/DataFixtures/'
 
+  Tests\App\Controller\TestUXComponentController: ~
+
   Tests\App\Test\Geocoder\DummyGeocoder: ~
 
   Geocoder\Geocoder: '@Tests\App\Test\Geocoder\DummyGeocoder'
