@@ -297,7 +297,7 @@
                                     <span class="text-ui_gray-80">Don</span> <span class="text-ui_green-50" x-text="`${calcCotisTotal().don} €`"></span>
                                 </li>
                                 <li class="flex justify-between items-center">
-                                    <span class="text-ui_gray-80">Cotisation total</span> <span class="text-ui_green-80" x-text="`${calcCotisTotal().total} €`"></span>
+                                    <span class="text-ui_gray-80">Montant total</span> <span class="text-ui_green-80" x-text="`${calcCotisTotal().total} €`"></span>
                                 </li>
                             </ul>
                         {% endif %}
@@ -307,7 +307,7 @@
 
                         <twig:Molecules:ReButton
                             color="green"
-                            x-text="`J'adhère pour ${calcCotisTotal().total} €`"
+                            x-text="`Je cotise pour ${calcCotisTotal().total} €`"
                             value="J'adhère"
                             class="w-full"
                             xSyncLoading="loading"
