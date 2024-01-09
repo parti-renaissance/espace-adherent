@@ -1,0 +1,129 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Don' %}
+
+{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
+
+{% block content %}
+    <main class="bg-[#F4F4F7] re_new_ui">
+        <section
+            class="flex flex-col justify-center items-center gap-10"
+            x-data="xFunnelPage({initStep: {{ step }}})"
+            @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
+            <header class="w-full flex flex-col p-4 bg-white sticky top-0 z-50 items-center h-auto
+                            xs:p-6
+                            md:p-0 md:grid md:grid-cols-4 md:h-20
+                            lg:grid-cols-3">
+
+                <div class="pb-6 md:pb-0 md:pl-8 md:px-12">
+                    <a href="{{ path('app_renaissance_homepage') }}">
+                        <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
+                    </a>
+                </div>
+                <twig:Molecules:ReStepper
+                        id="adhesion-stepper"
+                        class="relative z-50 md:col-span-2 lg:col-span-1"
+                        steps="{{ ['Montant', 'Informations', 'Autorisation'] }}"
+                        initStep="currentStep"
+                />
+            </header>
+
+            <div class="flex-col justify-start items-start gap-8 inline-flex" x-data="{formData:{
+                email: '{{ form.vars.value.emailAddress }}'
+            }}">
+                {{ form_start(form) }}
+                <div class="flex gap-8 flex-col p-0 sm:p-5">
+                    <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
+                        {{ form_row(form.amount) }}
+                        {{ form_row(form.duration) }}
+
+                        {{ form_row(form.localDestination, {
+                            label: 'donation.local_destination.label', label_html: true,
+                            attr: { onCheck:"setFieldValid('localDestination')", validate: "['required']" }
+                        }) }}
+                    </twig:Atoms:ReCard>
+
+                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep">
+                        {{ form_row(form.gender, {
+                            label: 'Mes informations',
+                            attr: { onCheck:"setFieldValid('gender')", validate: "['required']", autocomplete:"gender" }
+                        }) }}
+
+                        <div class="flex flex-col xs:flex-row gap-5 ">
+                            {{ form_row(form.lastName, {
+                                label: false,
+                                attr: { placeholder: 'Nom', onCheck:"setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']" }
+                            }) }}
+                            {{ form_row(form.firstName, {
+                                label: false,
+                                attr: { placeholder: 'Prénom', onCheck:"setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']" }
+                            }) }}
+                        </div>
+
+                        {{ form_row(form.emailAddress, {
+                            attr: {
+                                placeholder: 'Adresse mail',
+                                validate:"['required', 'email']",
+                                autocomplete: 'email',
+                                onCheck:"setFieldValid('emailAddress')",
+                            }, label: false}) }}
+
+                        {{ form_row(form.nationality, {
+                            label: 'Nationalité',
+                            attr: { onCheck:"setFieldValid('nationality')", validate: "['required']" }
+                        }) }}
+
+                        {{ form_row(form.address, {label: 'Adresse postale'}) }}
+
+                        <twig:Molecules:ReButton
+                            color="blue"
+                            value="Suivant"
+                            class="w-full"
+                            x-on:click="handleOnSubmit($event, $dispatch)"
+                            x-bind:class="{disabled: !checkValidity()}"
+                        />
+                    </twig:Atoms:ReCard>
+
+                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3" x-data="ThirdFormStep">
+                        {{ form_row(form.isPhysicalPerson, {
+                            label: 'donation.physical_person.label', label_html: true,
+                            attr: { onCheck:"setFieldValid('isPhysicalPerson')", validate: "['required']" }
+                        }) }}
+
+                        {{ form_row(form.hasFrenchNationality, {
+                            label: 'donation.french_nationality.label', label_html: true,
+                            attr: { onCheck:"setFieldValid('hasFrenchNationality')", validate: "['required']" }
+                        }) }}
+
+                        {{ form_row(form.consentDataCollect, {
+                            attr: {
+                                validate: "['required']",
+                                onCheck: "setFieldValid('consentDataCollect')",
+                            },
+                            label: 'Je consent au traitement de mes données personnelles'
+                        }) }}
+                    </twig:Atoms:ReCard>
+
+                    <twig:Molecules:ReButton
+                        color="green"
+                        x-text="Passer au paiement"
+                        value="Passer au paiement"
+                        class="w-full"
+                        xSyncLoading="loading"
+                        x-on:click="submitForm($event)"
+                    />
+
+                    <div class="spacer h-[50vh]"></div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </section>
+    </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
+    <script>
+        Bootstrap.onLoad(() => Main.runAdhesionPage('{{ google_maps_api_key }}'));
+    </script>
+{% endblock %}
