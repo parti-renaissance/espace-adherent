@@ -14,7 +14,6 @@ class AdhesionAlreadyAdherentMessage extends AbstractRenaissanceMessage
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Vous êtes déjà adhérent',
-            [],
             [
                 'first_name' => self::escape($adherent->getFirstName()),
                 'this_year' => date('Y'),

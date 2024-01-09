@@ -15,7 +15,7 @@
                     {% elseif app.user.isEligibleForMembershipPayment() %}
                         <p class="mt-4 text-base font-bold leading-6 text-blue-800">
                             Vous n'avez pas encore renouvelé votre cotisation pour cette année.<br/>
-                            Si vous voulez recotiser, cliquez <strong><a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="underline">ici</a></strong>.
+                            Si vous voulez recotiser, cliquez <strong><a href="{{ path('app_adhesion_index') }}" class="underline">ici</a></strong>.
                         </p>
                     {% endif %}
                     <p class="mt-4 text-base leading-6 text-gray-500">Votre dernier don ou dernière cotisation remonte à <strong>{{ donations_history|first.date|ago }}</strong>.</p>

@@ -56,11 +56,11 @@
                             </a>
                         {% elseif app.user.isEligibleForMembershipPayment() %}
                             {% if app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() %}
-                                <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="button button-green">
+                                <a href="{{ path('app_adhesion_index') }}" class="button button-green">
                                     Je mets à jour ma cotisation
                                 </a>
                             {% else %}
-                                <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="button button-green">
+                                <a href="{{ path('app_adhesion_index') }}" class="button button-green">
                                     Je termine mon adhésion
                                 </a>
                             {% endif %}
@@ -122,11 +122,11 @@
                                 </a>
                             {% elseif app.user.isEligibleForMembershipPayment() %}
                                 {% if app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() %}
-                                    <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
+                                    <a href="{{ path('app_adhesion_index') }}" class="flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
                                         Je mets à jour ma cotisation
                                     </a>
                                 {% else %}
-                                    <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
+                                    <a href="{{ path('app_adhesion_index') }}" class="flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
                                         Je termine mon adhésion
                                     </a>
                                 {% endif %}

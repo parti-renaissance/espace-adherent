@@ -137,7 +137,7 @@ class MembershipNotifier implements LoggerAwareInterface
                 $adherent,
                 $url,
                 $this->urlGenerator->generate('app_renaissance_forgot_password', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                $url.'&_target_path='.$this->urlGenerator->generate('app_renaissance_adhesion_pre_payment'),
+                $url.'&_target_path='.$this->urlGenerator->generate('app_adhesion_index'),
             ));
 
             return;

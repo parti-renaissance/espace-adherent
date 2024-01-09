@@ -25,10 +25,7 @@ class FinishAdhesionListener implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        if (
-            !$event->isMainRequest()
-            || !str_starts_with($request->getPathInfo(), '/espace-adherent')
-        ) {
+        if (!$event->isMainRequest() || !str_starts_with($request->getPathInfo(), '/espace-adherent')) {
             return;
         }
 
