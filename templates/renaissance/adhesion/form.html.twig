@@ -277,12 +277,12 @@
 
                         {% if missing_membership_years|length > 1 %}
                             <hr>
-                            <twig:Atoms:ReParagraphStatus status="info">
+                            <twig:ReParagraphStatus status="info">
                                 Quel plaisir de vous revoir ! <br>
                                 <br>
                                 Votre dernière cotisation a été enregistrée en {{ app.user.lastMembershipDonation|date('Y') }}.
                                 Afin de régulariser votre situation pour {{ "now"|date('Y') }}, nous vous remercions de procéder à son règlement.
-                            </twig:Atoms:ReParagraphStatus>
+                            </twig:ReParagraphStatus>
 
                             <ul class="font-medium leading-loose">
                                 {% for year in missing_membership_years %}
