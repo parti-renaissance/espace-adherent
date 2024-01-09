@@ -1,12 +1,8 @@
 {% extends 'base_renaissance.html.twig' %}
 
-{% block page_title 'Informations complémentaires' %}
+{% block page_title 'Choisir son comité' %}
 
 {% block flash_message '' %}
-
-{% set committee_name = 'Paris 12' %}
-
-
 
 {% block content %}
     {% set committees = [
@@ -46,10 +42,10 @@
         <twig:Atoms:ReCard class="max-w-[500px] w-full flex-1 flex">
             <form class="flex gap-8 flex-col w-full" x-ref="form">
                 <twig:Atoms:ReLabel class="!mb-0">Comité local</twig:Atoms:ReLabel>
-                <twig:Atoms:ReParagraphStatus x-show="isOpen" x-cloak status="valid">
+                <twig:ReParagraphStatus x-show="isOpen" x-cloak status="valid">
                     Vous ne pouvez appartenir qu'à un seul comité local. <br>
                     Celui-ci doit nécessairement être dans votre département
-                </twig:Atoms:ReParagraphStatus>
+                </twig:ReParagraphStatus>
                 <twig:Atoms:ReCard variant="inner" class="!bg-[#F9FAFF] !p-6">
                     <div class="flex flex-col items-center justify-center gap-8">
                         <div class="flex flex-col gap-4 items-center justify-center">
@@ -58,7 +54,7 @@
                             </div>
 
                             <p x-show="!isOpen" class="text-ui_gray-60 flex items-center">
-                                <twig:Atoms:ReIcon name="location" class="mr-1" />
+                                <twig:ReIcon name="location" class="mr-1" />
                                 <span x-text="selectedCommittee.location"></span>
                             </p>
                         </div>
@@ -79,22 +75,18 @@
                                     <li>Comité: <span class="font-medium" x-text="committee.name"></span></li>
                                     <li>Responsable: <span class="font-medium" x-text="committee.responsible"></span></li>
                                     <li class="flex-row items-center flex text-ui_gray-60">
-                                        <twig:Atoms:ReIcon name="location" class="mr-1" /> <span x-text="committee.location"></span>
+                                        <twig:ReIcon name="location" class="mr-1" /> <span x-text="committee.location"></span>
                                     </li>
                                 </ul>
-                                <twig:Molecules:ReButton
-                                    color="as-link"
-                                    tag="button"
-                                    value="Rejoindre"
-                                    class="w-full !text-left !justify-start !pl-0"
-                                    x-on:click.prevent
-                                />
+                                <twig:ReButton link class="w-full text-left justify-start pl-0" x-on:click.prevent>
+                                    Rejoindre
+                                </twig:ReButton>
                             </li>
                         </template>
                     </ul>
 
-                    <twig:Molecules:ReButton
-                        color="as-link"
+                    <twig:ReButton
+                        link
                         x-text="isOpen ? `Rester dans le comité ${selectedCommittee.name}` : 'Changer de comité'"
                         class="w-full"
                         x-on:click="handleCommitteeChange($event)"
@@ -103,7 +95,7 @@
 
                 <input hidden name="committee" x-bind:value="selectedCommittee.slug" />
 
-                <twig:Molecules:ReButton class="w-full" value="Continuer" type="submit" />
+                <twig:ReButton class="w-full" type="submit">Continuer</twig:ReButton>
             </form>
         </twig:Atoms:ReCard>
     </twig:ReStandaloneLayout>
