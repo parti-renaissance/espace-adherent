@@ -1,0 +1,47 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Informations complémentaires' %}
+
+{% block flash_message '' %}
+
+{#{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}#}
+
+{% block content %}
+    <twig:ReStandaloneLayout class="re_new_ui">
+        <twig:Atoms:ReCard class="max-w-[500px]">
+{#            {% include 'renaissance/partials/flashes.html.twig' with {slim: true} %}#}
+            <form class="flex flex-col gap-8">
+                <twig:ReParagraphStatus status="warning">
+                    <span class="font-medium">Attention, vous ne recevrez jamais aucune communication de notre part </span> (hors mail statutaire) :
+                    <br><br>
+                    <ul class="list-disc list-inside">
+                        <li>Nous n’avons pas votre numéro de téléphone</li>
+                        <li>Vous n’avez pas accepté d’être contacté par téléphone</li>
+                        <li>Vous n’avez pas accepté d’être contacté par e-mail</li>
+                    </ul>
+                </twig:ReParagraphStatus>
+
+                <twig:ReParagraphStatus status="valid">
+                    À noter que vos choix peuvent être modifiés à tout instant depuis les paramètres de votre profil.
+                </twig:ReParagraphStatus>
+
+                <div class="flex-col flex gap-6">
+                    <twig:Atoms:ReLabel class="text-ui_gray-80">Numéro de téléphone</twig:Atoms:ReLabel>
+{#                    {{ form_row(form.phone, {label: 'Numéro de téléphone' }) }}#}
+                    <twig:Molecules:ReCheckboxField id="lol">
+                        Je souhaite recevoir les informations sur l'actualité de Renaissance et ses communications politiques par SMS et téléphone
+                    </twig:Molecules:ReCheckboxField>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    <twig:Atoms:ReLabel class="text-ui_gray-80">Email</twig:Atoms:ReLabel>
+                    <twig:Molecules:ReCheckboxField id="lol2" >
+                        Je souhaite recevoir les informations sur l'actualité de Renaissance et ses communications politiques par e-mail
+                    </twig:Molecules:ReCheckboxField>
+                </div>
+
+                <twig:ReButton class="w-full">Continuer</twig:ReButton>
+            </form>
+        </twig:Atoms:ReCard>
+    </twig:ReStandaloneLayout>
+{% endblock %}
