@@ -1,16 +1,11 @@
-import { Loader } from '@googlemaps/js-api-loader';
 import FirstFormStep from './components/FirstFormStep';
 import SecondFormStep, { isFranceCountry } from './components/SecondFormStep';
 import ThirdFormStep from './components/ThirdFormStep';
 import Page from './components/Page';
 import ReContributionOpt from './components/ReContributionOpt';
-import * as GooglePlaces from './google_places';
 import FourthFormStep from './components/FourthFormStep';
 
-/**
- * @param {string} googleMapApiKey
- */
-export default (googleMapApiKey) => {
+export default () => {
     window.Alpine.data('FirstFormStep', FirstFormStep);
     window.Alpine.data('SecondFormStep', SecondFormStep);
     window.isFranceCountry = isFranceCountry;
@@ -18,47 +13,4 @@ export default (googleMapApiKey) => {
     window.Alpine.data('FourthFormStep', FourthFormStep);
     window.Alpine.data('xReContributionOpt', ReContributionOpt);
     window.Alpine.data('xFunnelPage', Page);
-
-    const loaderInstance = new Loader({
-        apiKey: googleMapApiKey,
-        version: 'weekly',
-        libraries: ['places'],
-    });
-
-    GooglePlaces.initAutocomplete();
-
-    loaderInstance.importLibrary('places')
-        .then((x) => GooglePlaces.initPlaces(x))
-        .then((services) => {
-            window.getPlacePredictions = GooglePlaces.getPlacePredictions(services);
-            document.addEventListener('autocomplete_change:membership_request_address_autocomplete', ({ detail }) => {
-                if (!detail) {
-                    GooglePlaces.clearAssociatedFields();
-                    return;
-                }
-                services.placesService.getDetails({
-                    placeId: detail,
-                    sessionToken: services.sessionToken,
-                    fields: ['address_components'],
-                }, (place, status) => {
-                    if ('OK' === status) {
-                        GooglePlaces.fillInAddress(place.address_components);
-                    } else {
-                        document.dispatchEvent(new CustomEvent('x-validate:membership_request_address_autocomplete', {
-                            detail: {
-                                status,
-                                message: 'Une erreur est survenue lors de la récupération de l\'adresse',
-                            },
-                        }));
-                    }
-                });
-            });
-        });
-
-    window.queryGooglePlaces = (input) => {
-        if (window.getPlacePredictions) {
-            return window.getPlacePredictions(input);
-        }
-        return Promise.resolve([]);
-    };
 };

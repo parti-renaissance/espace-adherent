@@ -129,6 +129,15 @@ class Main {
                 module.default();
             });
     }
+
+    initGooglePlacesAutocomplete(props) {
+        return import('services/utils/googlePlacesAutoComplete').catch((error) => {
+            throw error;
+        })
+            .then((module) => {
+                module.default(props);
+            });
+    }
 }
 
 window.Main = new Main();
