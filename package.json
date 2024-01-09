@@ -14,7 +14,7 @@
     "@babel/preset-react": "^7.23.3",
     "@google/markerclusterer": "^2.0.9",
     "@googlemaps/js-api-loader": "^1.16.2",
-    "@headlessui/react": "^1.7.17",
+    "@headlessui/react": "^1.7.18",
     "@mapbox/polylabel": "^1.0.2",
     "@sentry/browser": "^7.92.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
