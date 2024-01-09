@@ -243,3 +243,44 @@ Feature:
         When I simulate IPN call with "00000" code for the last donation of "renaissance-user-4@en-marche-dev.fr"
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes à jour de cotisations, félicitations !"
+        And I should have 1 email "RenaissanceReAdhesionConfirmationMessage" for "renaissance-user-4@en-marche-dev.fr" with payload:
+        """
+        {
+            "template_name": "renaissance-re-adhesion-confirmation",
+            "template_content": [],
+            "message": {
+                "subject": "Confirmation de votre cotisation à Renaissance !",
+                "from_email": "no-reply@parti-renaissance.fr",
+                "global_merge_vars": [
+                    {
+                        "name": "target_firstname",
+                        "content": "Louis"
+                    },
+                    {
+                        "name": "year",
+                        "content": "@number@"
+                    },
+                    {
+                        "name": "profile_link",
+                        "content": "http://test.renaissance.code/parametres/mon-compte"
+                    },
+                    {
+                        "name": "donation_link",
+                        "content": "http://test.renaissance.code/don"
+                    },
+                    {
+                        "name": "committee_link",
+                        "content": "http://test.renaissance.code/espace-adherent/mon-comite-local"
+                    }
+                ],
+                "from_name": "Renaissance",
+                "to": [
+                    {
+                        "email": "renaissance-user-4@en-marche-dev.fr",
+                        "type": "to",
+                        "name": "Louis Roche"
+                    }
+                ]
+            }
+        }
+        """
