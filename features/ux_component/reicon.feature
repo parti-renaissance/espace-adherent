@@ -11,6 +11,6 @@ Feature:
         When I go to "/test/ux-component/ReIcon/dynamic"
         Then I should see 1 ".re-icon.re-icon-arrow-left" elements
         And I should see 1 "[href='#re-icon-arrow']" elements
-        Then I click the 'button' selector
+        When I click the 'button' selector
         Then I should see 1 ".re-icon.re-icon-arrow-right" elements
         And I should see 1 "[href='#re-icon-arrow']" elements

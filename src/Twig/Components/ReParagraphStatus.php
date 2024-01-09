@@ -10,5 +10,5 @@ class ReParagraphStatus extends AbstractComponentsLogic
 {
     public string $status = 'default';
     public ?string $icon = null;
-    public ?bool $slim = false;
+    public bool $slim = false;
 }
