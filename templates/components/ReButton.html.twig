@@ -1,0 +1,50 @@
+{% set isDisabledMode = disabled and onDisabledClick %}
+
+{% if isDisabledMode  %} <div x-on:click="{{ onDisabledClick }}"> {% endif %}
+    <{{ tag }}
+        {{ attributes.without('x-text', 'x-html', 'class') }}
+
+    {% if disabled %}
+        {% if this.props.disabled.alpine %}
+            x-bind:disabled="({{ this.props.disabled.alpine }})"
+        {% endif %}
+        {% if this.props.disabled.twig %}
+            disabled="disabled"
+        {% endif %}
+    {% endif %}
+
+        class="{{ this.tw(
+            're-button',
+            'text-sm sm:text-base font-medium px-8 py-2 transition-colors rounded-[10px]',
+            'justify-center items-center gap-2.5 inline-flex',
+            'focus:enabled:outline focus:outline-4 focus:outline-offset-0 focus:outline-ui_blue-20',
+            'disabled:cursor-not-allowed disabled:pointer-events-none',
+            this.variantClasses
+        )}}"
+        >
+        {% if icon is defined %}
+            <div
+                    data-name="re-button__icon-container"
+                    {% if loading and this.props.loading.alpine%} x-bind:class="{'opacity-0':({{ this.props.loading.alpine }})}" {% endif %}
+                    {% if loading and this.props.loading.twig %} class="opacity-0" {% endif %}
+            >
+                <twig:ReIcon name="{{ icon }}" />
+            </div>
+        {% endif %}
+
+            <div
+                    data-name="re-button__text-container"
+                    {{ attributes.only('x-text', 'x-html') }}
+                    {% if loading and this.props.loading.alpine%} x-bind:class="{'opacity-0':({{ this.props.loading.alpine }})}" {% endif %}
+                    {% if loading and this.props.loading.twig %} class="opacity-0" {% endif %}
+            >
+                {% block content '' %}
+            </div>
+
+        {% if loading %}
+            <div {% if this.props.loading.alpine %} x-show="{{ this.props.loading.alpine }}" {% endif %} class="absolute inline-flex items-center">
+                <twig:ReIcon name="{{ this.loaderType }}" />
+            </div>
+        {% endif %}
+    </{{ tag }}>
+{% if isDisabledMode %} </div> {% endif %}

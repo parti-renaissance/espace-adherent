@@ -1,7 +1,15 @@
+.active .re-icon-unlock svg {
+  @apply text-ui_blue-50;
+}
+
 .re-icon {
-  .re-icon-info, &.re-icon-info-blank, &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down, &.re-icon-lock {
+  svg {
+    @apply h-4 w-4;
+  }
+
+  &.re-icon-info, &.re-icon-info-blank, &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down, &.re-icon-unlock {
     @apply cursor-pointer;
-    svg path {
+    svg {
       @apply transition-colors;
     }
 
@@ -14,12 +22,26 @@
     }
   }
 
-  &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down, &.re-icon-lock {
-    &:hover svg path, &.hover svg path {
+
+  &.re-icon-unlock, &.re-icon-lock {
+    @apply text-ui_gray-40;
+    &:hover svg, &.hover svg {
+      @apply text-ui_gray-60
+    }
+
+    &:active svg {
+      @apply text-ui_gray-80
+    }
+  }
+
+
+  &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down {
+    @apply stroke-ui_gray-40;
+    &:hover svg, &.hover svg {
       @apply stroke-ui_gray-60
     }
 
-    &:active svg path {
+    &:active svg {
       @apply stroke-ui_gray-80
     }
   }

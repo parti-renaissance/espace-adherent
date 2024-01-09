@@ -9,9 +9,9 @@
 {% block security_content %}
     {{ form_start(form, { action: path('app_user_login_check', { app_domain: app_renaissance_host }), attr: { class: 'grid grid-cols-1 gap-6 lg:gap-4 w-[280px] lg:w-[420px]' } }) }}
         {% if error %}
-            <twig:Atoms:ReParagraphStatus status="error" icon="error">
+            <twig:ReParagraphStatus status="error" icon>
                 {{- error.messageKey|trans(error.messageData)|raw -}}
-            </twig:Atoms:ReParagraphStatus>
+            </twig:ReParagraphStatus>
         {% endif %}
 
         {{ form_row(form._login_email, {
@@ -28,11 +28,7 @@
 
         {{ form_row(form._remember_me, { label: 'Se souvenir de moi' }) }}
 
-        <twig:Molecules:ReButton
-            color="blue"
-            value="Me connecter"
-            class="w-full"
-        />
+        <twig:ReButton class="w-full"> Me connecter</twig:ReButton>
     {{ form_end(form) }}
 
     <div class="grid grid-cols-1 gap-6 lg:gap-10 mt-6 lg:mt-10">
@@ -43,14 +39,13 @@
 
         <hr />
 
-        <twig:Molecules:ReButton
+        <twig:ReButton
             tag="a"
             href="{{ path('app_user_get_magic_link') }}"
-            value="Me connecter avec un lien"
             class="text-sm lg:text-base"
             icon="link-circle"
             stroke
-        />
+        >Me connecter avec un lien</twig:ReButton>
 
         <p class="text-center text-[13px] lg:text-base font-normal">
             {% include 'renaissance/partials/contact_info.html.twig' %}

@@ -1,0 +1,20 @@
+{% set name = this.props.name %}
+<span {{ attributes.without('class') }}
+    {% if this.props.name.alpine %}
+        class="re-icon {{ this.tw('') }}"
+        x-data="xReIcon"
+        x-bind:class="getClassName({{ name.alpine }})"
+    {% else %}
+        class="{{ this.className }} {{ this.tw('') }}"
+    {% endif %}
+>
+    <svg>
+        <use
+            {% if this.props.name.alpine %}
+                x-bind:href="getUrl({{ name.alpine }})"
+            {% else %}
+                href="#re-icon-{{ this.iconId }}"
+            {% endif %}
+        ></use>
+    </svg>
+</span>

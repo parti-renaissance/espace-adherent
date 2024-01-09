@@ -1,0 +1,8 @@
+<div x-data="{currentStatus: 'error', message: 'one error' }">
+
+    <twig:ReParagraphStatus status="x:currentStatus" icon x-text="message" />
+
+    <button x-on:click="currentStatus = 'warning'; message= 'one warning'">
+        change Status Message
+    </button>
+</div>

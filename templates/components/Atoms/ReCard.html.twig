@@ -1,6 +1,6 @@
 <div
     {{ attributes.defaults({
-        class: "w-full h-full px-4 py-8 gap-8 xs:p-6 sm:gap-8 sm:p-8 flex-col flex bg-white border border-stone-300 #{variant is same as('outer') ? ' rounded-md xs:rounded-[20px]' : ' rounded xs:rounded-[15px]'}
+        class: "w-full h-full p-8 gap-8 flex-col text-sm sm:text-base flex bg-white border border-stone-300 #{variant is same as('outer') ? ' rounded-md xs:rounded-[20px]' : ' rounded xs:rounded-[15px]'}
                 md:p-10"
     }) }}>
     {% block content %}{% endblock %}

@@ -6,9 +6,9 @@
     <twig:ReStandaloneLayout class="re_new_ui">
         <twig:Atoms:ReCard class="max-w-[500px]">
             {% if type == 'adhesion' %}
-                <twig:Atoms:ReParagraphStatus status="success" icon="success" slim="true">
+                <twig:ReParagraphStatus status="success" icon slim>
                     Votre carte d’adhérent est envoyée !
-                </twig:Atoms:ReParagraphStatus>
+                </twig:ReParagraphStatus>
             {% endif %}
 
             <twig:Atoms:ReCard class="!p-0 overflow-hidden" variant="inner">
@@ -61,13 +61,9 @@
                 </p>
             {% endif %}
 
-            <twig:Molecules:ReButton
-                color="blue"
-                tag="a"
-                href="{{ path('app_renaissance_adherent_space') }}"
-                value="Accéder à mon espace"
-                class="w-full"
-            />
+            <twig:ReButton tag="a" href="{{ path('app_renaissance_adherent_space') }}" class="w-full" >
+                Accéder à mon espace
+            </twig:ReButton>
         </twig:Atoms:ReCard>
     </twig:ReStandaloneLayout>
 {% endblock %}

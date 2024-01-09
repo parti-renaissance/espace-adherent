@@ -15,15 +15,19 @@ const FourthForm = (props) => ({
         return this.value === value;
     },
     confirmStudent: false,
-    submitForm(event) {
+    checkFormValidity(e) {
         const checkbox = document.getElementById('isStudent');
         if ('4' === this.value && !this.confirmStudent) {
-            event.preventDefault();
+            e.preventDefault();
             checkbox.scrollIntoView();
             checkbox.focus();
             checkbox.dispatchEvent(new Event('change'));
-            return;
+            return false;
         }
+        return true;
+    },
+    submitForm(event) {
+        if (!this.checkFormValidity(event)) return;
         this.loading = true;
     },
 

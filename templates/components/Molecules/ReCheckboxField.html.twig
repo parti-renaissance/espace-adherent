@@ -19,7 +19,7 @@
             {% block content '' %}
 
             {% if iconToolTip is defined and iconToolTip|length > 0 %}
-                <twig:Atoms:ReIcon class="mt-1" type="info-blank" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
+                <twig:ReIcon class="mt-1" name="info-blank" x-tooltip.bottom-end.re="{{ iconToolTip }}"/>
             {% endif %}
         </div>
     </div>

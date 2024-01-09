@@ -1,0 +1,16 @@
+<div
+    {{ attributes.without('class', 'x-text', 'x-html') }}
+    class="{{ this.tw(
+        're-paragraph-status',
+        this.props.status.twig ? 're-paragraph-status--' ~ this.props.status.twig : '',
+        slim ? 're-paragraph-status--slim' : ''
+    ) }}"
+    {% if this.props.status.alpine %}
+        x-bind:class="'re-paragraph-status--' + {{ this.props.status.alpine }}"
+    {% endif %}
+>
+    {% if icon %}
+        <twig:ReIcon name="{{ icon|length > 1 ? icon : status }}" />
+    {% endif %}
+    <div {{ attributes.only('x-text', 'x-html') }}>{% block content '' %}</div>
+</div>

@@ -13,14 +13,17 @@
         <div x-data="{
                 isActive: false,
                 isPassword: {{ attr.type is same as('password') ? 'true' : 'false' }},
+                isPasswordVisible: false,
                 handleBlur() {
                     this.isActive = false;
                     this.$refs.input.setAttribute('type', this.isPassword ? 'password' : this.$refs.input.getAttribute('type'))
                 },
                 handleLockClick() {
                     if (this.$refs.input.type === 'password') {
+                        this.isPasswordVisible = true;
                         this.$refs.input.setAttribute('type', 'text')
                     } else {
+                        this.isPasswordVisible = false;
                         this.$refs.input.setAttribute('type', 'password')
                     }
                 }
@@ -42,29 +45,31 @@
                     class="h-full w-full border-0 outline-none focus:outline-none focus:ring-0 focus:border-0 bg-transparent"
                     id="{{ id }}" />
 
-            <twig:Atoms:ReIcon x-show="status !== 'default'"
-                               xSyncType="status"
+            <twig:ReIcon x-show="status !== 'default'"
+                               name="x:status"
                                type="{{ status }}"
                                x-on:click="$refs.input.focus()"
                                class="flex pr-4 cursor-text"/>
             {% if icon %}
-                <twig:Atoms:ReIcon x-show="status === 'default'"
+                <twig:ReIcon x-show="status === 'default'"
                                    x-ref="icon"
                                    x-cloak
-                                   type="{{ icon }}"
+                                   name="{{ icon }}"
                                    x-on:click="$refs.input.focus()"
                                    class="flex pr-4 cursor-text"
                 />
             {% endif %}
 
             {% if attr.type is same as('password') %}
-                <twig:Atoms:ReIcon
-                        x-ref="icon"
-                        x-cloak
-                        type="lock"
-                        x-on:mouseup="handleLockClick()"
-                        class="flex pr-4 cursor-text"
-                />
+                <div x-bind:class="{'active': isPasswordVisible}">
+                    <twig:ReIcon
+                            x-ref="icon"
+                            x-cloak
+                            name="x:isPasswordVisible ? 'unlock' : 'lock'"
+                            x-on:click="handleLockClick()"
+                            class="flex pr-4 cursor-pointer"
+                    />
+                </div>
             {% endif %}
         </div>
     </div>

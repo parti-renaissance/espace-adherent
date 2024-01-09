@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Twig\Components\Atoms;
+namespace App\Twig\Components;
 
+use App\Twig\AbstractComponentsLogic;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent]
-class ReParagraphStatus
+class ReParagraphStatus extends AbstractComponentsLogic
 {
     public string $status = 'default';
     public ?string $icon = null;
-    public ?string $xSyncStatus;
     public bool $slim = false;
 }
