@@ -31,15 +31,14 @@
                 <twig:ReIcon name="{{ icon }}" />
             </div>
         {% endif %}
-
-            <div
+            <span
                     data-name="re-button__text-container"
                     {{ attributes.only('x-text', 'x-html') }}
                     {% if loading and this.props.loading.alpine%} x-bind:class="{'opacity-0':({{ this.props.loading.alpine }})}" {% endif %}
                     {% if loading and this.props.loading.twig %} class="opacity-0" {% endif %}
             >
                 {% block content '' %}
-            </div>
+            </span>
 
         {% if loading %}
             <div {% if this.props.loading.alpine %} x-show="{{ this.props.loading.alpine }}" {% endif %} class="absolute inline-flex items-center">

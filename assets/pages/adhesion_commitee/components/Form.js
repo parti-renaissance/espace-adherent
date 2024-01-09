@@ -23,19 +23,19 @@ const Form = (props) => ({
     },
 
     /**
-     * @param {string} committeeSlug
+     * @param {string} committeeUuid
      */
-    setSelectCommittee(committeeSlug) {
-        this.selectedCommittee = props.committees.find((x) => x.slug === committeeSlug);
-        this.committees = props.committees.filter((x) => x.slug !== committeeSlug);
+    setSelectCommittee(committeeUuid) {
+        this.selectedCommittee = props.committees.find((x) => x.uuid === committeeUuid);
+        this.committees = props.committees.filter((x) => x.uuid !== committeeUuid);
         this.isOpen = false;
     },
 
     /**
-     * @param {string} committeeSlug
+     * @param {string} committeeUuid
      */
-    handleCommitteeClick(committeeSlug) {
-        this.setSelectCommittee(committeeSlug);
+    handleCommitteeClick(committeeUuid) {
+        this.setSelectCommittee(committeeUuid);
     },
 
     handleCommitteeChange(e) {

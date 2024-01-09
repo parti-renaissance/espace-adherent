@@ -1,50 +1,22 @@
 {% extends 'base_renaissance.html.twig' %}
 
-{% block page_title 'Choisir son comité' %}
+{% block page_title 'Choisir son comité local' %}
 
 {% block flash_message '' %}
 
 {% block content %}
-    {% set committees = [
-        {
-            name: 'Paris 12',
-            slug: 'paris-12',
-            location: '12e arrondissement de Paris',
-            responsible: 'Jean-pierre de la marche',
-        },
-        {
-            name: 'Paris 11',
-            slug: 'paris-11',
-            location: '11e arrondissement de Paris',
-            responsible: 'Jean-pierre de la marche',
-        },
-        {
-            name: 'Paris 13',
-            slug: 'paris-13',
-            location: '13e arrondissement de Paris',
-            responsible: 'Jean-pierre de la marche',
-        },
-        {
-            name: 'Paris 14',
-            slug: 'paris-14',
-            location: '14e arrondissement de Paris',
-            responsible: 'Jean-pierre de la marche',
-        },
-    ] %}
-
-    <script>
-        window.committees = JSON.parse('{{ committees | json_encode | raw }}');
-    </script>
     <twig:ReStandaloneLayout class="re_new_ui" x-data="xCommitteeForm({
-        committees: window.committees,
-        defaultCommittee: 'paris-12',
+        committees: {{ committees|map(committee => {name: committee.name, uuid: committee.uuid, location: committee.getInlineFormattedAddress(), animator: committee.animator ? committee.animator.getFullName() : ''})|json_encode|e('html_attr') }},
+        defaultCommittee: '{{ default_committee.uuid }}',
     })">
         <twig:Atoms:ReCard class="max-w-[500px] w-full flex-1 flex">
-            <form class="flex gap-8 flex-col w-full" x-ref="form">
+            {% include 'renaissance/partials/flashes.html.twig' with {slim: true} %}
+
+            <form method="post" class="flex gap-8 flex-col w-full" x-ref="form">
                 <twig:Atoms:ReLabel class="!mb-0">Comité local</twig:Atoms:ReLabel>
                 <twig:ReParagraphStatus x-show="isOpen" x-cloak status="valid">
-                    Vous ne pouvez appartenir qu'à un seul comité local. <br>
-                    Celui-ci doit nécessairement être dans votre département
+                    Vous ne pouvez appartenir qu'à un seul comité local.
+                    Celui-ci doit nécessairement être dans votre département.
                 </twig:ReParagraphStatus>
                 <twig:Atoms:ReCard variant="inner" class="!bg-[#F9FAFF] !p-6">
                     <div class="flex flex-col items-center justify-center gap-8">
@@ -53,14 +25,14 @@
                                 <img src="{{ asset('/images/icons/adhesion_funnel/committee.png') }}" alt="visuel comité" class="h-full">
                             </div>
 
-                            <p x-show="!isOpen" class="text-ui_gray-60 flex items-center">
+                            <p x-show="!isOpen && selectedCommittee.location" class="text-ui_gray-60 flex items-center">
                                 <twig:ReIcon name="location" class="mr-1" />
                                 <span x-text="selectedCommittee.location"></span>
                             </p>
                         </div>
                         <ul x-show="!isOpen">
-                            <li>Comité: <span class="font-medium" x-text="selectedCommittee.name"></span></li>
-                            <li>Responsable: <span class="font-medium" x-text="selectedCommittee.responsible"></span></li>
+                            <li>Comité : <span class="font-medium" x-text="selectedCommittee.name"></span></li>
+                            <li>Responsable : <span class="font-medium" x-text="selectedCommittee.animator"></span></li>
                         </ul>
 
                         <p class="text-ui_blue-80" x-show="isOpen">
@@ -70,12 +42,13 @@
                     <ul x-show="isOpen" class="border-ui_gray-30 border border-b-0 overflow-hidden rounded-md">
                         <template x-for="committee in committees">
                             <li class="text-ui_gray-80 flex gap-6 flex-col border-b border-inherit bg-white p-6 cursor-pointer transition-colors hover:bg-ui_blue-5"
-                                x-on:click="handleCommitteeClick(committee.slug)">
+                                x-on:click="handleCommitteeClick(committee.uuid)">
                                 <ul>
-                                    <li>Comité: <span class="font-medium" x-text="committee.name"></span></li>
-                                    <li>Responsable: <span class="font-medium" x-text="committee.responsible"></span></li>
-                                    <li class="flex-row items-center flex text-ui_gray-60">
-                                        <twig:ReIcon name="location" class="mr-1" /> <span x-text="committee.location"></span>
+                                    <li>Comité : <span class="font-medium" x-text="committee.name"></span></li>
+                                    <li>Responsable : <span class="font-medium" x-text="committee.animator"></span></li>
+                                    <li class="flex-row items-center flex text-ui_gray-60" x-show="committee.location">
+                                        <twig:ReIcon name="location" class="mr-1" />
+                                        <span x-text="committee.location"></span>
                                     </li>
                                 </ul>
                                 <twig:ReButton link class="w-full text-left justify-start pl-0" x-on:click.prevent>
@@ -93,7 +66,7 @@
                     />
                 </twig:Atoms:ReCard>
 
-                <input hidden name="committee" x-bind:value="selectedCommittee.slug" />
+                <input type="hidden" name="committee" x-bind:value="selectedCommittee.uuid" />
 
                 <twig:ReButton class="w-full" type="submit">Continuer</twig:ReButton>
             </form>

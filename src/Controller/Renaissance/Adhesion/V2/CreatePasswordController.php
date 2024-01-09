@@ -17,7 +17,8 @@ class CreatePasswordController extends AbstractController
 {
     public function __invoke(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
-        if (!($adherent = $this->getUser()) instanceof Adherent) {
+        $adherent = $this->getUser();
+        if (!$adherent instanceof Adherent) {
             return $this->redirectToRoute('app_adhesion_index');
         }
 
@@ -38,7 +39,7 @@ class CreatePasswordController extends AbstractController
 
             $this->addFlash('success', 'Votre mot de passe a bien été sauvegardé !');
 
-            return $this->redirectToRoute('app_renaissance_adherent_space');
+            return $this->redirectToRoute('app_adhesion_further_information');
         }
 
         return $this->renderForm('renaissance/adhesion/create_password.html.twig', [

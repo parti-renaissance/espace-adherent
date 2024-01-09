@@ -75,6 +75,7 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
     {
         return [
             LoadAdherentData::class,
+            LoadDesignationData::class,
         ];
     }
 }

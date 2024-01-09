@@ -3,7 +3,6 @@
 namespace App\Controller\Renaissance\MyCommittee;
 
 use App\Entity\Adherent;
-use App\Entity\Geo\Zone;
 use App\Repository\CommitteeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +24,7 @@ class ShowCommitteeListController extends AbstractController
         }
 
         return $this->render('renaissance/adherent/my_committee/show_committees_list.html.twig', [
-            'committees' => $committeeRepository->findInZones($adherent->getParentZonesOfType($adherent->isForeignResident() ? Zone::CUSTOM : Zone::DEPARTMENT)),
+            'committees' => $committeeRepository->findInAdherentZone($adherent),
         ]);
     }
 }
