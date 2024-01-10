@@ -11,14 +11,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/adhesion/informations-complementaires', name: 'app_adhesion_further_information', methods: ['GET', 'POST'])]
+#[Route(path: '/adhesion/informations-complementaires', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
 class FurtherInformationController extends AbstractController
 {
+    public const ROUTE_NAME = 'app_adhesion_further_information';
+
     public function __invoke(Request $request, EntityManagerInterface $entityManager): Response
     {
         $adherent = $this->getUser();
         if (!$adherent instanceof Adherent) {
-            return $this->redirectToRoute('app_adhesion_index');
+            return $this->redirectToRoute(AdhesionController::ROUTE_NAME);
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::FURTHER_INFORMATION)) {
@@ -34,7 +36,7 @@ class FurtherInformationController extends AbstractController
             $adherent->finishAdhesionStep(AdhesionStepEnum::FURTHER_INFORMATION);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_adhesion_committee');
+            return $this->redirectToRoute(CommitteeController::ROUTE_NAME);
         }
 
         return $this->renderForm('renaissance/adhesion/further_information.html.twig', [

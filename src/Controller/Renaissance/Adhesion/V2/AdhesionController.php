@@ -15,9 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route('/adhesion', name: 'app_adhesion_index', methods: ['GET', 'POST'])]
+#[Route('/adhesion', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
 class AdhesionController extends AbstractController
 {
+    public const ROUTE_NAME = 'app_adhesion_index';
+
     private int $step = 0;
 
     public function __construct(

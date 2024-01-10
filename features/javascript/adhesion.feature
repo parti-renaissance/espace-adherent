@@ -174,6 +174,10 @@ Feature:
         And I should see "Comité : Comité des 3 communes"
         And I should see "Responsable : Adherent 55 Fa55ke"
         When I press "Continuer"
+        Then I should be on "/adhesion/rappel-communication"
+        And I should see "Attention, vous ne recevrez jamais aucune communication par mail de notre part (hors mail statutaire)"
+        When I click the "input[name='adhesion_communication[acceptEmail]']" selector
+        And I press "Continuer"
 
         # Finish step
         Then I should be on "/adhesion/felicitations" wait otherwise

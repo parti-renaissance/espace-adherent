@@ -17,7 +17,7 @@ class FinishController extends AbstractController
     {
         $user = $this->getUser();
         if (!$user instanceof Adherent) {
-            return $this->redirectToRoute('app_adhesion_index');
+            return $this->redirectToRoute(AdhesionController::ROUTE_NAME);
         }
 
         $type = $user->isRenaissanceAdherent() ? 'adhesion' : 'sympathizer';

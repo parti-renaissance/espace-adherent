@@ -5,6 +5,7 @@ namespace App\Controller\Renaissance\Adhesion\V2\Api;
 use App\Adhesion\Command\CreateAccountCommand;
 use App\Adhesion\CreateAdherentResult;
 use App\Adhesion\Request\MembershipRequest;
+use App\Controller\Renaissance\Adhesion\V2\ActivateEmailController;
 use App\Security\AuthenticationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,7 +82,7 @@ class CreateAccountController extends AbstractController
                 return $this->json([
                     'message' => 'Vous allez être redirigé vers la suite du parcours d’adhésion.',
                     'status' => 'redirect',
-                    'location' => $this->generateUrl('app_adhesion_confirm_email'),
+                    'location' => $this->generateUrl(ActivateEmailController::ROUTE_NAME),
                 ], Response::HTTP_OK);
             }
         }

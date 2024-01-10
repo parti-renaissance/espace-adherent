@@ -22,6 +22,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ActivateEmailController extends AbstractController
 {
+    public const ROUTE_NAME = 'app_adhesion_confirm_email';
+
     public function __construct(
         private readonly MessageBusInterface $bus,
         private readonly ActivationCodeManager $activationCodeManager,
@@ -30,12 +32,12 @@ class ActivateEmailController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/adhesion/confirmation-email', name: 'app_adhesion_confirm_email', methods: ['GET', 'POST'])]
+    #[Route(path: '/adhesion/confirmation-email', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
     public function validateAction(Request $request): Response
     {
         $adherent = $this->getUser();
         if (!$adherent instanceof Adherent) {
-            return $this->redirectToRoute('app_adhesion_index');
+            return $this->redirectToRoute(AdhesionController::ROUTE_NAME);
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::ACTIVATION)) {
@@ -55,7 +57,7 @@ class ActivateEmailController extends AbstractController
                     $this->activationCodeManager->validate((string) $validateAccountRequest->code, $adherent);
                     $this->addFlash('success', 'Votre adresse email a bien été validée !');
 
-                    return $this->redirectToRoute('app_adhesion_password_create');
+                    return $this->redirectToRoute(CreatePasswordController::ROUTE_NAME);
                 } catch (ActivationCodeExceptionInterface $e) {
                     $form->get('code')->addError(new FormError($e->getMessage()));
                 }
@@ -65,7 +67,7 @@ class ActivateEmailController extends AbstractController
                 if (!$limiter->consume()->isAccepted()) {
                     $this->addFlash('error', 'Veuillez patienter quelques minutes avant de retenter.');
 
-                    return $this->redirectToRoute('app_adhesion_confirm_email');
+                    return $this->redirectToRoute(self::ROUTE_NAME);
                 }
 
                 $adherent->setEmailAddress($validateAccountRequest->emailAddress);
@@ -74,7 +76,7 @@ class ActivateEmailController extends AbstractController
 
                 $this->addFlash('success', 'Votre adresse email a bien été modifiée ! Veuillez saisir le nouveau code reçu par email.');
 
-                return $this->redirectToRoute('app_adhesion_confirm_email');
+                return $this->redirectToRoute(self::ROUTE_NAME);
             }
         }
 
@@ -107,6 +109,6 @@ class ActivateEmailController extends AbstractController
             }
         }
 
-        return $this->redirectToRoute('app_adhesion_confirm_email');
+        return $this->redirectToRoute(self::ROUTE_NAME);
     }
 }
