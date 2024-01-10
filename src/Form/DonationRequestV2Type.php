@@ -41,4 +41,9 @@ class DonationRequestV2Type extends AbstractType
             'data_class' => DonationRequest::class,
         ]);
     }
+
+    public function getBlockPrefix(): string
+    {
+        return 'donation_request';
+    }
 }
