@@ -48,9 +48,12 @@ class DonationController extends AbstractController
     private function getDonationRequest(Request $request, ?Adherent $currentUser): DonationRequest
     {
         $clientIp = $request->getClientIp();
+        $defaultAmount = DonationRequest::DEFAULT_AMOUNT_V2;
 
-        return $currentUser
-            ? DonationRequest::createFromAdherent($currentUser, $clientIp)
-            : new DonationRequest($clientIp);
+        if ($currentUser) {
+            return DonationRequest::createFromAdherent($currentUser, $clientIp, $defaultAmount);
+        }
+
+        return new DonationRequest($clientIp, $defaultAmount);
     }
 }
