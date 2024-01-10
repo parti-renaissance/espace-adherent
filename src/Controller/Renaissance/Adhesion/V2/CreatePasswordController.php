@@ -12,14 +12,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/adhesion/creation-mot-de-passe', name: 'app_adhesion_password_create', methods: ['GET', 'POST'])]
+#[Route(path: '/adhesion/creation-mot-de-passe', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
 class CreatePasswordController extends AbstractController
 {
+    public const ROUTE_NAME = 'app_adhesion_password_create';
+
     public function __invoke(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         $adherent = $this->getUser();
         if (!$adherent instanceof Adherent) {
-            return $this->redirectToRoute('app_adhesion_index');
+            return $this->redirectToRoute(AdhesionController::ROUTE_NAME);
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::PASSWORD)) {
@@ -39,7 +41,7 @@ class CreatePasswordController extends AbstractController
 
             $this->addFlash('success', 'Votre mot de passe a bien été sauvegardé !');
 
-            return $this->redirectToRoute('app_adhesion_further_information');
+            return $this->redirectToRoute(FurtherInformationController::ROUTE_NAME);
         }
 
         return $this->renderForm('renaissance/adhesion/create_password.html.twig', [

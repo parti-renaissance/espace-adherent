@@ -3,6 +3,7 @@
 namespace App\Controller\Renaissance\Payment;
 
 use App\Adhesion\AdhesionStepEnum;
+use App\Controller\Renaissance\Adhesion\V2\ActivateEmailController;
 use App\Entity\Donation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,7 @@ class CheckStatusController extends AbstractController
             if ($donation->isMembership()) {
                 if (!$donation->isReAdhesion() && !$donation->getDonator()?->getAdherent()?->hasFinishedAdhesionStep(AdhesionStepEnum::ACTIVATION)) {
                     $this->addFlash('success', 'Votre paiement a bien été validé !');
-                    $redirectUri = $this->generateUrl('app_adhesion_confirm_email');
+                    $redirectUri = $this->generateUrl(ActivateEmailController::ROUTE_NAME);
                 } else {
                     $redirectUri = $this->generateUrl('app_adhesion_finish');
                 }
