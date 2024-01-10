@@ -110,6 +110,22 @@
                         <twig:ReButton color="green" class="w-full" x-on:click="handleOnSubmit($event, $dispatch)">Suivant</twig:ReButton>
                     </twig:Atoms:ReCard>
 
+                    {% if not (app.user and app.user.hasActiveMembership()) %}
+                        <twig:Atoms:ReCard class="max-w-[500px]">
+                            {% if not app.user %}
+                                Connectez vous pour pré-remplir toutes vos informations.
+                                <br>
+                                <a href="{{ path('app_renaissance_login', { '_target_path': path('app_donation_index') }) }}">
+                                    Me connecter
+                                </a>
+                            {% endif %}
+
+                            Un don ne vaut pas adhésion ou cotisation au parti Renaissance.
+                            Si vous souhaitez adhérer/cotiser, veuillez vous rendre sur
+                            <a href="{{ path('app_adhesion_index') }}">cette page</a>
+                        </twig:Atoms:ReCard>
+                    {% endif %}
+
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep">
                         {{ form_row(form.gender, {
                             label: 'Mes informations',
