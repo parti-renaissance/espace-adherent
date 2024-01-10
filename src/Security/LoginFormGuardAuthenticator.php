@@ -120,6 +120,8 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+            $this->removeTargetPath($request->getSession(), $providerKey);
+
             return new RedirectResponse($targetPath);
         }
 

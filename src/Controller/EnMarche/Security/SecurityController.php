@@ -24,11 +24,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
+    use TargetPathTrait;
+
     #[Route(path: '/connexion', name: 'app_user_login', methods: ['GET'])]
     public function loginAction(
         Request $request,
@@ -45,6 +48,10 @@ class SecurityController extends AbstractController
             }
 
             return $this->redirectToRoute('app_search_events');
+        }
+
+        if ($request->query->has('_target_path')) {
+            $this->saveTargetPath($request->getSession(), 'main', $request->query->get('_target_path'));
         }
 
         $form = $formFactory->createNamed('', LoginType::class, [
