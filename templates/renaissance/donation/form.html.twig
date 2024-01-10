@@ -21,6 +21,7 @@
                     </a>
                 </div>
                 <twig:Molecules:ReStepper
+                        color="green"
                         id="adhesion-stepper"
                         class="relative z-50 md:col-span-2 lg:col-span-1"
                         steps="{{ ['Montant', 'Informations', 'Autorisation'] }}"
@@ -33,14 +34,80 @@
             }}">
                 {{ form_start(form) }}
                 <div class="flex gap-8 flex-col p-0 sm:p-5">
-                    <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
-                        {{ form_row(form.amount) }}
-                        {{ form_row(form.duration) }}
+                    <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep({
+                        amount: '{{ form.vars.value.amount }}',
+                        duration: '{{ form.vars.value.duration }}',
+                    })" id="step_1">
+
+                        <twig:Atoms:ReLinkedToggle color="green" name="duration" id="donation_duration_picker" label="Choix du montant">
+                            <twig:Atoms:ReToggleButton
+                                id="duration_monthly" value="0" name="duration" checked="true"
+                                x-model="duration"
+                                x-on:click="amount = '60'"
+                            >
+                                Mensuel
+                            </twig:Atoms:ReToggleButton>
+                            <twig:Atoms:ReToggleButton
+                                id="duration_punctual" value="1" name="duration"
+                                x-model="duration"
+                                x-on:click="amount = '60'"
+                            >
+                                Unique
+                            </twig:Atoms:ReToggleButton>
+
+                        </twig:Atoms:ReLinkedToggle>
+
+                        <twig:Atoms:ReLinkedToggle color="green" name="amount" id="donation_amount_picker" grid label="">
+                            <template x-if="duration === '0'">
+                                <template x-for="amt in getAmounts()">
+                                    <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="amount" x-bind:value="amt" x-model="amount" x-text="amt" />
+                                </template>
+                            </template>
+                            <template x-if="duration === '1'">
+                                <template x-for="amt in getAmounts()">
+                                    <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="`amount_1`" x-bind:value="amt" x-model="amount" x-text="amt" />
+                                </template>
+                            </template>
+                        </twig:Atoms:ReLinkedToggle>
+
+                        <template x-if="duration === '0'">
+                            <twig:Molecules:ReTextField
+                                id="amount_custom"
+                                x-on:input="amount = ($event.target.value === '' ? '60' : $event.target.value)"
+                                x-on:change="amount = ($event.target.value === '' ? '60' : $event.target.value)"
+                                center
+                                type="text"
+                                x-numberonly.5.625
+                                placeholder="Montant personnalisé (de 5€ à 625€ par mois)" />
+                        </template>
+
+                        <template x-if="duration === '1'">
+                            <twig:Molecules:ReTextField
+                                id="amount_custom"
+                                x-on:input="amount = ($event.target.value === '' ? '60' : $event.target.value)"
+                                x-on:change="amount = ($event.target.value === '' ? '60' : $event.target.value)"
+                                center
+                                type="text"
+                                x-numberonly.10.7500
+                                placeholder="Montant personnalisé (de 10€ à 7500€)" />
+                        </template>
+
+                        {{ form_row(form.amount, {attr: { 'x-bind:value': 'amount'}}) }}
+                        {{ form_row(form.duration, {attr: { 'x-bind:value': 'duration'}}) }}
 
                         {{ form_row(form.localDestination, {
                             label: 'donation.local_destination.label', label_html: true,
-                            attr: { onCheck:"setFieldValid('localDestination')", validate: "['required']" }
+                            attr: { onCheck:"setFieldValid('localDestination')" }
                         }) }}
+
+                        <div>
+                            <twig:Atoms:ReLabel>Après réduction d’impôt :</twig:Atoms:ReLabel>
+                            <div class="rounded-[10px] bg-ui_gray-10 text-ui_green-90 text-center h-[51px] flex flex-col items-center justify-center">
+                                <span x-text="getTaxTextReduction()"></span>
+                            </div>
+                        </div>
+
+                        <twig:ReButton color="green" class="w-full" x-on:click="handleOnSubmit($event, $dispatch)">Suivant</twig:ReButton>
                     </twig:Atoms:ReCard>
 
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep">
@@ -75,13 +142,12 @@
 
                         {{ form_row(form.address, {label: 'Adresse postale'}) }}
 
-                        <twig:Molecules:ReButton
-                            color="blue"
-                            value="Suivant"
+                        <twig:ReButton
                             class="w-full"
+                            color="green"
                             x-on:click="handleOnSubmit($event, $dispatch)"
-                            x-bind:class="{disabled: !checkValidity()}"
-                        />
+                            x-bind:disabled="!checkValidity()"
+                        >Suivant</twig:ReButton>
                     </twig:Atoms:ReCard>
 
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3" x-data="ThirdFormStep">
@@ -104,14 +170,12 @@
                         }) }}
                     </twig:Atoms:ReCard>
 
-                    <twig:Molecules:ReButton
+                    <twig:ReButton
                         color="green"
-                        x-text="Passer au paiement"
-                        value="Passer au paiement"
                         class="w-full"
                         xSyncLoading="loading"
                         x-on:click="submitForm($event)"
-                    />
+                    >Passer au paiement</twig:ReButton>
 
                     <div class="spacer h-[50vh]"></div>
                 </div>
@@ -124,6 +188,6 @@
 {% block final_javascripts %}
     <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
     <script>
-        Bootstrap.onLoad(() => Main.runAdhesionPage('{{ google_maps_api_key }}'));
+        Bootstrap.onLoad(() => Main.runDonationFunnelPage());
     </script>
 {% endblock %}

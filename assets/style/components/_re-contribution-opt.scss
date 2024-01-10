@@ -1,88 +1,42 @@
 .re-contribution-opt {
-  @apply w-full relative;
-  input {
-    &[type=radio] {
-      @apply absolute opacity-0 right-0 bottom-0;
-      & + label {
-        @apply w-full  min-h-[155px] bg-white rounded-[10px] relative flex justify-start items-start inline-flex cursor-pointer border border-ui_gray-30 text-ui_gray-80 font-normal text-base;
-      }
-
-      &:checked + label {
-        @apply border-2 border-ui_blue-50 text-ui_blue-50 z-10;
-      }
-
-      &:disabled {
-        @apply cursor-not-allowed;
-        & + label {
-          @apply bg-ui_gray-20 border-ui_gray-20;
-        }
-      }
-
-      &:focus:not(:checked) + label {
-        @apply outline-ui_blue-20 outline-2 z-20
-      }
-
-      &:hover:not(:disabled):not(:checked) + label {
-        @apply border-ui_gray-40 bg-ui_gray-5 text-ui_gray-80
-      }
-    }
-  }
-
-  &.re-input--error {
+    @apply w-full relative;
     input {
-      &[type=checkbox], &[type=radio] {
-        & + label {
-          @apply border-red
+        &[type=radio] {
+            @apply absolute opacity-0 right-0 bottom-0;
+            & + label {
+                @apply w-full  min-h-[155px] bg-white rounded-[10px] relative flex justify-start items-start inline-flex cursor-pointer border border-ui_gray-30 text-ui_gray-80 font-normal text-base;
+            }
+
+            &:checked + label {
+                @apply border-2 border-ui_blue-50 text-ui_blue-50 z-10;
+            }
+
+            &:disabled {
+                @apply cursor-not-allowed;
+                & + label {
+                    @apply bg-ui_gray-20 border-ui_gray-20;
+                }
+            }
+
+            &:focus:not(:checked) + label {
+                @apply outline-ui_blue-20 outline-2 z-20
+            }
+
+            &:hover:not(:disabled):not(:checked) + label {
+                @apply border-ui_gray-40 bg-ui_gray-5 text-ui_gray-80
+            }
         }
-      }
-    }
-  }
-
-
-}
-
-.re-linked-toggle {
-  position: relative;
-
-  &--error .re-linked-toggle-content {
-    @apply border-ui_red-50 border rounded-[10px];
-  }
-
-  &--warning .re-linked-toggle-content {
-    @apply border-ui_yellow-50 border rounded-[10px];
-  }
-
-  &--success .re-linked-toggle-content {
-    @apply border-ui_green-50 border rounded-[10px];
-  }
-
-  &--valid .re-linked-toggle-content {
-    @apply border-ui_blue-50 border rounded-[10px];
-  }
-
-
-  .re-linked-toggle-content {
-    @apply flex;
-    label {
-      @apply rounded-none
     }
 
-    & > * {
-
-      &:not(:first-child) {
-        @apply -ml-[1px];
-      }
-
-      &:first-child label {
-        @apply rounded-l-[10px];
-      }
-
-      &:last-child label {
-        @apply rounded-r-[10px];
-      }
+    &.re-input--error {
+        input {
+            &[type=checkbox], &[type=radio] {
+                & + label {
+                    @apply border-red
+                }
+            }
+        }
     }
-
-  }
 
 
 }

@@ -10,6 +10,7 @@ class ReStepper
     public array $steps = [];
     public int|string $initStep = 0;
     public string $id;
+    public string $color = 'blue';
 
     private function getJsonSteps(): string
     {
