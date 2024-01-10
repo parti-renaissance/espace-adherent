@@ -30,6 +30,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     use RecaptchaChallengeTrait;
 
     public const DEFAULT_AMOUNT = 50.0;
+    public const DEFAULT_AMOUNT_V2 = 60.0;
     public const ALERT_AMOUNT = 200;
 
     private string $state = DonationRequestStateEnum::STATE_DONATION_AMOUNT;
