@@ -653,6 +653,11 @@ class CommitteeRepository extends ServiceEntityRepository
         return $this->createQueryBuilderForZones($zones, $version, $withZoneParents)->getQuery()->getResult();
     }
 
+    public function findInAdherentZone(Adherent $adherent): array
+    {
+        return $this->findInZones($adherent->getParentZonesOfType($adherent->isForeignResident() ? Zone::CUSTOM : Zone::DEPARTMENT));
+    }
+
     public function findCommitteesForHost(Adherent $adherent): array
     {
         // Prevent SQL query if the adherent doesn't follow any committees yet.

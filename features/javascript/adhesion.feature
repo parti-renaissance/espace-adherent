@@ -2,11 +2,10 @@
 @javascript
 @javascript2
 Feature:
-    Background:
+    Scenario: I can become adherent
         Given the following fixtures are loaded:
             | LoadSubscriptionTypeData |
-
-    Scenario: I can become adherent
+            | LoadCommitteeV2Data      |
         When I am on "/adhesion"
         And I fill in the following:
             | membership_request[email] | test@test123.com |
@@ -160,9 +159,25 @@ Feature:
         When I fill in the following:
             | adhesion_further_information[phone][number] | 0123456789 |
         And I press "Continuer"
+
+        # Step 9 : committee
+        Then I should be on "/adhesion/comite-local" wait otherwise
+        And I should see "Comité local"
+        And I should see "Comité : Second Comité des 3 communes"
+        And I should see "Responsable : Adherent 56 Fa56ke"
+        When I press "Changer de comité"
+        Then I should see "Choisissez un nouveau comité près de chez vous"
+        And I should see "Comité : Comité des 3 communes"
+        And I should see "Responsable : Adherent 55 Fa55ke"
+        When I press "Rejoindre"
+        Then I should not see "Choisissez un nouveau comité près de chez vous"
+        And I should see "Comité : Comité des 3 communes"
+        And I should see "Responsable : Adherent 55 Fa55ke"
+        When I press "Continuer"
+
+        # Finish step
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes désormais adhérent, félicitations !"
-
 
     Scenario: I can pay for new year as adherent RE
         Given the following fixtures are loaded:

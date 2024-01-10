@@ -8,6 +8,7 @@ final class AdhesionStepEnum
     public const ACTIVATION = 'activation';
     public const PASSWORD = 'password';
     public const FURTHER_INFORMATION = 'further_information';
+    public const COMMITTEE = 'committee';
 
     public static function all(): array
     {
@@ -16,6 +17,7 @@ final class AdhesionStepEnum
             'app_adhesion_confirm_email' => self::ACTIVATION,
             'app_adhesion_password_create' => self::PASSWORD,
             'app_adhesion_further_information' => self::FURTHER_INFORMATION,
+            'app_adhesion_committee' => self::COMMITTEE,
         ];
     }
 

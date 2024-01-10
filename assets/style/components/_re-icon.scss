@@ -1,74 +1,80 @@
 .active .re-icon-unlock svg {
-  @apply text-ui_blue-50;
+    @apply text-ui_blue-50;
 }
 
 .re-icon {
-  svg {
-    @apply h-4 w-4;
-  }
-
-  &.re-icon-info, &.re-icon-info-blank, &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down, &.re-icon-unlock {
-    @apply cursor-pointer;
     svg {
-      @apply transition-colors;
+        @apply h-4 w-4;
     }
 
-  }
+    &.re-icon-info, &.re-icon-info-blank, &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down, &.re-icon-unlock {
+        @apply cursor-pointer;
+        svg {
+            @apply transition-colors;
+        }
 
-  &.re-icon-info-blank {
-    @apply rounded-full;
-    &:hover {
-      @apply outline outline-ui_blue-20
-    }
-  }
-
-
-  &.re-icon-unlock, &.re-icon-lock {
-    @apply text-ui_gray-40;
-    &:hover svg, &.hover svg {
-      @apply text-ui_gray-60
     }
 
-    &:active svg {
-      @apply text-ui_gray-80
-    }
-  }
-
-
-  &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down {
-    @apply stroke-ui_gray-40;
-    &:hover svg, &.hover svg {
-      @apply stroke-ui_gray-60
+    &.re-icon-info-blank {
+        @apply rounded-full;
+        &:hover {
+            @apply outline outline-ui_blue-20
+        }
     }
 
-    &:active svg {
-      @apply stroke-ui_gray-80
+
+    &.re-icon-unlock, &.re-icon-lock {
+        @apply text-ui_gray-40;
+        &:hover svg, &.hover svg {
+            @apply text-ui_gray-60
+        }
+
+        &:active svg {
+            @apply text-ui_gray-80
+        }
     }
-  }
 
-  &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down {
-    @apply h-4 w-4 justify-center items-center flex;
-  }
 
-  &.re-icon-arrow-up {
-    transform: rotate(180deg);
-  }
+    &.re-icon-chevron, &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down {
+        @apply stroke-ui_gray-40;
+        &:hover svg, &.hover svg {
+            @apply stroke-ui_gray-60
+        }
 
-  &.re-icon-arrow-left {
-    transform: rotate(90deg);
-  }
-
-  &.re-icon-arrow-right {
-    transform: rotate(-90deg);
-  }
-
-  &.re-icon-loading > svg {
-    @apply animate-spin bg-transparent flex justify-center items-center h-6 w-6;
-  }
-
-  &.re-icon-star-fill {
-    svg path {
-      @apply fill-ui_blue-50;
+        &:active svg {
+            @apply stroke-ui_gray-80
+        }
     }
-  }
+
+    &.re-icon-arrow-left, &.re-icon-arrow-right, &.re-icon-arrow-up, &.re-icon-arrow-down {
+        @apply h-4 w-4 justify-center items-center flex;
+    }
+
+    &.re-icon-arrow-up {
+        transform: rotate(180deg);
+    }
+
+    &.re-icon-arrow-left {
+        transform: rotate(90deg);
+    }
+
+    &.re-icon-arrow-right {
+        transform: rotate(-90deg);
+    }
+
+    &.re-icon-loading > svg {
+        @apply animate-spin bg-transparent flex justify-center items-center h-6 w-6;
+    }
+
+    &.re-icon-star-fill {
+        svg path {
+            @apply fill-ui_blue-50;
+        }
+    }
+
+    &.re-icon-location {
+        svg {
+            @apply fill-transparent
+        }
+    }
 }

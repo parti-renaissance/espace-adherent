@@ -55,7 +55,7 @@ class ActivateEmailController extends AbstractController
                     $this->activationCodeManager->validate((string) $validateAccountRequest->code, $adherent);
                     $this->addFlash('success', 'Votre adresse email a bien été validée !');
 
-                    return $this->redirectToRoute('app_renaissance_adherent_space');
+                    return $this->redirectToRoute('app_adhesion_password_create');
                 } catch (ActivationCodeExceptionInterface $e) {
                     $form->get('code')->addError(new FormError($e->getMessage()));
                 }

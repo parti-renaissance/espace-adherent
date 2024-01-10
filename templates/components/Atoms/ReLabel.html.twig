@@ -1,6 +1,6 @@
 <label
     for="{{ id is defined ? id }}"
-    class="block {{ class != '' ? class : 'text-ui_gray-80 text-base font-medium mb-6' }}"
+    {{ attributes.defaults({class: 'block text-ui_gray-80 text-base font-medium mb-6'}) }}
 >
     {% block content %}
         {%- if labelHtml is same as(true) -%}
