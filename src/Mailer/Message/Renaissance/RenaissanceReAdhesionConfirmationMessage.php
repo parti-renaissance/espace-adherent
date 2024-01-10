@@ -18,10 +18,9 @@ class RenaissanceReAdhesionConfirmationMessage extends AbstractRenaissanceMessag
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Confirmation de votre cotisation à Renaissance !',
-            [],
             [
                 'target_firstname' => self::escape($adherent->getFirstName()),
-                'year' => date('Y'),
+                'year' => $adherent->getLastMembershipDonation()?->format('Y'),
                 'profile_link' => $profileLink,
                 'donation_link' => $donationLink,
                 'committee_link' => $committeeLink,
