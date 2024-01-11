@@ -28,7 +28,8 @@ const FirstForm = (props) => {
         },
 
         async handleOnSubmit(e, $dispatch) {
-            this._handleOnSubmitBase(e);
+            e.preventDefault();
+            this.handleNextStep();
         },
     });
 };
