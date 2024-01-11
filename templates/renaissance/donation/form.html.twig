@@ -8,7 +8,13 @@
     <main class="bg-[#F4F4F7] re_new_ui">
         <section
             class="flex flex-col justify-center items-center gap-10"
-            x-data="xFunnelPage({initStep: {{ step }}})"
+            x-data="xFunnelPage({
+                    initStep: {{ step }},
+                    amount: '{{ form.vars.value.amount }}',
+                    duration: '{{ form.vars.value.duration }}',
+                    localDestination: '{{ form.vars.value.localDestination }}',
+                    connectUrl: '{{ login_path_for_anonymous_follower('app_donation_index', { step: 1 }) }}'
+                   })"
             @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
             <header class="w-full flex flex-col p-4 bg-white sticky top-0 z-50 items-center h-auto
                             xs:p-6
@@ -34,42 +40,37 @@
             }}">
                 {{ form_start(form) }}
                 <div class="flex gap-8 flex-col p-0 sm:p-5">
-                    <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep({
-                        amount: '{{ form.vars.value.amount }}',
-                        duration: '{{ form.vars.value.duration }}',
-                    })" id="step_1">
+                    <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
                         <twig:Atoms:ReLinkedToggle color="green" name="duration" id="donation_duration_picker" label="Choix du montant">
                             <twig:Atoms:ReToggleButton
-                                id="duration_monthly" value="0" name="duration" checked="true"
+                                id="duration_monthly" value="{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}" name="duration"
                                 x-model="duration"
-                                x-on:click="amount = '60'"
-                            >
+                                x-on:click="amount = '60'" >
                                 Mensuel
                             </twig:Atoms:ReToggleButton>
                             <twig:Atoms:ReToggleButton
-                                id="duration_punctual" value="1" name="duration"
+                                id="duration_punctual" value="{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}" name="duration"
                                 x-model="duration"
-                                x-on:click="amount = '60'"
-                            >
+                                x-on:click="amount = '60'" >
                                 Unique
                             </twig:Atoms:ReToggleButton>
 
                         </twig:Atoms:ReLinkedToggle>
 
                         <twig:Atoms:ReLinkedToggle color="green" name="amount" id="donation_amount_picker" grid label="">
-                            <template x-if="duration === '0'">
-                                <template x-for="amt in getAmounts()">
-                                    <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="amount" x-bind:value="amt" x-model="amount" x-text="amt" />
-                                </template>
-                            </template>
-                            <template x-if="duration === '1'">
+                            <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}'">
                                 <template x-for="amt in getAmounts()">
                                     <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="`amount_1`" x-bind:value="amt" x-model="amount" x-text="amt" />
                                 </template>
                             </template>
+                            <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}'">
+                                <template x-for="amt in getAmounts()">
+                                    <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="amount" x-bind:value="amt" x-model="amount" x-text="amt" />
+                                </template>
+                            </template>
                         </twig:Atoms:ReLinkedToggle>
 
-                        <template x-if="duration === '0'">
+                        <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}'">
                             <twig:Molecules:ReTextField
                                 id="amount_custom"
                                 x-on:input="amount = ($event.target.value === '' ? '60' : $event.target.value)"
@@ -80,11 +81,12 @@
                                 placeholder="Montant personnalisé (de 5€ à 625€ par mois)" />
                         </template>
 
-                        <template x-if="duration === '1'">
+                        <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}'">
                             <twig:Molecules:ReTextField
                                 id="amount_custom"
                                 x-on:input="amount = ($event.target.value === '' ? '60' : $event.target.value)"
                                 x-on:change="amount = ($event.target.value === '' ? '60' : $event.target.value)"
+                                x-bind:value="getCustomAmount()"
                                 center
                                 type="text"
                                 x-numberonly.10.7500
@@ -96,7 +98,7 @@
 
                         {{ form_row(form.localDestination, {
                             label: 'donation.local_destination.label', label_html: true,
-                            attr: { onCheck:"setFieldValid('localDestination')" }
+                            attr: { onCheck:"setFieldValid('localDestination')", 'x-model': 'localDestination' }
                         }) }}
 
                         <div>
@@ -116,12 +118,7 @@
                                         <twig:Atoms:ReLabel>Vous avez un déjà compte Renaissance ? </twig:Atoms:ReLabel>
                                         Connectez vous pour pré-remplir toutes vos informations.
                                     </p>
-                                    <twig:ReButton stroke color="black" tag="a" href="{{ login_path_for_anonymous_follower('app_donation_index', {
-                                        amount: form.amount.vars.value,
-                                        duration: form.duration.vars.value,
-                                        localDestination: form.localDestination.vars.value,
-                                        step: 1
-                                    }) }}">
+                                    <twig:ReButton stroke color="black" tag="a" x-bind:href="connectUrl()">
                                         Me connecter
                                     </twig:ReButton>
                                 {% endif %}

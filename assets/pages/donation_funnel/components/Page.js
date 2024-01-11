@@ -7,6 +7,10 @@ const camelToSnakeCase = (str) => str.replace(/[A-Z]/g, (letter) => `_${letter.t
  * First Step component for funnel
  * @param {{
  *   initStep?: number | null,
+ *   connectUrl: string,
+ *   amount: string,
+ *   duration: string,
+ *   localDestination: string,
  * }} props
  * @returns {AlpineComponent}
  */
@@ -17,6 +21,9 @@ const Page = (props) => ({
         this.currentStep = step;
     },
     disableDispatchToStepper: false,
+    amount: props.amount,
+    duration: props.duration,
+    localDestination: props.localDestination,
 
     handleStepperChange(step) {
         this.disableDispatchToStepper = true;
@@ -44,6 +51,14 @@ const Page = (props) => ({
                     });
             }
         }
+    },
+
+    connectUrl() {
+        const url = new URL(props.connectUrl, window.location.origin);
+        url.searchParams.set('amount', this.amount);
+        url.searchParams.set('duration', this.duration);
+        url.searchParams.set('local_destination', this.localDestination);
+        return url.toString();
     },
 
     retrieveLocalStorage() {
