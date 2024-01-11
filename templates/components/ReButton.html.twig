@@ -23,13 +23,13 @@
         )}}"
         >
         {% if icon is defined %}
-            <div
+            <span
                     data-name="re-button__icon-container"
                     {% if loading and this.props.loading.alpine%} x-bind:class="{'opacity-0':({{ this.props.loading.alpine }})}" {% endif %}
                     {% if loading and this.props.loading.twig %} class="opacity-0" {% endif %}
             >
                 <twig:ReIcon name="{{ icon }}" />
-            </div>
+            </span>
         {% endif %}
             <span
                     data-name="re-button__text-container"
@@ -41,9 +41,9 @@
             </span>
 
         {% if loading %}
-            <div {% if this.props.loading.alpine %} x-show="{{ this.props.loading.alpine }}" {% endif %} class="absolute inline-flex items-center">
+            <span {% if this.props.loading.alpine %} x-show="{{ this.props.loading.alpine }}" {% endif %} class="absolute inline-flex items-center">
                 <twig:ReIcon name="{{ this.loaderType }}" />
-            </div>
+            </span>
         {% endif %}
     </{{ tag }}>
 {% if isDisabledMode %} </div> {% endif %}

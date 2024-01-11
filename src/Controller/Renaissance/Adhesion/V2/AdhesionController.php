@@ -35,6 +35,7 @@ class AdhesionController extends AbstractController
         }
 
         /** @var MembershipRequest $membershipRequest */
+        /** @var Adherent $adherent */
         [$membershipRequest, $adherent] = $this->getMembershipRequest($request, $currentUser);
 
         if ($request->query->has(RenaissanceMembershipRequest::UTM_SOURCE)) {

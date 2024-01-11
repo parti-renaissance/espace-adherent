@@ -1,5 +1,3 @@
-
-{% block final_javascripts %}
 <script async defer>
     const init_ac_{{ id }} = async () => await Main.initGooglePlacesAutocomplete({
         apiKey: '{{ google_maps_api_key }}',
@@ -7,12 +5,12 @@
         autocompleteInputId: '{{ id }}',
     })
 </script>
-{% endblock %}
 
 <div x-init="await init_ac_{{ id }}()">
-<twig:Molecules:ReSelect
-    {{ ...attributes.all() }}
-    onQuery="(x) => window.queryGooglePlaces(x)"
-    id="{{ id }}"
-    blocked="blocked" />
+    <twig:Molecules:ReSelect
+        {{ ...attributes.all() }}
+        onQuery="(x) => window.queryGooglePlaces(x)"
+        id="{{ id }}"
+        blocked="blocked"
+    />
 </div>

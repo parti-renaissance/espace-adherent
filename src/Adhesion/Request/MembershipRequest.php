@@ -76,7 +76,7 @@ class MembershipRequest implements DonationRequestInterface
     public ?int $partyMembership = null;
 
     /**
-     * @Assert\IsTrue
+     * @Assert\IsTrue(groups={"adhesion"})
      */
     public bool $isPhysicalPerson = false;
 

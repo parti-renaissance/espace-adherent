@@ -59,7 +59,7 @@ class CreateAccountController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $errors = $this->validator->validate($membershipRequest);
+        $errors = $this->validator->validate($membershipRequest, null, ['Default', 'adhesion']);
 
         if ($errors->count()) {
             return $this->json($errors, Response::HTTP_BAD_REQUEST);

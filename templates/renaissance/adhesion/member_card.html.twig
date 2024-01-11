@@ -1,43 +1,33 @@
 {% extends 'base_renaissance.html.twig' %}
 
-{% block page_title 'Création de mot de passe' %}
+{% block page_title 'Carte d’adhérent' %}
 
 {% block flash_message '' %}
 
-{#{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}#}
+{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
 {% block content %}
     <twig:ReStandaloneLayout class="re_new_ui">
         <twig:Atoms:ReCard class="max-w-[500px]">
-{#            {% include 'renaissance/partials/flashes.html.twig' with {slim: true} %}#}
-
-            <form class="flex flex-col gap-8">
+            {{ form_start(form, { attr: { 'x-ref': 'form', class: 'flex gap-8 flex-col'} }) }}
                 <div>
-                    <twig:Atoms:ReLabel> Carte d'adhérant</twig:Atoms:ReLabel>
+                    <twig:Atoms:ReLabel>Carte d'adhérant</twig:Atoms:ReLabel>
                     <p>
                         Votre carte d’adhérent dématérialisée vient d’être générée rien que pour vous.
                     </p>
-
                 </div>
+
                 <div>
-                    <twig:Atoms:ReLabel>Adresse Postale</twig:Atoms:ReLabel>
+                    <twig:Atoms:ReLabel>Adresse postale</twig:Atoms:ReLabel>
                     <p>Nous utiliserons cette adresse pour vous envoyer votre reçu fiscal et votre carte d’adhérent.</p>
                 </div>
 
-                <twig:ReGoogleAutoComplete
-                    id="exemple_address_autocomplete"
-                    associatedFieldsPrefix="exemple_address"
-                    placeholder="Indiquez votre adresse"
-                />
-
-                <input type="text" hidden id="exemple_address_address">
-                <input type="text" hidden id="exemple_address_postalCode">
-                <input type="text" hidden id="exemple_address_cityName">
-                <input type="text" hidden id="exemple_address_country">
+                {{ form_row(form.address, {label: false}) }}
 
                 <twig:ReButton type="submit">Recevoir ma carte</twig:ReButton>
-                <twig:ReButton link>Je ne veux pas recevoir ma carte</twig:ReButton>
-            </form>
+
+                {{ form_widget(form.refuseMemberCard, {label: 'Je ne veux pas recevoir ma carte', attr: {link: 'link'}}) }}
+            {{ form_end(form) }}
         </twig:Atoms:ReCard>
     </twig:ReStandaloneLayout>
 {% endblock %}

@@ -43,7 +43,7 @@ class CommitteeController extends AbstractController
         }
 
         if (!$defaultCommittee) {
-            return $this->redirectToRoute('app_adhesion_communication_reminder');
+            return $this->redirectToRoute('app_adhesion_finish');
         }
 
         if ($request->isMethod(Request::METHOD_POST)) {
@@ -61,7 +61,7 @@ class CommitteeController extends AbstractController
             $adherent->finishAdhesionStep(AdhesionStepEnum::COMMITTEE);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_adhesion_communication_reminder');
+            return $this->redirectToRoute('app_adhesion_finish');
         }
 
         return $this->renderForm('renaissance/adhesion/committee.html.twig', [

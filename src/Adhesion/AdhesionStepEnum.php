@@ -8,6 +8,7 @@ use App\Controller\Renaissance\Adhesion\V2\CommitteeController;
 use App\Controller\Renaissance\Adhesion\V2\CommunicationReminderController;
 use App\Controller\Renaissance\Adhesion\V2\CreatePasswordController;
 use App\Controller\Renaissance\Adhesion\V2\FurtherInformationController;
+use App\Controller\Renaissance\Adhesion\V2\MemberCardController;
 
 final class AdhesionStepEnum
 {
@@ -17,6 +18,7 @@ final class AdhesionStepEnum
     public const FURTHER_INFORMATION = 'further_information';
     public const COMMITTEE = 'committee';
     public const COMMUNICATION = 'communication';
+    public const MEMBER_CARD = 'member_card';
 
     public static function all(): array
     {
@@ -25,8 +27,9 @@ final class AdhesionStepEnum
             ActivateEmailController::ROUTE_NAME => self::ACTIVATION,
             CreatePasswordController::ROUTE_NAME => self::PASSWORD,
             FurtherInformationController::ROUTE_NAME => self::FURTHER_INFORMATION,
-            CommitteeController::ROUTE_NAME => self::COMMITTEE,
+            MemberCardController::ROUTE_NAME => self::MEMBER_CARD,
             CommunicationReminderController::ROUTE_NAME => self::COMMUNICATION,
+            CommitteeController::ROUTE_NAME => self::COMMITTEE,
         ];
     }
 

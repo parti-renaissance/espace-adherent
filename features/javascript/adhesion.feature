@@ -23,9 +23,9 @@ Feature:
         And I fill in the following:
             | membership_request[firstName]             | Marine |
             | membership_request[lastName]              | Dupont |
-            | membership_request[address][address]      | 92 bld Victor Hugo |
-            | membership_request[address][postalCode]   | 92110 |
-            | membership_request[address][cityName]     | Clichy |
+            | membership_request[address][address]      | 9 rue du lycée |
+            | membership_request[address][postalCode]   | 06000  |
+            | membership_request[address][cityName]     | Nice   |
         And I click the "membership_request_address_country_select_widget" element
         And I click the "#membership_request_address_country_select_widget .re-input-option--selected" selector
         And I press "Suivant"
@@ -160,7 +160,22 @@ Feature:
             | adhesion_further_information[phone][number] | 0123456789 |
         And I press "Continuer"
 
-        # Step 9 : committee
+        # Step 9 : member card
+        Then I should be on "/adhesion/carte-adherent" wait otherwise
+        And I should see "Carte d'adhérant"
+        When I fill in the following:
+            | member_card[address][address]      | 92 bld Victor Hugo |
+            | member_card[address][postalCode]   | 92110 |
+            | member_card[address][cityName]     | Clichy |
+        When I press "Recevoir ma carte"
+
+        # Step 10 : communication
+        Then I should be on "/adhesion/rappel-communication"
+        And I should see "Attention, vous ne recevrez jamais aucune communication par mail de notre part (hors mail statutaire)"
+        When I click the "input[name='adhesion_communication[acceptEmail]']" selector
+        And I press "Continuer"
+
+        # Step 11 : committee
         Then I should be on "/adhesion/comite-local" wait otherwise
         And I should see "Comité local"
         And I should see "Comité : Second Comité des 3 communes"
@@ -174,10 +189,6 @@ Feature:
         And I should see "Comité : Comité des 3 communes"
         And I should see "Responsable : Adherent 55 Fa55ke"
         When I press "Continuer"
-        Then I should be on "/adhesion/rappel-communication"
-        And I should see "Attention, vous ne recevrez jamais aucune communication par mail de notre part (hors mail statutaire)"
-        When I click the "input[name='adhesion_communication[acceptEmail]']" selector
-        And I press "Continuer"
 
         # Finish step
         Then I should be on "/adhesion/felicitations" wait otherwise
