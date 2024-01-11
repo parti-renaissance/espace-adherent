@@ -38,9 +38,6 @@
                         amount: '{{ form.vars.value.amount }}',
                         duration: '{{ form.vars.value.duration }}',
                     })" id="step_1">
-
-                        <a href="{{ login_path_for_anonymous_follower() }}">Connexion</a>
-
                         <twig:Atoms:ReLinkedToggle color="green" name="duration" id="donation_duration_picker" label="Choix du montant">
                             <twig:Atoms:ReToggleButton
                                 id="duration_monthly" value="0" name="duration" checked="true"
@@ -119,7 +116,7 @@
                                         <twig:Atoms:ReLabel>Vous avez un déjà compte Renaissance ? </twig:Atoms:ReLabel>
                                         Connectez vous pour pré-remplir toutes vos informations.
                                     </p>
-                                    <twig:ReButton stroke color="black" tag="a" href="{{ path('app_renaissance_login', { '_target_path': path('app_donation_index') }) }}">
+                                    <twig:ReButton stroke color="black" tag="a" href="{{ login_path_for_anonymous_follower() }}">
                                         Me connecter
                                     </twig:ReButton>
                                 {% endif %}
