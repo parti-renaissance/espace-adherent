@@ -116,7 +116,12 @@
                                         <twig:Atoms:ReLabel>Vous avez un déjà compte Renaissance ? </twig:Atoms:ReLabel>
                                         Connectez vous pour pré-remplir toutes vos informations.
                                     </p>
-                                    <twig:ReButton stroke color="black" tag="a" href="{{ login_path_for_anonymous_follower() }}">
+                                    <twig:ReButton stroke color="black" tag="a" href="{{ login_path_for_anonymous_follower('app_donation_index', {
+                                        amount: form.amount.vars.value,
+                                        duration: form.duration.vars.value,
+                                        localDestination: form.localDestination.vars.value,
+                                        step: 1
+                                    }) }}">
                                         Me connecter
                                     </twig:ReButton>
                                 {% endif %}

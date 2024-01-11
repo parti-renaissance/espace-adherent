@@ -3,6 +3,7 @@
 namespace App\Controller\Renaissance\Donation\V2;
 
 use App\Donation\Handler\DonationRequestHandler;
+use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use App\Form\DonationRequestV2Type;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/v2/don', name: 'app_donation_index', methods: ['GET', 'POST'])]
 class DonationController extends AbstractController
 {
-    private int $step = 0;
+    private const DEFAULT_STEP = 0;
 
     public function __construct(
         private readonly DonationRequestHandler $donationRequestHandler,
@@ -28,7 +29,7 @@ class DonationController extends AbstractController
             return $response;
         }
 
-        /** @var Adherent $adherent */
+        /** @var Adherent|null $adherent */
         $adherent = $this->getUser();
 
         $donationRequest = $this->getDonationRequest($request, $adherent);
@@ -46,19 +47,37 @@ class DonationController extends AbstractController
 
         return $this->renderForm('renaissance/donation/form.html.twig', [
             'form' => $form,
-            'step' => $this->step,
+            'step' => $this->getCurrentStep($request, $adherent),
         ]);
     }
 
     private function getDonationRequest(Request $request, ?Adherent $currentUser): DonationRequest
     {
         $clientIp = $request->getClientIp();
-        $defaultAmount = DonationRequest::DEFAULT_AMOUNT_V2;
 
-        if ($currentUser) {
-            return DonationRequest::createFromAdherent($currentUser, $clientIp, $defaultAmount);
+        $amount = $request->query->getInt('amount', DonationRequest::DEFAULT_AMOUNT_V2);
+        $duration = $request->query->getInt('duration', PayboxPaymentSubscription::NONE);
+        $localDestination = $request->query->getBoolean('localDestination', false);
+
+        $donationRequest = $currentUser
+            ? DonationRequest::createFromAdherent($currentUser, $clientIp, $amount)
+            : new DonationRequest($clientIp, $amount);
+
+        if (PayboxPaymentSubscription::isValid($duration)) {
+            $donationRequest->setDuration($duration);
         }
 
-        return new DonationRequest($clientIp, $defaultAmount);
+        $donationRequest->localDestination = $localDestination;
+
+        return $donationRequest;
+    }
+
+    private function getCurrentStep(Request $request, Adherent $adherent = null): int
+    {
+        if ($adherent && $request->query->has('step')) {
+            return min($request->query->get('step', self::DEFAULT_STEP), 1);
+        }
+
+        return self::DEFAULT_STEP;
     }
 }
