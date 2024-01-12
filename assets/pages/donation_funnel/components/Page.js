@@ -57,7 +57,7 @@ const Page = (props) => ({
         const url = new URL(props.connectUrl, window.location.origin);
         url.searchParams.set('amount', this.amount);
         url.searchParams.set('duration', this.duration);
-        url.searchParams.set('local_destination', this.localDestination);
+        url.searchParams.set('localDestination', this.localDestination);
         return url.toString();
     },
 
