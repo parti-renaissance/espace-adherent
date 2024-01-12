@@ -79,14 +79,12 @@
 {% endblock %}
 
 {% block re_auto_complete_row %}
-    <twig:Molecules:ReSelect
+    <twig:ReGoogleAutoComplete
         name="{{ full_name }}" id="{{ id }}"
         value="{{ value }}" {{ ...attr }}
-        status="default">
-        {{ label|trans }}
-    </twig:Molecules:ReSelect>
+        associatedFieldsPrefix="{{ form.parent.vars.id }}"
+    />
 {% endblock %}
-
 
 {% block checkbox_row %}
     <div>
@@ -147,7 +145,15 @@
         {# ---- Autocomplete ---- -#}
 
         <div class="address-autocomplete-wrapper gap-8 flex flex-col" x-show="showAutoComplete">
-            {{ form_row(form.autocomplete, { label: false, attr: { placeholder: 'Saisissez et sélectionnez une adresse', onQuery:"queryGooglePlaces",  validate:"['required']", blocked:"blocked" } }) }}
+            {{ form_row(form.autocomplete, {
+                label: false,
+                attr: {
+                    placeholder: 'Saisissez et sélectionnez une adresse',
+                    validate:"['required']",
+                    associatedFieldsPrefix:"membership_request_address",
+                    blocked:"blocked"
+                }
+            }) }}
 
             <div class="text-gray-700 cursor-pointer text-center aucomplete-fields-toggle" x-on:click="showAutoComplete = false">
                 Un problème ? <br/> <span class="text-ui_blue-50"> Cliquez ici</span> pour saisir manuellement votre

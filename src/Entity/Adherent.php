@@ -878,6 +878,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private array $finishedAdhesionSteps = [];
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    public bool $acceptMemberCard = true;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();

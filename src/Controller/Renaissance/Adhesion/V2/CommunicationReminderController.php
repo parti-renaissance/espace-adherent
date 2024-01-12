@@ -44,7 +44,7 @@ class CommunicationReminderController extends AbstractController
             $adherent->finishAdhesionStep(AdhesionStepEnum::COMMUNICATION);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_adhesion_finish');
+            return $this->redirectToRoute(CommitteeController::ROUTE_NAME);
         }
 
         $form = $this
@@ -68,7 +68,7 @@ class CommunicationReminderController extends AbstractController
             $adherent->finishAdhesionStep(AdhesionStepEnum::COMMUNICATION);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_adhesion_finish');
+            return $this->redirectToRoute(CommitteeController::ROUTE_NAME);
         }
 
         return $this->renderForm('renaissance/adhesion/communication_reminder.html.twig', [

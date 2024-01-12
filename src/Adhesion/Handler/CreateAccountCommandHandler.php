@@ -51,7 +51,7 @@ class CreateAccountCommandHandler
         $currentUser->utmSource = $membershipRequest->utmSource;
         $currentUser->utmCampaign = $membershipRequest->utmCampaign;
 
-        $currentUser->setExclusiveMembership($membershipRequest->exclusiveMembership);
+        $currentUser->setExclusiveMembership($membershipRequest->exclusiveMembership ?? false);
 
         if (!$membershipRequest->exclusiveMembership) {
             $currentUser->setTerritoireProgresMembership(1 === $membershipRequest->partyMembership);

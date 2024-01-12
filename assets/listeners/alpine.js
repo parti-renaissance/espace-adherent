@@ -7,6 +7,7 @@ import ReSelect from '../components/ReSelect';
 import Autogrow from '../components/Autogrow';
 import ReSlider from '../components/ReSlider';
 import ReStepper from '../components/ReStepper';
+import ReGoogleAutoComplete from '../components/ReGoogleAutoComplete';
 
 window.Alpine = Alpine;
 export default () => {
@@ -18,5 +19,6 @@ export default () => {
     Alpine.data('xValidateField', Validator.xValidate);
     Alpine.data('xReIcon', ReIcon.xReIcon);
     Alpine.data('xReSelect', ReSelect.xReSelect);
+    Alpine.data('xReGoogleAutoComplete', ReGoogleAutoComplete.xReGoogleAutoComplete);
     Alpine.data('xReSlider', ReSlider.xReSlider);
 };

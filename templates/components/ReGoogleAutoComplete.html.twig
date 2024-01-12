@@ -1,0 +1,11 @@
+<div x-data="xReGoogleAutoComplete({
+            apiKey: '{{ google_maps_api_key }}',
+            associatedFieldsPrefix: '{{ associatedFieldsPrefix }}',
+            autocompleteInputId: '{{ id }}',
+        })">
+    <twig:Molecules:ReSelect
+        {{ ...attributes.all() }}
+        onQuery="(x) => window.queryGooglePlaces(x)"
+        id="{{ id }}"
+        blocked="blocked" />
+</div>

@@ -36,7 +36,7 @@ class FurtherInformationController extends AbstractController
             $adherent->finishAdhesionStep(AdhesionStepEnum::FURTHER_INFORMATION);
             $entityManager->flush();
 
-            return $this->redirectToRoute(CommitteeController::ROUTE_NAME);
+            return $this->redirectToRoute(MemberCardController::ROUTE_NAME);
         }
 
         return $this->renderForm('renaissance/adhesion/further_information.html.twig', [
