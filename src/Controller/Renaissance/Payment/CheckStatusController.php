@@ -26,6 +26,8 @@ class CheckStatusController extends AbstractController
                 } else {
                     $redirectUri = $this->generateUrl('app_adhesion_finish');
                 }
+            } else {
+                $redirectUri = $this->generateUrl('app_donation_finish');
             }
         }
 
