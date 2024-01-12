@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Chatbot\ThreadRepository")
  * @ORM\Table(name="chatbot_thread")
  */
 class Thread
@@ -21,8 +21,11 @@ class Thread
     use EntityTimestampableTrait;
     use OpenAIResourceTrait;
 
-    public const STATUS_RUN_IN_PROGRESS = 'in_progress';
-    public const STATUS_RUN_COMPLETED = 'completed';
+    /**
+     * @ORM\ManyToOne(targetEntity=Chatbot::class)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     */
+    public Chatbot $chatbot;
 
     /**
      * @ORM\ManyToOne(targetEntity=Adherent::class)
@@ -31,6 +34,8 @@ class Thread
     public ?Adherent $adherent = null;
 
     /**
+     * @var Message[]|Collection
+     *
      * @ORM\OneToMany(
      *     targetEntity=Message::class,
      *     mappedBy="thread",

@@ -31,7 +31,7 @@ class Run
     /**
      * @ORM\Column
      */
-    public string $status;
+    public string $status = self::STATUS_QUEUED;
 
     public function __construct(UuidInterface $uuid = null)
     {
