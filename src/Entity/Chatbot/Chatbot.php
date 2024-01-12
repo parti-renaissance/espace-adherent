@@ -12,9 +12,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Chatbot\ChatbotRepository")
  *
- * @UniqueEntity(fields={"name"})
+ * @UniqueEntity(fields={"code"})
  */
 class Chatbot
 {
@@ -27,7 +27,7 @@ class Chatbot
      *
      * @Assert\NotBlank
      */
-    public ?string $name = null;
+    public ?string $code = null;
 
     /**
      * @ORM\Column
