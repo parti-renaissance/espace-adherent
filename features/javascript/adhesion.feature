@@ -47,7 +47,6 @@ Feature:
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I should see "Numéro de carte"
         And I should see "60.00 EUR"
         When I fill in the following:
             | NUMERO_CARTE | 1111222233334444 |
@@ -193,6 +192,8 @@ Feature:
         # Finish step
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes désormais adhérent, félicitations !"
+        When I go to "/espace-adherent"
+        Then I should see "Adhérent"
 
     Scenario: I can pay for new year as adherent RE
         Given the following fixtures are loaded:
@@ -248,6 +249,21 @@ Feature:
         """
         When I click on the email link "cotisation_link"
         Then I should be on "/adhesion" wait otherwise
+        When I click the ".aucomplete-fields-toggle" selector
+        And I fill in the following:
+            | membership_request[address][address]      | 9 rue du lycée |
+            | membership_request[address][postalCode]   | 06000  |
+            | membership_request[address][cityName]     | Nice   |
+        When I press "Suivant"
+        And I wait 1 second
+        And I click the "membership_request_exclusiveMembership_1" element
+        Then I wait 3 seconds until I see "J’appartiens à un autre parti politique"
+        When I click the "membership_request_exclusiveMembership_0" element
+        Then I should not see "J’appartiens à un autre parti politique"
+        When I click the "membership_request_allowNotifications" element
+        And I click the "membership_request_isPhysicalPerson" element
+        Then I click the "#step_3 .re-button" selector
+        And I wait 3 seconds
         And I should see "Cotisation pour l’année 2022"
         And I should see "Cotisation pour l’année 2023"
         And I should see "Cotisation pour l’année 2024"
@@ -255,7 +271,6 @@ Feature:
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I should see "Numéro de carte"
         And I should see "120.00 EUR"
         When I fill in the following:
             | NUMERO_CARTE | 1111222233334444 |
@@ -273,34 +288,49 @@ Feature:
         When I simulate IPN call with "00000" code for the last donation of "renaissance-user-4@en-marche-dev.fr"
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes à jour de cotisations, félicitations !"
-        And I should have 1 email "RenaissanceReAdhesionConfirmationMessage" for "renaissance-user-4@en-marche-dev.fr" with payload:
+        When I go to "/espace-adherent"
+        Then I should see "Adhérent"
+
+    Scenario: I can become adherent from EM account
+        Given the following fixtures are loaded:
+            | LoadSubscriptionTypeData |
+            | LoadAdherentData         |
+            | LoadCommitteeV2Data      |
+        When I am on "/adhesion"
+        And I fill in the following:
+            | membership_request[email] | renaissance-user-4@en-marche-dev.fr |
+        And I click the "membership_request_consentDataCollect" element
+        And I wait 15 seconds until I see "Nous ne sommes pas parvenus à vérifier l'existence de l'adresse « renaissance-user-4@en-marche-dev.fr ». Vérifiez votre saisie avant de continuer."
+        And I press "J'adhère"
+        Then I wait 5 seconds until I see "Un email de confirmation vient d’être envoyé à votre adresse email. Cliquez sur le lien de validation qu’il contient pour continuer votre adhésion."
+        And I should have 1 email "AdhesionAlreadyAdherentMessage" for "renaissance-user-4@en-marche-dev.fr" with payload:
         """
         {
-            "template_name": "renaissance-re-adhesion-confirmation",
+            "template_name": "adhesion-already-adherent",
             "template_content": [],
             "message": {
-                "subject": "Confirmation de votre cotisation à Renaissance !",
+                "subject": "Vous êtes déjà adhérent",
                 "from_email": "no-reply@parti-renaissance.fr",
                 "global_merge_vars": [
                     {
-                        "name": "target_firstname",
+                        "name": "first_name",
                         "content": "Louis"
                     },
                     {
-                        "name": "year",
+                        "name": "this_year",
                         "content": "@number@"
                     },
                     {
-                        "name": "profile_link",
-                        "content": "http://test.renaissance.code/parametres/mon-compte"
+                        "name": "magic_link",
+                        "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=renaissance-user-4@en-marche-dev.fr&expires=@number@&hash=@string@"
                     },
                     {
-                        "name": "donation_link",
-                        "content": "http://test.renaissance.code/don"
+                        "name": "forgot_password_link",
+                        "content": "http://test.renaissance.code/mot-de-passe-oublie"
                     },
                     {
-                        "name": "committee_link",
-                        "content": "http://test.renaissance.code/espace-adherent/mon-comite-local"
+                        "name": "cotisation_link",
+                        "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=renaissance-user-4@en-marche-dev.fr&expires=@number@&hash=@string@&_target_path=/adhesion"
                     }
                 ],
                 "from_name": "Renaissance",
@@ -314,3 +344,48 @@ Feature:
             }
         }
         """
+        When I click on the email link "cotisation_link"
+        Then I should be on "/adhesion" wait otherwise
+        When I click the ".aucomplete-fields-toggle" selector
+        And I fill in the following:
+            | membership_request[address][address]      | 9 rue du lycée |
+            | membership_request[address][postalCode]   | 06000  |
+            | membership_request[address][cityName]     | Nice   |
+        And I press "Suivant"
+        And I wait 1 second
+        And I click the "membership_request_exclusiveMembership_1" element
+        Then I wait 3 seconds until I see "J’appartiens à un autre parti politique"
+        When I click the "membership_request_exclusiveMembership_0" element
+        Then I should not see "J’appartiens à un autre parti politique"
+        When I click the "membership_request_allowNotifications" element
+        And I click the "membership_request_isPhysicalPerson" element
+        Then I click the "#step_3 .re-button" selector
+        And I wait 3 seconds
+        And I scroll element "#step_4 #amount_3_label" into view
+        And I click the "#step_4 #amount_4_label" selector
+        And I should see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
+        And I click the "#step_4 #amount_5_label" selector
+        And I should not see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
+        And I press "Je cotise pour 120 €"
+
+        # Step 5 : payment
+        Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
+        And I should see "120.00 EUR"
+        When I fill in the following:
+            | NUMERO_CARTE | 1111222233334444 |
+            | CVVX         | 123              |
+        And I wait 2 seconds
+        And I click the "#pbx-card-button-choice1" selector
+        And I select "12" from "MOIS_VALIDITE"
+        And I select "35" from "AN_VALIDITE"
+        And I press "Valider"
+        Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
+        And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
+        And I wait 2 seconds
+        And I click the ".textCenter:last-child a" selector
+        And I should be on "/paiement" wait otherwise
+        When I simulate IPN call with "00000" code for the last donation of "renaissance-user-4@en-marche-dev.fr"
+        Then I should be on "/adhesion/felicitations" wait otherwise
+        And I should see "Vous êtes à jour de cotisations, félicitations !"
+        When I go to "/espace-adherent"
+        Then I should see "Adhérent"

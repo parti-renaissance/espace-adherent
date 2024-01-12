@@ -3494,6 +3494,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return !$this->isOtherPartyMembership();
     }
 
+    public function finishAdhesionSteps(array $steps): void
+    {
+        $this->finishedAdhesionSteps = $steps;
+    }
+
     public function finishAdhesionStep(string $step): void
     {
         $this->finishedAdhesionSteps = array_unique(array_merge($this->finishedAdhesionSteps, [$step]));
