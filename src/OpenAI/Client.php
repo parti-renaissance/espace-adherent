@@ -2,8 +2,6 @@
 
 namespace App\OpenAI;
 
-use App\OpenAI\Resources\Message;
-use App\OpenAI\Resources\Thread;
 use OpenAI\Client as BaseClient;
 
 class Client
@@ -22,12 +20,14 @@ class Client
         return $threadResponse->id;
     }
 
-    public function addMessageToThread(string $threadId, string $message): void
+    public function addUserMessage(string $threadId, string $message): string
     {
-        $this->openAI->threads()->messages()->create($threadId, [
+        $messageResponse = $this->openAI->threads()->messages()->create($threadId, [
             'role' => 'user',
             'content' => $message,
         ]);
+
+        return $messageResponse->id;
     }
 
     public function createRun(string $threadId, string $assistantId): string
@@ -37,6 +37,18 @@ class Client
         ]);
 
         return $runResponse->id;
+    }
+
+    public function cancelRun(string $threadId, string $runId): void
+    {
+        $this->openAI->threads()->runs()->cancel($threadId, $runId);
+    }
+
+    public function getRunStatus(string $threadId, string $runId): string
+    {
+        $runResponse = $this->openAI->threads()->runs()->retrieve($threadId, $runId);
+
+        return $runResponse->status;
     }
 
     public function getThread(string $threadId, string $lastRunId = null): Thread
