@@ -42,7 +42,7 @@
                     x-on:focus="isActive = true"
                     x-on:blur="handleBlur()"
 
-                    class="h-full w-full border-0 outline-none focus:outline-none focus:ring-0 focus:border-0 bg-transparent"
+                    class="h-full w-full border-0 outline-none focus:outline-none focus:ring-0 focus:border-0 bg-transparent {{ (center ? ' text-center' : '') }}"
                     id="{{ id }}" />
 
             <twig:ReIcon x-show="status !== 'default'"

@@ -13,4 +13,5 @@ class ReTextField
     public ?string $label = null;
     public ?string $id = null;
     public ?string $icon = null;
+    public bool $center = false;
 }

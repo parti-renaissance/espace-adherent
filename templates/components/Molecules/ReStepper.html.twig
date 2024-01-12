@@ -2,7 +2,7 @@
 <div
     x-data="xReStepper({{ this.jsProps() }})"
     {{ attributes.defaults({
-        class: 're-stepper w-full flex-col flex bg-white relative'
+        class: 're-stepper re-stepper--'~color~' w-full flex-col flex bg-white relative'
     }) }}
     @setcurrentstep:{{ id }}.window="setCurrentStep($event.detail)">
     <div class="w-full flex-row flex">
@@ -17,7 +17,7 @@
                     class="pl-1 w-full text-xs xs:text-sm font-medium transition-colors md:text-base"
                     x-bind:class="{
                         'text-ui_gray-80': isCurrent(index),
-                        'text-ui_blue-50': isBeforeCurrent(index),
+                        'text-ui_{{ color }}-50': isBeforeCurrent(index),
                         'text-ui_gray-40': isAfterCurrent(index),
                 }"></span>
                 <div

@@ -10,6 +10,7 @@ class AnonymousExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
+            new TwigFunction('em_login_path_for_anonymous_follower', [AnonymousRuntime::class, 'generateEMLoginPathForAnonymousFollower']),
             new TwigFunction('login_path_for_anonymous_follower', [AnonymousRuntime::class, 'generateLoginPathForAnonymousFollower']),
             new TwigFunction('register_path_for_anonymous_follower', [AnonymousRuntime::class, 'generateRegisterPathForAnonymousFollower']),
         ];

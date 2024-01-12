@@ -4,7 +4,7 @@
         &[type=radio] {
             @apply absolute opacity-0 right-0 bottom-0;
             & + label {
-                @apply w-full h-[51px] relative flex justify-center items-center cursor-pointer px-4 py-2 border border-ui_gray-30 text-ui_gray-80 font-normal text-sm sm:text-base;
+                @apply w-full h-[51px] relative flex justify-center items-center cursor-pointer px-4 py-2 border border-ui_gray-30 text-ui_gray-60 font-normal text-sm sm:text-base;
             }
 
             &:checked + label {
@@ -44,6 +44,7 @@
 .re-linked-toggle {
     position: relative;
 
+
     &--error .re-linked-toggle-content {
         @apply border-ui_red-50 border rounded-[10px];
     }
@@ -61,7 +62,7 @@
     }
 
 
-    .re-linked-toggle-content {
+    &:not(&--grid) .re-linked-toggle-content {
         @apply flex;
         label {
             @apply rounded-none
@@ -82,6 +83,47 @@
             }
         }
 
+    }
+
+    &--grid .re-linked-toggle-content {
+        @apply grid grid-cols-3 gap-2;
+        label {
+            @apply rounded-[10px];
+        }
+    }
+
+    &--blue {
+        .re-toggle-btn {
+            input {
+                &[type=radio] {
+
+                    &:checked + label {
+                        @apply bg-ui_blue-5 border-ui_blue-50 text-ui_blue-50;
+                    }
+
+                    &:hover:not(:disabled):not(:checked) + label {
+                        @apply border-ui_blue-50 bg-ui_blue-5 text-ui_blue-50;
+                    }
+                }
+            }
+        }
+    }
+
+    &--green {
+        .re-toggle-btn {
+            input {
+                &[type=radio] {
+
+                    &:checked + label {
+                        @apply bg-ui_green-5 border-ui_green-50 text-ui_green-90;
+                    }
+
+                    &:hover:not(:disabled):not(:checked) + label {
+                        @apply border-ui_green-50 bg-ui_green-5 text-ui_green-50;
+                    }
+                }
+            }
+        }
     }
 
 

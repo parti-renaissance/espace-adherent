@@ -1,0 +1,31 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title "Merci #{donation.firstName} !" %}
+
+{% block content %}
+    <twig:ReStandaloneLayout class="re_new_ui">
+        <twig:Atoms:ReCard class="max-w-[500px]">
+            <twig:Atoms:ReCard class="!p-0 overflow-hidden" variant="inner">
+                <video loop muted autoplay width="100%" poster="{{ asset('videos/adhesion/congrats/congrats.jpg') }}">
+                    <source src="{{ asset('videos/adhesion/congrats/congrats.webm') }}" type="video/webm">
+                    <source src="{{ asset('videos/adhesion/congrats/congrats.mp4') }}" type="video/mp4">
+                    <source src="{{ asset('videos/adhesion/congrats/congrats.ogv') }}" type="video/ogg">
+                </video>
+            </twig:Atoms:ReCard>
+
+            <h1 class="text-ui_gray-80 text-4xl">
+                Merci pour votre donation!
+            </h1>
+
+            <p class="text-ui_gray-70 text-base">
+                Merci {{ donation.firstName }} pour votre don!
+                <br>
+                <br>
+                À très vite sur le terrain,
+                <br>
+                L'équipe de Renaissance
+            </p>
+
+        </twig:Atoms:ReCard>
+    </twig:ReStandaloneLayout>
+{% endblock %}

@@ -9,7 +9,8 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class AnonymousRuntime implements RuntimeExtensionInterface
 {
-    private const USER_LOGIN_ROUTE = 'app_user_login';
+    private const EM_USER_LOGIN_ROUTE = 'app_user_login';
+    private const USER_LOGIN_ROUTE = 'app_renaissance_login';
     private const USER_REGISTER_ROUTE = 'app_membership_join';
 
     private $urlGenerator;
@@ -19,6 +20,11 @@ class AnonymousRuntime implements RuntimeExtensionInterface
     {
         $this->urlGenerator = $urlGenerator;
         $this->requestStack = $requestStack;
+    }
+
+    public function generateEMLoginPathForAnonymousFollower(string $callbackRoute = '', array $params = []): string
+    {
+        return $this->doGeneratePathForAnonymousFollower(self::EM_USER_LOGIN_ROUTE, $callbackRoute, $params);
     }
 
     public function generateLoginPathForAnonymousFollower(string $callbackRoute = '', array $params = []): string
