@@ -1,6 +1,6 @@
 {% extends 'base_renaissance.html.twig' %}
 
-{% block page_title "Merci #{donation.firstName} !" %}
+{% block page_title "Merci #{donation.donator.firstName} !" %}
 
 {% block content %}
     <twig:ReStandaloneLayout class="re_new_ui">
@@ -18,7 +18,7 @@
             </h1>
 
             <p class="text-ui_gray-70 text-base">
-                Merci {{ donation.firstName }} pour votre don!
+                Merci {{ donation.donator.firstName }} pour votre don!
                 <br>
                 <br>
                 À très vite sur le terrain,
