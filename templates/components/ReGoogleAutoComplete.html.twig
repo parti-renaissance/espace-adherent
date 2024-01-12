@@ -1,16 +1,11 @@
-<script async defer>
-    const init_ac_{{ id }} = async () => await Main.initGooglePlacesAutocomplete({
-        apiKey: '{{ google_maps_api_key }}',
-        associatedFieldsPrefix: '{{ associatedFieldsPrefix }}',
-        autocompleteInputId: '{{ id }}',
-    })
-</script>
-
-<div x-init="await init_ac_{{ id }}()">
+<div x-data="xReGoogleAutoComplete({
+            apiKey: '{{ google_maps_api_key }}',
+            associatedFieldsPrefix: '{{ associatedFieldsPrefix }}',
+            autocompleteInputId: '{{ id }}',
+        })">
     <twig:Molecules:ReSelect
         {{ ...attributes.all() }}
         onQuery="(x) => window.queryGooglePlaces(x)"
         id="{{ id }}"
-        blocked="blocked"
-    />
+        blocked="blocked" />
 </div>

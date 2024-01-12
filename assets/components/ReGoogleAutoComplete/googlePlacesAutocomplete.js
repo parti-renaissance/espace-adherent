@@ -282,7 +282,7 @@ function watchAutocompleteInput(props) {
  *     autocompleteInputId: string,
  * }} props
  */
-export default async (props) => {
+async function initGoogleServiceAutoComplete(props) {
     initAutocomplete(props);
     if (!window.googleServices) {
         const loaderInstance = new Loader({
@@ -313,4 +313,9 @@ export default async (props) => {
         }
         return Promise.resolve([]);
     };
+}
+
+export {
+    initGoogleServiceAutoComplete,
+    initAutocomplete,
 };
