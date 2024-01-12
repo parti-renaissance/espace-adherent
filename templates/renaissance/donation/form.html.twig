@@ -151,7 +151,7 @@
                                 <twig:Atoms:ReCard class="max-w-[500px]">
                                     {{ form_row(form.gender, {
                                         label: 'Mes informations',
-                                        attr: { onCheck:"setFieldValid('gender')", validate: "['required']", autocomplete:"gender" }
+                                        attr: {color:'green', onCheck:"setFieldValid('gender')", validate: "['required']", autocomplete:"gender" }
                                     }) }}
 
                                     <div class="flex flex-col xs:flex-row gap-5 ">
@@ -168,7 +168,7 @@
                                     {{ form_row(form.emailAddress, {
                                         attr: {
                                             placeholder: 'Adresse mail',
-                                            validate:"['required', 'email']",
+                                            validate:"['required']",
                                             autocomplete: 'email',
                                             onCheck:"setFieldValid('emailAddress')",
                                         }, label: false}) }}
