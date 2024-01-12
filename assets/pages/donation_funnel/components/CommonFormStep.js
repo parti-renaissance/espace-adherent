@@ -116,7 +116,7 @@ const CommonFormStep = () => ({
             this.triggerValidateOnAllField();
             return false;
         }
-        this.saveFormToLocalStorage();
+        // this.saveFormToLocalStorage();
         return true;
     },
 });
