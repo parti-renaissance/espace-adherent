@@ -1,4 +1,4 @@
-<div {{ attributes.defaults({class: 're-linked-toggle' }) }}
+<div {{ attributes.defaults({class: 're-linked-toggle' ~ (grid ? ' re-linked-toggle--grid' : '') ~ (' re-linked-toggle--' ~  color) }) }}
     x-data="xValidateField({
         status: '{{ status is defined ? status : 'default' }}',
         message: '{{ message is defined ? message : '' }}',
@@ -17,7 +17,9 @@
     }"
     type="radio-group"
 >
-    <twig:Atoms:ReLabel id="{{ id }}">{{ label }}</twig:Atoms:ReLabel>
+    {% if id and label %}
+        <twig:Atoms:ReLabel id="{{ id }}">{{ label }}</twig:Atoms:ReLabel>
+    {% endif %}
 
     <div class="re-linked-toggle-content">
         {% block content %}{% endblock %}

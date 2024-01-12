@@ -1,4 +1,28 @@
-<div class="re-toggle-btn" :class="status ? `re-toggle-btn--${status}` : ''">
-    <input {{ attributes }} type="radio" {% if checked %}checked="checked"{% endif %}/>
-    <label for="{{ attributes.all().id }}" id="{{ attributes.all().id }}_label">{% block content '' %}</label>
+
+
+<div
+    class="{{ this.tw('re-toggle-btn') }}"
+         x-bind:class="status ? `re-toggle-btn--${status}` : ''"
+>
+    <input
+        {{ attributes.without('x-text', 'class') }}
+        {% if this.props.id.alpine %}
+            x-bind:id="{{ this.props.id.alpine }}"
+        {% else %}
+            id="{{ id }}"
+        {% endif %}
+        type="radio"
+        {% if checked %}checked="checked"{% endif %}/>
+    <label
+        {{ attributes.only('x-text') }}
+        {% if this.props.id.alpine %}
+            x-bind:for="{{ this.props.id.alpine }}"
+            x-bind:id="{{ this.props.id.alpine }} + '_label'"
+        {% else %}
+            for="{{ id }}"
+            id="{{ id }}_label"
+        {% endif %}
+    >
+        {% block content '' %}
+    </label>
 </div>

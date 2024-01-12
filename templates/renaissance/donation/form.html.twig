@@ -8,7 +8,13 @@
     <main class="bg-[#F4F4F7] re_new_ui">
         <section
             class="flex flex-col justify-center items-center gap-10"
-            x-data="xFunnelPage({initStep: {{ step }}})"
+            x-data="xFunnelPage({
+                    initStep: {{ step }},
+                    amount: '{{ form.vars.value.amount }}',
+                    duration: '{{ form.vars.value.duration }}',
+                    localDestination: '{{ form.vars.value.localDestination }}',
+                    connectUrl: '{{ login_path_for_anonymous_follower('app_donation_index', { step: 1 }) }}'
+                   })"
             @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
             <header class="w-full flex flex-col p-4 bg-white sticky top-0 z-50 items-center h-auto
                             xs:p-6
@@ -21,6 +27,7 @@
                     </a>
                 </div>
                 <twig:Molecules:ReStepper
+                        color="green"
                         id="adhesion-stepper"
                         class="relative z-50 md:col-span-2 lg:col-span-1"
                         steps="{{ ['Montant', 'Informations', 'Autorisation'] }}"
@@ -34,55 +41,136 @@
                 {{ form_start(form) }}
                 <div class="flex gap-8 flex-col p-0 sm:p-5">
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
-                        {{ form_row(form.amount) }}
-                        {{ form_row(form.duration) }}
+                        <twig:Atoms:ReLinkedToggle color="green" name="duration" id="donation_duration_picker" label="Choix du montant">
+                            <twig:Atoms:ReToggleButton
+                                id="duration_monthly" value="{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}" name="duration"
+                                x-model="duration"
+                                x-on:click="amount = '60'" >
+                                Mensuel
+                            </twig:Atoms:ReToggleButton>
+                            <twig:Atoms:ReToggleButton
+                                id="duration_punctual" value="{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}" name="duration"
+                                x-model="duration"
+                                x-on:click="amount = '60'" >
+                                Unique
+                            </twig:Atoms:ReToggleButton>
+
+                        </twig:Atoms:ReLinkedToggle>
+
+                        <twig:Atoms:ReLinkedToggle color="green" name="amount" id="donation_amount_picker" grid label="">
+                            <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}'">
+                                <template x-for="amt in getAmounts()">
+                                    <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="`amount_1`" x-bind:value="amt" x-model="amount" x-text="amt" />
+                                </template>
+                            </template>
+                            <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}'">
+                                <template x-for="amt in getAmounts()">
+                                    <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="amount" x-bind:value="amt" x-model="amount" x-text="amt" />
+                                </template>
+                            </template>
+                        </twig:Atoms:ReLinkedToggle>
+
+                        <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}'">
+                            <twig:Molecules:ReTextField
+                                id="amount_custom"
+                                x-on:input="amount = ($event.target.value === '' ? '60' : $event.target.value)"
+                                x-on:change="amount = ($event.target.value === '' ? '60' : $event.target.value)"
+                                center
+                                type="text"
+                                x-numberonly.5.625
+                                placeholder="Montant personnalisé (de 5€ à 625€ par mois)" />
+                        </template>
+
+                        <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}'">
+                            <twig:Molecules:ReTextField
+                                id="amount_custom"
+                                x-on:input="amount = ($event.target.value === '' ? '60' : $event.target.value)"
+                                x-on:change="amount = ($event.target.value === '' ? '60' : $event.target.value)"
+                                x-bind:value="getCustomAmount()"
+                                center
+                                type="text"
+                                x-numberonly.10.7500
+                                placeholder="Montant personnalisé (de 10€ à 7500€)" />
+                        </template>
+
+                        {{ form_row(form.amount, {attr: { 'x-bind:value': 'amount'}}) }}
+                        {{ form_row(form.duration, {attr: { 'x-bind:value': 'duration'}}) }}
 
                         {{ form_row(form.localDestination, {
                             label: 'donation.local_destination.label', label_html: true,
-                            attr: { onCheck:"setFieldValid('localDestination')", validate: "['required']" }
-                        }) }}
-                    </twig:Atoms:ReCard>
-
-                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep">
-                        {{ form_row(form.gender, {
-                            label: 'Mes informations',
-                            attr: { onCheck:"setFieldValid('gender')", validate: "['required']", autocomplete:"gender" }
+                            attr: { onCheck:"setFieldValid('localDestination')", 'x-model': 'localDestination' }
                         }) }}
 
-                        <div class="flex flex-col xs:flex-row gap-5 ">
-                            {{ form_row(form.lastName, {
-                                label: false,
-                                attr: { placeholder: 'Nom', onCheck:"setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']" }
-                            }) }}
-                            {{ form_row(form.firstName, {
-                                label: false,
-                                attr: { placeholder: 'Prénom', onCheck:"setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']" }
-                            }) }}
+                        <div>
+                            <twig:Atoms:ReLabel>Après réduction d’impôt :</twig:Atoms:ReLabel>
+                            <div class="rounded-[10px] bg-ui_gray-10 text-ui_green-90 text-center h-[51px] flex flex-col items-center justify-center">
+                                <span x-text="getTaxTextReduction()"></span>
+                            </div>
                         </div>
 
-                        {{ form_row(form.emailAddress, {
-                            attr: {
-                                placeholder: 'Adresse mail',
-                                validate:"['required', 'email']",
-                                autocomplete: 'email',
-                                onCheck:"setFieldValid('emailAddress')",
-                            }, label: false}) }}
-
-                        {{ form_row(form.nationality, {
-                            label: 'Nationalité',
-                            attr: { onCheck:"setFieldValid('nationality')", validate: "['required']" }
-                        }) }}
-
-                        {{ form_row(form.address, {label: 'Adresse postale'}) }}
-
-                        <twig:Molecules:ReButton
-                            color="blue"
-                            value="Suivant"
-                            class="w-full"
-                            x-on:click="handleOnSubmit($event, $dispatch)"
-                            x-bind:class="{disabled: !checkValidity()}"
-                        />
+                        <twig:ReButton color="green" class="w-full" x-on:click="handleOnSubmit($event, $dispatch)">Suivant</twig:ReButton>
                     </twig:Atoms:ReCard>
+                    <div class="re-step flex-col flex gap-8" id="step_2" x-data="SecondFormStep">
+                        {% if not (app.user and app.user.hasActiveMembership()) %}
+                            <twig:Atoms:ReCard class="max-w-[500px]">
+                                {% if not app.user %}
+                                    <p>
+                                        <twig:Atoms:ReLabel>Vous avez un déjà compte Renaissance ? </twig:Atoms:ReLabel>
+                                        Connectez vous pour pré-remplir toutes vos informations.
+                                    </p>
+                                    <twig:ReButton stroke color="black" tag="a" x-bind:href="connectUrl()">
+                                        Me connecter
+                                    </twig:ReButton>
+                                {% endif %}
+
+                                <p>
+                                    Un don ne vaut pas adhésion ou cotisation au parti Renaissance.
+                                    Si vous souhaitez adhérer/cotiser, veuillez vous rendre sur
+                                    <a class="text-ui_green-50 hover:text-ui_green-70" href="{{ path('app_adhesion_index') }}">cette page</a>
+                                </p>
+                            </twig:Atoms:ReCard>
+                        {% endif %}
+
+                        <twig:Atoms:ReCard class="max-w-[500px]">
+                            {{ form_row(form.gender, {
+                                label: 'Mes informations',
+                                attr: { onCheck:"setFieldValid('gender')", validate: "['required']", autocomplete:"gender" }
+                            }) }}
+
+                            <div class="flex flex-col xs:flex-row gap-5 ">
+                                {{ form_row(form.lastName, {
+                                    label: false,
+                                    attr: { placeholder: 'Nom', onCheck:"setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']" }
+                                }) }}
+                                {{ form_row(form.firstName, {
+                                    label: false,
+                                    attr: { placeholder: 'Prénom', onCheck:"setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']" }
+                                }) }}
+                            </div>
+
+                            {{ form_row(form.emailAddress, {
+                                attr: {
+                                    placeholder: 'Adresse mail',
+                                    validate:"['required', 'email']",
+                                    autocomplete: 'email',
+                                    onCheck:"setFieldValid('emailAddress')",
+                                }, label: false}) }}
+
+                            {{ form_row(form.nationality, {
+                                label: 'Nationalité',
+                                attr: { onCheck:"setFieldValid('nationality')", validate: "['required']" }
+                            }) }}
+
+                            {{ form_row(form.address, {label: 'Adresse postale'}) }}
+
+                            <twig:ReButton
+                                class="w-full"
+                                color="green"
+                                x-on:click="handleOnSubmit($event, $dispatch)"
+                                x-bind:disabled="!checkValidity()"
+                            >Suivant</twig:ReButton>
+                        </twig:Atoms:ReCard>
+                    </div>
 
                     <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3" x-data="ThirdFormStep">
                         {{ form_row(form.isPhysicalPerson, {
@@ -104,14 +192,12 @@
                         }) }}
                     </twig:Atoms:ReCard>
 
-                    <twig:Molecules:ReButton
+                    <twig:ReButton
                         color="green"
-                        x-text="Passer au paiement"
-                        value="Passer au paiement"
                         class="w-full"
                         xSyncLoading="loading"
                         x-on:click="submitForm($event)"
-                    />
+                    >Passer au paiement</twig:ReButton>
 
                     <div class="spacer h-[50vh]"></div>
                 </div>
@@ -124,6 +210,6 @@
 {% block final_javascripts %}
     <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
     <script>
-        Bootstrap.onLoad(() => Main.runAdhesionPage('{{ google_maps_api_key }}'));
+        Bootstrap.onLoad(() => Main.runDonationFunnelPage());
     </script>
 {% endblock %}

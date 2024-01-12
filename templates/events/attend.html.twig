@@ -16,7 +16,7 @@
             <h2 class="b__nudge--bottom text--normal">Participer à l'événement</h2>
             {% if not has_role_adherent %}
                 <p>
-                    <a href="{{ login_path_for_anonymous_follower('app_committee_event_attend', { slug: event.slug }) }}">
+                    <a href="{{ em_login_path_for_anonymous_follower('app_committee_event_attend', { slug: event.slug }) }}">
                         Connectez-vous
                     </a>
                     avec votre compte En Marche pour vous inscrire plus rapidement.
