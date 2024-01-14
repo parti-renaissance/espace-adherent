@@ -1,7 +1,6 @@
-import { reScrollTo } from '../utils';
+import reScrollTo from '../../../utils/scrollTo';
 
 /** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
-const camelToSnakeCase = (str) => str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 
 /**
  * First Step component for funnel
@@ -42,54 +41,6 @@ const CommonFormStep = () => ({
                 });
             }
         });
-    },
-
-    saveFormToLocalStorage() {
-        const form = document.querySelector('form[name="membership_request"]');
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-        localStorage.setItem('membership_request', JSON.stringify(data));
-    },
-
-    clearLocalStorage() {
-        localStorage.removeItem('membership_request');
-    },
-
-    setStepData(namespaces = [], pipe = (x, y) => y) {
-        const data = Array.from(
-            document.querySelectorAll(
-                `#${this.id} input, #${this.id} textarea, #${this.id} select`
-            )
-        )
-            .filter((x) => x.id.startsWith('membership_request_'))
-            .reduce((acc, x) => {
-                const [a, b, ...fieldnames] = x.id.split('_');
-                const fieldname = fieldnames.join('_');
-                if ('radio' === x.type) {
-                    if (x.checked) {
-                        acc[camelToSnakeCase(fieldnames[0])] = pipe(fieldnames[0], x.value);
-                    }
-                    return acc;
-                }
-
-                if ('checkbox' === x.type) {
-                    acc[camelToSnakeCase(fieldnames[0])] = pipe(fieldnames[0], x.checked);
-                    return acc;
-                }
-
-                if (namespaces.includes(fieldnames[0])) {
-                    const [namespace, ..._name] = fieldnames;
-                    const name = _name.join('_');
-                    acc[namespace] = {
-                        ...acc[namespace],
-                        [camelToSnakeCase(name)]: pipe(name, x.value),
-                    };
-                    return acc;
-                }
-                acc[camelToSnakeCase(fieldname)] = pipe(fieldname, x.value);
-                return acc;
-            }, {});
-        this.formData = { ...this.formData, ...data };
     },
 
     handleNextStep() {

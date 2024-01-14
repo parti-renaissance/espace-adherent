@@ -5,7 +5,7 @@ import CommonFormStep from './CommonFormStep';
 function closest(num, arr) {
     let curr = arr[0];
     let diff = Math.abs(num - curr);
-    for (let val = 0; val < arr.length; val++) {
+    for (let val = 0; val < arr.length; val += 1) {
         const newdiff = Math.abs(num - arr[val]);
         if (newdiff < diff) {
             diff = newdiff;
@@ -56,8 +56,6 @@ const FirstForm = () => {
                 index = this.getAmounts()
                     .indexOf(closest(Number(value), this.getAmounts()));
             }
-            console.log(index, value, this.getAmounts());
-
             const indexesToAnimate = Array.from(Array(index + 1)
                 .keys());
             document.querySelectorAll('[id^="p_"]')

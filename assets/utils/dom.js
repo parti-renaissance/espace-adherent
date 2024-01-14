@@ -1,9 +1,19 @@
 NodeList.prototype.forEach = Array.prototype.forEach;
 
+/**
+ * @param {Document|Element} element
+ * @param {string} selector
+ * @returns {Element}
+ */
 window.findOne = (element, selector) => element.querySelector(selector);
 
 window.dom = (selector) => findOne(document, selector);
 
+/**
+ * @param element
+ * @param selector
+ * @returns {NodeListOf<Element>}
+ */
 window.findAll = (element, selector) => element.querySelectorAll(selector);
 
 window.on = (element, event, handler) => element.addEventListener(event, handler);

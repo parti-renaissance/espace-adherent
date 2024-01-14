@@ -1,7 +1,5 @@
 /** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
-import { reScrollTo } from '../utils';
-
-const camelToSnakeCase = (str) => str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+import reScrollTo from '../../../utils/scrollTo';
 
 /**
  * First Step component for funnel
@@ -59,38 +57,6 @@ const Page = (props) => ({
         url.searchParams.set('duration', this.duration);
         url.searchParams.set('localDestination', this.localDestination);
         return url.toString();
-    },
-
-    retrieveLocalStorage() {
-        const data = localStorage.getItem('membership_request');
-        if (data) {
-            const parsedData = JSON.parse(data);
-            const form = document.querySelector('form[name="membership_request"]');
-            Object.entries(parsedData)
-                .forEach(([key, value]) => {
-                    form.querySelectorAll(`[name="${key}"]`)
-                        .forEach((el) => {
-                            if ('radio' === el.type) {
-                                el.checked = el.value === value;
-                            } else if ('checkbox' === el.type) {
-                                el.checked = value;
-                            } else if (!el.value) {
-                                if ('membership_request_address_autocomplete' === el.id) {
-                                    const fulladress = parsedData['membership_request[address][address]'];
-                                    if (fulladress) {
-                                        el.value = 'prefilled';
-                                        window[`options_${el.id}`] = [{
-                                            label: fulladress,
-                                            value: 'prefilled',
-                                        }];
-                                    }
-                                } else {
-                                    el.value = value;
-                                }
-                            }
-                        });
-                });
-        }
     },
 
     init() {

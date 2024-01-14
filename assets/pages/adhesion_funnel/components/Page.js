@@ -1,7 +1,6 @@
 /** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
-import { reScrollTo } from '../utils';
 
-const camelToSnakeCase = (str) => str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+import reScrollTo from '../../../utils/scrollTo';
 
 /**
  * First Step component for funnel
