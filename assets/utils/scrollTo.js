@@ -1,4 +1,9 @@
-function reScrollTo(id) {
+/**
+ * scroll to element, scrollIntoView if element is higher than window
+ *
+ * @param {string} id
+ */
+export default function reScrollTo(id) {
     /** @type {HTMLElement} */
     const nextStepEl = dom(`#${id}`);
 
@@ -19,6 +24,3 @@ function reScrollTo(id) {
         });
     }
 }
-
-// eslint-disable-next-line import/prefer-default-export
-export { reScrollTo };
