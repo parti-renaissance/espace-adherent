@@ -49,7 +49,6 @@ const SecondForm = () => ({
 
     async handleOnSubmit(e) {
         if (!this.checkFormValidity(e)) return;
-        this.setStepData(['address']);
         this.handleNextStep();
     },
 

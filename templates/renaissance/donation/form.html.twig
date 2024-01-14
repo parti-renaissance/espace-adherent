@@ -70,9 +70,8 @@
                                         x-on:click="amount = '60'" >
                                         Unique
                                     </twig:Atoms:ReToggleButton>
-
                                 </twig:Atoms:ReLinkedToggle>
-
+                                {{ form_errors(form.duration) }}
                                 <twig:Atoms:ReLinkedToggle color="green" name="amount" id="donation_amount_picker" grid label="">
                                     <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}'">
                                         <template x-for="amt in getAmounts()">
@@ -109,6 +108,8 @@
                                         x-numberonly.10.7500
                                         placeholder="Montant personnalisé (de 10€ à 7500€)" />
                                 </template>
+
+                                {{ form_errors(form.amount) }}
 
                                 {{ form_row(form.amount, {attr: { 'x-bind:value': 'amount'}}) }}
                                 {{ form_row(form.duration, {attr: { 'x-bind:value': 'duration'}}) }}
@@ -168,8 +169,9 @@
                                     {{ form_row(form.emailAddress, {
                                         attr: {
                                             placeholder: 'Adresse mail',
-                                            validate:"['required']",
+                                            validate:"['required', 'email']",
                                             autocomplete: 'email',
+                                            type: 'email',
                                             onCheck:"setFieldValid('emailAddress')",
                                         }, label: false}) }}
 
@@ -184,7 +186,8 @@
                                         class="w-full"
                                         color="green"
                                         x-on:click="handleOnSubmit($event, $dispatch)"
-                                        x-bind:disabled="!checkValidity()"
+                                        onDisabledClick="checkFormValidity($event)"
+                                        disabled="x:!checkValidity()"
                                     >Suivant</twig:ReButton>
                                 </twig:Atoms:ReCard>
                             </div>
@@ -220,6 +223,7 @@
                         </div>
                     </div>
                     {{ form_end(form) }}
+                    <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
                 </div>
             </div>
         </section>
