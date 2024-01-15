@@ -8,7 +8,7 @@
 
 {% block content %}
     <twig:ReStandaloneLayout class="re_new_ui">
-        <twig:Atoms:ReCard class="max-w-[500px]" x-data="{showAutoComplete: true}">
+        <twig:Atoms:ReCard class="max-w-[500px]" x-data="xMemberCardForm">
             {{ form_start(form, { attr: { 'x-ref': 'form', class: 'flex gap-8 flex-col'} }) }}
                 <div>
                     <twig:Atoms:ReLabel>Carte d'adhérant</twig:Atoms:ReLabel>
@@ -24,10 +24,21 @@
 
                 {{ form_row(form.address, {label: false}) }}
 
-                <twig:ReButton type="submit">Recevoir ma carte</twig:ReButton>
+                <twig:ReButton
+                        type="submit"
+                        x-bind:disabled="!isFormValid()"
+                        onDisabledClick="checkFormValidity()"
+                        x-on:click="handleOnSubmit"
+                >Recevoir ma carte</twig:ReButton>
 
                 {{ form_widget(form.refuseMemberCard, {label: 'Je ne veux pas recevoir ma carte', attr: {link: 'link'}}) }}
             {{ form_end(form) }}
         </twig:Atoms:ReCard>
     </twig:ReStandaloneLayout>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script>
+        Bootstrap.onLoad(() => Main.runAdhesionMemberCardPage());
+    </script>
 {% endblock %}
