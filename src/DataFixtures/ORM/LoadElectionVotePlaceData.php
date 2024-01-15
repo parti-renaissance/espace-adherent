@@ -253,7 +253,7 @@ class LoadElectionVotePlaceData extends Fixture implements DependentFixtureInter
             'Salle Polyvalente De Wazemmes',
             'zone_district_59-1'
         ));
-        $object->setPostAddress(NullablePostAddress::createAddress(AddressInterface::FRANCE, '59000,59100', 'Lille', "Rue De L'Abbé Aerts", null));
+        $object->setPostAddress(NullablePostAddress::createAddress(AddressInterface::FRANCE, '59000,59100', 'Lille', "Rue De L'Abbé Aerts", null, null));
 
         $this->addReference('vote-place-lille-wazemmes', $object);
 
@@ -264,7 +264,7 @@ class LoadElectionVotePlaceData extends Fixture implements DependentFixtureInter
             'Restaurant Scolaire - Rue H. Lefebvre',
             'zone_district_59-4'
         ));
-        $object->setPostAddress(NullablePostAddress::createAddress(AddressInterface::FRANCE, '59350', 'Lille', 'Groupe Scolaire Jean Zay', null));
+        $object->setPostAddress(NullablePostAddress::createAddress(AddressInterface::FRANCE, '59350', 'Lille', 'Groupe Scolaire Jean Zay', null, null));
 
         $this->addReference('vote-place-lille-jean-zay', $object);
 
@@ -276,7 +276,7 @@ class LoadElectionVotePlaceData extends Fixture implements DependentFixtureInter
             'zone_district_93-1'
         ));
 
-        $object->setPostAddress(NullablePostAddress::createAddress(AddressInterface::FRANCE, '93200,93066', 'Saint-Denis', '15, Rue Auguste Blanqui', null));
+        $object->setPostAddress(NullablePostAddress::createAddress(AddressInterface::FRANCE, '93200,93066', 'Saint-Denis', '15, Rue Auguste Blanqui', null, null));
 
         $this->addReference('vote-place-bobigny-blanqui', $object);
 

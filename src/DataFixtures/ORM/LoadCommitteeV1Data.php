@@ -128,7 +128,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'created_at' => '2017-03-19 08:14:45',
             'name' => 'En Marche - Comité de Berlin',
             'description' => 'En Marche pour la France et nos partenaires Allemands.',
-            'address' => NullablePostAddress::createAddress('DE', '10369', 'Berlin', '7 Hohenschönhauser Str.', null, 52.5330939, 13.4662418),
+            'address' => NullablePostAddress::createAddress('DE', '10369', 'Berlin', '7 Hohenschönhauser Str.', null, null, 52.5330939, 13.4662418),
             'phone' => '+492211653540',
         ]);
         $committee7->approved('2017-03-19 13:43:26');
@@ -141,7 +141,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'created_at' => '2017-04-10 17:34:18',
             'name' => 'En Marche - Comité de Singapour',
             'description' => 'En Marche pour la France mais depuis Singapour.',
-            'address' => NullablePostAddress::createAddress('SG', '368645', 'Singapour', '47 Jln Mulia', null, 1.3329126, 103.8795163),
+            'address' => NullablePostAddress::createAddress('SG', '368645', 'Singapour', '47 Jln Mulia', null, null, 1.3329126, 103.8795163),
             'phone' => '+6566888868',
         ]);
         $committee8->approved('2017-04-10 20:23:18');
@@ -154,7 +154,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'created_at' => '2017-04-09 12:16:22',
             'name' => 'En Marche - Comité de New York City',
             'description' => 'Les expats sont en En Marche.',
-            'address' => NullablePostAddress::createAddress('US', '10019', 'New York', '226 W 52nd St', null, 40.7625289, -73.9859927),
+            'address' => NullablePostAddress::createAddress('US', '10019', 'New York', '226 W 52nd St', null, null, 40.7625289, -73.9859927),
             'phone' => '+12123150100',
         ]);
         $committee9->approved('2017-04-09 13:27:42');
@@ -167,7 +167,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'created_at' => '2021-01-02 12:18:22',
             'name' => 'En Marche - Suisse',
             'description' => 'En Marche pour la France et nos partenaires en Suisse.',
-            'address' => NullablePostAddress::createAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, 47.3950786, 8.5361402),
+            'address' => NullablePostAddress::createAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, null, 47.3950786, 8.5361402),
             'phone' => '+33673654349',
         ]);
         $committee10->approved('2021-01-02 13:17:42');
@@ -180,7 +180,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'created_at' => '2017-05-12 12:18:22',
             'name' => 'En Marche - Suisse refused',
             'description' => 'En Marche pour la France et nos partenaires en Suisse. (refused)',
-            'address' => NullablePostAddress::createAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, 47.3950786, 8.5361402),
+            'address' => NullablePostAddress::createAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, null, 47.3950786, 8.5361402),
             'phone' => '+33673654567',
         ]);
         $committee11->approved('2017-05-13 13:17:42');
@@ -193,7 +193,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'created_at' => '2020-10-29 09:00:00',
             'name' => 'En Marche - Allemagne',
             'description' => 'En Marche Allemagne.',
-            'address' => NullablePostAddress::createAddress('DE', '10789', 'Berlin', 'Breitscheidplatz', null, 52.5065133, 13.1445545),
+            'address' => NullablePostAddress::createAddress('DE', '10789', 'Berlin', 'Breitscheidplatz', null, null, 52.5065133, 13.1445545),
             'phone' => '+33673654349',
         ]);
         $committee12->approved('2020-10-29 12:00:00');
@@ -206,7 +206,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'created_at' => '2020-10-29 09:00:00',
             'name' => 'En Marche - Prague',
             'description' => 'En Marche Prague',
-            'address' => NullablePostAddress::createAddress('CZ', '12000', 'Prague', 'Vinohradská 17-11', null, 50.078647, 14.434630),
+            'address' => NullablePostAddress::createAddress('CZ', '12000', 'Prague', 'Vinohradská 17-11', null, null, 50.078647, 14.434630),
             'phone' => '+33673654349',
         ]);
         $committee13->approved('2020-10-29 12:00:00');
@@ -219,7 +219,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'created_at' => '2020-10-29 09:00:00',
             'name' => 'En Marche - Allemagne 2',
             'description' => 'En Marche Allemagne.',
-            'address' => NullablePostAddress::createAddress('DE', '10789', 'Berlin', 'Breitscheidplatz', null, 52.5065133, 13.1445545),
+            'address' => NullablePostAddress::createAddress('DE', '10789', 'Berlin', 'Breitscheidplatz', null, null, 52.5065133, 13.1445545),
             'phone' => '+33673654349',
         ]);
         $committee14->approved('2020-10-29 12:00:00');
@@ -232,7 +232,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'created_at' => '2020-10-29 09:00:00',
             'name' => 'En Marche - Allemagne 3',
             'description' => 'En Marche Allemagne.',
-            'address' => NullablePostAddress::createAddress('DE', '10789', 'Berlin', 'Breitscheidplatz', null, 52.5065133, 13.1445545),
+            'address' => NullablePostAddress::createAddress('DE', '10789', 'Berlin', 'Breitscheidplatz', null, null, 52.5065133, 13.1445545),
             'phone' => '+33673654349',
         ]);
         $committee15->approved('2020-10-29 12:00:00');

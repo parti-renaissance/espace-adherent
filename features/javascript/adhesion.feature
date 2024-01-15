@@ -21,11 +21,12 @@ Feature:
         And I click the "membership_request_nationality_select_widget" element
         And I click the "#membership_request_nationality_select_widget .re-input-option--selected" selector
         And I fill in the following:
-            | membership_request[firstName]             | Marine |
-            | membership_request[lastName]              | Dupont |
-            | membership_request[address][address]      | 9 rue du lycée |
-            | membership_request[address][postalCode]   | 06000  |
-            | membership_request[address][cityName]     | Nice   |
+            | membership_request[firstName]                     | Marine |
+            | membership_request[lastName]                      | Dupont |
+            | membership_request[address][address]              | 9 rue du lycée |
+            | membership_request[address][additionalAddress]    | app 9 |
+            | membership_request[address][postalCode]           | 06000  |
+            | membership_request[address][cityName]             | Nice   |
         And I click the "membership_request_address_country_select_widget" element
         And I click the "#membership_request_address_country_select_widget .re-input-option--selected" selector
         And I press "Suivant"
@@ -46,7 +47,7 @@ Feature:
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I should see "60.00 EUR"
+        And I wait until I see "60.00 EUR"
         When I fill in the following:
             | NUMERO_CARTE | 1111222233334444 |
             | CVVX         | 123              |
@@ -163,9 +164,10 @@ Feature:
         And I should see "Carte d'adhérant"
         When I click the ".aucomplete-fields-toggle" selector
         And I fill in the following:
-            | member_card[address][address]      | 92 bld Victor Hugo |
-            | member_card[address][postalCode]   | 92110 |
-            | member_card[address][cityName]     | Clichy |
+            | member_card[address][address]             | 92 bld Victor Hugo |
+            | member_card[address][additionalAddress]   | |
+            | member_card[address][postalCode]          | 92110 |
+            | member_card[address][cityName]            | Clichy |
         When I press "Recevoir ma carte"
 
         # Step 10 : communication
@@ -271,7 +273,7 @@ Feature:
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I should see "120.00 EUR"
+        And I wait until I see "120.00 EUR"
         When I fill in the following:
             | NUMERO_CARTE | 1111222233334444 |
             | CVVX         | 123              |
@@ -370,7 +372,7 @@ Feature:
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I should see "120.00 EUR"
+        And I wait until I see "120.00 EUR"
         When I fill in the following:
             | NUMERO_CARTE | 1111222233334444 |
             | CVVX         | 123              |

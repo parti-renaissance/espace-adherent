@@ -60,6 +60,6 @@ abstract class AbstractLoadEventData extends Fixture
         [, $inseeCode] = explode('-', $cityCode);
         $city = $this->franceCities->getCityByInseeCode($inseeCode);
 
-        return NullablePostAddress::createFrenchAddress($street, $cityCode, $city ? $city->getName() : null, $region, $latitude, $longitude);
+        return NullablePostAddress::createFrenchAddress($street, $cityCode, $city?->getName(), null, $region, $latitude, $longitude);
     }
 }

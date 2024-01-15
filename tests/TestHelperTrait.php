@@ -488,9 +488,9 @@ trait TestHelperTrait
         float $latitude = null,
         float $longitude = null
     ): PostAddress {
-        [$postalCode, $inseeCode] = explode('-', $cityCode);
+        [, $inseeCode] = explode('-', $cityCode);
         $city = $this->getFranceCities()->getCityByInseeCode($inseeCode);
 
-        return PostAddress::createFrenchAddress($street, $cityCode, $city ? $city->getName() : null, $region, $latitude, $longitude);
+        return PostAddress::createFrenchAddress($street, $cityCode, $city?->getName(), null, $region, $latitude, $longitude);
     }
 }
