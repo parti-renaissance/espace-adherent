@@ -4,7 +4,13 @@
 
 {% block content %}
     <twig:ReStandaloneLayout class="re_new_ui">
+
         <twig:Atoms:ReCard class="max-w-[500px]">
+
+            <twig:ReParagraphStatus status="success" icon slim>
+                Votre paiement a bien été validé !
+            </twig:ReParagraphStatus>
+
             <twig:Atoms:ReCard class="!p-0 overflow-hidden" variant="inner">
                 <video loop muted autoplay width="100%" poster="{{ asset('videos/adhesion/congrats/congrats.jpg') }}">
                     <source src="{{ asset('videos/adhesion/congrats/congrats.webm') }}" type="video/webm">
@@ -13,18 +19,29 @@
                 </video>
             </twig:Atoms:ReCard>
 
-            <h1 class="text-ui_gray-80 text-4xl">
-                Merci pour votre donation!
+            <h1 class="text-ui_gray-90 text-3xl">
+                Merci <span class="text-ui_green-50 font-medium">{{ donation.donator.firstName }}</span> pour votre donation !
             </h1>
+            <div class="text-ui_gray-80 text-base flex flex-col gap-4">
+                <p>
+                    Félicitations pour votre générosité ! Chaque don, qu'il soit unique ou mensuel, contribue activement à soutenir nos actions.
+                </p>
+                 <p>
+                    Votre engagement est vital et se reflète dans l'organisation d'événements locaux, la mise en place de formations et la création d’actions de campagne.
+                </p>
+                <p>
+                    Nous vous remercions sincèrement pour votre investissement dans la concrétisation de notre mission.
+                </p>
+                <p>
+                   Un <span class="font-medium">email contenant le reçu</span> de votre don vous a été envoyé. Merci de faire partie intégrante de notre succès commun.
+                </p>
+            </div>
 
-            <p class="text-ui_gray-70 text-base">
-                Merci {{ donation.donator.firstName }} pour votre don!
-                <br>
-                <br>
-                À très vite sur le terrain,
-                <br>
-                L'équipe de Renaissance
-            </p>
+            {% set backPath = app.user ? 'app_renaissance_adherent_space': 'app_renaissance_homepage'  %}
+
+            <twig:ReButton href="{{ path(backPath) }}" tag="a" color="green" class="mt-8">
+                Retour
+            </twig:ReButton>
 
         </twig:Atoms:ReCard>
     </twig:ReStandaloneLayout>
