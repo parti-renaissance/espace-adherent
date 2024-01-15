@@ -17,4 +17,9 @@ class ThreadRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['uuid' => $uuid]);
     }
+
+    public function refresh(Thread $thread): void
+    {
+        $this->_em->refresh($thread);
+    }
 }

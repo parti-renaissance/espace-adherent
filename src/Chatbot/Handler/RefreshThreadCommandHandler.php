@@ -2,39 +2,38 @@
 
 namespace App\Chatbot\Handler;
 
-use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
-use App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface;
-use App\Chatbot\Command\SynchronizeThreadCommand;
+use App\Chatbot\Command\RefreshThreadCommand;
 use App\Chatbot\Exception\RunNotCompletedException;
-use App\Repository\AdherentRepository;
+use App\Chatbot\ThreadProcessor;
 use App\Repository\Chatbot\ThreadRepository;
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class SynchronizeThreadCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
+class RefreshThreadCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     public function __construct(
         private readonly ThreadRepository $threadRepository,
+        private readonly ThreadProcessor $threadProcessor,
         LoggerInterface $logger
     ) {
-        $this->logger = $logger;
     }
 
-    public function __invoke(SynchronizeThreadCommand $command): void
+    public function __invoke(RefreshThreadCommand $command): void
     {
         $thread = $this->threadRepository->findOneByUuid($command->getUuid()->toString());
 
         if (!$thread) {
+            $this->logger->error("Did not find thread");
             return;
         }
+        $this->logger->warning("Found thread");
 
-        // handle thread sync
+        $this->threadRepository->refresh($thread);
+        $this->threadProcessor->process($thread);
 
         if ($thread->currentRun) {
             throw new RunNotCompletedException();

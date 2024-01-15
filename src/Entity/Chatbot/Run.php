@@ -16,11 +16,12 @@ class Run
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use OpenAIResourceTrait;
+    use ExternalResourceTrait;
 
     public const STATUS_QUEUED = 'queued';
     public const STATUS_IN_PROGRESS = 'in_progress';
     public const STATUS_COMPLETED = 'completed';
+    public const STATUS_CANCELLED = 'cancelled';
 
     /**
      * @ORM\ManyToOne(targetEntity=Thread::class)
@@ -36,5 +37,23 @@ class Run
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
+    }
+
+    public function needRefresh(): bool
+    {
+        return \in_array($this->status, [
+            self::STATUS_QUEUED,
+            self::STATUS_IN_PROGRESS,
+        ], true);
+    }
+
+    public function isInProgress(): bool
+    {
+        return self::STATUS_IN_PROGRESS === $this->status;
+    }
+
+    public function cancel(): void
+    {
+        $this->status = self::STATUS_CANCELLED;
     }
 }

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\OpenAI;
+namespace App\Chatbot\Provider;
 
-use OpenAI\Client as BaseClient;
+use App\Chatbot\Provider\Resources\Message;
+use OpenAI\Client;
 
-class Client
+class OpenAIProvider implements ProviderInterface
 {
-    private BaseClient $openAI;
+    private Client $openAI;
 
     public function __construct(string $openAIApiKey)
     {
@@ -20,11 +21,11 @@ class Client
         return $threadResponse->id;
     }
 
-    public function addUserMessage(string $threadId, string $message): string
+    public function createMessage(string $threadId, string $role, string $content): string
     {
         $messageResponse = $this->openAI->threads()->messages()->create($threadId, [
-            'role' => 'user',
-            'content' => $message,
+            'role' => $role,
+            'content' => $content,
         ]);
 
         return $messageResponse->id;
@@ -51,33 +52,10 @@ class Client
         return $runResponse->status;
     }
 
-    public function getThread(string $threadId, string $lastRunId = null): Thread
-    {
-        $threadResponse = $this->openAI->threads()->retrieve($threadId);
-
-        $lastRunStatus = $lastRunId
-            ? $this->getRunStatus($threadId, $lastRunId)
-            : null;
-
-        return new Thread(
-            $threadId,
-            new \DateTime($threadResponse->createdAt),
-            $lastRunStatus,
-            $this->getThreadLastMessages($threadId)
-        );
-    }
-
-    private function getRunStatus(string $threadId, string $runId): string
-    {
-        $runResponse = $this->openAI->threads()->runs()->retrieve($threadId, $runId);
-
-        return $runResponse->status;
-    }
-
     /**
      * @return Message[]|array
      */
-    private function getThreadLastMessages(string $threadId, int $limit = 10)
+    public function retrieveMessages(string $threadId, int $limit = 10): array
     {
         $messageListResponse = $this->openAI->threads()->messages()->list($threadId, [
             'limit' => $limit,
@@ -94,9 +72,9 @@ class Client
 
             $messages[] = new Message(
                 $messageResponse->id,
-                new \DateTime($messageResponse->createdAt),
                 $messageResponse->role,
-                $content
+                $content,
+                new \DateTimeImmutable($messageResponse->createdAt)
             );
         }
 

@@ -2,44 +2,132 @@
 
 namespace App\Chatbot;
 
+use App\Entity\Chatbot\Message;
 use App\Entity\Chatbot\Run;
 use App\Entity\Chatbot\Thread;
-use App\OpenAI\Client;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ThreadProcessor
 {
-    public function __construct(private readonly Client $openAi)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly Client $client
+    ) {
     }
 
     public function process(Thread $thread): void
     {
-        if (!$thread->externalId) {
-            $threadExternalId = $this->openAi->createThread();
+        $this->initializeThread($thread);
 
-            $thread->externalId = $threadExternalId;
+        $newMessages = $thread->getMessagesToInitialize();
+
+        if (!$newMessages->isEmpty()) {
+            foreach ($newMessages as $newMessage) {
+                $this->initializeMessage($newMessage);
+            }
+
+            dump("has new messages");
+            $this->startCurrentRun($thread);
+        } elseif ($currentRun = $thread->currentRun) {
+            if ($currentRun->needRefresh()) {
+                $this->refreshRunStatus($currentRun);
+            }
+
+            if (!$currentRun->needRefresh()) {
+                $this->endCurrentRun($thread);
+
+                $this->retrieveLastMessages($thread);
+            }
+        }
+    }
+
+    private function initializeThread(Thread $thread): void
+    {
+        if ($thread->isInitialized()) {
+            return;
         }
 
-        foreach ($thread->messages as $message) {
-            if (!$message->isUserMessage()) {
+        $thread->externalId = $this->client->createThread();
+
+        $this->entityManager->flush();
+    }
+
+    private function initializeMessage(Message $message): void
+    {
+        if ($message->isInitialized()) {
+            return;
+        }
+
+        $message->externalId = $this->client->createMessage($message);
+
+        $this->entityManager->flush();
+    }
+
+    private function initializeRun(Run $run): void
+    {
+        if ($run->isInitialized()) {
+            return;
+        }
+
+        $run->externalId = $this->client->createRun($run);
+
+        $this->entityManager->flush();
+    }
+
+    private function cancelRun(Run $run): void
+    {
+        if ($run->isInitialized() && $run->isInProgress()) {
+            $this->client->cancelRun($run);
+        }
+
+        $run->cancel();
+
+        $this->entityManager->flush();
+    }
+
+    private function refreshRunStatus(Run $run): void
+    {
+        $run->status = $this->client->getRunStatus($run);
+
+        $this->entityManager->flush();
+    }
+
+    private function startCurrentRun(Thread $thread): void
+    {
+        if ($thread->currentRun) {
+            $this->cancelRun($thread->currentRun);
+        }
+
+        $thread->startNewRun();
+
+        $this->entityManager->flush();
+
+        $this->initializeRun($thread->currentRun);
+    }
+
+    private function endCurrentRun(Thread $thread): void
+    {
+        $thread->endCurrentRun();
+
+        $this->entityManager->flush();
+    }
+
+    private function retrieveLastMessages(Thread $thread): void
+    {
+        $lastMessages = $this->client->getLastMessages($thread);
+
+        foreach ($lastMessages as $message) {
+            if ($message->isUserMessage()) {
                 continue;
             }
 
-            if (!$message->externalId) {
-                $messageExternalId = $this->openAi->addUserMessage($thread->externalId, $message->content);
-
-                $message->externalId = $messageExternalId;
-            }
-        }
-
-        if ($currentRun = $thread->currentRun) {
-            if (!$currentRun->externalId) {
-                $currentRunExternalId =  $this->openAi->createRun($thread->externalId, $thread->chatbot->assistantId);
-
-                $currentRun->externalId = $currentRunExternalId;
+            if ($thread->hasMessageWithExternalId($message->id)) {
+                continue;
             }
 
-
+            $thread->addAssistantMessage($message->content, $message->createdAt);
         }
+
+        $this->entityManager->flush();
     }
 }

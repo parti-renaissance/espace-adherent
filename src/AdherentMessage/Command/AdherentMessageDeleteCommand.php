@@ -2,9 +2,9 @@
 
 namespace App\AdherentMessage\Command;
 
-use App\Mailchimp\CampaignMessageInterface;
+use App\Mailchimp\AbstractCampaignMessage;
 
-class AdherentMessageDeleteCommand implements CampaignMessageInterface
+class AdherentMessageDeleteCommand extends AbstractCampaignMessage
 {
     private $campaignId;
 

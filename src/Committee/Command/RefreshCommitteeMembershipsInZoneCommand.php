@@ -23,4 +23,14 @@ class RefreshCommitteeMembershipsInZoneCommand implements AsynchronousMessageInt
     {
         return 'refresh_committee_membership_'.$this->zoneCode;
     }
+
+    public function getLockTtl(): int
+    {
+        return 60;
+    }
+
+    public function isLockBlocking(): bool
+    {
+        return true;
+    }
 }

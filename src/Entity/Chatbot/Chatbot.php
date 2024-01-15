@@ -45,4 +45,9 @@ class Chatbot
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->code;
+    }
 }
