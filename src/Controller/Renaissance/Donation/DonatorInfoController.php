@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/don/coordonnees', name: 'app_renaissance_donation_informations', methods: ['GET|POST'])]
+#[Route(path: '/v1/don/coordonnees', name: 'app_renaissance_donation_informations', methods: ['GET|POST'])]
 class DonatorInfoController extends AbstractDonationController
 {
     private const RETRY_PAYLOAD = 'donation_retry_payload';
@@ -19,7 +19,7 @@ class DonatorInfoController extends AbstractDonationController
         $command = $this->getCommand();
 
         if (!$this->processor->canFillPersonalInfo($command)) {
-            return $this->redirectToRoute('app_renaissance_donation');
+            return $this->redirectToRoute('app_donation_index');
         }
 
         $this->processor->doFillPersonalInfo($command);

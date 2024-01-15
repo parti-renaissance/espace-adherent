@@ -6,7 +6,7 @@
     Je donne <span class="stabilo stabilo-green font-bold">en ligne</span>
 {% endblock %}
 
-{% set back_btn_target = path('app_renaissance_donation') %}
+{% set back_btn_target = path('app_donation_index') %}
 
 {% block donation_content %}
     <section class="lg:max-w-xl lg:mx-auto space-y-12 selection:bg-green selection:text-white">
@@ -26,7 +26,7 @@
             </div>
 
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
-                previous_route_name: 'app_renaissance_donation',
+                previous_route_name: 'app_donation_index',
             } %}
         {{ form_end(form) }}
     </section>
