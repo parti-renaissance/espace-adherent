@@ -29,9 +29,7 @@ class DonationRequestV2Type extends AbstractType
             ->add('nationality', CountryType::class, ['preferred_choices' => [AddressInterface::FRANCE]])
             ->add('address', AutocompleteAddressType::class, ['with_additional_address' => true])
 
-            ->add('isPhysicalPerson', RequiredCheckboxType::class)
-            ->add('hasFrenchNationality', RequiredCheckboxType::class)
-            ->add('consentDataCollect', AcceptPersonalDataCollectType::class)
+            ->add('autorisations', RequiredCheckboxType::class)
         ;
     }
 
