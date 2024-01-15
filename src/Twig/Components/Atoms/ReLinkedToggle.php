@@ -9,4 +9,9 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 class ReLinkedToggle
 {
     use StatusAwareTrait;
+
+    public string $id;
+    public string $label;
+    public bool $grid = false;
+    public string $color = 'blue';
 }

@@ -7,7 +7,6 @@
 {% block content %}
     <main class="bg-[#F4F4F7] re_new_ui">
         <section
-            class="flex flex-col justify-center items-center gap-10"
             x-data="xFunnelPage({initStep: {{ step }}})"
             @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
             <header class="w-full flex flex-col p-4 bg-white sticky top-0 z-50 items-center h-auto
@@ -27,8 +26,24 @@
                         initStep="currentStep"
                 />
             </header>
+            <div class="bg-[#F6F7F4] md:flex">
+                <div class="w-full relative mb-8">
+                    <div class="md:sticky top-[80px] md:pt-[6vh]">
+                        <div class="flex flex-col md:items-center text-2xl md:text-4xl w-full pt-10 pl-10 md:p-0">
+                            <h1 class="">
+                                Rejoignez <br>
+                                <img class="h-4 md:h-8 inline" src="{{ asset('images/renaissance/logo-dark.svg') }}" alt="">
+                                <br> dès aujourd'hui !
+                            </h1>
+                        </div>
+                        <figure class="w-full max-w-[75vw] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[1000px] md:pt-[80px]">
+                            {% include 'renaissance/adhesion/form_visual.svg.twig' %}
+                        </figure>
+                    </div>
+                </div>
 
-            <div class="flex-col justify-start items-start gap-8 inline-flex" x-data="{formData:{
+                <div class="flex flex-col justify-center items-center xl:items-start xl:pl-20 mt-8 gap-10 w-full">
+                    <div class="flex-col justify-start items-start gap-8 inline-flex" x-data="{formData:{
                 email: '{{ form.vars.value.email }}'
             }}">
                 {{ form_start(form) }}
@@ -318,6 +333,8 @@
                 <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
             </div>
             {{ form_end(form) }}
+            </div>
+            </div>
         </section>
     </main>
 {% endblock %}

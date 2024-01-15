@@ -129,11 +129,11 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
 
         $errors = $crawler->filter('.re-form-error');
         self::assertSame(7, $errors->count());
-        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(0)->text());
+        self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
-        self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(2)->text());
-        self::assertSame('La nationalité est requise.', $errors->eq(3)->text());
-        self::assertSame('L\'adresse email est requise.', $errors->eq(4)->text());
+        self::assertSame('La nationalité est requise.', $errors->eq(2)->text());
+        self::assertSame('L\'adresse email est requise.', $errors->eq(3)->text());
+        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(4)->text());
         self::assertSame('L\'adresse est obligatoire.', $errors->eq(5)->text());
         self::assertSame('Veuillez renseigner un code postal.', $errors->eq(6)->text());
 

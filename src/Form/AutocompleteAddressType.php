@@ -77,6 +77,7 @@ class AutocompleteAddressType extends AbstractType
             ->setDefaults([
                 'data_class' => Address::class,
                 'with_additional_address' => false,
+                'error_bubbling' => false,
             ])
             ->setDefined('with_additional_address')
             ->setAllowedTypes('with_additional_address', 'bool')

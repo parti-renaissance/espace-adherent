@@ -1,11 +1,14 @@
 /** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
-
 import reScrollTo from '../../../utils/scrollTo';
 
 /**
  * First Step component for funnel
  * @param {{
  *   initStep?: number | null,
+ *   connectUrl: string,
+ *   amount: string,
+ *   duration: string,
+ *   localDestination: string,
  * }} props
  * @returns {AlpineComponent}
  */
@@ -16,6 +19,9 @@ const Page = (props) => ({
         this.currentStep = step;
     },
     disableDispatchToStepper: false,
+    amount: props.amount,
+    duration: props.duration,
+    localDestination: props.localDestination,
 
     handleStepperChange(step) {
         this.disableDispatchToStepper = true;
@@ -45,43 +51,31 @@ const Page = (props) => ({
         }
     },
 
-    retrieveLocalStorage() {
-        const data = localStorage.getItem('membership_request');
-        if (data) {
-            const parsedData = JSON.parse(data);
-            const form = document.querySelector('form[name="membership_request"]');
-            Object.entries(parsedData)
-                .forEach(([key, value]) => {
-                    form.querySelectorAll(`[name="${key}"]`)
-                        .forEach((el) => {
-                            if ('radio' === el.type) {
-                                el.checked = el.value === value;
-                            } else if ('checkbox' === el.type) {
-                                el.checked = value;
-                            } else if (!el.value) {
-                                if ('membership_request_address_autocomplete' === el.id) {
-                                    const fulladress = parsedData['membership_request[address][address]'];
-                                    if (fulladress) {
-                                        el.value = 'prefilled';
-                                        window[`options_${el.id}`] = [{
-                                            label: fulladress,
-                                            value: 'prefilled',
-                                        }];
-                                    }
-                                } else {
-                                    el.value = value;
-                                }
-                            }
-                        });
-                });
-        }
+    connectUrl() {
+        const url = new URL(props.connectUrl, window.location.origin);
+        url.searchParams.set('amount', this.amount);
+        url.searchParams.set('duration', this.duration);
+        url.searchParams.set('localDestination', this.localDestination);
+        return url.toString();
     },
 
     init() {
-        this.retrieveLocalStorage();
-        this.blockStep(this.stepToFill);
         this.$nextTick(() => {
-            reScrollTo(`step_${this.currentStep + 1}`);
+            const firstError = document.querySelector('[data-status="error"]');
+            if (firstError) {
+                const stepNumber = Number(firstError.closest('.re-step')
+                    .id
+                    .split('_')[1]) - 1;
+                this.blockStep(stepNumber);
+                firstError.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'nearest',
+                });
+            } else {
+                reScrollTo(`step_${this.stepToFill + 1}`);
+                this.blockStep(this.stepToFill);
+            }
         });
         this.$watch('stepToFill', (value) => {
             this.blockStep(value);
