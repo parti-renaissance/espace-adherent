@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route('/v2/don', name: 'app_donation_index', methods: ['GET', 'POST'])]
+#[Route('/don', name: 'app_donation_index', methods: ['GET', 'POST'])]
 class DonationController extends AbstractController
 {
     private const DEFAULT_STEP = 0;

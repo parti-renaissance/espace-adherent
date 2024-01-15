@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/v2/don/merci', name: 'app_donation_finish', methods: ['GET'])]
+#[Route(path: '/don/merci', name: 'app_donation_finish', methods: ['GET'])]
 class FinishController extends AbstractController
 {
     public function __invoke(Request $request, DonationRepository $donationRepository): Response
