@@ -208,6 +208,7 @@
                                         loading="x:loading"
                                         disabled="x:!checkValidity()"
                                         onDisabledClick="triggerValidateOnAllField()"
+                                        x-on:click="handleOnSubmit($event)"
                                 >Passer au paiement</twig:ReButton>
                             </twig:Atoms:ReCard>
                             <twig:Atoms:ReCard class="max-w-[500px]">

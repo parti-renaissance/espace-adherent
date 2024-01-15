@@ -15,14 +15,13 @@ const ThirdForm = () => ({
     ...CommonFormStep(),
     id: 'step_3',
     fieldsValid: {
-        isPhysicalPerson: false,
-        hasFrenchNationality: false,
-        consentDataCollect: false,
+        autorisations: false,
         captcha: false,
     },
     captchaToken: null,
+    loading: false,
     handleOnSubmit(e) {
-        this._handleOnSubmitBase(e);
+        this.loading = true;
     },
 
     init() {
