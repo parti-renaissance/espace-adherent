@@ -60,10 +60,22 @@ const Page = (props) => ({
     },
 
     init() {
-        // this.retrieveLocalStorage();
-        this.blockStep(this.stepToFill);
         this.$nextTick(() => {
-            reScrollTo(`step_${this.currentStep + 1}`);
+            const firstError = document.querySelector('[data-status="error"]');
+            if (firstError) {
+                const stepNumber = Number(firstError.closest('.re-step')
+                    .id
+                    .split('_')[1]) - 1;
+                this.blockStep(stepNumber);
+                firstError.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'nearest',
+                });
+            } else {
+                reScrollTo(`step_${this.stepToFill + 1}`);
+                this.blockStep(this.stepToFill);
+            }
         });
         this.$watch('stepToFill', (value) => {
             this.blockStep(value);
