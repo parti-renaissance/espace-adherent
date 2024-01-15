@@ -8,7 +8,7 @@
 
 {% block content %}
     <twig:ReStandaloneLayout class="re_new_ui">
-        <twig:Atoms:ReCard class="max-w-[500px]">
+        <twig:Atoms:ReCard class="max-w-[500px]" x-data="{showAutoComplete: true}">
             {{ form_start(form, { attr: { 'x-ref': 'form', class: 'flex gap-8 flex-col'} }) }}
                 <div>
                     <twig:Atoms:ReLabel>Carte d'adhérant</twig:Atoms:ReLabel>
