@@ -34,8 +34,7 @@ Feature:
         Then I wait 3 seconds until I see "J’appartiens à un autre parti politique"
         When I click the "membership_request_exclusiveMembership_0" element
         Then I should not see "J’appartiens à un autre parti politique"
-        When I click the "membership_request_allowNotifications" element
-        And I click the "membership_request_isPhysicalPerson" element
+        When I click the "membership_request_isPhysicalPerson" element
         Then I click the "#step_3 .re-button" selector
         And I wait 5 seconds
         And I scroll element "#step_4 #amount_3_label" into view
@@ -153,7 +152,7 @@ Feature:
         And I click the "adhesion_further_information_birthdate_year_select_widget" element
         And I click the "#adhesion_further_information_birthdate_year_select_widget .re-input-option" selector
         Then I should see "Vous avez moins de 35 ans"
-        When I click the "input[name='adhesion_further_information[subscriptionTypes][]']" selector
+        When I click the "input[name='adhesion_further_information[acceptSmsNotification]']" selector
         And I press "Continuer"
         Then I should see "Vous avez accepté de recevoir des informations du parti par SMS ou téléphone, cependant, vous n'avez pas précisé votre numéro de téléphone."
         When I fill in the following:

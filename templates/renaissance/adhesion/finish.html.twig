@@ -5,7 +5,7 @@
 {% block content %}
     <twig:ReStandaloneLayout class="re_new_ui">
         <twig:Atoms:ReCard class="max-w-[500px]">
-            {% if type == 'adhesion' %}
+            {% if type == 'adhesion' and app.user.acceptMemberCard %}
                 <twig:ReParagraphStatus status="success" icon slim>
                     Votre carte d’adhérent est envoyée !
                 </twig:ReParagraphStatus>
