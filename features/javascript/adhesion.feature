@@ -13,7 +13,7 @@ Feature:
         Then I wait 15 seconds until I see "Nous ne sommes pas parvenus à vérifier l'existence de l'adresse « test@test123.com ». Vérifiez votre saisie avant de continuer."
         When I fill in the following:
             | membership_request[email] | test@test.com |
-        And I wait 1 seconds
+        And I wait 2 seconds
         And I press "J'adhère"
         And I wait 3 seconds
         And I click the "membership_request_civility_0_label" element
@@ -161,7 +161,8 @@ Feature:
         # Step 9 : member card
         Then I should be on "/adhesion/carte-adherent" wait otherwise
         And I should see "Carte d'adhérant"
-        When I fill in the following:
+        When I click the ".aucomplete-fields-toggle" selector
+        And I fill in the following:
             | member_card[address][address]      | 92 bld Victor Hugo |
             | member_card[address][postalCode]   | 92110 |
             | member_card[address][cityName]     | Clichy |
