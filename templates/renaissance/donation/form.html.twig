@@ -133,7 +133,7 @@
                                     <twig:Atoms:ReCard class="max-w-[500px]">
                                         {% if not app.user %}
                                             <p>
-                                                <twig:Atoms:ReLabel>Vous avez un déjà compte Renaissance ? </twig:Atoms:ReLabel>
+                                                <twig:Atoms:ReLabel>Vous avez déjà un compte Renaissance ? </twig:Atoms:ReLabel>
                                                 Connectez vous pour pré-remplir toutes vos informations.
                                             </p>
                                             <twig:ReButton stroke color="black" tag="a" x-bind:href="connectUrl()">
@@ -144,7 +144,7 @@
                                         <p>
                                             Un don ne vaut pas adhésion ou cotisation au parti Renaissance.
                                             Si vous souhaitez adhérer/cotiser, veuillez vous rendre sur
-                                            <a class="text-ui_green-50 hover:text-ui_green-70" href="{{ path('app_adhesion_index') }}">cette page</a>
+                                            <a class="text-ui_green-50 hover:text-ui_green-70" href="{{ path('app_adhesion_index') }}">cette page</a>.
                                         </p>
                                     </twig:Atoms:ReCard>
                                 {% endif %}
@@ -168,7 +168,7 @@
 
                                     {{ form_row(form.emailAddress, {
                                         attr: {
-                                            placeholder: 'Adresse mail',
+                                            placeholder: 'Adresse email',
                                             validate:"['required', 'email']",
                                             autocomplete: 'email',
                                             type: 'email',
