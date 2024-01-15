@@ -193,22 +193,9 @@
                             </div>
                             <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3" x-data="ThirdFormStep">
                                 <twig:Atoms:ReLabel>Autorisations</twig:Atoms:ReLabel>
-                                {{ form_row(form.isPhysicalPerson, {
-                                    label: 'donation.physical_person.label', label_html: true,
-                                    attr: { onCheck:"setFieldValid('isPhysicalPerson')", validate: "['required']" }
-                                }) }}
-
-                                {{ form_row(form.hasFrenchNationality, {
-                                    label: 'donation.french_nationality.label', label_html: true,
-                                    attr: { onCheck:"setFieldValid('hasFrenchNationality')", validate: "['required']" }
-                                }) }}
-
-                                {{ form_row(form.consentDataCollect, {
-                                    attr: {
-                                        validate: "['required']",
-                                        onCheck: "setFieldValid('consentDataCollect')",
-                                    },
-                                    label: 'Je consent au traitement de mes données personnelles'
+                                {{ form_row(form.autorisations, {
+                                    label: 'donation.autorisations.label', label_html: true,
+                                    attr: { onCheck:"setFieldValid('autorisations')", validate: "['required']" }
                                 }) }}
 
                                 <div class="w-full re-field-frame !h-auto cursor-pointer"
