@@ -22,9 +22,9 @@ class LockMiddleware implements MiddlewareInterface
             return $stack->next()->handle($envelope, $stack);
         }
 
-        $lock = $this->lockFactory->createLock($message->getLockKey(), 60);
+        $lock = $this->lockFactory->createLock($message->getLockKey(), $message->getLockTtl());
 
-        $lock->acquire(true);
+        $lock->acquire($message->isLockBlocking());
 
         try {
             return $stack->next()->handle($envelope, $stack);

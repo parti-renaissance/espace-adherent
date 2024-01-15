@@ -7,6 +7,7 @@ use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -16,7 +17,7 @@ class Message
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use OpenAIResourceTrait;
+    use ExternalResourceTrait;
 
     public const ROLE_USER = 'user';
     public const ROLE_ASSISTANT = 'assistant';
@@ -29,21 +30,27 @@ class Message
 
     /**
      * @ORM\Column
+     *
+     * @Groups({"chatbot:read"})
      */
     public string $role;
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @Groups({"chatbot:read"})
      */
     public string $content;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @Groups({"chatbot:read"})
+     */
+    public \DateTimeInterface $date;
 
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
-    }
-
-    public function isUserMessage(): bool
-    {
-        return self::ROLE_USER === $this->role;
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\AdherentMessage\Command;
 
-use App\Mailchimp\CampaignMessageInterface;
+use App\Mailchimp\AbstractCampaignMessage;
 use Ramsey\Uuid\UuidInterface;
 
-class AdherentMessageChangeCommand implements CampaignMessageInterface
+class AdherentMessageChangeCommand extends AbstractCampaignMessage
 {
     private $uuid;
 

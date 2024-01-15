@@ -2,8 +2,11 @@
 
 namespace App\Controller\Renaissance;
 
+use App\Chatbot\ConversationManager;
 use App\Controller\CanaryControllerTrait;
-use App\OpenAI\ChatbotClient;
+use App\Entity\Adherent;
+use App\Entity\Chatbot\Chatbot;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,16 +14,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/chatbot/{code}', name: 'api_chatbot')]
+#[Route(path: '/chatbot/{code}', name: 'api_chatbot_')]
+#[Entity('chatbot', expr: 'repository.findOneEnabledByCode(code)')]
 class ChatbotController extends AbstractController
 {
     use CanaryControllerTrait;
 
-    #[Route(name: '_post', methods: ['POST'])]
+    #[Route(name: 'post', methods: ['POST'])]
     public function addMessageAction(
         Request $request,
-        ChatbotClient $chatbotClient,
-        string $code
+        ConversationManager $manager,
+        Chatbot $chatbot
     ): JsonResponse {
         $this->disableInProduction();
 
@@ -31,36 +35,44 @@ class ChatbotController extends AbstractController
             throw new BadRequestHttpException('Missing "content" key in request body.');
         }
 
-        $chatbotClient->addMessage($code, $message);
+        /** @var Adherent|null $adherent */
+        $adherent = $this->getUser();
+
+        $thread = $manager->getCurrentThread($chatbot, $adherent);
+
+        $manager->addMessage($thread, $message);
 
         return $this->json(['OK']);
     }
 
-    #[Route(name: '_get', methods: ['GET'])]
+    #[Route(name: 'get', methods: ['GET'])]
     public function getThreadAction(
-        ChatbotClient $chatbotClient,
-        string $code
+        ConversationManager $manager,
+        Chatbot $chatbot
     ): JsonResponse {
         $this->disableInProduction();
 
-        $thread = $chatbotClient->getCurrentThread($code);
+        /** @var Adherent|null $adherent */
+        $adherent = $this->getUser();
+
+        $thread = $manager->getCurrentThread($chatbot, $adherent);
 
         return $this->json(
             $thread,
             Response::HTTP_OK,
             [],
-            ['groups' => ['chatbot_read']]
+            ['groups' => ['chatbot:read']]
         );
     }
 
-    #[Route(name: '_delete', methods: ['DELETE'])]
+    #[Route(name: 'delete', methods: ['DELETE'])]
     public function clearAction(
-        ChatbotClient $chatbotClient,
-        string $code
+        ConversationManager $manager,
+        Chatbot $chatbot
     ): JsonResponse {
         $this->disableInProduction();
 
-        $chatbotClient->clear($code);
+        $manager->end($chatbot);
 
         return $this->json(['OK']);
     }

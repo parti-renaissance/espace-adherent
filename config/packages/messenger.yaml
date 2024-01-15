@@ -66,7 +66,16 @@ framework:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailer' }
                     queues:
                         mailer: { binding_keys: [ 'mailer' ] }
+            chatbot:
+                dsn: "%env(RABBITMQ_DSN)%"
+                retry_strategy:
+                    delay: 3000
+                options:
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'chatbot' }
+                    queues:
+                        mailer: { binding_keys: [ 'chatbot' ] }
         routing:
+            App\Chatbot\Command\RefreshThreadCommand: chatbot
             App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
             App\Mailchimp\SynchronizeMessageInterface: mailchimp_sync
             App\Pap\Command\AsynchronousMessageInterface: pap
