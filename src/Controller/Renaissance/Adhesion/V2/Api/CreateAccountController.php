@@ -6,6 +6,7 @@ use App\Adhesion\Command\CreateAccountCommand;
 use App\Adhesion\CreateAdherentResult;
 use App\Adhesion\Request\MembershipRequest;
 use App\Controller\Renaissance\Adhesion\V2\ActivateEmailController;
+use App\Entity\Adherent;
 use App\Security\AuthenticationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +36,10 @@ class CreateAccountController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        if (!$emailIdentifier = $request->getSession()->get(PersistEmailController::SESSION_KEY)) {
+        /** @var Adherent|null $currentUser */
+        if ($currentUser = $this->getUser()) {
+            $emailIdentifier = $currentUser->getEmailAddress();
+        } elseif (!$emailIdentifier = $request->getSession()->get(PersistEmailController::SESSION_KEY)) {
             return $this->json([
                 'message' => 'Validation Failed',
                 'status' => 'error',
@@ -65,7 +69,7 @@ class CreateAccountController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $result = $this->handle(new CreateAccountCommand($membershipRequest, $this->getUser()));
+        $result = $this->handle(new CreateAccountCommand($membershipRequest, $currentUser));
 
         if ($result instanceof CreateAdherentResult) {
             $this->tokenStorage->setToken(null);

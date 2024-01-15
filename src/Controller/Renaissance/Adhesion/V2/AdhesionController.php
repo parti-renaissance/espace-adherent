@@ -70,7 +70,7 @@ class AdhesionController extends AbstractController
             // Create membership from connected user (like a sympathizer or an adherent who wants to renew)
             $membershipRequest = MembershipRequest::createFromAdherent($currentUser);
 
-            $this->step = $currentUser->isEligibleForMembershipPayment() ? 3 : 2;
+            $this->step = 1;
         } else {
             // Create empty membership request otherwise
             $membershipRequest = new MembershipRequest();
