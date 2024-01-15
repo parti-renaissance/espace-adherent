@@ -28,7 +28,7 @@
 {% block form_errors %}
     {%- if errors|length > 0 -%}
         {% for error in errors %}
-            <twig:Atoms:ReTextStatus status="error" value="{{ error.message }}" />
+            <twig:Atoms:ReTextStatus status="error" data-status="error" value="{{ error.message }}" />
         {% endfor %}
     {% endif %}
 {% endblock %}
@@ -140,7 +140,10 @@
     >
         {{ form_label(form) }}
 
-        {{ block('form_errors') }}
+        <div class="mb-8">
+            {{ block('form_errors') }}
+        </div>
+
 
         {# ---- Autocomplete ---- -#}
 
