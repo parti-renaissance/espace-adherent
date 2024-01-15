@@ -4,12 +4,9 @@ namespace App\Form;
 
 use App\Address\AddressInterface;
 use App\Entity\Adherent;
-use App\Entity\SubscriptionType;
 use App\Repository\SubscriptionTypeRepository;
 use App\Subscription\SubscriptionTypeEnum;
-use Doctrine\ORM\EntityRepository;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,32 +38,26 @@ class AdhesionFurtherInformationType extends AbstractType
                 'default_region' => AddressInterface::FRANCE,
                 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
             ])
-            ->add('subscriptionTypes', EntityType::class, [
-                'class' => SubscriptionType::class,
-                'choice_label' => fn (SubscriptionType $type) => "Je souhaite recevoir les informations sur l'actualité de Renaissance et ses communications politiques par SMS et téléphone",
-                'label' => false,
-                'expanded' => true,
-                'multiple' => true,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er
-                        ->createQueryBuilder('st')
-                        ->where('st.code = :code')
-                        ->setParameter('code', SubscriptionTypeEnum::MILITANT_ACTION_SMS)
-                    ;
-                },
-            ])
+            ->add('acceptSmsNotification', CheckboxType::class, ['required' => false, 'mapped' => false])
         ;
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             /** @var Adherent $adherent */
             $adherent = $event->getData();
+            $form = $event->getForm();
 
-            if ($event->getForm()->get('refuseJamNotification')->getData()) {
+            if ($form->get('refuseJamNotification')->getData()) {
                 $adherent->removeSubscriptionTypeByCode(SubscriptionTypeEnum::JAM_EMAIL);
             } else {
                 $adherent->addSubscriptionType($this->subscriptionTypeRepository->findOneByCode(SubscriptionTypeEnum::JAM_EMAIL));
             }
-        });
+
+            if ($form->get('acceptSmsNotification')->getData()) {
+                $adherent->addSubscriptionType($this->subscriptionTypeRepository->findOneByCode(SubscriptionTypeEnum::MILITANT_ACTION_SMS));
+            } else {
+                $adherent->removeSubscriptionTypeByCode(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
+            }
+        }, 10);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

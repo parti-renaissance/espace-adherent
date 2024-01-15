@@ -282,7 +282,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var SubscriptionType[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="SubscriptionType", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\SubscriptionType", cascade={"persist"})
      *
      * @Groups({"profile_read"})
      */
@@ -1420,11 +1420,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasSmsSubscriptionType(): bool
     {
         return $this->hasSubscriptionType(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
-    }
-
-    public function hasJAMSubscriptionType(): bool
-    {
-        return $this->hasSubscriptionType(SubscriptionTypeEnum::JAM_EMAIL);
     }
 
     /**

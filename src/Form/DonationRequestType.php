@@ -85,7 +85,7 @@ class DonationRequestType extends AbstractType
                         $donationRequest->setAmount($form->get('confirmSubscriptionAmount')->getData());
                         $donationRequest->setDuration(PayboxPaymentSubscription::UNLIMITED);
                     }
-                })
+                }, 10)
             ;
         }
 
