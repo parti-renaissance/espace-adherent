@@ -79,7 +79,7 @@ class SecurityControllerCaseTest extends AbstractRenaissanceWebTestCase
         $this->client->followRedirect();
 
         $this->assertStringContainsString(
-            'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.',
+            'adresse email et le mot de passe que vous avez saisis ne correspondent pas.',
             $this->client->getResponse()->getContent()
         );
     }
@@ -104,7 +104,7 @@ class SecurityControllerCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $error = $crawler->filter('#auth-error'));
-        $this->assertSame('L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.', trim($error->text()));
+        $this->assertSame('L\'adresse email et le mot de passe que vous avez saisis ne correspondent pas.', trim($error->text()));
     }
 
     public static function provideInvalidCredentials(): array

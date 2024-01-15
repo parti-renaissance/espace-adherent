@@ -19,7 +19,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | Nom                      | Jean                     |
       | Prénom                   | Dupont                   |
       | app_donation_nationality | FR                       |
-      | Adresse e-mail           | jean.dupont@en-marche.fr |
+      | Adresse email           | jean.dupont@en-marche.fr |
       | Code postal              | 75001                    |
       | Ville                    | Paris                    |
       | Adresse postale          | 1 allée vivaldie         |
@@ -61,7 +61,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | Nom                      | Jean                     |
       | Prénom                   | Dupont                   |
       | app_donation_nationality | FR                       |
-      | Adresse e-mail           | jean.dupont@en-marche.fr |
+      | Adresse email           | jean.dupont@en-marche.fr |
       | Code postal              | 75001                    |
       | Ville                    | Paris                    |
       | Adresse postale          | 1 allée vivaldie         |
@@ -97,7 +97,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | Nom                      | Jean                     |
       | Prénom                   | Dupont                   |
       | app_donation_nationality | FR                       |
-      | Adresse e-mail           | jean.dupont@en-marche.fr |
+      | Adresse email           | jean.dupont@en-marche.fr |
       | Code postal              | 75001                    |
       | Ville                    | Paris                    |
       | Adresse postale          | 1 allée vivaldie         |
@@ -115,7 +115,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And the "app_donation[gender]" field should contain "male"
     And the "Nom" field should contain "Jean"
     And the "Prénom" field should contain "Dupont"
-    And the "Adresse e-mail" field should contain "jean.dupont@en-marche.fr"
+    And the "Adresse email" field should contain "jean.dupont@en-marche.fr"
 
   @skip
   Scenario: The logged user can subscribe to donate each month successfully but can't have a second subscription without unsubscribe before

@@ -136,8 +136,8 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
     {
       "error": "invalid_grant",
-      "error_description": "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.",
-      "message": "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+      "error_description": "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas.",
+      "message": "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
     }
     """
     When I send a "POST" request to "/oauth/v2/token" with parameters:

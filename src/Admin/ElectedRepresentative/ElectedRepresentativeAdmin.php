@@ -154,7 +154,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
                 ->add('emailAddress', EmailType::class, [
                     'mapped' => false,
-                    'label' => 'Adresse e-mail de l\'adhérent',
+                    'label' => 'Adresse email de l\'adhérent',
                     'template' => 'admin/elected_representative/show_email.html.twig',
                 ])
                 ->add('contactEmail', null, [
@@ -203,7 +203,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
                 ->add('adherent', AdherentEmailType::class, [
                     'required' => false,
-                    'label' => 'Adresse e-mail',
+                    'label' => 'Adresse email',
                     'help' => 'Attention, changer l\'e-mail ici fera que l\'élu sera associé à un autre compte adhérent.'
                         .' Si vous souhaitez ajouter un autre mail de contact, faites-le ci-dessous.',
                 ])

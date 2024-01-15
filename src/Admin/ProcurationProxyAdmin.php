@@ -61,7 +61,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
                     'label' => 'Prénom(s)',
                 ])
                 ->add('emailAddress', null, [
-                    'label' => 'Adresse e-mail',
+                    'label' => 'Adresse email',
                 ])
                 ->add('phone', PhoneNumberType::class, [
                     'label' => 'Téléphone',
@@ -140,7 +140,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
                     'label' => 'Prénom(s)',
                 ])
                 ->add('emailAddress', null, [
-                    'label' => 'Adresse e-mail',
+                    'label' => 'Adresse email',
                 ])
                 ->add('phone', null, [
                     'label' => 'Téléphone',
@@ -216,7 +216,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 'label' => 'Prénom(s)',
             ])
             ->add('emailAddress', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
             ])
             ->add('electionRounds', null, [
                 'label' => 'Tours',
@@ -241,7 +241,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 'label' => 'Prénom(s)',
             ])
             ->add('emailAddress', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
             ])
             ->add('reliability', null, [
                 'label' => 'Fiabilité',

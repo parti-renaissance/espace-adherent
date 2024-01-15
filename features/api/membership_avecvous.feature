@@ -324,12 +324,12 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "email_address: Ceci n'est pas une adresse e-mail valide.",
+      "detail": "email_address: Ceci n'est pas une adresse email valide.",
       "violations": [
         {
           "code": "@uuid@",
           "propertyPath": "email_address",
-          "message": "Ceci n'est pas une adresse e-mail valide."
+          "message": "Ceci n'est pas une adresse email valide."
         }
       ]
     }

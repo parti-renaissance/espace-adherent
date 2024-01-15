@@ -21,9 +21,9 @@ common.first_name.max_length: Votre prénom ne peut pas dépasser {{ limit }} ca
 common.last_name.min_length: Votre nom doit comporter au moins {{ limit }} caractères.
 common.last_name.max_length: Votre nom ne peut pas dépasser {{ limit }} caractères.
 
-common.email.not_blank: Veuillez renseigner une adresse e-mail.
-common.email.invalid: Ceci n'est pas une adresse e-mail valide.
-common.email.max_length: L'adresse e-mail est trop longue, {{ limit }} caractères maximum.
+common.email.not_blank: Veuillez renseigner une adresse email.
+common.email.invalid: Ceci n'est pas une adresse email valide.
+common.email.max_length: L'adresse email est trop longue, {{ limit }} caractères maximum.
 common.email.repeated: Les adresses email ne correspondent pas.
 
 common.birthdate.not_blank: Vous devez spécifier votre date de naissance.
@@ -86,7 +86,7 @@ adherent.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 adherent.birthdate.minimum_required_age: Vous devez être âgé d'au moins 15 ans pour adhérer.
 adherent.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 ans pour adhérer.
 
-adherent.email_address.not_unique: Cette adresse e-mail existe déjà.
+adherent.email_address.not_unique: Cette adresse email existe déjà.
 
 adherent.plain_password.min_length: Votre mot de passe doit comporter au moins 8 caractères.
 adherent.plain_password.not_blank: Le mot de passe ne doit pas être vide.
@@ -178,13 +178,13 @@ donation.french_address_or_nationality_donation: |
 newsletter.already_registered: Vous êtes déjà inscrit à la newsletter.
 
 newsletter.email.not_blank: Cette valeur est requise.
-newsletter.email.invalid: Ceci n'est pas une adresse e-mail valide.
+newsletter.email.invalid: Ceci n'est pas une adresse email valide.
 
 newsletter.postalCode.invalid: Ce code postal n'est pas valide.
 
-newsletter.guests.min: Merci de saisir au moins une adresse e-mail.
+newsletter.guests.min: Merci de saisir au moins une adresse email.
 
-legislative_newsletter.already_registered: Une souscription existe déjà avec cette adresse mail.
+legislative_newsletter.already_registered: Une souscription existe déjà avec cette adresse email.
 
 #
 # Invitation
@@ -197,7 +197,7 @@ invitation.email.was_invited_recently: Cette personne a déjà été invitée r�
 #
 referent.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
 referent.message.max_length: Le message doit contenir moins de {{ limit }} caractères.
-referent.adherent.invalid_email: Veuillez renseigner une adresse mail liée à un compte adhérent
+referent.adherent.invalid_email: Veuillez renseigner une adresse email liée à un compte adhérent
 referent.adherent.can_be_coreferent: Cet adhérent est déjà co-référent d’un autre territoire
 referent.managed_zone.empty: La zone gérée ne doit pas être vide.
 
@@ -283,7 +283,7 @@ procuration.proxies_count.already_associated: Si vous voulez réduire le nombre 
 #
 event.full: L'événement est complet.
 event.invitation.message.max_length: Le message contient {{ limit }} caractères mais ne doit pas excéder 200.
-event.invitation.guests.min: Merci de saisir au moins une adresse e-mail.
+event.invitation.guests.min: Merci de saisir au moins une adresse email.
 event.registration.already_exists: Vous êtes déjà inscrit(e) à l'événement
 
 #
@@ -408,7 +408,7 @@ application_request.last_name.min_length: Votre nom doit faire au moins {{ limit
 application_request.last_name.max_length: Votre nom ne doit pas faire plus de {{ limit }} caractères.
 application_request.favorite_cities.min_length: Veuillez sélectionner au moins {{ limit }} ville.
 application_request.favorite_cities.max_length: Vous ne pouvez pas sélectionner plus de {{ limit }} villes.
-application_request.email_address.not_blank: Veuillez renseigner une adresse e-mail.
+application_request.email_address.not_blank: Veuillez renseigner une adresse email.
 application_request.profession.required: Veuillez renseigner votre profession.
 application_request.favorite_themes.min: Veuillez sélectionner au moins une thématique.
 application_request.technical_skills.min: Veuillez sélectionner au moins une compétence technique.

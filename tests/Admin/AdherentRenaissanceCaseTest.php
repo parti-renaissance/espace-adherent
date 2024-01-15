@@ -714,7 +714,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         ];
         yield 'Invalid email address' => [
             ['email' => 'abc'],
-            ['email' => ['Ceci n\'est pas une adresse e-mail valide.']],
+            ['email' => ['Ceci n\'est pas une adresse email valide.']],
         ];
         yield 'No phone country' => [
             ['phone' => ['country' => '', 'number' => '0612345678'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],

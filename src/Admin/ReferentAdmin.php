@@ -144,7 +144,7 @@ class ReferentAdmin extends AbstractAdmin
                     ],
                 ])
                 ->add('emailAddress', EmailType::class, [
-                    'label' => 'Adresse e-mail',
+                    'label' => 'Adresse email',
                     'required' => false,
                     'attr' => [
                         'placeholder' => 'alexandre@dumoulin.com',
@@ -227,7 +227,7 @@ class ReferentAdmin extends AbstractAdmin
                     'label' => 'Prénom',
                 ])
                 ->add('emailAddress', null, [
-                    'label' => 'Adresse e-mail',
+                    'label' => 'Adresse email',
                 ])
             ->end()
             ->with('Zone', ['class' => 'col-md-7'])

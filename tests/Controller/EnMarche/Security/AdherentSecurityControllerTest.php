@@ -96,12 +96,12 @@ class AdherentSecurityControllerTest extends AbstractEnMarcheWebTestCase
             'Unregistered adherent account' => [
                 'foobar@foo.tld',
                 'foo-bar-pass',
-                'L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.',
+                'L\'adresse email et le mot de passe que vous avez saisis ne correspondent pas.',
             ],
             'Registered enabled adherent' => [
                 'carl999@example.fr',
                 'foo-bar-pass',
-                'L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.',
+                'L\'adresse email et le mot de passe que vous avez saisis ne correspondent pas.',
             ],
             'Registered not validated account' => [
                 'michelle.dufour@example.ch',

@@ -107,7 +107,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
                     ],
                 ])
                 ->add('emailAddress', EmailType::class, [
-                    'label' => 'Adresse e-mail',
+                    'label' => 'Adresse email',
                     'required' => false,
                     'attr' => [
                         'placeholder' => 'alexandre@dumoulin.com',
@@ -212,7 +212,7 @@ class LegislativeCandidateAdmin extends AbstractAdmin
                     'label' => 'Prénom',
                 ])
                 ->add('emailAddress', null, [
-                    'label' => 'Adresse e-mail',
+                    'label' => 'Adresse email',
                 ])
             ->end()
             ->with('Circonscription', ['class' => 'col-md-7'])

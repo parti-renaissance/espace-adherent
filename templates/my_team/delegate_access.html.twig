@@ -26,7 +26,7 @@
                         Aucun adhérent ne correspond à votre recherche
                     </div>
                     <div class="text--body b__nudge--top-10 b__nudge--bottom-small">
-                        L'adhérent est hors de mon territoire - <span class="text--blue--dark link--no-decor" id="js-search-by-email" style="cursor: pointer;">Saisir son adresse e-mail</span>
+                        L'adhérent est hors de mon territoire - <span class="text--blue--dark link--no-decor" id="js-search-by-email" style="cursor: pointer;">Saisir son adresse email</span>
                     </div>
                 </div>
 
@@ -41,7 +41,7 @@
 
             <div id="js-by-email" {% if not form.email.vars.data %}style="display: none;"{% endif %}>
                 <div class="form__row">
-                    {{ form_row(form.email, {attr: {placeholder: 'Entrez une adresse e-mail'}}) }}
+                    {{ form_row(form.email, {attr: {placeholder: 'Entrez une adresse email'}}) }}
                     {{ form_errors(form) }}
                     <div class="text--body text--blue--dark link--no-decor b__nudge--top-10 b__nudge--bottom-small" id="js-search-by-name" style="cursor: pointer;">Rechercher par prénom et/ou nom</div>
                 </div>

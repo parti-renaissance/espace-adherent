@@ -132,7 +132,7 @@ class FormControllerTest extends AbstractApiTestCase
                     ],
                     'emailAddress' => [
                         'errors' => [
-                            'Ceci n\'est pas une adresse e-mail valide.',
+                            'Ceci n\'est pas une adresse email valide.',
                         ],
                     ],
                 ],

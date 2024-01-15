@@ -42,7 +42,7 @@ class ProcurationRequestAdmin extends AbstractAdmin
                     'label' => 'Prénom(s)',
                 ])
                 ->add('emailAddress', null, [
-                    'label' => 'Adresse e-mail',
+                    'label' => 'Adresse email',
                 ])
                 ->add('phone', PhoneNumberType::class, [
                     'label' => 'Téléphone',
@@ -111,7 +111,7 @@ class ProcurationRequestAdmin extends AbstractAdmin
                     'label' => 'Prénom(s)',
                 ])
                 ->add('emailAddress', null, [
-                    'label' => 'Adresse e-mail',
+                    'label' => 'Adresse email',
                 ])
                 ->add('phone', null, [
                     'label' => 'Téléphone',
@@ -184,7 +184,7 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 'label' => 'Prénom(s)',
             ])
             ->add('emailAddress', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date',
@@ -209,7 +209,7 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 'label' => 'Prénom(s)',
             ])
             ->add('emailAddress', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
             ])
             ->add('_profile', null, [
                 'virtual_field' => true,

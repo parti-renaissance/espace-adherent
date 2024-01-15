@@ -11,31 +11,31 @@ Feature:
       | _login_email    | luciole1989@spambox.fr |
       | _login_password | wrongPassword          |
     And I press "Me connecter"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I fill in the following:
       | _login_email    | lUciole1989@spambox.fr |
       | _login_password | wrongPassword          |
     And I press "Me connecter"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I fill in the following:
       | _login_email    | Luciole1989@spambox.fr |
       | _login_password | wrongPassword          |
     And I press "Me connecter"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I fill in the following:
       | _login_email    | luciole1989@spambox.fr |
       | _login_password | wrongPassword          |
     And I press "Me connecter"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I fill in the following:
       | _login_email    | luciole1989@spambox.fr |
       | _login_password | wrongPassword          |
     And I press "Me connecter"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     # Refuse login with good credential
     When I fill in the following:
@@ -51,31 +51,31 @@ Feature:
       | _login_email    | unkown_not_in_em_db@spambox.fr |
       | _login_password | wrongPassword                  |
     And I press "Me connecter"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I fill in the following:
       | _login_email    | unkown_not_in_em_db@spambox.fr |
       | _login_password | wrongPassword                  |
     And I press "Me connecter"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I fill in the following:
       | _login_email    | unkown_not_in_em_db@spambox.fr |
       | _login_password | wrongPassword                  |
     And I press "Me connecter"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I fill in the following:
       | _login_email    | unkown_not_in_em_db@spambox.fr |
       | _login_password | wrongPassword                  |
     And I press "Me connecter"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I fill in the following:
       | _login_email    | unkown_not_in_em_db@spambox.fr |
       | _login_password | wrongPassword                  |
     And I press "Me connecter"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     # Refuse login
     When I fill in the following:
@@ -91,31 +91,31 @@ Feature:
       | _login_email    | superadmin@en-marche-dev.fr |
       | _login_password | wrongPassword               |
     And I press "Connexion"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I fill in the following:
       | _login_email    | superadmin@en-marche-dev.fr |
       | _login_password | wrongPassword               |
     And I press "Connexion"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I fill in the following:
       | _login_email    | suPeradmin@en-marche-dev.fr |
       | _login_password | wrongPassword               |
     And I press "Connexion"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I fill in the following:
       | _login_email    | superadmin@en-marche-dev.fr |
       | _login_password | wrongPassword               |
     And I press "Connexion"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I fill in the following:
       | _login_email    | superAdmin@en-marche-dev.fr |
       | _login_password | wrongPassword               |
     And I press "Connexion"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
     # Refuse login with good credential
     When I fill in the following:
