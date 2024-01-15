@@ -296,7 +296,7 @@ Feature:
                     },
                     {
                         "name": "donation_link",
-                        "content": "http://test.renaissance.code/don"
+                        "content": "http://test.renaissance.code/v1/don"
                     },
                     {
                         "name": "committee_link",

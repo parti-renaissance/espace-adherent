@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/don/mentions', name: 'app_renaissance_donation_mentions', methods: ['GET|POST'])]
+#[Route(path: '/v1/don/mentions', name: 'app_renaissance_donation_mentions', methods: ['GET|POST'])]
 class MentionsController extends AbstractDonationController
 {
     public function __invoke(
