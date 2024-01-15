@@ -59,6 +59,10 @@
                         newMessage.innerHTML = messageText;
                         chatMessages.appendChild(newMessage);
                     });
+
+                    if (data.need_refresh) {
+                        stopConversationInterval();
+                    }
                 });
         }
 
@@ -78,19 +82,22 @@
                         // Vide le champ de saisie après envoi du message
                         userInput.value = '';
                         // Récupère les derniers messages de la conversation
-                        getConversation();
+                        startConversationInterval();
                     });
             }
         }
 
-        // Fonction pour rafraîchir la conversation toutes les 10 secondes
+        // Fonction pour rafraîchir la conversation toutes les 5 secondes
         function startConversationInterval() {
-            conversationInterval = setInterval(getConversation, 10000);
+            stopConversationInterval();
+            conversationInterval = setInterval(getConversation, 5000);
         }
 
         // Fonction pour arrêter le rafraîchissement automatique de la conversation
         function stopConversationInterval() {
-            clearInterval(conversationInterval);
+            if (typeof conversationInterval !== 'undefined') {
+                clearInterval(conversationInterval);
+            }
         }
 
         // Fonction pour fermer la conversation
@@ -111,10 +118,6 @@
             }
         });
 
-        // Récupère les derniers messages de la conversation au chargement de la page
-
-        getConversation();
-        // Démarre le rafraîchissement automatique de la conversation
         startConversationInterval();
 
         // Ajoute un événement pour fermer la conversation lorsque la fenêtre se ferme
