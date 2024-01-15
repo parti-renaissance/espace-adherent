@@ -91,9 +91,9 @@ Gender: Genre
 #
 # Adherent
 #
-Invalid credentials.: L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.
+Invalid credentials.: L'adresse email et le mot de passe que vous avez saisis ne correspondent pas.
 Invalid or expired login link.: Le lien de connexion n'est plus actif ou invalide
-Username could not be found.: L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.
+Username could not be found.: L'adresse email et le mot de passe que vous avez saisis ne correspondent pas.
 Max attempts reached.: Vous avez effectué 5 tentatives de connexion erronées. Veuillez attendre 1 minute avant de réessayer.
 adherent.error.must_be_validated: Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez <a href="{url}">cliquer ici</a> pour le recevoir à nouveau.
 user.error.must_be_validated: Pour vous connecter vous devez confirmer votre adresse email.
@@ -181,8 +181,8 @@ adherent.update_interests.success: Vos centres d'intérêts ont bien été mis �
 adherent.update_password.success: Vôtre mot de passe a bien été mis à jour.
 adherent.set_emails_notifications.success: Vos préférences d'e-mails ont bien été mises à jour.
 
-adherent.change_email.email_sent: Nous avons envoyé un e-mail à {email} pour vérifier votre adresse e-mail. Cliquez sur le lien qui y est présent pour valider le changement.
-adherent.change_email.success: Votre demande de changement a bien été prise en compte. Vous pouvez désormais vous connecter avec votre nouvelle adresse e-mail.
+adherent.change_email.email_sent: Nous avons envoyé un e-mail à {email} pour vérifier votre adresse email. Cliquez sur le lien qui y est présent pour valider le changement.
+adherent.change_email.success: Votre demande de changement a bien été prise en compte. Vous pouvez désormais vous connecter avec votre nouvelle adresse email.
 adherent.change_email.expired_key: Votre demande de changement d'email est expirée ! Veuillez faire une nouvelle demande.
 
 adherent.contact.success: Votre message a bien été envoyé.

@@ -13,7 +13,7 @@ final class AdherentChangeEmailMessage extends Message
             Uuid::uuid4(),
             $newEmail,
             $adherent->getFullName(),
-            'Validez votre nouvelle adresse e-mail',
+            'Validez votre nouvelle adresse email',
             [],
             static::getRecipientVars($adherent->getFirstName(), $confirmationLink)
         );

@@ -1591,7 +1591,7 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "status: Le statut n'est pas valide.\nemail_address: Cette valeur n'est pas une adresse email valide.\nemail_address: L'adresse e-mail est trop longue, 255 caractères maximum.\ngender: Ce sexe n'est pas valide.\nage_range: Cette valeur doit être l'un des choix proposés.\nprofession: Cette valeur doit être l'un des choix proposés.",
+        "detail": "status: Le statut n'est pas valide.\nemail_address: Cette valeur n'est pas une adresse email valide.\nemail_address: L'adresse email est trop longue, 255 caractères maximum.\ngender: Ce sexe n'est pas valide.\nage_range: Cette valeur doit être l'un des choix proposés.\nprofession: Cette valeur doit être l'un des choix proposés.",
         "violations": [
             {
                 "code": "@uuid@",
@@ -1606,7 +1606,7 @@ Feature:
             {
                 "code": "@uuid@",
                 "propertyPath": "email_address",
-                "message": "L'adresse e-mail est trop longue, 255 caractères maximum."
+                "message": "L'adresse email est trop longue, 255 caractères maximum."
             },
             {
                 "code": "@uuid@",

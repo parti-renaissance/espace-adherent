@@ -48,7 +48,7 @@ Feature:
         And I am on "/espace-depute/mon-equipe/deleguer-acces"
         And I wait 3 second until I see "J'ai lu et j'accepte"
         And I press "J'ai lu et j'accepte"
-        Then I should not see "Saisir une adresse e-mail"
+        Then I should not see "Saisir une adresse email"
         And I should see "L'adhérent est hors de mon territoire"
 
         When I click the "#js-search-by-email" selector

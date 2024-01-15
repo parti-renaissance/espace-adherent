@@ -50,7 +50,7 @@ abstract class AbstractApplicationRequestAdmin extends AbstractAdmin
                 ],
             ])
             ->add('emailAddress', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
                 'show_filter' => true,
             ])
             ->add('favoriteCities', CallbackFilter::class, [

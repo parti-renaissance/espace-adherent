@@ -6,7 +6,7 @@ use League\OAuth2\Server\Exception\OAuthServerException as BaseOAuthServerExcept
 
 class OAuthServerException extends BaseOAuthServerException
 {
-    private const INVALID_CREDENTIALS_MESSAGE = 'L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.';
+    private const INVALID_CREDENTIALS_MESSAGE = 'L\'adresse email et le mot de passe que vous avez saisis ne correspondent pas.';
     private const INVALID_REQUEST_MESSAGE = 'Un paramètre requis est manquant, invalide, ou est inclus plus d\'une fois.';
     private const INVALID_REQUEST_HINT_MESSAGE = 'Vérifiez le paramètre \'%s\'.';
 

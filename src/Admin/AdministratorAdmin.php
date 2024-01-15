@@ -82,7 +82,7 @@ class AdministratorAdmin extends AbstractAdmin
         $form
             ->with('Informations', ['class' => 'col-md-6'])
                 ->add('emailAddress', EmailType::class, [
-                    'label' => 'Adresse e-mail',
+                    'label' => 'Adresse email',
                 ])
                 ->add('activated', null, [
                     'label' => 'Activé',
@@ -140,7 +140,7 @@ class AdministratorAdmin extends AbstractAdmin
     {
         $list
             ->addIdentifier('emailAddress', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
             ])
             ->add('administratorRoles', null, [
                 'label' => 'Rôles',

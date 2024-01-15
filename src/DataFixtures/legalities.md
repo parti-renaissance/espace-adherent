@@ -134,13 +134,13 @@ s'engage à fournir des informations exactes, sincères et à jour sur sa person
 devra en outre procéder à une vérification régulière des données le concernant afin d'en conserver
 l'exactitude.
 
-L'Utilisateur doit ainsi fournir impérativement une adresse e-mail valide, sur laquelle le site lui
+L'Utilisateur doit ainsi fournir impérativement une adresse email valide, sur laquelle le site lui
 adressera une confirmation de son inscription à ses services. Une adresse de messagerie électronique ne peut être
 utilisée plusieurs fois pour s'inscrire aux services.
 
 Toute communication réalisée par en-marche.fr et ses
 partenaires est en conséquence réputée avoir été réceptionnée et lue par l'Utilisateur. Ce dernier s'engage
-donc à consulter régulièrement les messages reçus sur cette adresse e-mail et à répondre dans un délai
+donc à consulter régulièrement les messages reçus sur cette adresse email et à répondre dans un délai
 raisonnable si cela est nécessaire.
 
 Une seule inscription aux services du site est admise par personne

@@ -140,7 +140,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     'label' => 'Prénom',
                 ])
                 ->add('emailAddress', null, [
-                    'label' => 'Adresse e-mail',
+                    'label' => 'Adresse email',
                 ])
                 ->add('nationality', null, [
                     'label' => 'Nationalité',
@@ -261,7 +261,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                             'format_identity_case' => true,
                         ])
                         ->add('emailAddress', null, [
-                            'label' => 'Adresse e-mail',
+                            'label' => 'Adresse email',
                         ])
                         ->add('nationality', CountryType::class, [
                             'label' => 'Nationalité',
@@ -596,7 +596,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 'show_filter' => true,
             ])
             ->add('emailAddress', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
                 'show_filter' => true,
             ])
             ->add('mailchimpStatus', ChoiceFilter::class, [

@@ -29,7 +29,7 @@ class UserControllerTest extends AbstractEnMarcheWebTestCase
         $errors = $crawler->filter('.em-form--error');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        self::assertSame('Cette adresse e-mail existe déjà.', $errors->eq(0)->text());
+        self::assertSame('Cette adresse email existe déjà.', $errors->eq(0)->text());
     }
 
     public function testUserCanValidateYourNewEmail(): void
@@ -49,7 +49,7 @@ class UserControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertStatusCode(200, $this->client);
 
         $this->assertStringContainsString(
-            'Nous avons envoyé un e-mail à new.mail@test.com pour vérifier votre adresse e-mail. Cliquez sur le lien qui y est présent pour valider le changement.',
+            'Nous avons envoyé un e-mail à new.mail@test.com pour vérifier votre adresse email. Cliquez sur le lien qui y est présent pour valider le changement.',
             $crawler->filter('.flash--info')->eq(1)->text()
         );
 

@@ -105,7 +105,7 @@ class DonatorAdmin extends AbstractAdmin
                     'label' => 'Nom',
                 ])
                 ->add('emailAddress', null, [
-                    'label' => 'Adresse e-mail',
+                    'label' => 'Adresse email',
                 ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-6'])
@@ -175,7 +175,7 @@ class DonatorAdmin extends AbstractAdmin
                 'show_filter' => true,
             ])
             ->add('emailAddress', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
                 'show_filter' => true,
             ])
             ->add('donations.nationality', ChoiceFilter::class, [
@@ -431,7 +431,7 @@ class DonatorAdmin extends AbstractAdmin
                 'label' => 'Prénom',
             ])
             ->add('emailAddress', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
             ])
             ->add('lastSuccessfulDonation', null, [
                 'label' => 'Date du dernier don',
@@ -475,7 +475,7 @@ class DonatorAdmin extends AbstractAdmin
                 'Nom' => $donator->getLastName(),
                 'Prénom' => $donator->getFirstName(),
                 'Civilité' => $donator->getGender(),
-                'Adresse e-mail' => $donator->getEmailAddress(),
+                'Adresse email' => $donator->getEmailAddress(),
                 'Ville du donateur' => $donator->getCity(),
                 'Pays du donateur' => $donator->getCountry(),
                 'Adresse de référence' => $referenceDonation?->getAddress(),

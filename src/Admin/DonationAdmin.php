@@ -563,7 +563,7 @@ class DonationAdmin extends AbstractAdmin
                 'Nom' => $donator->getLastName(),
                 'Prénom' => $donator->getFirstName(),
                 'Civilité' => $donator->getGender(),
-                'Adresse e-mail' => $donator->getEmailAddress(),
+                'Adresse email' => $donator->getEmailAddress(),
                 'Ville du donateur' => $donator->getCity(),
                 'Pays du donateur' => $donator->getCountry(),
                 'Adresse de référence' => $referenceDonation?->getAddress(),

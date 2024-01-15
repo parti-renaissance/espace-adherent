@@ -658,7 +658,7 @@ Feature:
           {
               "code": "@uuid@",
               "propertyPath": "email_address",
-              "message": "Ceci n'est pas une adresse e-mail valide."
+              "message": "Ceci n'est pas une adresse email valide."
           }
       ]
     }
@@ -677,7 +677,7 @@ Feature:
       "template_name": "adherent-change-email",
       "template_content": [],
       "message": {
-        "subject": "Validez votre nouvelle adresse e-mail",
+        "subject": "Validez votre nouvelle adresse email",
         "from_email": "contact@en-marche.fr",
         "merge_vars": [
           {

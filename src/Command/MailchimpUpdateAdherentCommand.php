@@ -87,8 +87,8 @@ class MailchimpUpdateAdherentCommand extends Command
         int $emailPrefColIndex,
         int $interestColIndex
     ): void {
-        if ('Adresse mail' !== $header[$emailColIndex]) {
-            throw new \InvalidArgumentException(sprintf('It seems that position of email column is not %d or its label is not equal to `Adresse mail`', $emailColIndex));
+        if ('Adresse email' !== $header[$emailColIndex]) {
+            throw new \InvalidArgumentException(sprintf('It seems that position of email column is not %d or its label is not equal to `Adresse email`', $emailColIndex));
         }
 
         if ('Mes notifications via e-mail' !== $header[$emailPrefColIndex]) {

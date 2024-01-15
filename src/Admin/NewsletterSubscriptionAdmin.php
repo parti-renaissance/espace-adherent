@@ -32,7 +32,7 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
     {
         $form
             ->add('email', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
             ])
             ->add('postalCode', TextType::class, [
                 'label' => 'Code postal',
@@ -44,7 +44,7 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
     {
         $show
             ->add('email', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
             ])
             ->add('postalCode', null, [
                 'label' => 'Code postal',
@@ -59,7 +59,7 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
     {
         $filter
             ->add('email', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
                 'show_filter' => true,
             ])
             ->add('postalCode', null, [
@@ -72,7 +72,7 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
     {
         $list
             ->addIdentifier('email', null, [
-                'label' => 'Adresse e-mail',
+                'label' => 'Adresse email',
             ])
             ->add('postalCode', null, [
                 'label' => 'Code postal',
