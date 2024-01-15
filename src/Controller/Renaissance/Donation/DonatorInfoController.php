@@ -19,7 +19,7 @@ class DonatorInfoController extends AbstractDonationController
         $command = $this->getCommand();
 
         if (!$this->processor->canFillPersonalInfo($command)) {
-            return $this->redirectToRoute('app_renaissance_donation');
+            return $this->redirectToRoute('app_donation_index');
         }
 
         $this->processor->doFillPersonalInfo($command);

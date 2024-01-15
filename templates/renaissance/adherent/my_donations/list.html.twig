@@ -34,7 +34,7 @@
                             </p>
                             <a href="{{ path('app_renaissance_donation__cancel_subscription') }}" class="text-sm button button-blue">{{ 'adherent.stop_donation'|trans({ count: subscribed_donations|length }) }}</a>
                     {% elseif last_subscription_ended %}
-                        <p class="text-base leading-6 text-blue-800">Vous avez mis fin à votre don mensuel le {{ last_subscription_ended.subscriptionEndedAt|format_datetime('medium', 'none') }}. Vous pouvez en refaire un <a href="{{ path('app_renaissance_donation') }}">en cliquant <strong>ici</strong></a>. </p>
+                        <p class="text-base leading-6 text-blue-800">Vous avez mis fin à votre don mensuel le {{ last_subscription_ended.subscriptionEndedAt|format_datetime('medium', 'none') }}. Vous pouvez en refaire un <a href="{{ path('app_donation_index') }}">en cliquant <strong>ici</strong></a>. </p>
                     {% else %}
                         <p class="text-base leading-6 text-blue-800">À date, vous n'avez souscrit à aucun don mensuel.</p>
                     {% endif %}

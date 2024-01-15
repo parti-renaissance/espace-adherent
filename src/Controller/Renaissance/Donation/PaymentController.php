@@ -31,7 +31,7 @@ class PaymentController extends AbstractDonationController
         $command = $this->getCommand();
 
         if (!$this->processor->canProceedDonationPayment($command)) {
-            return $this->redirectToRoute('app_renaissance_donation');
+            return $this->redirectToRoute('app_donation_index');
         }
 
         $this->processor->doDonationPayment($command);
@@ -53,7 +53,7 @@ class PaymentController extends AbstractDonationController
         $id = explode('_', $request->query->get('id'))[0];
 
         if (!$id || !Uuid::isValid($id)) {
-            return $this->redirectToRoute('app_renaissance_donation');
+            return $this->redirectToRoute('app_donation_index');
         }
 
         return $transactionCallbackHandler->handle($id, $request, $_callback_token, 'app_renaissance_donation_payment_result');

@@ -15,7 +15,7 @@ class DonationConfirmationTypeController extends AbstractDonationController
         $command = $this->getCommand();
 
         if (!$this->processor->canChangeDonationType($command)) {
-            return $this->redirectToRoute('app_renaissance_donation');
+            return $this->redirectToRoute('app_donation_index');
         }
 
         $this->processor->doChangeDonationType($command);

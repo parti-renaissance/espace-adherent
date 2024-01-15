@@ -51,7 +51,7 @@
                                 {{ app.user ? '(Re)' }} Adhérer
                             </a>
                         {% elseif app.user.hasActiveMembership() %}
-                            <a href="{{ path('app_renaissance_donation') }}" class="button button-green">
+                            <a href="{{ path('app_donation_index') }}" class="button button-green">
                                 Je donne
                             </a>
                         {% elseif app.user.isEligibleForMembershipPayment() %}
@@ -117,7 +117,7 @@
                                     {{ app.user ? '(Re)' }} Adhérer
                                 </a>
                             {% elseif app.user.hasActiveMembership() %}
-                                <a href="{{ path('app_renaissance_donation') }}" class="flex w-full items-center justify-center rounded-md border border-transparent bg-re-green-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-re-green-700">
+                                <a href="{{ path('app_donation_index') }}" class="flex w-full items-center justify-center rounded-md border border-transparent bg-re-green-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-re-green-700">
                                     Je donne
                                 </a>
                             {% elseif app.user.isEligibleForMembershipPayment() %}

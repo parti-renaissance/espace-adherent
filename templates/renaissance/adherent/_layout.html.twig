@@ -111,7 +111,7 @@
                             >
                                 <div class="px-2" role="none">
                                     <div class="py-1" role="none">
-                                        <a href="{{ path('app_renaissance_donation') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Donner</a>
+                                        <a href="{{ path('app_donation_index') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Donner</a>
                                         {% if app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() and app.user.isEligibleForMembershipPayment() %}
                                             <a href="{{ path('app_adhesion_index') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Je mets à jour ma cotisation</a>
                                         {% endif %}
@@ -121,7 +121,7 @@
                         </div>
 
                         <div class="hidden md:flex items-center space-x-5">
-                            <a href="{{ path('app_renaissance_donation') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Donner</a>
+                            <a href="{{ path('app_donation_index') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Donner</a>
 
                             {% if app.user.isRenaissanceSympathizer() or (app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() and app.user.isEligibleForMembershipPayment()) %}
                                 <a href="{{ path('app_adhesion_index') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">
