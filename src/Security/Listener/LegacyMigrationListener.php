@@ -3,29 +3,39 @@
 namespace App\Security\Listener;
 
 use App\Entity\Adherent;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\SecurityEvents;
 
 /**
  * Migrate the user to the new hashing algorithm if is using the legacy one.
  */
-class LegacyMigrationListener
+class LegacyMigrationListener implements EventSubscriberInterface
 {
-    private $encoderFactory;
-    private $manager;
-
-    public function __construct(EncoderFactoryInterface $encoderFactory, ObjectManager $manager)
-    {
-        $this->encoderFactory = $encoderFactory;
-        $this->manager = $manager;
+    public function __construct(
+        private readonly EncoderFactoryInterface $encoderFactory,
+        private readonly EntityManagerInterface $manager
+    ) {
     }
 
-    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
+    public static function getSubscribedEvents(): array
+    {
+        return [SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin'];
+    }
+
+    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $user = $event->getAuthenticationToken()->getUser();
 
         if (!$user instanceof Adherent) {
+            return;
+        }
+
+        $request = $event->getRequest();
+
+        if ('app_user_login_check' !== $request->attributes->get('_route')) {
             return;
         }
 
