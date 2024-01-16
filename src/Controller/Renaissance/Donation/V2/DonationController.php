@@ -2,7 +2,6 @@
 
 namespace App\Controller\Renaissance\Donation\V2;
 
-use App\Controller\CanaryControllerTrait;
 use App\Donation\Handler\DonationRequestHandler;
 use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Donation\Request\DonationRequest;
@@ -18,8 +17,6 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 #[Route('/don', name: 'app_donation_index', methods: ['GET', 'POST'])]
 class DonationController extends AbstractController
 {
-    use CanaryControllerTrait;
-
     private const DEFAULT_STEP = 0;
 
     public function __construct(
@@ -30,8 +27,6 @@ class DonationController extends AbstractController
 
     public function __invoke(Request $request, AnonymousFollowerSession $anonymousFollowerSession): Response
     {
-        $this->disableInProduction();
-
         if ($response = $anonymousFollowerSession->start($request)) {
             return $response;
         }
