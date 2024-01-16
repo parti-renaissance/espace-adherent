@@ -3,7 +3,7 @@
 {% block field %}
     {% for mandate in object.activeAdherentMandates %}
         {% if mandate is instanceof('App\\Entity\\AdherentMandate\\TerritorialCouncilAdherentMandate') %}
-            <span class="label label-warning">{{ ('political_committee.membership.quality.'~mandate.quality)|trans }}</span><br>
+            <span class="label label-warning">{{ ('political_committee.membership.quality.' ~ mandate.quality)|trans }}</span><br>
         {% elseif mandate is instanceof('App\\Entity\\AdherentMandate\\CommitteeAdherentMandate') %}
             <span class="label label-warning">{{ 'territorial_council.membership.quality.elected_candidate_adherent'|trans }}</span><br>
         {% elseif mandate is instanceof('App\\Entity\\AdherentMandate\\NationalCouncilAdherentMandate') %}
@@ -13,7 +13,7 @@
 
     {% for mandate in object.findElectedRepresentativeMandates(true) %}
         <span class="label label-success">
-            {{ ('adherent.mandate.type.'~mandate.mandateType)|trans }}
+            {{ ('adherent.mandate.type.' ~ mandate.mandateType)|trans }}
         </span>
         <br>
     {% endfor %}

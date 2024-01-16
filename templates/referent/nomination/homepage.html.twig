@@ -68,10 +68,10 @@
                 <a href="{{ path('our_referents_referent', {'slug': referent.slug}) }}"
                    title="{{ referent.fullName }}"
                    class="legislatives__trombi__item__visual link--no-decor progressive-background"
-                    {% if referent.profilePicture  %}
+                    {% if referent.profilePicture %}
                         data-sd="{{ media_asset(referent.profilePicture, {'w': 50, 'q': 20}) }}"
                         data-hd="{{ media_asset(referent.profilePicture, {'w': 640, 'q': 70}) }}"
-                    {% else  %}
+                    {% else %}
                         data-sd="{{ static_asset('legislatives/unknown-referent.jpg', {'w': 50, 'q': 20}) }}"
                         data-hd="{{ static_asset('legislatives/unknown-referent.jpg', {'w': 320, 'q': 70}) }}"
                    {% endif %}

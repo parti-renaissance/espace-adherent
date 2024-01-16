@@ -21,32 +21,32 @@
             <div class="form__row">
                 {{ form_label(interactive_form.messageSubject, 'Objet') }}
                 {{ form_errors(interactive_form.messageSubject) }}
-                {{ form_widget(interactive_form.messageSubject, { 'attr': { 'class': 'form--full' } }) }}
+                {{ form_widget(interactive_form.messageSubject, {'attr': {'class': 'form--full'}}) }}
             </div>
 
             <div class="form__row">
                 {{ form_label(interactive_form.messageContent, 'Message') }}
                 {{ form_errors(interactive_form.messageContent) }}
-                {{ form_widget(interactive_form.messageContent, { 'attr': { 'class': 'form--full form__field--textarea-500' } }) }}
+                {{ form_widget(interactive_form.messageContent, {'attr': {'class': 'form--full form__field--textarea-500'}}) }}
             </div>
 
             <div class="l__wrapper--500 b__nudge--top-50">
                 <div class="form__row">
                     {{ form_label(interactive_form.selfFirstName, 'Votre prénom') }}
                     {{ form_errors(interactive_form.selfFirstName) }}
-                    {{ form_widget(interactive_form.selfFirstName, { 'attr': { 'class': 'form--full' } }) }}
+                    {{ form_widget(interactive_form.selfFirstName, {'attr': {'class': 'form--full'}}) }}
                 </div>
 
                 <div class="form__row">
                     {{ form_label(interactive_form.selfEmail, 'Votre adresse email') }}
                     {{ form_errors(interactive_form.selfEmail) }}
-                    {{ form_widget(interactive_form.selfEmail, { 'attr': { 'class': 'form--full' } }) }}
+                    {{ form_widget(interactive_form.selfEmail, {'attr': {'class': 'form--full'}}) }}
                 </div>
 
                 <div class="form__row">
                     {{ form_label(interactive_form.friendEmail, 'L\'e-mail de votre proche') }}
                     {{ form_errors(interactive_form.friendEmail) }}
-                    {{ form_widget(interactive_form.friendEmail, { 'attr': { 'class': 'form--full' } }) }}
+                    {{ form_widget(interactive_form.friendEmail, {'attr': {'class': 'form--full'}}) }}
                 </div>
             </div>
 

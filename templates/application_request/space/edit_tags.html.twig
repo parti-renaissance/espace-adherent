@@ -4,17 +4,17 @@
     <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
-{% block application_request_main_block  %}
+{% block application_request_main_block %}
     <a href="{{ path("app_#{space_name}_candidate_#{request_type}_list") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
         ⟵ Retour
     </a>
 
     <div class="l__wrapper--slim">
-        {{ form_start(form, { attr: { class: 'b__nudge--top-40' } }) }}
+        {{ form_start(form, {attr: {class: 'b__nudge--top-40'}}) }}
             <div class="form__row">
                 {{ form_errors(form.tags) }}
-                {{ form_label(form.tags, 'Tags de candidature', { label_attr: { class: 'label__header--large' } }) }}
-                {{ form_widget(form.tags, { attr: { class: 'form--full committee_event__form__name multi_tags' } }) }}
+                {{ form_label(form.tags, 'Tags de candidature', {label_attr: {class: 'label__header--large'}}) }}
+                {{ form_widget(form.tags, {attr: {class: 'form--full committee_event__form__name multi_tags'}}) }}
             </div>
 
             <button type="submit" class="btn btn--blue btn--large-and-full b__nudge--top">Enregistrer</button>

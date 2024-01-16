@@ -24,7 +24,7 @@
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
             Retour à la liste
         </a>
-        <a href="{{ path('admin_app_phoning_campaign_edit', { id: campaign.id }) }}" class="btn btn-default">
+        <a href="{{ path('admin_app_phoning_campaign_edit', {id: campaign.id}) }}" class="btn btn-default">
             <i class="fa fa-pencil" aria-hidden="true"></i>
             Editer la campaign
         </a>
@@ -70,8 +70,8 @@
                         {% for caller in callers %}
                             <tr>
                                 <td>
-                                    <a href="{{ path('admin_app_adherent_show', { id: caller.id }) }}">
-                                        {{ caller.firstName~' '~caller.lastName }}
+                                    <a href="{{ path('admin_app_adherent_show', {id: caller.id}) }}">
+                                        {{ caller.firstName ~ ' ' ~ caller.lastName }}
                                     </a>
                                 </td>
                                 <td>
@@ -97,7 +97,7 @@
                                 </td>
                                 <td>
                                     {% if caller.nb_calls > 0 %}
-                                        <a href="{{ path('admin_app_phoning_campaignhistory_list', { filter: { campaign: { value: campaign.id }, caller: { value: caller.id } } }) }}" class="btn btn-sm btn-default view_link"
+                                        <a href="{{ path('admin_app_phoning_campaignhistory_list', {filter: {campaign: {value: campaign.id}, caller: {value: caller.id}}}) }}" class="btn btn-sm btn-default view_link"
                                            title="Voir les appels" target="_blank" rel="noopener noreferrer">
                                             <i class="fa fa-info-circle" aria-hidden="true"></i>
                                             Voir les appels

@@ -26,7 +26,7 @@
                                 <div class="name l__row">
                                     {{ app.user }}
                                     {% if app.user.certified %}
-                                        {% include('components/_certification_logo.html.twig') %}
+                                        {% include ('components/_certification_logo.html.twig') %}
                                     {% endif %}
                                 </div>
                                 <div class="adhesion-date">
@@ -43,17 +43,17 @@
                                 <li>{{ role }}</li>
                             {% endfor %}
                         </ul>
-{#                        <div class="adherent-profile__completion b__nudge--bottom-50">#}
-{#                            <div class="text--body text--small b__nudge--bottom-small">#}
-{#                                <!-- If is not completed -->#}
-{#                                Complétion du profil : 50%#}
-{#                                <!-- If is completed TODO#}
-{#                                👏 Profil complété ! -->#}
-{#                            </div>#}
-{#                            <div class="gauge">#}
-{#                                <span></span>#}
-{#                            </div>#}
-{#                        </div>#}
+{# <div class="adherent-profile__completion b__nudge--bottom-50"> #}
+{# <div class="text--body text--small b__nudge--bottom-small"> #}
+{# <!-- If is not completed --> #}
+{# Complétion du profil : 50% #}
+{# <!-- If is completed TODO #}
+{# 👏 Profil complété ! --> #}
+{# </div> #}
+{# <div class="gauge"> #}
+{# <span></span> #}
+{# </div> #}
+{# </div> #}
                     </div>
                     {% block adherent_profile_menu %}
                     <nav class="adherent-profile__menu adherent-profile__menu--desktop accordion-container">
@@ -64,8 +64,8 @@
                             'app_adherent_pin_interests',
                             'app_user_set_email_notifications',
                             'app_adherent_commitment',
-                        ] ) %}
-                        {% set isActivityRoute = is_active_route(app.request, 'app_adherent_profile_activity' ) %}
+                        ]) %}
+                        {% set isActivityRoute = is_active_route(app.request, 'app_adherent_profile_activity') %}
 
                         <div class="menu-section accordion{{ isInformationRoute ? ' opened' }}">
                             <div class="menu-section__heading menu-section-informations accordion--title {{ isInformationRoute ? 'active' }}">

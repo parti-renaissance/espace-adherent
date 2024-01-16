@@ -37,13 +37,13 @@
                 <div class="form__row">
                     {{ form_label(procuration_form.voteCountry, 'Le pays où je suis inscrit sur les listes électorales') }}
                     {{ form_errors(procuration_form.voteCountry) }}
-                    {{ form_widget(procuration_form.voteCountry, { attr: { class: 'form--full' } }) }}
+                    {{ form_widget(procuration_form.voteCountry, {attr: {class: 'form--full'}}) }}
                 </div>
 
                 <div id="vote-row-postal-code" class="form__row">
                     {{ form_label(procuration_form.votePostalCode, 'Le code postal où je vote') }}
                     {{ form_errors(procuration_form.votePostalCode) }}
-                    {{ form_widget(procuration_form.votePostalCode, { attr: { class: 'form--full', placeholder: 'Code postal' } }) }}
+                    {{ form_widget(procuration_form.votePostalCode, {attr: {class: 'form--full', placeholder: 'Code postal'}}) }}
                 </div>
 
                 <div class="form__row">
@@ -54,14 +54,14 @@
                         {{ form_label(procuration_form.voteCity, 'La ville dans laquelle je vote') }}
                     </span>
                     {{ form_widget(procuration_form.voteCity) }}
-                    {{ form_widget(procuration_form.voteCityName, { attr: { class: 'form--full', placeholder: 'Ville' } }) }}
+                    {{ form_widget(procuration_form.voteCityName, {attr: {class: 'form--full', placeholder: 'Ville'}}) }}
                     {{ form_errors(procuration_form.voteCity) }}
                 </div>
 
                 <div class="form__row">
                     {{ form_label(procuration_form.voteOffice, 'Nom ou localisation de votre bureau de vote') }}
                     {{ form_errors(procuration_form.voteOffice) }}
-                    {{ form_widget(procuration_form.voteOffice, { attr: { class: 'form--full', placeholder: 'Bureau de vote' } }) }}
+                    {{ form_widget(procuration_form.voteOffice, {attr: {class: 'form--full', placeholder: 'Bureau de vote'}}) }}
                     <div class="text--body text--small b__nudge--top-10">
                         Connaître votre bureau de vote nous permettra de trouver une personne qui pourra s’y rendre. Vous pouvez trouver
                         votre numéro de bureau de vote sur votre carte électorale.

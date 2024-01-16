@@ -75,10 +75,10 @@
                 <a href="{{ path('legislatives_candidate', {'slug': candidate.slug}) }}"
                    title="{{ candidate.fullName }}"
                    class="legislatives__trombi__item__visual link--no-decor progressive-background"
-                    {% if candidate.profilePicture  %}
+                    {% if candidate.profilePicture %}
                         data-sd="{{ media_asset(candidate.profilePicture, {'w': 50, 'q': 20}) }}"
                         data-hd="{{ media_asset(candidate.profilePicture, {'w': 640, 'q': 70}) }}"
-                    {% else  %}
+                    {% else %}
                         data-sd="{{ static_asset('legislatives/unknown-candidate.jpg', {'w': 50, 'q': 20}) }}"
                         data-hd="{{ static_asset('legislatives/unknown-candidate.jpg', {'w': 320, 'q': 70}) }}"
                    {% endif %}

@@ -127,7 +127,9 @@ jobs:
         run: bin/console lint:yaml config --parse-tags
 
       - name: Lint Twig files
-        run: bin/console lint:twig templates
+        run: |-
+            bin/console lint:twig templates
+            vendor/bin/twig-cs-fixer
 
       - name: Lint container
         run: bin/console lint:container

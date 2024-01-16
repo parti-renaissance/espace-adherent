@@ -11,7 +11,7 @@
             {# Add a margin if no pager to prevent dropdown cropping on window #}
             <div class="box box-primary" {% if admin.datagrid.pager.lastPage == 1 %}style="margin-bottom: 100px;"{% endif %}>
                 <div class="box-body {% if admin.datagrid.results|length > 0 %}table-responsive{% endif %}">
-                    {{ sonata_block_render_event('sonata.admin.list.table.top', { 'admin': admin }) }}
+                    {{ sonata_block_render_event('sonata.admin.list.table.top', {'admin': admin}) }}
 
                     {% block list_header %}{% endblock %}
 
@@ -19,8 +19,8 @@
 
                         {% for stepName, stepNumber in constant('App\\Entity\\MyEuropeChoice::STEPS') %}
                             {% set objects = [] %}
-                            {% for object in admin.datagrid.results|filter(item => item.step == stepNumber)  %}
-                                {% set objects = objects|merge({ (loop.index0): object}) %}
+                            {% for object in admin.datagrid.results|filter(item => item.step == stepNumber) %}
+                                {% set objects = objects|merge({(loop.index0): object}) %}
                             {% endfor %}
 
                             <h2>{{ stepName|trans([], 'forms') }}</h2>
@@ -44,15 +44,15 @@
                                                 {% else %}
                                                     {% set sortable = false %}
                                                     {% if field_description.options.sortable is defined and field_description.options.sortable %}
-                                                        {% set sortable             = true %}
-                                                        {% set sort_parameters      = admin.datagrid.sortparameters(field_description) %}
-                                                        {% set current              = admin.datagrid.values._sort_by == field_description or admin.datagrid.values._sort_by.fieldName == sort_parameters.filter._sort_by %}
-                                                        {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
-                                                        {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
+                                                        {% set sortable = true %}
+                                                        {% set sort_parameters = admin.datagrid.sortparameters(field_description) %}
+                                                        {% set current = admin.datagrid.values._sort_by == field_description or admin.datagrid.values._sort_by.fieldName == sort_parameters.filter._sort_by %}
+                                                        {% set sort_active_class = current ? 'sonata-ba-list-field-order-active' : '' %}
+                                                        {% set sort_by = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
                                                     {% endif %}
 
                                                     {% apply spaceless %}
-                                                        <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}{% if field_description.options.header_class is defined %} {{ field_description.options.header_class }}{% endif %}"{% if field_description.options.header_style is defined %} style="{{ field_description.options.header_style }}"{% endif %}>
+                                                        <th class="sonata-ba-list-field-header-{{ field_description.type }} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}{% if field_description.options.header_class is defined %} {{ field_description.options.header_class }}{% endif %}"{% if field_description.options.header_style is defined %} style="{{ field_description.options.header_style }}"{% endif %}>
                                                             {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
                                                                 {{ field_description.label|trans({}, field_description.translationDomain) }}
                                                                 {% if sortable %}</a>{% endif %}
@@ -102,7 +102,7 @@
                         {% endblock %}
                     {% endif %}
 
-                    {{ sonata_block_render_event('sonata.admin.list.table.bottom', { 'admin': admin }) }}
+                    {{ sonata_block_render_event('sonata.admin.list.table.bottom', {'admin': admin}) }}
                 </div>
 
                 {% block list_footer %}
@@ -111,7 +111,7 @@
                             <div class="form-inline clearfix">
                                 {% if not app.request.isXmlHttpRequest %}
                                     <div class="pull-left">
-                                        {% if admin.hasRoute('batch') and batchactions|length > 0  %}
+                                        {% if admin.hasRoute('batch') and batchactions|length > 0 %}
                                             {% block batch %}
                                                 <script>
                                                     {% block batch_javascript %}
@@ -162,7 +162,6 @@
                                         {% endif %}
                                     </div>
 
-
                                     {# NEXT_MAJOR : remove this assignment #}
                                     {% set export_formats = export_formats|default(admin.exportFormats) %}
 
@@ -177,7 +176,7 @@
                                                 <ul class="dropdown-menu">
                                                     {% for format in export_formats %}
                                                     <li>
-                                                        <a href="{{ admin.generateUrl('export', admin.datagrid.paginationparameters(0) + {'format' : format}) }}">
+                                                        <a href="{{ admin.generateUrl('export', admin.datagrid.paginationparameters(0) + {'format': format}) }}">
                                                             <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
                                                             {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
                                                         </a>

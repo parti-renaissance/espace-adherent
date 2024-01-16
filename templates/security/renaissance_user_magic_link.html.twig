@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block security_content %}
-    {{ form_start(form, { attr: { class: 'grid grid-cols-1 gap-6 lg:gap-4' } }) }}
+    {{ form_start(form, {attr: {class: 'grid grid-cols-1 gap-6 lg:gap-4'}}) }}
         {% if error is defined %}
             <twig:ReParagraphStatus status="error" icon>
                 {{- error.messageKey|trans(error.messageData)|raw -}}
@@ -17,7 +17,7 @@
         {{ form_row(form, {
             attr: {
                 placeholder: 'Adresse email',
-                validate:"['']",
+                validate: "['']",
                 autocomplete: 'email',
             }, label: false}) }}
 

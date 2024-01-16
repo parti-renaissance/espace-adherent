@@ -65,7 +65,7 @@
                 <div class="manager-overview__case">
                     <span class="manager-overview__case--section">Candidatures</span>
                     <span class="manager-overview__case--value">
-                        {{ election_stats|map(stats_row => '<span class="text--pink">'~stats_row.candidate_group_count~'</span><span class="text--small text--uppercase">'~('territorial_council.membership.qualities.'~stats_row.pool_code)|trans~'</span>')|join(' / ')|raw }}
+                        {{ election_stats|map(stats_row => '<span class="text--pink">' ~ stats_row.candidate_group_count ~ '</span><span class="text--small text--uppercase">' ~ ('territorial_council.membership.qualities.' ~ stats_row.pool_code)|trans ~ '</span>')|join(' / ')|raw }}
                     </span>
                     <h1 class="manager-overview__case--title">Candidatures</h1>
                 </div>
@@ -83,7 +83,7 @@
                         {% for pool_stat_row in election_stats %}
                             <h3>
                                 <a class="{{ is_active_route(app.request, 'app_territorial_council_referent_designation_results_by_pool') and app.request.query.get('pool_code') == pool_stat_row.pool_code ? 'active' }}"
-                                   href="{{ path('app_territorial_council_referent_designation_results_by_pool', {pool_code: pool_stat_row.pool_code}|merge(link_params)) }}">Résultats {{ ('territorial_council.membership.qualities.'~pool_stat_row.pool_code)|trans }}</a>
+                                   href="{{ path('app_territorial_council_referent_designation_results_by_pool', {pool_code: pool_stat_row.pool_code}|merge(link_params)) }}">Résultats {{ ('territorial_council.membership.qualities.' ~ pool_stat_row.pool_code)|trans }}</a>
                             </h3>
 
                             <span class="separator"></span>

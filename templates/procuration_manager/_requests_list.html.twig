@@ -26,7 +26,7 @@
         <td class="datagrid__table__col--left">
             {{ include('procuration_manager/_election_rounds.html.twig', {
                 rounds: request.data.electionRounds,
-            }, with_context=false) }}
+            }, with_context = false) }}
         </td>
         <td>
             {{ request.matchingProxiesCount }}
@@ -47,13 +47,13 @@
             </a>
             {% if request.data.enabled %}
                 <p class="b__nudge--top-15">
-                    <a href="{{ path('app_procuration_manager_request_transform', { id: request.data.id, action: constant('App\\Entity\\ActionEnum::ACTION_DISABLE'), csrfToken: csrf_token('request_action') }) }}">
+                    <a href="{{ path('app_procuration_manager_request_transform', {id: request.data.id, action: constant('App\\Entity\\ActionEnum::ACTION_DISABLE'), csrfToken: csrf_token('request_action')}) }}">
                     Désactiver
                     </a>
                 </p>
             {% else %}
                 <p class="b__nudge--top-15">
-                    <a href="{{ path('app_procuration_manager_request_transform', { id: request.data.id, action: constant('App\\Entity\\ActionEnum::ACTION_ENABLE'), csrfToken: csrf_token('request_action') }) }}">
+                    <a href="{{ path('app_procuration_manager_request_transform', {id: request.data.id, action: constant('App\\Entity\\ActionEnum::ACTION_ENABLE'), csrfToken: csrf_token('request_action')}) }}">
                         Réactiver
                     </a>
                 </p>

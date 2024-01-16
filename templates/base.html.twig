@@ -136,7 +136,7 @@
             {% endfor %}
         {% endblock %}
 
-        {% block banner include('banner/call.html.twig', { banner: get_home_block('Bannière en haut') }) %}
+        {% block banner include('banner/call.html.twig', {banner: get_home_block('Bannière en haut')}) %}
 
         {% block designation_banner include('voting_platform/_designation_banner.html.twig') %}
 
@@ -181,10 +181,10 @@
             on(window, 'load', function() {
                 Kernel.boot(
                     '{{ app_version }}',
-                    {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }},
+                    {{ sentry_dsn ? ('\'' ~ sentry_dsn ~ '\'')|raw : 'null' }},
                     '{{ app_environment }}',
-                    {{ algolia_app_id ? ('\''~algolia_app_id|e('js')~'\'')|raw : 'null' }},
-                    {{ algolia_api_key ? ('\''~algolia_api_key|e('js')~'\'')|raw : 'null' }},
+                    {{ algolia_app_id ? ('\'' ~ algolia_app_id|e('js') ~ '\'')|raw : 'null' }},
+                    {{ algolia_api_key ? ('\'' ~ algolia_api_key|e('js') ~ '\'')|raw : 'null' }},
                     '{{ algolia_blacklist|base64_encode }}',
                     '{{ algolia_index_prefix }}',
                     '{{ app.user ? app.user.getUsername() }}'

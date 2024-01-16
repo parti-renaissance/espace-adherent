@@ -11,12 +11,12 @@
                 {% if 1 != loop.index %}
                     <li>...</li>
                 {% endif %}
-            {% elseif 0 == (current_page + nearbyPagesLimit) - loop.index  and (current_page + nearbyPagesLimit) < total_pages %}
+            {% elseif 0 == (current_page + nearbyPagesLimit) - loop.index and (current_page + nearbyPagesLimit) < total_pages %}
                 <li>...</li>
             {% elseif 0 < (current_page - nearbyPagesLimit) - loop.index %}
             {% elseif 0 > (current_page + nearbyPagesLimit) - loop.index %}
             {% else %}
-                {% if current_page == loop.index  %}
+                {% if current_page == loop.index %}
                     <li class="active"><span>{{ i }}</span></li>
                 {% else %}
                     {% if loop.index == 1 %}
@@ -27,7 +27,7 @@
                 {% endif %}
             {% endif %}
         {% endfor %}
-        {% if current_page != total_pages  and (current_page + nearbyPagesLimit) < total_pages %}
+        {% if current_page != total_pages and (current_page + nearbyPagesLimit) < total_pages %}
             <a href="{{ path(pagination_route_name, {page: total_pages, type: pagination_type, '_fragment': section}) }}" class="link--no-decor{{ total_pages == current_page ? ' active' }}">{{ total_pages }}</a>
         {% endif %}
     </ul>

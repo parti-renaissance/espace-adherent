@@ -40,7 +40,7 @@
         {% endif %}
 
         {{ form_start(form) }}
-            {% include 'renaissance/components/amount_chooser.html.twig' with { is_re_adhesion: is_re_adhesion } %}
+            {% include 'renaissance/components/amount_chooser.html.twig' with {is_re_adhesion: is_re_adhesion} %}
 
             {% if is_re_adhesion %}
                 <p class="text-justify mt-5 text-gray-500">Si vous souhaitez faire un don aux assemblées départementales, merci de vous rendre sur la page dédiée aux dons.</p>

@@ -54,7 +54,6 @@
                                 </div>
                             </div>
 
-
                             <div class="filter__row">
                                 <label class="filter__label">Statut (E-mail)</label>
                                 {{ form_widget(form.subscribed, {attr: {class: 'filter__radio__tabs inputs--3'}}) }}
@@ -180,7 +179,7 @@
                             {% if is_supervisor %}
                                 {{ member.fullName|default('~') }}
                                 {% if member.isCertified %}
-                                    {% include('components/_certification_logo.html.twig') %}
+                                    {% include ('components/_certification_logo.html.twig') %}
                                 {% endif %}
                             {% else %}
                                 {{ member.firstName|default('~')|capitalize }} {{ member.lastNameInitial|default('~') }}

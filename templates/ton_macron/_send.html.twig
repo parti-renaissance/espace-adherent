@@ -25,38 +25,38 @@
         <div class="form__row">
             {{ form_label(invitation_form.messageSubject, 'Objet') }}
             {{ form_errors(invitation_form.messageSubject) }}
-            {{ form_widget(invitation_form.messageSubject, { 'attr': { 'class': 'form--full' } }) }}
+            {{ form_widget(invitation_form.messageSubject, {'attr': {'class': 'form--full'}}) }}
         </div>
 
         <div class="form__row">
             {{ form_label(invitation_form.messageContent, 'Message') }}
             {{ form_errors(invitation_form.messageContent) }}
-            {{ form_widget(invitation_form.messageContent, { 'attr': { 'class': 'form--full form__field--textarea-500' } }) }}
+            {{ form_widget(invitation_form.messageContent, {'attr': {'class': 'form--full form__field--textarea-500'}}) }}
         </div>
 
         <div class="l__wrapper--500 b__nudge--top-50">
             <div class="form__row">
                 {{ form_label(invitation_form.selfFirstName, 'Votre prénom') }}
                 {{ form_errors(invitation_form.selfFirstName) }}
-                {{ form_widget(invitation_form.selfFirstName, { 'attr': { 'class': 'form--full' } }) }}
+                {{ form_widget(invitation_form.selfFirstName, {'attr': {'class': 'form--full'}}) }}
             </div>
 
             <div class="form__row">
                 {{ form_label(invitation_form.selfLastName, 'Votre nom') }}
                 {{ form_errors(invitation_form.selfLastName) }}
-                {{ form_widget(invitation_form.selfLastName, { 'attr': { 'class': 'form--full' } }) }}
+                {{ form_widget(invitation_form.selfLastName, {'attr': {'class': 'form--full'}}) }}
             </div>
 
             <div class="form__row">
                 {{ form_label(invitation_form.selfEmail, 'Votre adresse email') }}
                 {{ form_errors(invitation_form.selfEmail) }}
-                {{ form_widget(invitation_form.selfEmail, { 'attr': { 'class': 'form--full' } }) }}
+                {{ form_widget(invitation_form.selfEmail, {'attr': {'class': 'form--full'}}) }}
             </div>
 
             <div class="form__row">
                 {{ form_label(invitation_form.friendEmail, 'L\'e-mail de votre proche') }}
                 {{ form_errors(invitation_form.friendEmail) }}
-                {{ form_widget(invitation_form.friendEmail, { 'attr': { 'class': 'form--full' } }) }}
+                {{ form_widget(invitation_form.friendEmail, {'attr': {'class': 'form--full'}}) }}
             </div>
         </div>
 

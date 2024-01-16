@@ -3,7 +3,7 @@
 {% macro display(user) %}
     {% if user is instanceof('App\\Entity\\Administrator') %}
         {% if is_granted('ROLE_ADMIN_ADMINISTRATORS') %}
-            <a class="btn btn-xs btn-danger" href="{{ path('admin_app_administrator_edit', { id: user.id }) }}">
+            <a class="btn btn-xs btn-danger" href="{{ path('admin_app_administrator_edit', {id: user.id}) }}">
                 {{ user }}
                 &nbsp; <i class="fa fa-external-link"></i>
             </a>
@@ -14,7 +14,7 @@
         {% endif %}
     {% elseif user is instanceof('App\\Entity\\Adherent') %}
         {% if is_granted('ROLE_ADMIN_ADHERENTS') %}
-            <a class="btn btn-xs btn-primary" href="{{ path('admin_app_adherent_edit', { id: user.id }) }}">
+            <a class="btn btn-xs btn-primary" href="{{ path('admin_app_adherent_edit', {id: user.id}) }}">
                 {{ user }}
                 &nbsp; <i class="fa fa-external-link"></i>
             </a>

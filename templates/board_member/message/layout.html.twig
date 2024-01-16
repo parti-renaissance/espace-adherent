@@ -22,25 +22,25 @@
             {{ form_errors(form) }}
             <ul>
                 <li>
-                    {{ form_label(form.subject, 'Destinataire(s)', { 'label_attr': {'class': 'label__header'} }) }}
+                    {{ form_label(form.subject, 'Destinataire(s)', {'label_attr': {'class': 'label__header'}}) }}
                     <input type="text" disabled="disabled"
-                           value="{{ 'board_member.message.recipients'|trans({ count: message.recipients|length }) }}" />
+                           value="{{ 'board_member.message.recipients'|trans({count: message.recipients|length}) }}" />
                 </li>
 
                 <li>
-                    {{ form_label(form.subject, 'Expéditeur', { 'label_attr': {'class': 'label__header'} }) }}
+                    {{ form_label(form.subject, 'Expéditeur', {'label_attr': {'class': 'label__header'}}) }}
                     <input type="text" disabled="disabled"
                            value="{{ app.user.fullName }}" />
                 </li>
 
                 <li>
-                    {{ form_label(form.subject, 'Objet', { 'label_attr': {'class': 'label__header'} }) }}
+                    {{ form_label(form.subject, 'Objet', {'label_attr': {'class': 'label__header'}}) }}
                     {{ form_errors(form.subject) }}
                     {{ form_widget(form.subject) }}
                 </li>
 
                 <li>
-                    {{ form_label(form.content, 'Message', { 'label_attr': {'class': 'label__header'} }) }}
+                    {{ form_label(form.content, 'Message', {'label_attr': {'class': 'label__header'}}) }}
                     {{ form_errors(form.content) }}
                     {{ form_widget(form.content) }}
                 </li>

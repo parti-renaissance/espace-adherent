@@ -8,7 +8,7 @@
 
         {% if electedRepresentative %}
             {% for mandate in electedRepresentative.currentMandates %}
-                <span class="label label-success">{{ ('adherent_mandate.'~mandate.type)|trans }}</span>
+                <span class="label label-success">{{ ('adherent_mandate.' ~ mandate.type)|trans }}</span>
             {% endfor %}
         {% endif %}
     {% endif %}

@@ -12,7 +12,6 @@
 
     {{ include('assessor_manager/_filters_assessor_requests.html.twig') }}
 
-
     {% if 0 == requests|length %}
         <div class="datagrid__pre-table b__nudge--bottom-larger">
             <h3>
@@ -27,9 +26,9 @@
         <div class="datagrid__pre-table b__nudge--bottom-larger">
             <h3>
                 {% if constant('PROCESSED', filters) == filters.status %}
-                    {{ 'assessor.processed.choices'|trans({ count: total_count }) }}
+                    {{ 'assessor.processed.choices'|trans({count: total_count}) }}
                 {% else %}
-                    {{ 'assessor.unprocessed.choices'|trans({ count: total_count }) }}
+                    {{ 'assessor.unprocessed.choices'|trans({count: total_count}) }}
                 {% endif %}
             </h3>
         </div>

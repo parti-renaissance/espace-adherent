@@ -9,7 +9,7 @@
 {% block page_title designation.label %}
 
 {% block content %}
-    {% include 'renaissance/partials/site-header.html.twig' with { theme_bg: 'border-b border-re-blue-400 bg-re-blue-500' } %}
+    {% include 'renaissance/partials/site-header.html.twig' with {theme_bg: 'border-b border-re-blue-400 bg-re-blue-500'} %}
 
     <section class="bg-re-blue-50 py-10 md:py-12">
         <div class="max-w-8xl mx-auto px-4 md:px-6">
@@ -52,8 +52,8 @@
                 {% for candidaciesGroup in election.candidaciesGroups %}
                     <div class="border border-gray-300 rounded-md p-4 md:p-5">
                         <h3 class="text-lg font-medium text-gray-900">Liste #{{ loop.index }}</h3>
-                        <a class="inline-flex items-center mt-1 text-re-blue-500 hover:text-re-blue-600" href="{{ path('asset_url', { path: candidaciesGroup.getFaithStatementFilePath(), app_domain: app_renaissance_host }) }}">
-                            {% include 'icons/download.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+                        <a class="inline-flex items-center mt-1 text-re-blue-500 hover:text-re-blue-600" href="{{ path('asset_url', {path: candidaciesGroup.getFaithStatementFilePath(), app_domain: app_renaissance_host}) }}">
+                            {% include 'icons/download.svg.twig' with {svg_class: 'h-5 w-5 mr-2'} %}
                             Télécharger la profession de foi
                         </a>
 
@@ -71,7 +71,7 @@
                                     </li>
                                 {% endfor %}
                             </ul>
-                            {%if candidaciesGroup.substituteCandidacies is not empty %}
+                            {% if candidaciesGroup.substituteCandidacies is not empty %}
                                 <div class="mt-2 pb-3">
                                     <h3 class="text-lg font-medium leading-6 text-gray-500">Suppléants</h3>
                                 </div>

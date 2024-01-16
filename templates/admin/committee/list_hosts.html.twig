@@ -4,7 +4,7 @@
 
 {% macro dislay_host_line(host, displayGender = false) %}
     <li>
-        <a href="{{ path('admin_app_adherent_show', { id: host.id }) }}">
+        <a href="{{ path('admin_app_adherent_show', {id: host.id}) }}">
             {{ host.fullName }}
         </a> {% if displayGender %} ({{ host.genderName|trans|lower }}) {% endif %}
         <br />

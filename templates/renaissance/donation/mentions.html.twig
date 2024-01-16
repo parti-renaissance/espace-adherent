@@ -21,7 +21,7 @@
         {{ form_start(form) }}
             {{ form_errors(form) }}
             <div class="border-t-1 border-white/10 pt-4 mb-5">
-                {{ form_widget(form.isPhysicalPerson, { attr: { class: 'form-checkbox form-checkbox-green' }}) }}
+                {{ form_widget(form.isPhysicalPerson, {attr: {class: 'form-checkbox form-checkbox-green'}}) }}
                 <label for="{{ form.isPhysicalPerson.vars.id }}" class="required">
                     <span>
                         Je certifie sur l'honneur être une personne physique, et que le règlement de mon don ne provient pas du compte d'une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel
@@ -31,7 +31,7 @@
             </div>
 
             <div class="border-t-1 border-white/10 pt-4 mb-5">
-                {{ form_widget(form.hasFrenchNationality, { attr: { class: 'form-checkbox form-checkbox-green' }}) }}
+                {{ form_widget(form.hasFrenchNationality, {attr: {class: 'form-checkbox form-checkbox-green'}}) }}
                 <label for="{{ form.hasFrenchNationality.vars.id }}" class="required">
                     <span>
                         Je certifie être de nationalité française ou résider fiscalement en France
@@ -41,7 +41,7 @@
             </div>
 
             <div class="border-t-1 border-white/10 pt-4 mb-5">
-                {{ form_widget(form.personalDataCollection, { attr: { class: 'form-checkbox form-checkbox-green' }}) }}
+                {{ form_widget(form.personalDataCollection, {attr: {class: 'form-checkbox form-checkbox-green'}}) }}
                 <label for="{{ form.personalDataCollection.vars.id }}" class="required">
                     <span>
                         J’accepte les <a class="underline font-bold" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: app_renaissance_host}) }}" target="_blank">CGU du site Renaissance</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'politique-de-protection-des-donnees', app_domain: app_renaissance_host}) }}" class="underline font-bold" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations relatives au traitement de mes données ci-dessous

@@ -10,7 +10,7 @@
                     <h4 class="box-title">Comité source</h4>
                 </div>
                 <div class="box-body table-responsive no-padding">
-                    {% include 'admin/committee/merge/_committee_summary.html.twig' with { committee: source_committee } %}
+                    {% include 'admin/committee/merge/_committee_summary.html.twig' with {committee: source_committee} %}
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
                     </h4>
                 </div>
                 <div class="box-body table-responsive no-padding">
-                    {% include 'admin/committee/merge/_committee_summary.html.twig' with { committee: destination_committee } %}
+                    {% include 'admin/committee/merge/_committee_summary.html.twig' with {committee: destination_committee} %}
                 </div>
             </div>
         </div>
@@ -38,8 +38,8 @@
                         </div>
                         <div class="box-body">
                             <div class="sonata-ba-collapsed-fields">
-                                {{ form_row(form.sourceCommittee, { label: 'ID du comité source', attr: { readonly: true } }) }}
-                                {{ form_row(form.destinationCommittee, { label: 'ID du comité de destination', attr: { readonly: true } }) }}
+                                {{ form_row(form.sourceCommittee, {label: 'ID du comité source', attr: {readonly: true}}) }}
+                                {{ form_row(form.destinationCommittee, {label: 'ID du comité de destination', attr: {readonly: true}}) }}
 
                                 <div>
                                     La fusion entraînera:
@@ -57,7 +57,7 @@
                                     </ul>
                                 </div>
                                 <div>
-                                    {{ form_widget(form.confirm, { label: 'Confirmer la fusion', attr: { class: 'btn btn-success' } }) }}
+                                    {{ form_widget(form.confirm, {label: 'Confirmer la fusion', attr: {class: 'btn btn-success'}}) }}
                                     <a href="{{ path('admin_app_reporting_committeemergehistory_merge') }}" class="btn btn-danger">Annuler</a>
                                 </div>
                             </div>

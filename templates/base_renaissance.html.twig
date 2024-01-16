@@ -74,7 +74,7 @@
         on(window, 'load', function() {
             Bootstrap.boot(
                 '{{ app_version }}',
-                {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }},
+                {{ sentry_dsn ? ('\'' ~ sentry_dsn ~ '\'')|raw : 'null' }},
                 '{{ app_environment }}',
                 '{{ app.user ? app.user.getUsername() }}'
             );
@@ -94,7 +94,7 @@
                 t.parentNode.insertBefore(e, t);
             })(document, "script");
         </script>
-    {% endif%}
+    {% endif %}
 
     {% block final_javascripts '' %}
 

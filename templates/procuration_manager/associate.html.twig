@@ -2,7 +2,7 @@
 
 {% block procuration_manager_content %}
     <div class="text--summary b__nudge--bottom-large">
-        <a href="{{ path('app_procuration_manager_request', { id: request.id }) }}" class="back-to-list icon--with-text">
+        <a href="{{ path('app_procuration_manager_request', {id: request.id}) }}" class="back-to-list icon--with-text">
             {{ include('components/caret--left.html.twig') }}
             Retour à la demande
         </a>
@@ -77,7 +77,7 @@
             <div class="profile-value">
                 {{ include('procuration_manager/_election_rounds.html.twig', {
                     rounds: request.electionRounds,
-                }, with_context=false) }}
+                }, with_context = false) }}
             </div>
         </div>
 
@@ -141,7 +141,7 @@
             </div>
             <div class="profile-value b__nudge--left">
                 <span id="proxy-election">
-                    {% include 'procuration/proxy/_available_rounds.html.twig' with { proxy: proxy, request: request } %}
+                    {% include 'procuration/proxy/_available_rounds.html.twig' with {proxy: proxy, request: request} %}
                 </span>
             </div>
         </div>

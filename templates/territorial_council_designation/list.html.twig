@@ -29,7 +29,7 @@
                             <td>{{ designation.getTitle() }}</td>
                             <td>{{ election.territorialCouncil.name }}</td>
                             <td>
-                                <span class="cursor--pointer status {{ status in constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::ACTIVE_STATUSES') ? 'status__1' : 'status__2' }}">{{ ('designation.status.'~status)|trans|lower }}</span>
+                                <span class="cursor--pointer status {{ status in constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::ACTIVE_STATUSES') ? 'status__1' : 'status__2' }}">{{ ('designation.status.' ~ status)|trans|lower }}</span>
                             </td>
                             <td>
                                 {% if election.electionMode %}

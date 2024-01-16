@@ -25,11 +25,11 @@
     {% else %}
         <div class="alert alert--tips b__nudge--bottom-60 procuration_proposals_total_count">
             {% if constant('UNASSOCIATED', filters) == filters.status %}
-                {{ 'procuration_manager.unassociated.proposals'|trans({ count: total_count }) }}
+                {{ 'procuration_manager.unassociated.proposals'|trans({count: total_count}) }}
             {% elseif constant('ASSOCIATED', filters) == filters.status %}
-                {{ 'procuration_manager.associated.proposals'|trans({ count: total_count }) }}
+                {{ 'procuration_manager.associated.proposals'|trans({count: total_count}) }}
             {% else %}
-                {{ 'procuration_manager.deactivated.proposals'|trans({ count: total_count }) }}
+                {{ 'procuration_manager.deactivated.proposals'|trans({count: total_count}) }}
             {% endif %}
         </div>
     {% endif %}

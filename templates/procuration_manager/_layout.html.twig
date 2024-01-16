@@ -56,7 +56,7 @@
                         <ul>
                             {% for page in pages %}
                                 <li class="{{ is_active_route(app.request, page.route) and filters.status == page.status ? 'active' }}">
-                                    <a href="{{ path(page.route, { status: page.status }) }}">
+                                    <a href="{{ path(page.route, {status: page.status}) }}">
                                         {{ page.label }}
                                     </a>
                                 </li>

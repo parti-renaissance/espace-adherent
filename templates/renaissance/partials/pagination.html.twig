@@ -8,28 +8,28 @@
     <nav class="isolate inline-flex -space-x-px overflow-hidden shadow-sm" aria-label="Pagination">
         {% for i in 1..total_pages %}
             {% if 0 == (current_page - nearbyPagesLimit) - loop.index %}
-                <a href="{{ pagination_type is not null ? path(pagination_route_name, { page: 1, type: pagination_type }) : path(pagination_route_name, { page: 1 }) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">1</a>
+                <a href="{{ pagination_type is not null ? path(pagination_route_name, {page: 1, type: pagination_type}) : path(pagination_route_name, {page: 1}) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">1</a>
                 {% if 1 != loop.index %}
                     <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">...</span>
                 {% endif %}
-            {% elseif 0 == (current_page + nearbyPagesLimit) - loop.index  and (current_page + nearbyPagesLimit) < total_pages %}
+            {% elseif 0 == (current_page + nearbyPagesLimit) - loop.index and (current_page + nearbyPagesLimit) < total_pages %}
                 <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">...</span>
             {% elseif 0 < (current_page - nearbyPagesLimit) - loop.index %}
             {% elseif 0 > (current_page + nearbyPagesLimit) - loop.index %}
             {% else %}
-                {% if current_page == loop.index  %}
+                {% if current_page == loop.index %}
                     <span aria-current="page" class="relative z-10 inline-flex items-center bg-blue-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">{{ i }}</span>
                 {% else %}
                     {% if loop.index == 1 %}
-                        <a href="{{ pagination_type is not null ? path(pagination_route_name, { page: 1, type: pagination_type }) : path(pagination_route_name, { page: 1 }) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">1</a>
+                        <a href="{{ pagination_type is not null ? path(pagination_route_name, {page: 1, type: pagination_type}) : path(pagination_route_name, {page: 1}) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">1</a>
                     {% else %}
-                        <a href="{{ pagination_type is not null ? path(pagination_route_name, { page: i, type: pagination_type }) : path(pagination_route_name, { page: i }) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">{{ i }}</a>
+                        <a href="{{ pagination_type is not null ? path(pagination_route_name, {page: i, type: pagination_type}) : path(pagination_route_name, {page: i}) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">{{ i }}</a>
                     {% endif %}
                 {% endif %}
             {% endif %}
         {% endfor %}
-        {% if current_page != total_pages  and (current_page + nearbyPagesLimit) < total_pages %}
-            <a href="{{ pagination_type is not null ? path(pagination_route_name, { page: total_pages, type: pagination_type }) : path(pagination_route_name, { page: total_pages }) }}" class="rounded-r-md {{ total_pages == current_page ? ' relative z-10 inline-flex items-center bg-blue-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600': 'relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0' }}">{{ total_pages }}</a>
+        {% if current_page != total_pages and (current_page + nearbyPagesLimit) < total_pages %}
+            <a href="{{ pagination_type is not null ? path(pagination_route_name, {page: total_pages, type: pagination_type}) : path(pagination_route_name, {page: total_pages}) }}" class="rounded-r-md {{ total_pages == current_page ? ' relative z-10 inline-flex items-center bg-blue-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600' : 'relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0' }}">{{ total_pages }}</a>
         {% endif %}
     </nav>
 </div>

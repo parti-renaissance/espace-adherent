@@ -3,7 +3,7 @@
 {% block page_title 'Élections locales' %}
 
 {% block content %}
-    {% include 'renaissance/partials/site-header.html.twig' with { theme_bg: 'border-b border-re-blue-400 bg-re-blue-500' } %}
+    {% include 'renaissance/partials/site-header.html.twig' with {theme_bg: 'border-b border-re-blue-400 bg-re-blue-500'} %}
 
     <section class="bg-re-blue-50 py-10 md:py-16 lg:py-20">
         <div class="max-w-8xl mx-auto px-4 md:px-6">
@@ -44,7 +44,7 @@
                                 {% for election in elections %}
                                     <div class="relative border border-gray-300 rounded-md p-4 md:p-5 divide-y divide-gray-200">
                                         {% set department = election.designation.zones.first %}
-                                        <a href="{{ path('app_renaissance_local_election_summary_candidacies', { uuid: election.uuid }) }}" class="inline-block pb-4 focus:outline-none">
+                                        <a href="{{ path('app_renaissance_local_election_summary_candidacies', {uuid: election.uuid}) }}" class="inline-block pb-4 focus:outline-none">
                                             <span class="absolute inset-0" aria-hidden="true"></span>
                                             <p class="font-medium text-gray-900">{% if department.type == constant('App\\Entity\\Geo\\Zone::FOREIGN_DISTRICT') %}Français de l'Étranger{% else %}{{ department.name }} ({{ department.code }}){% endif %}</p>
                                             <p class="truncate text-gray-500">{{ election.candidaciesGroups|length }} candidature{{ election.candidaciesGroups|length > 1 ? 's' }}</p>
@@ -52,11 +52,11 @@
 
                                         <div class="pt-4">
                                             <p class="flex items-center space-x-2">
-                                                {% include 'icons/calendar.svg.twig' with { svg_class: 'w-4 h-4 mr-2' } %}
+                                                {% include 'icons/calendar.svg.twig' with {svg_class: 'w-4 h-4 mr-2'} %}
                                                 Début: {{ election.voteStartDate|date('d/m/Y à H:i') }}
                                             </p>
                                             <p class="flex items-center space-x-2">
-                                                {% include 'icons/calendar.svg.twig' with { svg_class: 'w-4 h-4 mr-2' } %}
+                                                {% include 'icons/calendar.svg.twig' with {svg_class: 'w-4 h-4 mr-2'} %}
                                                 Fin: {{ election.voteEndDate|date('d/m/Y à H:i') }}
                                             </p>
                                         </div>

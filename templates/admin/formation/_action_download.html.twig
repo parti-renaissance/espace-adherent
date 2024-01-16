@@ -1,5 +1,5 @@
 {% if object.hasFilePath %}
-    <a href="{{ path('asset_url', { path: object.filePath }) }}" download="{{ object.title }}" title="Télécharger" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-default view_link">
+    <a href="{{ path('asset_url', {path: object.filePath}) }}" download="{{ object.title }}" title="Télécharger" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-default view_link">
         <i class="fa fa-file" aria-hidden="true"></i>
         Télécharger
     </a>

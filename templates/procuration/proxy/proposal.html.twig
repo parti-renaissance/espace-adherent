@@ -6,7 +6,7 @@
 {% block meta_description "Chaque vote compte. Allez voter au nom d'un citoyen." %}
 {% block canonical_url url('app_procuration_proxy_proposal') %}
 
-{% block open_graph_image (homepage_url ~ static_asset('procuration.jpg', { q: 70 }))|raw %}
+{% block open_graph_image (homepage_url ~ static_asset('procuration.jpg', {q: 70}))|raw %}
 
 {% block banner '' %}
 {% block header '' %}
@@ -100,8 +100,8 @@
 {% block content %}
     <main class="procuration">
         <section class="procuration__header--outer l__row l__row--h-stretch list__links--nav progressive-background text--center text--white"
-                 data-sd="{{ static_asset('procuration.jpg', { w: 300, q: 20 }) }}"
-                 data-hd="{{ static_asset('procuration.jpg', { w: 2000, q: 70 }) }}">
+                 data-sd="{{ static_asset('procuration.jpg', {w: 300, q: 20}) }}"
+                 data-hd="{{ static_asset('procuration.jpg', {w: 2000, q: 70}) }}">
             <div class="procuration__header--inner l__wrapper--slim">
                 <h1 class="text--larger">
                     Chaque vote compte.
@@ -129,7 +129,7 @@
                         <div class="form__row">
                             {{ form_label(procuration_form.gender, 'Genre') }}
                             <div class="l__row l__row--h-stretch">
-                                {{ form_widget(procuration_form.gender, { attr: { class: 'register__form__gender' } }) }}
+                                {{ form_widget(procuration_form.gender, {attr: {class: 'register__form__gender'}}) }}
                             </div>
                             {{ form_errors(procuration_form.gender) }}
                         </div>
@@ -137,7 +137,7 @@
                         <div class="form__row l__row l__row--top l__row--h-stretch l__mobile--col">
                             <div class="register__form--mid">
                                 {{ form_label(procuration_form.firstNames, 'Prénom(s)') }}
-                                {{ form_widget(procuration_form.firstNames, { attr: { placeholder: 'Prénom(s)' } }) }}
+                                {{ form_widget(procuration_form.firstNames, {attr: {placeholder: 'Prénom(s)'}}) }}
                                 {{ form_errors(procuration_form.firstNames) }}
 
                                 <span class="text--smallest text--gray b__nudge--top-0">
@@ -147,7 +147,7 @@
 
                             <div class="register__form--mid">
                                 {{ form_label(procuration_form.lastName, 'Nom') }}
-                                {{ form_widget(procuration_form.lastName, { attr: { placeholder: 'Nom de naissance' } }) }}
+                                {{ form_widget(procuration_form.lastName, {attr: {placeholder: 'Nom de naissance'}}) }}
                                 {{ form_errors(procuration_form.lastName) }}
                             </div>
                         </div>
@@ -155,7 +155,7 @@
                         <div class="form__row">
                             {{ form_label(procuration_form.voterNumber, 'Mon numéro d’électeur') }}
                             <div class="l__row l__row--h-stretch register__form--full">
-                                {{ form_widget(procuration_form.voterNumber, { attr: { placeholder: 'Numéro d\'électeur' } }) }}
+                                {{ form_widget(procuration_form.voterNumber, {attr: {placeholder: 'Numéro d\'électeur'}}) }}
                             </div>
                             {{ form_errors(procuration_form.voterNumber) }}
                             <p class="text--smallest text--gray b__nudge--top-0">
@@ -177,7 +177,7 @@
 
                             <div class="address-block">
                                 <div class="l__row l__row--h-stretch register__form--full">
-                                    {{ form_widget(procuration_form.address, { attr: { placeholder: 'Mon adresse de résidence' } }) }}
+                                    {{ form_widget(procuration_form.address, {attr: {placeholder: 'Mon adresse de résidence'}}) }}
                                     {{ form_errors(procuration_form.address) }}
                                 </div>
 
@@ -188,20 +188,20 @@
                                     </div>
 
                                     <div class="register__form__zip_code register__form--third">
-                                        {{ form_widget(procuration_form.postalCode, { attr: { placeholder: 'Code postal' } }) }}
+                                        {{ form_widget(procuration_form.postalCode, {attr: {placeholder: 'Code postal'}}) }}
                                         {{ form_errors(procuration_form.postalCode) }}
                                     </div>
 
                                     <div class="register__form__city register__form--third">
-                                        {{ form_widget(procuration_form.city, { attr: { class: 'register__form__city'} }) }}
-                                        {{ form_widget(procuration_form.cityName, { attr: { class: 'register__form__city_name', placeholder: 'Ville' } }) }}
+                                        {{ form_widget(procuration_form.city, {attr: {class: 'register__form__city'}}) }}
+                                        {{ form_widget(procuration_form.cityName, {attr: {class: 'register__form__city_name', placeholder: 'Ville'}}) }}
                                         {{ form_errors(procuration_form.city) }}
                                     </div>
                                 </div>
 
                                 <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
                                     <div class="register__form--mid">
-                                        {{ form_widget(procuration_form.state, { attr: { placeholder: 'État/Province'} }) }}
+                                        {{ form_widget(procuration_form.state, {attr: {placeholder: 'État/Province'}}) }}
                                         {{ form_errors(procuration_form.state) }}
                                     </div>
                                 </div>
@@ -222,7 +222,7 @@
                             <div class="register__form--mid">
                                 <div class="form__row">
                                     {{ form_label(procuration_form.emailAddress, 'Adresse email') }}
-                                    {{ form_widget(procuration_form.emailAddress, { attr: { placeholder: 'Adresse email' } }) }}
+                                    {{ form_widget(procuration_form.emailAddress, {attr: {placeholder: 'Adresse email'}}) }}
                                     {{ form_errors(procuration_form.emailAddress) }}
                                 </div>
                             </div>
@@ -231,8 +231,8 @@
                         <div class="l__col l__col--top register__form__phone">
                             {{ form_label(procuration_form.phone, 'Téléphone') }}
                             <div class="l__row l__row--top l__row--h-stretch">
-                                {{ form_widget(procuration_form.phone.country, { attr: { class: 'membership_request__form__phone' } }) }}
-                                {{ form_widget(procuration_form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+                                {{ form_widget(procuration_form.phone.country, {attr: {class: 'membership_request__form__phone'}}) }}
+                                {{ form_widget(procuration_form.phone.number, {attr: {placeholder: 'Téléphone'}}) }}
                             </div>
                             {{ form_errors(procuration_form.phone) }}
                         </div>
@@ -243,12 +243,12 @@
 
                         <div class="form__row">
                             {{ form_label(procuration_form.voteCountry, 'Le pays où je suis inscrit sur les listes électorales') }}
-                            {{ form_widget(procuration_form.voteCountry, { attr: { class: 'form--full' } }) }}
+                            {{ form_widget(procuration_form.voteCountry, {attr: {class: 'form--full'}}) }}
                         </div>
 
                         <div id="vote-row-postal-code" class="form__row">
                             {{ form_label(procuration_form.votePostalCode, 'Le code postal où je vote') }}
-                            {{ form_widget(procuration_form.votePostalCode, { attr: { class: 'form--full', placeholder: 'Code postal' } }) }}
+                            {{ form_widget(procuration_form.votePostalCode, {attr: {class: 'form--full', placeholder: 'Code postal'}}) }}
                         </div>
 
                         <div class="form__row">
@@ -259,13 +259,13 @@
                                 {{ form_label(procuration_form.voteCity, 'La circonscription consulaire dans laquelle je suis inscrit(e)') }}
                             </span>
                             {{ form_widget(procuration_form.voteCity) }}
-                            {{ form_widget(procuration_form.voteCityName, { attr: { class: 'form--full', placeholder: 'Ville' } }) }}
+                            {{ form_widget(procuration_form.voteCityName, {attr: {class: 'form--full', placeholder: 'Ville'}}) }}
                         </div>
 
                         <div class="form__row">
                             {{ form_label(procuration_form.voteOffice, 'Nom ou localisation de votre bureau de vote') }}
                             {{ form_errors(procuration_form.voteOffice) }}
-                            {{ form_widget(procuration_form.voteOffice, { attr: { class: 'form--full', placeholder: 'Bureau de vote' } }) }}
+                            {{ form_widget(procuration_form.voteOffice, {attr: {class: 'form--full', placeholder: 'Bureau de vote'}}) }}
                             <div class="text--body text--small b__nudge--top-10">
                                 Vous pouvez trouver votre numéro de bureau de vote sur votre carte électorale ou
                                 <a href="https://www.service-public.fr/particuliers/vosdroits/services-en-ligne-et-formulaires/ISE" target="_blank">
@@ -281,7 +281,7 @@
 
                         <div class="form__row">
                             <div class="l__row--h-stretch b__nudge--bottom-medium form__radio-button">
-                                {{ form_widget(procuration_form.proxiesCount, { attr: { class: 'b__nudge--bottom-small' } }) }}
+                                {{ form_widget(procuration_form.proxiesCount, {attr: {class: 'b__nudge--bottom-small'}}) }}
                             </div>
 
                             <div id="app_procuration_proposal_proxiesCount_helper"></div>
@@ -308,7 +308,7 @@
 
                             <div class="form__row {{ not procuration_form.otherVoteCities.vars.data ? 'hidden' }}" id="{{ procuration_form.otherVoteCities.vars.id }}_wrapper">
                                 {{ form_label(procuration_form.otherVoteCities, 'Autre commune') }}
-                                {{ form_widget(procuration_form.otherVoteCities, { attr: { class: 'form--full', placeholder: 'Autre commune', required: not not procuration_form.otherVoteCities.vars.data } }) }}
+                                {{ form_widget(procuration_form.otherVoteCities, {attr: {class: 'form--full', placeholder: 'Autre commune', required: not not procuration_form.otherVoteCities.vars.data}}) }}
                                 {{ form_errors(procuration_form.otherVoteCities) }}
                             </div>
                         </div>

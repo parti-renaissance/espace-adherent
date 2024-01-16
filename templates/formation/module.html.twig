@@ -4,7 +4,7 @@
 {% block page_title module.title %}
 {% block meta_description module.description %}
 
-{% block canonical_url url('app_formation_module', { 'slug': module.slug }) %}
+{% block canonical_url url('app_formation_module', {'slug': module.slug}) %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/emoji.min.css') }}" rel="stylesheet">
@@ -27,7 +27,7 @@
                 <ul>
                     {% for file in module.files %}
                         <li>
-                            <a href="{{ path('asset_url', { path: file.path, mime_type: 'application/pdf' }) }}"
+                            <a href="{{ path('asset_url', {path: file.path, mime_type: 'application/pdf'}) }}"
                                target="_blank" class="text--blue link--no-decor">{{ file.title }}</a> (pdf)
                         </li>
                     {% endfor %}

@@ -82,7 +82,7 @@
                 if ($(this).val() !== 'FR') {
                     initForeignAssessorRequest();
 
-                    let url = "{{ path('app_assessor_request_find_vote_places', { country: 'countryVal' }) }}";
+                    let url = "{{ path('app_assessor_request_find_vote_places', {country: 'countryVal'}) }}";
                     refreshVotePlaceWishes(url.replace('countryVal', $(this).val()));
                 } else {
                     $('.french-block').show();
@@ -92,13 +92,13 @@
             assessorPostalCodeInput.on('input', function() {
                 if ($(this).val().length > 4) {
 
-                    let apiPostalCodeUrl = "{{ path('api_postal_code', { postalCode: 'postalCodeVal' }) }}";
+                    let apiPostalCodeUrl = "{{ path('api_postal_code', {postalCode: 'postalCodeVal'}) }}";
                     refreshAssessorCity(apiPostalCodeUrl.replace('postalCodeVal', $(this).val()));
                 }
             });
 
             assessorCityInput.on('change', function () {
-                let apiVotePlacesUrl = "{{ path('app_assessor_request_find_vote_places', { postalCode: 'postalCodeVal', city: 'cityVal' })|raw }}";
+                let apiVotePlacesUrl = "{{ path('app_assessor_request_find_vote_places', {postalCode: 'postalCodeVal', city: 'cityVal'})|raw }}";
                 refreshVotePlaceWishes(apiVotePlacesUrl.replace('postalCodeVal', assessorPostalCodeInput.val()).replace('cityVal', $(this).val()));
             });
         });
@@ -109,7 +109,7 @@
     <main class="assessor__content">
         <section class="assessor__content__form l__wrapper l__row l__row--top l__row--h-stretch-around l__tablet--col space--40-0">
             <div class="l__wrapper">
-                {% include('assessor_request/_'~transition~'.html.twig') %}
+                {% include ('assessor_request/_' ~ transition ~ '.html.twig') %}
             </div>
         </section>
     </main>

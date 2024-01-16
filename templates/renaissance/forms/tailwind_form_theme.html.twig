@@ -5,7 +5,7 @@
         name="{{ full_name }}"
         value="{{ label }}"
         type="{{ type }}"
-        {{ ...attr }}
+        {{ ...(attr) }}
     >{{ label }}</twig:ReButton>
 {% endblock %}
 
@@ -34,7 +34,7 @@
 {% endblock %}
 
 {% block re_choice_tab_row %}
-    <twig:Atoms:ReLinkedToggle name="{{ full_name }}" {{ ...attr }}>
+    <twig:Atoms:ReLinkedToggle {{...attr}} name="{{ full_name }}">
         {% for child in form.children %}
             <twig:Atoms:ReToggleButton
                 x-bind="validateField" name="{{ full_name }}"

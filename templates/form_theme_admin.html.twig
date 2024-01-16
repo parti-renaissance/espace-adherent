@@ -3,10 +3,10 @@
 {% block measure_entry_row %}
     <div class="row">
         <div class="col-xs-4">
-            {{ form_row(form.key, { required: true }) }}
+            {{ form_row(form.key, {required: true}) }}
         </div>
         <div class="col-xs-4">
-            {{ form_row(form.value, { required: true }) }}
+            {{ form_row(form.value, {required: true}) }}
         </div>
     </div>
 {% endblock %}
@@ -22,7 +22,7 @@
                     </h4>
                     {% for key, choice in group %}
                         <div>
-                            {{- form_widget(form[key], { role: choice.data }) -}}
+                            {{- form_widget(form[key], {role: choice.data}) -}}
                         </div>
                     {% endfor %}
                 </div>
@@ -107,7 +107,6 @@
                     {% if choice.vars.value %}
                         {% set donation = form.vars.choices[choice.vars.value].data %}
 
-
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {{ donation.amountInEuros|format_currency('EUR') }}
                         </td>
@@ -147,7 +146,7 @@
                             Nationalité: {{ donation.nationality }}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                            <a href="{{ path('admin_app_donation_edit', { id: choice.vars.value }) }}" target="_blank">
+                            <a href="{{ path('admin_app_donation_edit', {id: choice.vars.value}) }}" target="_blank">
                                 Voir le détail
                             </a>
                         </td>
@@ -173,7 +172,7 @@
 
     {% set object = form.parent.vars.value %}
     {% if object.filename is defined and object.filename is not empty %}
-        <a href="{{ path('app_admin_donation_file', { id: object.id }) }}" target="_blank">
+        <a href="{{ path('app_admin_donation_file', {id: object.id}) }}" target="_blank">
             <i class="fa fa-link" aria-hidden="true"></i> Voir le fichier téléchargé
         </a>
     {% endif %}
@@ -295,7 +294,7 @@
             <option value="{{ label }}" {{ form.vars.value == label or (shouldSetOther and label == constant('App\\Entity\\ElectedRepresentative\\LabelNameEnum::OTHER')) ? 'selected="selected"' }}>{{ label }}</option>
         {% endfor %}
     </select>
-    {{ form_widget(form, { attr: { style: "margin-top: 15px;" } }) }}
+    {{ form_widget(form, {attr: {style: "margin-top: 15px;"}}) }}
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -389,7 +388,7 @@
                 {% endfor %}
 
             </select>
-            {{ form_row(form.candidate, { attr: { style: "margin-top: 15px;" } }) }}
+            {{ form_row(form.candidate, {attr: {style: "margin-top: 15px;"}}) }}
         </td>
     </tr>
 
@@ -447,7 +446,7 @@
             <div>
                 <p><em>Image actuelle:</em></p>
                 <p class="text-center">
-                    <img class="img-thumbnail" src="{{ path('asset_url', { path: path }) }}">
+                    <img class="img-thumbnail" src="{{ path('asset_url', {path: path}) }}">
                 </p>
             </div>
         {% endif %}
@@ -626,7 +625,7 @@
                 <div class="rigth row col-md-7">
                     <a class="btn elected-representative-link" title="Fiche élu"
                        target="_blank" rel="noopener noreferrer"
-                       href="{{ path('admin_app_electedrepresentative_electedrepresentative_edit', { id: elected_representative.id }) }}">
+                       href="{{ path('admin_app_electedrepresentative_electedrepresentative_edit', {id: elected_representative.id}) }}">
                         Voir <i class="fa fa-external-link"></i>
                     </a>
                 </div>
@@ -640,7 +639,7 @@
             <div class="sonata-ba-field sonata-ba-field-standard-natural">
                 <div style="width: 100%;">
                     {% for listDefinition in elected_representative.userListDefinitions %}
-                        <span class="elected-representative-label" style="{{ listDefinition.color ? 'background-color: '~listDefinition.color  : 'color: #333;' }}">
+                        <span class="elected-representative-label" style="{{ listDefinition.color ? 'background-color: ' ~ listDefinition.color : 'color: #333;' }}">
                             {{ listDefinition.label }}
                         </span>
                     {% else %}
@@ -665,7 +664,7 @@
                 </label>
                 <div class="sonata-ba-field sonata-ba-field-standard-natural">
                 {% for mandate in mandates %}
-                    <div>{{ mandate.name }} {{ mandate.lastPoliticalFunction ? '- '~mandate.lastPoliticalFunction : '' }} ({{ mandate.geoZone }})</div>
+                    <div>{{ mandate.name }} {{ mandate.lastPoliticalFunction ? '- ' ~ mandate.lastPoliticalFunction : '' }} ({{ mandate.geoZone }})</div>
                 {% endfor %}
                 </div>
             </div>
@@ -676,7 +675,7 @@
 {% block app_admin_adherent_contributionStatus_text_widget %}
     {% set adherent = form.parent.vars.value %}
 
-    {% include 'admin/adherent/partial/_contributions.html.twig' with { adherent: adherent } %}
+    {% include 'admin/adherent/partial/_contributions.html.twig' with {adherent: adherent} %}
 {% endblock %}
 
 {% block app_admin_file_file_parent_widget %}
@@ -769,7 +768,7 @@
 
     <label>Labels</label><br/>
     {% for tag in object.tags %}
-        <span class="label label-success">{{ ('adherent.tag.'~tag)|trans }}</span>
+        <span class="label label-success">{{ ('adherent.tag.' ~ tag)|trans }}</span>
     {% else %}
         ~
     {% endfor %}
@@ -981,7 +980,7 @@
                         {{ candidacy.candidacies|length }} candidat(s)
                     </td>
                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                        <a href="{{ path('admin_app_localelection_candidaciesgroup_edit', { id: candidacy.id }) }}" target="_blank">
+                        <a href="{{ path('admin_app_localelection_candidaciesgroup_edit', {id: candidacy.id}) }}" target="_blank">
                             Voir le détail
                         </a>
                     </td>

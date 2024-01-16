@@ -8,7 +8,7 @@
 
         {% for motivation in object.motivations %}
             <span class="label label-default" style="margin-right: 2px;">
-                {{ ('admin.thematic_community.membership.motivations.'~motivation)|trans }}
+                {{ ('admin.thematic_community.membership.motivations.' ~ motivation)|trans }}
             </span>
         {% endfor %}
 
