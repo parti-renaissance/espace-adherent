@@ -25,12 +25,12 @@
 
             {{ form_errors(form) }}
 
-            {{ form_row(form.birthdate, { label: 'Date de naissance' }) }}
+            {{ form_row(form.birthdate, {label: 'Date de naissance'}) }}
 
             {{ form_errors(form.phone) }}
             <div class="flex flex-row space-x-4">
-                {{ form_row(form.phone.country, { label: 'Indicatif Pays' }) }}
-                {{ form_row(form.phone.number, { label: 'Téléphone' }) }}
+                {{ form_row(form.phone.country, {label: 'Indicatif Pays'}) }}
+                {{ form_row(form.phone.number, {label: 'Téléphone'}) }}
             </div>
 
             <div class="mt-4">

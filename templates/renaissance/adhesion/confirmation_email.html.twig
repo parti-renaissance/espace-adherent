@@ -30,7 +30,7 @@
                 </p>
             </div>
 
-            {{ form_start(form, { attr: { 'x-ref': 'form', class: 'flex gap-8 flex-col'} }) }}
+            {{ form_start(form, {attr: {'x-ref': 'form', class: 'flex gap-8 flex-col'}}) }}
                 {{ form_errors(form) }}
 
                 <template x-if="!isChangeMailMode">
@@ -53,7 +53,7 @@
                             'x-on:input': 'handleCodeInput($event)',
                         }}) }}
 
-                        {{ form_row(form.validate, { label: 'Valider', attr: {
+                        {{ form_row(form.validate, {label: 'Valider', attr: {
                             color: "blue",
                             class: "w-full",
                             'x-bind:class': "{disabled: !checkValidity()}",
@@ -86,7 +86,7 @@
                             }}) }}
                         </div>
 
-                        {{ form_row(form.changeEmail, { label: 'Changer mon email', attr: {
+                        {{ form_row(form.changeEmail, {label: 'Changer mon email', attr: {
                             color: "blue",
                             class: "w-full",
                             'x-bind:class': "{disabled: !checkValidity()}",

@@ -146,7 +146,7 @@
                                         </div>
                                         <div class="adherent-caracs">
                                             {{ adherent.gender ? ('male' == adherent.gender ? 'common.gender.man' : 'common.gender.woman')|trans : '~' }},
-                                            {{ adherent.age ? adherent.age ~ ' ans' : '~'}}
+                                            {{ adherent.age ? adherent.age ~ ' ans' : '~' }}
                                         </div>
                                     </td>
                                     <td>
@@ -160,7 +160,7 @@
                                         {% endfor %}
                                         {% set pcQualities = adherent.politicalCommitteeMembership ? adherent.politicalCommitteeMembership.qualityNames : [] %}
                                         {% for pcQuality in pcQualities|filter(quality => quality not in membership.qualityNames) %}
-                                            <b>{{ ('political_committee.membership.quality.'~pcQuality)|trans }}</b>
+                                            <b>{{ ('political_committee.membership.quality.' ~ pcQuality)|trans }}</b>
                                         {% endfor %}
                                     </td>
                                     <td>

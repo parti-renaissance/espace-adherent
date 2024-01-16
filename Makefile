@@ -170,6 +170,7 @@ ly:
 
 lt:
 	$(CONSOLE) lint:twig templates
+	$(EXEC) vendor/bin/twig-cs-fixer --fix
 
 lc:
 	$(CONSOLE) lint:container

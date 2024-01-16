@@ -2,7 +2,7 @@
 
 {% block assessor_manager_content %}
     <div class="text--summary b__nudge--bottom-large">
-        <a href="{{ path('app_assessor_manager_request', { uuid: request.uuid }) }}" class="back-to-list icon--with-text">
+        <a href="{{ path('app_assessor_manager_request', {uuid: request.uuid}) }}" class="back-to-list icon--with-text">
             {{ include('components/caret--left.html.twig') }}
             Retour à la demande
         </a>
@@ -28,8 +28,8 @@
 
     <div class="text--center b__nudge--bottom-60">
         {{ form_start(form) }}
-            {{ form_widget(form.allow, { label: 'Associer', attr: { class: 'btn btn--primary' } }) }}
-            {{ form_widget(form.deny, { label: 'Retour', attr: { class: 'btn btn-warning' } }) }}
+            {{ form_widget(form.allow, {label: 'Associer', attr: {class: 'btn btn--primary'}}) }}
+            {{ form_widget(form.deny, {label: 'Retour', attr: {class: 'btn btn-warning'}}) }}
         {{ form_end(form) }}
     </div>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% set is_readhesion = is_re_adhesion ?? false %}
 <div>
     {{ form_errors(form.amount) }}
-    {{ form_row(form.amount, {attr: { class: 'renaissance-amount-chooser', 'data-display-label': 'true', 'data-adhesion': 'true', 'data-readhesion': is_readhesion } }) }}
+    {{ form_row(form.amount, {attr: {class: 'renaissance-amount-chooser', 'data-display-label': 'true', 'data-adhesion': 'true', 'data-readhesion': is_readhesion}}) }}
     {{ form_rest(form.amount) }}
 
     <p class="mt-4 text-gray-500">

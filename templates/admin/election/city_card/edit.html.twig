@@ -38,12 +38,12 @@
                                         {{ object.population|number_format(0, ',', ' ') }}
                                     </td>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ form_widget(form.risk, { label: false })}}
-                                        {{ form_errors(form.risk)}}
+                                        {{ form_widget(form.risk, {label: false}) }}
+                                        {{ form_errors(form.risk) }}
                                     </td>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ form_widget(form.priority)}}
-                                        {{ form_errors(form.priority)}}
+                                        {{ form_widget(form.priority) }}
+                                        {{ form_errors(form.priority) }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -218,7 +218,7 @@
                         <h4 class="box-title">Partenaires</h4>
                     </div>
                     <div class="box-body no-padding">
-                        {{ form_row(form.partners, { label: false }) }}
+                        {{ form_row(form.partners, {label: false}) }}
                     </div>
                 </div>
             </div>
@@ -230,7 +230,7 @@
                         </h4>
 
                         {% if is_granted('ROLE_ADMIN_ELECTION_CITY_CARD_MANAGERS') %}
-                            <a href="{{ path('admin_app_election_citycard_managers_edit', { id: object.id }) }}" target="_blank">
+                            <a href="{{ path('admin_app_election_citycard_managers_edit', {id: object.id}) }}" target="_blank">
                                 <span class="fa fa-external-link"></span>
                             </a>
                         {% endif %}
@@ -269,7 +269,7 @@
                         <h4 class="box-title">Personnes à contacter</h4>
                     </div>
                     <div class="box-body no-padding">
-                        {{ form_row(form.contacts, { label: false }) }}
+                        {{ form_row(form.contacts, {label: false}) }}
                     </div>
                 </div>
             </div>
@@ -329,7 +329,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for index,list in lists %}
+                    {% for index, list in lists %}
                         <tr class="{{ 10 <= list.percent ? 'success' : 5 < list.percent ? 'warning' : 'danger' }}">
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                 {{ list.place }}
@@ -408,7 +408,7 @@
                             le {{ totals.updatedAt|format_datetime('none', 'none', "d MMM yyyy à HH:mm") }}
                             {% if totals.updatedBy is instanceof('App\\Entity\\Adherent') %}
                                 <br/>par
-                                <a href="{{ path('admin_app_adherent_edit', { id: totals.updatedBy.id }) }}" target="_blank">
+                                <a href="{{ path('admin_app_adherent_edit', {id: totals.updatedBy.id}) }}" target="_blank">
                                     {{ totals.updatedBy.fullName }}
                                 </a>
                             {% endif %}

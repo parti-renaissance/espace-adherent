@@ -11,7 +11,7 @@
             <i class="fa fa-search-plus" aria-hidden="true"></i>
             Prévisualiser
         </a>
-    {% endif%}
+    {% endif %}
 {% else %}
     {% if not object.published %}
         <a href="{{ path('article_view', {categorySlug: object.category.slug, articleSlug: object.slug, preview: article_preview_admin_key}) }}" class="btn btn-sm btn-default view_link"

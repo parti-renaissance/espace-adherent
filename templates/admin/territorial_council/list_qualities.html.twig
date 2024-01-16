@@ -4,7 +4,7 @@
     <ul>
         {% for quality in object.actualQualityNames %}
             <li>
-                {{ ('territorial_council.membership.quality.'~quality)|trans }}
+                {{ ('territorial_council.membership.quality.' ~ quality)|trans }}
             </li>
         {% endfor %}
     </ul>

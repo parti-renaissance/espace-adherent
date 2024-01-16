@@ -2,13 +2,13 @@
 
 {% block field %}
     <div class="btn-group">
-        <a href="{{ path('app_admin_qr_code_generate', { uuid: object.uuid, _format: 'png' }) }}"
+        <a href="{{ path('app_admin_qr_code_generate', {uuid: object.uuid, _format: 'png'}) }}"
            class="btn btn-sm btn-default view_link"
            title="QR Code" target="_blank" rel="noopener noreferrer">
             <i class="fa fa-qrcode" aria-hidden="true"></i>
             PNG
         </a>
-        <a href="{{ path('app_admin_qr_code_generate', { uuid: object.uuid, _format: 'svg', _download: true }) }}"
+        <a href="{{ path('app_admin_qr_code_generate', {uuid: object.uuid, _format: 'svg', _download: true}) }}"
            class="btn btn-sm btn-default view_link"
            title="QR Code" target="_blank" rel="noopener noreferrer">
             <i class="fa fa-qrcode" aria-hidden="true"></i>

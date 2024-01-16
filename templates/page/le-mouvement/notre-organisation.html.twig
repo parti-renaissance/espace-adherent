@@ -49,10 +49,10 @@
                     {% for member in members %}
                         {% if member %}
                             <li>
-                                <a class="link--no-decor" href="{{ path('app_our_organization_show', { slug: member.slug }) }}">
+                                <a class="link--no-decor" href="{{ path('app_our_organization_show', {slug: member.slug}) }}">
                                     <div class="profile-pic">
                                         {% if member.hasImageName %}
-                                            <img src="{{ path('asset_url', { path: member.getImagePath }) }}">
+                                            <img src="{{ path('asset_url', {path: member.getImagePath}) }}">
                                         {% endif %}
                                     </div>
                                     <div class="team__meta">
@@ -64,7 +64,7 @@
                                     </div>
                                 </a>
                                 <div class="social-networks">
-                                    {{ include('social_share/social_networks.html.twig', { object: member }) }}
+                                    {{ include('social_share/social_networks.html.twig', {object: member}) }}
                                 </div>
                             </li>
                         {% endif %}
@@ -79,10 +79,10 @@
                 <ul class="team">
                     {% for member in executiveOfficeMembers %}
                         <li>
-                            <a class="link--no-decor" href="{{ path('app_our_organization_show', { slug: member.slug }) }}">
+                            <a class="link--no-decor" href="{{ path('app_our_organization_show', {slug: member.slug}) }}">
                                 <div class="profile-pic">
                                     {% if member.hasImageName %}
-                                        <img src="{{ path('asset_url', { path: member.getImagePath }) }}">
+                                        <img src="{{ path('asset_url', {path: member.getImagePath}) }}">
                                     {% endif %}
                                 </div>
                                 <div class="team__meta">
@@ -94,7 +94,7 @@
                                 </div>
                             </a>
                             <div class="social-networks">
-                                {{ include('social_share/social_networks.html.twig', { object: member }) }}
+                                {{ include('social_share/social_networks.html.twig', {object: member}) }}
                             </div>
                         </li>
                     {% endfor %}
@@ -107,7 +107,7 @@
             <p>
                 Nommés par le Bureau Executif, ils ont pour mission de représenter le Mouvement dans les médias.
             </p>
-            <a href="{{ path('app_static_page', { slug: 'porte-parole' }) }}"
+            <a href="{{ path('app_static_page', {slug: 'porte-parole'}) }}"
                target="_blank" rel="noopener noreferrer" class="btn btn--blue">Les porte-parole</a>
         </div>
 
@@ -133,7 +133,7 @@
              <p>
                  Ils/Elles sont les représentant(e)s du mouvement au niveau du siège. Chaque chef(fe) de pôle a la responsabilité d'une activité au sein du Mouvement (communication, finance, idées etc.).
              </p>
-             <a target="_blank" href="{{ path('app_static_page', { slug: 'le-mouvement/organigramme' }) }}" class="btn btn--blue">Les salarié(e)s du siège</a>
+             <a target="_blank" href="{{ path('app_static_page', {slug: 'le-mouvement/organigramme'}) }}" class="btn btn--blue">Les salarié(e)s du siège</a>
          </div>
     </div>
 {% endblock %}

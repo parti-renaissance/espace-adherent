@@ -10,7 +10,7 @@
     {% endif %}
 
     <div class="datagrid__pre-table b__nudge--bottom-50">
-        <h3>Résultats par scrutin : <span class="text--pink">{{ ('territorial_council.membership.qualities.'~app.request.query.get('pool_code'))|trans }}</span></h3>
+        <h3>Résultats par scrutin : <span class="text--pink">{{ ('territorial_council.membership.qualities.' ~ app.request.query.get('pool_code'))|trans }}</span></h3>
 
         <span class="datagrid__count">
             <span>{{ candidate_group_count|number_format(0, ',', ' ') }}</span> candidat{{ app.request.query.has('femme') ? 'e' }}{{ candidate_group_count > 1 ? 's' }}

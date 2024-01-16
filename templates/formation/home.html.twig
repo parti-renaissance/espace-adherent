@@ -33,7 +33,7 @@
                             <h2 class="espace-formation__case--title">{{ axe.title }}</h2>
                             {% for module in axe.modules %}
                             <li>
-                                <a class="espace-formation__module" href="{{ path('app_formation_module', { 'slug': module.slug }) }}">
+                                <a class="espace-formation__module" href="{{ path('app_formation_module', {'slug': module.slug}) }}">
                                     <strong>M{{ loop.parent.loop.index }}.{{ loop.index0 }} -</strong> {{ module.title }}
                                 </a>
                             </li>

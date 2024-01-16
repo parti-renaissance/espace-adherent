@@ -25,7 +25,7 @@
                                     <h4 class="box-title">Comité source</h4>
                                 </div>
                                 <div class="box-body table-responsive no-padding">
-                                    {% include 'admin/committee/merge/_committee_summary.html.twig' with { committee: source_committee } %}
+                                    {% include 'admin/committee/merge/_committee_summary.html.twig' with {committee: source_committee} %}
                                 </div>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                                     </h4>
                                 </div>
                                 <div class="box-body table-responsive no-padding">
-                                    {% include 'admin/committee/merge/_committee_summary.html.twig' with { committee: destination_committee } %}
+                                    {% include 'admin/committee/merge/_committee_summary.html.twig' with {committee: destination_committee} %}
                                 </div>
                             </div>
                         </div>
@@ -63,10 +63,10 @@
                     </div>
                     <div class="row">
                         <div class="col-md-1">
-                            {{ form_widget(form.allow, { label: 'Confirmer', attr: { class: 'btn btn-warning' } }) }}
+                            {{ form_widget(form.allow, {label: 'Confirmer', attr: {class: 'btn btn-warning'}}) }}
                         </div>
                         <div class="col-md-1 col-md-offset-10">
-                            {{ form_widget(form.deny, { label: 'Annuler', attr: { class: 'btn btn-info' } }) }}
+                            {{ form_widget(form.deny, {label: 'Annuler', attr: {class: 'btn btn-info'}}) }}
                         </div>
                     </div>
                 </div>

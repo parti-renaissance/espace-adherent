@@ -1,7 +1,7 @@
 {% extends 'procuration/_layout.html.twig' %}
 
 {% block meta_description 'Chaque vote compte. Donnez ou proposez procuration.' %}
-{% block canonical_url url('app_procuration_choose_election', { action: action }) %}
+{% block canonical_url url('app_procuration_choose_election', {action: action}) %}
 
 {% set is_request = constant('App\\Procuration\\ElectionContext::ACTION_REQUEST') is same as(action) %}
 
@@ -33,7 +33,7 @@
 
             </div>
             <div>
-                {{ form_widget(elections_form.choose, { label: 'Continuer' }) }}
+                {{ form_widget(elections_form.choose, {label: 'Continuer'}) }}
             </div>
 
         {{ form_end(elections_form) }}

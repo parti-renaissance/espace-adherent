@@ -1,6 +1,6 @@
 {% if is_granted('ROLE_APP_ADMIN_LOCAL_ELECTION_CANDIDATE_IMPORT') %}
     <li>
-        <a href="{{ path('admin_app_localelection_candidaciesgroup_candidate_import', { id: object.id }) }}" class="sonata-action-element" title="Importer les candidats">
+        <a href="{{ path('admin_app_localelection_candidaciesgroup_candidate_import', {id: object.id}) }}" class="sonata-action-element" title="Importer les candidats">
             <i class="fa fa-file"></i> Importer les candidats
         </a>
     </li>

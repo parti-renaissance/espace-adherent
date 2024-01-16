@@ -21,7 +21,7 @@
                 {% if value is not empty %}
                     {% set city_data = get_city_data_from_insee_code(value) %}
                     {% if city_data is not null %}
-                        {{ city_data.name }} ({{  city_data.postalCode|join(', ') }})
+                        {{ city_data.name }} ({{ city_data.postalCode|join(', ') }})
                     {% endif %}
                 {% endif %}
             </span>
@@ -54,7 +54,7 @@
                 {% if value is not empty %}
                     {% set city_data = get_city_data_from_insee_code(value) %}
                     {% if city_data is not null %}
-                        {{ city_data.name }} ({{  city_data.postalCode|join(', ') }})
+                        {{ city_data.name }} ({{ city_data.postalCode|join(', ') }})
                     {% endif %}
                 {% endif %}
             </span>

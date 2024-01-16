@@ -24,7 +24,7 @@
 
             <hr class="w-full"/>
 
-            <div>{% include 'renaissance/partials/contact_info.html.twig' with { adhesion: true } %}</div>
+            <div>{% include 'renaissance/partials/contact_info.html.twig' with {adhesion: true} %}</div>
         {% endif %}
     </twig:Atoms:ReCard>
 </twig:ReStandaloneLayout>
@@ -34,7 +34,7 @@
     <script type="text/javascript">
         Bootstrap.onLoad(async function() {
             {% if result_code == '00000' %}
-                await Main.runPaymentStatusPage('{{ path('app_payment_check', { uuid: uuid }) }}');
+                await Main.runPaymentStatusPage('{{ path('app_payment_check', {uuid: uuid}) }}');
             {% endif %}
         });
     </script>

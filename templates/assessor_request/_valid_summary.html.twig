@@ -67,7 +67,7 @@
             {% endif %}
             <tr class="reachable">
                 <td>Accepte d'être recontacté par LaREM</td>
-                <td>{{ assessorRequest.isReachable ? 'Oui' : 'Non'}}</td>
+                <td>{{ assessorRequest.isReachable ? 'Oui' : 'Non' }}</td>
             </tr>
         </table>
 
@@ -132,7 +132,7 @@
         </div>
 
         <div class="text--center b__nudge--top-large">
-            {{ form_widget(form.valid_summary, { attr: {class: 'btn btn--medium newbtn--blue-dark'}}) }}
+            {{ form_widget(form.valid_summary, {attr: {class: 'btn btn--medium newbtn--blue-dark'}}) }}
         </div>
 
     {{ form_end(form) }}

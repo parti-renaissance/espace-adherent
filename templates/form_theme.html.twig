@@ -12,7 +12,7 @@
             {% else %}
                 {% set size = 1 %}
             {% endif %}
-            {%- for child in form.children|slice(start,size) %}
+            {%- for child in form.children|slice(start, size) %}
                 {{- form_row(child, {translation_domain: choice_translation_domain}) -}}
             {% endfor -%}
             {% set start = start + size %}
@@ -27,7 +27,7 @@
     <div{% if form_full %} class="form__row"{% endif %}>
         {{- form_label(form) -}}
         {{- form_errors(form) -}}
-        {{- form_widget(form, { attr: attr }) -}}
+        {{- form_widget(form, {attr: attr}) -}}
     </div>
 {%- endblock form_row -%}
 
@@ -60,7 +60,7 @@
 {%- block month_choice_widget -%}
     <div {{ block('widget_container_attributes') }}>
         {{- date_pattern|replace({
-            '{{ year }}':  form_widget(form.year),
+            '{{ year }}': form_widget(form.year),
             '{{ month }}': form_widget(form.month),
             '{{ day }}': '',
         })|raw -}}
@@ -112,7 +112,7 @@
                     <h3 class="text--medium text--normal text--breakword">{{ choice.vars.label }}</h3>
                     <div class="text--body space--10-0 icon--with-text">
                         {{ include('components/participants.html.twig') }}
-                        {{ 'committee.members_count'|trans({ count: committee_data['members_count'] }) }}
+                        {{ 'committee.members_count'|trans({count: committee_data['members_count']}) }}
                     </div>
                 </div>
                 <div class="register__comites__follow form__checkbox">
@@ -188,7 +188,7 @@
 {% block attachment_file_widget %}
     {{ form_widget(form) }}
     {% if form.path is defined %}
-        <a href="{{ path('mooc_get_file', { slug: form.vars.value.slug, extension: form.vars.value.extension }) }}" target="_blank">Télécharger le fichier</a>
+        <a href="{{ path('mooc_get_file', {slug: form.vars.value.slug, extension: form.vars.value.extension}) }}" target="_blank">Télécharger le fichier</a>
     {% endif %}
 {% endblock %}
 
@@ -199,7 +199,7 @@
             {{- form_widget(child) -}}
              <label for="{{ child.vars.id }}">
                 {% if child.vars.value == constant('App\\Form\\DonationRequestType::CONFIRM_DONATION_TYPE_UNIQUE') %}
-                    Je fais un don unique de {{ form.parent.children.amount.vars.value|format_currency('EUR')|replace({',00' : ''})  }}
+                    Je fais un don unique de {{ form.parent.children.amount.vars.value|format_currency('EUR')|replace({',00': ''}) }}
                 {% else %}
                     Je fais un don mensuel de {{ form_widget(form.parent.children.confirmSubscriptionAmount) }} €
                 {% endif %}
@@ -475,7 +475,7 @@
                 source: function(request, response) {
                     var term = request.term.trim();
 
-                    $.get("{{ path('app_referent_provisional_supervisor_autocomplete')|raw }}?name=" + term + "{{ (form.vars.gender ? '&gender='~form.vars.gender)|raw }}", function(data) {
+                    $.get("{{ path('app_referent_provisional_supervisor_autocomplete')|raw }}?name=" + term + "{{ (form.vars.gender ? '&gender=' ~ form.vars.gender)|raw }}", function(data) {
                         response($.map(data, function(m) {
                             var d = new Date(m.registeredAt);
                             return {

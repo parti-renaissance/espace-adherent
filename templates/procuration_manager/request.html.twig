@@ -12,17 +12,17 @@
         <span id="request-title">Demande de procuration n°{{ request.id }}</span>
 
         {% if request.hasFoundProxy %}
-            <a href="{{ path('app_procuration_manager_request_deassociate', { id: request.id }) }}"
+            <a href="{{ path('app_procuration_manager_request_deassociate', {id: request.id}) }}"
                class="btn btn--small procuration-manager__request__process" id="request-deassociate">
                 Désassocier de {{ request.foundProxy.firstNames }} {{ request.foundProxy.lastName }}
             </a>
         {% elseif request.processed %}
-            <a href="{{ path('app_procuration_manager_request_transform', { id: request.id, action: constant('ACTION_UNPROCESS', request), csrfToken: csrf_token('request_action') }) }}"
+            <a href="{{ path('app_procuration_manager_request_transform', {id: request.id, action: constant('ACTION_UNPROCESS', request), csrfToken: csrf_token('request_action')}) }}"
                class="btn btn--small procuration-manager__request__process">
                 Marquer "En attente"
             </a>
         {% else %}
-            <a href="{{ path('app_procuration_manager_request_transform', { id: request.id, action: constant('ACTION_PROCESS', request), csrfToken: csrf_token('request_action') }) }}"
+            <a href="{{ path('app_procuration_manager_request_transform', {id: request.id, action: constant('ACTION_PROCESS', request), csrfToken: csrf_token('request_action')}) }}"
                class="btn btn--small procuration-manager__request__process">
                 Marquer "Traitée manuellement"
             </a>
@@ -104,7 +104,7 @@
             <div class="profile-value">
                 {{ include('procuration_manager/_election_rounds.html.twig', {
                     rounds: request.electionRounds,
-                }, with_context=false) }}
+                }, with_context = false) }}
             </div>
         </div>
 
@@ -174,7 +174,7 @@
                         Disponibilités
                     </div>
                     <div class="profile-value">
-                        {% include 'procuration/proxy/_available_rounds.html.twig' with { proxy: request.foundProxy, request: request } %}
+                        {% include 'procuration/proxy/_available_rounds.html.twig' with {proxy: request.foundProxy, request: request} %}
                     </div>
                 {% endif %}
             {% else %}

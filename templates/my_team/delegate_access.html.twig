@@ -3,7 +3,7 @@
 {% form_theme form 'referent/_form_theme.html.twig' %}
 
 {% block my_team_content %}
-    <a href="{{ path('app_'~ space_name ~'_my_team_list') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+    <a href="{{ path('app_' ~ space_name ~ '_my_team_list') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
          ⟵ Annuler
     </a>
     <div class="l__wrapper--slim">
@@ -17,8 +17,8 @@
                     <div class="form__legend" style="font-size: 14px;">Sélectionnez un adhérent de votre territoire.</div>
                     <div class="pst--relative">
                         {{ form_widget(filter_form.name, {value: form.vars.data.delegated ? form.vars.data.delegated.fullName, attr: {placeholder: 'Saisissez un prénom et/ou un nom'}}) }}
-                        <button type="button" title="Réinitialiser" class="btn btn--black js-undo-search pst--absolute" style="right: 12px; top: 10px;{{ not form.delegated.vars.data ? 'display: none;'}}">Réinitialiser</button>
-                        <button type="submit" id="js-search" class="btn btn--blue pst--absolute" style="right: 12px; top: 10px;{{ form.delegated.vars.data ? 'display: none;'}}">Rechercher</button>
+                        <button type="button" title="Réinitialiser" class="btn btn--black js-undo-search pst--absolute" style="right: 12px; top: 10px;{{ not form.delegated.vars.data ? 'display: none;' }}">Réinitialiser</button>
+                        <button type="submit" id="js-search" class="btn btn--blue pst--absolute" style="right: 12px; top: 10px;{{ form.delegated.vars.data ? 'display: none;' }}">Rechercher</button>
                     </div>
                     {{ form_errors(form) }}
 
@@ -36,7 +36,7 @@
     </div>
 
     <div>
-        {{ form_start(form, {attr: {id: 'delegate-access-form', class: 'em-form' }}) }}
+        {{ form_start(form, {attr: {id: 'delegate-access-form', class: 'em-form'}}) }}
         <div class="l__wrapper--slim">
 
             <div id="js-by-email" {% if not form.email.vars.data %}style="display: none;"{% endif %}>
@@ -57,7 +57,7 @@
             {{ form_widget(form.delegated) }}
 
             <div class="em-form__group">
-                {{ form_label(form.accesses, 'Accès délégués', {label_attr: {class: 'em-form__label' }}) }}
+                {{ form_label(form.accesses, 'Accès délégués', {label_attr: {class: 'em-form__label'}}) }}
                 <div class="em-form__legend">Ajoutez autant d'accès que nécessaire.</div>
                 {{ form_widget(form.accesses) }}
             </div>
@@ -119,7 +119,7 @@
 
           $.ajax({
             type: 'POST',
-            url: "{{ path('app_'~ space_name ~'_my_team_search') }}",
+            url: "{{ path('app_' ~ space_name ~ '_my_team_search') }}",
             data: $(this).serialize(),
           }).done(function (data) {
             if (data.result) {
@@ -163,13 +163,13 @@
         {{ js.committee(
           '#delegate_access_restrictedCommittees',
           '#delegate_access_restrictedCommittees_search',
-          path('app_'~ space_name ~'_my_team_autocomplete_committee'),
+          path('app_' ~ space_name ~ '_my_team_autocomplete_committee'),
           '#delegate_access_restrictedCommittees_search'
         ) }}
         {{ js.applicationFavoriteCities(
           '#delegate_access_restrictedCities',
           '#delegate_access_restrictedCities_search',
-          path('app_'~ space_name ~'_my_team_autocomplete_city'),
+          path('app_' ~ space_name ~ '_my_team_autocomplete_city'),
           '#delegate_access_restrictedCities_search'
         ) }}
         $(document).on('click', '#js-search-by-email', function (e) {

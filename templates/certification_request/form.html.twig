@@ -6,7 +6,7 @@
     <section class="adherent-profile__section" id="certification">
         <h1 class="text--medium-large">Certification du profil</h1>
 
-        {{ form_start(form, { attr: { class: 'em-form', id: 'app_certification_request' } }) }}
+        {{ form_start(form, {attr: {class: 'em-form', id: 'app_certification_request'}}) }}
 
             {{ form_errors(form) }}
 
@@ -37,8 +37,8 @@
 
                 <div id="form-file">
                     <div class="em-form__file">
-                        {{ form_widget(form.document, { attr: { class: 'em-form__file--area' } }) }}
-                        {{ form_label(form.document, 'Téléchargez votre Carte nationale d\'identité recto ou votre passeport en .jpg ou .png.', { label_attr: { class: 'em-form__file--label text--blue--dark' } }) }}
+                        {{ form_widget(form.document, {attr: {class: 'em-form__file--area'}}) }}
+                        {{ form_label(form.document, 'Téléchargez votre Carte nationale d\'identité recto ou votre passeport en .jpg ou .png.', {label_attr: {class: 'em-form__file--label text--blue--dark'}}) }}
                         <span class="em-form__file--name">Aucun fichier sélectionné</span>
                         <span id="bad-file-selected" class="em-form__legend em-form--error visually-hidden">Le fichier sélectionné n'est pas autorisé</span>
                     </div>
@@ -83,9 +83,9 @@
                     <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
                     Pour toute information concernant la protection de vos données,
                     vous pouvez consulter la Politique de protection des données de LaREM ici :
-                    <a href="{{ path('app_static_page', { slug: 'politique-protection-donnees' }) }}"
+                    <a href="{{ path('app_static_page', {slug: 'politique-protection-donnees'}) }}"
                        target="_blank" rel="noopener noreferrer" class="link--no-decor">
-                        {{ url('app_static_page', { slug: 'politique-protection-donnees' }) }}
+                        {{ url('app_static_page', {slug: 'politique-protection-donnees'}) }}
                     </a>
                     et/ou contacter notre DPO à l’adresse <a href="mailto:dpo@en-marche.fr">dpo@en-marche.fr</a>
                     <br>

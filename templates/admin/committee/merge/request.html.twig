@@ -14,8 +14,8 @@
                         {{ form_errors(form) }}
 
                         <div class="sonata-ba-collapsed-fields">
-                            {{ form_row(form.sourceCommittee, { label: 'ID du comité source', attr: { min: 1 } }) }}
-                            {{ form_row(form.destinationCommittee, { label: 'ID du comité de destination', attr: { min: 1 } }) }}
+                            {{ form_row(form.sourceCommittee, {label: 'ID du comité source', attr: {min: 1}}) }}
+                            {{ form_row(form.destinationCommittee, {label: 'ID du comité de destination', attr: {min: 1}}) }}
                             <div>
                                 <button type="submit" class="btn btn-success">Fusionner</button>
                                 <a href="{{ path('admin_app_reporting_committeemergehistory_list') }}" class="btn btn-danger">

@@ -1,12 +1,12 @@
 {% form_theme form 'application_request/_form_theme.html.twig' %}
 
-{{ form_start(form, { attr: { class: 'em-form' } }) }}
+{{ form_start(form, {attr: {class: 'em-form'}}) }}
     {{ form_errors(form) }}
 
         <div class="em-form__section">
             <div class="em-form__group em-form__type-and-select">
-                {{ form_label(form.favoriteCities_search, 'Villes', { required: true }) }}
-                {{ form_widget(form.favoriteCities_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher une ville ou un code postal' } }) }}
+                {{ form_label(form.favoriteCities_search, 'Villes', {required: true}) }}
+                {{ form_widget(form.favoriteCities_search, {attr: {autocomplete: 'nope', placeholder: 'Rechercher une ville ou un code postal'}}) }}
                 {% block favorite_cities_help '' %}
                 {{ form_errors(form.favoriteCities) }}
                 <div class="type-and-select__tags">
@@ -27,19 +27,19 @@
             <div class="em-form__row">
                 <div class="em-form__group em-form__width--1">
                     {{ form_label(form.lastName, 'Nom') }}
-                    {{ form_widget(form.lastName, { attr: { placeholder: 'Votre nom' } }) }}
+                    {{ form_widget(form.lastName, {attr: {placeholder: 'Votre nom'}}) }}
                     {{ form_errors(form.lastName) }}
                 </div>
                 <div class="em-form__group em-form__width--1">
                     {{ form_label(form.firstName, 'Prénom') }}
-                    {{ form_widget(form.firstName, { attr: { placeholder: 'Votre prénom' } }) }}
+                    {{ form_widget(form.firstName, {attr: {placeholder: 'Votre prénom'}}) }}
                     {{ form_errors(form.firstName) }}
                 </div>
             </div>
 
             <div class="em-form__group">
                 {{ form_label(form.emailAddress, 'E-mail') }}
-                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Votre adresse email' } }) }}
+                {{ form_widget(form.emailAddress, {attr: {placeholder: 'Votre adresse email'}}) }}
                 <div class="em-form__legend">Si vous êtes adhérent(e), indiquez-le ici avec l'adresse email de votre compte En Marche.</div>
                 {{ form_errors(form.emailAddress) }}
             </div>
@@ -50,7 +50,7 @@
                     {{ form_widget(form.phone.country) }}
                 </div>
                 <div class="em-form__group em-form__width--1">
-                    {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+                    {{ form_widget(form.phone.number, {attr: {placeholder: 'Téléphone'}}) }}
                     {{ form_errors(form.phone) }}
                 </div>
             </div>
@@ -59,7 +59,7 @@
                 <div class="">
                     <div class="em-form__group">
                         {{ form_label(form.address.address, 'Adresse') }}
-                        {{ form_widget(form.address.address, { attr: { placeholder: 'Votre adresse' } }) }}
+                        {{ form_widget(form.address.address, {attr: {placeholder: 'Votre adresse'}}) }}
                         {{ form_errors(form.address.address) }}
                     </div>
                 </div>
@@ -67,13 +67,13 @@
                 <div class="em-form__row">
                     <div class="em-form__group em-form__width--1">
                         {{ form_label(form.address.postalCode, 'Code postal') }}
-                        {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Votre code postal' } }) }}
+                        {{ form_widget(form.address.postalCode, {attr: {placeholder: 'Votre code postal'}}) }}
                         {{ form_errors(form.address.postalCode) }}
                     </div>
                     <div class="em-form__group em-form__width--2">
                         {{ form_label(form.address.cityName, 'Ville') }}
-                        {{ form_widget(form.address.city, { attr: { class: 'register__form__city'} }) }}
-                        {{ form_widget(form.address.cityName, { attr: { class: 'register__form__city_name ', placeholder: 'Ville' } }) }}
+                        {{ form_widget(form.address.city, {attr: {class: 'register__form__city'}}) }}
+                        {{ form_widget(form.address.cityName, {attr: {class: 'register__form__city_name ', placeholder: 'Ville'}}) }}
                         {{ form_errors(form.address.city) }}
                         {{ form_errors(form.address.cityName) }}
                     </div>
@@ -81,7 +81,7 @@
 
                 <div class="em-form__group">
                     {{ form_label(form.address.country, 'Pays') }}
-                    {{ form_widget(form.address.country, { attr: { placeholder: 'Pays' } }) }}
+                    {{ form_widget(form.address.country, {attr: {placeholder: 'Pays'}}) }}
                     {{ form_errors(form.address.country) }}
                 </div>
             </div>
@@ -104,7 +104,7 @@
 
         <div class="em-form__group">
             {{ form_label(form.profession, 'Quelle est votre profession ?') }}
-            {{ form_widget(form.profession, { attr: { placeholder: 'Votre profession' } }) }}
+            {{ form_widget(form.profession, {attr: {placeholder: 'Votre profession'}}) }}
             {{ form_errors(form.profession) }}
         </div>
 
@@ -127,8 +127,8 @@
         </div>
 
         <div class="em-form__group application_request_customFavoriteTheme">
-            {{ form_label(form.customFavoriteTheme, 'Autre(s)', { required: true }) }}
-            {{ form_widget(form.customFavoriteTheme, { attr: { placeholder: 'Entrez une ou plusieurs thématiques' } }) }}
+            {{ form_label(form.customFavoriteTheme, 'Autre(s)', {required: true}) }}
+            {{ form_widget(form.customFavoriteTheme, {attr: {placeholder: 'Entrez une ou plusieurs thématiques'}}) }}
             {{ form_errors(form.customFavoriteTheme) }}
         </div>
 
@@ -175,8 +175,6 @@
                 données</a> de LaREM et/ou contacter notre DPO à l’adresse <a href="mailto:dpo&#64;en-marche.fr" class="text--blue--dark">dpo&#64;en-marche.fr</a>.
             </p>
         </div>
-
-
 
         <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
         {% if recaptcha_public_key is not empty %}

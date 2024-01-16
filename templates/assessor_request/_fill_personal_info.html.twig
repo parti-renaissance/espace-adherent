@@ -15,19 +15,19 @@
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="form__radio-button register__form--mid">
                 <p class="b__nudge--bottom-tiny text--bold">Genre <span class="text--normal">*</span></p>
-                {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+                {{ form_widget(form.gender, {attr: {class: 'register__form__gender'}}) }}
                 {{ form_errors(form.gender) }}
             </div>
         </div>
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="register__form--mid">
                 <p class="b__nudge--bottom-tiny text--bold">Nom de naissance <span class="text--normal">*</span></p>
-                {{ form_widget(form.lastName, { attr: { placeholder: 'Votre nom' } }) }}
+                {{ form_widget(form.lastName, {attr: {placeholder: 'Votre nom'}}) }}
                 {{ form_errors(form.lastName) }}
             </div>
             <div class="register__form--mid">
                 <p class="b__nudge--bottom-tiny text--bold">Prénoms (tous vos prénoms) <span class="text--normal">*</span></p>
-                {{ form_widget(form.firstName, { attr: { placeholder: 'Vos prénoms' } }) }}
+                {{ form_widget(form.firstName, {attr: {placeholder: 'Vos prénoms'}}) }}
                 {{ form_errors(form.firstName) }}
             </div>
         </div>
@@ -44,7 +44,7 @@
             <div class="address-block">
                 <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
                     <div class="l__row--h-stretch register__form--full">
-                        {{ form_widget(form.address, { attr: { placeholder: 'Votre adresse postale' } }) }}
+                        {{ form_widget(form.address, {attr: {placeholder: 'Votre adresse postale'}}) }}
                         {{ form_errors(form.address) }}
                     </div>
                 </div>
@@ -57,12 +57,12 @@
                     </div>
                     <div class="register__form--third">
                         <p class="b__nudge--bottom-tiny text--bold">Code postal <span class="text--normal">*</span></p>
-                        {{ form_widget(form.postalCode, { attr: { placeholder: 'Votre code postal' } }) }}
+                        {{ form_widget(form.postalCode, {attr: {placeholder: 'Votre code postal'}}) }}
                         {{ form_errors(form.postalCode) }}
                     </div>
                     <div class="register__form--third">
                         <p class="b__nudge--bottom-tiny text--bold">Ville <span class="text--normal">*</span></p>
-                        {{ form_widget(form.city, { attr: { placeholder: 'Ville où vous vivez' } }) }}
+                        {{ form_widget(form.city, {attr: {placeholder: 'Ville où vous vivez'}}) }}
                         {{ form_errors(form.city) }}
                     </div>
                 </div>
@@ -72,12 +72,12 @@
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="register__form--mid">
                 <p class="b__nudge--bottom-tiny text--bold">La commune où vous êtes inscrit sur les listes électorales <span class="text--normal">*</span></p>
-                {{ form_widget(form.voteCity, { attr: { placeholder: 'Ville où vous votez' } }) }}
+                {{ form_widget(form.voteCity, {attr: {placeholder: 'Ville où vous votez'}}) }}
                 {{ form_errors(form.voteCity) }}
             </div>
             <div class="register__form--mid">
                 <p class="b__nudge--bottom-tiny text--bold">Le nom / n° de votre bureau de vote habituel</p>
-                {{ form_widget(form.officeNumber, { attr: { placeholder: 'N° du bureau de vote' } }) }}
+                {{ form_widget(form.officeNumber, {attr: {placeholder: 'N° du bureau de vote'}}) }}
                 {{ form_errors(form.officeNumber) }}
             </div>
         </div>
@@ -85,12 +85,12 @@
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="register__form__zip_code register__form--mid">
                 <p class="b__nudge--bottom-tiny text--bold">Date de naissance <span class="text--normal">*</span></p>
-                {{ form_widget(form.birthdate, { attr: { placeholder: 'Votre date de naissance', class: 'l__row l__row--h-stretch' } }) }}
+                {{ form_widget(form.birthdate, {attr: {placeholder: 'Votre date de naissance', class: 'l__row l__row--h-stretch'}}) }}
                 {{ form_errors(form.birthdate) }}
             </div>
             <div class="register__form--mid">
                 <p class="b__nudge--bottom-tiny text--bold">Lieu de naissance <span class="text--normal">*</span></p>
-                {{ form_widget(form.birthCity, { attr: { placeholder: 'Votre lieu de naissance' } }) }}
+                {{ form_widget(form.birthCity, {attr: {placeholder: 'Votre lieu de naissance'}}) }}
                 {{ form_errors(form.birthCity) }}
             </div>
         </div>
@@ -98,7 +98,7 @@
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="l__row--h-stretch register__form--full">
                 <p class="b__nudge--bottom-tiny text--bold">Adresse email <span class="text--normal">*</span></p>
-                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Votre adresse email' } }) }}
+                {{ form_widget(form.emailAddress, {attr: {placeholder: 'Votre adresse email'}}) }}
                 {{ form_errors(form.emailAddress) }}
             </div>
         </div>
@@ -106,8 +106,8 @@
         <div class="l__col l__col--top register__form__phone">
             <p class="b__nudge--bottom-tiny text--bold">Téléphone <span class="text--normal">*</span></p>
             <div class="l__row l__row--top l__row--h-stretch">
-                {{ form_widget(form.phone.country, { attr: { class: 'membership_request__form__phone' } }) }}
-                {{ form_widget(form.phone.number, { attr: { placeholder: ' Votre numéro de téléphone' } }) }}
+                {{ form_widget(form.phone.country, {attr: {class: 'membership_request__form__phone'}}) }}
+                {{ form_widget(form.phone.number, {attr: {placeholder: ' Votre numéro de téléphone'}}) }}
             </div>
             {{ form_errors(form.phone) }}
         </div>
@@ -115,7 +115,7 @@
     <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
         <div class="l__row--h-stretch register__form--full">
             <p class="b__nudge--bottom-tiny text--bold">Numéro d'électeur <span class="text--normal">*</span></p>
-            {{ form_widget(form.voterNumber, { attr: { placeholder: 'Votre Numéro d\'électeur' } }) }}
+            {{ form_widget(form.voterNumber, {attr: {placeholder: 'Votre Numéro d\'électeur'}}) }}
             {{ form_errors(form.voterNumber) }}
             <p class="text--small text--gray">
                 Où le trouver ? Sur votre carte électorale ; En ligne grâce au téléservice <a href="https://www.service-public.fr/particuliers/vosdroits/services-en-ligne-et-formulaires/ISE" target="_blank" rel="noopener noreferrer">« Interroger sa situation électorale »</a>
@@ -126,7 +126,7 @@
     </div>
 
         <div class="text--center b__nudge--top-large">
-            {{ form_widget(form.fill_personal_info, { attr: {class: 'btn btn--medium newbtn--blue-dark'}}) }}
+            {{ form_widget(form.fill_personal_info, {attr: {class: 'btn btn--medium newbtn--blue-dark'}}) }}
         </div>
 
     {{ form_end(form) }}

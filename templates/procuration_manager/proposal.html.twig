@@ -21,7 +21,7 @@
                 {% if not proxy.foundRequests.isEmpty %}
                     {{ proxy.foundRequests.count > 1 ? '<br />' }}
                     {% for foundRequest in proxy.foundRequests %}
-                        Associé à la demande n°<a href="{{ path('app_procuration_manager_request', { id: foundRequest.id }) }}">{{ foundRequest.id }}</a><br />
+                        Associé à la demande n°<a href="{{ path('app_procuration_manager_request', {id: foundRequest.id}) }}">{{ foundRequest.id }}</a><br />
                     {% endfor %}
                 {% elseif proxy.disabled %}
                     Désactivé {{ proxy.isAutoDisabled() ? 'automatiquement ' }}(n'est plus associable)
@@ -92,7 +92,7 @@
             </div>
             <div class="profile-value" id="proxy-election-rounds">
                 <div class="b__nudge--left">
-                    {% include 'procuration/proxy/_available_rounds.html.twig' with { proxy: proxy } %}
+                    {% include 'procuration/proxy/_available_rounds.html.twig' with {proxy: proxy} %}
                 </div>
             </div>
 

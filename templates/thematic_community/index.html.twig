@@ -21,7 +21,7 @@
                     </div>
                     <div class="l__wrapper-300 text--center list--item-content">
                         <p class="subtitle b__nudge--top-large">Je m'engage</p>
-                        <h2 class="text--medium text--italic text--bold b__nudge--bottom">{{ ('thematic_community.label.'~thematic_community.slug)|trans }}</h2>
+                        <h2 class="text--medium text--italic text--bold b__nudge--bottom">{{ ('thematic_community.label.' ~ thematic_community.slug)|trans }}</h2>
                         {% if thematic_community.uuid.toString in joined_communities|keys %}
                             <a href="{{ path('app_thematic_community_membership_edit', {uuid: joined_communities[thematic_community.uuid.toString]}) }}" class="link--no-decor text--body link--newblue">Modifier mes préférences</a>
                         {% else %}
@@ -34,4 +34,3 @@
     </div>
 </main>
 {% endblock %}
-

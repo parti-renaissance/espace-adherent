@@ -14,7 +14,7 @@
         <span id="request-title">Demande d'attribution</span>
 
         {% if request.votePlace %}
-            <a href="{{ path('app_assessor_manager_request_deassociate', { uuid: request.uuid }) }}"
+            <a href="{{ path('app_assessor_manager_request_deassociate', {uuid: request.uuid}) }}"
                class="btn btn--small assessor-manager__request__process" id="request-deassociate">
                 Désassocier de {{ request.votePlace.name }}
             </a>
@@ -94,7 +94,7 @@
                             <tr>
                                 <td style="border: 0;"></td>
                                 <td colspan="3" class="datagrid__table__col--left datagrid__table__col--top proxy_name" style="border: 0;">
-                                    <strong>{{ votePlace.name ~ ', '~ votePlace.localCode }}</strong>
+                                    <strong>{{ votePlace.name ~ ', ' ~ votePlace.localCode }}</strong>
                                 </td>
                             </tr>
                             <tr>

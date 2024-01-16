@@ -1,11 +1,11 @@
 {% block survey_question_form_widget %}
     <div class="question-box {{ form.fromSuggestedQuestion.vars.value ? 'read-only' }}">
         <div class="em-form__group">
-            {{ form_label(form.question, 'Question ' ~ (form.fromSuggestedQuestion.vars.value ? 'suggérée' : 'libre'), { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_label(form.question, 'Question ' ~ (form.fromSuggestedQuestion.vars.value ? 'suggérée' : 'libre'), {label_attr: {class: 'em-form__label'}}) }}
             {{ form_errors(form.question.content) }}
 
             <div class="em-form__row">
-                {{ form_widget(form.question.content, { attr: { class: 'em-form__field em-form__width--1', placeholder: 'Écrivez votre question' } }) }}
+                {{ form_widget(form.question.content, {attr: {class: 'em-form__field em-form__width--1', placeholder: 'Écrivez votre question'}}) }}
                 {% if not form.vars.disabled %}
                     <div class="em-form__action-container question-header__management">
                         <a href="#" class="question-up em-form__action"><i class="fa fa-arrow-up"></i></a>
@@ -17,13 +17,13 @@
         </div>
 
         <div class="survey-question-type em-form__group em-form__checkbox--inline">
-            {{ form_label(form.question.type, 'Type de question', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_label(form.question.type, 'Type de question', {label_attr: {class: 'em-form__label'}}) }}
             {{ form_errors(form.question.type) }}
-            {{ form_widget(form.question.type, { attr: { class: 'form__radio' } }) }}
+            {{ form_widget(form.question.type, {attr: {class: 'form__radio'}}) }}
         </div>
 
         <div class="em-form__group question-choices">
-            {{ form_label(form.question.choices, 'Choix possibles', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_label(form.question.choices, 'Choix possibles', {label_attr: {class: 'em-form__label'}}) }}
             {{ form_widget(form.question.choices) }}
         </div>
         {{ form_row(form.fromSuggestedQuestion) }}
@@ -35,7 +35,7 @@
     <div>{{ form_errors(form.content) }}</div>
     <div class="em-form__row survey-question__choice_widget">
         <div class="survey-question-type em-form__width--1 form__radio-button choice-item">
-            {{ form_widget(form.content,  { attr: { class: 'em-form__field', placeholder: 'Saisissez un choix' } }) }}
+            {{ form_widget(form.content, {attr: {class: 'em-form__field', placeholder: 'Saisissez un choix'}}) }}
             {{ form_row(form.position) }}
         </div>
 

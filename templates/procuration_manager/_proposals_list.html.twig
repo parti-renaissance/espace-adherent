@@ -27,7 +27,7 @@
             </span>
         </td>
         <td class="datagrid__table__col--left">
-            {% include 'procuration/proxy/_available_rounds.html.twig' with { proxy: proxy } %}
+            {% include 'procuration/proxy/_available_rounds.html.twig' with {proxy: proxy} %}
         </td>
         <td class="datagrid__table__col--hide-mobile">
             {{ proxy.createdAt|date('d/m/Y H:i') }}
@@ -35,7 +35,7 @@
         <td>
             {% if not proxy.foundRequests.isEmpty %}
                 {% for foundRequest in proxy.foundRequests %}
-                    Associé à la demande n°<a href="{{ path('app_procuration_manager_request', { id: foundRequest.id }) }}">{{ foundRequest.id }}</a><br />
+                    Associé à la demande n°<a href="{{ path('app_procuration_manager_request', {id: foundRequest.id}) }}">{{ foundRequest.id }}</a><br />
                 {% endfor %}
             {% elseif proxy.disabled %}
                 Désactivé {{ proxy.isAutoDisabled() ? 'automatiquement' }}<br />
@@ -51,11 +51,11 @@
                 Afficher
             </a>
             {% if proxy.disabled %}
-                <a href="{{ path('app_procuration_manager_proposal_transform', { id: proxy.id, action: constant('ACTION_ENABLE', proxy) }) }}">
+                <a href="{{ path('app_procuration_manager_proposal_transform', {id: proxy.id, action: constant('ACTION_ENABLE', proxy)}) }}">
                     Réactiver
                 </a>
             {% else %}
-                <a href="{{ path('app_procuration_manager_proposal_transform', { id: proxy.id, action: constant('ACTION_DISABLE', proxy) }) }}">
+                <a href="{{ path('app_procuration_manager_proposal_transform', {id: proxy.id, action: constant('ACTION_DISABLE', proxy)}) }}">
                     Désactiver
                 </a>
             {% endif %}

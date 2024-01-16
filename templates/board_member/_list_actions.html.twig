@@ -1,5 +1,5 @@
 {% if currentRoute is same as('app_board_member_search') %}
-    {% if app.user.boardMember.hasSavedBoardMember(member.boardMember)  %}
+    {% if app.user.boardMember.hasSavedBoardMember(member.boardMember) %}
         <span class="newbtn newbtn--smaller newbtn--light btn-remove-member-list newbtn--green" data-memberid="{{ member.boardMember.id }}">Profil sauvegardé</span>
     {% else %}
         <span class="newbtn newbtn--smaller newbtn--light btn-add-member-list" data-memberid="{{ member.boardMember.id }}">Sauvegarder ce profil</span>

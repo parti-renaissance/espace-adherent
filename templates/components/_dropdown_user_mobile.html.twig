@@ -9,20 +9,20 @@
                     <li>{{ role }}</li>
                 {% endfor %}
             </ul>
-{#                        <div class="adherent-profile__completion b__nudge--bottom">#}
-{#                            <div class="text--body text--small b__nudge--bottom-small">#}
-{#                                <!-- If is not completed -->#}
-{#                                Complétion du profil : 50%#}
-{#                                <!-- If is completed TODO#}
-{#                                👏 Profil complété ! -->#}
-{#                            </div>#}
-{#                            <div class="gauge">#}
-{#                                <span></span>#}
-{#                            </div>#}
-{#                            <div class="b__nudge--top-10">#}
-{#                                <a href="{{ path('app_user_edit') }}" class="text--body text--blue--dark link--no-decor">Compléter mon profil</a>#}
-{#                            </div>#}
-{#                        </div>#}
+{# <div class="adherent-profile__completion b__nudge--bottom"> #}
+{# <div class="text--body text--small b__nudge--bottom-small"> #}
+{# <!-- If is not completed --> #}
+{# Complétion du profil : 50% #}
+{# <!-- If is completed TODO #}
+{# 👏 Profil complété ! --> #}
+{# </div> #}
+{# <div class="gauge"> #}
+{# <span></span> #}
+{# </div> #}
+{# <div class="b__nudge--top-10"> #}
+{# <a href="{{ path('app_user_edit') }}" class="text--body text--blue--dark link--no-decor">Compléter mon profil</a> #}
+{# </div> #}
+{# </div> #}
         {% endif %}
 
         <div class="em-nav__menu em-nav__menu--mobile">
@@ -135,33 +135,33 @@
                 <ul class="items">
                     <li><a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a></li>
                     <li><a href="{{ path('app_our_organization') }}">Notre organisation</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'rejoignez-notre-equipe' }) }}">Recrutement</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'le-mouvement/fonctionnement' }) }}">Notre fonctionnement</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'rejoignez-notre-equipe'}) }}">Recrutement</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'le-mouvement/fonctionnement'}) }}">Notre fonctionnement</a></li>
                     <li><a href="{{ path('our_referents_homepage') }}">Nos référents</a></li>
                     <li><a href="https://dpt.en-marche.fr">Nos sites départementaux</a></li>
                     <li><a href="{{ path('legislatives_homepage') }}">Nos députés</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'delegation-renaissance' }) }}">Les eurodéputés Renaissance</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'nos-senateurs' }) }}">Nos sénateurs</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'elus' }) }}">Nos élus locaux</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'francais-de-l-etranger' }) }}">Français de l’Étranger</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'communaute' }) }}">Communautés LaREM</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'delegation-renaissance'}) }}">Les eurodéputés Renaissance</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'nos-senateurs'}) }}">Nos sénateurs</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'elus'}) }}">Nos élus locaux</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'francais-de-l-etranger'}) }}">Français de l’Étranger</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'communaute'}) }}">Communautés LaREM</a></li>
                 </ul>
             </div>
             <div class="b__nudge--bottom">
                 <span class="head">Actualités</span>
                 <ul class="items">
                     <li><a href="{{ path('articles_list', {category: 'tout'}) }}">Toutes nos actualités</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'toutes-les-newsletters' }) }}">Notre Newsletter</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'toutes-les-newsletters'}) }}">Notre Newsletter</a></li>
                 </ul>
             </div>
             <div class="b__nudge--bottom">
                 <span class="head">S'engager</span>
                 <ul class="items">
-                    <li><a href="{{ path('app_static_page', { slug: 'engagement-larem' }) }}">S'engager à LaREM</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'engagement-larem'}) }}">S'engager à LaREM</a></li>
                     <li><a href="{{ path('app_search_events') }}">Événements</a></li>
                     <li><a href="{{ path('app_search_committees') }}">Comités</a></li>
                     <li><a href="https://pourunecause.fr">Je m'engage pour une cause</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'toutes-politiques' }) }}">Toutes Politiques</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'toutes-politiques'}) }}">Toutes Politiques</a></li>
                     {% if is_canary_enabled() %}
                         <li><a href="{{ path('app_thematic_community_index') }}">Communautés thématiques</a></li>
                     {% endif %}
@@ -173,12 +173,12 @@
             <div class="b__nudge--bottom">
                 <span class="head">Nos idées</span>
                 <ul class="items">
-                    <li><a href="{{ path('app_static_page', { slug: 'notre-projet' }) }}">Notre projet</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'nos-resultats' }) }}">Nos résultats concrets</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'conferences-debats' }) }}">Les conférences-débats</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'publications' }) }}">Les publications</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'vos-contributions' }) }}">Vos contributions</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'apres-la-crise' }) }}">Après la crise</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'notre-projet'}) }}">Notre projet</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'nos-resultats'}) }}">Nos résultats concrets</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'conferences-debats'}) }}">Les conférences-débats</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'publications'}) }}">Les publications</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'vos-contributions'}) }}">Vos contributions</a></li>
+                    <li><a href="{{ path('app_static_page', {slug: 'apres-la-crise'}) }}">Après la crise</a></li>
                 </ul>
             </div>
         </div>

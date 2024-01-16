@@ -27,7 +27,7 @@
 
                 <twig:Atoms:ReCard variant="inner" class=" bg-gradient-to-t from-ui_gray-20">
                     <h1 class="font-bold">Icons</h1>
-                    {% for key in [ 'success', 'error', 'warning', 'info', 'valid', 'arrow-up', 'arrow-down','arrow-left','arrow-right', 'chevron', 'star', 'star-fill', 'loading' ] %}
+                    {% for key in ['success', 'error', 'warning', 'info', 'valid', 'arrow-up', 'arrow-down', 'arrow-left', 'arrow-right', 'chevron', 'star', 'star-fill', 'loading'] %}
                         <div class="flex justify-between items-center">
                             <span>{{ key }}</span>
                             <twig:ReIcon name="{{ key }}"/>
@@ -47,7 +47,7 @@
                         <twig:Atoms:ReFieldFrame tag="button" disabled/>
                     </div>
 
-                    {% for key in [ 'success', 'error', 'warning', 'valid'] %}
+                    {% for key in ['success', 'error', 'warning', 'valid'] %}
                         <div class=" justify-between items-center">
                             <span>{{ key }}</span>
                             <twig:Atoms:ReFieldFrame tag="button" status="{{ key }}"/>
@@ -57,7 +57,7 @@
 
                 <twig:Atoms:ReCard variant="inner">
                     <h1 class="font-bold">TextStatus</h1>
-                    {% for key in [ 'success', 'error', 'warning', 'valid', 'default'] %}
+                    {% for key in ['success', 'error', 'warning', 'valid', 'default'] %}
                         <div class=" justify-between items-center">
                             <twig:Atoms:ReTextStatus status="{{ key }}" value="{{ key }}"/>
                         </div>
@@ -77,7 +77,7 @@
             <div class="flex-row flex gap-8">
                 <twig:Atoms:ReCard variant="inner">
                     <h1 class="font-bold">Buttons</h1>
-                    {% for key in [ 'blue', 'green', 'yellow' ] %}
+                    {% for key in ['blue', 'green', 'yellow'] %}
                         <div>
                             <twig:ReButton color="{{ key }}" class="mb-4">{{ key }}</twig:ReButton>
                             <twig:ReButton color="{{ key }}" disabled>{{ key }}</twig:ReButton>
@@ -101,7 +101,7 @@
                     <h1 class="font-bold">TextFields</h1>
                     <twig:Molecules:ReTextField placeholder="default" message="Un message"/>
                     <twig:Molecules:ReTextField placeholder="default" disabled/>
-                    {% for key in [ 'success', 'error', 'warning', 'loading'] %}
+                    {% for key in ['success', 'error', 'warning', 'loading'] %}
                         <twig:Molecules:ReTextField
                             status="{{ key }}"
                             placeholder="{{ key }}"
@@ -127,8 +127,8 @@
                     </div>
                     <div>
                         <h1 class="font-bold">Select</h1>
-                        {% set options = [ { label: 'frontend', value: 'antonin', }, { label: 'backend', value: 'remy', }, { label: 'fullstack', value: 'dimitri', }, ] %}
-                        {% set preferred = [ { label: 'frontend', value: 'antonin', }, { label: 'fullstack', value: 'dimitri', }, ] %}
+                        {% set options = [{label: 'frontend', value: 'antonin'}, {label: 'backend', value: 'remy'}, {label: 'fullstack', value: 'dimitri'}] %}
+                        {% set preferred = [{label: 'frontend', value: 'antonin'}, {label: 'fullstack', value: 'dimitri'}] %}
 
                         <h2>Placeholder</h2>
                         <twig:Molecules:ReSelect
@@ -142,7 +142,6 @@
                             options="{{ options }}"
                             preferredOptions="{{ preferred }}"
                         />
-
 
                         <h2>Autocomplete</h2>
                         <twig:Molecules:ReSelect

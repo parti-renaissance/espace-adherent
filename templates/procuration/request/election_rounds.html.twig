@@ -13,12 +13,12 @@
         <div class="procuration__banner__form procuration__banner__form__part">
             <ul class="procuration__steps">
                 <li>
-                    <a href="{{ path('app_procuration_request', { step: constant('STEP_URI_VOTE', procuration_form.vars.data) }) }}">
+                    <a href="{{ path('app_procuration_request', {step: constant('STEP_URI_VOTE', procuration_form.vars.data)}) }}">
                         Mon lieu de vote
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('app_procuration_request', { step: constant('STEP_URI_PROFILE', procuration_form.vars.data) }) }}">
+                    <a href="{{ path('app_procuration_request', {step: constant('STEP_URI_PROFILE', procuration_form.vars.data)}) }}">
                         Mes coordonnées
                     </a>
                 </li>
@@ -34,7 +34,7 @@
                 {{ form_label(procuration_form.requestFromFrance, 'Où vais-je faire ma procuration ?') }}
                 <div class="form__row form__radio-button">
                     {{ form_errors(procuration_form.requestFromFrance) }}
-                    {{ form_widget(procuration_form.requestFromFrance, { attr: { class: 'form--full b__nudge--top-5' } }) }}
+                    {{ form_widget(procuration_form.requestFromFrance, {attr: {class: 'form--full b__nudge--top-5'}}) }}
                 </div>
 
                 <h5 class="procuration__title-elections">

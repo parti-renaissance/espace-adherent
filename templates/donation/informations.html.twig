@@ -37,18 +37,18 @@
         </div>
 
         <div class="l__wrapper--600">
-            {{ form_start(form, { attr: { class: 'em-form donation__informations__form' } }) }}
+            {{ form_start(form, {attr: {class: 'em-form donation__informations__form'}}) }}
 
             <div class="b__nudge--bottom">
-                {{ form_errors(form, { error_raw: true }) }}
+                {{ form_errors(form, {error_raw: true}) }}
             </div>
 
             <section class="donation__informations__recap">
                 <h3 class="donation-subtitle">Vous faites <span>un don</span> de :</h3>
-                <h1 class="donation__informations__amount b__nudge--top-large">{{ donation.amount|format_currency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') ? ' <span>/ mois</span>' }}</h1>
+                <h1 class="donation__informations__amount b__nudge--top-large">{{ donation.amount|format_currency('EUR')|replace({',00': ''}) }} {{ donation.duration == constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') ? ' <span>/ mois</span>' }}</h1>
                 <div class="donation__amount-chooser">
                     <div class="donation__amount-chooser__after-taxes">
-                        soit <span class="after-taxes-amount">{{ (donation.amount * 0.34)|format_currency('EUR')|replace({',00' : ''})}}</span> après réduction d’impôt
+                        soit <span class="after-taxes-amount">{{ (donation.amount * 0.34)|format_currency('EUR')|replace({',00': ''}) }}</span> après réduction d’impôt
                         <div class="infos-taxe-reduction">
                         ?
                             <div class="infos-taxe-reduction__content">
@@ -103,7 +103,7 @@
                     <div class="em-form__group em-form__checkbox--inline">
                         <div class="form__radio">
                             {% for choice in form.gender %}
-                                {{ form_row(choice, { label_attr: { id: 'donation_gender_'~choice.vars.value }}) }}
+                                {{ form_row(choice, {label_attr: {id: 'donation_gender_' ~ choice.vars.value}}) }}
                             {% endfor %}
                         </div>
                         {{ form_errors(form.gender) }}
@@ -114,25 +114,25 @@
                     <div class="em-form__group em-form__width--1">
                         <label class="em-form__label">Prénom <span class="em-form__required">*</span></label>
                         {{ form_errors(form.firstName) }}
-                        {{ form_widget(form.firstName, { attr: { class: 'em-form__field', placeholder: 'Prénom' } }) }}
+                        {{ form_widget(form.firstName, {attr: {class: 'em-form__field', placeholder: 'Prénom'}}) }}
                     </div>
                     <div class="em-form__group em-form__width--1">
                         <label class="em-form__label">Nom <span class="em-form__required">*</span></label>
                         {{ form_errors(form.lastName) }}
-                        {{ form_widget(form.lastName, { attr: { class: 'em-form__field', placeholder: 'Nom' } }) }}
+                        {{ form_widget(form.lastName, {attr: {class: 'em-form__field', placeholder: 'Nom'}}) }}
                     </div>
                 </div>
 
                 <div class="em-form__group">
                     <label class="em-form__label">Nationalité <span class="em-form__required">*</span></label>
                     {{ form_errors(form.nationality) }}
-                    {{ form_widget(form.nationality, { attr: { class: 'em-form__field', placeholder: 'Adresse email'} }) }}
+                    {{ form_widget(form.nationality, {attr: {class: 'em-form__field', placeholder: 'Adresse email'}}) }}
                 </div>
 
                 <div class="em-form__group">
                     <label class="em-form__label">Adresse email <span class="em-form__required">*</span></label>
                     {{ form_errors(form.emailAddress) }}
-                    {{ form_widget(form.emailAddress, { attr: { class: 'em-form__field', placeholder: 'Adresse email' } }) }}
+                    {{ form_widget(form.emailAddress, {attr: {class: 'em-form__field', placeholder: 'Adresse email'}}) }}
                 </div>
             </div>
 
@@ -152,25 +152,25 @@
                     <div class="em-form__group">
                         <label class="em-form__label">Adresse postale <span class="em-form__required">*</span></label>
                         {{ form_errors(form.address) }}
-                        {{ form_widget(form.address, { attr: { class: 'em-form__field', placeholder: 'Adresse postale' } }) }}
+                        {{ form_widget(form.address, {attr: {class: 'em-form__field', placeholder: 'Adresse postale'}}) }}
                     </div>
 
                     <div class="em-form__group">
                         <label class="em-form__label">Pays <span class="em-form__required">*</span></label>
                         {{ form_errors(form.country) }}
-                        {{ form_widget(form.country, { attr: { class: 'em-form__field' } }) }}
+                        {{ form_widget(form.country, {attr: {class: 'em-form__field'}}) }}
                     </div>
 
                     <div class="em-form__row">
                         <div class="em-form__group">
                             <label class="em-form__label">Code postal <span class="em-form__required">*</span></label>
                             {{ form_errors(form.postalCode) }}
-                            {{ form_widget(form.postalCode, { attr: { class: 'em-form__field', placeholder: 'Code postal' } }) }}
+                            {{ form_widget(form.postalCode, {attr: {class: 'em-form__field', placeholder: 'Code postal'}}) }}
                         </div>
                         <div class="em-form__group">
                             <label class="em-form__label">Ville <span class="em-form__required">*</span></label>
                             {{ form_errors(form.cityName) }}
-                            {{ form_widget(form.cityName, { attr: { class: 'em-form__field', placeholder: 'Ville' } }) }}
+                            {{ form_widget(form.cityName, {attr: {class: 'em-form__field', placeholder: 'Ville'}}) }}
                         </div>
                     </div>
                 </div>
@@ -180,19 +180,19 @@
 
             <div class="em-form__group em-form__group--cgu b__nudge--top-large">
                 <div class="form__checkbox">
-                    {{ form_row(form.isPhysicalPerson, { label: "Je certifie sur l'honneur être une personne physique et que le règlement de mon don ne provient pas du compte d'une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel", label_attr: { id: 'donation_check_label' } }) }}
+                    {{ form_row(form.isPhysicalPerson, {label: "Je certifie sur l'honneur être une personne physique et que le règlement de mon don ne provient pas du compte d'une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel", label_attr: {id: 'donation_check_label'}}) }}
                 </div>
 
                 <div class="form__checkbox">
-                    {{ form_row(form.hasFrenchNationality, { label: 'Je certifie être de nationalité française ou résider fiscalement en France', label_attr: { id: 'donation_check_nationality_label' } }) }}
+                    {{ form_row(form.hasFrenchNationality, {label: 'Je certifie être de nationalité française ou résider fiscalement en France', label_attr: {id: 'donation_check_nationality_label'}}) }}
                 </div>
 
                 <div class="form__checkbox">
-                    {{ form_row(form.personalDataCollection, { label: "J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous" }) }}
+                    {{ form_row(form.personalDataCollection, {label: "J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous"}) }}
                 </div>
             </div>
 
-            {{ form_widget(form.submit, { label: 'Finaliser mon don', attr: { class: 'btn-fat btn-fat--red btn--full b__nudge--top' } }) }}
+            {{ form_widget(form.submit, {label: 'Finaliser mon don', attr: {class: 'btn-fat btn-fat--red btn--full b__nudge--top'}}) }}
 
             <div class="em-form__group">
                 <p class="em-form__cgu b__nudge--top-40">
