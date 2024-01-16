@@ -2,7 +2,6 @@
 
 namespace App\Address;
 
-use App\Entity\Geo\Zone;
 use App\Entity\NullablePostAddress;
 use App\Entity\PostAddress;
 
@@ -15,27 +14,7 @@ class PostAddressFactory
         ?string $address,
         string $region = null
     ): PostAddress {
-        return PostAddress::createForeignAddress($country, $postalCode, $cityName, $address, $region);
-    }
-
-    public function createFromZone(Zone $zone): PostAddress
-    {
-        if ($zone->isCountry()) {
-            return PostAddress::createCountryAddress($zone->getCode());
-        }
-
-        $address = PostAddress::createEmptyAddress();
-
-        if ($zone->isCity() || $zone->isBorough()) {
-            if ($zone->isCity()) {
-                $address->setCity($zone->getCode());
-                $address->setCityName($zone->getName());
-            }
-
-            return $address;
-        }
-
-        return $address;
+        return PostAddress::createForeignAddress($country, $postalCode, $cityName, $address, null, $region);
     }
 
     public static function createFromAddress(Address $address, bool $nullable = false): AddressInterface
@@ -46,6 +25,7 @@ class PostAddressFactory
                     $address->getAddress(),
                     $address->getCity(),
                     $address->getCityName(),
+                    $address->getAdditionalAddress(),
                     $address->getRegion()
                 );
             }
@@ -54,6 +34,7 @@ class PostAddressFactory
                 $address->getAddress(),
                 $address->getCity(),
                 $address->getCityName(),
+                $address->getAdditionalAddress(),
                 $address->getRegion()
             );
         }
@@ -64,6 +45,7 @@ class PostAddressFactory
                 $address->getPostalCode(),
                 $address->getCityName(),
                 $address->getAddress(),
+                $address->getAdditionalAddress(),
                 $address->getRegion()
             );
         }
@@ -73,6 +55,7 @@ class PostAddressFactory
             $address->getPostalCode(),
             $address->getCityName(),
             $address->getAddress(),
+            $address->getAdditionalAddress(),
             $address->getRegion()
         );
     }

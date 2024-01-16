@@ -93,7 +93,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'gender' => 'female',
             'first_name' => 'Michelle',
             'last_name' => 'Dufour',
-            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, 47.3950786, 8.5361402),
+            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, null, 47.3950786, 8.5361402),
             'birthdate' => '1972-11-23',
         ]);
         $adherent1->addReferentTag($this->getReference('referent_tag_ch'));
@@ -298,7 +298,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'nationality' => 'DE',
             'first_name' => 'Martine',
             'last_name' => 'Lindt',
-            'address' => PostAddress::createForeignAddress('DE', '10369', 'Berlin', '7 Hohenschönhauser Str.', null, 52.5330939, 13.4662418),
+            'address' => PostAddress::createForeignAddress('DE', '10369', 'Berlin', '7 Hohenschönhauser Str.', null, null, 52.5330939, 13.4662418),
             'birthdate' => '2000-11-14',
             'position' => 'student',
             'phone' => '+492211653540',
@@ -320,7 +320,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'nationality' => 'SG',
             'first_name' => 'Élodie',
             'last_name' => 'Dutemps',
-            'address' => PostAddress::createForeignAddress('SG', '368645', 'Singapour', '47 Jln Mulia', null, 1.3329126, 103.8795163),
+            'address' => PostAddress::createForeignAddress('SG', '368645', 'Singapour', '47 Jln Mulia', null, null, 1.3329126, 103.8795163),
             'birthdate' => '2006-07-13',
             'position' => 'employed',
             'phone' => '+6566888868',
@@ -342,7 +342,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'nationality' => 'US',
             'first_name' => 'Pierre',
             'last_name' => 'Kiroule',
-            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', null, 40.7625289, -73.9859927),
+            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', null, null, 40.7625289, -73.9859927),
             'birthdate' => '1964-10-02',
             'position' => 'employed',
             'phone' => '+12123150100',
@@ -367,7 +367,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'gender' => 'male',
             'first_name' => 'Michel',
             'last_name' => 'VASSEUR',
-            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', null, 47.321569, 8.549968799999988),
+            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', null, null, 47.321569, 8.549968799999988),
             'birthdate' => '1987-05-13',
         ]);
         $adherent13->setSubscriptionTypes($this->getStandardSubscriptionTypes());
@@ -386,7 +386,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'gender' => 'male',
             'first_name' => 'Damien',
             'last_name' => 'SCHMIDT',
-            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', 'Seestrasse 204', null, 47.3180696, 8.552615),
+            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', 'Seestrasse 204', null, null, 47.3180696, 8.552615),
             'birthdate' => '1988-04-13',
             'phone' => '+33111223345',
         ]);
@@ -404,7 +404,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'gender' => 'male',
             'first_name' => 'Thomas',
             'last_name' => 'Leclerc',
-            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, 47.3950786, 8.5361402),
+            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, null, 47.3950786, 8.5361402),
             'birthdate' => '1982-05-12',
             'registered_at' => '2017-04-09 06:20:38',
         ]);

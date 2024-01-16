@@ -105,6 +105,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         string $street = null,
         string $cityCode = null,
         string $cityName = null,
+        string $additionalAddress = null,
         string $region = null,
         float $latitude = null,
         float $longitude = null
@@ -116,6 +117,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
             $postalCode,
             $cityName,
             $street,
+            $additionalAddress,
             $latitude,
             $longitude,
             $region
@@ -131,10 +133,11 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         ?string $zipCode,
         ?string $cityName,
         ?string $street,
+        string $additionalAddress = null,
         string $region = null,
         float $latitude = null,
         float $longitude = null
     ): self {
-        return new self($country, $zipCode, $cityName, $street, $latitude, $longitude, $region);
+        return new self($country, $zipCode, $cityName, $street, $additionalAddress, $latitude, $longitude, $region);
     }
 }

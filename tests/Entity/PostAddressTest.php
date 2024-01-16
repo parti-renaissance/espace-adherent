@@ -30,6 +30,7 @@ class PostAddressTest extends AbstractKernelTestCase
             'Washington, DC',
             '1600 Pennsylvania Ave NW',
             null,
+            null,
             48.123456,
             5.987654
         );

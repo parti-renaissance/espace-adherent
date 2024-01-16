@@ -27,7 +27,7 @@ abstract class AbstractLoadPostAddressData extends Fixture
         [, $inseeCode] = explode('-', $cityCode);
         $city = $this->franceCities->getCityByInseeCode($inseeCode);
 
-        return PostAddress::createFrenchAddress($street, $cityCode, $city?->getName(), $region, $latitude, $longitude);
+        return PostAddress::createFrenchAddress($street, $cityCode, $city?->getName(), null, $region, $latitude, $longitude);
     }
 
     protected function createNullablePostAddress(
@@ -42,6 +42,6 @@ abstract class AbstractLoadPostAddressData extends Fixture
             $city = $this->franceCities->getCityByInseeCode($inseeCode);
         }
 
-        return NullablePostAddress::createFrenchAddress($street, $cityCode, $city?->getName(), $region, $latitude, $longitude);
+        return NullablePostAddress::createFrenchAddress($street, $cityCode, $city?->getName(), null, $region, $latitude, $longitude);
     }
 }

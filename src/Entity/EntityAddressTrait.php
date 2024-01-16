@@ -21,6 +21,11 @@ trait EntityAddressTrait
     protected ?string $address = null;
 
     /**
+     * @ORM\Column(length=150, nullable=true)
+     */
+    protected ?string $additionalAddress = null;
+
+    /**
      * The address zip code.
      *
      * @ORM\Column(nullable=true)
@@ -91,6 +96,16 @@ trait EntityAddressTrait
         return $this->address;
     }
 
+    public function getAdditionalAddress(): ?string
+    {
+        return $this->additionalAddress;
+    }
+
+    public function setAdditionalAddress(?string $additionalAddress): void
+    {
+        $this->additionalAddress = $additionalAddress;
+    }
+
     public function setAddress(?string $address): void
     {
         $this->address = $address;
@@ -101,12 +116,14 @@ trait EntityAddressTrait
         string $postalCode = null,
         string $cityName = null,
         string $street = null,
+        string $additionalAddress = null,
         float $latitude = null,
         float $longitude = null,
         string $region = null
     ) {
         $this->country = $country;
         $this->address = $street;
+        $this->additionalAddress = $additionalAddress;
         $this->postalCode = $postalCode;
         $this->cityName = $cityName;
         $this->latitude = $latitude;
