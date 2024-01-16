@@ -7466,16 +7466,16 @@
         },
         {
             "name": "lexik/paybox-bundle",
-            "version": "v2.2.4",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/EnMarche/LexikPayboxBundle.git",
-                "reference": "eb848799a03746f1aaca97355c29d455b8f9ecc1"
+                "url": "https://github.com/parti-renaissance/LexikPayboxBundle.git",
+                "reference": "466a08c08279498db1ab6e7907560de864557799"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EnMarche/LexikPayboxBundle/zipball/eb848799a03746f1aaca97355c29d455b8f9ecc1",
-                "reference": "eb848799a03746f1aaca97355c29d455b8f9ecc1",
+                "url": "https://api.github.com/repos/parti-renaissance/LexikPayboxBundle/zipball/466a08c08279498db1ab6e7907560de864557799",
+                "reference": "466a08c08279498db1ab6e7907560de864557799",
                 "shasum": ""
             },
             "require": {
@@ -7524,9 +7524,9 @@
                 "bundle"
             ],
             "support": {
-                "source": "https://github.com/EnMarche/LexikPayboxBundle/tree/v2.2.4"
+                "source": "https://github.com/parti-renaissance/LexikPayboxBundle/tree/v2.3.1"
             },
-            "time": "2023-01-24T17:23:13+00:00"
+            "time": "2024-01-16T23:53:30+00:00"
         },
         {
             "name": "longitude-one/doctrine-spatial",
@@ -22659,20 +22659,21 @@
         },
         {
             "name": "symfony/process",
-            "version": "v7.0.2",
+            "version": "v5.4.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "acd3eb5cb02382c1cb0287ba29b2908cc6ffa83a"
+                "reference": "8fa22178dfc368911dbd513b431cd9b06f9afe7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/acd3eb5cb02382c1cb0287ba29b2908cc6ffa83a",
-                "reference": "acd3eb5cb02382c1cb0287ba29b2908cc6ffa83a",
+                "url": "https://api.github.com/repos/symfony/process/zipball/8fa22178dfc368911dbd513b431cd9b06f9afe7a",
+                "reference": "8fa22178dfc368911dbd513b431cd9b06f9afe7a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2"
+                "php": ">=7.2.5",
+                "symfony/polyfill-php80": "^1.16"
             },
             "type": "library",
             "autoload": {
@@ -22700,7 +22701,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v7.0.2"
+                "source": "https://github.com/symfony/process/tree/v5.4.34"
             },
             "funding": [
                 {
@@ -22716,7 +22717,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-24T09:15:37+00:00"
+            "time": "2023-12-02T08:41:43+00:00"
         },
         {
             "name": "symfony/web-profiler-bundle",
