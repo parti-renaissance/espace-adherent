@@ -37,7 +37,16 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
 
     /**
      * @Assert\NotBlank(groups={"Default", "choose_donation_amount"})
-     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0", groups={"Default", "choose_donation_amount"})
+     * @Assert\Expression(
+     *     expression="!this.isSubscription() and value >= 10 and value <= 7500",
+     *     message="donation.amount.invalid_for_unique"
+     *     groups={"Default", "choose_donation_amount"}
+     * )
+     * @Assert\Expression(
+     *     expression="this.isSubscription() and value >= 5 and value <= 625",
+     *     message="donation.amount.invalid_for_subscription"
+     *     groups={"Default", "choose_donation_amount"}
+     * )
      */
     private $amount;
 

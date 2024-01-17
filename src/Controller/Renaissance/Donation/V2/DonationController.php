@@ -69,7 +69,10 @@ class DonationController extends AbstractController
         }
 
         $amount = min(
-            abs($request->query->getInt('amount', DonationRequest::DEFAULT_AMOUNT_V2)),
+            max(
+                $request->query->getInt('amount', DonationRequest::DEFAULT_AMOUNT_V2),
+                PayboxPaymentSubscription::NONE === $duration ? 10 : 5
+            ),
             PayboxPaymentSubscription::NONE === $duration ? 7500 : 625
         );
 
