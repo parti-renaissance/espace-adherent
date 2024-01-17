@@ -73,7 +73,7 @@ class DonationController extends AbstractController
                 $request->query->getInt('amount', DonationRequest::DEFAULT_AMOUNT_V2),
                 PayboxPaymentSubscription::NONE === $duration ? 7500 : 625
             ),
-            0
+            10
         );
 
         $localDestination = $request->query->getBoolean('localDestination', false);
