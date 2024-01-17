@@ -18,8 +18,12 @@ class DonationRequestV2Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('amount', AmountType::class)
-            ->add('duration', HiddenType::class)
+            ->add('amount', AmountType::class, [
+                'error_bubbling' => false,
+            ])
+            ->add('duration', HiddenType::class, [
+                'error_bubbling' => false,
+            ])
             ->add('localDestination', CheckboxType::class)
 
             ->add('gender', CivilityType::class)
