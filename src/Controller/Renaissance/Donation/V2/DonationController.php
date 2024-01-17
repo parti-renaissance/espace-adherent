@@ -68,12 +68,17 @@ class DonationController extends AbstractController
             $duration = PayboxPaymentSubscription::NONE;
         }
 
+        $isSubscription = PayboxPaymentSubscription::NONE === $duration;
+
         $amount = min(
             max(
-                $request->query->getInt('amount', DonationRequest::DEFAULT_AMOUNT_V2),
-                PayboxPaymentSubscription::NONE === $duration ? 10 : 5
+                $request->query->getInt(
+                    'amount',
+                    $isSubscription ? DonationRequest::DEFAULT_AMOUNT_V2 : DonationRequest::DEFAULT_AMOUNT_SUBSCRIPTION_V2
+                ),
+                $isSubscription ? DonationRequest::MIN_AMOUNT : DonationRequest::MIN_AMOUNT_SUBSCRIPTION
             ),
-            PayboxPaymentSubscription::NONE === $duration ? 7500 : 625
+            $isSubscription ? DonationRequest::MAX_AMOUNT : DonationRequest::MAX_AMOUNT_SUBSCRIPTION
         );
 
         $localDestination = $request->query->getBoolean('localDestination', false);
@@ -82,9 +87,7 @@ class DonationController extends AbstractController
             ? DonationRequest::createFromAdherent($currentUser, $clientIp, $amount)
             : new DonationRequest($clientIp, $amount);
 
-        if (PayboxPaymentSubscription::isValid($duration)) {
-            $donationRequest->setDuration($duration);
-        }
+        $donationRequest->setDuration($duration);
 
         $donationRequest->localDestination = $localDestination;
 
