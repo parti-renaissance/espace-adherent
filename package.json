@@ -59,7 +59,7 @@
     "regenerator-runtime": "^0.14.1",
     "reqwest": "^2.0.5",
     "sass": "^1.69.7",
-    "sass-loader": "^13.3.3",
+    "sass-loader": "^14.0.0",
     "select2": "^4.0.13",
     "stackblur-canvas": "^2.6.0",
     "style-loader": "^3.3.4",
