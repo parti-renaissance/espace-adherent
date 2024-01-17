@@ -10,6 +10,7 @@ use App\Repository\Chatbot\ThreadRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Security\Core\Security;
 
 class ConversationManager
 {
@@ -17,11 +18,12 @@ class ConversationManager
         private readonly ThreadRepository $threadRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly MessageBusInterface $bus,
-        private readonly SessionInterface $session
+        private readonly SessionInterface $session,
+        private readonly Security $security
     ) {
     }
 
-    public function getCurrentThread(Chatbot $chatbot, ?Adherent $adherent): Thread
+    public function getCurrentThread(Chatbot $chatbot): Thread
     {
         $threadKey = self::buildThreadKey($chatbot->code);
 
@@ -35,7 +37,7 @@ class ConversationManager
             $this->session->remove($threadKey);
         }
 
-        $thread = $this->createThread($chatbot, $adherent);
+        $thread = $this->createThread($chatbot, $this->getAdherent());
 
         $this->entityManager->persist($thread);
         $this->entityManager->flush();
@@ -59,6 +61,15 @@ class ConversationManager
         $threadKey = self::buildThreadKey($chatbot->code);
 
         $this->session->remove($threadKey);
+    }
+
+    private function getAdherent(): ?Adherent
+    {
+        if (($user = $this->security->getUser()) && $user instanceof Adherent) {
+            return $user;
+        }
+
+        return null;
     }
 
     private function createThread(Chatbot $chatbot, ?Adherent $adherent): Thread
