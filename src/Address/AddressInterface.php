@@ -26,6 +26,8 @@ interface AddressInterface
      */
     public function getAddress(): ?string;
 
+    public function getAdditionalAddress(): ?string;
+
     /**
      * Returns the zip code.
      */

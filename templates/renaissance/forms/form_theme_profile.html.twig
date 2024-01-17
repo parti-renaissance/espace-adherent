@@ -132,10 +132,13 @@
                 <div class="md:col-span-3">
                     {{ form_row(form.postalCode, { label: 'Code postal' }) }}
                 </div>
-                <div class="md:col-span-2">
+                <div class="md:col-span-3">
+                    {{ form_row(form.additionalAddress, { label: 'Complément d\'adresse' }) }}
+                </div>
+                <div class="md:col-span-3">
                     {{ form_row(form.cityName, { label: 'Ville' }) }}
                 </div>
-                <div class="md:col-span-4">
+                <div class="md:col-span-3">
                     {{ form_row(form.country, { label: 'Pays', attr: { placeholder: 'Sélectionner un pays' } }) }}
                 </div>
             </div>

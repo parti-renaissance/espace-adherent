@@ -255,6 +255,7 @@ trait EntityAddressTrait
     public function equals(self $other): bool
     {
         return mb_strtolower($this->address) === mb_strtolower($other->getAddress())
+            && mb_strtolower($this->additionalAddress) === mb_strtolower($other->getAdditionalAddress())
             && mb_strtolower($this->cityName) === mb_strtolower($other->getCityName())
             && mb_strtolower($this->postalCode) === mb_strtolower($other->getPostalCode())
             && mb_strtolower($this->country) === mb_strtolower($other->getCountry());
