@@ -54,6 +54,11 @@ trait EntityPostAddressTrait
         return $this->postAddress->getAddress();
     }
 
+    public function getAdditionalAddress(): ?string
+    {
+        return $this->postAddress->getAdditionalAddress();
+    }
+
     /**
      * @SymfonySerializer\Groups({
      *     "user_profile",

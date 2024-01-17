@@ -51,6 +51,7 @@ class AdherentProfileType extends AbstractType
         if ($options['is_renaissance']) {
             $builder
                 ->add('address', AutocompleteAddressType::class, [
+                    'with_additional_address' => true,
                     'validation_groups' => ['fill_personal_info'],
                 ])
             ;

@@ -161,24 +161,13 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-3'])
-                ->add('postAddress.address', null, [
-                    'label' => 'Rue',
-                ])
-                ->add('postAddress.postalCode', null, [
-                    'label' => 'Code postal',
-                ])
-                ->add('postAddress.cityName', null, [
-                    'label' => 'Ville',
-                ])
-                ->add('postAddress.country', null, [
-                    'label' => 'Pays',
-                ])
-                ->add('postAddress.latitude', null, [
-                    'label' => 'Latitude',
-                ])
-                ->add('postAddress.longitude', null, [
-                    'label' => 'Longitude',
-                ])
+                ->add('postAddress.address', null, ['label' => 'Rue'])
+                ->add('postAddress.additionalAddress', null, ['label' => 'Complément d\'adresse'])
+                ->add('postAddress.postalCode', null, ['label' => 'Code postal'])
+                ->add('postAddress.cityName', null, ['label' => 'Ville'])
+                ->add('postAddress.country', null, ['label' => 'Pays'])
+                ->add('postAddress.latitude', null, ['label' => 'Latitude'])
+                ->add('postAddress.longitude', null, ['label' => 'Longitude'])
             ->end()
             ->with('Information de compte', ['class' => 'col-md-3'])
                 ->add('status', null, [
@@ -292,18 +281,11 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         ])
                     ->end()
                     ->with('Adresse', ['class' => 'col-md-6'])
-                        ->add('postAddress.address', TextType::class, [
-                            'label' => 'Rue',
-                        ])
-                        ->add('postAddress.postalCode', TextType::class, [
-                            'label' => 'Code postal',
-                        ])
-                        ->add('postAddress.cityName', TextType::class, [
-                            'label' => 'Ville',
-                        ])
-                        ->add('postAddress.country', CountryType::class, [
-                            'label' => 'Pays',
-                        ])
+                        ->add('postAddress.address', TextType::class, ['label' => 'Rue'])
+                        ->add('postAddress.additionalAddress', TextType::class, ['label' => 'Complément d\'adresse', 'required' => false])
+                        ->add('postAddress.postalCode', TextType::class, ['label' => 'Code postal'])
+                        ->add('postAddress.cityName', TextType::class, ['label' => 'Ville'])
+                        ->add('postAddress.country', CountryType::class, ['label' => 'Pays'])
                         ->add('postAddress.latitude', NumberType::class, [
                             'label' => 'Latitude',
                             'html5' => true,
@@ -892,6 +874,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     'Inscrit(e) le' => $registeredAt?->format('Y/m/d H:i:s'),
                     'Sexe' => $adherent->getGender(),
                     'Adresse' => $adherent->getAddress(),
+                    'Complément d\'adresse' => $adherent->getAdditionalAddress(),
                     'Code postal' => $adherent->getPostalCode(),
                     'Ville' => $adherent->getCityName(),
                     'Pays' => $adherent->getCountry(),

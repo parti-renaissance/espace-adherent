@@ -165,6 +165,7 @@ trait AddressTrait
     {
         $address = new self();
         $address->address = $other->getAddress();
+        $address->additionalAddress = $other->getAdditionalAddress();
         $address->postalCode = $other->getPostalCode();
         $address->city = $other->getCity();
         $address->cityName = $other->getCityName();
