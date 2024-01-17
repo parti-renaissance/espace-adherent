@@ -14,7 +14,7 @@ class RefreshThreadCommand extends UuidDefaultAsyncMessage implements LockableMe
 
     public function getLockTtl(): int
     {
-        return 10;
+        return 5;
     }
 
     public function isLockBlocking(): bool

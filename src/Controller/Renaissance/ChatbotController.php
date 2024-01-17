@@ -4,7 +4,6 @@ namespace App\Controller\Renaissance;
 
 use App\Chatbot\ConversationManager;
 use App\Controller\CanaryControllerTrait;
-use App\Entity\Adherent;
 use App\Entity\Chatbot\Chatbot;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,10 +34,7 @@ class ChatbotController extends AbstractController
             throw new BadRequestHttpException('Missing "content" key in request body.');
         }
 
-        /** @var Adherent|null $adherent */
-        $adherent = $this->getUser();
-
-        $thread = $manager->getCurrentThread($chatbot, $adherent);
+        $thread = $manager->getCurrentThread($chatbot);
 
         $manager->addMessage($thread, $message);
 
@@ -52,10 +48,7 @@ class ChatbotController extends AbstractController
     ): JsonResponse {
         $this->disableInProduction();
 
-        /** @var Adherent|null $adherent */
-        $adherent = $this->getUser();
-
-        $thread = $manager->getCurrentThread($chatbot, $adherent);
+        $thread = $manager->getCurrentThread($chatbot);
 
         return $this->json(
             $thread,

@@ -53,4 +53,9 @@ class Message
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
+
+    public function isUserMessage(): bool
+    {
+        return self::ROLE_USER === $this->role;
+    }
 }

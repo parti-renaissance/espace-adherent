@@ -4,9 +4,18 @@ namespace Tests\App\Chatbot\Provider;
 
 use App\Chatbot\Provider\ProviderInterface;
 use App\Chatbot\Provider\Resources\Message;
+use Faker\Factory;
+use Faker\Generator;
 
 class DummyProvider implements ProviderInterface
 {
+    private Generator $faker;
+
+    public function __construct()
+    {
+        $this->faker = Factory::create('fr_FR');
+    }
+
     public function createThread(): string
     {
         return uniqid('thread_');
@@ -37,7 +46,7 @@ class DummyProvider implements ProviderInterface
             new Message(
                 uniqid('message_'),
                 'assistant',
-                'Voici une réponse à votre message.',
+                $this->faker->text('100'),
                 new \DateTimeImmutable()
             ),
         ];

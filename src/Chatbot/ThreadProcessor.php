@@ -11,24 +11,30 @@ class ThreadProcessor
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly Client $client
+        private readonly Client $client,
+        private readonly Logger $logger
     ) {
     }
 
     public function process(Thread $thread): void
     {
+        $this->logger->logThread($thread, 'Starting process');
+
         $this->initializeThread($thread);
 
         $newMessages = $thread->getMessagesToInitialize();
 
         if (!$newMessages->isEmpty()) {
+            $this->logger->logThread($thread, sprintf('Found %d messages to initialize', $newMessages->count()));
+
             foreach ($newMessages as $newMessage) {
                 $this->initializeMessage($newMessage);
             }
 
-            dump("has new messages");
-            $this->startCurrentRun($thread);
+            $this->startNewRun($thread);
         } elseif ($currentRun = $thread->currentRun) {
+            $this->logger->logThread($thread, sprintf('Processing current Run (uuid: "%s")', $currentRun->getUuid()->toString()));
+
             if ($currentRun->needRefresh()) {
                 $this->refreshRunStatus($currentRun);
             }
@@ -38,7 +44,11 @@ class ThreadProcessor
 
                 $this->retrieveLastMessages($thread);
             }
+        } else {
+            $this->logger->logThread($thread, 'No new message and no current run to process');
         }
+
+        $this->logger->logThread($thread, 'Ending process');
     }
 
     private function initializeThread(Thread $thread): void
@@ -46,6 +56,8 @@ class ThreadProcessor
         if ($thread->isInitialized()) {
             return;
         }
+
+        $this->logger->logThread($thread, 'Initializing remote Thread');
 
         $thread->externalId = $this->client->createThread();
 
@@ -58,6 +70,8 @@ class ThreadProcessor
             return;
         }
 
+        $this->logger->logThread($message->thread, sprintf('Initializing remote Message (uuid: "%s")', $message->getUuid()->toString()));
+
         $message->externalId = $this->client->createMessage($message);
 
         $this->entityManager->flush();
@@ -69,6 +83,8 @@ class ThreadProcessor
             return;
         }
 
+        $this->logger->logThread($run->thread, sprintf('Initializing remote Run (uuid: "%s")', $run->getUuid()->toString()));
+
         $run->externalId = $this->client->createRun($run);
 
         $this->entityManager->flush();
@@ -76,7 +92,11 @@ class ThreadProcessor
 
     private function cancelRun(Run $run): void
     {
+        $this->logger->logThread($run->thread, sprintf('Cancelling Run (uuid: "%s")', $run->getUuid()->toString()));
+
         if ($run->isInitialized() && $run->isInProgress()) {
+            $this->logger->logThread($run->thread, sprintf('Cancelling remote Run (uuid: "%s")', $run->getUuid()->toString()));
+
             $this->client->cancelRun($run);
         }
 
@@ -87,13 +107,17 @@ class ThreadProcessor
 
     private function refreshRunStatus(Run $run): void
     {
+        $this->logger->logThread($run->thread, sprintf('Refreshing Run status (uuid: "%s")', $run->getUuid()->toString()));
+
         $run->status = $this->client->getRunStatus($run);
 
         $this->entityManager->flush();
     }
 
-    private function startCurrentRun(Thread $thread): void
+    private function startNewRun(Thread $thread): void
     {
+        $this->logger->logThread($thread, 'Starting new Run');
+
         if ($thread->currentRun) {
             $this->cancelRun($thread->currentRun);
         }
@@ -107,6 +131,8 @@ class ThreadProcessor
 
     private function endCurrentRun(Thread $thread): void
     {
+        $this->logger->logThread($thread, 'Ending current Run');
+
         $thread->endCurrentRun();
 
         $this->entityManager->flush();
@@ -114,6 +140,8 @@ class ThreadProcessor
 
     private function retrieveLastMessages(Thread $thread): void
     {
+        $this->logger->logThread($thread, 'Retrieving last messages');
+
         $lastMessages = $this->client->getLastMessages($thread);
 
         foreach ($lastMessages as $message) {
@@ -125,7 +153,9 @@ class ThreadProcessor
                 continue;
             }
 
-            $thread->addAssistantMessage($message->content, $message->createdAt);
+            $this->logger->logThread($thread, 'Saving new assistant Message');
+
+            $thread->addAssistantMessage($message->content, $message->createdAt, $message->id);
         }
 
         $this->entityManager->flush();
