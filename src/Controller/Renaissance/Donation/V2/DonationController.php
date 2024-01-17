@@ -70,15 +70,15 @@ class DonationController extends AbstractController
 
         $isSubscription = PayboxPaymentSubscription::NONE === $duration;
 
-        $amount = min(
-            max(
+        $amount = max(
+            min(
                 $request->query->getInt(
                     'amount',
                     $isSubscription ? DonationRequest::DEFAULT_AMOUNT_V2 : DonationRequest::DEFAULT_AMOUNT_SUBSCRIPTION_V2
                 ),
-                $isSubscription ? DonationRequest::MIN_AMOUNT : DonationRequest::MIN_AMOUNT_SUBSCRIPTION
+                $isSubscription ? DonationRequest::MAX_AMOUNT : DonationRequest::MAX_AMOUNT_SUBSCRIPTION
             ),
-            $isSubscription ? DonationRequest::MAX_AMOUNT : DonationRequest::MAX_AMOUNT_SUBSCRIPTION
+            $isSubscription ? DonationRequest::MIN_AMOUNT : DonationRequest::MIN_AMOUNT_SUBSCRIPTION
         );
 
         $localDestination = $request->query->getBoolean('localDestination', false);
