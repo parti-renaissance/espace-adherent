@@ -41,7 +41,8 @@ class Thread
      *     targetEntity=Message::class,
      *     mappedBy="thread",
      *     cascade={"all"},
-     *     orphanRemoval=true
+     *     orphanRemoval=true,
+     *     fetch="EXTRA_LAZY"
      * )
      *
      * @Groups({"chatbot:read"})
@@ -73,9 +74,9 @@ class Thread
         $this->currentRun = null;
     }
 
-    public function addAssistantMessage(string $content, \DateTimeInterface $date = null): void
+    public function addAssistantMessage(string $content, \DateTimeInterface $date, string $externalId): void
     {
-        $this->addMessage(Message::ROLE_ASSISTANT, $content, $date);
+        $this->addMessage(Message::ROLE_ASSISTANT, $content, $date, $externalId);
     }
 
     public function addUserMessage(string $content, \DateTimeInterface $date = null): void
@@ -83,13 +84,14 @@ class Thread
         $this->addMessage(Message::ROLE_USER, $content, $date);
     }
 
-    private function addMessage(string $role, string $content, \DateTimeInterface $date = null): void
+    private function addMessage(string $role, string $content, \DateTimeInterface $date = null, string $externalId = null): void
     {
         $message = new Message();
         $message->thread = $this;
         $message->role = $role;
         $message->content = $content;
         $message->date = $date ?? new \DateTimeImmutable('now');
+        $message->externalId = $externalId;
 
         $this->messages->add($message);
     }
@@ -97,7 +99,7 @@ class Thread
     public function hasMessageWithExternalId(string $externalId): bool
     {
         return null !== $this->messages->findFirst(
-            static function (Message $message) use ($externalId): bool {
+            static function (int $key, Message $message) use ($externalId): bool {
                 return $externalId === $message->externalId;
             }
         );
@@ -107,7 +109,7 @@ class Thread
     {
         return $this->messages->filter(
             static function (Message $message): bool {
-                return !$message->isInitialized();
+                return $message->isUserMessage() && !$message->isInitialized();
             }
         );
     }

@@ -17,10 +17,6 @@
             <article class="max-w-screen-lg mx-5 md:mx-auto my-20">
                 {{ page.content|markdown }}
             </article>
-
-            {% if is_canary_enabled() %}
-                {% include 'renaissance/components/_chatbot.html.twig' %}
-            {% endif %}
         </section>
 
         {% include 'renaissance/partials/small-footer.html.twig' %}
