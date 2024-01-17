@@ -30,14 +30,26 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     use RecaptchaChallengeTrait;
 
     public const DEFAULT_AMOUNT = 50.0;
-    public const DEFAULT_AMOUNT_V2 = 60.0;
+    public const DEFAULT_AMOUNT_V2 = 60;
+    public const DEFAULT_AMOUNT_SUBSCRIPTION_V2 = 10;
+
+    public const MIN_AMOUNT = 10;
+    public const MIN_AMOUNT_SUBSCRIPTION = 5;
+
+    public const MAX_AMOUNT = 7500;
+    public const MAX_AMOUNT_SUBSCRIPTION = 625;
+
     public const ALERT_AMOUNT = 200;
 
     private string $state = DonationRequestStateEnum::STATE_DONATION_AMOUNT;
 
     /**
      * @Assert\NotBlank(groups={"Default", "choose_donation_amount"})
-     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0", groups={"Default", "choose_donation_amount"})
+     * @Assert\Expression(
+     *     expression="(this.isSubscription() and value >= 5 and value <= 625) or (!this.isSubscription() and value >= 10 and value <= 7500)",
+     *     message="donation.amount.invalid",
+     *     groups={"Default", "choose_donation_amount"}
+     * )
      */
     private $amount;
 
