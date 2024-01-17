@@ -1011,7 +1011,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilder('adherent')
             ->andWhere('adherent.status = :adherent_status')
             ->setParameter('adherent_status', Adherent::ENABLED)
-            ->andWhere((new OrX())
+            ->andWhere((new Orx())
                 ->add('adherent.source IS NULL AND adherent.adherent = true')
                 ->add('adherent.source = :source_jme')
                 ->add('adherent.source = :source_renaissance')
@@ -1092,7 +1092,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                     $zoneQueryBuilder
                         ->andWhere(sprintf('%s.status = :adherent_status', $entityClassAlias))
                         ->andWhere(sprintf('%s.adherent = true', $entityClassAlias))
-                        ->andWhere((new OrX())
+                        ->andWhere((new Orx())
                             ->add(sprintf('%s.source IS NULL', $entityClassAlias))
                             ->add(sprintf('%s.source = :source_jme', $entityClassAlias))
                             ->add(sprintf('%s.source = :source_renaissance', $entityClassAlias))

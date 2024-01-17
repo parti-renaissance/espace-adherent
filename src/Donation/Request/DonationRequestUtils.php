@@ -63,7 +63,7 @@ class DonationRequestUtils
         CsrfTokenManagerInterface $tokenManager,
         SlugifyInterface $slugify,
         MembershipRegistrationProcess $membershipRegistrationProcess,
-        Geocoder $geocoder
+        GeoCoder $geocoder
     ) {
         $this->validator = $validator;
         $this->session = $session;
