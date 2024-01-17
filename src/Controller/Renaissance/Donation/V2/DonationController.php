@@ -63,8 +63,19 @@ class DonationController extends AbstractController
     {
         $clientIp = $request->getClientIp();
 
-        $amount = $request->query->getInt('amount', DonationRequest::DEFAULT_AMOUNT_V2);
         $duration = $request->query->getInt('duration', PayboxPaymentSubscription::NONE);
+        if (!PayboxPaymentSubscription::isValid($duration)) {
+            $duration = PayboxPaymentSubscription::NONE;
+        }
+
+        $amount = max(
+            min(
+                $request->query->getInt('amount', DonationRequest::DEFAULT_AMOUNT_V2),
+                PayboxPaymentSubscription::NONE === $duration ? 7500 : 625
+            ),
+            0
+        );
+
         $localDestination = $request->query->getBoolean('localDestination', false);
 
         $donationRequest = $currentUser
