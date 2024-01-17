@@ -68,12 +68,9 @@ class DonationController extends AbstractController
             $duration = PayboxPaymentSubscription::NONE;
         }
 
-        $amount = max(
-            min(
-                $request->query->getInt('amount', DonationRequest::DEFAULT_AMOUNT_V2),
-                PayboxPaymentSubscription::NONE === $duration ? 7500 : 625
-            ),
-            0
+        $amount = min(
+            abs($request->query->getInt('amount', DonationRequest::DEFAULT_AMOUNT_V2)),
+            PayboxPaymentSubscription::NONE === $duration ? 7500 : 625
         );
 
         $localDestination = $request->query->getBoolean('localDestination', false);
@@ -94,7 +91,10 @@ class DonationController extends AbstractController
     private function getCurrentStep(Request $request, Adherent $adherent = null): int
     {
         if ($adherent && $request->query->has('step')) {
-            return max(min($request->query->get('step', self::DEFAULT_STEP), 1), 0);
+            return min(
+                abs($request->query->get('step', self::DEFAULT_STEP)),
+                1
+            );
         }
 
         return self::DEFAULT_STEP;
