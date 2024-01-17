@@ -73,7 +73,14 @@ const Page = (props) => ({
                     inline: 'nearest',
                 });
             } else {
-                reScrollTo(`step_${this.stepToFill + 1}`);
+                if (0 === this.stepToFill) {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth',
+                    });
+                } else {
+                    reScrollTo(`step_${this.stepToFill + 1}`);
+                }
                 this.blockStep(this.stepToFill);
             }
         });

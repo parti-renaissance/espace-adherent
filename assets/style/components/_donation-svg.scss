@@ -1,43 +1,41 @@
 .donation-svg {
 
-  @keyframes bounce_2 {
-    0% {
-      transform: translateY(-25%);
-      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    @keyframes bounce_2 {
+        0% {
+            transform: translateY(-25%);
+            animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+        }
+        25% {
+            transform: translateY(0);
+            animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        }
+        50% {
+            transform: translateY(-10%);
+            animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+        }
+        75% {
+            transform: translateY(0);
+            animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        }
+        100% {
+            transform: translateY(0%);
+            animation-timing-function: cubic-bezier(0.8, 0, 0.2, 1);
+        }
     }
-    25% {
-      transform: translateY(0);
-      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    }
-    50% {
-      transform: translateY(-10%);
-      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-    }
-    75% {
-      transform: translateY(0);
-      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    }
-    100% {
-      transform: translateY(0%);
-      animation-timing-function: cubic-bezier(0.8, 0, 0.2, 1);
-    }
-  }
 
-  g[id^="p_"] {
-    transform: translateY(100vh);
-    opacity: 0;
-    z-index: 100;
-    @apply transition-all duration-500 ease-in-out;
+    g[id^="p_"] {
+        opacity: 0;
+        z-index: 100;
+        @apply transition-all duration-500 ease-in-out;
 
 
-    &.active {
-      z-index: 0;
-      opacity: 1;
-      transform: translateY(0);
-      @apply animate-bounce;
-      animation-iteration-count: 1;
-      animation-duration: 1s;
-      animation-name: bounce_2;
+        &.active {
+            z-index: 0;
+            opacity: 1;
+            @apply animate-bounce;
+            animation-iteration-count: 1;
+            animation-duration: 1s;
+            animation-name: bounce_2;
+        }
     }
-  }
 }
