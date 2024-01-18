@@ -142,7 +142,7 @@ class DesignationAdmin extends AbstractAdmin
                 ->end()
             ->end()
             ->tab('Notifications 📯')
-                ->with('Envoi de mail')
+                ->with('Envoi d\'email')
                     ->add('notifications', DesignationNotificationType::class, ['required' => false])
                 ->end()
             ->end()

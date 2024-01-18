@@ -95,7 +95,7 @@ Invalid credentials.: L'adresse email et le mot de passe que vous avez saisis ne
 Invalid or expired login link.: Le lien de connexion n'est plus actif ou invalide
 Username could not be found.: L'adresse email et le mot de passe que vous avez saisis ne correspondent pas.
 Max attempts reached.: Vous avez effectué 5 tentatives de connexion erronées. Veuillez attendre 1 minute avant de réessayer.
-adherent.error.must_be_validated: Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez <a href="{url}">cliquer ici</a> pour le recevoir à nouveau.
+adherent.error.must_be_validated: Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu l'email de validation, vous pouvez <a href="{url}">cliquer ici</a> pour le recevoir à nouveau.
 user.error.must_be_validated: Pour vous connecter vous devez confirmer votre adresse email.
 adherent.activity_position.form_label: Profession
 adherent.activity_position.student: Étudiant
@@ -158,7 +158,7 @@ role_or_mandat.contact: Contact
 adherent.registration.success: |
     Vous venez de rejoindre En Marche, nous vous en remercions !
     Pour finaliser votre inscription et accéder à votre espace adhérent, vous devez
-    cliquer sur le lien que nous vous avons envoyé par e-mail.
+    cliquer sur le lien que nous vous avons envoyé par email.
 
 adherent.activation.success: Votre compte adhérent est maintenant actif. Pour poursuivre votre action militante, n'hésitez pas à vous rendre sur l'application mobile Je m'engage.
 adherent.activation.already_active: Votre compte est déjà actif.
@@ -181,7 +181,7 @@ adherent.update_interests.success: Vos centres d'intérêts ont bien été mis �
 adherent.update_password.success: Vôtre mot de passe a bien été mis à jour.
 adherent.set_emails_notifications.success: Vos préférences d'e-mails ont bien été mises à jour.
 
-adherent.change_email.email_sent: Nous avons envoyé un e-mail à {email} pour vérifier votre adresse email. Cliquez sur le lien qui y est présent pour valider le changement.
+adherent.change_email.email_sent: Nous avons envoyé un email à {email} pour vérifier votre adresse email. Cliquez sur le lien qui y est présent pour valider le changement.
 adherent.change_email.success: Votre demande de changement a bien été prise en compte. Vous pouvez désormais vous connecter avec votre nouvelle adresse email.
 adherent.change_email.expired_key: Votre demande de changement d'email est expirée ! Veuillez faire une nouvelle demande.
 
@@ -248,15 +248,15 @@ dashboard.members_stats: >-
     }
 dashboard.subscriber_stats: >-
     {count, plural,
-        =0 {aucun accepte de recevoir des e-mails.}
-        one {1 accepte de recevoir des e-mails.}
-        other {# acceptent de recevoir des e-mails.}
+        =0 {aucun accepte de recevoir des emails.}
+        one {1 accepte de recevoir des emails.}
+        other {# acceptent de recevoir des emails.}
     }
-dashboard.send_email: Envoyer un e-mail
+dashboard.send_email: Envoyer un email
 dashboard.create_event: Créer un événement
 dashboard.show_members: Voir tous les adhérents
 dashboard.show_committees: Voir tous les comités
-dashboard.my_emails_sended: Les e-mails que j'ai envoyés
+dashboard.my_emails_sended: Les emails que j'ai envoyés
 dashboard.show_emails: Voir tous les emails
 dashboard.my_events: Les événements que j'ai créés
 dashboard.show_events: Voir tous les événements
@@ -485,7 +485,7 @@ procuration.request.rounds: >-
 #
 newsletter.invitation.form.first_name: Votre prénom
 newsletter.invitation.form.last_name: Votre nom
-newsletter.invitation.form.guest: E-mail d'un ami
+newsletter.invitation.form.guest: Email d'un ami
 newsletter.invitation.form.invite: J'invite des amis
 newsletter.invitation.form.invite_sent: >-
     {count, plural,
@@ -508,8 +508,8 @@ ton_macron.invitation_form.submit_fill_reasons: Continuer
 ton_macron.invitation_form.default_subject: Les 10 raisons pour lesquelles je pense que tu devrais voter Macron
 ton_macron.invitation_form.self_first_name: Votre prénom
 ton_macron.invitation_form.self_last_name: Votre nom
-ton_macron.invitation_form.self_email: Votre e-mail
-ton_macron.invitation_form.friend_email: E-mail de votre ami
+ton_macron.invitation_form.self_email: Votre email
+ton_macron.invitation_form.friend_email: Email de votre ami
 ton_macron.invitation_form.submit_send: Envoyer
 
 #
@@ -521,11 +521,11 @@ legislative_candidate.careers.2: Vient du monde politique
 #
 # Event
 #
-event.invitation.form.email: Votre e-mail
+event.invitation.form.email: Votre email
 event.invitation.form.first_name: Votre prénom
 event.invitation.form.last_name: Votre nom
 event.invitation.form.message: Votre message (200 caractères max)
-event.invitation.form.guest: E-mail d'un ami
+event.invitation.form.guest: Email d'un ami
 event.invitation.form.invite: Envoyer
 event.invitation.form.invite_sent: >-
     {count, plural,
@@ -594,8 +594,8 @@ interactive.form.submit_fill_appreciations: Continuer
 interactive.form.default_subject: Les 10 raisons pour lesquelles je pense que tu devrais voter Macron
 interactive.form.self_first_name: Nous l'ajouterons dans la signature de votre message
 interactive.form.self_last_name: Nous l'ajouterons dans la signature de votre message
-interactive.form.self_email: Votre e-mail
-interactive.form.friend_email: E-mail de votre ami
+interactive.form.self_email: Votre email
+interactive.form.friend_email: Email de votre ami
 interactive.form.submit_send: Envoyer
 
 #

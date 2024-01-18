@@ -219,7 +219,7 @@ abstract class AbstractMessageController extends AbstractController
         $recipients = $this->getMessageRecipients($message);
 
         if (null !== $recipients && 0 === \count($recipients)) {
-            $this->addFlash('error', 'Aucun destinataire du mail n\'a été trouvé.');
+            $this->addFlash('error', 'Aucun destinataire de l\'email n\'a été trouvé.');
 
             return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
         }

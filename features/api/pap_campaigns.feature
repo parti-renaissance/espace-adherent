@@ -1425,7 +1425,7 @@ Feature:
                         "code": "to_contact",
                         "type": "boolean",
                         "options": {
-                            "label": "Souhaite-t-il être tenu au courant des résultats de cette consultation et recevoir notre actualité politique par e-mail ?",
+                            "label": "Souhaite-t-il être tenu au courant des résultats de cette consultation et recevoir notre actualité politique par email ?",
                             "required": true,
                             "help": "En cochant oui, vous certifiez qu'il consent à ce que ses données personnelles soient traitées par La République En Marche et qu'il est informé des droits dont il dispose sur ses données - notamment, la possibilité de se désinscrire à tout moment."
                         }
@@ -1465,7 +1465,7 @@ Feature:
                                     "code": "email_address",
                                     "type": "text",
                                     "options": {
-                                        "label": "E-mail",
+                                        "label": "Email",
                                         "required": true,
                                         "placeholder": "Indiquez ici l'e-mail de la personne rencontrée"
                                     }

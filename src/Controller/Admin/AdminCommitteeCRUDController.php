@@ -60,7 +60,7 @@ class AdminCommitteeCRUDController extends CRUDController
                 } catch (MultipleReferentsFoundException $exception) {
                     $this->addFlash('warning', sprintf(
                         'Attention, plusieurs référents (%s) ont été trouvés dans le département de ce nouveau comité.
-                                Aucun mail de notification pour la validation de ce comité ne leur a été envoyé.
+                                Aucun email de notification pour la validation de ce comité ne leur a été envoyé.
                                 Nommez un seul référent pour permettre les notifications de ce type.',
                         implode(', ', array_map(function (Adherent $referent) {
                             return $referent->getEmailAddress();

@@ -38,7 +38,7 @@ class CommitteeFeedMessageType extends AbstractType
                 'required' => false,
             ])
             ->add('sendNotification', CheckboxType::class, [
-                'label' => 'Envoyer le message par e-mail. Vous serez systématiquement mis(e) en copie de celui-ci',
+                'label' => 'Envoyer le message par email. Vous serez systématiquement mis(e) en copie de celui-ci',
                 'attr' => ['class' => 'form__checkbox form__checkbox--large'],
                 'required' => false,
             ])

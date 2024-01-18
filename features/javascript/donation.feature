@@ -175,7 +175,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I am on "/parametres/mes-activites"
     And I follow "Mettre fin à mon don mensuel"
     And I press "Oui"
-    Then I should see "Votre don mensuel a bien été annulé. Vous recevrez bientôt un mail de confirmation."
+    Then I should see "Votre don mensuel a bien été annulé. Vous recevrez bientôt un email de confirmation."
 
     # Check if I can create a new subscription after cancel subscription
     Given I am on "/don"

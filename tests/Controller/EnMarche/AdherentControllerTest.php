@@ -153,7 +153,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertStringContainsString('Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau.', $crawler->filter('#auth-error')->text());
+        $this->assertStringContainsString('Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu l\'email de validation, vous pouvez cliquer ici pour le recevoir à nouveau.', $crawler->filter('#auth-error')->text());
     }
 
     public function testEditAdherentProfile(): void

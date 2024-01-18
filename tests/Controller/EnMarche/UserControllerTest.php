@@ -49,7 +49,7 @@ class UserControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertStatusCode(200, $this->client);
 
         $this->assertStringContainsString(
-            'Nous avons envoyé un e-mail à new.mail@test.com pour vérifier votre adresse email. Cliquez sur le lien qui y est présent pour valider le changement.',
+            'Nous avons envoyé un email à new.mail@test.com pour vérifier votre adresse email. Cliquez sur le lien qui y est présent pour valider le changement.',
             $crawler->filter('.flash--info')->eq(1)->text()
         );
 

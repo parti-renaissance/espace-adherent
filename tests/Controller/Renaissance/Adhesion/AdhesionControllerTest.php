@@ -106,7 +106,7 @@ class AdhesionControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertStringContainsString('john@test.com', $list->eq(3)->text());
         $this->assertStringContainsString("30,75\u{a0}€", $list->eq(4)->text());
 
-        $this->client->submit($crawler->selectButton('Confirmer mon e-mail')->form());
+        $this->client->submit($crawler->selectButton('Confirmer mon email')->form());
 
         $adherentRequest = $this->getEntityManager()->getRepository(AdherentRequest::class)->findOneBy(['email' => 'john@test.com']);
         $this->assertInstanceOf(AdherentRequest::class, $adherentRequest);

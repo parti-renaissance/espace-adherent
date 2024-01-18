@@ -19,7 +19,7 @@ class AdminEmailCRUDController extends CRUDController
 
         $bus->dispatch(new SendMessageCommand($email->getUuid(), true));
 
-        $this->addFlash('sonata_flash_success', 'E-mail a été renvoyé');
+        $this->addFlash('sonata_flash_success', 'Email a été renvoyé');
 
         return $this->redirectToList();
     }

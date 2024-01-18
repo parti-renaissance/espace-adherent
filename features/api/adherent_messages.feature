@@ -178,7 +178,7 @@ Feature:
     {
       "type": "correspondent",
       "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
-      "subject": "L'objet du mail",
+      "subject": "L'objet de l'email",
       "content": "<table>...</table>",
       "json_content": "{\"foo\": \"bar\", \"items\": [1, 2, true, \"hello world\"]}"
     }
@@ -190,7 +190,7 @@ Feature:
     {
       "uuid": "@uuid@",
       "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
-      "subject": "L'objet du mail",
+      "subject": "L'objet de l'email",
       "status": "draft",
       "recipient_count": 0,
       "source": "api",
@@ -209,7 +209,7 @@ Feature:
     {
       "type": "referent",
       "label": "Message d'un référent délégué",
-      "subject": "L'objet du mail",
+      "subject": "L'objet de l'email",
       "content": "<table>...</table>",
       "json_content": "{\"foo\": \"bar\", \"items\": [1, 2, true, \"hello world\"]}"
     }
@@ -221,7 +221,7 @@ Feature:
     {
         "uuid": "@uuid@",
         "label": "Message d'un référent délégué",
-        "subject": "L'objet du mail",
+        "subject": "L'objet de l'email",
         "status": "draft",
         "recipient_count": 0,
         "source": "api",
@@ -235,7 +235,7 @@ Feature:
     """
     {
       "label": "Mon nouveau titre",
-      "subject": "Mon nouveau objet du mail",
+      "subject": "Mon nouveau objet de l'email",
       "content": "<table>nouveau</table>",
       "json_content": "{\"items\": [\"nouveau\"]}"
     }
@@ -247,7 +247,7 @@ Feature:
     {
         "uuid": "969b1f08-53ec-4a7d-8d6e-7654a001b13f",
         "label": "Mon nouveau titre",
-        "subject": "Mon nouveau objet du mail",
+        "subject": "Mon nouveau objet de l'email",
         "status": "draft",
         "recipient_count": 0,
         "source": "api",
@@ -273,7 +273,7 @@ Feature:
     {
       "type": "regional_coordinator",
       "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
-      "subject": "L'objet du mail",
+      "subject": "L'objet de l'email",
       "content": "<table>...</table>",
       "json_content": "{\"foo\": \"bar\", \"items\": [1, 2, true, \"hello world\"]}"
     }
@@ -285,7 +285,7 @@ Feature:
     {
       "uuid": "@uuid@",
       "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
-      "subject": "L'objet du mail",
+      "subject": "L'objet de l'email",
       "status": "draft",
       "recipient_count": 0,
       "source": "api",

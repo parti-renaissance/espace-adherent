@@ -106,7 +106,7 @@ class AdherentSecurityControllerTest extends AbstractEnMarcheWebTestCase
             'Registered not validated account' => [
                 'michelle.dufour@example.ch',
                 'secret!12345',
-                'Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau.',
+                'Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu l\'email de validation, vous pouvez cliquer ici pour le recevoir à nouveau.',
             ],
             'Registered disabled account' => [
                 'simple-user-disabled@example.ch',
@@ -132,7 +132,7 @@ class AdherentSecurityControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->submit($crawler->selectButton('Envoyer un e-mail')->form(), ['form' => ['email' => '']]);
+        $crawler = $this->client->submit($crawler->selectButton('Envoyer un email')->form(), ['form' => ['email' => '']]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -151,7 +151,7 @@ class AdherentSecurityControllerTest extends AbstractEnMarcheWebTestCase
             'form' => ['email' => 'toto@example.org'],
         ];
 
-        $this->client->submit($crawler->selectButton('Envoyer un e-mail')->form(), $formData);
+        $this->client->submit($crawler->selectButton('Envoyer un email')->form(), $formData);
 
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
 
@@ -172,7 +172,7 @@ class AdherentSecurityControllerTest extends AbstractEnMarcheWebTestCase
             'form' => ['email' => 'carl999@example.fr'],
         ];
 
-        $this->client->submit($crawler->selectButton('Envoyer un e-mail')->form(), $formData);
+        $this->client->submit($crawler->selectButton('Envoyer un email')->form(), $formData);
 
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
 

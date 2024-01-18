@@ -213,8 +213,8 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     When I fill in the following:
       | Prénom               | Jean-pierre |
       | Nom                  | D'ARTAGNAN  |
-      | E-mail               | jp@test.com |
-      | Re-saisir l'e-mail   | jp@test.com |
+      | Email                | jp@test.com |
+      | Re-saisir l'email    | jp@test.com |
       | Mot de passe         | testtest    |
       | Code postal          | 38000       |
       | Pays                 | FR          |

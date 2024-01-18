@@ -442,7 +442,7 @@ trait TestHelperTrait
     }
 
     /**
-     * @param string|null $email E-mail used to generate a unique UUID
+     * @param string|null $email email used to generate a unique UUID
      */
     protected function createAdherent(string $email = null): Adherent
     {

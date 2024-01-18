@@ -17,7 +17,7 @@
 
             <form method="POST" action="{{ path("app_message_#{space_name}_create") }}">
                 <input type="hidden" name='message_content' value="Inscrivez-vous à l'événement <a href='{{ url('app_committee_event_show', { slug: event.slug }) }}'>ici</a>">
-                <button class="btn btn--blue b__nudge--bottom">L'envoyer par e-mail</button>
+                <button class="btn btn--blue b__nudge--bottom">L'envoyer par email</button>
             </form>
         {% endif %}
 

@@ -17,10 +17,10 @@
 
             <p class="text--body text--dark">
                 {% if invitations|length > 1 %}
-                    Nous vous confirmons que {{ invitations|map(invitation => invitation.getMembership().getFullName())|join(' et ') }} ont bien reçus votre demande de trinôme. Vous recevrez un e-mail lorsqu’ils
+                    Nous vous confirmons que {{ invitations|map(invitation => invitation.getMembership().getFullName())|join(' et ') }} ont bien reçus votre demande de trinôme. Vous recevrez un email lorsqu’ils
                     auront répondu à votre invitation.
                 {% else %}
-                    Nous vous confirmons que {{ invitations|first.getMembership().getFullName() }} a bien reçue votre demande de trinôme. Vous recevrez un e-mail lorsqu’elle
+                    Nous vous confirmons que {{ invitations|first.getMembership().getFullName() }} a bien reçue votre demande de trinôme. Vous recevrez un email lorsqu’elle
                     aura répondu à votre invitation.
                 {% endif %}
 

@@ -115,7 +115,7 @@ abstract class AbstractAssessorSpaceController extends AbstractController
         $this->denyAccessUnlessGranted(ManageVotePlaceVoter::MANAGE_VOTE_PLACE, $votePlace);
 
         if (false === $enabled && $entityManager->getRepository(AssessorRoleAssociation::class)->findOneBy(['votePlace' => $votePlace])) {
-            $this->addFlash('error', 'Vous ne pouvez pas désactiver un bureau de vote attribué. Veuillez d’abord y supprimer le mail de l’assesseur');
+            $this->addFlash('error', 'Vous ne pouvez pas désactiver un bureau de vote attribué. Veuillez d’abord y supprimer l\'email de l’assesseur');
         } else {
             $votePlace->setEnabled($enabled);
             $entityManager->flush();

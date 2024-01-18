@@ -15,7 +15,7 @@ class CandidacyAdmin extends AbstractAdmin
             ->add('gender', CivilityType::class, ['expanded' => false, 'label' => 'Civilité'])
             ->add('lastName', null, ['label' => 'Nom'])
             ->add('firstName', null, ['label' => 'Prénoms'])
-            ->add('email', null, ['label' => 'E-mail'])
+            ->add('email', null, ['label' => 'Email'])
             ->add('position', IntegerType::class, ['label' => 'Position', 'attr' => ['min' => 1, 'step' => 1]])
         ;
     }

@@ -58,10 +58,10 @@
             </div>
 
             {% if form.emailAddress.first is defined %}
-                {{ form_row(form.emailAddress.first, { label: 'E-mail' }) }}
-                {{ form_row(form.emailAddress.second, { label: 'Re-saisir l\'e-mail' }) }}
+                {{ form_row(form.emailAddress.first, { label: 'Email' }) }}
+                {{ form_row(form.emailAddress.second, { label: 'Re-saisir l\'email' }) }}
             {% else %}
-                {{ form_row(form.emailAddress, { label: 'E-mail' }) }}
+                {{ form_row(form.emailAddress, { label: 'Email' }) }}
             {% endif %}
 
             {{ form.password is defined ? form_row(form.password, { label: 'Mot de passe' }) }}

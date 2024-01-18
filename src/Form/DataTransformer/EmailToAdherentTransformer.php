@@ -29,7 +29,7 @@ class EmailToAdherentTransformer implements DataTransformerInterface
     {
         if ($value) {
             if (!$adherent = $this->adherentRepository->findOneByEmail($value)) {
-                throw new TransformationFailedException('Adhérent avec cet e-mail n\'existe pas');
+                throw new TransformationFailedException('Adhérent avec cet email n\'existe pas');
             }
 
             return $adherent;

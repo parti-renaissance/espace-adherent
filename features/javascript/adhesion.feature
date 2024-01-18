@@ -49,8 +49,8 @@ Feature:
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
         And I wait until I see "60.00 EUR"
         When I fill in the following:
-            | NUMERO_CARTE | 1111222233334444 |
             | CVVX         | 123              |
+            | NUMERO_CARTE | 1111222233334444 |
         And I wait 2 seconds
         And I click the "#pbx-card-button-choice1" selector
         And I select "12" from "MOIS_VALIDITE"
@@ -172,7 +172,7 @@ Feature:
 
         # Step 10 : communication
         Then I should be on "/adhesion/rappel-communication"
-        And I should see "Attention, vous ne recevrez jamais aucune communication par mail de notre part (hors mail statutaire)"
+        And I should see "Attention, vous ne recevrez jamais aucune communication par email de notre part (hors email statutaire)"
         When I click the "input[name='adhesion_communication[acceptEmail]']" selector
         And I press "Continuer"
 
@@ -275,8 +275,8 @@ Feature:
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
         And I wait until I see "120.00 EUR"
         When I fill in the following:
-            | NUMERO_CARTE | 1111222233334444 |
             | CVVX         | 123              |
+            | NUMERO_CARTE | 1111222233334444 |
         And I wait 2 seconds
         And I click the "#pbx-card-button-choice1" selector
         And I select "12" from "MOIS_VALIDITE"
@@ -374,8 +374,8 @@ Feature:
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
         And I wait until I see "120.00 EUR"
         When I fill in the following:
-            | NUMERO_CARTE | 1111222233334444 |
             | CVVX         | 123              |
+            | NUMERO_CARTE | 1111222233334444 |
         And I wait 2 seconds
         And I click the "#pbx-card-button-choice1" selector
         And I select "12" from "MOIS_VALIDITE"

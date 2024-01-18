@@ -37,7 +37,7 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                         $this->buildQuestion(
                             'to_contact',
                             'boolean',
-                            'Souhaite-t-il être tenu au courant des résultats de cette consultation et recevoir notre actualité politique par e-mail ?',
+                            'Souhaite-t-il être tenu au courant des résultats de cette consultation et recevoir notre actualité politique par email ?',
                             true,
                             null,
                             null,
@@ -52,7 +52,7 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                             [
                                 $this->buildQuestion('first_name', 'text', 'Prénom', true, null, null, null, 'Indiquez ici le prénom de la personne rencontrée'),
                                 $this->buildQuestion('last_name', 'text', 'Nom', true, null, null, null, 'Indiquez ici le nom de la personne rencontrée'),
-                                $this->buildQuestion('email_address', 'text', 'E-mail', true, null, null, null, 'Indiquez ici l\'e-mail de la personne rencontrée'),
+                                $this->buildQuestion('email_address', 'text', 'Email', true, null, null, null, 'Indiquez ici l\'e-mail de la personne rencontrée'),
                             ],
                             null,
                             [

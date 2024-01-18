@@ -30,7 +30,7 @@ class SaveNewsletterController extends AbstractController
 
             $this->dispatchMessage(new SendWelcomeMailCommand($newsletterSubscription));
 
-            $this->addFlash('success', 'Merci pour votre inscription ! Nous vous invitons à la valider en cliquant sur le lien reçu par e-mail.');
+            $this->addFlash('success', 'Merci pour votre inscription ! Nous vous invitons à la valider en cliquant sur le lien reçu par email.');
 
             return $this->redirectToRoute('renaissance_site');
         }

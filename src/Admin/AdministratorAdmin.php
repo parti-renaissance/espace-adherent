@@ -121,7 +121,7 @@ class AdministratorAdmin extends AbstractAdmin
     {
         $filter
             ->add('emailAddress', null, [
-                'label' => 'E-mail',
+                'label' => 'Email',
                 'show_filter' => true,
             ])
             ->add('administratorRoles', null, [

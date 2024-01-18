@@ -120,7 +120,7 @@ Feature:
             },
             {
                 "title": "Inscrits à la liste globale (total)",
-                "category": "Inscriptions e-mails",
+                "category": "Inscriptions emails",
                 "items": {
                     "201801": "@integer@",
                     "201802": "@integer@",
@@ -129,7 +129,7 @@ Feature:
             },
             {
                 "title": "Inscrits à la lettre du vendredi (total)",
-                "category": "Inscriptions e-mails",
+                "category": "Inscriptions emails",
                 "items": {
                     "201801": "@integer@",
                     "201802": "@integer@",
@@ -138,7 +138,7 @@ Feature:
             },
             {
                 "title": "Adhérents inscrits à la lettre du vendredi (total)",
-                "category": "Inscriptions e-mails",
+                "category": "Inscriptions emails",
                 "items": {
                     "201801": "@integer@",
                     "201802": "@integer@",
@@ -146,8 +146,8 @@ Feature:
                 }
             },
             {
-                "title": "Adhérents inscrits aux mails de leur référent (total)",
-                "category": "Inscriptions e-mails",
+                "title": "Adhérents inscrits aux emails de leur référent (total)",
+                "category": "Inscriptions emails",
                 "items": {
                     "201801": "@integer@",
                     "201802": "@integer@",

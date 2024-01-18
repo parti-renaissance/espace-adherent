@@ -30,7 +30,7 @@ class InviteAdmin extends AbstractAdmin
                 'label' => 'Prénom',
             ])
             ->add('email', null, [
-                'label' => 'E-mail de l\'invité',
+                'label' => 'Email de l\'invité',
             ])
             ->add('message', TextareaType::class, [
                 'label' => 'Message',
@@ -54,7 +54,7 @@ class InviteAdmin extends AbstractAdmin
                 'label' => 'Prénom',
             ])
             ->add('email', null, [
-                'label' => 'E-mail de l\'invité',
+                'label' => 'Email de l\'invité',
             ])
         ;
     }
@@ -69,7 +69,7 @@ class InviteAdmin extends AbstractAdmin
                 'label' => 'Prénom',
             ])
             ->add('email', null, [
-                'label' => 'E-mail de l\'invité',
+                'label' => 'Email de l\'invité',
             ])
             ->add('clientIp', null, [
                 'label' => 'IP du client',
