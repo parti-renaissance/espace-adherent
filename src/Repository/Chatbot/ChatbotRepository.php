@@ -12,16 +12,4 @@ class ChatbotRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Chatbot::class);
     }
-
-    public function findOneEnabledByCode(string $code): ?Chatbot
-    {
-        return $this->createQueryBuilder('chatbot')
-            ->where('chatbot.code = :code')
-            ->andWhere('chatbot.enabled = :enabled')
-            ->setParameter('code', $code)
-            ->setParameter('enabled', true)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
 }
