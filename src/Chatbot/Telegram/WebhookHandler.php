@@ -30,28 +30,26 @@ class WebhookHandler
             return;
         }
 
-        $this->saveSecret($chatbot, $botApiTokenAfterUpdate);
+        if (!$botApiTokenAfterUpdate) {
+            $this->saveSecret($chatbot, null);
 
-        if (!$botApiTokenAfterUpdate && $botApiTokenBeforeUpdate) {
-            $this->deleteWebhook($botApiTokenBeforeUpdate);
+            if ($botApiTokenBeforeUpdate) {
+                $this->deleteWebhook($botApiTokenBeforeUpdate);
+            }
 
             return;
         }
 
-        if ($botApiTokenAfterUpdate) {
-            $webhookUrl = $this->generateWebhookUrl($chatbot->telegramBotSecret);
+        $this->saveSecret($chatbot, $this->generateSecret());
 
-            $this->client->setWebhook($botApiTokenAfterUpdate, $webhookUrl);
-        }
+        $webhookUrl = $this->generateWebhookUrl($chatbot->telegramBotSecret);
+
+        $this->client->setWebhook($botApiTokenAfterUpdate, $webhookUrl);
     }
 
-    private function saveSecret(Chatbot $chatbot, ?string $secret): void
+    private function saveSecret(Chatbot $chatbot, ?string $newSecret): void
     {
-        if ($secret === $chatbot->telegramBotSecret) {
-            return;
-        }
-
-        $chatbot->telegramBotSecret = $secret;
+        $chatbot->telegramBotSecret = $newSecret;
 
         $this->entityManager->flush();
     }
