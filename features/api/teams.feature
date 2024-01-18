@@ -66,6 +66,21 @@ Feature:
       }
     ]
     """
+    When I send a "GET" request to "/api/v3/adherents/autocomplete?q=lolodie.dutemps@hotnix.tld&scope=phoning_national_manager"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    [
+      {
+        "registered_at": "@string@.isDateTime()",
+        "uuid": "@uuid@",
+        "first_name": "Élodie",
+        "last_name": "Dutemps",
+        "postal_code": "368645",
+        "email_address": "lolodie.dutemps@hotnix.tld"
+      }
+    ]
+    """
 
   Scenario Outline: As a (delegated) referent I can search an adherent with autocomplete search in my managed zone
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
