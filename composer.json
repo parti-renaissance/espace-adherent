@@ -142,6 +142,7 @@
         "symfony/workflow": "^5.4",
         "symfony/yaml": "^5.4",
         "tackk/cartographer": "dev-welcome-php7",
+        "telegram-bot/api": "^2.5",
         "tetranz/select2entity-bundle": "^3.1",
         "twig/extra-bundle": "^3.3",
         "twig/intl-extra": "^3.3",

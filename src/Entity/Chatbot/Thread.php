@@ -23,6 +23,11 @@ class Thread
     use ExternalResourceTrait;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $telegramChatId = null;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Chatbot::class)
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
