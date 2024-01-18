@@ -12,7 +12,7 @@
             </twig:ReParagraphStatus>
 
             <twig:Atoms:ReCard class="!p-0 overflow-hidden" variant="inner">
-                <video muted autoplay width="100%" poster="{{ asset('videos/don/congrats/congrats.jpg') }}">
+                <video loop muted autoplay width="100%" poster="{{ asset('videos/don/congrats/congrats.jpg') }}">
                     <source src="{{ asset('videos/don/congrats/congrats.webm') }}" type="video/webm">
                     <source src="{{ asset('videos/don/congrats/congrats.mp4') }}" type="video/mp4">
                     <source src="{{ asset('videos/don/congrats/congrats.ogv') }}" type="video/ogg">
@@ -24,13 +24,20 @@
             </h1>
             <div class="text-ui_gray-80 text-base flex flex-col gap-4">
                 <p>
-                    Félicitations pour votre générosité ! Chaque don, qu'il soit unique ou mensuel, contribue activement à soutenir nos actions.
-                </p>
-                 <p>
-                    Votre engagement est vital et se reflète dans l'organisation d'événements locaux, la mise en place de formations et la création d’actions de campagne.
+                    Je vous remercie d’avoir participé à la construction de notre parti Renaissance avec un don de {{ donation.amountInEuros() }} euros. Votre soutien est très précieux.
                 </p>
                 <p>
-                    Nous vous remercions sincèrement pour votre investissement dans la concrétisation de notre mission.
+                     La priorité de Renaissance est de faire réussir le quinquennat d’Emmanuel Macron, également Président d’honneur du parti. Avec toutes les forces progressistes, nous continuerons à nous battre pour tenir les engagements du Président de la République et pour ne jamais laisser les clés de notre pays aux extrêmes.
+                </p>
+                <p>
+                    Sans réussite collective, il n’y a pas de réussite individuelle. Ensemble, faisons de Renaissance la première force de proposition, le parti d'idées et l’organisation politique la plus décentralisée de la Vème République.
+                </p>
+                <p>
+                    Merci à vous de soutenir notre parti.
+                </p>
+                <p>
+                    Stéphane Séjourné <br>
+                    Secrétaire général de Renaissance
                 </p>
                 <p>
                    Un <span class="font-medium">email contenant le reçu</span> de votre don vous a été envoyé. Merci de faire partie intégrante de notre succès commun.
