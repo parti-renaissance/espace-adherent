@@ -41,6 +41,16 @@ class Chatbot
      */
     public bool $enabled = false;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $telegramBotApiToken = null;
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $telegramBotSecret = null;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -49,5 +59,10 @@ class Chatbot
     public function __toString(): string
     {
         return (string) $this->code;
+    }
+
+    public function generateTelegramBotSecret(): void
+    {
+        $this->telegramBotSecret = Uuid::uuid4()->toString();
     }
 }

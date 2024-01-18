@@ -3,7 +3,7 @@
 namespace App\Admin;
 
 use App\Documents\DocumentHandler;
-use App\Entity\Document;
+use App\Entity\Chatbot\Chatbot;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -69,31 +69,25 @@ class DocumentAdmin extends AbstractAdmin
     }
 
     /**
-     * @param Document $object
+     * @param Chatbot $object
      */
     protected function prePersist(object $object): void
     {
-        $this->handleFile($object);
+        $this->handleTelegramBotSecret($object);
     }
 
     /**
-     * @param Document $object
+     * @param Chatbot $object
      */
     protected function preUpdate(object $object): void
     {
-        $this->handleFile($object);
+        $this->handleTelegramBotSecret($object);
     }
 
-    private function handleFile(Document $document): void
+    private function handleTelegramBotSecret(Chatbot $chatbot): void
     {
-        $this->documentHandler->handleFile($document);
-    }
+        // generate secret
 
-    /**
-     * @required
-     */
-    public function setDocumentHandler(DocumentHandler $documentHandler): void
-    {
-        $this->documentHandler = $documentHandler;
+        // set webhook url to bot
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Admin\Chatbot;
 
+use App\Chatbot\Telegram\WebhookHandler;
+use App\Entity\Chatbot\Chatbot;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -12,6 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ChatbotAdmin extends AbstractAdmin
 {
+    private ?string $telegramBotApiTokenBeforeUpdate = null;
+    private WebhookHandler $botWebhookHandler;
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('show');
@@ -25,7 +30,11 @@ class ChatbotAdmin extends AbstractAdmin
                     'label' => 'Code',
                 ])
                 ->add('assistantId', TextType::class, [
-                    'label' => 'ID Assistant',
+                    'label' => 'ID Assistant OpenAI',
+                ])
+                ->add('telegramBotApiToken', TextType::class, [
+                    'label' => 'Clé API Bot Telegram',
+                    'help' => 'Remplir seulement si ce chatbot est associé à un bot Telegram',
                 ])
                 ->add('enabled', CheckboxType::class, [
                     'label' => 'Activé',
@@ -43,7 +52,11 @@ class ChatbotAdmin extends AbstractAdmin
                 'show_filter' => true,
             ])
             ->add('assistantId', null, [
-                'label' => 'ID Assistant',
+                'label' => 'ID Assistant OpenAI',
+                'show_filter' => true,
+            ])
+            ->add('telegramBotApiToken', null, [
+                'label' => 'Clé API Bot Telegram',
                 'show_filter' => true,
             ])
             ->add('enabled', null, [
@@ -60,7 +73,10 @@ class ChatbotAdmin extends AbstractAdmin
                 'label' => 'Code',
             ])
             ->add('assistantId', null, [
-                'label' => 'ID Assistant',
+                'label' => 'ID Assistant OpenAI',
+            ])
+            ->add('telegramBotApiToken', null, [
+                'label' => 'Clé API Bot Telegram',
             ])
             ->add('enabled', null, [
                 'label' => 'Activé',
@@ -72,5 +88,45 @@ class ChatbotAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    /**
+     * @param Chatbot $object
+     */
+    protected function alterObject(object $object): void
+    {
+        $this->telegramBotApiTokenBeforeUpdate = $object->telegramBotApiToken;
+    }
+
+    /**
+     * @param Chatbot $object
+     */
+    protected function postPersist(object $object): void
+    {
+        $this->botWebhookHandler->handleChanges($object);
+    }
+
+    /**
+     * @param Chatbot $object
+     */
+    protected function postUpdate(object $object): void
+    {
+        $this->botWebhookHandler->handleChanges($object, $this->telegramBotApiTokenBeforeUpdate);
+    }
+
+    /**
+     * @param Chatbot $object
+     */
+    protected function postRemove(object $object): void
+    {
+        if ($object->telegramBotApiToken) {
+            $this->botWebhookHandler->deleteWebhook($object->telegramBotApiToken);
+        }
+    }
+
+    /** @required */
+    public function setBotWebhookHandler(WebhookHandler $botWebhookHandler): void
+    {
+        $this->botWebhookHandler = $botWebhookHandler;
     }
 }

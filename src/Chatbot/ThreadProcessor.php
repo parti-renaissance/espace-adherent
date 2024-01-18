@@ -2,16 +2,19 @@
 
 namespace App\Chatbot;
 
+use App\Chatbot\Command\SendTelegramMessageCommand;
 use App\Entity\Chatbot\Message;
 use App\Entity\Chatbot\Run;
 use App\Entity\Chatbot\Thread;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class ThreadProcessor
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly Client $client,
+        private readonly MessageBusInterface $bus,
         private readonly Logger $logger
     ) {
     }
@@ -155,9 +158,29 @@ class ThreadProcessor
 
             $this->logger->logThread($thread, 'Saving new assistant Message');
 
-            $thread->addAssistantMessage($message->content, $message->createdAt, $message->id);
+            $this->handleNewAssistantMessage(
+                $thread,
+                $message->content,
+                $message->createdAt,
+                $message->id
+            );
         }
 
         $this->entityManager->flush();
+    }
+
+    private function handleNewAssistantMessage(
+        Thread $thread,
+        string $content,
+        \DateTimeInterface $date,
+        string $externalId
+    ): void {
+        $message = $thread->addAssistantMessage($content, $date, $externalId);
+
+        $this->entityManager->flush();
+
+        if ($thread->telegramChatId) {
+            $this->bus->dispatch(new SendTelegramMessageCommand($message->getUuid()));
+        }
     }
 }

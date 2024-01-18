@@ -23,6 +23,11 @@ class Thread
     use ExternalResourceTrait;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $telegramChatId = null;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Chatbot::class)
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
@@ -74,17 +79,17 @@ class Thread
         $this->currentRun = null;
     }
 
-    public function addAssistantMessage(string $content, \DateTimeInterface $date, string $externalId): void
+    public function addAssistantMessage(string $content, \DateTimeInterface $date, string $externalId): Message
     {
-        $this->addMessage(Message::ROLE_ASSISTANT, $content, $date, $externalId);
+        return $this->addMessage(Message::ROLE_ASSISTANT, $content, $date, $externalId);
     }
 
-    public function addUserMessage(string $content, \DateTimeInterface $date = null): void
+    public function addUserMessage(string $content, \DateTimeInterface $date = null): Message
     {
-        $this->addMessage(Message::ROLE_USER, $content, $date);
+        return $this->addMessage(Message::ROLE_USER, $content, $date);
     }
 
-    private function addMessage(string $role, string $content, \DateTimeInterface $date = null, string $externalId = null): void
+    private function addMessage(string $role, string $content, \DateTimeInterface $date = null, string $externalId = null): Message
     {
         $message = new Message();
         $message->thread = $this;
@@ -94,6 +99,8 @@ class Thread
         $message->externalId = $externalId;
 
         $this->messages->add($message);
+
+        return $message;
     }
 
     public function hasMessageWithExternalId(string $externalId): bool
