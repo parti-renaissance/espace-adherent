@@ -26,6 +26,10 @@ services:
 
   App\Ohme\ClientInterface: '@Tests\App\Ohme\DummyClient'
 
+  Tests\App\Chatbot\Provider\DummyProvider: ~
+
+  App\Chatbot\Provider\ProviderInterface: '@Tests\App\Chatbot\Provider\DummyProvider'
+
   App\Mandrill\EmailClient:
     class: 'Tests\App\Test\Mailer\NullEmailClient'
 
