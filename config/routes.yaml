@@ -280,6 +280,12 @@ app_nous_reussirons:
     methods:  GET
     defaults: { _controller: App\Controller\EnMarche\PageController:showPageAction, slug: 'nous-reussirons' }
 
+
+app_webhook_renaissance:
+    host:   "%webhook_renaissance_host%"
+    resource: "../src/Controller/Webhook"
+    type: "annotation"
+
 app_renaissance:
     host:   "%app_renaissance_host%"
     resource: "../src/Controller/Renaissance"
