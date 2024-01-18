@@ -25,7 +25,7 @@ class ChatbotAdmin extends AbstractAdmin
                     'label' => 'Code',
                 ])
                 ->add('assistantId', TextType::class, [
-                    'label' => 'ID Assistant',
+                    'label' => 'ID Assistant OpenAI',
                 ])
                 ->add('enabled', CheckboxType::class, [
                     'label' => 'Activé',
@@ -43,7 +43,7 @@ class ChatbotAdmin extends AbstractAdmin
                 'show_filter' => true,
             ])
             ->add('assistantId', null, [
-                'label' => 'ID Assistant',
+                'label' => 'ID Assistant OpenAI',
                 'show_filter' => true,
             ])
             ->add('enabled', null, [
@@ -60,7 +60,7 @@ class ChatbotAdmin extends AbstractAdmin
                 'label' => 'Code',
             ])
             ->add('assistantId', null, [
-                'label' => 'ID Assistant',
+                'label' => 'ID Assistant OpenAI',
             ])
             ->add('enabled', null, [
                 'label' => 'Activé',

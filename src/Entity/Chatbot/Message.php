@@ -10,7 +10,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Chatbot\MessageRepository")
  * @ORM\Table(name="chatbot_message")
  */
 class Message
