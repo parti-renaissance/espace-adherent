@@ -144,7 +144,7 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
                     Quelles sont les prochaines étapes?
                     <ol>
                         <li>Si nous recevons une demande dans votre commune ou dans l’une de celles où vous nous avez notifié pouvoir vous rendre, nous réaliserons un «match» entre vous.</li>
-                        <li>Vous recevrez un mail identique vous indiquant vos coordonnées respectives.</li>
+                        <li>Vous recevrez un email identique vous indiquant vos coordonnées respectives.</li>
                         <li>Prenez contact l’un avec l’autre et confirmez la mission entre vous.</li>
                         <li>Attendez que le mandant réalise les démarches. N’hésitez pas à prendre des nouvelles régulièrement si vous n’en avez pas.</li>
                         <li>Vous pourrez voter le jour J en présentant simplement votre propre pièce d’identité (vous n’avez besoin d’aucun document de la part de mandant). Assurez-vous de bien connaitre l’adresse du bureau de vote à l’avance.</li>
@@ -164,7 +164,7 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
                     Quelles sont les prochaines étapes?
                     <ol>
                         <li>Nous vous cherchons un mandataire</li>
-                        <li>Quand nous l’avons trouvé, nous vous envoyons à tous les deux le même mail avec vos coordonnées respectives.</li>
+                        <li>Quand nous l’avons trouvé, nous vous envoyons à tous les deux le même email avec vos coordonnées respectives.</li>
                         <li>Prenez contact l’un avec l’autre et confirmez la mission entre vous.</li>
                         <li>
                             Vous, le mandant, devez-vous rendre dans un commissariat ou une gendarmerie (si vous habitez en France) ou dans un consulat de France (si vous résidez à l'étranger) pour établir la procuration. Vous pouvez aussi gagner du temps dans la démarche et faire l’opération en ligne sur https://www.maprocuration.gouv.fr :
@@ -206,7 +206,7 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
                     Ce formulaire vous permettra de renseigner l'ensemble des informations nécessaires.<br/><br/>
                     En raison du nombre limité de places par bureau de vote pour chaque liste (1 assesseur(e) titulaire et 1 assesseur(e) suppléant(e)),
                     nous vous invitons à en sélectionner plusieurs dans l’ordre de vos préférences. Nous en tiendrons compte au maximum lors des attributions.<br/>
-                    Vous recevrez prochainement un mail de confirmation et d’explication si votre candidature est retenue.<br/>
+                    Vous recevrez prochainement un email de confirmation et d’explication si votre candidature est retenue.<br/>
                     <br/>
                     Merci encore pour votre engagement !<br/><br/>
                     Conditions préalables pour devenir assesseur :<br/>
@@ -446,7 +446,7 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
         $manager->persist($this->createCmsBlock(
             'renaissance-elected-representative-contribution-step-3',
             'Texte affiché à la troisième étape du funnel des cotisations élus',
-            'Les informations suivantes (Nom, Prénom, Pays de résidence, Adresse postale, E-mail) doivent être renseignées et à jour dans vos informations générales. Sans cette correspondance, votre contribution pourrait être mal traitée.'
+            'Les informations suivantes (Nom, Prénom, Pays de résidence, Adresse postale, Email) doivent être renseignées et à jour dans vos informations générales. Sans cette correspondance, votre contribution pourrait être mal traitée.'
         ));
         $manager->persist($this->createCmsBlock(
             'renaissance-elected-representative-contribution-step-confirmation',

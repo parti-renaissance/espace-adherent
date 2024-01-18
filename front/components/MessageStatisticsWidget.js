@@ -60,7 +60,7 @@ export default class MessageStatisticsWidget extends React.Component {
     renderStatsBlock() {
         return (
             <div className="font-roboto">
-                <div className="text--bold text--default-large">Statistiques de l'e-mail :</div>
+                <div className="text--bold text--default-large">Statistiques de l'email :</div>
                 <div className="b__nudge--top-15 b__nudge--bottom-large text--dark">Objet : {this.state.subject}</div>
 
                 <div className="l__row">

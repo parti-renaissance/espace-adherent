@@ -17,7 +17,7 @@ Les informations recueillies sont enregistrées dans un fichier informatique par
 * L’instruction des demandes adressées par les Adhérents, les Utilisateurs et les Visiteurs ;
 * L’évaluation statistique de la fréquentation du Site ;
 * La gestion des adhésions à **LaREM** et des contacts réguliers/occasionnels avec  **LaREM**;
-* La gestion des opérations de communication, de prospection politique et de propagande électorale de LaREM et ses candidats, quels que soient les moyens de communication utilisés (téléphone, e-mail, courrier, SMS, MMS) ;
+* La gestion des opérations de communication, de prospection politique et de propagande électorale de LaREM et ses candidats, quels que soient les moyens de communication utilisés (téléphone, email, courrier, SMS, MMS) ;
 * La gestion des opérations liées au financement de **LaREM** et ses candidats en période électorale, et notamment le traitement des dons au profit des mandataires financiers de ces derniers ;
 * L'établissement d'études statistiques et de consultations publiques, à l'exception des sondages d'opinion ;
 * Le référencement des évènements mis en œuvre par les comités locaux **LaREM**, tels que les Projets Citoyens.

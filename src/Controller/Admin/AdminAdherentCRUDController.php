@@ -222,7 +222,7 @@ class AdminAdherentCRUDController extends CRUDController
 
             $bus->dispatch(new SendResubscribeEmailCommand($adherent, AdherentEmailSubscribeToken::TRIGGER_SOURCE_ADMIN));
 
-            $this->addFlash('sonata_flash_success', 'E-mail a bien été envoyé');
+            $this->addFlash('sonata_flash_success', 'Email a bien été envoyé');
 
             return $this->redirect($this->admin->generateObjectUrl('edit', $adherent));
         }
@@ -230,7 +230,7 @@ class AdminAdherentCRUDController extends CRUDController
         return $this->renderWithExtraParams('admin/CRUD/confirm.html.twig', [
             'csrf_token' => $this->getCsrfToken('admin.adherent.send_email'),
             'action' => 'send_resubscribe_email',
-            'message' => 'Êtes-vous sûr de vouloir envoyer un e-mail de réabonnement à <strong>'.$adherent->getFullName().'</strong> ?',
+            'message' => 'Êtes-vous sûr de vouloir envoyer un email de réabonnement à <strong>'.$adherent->getFullName().'</strong> ?',
             'object' => $adherent,
             'cancel_action' => 'edit',
         ]);

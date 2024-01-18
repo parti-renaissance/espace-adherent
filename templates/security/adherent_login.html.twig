@@ -28,9 +28,9 @@
         {{ form_start(form, { action: path('app_user_login_check') }) }}
             <ul class="form">
                 <li>
-                     {{ form_label(form._login_email, 'E-mail', { label_attr: { class: 'visually-hidden' } }) }}
+                     {{ form_label(form._login_email, 'Email', { label_attr: { class: 'visually-hidden' } }) }}
                      {{ form_errors(form._login_email) }}
-                     {{ form_widget(form._login_email, { attr: { placeholder: 'E-mail', autocapitalize: 'off' } }) }}
+                     {{ form_widget(form._login_email, { attr: { placeholder: 'Email', autocapitalize: 'off' } }) }}
                 </li>
 
                 <li>

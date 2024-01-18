@@ -115,7 +115,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
             'Registered not validated account' => [
                 'michelle.dufour@example.ch',
                 'secret!12345',
-                'Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau.',
+                'Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu l\'email de validation, vous pouvez cliquer ici pour le recevoir à nouveau.',
             ],
             'Registered disabled account' => [
                 'simple-user-disabled@example.ch',
@@ -169,7 +169,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.re-text-status--error'));
         $this->assertStringContainsString('Si toto@example.org existe, vous recevrez un email dans quelques instants.Cliquez sur le bouton qu\'il contient pour changer votre mot de passe.Si vous n\'avez rien reçu, vérifiez votre saisie avant de réessayer', $crawler->text());
-        $this->assertCount(0, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No mail should have been sent to unknown account.');
+        $this->assertCount(0, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No email should have been sent to unknown account.');
     }
 
     public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail(): void

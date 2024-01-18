@@ -32,7 +32,7 @@
                 {% set send_button_disabled = true %}
 
                 {% if not is_granted(constant('App\\Security\\Voter\\AdherentMessageLimitVoter::USER_CAN_SEND_MESSAGE'), message) %}
-                    <p class="text--medium-small">Vous avez atteint la limite d'envoi de mails pour ce mois-ci</p>
+                    <p class="text--medium-small">Vous avez atteint la limite d'envoi d'emails pour ce mois-ci</p>
                 {% elseif message.recipientCount is not null %}
                     <div>
                         {% if message.recipientCount == 0 %}

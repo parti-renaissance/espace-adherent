@@ -65,7 +65,7 @@
                         </div>
                     {% else %}
                         <div class="text--body">
-                            {% set msg = 'Votre message sera envoyé par e-mail à %s de votre comité.' %}
+                            {% set msg = 'Votre message sera envoyé par email à %s de votre comité.' %}
                             {{ msg|format('participants_count'|trans({ count: contacts|length })) }}
                         </div>
                     {% endif %}

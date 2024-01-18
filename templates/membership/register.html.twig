@@ -43,15 +43,15 @@
                 </li>
 
                 <li>
-                    {{ form_label(form.emailAddress.first, 'E-mail', { label_attr: {class: 'visually-hidden'} }) }}
+                    {{ form_label(form.emailAddress.first, 'Email', { label_attr: {class: 'visually-hidden'} }) }}
                     {{ form_errors(form.emailAddress.first) }}
-                    {{ form_widget(form.emailAddress.first, {attr: {placeholder: 'E-mail'} }) }}
+                    {{ form_widget(form.emailAddress.first, {attr: {placeholder: 'Email'} }) }}
                 </li>
 
                 <li class="visually-hidden">
-                    {{ form_label(form.emailAddress.second, 'Re-saisir l\'e-mail', { label_attr: {class: 'visually-hidden'} }) }}
+                    {{ form_label(form.emailAddress.second, 'Re-saisir l\'email', { label_attr: {class: 'visually-hidden'} }) }}
                     {{ form_errors(form.emailAddress.second) }}
-                    {{ form_widget(form.emailAddress.second, {attr: {placeholder: 'Re-saisir l\'e-mail'} }) }}
+                    {{ form_widget(form.emailAddress.second, {attr: {placeholder: 'Re-saisir l\'email'} }) }}
                 </li>
 
                 <li>

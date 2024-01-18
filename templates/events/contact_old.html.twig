@@ -20,7 +20,7 @@
                     il ne pourra donc pas être envoyé.
                 </div>
             {% else %}
-                <div class="text--body">{{ 'Votre message sera envoyé par e-mail à %s de votre comité.'|format('participants_count'|trans({ count: contacts|length })) }}</div>
+                <div class="text--body">{{ 'Votre message sera envoyé par email à %s de votre comité.'|format('participants_count'|trans({ count: contacts|length })) }}</div>
             {% endif %}
 
             {{ form_start(form) }}

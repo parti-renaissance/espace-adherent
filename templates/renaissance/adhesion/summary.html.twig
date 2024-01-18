@@ -17,7 +17,7 @@
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Prénom', value: command.firstName } %}
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Nom', value: command.lastName } %}
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Adresse postale', value: command.address.fullAddress } %}
-        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'E-mail', value: command.emailAddress } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Email', value: command.emailAddress } %}
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Cotisation', value: command.amount|format_currency('EUR', locale='fr')|replace({',00' : ''}) } %}
 
         {{ form_start(form, { attr: { class: 'mt-10' } }) }}
@@ -26,7 +26,7 @@
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
                 previous_route_name: 'app_renaissance_adhesion',
                 previous_route_label: 'Modifier mes informations',
-                next_button_label: 'Confirmer mon e-mail',
+                next_button_label: 'Confirmer mon email',
             } %}
         {{ form_end(form) }}
     </section>

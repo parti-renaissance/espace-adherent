@@ -38,7 +38,7 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('file', InputArgument::REQUIRED, 'File csv with contact mails')
+            ->addArgument('file', InputArgument::REQUIRED, 'File csv with contact emails')
             ->addOption('adherents', null, InputOption::VALUE_NONE)
             ->addOption('candidates', null, InputOption::VALUE_NONE)
             ->addOption('newsletters', null, InputOption::VALUE_NONE)

@@ -187,7 +187,7 @@ class DonationController extends AbstractController
                         $payboxPaymentUnsubscription->sendConfirmationMessage($donation, $this->getUser());
                         $this->addFlash(
                             'success',
-                            'Votre don mensuel a bien été annulé. Vous recevrez bientôt un mail de confirmation.'
+                            'Votre don mensuel a bien été annulé. Vous recevrez bientôt un email de confirmation.'
                         );
                         $logger->info(sprintf('Subscription donation id(%d) from user email %s have been cancel successfully.', $donation->getId(), $this->getUser()->getEmailAddress()));
                     } catch (PayboxPaymentUnsubscriptionException $e) {

@@ -13,7 +13,7 @@ class NewsletterReferentSubscriptionCalculator extends AbstractNewsletterSubscri
 
     public function getLabel(): string
     {
-        return 'Adhérents inscrits aux mails de leur référent (total)';
+        return 'Adhérents inscrits aux emails de leur référent (total)';
     }
 
     protected function getSubscriptionCode(): string

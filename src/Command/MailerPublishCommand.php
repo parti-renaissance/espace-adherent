@@ -13,7 +13,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
     name: 'app:mailer:publish',
-    description: 'Publish a message in RabbitMQ for the given UUID to redeliver the e-mail'
+    description: 'Publish a message in RabbitMQ for the given UUID to redeliver the email'
 )]
 class MailerPublishCommand extends Command
 {

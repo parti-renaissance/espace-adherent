@@ -12,12 +12,12 @@
             {{ form_start(form, { attr: { 'x-ref': 'form', class: 'flex gap-8 flex-col'} }) }}
                 <twig:ReParagraphStatus status="warning">
                     {% if not accept_email and not accept_sms and not has_phone %}
-                        <span class="font-medium">Attention, vous ne recevrez jamais aucune communication de notre part</span> (hors mail statutaire) :
+                        <span class="font-medium">Attention, vous ne recevrez jamais aucune communication de notre part</span> (hors email statutaire) :
                         <br><br>
                         <ul class="list-disc list-inside">
                             <li>Nous n’avons pas votre numéro de téléphone</li>
                             <li>Vous n’avez pas accepté d’être contacté par téléphone</li>
-                            <li>Vous n’avez pas accepté d’être contacté par e-mail</li>
+                            <li>Vous n’avez pas accepté d’être contacté par email</li>
                         </ul>
                     {% elseif accept_email and not accept_sms and not has_phone %}
                         <span class="font-medium">Attention, vous ne recevrez jamais aucune communication par téléphone de notre part :</span>
@@ -33,12 +33,12 @@
                             <li>Vous n’avez pas accepté d’être contacté par téléphone</li>
                         </ul>
                     {% elseif not accept_email and accept_sms and has_phone %}
-                        <span class="font-medium">Attention, vous ne recevrez jamais aucune communication par mail de notre part (hors mail statutaire)</span>
+                        <span class="font-medium">Attention, vous ne recevrez jamais aucune communication par email de notre part (hors email statutaire)</span>
                     {% elseif not accept_email and not accept_sms and has_phone %}
-                        <span class="font-medium">Attention, plusieurs de vos choix nous empêcheront de communiquer avec vous (hors mail statutaire) :</span>
+                        <span class="font-medium">Attention, plusieurs de vos choix nous empêcheront de communiquer avec vous (hors email statutaire) :</span>
                         <br><br>
                         <ul class="list-disc list-inside">
-                            <li>Vous n’avez pas accepté d’être contacté par e-mail</li>
+                            <li>Vous n’avez pas accepté d’être contacté par email</li>
                             <li>Vous n’avez pas accepté d’être contacté par téléphone</li>
                         </ul>
                     {% endif %}
@@ -62,8 +62,8 @@
                     </div>
 
                     <div class="{{ accept_email ? 'hidden' }}">
-                        <twig:Atoms:ReLabel class="text-ui_gray-80">Communication par e-mail</twig:Atoms:ReLabel>
-                        {{ form_row(form.acceptEmail, {label: 'Je souhaite recevoir les informations sur l\'actualité de Renaissance et ses communications politiques par e-mail'}) }}
+                        <twig:Atoms:ReLabel class="text-ui_gray-80">Communication par email</twig:Atoms:ReLabel>
+                        {{ form_row(form.acceptEmail, {label: 'Je souhaite recevoir les informations sur l\'actualité de Renaissance et ses communications politiques par email'}) }}
                     </div>
                 </div>
 

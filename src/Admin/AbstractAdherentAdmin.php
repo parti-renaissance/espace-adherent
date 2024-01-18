@@ -183,7 +183,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ->end()
             ->with('Abonnement', ['class' => 'col-md-6'])
                 ->add('subscriptionTypes', null, [
-                    'label' => 'Abonné aux notifications via e-mail et mobile',
+                    'label' => 'Abonné aux notifications via email et mobile',
                     'associated_property' => 'label',
                 ])
             ->end()
@@ -316,7 +316,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     ->end()
                     ->with('Abonnement', ['class' => 'col-md-6'])
                         ->add('subscriptionTypes', null, [
-                            'label' => 'Notifications via e-mail et mobile :',
+                            'label' => 'Notifications via email et mobile :',
                             'choice_label' => 'label',
                             'required' => false,
                             'multiple' => true,
@@ -589,7 +589,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         return 'mailchimp_contact.status.'.$label;
                     },
                 ],
-                'label' => 'Abonnement e-mail',
+                'label' => 'Abonnement email',
             ])
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',

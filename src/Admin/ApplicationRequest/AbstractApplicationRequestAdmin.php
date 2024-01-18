@@ -116,7 +116,7 @@ abstract class AbstractApplicationRequestAdmin extends AbstractAdmin
                 'label' => 'Prénom',
             ])
             ->add('emailAddress', null, [
-                'label' => 'E-mail',
+                'label' => 'Email',
             ])
             ->add('favoriteCities', null, [
                 'label' => 'Ville(s) choisie(s)',
@@ -155,7 +155,7 @@ abstract class AbstractApplicationRequestAdmin extends AbstractAdmin
                     'label' => 'Prénom',
                 ])
                 ->add('emailAddress', null, [
-                    'label' => 'E-mail',
+                    'label' => 'Email',
                 ])
                 ->add('address', null, [
                     'label' => 'Adresse',

@@ -97,7 +97,7 @@ class UnregistrationAdmin extends AbstractAdmin
                 },
             ])
             ->add('adherentUuid', CallbackFilter::class, [
-                'label' => 'E-mail',
+                'label' => 'Email',
                 'show_filter' => true,
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {

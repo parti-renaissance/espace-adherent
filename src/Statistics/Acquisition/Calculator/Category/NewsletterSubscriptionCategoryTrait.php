@@ -6,6 +6,6 @@ trait NewsletterSubscriptionCategoryTrait
 {
     public function getCategory(): string
     {
-        return 'Inscriptions e-mails';
+        return 'Inscriptions emails';
     }
 }

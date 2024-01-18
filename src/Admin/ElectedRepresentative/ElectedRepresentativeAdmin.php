@@ -158,7 +158,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'template' => 'admin/elected_representative/show_email.html.twig',
                 ])
                 ->add('contactEmail', null, [
-                    'label' => 'Autre e-mail de contact',
+                    'label' => 'Autre email de contact',
                 ])
                 ->add('phone', null, [
                     'mapped' => false,
@@ -205,10 +205,10 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'required' => false,
                     'label' => 'Adresse email',
                     'help' => 'Attention, changer l\'e-mail ici fera que l\'élu sera associé à un autre compte adhérent.'
-                        .' Si vous souhaitez ajouter un autre mail de contact, faites-le ci-dessous.',
+                        .' Si vous souhaitez ajouter un autre email de contact, faites-le ci-dessous.',
                 ])
                 ->add('contactEmail', null, [
-                    'label' => 'Autre e-mail de contact',
+                    'label' => 'Autre email de contact',
                     'required' => false,
                 ])
                 ->add('contactPhone', PhoneNumberType::class, [
