@@ -60,9 +60,4 @@ class Chatbot
     {
         return (string) $this->code;
     }
-
-    public function generateTelegramBotSecret(): void
-    {
-        $this->telegramBotSecret = Uuid::uuid4()->toString();
-    }
 }
