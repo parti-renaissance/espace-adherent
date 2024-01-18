@@ -2,10 +2,10 @@
 
 namespace App\Chatbot\Command;
 
+use App\Messenger\Message\AbstractUuidMessage;
 use App\Messenger\Message\LockableMessageInterface;
-use App\Messenger\Message\UuidDefaultAsyncMessage;
 
-class RefreshThreadCommand extends UuidDefaultAsyncMessage implements LockableMessageInterface
+class RefreshThreadCommand extends AbstractUuidMessage implements LockableMessageInterface
 {
     public function getLockKey(): string
     {

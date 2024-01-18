@@ -50,7 +50,7 @@ class Thread
     public Collection $messages;
 
     /**
-     * @ORM\OneToOne(targetEntity=Run::class, cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity=Run::class, cascade={"all"}, fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     public ?Run $currentRun = null;
