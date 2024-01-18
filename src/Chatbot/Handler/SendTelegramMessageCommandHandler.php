@@ -23,16 +23,6 @@ class SendTelegramMessageCommandHandler implements MessageHandlerInterface
             return;
         }
 
-        $thread = $message->thread;
-
-        if (
-            !$thread->telegramChatId
-            || !$thread->chatbot->enabled
-            || !$thread->chatbot->telegramBotApiToken
-        ) {
-            return;
-        }
-
         $this->messageHandler->sendMessage($message);
     }
 }
