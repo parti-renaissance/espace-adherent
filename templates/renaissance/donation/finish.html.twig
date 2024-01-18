@@ -20,7 +20,7 @@
             </twig:Atoms:ReCard>
 
             <h1 class="text-ui_gray-90 text-3xl">
-                Merci <span class="text-ui_green-50 font-medium">{{ donation.donator.firstName }}</span> pour votre donation !
+                Merci <span class="text-ui_green-50 font-medium">{{ donation.donator.firstName }}</span> pour votre <span class="whitespace-nowrap">don !</span>
             </h1>
             <div class="text-ui_gray-80 text-base flex flex-col gap-4">
                 <p>
@@ -36,17 +36,20 @@
                     Merci à vous de soutenir notre parti.
                 </p>
                 <p>
-                    Stéphane Séjourné <br>
+                    <span class="font-medium">Stéphane Séjourné</span><br>
                     Secrétaire général de Renaissance
                 </p>
-                <p>
-                   Un <span class="font-medium">email contenant le reçu</span> de votre don vous a été envoyé. Merci de faire partie intégrante de notre succès commun.
-                </p>
+
             </div>
+            <twig:ReParagraphStatus status="success">
+                <p class="text-ui_gray-80">
+                    Un <span class="font-medium">email contenant le reçu</span> de votre don vous a été envoyé. Merci de faire partie intégrante de notre succès commun.
+                </p>
+            </twig:ReParagraphStatus>
 
             {% set backPath = app.user ? 'app_renaissance_adherent_space': 'app_renaissance_homepage'  %}
 
-            <twig:ReButton href="{{ path(backPath) }}" tag="a" color="green" class="mt-8">
+            <twig:ReButton href="{{ path(backPath) }}" tag="a" color="green" class="">
                 Retour
             </twig:ReButton>
 
