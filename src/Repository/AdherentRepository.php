@@ -1330,24 +1330,32 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }
 
         $qb = $this->createQueryBuilder('a')
-            ->where('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName), \' \', LOWER(a.emailAddress)) LIKE :name')
-            ->andWhere('a.status = :status')
-            ->setParameters([
-                'name' => '%'.strtolower(trim($filter->q)).'%',
-                'status' => Adherent::ENABLED,
-            ])
+            ->where('a.status = :status')
+            ->setParameter('status', Adherent::ENABLED)
         ;
 
-        if (!empty($filter->managedZones)) {
-            $this->withGeoZones(
-                $filter->managedZones,
-                $qb,
-                'a',
-                Adherent::class,
-                'a2',
-                'zones',
-                'z2'
-            );
+        if (filter_var($filter->q, \FILTER_VALIDATE_EMAIL)) {
+            $qb
+                ->andWhere('a.emailAddress = :email')
+                ->setParameter('email', $filter->q)
+            ;
+        } else {
+            $qb
+                ->andWhere('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName), \' \', LOWER(a.emailAddress)) LIKE :name')
+                ->setParameter('name', '%'.trim($filter->q).'%')
+            ;
+
+            if (!empty($filter->managedZones)) {
+                $this->withGeoZones(
+                    $filter->managedZones,
+                    $qb,
+                    'a',
+                    Adherent::class,
+                    'a2',
+                    'zones',
+                    'z2'
+                );
+            }
         }
 
         if ($filter->committee || $filter->managedCommitteeUuids) {

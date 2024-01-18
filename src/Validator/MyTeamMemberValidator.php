@@ -3,7 +3,6 @@
 namespace App\Validator;
 
 use App\Entity\Adherent;
-use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -11,13 +10,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class MyTeamMemberValidator extends ConstraintValidator
 {
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
-    private ZoneRepository $zoneRepository;
-
-    public function __construct(ScopeGeneratorResolver $scopeGeneratorResolver, ZoneRepository $zoneRepository)
+    public function __construct(private readonly ScopeGeneratorResolver $scopeGeneratorResolver)
     {
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
-        $this->zoneRepository = $zoneRepository;
     }
 
     public function validate($value, Constraint $constraint): void
@@ -38,8 +32,7 @@ class MyTeamMemberValidator extends ConstraintValidator
             ;
         }
 
-        if (!($scope = $this->scopeGeneratorResolver->generate())
-            || !($zones = $scope->getZones())) {
+        if (!$scope = $this->scopeGeneratorResolver->generate()) {
             return;
         }
 
@@ -53,16 +46,6 @@ class MyTeamMemberValidator extends ConstraintValidator
             $this
                 ->context
                 ->buildViolation($constraint->messageCurrentUser)
-                ->addViolation()
-            ;
-
-            return;
-        }
-
-        if (!$this->zoneRepository->isInZones($value->getZones()->toArray(), $zones)) {
-            $this
-                ->context
-                ->buildViolation($constraint->messageInvalidAdherent)
                 ->addViolation()
             ;
         }

@@ -81,13 +81,8 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "adherent: Le militant choisi ne fait pas partie de la zone géographique que vous gérez.\nrole: Ce poste n'est pas valide.\nscope_features: Une ou plusieurs des accès délégués ne sont pas valides.",
+        "detail": "role: Ce poste n'est pas valide.\nscope_features: Une ou plusieurs des accès délégués ne sont pas valides.",
         "violations": [
-            {
-                "code": null,
-                "message": "Le militant choisi ne fait pas partie de la zone géographique que vous gérez.",
-                "propertyPath": "adherent"
-            },
             {
                 "code": "@uuid@",
                 "propertyPath": "role",
@@ -172,34 +167,6 @@ Feature:
 
   Scenario: As a referent I cannot add a new member in my team, if the user is not in my managed zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
-    """
-    {
-        "team": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26",
-        "adherent": "2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf",
-        "role": "mobilization_manager",
-        "scope_features": [
-          "contacts",
-          "messages"
-        ]
-    }
-    """
-    Then the response status code should be 400
-    And the JSON should be equal to:
-    """
-    {
-        "type": "https://tools.ietf.org/html/rfc2616#section-10",
-        "title": "An error occurred",
-        "detail": "adherent: Le militant choisi ne fait pas partie de la zone géographique que vous gérez.",
-        "violations": [
-            {
-                "code": null,
-                "propertyPath": "adherent",
-                "message": "Le militant choisi ne fait pas partie de la zone géographique que vous gérez."
-            }
-        ]
-    }
-    """
     When I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
     """
     {
