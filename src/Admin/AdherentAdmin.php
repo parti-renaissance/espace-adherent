@@ -453,6 +453,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
             'type',
             'allMandates',
             'mailchimpStatus',
+            'tags',
             ListMapper::NAME_ACTIONS,
         ]);
     }

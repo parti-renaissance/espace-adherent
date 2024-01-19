@@ -111,6 +111,7 @@ class AdherentElectedRepresentativeAdmin extends AbstractAdherentAdmin
             'mandates',
             'allMandates',
             'mailchimpStatus',
+            'tags',
             ListMapper::NAME_ACTIONS,
         ]);
     }

@@ -844,6 +844,10 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 'label' => 'Abonnement',
                 'template' => 'admin/adherent/list_email_subscription_status.html.twig',
             ])
+            ->add('tags', null, [
+                'label' => 'Labels',
+                'template' => 'admin/adherent/list_tags.html.twig',
+            ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'template' => 'admin/adherent/list_actions.html.twig',
