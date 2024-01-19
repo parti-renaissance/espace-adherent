@@ -7,6 +7,6 @@
         {{ xSyncStatus ? (':class="`re-text-status--${ ' ~ xSyncStatus ~ ' }`"')|raw }}
         {{ xSyncValue ? ('x-text="' ~ xSyncValue ~ '"')|raw }}
     >
-        {{ value }}
+        {{ value | raw }}
     </span>
 </span>
