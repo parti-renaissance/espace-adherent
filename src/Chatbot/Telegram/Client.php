@@ -6,6 +6,7 @@ use TelegramBot\Api\BotApi;
 
 class Client
 {
+    private const PARSE_MODE = 'MarkdownV2';
     private const MAX_CONNECTIONS = 40;
     private const ALLOWED_UPDATE_TYPES = [
         'message',
@@ -29,7 +30,7 @@ class Client
 
     public function sendMessage(string $botApiToken, string $chatId, string $messageText): void
     {
-        $this->createClient($botApiToken)->sendMessage($chatId, $messageText);
+        $this->createClient($botApiToken)->sendMessage($chatId, $messageText, self::PARSE_MODE);
     }
 
     private function createClient(string $botApiToken): BotApi
