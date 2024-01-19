@@ -1,0 +1,12 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% for tag in object.tags %}
+        <span class="label" style="background-color: {{ (tag starts with 'adherent') ? '#00205F' : '#d2d6de' }};">
+            {{ ('adherent.tag.' ~ tag)|trans }}
+        </span>
+        {% if not loop.last %}
+        <br>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
