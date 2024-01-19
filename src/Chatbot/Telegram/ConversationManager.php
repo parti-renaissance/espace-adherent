@@ -31,7 +31,7 @@ class ConversationManager
 
     private function getCurrentThread(Chatbot $chatbot, string $telegramChatId): Thread
     {
-        if ($thread = $this->threadRepository->findOneByTelegramChatId($telegramChatId)) {
+        if ($thread = $this->threadRepository->findOneForTelegram($chatbot, $telegramChatId)) {
             return $thread;
         }
 
