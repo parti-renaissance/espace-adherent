@@ -34,6 +34,7 @@
                         initStep="currentStep"
                 />
             </header>
+            {{ form_start(form) }}
             <div class="bg-[#F6F7F4] md:flex">
 
                 <div class="w-full relative mb-8">
@@ -54,8 +55,21 @@
                     <div class="flex-col justify-start items-start gap-8 inline-flex" x-data="{formData:{
                         email: '{{ form.vars.value.emailAddress }}'
                     }}">
-                        {{ form_start(form) }}
                         <div class="flex gap-8 flex-col p-0 sm:p-5">
+                            {% if form.vars.errors|length > 0 %}
+                                <twig:ReParagraphStatus status="error" icon class="max-w-[500px]">
+                                    <ul
+                                        {% if form.vars.errors|length > 1 %}
+                                            class="list-disc list-inside flex flex-col gap-2.5"
+                                        {% endif %}
+                                    >
+                                    {% for error in form.vars.errors %}
+                                        <li class="[&>a]:font-medium [&>a]:underline">{{ error.message|raw }}</li>
+                                    {% endfor %}
+                                    </ul>
+                                </twig:ReParagraphStatus>
+                            {% endif %}
+
                             <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
                                 <twig:Atoms:ReLinkedToggle color="green" name="duration" id="donation_duration_picker" label="Choix du montant">
                                     <twig:Atoms:ReToggleButton
@@ -227,10 +241,10 @@
                             <div class="spacer h-[50vh]"></div>
                         </div>
                     </div>
-                    {{ form_end(form) }}
-                    <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
                 </div>
             </div>
+            {{ form_end(form) }}
+            <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
         </section>
     </main>
 {% endblock %}
