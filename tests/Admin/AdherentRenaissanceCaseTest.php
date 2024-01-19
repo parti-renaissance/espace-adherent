@@ -104,7 +104,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringContainsString(
-            "L'adhérent $fullName a bien été supprimé.",
+            "L'adhérent $fullName ($email) a bien été supprimé.",
             $crawler->filter('.alert.alert-success ')->text()
         );
 
@@ -476,7 +476,12 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         self::assertStringContainsString(
-            'Le compte adhérent Renaissance a bien été créé.',
+            sprintf(
+                '%s %s (%s)',
+                $submittedValues['firstName'],
+                $submittedValues['lastName'],
+                $submittedValues['email']
+            ),
             $crawler->filter('.alert-success')->text()
         );
 
