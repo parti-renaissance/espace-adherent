@@ -74,6 +74,7 @@ class AdminAdherentCRUDController extends CRUDController
 
     public function terminateMembershipAction(Request $request, UnregistrationManager $unregistrationManager): Response
     {
+        /** @var Adherent $adherent */
         $adherent = $this->admin->getSubject();
 
         $this->admin->checkAccess('terminate_membership', $adherent);
@@ -97,7 +98,11 @@ class AdminAdherentCRUDController extends CRUDController
         if ($form->isSubmitted() && $form->isValid()) {
             $unregistrationManager->terminateMembership($adherent, $unregistrationCommand);
 
-            $this->addFlash('success', sprintf('L\'adhérent <b>%s</b> a bien été supprimé.', $adherent->getFullName()));
+            $this->addFlash('success', sprintf(
+                'L\'adhérent <b>%s</b> (%s) a bien été supprimé.',
+                $adherent->getFullName(),
+                $adherent->getEmailAddress()
+            ));
 
             return $this->redirectToList();
         }
@@ -118,8 +123,9 @@ class AdminAdherentCRUDController extends CRUDController
 
         if (!$this->isGranted(CertificationPermissions::CERTIFY, $adherent)) {
             $this->addFlash('error', sprintf(
-                'L\'adhérent <b>%s</b> est déjà certifié.',
-                $adherent->getFullName()
+                'L\'adhérent <b>%s</b> (%s) est déjà certifié.',
+                $adherent->getFullName(),
+                $adherent->getEmailAddress()
             ));
 
             return $this->redirectTo($request, $adherent);
@@ -135,8 +141,9 @@ class AdminAdherentCRUDController extends CRUDController
                 $certificationManager->certify($adherent, $this->getUser());
 
                 $this->addFlash('success', sprintf(
-                    'L\'adhérent <b>%s</b> a bien été certifié.',
-                    $adherent->getFullName()
+                    'L\'adhérent <b>%s</b> (%s) a bien été certifié.',
+                    $adherent->getFullName(),
+                    $adherent->getEmailAddress()
                 ));
             }
 
@@ -160,8 +167,9 @@ class AdminAdherentCRUDController extends CRUDController
 
         if (!$this->isGranted(CertificationPermissions::UNCERTIFY, $adherent)) {
             $this->addFlash('error', sprintf(
-                'L\'adhérent <b>%s</b> n\'est pas certifié.',
-                $adherent->getFullName()
+                'L\'adhérent <b>%s</b> (%s) n\'est pas certifié.',
+                $adherent->getFullName(),
+                $adherent->getEmailAddress()
             ));
 
             return $this->redirectTo($request, $adherent);
@@ -177,8 +185,9 @@ class AdminAdherentCRUDController extends CRUDController
                 $certificationManager->uncertify($adherent, $this->getUser());
 
                 $this->addFlash('warning', sprintf(
-                    'L\'adhérent <b>%s</b> n\'est plus certifié.',
-                    $adherent->getFullName()
+                    'L\'adhérent <b>%s</b> (%s) n\'est plus certifié.',
+                    $adherent->getFullName(),
+                    $adherent->getEmailAddress()
                 ));
             }
 
@@ -230,7 +239,11 @@ class AdminAdherentCRUDController extends CRUDController
         return $this->renderWithExtraParams('admin/CRUD/confirm.html.twig', [
             'csrf_token' => $this->getCsrfToken('admin.adherent.send_email'),
             'action' => 'send_resubscribe_email',
-            'message' => 'Êtes-vous sûr de vouloir envoyer un email de réabonnement à <strong>'.$adherent->getFullName().'</strong> ?',
+            'message' => sprintf(
+                'Êtes-vous sûr de vouloir envoyer un email de réabonnement à <b>%s</b> (%s) ?',
+                $adherent->getFullName(),
+                $adherent->getEmailAddress()
+            ),
             'object' => $adherent,
             'cancel_action' => 'edit',
         ]);
@@ -289,7 +302,12 @@ class AdminAdherentCRUDController extends CRUDController
         if ($form->isSubmitted() && $form->isValid()) {
             $adherentCreateCommandHandler->handle($command, $this->getUser(), $adherent);
 
-            $this->addFlash('sonata_flash_success', 'Le compte adhérent Renaissance a bien été créé.');
+            $this->addFlash('sonata_flash_success', sprintf(
+                'Le compte adhérent Renaissance <b>%s %s</b> (%s) a bien été créé.',
+                $command->firstName,
+                $command->lastName,
+                $command->email
+            ));
 
             return $this->redirect($this->admin->generateUrl('create_renaissance_verify_email'));
         }
