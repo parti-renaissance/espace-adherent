@@ -86,7 +86,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I simulate IPN call with "00000" code for the last donation of "jean.dupont@en-marche.fr"
     Then I should see "Continuons à transformer notre pays ensemble !"
 
-    Given I am on "/v1don"
+    Given I am on "/v1/don"
     And wait 2 second until I see "Une fois"
     And I click the "donation-monthly_label" element
     And I press "50 €"
@@ -123,12 +123,12 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | LoadAdherentData          |
       | LoadDonatorIdentifierData |
     And I am logged as "jacques.picard@en-marche.fr"
-    And I am on " /v1/don"
+    And I am on "/v1/don"
     And wait 2 second until I see "Une fois"
     When I click the "donation-monthly_label" element
     And I press "50 €"
     And I press "Je donne maintenant"
-    Then I should be on " /v1/don/coordonnees?montant=50&abonnement=1"
+    Then I should be on "/v1/don/coordonnees?montant=50&abonnement=1"
 
     When I fill in the following:
       | app_donation_nationality | FR |
@@ -153,12 +153,12 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Then I should see "Continuons à transformer notre pays ensemble !"
 
     # Check if I can't continue create a new subscription and then can cancel a subscription
-    Given I am on " /v1/don"
+    Given I am on "/v1/don"
     And wait 2 second until I see "Une fois"
     And I click the "donation-monthly_label" element
     And I press "50 €"
     When I press "Je donne maintenant"
-    Then I should be on " /v1/don/coordonnees?montant=50&abonnement=1"
+    Then I should be on "/v1/don/coordonnees?montant=50&abonnement=1"
 
     When I fill in the following:
       | app_donation_nationality | FR |
@@ -166,7 +166,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
     And I press "Finaliser mon don"
-    Then I should be on " /v1/don/coordonnees?montant=50&abonnement=1"
+    Then I should be on "/v1/don/coordonnees?montant=50&abonnement=1"
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
 
     When I follow "vous rendre sur votre profil"
@@ -178,12 +178,12 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Then I should see "Votre don mensuel a bien été annulé. Vous recevrez bientôt un email de confirmation."
 
     # Check if I can create a new subscription after cancel subscription
-    Given I am on " /v1/don"
+    Given I am on "/v1/don"
     And wait 2 second until I see "Une fois"
     When I click the "donation-monthly_label" element
     And I press "50 €"
     And I press "Je donne maintenant"
-    Then I should be on " /v1/don/coordonnees?montant=50&abonnement=1"
+    Then I should be on "/v1/don/coordonnees?montant=50&abonnement=1"
 
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
@@ -210,12 +210,12 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | LoadDonationData          |
       | LoadDonatorIdentifierData |
     And I am logged as "jacques.picard@en-marche.fr"
-    And I am on " /v1/don"
+    And I am on "/v1/don"
     And wait 2 second until I see "Une fois"
     When I click the "donation-monthly_label" element
     And I press "50 €"
     And I press "Je donne maintenant"
-    Then I should be on " /v1/don/coordonnees?montant=50&abonnement=1"
+    Then I should be on "/v1/don/coordonnees?montant=50&abonnement=1"
 
     When I fill in the following:
       | app_donation_nationality | FR |
@@ -223,11 +223,11 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
     And I press "Finaliser mon don"
-    Then I should be on " /v1/don/coordonnees?montant=50&abonnement=1"
+    Then I should be on "/v1/don/coordonnees?montant=50&abonnement=1"
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
 
     When I follow "faire un nouveau don unique"
-    Then I should be on " /v1/don/coordonnees?montant=50"
+    Then I should be on "/v1/don/coordonnees?montant=50"
     And I should not see "200€ / mois"
 
     When I click the "donation_check_label" element
