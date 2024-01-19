@@ -39,7 +39,7 @@ class TransactionCallbackHandler
                 return new RedirectResponse($this->router->generate('app_adhesion_index'));
             }
 
-            return new RedirectResponse($this->router->generate('app_renaissance_donation'));
+            return new RedirectResponse($this->router->generate('app_donation_index'));
         }
 
         $payload = $this->donationRequestUtils->extractPayboxResultFromCallback($request, $callbackToken);

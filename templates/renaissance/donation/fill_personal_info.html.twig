@@ -12,7 +12,7 @@
     {% endif %}
 {% endblock %}
 
-{% set back_btn_target = path('app_renaissance_donation') %}
+{% set back_btn_target = path('app_donation_index') %}
 
 {% block donation_content %}
     <section>
@@ -36,7 +36,7 @@
             {{ form_row(form.address, { label: 'Adresse postale' }) }}
 
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
-                previous_route_name: 'app_renaissance_donation',
+                previous_route_name: 'app_donation_index',
             } %}
         {{ form_end(form) }}
     </section>

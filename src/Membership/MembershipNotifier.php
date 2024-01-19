@@ -77,7 +77,7 @@ class MembershipNotifier implements LoggerAwareInterface
             ? $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent(
                 $adherent,
                 $this->callbackManager->generateUrl('app_renaissance_adherent_profile', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                $this->callbackManager->generateUrl('app_renaissance_donation', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                $this->callbackManager->generateUrl('app_donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 $this->callbackManager->generateUrl('app_my_committee_show_current', [], UrlGeneratorInterface::ABSOLUTE_URL),
             ))
             : $this->transactionalMailer->sendMessage(Message\AdherentAccountConfirmationMessage::createFromAdherent($adherent));
@@ -88,7 +88,7 @@ class MembershipNotifier implements LoggerAwareInterface
         $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceReAdhesionConfirmationMessage::createFromAdherent(
             $adherent,
             $this->callbackManager->generateUrl('app_renaissance_adherent_profile', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            $this->callbackManager->generateUrl('app_renaissance_donation', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->callbackManager->generateUrl('app_donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL),
             $this->callbackManager->generateUrl('app_my_committee_show_current', [], UrlGeneratorInterface::ABSOLUTE_URL),
         ));
     }

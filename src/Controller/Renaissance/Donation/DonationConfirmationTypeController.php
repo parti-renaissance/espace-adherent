@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/don/confirmation-type-de-don', name: 'app_renaissance_donation_confirmation_type', methods: ['GET|POST'])]
+#[Route(path: '/v1/don/confirmation-type-de-don', name: 'app_renaissance_donation_confirmation_type', methods: ['GET|POST'])]
 class DonationConfirmationTypeController extends AbstractDonationController
 {
     public function __invoke(Request $request): Response
@@ -15,7 +15,7 @@ class DonationConfirmationTypeController extends AbstractDonationController
         $command = $this->getCommand();
 
         if (!$this->processor->canChangeDonationType($command)) {
-            return $this->redirectToRoute('app_renaissance_donation');
+            return $this->redirectToRoute('app_donation_index');
         }
 
         $this->processor->doChangeDonationType($command);
