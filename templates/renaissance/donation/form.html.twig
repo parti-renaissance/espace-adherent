@@ -34,7 +34,7 @@
                         initStep="currentStep"
                 />
             </header>
-                        {{ form_start(form) }}
+            {{ form_start(form) }}
             <div class="bg-[#F6F7F4] md:flex">
 
                 <div class="w-full relative mb-8">
@@ -242,8 +242,8 @@
                         </div>
                     </div>
                 </div>
-                    {{ form_end(form) }}
-                    <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
+                {{ form_end(form) }}
+                <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
             </div>
         </section>
     </main>
