@@ -380,6 +380,6 @@ jobs:
             location: ${{ secrets.GKE_REGION }}
 
       - run: |-
-          for GKE_DEPLOYMENT in $(echo ${{ secrets.GKE_DEPLOYMENTS }}); do
+          for GKE_DEPLOYMENT in $(echo ${{ vars.GKE_DEPLOYMENTS }}); do
             kubectl set image deployment/$GKE_DEPLOYMENT ${{ secrets.GKE_CONTAINER }}=${{ env.REGISTRY }}:$TAG-$HASH
           done
