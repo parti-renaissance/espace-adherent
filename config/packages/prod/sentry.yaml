@@ -3,6 +3,11 @@ services:
     Sentry\Integration\FrameContextifierIntegration: ~
     Sentry\Integration\RequestIntegration: ~
     Sentry\Integration\TransactionIntegration: ~
+    Sentry\Integration\IgnoreErrorsIntegration:
+        arguments:
+            $options:
+                ignore_exceptions:
+                    - App\Messenger\Exception\NeedRetryExceptionInterface
 
 sentry:
     dsn: "%env(SENTRY_DSN)%"
@@ -12,6 +17,7 @@ sentry:
         send_default_pii: true
         default_integrations: false
         integrations:
+            - Sentry\Integration\IgnoreErrorsIntegration
             - Sentry\Integration\EnvironmentIntegration
             - Sentry\Integration\FrameContextifierIntegration
             - Sentry\Integration\RequestIntegration
