@@ -55,6 +55,7 @@
                         email: '{{ form.vars.value.emailAddress }}'
                     }}">
                         {{ form_start(form) }}
+                        {{ form_errors(form) }}
                         <div class="flex gap-8 flex-col p-0 sm:p-5">
                             <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
                                 <twig:Atoms:ReLinkedToggle color="green" name="duration" id="donation_duration_picker" label="Choix du montant">
