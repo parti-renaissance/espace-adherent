@@ -4096,16 +4096,16 @@
         },
         {
             "name": "gocardless/gocardless-pro",
-            "version": "5.6.0",
+            "version": "5.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gocardless/gocardless-pro-php.git",
-                "reference": "56c45d295f312e39e4991759fb2b0819717578df"
+                "reference": "882efd66430b6dec9baeceb2ea6bb7078c3ef908"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gocardless/gocardless-pro-php/zipball/56c45d295f312e39e4991759fb2b0819717578df",
-                "reference": "56c45d295f312e39e4991759fb2b0819717578df",
+                "url": "https://api.github.com/repos/gocardless/gocardless-pro-php/zipball/882efd66430b6dec9baeceb2ea6bb7078c3ef908",
+                "reference": "882efd66430b6dec9baeceb2ea6bb7078c3ef908",
                 "shasum": ""
             },
             "require": {
@@ -4145,9 +4145,9 @@
             ],
             "support": {
                 "issues": "https://github.com/gocardless/gocardless-pro-php/issues",
-                "source": "https://github.com/gocardless/gocardless-pro-php/tree/v5.6.0"
+                "source": "https://github.com/gocardless/gocardless-pro-php/tree/v5.7.0"
             },
-            "time": "2024-01-10T12:52:43+00:00"
+            "time": "2024-01-18T10:49:50+00:00"
         },
         {
             "name": "google/auth",
