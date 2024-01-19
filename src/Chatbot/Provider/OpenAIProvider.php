@@ -74,7 +74,7 @@ class OpenAIProvider implements ProviderInterface
                 $messageResponse->id,
                 $messageResponse->role,
                 $content,
-                new \DateTimeImmutable($messageResponse->createdAt)
+                new \DateTimeImmutable('@'.$messageResponse->createdAt)
             );
         }
 
