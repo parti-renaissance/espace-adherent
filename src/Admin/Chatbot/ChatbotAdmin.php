@@ -34,6 +34,7 @@ class ChatbotAdmin extends AbstractAdmin
                 ])
                 ->add('telegramBotApiToken', TextType::class, [
                     'label' => 'Clé API Bot Telegram',
+                    'required' => false,
                     'help' => 'Remplir seulement si ce chatbot est associé à un bot Telegram',
                 ])
                 ->add('enabled', CheckboxType::class, [
