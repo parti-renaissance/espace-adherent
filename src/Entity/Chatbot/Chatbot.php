@@ -2,9 +2,13 @@
 
 namespace App\Entity\Chatbot;
 
+use App\Chatbot\Enum\AssistantTypeEnum;
+use App\Chatbot\Enum\ChatbotTypeEnum;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\OpenAI\Assistant as OpenAIAssistant;
+use App\Entity\TelegramBot;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -27,29 +31,39 @@ class Chatbot
      *
      * @Assert\NotBlank
      */
-    public ?string $code = null;
+    public ?string $name = null;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(enumType=ChatbotTypeEnum::class)
      *
      * @Assert\NotBlank
+     * @Assert\Type(type=ChatbotTypeEnum::class)
      */
-    public ?string $assistantId = null;
+    public ?ChatbotTypeEnum $type = null;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(enumType=AssistantTypeEnum::class)
+     *
+     * @Assert\NotBlank
+     * @Assert\Type(type=AssistantTypeEnum::class)
      */
-    public bool $enabled = false;
+    public ?AssistantTypeEnum $assistantType = null;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @ORM\OneToOne(targetEntity=OpenAIAssistant::class, cascade={"all"})
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     *
+     * @Assert\Expression(expression="this.isOpenAIAssistant() and value")
      */
-    public ?string $telegramBotApiToken = null;
+    public ?OpenAIAssistant $openAiAssistant = null;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @ORM\OneToOne(targetEntity=TelegramBot::class, cascade={"all"})
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     *
+     * @Assert\Expression(expression="this.isTelegramBot() and value")
      */
-    public ?string $telegramBotSecret = null;
+    public ?TelegramBot $telegramBot = null;
 
     public function __construct(?UuidInterface $uuid = null)
     {
@@ -58,6 +72,16 @@ class Chatbot
 
     public function __toString(): string
     {
-        return (string) $this->code;
+        return (string) $this->name;
+    }
+
+    public function isOpenAIAssistant(): bool
+    {
+        return AssistantTypeEnum::OPENAI === $this->assistantType;
+    }
+
+    public function isTelegramBot(): bool
+    {
+        return ChatbotTypeEnum::TELEGRAM === $this->type;
     }
 }

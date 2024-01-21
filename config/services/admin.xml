@@ -228,14 +228,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.chatbot_chatbot" class="App\Admin\Chatbot\ChatbotAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Chatbots" group="Communication" />
-
-            <argument />
-            <argument>App\Entity\Chatbot\Chatbot</argument>
-            <argument />
-        </service>
-
         <!--
         ######################################################
         # Adhérents
@@ -986,6 +978,22 @@
             <argument>App\Entity\ChezVous\MeasureType</argument>
             <argument />
             <argument type="service" id="event_dispatcher"/>
+        </service>
+
+        <service id="app.admin.chatbot_chatbot" class="App\Admin\Chatbot\ChatbotAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Chatbots" group="Tech" />
+
+            <argument />
+            <argument>App\Entity\Chatbot\Chatbot</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.telegram_bot" class="App\Admin\TelegramBotAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Bots Telegram" group="Tech" />
+
+            <argument />
+            <argument>App\Entity\TelegramBot</argument>
+            <argument />
         </service>
 
         <!--

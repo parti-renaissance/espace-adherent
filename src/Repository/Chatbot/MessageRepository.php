@@ -13,8 +13,9 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
-    public function findOneByUuid(string $uuid): ?Message
+    public function save(Message $message): void
     {
-        return $this->findOneBy(['uuid' => $uuid]);
+        $this->_em->persist($message);
+        $this->_em->flush();
     }
 }

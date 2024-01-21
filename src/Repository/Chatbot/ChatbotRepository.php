@@ -3,8 +3,8 @@
 namespace App\Repository\Chatbot;
 
 use App\Entity\Chatbot\Chatbot;
+use App\Entity\TelegramBot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ChatbotRepository extends ServiceEntityRepository
@@ -14,22 +14,14 @@ class ChatbotRepository extends ServiceEntityRepository
         parent::__construct($registry, Chatbot::class);
     }
 
-    public function findOneEnabledBySecret(string $telegramBotSecret): ?Chatbot
-    {
-        return $this->createEnabledQueryBuilder('chatbot')
-            ->andWhere('chatbot.telegramBotSecret = :telegram_bot_secret')
-            ->setParameter('telegram_bot_secret', $telegramBotSecret)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-
-    private function createEnabledQueryBuilder(string $alias): QueryBuilder
+    public function findOneByTelegramBot(TelegramBot $telegramBot): ?Chatbot
     {
         return $this
-            ->createQueryBuilder($alias)
-            ->where("$alias.enabled = :enabled")
-            ->setParameter('enabled', true)
+            ->createQueryBuilder('chatbot')
+            ->andWhere('chatbot.telegramBot = :telegram_bot')
+            ->setParameter('telegram_bot', $telegramBot)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 }

@@ -77,7 +77,7 @@ framework:
                     queues:
                         chatbot: { binding_keys: [ 'chatbot' ] }
         routing:
-            App\Chatbot\Command\RefreshThreadCommand: chatbot
+            App\OpenAI\Command\RunThreadCommand: chatbot
             App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
             App\Mailchimp\SynchronizeMessageInterface: mailchimp_sync
             App\Pap\Command\AsynchronousMessageInterface: pap

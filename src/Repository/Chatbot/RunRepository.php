@@ -13,8 +13,14 @@ class RunRepository extends ServiceEntityRepository
         parent::__construct($registry, Run::class);
     }
 
-    public function findOneByUuid(string $uuid): ?Run
+    public function findOneByOpenAiId(string $openAiId): ?Run
     {
-        return $this->findOneBy(['uuid' => $uuid]);
+        return $this->findOneBy(['openAiId' => $openAiId]);
+    }
+
+    public function save(Run $run): void
+    {
+        $this->_em->persist($run);
+        $this->_em->flush();
     }
 }

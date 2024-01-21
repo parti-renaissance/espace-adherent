@@ -1480,3 +1480,9 @@ administrator:
             communautes_thematiques: Communautés thématiques
             elections_departementales: Élections départementales
             archives: Archives
+
+chatbot:
+    type:
+        telegram: Telegram
+    assistant_type:
+        openai: OpenAI

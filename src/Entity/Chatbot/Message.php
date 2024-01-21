@@ -2,8 +2,10 @@
 
 namespace App\Entity\Chatbot;
 
+use App\Chatbot\Enum\MessageRoleEnum;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\OpenAI\OpenAIResourceTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -17,10 +19,7 @@ class Message
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use ExternalResourceTrait;
-
-    public const ROLE_USER = 'user';
-    public const ROLE_ASSISTANT = 'assistant';
+    use OpenAIResourceTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity=Thread::class, inversedBy="messages")
@@ -29,18 +28,25 @@ class Message
     public Thread $thread;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(enumType=MessageRoleEnum::class)
      *
      * @Groups({"chatbot:read"})
      */
-    public string $role;
+    public ?MessageRoleEnum $role = null;
 
     /**
      * @ORM\Column(type="text")
      *
      * @Groups({"chatbot:read"})
      */
-    public string $content;
+    public string $text;
+
+    /**
+     * @ORM\Column(type="json")
+     *
+     * @Groups({"chatbot:read"})
+     */
+    public array $entities = [];
 
     /**
      * @ORM\Column(type="datetime")
@@ -49,13 +55,19 @@ class Message
      */
     public \DateTimeInterface $date;
 
-    public function __construct(?UuidInterface $uuid = null)
+    /**
+     * @ORM\ManyToOne(targetEntity=Run::class)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    public ?Run $run = null;
+
+    public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
     public function isUserMessage(): bool
     {
-        return self::ROLE_USER === $this->role;
+        return MessageRoleEnum::USER === $this->role;
     }
 }

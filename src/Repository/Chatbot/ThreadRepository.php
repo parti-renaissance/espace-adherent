@@ -36,4 +36,10 @@ class ThreadRepository extends ServiceEntityRepository
     {
         $this->_em->refresh($thread);
     }
+
+    public function save(Thread $thread): void
+    {
+        $this->_em->persist($thread);
+        $this->_em->flush($thread);
+    }
 }

@@ -4,6 +4,8 @@ namespace App\Entity\Chatbot;
 
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\OpenAI\OpenAIResourceTrait;
+use App\OpenAI\Enum\RunStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -16,12 +18,7 @@ class Run
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use ExternalResourceTrait;
-
-    public const STATUS_QUEUED = 'queued';
-    public const STATUS_IN_PROGRESS = 'in_progress';
-    public const STATUS_COMPLETED = 'completed';
-    public const STATUS_CANCELLED = 'cancelled';
+    use OpenAIResourceTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity=Thread::class)
@@ -30,9 +27,9 @@ class Run
     public Thread $thread;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(enumType=RunStatusEnum::class)
      */
-    public string $status = self::STATUS_QUEUED;
+    public ?RunStatusEnum $status = RunStatusEnum::QUEUED;
 
     public function __construct(?UuidInterface $uuid = null)
     {
@@ -41,19 +38,21 @@ class Run
 
     public function needRefresh(): bool
     {
-        return \in_array($this->status, [
-            self::STATUS_QUEUED,
-            self::STATUS_IN_PROGRESS,
-        ], true);
+        return \in_array($this->status, RunStatusEnum::NEED_REFRESH, true);
     }
 
     public function isInProgress(): bool
     {
-        return self::STATUS_IN_PROGRESS === $this->status;
+        return RunStatusEnum::IN_PROGRESS === $this->status;
+    }
+
+    public function isCompleted(): bool
+    {
+        return RunStatusEnum::COMPLETED === $this->status;
     }
 
     public function cancel(): void
     {
-        $this->status = self::STATUS_CANCELLED;
+        $this->status = RunStatusEnum::CANCELLED;
     }
 }
