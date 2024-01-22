@@ -137,7 +137,7 @@ class AdherentFactory
 
         $adherent->join();
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
-        $adherent->tags = [TagEnum::SYMPATHISANT];
+        $adherent->tags = [TagEnum::SYMPATHISANT, TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
         $adherent->setPapUserRole(true);
 
         return $adherent;
@@ -156,7 +156,7 @@ class AdherentFactory
             nationality: $membershipRequest->nationality,
         );
 
-        $adherent->tags = [TagEnum::SYMPATHISANT];
+        $adherent->tags = [TagEnum::SYMPATHISANT, TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
         $adherent->setPapUserRole(true);
 
         return $adherent;

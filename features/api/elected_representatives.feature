@@ -365,7 +365,10 @@ Feature:
                             "adherent": "Adhérent",
                             "adherent:cotisation_nok": "Adhérent - non à jour de cotisation",
                             "adherent:cotisation_ok": "Adhérent - à jour de cotisation",
-                            "sympathisant": "Sympathisant"
+                            "sympathisant": "Sympathisant",
+                            "sympathisant:adhesion_incomplete": "Sympathisant - adhésion incomplète",
+                            "sympathisant:compte_em": "Sympathisant - ancien adhérent En Marche",
+                            "sympathisant:autre_parti": "Sympathisant - adhérent d'un autre parti"
                         }
                     },
                     "type": "select"

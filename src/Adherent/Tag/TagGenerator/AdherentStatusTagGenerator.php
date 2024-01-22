@@ -27,6 +27,18 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
             ];
         }
 
-        return [TagEnum::SYMPATHISANT];
+        $sympathizerTags = [TagEnum::SYMPATHISANT];
+
+        if ($adherent->isOtherPartyMembership()) {
+            $sympathizerTags[] = TagEnum::SYMPATHISANT_AUTRE_PARTI;
+        }
+
+        if ($adherent->getActivatedAt() && $adherent->getActivatedAt() < new \DateTime('2022-09-17')) {
+            $sympathizerTags[] = TagEnum::SYMPATHISANT_COMPTE_EM;
+        } else {
+            $sympathizerTags[] = TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE;
+        }
+
+        return $sympathizerTags;
     }
 }
