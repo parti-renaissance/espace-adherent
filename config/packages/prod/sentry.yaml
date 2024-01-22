@@ -7,7 +7,7 @@ services:
         arguments:
             $options:
                 ignore_exceptions:
-                    - App\Messenger\Exception\NeedRetryExceptionInterface
+                    - App\Sentry\SentryIgnoredExceptionInterface
 
 sentry:
     dsn: "%env(SENTRY_DSN)%"
