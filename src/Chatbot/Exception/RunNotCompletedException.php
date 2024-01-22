@@ -2,6 +2,8 @@
 
 namespace App\Chatbot\Exception;
 
-class RunNotCompletedException extends \Exception
+use App\Sentry\SentryIgnoredExceptionInterface;
+
+class RunNotCompletedException extends \Exception implements SentryIgnoredExceptionInterface
 {
 }
