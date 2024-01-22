@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
@@ -46,15 +47,6 @@ class DonationAdmin extends AbstractAdmin
 {
     use IterableCallbackDataSourceTrait;
 
-    protected function configureDefaultSortValues(array &$sortValues): void
-    {
-        parent::configureDefaultSortValues($sortValues);
-
-        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
-        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
-        $sortValues[DatagridInterface::PER_PAGE] = 128;
-    }
-
     private $storage;
     private $dispatcher;
 
@@ -71,6 +63,15 @@ class DonationAdmin extends AbstractAdmin
         $this->dispatcher = $dispatcher;
     }
 
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+        $sortValues[DatagridInterface::PER_PAGE] = 128;
+    }
+
     protected function configureActionButtons(array $buttonList, string $action, object $object = null): array
     {
         $actions = parent::configureActionButtons($buttonList, $action, $object);
@@ -85,7 +86,8 @@ class DonationAdmin extends AbstractAdmin
     protected function preRemove(object $object): void
     {
         if ($object->isCB()) {
-            throw new \RuntimeException();
+            $this->getRequest()->getSession()->getFlashBag()->add('sonata_flash_error', 'Vous ne pouvez pas supprimer un don de type CB');
+            throw new ModelManagerException();
         }
     }
 
