@@ -768,7 +768,7 @@
     {% set object = form.parent.vars.data %}
 
     <label>Labels</label><br/>
-    {% for tag in object.tags %}
+    {% for tag in get_reduced_tags(object.tags) %}
         <span class="label label-success">{{ ('adherent.tag.'~tag)|trans }}</span>
     {% else %}
         ~
