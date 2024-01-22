@@ -4274,16 +4274,16 @@
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
-            "version": "v1.8.0",
+            "version": "v1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise.git",
-                "reference": "472f092103a7fcb8fde8dc27eb677f1943f99d36"
+                "reference": "97224e0432c8dbfafa51cb930105647cee2b6f49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/472f092103a7fcb8fde8dc27eb677f1943f99d36",
-                "reference": "472f092103a7fcb8fde8dc27eb677f1943f99d36",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/97224e0432c8dbfafa51cb930105647cee2b6f49",
+                "reference": "97224e0432c8dbfafa51cb930105647cee2b6f49",
                 "shasum": ""
             },
             "require": {
@@ -4318,9 +4318,9 @@
             ],
             "description": "Google Cloud Recaptcha Enterprise Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.8.0"
+                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.8.1"
             },
-            "time": "2024-01-05T17:34:35+00:00"
+            "time": "2024-01-19T15:59:50+00:00"
         },
         {
             "name": "google/cloud-storage",
@@ -4489,16 +4489,16 @@
         },
         {
             "name": "google/gax",
-            "version": "v1.26.1",
+            "version": "v1.26.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "b4e80d6974781f84532d651f61d10bbb92717fe4"
+                "reference": "5dc97ea229abd449fa9acb9a909579f38820badd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/b4e80d6974781f84532d651f61d10bbb92717fe4",
-                "reference": "b4e80d6974781f84532d651f61d10bbb92717fe4",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/5dc97ea229abd449fa9acb9a909579f38820badd",
+                "reference": "5dc97ea229abd449fa9acb9a909579f38820badd",
                 "shasum": ""
             },
             "require": {
@@ -4538,9 +4538,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/gax-php/issues",
-                "source": "https://github.com/googleapis/gax-php/tree/v1.26.1"
+                "source": "https://github.com/googleapis/gax-php/tree/v1.26.2"
             },
-            "time": "2024-01-04T19:17:21+00:00"
+            "time": "2024-01-09T19:22:20+00:00"
         },
         {
             "name": "google/grpc-gcp",
@@ -4633,16 +4633,16 @@
         },
         {
             "name": "google/protobuf",
-            "version": "v3.25.1",
+            "version": "v3.25.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "1fb247e72df401c863ed239c1660f981644af5db"
+                "reference": "83ea4c147718666ce6a9b9332ac2aa588c9211eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/1fb247e72df401c863ed239c1660f981644af5db",
-                "reference": "1fb247e72df401c863ed239c1660f981644af5db",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/83ea4c147718666ce6a9b9332ac2aa588c9211eb",
+                "reference": "83ea4c147718666ce6a9b9332ac2aa588c9211eb",
                 "shasum": ""
             },
             "require": {
@@ -4671,9 +4671,9 @@
                 "proto"
             ],
             "support": {
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.25.1"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.25.2"
             },
-            "time": "2023-11-15T21:36:03+00:00"
+            "time": "2024-01-09T22:12:32+00:00"
         },
         {
             "name": "grpc/grpc",
