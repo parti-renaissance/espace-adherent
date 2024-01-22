@@ -15,7 +15,7 @@ class RenaissanceMagicLinkMessage extends AbstractRenaissanceMessage
             $adherent->getFullName(),
             'Votre lien de connexion',
             [],
-            ['url' => $url],
+            ['magic_link' => $url],
         );
     }
 }
