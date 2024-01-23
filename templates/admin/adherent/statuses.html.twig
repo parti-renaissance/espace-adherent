@@ -130,14 +130,6 @@
     {% endif %}
 {% endif %}
 
-{% if object.isTerritoireProgresMembership %}
-    {% set labels = labels|merge(['Militant TDP']) %}
-{% endif %}
-
-{% if object.isAgirMembership %}
-    {% set labels = labels|merge(['Militant AGIR']) %}
-{% endif %}
-
 {% if object.hasNationalRole %}
     {% set labels = labels|merge(['Rôle National']) %}
 {% endif %}
@@ -162,3 +154,11 @@
 {% endfor %}
 
 {% include 'admin/adherent/_tags.html.twig' with { tags: object.tags } %}
+
+{% if object.isTerritoireProgresMembership %}
+    {% set labels = labels|merge(['Militant TDP']) %}
+{% endif %}
+
+{% if object.isAgirMembership %}
+    {% set labels = labels|merge(['Militant AGIR']) %}
+{% endif %}
