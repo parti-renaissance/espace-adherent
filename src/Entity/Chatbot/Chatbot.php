@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Chatbot\ChatbotRepository")
  *
- * @UniqueEntity(fields={"code"})
+ * @UniqueEntity(fields={"name"})
  */
 class Chatbot
 {
@@ -83,5 +83,10 @@ class Chatbot
     public function isTelegramBot(): bool
     {
         return ChatbotTypeEnum::TELEGRAM === $this->type;
+    }
+
+    public function getTelegramBot(): ?TelegramBot
+    {
+        return $this->telegramBot;
     }
 }

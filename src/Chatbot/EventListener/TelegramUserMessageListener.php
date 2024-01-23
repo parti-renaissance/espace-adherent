@@ -31,11 +31,7 @@ class TelegramUserMessageListener
 
         $chatbot = $this->chatbotRepository->findOneByTelegramBot($telegramBot);
 
-        if (
-            !$chatbot
-            || !$chatbot->enabled
-            || !$chatbot->isTelegramBot()
-        ) {
+        if (!$chatbot || !$chatbot->isTelegramBot()) {
             return;
         }
 

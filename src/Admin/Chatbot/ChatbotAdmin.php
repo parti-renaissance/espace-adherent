@@ -2,16 +2,15 @@
 
 namespace App\Admin\Chatbot;
 
-use App\Entity\TelegramBot;
 use App\Form\Admin\Chatbot\AssistantTypeEnumType;
 use App\Form\Admin\Chatbot\ChatbotTypeEnumType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ChatbotAdmin extends AbstractAdmin
@@ -33,13 +32,13 @@ class ChatbotAdmin extends AbstractAdmin
                 ->add('type', ChatbotTypeEnumType::class, [
                     'label' => 'Type',
                 ])
-                ->add('telegramBot', EntityType::class, [
+                ->add('telegramBot', ModelType::class, [
                     'label' => 'Bot Telegram',
-                    'class' => TelegramBot::class,
+                    'required' => false,
                 ])
             ->end()
-            ->with('Integration', ['class' => 'col-md-6'])
-                ->add('type', AssistantTypeEnumType::class, [
+            ->with('Assistant', ['class' => 'col-md-6'])
+                ->add('assistantType', AssistantTypeEnumType::class, [
                     'label' => 'Type d\'assistant',
                 ])
             ->end()

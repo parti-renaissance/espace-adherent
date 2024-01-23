@@ -76,8 +76,20 @@ framework:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'chatbot' }
                     queues:
                         chatbot: { binding_keys: [ 'chatbot' ] }
+            telegram:
+                dsn: "%env(RABBITMQ_DSN)%"
+                retry_strategy:
+                    max_retries: 10
+                    delay: 3000
+                    multiplier: 1
+                options:
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'telegram' }
+                    queues:
+                        telegram: { binding_keys: [ 'telegram' ] }
+
         routing:
             App\OpenAI\Command\RunThreadCommand: chatbot
+            App\Telegram\Command\SendBotMessageCommand: telegram
             App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
             App\Mailchimp\SynchronizeMessageInterface: mailchimp_sync
             App\Pap\Command\AsynchronousMessageInterface: pap

@@ -2,9 +2,7 @@
 
 namespace App\Admin;
 
-use App\Entity\TelegramBot;
 use App\Form\Admin\StringArrayType;
-use Ramsey\Uuid\Uuid;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -38,10 +36,12 @@ class TelegramBotAdmin extends AbstractAdmin
             ->with('Autorisations', ['class' => 'col-md-6'])
                 ->add('blacklistedIds', StringArrayType::class, [
                     'label' => 'Blacklist',
+                    'required' => false,
                     'help' => 'Saisir un ID Telegram (user ou group) par ligne.',
                 ])
                 ->add('whitelistedIds', StringArrayType::class, [
                     'label' => 'Whitelist',
+                    'required' => false,
                     'help' => 'Saisir un ID Telegram (user ou group) par ligne.',
                 ])
             ->end()
@@ -82,13 +82,5 @@ class TelegramBotAdmin extends AbstractAdmin
                 ],
             ])
         ;
-    }
-
-    /**
-     * @param TelegramBot $object
-     */
-    protected function postPersist(object $object): void
-    {
-        $object->secret = Uuid::uuid4();
     }
 }

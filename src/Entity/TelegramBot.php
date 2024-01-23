@@ -72,6 +72,7 @@ class TelegramBot implements BotInterface
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->secret = Uuid::uuid4();
     }
 
     public function __toString(): string
