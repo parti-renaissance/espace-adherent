@@ -1,5 +1,15 @@
 {% extends '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
 
+{% macro display_tags(tags) %}
+    <label>Labels</label><br/>
+
+    {% if tags is not empty %}
+        {% include 'admin/adherent/_tags.html.twig' with { tags: tags } %}
+    {% else %}
+        ~
+    {% endif %}
+{% endmacro %}
+
 {% block measure_entry_row %}
     <div class="row">
         <div class="col-xs-4">
@@ -700,12 +710,13 @@
 {% block app_admin_adherent_tags_hidden_widget %}
     {% set object = form.parent.vars.data %}
 
-    <label>Labels</label><br/>
-    {% for tag in get_reduced_tags(object.tags) %}
-        <span class="label label-success">{{ ('adherent.tag.'~tag)|trans }}</span>
-    {% else %}
-        ~
-    {% endfor %}
+    {{ _self.display_tags(object.tags) }}
+{% endblock %}
+
+{% block app_admin_adherent_elected_representative_tags_hidden_widget %}
+    {% set object = form.parent.vars.data %}
+
+    {{ _self.display_tags(object.tags) }}
 {% endblock %}
 
 {% block unlayer_content_widget %}

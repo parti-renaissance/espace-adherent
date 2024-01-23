@@ -1,0 +1,16 @@
+{% for tag in get_reduced_tags(tags) %}
+    {% if tag starts with 'adherent' %}
+        {% set backgroundColor = '#00205F' %}
+    {% elseif tag starts with 'sympathisant' %}
+        {% set backgroundColor = '#73C0F1' %}
+    {% else %}
+        {% set backgroundColor = '#0CA65B' %}
+    {% endif %}
+
+    <span class="label" style="background-color: {{ backgroundColor }};">
+        {{ ('adherent.tag.' ~ tag)|trans }}
+    </span>
+    {% if not loop.last %}
+        <br>
+    {% endif %}
+{% endfor %}

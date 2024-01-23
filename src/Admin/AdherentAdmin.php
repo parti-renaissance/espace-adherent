@@ -436,10 +436,6 @@ class AdherentAdmin extends AbstractAdherentAdmin
                 'label' => 'Tags souscrits',
                 'associated_property' => 'code',
             ])
-            ->add('type', null, [
-                'label' => 'Rôles',
-                'template' => 'admin/adherent/list_status.html.twig',
-            ])
         ;
 
         $list->reorder([
@@ -453,7 +449,6 @@ class AdherentAdmin extends AbstractAdherentAdmin
             'type',
             'allMandates',
             'mailchimpStatus',
-            'tags',
             ListMapper::NAME_ACTIONS,
         ]);
     }
