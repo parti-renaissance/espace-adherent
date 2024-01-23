@@ -472,17 +472,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
         $form
             ->tab('Responsabilités politiques')
-                ->with('Identité de l\'élu', [
-                    'class' => 'col-md-6',
-                    'description' => 'adherent.admin.elected_representative.description',
-                    'box_class' => 'box box-success',
-                ])
-                    ->add('electedRepresentative', TextType::class, [
-                        'label' => false,
-                        'required' => false,
-                        'mapped' => false,
-                    ])
-                ->end()
                 ->with('Mandats', [
                     'class' => 'col-md-12',
                     'box_class' => 'box box-warning',

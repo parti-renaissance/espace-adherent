@@ -209,8 +209,6 @@ adherent.mandate.type.delegue_consulaire: Délégué consulaire
 adherent.form.elected: Je suis élu(e)
 adherent.form.mandate.placeholder: Choisissez un ou plusieurs mandats
 
-adherent.admin.elected_representative.description: Ces informations sont celles de la fiche élu.
-
 adherent_formation.content_type.file: Fichier
 adherent_formation.content_type.link: Lien
 
