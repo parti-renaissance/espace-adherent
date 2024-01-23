@@ -108,10 +108,10 @@ class AdherentElectedRepresentativeAdmin extends AbstractAdherentAdmin
             'registeredAt',
             'lastMembershipDonation',
             'lastLoggedAt',
+            'type',
             'mandates',
             'allMandates',
             'mailchimpStatus',
-            'tags',
             ListMapper::NAME_ACTIONS,
         ]);
     }

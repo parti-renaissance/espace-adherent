@@ -1,163 +1,164 @@
+{% set labels = [] %}
+
 {% if object.hasAdvancedPrivileges %}
     {% if object.isReferent %}
-        <span class="label label-primary" style="padding: 2px;">Référent</span><br/>
+        {% set labels = labels|merge(['Référent']) %}
     {% endif %}
 
     {% if object.isCoReferent %}
-        <span class="label label-primary" style="padding: 2px;">Co-Référent</span><br/>
+        {% set labels = labels|merge(['Co-Référent']) %}
     {% endif %}
 
     {% if object.isDelegatedReferent %}
-        <span class="label label-primary" style="padding: 2px;">Référent délégué</span><br/>
+        {% set labels = labels|merge(['Référent délégué']) %}
     {% endif %}
 
     {% if object.isRegionalCoordinator %}
-        <span class="label label-primary" style="padding: 2px;">Coordinateur Régional</span><br/>
+        {% set labels = labels|merge(['Coordinateur Régional']) %}
     {% endif %}
 
     {% if object.isRegionalDelegate %}
-        <span class="label label-primary" style="padding: 2px;">Délégué régional</span><br/>
+        {% set labels = labels|merge(['Coordinateur Régional']) %}
     {% endif %}
 
     {% if object.isPresidentDepartmentalAssembly() %}
-        <span class="label label-primary" style="padding: 2px;">Président assemblée départementale</span><br/>
+        {% set labels = labels|merge(['Président assemblée départementale']) %}
     {% endif %}
 
-    {% if object.isDelegatedPresidentDepartmentalAssembly %}
-        <span class="label label-primary" style="padding: 2px;">PaD délégué</span><br/>
+    {% if object.isDelegatedPresidentDepartmentalAssembly() %}
+        {% set labels = labels|merge(['PaD délégué']) %}
     {% endif %}
 
     {% if object.isProcurationManager %}
-        <span class="label label-primary" style="padding: 2px;">Procuration</span><br/>
+        {% set labels = labels|merge(['Procuration']) %}
     {% endif %}
 
     {% if object.isAssessorManager %}
-        <span class="label label-primary" style="padding: 2px;">Responsable assesseurs</span><br/>
+        {% set labels = labels|merge(['Responsable assesseurs']) %}
     {% endif %}
 
     {% if object.isAnimator %}
-        <span class="label label-primary" style="padding: 2px;">Responsable comité local</span><br/>
+        {% set labels = labels|merge(['Responsable comité local']) %}
     {% endif %}
 
     {% if object.isDelegatedAnimator %}
-        <span class="label label-primary" style="padding: 2px;">Responsable comité local délégué</span><br/>
+        {% set labels = labels|merge(['Responsable comité local délégué']) %}
     {% endif %}
 
     {% if object.isAssessor %}
-        <span class="label label-primary" style="padding: 2px;">Assesseur</span><br/>
+        {% set labels = labels|merge(['Assesseur']) %}
     {% endif %}
 
     {% if object.isJecouteManager %}
-        <span class="label label-primary" style="padding: 2px;">Responsable des questionnaires</span><br/>
+        {% set labels = labels|merge(['Responsable des questionnaires']) %}
     {% endif %}
 
     {% if object.isHost %}
-        <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Co-Animateur</span><br/>
+        {% set labels = labels|merge(['Co-Animateur']) %}
     {% endif %}
 
     {% if object.isSupervisor(false) %}
-        <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Animateur</span><br/>
+        {% set labels = labels|merge(['Animateur']) %}
     {% endif %}
 
     {% if object.isSupervisor(true) %}
-        <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Animateur provisiore</span><br/>
+        {% set labels = labels|merge(['Animateur provisiore']) %}
     {% endif %}
 
     {% if object.isBoardMember %}
-        <span class="label label-primary" style="padding: 2px;">Membre du Conseil</span><br/>
+        {% set labels = labels|merge(['Membre du Conseil']) %}
     {% endif %}
 
     {% if object.isDeputy %}
-        <span class="label label-primary" style="padding: 2px;">Délégué de circonscription</span><br/>
+        {% set labels = labels|merge(['Délégué de circonscription']) %}
     {% endif %}
 
     {% if object.isDelegatedDeputy %}
-        <span class="label label-primary" style="padding: 2px;">Délégué de circonscription délégué</span><br/>
+        {% set labels = labels|merge(['Délégué de circonscription délégué']) %}
     {% endif %}
 
     {% if object.isSenator %}
-        <span class="label label-primary" style="padding: 2px;">Sénateur</span><br/>
+        {% set labels = labels|merge(['Sénateur']) %}
     {% endif %}
 
     {% if object.isDelegatedSenator %}
-        <span class="label label-primary" style="padding: 2px;">Sénateur délégué</span><br/>
+        {% set labels = labels|merge(['Sénateur délégué']) %}
     {% endif %}
 
     {% if object.isSenatorialCandidate %}
-        <span class="label label-primary" style="padding: 2px;">Candidats Sénatoriales 2020</span><br/>
+        {% set labels = labels|merge(['Candidats Sénatoriales 2020']) %}
     {% endif %}
 
     {% if object.isHeadedRegionalCandidate %}
-        <span class="label label-primary" style="padding: 2px;">Tête de liste aux régionales</span><br/>
+        {% set labels = labels|merge(['Tête de liste aux régionales']) %}
     {% endif %}
 
     {% if object.isLeaderRegionalCandidate %}
-        <span class="label label-primary" style="padding: 2px;">Chef de file aux régionales</span><br/>
+        {% set labels = labels|merge(['Chef de file aux régionales']) %}
     {% endif %}
 
     {% if object.isDepartmentalCandidate %}
-        <span class="label label-primary" style="padding: 2px;">Candidat aux départementales</span><br/>
+        {% set labels = labels|merge(['Candidat aux départementales']) %}
     {% endif %}
 
     {% if object.isDelegatedHeadedRegionalCandidate %}
-        <span class="label label-primary" style="padding: 2px;">Tête de liste aux régionales délégué</span><br/>
+        {% set labels = labels|merge(['Tête de liste aux régionales délégué']) %}
     {% endif %}
 
     {% if object.isDelegatedLeaderRegionalCandidate %}
-        <span class="label label-primary" style="padding: 2px;">Chef de file aux régionales délégué</span><br/>
+        {% set labels = labels|merge(['Chef de file aux régionales délégué']) %}
     {% endif %}
 
     {% if object.isDelegatedDepartmentalCandidate %}
-        <span class="label label-primary" style="padding: 2px;">Candidat aux départementales délégué</span><br/>
+        {% set labels = labels|merge(['Candidat aux départementales délégué']) %}
     {% endif %}
 
     {% if object.isElectionResultsReporter %}
-        <span class="label label-primary" style="padding: 2px;">Rapporteur résultats</span><br/>
+        {% set labels = labels|merge(['Rapporteur résultats']) %}
     {% endif %}
 
     {% if object.isLegislativeCandidate %}
-        <span class="label label-primary" style="padding: 2px;">Candidat aux législatives</span><br/>
+        {% set labels = labels|merge(['Candidat aux législatives']) %}
     {% endif %}
 
     {% if object.isCorrespondent %}
-        <span class="label label-primary" style="padding: 2px;">Correspondant</span><br/>
+        {% set labels = labels|merge(['Correspondant']) %}
     {% endif %}
 
     {% if object.isThematicCommunityChief %}
-        <span class="label label-primary">Responsable Thématique</span>
+        {% set labels = labels|merge(['Responsable Thématique']) %}
     {% endif %}
 {% endif %}
 
-{% if object.isRenaissanceAdherent %}
-    <span class="label" style="background-color: #00205F">Adhérent RE</span>
-{% elseif object.isRenaissanceSympathizer %}
-    <span class="label" style="background-color: #73C0F1">Sympathisant RE</span>
-{% elseif object.isAdherent and object.source is null %}
-    <span class="label label-default">Adhérent EM</span>
-{% else %}
-    <span class="label label-default">Utilisateur</span>
-{% endif %}
-
 {% if object.isTerritoireProgresMembership %}
-    <span class="label label-primary">Militant TDP</span>
+    {% set labels = labels|merge(['Militant TDP']) %}
 {% endif %}
 
 {% if object.isAgirMembership %}
-    <span class="label label-primary">Militant AGIR</span>
+    {% set labels = labels|merge(['Militant AGIR']) %}
 {% endif %}
 
 {% if object.hasNationalRole %}
-    <span class="label label-primary" style="padding: 2px;">Rôle National</span>
+    {% set labels = labels|merge(['Rôle National']) %}
 {% endif %}
 
 {% if object.hasNationalCommunicationRole %}
-    <span class="label label-primary" style="padding: 2px;">Rôle National communication</span>
+    {% set labels = labels|merge(['Rôle National communication']) %}
 {% endif %}
 
 {% if object.hasPhoningManagerRole %}
-    <span class="label label-primary" style="padding: 2px;">Responsable équipe d'appel</span>
+    {% set labels = labels|merge(['Responsable équipe d\'appel']) %}
 {% endif %}
 
 {% if object.hasPapNationalManagerRole %}
-    <span class="label label-primary" style="padding: 2px;">Responsable National PAP</span>
+    {% set labels = labels|merge(['Responsable National PAP']) %}
 {% endif %}
+
+{% for label in labels %}
+    <span class="label" style="background-color: #3C8DBC; padding: 2px;">
+        {{ label }}
+    </span>
+    <br/>
+{% endfor %}
+
+{% include 'admin/adherent/_tags.html.twig' with { tags: object.tags } %}

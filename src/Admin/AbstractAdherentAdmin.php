@@ -824,6 +824,10 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ->add('lastLoggedAt', null, [
                 'label' => 'Dernière connexion',
             ])
+            ->add('type', null, [
+                'label' => 'Compte',
+                'template' => 'admin/adherent/list_status.html.twig',
+            ])
             ->add('allMandates', null, [
                 'label' => 'Mandats',
                 'virtual_field' => true,
@@ -832,10 +836,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ->add('mailchimpStatus', null, [
                 'label' => 'Abonnement',
                 'template' => 'admin/adherent/list_email_subscription_status.html.twig',
-            ])
-            ->add('tags', null, [
-                'label' => 'Labels',
-                'template' => 'admin/adherent/list_tags.html.twig',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
