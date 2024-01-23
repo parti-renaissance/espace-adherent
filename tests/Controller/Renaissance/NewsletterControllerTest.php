@@ -3,6 +3,7 @@
 namespace Tests\App\Controller\Renaissance;
 
 use App\Entity\Renaissance\NewsletterSubscription;
+use App\Mailer\Message\Renaissance\RenaissanceNewsletterSubscriptionConfirmationMessage;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\App\AbstractRenaissanceWebTestCase;
@@ -13,31 +14,26 @@ class NewsletterControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
-    public function testRenaissanceMembershipRequest(): void
+    public function testNewsletterRequest(): void
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/');
-
-        $this->client->submit($crawler->filter('form[name="newsletter_subscription"]')->form([
-            'frc-captcha-solution' => 'fake',
-            'newsletter_subscription' => [
-                'firstName' => 'Jules',
+        $this->client->request(
+            Request::METHOD_POST,
+            '/api/newsletter',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
             ],
-        ]));
+            json_encode([
+                'email' => $email = 'jules@en-marche-dev.fr',
+                'postal_code' => '06500',
+                'recaptcha' => 'fake',
+                'cgu_accepted' => true,
+                'source' => 'site_eu',
+            ])
+        );
 
-        $crawler = $this->client->followRedirect();
-
-        self::assertStringContainsString('Cette valeur ne doit pas être vide.', $crawler->filter('#newsletter-form-error')->text());
-
-        $this->client->submit($crawler->filter('form[name="newsletter_subscription"]')->form([
-            'frc-captcha-solution' => 'fake',
-            'newsletter_subscription' => [
-                'firstName' => 'Jules',
-                'email' => 'jules@en-marche-dev.fr',
-                'zipCode' => '06500',
-                'cguAccepted' => true,
-                'conditions' => true,
-            ],
-        ]));
+        $this->assertResponseStatusCodeSame(201);
 
         $entities = $this->getEntityManager()->getRepository(NewsletterSubscription::class)->findAll();
         self::assertCount(1, $entities);
@@ -45,10 +41,11 @@ class NewsletterControllerTest extends AbstractRenaissanceWebTestCase
         /** @var NewsletterSubscription $nl */
         $nl = current($entities);
 
-        self::assertSame('Jules', $nl->firstName);
-        self::assertSame('jules@en-marche-dev.fr', $nl->email);
+        self::assertSame($email, $nl->email);
         self::assertSame('06500', $nl->zipCode);
         self::assertNotEmpty($nl->token);
         self::assertEmpty($nl->confirmedAt);
+
+        $this->assertCountMails(1, RenaissanceNewsletterSubscriptionConfirmationMessage::class, $email);
     }
 }

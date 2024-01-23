@@ -6,10 +6,7 @@ use App\Entity\Renaissance\NewsletterSubscription;
 
 class SendWelcomeMailCommand
 {
-    public NewsletterSubscription $newsletterSubscription;
-
-    public function __construct(NewsletterSubscription $newsletterSubscription)
+    public function __construct(public readonly NewsletterSubscription $newsletterSubscription)
     {
-        $this->newsletterSubscription = $newsletterSubscription;
     }
 }

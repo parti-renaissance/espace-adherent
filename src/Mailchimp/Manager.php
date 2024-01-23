@@ -117,11 +117,8 @@ class Manager implements LoggerAwareInterface
             case NewsletterTypeEnum::SITE_LEGISLATIVE_CANDIDATE:
                 $listId = $this->mailchimpObjectIdMapping->getNewsletterLegislativeCandidateListId();
                 break;
-            case NewsletterTypeEnum::SITE_RENAISSANCE:
-                $listId = $this->mailchimpObjectIdMapping->getNewsletterRenaissanceListId();
-                break;
             default:
-                $listId = $this->mailchimpObjectIdMapping->getNewsletterListId();
+                $listId = $this->mailchimpObjectIdMapping->getNewsletterRenaissanceListId();
                 break;
         }
 

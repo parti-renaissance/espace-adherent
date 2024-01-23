@@ -79,6 +79,7 @@ services:
             $goCardlessApiKey: '%env(GOCARDLESS_API_KEY)%'
             $goCardlessEnvironment: '%env(GOCARDLESS_ENV)%'
             $openAIApiKey: '%env(OPENAI_API_KEY)%'
+            $friendlyCaptchaEuropeSiteKey: '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:

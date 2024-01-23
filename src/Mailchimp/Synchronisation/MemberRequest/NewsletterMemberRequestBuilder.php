@@ -96,6 +96,10 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
             case NewsletterTypeEnum::SITE_MUNICIPAL:
                 $mergeFields[MemberRequest::MERGE_FIELD_INSEE_CODE] = $this->siteCode;
                 break;
+
+            default:
+                $mergeFields[MemberRequest::MERGE_FIELD_SOURCE] = $this->type;
+                break;
         }
 
         if ($this->zones) {

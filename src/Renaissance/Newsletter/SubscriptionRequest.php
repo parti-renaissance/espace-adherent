@@ -2,10 +2,13 @@
 
 namespace App\Renaissance\Newsletter;
 
+use App\Newsletter\NewsletterTypeEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
+use App\Validator\StrictEmail;
 use App\Validator\UniqueRenaissanceNewsletter;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -19,36 +22,34 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
     /**
      * @Assert\NotBlank
      */
-    public ?string $firstName = null;
+    #[Groups(['newsletter:write'])]
+    public ?string $postalCode = null;
 
     /**
      * @Assert\NotBlank
+     * @StrictEmail(dnsCheck=false)
      */
-    public ?string $zipCode = null;
-
-    /**
-     * @Assert\NotBlank
-     * @Assert\Email
-     */
+    #[Groups(['newsletter:write'])]
     public ?string $email = null;
 
     /**
      * @Assert\NotBlank
-     * @Assert\IsTrue
+     * @Assert\Choice(callback="getValidSources")
      */
-    public ?bool $conditions = null;
+    #[Groups(['newsletter:write'])]
+    public ?string $source = null;
 
     /**
-     * @Assert\NotBlank
      * @Assert\IsTrue
      */
-    public ?bool $cguAccepted = null;
+    #[Groups(['newsletter:write'])]
+    public ?bool $cguAccepted = false;
 
-    public static function createFromRecaptcha(?string $recaptchaResponse): self
+    public function getValidSources(): array
     {
-        $object = new self();
-        $object->recaptcha = $recaptchaResponse;
-
-        return $object;
+        return [
+            NewsletterTypeEnum::SITE_RENAISSANCE,
+            NewsletterTypeEnum::SITE_EU,
+        ];
     }
 }
