@@ -1,9 +1,3 @@
-{% macro label(text, backgroundColor = '#3C8DBC') %}
-    <span class="label" style="background-color: {{ backgroundColor }}; padding: 2px;">
-        {{ text }}
-    </span>
-{% endmacro %}
-
 {% set labels = [] %}
 
 {% if object.hasAdvancedPrivileges %}
