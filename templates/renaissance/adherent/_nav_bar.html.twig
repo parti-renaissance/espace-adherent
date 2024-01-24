@@ -1,0 +1,137 @@
+<nav class="shrink-0 bg-re-blue-600">
+    <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+            <div class="flex h-16 flex-1">
+                <!-- Mobile menu button -->
+                {% if with_menu_open_button is defined %}
+                    <button @click="show = true" type="button" class="border-r border-re-blue-300 px-4 text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-re-blue-500 md:hidden">
+                        <span class="sr-only">Ouverture du menu</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/>
+                        </svg>
+                    </button>
+                {% endif %}
+
+                <!-- Logo section -->
+                <div class="flex items-center px-4 lg:px-0">
+                    <a href="{{ path('renaissance_site') }}" class="shrink-0">
+                        <!-- Logo Renaissance Texte -->
+                        {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-6 w-auto text-white hidden md:block' } %}
+                        <!-- Logo Renaissance Icon -->
+                        {% include 'renaissance/partials/logo-icon.svg.twig' with { svg_class: 'h-8 w-8 text-white md:hidden' } %}
+                    </a>
+                </div>
+            </div>
+
+            <!-- Links section -->
+            <div class="flex items-center space-x-5 md:space-x-4 justify-end">
+                <div class="flex">
+                    <a href="//{{ renaissance_host }}" class="inline-flex items-center rounded-md text-re-blue-100 hover:text-white">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                        </svg>
+                        <span class="hidden lg:block lg:ml-1">Retourner sur le site</span>
+                    </a>
+                </div>
+                <!-- Profile dropdown -->
+                <div x-data="{ open: false }" @keydown.escape.stop="open = false;" @click.away="open = false" class="relative shrink-0">
+                    <div>
+                        <button @click="open =! open" type="button" class="flex items-center py-2 px-3 bg-re-blue-700 hover:bg-re-blue-800 rounded-md  text-re-blue-100 hover:text-white focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true" x-bind:aria-expanded="open.toString()">
+                            <span class="sr-only">Menu utilisateur</span>
+                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                            </svg>
+                            <span class="hidden lg:inline-flex ml-2 items-center">
+                                {{ app.user.firstName }}
+                                {% if app.user.certified %}
+                                    {% include 'icons/check-blue.svg.twig' with { svg_class: 'w-5 h-5 text-sky-50 ml-1'} %}
+                                {% endif %}
+                            </span>
+                        </button>
+                    </div>
+                    <div x-cloak x-show="open"
+                         x-transition:enter="transition ease-out duration-100"
+                         x-transition:enter-start="transform opacity-0 scale-95"
+                         x-transition:enter-end="transform opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75"
+                         x-transition:leave-start="transform opacity-100 scale-100"
+                         x-transition:leave-end="transform opacity-0 scale-95"
+                         class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                         x-ref="menu-items"
+                         role="menu"
+                         aria-orientation="vertical"
+                         aria-labelledby="menu-button"
+                         tabindex="-1"
+                         @keydown.tab="open = false"
+                         @keydown.enter.prevent="open = false;"
+                         @keyup.space.prevent="open = false;">
+                        <div class="px-4 py-3" role="none">
+                            <p class="text-sm" role="none">Connecté avec</p>
+                            <p class="truncate text-sm font-medium text-gray-900" role="none">{{ app.user.emailAddress }}</p>
+                        </div>
+                        <div class="py-1" role="none">
+                            <a href="{{ path('app_renaissance_adherent_profile') }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Mon compte</a>
+                            <a href="{{ path('app_certification_request_home', { app_domain: app_renaissance_host }) }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Certification</a>
+                        </div>
+                        <div class="py-1" role="none">
+                            {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                <a href="{{ path('admin_app_adherent_list', {'_switch_user': '_exit'}) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Quitter l'impersonnification</a>
+                            {% else %}
+                                <a href="{{ path('logout', { app_domain: app_renaissance_host }) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Me déconnecter</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Donation dropdown -->
+                <div x-data="{ open: false }" @keydown.escape.stop="open = false;" @click.away="open = false" class="relative shrink-0 md:hidden">
+                    <div>
+                        <button @click="open =! open" type="button" class="flex items-center py-2 px-3 bg-re-blue-700 hover:bg-re-blue-800 rounded-md  text-re-blue-100 hover:text-white focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true" x-bind:aria-expanded="open.toString()">
+                            <span>Autres liens</span>
+                        </button>
+                    </div>
+                    <div x-cloak x-show="open"
+                         x-transition:enter="transition ease-out duration-100"
+                         x-transition:enter-start="transform opacity-0 scale-95"
+                         x-transition:enter-end="transform opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75"
+                         x-transition:leave-start="transform opacity-100 scale-100"
+                         x-transition:leave-end="transform opacity-0 scale-95"
+                         class="absolute right-0 z-10 mt-2 w-80 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                         x-ref="menu-items"
+                         role="menu"
+                         aria-orientation="vertical"
+                         aria-labelledby="menu-button"
+                         tabindex="-1"
+                         @keydown.tab="open = false"
+                         @keydown.enter.prevent="open = false;"
+                         @keyup.space.prevent="open = false;"
+                    >
+                        <div class="px-2" role="none">
+                            <div class="py-1" role="none">
+                                <a href="{{ path('app_donation_index') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Donner</a>
+                                {% if app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() and app.user.isEligibleForMembershipPayment() %}
+                                    <a href="{{ path('app_adhesion_index') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Je mets à jour ma cotisation</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-5">
+                    <a href="{{ path('app_donation_index') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">Donner</a>
+
+                    {% if app.user.isRenaissanceSympathizer() or (app.user.isRenaissanceAdherent() and not app.user.hasActiveMembership() and app.user.isEligibleForMembershipPayment()) %}
+                        <a href="{{ path('app_adhesion_index') }}" class="inline-flex items-center bg-white rounded-md px-3 py-2 text-sm leading-5 uppercase tracking-wider font-medium text-re-blue-500 hover:bg-re-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-re-blue-500 focus:ring-offset-2">
+                            {% if app.user.isRenaissanceSympathizer() %}
+                                Adhérer
+                            {% else %}
+                                Je mets à jour ma cotisation
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
