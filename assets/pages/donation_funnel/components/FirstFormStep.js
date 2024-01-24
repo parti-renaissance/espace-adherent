@@ -32,7 +32,7 @@ const FirstForm = () => {
         defaultCustomAmount: '',
 
         getTaxTextReduction() {
-            return `${(this.amount * 0.66).toFixed(2)} € ${'-1' === this.duration ? '/ mois' : ''}`;
+            return `${(this.amount * 0.34).toFixed(2)} € ${'-1' === this.duration ? '/ mois' : ''}`;
         },
 
         handleAmountClick(amount) {
