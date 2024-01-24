@@ -375,6 +375,12 @@ app_profile:
     requirements:
         app_domain: "%app_host%|%app_renaissance_host%"
 
+app_quizz_europe:
+    path: /espace-adherent/quiz-europe
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        template: 'renaissance/quizz_europe.html.twig'
+
 app_certification:
     host: "{app_domain}"
     type: "annotation"

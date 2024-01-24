@@ -37,7 +37,7 @@
                 <p class="mt-6 text-justify">{{ consultation_designation.getDescription() }}</p>
             {% endif %}
 
-            <div class="flex mt-6 items-center justify-between">
+            <div class="flex flex-col gap-1 sm:flex-row mt-6 sm:items-center justify-between">
                 <a class="banner-btn {{ disable_vote_button ? 'banner-btn-disabled' }}" href="{{ disable_vote_button ? '#' : path('app_sas_election_index', {uuid: consultation_designation.getUuid()}) }}">
                     <img src="{{ asset('/images/icons/icn_vote-hand.svg') }}" alt="Main vote" class="mr-3" /> Je participe !
                 </a>
