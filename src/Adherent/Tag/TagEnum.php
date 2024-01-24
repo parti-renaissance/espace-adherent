@@ -93,6 +93,16 @@ class TagEnum extends Enum
             }
         }
 
+        usort($reducedTags, static function (string $tag): int {
+            if (str_starts_with('adherent', $tag)) {
+                return 1;
+            } elseif (str_starts_with('sympathisant', $tag)) {
+                return 0;
+            } else {
+                return -1;
+            }
+        });
+
         return $reducedTags;
     }
 }
