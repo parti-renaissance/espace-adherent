@@ -3,3 +3,7 @@
 {% if consultation_designation %}
     {% include 'renaissance/banner/consultation_in_progress.html.twig' %}
 {% endif %}
+
+{% if app.user.isRenaissanceAdherent() %}
+    {% include 'renaissance/banner/quizz_europe.html.twig' %}
+{% endif %}
