@@ -1,0 +1,35 @@
+<div x-data="{open: true}" x-show="open" class="relative z-10" aria-labelledby="modal-title" x-ref="dialog" aria-modal="true">
+    <div x-show="open" x-cloak
+         x-transition:enter="ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 bg-black bg-opacity-30 transition-opacity"></div>
+
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center md:items-center md:p-0">
+            <div
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 md:scale-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 md:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
+                 class="relative transform rounded-lg bg-white text-left shadow-xl transition-all"
+                 @click.away="open = false"
+                 x-cloak
+            >
+                <div class="absolute top-[-52px] right-0">
+                    <button type="button" class="rounded-full p-2 bg-white text-black hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            @click="open = false">
+                        <span class="sr-only">Fermer</span>
+                        {% include 'icons/x-close.svg.twig' %}
+                    </button>
+                </div>
+                {% block content '' %}
+            </div>
+        </div>
+    </div>
+</div>
