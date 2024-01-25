@@ -38,7 +38,7 @@ class SessionModalActivatorListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
-        if ($request->query->has('_target_path')) {
+        if ($request->query->has('_target_path') || $request->request->has('_target_path')) {
             return;
         }
 
@@ -48,7 +48,7 @@ class SessionModalActivatorListener implements EventSubscriberInterface
             return;
         }
 
-        if ($adherent->getLastMembershipDonation() < new \DateTime('2023-01-01 00:00:00')) {
+        if ($adherent->getLastMembershipDonation() < new \DateTime((date('Y') - 1).'-01-01 00:00:00')) {
             $request->getSession()->set(self::SESSION_KEY, self::CONTEXT_CERTIFICATION);
         }
     }
