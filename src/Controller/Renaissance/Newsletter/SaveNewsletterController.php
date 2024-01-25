@@ -3,44 +3,49 @@
 namespace App\Controller\Renaissance\Newsletter;
 
 use App\Entity\Renaissance\NewsletterSubscription;
-use App\Form\Renaissance\NewsletterSubscriptionType;
 use App\Renaissance\Newsletter\Command\SendWelcomeMailCommand;
 use App\Renaissance\Newsletter\SubscriptionRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route(path: '/newsletter', name: 'app_renaissance_newsletter_save', methods: ['POST'])]
+#[Route(path: '/api/newsletter', name: 'app_renaissance_newsletter_save', methods: ['POST'])]
 class SaveNewsletterController extends AbstractController
 {
-    public function __invoke(Request $request, EntityManagerInterface $entityManager): Response
+    public function __construct(
+        private readonly SerializerInterface $serializer,
+        private readonly ValidatorInterface $validator,
+        private readonly MessageBusInterface $bus,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly string $friendlyCaptchaEuropeSiteKey
+    ) {
+    }
+
+    public function __invoke(Request $request): Response
     {
-        $subscription = SubscriptionRequest::createFromRecaptcha($request->request->get('frc-captcha-solution'));
+        $subscription = $this->serializer->deserialize($request->getContent(), SubscriptionRequest::class, JsonEncoder::FORMAT, [
+            AbstractNormalizer::GROUPS => ['newsletter:write'],
+        ]);
+        $subscription->setRecaptchaSiteKey($this->friendlyCaptchaEuropeSiteKey);
 
-        $form = $this
-            ->createForm(NewsletterSubscriptionType::class, $subscription)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($newsletterSubscription = NewsletterSubscription::create($subscription));
-            $entityManager->flush();
-
-            $this->dispatchMessage(new SendWelcomeMailCommand($newsletterSubscription));
-
-            $this->addFlash('success', 'Merci pour votre inscription ! Nous vous invitons à la valider en cliquant sur le lien reçu par email.');
-
-            return $this->redirectToRoute('renaissance_site');
-        }
-
-        $errors = $form->getErrors(true);
+        $errors = $this->validator->validate($subscription);
 
         if ($errors->count()) {
-            $this->addFlash('newsletter_error', $errors->current()->getMessage());
+            return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        return $this->redirectToRoute('app_renaissance_homepage', ['_fragment' => 'newsletter-form-error']);
+        $this->entityManager->persist($newsletter = NewsletterSubscription::create($subscription));
+        $this->entityManager->flush();
+
+        $this->bus->dispatch(new SendWelcomeMailCommand($newsletter));
+
+        return $this->json('OK', Response::HTTP_CREATED);
     }
 }

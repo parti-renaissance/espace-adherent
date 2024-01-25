@@ -20,14 +20,19 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface
     use EntityTimestampableTrait;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
-    public string $firstName;
+    public ?string $firstName = null;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
-    public string $zipCode;
+    public ?string $zipCode = null;
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $source = null;
 
     /**
      * @ORM\Column(unique=true)
@@ -54,9 +59,9 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface
     {
         $object = new self();
 
-        $object->firstName = $request->firstName;
-        $object->zipCode = $request->zipCode;
+        $object->zipCode = $request->postalCode;
         $object->email = $request->email;
+        $object->source = $request->source;
 
         return $object;
     }
