@@ -140,10 +140,11 @@
     >
         {{ form_label(form) }}
 
-        <div class="mb-8">
-            {{ block('form_errors') }}
-        </div>
-
+        {% if errors.count() %}
+            <div class="mb-8">
+                {{ block('form_errors') }}
+            </div>
+        {% endif %}
 
         {# ---- Autocomplete ---- -#}
 

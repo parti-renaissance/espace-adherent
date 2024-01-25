@@ -104,6 +104,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     /**
      * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
      * @Assert\Country(message="common.nationality.invalid", groups={"Default", "fill_personal_info"})
+     * @Assert\Expression("this.getNationality() == 'FR' or this.getAddress().getCountry() == 'FR'", groups={"Default"}, message="donation.french_address_or_nationality_donation")
      */
     private $nationality;
 
