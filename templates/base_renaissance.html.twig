@@ -64,6 +64,12 @@
     {% block content '' %}
     {% block footer '' %}
 
+    {% set session_modal_context = get_session_modal_context(app.request) %}
+
+    {% if session_modal_context %}
+        {% include 'components/_adherent_session_modal.html.twig' %}
+    {% endif %}
+
     <div id="modal-wrapper"></div>
 
     <script type="text/javascript" src="{{ webpack_asset('bootstrap.js') }}"></script>

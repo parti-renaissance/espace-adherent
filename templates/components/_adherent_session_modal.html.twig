@@ -1,88 +1,11 @@
-<span id="session-modal--trigger" class="em-modal--trigger" data-content-element="#session-modal--content"></span>
+<twig:ReModal>
+    <div class="flex flex-col w-[850px] rounded py-10" style="background: linear-gradient(94deg, #DEE4F9 14.86%, #ABC8FF 145.08%);">
+        <h2 class="text-[54px] font-medium uppercase my-10 px-8 text-[#18184D] leading-tight">Je renouvelle ma<br/><span class="font-normal">Cotisation</span></h2>
 
-<div style="display: none">
-    <div id="session-modal--content" class="font-roboto">
-        {% if session_modal_context == constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::CONTEXT_CERTIFICATION') %}
-            <h2>Certifiez-vous !</h2>
+        <img src="{{ asset('images/icons/renaissance-hand.svg') }}" alt="Recotiser" class="w-3/4" />
 
-            <p class="text--body">Pour pouvoir voter, il faut être certifié avant le 16 septembre à 7h59. Cela prend quelques instants et c'est indispensable pour participer au scrutin !</p>
-
-            <div class="certification-status b__border text--center b__nudge--bottom-large space--30">
-                <img src="{{ asset('/images/icons/certification/not-certified.svg') }}" alt="certif-img"/>
-                <div class="title b__nudge--bottom"><strong>Votre profil n'est pas encore certifié.</strong></div>
-                <p>Certifiez-le avec une pièce d'identité, ça ne prend qu'une minute.</p>
-
-                {% if app.user.birthdate %}
-                    <a href="{{ path('app_certification_request_form') }}" class="btn btn--blue b__nudge--top">Certifier mon profil</a>
-                {% else %}
-                    <div class="b__nudge--top-40 alert alert--error">Malheureusement, nous ne connaissons pas votre date de naissance et nous en avons besoin pour certifier votre identité. Mettez à jour votre profil avant de continuer.</div>
-                    <p><a href="{{ path('app_user_edit') }}" class="btn btn--blue b__nudge--top">METTRE À JOUR MON PROFIL</a></p>
-                {% endif %}
-            </div>
-        {% elseif session_modal_context == constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::CONTEXT_COMMITTEE_ELECTION') %}
-            {% set memberships = app.user.memberships.getMembershipsForApprovedCommittees()|filter(membership => membership.id in app.session.get(constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::COMMITTEE_MEMBERSHIP_LIST'))) %}
-
-            {% set committee_election = memberships|first.committee.currentElection %}
-
-            {% if committee_election.isCandidacyPeriodActive %}
-                <h2>Candidatez en binôme</h2>
-
-                <p class="text--body">Vous avez jusqu'au {{ committee_election.candidacyPeriodEndDate|format_datetime('none', 'none', "dd MMMM y à HH'h'mm") }} pour candidater à l'élection des binômes paritaires d'animateurs locaux.</p>
-
-                <p class="text--body">Vous pouvez candidater dans ces comités :</p>
-                {% set memberships = memberships|filter(membership => membership.committee.currentElection.isCandidacyPeriodActive) %}
-            {% elseif committee_election.isVotePeriodActive %}
-                <h2>Votez pour votre binôme d'animateurs</h2>
-
-                <p class="text--body">Vous avez jusqu'au {{ committee_election.voteEndDate|format_datetime('none', 'none', "dd MMMM y à HH'h'mm") }} pour voter à l'élection des binômes paritaires d'animateurs locaux.</p>
-
-                <p class="text--body">Vous pouvez voter dans ces comités :</p>
-                {% set memberships = memberships|filter(membership => membership.committee.currentElection.isVotePeriodActive) %}
-            {% endif %}
-
-            {% for membership in memberships %}
-                {% set committee = membership.committee %}
-
-                <article class="activity-card b__nudge--bottom">
-                    <div class="space--30">
-                        <div class="activity-card__type activity-card__type--committee">Comité</div>
-                        <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold l__row">{{ committee.name }}</h2>
-                        <div class="l__row l__row--wrap font-roboto text--gray b__nudge--bottom-small">
-                            <div class="l__row b__nudge--right-small">
-                                <img src="{{ asset('/images/icons/activity/place.svg') }}" alt="Ville" class="b__nudge--right-nano">
-                                <span>{{ committee.getCityName }}</span>
-                            </div>
-                            <div class="l__row">
-                                <img src="{{ asset('/images/icons/activity/members.svg') }}" alt="Adhérents" class="b__nudge--right-nano">
-                                <span>{{ committee.membersEmCount }} adhérents</span>
-                            </div>
-                        </div>
-
-                        <div class="activity-card__footer b__nudge--top">
-                            <div class="l__row l__row--h-stretch l__row--bottom l__row--wrap">
-                                <div class="l__row">
-                                    <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}" title="{{ committee.name }}" class="btn btn--blue b__nudge--right-small">
-                                        Voir
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            {% endfor %}
-        {% endif %}
-
-        <div class="l__row">
-            <div class="l__col--half">
-                <a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}" class="link--blue--dark">
-                    Mes comités
-                </a>
-            </div>
-            <div class="l__col--half text--right">
-                <a href="#" class="link--blue--dark" onClick="document.cookie='{{ constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::DISMISS_COOKIE_KEY') }}=true;path=/;max-age=2592000';findOne(this.parentNode.parentNode.parentNode.parentNode, '.close').click();">
-                    Ne plus m'avertir
-                </a>
-            </div>
+        <div class="self-end mr-10">
+            <twig:ReButton tag="a" href="{{ path('app_adhesion_index') }}" color="gray">Je cotise</twig:ReButton>
         </div>
     </div>
-</div>
+</twig:ReModal>
