@@ -85,7 +85,7 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      *
      * @Assert\Expression(
-     *     "value !== null or (value == null and this.mandateType === constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
+     *     "value !== null or (value == null and this.mandateType === constant('App\\Adherent\\MandateTypeEnum::DEPUTE_EUROPEEN'))",
      *     message="Le périmètre géographique est obligatoire."
      * )
      *
