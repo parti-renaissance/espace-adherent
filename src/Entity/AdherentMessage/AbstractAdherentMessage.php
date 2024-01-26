@@ -136,6 +136,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var Adherent
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Groups({"message_read_list"})
      *
