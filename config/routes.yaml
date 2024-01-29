@@ -377,6 +377,7 @@ app_profile:
 
 app_quiz_europe:
     path: /espace-adherent/quiz-europe
+    condition: "%enable_canary% matches '/1/'"
     controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
     defaults:
         template: 'renaissance/quiz_europe.html.twig'
