@@ -6,10 +6,12 @@ import reScrollTo from '../../../utils/scrollTo';
  * First Step component for funnel
  * @param {{
  *   initStep?: number | null,
+ *   isReContribution: boolean,
  * }} props
  * @returns {AlpineComponent}
  */
 const Page = (props) => ({
+    isReContribution: props.isReContribution,
     currentStep: props.initStep ?? 0,
     stepToFill: props.initStep ?? 0,
     setCurrentStep(step) {
@@ -78,6 +80,11 @@ const Page = (props) => ({
     },
 
     init() {
+        if (this.isReContribution) {
+            ['step_1', 'step_3', 'legal-mention'].forEach((stepId) => {
+                dom(`#${stepId}`).style.display = 'none';
+            });
+        }
         this.retrieveLocalStorage();
         this.blockStep(this.stepToFill);
         this.$nextTick(() => {
