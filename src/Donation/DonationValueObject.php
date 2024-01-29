@@ -9,7 +9,8 @@ class DonationValueObject
         private int $amount,
         private string $type,
         private bool $subscription,
-        private bool $membership
+        private bool $membership,
+        private string $status
     ) {
     }
 
@@ -36,5 +37,10 @@ class DonationValueObject
     public function isMembership(): bool
     {
         return $this->membership;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
     }
 }

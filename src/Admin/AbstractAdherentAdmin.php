@@ -505,6 +505,18 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     ])
                 ->end()
             ->end()
+            ->tab('Dons / Cotisations')
+                ->with('Informations', [
+                    'class' => 'col-md-12',
+                    'box_class' => 'box box-info',
+                ])
+                    ->add('donations', HiddenType::class, [
+                        'label' => false,
+                        'required' => false,
+                        'mapped' => false,
+                    ])
+                ->end()
+            ->end()
         ;
 
         if ($this->isGrantedAdherentAdminRole()) {

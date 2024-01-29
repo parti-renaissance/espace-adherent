@@ -622,6 +622,12 @@
     {% include 'admin/adherent/partial/_contributions.html.twig' with { adherent: adherent } %}
 {% endblock %}
 
+{% block app_admin_adherent_donations_hidden_widget %}
+    {% set adherent = form.parent.vars.value %}
+
+    {% include 'admin/adherent/partial/_donations.html.twig' with { adherent: adherent } %}
+{% endblock %}
+
 {% block app_admin_file_file_parent_widget %}
     {{ form_widget(form) }}
 

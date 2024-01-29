@@ -28,7 +28,7 @@ class TransactionRepository extends ServiceEntityRepository
     /**
      * @return Transaction[]
      */
-    public function findAllSuccessfulTransactionByAdherentIdOrEmail(Adherent $adherent): array
+    public function findAllTransactionByAdherentIdOrEmail(Adherent $adherent, bool $onlySuccess = true): array
     {
         return $this->createQueryBuilder('transaction')
             ->addSelect('donation')
