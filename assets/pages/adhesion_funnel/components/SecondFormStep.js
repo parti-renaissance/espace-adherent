@@ -54,7 +54,7 @@ const SecondForm = () => ({
         if (this.isReContribution) {
             this.loading = true;
             const bodyPayload = {
-                ...this.stepData,
+                ...this.formData,
                 exclusiveMembership: true,
                 isPhysicalPerson: true,
             };

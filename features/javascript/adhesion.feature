@@ -2,6 +2,7 @@
 @javascript
 @javascript2
 Feature:
+
     Scenario: I can become adherent
         Given the following fixtures are loaded:
             | LoadSubscriptionTypeData |
@@ -21,12 +22,12 @@ Feature:
         And I click the "membership_request_nationality_select_widget" element
         And I click the "#membership_request_nationality_select_widget .re-input-option--selected" selector
         And I fill in the following:
-            | membership_request[firstName]                     | Marine |
-            | membership_request[lastName]                      | Dupont |
-            | membership_request[address][address]              | 9 rue du lycée |
-            | membership_request[address][additionalAddress]    | app 9 |
-            | membership_request[address][postalCode]           | 06000  |
-            | membership_request[address][cityName]             | Nice   |
+            | membership_request[firstName]                  | Marine         |
+            | membership_request[lastName]                   | Dupont         |
+            | membership_request[address][address]           | 9 rue du lycée |
+            | membership_request[address][additionalAddress] | app 9          |
+            | membership_request[address][postalCode]        | 06000          |
+            | membership_request[address][cityName]          | Nice           |
         And I click the "membership_request_address_country_select_widget" element
         And I click the "#membership_request_address_country_select_widget .re-input-option--selected" selector
         And I press "Suivant"
@@ -164,10 +165,10 @@ Feature:
         And I should see "Carte d'adhérant"
         When I click the ".aucomplete-fields-toggle" selector
         And I fill in the following:
-            | member_card[address][address]             | 92 bld Victor Hugo |
-            | member_card[address][additionalAddress]   | |
-            | member_card[address][postalCode]          | 92110 |
-            | member_card[address][cityName]            | Clichy |
+            | member_card[address][address]           | 92 bld Victor Hugo |
+            | member_card[address][additionalAddress] |                    |
+            | member_card[address][postalCode]        | 92110              |
+            | member_card[address][cityName]          | Clichy             |
         When I press "Recevoir ma carte"
 
         # Step 10 : communication
@@ -253,18 +254,10 @@ Feature:
         Then I should be on "/adhesion" wait otherwise
         When I click the ".aucomplete-fields-toggle" selector
         And I fill in the following:
-            | membership_request[address][address]      | 9 rue du lycée |
-            | membership_request[address][postalCode]   | 06000  |
-            | membership_request[address][cityName]     | Nice   |
+            | membership_request[address][address]    | 9 rue du lycée |
+            | membership_request[address][postalCode] | 06000          |
+            | membership_request[address][cityName]   | Nice           |
         When I press "Suivant"
-        And I wait 1 second
-        And I click the "membership_request_exclusiveMembership_1" element
-        Then I wait 3 seconds until I see "J’appartiens à un autre parti politique"
-        When I click the "membership_request_exclusiveMembership_0" element
-        Then I should not see "J’appartiens à un autre parti politique"
-        When I click the "membership_request_allowNotifications" element
-        And I click the "membership_request_isPhysicalPerson" element
-        Then I click the "#step_3 .re-button" selector
         And I wait 3 seconds
         And I should see "Cotisation pour l’année 2022"
         And I should see "Cotisation pour l’année 2023"
@@ -350,18 +343,10 @@ Feature:
         Then I should be on "/adhesion" wait otherwise
         When I click the ".aucomplete-fields-toggle" selector
         And I fill in the following:
-            | membership_request[address][address]      | 9 rue du lycée |
-            | membership_request[address][postalCode]   | 06000  |
-            | membership_request[address][cityName]     | Nice   |
+            | membership_request[address][address]    | 9 rue du lycée |
+            | membership_request[address][postalCode] | 06000          |
+            | membership_request[address][cityName]   | Nice           |
         And I press "Suivant"
-        And I wait 1 second
-        And I click the "membership_request_exclusiveMembership_1" element
-        Then I wait 3 seconds until I see "J’appartiens à un autre parti politique"
-        When I click the "membership_request_exclusiveMembership_0" element
-        Then I should not see "J’appartiens à un autre parti politique"
-        When I click the "membership_request_allowNotifications" element
-        And I click the "membership_request_isPhysicalPerson" element
-        Then I click the "#step_3 .re-button" selector
         And I wait 3 seconds
         And I scroll element "#step_4 #amount_3_label" into view
         And I click the "#step_4 #amount_4_label" selector
