@@ -9,6 +9,7 @@ use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use App\Form\MembershipRequestType;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
+use App\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,11 +26,16 @@ class AdhesionController extends AbstractController
     public function __construct(
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly DonationRequestHandler $donationRequestHandler,
+        private readonly AnonymousFollowerSession $anonymousFollowerSession,
     ) {
     }
 
     public function __invoke(Request $request): Response
     {
+        if ($response = $this->anonymousFollowerSession->start($request)) {
+            return $response;
+        }
+
         if (($currentUser = $this->getUser()) instanceof Adherent && $currentUser->hasActiveMembership()) {
             return $this->redirectToRoute('app_renaissance_adherent_space');
         }
