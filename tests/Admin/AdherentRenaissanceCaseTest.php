@@ -23,7 +23,6 @@ use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('admin')]
-#[Group('debug')]
 class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;

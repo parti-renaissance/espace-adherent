@@ -69,6 +69,6 @@ class UnregistrationControllerTest extends AbstractEnMarcheWebTestCase
             $handler(new RemoveAdherentAndRelatedDataCommand($adherent->getUuid()));
         }
 
-        self::assertSame(29, $countForbidden);
+        self::assertSame(18, $countForbidden);
     }
 }
