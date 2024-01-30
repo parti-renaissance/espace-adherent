@@ -31,7 +31,6 @@ class AdherentUnregistrationVoter extends Voter
             && !$subject->isDeputy()
             && !$subject->isRegionalDelegate()
             && !$subject->getMemberships()->getCommitteeCandidacyMembership(true)
-            && !(($coTerrMembership = $subject->getTerritorialCouncilMembership()) && $coTerrMembership->getActiveCandidacy())
-        ;
+            && !(($coTerrMembership = $subject->getTerritorialCouncilMembership()) && $coTerrMembership->getActiveCandidacy());
     }
 }

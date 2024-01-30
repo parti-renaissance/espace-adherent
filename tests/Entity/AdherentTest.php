@@ -4,14 +4,9 @@ namespace Tests\App\Entity;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
-use App\Entity\BoardMember\BoardMember;
-use App\Entity\CommitteeMembership;
-use App\Entity\Geo\Zone;
-use App\Entity\ReferentTag;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Geocoder\Coordinates;
 use App\Membership\ActivityPositionsEnum;
-use Doctrine\Common\Collections\ArrayCollection;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\App\AbstractKernelTestCase;
