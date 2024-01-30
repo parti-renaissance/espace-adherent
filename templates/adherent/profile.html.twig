@@ -154,11 +154,10 @@
         <div class="b__nudge--bottom-60">
             <h2 class="section-subtitle">Suppression du compte</h2>
             <div>
-                {% if is_granted('UNREGISTER', app.user) and (app.user.isBasicAdherent or app.user.isUser) %}
-                <p class="text--body">
-                    Si vous souhaitez désadhérer et supprimer votre compte En Marche, <a href="{{ path('app_user_terminate_membership') }}" class="text--blue--dark link--no-decor">cliquez-ici</a>.
-                </p>
-
+                {% if is_granted('UNREGISTER', app.user) %}
+                    <p class="text--body">
+                        Si vous souhaitez désadhérer et supprimer votre compte En Marche, <a href="{{ path('app_user_terminate_membership') }}" class="text--blue--dark link--no-decor">cliquez-ici</a>.
+                    </p>
                 {% endif %}
 
                 {% if not is_granted('UNREGISTER', app.user) %}

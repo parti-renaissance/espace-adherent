@@ -157,7 +157,7 @@
             </span>
             </button>
             <div x-cloak x-show="isOpen">
-                {% if is_granted('UNREGISTER', app.user) and (app.user.isBasicAdherent or app.user.isUser) %}
+                {% if is_granted('UNREGISTER', app.user) %}
                     <div class="mt-2 max-w-xl text-gray-500">
                         <p>
                             Cliquez ci-dessous si vous souhaitez supprimer votre compte.
