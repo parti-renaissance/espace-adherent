@@ -2,7 +2,7 @@
 import '../../../components/Validator/typedef';
 import CommonFormStep from './CommonFormStep';
 
-import { $postAccount, handlePostAccountResponse } from '../shared/utils';
+import { handlePostAccountResponse, postAccount } from '../shared/utils';
 
 /**
  * First Step component for funnel
@@ -58,7 +58,7 @@ const SecondForm = () => ({
                 exclusiveMembership: true,
                 isPhysicalPerson: true,
             };
-            await $postAccount(bodyPayload)
+            await postAccount(bodyPayload)
                 .then((res) => handlePostAccountResponse.call(this, res, (payload) => {
                     this.stepToFill = 3;
                     this.nextStepId = 'step_4';

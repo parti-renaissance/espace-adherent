@@ -1,6 +1,6 @@
 import { captureException } from '@sentry/browser';
 
-export function $postAccount(data) {
+export function postAccount(data) {
     return fetch('/api/create-account', {
         method: 'POST',
         headers: {
@@ -17,10 +17,7 @@ export function $postAccount(data) {
 /**
  * @param {Response} response
  * @param {(payload: any) => void} onSuccess
- * @param {{
- *     success: string,
- *     error: string,
- * }} opt
+ * @param {{ error: string }} opt
  * @return {Promise<Response>}
  */
 export function handlePostAccountResponse(response, onSuccess, opt = {

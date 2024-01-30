@@ -1,7 +1,7 @@
 /** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
 import '../../../components/Validator/typedef';
 import CommonFormStep from './CommonFormStep';
-import { $postAccount, handlePostAccountResponse } from '../shared/utils';
+import { handlePostAccountResponse, postAccount } from '../shared/utils';
 
 /**
  * First Step component for funnel
@@ -51,7 +51,7 @@ const ThirdForm = () => ({
 
     createAccount(data) {
         this.loading = true;
-        return $postAccount(data);
+        return postAccount(data);
     },
 
     async handleOnSubmit(e) {

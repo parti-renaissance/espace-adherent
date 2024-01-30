@@ -1,5 +1,5 @@
 import reScrollTo from '../../../utils/scrollTo';
-import { camelToSnakeCase, snakeToCamel } from '../../../utils/string';
+import { camelToSnakeCase, snakeToCamelCase } from '../../../utils/string';
 
 /** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
 
@@ -33,7 +33,7 @@ const CommonFormStep = () => ({
 
     _handleBadRequest(data) {
         data.violations.forEach((x) => {
-            const prop = x.property.startsWith('address') ? `address_${snakeToCamel(x.property)}` : snakeToCamel(x.property);
+            const prop = x.property.startsWith('address') ? `address_${snakeToCamelCase(x.property)}` : snakeToCamelCase(x.property);
             this.$dispatch(`x-validate:membership_request_${prop}`, {
                 status: data.status,
                 message: x.message,
