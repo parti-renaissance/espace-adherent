@@ -3,17 +3,12 @@
 namespace App\Security\Voter;
 
 use App\Entity\Adherent;
-use App\Repository\AdherentMandate\AdherentMandateRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class AdherentUnregistrationVoter extends Voter
 {
     public const PERMISSION_UNREGISTER = 'UNREGISTER';
-
-    public function __construct(private readonly AdherentMandateRepository $adherentMandateRepository)
-    {
-    }
 
     protected function supports(string $attribute, $subject): bool
     {
@@ -31,18 +26,12 @@ class AdherentUnregistrationVoter extends Voter
             return true;
         }
 
-        if ($subject->getMemberships()->getCommitteeCandidacyMembership(true)) {
-            return false;
-        }
-
-        if (($coTerrMembership = $subject->getTerritorialCouncilMembership()) && $coTerrMembership->getActiveCandidacy()) {
-            return false;
-        }
-
-        if ($this->adherentMandateRepository->hasActiveMandate($subject)) {
-            return false;
-        }
-
-        return $subject->isBasicAdherent();
+        return !$subject->isPresidentDepartmentalAssembly()
+            && !$subject->isAnimator()
+            && !$subject->isDeputy()
+            && !$subject->isRegionalDelegate()
+            && !$subject->getMemberships()->getCommitteeCandidacyMembership(true)
+            && !(($coTerrMembership = $subject->getTerritorialCouncilMembership()) && $coTerrMembership->getActiveCandidacy())
+        ;
     }
 }
