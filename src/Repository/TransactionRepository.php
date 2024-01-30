@@ -30,19 +30,28 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function findAllTransactionByAdherentIdOrEmail(Adherent $adherent, bool $onlySuccess = true): array
     {
-        return $this->createQueryBuilder('transaction')
+        $qb = $this->createQueryBuilder('transaction')
             ->addSelect('donation')
             ->innerJoin('transaction.donation', 'donation')
             ->innerJoin('donation.donator', 'donator')
             ->leftJoin('donator.adherent', 'adherent')
             ->andWhere('donator.emailAddress = :email OR adherent = :adherent')
-            ->andWhere('transaction.payboxResultCode = :resultCode')
             ->setParameters([
-                'resultCode' => Transaction::PAYBOX_SUCCESS,
                 'email' => $adherent->getEmailAddress(),
                 'adherent' => $adherent,
             ])
             ->orderBy('transaction.payboxDateTime', 'DESC')
+        ;
+
+        if ($onlySuccess) {
+            $qb
+
+                ->andWhere('transaction.payboxResultCode = :resultCode')
+                ->setParameter('resultCode', Transaction::PAYBOX_SUCCESS)
+            ;
+        }
+
+        return $qb
             ->getQuery()
             ->getResult()
         ;
