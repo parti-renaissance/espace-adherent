@@ -14,11 +14,11 @@ class DonationManager
     ) {
     }
 
-    public function getHistory(Adherent $adherent): array
+    public function getHistory(Adherent $adherent, bool $onlySuccess = true): array
     {
         $history = [];
 
-        $transactions = $this->transactionRepository->findAllSuccessfulTransactionByAdherentIdOrEmail($adherent);
+        $transactions = $this->transactionRepository->findAllTransactionByAdherentIdOrEmail($adherent, $onlySuccess);
         foreach ($transactions as $transaction) {
             $donation = $transaction->getDonation();
 
@@ -27,7 +27,8 @@ class DonationManager
                 $donation->getAmount(),
                 $donation->getType(),
                 $donation->isSubscription(),
-                $donation->isMembership()
+                $donation->isMembership(),
+                $donation->getStatus()
             );
         }
 
@@ -38,7 +39,8 @@ class DonationManager
                 $donation->getAmount(),
                 $donation->getType(),
                 $donation->isSubscription(),
-                $donation->isMembership()
+                $donation->isMembership(),
+                $donation->getStatus()
             );
         }
 
@@ -54,8 +56,9 @@ class DonationManager
         int $amount,
         string $type,
         bool $isSubscription,
-        bool $isMembership
+        bool $isMembership,
+        string $status
     ): DonationValueObject {
-        return new DonationValueObject($date, $amount, $type, $isSubscription, $isMembership);
+        return new DonationValueObject($date, $amount, $type, $isSubscription, $isMembership, $status);
     }
 }
