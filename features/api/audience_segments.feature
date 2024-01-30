@@ -114,7 +114,7 @@ Feature:
     {
        "type":"https://tools.ietf.org/html/rfc2616#section-10",
        "title":"An error occurred",
-       "detail":"filter.scope.type: Le scope n'est pas autoris\u00e9",
+       "detail":"filter.scope.type: Le scope n'est pas autorisé",
        "violations":[
           {
              "code": null,

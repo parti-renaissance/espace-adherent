@@ -4,41 +4,54 @@ namespace App\Adherent\Tag\TagGenerator;
 
 use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
+use App\Repository\DonationRepository;
 
 class AdherentStatusTagGenerator extends AbstractTagGenerator
 {
-    public function generate(Adherent $adherent): array
+    public function __construct(private readonly DonationRepository $donationRepository)
+    {
+    }
+
+    public function generate(Adherent $adherent, array $previousTags): array
     {
         if (!$adherent->isRenaissanceUser()) {
             return [];
         }
 
+        $mainTag = null;
+
         if (\count($adherent->getConfirmedPayments())) {
-            return [
-                TagEnum::ADHERENT,
-                TagEnum::ADHERENT_COTISATION_OK,
-            ];
+            $mainTag = sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, date('Y'));
         }
 
-        if ($contributedAt = $adherent->getLastMembershipDonation()) {
-            return [
-                TagEnum::ADHERENT,
-                $contributedAt->format('Y') === date('Y') ? TagEnum::ADHERENT_COTISATION_OK : TagEnum::ADHERENT_COTISATION_NOK,
-            ];
+        $countCotisationByYear = $this->donationRepository->countCotisationByYearForAdherent($adherent);
+
+        if ($countTotalCotisation = \count($countCotisationByYear)) {
+            $lastYear = key($countCotisationByYear);
+
+            if ($lastYear === date('Y')) {
+                if (1 === $countTotalCotisation) {
+                    $mainTag = sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $lastYear);
+                } else {
+                    $mainTag = sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $lastYear);
+                }
+            } elseif (null === $mainTag) {
+                $mainTag = sprintf(TagEnum::ADHERENT_YEAR_TAG_PATTERN, $lastYear);
+            }
         }
 
-        $sympathizerTags = [TagEnum::SYMPATHISANT];
+        if ($mainTag) {
+            return [$mainTag];
+        }
 
         if ($adherent->isOtherPartyMembership()) {
-            $sympathizerTags[] = TagEnum::SYMPATHISANT_AUTRE_PARTI;
+            return [TagEnum::SYMPATHISANT_AUTRE_PARTI];
         }
 
-        if ($adherent->getActivatedAt() && $adherent->getActivatedAt() < new \DateTime('2022-09-17')) {
-            $sympathizerTags[] = TagEnum::SYMPATHISANT_COMPTE_EM;
-        } else {
-            $sympathizerTags[] = TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE;
+        if (!$adherent->isV2() && $adherent->getActivatedAt() && $adherent->getActivatedAt() < new \DateTime('2022-09-17')) {
+            return [TagEnum::SYMPATHISANT_COMPTE_EM];
         }
 
-        return $sympathizerTags;
+        return [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
     }
 }

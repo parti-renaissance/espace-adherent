@@ -14,7 +14,6 @@ class AdhesionAlreadySympathizerMessage extends AbstractRenaissanceMessage
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Confirmez votre adresse email',
-            [],
             [
                 'first_name' => self::escape($adherent->getFirstName()),
                 'created_at' => static::formatDate($adherent->getRegisteredAt(), 'EEEE d MMMM y, HH\'h\'mm'),

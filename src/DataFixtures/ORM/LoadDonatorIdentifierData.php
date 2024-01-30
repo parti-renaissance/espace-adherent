@@ -11,7 +11,7 @@ class LoadDonatorIdentifierData extends Fixture
     public function load(ObjectManager $manager)
     {
         $donationIdentifier = new DonatorIdentifier();
-        $donationIdentifier->setIdentifier('000053');
+        $donationIdentifier->setIdentifier('000054');
 
         $manager->persist($donationIdentifier);
         $manager->flush();

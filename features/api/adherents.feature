@@ -579,12 +579,16 @@ Feature:
                     "options": {
                         "choices": {
                             "adherent": "Adhérent",
-                            "adherent:cotisation_nok": "Adhérent - non à jour de cotisation",
-                            "adherent:cotisation_ok": "Adhérent - à jour de cotisation",
+                            "adherent:a_jour_2024": "Adhérent - À jour 2024",
+                            "adherent:a_jour_2024:primo": "Adhérent - À jour 2024 - Primo-adhérent",
+                            "adherent:a_jour_2024:recotisation": "Adhérent - À jour 2024 - Recotisation",
+                            "adherent:a_jour_2024:elu_a_jour": "Adhérent - À jour 2024 - Car à jour de cotisation élu",
+                            "adherent:a_jour_2023": "Adhérent - À jour 2023",
+                            "adherent:a_jour_2022": "Adhérent - À jour 2022",
                             "sympathisant": "Sympathisant",
-                            "sympathisant:adhesion_incomplete": "Sympathisant - adhésion incomplète",
-                            "sympathisant:compte_em": "Sympathisant - ancien adhérent En Marche",
-                            "sympathisant:autre_parti": "Sympathisant - adhérent d'un autre parti"
+                            "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incompl\u00e8te",
+                            "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
+                            "sympathisant:autre_parti": "Sympathisant - Adhérent d\u0027un autre parti"
                         }
                     },
                     "type": "select"
@@ -683,14 +687,14 @@ Feature:
                     "label": "Labels élu",
                     "options": {
                         "choices": {
-                            "elu":"Élu",
-                            "elu:attente_declaration": "Élu - en attente de déclaration",
-                            "elu:cotisation_nok": "Élu - non à jour de cotisation",
-                            "elu:cotisation_ok": "Élu - à jour de cotisation",
-                            "elu:cotisation_ok:exempte": "Élu - à jour de cotisation - exempté de cotisation",
-                            "elu:cotisation_ok:non_soumis": "Élu - à jour de cotisation - non soumis à cotisation",
-                            "elu:cotisation_ok:soumis": "Élu - à jour de cotisation - soumis à cotisation",
-                            "elu:exempte_et_adherent_cotisation_nok": "Élu - exempté mais pas à jour de cotisation adhérent"
+                            "elu": "Élu",
+                            "elu:attente_declaration": "Élu - En attente de déclaration",
+                            "elu:cotisation_ok": "Élu - À jour de cotisation",
+                            "elu:cotisation_ok:exempte": "Élu - À jour de cotisation - Exempté de cotisation",
+                            "elu:cotisation_ok:non_soumis": "Élu - À jour de cotisation - Non soumis à cotisation",
+                            "elu:cotisation_ok:soumis": "Élu - À jour de cotisation - Soumis à cotisation",
+                            "elu:cotisation_nok": "Élu - Non à jour de cotisation",
+                            "elu:exempte_et_adherent_cotisation_nok": "Élu - Exempté mais pas à jour de cotisation adhérent"
                         }
                     },
                     "type": "select"

@@ -98,11 +98,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->select('PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}')
             ->innerJoin('adherent.memberships', 'membership', Join::WITH, 'membership.committee = :committee')
             ->andWhere('adherent.status = :status')
-            ->andWhere('FIND_IN_SET(:adherent_tag, adherent.tags) > 0')
+            ->andWhere('adherent.tags like :adherent_tag')
             ->setParameters([
                 'committee' => $committee,
                 'status' => Adherent::ENABLED,
-                'adherent_tag' => TagEnum::ADHERENT,
+                'adherent_tag' => '%'.TagEnum::ADHERENT.'%',
             ])
             ->getQuery()
             ->getResult()
@@ -1218,11 +1218,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $queryBuilder = $this->createQueryBuilder('adherent')
             ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
             ->where('adherent.status = :status AND adherent.activatedAt IS NOT NULL')
-            ->andWhere('FIND_IN_SET(:adherent_tag, adherent.tags) > 0')
+            ->andWhere('adherent.tags like :adherent_tag')
             ->andWhere('adherent.registeredAt <= :date')
             ->setParameters([
                 'status' => Adherent::ENABLED,
-                'adherent_tag' => TagEnum::ADHERENT,
+                'adherent_tag' => '%'.TagEnum::ADHERENT.'%',
                 'date' => $startDate,
             ])
         ;
@@ -1362,8 +1362,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $qb
                 ->innerJoin('a.memberships', 'membership')
                 ->innerJoin('membership.committee', 'committee', Join::WITH, 'committee.version = 2')
-                ->andWhere('FIND_IN_SET(:adherent_tag, a.tags) > 0')
-                ->setParameter('adherent_tag', TagEnum::ADHERENT)
+                ->andWhere('a.tags like :adherent_tag')
+                ->setParameter('adherent_tag', '%'.TagEnum::ADHERENT.'%')
             ;
 
             if ($filter->committee) {
@@ -1464,8 +1464,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         if ($adherentRenaissance ^ $sympathizerRenaissance) {
             $qb
-                ->andWhere('FIND_IN_SET(:adherent_tag, adherent.tags) > 0')
-                ->setParameter('adherent_tag', $adherentRenaissance ? TagEnum::ADHERENT : TagEnum::SYMPATHISANT)
+                ->andWhere('adherent.tags like :adherent_tag')
+                ->setParameter('adherent_tag', '%'.($adherentRenaissance ? TagEnum::ADHERENT : TagEnum::SYMPATHISANT).'%')
             ;
         }
 
@@ -1680,11 +1680,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
             ->innerJoin(ElectedRepresentativeAdherentMandate::class, 'mandate', Join::WITH, 'mandate.adherent = adherent')
             ->where('mandate.finishAt IS NULL AND mandate.mandateType IN (:types)')
-            ->andWhere('FIND_IN_SET(:adherent_tag, adherent.tags) > 0')
+            ->andWhere('adherent.tags LIKE :adherent_tag')
             ->andWhere('adherent.status = :status')
             ->setParameters([
                 'types' => MandateTypeEnum::LOCAL_TYPES,
-                'adherent_tag' => TagEnum::ADHERENT,
+                'adherent_tag' => '%'.TagEnum::ADHERENT.'%',
                 'status' => Adherent::ENABLED,
             ])
             ->getQuery()

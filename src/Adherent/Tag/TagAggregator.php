@@ -19,7 +19,7 @@ class TagAggregator
         $tags = [];
 
         foreach ($this->generators as $generator) {
-            $tags = array_merge($tags, $generator->generate($adherent));
+            $tags = array_merge($tags, $generator->generate($adherent, $tags));
         }
 
         return array_values(array_unique($tags));

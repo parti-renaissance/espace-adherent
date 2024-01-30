@@ -3,7 +3,6 @@
 namespace App\DataFixtures\ORM;
 
 use App\Address\AddressInterface;
-use App\Donation\DonationSourceEnum;
 use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Adherent;
 use App\Entity\Donation;
@@ -26,10 +25,36 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $donator0 = $this->createDonator('000050', $this->getReference('adherent-1'));
-        $donator1 = $this->createDonator('000051', $this->getReference('adherent-4'));
-        $donator2 = $this->createDonator('000052', $this->getReference('adherent-3'));
-        $donator3 = $this->createDonator('000053', $this->getReference('adherent-5'));
+        /** @var Donator[] $donators */
+        $donators = [
+            $donator0 = $this->createDonator('000050', $this->getReference('adherent-1')),
+            $donator1 = $this->createDonator('000051', $this->getReference('adherent-4')),
+            $donator2 = $this->createDonator('000052', $this->getReference('adherent-3')),
+            $donator3 = $this->createDonator('000053', $this->getReference('adherent-5')),
+        ];
+
+        $currentYear = date('Y');
+
+        foreach ($donators as $index => $donator) {
+            foreach (range($currentYear - ($index + 1), $currentYear) as $year) {
+                $donation = $this->createDonation(
+                    $donator,
+                    30,
+                    PayboxPaymentSubscription::NONE,
+                    Donation::TYPE_CB,
+                    $year.'/01/01 10:30:00',
+                    '123456'
+                );
+                $this->createTransaction($donation);
+
+                $donation->setMembership(true);
+                $donator->setMembershipDonation($donation);
+
+                $manager->persist($donation);
+            }
+            $donator->computeLastSuccessfulDonation();
+            $manager->persist($donator);
+        }
 
         $donationNormal = $this->createDonation(
             $donator0,
@@ -109,16 +134,6 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         );
         $this->createTransaction($donation4);
 
-        $donationForMembership1 = $this->createDonation(
-            $donator3,
-            30.,
-            PayboxPaymentSubscription::NONE,
-            Donation::TYPE_CB
-        );
-        $this->createTransaction($donationForMembership1);
-        $donationForMembership1->setSource(DonationSourceEnum::MEMBERSHIP);
-        $donator3->setMembershipDonation($donationForMembership1);
-
         $donation5 = $this->createDonation(
             $donator3,
             50.,
@@ -128,14 +143,31 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         );
         $this->createTransaction($donation5);
 
+        $donator4 = $this->createDonator('000054', $this->getReference('renaissance-user-4'));
+        $donation = $this->createDonation(
+            $donator4,
+            30,
+            PayboxPaymentSubscription::NONE,
+            Donation::TYPE_CB,
+            '2021/02/02 00:00:00',
+            '123456'
+        );
+        $this->createTransaction($donation);
+
+        $donation->setMembership(true);
+        $donator4->setMembershipDonation($donation);
+
         $donator0->computeLastSuccessfulDonation();
         $donator1->computeLastSuccessfulDonation();
         $donator2->computeLastSuccessfulDonation();
+        $donator3->computeLastSuccessfulDonation();
+        $donator4->computeLastSuccessfulDonation();
 
         $manager->persist($donator0);
         $manager->persist($donator1);
         $manager->persist($donator2);
         $manager->persist($donator3);
+        $manager->persist($donator4);
 
         $manager->flush();
     }
@@ -206,7 +238,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         ]);
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,

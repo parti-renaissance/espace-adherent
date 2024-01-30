@@ -29,7 +29,7 @@ Feature:
     """
     {
       "committees":[
-        {"508d4ac0-27d6-4635-8953-4cc8600018f9":"En Marche - Comit\u00e9 de Rouen"},
+        {"508d4ac0-27d6-4635-8953-4cc8600018f9":"En Marche - Comité de Rouen"},
         {"79638242-5101-11e7-b114-b2f933d5fe66":"En Marche - Suisse"},
         {"b0cd0e52-a5a4-410b-bba3-37afdd326a0a":"En Marche Dammarie-les-Lys"}
       ]
@@ -51,7 +51,7 @@ Feature:
     {
       "committees":[
         {"d648d486-fbb3-4394-b4b3-016fac3658af":"Antenne En Marche de Fontainebleau"},
-        {"508d4ac0-27d6-4635-8953-4cc8600018f9":"En Marche - Comit\u00e9 de Rouen"},
+        {"508d4ac0-27d6-4635-8953-4cc8600018f9":"En Marche - Comité de Rouen"},
         {"79638242-5101-11e7-b114-b2f933d5fe66":"En Marche - Suisse"},
         {"b0cd0e52-a5a4-410b-bba3-37afdd326a0a":"En Marche Dammarie-les-Lys"}
       ]

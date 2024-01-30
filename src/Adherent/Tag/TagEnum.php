@@ -7,6 +7,12 @@ use MyCLabs\Enum\Enum;
 class TagEnum extends Enum
 {
     public const ADHERENT = 'adherent';
+
+    public const ADHERENT_YEAR_TAG_PATTERN = self::ADHERENT.':a_jour_%s';
+    public const ADHERENT_YEAR_PRIMO_TAG_PATTERN = self::ADHERENT_YEAR_TAG_PATTERN.':primo';
+    public const ADHERENT_YEAR_RECOTISATION_TAG_PATTERN = self::ADHERENT_YEAR_TAG_PATTERN.':recotisation';
+    public const ADHERENT_YEAR_ELU_TAG_PATTERN = self::ADHERENT_YEAR_TAG_PATTERN.':elu_a_jour';
+
     public const ADHERENT_COTISATION_OK = 'adherent:cotisation_ok';
     public const ADHERENT_COTISATION_NOK = 'adherent:cotisation_nok';
 
@@ -26,17 +32,35 @@ class TagEnum extends Enum
     public const ELU_COTISATION_NOK = 'elu:cotisation_nok';
     public const ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK = 'elu:exempte_et_adherent_cotisation_nok';
 
+    public static function getTags(): array
+    {
+        return array_merge(self::getAdherentTags(), self::getElectTags());
+    }
+
     public static function getAdherentTags(): array
     {
-        return [
-            self::ADHERENT,
-            self::ADHERENT_COTISATION_OK,
-            self::ADHERENT_COTISATION_NOK,
+        $currentYear = date('Y');
+
+        $adherentTags = array_merge(
+            [
+                self::ADHERENT,
+                self::getAdherentYearTag($currentYear),
+                sprintf(self::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear),
+                sprintf(self::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear),
+                sprintf(self::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear),
+            ],
+            array_map(
+                fn (int $year) => self::getAdherentYearTag($year),
+                array_reverse(range(2022, $currentYear - 1))
+            )
+        );
+
+        return array_merge($adherentTags, [
             self::SYMPATHISANT,
             self::SYMPATHISANT_ADHESION_INCOMPLETE,
             self::SYMPATHISANT_COMPTE_EM,
             self::SYMPATHISANT_AUTRE_PARTI,
-        ];
+        ]);
     }
 
     public static function getElectTags(): array
@@ -57,8 +81,6 @@ class TagEnum extends Enum
     {
         return [
             self::ADHERENT => 'adherent',
-            self::ADHERENT_COTISATION_OK => 'adherent:à jour de cotisation',
-            self::ADHERENT_COTISATION_NOK => 'adherent:non à jour de cotisation',
             self::SYMPATHISANT => 'sympathisant',
             self::SYMPATHISANT_ADHESION_INCOMPLETE => 'sympathisant:adhésion incomplète',
             self::SYMPATHISANT_COMPTE_EM => 'sympathisant:ancien adhérent En Marche',
@@ -72,6 +94,11 @@ class TagEnum extends Enum
             self::ELU_COTISATION_NOK => 'elu:non à jour de cotisation',
             self::ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK => 'elu:exempté mais pas à jour de cotisation adhérent',
         ];
+    }
+
+    public static function getAdherentYearTag(int $year = null): string
+    {
+        return self::ADHERENT.':a_jour_'.($year ?? date('Y'));
     }
 
     public static function getReducedTags(array $allTags): array
@@ -104,5 +131,16 @@ class TagEnum extends Enum
         });
 
         return $reducedTags;
+    }
+
+    public static function includesTag(string $searchTag, array $previousTags): bool
+    {
+        foreach ($previousTags as $tag) {
+            if (str_starts_with($tag, $searchTag)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

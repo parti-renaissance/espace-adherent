@@ -13,7 +13,7 @@ class SessionModalActivatorListener implements EventSubscriberInterface
     public const DISMISS_COOKIE_KEY = 'session_modal_dismiss';
     public const SESSION_KEY = 'session_modal';
 
-    public const CONTEXT_CERTIFICATION = 'certification';
+    public const CONTEXT_READHESION = 'readhesion';
 
     public static function getSubscribedEvents(): array
     {
@@ -49,7 +49,7 @@ class SessionModalActivatorListener implements EventSubscriberInterface
         }
 
         if ($adherent->getLastMembershipDonation() < new \DateTime((date('Y') - 1).'-01-01 00:00:00')) {
-            $request->getSession()->set(self::SESSION_KEY, self::CONTEXT_CERTIFICATION);
+            $request->getSession()->set(self::SESSION_KEY, self::CONTEXT_READHESION);
         }
     }
 }

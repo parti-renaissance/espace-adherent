@@ -6,5 +6,7 @@ use App\Entity\Adherent;
 
 interface TagGeneratorInterface
 {
-    public function generate(Adherent $adherent): array;
+    public function generate(Adherent $adherent, array $previousTags): array;
+
+    public static function getDefaultPriority(): int;
 }

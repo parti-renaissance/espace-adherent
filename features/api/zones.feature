@@ -115,12 +115,12 @@ Feature:
                 },
                 {
                    "id":1427,
-                   "text":"Le Puy-Sainte-R\u00e9parade (13610)"
+                   "text":"Le Puy-Sainte-Réparade (13610)"
                 }
              ]
           },
           {
-             "text":"Communaut\u00e9 de communes",
+             "text":"Communauté de communes",
              "children":[
                 {
                    "id":1281,
@@ -418,7 +418,7 @@ Feature:
     {
        "results":[
           {
-             "text":"Circonscription \u00e9lectorale",
+             "text":"Circonscription électorale",
              "children":[
                 {
                    "id":776,
@@ -432,4 +432,3 @@ Feature:
        }
     }
     """
-

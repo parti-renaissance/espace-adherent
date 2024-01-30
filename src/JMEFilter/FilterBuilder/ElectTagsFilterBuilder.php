@@ -3,14 +3,14 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\Adherent\Tag\TagEnum;
+use App\Adherent\Tag\TagTranslator;
 use App\JMEFilter\FilterCollectionBuilder;
 use App\JMEFilter\FilterGroup\ElectedRepresentativeFilterGroup;
 use App\Scope\ScopeEnum;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ElectTagsFilterBuilder implements FilterBuilderInterface
 {
-    public function __construct(private readonly TranslatorInterface $translator)
+    public function __construct(private readonly TagTranslator $translator)
     {
     }
 
@@ -32,7 +32,7 @@ class ElectTagsFilterBuilder implements FilterBuilderInterface
     {
         $choices = [];
         foreach (TagEnum::getElectTags() as $tag) {
-            $choices[$tag] = $this->translator->trans('adherent.tag.'.$tag);
+            $choices[$tag] = $this->translator->trans($tag);
         }
 
         return $choices;

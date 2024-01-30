@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\Address\AddressInterface;
 use App\Adherent\Tag\TagEnum;
+use App\Adherent\Tag\TagTranslator;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
@@ -79,6 +80,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
     protected AdherentProfileHandler $adherentProfileHandler;
     protected LoggerInterface $logger;
     protected FranceCities $franceCities;
+    private TagTranslator $tagTranslator;
 
     /**
      * State of adherent data before update
@@ -96,7 +98,8 @@ class AbstractAdherentAdmin extends AbstractAdmin
         PoliticalCommitteeManager $politicalCommitteeManager,
         AdherentProfileHandler $adherentProfileHandler,
         LoggerInterface $logger,
-        FranceCities $franceCities
+        FranceCities $franceCities,
+        TagTranslator $tagTranslator,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
@@ -106,6 +109,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
         $this->adherentProfileHandler = $adherentProfileHandler;
         $this->logger = $logger;
         $this->franceCities = $franceCities;
+        $this->tagTranslator = $tagTranslator;
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
@@ -756,9 +760,19 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => TagEnum::values(),
-                    'choice_label' => function (string $label) {
-                        return 'adherent.tag.'.$label;
+                    'choices' => TagEnum::getTags(),
+                    'choice_label' => function (string $tag) {
+                        $label = $this->tagTranslator->trans($tag, false);
+
+                        if ($count = substr_count($tag, ':')) {
+                            return sprintf(
+                                '•%s%s',
+                                str_repeat("\u{a0}", $count * 4),
+                                $label
+                            );
+                        }
+
+                        return $label;
                     },
                     'multiple' => true,
                 ],
@@ -772,13 +786,13 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     $orX = $qb->expr()->orX();
 
                     $condition = match ($value->getType()) {
-                        ContainsOperatorType::TYPE_NOT_CONTAINS => '=',
-                        default => '>',
+                        ContainsOperatorType::TYPE_NOT_CONTAINS => 'NOT LIKE',
+                        default => 'LIKE',
                     };
 
                     foreach ($value->getValue() as $index => $choice) {
-                        $orX->add('FIND_IN_SET(:tag_'.$index.', '.$alias.'.tags) '.$condition.' 0');
-                        $qb->setParameter('tag_'.$index, $choice);
+                        $orX->add($alias.'.tags '.$condition.' :tag_'.$index);
+                        $qb->setParameter('tag_'.$index, '%'.$choice.'%');
                     }
 
                     $qb->andWhere($orX);
