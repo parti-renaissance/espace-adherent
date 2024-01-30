@@ -423,12 +423,6 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
                 TXT
         ));
 
-        $manager->persist($this->createCmsBlock(
-            'renaissance-local-elections-subtitle',
-            'Texte affiché dans le header de la page des élections locales',
-            'Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua.'
-        ));
-
         $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-1', 'Vote des statuts', 'Approuvez vous la résolution A ?'));
         $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-2', 'Vote des statuts', 'Approuvez vous la résolution B ?'));
         $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-3', 'Vote des statuts', 'Approuvez vous la résolution C ?'));
