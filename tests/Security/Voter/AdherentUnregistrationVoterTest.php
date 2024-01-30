@@ -99,11 +99,6 @@ class AdherentUnregistrationVoterTest extends TestCase
     {
         $adherent = $this->createAdherentMock();
 
-        $adherent->expects($this->any())
-            ->method('isBasicAdherent')
-            ->willReturn(true)
-        ;
-
         $this->adherentMandateRepository
             ->expects($this->once())
             ->method('hasActiveMandate')
