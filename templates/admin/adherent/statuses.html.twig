@@ -1,3 +1,9 @@
+{% macro label(label) %}
+    <span class="label" style="background-color: #3C8DBC; padding: 2px;">
+        {{ label }}
+    </span>
+{% endmacro %}
+
 {% set labels = [] %}
 
 {% if object.hasAdvancedPrivileges %}
@@ -147,18 +153,18 @@
 {% endif %}
 
 {% for label in labels %}
-    <span class="label" style="background-color: #3C8DBC; padding: 2px;">
-        {{ label }}
-    </span>
+    {{ _self.label(label) }}
     <br/>
 {% endfor %}
 
 {% include 'admin/adherent/_tags.html.twig' with { tags: object.tags } %}
 
 {% if object.isTerritoireProgresMembership %}
-    {% set labels = labels|merge(['Militant TDP']) %}
+    <br>
+    {{ _self.label('Militant TDP') }}
 {% endif %}
 
 {% if object.isAgirMembership %}
-    {% set labels = labels|merge(['Militant AGIR']) %}
+    <br>
+    {{ _self.label('Militant AGIR') }}
 {% endif %}
