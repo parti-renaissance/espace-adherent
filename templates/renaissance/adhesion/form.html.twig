@@ -4,10 +4,14 @@
 
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
+
+{% set isReContribution = (app.user and app.user.missingMembershipYears ? '1' : '0') %}
+{% set stepsStepper = isReContribution ? ['Informations', 'Cotisation'] : ['Email', 'Informations', 'Autorisation', 'Cotisation'] %}
+
 {% block content %}
     <main class="bg-[#F4F4F7] re_new_ui">
         <section
-            x-data="xFunnelPage({initStep: {{ step }}})"
+            x-data="xFunnelPage({initStep: {{ step }}, isReContribution: {{ isReContribution }} })"
             @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
             <header class="w-full flex flex-col p-4 bg-white sticky top-0 z-50 items-center h-auto
                             xs:p-6
@@ -22,7 +26,7 @@
                 <twig:Molecules:ReStepper
                         id="adhesion-stepper"
                         class="relative z-50 md:col-span-2 lg:col-span-1"
-                        steps="{{ ['Email', 'Informations', 'Autorisation', 'Cotisation'] }}"
+                        steps="{{ stepsStepper }}"
                         initStep="currentStep"
                 />
             </header>
@@ -123,6 +127,7 @@
                             x-on:click="handleOnSubmit($event, $dispatch)"
                             onDisabledClick="checkFormValidity($event)"
                             disabled="x:!checkValidity()"
+                            loading="x:loading"
                         >Suivant</twig:ReButton>
                     </twig:Atoms:ReCard>
 
@@ -200,7 +205,7 @@
                         </template>
                     </twig:Atoms:ReCard>
 
-                    <twig:Atoms:ReCard class="max-w-[500px] text-ui_gray-80">
+                    <twig:Atoms:ReCard class="max-w-[500px] text-ui_gray-80" id="legal-mention">
                         <p>
                           66 % de votre cotisation/don vient en réduction de votre impôt sur le revenu (dans la limite de 20 % du revenu imposable). Le reçu fiscal pour votre cotisation de l’année N vous sera envoyé au 2e trimestre de l’année N+1.
                             <br>

@@ -1,12 +1,7 @@
 /** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
 import '../../../components/Validator/typedef';
-import { captureException } from '@sentry/browser';
 import CommonFormStep from './CommonFormStep';
-
-const snakeToCamel = (str) => str.toLowerCase()
-    .replace(/([-_][a-z])/g, (group) => group
-        .replace('-', '')
-        .replace('_', ''));
+import { handlePostAccountResponse, postAccount } from '../shared/utils';
 
 /**
  * First Step component for funnel
@@ -56,27 +51,7 @@ const ThirdForm = () => ({
 
     createAccount(data) {
         this.loading = true;
-        return fetch('/api/create-account', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                ...data,
-                utm_source: document.querySelector('#membership_request_utmSource').value,
-                utm_campaign: document.querySelector('#membership_request_utmCampaign').value,
-            }),
-        });
-    },
-
-    _handleBadRequest(data) {
-        data.violations.forEach((x) => {
-            const prop = x.property.startsWith('address') ? `address_${snakeToCamel(x.property)}` : snakeToCamel(x.property);
-            this.$dispatch(`x-validate:membership_request_${prop}`, {
-                status: data.status,
-                message: x.message,
-            });
-        });
+        return postAccount(data);
     },
 
     async handleOnSubmit(e) {
@@ -102,49 +77,11 @@ const ThirdForm = () => ({
         });
 
         await this.createAccount(this.formData)
-            // eslint-disable-next-line consistent-return
-            .then((res) => res.json())
-            .then((payload) => {
-                if (this.isNotifResponse(payload)) {
-                    if ('success' === payload.status) {
-                        this.stepToFill = 3;
-                        this.handleNextStep();
-                        this.clearLocalStorage();
-                        return;
-                    }
-                    if ('redirect' === payload.status) {
-                        window.location.href = payload.location;
-                        return;
-                    }
-                    if (payload.violations) {
-                        this._handleBadRequest(payload);
-                        this.scrollToFirstError();
-                        return;
-                    }
-                    this.generalNotification = payload;
-                    if ('error' === payload.status) {
-                        this.scrollToFirstError();
-                    }
-                } else {
-                    throw new Error('Invalid response');
-                }
-            })
-            .catch((err) => {
-                this.generalNotification = {
-                    status: 'error',
-                    message: 'Une erreur est survenue lors de la création de votre compte',
-                };
-                this.scrollToFirstError();
-                captureException(err, {
-                    tags: {
-                        component: 'membership-request',
-                        step: 'create-account',
-                    },
-                });
-            })
-            .finally(() => {
-                this.loading = false;
-            });
+            .then((res) => handlePostAccountResponse.call(this, res, (payload) => {
+                this.stepToFill = 3;
+                this.handleNextStep();
+                this.clearLocalStorage();
+            }));
     },
 
 });

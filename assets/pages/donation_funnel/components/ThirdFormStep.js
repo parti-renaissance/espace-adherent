@@ -2,11 +2,6 @@
 import '../../../components/Validator/typedef';
 import CommonFormStep from './CommonFormStep';
 
-const snakeToCamel = (str) => str.toLowerCase()
-    .replace(/([-_][a-z])/g, (group) => group
-        .replace('-', '')
-        .replace('_', ''));
-
 /**
  * First Step component for funnel
  * @return {AlpineComponent}

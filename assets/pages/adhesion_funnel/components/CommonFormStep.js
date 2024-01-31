@@ -1,5 +1,5 @@
 import reScrollTo from '../../../utils/scrollTo';
-import { camelToSnakeCase } from '../../../utils/string';
+import { camelToSnakeCase, snakeToCamelCase } from '../../../utils/string';
 
 /** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
 
@@ -29,6 +29,16 @@ const CommonFormStep = () => ({
 
     isNotifResponse(payload) {
         return payload && payload.status && payload.message;
+    },
+
+    _handleBadRequest(data) {
+        data.violations.forEach((x) => {
+            const prop = x.property.startsWith('address') ? `address_${snakeToCamelCase(x.property)}` : snakeToCamelCase(x.property);
+            this.$dispatch(`x-validate:membership_request_${prop}`, {
+                status: data.status,
+                message: x.message,
+            });
+        });
     },
 
     scrollToFirstError() {

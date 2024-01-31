@@ -2,6 +2,8 @@
 import '../../../components/Validator/typedef';
 import CommonFormStep from './CommonFormStep';
 
+import { handlePostAccountResponse, postAccount } from '../shared/utils';
+
 /**
  * First Step component for funnel
  * @return {AlpineComponent}
@@ -49,6 +51,23 @@ const SecondForm = () => ({
     async handleOnSubmit(e) {
         if (!this.checkFormValidity(e)) return;
         this.setStepData(['address']);
+        if (this.isReContribution) {
+            this.loading = true;
+            const bodyPayload = {
+                ...this.formData,
+                exclusiveMembership: true,
+                isPhysicalPerson: true,
+            };
+            await postAccount(bodyPayload)
+                .then((res) => handlePostAccountResponse.call(this, res, (payload) => {
+                    this.stepToFill = 3;
+                    this.nextStepId = 'step_4';
+                    this.handleNextStep();
+                    this.clearLocalStorage();
+                }, {
+                    error: 'Une erreur est survenue lors de la modification de votre compte',
+                }));
+        }
         this.handleNextStep();
     },
 
