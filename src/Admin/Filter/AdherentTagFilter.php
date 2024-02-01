@@ -27,8 +27,8 @@ class AdherentTagFilter extends AbstractCallbackDecoratorFilter
                 };
 
                 foreach ($value->getValue() as $index => $choice) {
-                    $orX->add($alias.'.tags '.$condition.' :tag_'.$index);
-                    $qb->setParameter('tag_'.$index, '%'.$choice.'%');
+                    $orX->add($alias.'.tags '.$condition.' :tag_'.$field.'_'.$index);
+                    $qb->setParameter('tag_'.$field.'_'.$index, '%'.$choice.'%');
                 }
 
                 $qb->andWhere($orX);
