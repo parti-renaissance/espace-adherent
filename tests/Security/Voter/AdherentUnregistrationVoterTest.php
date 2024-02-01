@@ -2,8 +2,11 @@
 
 namespace Tests\App\Security\Voter;
 
+use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
-use App\Repository\AdherentMandate\AdherentMandateRepository;
+use App\Entity\CommitteeMembership;
+use App\Entity\TerritorialCouncil\Candidacy;
+use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Security\Voter\AdherentUnregistrationVoter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -12,22 +15,19 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class AdherentUnregistrationVoterTest extends TestCase
 {
-    private ?AdherentMandateRepository $adherentMandateRepository = null;
     private ?AdherentUnregistrationVoter $voter = null;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->adherentMandateRepository = $this->createMock(AdherentMandateRepository::class);
-        $this->voter = new AdherentUnregistrationVoter($this->adherentMandateRepository);
+        $this->voter = new AdherentUnregistrationVoter();
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        $this->adherentMandateRepository = null;
         $this->voter = null;
     }
 
@@ -36,54 +36,23 @@ class AdherentUnregistrationVoterTest extends TestCase
         yield [false, true, AdherentUnregistrationVoter::PERMISSION_UNREGISTER];
     }
 
-    #[DataProvider('provideBasicAdherentCases')]
-    public function testAdherentIsGrantedIfBasic(bool $granted)
-    {
-        $adherent = $this->createAdherentMock();
-
-        $adherent->expects($this->once())
-            ->method('isBasicAdherent')
-            ->willReturn($granted)
-        ;
-
-        if (!$granted) {
-            $adherent->expects($this->once())
-                ->method('isUser')
-                ->willReturn(false)
-            ;
-        } else {
-            $this->adherentMandateRepository
-                ->expects($this->once())
-                ->method('hasActiveMandate')
-                ->with($adherent)
-                ->willReturn(false)
-            ;
-        }
-
-        $this->assertSame(
-            $granted ? VoterInterface::ACCESS_GRANTED : VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($this->createTokenMock(), $adherent, [AdherentUnregistrationVoter::PERMISSION_UNREGISTER])
-        );
-    }
-
     public static function provideBasicAdherentCases(): iterable
     {
         yield [true];
         yield [false];
     }
 
-    #[DataProvider('provideUserCases')]
-    public function testAdherentIsGrantedIfUser(bool $granted)
+    public function testAdherentIsGrantedIfUser(): void
     {
         $adherent = $this->createAdherentMock();
 
         $adherent->expects($this->once())
             ->method('isUser')
-            ->willReturn($granted)
+            ->willReturn(true)
         ;
 
         $this->assertSame(
-            $granted ? VoterInterface::ACCESS_GRANTED : VoterInterface::ACCESS_DENIED,
+            VoterInterface::ACCESS_GRANTED,
             $this->voter->vote($this->createTokenMock(), $adherent, [AdherentUnregistrationVoter::PERMISSION_UNREGISTER])
         );
     }
@@ -94,33 +63,72 @@ class AdherentUnregistrationVoterTest extends TestCase
         yield [false];
     }
 
-    #[DataProvider('provideWithActiveMandateCases')]
-    public function testAdherentIsGrantedIfActiveMandates(bool $granted)
-    {
+    #[DataProvider('provideAdherentWithRolesCases')]
+    public function testAdherentIsNotGrantedIfRole(
+        bool $isPresidentDepartmentalAssembly,
+        bool $isAnimator,
+        bool $isDeputy,
+        bool $isRegionalDelegate,
+        bool $hasCommitteeCandidacy,
+        bool $hasCoterrCandidacy
+    ): void {
         $adherent = $this->createAdherentMock();
 
         $adherent->expects($this->any())
-            ->method('isBasicAdherent')
-            ->willReturn(true)
+            ->method('isPresidentDepartmentalAssembly')
+            ->willReturn($isPresidentDepartmentalAssembly)
         ;
 
-        $this->adherentMandateRepository
-            ->expects($this->once())
-            ->method('hasActiveMandate')
-            ->with($adherent)
-            ->willReturn($granted)
+        $adherent->expects($this->any())
+            ->method('isAnimator')
+            ->willReturn($isAnimator)
+        ;
+
+        $adherent->expects($this->any())
+            ->method('isDeputy')
+            ->willReturn($isDeputy)
+        ;
+
+        $adherent->expects($this->any())
+            ->method('isRegionalDelegate')
+            ->willReturn($isRegionalDelegate)
+        ;
+
+        $memberships = $this->createMock(CommitteeMembershipCollection::class);
+        $memberships->expects($this->any())
+            ->method('getCommitteeCandidacyMembership')
+            ->willReturn($hasCommitteeCandidacy ? $this->createMock(CommitteeMembership::class) : null)
+        ;
+        $adherent->expects($this->any())
+            ->method('getMemberships')
+            ->willReturn($memberships)
+        ;
+
+        $territorialCouncilMembership = $this->createMock(TerritorialCouncilMembership::class);
+        $territorialCouncilMembership->expects($this->any())
+            ->method('getActiveCandidacy')
+            ->willReturn($hasCoterrCandidacy ? $this->createMock(Candidacy::class) : null)
+        ;
+        $adherent->expects($this->any())
+            ->method('getTerritorialCouncilMembership')
+            ->willReturn($territorialCouncilMembership)
         ;
 
         $this->assertSame(
-            !$granted ? VoterInterface::ACCESS_GRANTED : VoterInterface::ACCESS_DENIED,
+            VoterInterface::ACCESS_DENIED,
             $this->voter->vote($this->createTokenMock(), $adherent, [AdherentUnregistrationVoter::PERMISSION_UNREGISTER])
         );
     }
 
-    public static function provideWithActiveMandateCases(): iterable
+    public static function provideAdherentWithRolesCases(): iterable
     {
-        yield [true];
-        yield [false];
+        yield [true, false, false, false, false, false];
+        yield [false, true, false, false, false, false];
+        yield [false, false, true, false, false, false];
+        yield [false, false, false, true, false, false];
+        yield [false, false, false, false, true, false];
+        yield [false, false, false, false, false, true];
+        yield [true, true, true, true, true, true];
     }
 
     private function createAdherentMock(): Adherent

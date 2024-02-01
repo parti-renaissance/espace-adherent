@@ -339,7 +339,8 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
 
     public static function dataProviderCannotTerminateMembership(): \Generator
     {
-        yield 'Referent' => ['renaissance-user-3@en-marche-dev.fr'];
+        yield 'PAD' => ['president-ad@renaissance-dev.fr'];
+        yield 'RCL' => ['adherent-male-55@en-marche-dev.fr'];
     }
 
     #[DataProvider('provideAdherentCredentials')]

@@ -166,7 +166,7 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                     }, $delegatedTypes));
                 }
 
-                // Legislative candidate | Correspondent | Deputy
+                // Legislative candidate | Correspondent | Deputy | PAD
                 if ($zoneBasedRoles = array_intersect(ZoneBasedRoleTypeEnum::ALL, $value)) {
                     $qb
                         ->leftJoin(sprintf('%s.zoneBasedRoles', $alias), 'zone_based_role')

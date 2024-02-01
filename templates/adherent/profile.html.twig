@@ -154,18 +154,20 @@
         <div class="b__nudge--bottom-60">
             <h2 class="section-subtitle">Suppression du compte</h2>
             <div>
-                {% if is_granted('UNREGISTER', app.user) and (app.user.isBasicAdherent or app.user.isUser) %}
-                <p class="text--body">
-                    Si vous souhaitez désadhérer et supprimer votre compte En Marche, <a href="{{ path('app_user_terminate_membership') }}" class="text--blue--dark link--no-decor">cliquez-ici</a>.
-                </p>
-
+                {% if is_granted('UNREGISTER', app.user) %}
+                    <p class="text--body">
+                        Si vous souhaitez désadhérer et supprimer votre compte En Marche, <a href="{{ path('app_user_terminate_membership') }}" class="text--blue--dark link--no-decor">cliquez-ici</a>.
+                    </p>
                 {% endif %}
 
                 {% if not is_granted('UNREGISTER', app.user) %}
                     <p class="text--body b__nudge--top-0">
-                        Si vous êtes animateur local, référent, parlementaire, porteur de projet, membre du conseil ou désigné lors d'une élection interne, vous ne pouvez pas supprimer votre compte directement : il vous faut d'abord quitter vos responsabilités. <br><br>
-                        Pour ce faire, vous pouvez écrire votre demande par email à l'adresse suivante : <a href="mailto:territoires@en-marche.fr">territoires@en-marche.fr</a>. <br><br>
-                        Si vous êtes co-animateur local, votre animateur peut retirer votre rôle depuis son espace comité. <br><br>
+                        Si vous êtes président d'assemblée départementale, responsable de commission locale, délégué de circonscription, délégué régional, vous ne pouvez pas supprimer votre compte directement : il vous faut d'abord quitter vos responsabilités.
+                        <br>
+                        <br>
+                        Pour ce faire, vous pouvez écrire votre demande par email à l'adresse suivante : <a href="mailto:territoires@en-marche.fr">territoires@parti-renaissance.fr</a>.
+                        <br>
+                        <br>
                         Si vous êtes candidat à une désignation interne, vous ne pouvez pas désadhérer du mouvement directement, il vous faut attendre la fin de la désignation.
                     </p>
                 {% endif %}

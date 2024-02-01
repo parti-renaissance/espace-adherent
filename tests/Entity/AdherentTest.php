@@ -4,14 +4,9 @@ namespace Tests\App\Entity;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
-use App\Entity\BoardMember\BoardMember;
-use App\Entity\CommitteeMembership;
-use App\Entity\Geo\Zone;
-use App\Entity\ReferentTag;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Geocoder\Coordinates;
 use App\Membership\ActivityPositionsEnum;
-use Doctrine\Common\Collections\ArrayCollection;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\App\AbstractKernelTestCase;
@@ -114,42 +109,6 @@ class AdherentTest extends AbstractKernelTestCase
 
         $adherent = $this->createNewAdherent('john.smith@en-marche.fr');
         $this->assertNotContains('ROLE_LEGISLATIVE_CANDIDATE', $adherent->getRoles());
-    }
-
-    public function testIsBasicAdherent(): void
-    {
-        // User
-        $adherent = $this->createNewAdherent();
-
-        $this->assertFalse($adherent->isBasicAdherent());
-
-        // Basic
-        $adherent->join();
-
-        $this->assertTrue($adherent->isBasicAdherent());
-
-        // Host
-        $adherent = $this->createNewAdherent();
-        $adherent->join();
-        $memberships = $adherent->getMemberships();
-
-        $membership = $this->createMock(CommitteeMembership::class);
-        $membership->expects($this->once())->method('isHostMember')->willReturn(true);
-        $memberships->add($membership);
-
-        $this->assertFalse($adherent->isBasicAdherent());
-
-        // Referent
-        $adherent = $this->createNewAdherent();
-        $adherent->setReferent([new ReferentTag('06', null, new Zone('', '', '06'))], -1.6743, 48.112);
-
-        $this->assertFalse($adherent->isBasicAdherent());
-
-        // BoardMember
-        $adherent = $this->createNewAdherent();
-        $adherent->setBoardMember(BoardMember::AREA_ABROAD, new ArrayCollection());
-
-        $this->assertFalse($adherent->isBasicAdherent());
     }
 
     #[DataProvider('provideInitials')]
