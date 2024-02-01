@@ -16,7 +16,6 @@ class PostalCodeFilterAdminExtension extends AbstractAdminExtension
         $filter
             ->add('postalCode', CallbackFilter::class, [
                 'label' => 'Code postal (préfixe)',
-                'show_filter' => true,
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {

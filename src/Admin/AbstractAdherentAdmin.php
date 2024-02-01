@@ -8,12 +8,17 @@ use App\Adherent\Tag\TagTranslator;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
+use App\Admin\Filter\AdherentRoleFilter;
+use App\Admin\Filter\AdherentTagFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Contribution\ContributionStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\BoardMember\Role;
+use App\Entity\Instance\InstanceQuality;
+use App\Entity\SubscriptionType;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Form\ActivityPositionType;
 use App\Form\AdherentMandateType;
 use App\Form\Admin\AdherentInstanceQualityType;
@@ -26,17 +31,17 @@ use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
 use App\FranceCities\FranceCities;
 use App\History\EmailSubscriptionHistoryHandler;
+use App\Instance\InstanceQualityScopeEnum;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\AdherentEvents;
 use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
-use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
-use App\Repository\Helper\MembershipFilterHelper;
 use App\Repository\Instance\InstanceQualityRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Psr\Log\LoggerInterface;
@@ -47,14 +52,16 @@ use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelType;
-use Sonata\AdminBundle\Form\Type\Operator\ContainsOperatorType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\DatePickerType;
+use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -571,33 +578,85 @@ class AbstractAdherentAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
+            ->add('search', CallbackFilter::class, [
+                'label' => 'Recherche',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $qb
+                        ->andWhere(
+                            (new Expr\Orx())
+                                ->add("$alias.firstName LIKE :search")
+                                ->add("$alias.lastName LIKE :search")
+                                ->add("$alias.emailAddress LIKE :search")
+                        )
+                        ->setParameter('search', '%'.$value->getValue().'%')
+                    ;
+
+                    return true;
+                },
+            ])
             ->add('id', null, [
                 'label' => 'ID',
             ])
+            ->add('tags_adherents', AdherentTagFilter::class, [
+                'label' => 'Labels adhérents',
+                'show_filter' => true,
+                'field_options' => [
+                    'choices' => TagEnum::getAdherentTags(),
+                    'choice_label' => function (string $tag) {
+                        $label = $this->tagTranslator->trans($tag, false);
+
+                        if ($count = substr_count($tag, ':')) {
+                            return sprintf(
+                                '•%s%s',
+                                str_repeat("\u{a0}", $count * 4),
+                                $label
+                            );
+                        }
+
+                        return $label;
+                    },
+                    'multiple' => true,
+                ],
+            ])
+            ->add('tags_elected', AdherentTagFilter::class, [
+                'label' => 'Labels élus',
+                'show_filter' => true,
+                'field_options' => [
+                    'choices' => TagEnum::getElectTags(),
+                    'choice_label' => function (string $tag) {
+                        $label = $this->tagTranslator->trans($tag, false);
+
+                        if ($count = substr_count($tag, ':')) {
+                            return sprintf(
+                                '•%s%s',
+                                str_repeat("\u{a0}", $count * 4),
+                                $label
+                            );
+                        }
+
+                        return $label;
+                    },
+                    'multiple' => true,
+                ],
+            ])
             ->add('lastName', null, [
                 'label' => 'Nom',
-                'show_filter' => true,
             ])
             ->add('firstName', null, [
                 'label' => 'Prénom',
-                'show_filter' => true,
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse email',
-                'show_filter' => true,
-            ])
-            ->add('mailchimpStatus', ChoiceFilter::class, [
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => ContactStatusEnum::values(),
-                    'choice_label' => function (string $label) {
-                        return 'mailchimp_contact.status.'.$label;
-                    },
-                ],
-                'label' => 'Abonnement email',
             ])
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',
+                'show_filter' => true,
                 'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
                     'multiple' => true,
@@ -609,28 +668,16 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     ],
                 ],
             ])
-            ->add('mandates', CallbackFilter::class, [
-                'label' => 'Mandat(s) déclaré(s)',
-                'field_type' => AdherentMandateType::class,
+            ->add('mailchimpStatus', ChoiceFilter::class, [
+                'label' => 'Abonnement email',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'multiple' => true,
+                    'choices' => ContactStatusEnum::values(),
+                    'choice_label' => function (string $label) {
+                        return 'mailchimp_contact.status.'.$label;
+                    },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $where = new Expr\Orx();
-
-                    foreach ($value->getValue() as $mandate) {
-                        $where->add("FIND_IN_SET(:mandate_$mandate, $alias.mandates) > 0");
-                        $qb->setParameter("mandate_$mandate", $mandate);
-                    }
-
-                    $qb->andWhere($where);
-
-                    return true;
-                },
             ])
             ->add('er_adherent_mandate_type', CallbackFilter::class, [
                 'label' => 'Mandat(s) élu',
@@ -659,9 +706,31 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('mandates', CallbackFilter::class, [
+                'label' => 'Mandat(s) déclaré(s)',
+                'field_type' => AdherentMandateType::class,
+                'field_options' => [
+                    'multiple' => true,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $where = new Expr\Orx();
+
+                    foreach ($value->getValue() as $mandate) {
+                        $where->add("FIND_IN_SET(:mandate_$mandate, $alias.mandates) > 0");
+                        $qb->setParameter("mandate_$mandate", $mandate);
+                    }
+
+                    $qb->andWhere($where);
+
+                    return true;
+                },
+            ])
             ->add('er_adherent_mandate_ongoing', CallbackFilter::class, [
                 'label' => 'Mandat en cours ?',
-                'show_filter' => true,
                 'field_type' => BooleanType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {
@@ -700,7 +769,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ])
             ->add('revenueDeclared', CallbackFilter::class, [
                 'label' => 'Revenus élu déclarés ?',
-                'show_filter' => true,
                 'field_type' => BooleanType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {
@@ -723,7 +791,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ])
             ->add('contributionEligible', CallbackFilter::class, [
                 'label' => 'Éligible à la cotisation élu ?',
-                'show_filter' => true,
                 'field_type' => BooleanType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {
@@ -745,60 +812,183 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('renaissanceMembership', CallbackFilter::class, [
-                'label' => 'Renaissance',
-                'show_filter' => true,
+            ->add('certified', CallbackFilter::class, [
+                'label' => 'Certifié',
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => RenaissanceMembershipFilterEnum::CHOICES,
-                ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    return MembershipFilterHelper::withMembershipFilter($qb, $alias, $value->getValue());
-                },
-            ])
-            ->add('tags', CallbackFilter::class, [
-                'show_filter' => true,
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => TagEnum::getTags(),
-                    'choice_label' => function (string $tag) {
-                        $label = $this->tagTranslator->trans($tag, false);
-
-                        if ($count = substr_count($tag, ':')) {
-                            return sprintf(
-                                '•%s%s',
-                                str_repeat("\u{a0}", $count * 4),
-                                $label
-                            );
-                        }
-
-                        return $label;
+                    'choices' => [
+                        'yes',
+                        'no',
+                    ],
+                    'choice_label' => function (string $choice) {
+                        return "global.$choice";
                     },
-                    'multiple' => true,
                 ],
-                'label' => 'Labels',
-                'operator_type' => ContainsOperatorType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     if (!$value->hasValue()) {
                         return false;
                     }
 
-                    $orX = $qb->expr()->orX();
+                    switch ($value->getValue()) {
+                        case 'yes':
+                            $qb->andWhere("$alias.certifiedAt IS NOT NULL");
 
-                    $condition = match ($value->getType()) {
-                        ContainsOperatorType::TYPE_NOT_CONTAINS => 'NOT LIKE',
-                        default => 'LIKE',
-                    };
+                            return true;
 
-                    foreach ($value->getValue() as $index => $choice) {
-                        $orX->add($alias.'.tags '.$condition.' :tag_'.$index);
-                        $qb->setParameter('tag_'.$index, '%'.$choice.'%');
+                        case 'no':
+                            $qb->andWhere("$alias.certifiedAt IS NULL");
+
+                            return true;
+                        default:
+                            return false;
+                    }
+                },
+            ])
+            ->add('certifiedAt', DateRangeFilter::class, [
+                'label' => 'Date de certification',
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('registeredAt', DateRangeFilter::class, [
+                'label' => 'Date de création de compte',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('lastLoggedAt', DateRangeFilter::class, [
+                'label' => 'Date de dernière connexion',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('city', CallbackFilter::class, [
+                'label' => 'Ville',
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
                     }
 
-                    $qb->andWhere($orX);
+                    $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
+                    $qb->setParameter('cityName', '%'.mb_strtolower($value->getValue()).'%');
 
                     return true;
                 },
+            ])
+            ->add('country', CallbackFilter::class, [
+                'label' => 'Pays',
+                'field_type' => CountryType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
+                    $qb->setParameter('country', mb_strtolower($value->getValue()));
+
+                    return true;
+                },
+            ])
+            ->add('subscriptionTypes', ModelFilter::class, [
+                'label' => 'Types de souscriptions',
+                'field_options' => [
+                    'class' => SubscriptionType::class,
+                    'multiple' => true,
+                    'choice_label' => 'label',
+                ],
+                'mapping_type' => ClassMetadata::MANY_TO_MANY,
+            ])
+            ->add('canaryTester')
+            ->add('status', ChoiceFilter::class, [
+                'label' => 'Etat du compte',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'Activé' => Adherent::ENABLED,
+                        'Désactivé' => Adherent::DISABLED,
+                    ],
+                ],
+            ])
+            ->add('role', AdherentRoleFilter::class, [
+                'label' => 'common.role',
+            ])
+            ->add('adherent_mandates', CallbackFilter::class, [
+                'label' => 'Mandat(s) internes',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => array_merge(
+                        TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS,
+                        ['TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT]
+                    ),
+                    'choice_label' => function (string $choice) {
+                        if ('TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT === $choice) {
+                            return 'territorial_council.membership.quality.elected_candidate_adherent';
+                        } else {
+                            return 'political_committee.membership.quality.'.$choice;
+                        }
+                    },
+                    'multiple' => true,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $mandatesCondition = 'adherentMandate.quality IN (:qualities)';
+                    if (\in_array('TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, $value->getValue())) {
+                        $mandatesCondition = '(adherentMandate.quality IN (:qualities) OR adherentMandate.committee IS NOT NULL)';
+                    }
+
+                    $qb
+                        ->leftJoin("$alias.adherentMandates", 'adherentMandate')
+                        ->andWhere('adherentMandate.finishAt IS NULL')
+                        ->andWhere($mandatesCondition)
+                        ->setParameter('qualities', $value->getValue())
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('instanceQualities', CallbackFilter::class, [
+                'label' => 'Membre du Conseil national',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => array_merge([
+                        'Oui' => true,
+                        'Non' => false,
+                    ], array_combine($qualities = $this->instanceQualityRepository->getAllCustomQualities(), $qualities)),
+                    'group_by' => function ($choice) {
+                        if (\is_bool($choice)) {
+                            return 'Général';
+                        }
+
+                        return 'Qualités personnalisées';
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (null === $value->getValue()) {
+                        return false;
+                    }
+
+                    $qb
+                        ->leftJoin("$alias.instanceQualities", 'adherent_instance_quality')
+                        ->leftJoin('adherent_instance_quality.instanceQuality', 'instance_quality', Expr\Join::WITH, 'FIND_IN_SET(:national_council_scope, instance_quality.scopes) > 0')
+                        ->andWhere('instance_quality.id '.(0 === $value->getValue() ? 'IS NULL' : 'IS NOT NULL'))
+                        ->setParameter('national_council_scope', InstanceQualityScopeEnum::NATIONAL_COUNCIL)
+                    ;
+
+                    if ($value->getValue() instanceof InstanceQuality) {
+                        $qb
+                            ->andWhere('instance_quality = :instance_quality')
+                            ->setParameter('instance_quality', $value->getValue())
+                        ;
+                    }
+
+                    return true;
+                },
+            ])
+            ->add('lastMembershipDonation', DateRangeFilter::class, [
+                'label' => 'Date de dernière cotisation',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
             ])
         ;
     }
