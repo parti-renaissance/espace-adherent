@@ -34,7 +34,13 @@
 {% endblock %}
 
 {% block re_choice_tab_row %}
-    <twig:Atoms:ReLinkedToggle name="{{ full_name }}" {{ ...attr }}>
+    <twig:Atoms:ReLinkedToggle
+        name="{{ full_name }}"
+        {{ ...{
+            ...(disabled ? {disabled: 'disabled'} : {}),
+        } }}
+        {{ ...attr }}
+    >
         {% for child in form.children %}
             <twig:Atoms:ReToggleButton
                 x-bind="validateField" name="{{ full_name }}"
@@ -75,6 +81,9 @@
         options="{{ choices }}"
         preferredOptions="{{ preferred_choices }}"
         status="default"
+        {{ ...{
+            ...(disabled ? {disabled: 'disabled'} : {}),
+        } }}
         {{ ...attr }}
     />
 {% endblock %}
