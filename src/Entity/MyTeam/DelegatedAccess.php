@@ -103,6 +103,7 @@ class DelegatedAccess
      * @var Adherent
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="receivedDelegatedAccesses")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank(message="Veuillez sélectionner un adhérent.")
      */
