@@ -3468,10 +3468,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function updateFromMembershipRequest(MembershipRequest $membershipRequest): void
     {
-        $this->firstName = $membershipRequest->firstName;
-        $this->lastName = $membershipRequest->lastName;
-        $this->nationality = $membershipRequest->nationality;
-        $this->gender = $membershipRequest->civility;
+        if (!$this->isCertified()) {
+            $this->firstName = $membershipRequest->firstName;
+            $this->lastName = $membershipRequest->lastName;
+            $this->nationality = $membershipRequest->nationality;
+            $this->gender = $membershipRequest->civility;
+        }
     }
 
     public function isV2(): bool

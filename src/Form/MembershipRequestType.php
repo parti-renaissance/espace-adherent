@@ -18,12 +18,14 @@ class MembershipRequestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $fromCertifiedAdherent = $options['from_certified_adherent'];
+
         $builder
             ->add('email', EmailType::class)
-            ->add('civility', CivilityType::class)
-            ->add('firstName', TextType::class)
-            ->add('lastName', TextType::class)
-            ->add('nationality', CountryType::class, ['preferred_choices' => [AddressInterface::FRANCE]])
+            ->add('civility', CivilityType::class, ['disabled' => $fromCertifiedAdherent])
+            ->add('firstName', TextType::class, ['disabled' => $fromCertifiedAdherent])
+            ->add('lastName', TextType::class, ['disabled' => $fromCertifiedAdherent])
+            ->add('nationality', CountryType::class, ['preferred_choices' => [AddressInterface::FRANCE], 'disabled' => $fromCertifiedAdherent])
             ->add('address', AutocompleteAddressType::class, ['with_additional_address' => true])
             ->add('consentDataCollect', AcceptPersonalDataCollectType::class)
             ->add('utmSource', HiddenType::class)
@@ -52,8 +54,12 @@ class MembershipRequestType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => MembershipRequest::class,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => MembershipRequest::class,
+                'from_certified_adherent' => false,
+            ])
+            ->setAllowedTypes('from_certified_adherent', 'bool')
+        ;
     }
 }
