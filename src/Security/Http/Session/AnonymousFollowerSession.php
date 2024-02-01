@@ -5,6 +5,7 @@ namespace App\Security\Http\Session;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * Marks a registration process starting as anonymous for any event or group,
@@ -16,9 +17,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 final class AnonymousFollowerSession
 {
     // Either login or register path
-    public const AUTHENTICATION_INTENTION = 'anonymous_authentication_intention';
+    public const AUTHENTICATION_INTENTION = 'callback';
 
-    // The subject uri that the anonymous tried to reached before authentication (i.e following a committee)
+    // The subject uri that the anonymous tried to reach before authentication (i.e. following a committee)
     private const SESSION_KEY = 'app.anonymous_follower.callback_path';
 
     private const VALID_INTENTION_URLS = [
@@ -26,16 +27,18 @@ final class AnonymousFollowerSession
         '/adhesion',
     ];
 
-    private $session;
-
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
+    public function __construct(
+        private readonly SessionInterface $session,
+        private readonly Security $security
+    ) {
     }
 
     public function start(Request $request): ?RedirectResponse
     {
-        if (!$request->query->has(self::AUTHENTICATION_INTENTION)) {
+        if (
+            !$request->query->has(self::AUTHENTICATION_INTENTION)
+            || $this->security->getUser()
+        ) {
             return null;
         }
 

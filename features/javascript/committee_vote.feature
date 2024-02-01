@@ -54,7 +54,7 @@ Feature:
                 },
                 {
                     "name": "committee_url",
-                    "content": "http:\/\/enmarche.code\/comites\/en-marche-comite-de-rouen?anonymous_authentication_intention=\/connexion#committee-toggle-candidacy"
+                    "content": "http:\/\/enmarche.code\/comites\/en-marche-comite-de-rouen?callback=\/connexion#committee-toggle-candidacy"
                 }
             ],
             "from_name": "La R\u00e9publique En Marche !",
