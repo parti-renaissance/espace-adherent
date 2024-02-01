@@ -37,6 +37,8 @@ class AdhesionController extends AbstractController
         }
 
         if (($currentUser = $this->getUser()) instanceof Adherent && $currentUser->hasActiveMembership()) {
+            $this->addFlash('success', 'Vous êtes déjà à jour de cotisation.');
+
             return $this->redirectToRoute('app_renaissance_adherent_space');
         }
 
