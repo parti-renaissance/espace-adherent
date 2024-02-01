@@ -193,15 +193,15 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         if ($filter->adherentTags) {
             $qb
-                ->andWhere('FIND_IN_SET(:adherent_tag, u.tags) > 0')
-                ->setParameter('adherent_tag', $filter->adherentTags)
+                ->andWhere('u.tags LIKE :adherent_tag')
+                ->setParameter('adherent_tag', '%'.$filter->adherentTags.'%')
             ;
         }
 
         if ($filter->electTags) {
             $qb
-                ->andWhere('FIND_IN_SET(:elect_tag, u.tags) > 0')
-                ->setParameter('elect_tag', $filter->electTags)
+                ->andWhere('u.tags LIKE :elect_tag')
+                ->setParameter('elect_tag', '%'.$filter->electTags.'%')
             ;
         }
 

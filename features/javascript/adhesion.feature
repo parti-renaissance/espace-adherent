@@ -201,6 +201,7 @@ Feature:
     Scenario: I can pay for new year as adherent RE
         Given the following fixtures are loaded:
             | LoadSubscriptionTypeData |
+            | LoadDonationData         |
             | LoadAdherentData         |
         When I am on "/adhesion"
         And I fill in the following:
@@ -293,53 +294,45 @@ Feature:
             | LoadCommitteeV2Data      |
         When I am on "/adhesion"
         And I fill in the following:
-            | membership_request[email] | renaissance-user-4@en-marche-dev.fr |
+            | membership_request[email] | carl999@example.fr |
         And I click the "membership_request_consentDataCollect" element
-        And I wait 15 seconds until I see "Nous ne sommes pas parvenus à vérifier l'existence de l'adresse « renaissance-user-4@en-marche-dev.fr ». Vérifiez votre saisie avant de continuer."
+        And I wait 3 seconds
         And I press "J'adhère"
         Then I wait 5 seconds until I see "Un email de confirmation vient d’être envoyé à votre adresse email. Cliquez sur le lien de validation qu’il contient pour continuer votre adhésion."
-        And I should have 1 email "AdhesionAlreadyAdherentMessage" for "renaissance-user-4@en-marche-dev.fr" with payload:
+        And I should have 1 email "AdhesionAlreadySympathizerMessage" for "carl999@example.fr" with payload:
         """
         {
-            "template_name": "adhesion-already-adherent",
+            "template_name": "adhesion-already-sympathizer",
             "template_content": [],
             "message": {
-                "subject": "Vous êtes déjà adhérent",
+                "subject": "Confirmez votre adresse email",
                 "from_email": "no-reply@parti-renaissance.fr",
                 "global_merge_vars": [
                     {
                         "name": "first_name",
-                        "content": "Louis"
+                        "content": "Carl"
                     },
                     {
-                        "name": "this_year",
-                        "content": "@number@"
+                        "name": "created_at",
+                        "content": "@string@"
                     },
                     {
                         "name": "magic_link",
-                        "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=renaissance-user-4@en-marche-dev.fr&expires=@number@&hash=@string@"
-                    },
-                    {
-                        "name": "forgot_password_link",
-                        "content": "http://test.renaissance.code/mot-de-passe-oublie"
-                    },
-                    {
-                        "name": "cotisation_link",
-                        "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=renaissance-user-4@en-marche-dev.fr&expires=@number@&hash=@string@&_target_path=/adhesion"
+                        "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=carl999@example.fr&expires=@number@&hash=@string@"
                     }
                 ],
                 "from_name": "Renaissance",
                 "to": [
                     {
-                        "email": "renaissance-user-4@en-marche-dev.fr",
+                        "email": "carl999@example.fr",
                         "type": "to",
-                        "name": "Louis Roche"
+                        "name": "Carl Mirabeau"
                     }
                 ]
             }
         }
         """
-        When I click on the email link "cotisation_link"
+        When I click on the email link "magic_link"
         Then I should be on "/adhesion" wait otherwise
         When I click the ".aucomplete-fields-toggle" selector
         And I fill in the following:
@@ -353,11 +346,11 @@ Feature:
         And I should see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
         And I click the "#step_4 #amount_5_label" selector
         And I should not see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
-        And I press "Je cotise pour 120 €"
+        And I press "Je cotise pour 60 €"
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I wait until I see "120.00 EUR"
+        And I wait until I see "60.00 EUR"
         When I fill in the following:
             | CVVX         | 123              |
             | NUMERO_CARTE | 1111222233334444 |
@@ -371,8 +364,8 @@ Feature:
         And I wait 2 seconds
         And I click the ".textCenter:last-child a" selector
         And I should be on "/paiement" wait otherwise
-        When I simulate IPN call with "00000" code for the last donation of "renaissance-user-4@en-marche-dev.fr"
+        When I simulate IPN call with "00000" code for the last donation of "carl999@example.fr"
         Then I should be on "/adhesion/felicitations" wait otherwise
-        And I should see "Vous êtes à jour de cotisations, félicitations !"
+        And I should see "Vous êtes désormais adhérent, félicitations !"
         When I go to "/espace-adherent"
         Then I should see "Adhérent"

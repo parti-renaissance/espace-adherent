@@ -27,7 +27,7 @@ class TransactionRepositoryTest extends AbstractKernelTestCase
             ->execute()
         ;
 
-        static::assertSame(31000, $this->transactionRepository->getTotalAmountInCentsByEmail('jacques.picard@en-marche.fr'));
+        static::assertSame(43000, $this->transactionRepository->getTotalAmountInCentsByEmail('jacques.picard@en-marche.fr'));
     }
 
     protected function setUp(): void

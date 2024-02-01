@@ -3213,7 +3213,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function hasActiveMembership(): bool
     {
-        return $this->isRenaissanceAdherent() && $this->hasTag(TagEnum::ADHERENT_COTISATION_OK);
+        return $this->isRenaissanceAdherent() && $this->hasTag(TagEnum::getAdherentYearTag());
     }
 
     public function hasMembershipDonationCurrentYear(): bool
@@ -3463,7 +3463,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function hasTag(string $tag): bool
     {
-        return \in_array($tag, $this->tags, true);
+        return TagEnum::includesTag($tag, $this->tags);
     }
 
     public function updateFromMembershipRequest(MembershipRequest $membershipRequest): void

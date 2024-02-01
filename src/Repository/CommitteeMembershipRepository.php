@@ -139,8 +139,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         if ($adherentRenaissance ^ $sympathizerRenaissance) {
             $qb
                 ->innerJoin('cm.adherent', 'adherent')
-                ->andWhere('FIND_IN_SET(:adherent_tag, adherent.tags) > 0')
-                ->setParameter('adherent_tag', $adherentRenaissance ? TagEnum::ADHERENT : TagEnum::SYMPATHISANT)
+                ->andWhere('adherent.tags LIKE :adherent_tag')
+                ->setParameter('adherent_tag', '%'.($adherentRenaissance ? TagEnum::ADHERENT : TagEnum::SYMPATHISANT).'%')
             ;
         }
 
@@ -641,8 +641,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
         if ($committee->isVersion2()) {
             $qb
-                ->andWhere('FIND_IN_SET(:adherent_tag, adherent.tags) > 0')
-                ->setParameter('adherent_tag', TagEnum::ADHERENT)
+                ->andWhere('adherent.tags LIKE :adherent_tag')
+                ->setParameter('adherent_tag', '%'.TagEnum::ADHERENT.'%')
             ;
         } else {
             $qb
@@ -691,11 +691,11 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->innerJoin('cm.adherent', 'a')
             ->where('cm.committee = :committee')
             ->andWhere('a.uuid = :adherent_uuid')
-            ->andWhere('FIND_IN_SET(:adherent_tag, a.tags) > 0')
+            ->andWhere('a.tags LIKE :adherent_tag')
             ->setParameters([
                 'adherent_uuid' => $adherentUuid,
                 'committee' => $committee,
-                'adherent_tag' => TagEnum::ADHERENT,
+                'adherent_tag' => '%'.TagEnum::ADHERENT.'%',
             ])
             ->getQuery()
             ->getOneOrNullResult()

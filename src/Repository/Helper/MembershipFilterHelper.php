@@ -25,15 +25,15 @@ final class MembershipFilterHelper
                 return true;
             case RenaissanceMembershipFilterEnum::ADHERENT_RE:
                 $qb
-                    ->andWhere("FIND_IN_SET(:adherent_tag, $alias.tags) > 0")
-                    ->setParameter('adherent_tag', TagEnum::ADHERENT)
+                    ->andWhere("$alias.tags LIKE :adherent_tag")
+                    ->setParameter('adherent_tag', '%'.TagEnum::ADHERENT.'%')
                 ;
 
                 return true;
             case RenaissanceMembershipFilterEnum::SYMPATHIZER_RE:
                 $qb
-                    ->andWhere("FIND_IN_SET(:adherent_tag, $alias.tags) > 0")
-                    ->setParameter('adherent_tag', TagEnum::SYMPATHISANT)
+                    ->andWhere("$alias.tags LIKE :adherent_tag")
+                    ->setParameter('adherent_tag', '%'.TagEnum::SYMPATHISANT.'%')
                 ;
 
                 return true;

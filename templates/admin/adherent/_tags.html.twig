@@ -1,4 +1,4 @@
-{% for tag in get_reduced_tags(tags) %}
+{% for tag in tags %}
     {% if tag starts with 'adherent' %}
         {% set backgroundColor = '#00205F' %}
     {% elseif tag starts with 'sympathisant' %}
@@ -8,7 +8,7 @@
     {% endif %}
 
     <span class="label" style="background-color: {{ backgroundColor }};">
-        {{ ('adherent.tag.' ~ tag)|trans }}
+        {{ translate_tag(tag) }}
     </span>
     {% if not loop.last %}
         <br>

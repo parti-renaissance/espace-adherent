@@ -1076,7 +1076,7 @@ Feature:
                 },
                 {
                     "name": "committee_name",
-                    "content": "Comit\u00e9 des 3 communes"
+                    "content": "Comité des 3 communes"
                 }
             ],
             "merge_vars": [

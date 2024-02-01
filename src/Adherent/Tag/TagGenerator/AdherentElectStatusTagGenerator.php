@@ -7,13 +7,18 @@ use App\Entity\Adherent;
 
 class AdherentElectStatusTagGenerator extends AbstractTagGenerator
 {
-    public function generate(Adherent $adherent): array
+    public static function getDefaultPriority(): int
+    {
+        return -255;
+    }
+
+    public function generate(Adherent $adherent, array $previousTags): array
     {
         if (!$adherent->findElectedRepresentativeMandates(true)) {
             return [];
         }
 
-        $tags = [TagEnum::ELU];
+        $tags = [];
 
         $countPayments = \count($adherent->getConfirmedPayments());
 
@@ -28,15 +33,11 @@ class AdherentElectStatusTagGenerator extends AbstractTagGenerator
         }
 
         if ($adherent->exemptFromCotisation) {
-            if ($adherent->hasMembershipDonationCurrentYear()) {
+            if (TagEnum::includesTag(TagEnum::getAdherentYearTag(date('Y')), $previousTags)) {
                 $tags[] = TagEnum::ELU_COTISATION_OK_EXEMPTE;
             } else {
                 $tags[] = TagEnum::ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK;
             }
-        }
-
-        if (array_intersect($tags, [TagEnum::ELU_COTISATION_OK_SOUMIS, TagEnum::ELU_COTISATION_OK_NON_SOUMIS, TagEnum::ELU_COTISATION_OK_EXEMPTE])) {
-            $tags[] = TagEnum::ELU_COTISATION_OK;
         }
 
         return $tags;

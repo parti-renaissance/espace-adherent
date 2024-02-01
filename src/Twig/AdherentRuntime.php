@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Adherent\SessionModal\SessionModalActivatorListener;
+use App\Adherent\Tag\TagTranslator;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ReferentSpaceAccessInformation;
@@ -21,18 +22,21 @@ class AdherentRuntime implements RuntimeExtensionInterface
     private $electedRepresentativeRepository;
     private $committeeMandateRepository;
     private $adherentRepository;
+    private $tagTranslator;
 
     public function __construct(
         ElectedRepresentativeRepository $electedRepresentativeRepository,
         ReferentSpaceAccessInformationRepository $accessInformationRepository,
         CommitteeAdherentMandateRepository $committeeMandateRepository,
         AdherentRepository $adherentRepository,
+        TagTranslator $tagTranslator,
         array $adherentInterests
     ) {
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
         $this->accessInformationRepository = $accessInformationRepository;
         $this->committeeMandateRepository = $committeeMandateRepository;
         $this->adherentRepository = $adherentRepository;
+        $this->tagTranslator = $tagTranslator;
         $this->memberInterests = $adherentInterests;
     }
 
@@ -43,6 +47,11 @@ class AdherentRuntime implements RuntimeExtensionInterface
         }
 
         return $this->memberInterests[$interest];
+    }
+
+    public function translateTag(string $tag, bool $fullTag = true): string
+    {
+        return $this->tagTranslator->trans($tag, $fullTag);
     }
 
     public function getUserLevelLabel(Adherent $adherent): string
@@ -164,7 +173,18 @@ class AdherentRuntime implements RuntimeExtensionInterface
 
     public function getSessionModalContext(Request $request): ?string
     {
-        // get and remove session modal context if presents
+        if (!$modalContext = $request->getSession()->get(SessionModalActivatorListener::SESSION_KEY)) {
+            return null;
+        }
+
+        if (SessionModalActivatorListener::CONTEXT_READHESION === $modalContext) {
+            if (str_contains($request->getPathInfo(), 'espace-adherent')) {
+                return $request->getSession()->remove(SessionModalActivatorListener::SESSION_KEY);
+            }
+
+            return null;
+        }
+
         return $request->getSession()->remove(SessionModalActivatorListener::SESSION_KEY);
     }
 }

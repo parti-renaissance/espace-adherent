@@ -47,8 +47,8 @@ class TransactionSubscriberTest extends AbstractEnMarcheWebTestCase
     {
         $transactions = $this->transactionRepository->findAllTransactionByAdherentIdOrEmail($this->adherentRepository->findOneByEmail('jacques.picard@en-marche.fr'));
 
-        // b/c there are initial transactions when donationFixtures are loaded then 1+4 = 5
-        static::assertCount(5, $transactions);
+        // b/c there are initial transactions when donationFixtures are loaded then 5+4 = 9
+        static::assertCount(9, $transactions);
     }
 
     private function createSignature(array $params): string
