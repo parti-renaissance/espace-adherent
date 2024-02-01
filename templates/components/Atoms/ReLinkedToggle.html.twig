@@ -21,7 +21,7 @@
         <twig:Atoms:ReLabel id="{{ id }}">{{ label }}</twig:Atoms:ReLabel>
     {% endif %}
 
-    <div class="re-linked-toggle-content">
+    <div class="re-linked-toggle-content {{ disabled ? 're-linked-toggle-content--disabled' }}">
         {% block content %}{% endblock %}
     </div>
 

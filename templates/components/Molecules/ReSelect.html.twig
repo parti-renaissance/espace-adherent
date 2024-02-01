@@ -28,7 +28,7 @@
                 onQuery: {{ attr.onQuery is defined ? attr.onQuery : 'null' }},
                 blocked: {{ blocked ? 'true' : 'false' }},
              })"
-             class="re-field-frame overflow-hidden !p-0 !h-auto !justify-between
+             class="re-field-frame overflow-hidden !p-0 !h-auto !justify-between {{ disabled ? 'opacity-50 pointer-events-none cursor-not-allowed' : '' }}
                        {{ (status is defined ? ' re-field-frame--' ~ status) }}"
              x-bind:class="[toggle ? 'active' : '', status ? `re-field-frame--${status}` : '', ].join(' ')"
              x-on:click.away="handleClickAway"
