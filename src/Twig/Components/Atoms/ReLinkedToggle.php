@@ -13,5 +13,6 @@ class ReLinkedToggle
     public string $id;
     public string $label;
     public bool $grid = false;
+    public bool $disabled = false;
     public string $color = 'blue';
 }
