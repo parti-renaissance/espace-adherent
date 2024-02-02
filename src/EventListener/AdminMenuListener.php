@@ -29,7 +29,7 @@ class AdminMenuListener implements EventSubscriberInterface
             $this->addCreateAdherentMenu($event);
         }
 
-        if ($this->authorizationChecker->isGranted('ROLE_ADMIN_ALL_STATS')) {
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN_STATS_ALL')) {
             $this->addStatsMenu($event);
         }
     }
@@ -50,7 +50,7 @@ class AdminMenuListener implements EventSubscriberInterface
     {
         $items = [];
 
-        if ($this->authorizationChecker->isGranted('ROLE_ADMIN_ADHESION_STATS')) {
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN_ADHERENT_STATS')) {
             $items[] = [
                 'label' => 'Adhésion par département',
                 'route' => 'admin_app_stats_adhesion_per_department',
