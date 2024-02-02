@@ -1,0 +1,129 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.dataTable').DataTable({
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/French.json"
+                },
+                searching: false,
+                lengthChange: false,
+                paging: false,
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap.min.css" />
+{% endblock %}
+
+{% block sonata_page_content_header %}
+    <h1>
+        Adhésion par département pour l'année <strong>{{ "now"|date("Y") }}</strong>
+    </h1>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {% set first = stats_per_department|first %}
+
+    <div class="row">
+        <div class="col-md-3 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Total</span>
+                    <span class="info-box-number">{{ first['Total'] }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+            <div class="info-box bg-aqua">
+                <span class="info-box-icon"><i class="fa fa-heart"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Pas à jour</span>
+                    <span class="info-box-number">{{ first['Pas à jour'] }}</span>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: {{ first['Total'] * first['Pas à jour'] / 100 }}%"></div>
+                    </div>
+                    <span class="progress-description">
+                        {{ (first['Total'] * first['Pas à jour'] / 100)|number_format(1, ',', ' ') }}%
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+            <div class="info-box bg-yellow">
+                <span class="info-box-icon"><i class="fa fa-heartbeat"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Réadhésions</span>
+                    <span class="info-box-number">{{ first['Réadhésions'] }}</span>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: {{ first['Total'] * first['Réadhésions'] / 100 }}%"></div>
+                    </div>
+                    <span class="progress-description">
+                        {{ (first['Total'] * first['Réadhésions'] / 100)|number_format(1, ',', ' ') }}%
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+            <div class="info-box bg-green">
+                <span class="info-box-icon"><i class="fa fa-child"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Primo adhésion</span>
+                    <span class="info-box-number">{{ first['Primo adhésion'] }}</span>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: {{ first['Total'] * first['Primo adhésion'] / 100 }}%"></div>
+                    </div>
+                    <span class="progress-description">
+                        {{ (first['Total'] * first['Primo adhésion'] / 100)|number_format(1, ',', ' ') }}%
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-hover dataTable">
+                                    <thead>
+                                        <tr role="row">
+                                            {% for key in first|keys[:-1] %}
+                                                <th class="sorting">{{ key }}</th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for stats in stats_per_department[1:] %}
+                                            <tr>
+                                                {% for value in stats[:-1] %}
+                                                    <td class="{{ value == '0' ? 'text-muted' }}">{{ value }}</td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
