@@ -1697,76 +1697,121 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $currentYear = date('Y');
 
         $params = [
-            'current_year_tag' => '%'.TagEnum::getAdherentYearTag().'%',
-            'year_tag_pattern' => '%'.sprintf(TagEnum::ADHERENT_YEAR_TAG_PATTERN, '').'%',
-            'recotisation_tag' => '%'.sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear).'%',
-            'primo_tag' => '%'.sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear).'%',
-            'dpt_type' => Zone::DEPARTMENT,
+            'tag_current_year' => '%'.TagEnum::getAdherentYearTag().'%',
+            'tag_elu' => '%'.sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, '').'%',
+            'tag_recotisation' => '%'.sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear).'%',
+            'tag_primo' => '%'.sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear).'%',
+            'tag_a_jour_n1' => '%'.TagEnum::getAdherentYearTag($currentYear - 1).'%',
+            'tag_a_jour_n2' => '%'.TagEnum::getAdherentYearTag($currentYear - 2).'%',
+            'tag_sympathisant' => '%'.TagEnum::SYMPATHISANT.'%',
+            'type_dpt' => Zone::DEPARTMENT,
+            'type_region' => Zone::REGION,
             'fde_code' => Zone::FDE_CODE,
         ];
 
         $query = <<<SQL
-            select
-            	'Total' as Region,
-            	'Total' as Code,
-            	'Total' as Departement,
-            	(
-            		select count(distinct a.id)
-            		from adherents a
-            		where a.tags like :year_tag_pattern and a.tags not like :current_year_tag
-            	) as 'Pas à jour',
-            	(
-            		select count(distinct a.id)
-            		from adherents a
-            		where a.tags like :recotisation_tag
-            	) as 'Réadhésions',
-            	(
-            		select count(distinct a.id)
-            		from adherents a
-            		where a.tags like :primo_tag
-            	) as 'Primo adhésion',
-                (select count(distinct a.id) from adherents a where a.tags like '%adherent:%') as Total
-            union all
-            select * from (
-            	select
-            		COALESCE(p.name, gz.code) as 'Région',
-            		gz.Code,
-            		gz.name as 'Département',
-            		(
-            			select count(distinct a.id)
-            			from adherents a
-            			inner join adherent_zone az on az.adherent_id = a.id
-            			inner join geo_zone_parent gzp2 on gzp2.child_id = az.zone_id
-            			where gzp2.parent_id = gz.id and a.tags like :year_tag_pattern and a.tags not like :current_year_tag
-            		) as 'Pas à jour',
-            		(
-            			select count(distinct a.id)
-            			from adherents a
-            			inner join adherent_zone az on az.adherent_id = a.id
-            			inner join geo_zone_parent gzp2 on gzp2.child_id = az.zone_id
-            			where gzp2.parent_id = gz.id and a.tags like :recotisation_tag
-            		) as 'Réadhésions',
-            		(
-            			select count(distinct a.id)
-            			from adherents a
-            			inner join adherent_zone az on az.adherent_id = a.id
-            			inner join geo_zone_parent gzp2 on gzp2.child_id = az.zone_id
-            			where gzp2.parent_id = gz.id and a.tags like :primo_tag
-            		) as 'Primo adhésion',
-            	    (
-            	        select count(distinct a.id)
-            			from adherents a
-            			inner join adherent_zone az on az.adherent_id = a.id
-            			inner join geo_zone_parent gzp2 on gzp2.child_id = az.zone_id
-            			where gzp2.parent_id = gz.id and a.tags like '%adherent:%'
-            	    ) as Total
-            	from geo_zone gz
-            	left join geo_zone_parent gzp on gzp.child_id = gz.id
-            	left join geo_zone p on p.id = gzp.parent_id and p.`type` = 'region'
-            	where (gz.type = :dpt_type or gz.code = :fde_code) and ((gz.type = :dpt_type and p.id is not null) or gz.code = :fde_code)
-            	and gz.code not in ('69M', '69D', '2A', '2B', '64B', '64PB')
-            	order by p.name, gz.code
-            ) as t
+                        select
+                        	'Total' as Region,
+                        	'Total' as Code,
+                        	'Total' as Departement,
+                        	(
+                        		select count(distinct a.id)
+                        		from adherents a
+                        		where a.tags like :tag_primo
+                        	) as 'Primo adhésion',
+                        	(
+                        		select count(distinct a.id)
+                        		from adherents a
+                        		where a.tags like :tag_recotisation
+                        	) as 'Réadhésion',
+                            (
+                        		select count(distinct a.id)
+                        		from adherents a
+                        		where a.tags like :tag_elu
+                        	) as 'À jour de cotisation élu',
+                            (
+                                select count(distinct a.id)
+                                from adherents a
+                                where a.tags like :tag_current_year
+                            ) as 'À jour N',
+                            (
+                        		select count(distinct a.id)
+                        		from adherents a
+                        		where a.tags like :tag_a_jour_n1
+                        	) as 'À jour N-1',
+                            (
+                        		select count(distinct a.id)
+                        		from adherents a
+                        		where a.tags like :tag_a_jour_n2
+                        	) as 'À jour N-2',
+                            (select count(distinct a.id) from adherents a where a.tags like :tag_sympathisant) as 'Sympathisants'
+                        union all
+                        select * from (
+                        	select
+                        		COALESCE(p.name, gz.code) as 'Région',
+                        		gz.Code,
+                        		gz.name as 'Département',
+                        		(
+                        			select count(distinct a.id)
+                        			from adherents a
+                        			inner join adherent_zone az on az.adherent_id = a.id
+                        			inner join geo_zone_parent gzp2 on gzp2.child_id = az.zone_id
+                        			where gzp2.parent_id = gz.id and a.tags like :tag_primo
+                        		) as 'Primo adhésion',
+                        		(
+                        			select count(distinct a.id)
+                        			from adherents a
+                        			inner join adherent_zone az on az.adherent_id = a.id
+                        			inner join geo_zone_parent gzp2 on gzp2.child_id = az.zone_id
+                        			where gzp2.parent_id = gz.id and a.tags like :tag_recotisation
+                        		) as 'Réadhésion',
+                        		(
+                        			select count(distinct a.id)
+                        			from adherents a
+                        			inner join adherent_zone az on az.adherent_id = a.id
+                        			inner join geo_zone_parent gzp2 on gzp2.child_id = az.zone_id
+                        			where gzp2.parent_id = gz.id and a.tags like :tag_elu
+                        		) as 'À jour de cotisation élu',
+                        	    (
+                        	        select count(distinct a.id)
+                        			from adherents a
+                        			inner join adherent_zone az on az.adherent_id = a.id
+                        			inner join geo_zone_parent gzp2 on gzp2.child_id = az.zone_id
+                        			where gzp2.parent_id = gz.id and a.tags like :tag_current_year
+                        	    ) as 'À jour N',
+                        	    (
+                                    select count(distinct a.id)
+                                    from adherents a
+                                    inner join adherent_zone az on az.adherent_id = a.id
+                        			inner join geo_zone_parent gzp2 on gzp2.child_id = az.zone_id
+                        			where gzp2.parent_id = gz.id and a.tags like :tag_a_jour_n1
+                                ) as 'À jour N-1',
+                        	    (
+                                    select count(distinct a.id)
+                                    from adherents a
+                                    inner join adherent_zone az on az.adherent_id = a.id
+                        			inner join geo_zone_parent gzp2 on gzp2.child_id = az.zone_id
+                        			where gzp2.parent_id = gz.id and a.tags like :tag_a_jour_n2
+                                ) as 'À jour N-2',
+                        	    (
+                        	        select count(distinct a.id)
+                        			from adherents a
+                        			inner join adherent_zone az on az.adherent_id = a.id
+                        			inner join geo_zone_parent gzp2 on gzp2.child_id = az.zone_id
+                        			where gzp2.parent_id = gz.id and a.tags like :tag_sympathisant
+                        	    ) as Sympathisant
+                        	from geo_zone gz
+                        	left join geo_zone_parent gzp on gzp.child_id = gz.id
+                        	left join geo_zone p on p.id = gzp.parent_id and p.`type` = :type_region
+                        	where
+                        	    (gz.type = :type_dpt or gz.code = :fde_code)
+                        	    and (
+                                    (gz.type = :type_dpt and p.id is not null)
+                                    or gz.code = :fde_code
+                                )
+                        	    and gz.code not in ('69M', '69D', '2A', '2B', '64B', '64PB')
+                        	order by p.name, gz.code
+                        ) as t
             SQL;
 
         return $this->getEntityManager()->getConnection()->executeQuery($query, $params)->fetchAllAssociative();

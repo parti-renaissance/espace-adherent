@@ -29,7 +29,7 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
         if ($countTotalCotisation = \count($countCotisationByYear)) {
             $lastYear = key($countCotisationByYear);
 
-            if ($lastYear === date('Y')) {
+            if ($lastYear == date('Y')) {
                 if (1 === $countTotalCotisation) {
                     $mainTag = sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $lastYear);
                 } else {
