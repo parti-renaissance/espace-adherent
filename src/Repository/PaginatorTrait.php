@@ -13,7 +13,7 @@ trait PaginatorTrait
         QueryBuilder $queryBuilder,
         int $page,
         int $limit = 30,
-        callable $queryModifier = null,
+        ?callable $queryModifier = null,
         bool $useOutputWalkers = true
     ): PaginatorInterface {
         if ($page < 1) {

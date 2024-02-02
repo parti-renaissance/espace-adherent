@@ -41,8 +41,8 @@ class CommitteeMessage
     public function __construct(
         Adherent $author,
         Committee $committee,
-        string $subject = null,
-        string $content = null,
+        ?string $subject = null,
+        ?string $content = null,
         bool $published = false,
         string $createdAt = 'now',
         bool $sendNotification = true

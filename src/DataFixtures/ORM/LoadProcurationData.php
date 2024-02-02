@@ -560,7 +560,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         iterable $electionRounds,
         bool $requestFromFrance = true,
         bool $enabled = true,
-        string $disabledReason = null
+        ?string $disabledReason = null
     ): ProcurationRequest {
         if ($phone) {
             $phone = PhoneNumberUtils::create($phone);
@@ -630,7 +630,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         int $proxiesCount = 1,
         array $otherVoteCities = [],
         bool $disabled = false,
-        string $voterNumber = null
+        ?string $voterNumber = null
     ): ProcurationProxy {
         if ($phone) {
             $phone = PhoneNumberUtils::create($phone);

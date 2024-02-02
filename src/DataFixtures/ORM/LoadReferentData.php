@@ -75,8 +75,8 @@ class LoadReferentData extends Fixture
         string $gender,
         string $firstName,
         string $lastName,
-        string $geojson = null,
-        string $slug = null,
+        ?string $geojson = null,
+        ?string $slug = null,
         string $status = Referent::ENABLED
     ): Referent {
         $directory = __DIR__.'/../../DataFixtures/legislatives';

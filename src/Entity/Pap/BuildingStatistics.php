@@ -115,7 +115,7 @@ class BuildingStatistics implements CampaignStatisticsInterface
      */
     private int $nbSurveys = 0;
 
-    public function __construct(Building $building, Campaign $campaign, string $status = null)
+    public function __construct(Building $building, Campaign $campaign, ?string $status = null)
     {
         $this->building = $building;
         $this->campaign = $campaign;

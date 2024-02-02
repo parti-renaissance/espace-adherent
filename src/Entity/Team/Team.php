@@ -134,7 +134,7 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      */
     public ?bool $isDeletable = null;
 
-    public function __construct(UuidInterface $uuid = null, string $name = null, array $members = [], Zone $zone = null)
+    public function __construct(?UuidInterface $uuid = null, ?string $name = null, array $members = [], ?Zone $zone = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->name = $name;

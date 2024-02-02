@@ -12,7 +12,7 @@ class DummyStaticMapProvider implements StaticMapProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function get(Coordinates $coordinates, string $size = null)
+    public function get(Coordinates $coordinates, ?string $size = null)
     {
         return base64_decode(self::$image);
     }

@@ -99,8 +99,8 @@ class ArticleCategory
         string $name = '',
         string $slug = '',
         int $position = 1,
-        string $ctaLink = null,
-        string $ctaLabel = null,
+        ?string $ctaLink = null,
+        ?string $ctaLabel = null,
         bool $display = true
     ) {
         $this->name = $name;

@@ -61,15 +61,15 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         $propertyMetadataFactory,
         $iriConverter,
         $resourceClassResolver,
-        PropertyAccessorInterface $propertyAccessor = null,
-        NameConverterInterface $nameConverter = null,
-        ClassMetadataFactoryInterface $classMetadataFactory = null,
-        ItemDataProviderInterface $itemDataProvider = null,
+        ?PropertyAccessorInterface $propertyAccessor = null,
+        ?NameConverterInterface $nameConverter = null,
+        ?ClassMetadataFactoryInterface $classMetadataFactory = null,
+        ?ItemDataProviderInterface $itemDataProvider = null,
         bool $allowPlainIdentifiers = false,
         array $defaultContext = [],
         iterable $dataTransformers = [],
         $resourceMetadataFactory = null,
-        ResourceAccessCheckerInterface $resourceAccessChecker = null
+        ?ResourceAccessCheckerInterface $resourceAccessChecker = null
     ) {
         if (!isset($defaultContext['circular_reference_handler'])) {
             $defaultContext['circular_reference_handler'] = function ($object) {
@@ -390,7 +390,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         $this->setValue($object, $attribute, $this->createAttributeValue($attribute, $value, $format, $context));
     }
 
-    protected function validateType(string $attribute, Type $type, $value, string $format = null)
+    protected function validateType(string $attribute, Type $type, $value, ?string $format = null)
     {
         $builtinType = $type->getBuiltinType();
         if (Type::BUILTIN_TYPE_FLOAT === $builtinType && null !== $format && str_contains($format, 'json')) {

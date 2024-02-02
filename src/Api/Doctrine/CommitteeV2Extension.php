@@ -15,7 +15,7 @@ class CommitteeV2Extension implements QueryCollectionExtensionInterface, QueryIt
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        Operation $operation = null,
+        ?Operation $operation = null,
         array $context = []
     ): void {
         $this->addWhere($queryBuilder, $resourceClass);
@@ -26,7 +26,7 @@ class CommitteeV2Extension implements QueryCollectionExtensionInterface, QueryIt
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         array $identifiers,
-        Operation $operation = null,
+        ?Operation $operation = null,
         array $context = []
     ): void {
         $this->addWhere($queryBuilder, $resourceClass);

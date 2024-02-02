@@ -176,7 +176,7 @@ class RedisProfilerStorage implements ProfilerStorageInterface
         return false;
     }
 
-    protected function createProfileFromData(string $token, array $data, Profile $parent = null): Profile
+    protected function createProfileFromData(string $token, array $data, ?Profile $parent = null): Profile
     {
         $profile = new Profile($token);
         $profile->setIp($data['ip']);

@@ -284,7 +284,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         QueryBuilder $qb,
         array $zones,
         string $alias = 'er',
-        Composite $condition = null
+        ?Composite $condition = null
     ): QueryBuilder {
         if (!$zones) {
             return $qb;

@@ -8,7 +8,7 @@ class BaseGroupException extends \RuntimeException
 {
     private $groupUuid;
 
-    public function __construct(UuidInterface $groupUuid, $message = '', \Exception $previous = null)
+    public function __construct(UuidInterface $groupUuid, $message = '', ?\Exception $previous = null)
     {
         parent::__construct($message, 0, $previous);
 

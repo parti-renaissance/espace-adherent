@@ -79,11 +79,11 @@ class HeaderBlock implements ExposedImageOwnerInterface
     private ?\DateTime $deadlineDate = null;
 
     public function __construct(
-        string $name = null,
-        string $prefix = null,
-        string $slogan = null,
-        string $content = null,
-        \DateTime $deadlineDate = null
+        ?string $name = null,
+        ?string $prefix = null,
+        ?string $slogan = null,
+        ?string $content = null,
+        ?\DateTime $deadlineDate = null
     ) {
         $this->name = $name;
         $this->prefix = $prefix;

@@ -276,7 +276,7 @@ class Media
         return $this->file;
     }
 
-    public function setFile(File $file = null): self
+    public function setFile(?File $file = null): self
     {
         if (!$file || !$file->getPathname()) {
             return $this;

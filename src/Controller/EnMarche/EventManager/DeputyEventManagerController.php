@@ -33,7 +33,7 @@ class DeputyEventManagerController extends AbstractEventManagerController
         return EventManagerSpaceEnum::DEPUTY;
     }
 
-    protected function getEventsPaginator(Adherent $adherent, string $type = null, int $page = 1): PaginatorInterface
+    protected function getEventsPaginator(Adherent $adherent, ?string $type = null, int $page = 1): PaginatorInterface
     {
         if (AbstractEventManagerController::EVENTS_TYPE_ALL === $type) {
             $managedZones = $this->managedZoneProvider->getManagedZones($adherent, AdherentSpaceEnum::DEPUTY);

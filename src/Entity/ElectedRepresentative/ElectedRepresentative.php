@@ -347,7 +347,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      */
     private Collection $revenueDeclarations;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
 
@@ -367,8 +367,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         string $firstName,
         string $lastName,
         \DateTime $birthDate,
-        string $gender = null,
-        UuidInterface $uuid = null
+        ?string $gender = null,
+        ?UuidInterface $uuid = null
     ): self {
         $electedRepresentative = new self();
 
@@ -406,7 +406,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->gender;
     }
 
-    public function setGender(string $gender = null): void
+    public function setGender(?string $gender = null): void
     {
         $this->gender = $gender;
     }
@@ -426,7 +426,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->birthPlace;
     }
 
-    public function setBirthPlace(string $birthPlace = null): void
+    public function setBirthPlace(?string $birthPlace = null): void
     {
         $this->birthPlace = $birthPlace;
     }
@@ -436,7 +436,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->contactEmail;
     }
 
-    public function setContactEmail(string $contactEmail = null): void
+    public function setContactEmail(?string $contactEmail = null): void
     {
         $this->contactEmail = $contactEmail;
     }
@@ -446,7 +446,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->contactPhone;
     }
 
-    public function setContactPhone(PhoneNumber $contactPhone = null): void
+    public function setContactPhone(?PhoneNumber $contactPhone = null): void
     {
         $this->contactPhone = $contactPhone;
     }
@@ -456,7 +456,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->hasFollowedTraining;
     }
 
-    public function setHasFollowedTraining(bool $hasFollowedTraining = null): void
+    public function setHasFollowedTraining(?bool $hasFollowedTraining = null): void
     {
         $this->hasFollowedTraining = $hasFollowedTraining;
     }
@@ -474,7 +474,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->adherent;
     }
 
-    public function setAdherent(Adherent $adherent = null): void
+    public function setAdherent(?Adherent $adherent = null): void
     {
         $this->adherent = $adherent;
     }

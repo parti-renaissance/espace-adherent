@@ -78,7 +78,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTestCase
     /**
      * @return Adherent|MockObject
      */
-    private function getAdherentMock(bool $isReferent = null, bool $isHost = null): Adherent
+    private function getAdherentMock(?bool $isReferent = null, ?bool $isHost = null): Adherent
     {
         $adherent = $this->createAdherentMock();
 

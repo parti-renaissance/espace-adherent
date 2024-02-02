@@ -105,7 +105,7 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
         ];
     }
 
-    private function createTeam(string $uuid, string $name, Zone $zone = null): Team
+    private function createTeam(string $uuid, string $name, ?Zone $zone = null): Team
     {
         return new Team(Uuid::fromString($uuid), $name, [], $zone);
     }

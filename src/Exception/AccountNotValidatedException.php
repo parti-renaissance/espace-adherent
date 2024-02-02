@@ -10,7 +10,7 @@ class AccountNotValidatedException extends AccountStatusException
     private $redirect;
     private $messageKey;
 
-    public function __construct(Adherent $adherent, string $redirect = null, int $code = 0, \Throwable $previous = null)
+    public function __construct(Adherent $adherent, ?string $redirect = null, int $code = 0, ?\Throwable $previous = null)
     {
         parent::__construct('Account not validated.', $code, $previous);
 

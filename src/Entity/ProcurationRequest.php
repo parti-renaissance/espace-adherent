@@ -374,7 +374,7 @@ class ProcurationRequest implements RecaptchaChallengeInterface
         $this->birthdate = $adherent->getBirthdate();
     }
 
-    public function process(ProcurationProxy $procurationProxy = null, Adherent $procurationFoundBy = null): void
+    public function process(?ProcurationProxy $procurationProxy = null, ?Adherent $procurationFoundBy = null): void
     {
         $this->foundBy = $procurationFoundBy;
         $this->processed = true;
@@ -675,7 +675,7 @@ class ProcurationRequest implements RecaptchaChallengeInterface
         return $currentStepUri === end($stepUris);
     }
 
-    private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber
+    private static function createPhoneNumber(int $countryCode = 33, ?string $number = null): PhoneNumber
     {
         $phone = new PhoneNumber();
         $phone->setCountryCode($countryCode);

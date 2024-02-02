@@ -208,7 +208,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      */
     private $displayed = true;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->favoriteThemes = new ArrayCollection();

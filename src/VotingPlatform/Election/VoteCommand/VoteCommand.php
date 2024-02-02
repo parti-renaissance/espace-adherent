@@ -111,7 +111,7 @@ class VoteCommand
     /**
      * @param ElectionPool[] $pools
      */
-    public function updateForCurrentPool(array $pools, ElectionPool $selectedPool = null): ?ElectionPool
+    public function updateForCurrentPool(array $pools, ?ElectionPool $selectedPool = null): ?ElectionPool
     {
         if (0 === \count($this->choicesByPools)) {
             return current($pools);

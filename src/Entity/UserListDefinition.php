@@ -55,7 +55,7 @@ class UserListDefinition
      */
     private $color;
 
-    public function __construct(string $type = null, string $code = null, string $label = null, string $color = null)
+    public function __construct(?string $type = null, ?string $code = null, ?string $label = null, ?string $color = null)
     {
         $this->type = $type;
         $this->code = $code;

@@ -49,7 +49,7 @@ class Vote
      */
     private $device;
 
-    public function __construct(Choice $choice, Adherent $adherent = null, Device $device = null)
+    public function __construct(Choice $choice, ?Adherent $adherent = null, ?Device $device = null)
     {
         $this->choice = $choice;
         $this->adherent = $adherent;

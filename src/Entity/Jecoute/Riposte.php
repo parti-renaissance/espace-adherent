@@ -196,7 +196,7 @@ class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkO
      */
     private $nbRipostes = 0;
 
-    public function __construct(UuidInterface $uuid = null, $withNotification = true, $enabled = true)
+    public function __construct(?UuidInterface $uuid = null, $withNotification = true, $enabled = true)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->withNotification = $withNotification;

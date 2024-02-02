@@ -157,14 +157,14 @@ class Region
     private $author;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        Zone $zone = null,
-        string $subtitle = null,
-        string $description = null,
-        string $primaryColor = null,
-        string $logo = null,
-        string $banner = null,
-        string $externalLink = null,
+        ?UuidInterface $uuid = null,
+        ?Zone $zone = null,
+        ?string $subtitle = null,
+        ?string $description = null,
+        ?string $primaryColor = null,
+        ?string $logo = null,
+        ?string $banner = null,
+        ?string $externalLink = null,
         bool $enabled = true
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();

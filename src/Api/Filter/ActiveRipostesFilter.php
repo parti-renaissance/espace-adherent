@@ -18,7 +18,7 @@ final class ActiveRipostesFilter extends AbstractFilter
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        Operation $operation = null,
+        ?Operation $operation = null,
         array $context = []
     ) {
         if (Riposte::class !== $resourceClass || self::PROPERTY_NAME !== $property) {

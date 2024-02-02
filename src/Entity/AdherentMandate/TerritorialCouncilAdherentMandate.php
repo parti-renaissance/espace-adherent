@@ -32,9 +32,9 @@ class TerritorialCouncilAdherentMandate extends AbstractAdherentMandate
     public static function create(
         TerritorialCouncil $coTerrParis,
         Adherent $adherent,
-        \DateTime $date = null,
-        string $gender = null,
-        string $quality = null
+        ?\DateTime $date = null,
+        ?string $gender = null,
+        ?string $quality = null
     ): self {
         $mandate = new self($adherent, $gender ?? $adherent->getGender(), $date ?? new \DateTime(), null, $quality);
         $mandate->setTerritorialCouncil($coTerrParis);

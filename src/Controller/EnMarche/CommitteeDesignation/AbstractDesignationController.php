@@ -46,7 +46,7 @@ abstract class AbstractDesignationController extends AbstractController
         Request $request,
         Committee $committee,
         Election $election,
-        ElectionRound $electionRound = null
+        ?ElectionRound $electionRound = null
     ): Response {
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
@@ -67,7 +67,7 @@ abstract class AbstractDesignationController extends AbstractController
         Committee $committee,
         Election $election,
         VoterRepository $voterRepository,
-        ElectionRound $electionRound = null
+        ?ElectionRound $electionRound = null
     ): Response {
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
@@ -92,7 +92,7 @@ abstract class AbstractDesignationController extends AbstractController
         Request $request,
         Committee $committee,
         Election $election,
-        ElectionRound $electionRound = null
+        ?ElectionRound $electionRound = null
     ): Response {
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
@@ -125,7 +125,7 @@ abstract class AbstractDesignationController extends AbstractController
         Committee $committee,
         Election $election,
         VoteResultRepository $voteResultRepository,
-        ElectionRound $electionRound = null
+        ?ElectionRound $electionRound = null
     ): Response {
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()

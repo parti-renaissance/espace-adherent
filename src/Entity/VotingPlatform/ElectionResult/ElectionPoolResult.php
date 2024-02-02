@@ -73,7 +73,7 @@ class ElectionPoolResult
      */
     private $blank = 0;
 
-    public function __construct(ElectionPool $pool, UuidInterface $uuid = null)
+    public function __construct(ElectionPool $pool, ?UuidInterface $uuid = null)
     {
         $this->electionPool = $pool;
         $this->uuid = $uuid ?? Uuid::uuid4();

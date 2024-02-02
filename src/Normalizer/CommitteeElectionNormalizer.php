@@ -18,7 +18,7 @@ class CommitteeElectionNormalizer implements NormalizerInterface, NormalizerAwar
     {
     }
 
-    public function normalize($object, string $format = null, array $context = [])
+    public function normalize($object, ?string $format = null, array $context = [])
     {
         $context[self::ALREADY_CALLED] = true;
 
@@ -42,7 +42,7 @@ class CommitteeElectionNormalizer implements NormalizerInterface, NormalizerAwar
         return $data;
     }
 
-    public function supportsNormalization($data, string $format = null, array $context = []): bool
+    public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return !isset($context[self::ALREADY_CALLED])
             && $data instanceof CommitteeElection

@@ -18,7 +18,7 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
 
     public function findActiveMandate(
         Adherent $adherent,
-        Committee $excludedCommittee = null
+        ?Committee $excludedCommittee = null
     ): ?CommitteeAdherentMandate {
         $qb = $this->createQueryBuilder('m')
             ->where('m.adherent = :adherent')
@@ -68,7 +68,7 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
     /**
      * @return CommitteeAdherentMandate[]
      */
-    public function findActiveCommitteeMandates(Adherent $adherent, array $refTags = [], string $quality = null): array
+    public function findActiveCommitteeMandates(Adherent $adherent, array $refTags = [], ?string $quality = null): array
     {
         $qb = $this->createQueryBuilder('m')
             ->innerJoin('m.committee', 'committee')
@@ -127,9 +127,9 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
     public function closeMandates(
         Committee $committee,
         string $reason,
-        \DateTime $finishAt = null,
-        string $quality = null,
-        string $gender = null
+        ?\DateTime $finishAt = null,
+        ?string $quality = null,
+        ?string $gender = null
     ): void {
         $qb = $this->createQueryBuilder('m')
             ->update()

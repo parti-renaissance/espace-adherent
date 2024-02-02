@@ -86,7 +86,7 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
      */
     protected $candidaciesGroup;
 
-    public function __construct(string $gender = null, UuidInterface $uuid = null)
+    public function __construct(?string $gender = null, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->gender = $gender;

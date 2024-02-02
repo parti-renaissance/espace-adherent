@@ -99,7 +99,7 @@ class CommitteeMergeHistory
         Committee $destinationCommittee,
         array $mergedMemberships,
         Administrator $admin,
-        \DateTimeImmutable $date = null
+        ?\DateTimeImmutable $date = null
     ) {
         $this->sourceCommittee = $sourceCommittee;
         $this->destinationCommittee = $destinationCommittee;

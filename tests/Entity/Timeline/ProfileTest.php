@@ -70,9 +70,9 @@ class ProfileTest extends TestCase
 
     private function createTranslation(
         string $locale,
-        string $title = null,
-        string $slug = null,
-        string $description = null
+        ?string $title = null,
+        ?string $slug = null,
+        ?string $description = null
     ): ProfileTranslation {
         $translation = $this->createMock(ProfileTranslation::class);
 

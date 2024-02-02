@@ -103,8 +103,8 @@ class Candidate
         string $firstName,
         string $lastName,
         string $gender,
-        Adherent $adherent = null,
-        UuidInterface $uuid = null,
+        ?Adherent $adherent = null,
+        ?UuidInterface $uuid = null,
         bool $isSubstitute = false,
     ) {
         $this->firstName = $firstName;

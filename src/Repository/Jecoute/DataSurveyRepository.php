@@ -193,7 +193,7 @@ class DataSurveyRepository extends ServiceEntityRepository
         return $this->configurePaginator($queryBuilder, $page, $limit);
     }
 
-    public function countSurveysForBuilding(Building $building, string $buildingBlock = null, int $floor = null): int
+    public function countSurveysForBuilding(Building $building, ?string $buildingBlock = null, ?int $floor = null): int
     {
         $conditions = '';
         $params = [
@@ -232,7 +232,7 @@ class DataSurveyRepository extends ServiceEntityRepository
         ;
     }
 
-    public function countByAdherent(Adherent $adherent, \DateTimeInterface $minPostedAt = null): int
+    public function countByAdherent(Adherent $adherent, ?\DateTimeInterface $minPostedAt = null): int
     {
         $qb = $this->createQueryBuilder('dataSurvey')
             ->select('COUNT(1)')

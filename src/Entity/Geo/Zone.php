@@ -211,7 +211,7 @@ class Zone implements GeoInterface
      */
     private ?array $tags = null;
 
-    public function __construct(string $type, string $code, string $name, UuidInterface $uuid = null)
+    public function __construct(string $type, string $code, string $name, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->type = $type;

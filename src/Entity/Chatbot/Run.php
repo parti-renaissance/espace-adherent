@@ -34,7 +34,7 @@ class Run
      */
     public string $status = self::STATUS_QUEUED;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }

@@ -79,7 +79,7 @@ class VotePlace
      */
     public ?Zone $zone = null;
 
-    public function __construct(UuidInterface $uuid = null, string $code = null, string $name = null)
+    public function __construct(?UuidInterface $uuid = null, ?string $code = null, ?string $name = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->code = $code;

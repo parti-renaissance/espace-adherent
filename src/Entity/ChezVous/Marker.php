@@ -58,7 +58,7 @@ class Marker
      */
     private $city;
 
-    public function __construct(City $city = null, string $type = null, float $latitude = null, float $longitude = null)
+    public function __construct(?City $city = null, ?string $type = null, ?float $latitude = null, ?float $longitude = null)
     {
         $this->type = $type;
         $this->latitude = $latitude;

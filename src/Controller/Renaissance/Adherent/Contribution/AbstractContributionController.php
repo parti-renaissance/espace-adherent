@@ -17,7 +17,7 @@ abstract class AbstractContributionController extends AbstractController
     ) {
     }
 
-    protected function getCommand(Request $request = null): ContributionRequest
+    protected function getCommand(?Request $request = null): ContributionRequest
     {
         /** @var ?Adherent $user */
         $user = $this->getUser();

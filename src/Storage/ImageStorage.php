@@ -24,7 +24,7 @@ class ImageStorage
         $this->glide = $glide;
     }
 
-    public function save(UploadedFile $file, string $path, string $oldPath = null): void
+    public function save(UploadedFile $file, string $path, ?string $oldPath = null): void
     {
         // Clears the old file if needed
         if (null !== $oldPath && $this->storage->has($oldPath)) {

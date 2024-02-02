@@ -78,7 +78,7 @@ class EmailSubscriptionHistory
         SubscriptionType $subscriptionType,
         array $referentTags,
         EmailSubscriptionHistoryAction $action,
-        \DateTimeImmutable $date = null
+        ?\DateTimeImmutable $date = null
     ) {
         $this->adherentUuid = $adherent->getUuid();
         $this->subscriptionType = $subscriptionType;

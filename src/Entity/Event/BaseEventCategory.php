@@ -55,7 +55,7 @@ abstract class BaseEventCategory implements EventCategoryInterface
      */
     protected $status;
 
-    public function __construct(string $name = null, ?string $status = self::ENABLED, string $slug = null)
+    public function __construct(?string $name = null, ?string $status = self::ENABLED, ?string $slug = null)
     {
         if ($name) {
             $this->name = $name;

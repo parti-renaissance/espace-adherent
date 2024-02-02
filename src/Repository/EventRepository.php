@@ -200,7 +200,7 @@ class EventRepository extends ServiceEntityRepository
     /**
      * @return CommitteeEvent[]
      */
-    public function findUpcomingEvents(int $category = null, bool $withPrivate = false): array
+    public function findUpcomingEvents(?int $category = null, bool $withPrivate = false): array
     {
         $qb = $this->createUpcomingEventsQueryBuilder($withPrivate);
 
@@ -567,7 +567,7 @@ class EventRepository extends ServiceEntityRepository
 
     public function countCommitteeEventsInReferentManagedArea(
         Adherent $referent,
-        StatisticsParametersFilter $filter = null
+        ?StatisticsParametersFilter $filter = null
     ): array {
         $this->checkReferent($referent);
 

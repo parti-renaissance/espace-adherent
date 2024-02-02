@@ -31,7 +31,7 @@ class JecouteFilter extends AbstractAdherentMessageFilter implements AdherentSeg
      */
     private $zone;
 
-    public function __construct(Zone $zone = null)
+    public function __construct(?Zone $zone = null)
     {
         parent::__construct();
 

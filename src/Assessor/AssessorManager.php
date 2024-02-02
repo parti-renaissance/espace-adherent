@@ -33,7 +33,7 @@ class AssessorManager
         $this->dispatcher = $dispatcher;
     }
 
-    public function processAssessorRequest(AssessorRequest $assessorRequest, VotePlace $votePlace = null): void
+    public function processAssessorRequest(AssessorRequest $assessorRequest, ?VotePlace $votePlace = null): void
     {
         $assessorRequest->process($votePlace);
 

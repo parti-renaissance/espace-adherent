@@ -36,7 +36,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
         ;
     }
 
-    protected function configureActionButtons(array $buttonList, string $action, object $object = null): array
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
         if (\in_array($action, ['ban', 'certify', 'uncertify'], true)) {
             $actions = parent::configureActionButtons($buttonList, 'show', $object);

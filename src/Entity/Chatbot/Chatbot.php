@@ -51,7 +51,7 @@ class Chatbot
      */
     public ?string $telegramBotSecret = null;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }

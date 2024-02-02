@@ -74,13 +74,13 @@ class Voter
     private ?Address $address;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $firstName = null,
-        string $lastName = null,
-        string $gender = null,
-        \DateTimeInterface $birthdate = null,
-        string $votePlace = null,
-        string $source = null
+        ?UuidInterface $uuid = null,
+        ?string $firstName = null,
+        ?string $lastName = null,
+        ?string $gender = null,
+        ?\DateTimeInterface $birthdate = null,
+        ?string $votePlace = null,
+        ?string $source = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->firstName = $firstName;

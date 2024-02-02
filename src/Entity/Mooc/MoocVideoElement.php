@@ -27,14 +27,14 @@ class MoocVideoElement extends BaseMoocElement
     private $duration;
 
     public function __construct(
-        string $title = null,
-        string $content = null,
-        string $shareTwitterText = null,
-        string $shareFacebokText = null,
-        string $shareEmailObject = null,
-        string $shareEmailBody = null,
-        string $youtubeId = null,
-        \DateTime $duration = null
+        ?string $title = null,
+        ?string $content = null,
+        ?string $shareTwitterText = null,
+        ?string $shareFacebokText = null,
+        ?string $shareEmailObject = null,
+        ?string $shareEmailBody = null,
+        ?string $youtubeId = null,
+        ?\DateTime $duration = null
     ) {
         parent::__construct($title, $content, $shareTwitterText, $shareFacebokText, $shareEmailObject, $shareEmailBody);
         $this->youtubeId = $youtubeId;

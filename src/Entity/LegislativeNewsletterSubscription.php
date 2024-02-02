@@ -109,10 +109,10 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     private ?\DateTimeInterface $confirmedAt = null;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $emailAddress = null,
-        string $postalCode = null,
-        bool $personalDataCollection = null
+        ?UuidInterface $uuid = null,
+        ?string $emailAddress = null,
+        ?string $postalCode = null,
+        ?bool $personalDataCollection = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->emailAddress = $emailAddress;
@@ -197,7 +197,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         return $this->token;
     }
 
-    public function setToken(UuidInterface $token = null): void
+    public function setToken(?UuidInterface $token = null): void
     {
         $this->token = $token;
     }
@@ -207,7 +207,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         return $this->confirmedAt;
     }
 
-    public function setConfirmedAt(\DateTimeInterface $confirmedAt = null): void
+    public function setConfirmedAt(?\DateTimeInterface $confirmedAt = null): void
     {
         $this->confirmedAt = $confirmedAt;
     }

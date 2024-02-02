@@ -36,7 +36,7 @@ class DonationTag
      */
     private $color;
 
-    public function __construct(string $label = null, string $color = null)
+    public function __construct(?string $label = null, ?string $color = null)
     {
         $this->label = $label;
         $this->color = $color;

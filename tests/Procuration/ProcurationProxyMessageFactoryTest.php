@@ -195,8 +195,8 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         string $lastName,
         string $email,
         string $phone = '',
-        string $voteCityName = null,
-        string $votePostalCode = null
+        ?string $voteCityName = null,
+        ?string $votePostalCode = null
     ) {
         $request = $this->createMock(ProcurationRequest::class);
         $request->expects($this->any())->method('getFirstNames')->willReturn($firstNames);
@@ -218,10 +218,10 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         string $lastName,
         string $email,
         string $phone = '',
-        string $voteCityName = null,
-        string $votePostalCode = null,
-        \DateTimeInterface $birthdate = null,
-        string $voterNumber = null
+        ?string $voteCityName = null,
+        ?string $votePostalCode = null,
+        ?\DateTimeInterface $birthdate = null,
+        ?string $voterNumber = null
     ) {
         $proxy = $this->createMock(ProcurationProxy::class);
         $proxy->expects($this->any())->method('getFirstNames')->willReturn($firstNames);

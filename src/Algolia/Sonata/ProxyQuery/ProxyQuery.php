@@ -36,7 +36,7 @@ class ProxyQuery implements ProxyQueryInterface
     private $results;
     private $queryBuilder;
 
-    public function __construct(SearchService $algolia, QueryBuilder $queryBuilder, string $class = null)
+    public function __construct(SearchService $algolia, QueryBuilder $queryBuilder, ?string $class = null)
     {
         $this->algolia = $algolia;
         $this->queryBuilder = $queryBuilder;

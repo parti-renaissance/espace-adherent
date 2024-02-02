@@ -173,16 +173,16 @@ class Address
     public ?VotePlace $votePlace = null;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $number = null,
-        string $address = null,
-        string $inseeCode = null,
-        array $postalCodes = null,
-        string $cityName = null,
-        int $offsetX = null,
-        int $offsetY = null,
-        float $latitude = null,
-        float $longitude = null
+        ?UuidInterface $uuid = null,
+        ?string $number = null,
+        ?string $address = null,
+        ?string $inseeCode = null,
+        ?array $postalCodes = null,
+        ?string $cityName = null,
+        ?int $offsetX = null,
+        ?int $offsetY = null,
+        ?float $latitude = null,
+        ?float $longitude = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->number = $number;

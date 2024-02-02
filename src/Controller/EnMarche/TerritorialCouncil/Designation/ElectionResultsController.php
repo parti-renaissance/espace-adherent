@@ -28,7 +28,7 @@ class ElectionResultsController extends AbstractController
 
     #[Route(path: '/{election_round_uuid}', name: '_dashboard', methods: ['GET'], defaults: ['election_round_uuid' => null], requirements: ['election_round_uuid' => '%pattern_uuid%'])]
     #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
-    public function dashboardAction(Election $election, ElectionRound $electionRound = null): Response
+    public function dashboardAction(Election $election, ?ElectionRound $electionRound = null): Response
     {
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
@@ -47,7 +47,7 @@ class ElectionResultsController extends AbstractController
     public function listVotersAction(
         Election $election,
         VoterRepository $voterRepository,
-        ElectionRound $electionRound = null
+        ?ElectionRound $electionRound = null
     ): Response {
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
@@ -71,7 +71,7 @@ class ElectionResultsController extends AbstractController
     public function showResultsAction(
         Request $request,
         Election $election,
-        ElectionRound $electionRound = null
+        ?ElectionRound $electionRound = null
     ): Response {
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
@@ -100,7 +100,7 @@ class ElectionResultsController extends AbstractController
     public function listVotesAction(
         Election $election,
         VoteResultRepository $voteResultRepository,
-        ElectionRound $electionRound = null
+        ?ElectionRound $electionRound = null
     ): Response {
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()

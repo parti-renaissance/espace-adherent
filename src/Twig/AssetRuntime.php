@@ -24,7 +24,7 @@ class AssetRuntime implements RuntimeExtensionInterface
         string $path,
         array $parameters = [],
         int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
-        string $appDomain = null
+        ?string $appDomain = null
     ): string {
         $parameters['cache'] = $this->appVersion;
 
@@ -75,7 +75,7 @@ class AssetRuntime implements RuntimeExtensionInterface
         string $path,
         array $parameters,
         int $referenceType,
-        string $appDomain = null
+        ?string $appDomain = null
     ): string {
         $parameters['fm'] = 'pjpg';
 

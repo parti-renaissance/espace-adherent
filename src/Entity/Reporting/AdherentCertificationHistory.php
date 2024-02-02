@@ -109,7 +109,7 @@ class AdherentCertificationHistory
         return self::ACTION_UNCERTIFY === $this->action;
     }
 
-    public static function createCertify(Adherent $adherent, Administrator $administrator = null): self
+    public static function createCertify(Adherent $adherent, ?Administrator $administrator = null): self
     {
         return new self($adherent, $administrator, self::ACTION_CERTIFY);
     }

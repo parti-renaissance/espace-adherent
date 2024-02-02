@@ -15,7 +15,7 @@ class ArticleExtension implements QueryItemExtensionInterface, QueryCollectionEx
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        Operation $operation = null,
+        ?Operation $operation = null,
         array $context = []
     ): void {
         $this->modifyQuery($queryBuilder, $resourceClass);
@@ -26,7 +26,7 @@ class ArticleExtension implements QueryItemExtensionInterface, QueryCollectionEx
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         array $identifiers,
-        Operation $operation = null,
+        ?Operation $operation = null,
         array $context = []
     ): void {
         $this->modifyQuery($queryBuilder, $resourceClass);

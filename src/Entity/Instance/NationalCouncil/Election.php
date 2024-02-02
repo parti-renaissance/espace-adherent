@@ -22,7 +22,7 @@ class Election extends AbstractElectionEntity
      */
     private $candidacies;
 
-    public function __construct(Designation $designation = null, UuidInterface $uuid = null)
+    public function __construct(?Designation $designation = null, ?UuidInterface $uuid = null)
     {
         parent::__construct($designation, $uuid);
 

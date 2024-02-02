@@ -18,7 +18,7 @@ class FiltersGenerator
     /**
      * @return FilterInterface[]
      */
-    public function generate(string $scope, string $feature = null): array
+    public function generate(string $scope, ?string $feature = null): array
     {
         $filters = [];
 

@@ -13,7 +13,7 @@ class ElectedRepresentativePoliticalFunctionFromIdDenormalizer implements Denorm
     {
     }
 
-    public function denormalize($data, string $type, string $format = null, array $context = [])
+    public function denormalize($data, string $type, ?string $format = null, array $context = [])
     {
         if ($function = $this->repository->find($data)) {
             return $function;
@@ -22,7 +22,7 @@ class ElectedRepresentativePoliticalFunctionFromIdDenormalizer implements Denorm
         throw new ItemNotFoundException();
     }
 
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = [])
     {
         return PoliticalFunction::class === $type && \is_int($data);
     }

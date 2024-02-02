@@ -276,9 +276,9 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         ?Adherent $called,
         Campaign $campaign,
         string $status,
-        Survey $survey = null,
-        \DateTime $begitAt = null,
-        string $uuid = null
+        ?Survey $survey = null,
+        ?\DateTime $begitAt = null,
+        ?string $uuid = null
     ): CampaignHistory {
         $campaignHistory = CampaignHistory::createForCampaign($campaign, $author, $called, $uuid ? Uuid::fromString($uuid) : Uuid::uuid4());
 

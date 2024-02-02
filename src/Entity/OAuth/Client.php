@@ -90,7 +90,7 @@ class Client implements EntitySoftDeletedInterface
     private $requestedRoles;
 
     public function __construct(
-        UuidInterface $uuid = null,
+        ?UuidInterface $uuid = null,
         string $name = '',
         string $description = '',
         string $secret = '',

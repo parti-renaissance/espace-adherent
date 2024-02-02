@@ -58,7 +58,7 @@ class CandidateGroupResult
      */
     private $majorityMention;
 
-    public function __construct(CandidateGroup $candidateGroup, UuidInterface $uuid = null)
+    public function __construct(CandidateGroup $candidateGroup, ?UuidInterface $uuid = null)
     {
         $this->candidateGroup = $candidateGroup;
         $this->uuid = $uuid ?? Uuid::uuid4();

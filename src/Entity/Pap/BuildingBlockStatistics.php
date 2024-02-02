@@ -30,7 +30,7 @@ class BuildingBlockStatistics implements CampaignStatisticsInterface
      */
     private Campaign $campaign;
 
-    public function __construct(BuildingBlock $buildingBlock, Campaign $campaign, string $status = null)
+    public function __construct(BuildingBlock $buildingBlock, Campaign $campaign, ?string $status = null)
     {
         $this->buildingBlock = $buildingBlock;
         $this->campaign = $campaign;

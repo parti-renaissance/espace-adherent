@@ -172,7 +172,7 @@ class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, En
      */
     private ?string $filePath = null;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }

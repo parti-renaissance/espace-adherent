@@ -67,7 +67,7 @@ class Floor implements EntityAdherentBlameableInterface, CampaignStatisticsOwner
      */
     private Collection $statistics;
 
-    public function __construct(int $number, BuildingBlock $buildingBlock, UuidInterface $uuid = null)
+    public function __construct(int $number, BuildingBlock $buildingBlock, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->number = $number;

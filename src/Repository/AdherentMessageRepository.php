@@ -44,7 +44,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
     public function findAllByAuthor(
         Adherent $adherent,
         string $type,
-        string $status = null,
+        ?string $status = null,
         int $page = 1
     ): PaginatorInterface {
         return $this->configurePaginator($this->createListQueryBuilder($adherent, $type, $status), $page);
@@ -56,7 +56,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
     public function findAllCommitteeMessage(
         Adherent $adherent,
         Committee $committee,
-        string $status = null,
+        ?string $status = null,
         int $page = 1
     ): PaginatorInterface {
         $queryBuilder = $this->createListQueryBuilder($adherent, AdherentMessageTypeEnum::COMMITTEE, $status);
@@ -175,7 +175,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
-    private function createListQueryBuilder(Adherent $adherent, string $type, string $status = null): QueryBuilder
+    private function createListQueryBuilder(Adherent $adherent, string $type, ?string $status = null): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('message')
             ->leftJoin('message.mailchimpCampaigns', 'mc')

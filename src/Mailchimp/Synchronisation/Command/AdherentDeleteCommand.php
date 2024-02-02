@@ -9,7 +9,7 @@ class AdherentDeleteCommand implements SynchronizeMessageInterface
     private string $email;
     private ?int $adherentId;
 
-    public function __construct(string $email, int $adherentId = null)
+    public function __construct(string $email, ?int $adherentId = null)
     {
         $this->email = $email;
         $this->adherentId = $adherentId;

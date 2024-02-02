@@ -52,7 +52,7 @@ class Choice
      */
     private $dataAnswers;
 
-    public function __construct(string $content = null)
+    public function __construct(?string $content = null)
     {
         $this->content = $content;
         $this->dataAnswers = new ArrayCollection();

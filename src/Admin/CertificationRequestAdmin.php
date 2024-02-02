@@ -60,7 +60,7 @@ class CertificationRequestAdmin extends AbstractAdmin
     /**
      * @param CertificationRequest|null $object
      */
-    protected function configureActionButtons(array $buttonList, string $action, object $object = null): array
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
         if (\in_array($action, ['approve', 'refuse', 'block'], true)) {
             $actions = parent::configureActionButtons($buttonList, 'show', $object);

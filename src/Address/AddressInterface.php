@@ -54,7 +54,7 @@ interface AddressInterface
      */
     public function getCountry(): ?string;
 
-    public function getCountryName(string $locale = null): ?string;
+    public function getCountryName(?string $locale = null): ?string;
 
     public function getRegion(): ?string;
 }

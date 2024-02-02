@@ -480,7 +480,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         return $this->category ? $this->category->getName() : null;
     }
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
 
@@ -755,8 +755,8 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         string $timeZone,
         \DateTimeInterface $beginAt,
         \DateTimeInterface $finishAt,
-        string $visioUrl = null,
-        int $capacity = null,
+        ?string $visioUrl = null,
+        ?int $capacity = null,
         bool $private = false,
         bool $electoral = false
     ): void {

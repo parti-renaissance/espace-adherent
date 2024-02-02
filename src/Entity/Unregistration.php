@@ -129,7 +129,7 @@ class Unregistration
         bool $isAdherent,
         bool $isRenaissance,
         array $referentTags,
-        Administrator $admin = null
+        ?Administrator $admin = null
     ) {
         $this->uuid = $uuid;
         $this->adherentUuid = $adherentUuid;

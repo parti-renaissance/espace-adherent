@@ -71,7 +71,7 @@ class Chapter
      */
     private $elements;
 
-    public function __construct(string $title = null, bool $published = false, \DateTime $publishedAt = null)
+    public function __construct(?string $title = null, bool $published = false, ?\DateTime $publishedAt = null)
     {
         $this->title = $title;
         $this->published = $published;

@@ -109,7 +109,7 @@ class Building implements CampaignStatisticsOwnerInterface
      */
     private ?Campaign $currentCampaign = null;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->buildingBlocks = new ArrayCollection();

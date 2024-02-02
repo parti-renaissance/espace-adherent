@@ -33,7 +33,7 @@ class BuildingEventControllerTest extends AbstractApiTestCase
     private ?BuildingRepository $buildingRepository;
 
     #[DataProvider('provideActions')]
-    public function testCloseOpenBuilding(string $type, string $action, string $identifier = null): void
+    public function testCloseOpenBuilding(string $type, string $action, ?string $identifier = null): void
     {
         $campaignUuid = LoadPapCampaignData::CAMPAIGN_1_UUID;
         $buidingUuid = LoadPapBuildingData::BUILDING_01_UUID;

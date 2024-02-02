@@ -65,11 +65,11 @@ class TonMacronChoice
     }
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $step = null,
-        string $contentKey = null,
-        string $label = null,
-        string $content = null
+        ?UuidInterface $uuid = null,
+        ?string $step = null,
+        ?string $contentKey = null,
+        ?string $label = null,
+        ?string $content = null
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->step = $step;

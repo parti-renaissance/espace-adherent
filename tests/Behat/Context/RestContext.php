@@ -95,7 +95,7 @@ class RestContext extends BehatchRestContext
      * @Given I am logged with :email via OAuth client :clientName with scope :scopes
      * @Given I am logged with :email via OAuth client :clientName with scopes :scopes
      */
-    public function iAmLoggedViaOAuthWithClientAndScope(string $email, string $clientName, string $scopes = null): void
+    public function iAmLoggedViaOAuthWithClientAndScope(string $email, string $clientName, ?string $scopes = null): void
     {
         $identifier = uniqid();
 
@@ -172,7 +172,7 @@ class RestContext extends BehatchRestContext
         $this->savedResponse = $this->httpCallResultPool->getResult();
     }
 
-    public function iSendARequestTo($method, $url, PyStringNode $body = null, $files = [])
+    public function iSendARequestTo($method, $url, ?PyStringNode $body = null, $files = [])
     {
         $match = [];
         if (preg_match('/:(last_response|saved_response)\.(\w+):/', $url, $match)) {
@@ -303,8 +303,8 @@ class RestContext extends BehatchRestContext
 
     private function setAcceptApplicationJsonHeader(
         string $url,
-        string $method = null,
-        PyStringNode &$body = null
+        ?string $method = null,
+        ?PyStringNode &$body = null
     ): void {
         if (preg_match('#^/?(api|oauth)/#', $url) && !str_contains($url, 'oauth/v2/auth')) {
             $this->iAddHeaderEqualTo('Accept', 'application/json');

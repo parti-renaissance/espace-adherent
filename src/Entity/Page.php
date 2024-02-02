@@ -98,7 +98,7 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
         return $this->headerMedia;
     }
 
-    public function setHeaderMedia(Media $headerMedia = null): void
+    public function setHeaderMedia(?Media $headerMedia = null): void
     {
         $this->headerMedia = $headerMedia;
     }

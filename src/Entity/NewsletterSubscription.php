@@ -91,11 +91,11 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
     private $personalDataCollection = false;
 
     public function __construct(
-        string $email = null,
-        string $postalCode = null,
-        string $country = null,
+        ?string $email = null,
+        ?string $postalCode = null,
+        ?string $country = null,
         bool $fromEvent = false,
-        UuidInterface $uuid = null
+        ?UuidInterface $uuid = null
     ) {
         $this->email = $email;
         $this->postalCode = $postalCode;
@@ -114,7 +114,7 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
         return $this->email;
     }
 
-    public function setEmail(string $email = null): void
+    public function setEmail(?string $email = null): void
     {
         $this->email = $email;
     }
@@ -124,7 +124,7 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
         return $this->postalCode;
     }
 
-    public function setPostalCode(string $postalCode = null): void
+    public function setPostalCode(?string $postalCode = null): void
     {
         $this->postalCode = $postalCode;
     }
@@ -159,7 +159,7 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
         return $this->confirmedAt;
     }
 
-    public function setConfirmedAt(\DateTimeInterface $confirmedAt = null): void
+    public function setConfirmedAt(?\DateTimeInterface $confirmedAt = null): void
     {
         $this->confirmedAt = $confirmedAt;
     }
@@ -174,7 +174,7 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
         return $this->token;
     }
 
-    public function setToken(UuidInterface $token = null): void
+    public function setToken(?UuidInterface $token = null): void
     {
         $this->token = $token;
     }

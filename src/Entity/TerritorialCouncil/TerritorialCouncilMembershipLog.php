@@ -83,11 +83,11 @@ class TerritorialCouncilMembershipLog
     private $isResolved = false;
 
     public function __construct(
-        string $type = null,
-        string $description = null,
-        Adherent $adherent = null,
-        string $qualityName = null,
-        string $territorialCouncil = null,
+        ?string $type = null,
+        ?string $description = null,
+        ?Adherent $adherent = null,
+        ?string $qualityName = null,
+        ?string $territorialCouncil = null,
         array $qualityNames = [],
         array $territorialCouncils = []
     ) {

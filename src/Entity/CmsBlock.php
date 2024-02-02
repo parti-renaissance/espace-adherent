@@ -51,7 +51,7 @@ class CmsBlock implements EntityAdministratorBlameableInterface
      */
     private $content;
 
-    public function __construct(string $name = null, string $description = null, string $content = null)
+    public function __construct(?string $name = null, ?string $description = null, ?string $content = null)
     {
         $this->name = $name;
         $this->description = $description;

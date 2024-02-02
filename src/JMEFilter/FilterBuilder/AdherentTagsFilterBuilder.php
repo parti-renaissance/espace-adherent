@@ -14,12 +14,12 @@ class AdherentTagsFilterBuilder implements FilterBuilderInterface
     {
     }
 
-    public function supports(string $scope, string $feature = null): bool
+    public function supports(string $scope, ?string $feature = null): bool
     {
         return \in_array($scope, ScopeEnum::ALL, true);
     }
 
-    public function build(string $scope, string $feature = null): array
+    public function build(string $scope, ?string $feature = null): array
     {
         return (new FilterCollectionBuilder())
             ->createSelect('adherent_tags', 'Labels adhérent')

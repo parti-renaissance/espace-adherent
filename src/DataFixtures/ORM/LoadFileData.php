@@ -189,7 +189,7 @@ class LoadFileData extends Fixture implements DependentFixtureInterface
         Administrator $admin,
         bool $displayed = true,
         string $createdAt = '2020-11-10 09:08:07',
-        File $parent = null,
+        ?File $parent = null,
         array $permissions = []
     ): File {
         $file = new File();

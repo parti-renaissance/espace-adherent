@@ -116,7 +116,7 @@ trait ControllerTestTrait
         return null;
     }
 
-    protected function seeFlashMessage(Crawler $crawler, string $message = null, string $level = 'info'): bool
+    protected function seeFlashMessage(Crawler $crawler, ?string $message = null, string $level = 'info'): bool
     {
         $flash = $crawler->filter('.flash--'.$level);
 

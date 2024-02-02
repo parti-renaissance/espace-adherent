@@ -19,7 +19,7 @@ class InvalidEmailAddress
      */
     private string $emailHash;
 
-    public function __construct(string $emailHash, UuidInterface $uuid = null)
+    public function __construct(string $emailHash, ?UuidInterface $uuid = null)
     {
         $this->emailHash = $emailHash;
         $this->uuid = $uuid ?? Uuid::uuid4();

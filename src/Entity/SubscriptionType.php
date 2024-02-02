@@ -64,7 +64,7 @@ class SubscriptionType
      */
     private $position = 0;
 
-    public function __construct(string $label = null, string $code = null, string $externalId = null)
+    public function __construct(?string $label = null, ?string $code = null, ?string $externalId = null)
     {
         $this->label = $label;
         $this->code = $code;

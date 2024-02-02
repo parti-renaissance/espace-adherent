@@ -244,7 +244,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
 
     public function countEventParticipantsInReferentManagedArea(
         Adherent $referent,
-        StatisticsParametersFilter $filter = null,
+        ?StatisticsParametersFilter $filter = null,
         int $months = 5
     ): array {
         $this->checkReferent($referent);
@@ -260,7 +260,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
 
     public function countEventParticipantsAsAdherentInReferentManagedArea(
         Adherent $referent,
-        StatisticsParametersFilter $filter = null,
+        ?StatisticsParametersFilter $filter = null,
         int $months = 5
     ): array {
         $this->checkReferent($referent);

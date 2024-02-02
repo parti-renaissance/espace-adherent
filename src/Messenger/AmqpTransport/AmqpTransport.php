@@ -15,7 +15,7 @@ class AmqpTransport extends SymfonyAmqpTransport
 {
     protected Connection $connection;
 
-    public function __construct(Connection $connection, SerializerInterface $serializer = null)
+    public function __construct(Connection $connection, ?SerializerInterface $serializer = null)
     {
         $this->connection = $connection;
 

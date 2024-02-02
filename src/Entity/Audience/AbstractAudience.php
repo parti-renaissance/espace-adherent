@@ -20,7 +20,7 @@ abstract class AbstractAudience implements AudienceInterface
     use EntityZoneTrait;
     use AudienceFieldsTrait;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->zones = new ZoneCollection();

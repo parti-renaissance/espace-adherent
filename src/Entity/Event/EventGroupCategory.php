@@ -22,7 +22,7 @@ class EventGroupCategory extends BaseEventCategory
      */
     private $eventCategories;
 
-    public function __construct(string $name = null, ?string $status = self::ENABLED, string $slug = null)
+    public function __construct(?string $name = null, ?string $status = self::ENABLED, ?string $slug = null)
     {
         parent::__construct($name, $status, $slug);
         $this->eventCategories = new ArrayCollection();

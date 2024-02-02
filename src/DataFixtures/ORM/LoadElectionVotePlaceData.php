@@ -33,10 +33,10 @@ class LoadElectionVotePlaceData extends Fixture implements DependentFixtureInter
         string $code,
         string $name,
         string $zoneId,
-        float $latitude = null,
-        float $longitude = null,
-        int $nbAddresses = null,
-        int $nbVoters = null
+        ?float $latitude = null,
+        ?float $longitude = null,
+        ?int $nbAddresses = null,
+        ?int $nbVoters = null
     ): VotePlace {
         $object = new VotePlace($uuid ? Uuid::fromString($uuid) : Uuid::uuid4(), $code, $name);
         $object->latitude = $latitude;

@@ -60,8 +60,8 @@ class AdherentInstanceQuality
     public function __construct(
         ?Adherent $adherent,
         InstanceQuality $instanceQuality,
-        \DateTime $date = null,
-        UuidInterface $uuid = null
+        ?\DateTime $date = null,
+        ?UuidInterface $uuid = null
     ) {
         $this->adherent = $adherent;
         $this->instanceQuality = $instanceQuality;

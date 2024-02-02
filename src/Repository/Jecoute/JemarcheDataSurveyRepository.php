@@ -60,7 +60,7 @@ class JemarcheDataSurveyRepository extends ServiceEntityRepository
         return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
     }
 
-    public function countByDevice(Device $device, \DateTimeInterface $minPostedAt = null): int
+    public function countByDevice(Device $device, ?\DateTimeInterface $minPostedAt = null): int
     {
         $qb = $this->createCountByDeviceQueryBuilder($device);
 

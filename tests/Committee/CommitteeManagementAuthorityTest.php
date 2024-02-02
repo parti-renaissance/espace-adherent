@@ -121,7 +121,7 @@ class CommitteeManagementAuthorityTest extends TestCase
         return $creator;
     }
 
-    private function createManager(Adherent $creator = null, AdherentCollection $referents = null): CommitteeManager
+    private function createManager(?Adherent $creator = null, ?AdherentCollection $referents = null): CommitteeManager
     {
         $manager = $this->createMock(CommitteeManager::class);
 

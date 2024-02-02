@@ -34,7 +34,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
         ;
     }
 
-    public function configureActionButtons(array $buttonList, string $action, object $object = null): array
+    public function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
         $actions = parent::configureActionButtons($buttonList, $action, $object);
 

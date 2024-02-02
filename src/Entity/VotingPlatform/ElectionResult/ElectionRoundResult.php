@@ -42,7 +42,7 @@ class ElectionRoundResult
      */
     private $electionPoolResults;
 
-    public function __construct(ElectionRound $electionRound, UuidInterface $uuid = null)
+    public function __construct(ElectionRound $electionRound, ?UuidInterface $uuid = null)
     {
         $this->electionRound = $electionRound;
         $this->uuid = $uuid ?? Uuid::uuid4();

@@ -72,7 +72,7 @@ class DonationAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::PER_PAGE] = 128;
     }
 
-    protected function configureActionButtons(array $buttonList, string $action, object $object = null): array
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
         $actions = parent::configureActionButtons($buttonList, $action, $object);
 

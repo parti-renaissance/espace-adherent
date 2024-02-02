@@ -29,7 +29,7 @@ class ApplicationRequestRepository
         return $this->volunteerRepository->findOneByUuid($uuid);
     }
 
-    public function findAllForInseeCodes(array $inseeCodes, string $type, ListFilter $filter = null): array
+    public function findAllForInseeCodes(array $inseeCodes, string $type, ?ListFilter $filter = null): array
     {
         if (ApplicationRequestTypeEnum::RUNNING_MATE === $type) {
             return $this->runningMateRepository->findAllForInseeCodes($inseeCodes, $filter);
@@ -38,7 +38,7 @@ class ApplicationRequestRepository
         return $this->volunteerRepository->findAllForInseeCodes($inseeCodes, $filter);
     }
 
-    public function findAllTakenFor(string $inseeCode, string $type, ListFilter $filter = null): array
+    public function findAllTakenFor(string $inseeCode, string $type, ?ListFilter $filter = null): array
     {
         if (ApplicationRequestTypeEnum::RUNNING_MATE === $type) {
             return $this->runningMateRepository->findAllTakenFor($inseeCode, $filter);
@@ -47,7 +47,7 @@ class ApplicationRequestRepository
         return $this->volunteerRepository->findAllTakenFor($inseeCode, $filter);
     }
 
-    public function findAllForReferentTags(array $referentTags, string $type, ListFilter $filter = null): array
+    public function findAllForReferentTags(array $referentTags, string $type, ?ListFilter $filter = null): array
     {
         if (ApplicationRequestTypeEnum::RUNNING_MATE === $type) {
             return $this->runningMateRepository->findForReferentTags($referentTags, $filter);

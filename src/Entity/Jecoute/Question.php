@@ -68,7 +68,7 @@ class Question
      */
     private $choices;
 
-    public function __construct(string $content = null, string $type = null)
+    public function __construct(?string $content = null, ?string $type = null)
     {
         $this->content = $content;
         $this->type = $type ?? SurveyQuestionTypeEnum::SIMPLE_FIELD;

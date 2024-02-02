@@ -30,7 +30,7 @@ class ContactMessage implements RecaptchaChallengeInterface
     private $from;
     private $to;
 
-    public function __construct(Adherent $from, Adherent $to, string $content = null)
+    public function __construct(Adherent $from, Adherent $to, ?string $content = null)
     {
         $this->from = $from;
         $this->to = $to;
@@ -40,8 +40,8 @@ class ContactMessage implements RecaptchaChallengeInterface
     public static function createWithCaptcha(
         Adherent $from,
         Adherent $to,
-        string $recaptcha = null,
-        string $content = null
+        ?string $recaptcha = null,
+        ?string $content = null
     ): self {
         $message = new self($from, $to, $content);
         $message->setRecaptcha($recaptcha);

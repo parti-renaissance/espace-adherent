@@ -36,7 +36,7 @@ class Theme
      */
     private $display = true;
 
-    public function __construct(string $name = null)
+    public function __construct(?string $name = null)
     {
         $this->name = $name;
     }

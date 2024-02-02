@@ -400,7 +400,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $this->assertNull($mandate->getReason());
     }
 
-    private function createNewAdherent(string $gender = Genders::MALE, string $birthday = null): Adherent
+    private function createNewAdherent(string $gender = Genders::MALE, ?string $birthday = null): Adherent
     {
         return Adherent::create(
             Uuid::fromString('c0d66d5f-e124-4641-8fd1-1dd72ffda563'),
@@ -429,7 +429,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         );
     }
 
-    private function createMandate(string $gender, Committee $committee = null): CommitteeAdherentMandate
+    private function createMandate(string $gender, ?Committee $committee = null): CommitteeAdherentMandate
     {
         return CommitteeAdherentMandate::createForCommittee(
             $committee ?? $this->createCommittee(),

@@ -19,10 +19,10 @@ class NationalPoll extends Poll
     private $administrator;
 
     public function __construct(
-        Administrator $administrator = null,
-        UuidInterface $uuid = null,
-        string $question = null,
-        \DateTimeInterface $finishAt = null
+        ?Administrator $administrator = null,
+        ?UuidInterface $uuid = null,
+        ?string $question = null,
+        ?\DateTimeInterface $finishAt = null
     ) {
         parent::__construct($uuid, $question, $finishAt, true);
 

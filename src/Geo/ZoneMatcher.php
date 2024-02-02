@@ -74,7 +74,7 @@ class ZoneMatcher
         return array_values(array_filter(array_unique($zones)));
     }
 
-    public function matchPostalCode(?string $postalCode, string $cityName = null): ?Zone
+    public function matchPostalCode(?string $postalCode, ?string $cityName = null): ?Zone
     {
         if (!$postalCode) {
             return null;

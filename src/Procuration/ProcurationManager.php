@@ -36,8 +36,8 @@ class ProcurationManager
 
     public function processProcurationRequest(
         ProcurationRequest $request,
-        ProcurationProxy $proxy = null,
-        Adherent $referent = null,
+        ?ProcurationProxy $proxy = null,
+        ?Adherent $referent = null,
         bool $notify = false,
         bool $flush = true
     ): void {
@@ -52,7 +52,7 @@ class ProcurationManager
 
     public function unprocessProcurationRequest(
         ProcurationRequest $request,
-        Adherent $referent = null,
+        ?Adherent $referent = null,
         bool $notify = false,
         bool $flush = true
     ): void {
@@ -89,7 +89,7 @@ class ProcurationManager
         $this->manager->flush();
     }
 
-    public function disableProcurationRequest(ProcurationRequest $request, string $reason = null): void
+    public function disableProcurationRequest(ProcurationRequest $request, ?string $reason = null): void
     {
         $request->disable($reason);
         $this->manager->flush();

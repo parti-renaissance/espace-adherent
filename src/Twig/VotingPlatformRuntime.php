@@ -32,7 +32,7 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
     ) {
     }
 
-    public function findActiveDesignations(Adherent $adherent, array $types = null, int $limit = null, bool $withVoteActiveOnly = false): array
+    public function findActiveDesignations(Adherent $adherent, ?array $types = null, ?int $limit = null, bool $withVoteActiveOnly = false): array
     {
         if (!$types) {
             $types = [
@@ -98,8 +98,8 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
     public function getElectionCandidateResult(
         int $adherentId,
         int $designationId,
-        int $committeeId = null,
-        int $territorialCouncilId = null
+        ?int $committeeId = null,
+        ?int $territorialCouncilId = null
     ): array {
         return $this->voteResultRepository->getResultsForCandidate($adherentId, $designationId, $committeeId, $territorialCouncilId);
     }

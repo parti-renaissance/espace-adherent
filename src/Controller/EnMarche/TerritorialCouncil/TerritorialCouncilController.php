@@ -41,7 +41,7 @@ class TerritorialCouncilController extends AbstractController
 
     #[Route(path: '/faq', name: 'faq', methods: ['GET'])]
     #[Route(path: '/{uuid}/faq', name: 'selected_faq', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
-    public function faqAction(TerritorialCouncil $territorialCouncil = null): Response
+    public function faqAction(?TerritorialCouncil $territorialCouncil = null): Response
     {
         $this->checkAccess($territorialCouncil);
 
@@ -62,7 +62,7 @@ class TerritorialCouncilController extends AbstractController
 
     #[Route(path: '/membres', name: 'members', methods: ['GET'])]
     #[Route(path: '/{uuid}/membres', name: 'selected_members', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
-    public function listMembersAction(TerritorialCouncil $territorialCouncil = null): Response
+    public function listMembersAction(?TerritorialCouncil $territorialCouncil = null): Response
     {
         $this->disableInProduction();
 
@@ -87,7 +87,7 @@ class TerritorialCouncilController extends AbstractController
     #[Route(path: '/{uuid}/liste-candidature', name: 'selected_candidacy_list', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
     public function candidacyListAction(
         CandidacyRepository $repository,
-        TerritorialCouncil $territorialCouncil = null
+        ?TerritorialCouncil $territorialCouncil = null
     ): Response {
         $this->checkAccess($territorialCouncil);
 
@@ -147,7 +147,7 @@ class TerritorialCouncilController extends AbstractController
 
     #[Route(path: '/accueil', name: 'homepage', methods: ['GET'])]
     #[Route(path: '/accueil/{uuid}', name: 'selected_homepage', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
-    public function homepageAction(TerritorialCouncil $territorialCouncil = null): Response
+    public function homepageAction(?TerritorialCouncil $territorialCouncil = null): Response
     {
         $this->checkAccess($territorialCouncil);
 
@@ -171,7 +171,7 @@ class TerritorialCouncilController extends AbstractController
     public function feedItemsAction(
         Request $request,
         TerritorialCouncilFeedItemRepository $feedItemRepository,
-        TerritorialCouncil $territorialCouncil = null
+        ?TerritorialCouncil $territorialCouncil = null
     ): Response {
         $this->checkAccess($territorialCouncil);
 
@@ -238,7 +238,7 @@ class TerritorialCouncilController extends AbstractController
         return $this->redirectToRoute('app_territorial_council_index');
     }
 
-    private function checkAccess(TerritorialCouncil $territorialCouncil = null): void
+    private function checkAccess(?TerritorialCouncil $territorialCouncil = null): void
     {
         if ($territorialCouncil) {
             $this->denyAccessUnlessGranted(ManageTerritorialCouncilVoter::PERMISSION, $territorialCouncil);

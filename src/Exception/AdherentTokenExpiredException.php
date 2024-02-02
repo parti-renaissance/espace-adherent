@@ -6,7 +6,7 @@ use App\Entity\AdherentExpirableTokenInterface;
 
 final class AdherentTokenExpiredException extends AdherentTokenException
 {
-    public function __construct(AdherentExpirableTokenInterface $token, \Exception $previous = null)
+    public function __construct(AdherentExpirableTokenInterface $token, ?\Exception $previous = null)
     {
         $message = sprintf('The %s token %s for account %s is expired.', $token->getType(), $token->getValue(), $token->getAdherentUuid());
 

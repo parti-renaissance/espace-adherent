@@ -101,11 +101,11 @@ class PushToken
     private $source;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        Adherent $adherent = null,
-        Device $device = null,
-        string $identifier = null,
-        string $source = null
+        ?UuidInterface $uuid = null,
+        ?Adherent $adherent = null,
+        ?Device $device = null,
+        ?string $identifier = null,
+        ?string $source = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->adherent = $adherent;

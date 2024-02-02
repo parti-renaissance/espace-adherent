@@ -84,7 +84,7 @@ class Device
      */
     private $lastLoggedAt;
 
-    public function __construct(UuidInterface $uuid, string $deviceUuid, string $postalCode = null)
+    public function __construct(UuidInterface $uuid, string $deviceUuid, ?string $postalCode = null)
     {
         $this->uuid = $uuid;
         $this->deviceUuid = $deviceUuid;

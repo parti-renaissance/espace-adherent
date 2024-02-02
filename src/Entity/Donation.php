@@ -217,18 +217,18 @@ class Donation implements GeoPointInterface
     private bool $reAdhesion = false;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $type = null,
-        int $amount = null,
-        \DateTimeInterface $donatedAt = null,
-        PostAddress $postAddress = null,
-        string $clientIp = null,
+        ?UuidInterface $uuid = null,
+        ?string $type = null,
+        ?int $amount = null,
+        ?\DateTimeInterface $donatedAt = null,
+        ?PostAddress $postAddress = null,
+        ?string $clientIp = null,
         int $duration = PayboxPaymentSubscription::NONE,
-        string $payboxOrderRef = null,
-        string $nationality = null,
-        string $code = null,
-        Donator $donator = null,
-        \DateTimeImmutable $createdAt = null
+        ?string $payboxOrderRef = null,
+        ?string $nationality = null,
+        ?string $code = null,
+        ?Donator $donator = null,
+        ?\DateTimeImmutable $createdAt = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;
@@ -380,7 +380,7 @@ class Donation implements GeoPointInterface
         return $this->subscriptionEndedAt;
     }
 
-    public function nextDonationAt(\DateTime $fromDay = null): \DateTimeInterface
+    public function nextDonationAt(?\DateTime $fromDay = null): \DateTimeInterface
     {
         if (!$this->hasSubscription()) {
             throw new \LogicException('Donation without subscription can\'t have next donation date.');
@@ -621,7 +621,7 @@ class Donation implements GeoPointInterface
         return $this->phone;
     }
 
-    public function setBeneficiary(string $beneficiary = null): void
+    public function setBeneficiary(?string $beneficiary = null): void
     {
         $this->beneficiary = $beneficiary;
     }

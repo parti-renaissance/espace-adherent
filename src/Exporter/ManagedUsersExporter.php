@@ -21,7 +21,7 @@ class ManagedUsersExporter
         $this->repository = $repository;
     }
 
-    public function getResponse(string $format, ManagedUsersFilter $filter, string $spaceType = null): Response
+    public function getResponse(string $format, ManagedUsersFilter $filter, ?string $spaceType = null): Response
     {
         switch ($spaceType) {
             case AdherentSpaceEnum::CANDIDATE:

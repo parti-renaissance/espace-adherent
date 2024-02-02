@@ -136,7 +136,7 @@ class ListFilter
      */
     private array $committeeUuids = [];
 
-    public function __construct(array $managedZones = [], Adherent $createdByAdherent = null)
+    public function __construct(array $managedZones = [], ?Adherent $createdByAdherent = null)
     {
         $this->managedZones = $managedZones;
         $this->createdOrUpdatedByAdherent = $createdByAdherent;
@@ -207,7 +207,7 @@ class ListFilter
         return $this->contactType;
     }
 
-    public function setContactType(string $contactType = null): void
+    public function setContactType(?string $contactType = null): void
     {
         $this->contactType = $contactType;
     }
@@ -217,7 +217,7 @@ class ListFilter
         return $this->emailSubscription;
     }
 
-    public function setEmailSubscription(bool $emailSubscription = null): void
+    public function setEmailSubscription(?bool $emailSubscription = null): void
     {
         $this->emailSubscription = $emailSubscription;
     }

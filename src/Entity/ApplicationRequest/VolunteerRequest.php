@@ -59,7 +59,7 @@ class VolunteerRequest extends ApplicationRequest
      */
     private $associativeCommitmentDetails;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         parent::__construct($uuid);
 

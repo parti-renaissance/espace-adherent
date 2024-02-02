@@ -60,7 +60,7 @@ class Scope
      */
     private $apps;
 
-    public function __construct(string $code = null, string $name = null, array $features = null, array $apps = null)
+    public function __construct(?string $code = null, ?string $name = null, ?array $features = null, ?array $apps = null)
     {
         $this->code = $code;
         $this->name = $name;

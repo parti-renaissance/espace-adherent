@@ -94,7 +94,7 @@ class Zone
      */
     private $children;
 
-    public function __construct(ZoneCategory $category = null, string $name = null)
+    public function __construct(?ZoneCategory $category = null, ?string $name = null)
     {
         $this->category = $category;
         $this->name = $name;

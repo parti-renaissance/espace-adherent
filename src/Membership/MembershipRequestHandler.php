@@ -86,7 +86,7 @@ class MembershipRequestHandler
 
     public function createOrUpdateRenaissanceAdherent(
         AdherentRequest $adherentRequest,
-        Adherent $adherent = null
+        ?Adherent $adherent = null
     ): Adherent {
         if ($adherent) {
             $adherent->updateMembershipFromAdherentRequest($adherentRequest);
@@ -174,9 +174,9 @@ class MembershipRequestHandler
 
     public function terminateMembership(
         Adherent $adherent,
-        UnregistrationCommand $command = null,
+        ?UnregistrationCommand $command = null,
         bool $sendMail = true,
-        string $comment = null
+        ?string $comment = null
     ): void {
         $this->unregistrationHandler->handle($adherent, $command, $comment);
 

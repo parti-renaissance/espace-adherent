@@ -154,7 +154,7 @@ class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterfac
         ;
     }
 
-    public function getUploadableImagePropertyNames(BaseMoocElement $element = null): array
+    public function getUploadableImagePropertyNames(?BaseMoocElement $element = null): array
     {
         if (MoocElementTypeEnum::IMAGE !== ($element ? $element->getType() : $this->getSubject()->getType())) {
             return [];

@@ -17,7 +17,7 @@ class AssessorRoleAssociationValueObject
      */
     private $adherent;
 
-    public function __construct(VotePlace $votePlace, Adherent $adherent = null)
+    public function __construct(VotePlace $votePlace, ?Adherent $adherent = null)
     {
         $this->votePlace = $votePlace;
         $this->adherent = $adherent;

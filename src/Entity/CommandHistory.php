@@ -26,7 +26,7 @@ class CommandHistory
      */
     public \DateTimeInterface $createdAt;
 
-    public function __construct(CommandHistoryTypeEnum $type, \DateTimeInterface $createdAt = null)
+    public function __construct(CommandHistoryTypeEnum $type, ?\DateTimeInterface $createdAt = null)
     {
         $this->type = $type;
         $this->createdAt = $createdAt ?? new \DateTimeImmutable();

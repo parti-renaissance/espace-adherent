@@ -29,10 +29,10 @@ class Client implements ClientInterface
         string $email,
         string $firstName,
         string $lastName,
-        string $address = null,
-        string $city = null,
-        string $postalCode = null,
-        string $countryCode = null,
+        ?string $address = null,
+        ?string $city = null,
+        ?string $postalCode = null,
+        ?string $countryCode = null,
         array $metadata = []
     ): Customer {
         return $this->client->customers()->create([

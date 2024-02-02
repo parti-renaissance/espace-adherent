@@ -180,10 +180,10 @@ class Contact implements RecaptchaChallengeInterface
     private ?Adherent $adherent = null;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $firstName = null,
-        string $emailAddress = null,
-        string $source = null
+        ?UuidInterface $uuid = null,
+        ?string $firstName = null,
+        ?string $emailAddress = null,
+        ?string $source = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->firstName = $firstName;

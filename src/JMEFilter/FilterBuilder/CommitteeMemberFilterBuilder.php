@@ -9,7 +9,7 @@ use App\Scope\ScopeEnum;
 
 class CommitteeMemberFilterBuilder implements FilterBuilderInterface
 {
-    public function supports(string $scope, string $feature = null): bool
+    public function supports(string $scope, ?string $feature = null): bool
     {
         return \in_array($scope, ScopeEnum::ALL, true)
             && ScopeEnum::ANIMATOR !== $scope
@@ -18,7 +18,7 @@ class CommitteeMemberFilterBuilder implements FilterBuilderInterface
                 || FeatureEnum::CONTACTS === $feature);
     }
 
-    public function build(string $scope, string $feature = null): array
+    public function build(string $scope, ?string $feature = null): array
     {
         return (new FilterCollectionBuilder())
             ->createBooleanSelect('isCommitteeMember', 'Membre d\'un comité')

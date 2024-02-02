@@ -108,7 +108,7 @@ trait AddressTrait
         $this->cityName = $cityName;
     }
 
-    public function getCountryName(string $locale = null): ?string
+    public function getCountryName(?string $locale = null): ?string
     {
         return $this->country ? Countries::getName($this->country, $locale) : null;
     }

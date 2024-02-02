@@ -41,7 +41,7 @@ class ListTotalResult
      */
     private $voteResult;
 
-    public function __construct(VoteResultList $list = null)
+    public function __construct(?VoteResultList $list = null)
     {
         $this->list = $list;
     }

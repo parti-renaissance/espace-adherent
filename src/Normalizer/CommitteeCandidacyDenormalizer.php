@@ -18,7 +18,7 @@ class CommitteeCandidacyDenormalizer implements DenormalizerInterface
     ) {
     }
 
-    public function denormalize($data, string $class, string $format = null, array $context = [])
+    public function denormalize($data, string $class, ?string $format = null, array $context = [])
     {
         if (!isset($data['candidacies_group']) || !isset($data['adherent'])) {
             throw new NotNormalizableValueException('Missing "candidacies_group" or "adherent" or both keys');
@@ -40,7 +40,7 @@ class CommitteeCandidacyDenormalizer implements DenormalizerInterface
         return $candidacy;
     }
 
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = [])
     {
         return CommitteeCandidacy::class === $type && 'api_committee_candidacies_post_collection' === $context['operation_name'];
     }

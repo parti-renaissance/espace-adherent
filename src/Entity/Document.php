@@ -112,7 +112,7 @@ class Document implements EntityAdministratorBlameableInterface
      */
     public ?string $filePath = null;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }

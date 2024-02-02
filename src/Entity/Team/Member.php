@@ -39,7 +39,7 @@ class Member
      */
     private $adherent;
 
-    public function __construct(UuidInterface $uuid = null, Adherent $adherent = null, Team $team = null)
+    public function __construct(?UuidInterface $uuid = null, ?Adherent $adherent = null, ?Team $team = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->team = $team;

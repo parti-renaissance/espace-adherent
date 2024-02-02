@@ -68,7 +68,7 @@ class LoadElectionCityCardData extends Fixture implements DependentFixtureInterf
         $manager->flush();
     }
 
-    private function createCityCard(City $city, int $population = null, string $priority = null): CityCard
+    private function createCityCard(City $city, ?int $population = null, ?string $priority = null): CityCard
     {
         return new CityCard($city, $population, $priority);
     }

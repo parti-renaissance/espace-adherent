@@ -66,9 +66,9 @@ class PoliticalCommitteeMembership
 
     public function __construct(
         PoliticalCommittee $politicalCommittee,
-        Adherent $adherent = null,
-        \DateTime $joinedAt = null,
-        UuidInterface $uuid = null,
+        ?Adherent $adherent = null,
+        ?\DateTime $joinedAt = null,
+        ?UuidInterface $uuid = null,
         bool $isAdditional = false
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();

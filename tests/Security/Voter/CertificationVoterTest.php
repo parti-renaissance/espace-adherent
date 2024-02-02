@@ -60,8 +60,8 @@ class CertificationVoterTest extends AbstractAdherentVoterTestCase
 
     private function getAdherentMock(
         bool $isCertified,
-        bool $hasPendingCertificationRequest = null,
-        bool $hasBlockedCertificationRequest = null
+        ?bool $hasPendingCertificationRequest = null,
+        ?bool $hasBlockedCertificationRequest = null
     ): Adherent {
         $adherent = $this->createAdherentMock();
 

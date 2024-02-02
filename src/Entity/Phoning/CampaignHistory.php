@@ -229,7 +229,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      */
     private ?DataSurvey $dataSurvey = null;
 
-    public function __construct(Campaign $campaign, UuidInterface $uuid = null)
+    public function __construct(Campaign $campaign, ?UuidInterface $uuid = null)
     {
         $this->campaign = $campaign;
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -239,7 +239,7 @@ class CampaignHistory implements DataSurveyAwareInterface
         Campaign $campaign,
         Adherent $caller,
         ?Adherent $adherent,
-        UuidInterface $uuid = null
+        ?UuidInterface $uuid = null
     ): self {
         $history = new self($campaign, $uuid);
         $history->caller = $caller;

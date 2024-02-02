@@ -55,7 +55,7 @@ class Measure
      */
     private $type;
 
-    public function __construct(City $city = null, MeasureType $type = null, array $payload = null)
+    public function __construct(?City $city = null, ?MeasureType $type = null, ?array $payload = null)
     {
         $this->city = $city;
         $this->type = $type;

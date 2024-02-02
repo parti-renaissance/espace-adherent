@@ -40,7 +40,7 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         $this->deviceRepository = $deviceRepository;
     }
 
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, ?AuthenticationException $authException = null)
     {
         $data = [
             'message' => 'Authentication Required.',

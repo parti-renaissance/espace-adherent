@@ -22,7 +22,7 @@ class ElectedMandateDenormalizer implements DenormalizerInterface, DenormalizerA
     ) {
     }
 
-    public function denormalize($data, string $class, string $format = null, array $context = [])
+    public function denormalize($data, string $class, ?string $format = null, array $context = [])
     {
         $context[self::ALREADY_CALLED] = true;
 
@@ -46,7 +46,7 @@ class ElectedMandateDenormalizer implements DenormalizerInterface, DenormalizerA
         return $mandate;
     }
 
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = [])
     {
         return !isset($context[self::ALREADY_CALLED])
             && is_a($type, Mandate::class, true)

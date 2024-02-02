@@ -41,7 +41,7 @@ class CityManager
      */
     private $phone;
 
-    public function __construct(string $name = null, PhoneNumber $phone = null)
+    public function __construct(?string $name = null, ?PhoneNumber $phone = null)
     {
         $this->name = $name;
         $this->phone = $phone;

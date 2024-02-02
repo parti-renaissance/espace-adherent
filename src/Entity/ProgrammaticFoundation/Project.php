@@ -92,12 +92,12 @@ class Project
     private $tags;
 
     public function __construct(
-        int $position = null,
-        string $title = null,
-        string $content = null,
-        string $city = null,
+        ?int $position = null,
+        ?string $title = null,
+        ?string $content = null,
+        ?string $city = null,
         bool $isExpanded = false,
-        Measure $measure = null
+        ?Measure $measure = null
     ) {
         $this->uuid = Uuid::uuid4();
         $this->position = $position;

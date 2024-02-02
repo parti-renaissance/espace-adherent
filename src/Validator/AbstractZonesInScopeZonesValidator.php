@@ -15,7 +15,7 @@ abstract class AbstractZonesInScopeZonesValidator extends ConstraintValidator
     ) {
     }
 
-    protected function validateZones(array $zones, Constraint $constraint, string $path = null): void
+    protected function validateZones(array $zones, Constraint $constraint, ?string $path = null): void
     {
         $scope = $this->scopeGeneratorResolver->generate();
         if (!$scope || $scope->isNational() || !($managedZones = $scope->getZones())) {

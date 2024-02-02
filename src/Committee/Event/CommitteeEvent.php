@@ -14,7 +14,7 @@ class CommitteeEvent extends Event implements GeocodableEntityEventInterface
 
     private $committee;
 
-    public function __construct(Committee $committee = null)
+    public function __construct(?Committee $committee = null)
     {
         $this->committee = $committee;
     }

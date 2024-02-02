@@ -34,7 +34,7 @@ class AdherentZoneBasedRole
      */
     private ?Adherent $adherent = null;
 
-    public function __construct(string $type = null)
+    public function __construct(?string $type = null)
     {
         $this->uuid = Uuid::uuid4();
         $this->type = $type;

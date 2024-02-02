@@ -19,17 +19,17 @@ class DummyDynamicLinks implements DynamicLinks
         return DynamicLink::fromApiResponse(new Response(200, [], '{"shortLink":"https://app.fake.code/'.substr(base64_encode(random_bytes(10)), 10).'"}'));
     }
 
-    public function createDynamicLink($actionOrParametersOrUrl, string $suffixType = null): DynamicLink
+    public function createDynamicLink($actionOrParametersOrUrl, ?string $suffixType = null): DynamicLink
     {
         return $this->createShortLink('');
     }
 
-    public function shortenLongDynamicLink($longDynamicLinkOrAction, string $suffixType = null): DynamicLink
+    public function shortenLongDynamicLink($longDynamicLinkOrAction, ?string $suffixType = null): DynamicLink
     {
         return $this->createShortLink('');
     }
 
-    public function getStatistics($dynamicLinkOrAction, int $durationInDays = null): DynamicLinkStatistics
+    public function getStatistics($dynamicLinkOrAction, ?int $durationInDays = null): DynamicLinkStatistics
     {
         return DynamicLinkStatistics::fromApiResponse(new Response(200, [], '{}'));
     }

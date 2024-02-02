@@ -16,7 +16,7 @@ abstract class FilterFactory
     public static function create(
         Adherent $user,
         string $messageType,
-        Scope $scope = null
+        ?Scope $scope = null
     ): AdherentMessageFilterInterface {
         switch ($messageType) {
             case AdherentMessageTypeEnum::REFERENT:

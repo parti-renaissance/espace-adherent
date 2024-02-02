@@ -88,7 +88,7 @@ class CommitteeCommand
 
     protected $slug;
 
-    protected function __construct(Address $address = null)
+    protected function __construct(?Address $address = null)
     {
         $this->address = $address ?: new Address();
     }
@@ -118,7 +118,7 @@ class CommitteeCommand
         return $this->address->getCityName();
     }
 
-    public function setPhone(PhoneNumber $phone = null): void
+    public function setPhone(?PhoneNumber $phone = null): void
     {
         $this->phone = $phone;
     }

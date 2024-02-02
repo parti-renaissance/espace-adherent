@@ -20,9 +20,9 @@ abstract class AbstractLoadPostAddressData extends Fixture
     protected function createPostAddress(
         string $street,
         string $cityCode,
-        string $region = null,
-        float $latitude = null,
-        float $longitude = null
+        ?string $region = null,
+        ?float $latitude = null,
+        ?float $longitude = null
     ): AddressInterface {
         [, $inseeCode] = explode('-', $cityCode);
         $city = $this->franceCities->getCityByInseeCode($inseeCode);
@@ -31,11 +31,11 @@ abstract class AbstractLoadPostAddressData extends Fixture
     }
 
     protected function createNullablePostAddress(
-        string $street = null,
-        string $cityCode = null,
-        string $region = null,
-        float $latitude = null,
-        float $longitude = null
+        ?string $street = null,
+        ?string $cityCode = null,
+        ?string $region = null,
+        ?float $latitude = null,
+        ?float $longitude = null
     ): AddressInterface {
         if ($cityCode) {
             [, $inseeCode] = explode('-', $cityCode);

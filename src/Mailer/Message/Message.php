@@ -46,8 +46,8 @@ class Message
         string $subject,
         array $commonVars = [],
         array $recipientVars = [],
-        string $replyTo = null,
-        string $template = null,
+        ?string $replyTo = null,
+        ?string $template = null,
         array $templateContent = []
     ) {
         $this->uuid = $uuid;

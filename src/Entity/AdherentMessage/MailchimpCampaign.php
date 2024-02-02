@@ -204,7 +204,7 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
         $this->status = self::STATUS_SENT;
     }
 
-    public function markAsError(string $errorMessage = null): void
+    public function markAsError(?string $errorMessage = null): void
     {
         $this->status = self::STATUS_ERROR;
         $this->detail = $errorMessage;

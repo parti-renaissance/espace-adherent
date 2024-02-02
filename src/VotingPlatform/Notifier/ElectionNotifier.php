@@ -149,7 +149,7 @@ class ElectionNotifier
     /**
      * @return Adherent[]
      */
-    private function getAdherentForElection(Election $election, int $offset = null, int $limit = null): array
+    private function getAdherentForElection(Election $election, ?int $offset = null, ?int $limit = null): array
     {
         return array_map(
             function (Voter $voter) { return $voter->getAdherent(); },

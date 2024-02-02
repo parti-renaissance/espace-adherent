@@ -108,7 +108,7 @@ class CommitteeCandidacy extends BaseCandidacy
      */
     protected $candidaciesGroup;
 
-    public function __construct(CommitteeElection $election, string $gender = null, UuidInterface $uuid = null)
+    public function __construct(CommitteeElection $election, ?string $gender = null, ?UuidInterface $uuid = null)
     {
         parent::__construct($gender, $uuid);
 

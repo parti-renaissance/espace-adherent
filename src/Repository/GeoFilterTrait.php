@@ -15,9 +15,9 @@ trait GeoFilterTrait
         QueryBuilder $qb,
         array $referentTags,
         string $alias,
-        string $countryColumn = null,
-        string $postalCodeColumn = null,
-        string $referentTagsColumn = null
+        ?string $countryColumn = null,
+        ?string $postalCodeColumn = null,
+        ?string $referentTagsColumn = null
     ): void {
         if (!$countryColumn) {
             $countryColumn = "$alias.postAddress.country";

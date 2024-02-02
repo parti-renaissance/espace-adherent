@@ -74,7 +74,7 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
      */
     private $referentTag;
 
-    public function __construct(ReferentTag $referentTag = null)
+    public function __construct(?ReferentTag $referentTag = null)
     {
         parent::__construct();
 
@@ -116,7 +116,7 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
         return $this->mandate;
     }
 
-    public function setMandate(string $mandate = null): void
+    public function setMandate(?string $mandate = null): void
     {
         $this->mandate = $mandate;
     }
@@ -126,7 +126,7 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
         return $this->politicalFunction;
     }
 
-    public function setPoliticalFunction(string $politicalFunction = null): void
+    public function setPoliticalFunction(?string $politicalFunction = null): void
     {
         $this->politicalFunction = $politicalFunction;
     }
@@ -136,7 +136,7 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
         return $this->label;
     }
 
-    public function setLabel(string $label = null): void
+    public function setLabel(?string $label = null): void
     {
         $this->label = $label;
     }
@@ -156,7 +156,7 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
         return $this->referentTag;
     }
 
-    public function setReferentTag(ReferentTag $referentTag = null): void
+    public function setReferentTag(?ReferentTag $referentTag = null): void
     {
         $this->referentTag = $referentTag;
     }

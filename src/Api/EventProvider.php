@@ -20,7 +20,7 @@ class EventProvider
     /**
      * @throws EventException
      */
-    public function getUpcomingEvents(int $type = null, bool $withPrivate = false): array
+    public function getUpcomingEvents(?int $type = null, bool $withPrivate = false): array
     {
         $data = [];
 

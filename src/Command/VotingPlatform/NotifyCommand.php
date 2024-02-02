@@ -131,7 +131,7 @@ class NotifyCommand extends Command
         }
     }
 
-    private function getAdherentChunkForElection(Election $election, int $offset = 0, int $limit = null): array
+    private function getAdherentChunkForElection(Election $election, int $offset = 0, ?int $limit = null): array
     {
         return $this->entityManager->createQueryBuilder()
             ->from(Adherent::class, 'adherent')

@@ -47,7 +47,7 @@ class CertificationAuthorityManager
 
     public function approve(
         CertificationRequest $certificationRequest,
-        Administrator $administrator = null,
+        ?Administrator $administrator = null,
         bool $removeDocument = false
     ): void {
         $certificationRequest->approve();
@@ -100,7 +100,7 @@ class CertificationAuthorityManager
         $this->messageNotifier->sendBlockMessage($certificationRequest);
     }
 
-    private function certifyAdherent(Adherent $adherent, Administrator $administrator = null): void
+    private function certifyAdherent(Adherent $adherent, ?Administrator $administrator = null): void
     {
         $adherent->certify();
 

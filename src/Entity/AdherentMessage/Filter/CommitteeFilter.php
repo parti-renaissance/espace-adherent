@@ -19,7 +19,7 @@ class CommitteeFilter extends AbstractUserFilter
      */
     private ?Committee $committee = null;
 
-    public function __construct(Committee $committee = null)
+    public function __construct(?Committee $committee = null)
     {
         parent::__construct();
 

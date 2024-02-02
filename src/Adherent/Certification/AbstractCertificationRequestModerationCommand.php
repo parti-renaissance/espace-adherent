@@ -18,7 +18,7 @@ abstract class AbstractCertificationRequestModerationCommand
      */
     private $comment;
 
-    public function __construct(CertificationRequest $certificationRequest, Administrator $administrator = null)
+    public function __construct(CertificationRequest $certificationRequest, ?Administrator $administrator = null)
     {
         $this->certificationRequest = $certificationRequest;
         $this->administrator = $administrator;

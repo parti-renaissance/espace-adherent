@@ -54,10 +54,10 @@ class QrCode
     private ?Administrator $createdBy = null;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $name = null,
-        string $redirectUrl = null,
-        string $host = null,
+        ?UuidInterface $uuid = null,
+        ?string $name = null,
+        ?string $redirectUrl = null,
+        ?string $host = null,
         int $count = 0
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();

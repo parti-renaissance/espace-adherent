@@ -46,7 +46,7 @@ class PoliticalCommitteeQuality
      */
     private $joinedAt;
 
-    public function __construct(string $name, \DateTime $joinedAt = null)
+    public function __construct(string $name, ?\DateTime $joinedAt = null)
     {
         $this->setName($name);
         $this->joinedAt = $joinedAt ?? new \DateTime('now');

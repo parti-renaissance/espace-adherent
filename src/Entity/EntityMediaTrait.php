@@ -25,7 +25,7 @@ trait EntityMediaTrait
         return $this->media;
     }
 
-    public function setMedia(Media $media = null): void
+    public function setMedia(?Media $media = null): void
     {
         $this->media = $media;
     }

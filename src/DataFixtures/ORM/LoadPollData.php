@@ -140,12 +140,12 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
         return new NationalPoll($administrator, Uuid::fromString($uuid), $question, $finishAt);
     }
 
-    private function createChoice(string $value, string $uuid = null): Choice
+    private function createChoice(string $value, ?string $uuid = null): Choice
     {
         return new Choice($value, $uuid ? Uuid::fromString($uuid) : null);
     }
 
-    private function createVote(Choice $choice, Adherent $adherent = null): Vote
+    private function createVote(Choice $choice, ?Adherent $adherent = null): Vote
     {
         return new Vote($choice, $adherent);
     }

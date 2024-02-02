@@ -47,14 +47,14 @@ class ExecutiveOfficeMember extends AbstractBiography implements EntitySourceabl
     private $deputyGeneralDelegate = false;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $firstName = null,
-        string $lastName = null,
-        string $description = null,
-        string $content = null,
-        bool $published = null,
-        string $job = null,
-        string $role = null
+        ?UuidInterface $uuid = null,
+        ?string $firstName = null,
+        ?string $lastName = null,
+        ?string $description = null,
+        ?string $content = null,
+        ?bool $published = null,
+        ?string $job = null,
+        ?string $role = null
     ) {
         parent::__construct($uuid, $firstName, $lastName, $description, $content, $published);
 

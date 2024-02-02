@@ -40,7 +40,7 @@ class FloorStatistics implements CampaignStatisticsInterface
      */
     private int $nbSurveys = 0;
 
-    public function __construct(Floor $floor, Campaign $campaign, string $status = null)
+    public function __construct(Floor $floor, Campaign $campaign, ?string $status = null)
     {
         $this->floor = $floor;
         $this->campaign = $campaign;

@@ -39,7 +39,7 @@ class PollChoice
      */
     private $votes;
 
-    public function __construct(Poll $electionPoll, string $value, UuidInterface $uuid = null)
+    public function __construct(Poll $electionPoll, string $value, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->electionPoll = $electionPoll;

@@ -15,7 +15,7 @@ class UserResetPasswordEvent extends Event
     public function __construct(
         Adherent $adherent,
         AdherentResetPasswordToken $resetPasswordToken,
-        string $source = null
+        ?string $source = null
     ) {
         $this->user = $adherent;
         $this->resetPasswordToken = $resetPasswordToken;

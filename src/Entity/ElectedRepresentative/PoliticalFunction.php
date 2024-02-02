@@ -109,13 +109,13 @@ class PoliticalFunction
     private $mandate;
 
     public function __construct(
-        string $name = null,
-        string $clarification = null,
-        ElectedRepresentative $electedRepresentative = null,
-        Mandate $mandate = null,
+        ?string $name = null,
+        ?string $clarification = null,
+        ?ElectedRepresentative $electedRepresentative = null,
+        ?Mandate $mandate = null,
         bool $onGoing = true,
-        \DateTime $beginAt = null,
-        \DateTime $finishAt = null
+        ?\DateTime $beginAt = null,
+        ?\DateTime $finishAt = null
     ) {
         $this->name = $name;
         $this->clarification = $clarification;
@@ -150,7 +150,7 @@ class PoliticalFunction
         return $this->clarification;
     }
 
-    public function setClarification(string $clarification = null): void
+    public function setClarification(?string $clarification = null): void
     {
         $this->clarification = $clarification;
     }
@@ -180,7 +180,7 @@ class PoliticalFunction
         return $this->finishAt;
     }
 
-    public function setFinishAt(\DateTime $finishAt = null): void
+    public function setFinishAt(?\DateTime $finishAt = null): void
     {
         $this->finishAt = $finishAt;
     }

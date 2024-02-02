@@ -55,7 +55,7 @@ class CityPartner
      */
     private $city;
 
-    public function __construct(CityCard $city = null, string $label = null, string $consensus = null)
+    public function __construct(?CityCard $city = null, ?string $label = null, ?string $consensus = null)
     {
         $this->city = $city;
         $this->label = $label;

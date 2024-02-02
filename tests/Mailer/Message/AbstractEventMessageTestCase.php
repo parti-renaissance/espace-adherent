@@ -17,7 +17,7 @@ abstract class AbstractEventMessageTestCase extends AbstractKernelTestCase
         string $beginAt,
         string $street,
         string $cityCode,
-        string $committeeName = null,
+        ?string $committeeName = null,
         string $timeZone = 'Europe/Paris',
         string $description = ''
     ): CommitteeEvent {
@@ -69,8 +69,8 @@ abstract class AbstractEventMessageTestCase extends AbstractKernelTestCase
     protected function createCommitteeFeedItemMock(
         Adherent $author,
         string $content,
-        BaseEvent $event = null,
-        string $committeeName = null
+        ?BaseEvent $event = null,
+        ?string $committeeName = null
     ): CommitteeFeedItem {
         $mock = $this->getMockBuilder(CommitteeFeedItem::class)->disableOriginalConstructor()->getMock();
         $mock->expects($this->any())->method('getAuthor')->willReturn($author);

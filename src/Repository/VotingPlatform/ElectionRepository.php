@@ -228,7 +228,7 @@ class ElectionRepository extends ServiceEntityRepository
     /**
      * @return Election[]
      */
-    public function getElectionsToClose(\DateTime $date, int $limit = null): array
+    public function getElectionsToClose(\DateTime $date, ?int $limit = null): array
     {
         $qb = $this->createQueryBuilder('election')
             ->addSelect('designation')
@@ -255,7 +255,7 @@ class ElectionRepository extends ServiceEntityRepository
     /**
      * @return Election[]
      */
-    public function getElectionsToCloseOrWithoutResults(\DateTime $date, int $limit = null): array
+    public function getElectionsToCloseOrWithoutResults(\DateTime $date, ?int $limit = null): array
     {
         $qb = $this->createQueryBuilder('election')
             ->addSelect('designation')

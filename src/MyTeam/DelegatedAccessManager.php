@@ -36,7 +36,7 @@ class DelegatedAccessManager
         $this->tokenRevocationAuthority->revokeUserTokens($member->getAdherent());
     }
 
-    public function updateDelegatedAccessForMember(Member $member, Member $fromMember = null): void
+    public function updateDelegatedAccessForMember(Member $member, ?Member $fromMember = null): void
     {
         if ($fromMember && $member->getAdherent() !== $fromMember->getAdherent() && ($fromDelegatedAccess = $this->findDelegatedAccess($fromMember))) {
             $this->removeDelegatedAccess($fromDelegatedAccess);

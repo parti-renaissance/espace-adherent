@@ -78,7 +78,7 @@ class MyTeam
      */
     private Collection $members;
 
-    public function __construct(Adherent $owner, string $scope, UuidInterface $uuid = null)
+    public function __construct(Adherent $owner, string $scope, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->owner = $owner;

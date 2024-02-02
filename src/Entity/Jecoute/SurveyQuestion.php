@@ -60,7 +60,7 @@ class SurveyQuestion implements AuthoredInterface
      */
     private $fromSuggestedQuestion;
 
-    public function __construct(Survey $survey = null, Question $question = null)
+    public function __construct(?Survey $survey = null, ?Question $question = null)
     {
         $this->uuid = Uuid::uuid4();
         $this->survey = $survey;

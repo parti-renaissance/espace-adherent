@@ -391,7 +391,7 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
         $this->electionRounds = $electionRounds;
     }
 
-    private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber
+    private static function createPhoneNumber(int $countryCode = 33, ?string $number = null): PhoneNumber
     {
         $phone = new PhoneNumber();
         $phone->setCountryCode($countryCode);

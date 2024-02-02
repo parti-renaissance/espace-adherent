@@ -32,7 +32,7 @@ class AdministratorAdmin extends AbstractAdmin
 
     private array $rolesBeforeUpdate = [];
 
-    public function __construct(string $code = null, string $class = null, string $baseControllerName = null, AdministratorRoleHistoryHandler $administratorRoleHistoryHandler)
+    public function __construct(?string $code, ?string $class, ?string $baseControllerName, AdministratorRoleHistoryHandler $administratorRoleHistoryHandler)
     {
         parent::__construct($code, $class, $baseControllerName);
 

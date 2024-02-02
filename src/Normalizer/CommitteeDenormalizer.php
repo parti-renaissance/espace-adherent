@@ -13,7 +13,7 @@ class CommitteeDenormalizer implements DenormalizerInterface, DenormalizerAwareI
 
     private const ALREADY_CALLED = 'JE_MENGAGE_WEB_COMMITTEE_DENORMALIZER_ALREADY_CALLED';
 
-    public function denormalize($data, string $class, string $format = null, array $context = [])
+    public function denormalize($data, string $class, ?string $format = null, array $context = [])
     {
         $context[self::ALREADY_CALLED] = true;
 
@@ -27,7 +27,7 @@ class CommitteeDenormalizer implements DenormalizerInterface, DenormalizerAwareI
         return $committee;
     }
 
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = [])
     {
         return !isset($context[self::ALREADY_CALLED])
             && Committee::class === $type

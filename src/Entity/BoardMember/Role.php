@@ -45,7 +45,7 @@ class Role
      */
     private $boardMembers;
 
-    public function __construct(string $code = null, string $name = null)
+    public function __construct(?string $code = null, ?string $name = null)
     {
         $this->code = (string) $code;
         $this->name = (string) $name;

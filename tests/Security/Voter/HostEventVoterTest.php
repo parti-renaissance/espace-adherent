@@ -53,9 +53,9 @@ class HostEventVoterTest extends AbstractAdherentVoterTestCase
      * @return Adherent|MockObject
      */
     private function getAdherentMock(
-        bool $isOrganizer = null,
-        bool $isHost = null,
-        Committee $committee = null
+        ?bool $isOrganizer = null,
+        ?bool $isHost = null,
+        ?Committee $committee = null
     ): Adherent {
         $adherent = $this->createAdherentMock();
 
@@ -87,8 +87,8 @@ class HostEventVoterTest extends AbstractAdherentVoterTestCase
      */
     private function getEventMock(
         ?Adherent $organizer,
-        bool $committeeEvent = null,
-        Committee $committee = null
+        ?bool $committeeEvent = null,
+        ?Committee $committee = null
     ): CommitteeEvent {
         $event = $this->createMock(CommitteeEvent::class);
 

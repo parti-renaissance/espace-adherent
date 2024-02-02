@@ -142,7 +142,7 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTestCase
 
     private function assertElectedRepresentativeRepositoryBehavior(
         bool $isCalled,
-        Adherent $adherent = null,
+        ?Adherent $adherent = null,
         bool $allowedToCreate = false
     ): void {
         if ($isCalled) {

@@ -118,9 +118,9 @@ class ThemeTest extends TestCase
     }
 
     private function createMeasure(
-        int $id = null,
-        string $frenchTitle = null,
-        string $englishTitle = null,
+        ?int $id = null,
+        ?string $frenchTitle = null,
+        ?string $englishTitle = null,
         array $profiles = []
     ): Measure {
         $measure = $this->createMock(Measure::class);
@@ -210,9 +210,9 @@ class ThemeTest extends TestCase
 
     private function createThemeTranslation(
         string $locale,
-        string $title = null,
-        string $slug = null,
-        string $description = null
+        ?string $title = null,
+        ?string $slug = null,
+        ?string $description = null
     ): ThemeTranslation {
         $translation = $this->createMock(ThemeTranslation::class);
 

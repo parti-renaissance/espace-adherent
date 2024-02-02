@@ -254,7 +254,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      */
     public function getCommitteeMembershipsPaginator(
         Committee $committee,
-        ListFilterObject $filter = null,
+        ?ListFilterObject $filter = null,
         int $page = 1,
         ?int $limit = 30
     ): iterable {

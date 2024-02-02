@@ -25,7 +25,7 @@ class UnregistrationFactory
         );
     }
 
-    public static function createFromAdherent(Adherent $adherent, string $comment = null): Unregistration
+    public static function createFromAdherent(Adherent $adherent, ?string $comment = null): Unregistration
     {
         return new Unregistration(
             $adherent->getUuid(),

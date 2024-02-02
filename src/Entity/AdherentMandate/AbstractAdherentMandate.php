@@ -126,11 +126,11 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
     public $provisional = false;
 
     public function __construct(
-        Adherent $adherent = null,
-        string $gender = null,
-        \DateTime $beginAt = null,
-        \DateTime $finishAt = null,
-        string $quality = null,
+        ?Adherent $adherent = null,
+        ?string $gender = null,
+        ?\DateTime $beginAt = null,
+        ?\DateTime $finishAt = null,
+        ?string $quality = null,
         bool $isProvisional = false
     ) {
         $this->uuid = Uuid::uuid4();
@@ -185,7 +185,7 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
         return $this->finishAt;
     }
 
-    public function setFinishAt(\DateTime $finishAt = null): void
+    public function setFinishAt(?\DateTime $finishAt = null): void
     {
         $this->finishAt = $finishAt;
     }

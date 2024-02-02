@@ -65,7 +65,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTestCase
     /**
      * @return Adherent|MockObject
      */
-    private function getAdherentMock(Committee $committee, bool $isSupervisor, bool $isHost = null): Adherent
+    private function getAdherentMock(Committee $committee, bool $isSupervisor, ?bool $isHost = null): Adherent
     {
         $adherent = $this->createAdherentMock();
 

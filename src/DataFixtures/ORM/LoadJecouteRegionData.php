@@ -76,8 +76,8 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
         string $description,
         string $primaryColor,
         string $logo,
-        string $banner = null,
-        string $externalLink = null,
+        ?string $banner = null,
+        ?string $externalLink = null,
         bool $enabled = true
     ): Region {
         return new Region(

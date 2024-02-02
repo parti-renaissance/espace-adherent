@@ -14,5 +14,5 @@ interface StaticMapProviderInterface
      *
      * @return string|false return the map image content or false if an error occurred
      */
-    public function get(Coordinates $coordinates, string $size = null);
+    public function get(Coordinates $coordinates, ?string $size = null);
 }

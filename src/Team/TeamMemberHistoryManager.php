@@ -21,7 +21,7 @@ class TeamMemberHistoryManager
         $this->security = $security;
     }
 
-    public function handleChanges(Team $newTeam, Team $oldTeam = null): void
+    public function handleChanges(Team $newTeam, ?Team $oldTeam = null): void
     {
         $newMembers = $newTeam->getMembers();
         $oldMembers = $oldTeam ? $oldTeam->getMembers() : new ArrayCollection();
