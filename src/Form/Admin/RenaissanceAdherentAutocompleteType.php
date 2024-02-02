@@ -2,8 +2,8 @@
 
 namespace App\Form\Admin;
 
+use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
-use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -28,8 +28,8 @@ class RenaissanceAdherentAutocompleteType extends AbstractType
     public static function filterCallback(AbstractAdmin $admin, array $property, $value): void
     {
         $datagrid = $admin->getDatagrid();
-        $filter = $datagrid->getFilter('renaissanceMembership');
-        $datagrid->setValue($filter->getName(), null, RenaissanceMembershipFilterEnum::ADHERENT_RE);
+        $filter = $datagrid->getFilter('tags_adherents');
+        $datagrid->setValue($filter->getName(), null, [TagEnum::ADHERENT]);
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $datagrid->getQuery();
