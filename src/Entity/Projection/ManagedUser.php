@@ -23,7 +23,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     @ORM\Index(columns={"status"}),
  *     @ORM\Index(columns={"original_id"}),
  *     @ORM\Index(columns={"zones_ids"}),
- *     @ORM\Index(columns={"tags"}),
  * })
  * @ORM\Entity(readOnly=true, repositoryClass="App\Repository\Projection\ManagedUserRepository")
  * @ORM\AssociationOverrides({
