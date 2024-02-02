@@ -27,7 +27,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
@@ -127,7 +126,7 @@ class DonationAdmin extends AbstractAdmin
                 ])
                 ->add('amountInEuros', FormNumberType::class, [
                     'label' => 'Montant',
-                    'disabled' => !$this->isCurrentRoute('create'),
+                    'disabled' => $donation->getId() && $donation->isCB(),
                 ])
                 ->add('membership', CheckboxType::class, [
                     'label' => 'Cotisation',
@@ -492,7 +491,7 @@ class DonationAdmin extends AbstractAdmin
             ->add('donator', null, [
                 'label' => 'Donateur',
             ])
-            ->add('amountInEuros', NumberType::class, [
+            ->add('amountInEuros', null, [
                 'label' => 'Montant',
                 'template' => 'admin/donation/list_amount.html.twig',
             ])
@@ -640,7 +639,6 @@ class DonationAdmin extends AbstractAdmin
             $donation->isMembership()
             && $donation->isFinished()
             && ($adherent = $donation->getDonator()->getAdherent())
-            && !$adherent->hasActiveMembership()
         ) {
             $adherent->donatedForMembership($donation->getDonatedAt());
             $adherent->join();
