@@ -500,7 +500,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         self::assertIsNumeric($adherent->getLatitude());
         self::assertIsNumeric($adherent->getLongitude());
         self::assertSame($submittedValues['email'], $adherent->getEmailAddress());
-        self::assertSame(['adherent:a_jour_'.date('Y')], $adherent->tags);
+        self::assertSame(['adherent:a_jour_'.date('Y').':primo'], $adherent->tags);
         self::assertEquals(new \DateTime('-20 years, january 1st'), $adherent->getBirthdate());
         self::assertSame('exclusive' === $submittedValues['membershipType'], $adherent->isExclusiveMembership());
         self::assertSame('agir' === $submittedValues['membershipType'], $adherent->isAgirMembership());

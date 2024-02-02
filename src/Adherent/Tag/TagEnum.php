@@ -13,9 +13,6 @@ class TagEnum extends Enum
     public const ADHERENT_YEAR_RECOTISATION_TAG_PATTERN = self::ADHERENT_YEAR_TAG_PATTERN.':recotisation';
     public const ADHERENT_YEAR_ELU_TAG_PATTERN = self::ADHERENT_YEAR_TAG_PATTERN.':elu_a_jour';
 
-    public const ADHERENT_COTISATION_OK = 'adherent:cotisation_ok';
-    public const ADHERENT_COTISATION_NOK = 'adherent:cotisation_nok';
-
     public const SYMPATHISANT = 'sympathisant';
     public const SYMPATHISANT_COMPTE_EM = 'sympathisant:compte_em';
     public const SYMPATHISANT_ADHESION_INCOMPLETE = 'sympathisant:adhesion_incomplete';

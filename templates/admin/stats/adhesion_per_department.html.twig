@@ -38,55 +38,58 @@
             <div class="info-box">
                 <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Total</span>
-                    <span class="info-box-number">{{ first['Total'] }}</span>
+                    <span class="info-box-text">À jour {{ "now"|date("Y") }}</span>
+                    <span class="info-box-number">{{ first['À jour N'] }}</span>
                 </div>
             </div>
         </div>
 
+        {% set percentPrimo = first['À jour N'] > 0 ? (first['Primo adhésion'] * 100.0 / first['À jour N']) : 0 %}
         <div class="col-md-3 col-xs-12">
             <div class="info-box bg-aqua">
-                <span class="info-box-icon"><i class="fa fa-heart"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Pas à jour</span>
-                    <span class="info-box-number">{{ first['Pas à jour'] }}</span>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: {{ first['Total'] * first['Pas à jour'] / 100 }}%"></div>
-                    </div>
-                    <span class="progress-description">
-                        {{ (first['Total'] * first['Pas à jour'] / 100)|number_format(1, ',', ' ') }}%
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 col-xs-12">
-            <div class="info-box bg-yellow">
-                <span class="info-box-icon"><i class="fa fa-heartbeat"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Réadhésions</span>
-                    <span class="info-box-number">{{ first['Réadhésions'] }}</span>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: {{ first['Total'] * first['Réadhésions'] / 100 }}%"></div>
-                    </div>
-                    <span class="progress-description">
-                        {{ (first['Total'] * first['Réadhésions'] / 100)|number_format(1, ',', ' ') }}%
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 col-xs-12">
-            <div class="info-box bg-green">
                 <span class="info-box-icon"><i class="fa fa-child"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Primo adhésion</span>
                     <span class="info-box-number">{{ first['Primo adhésion'] }}</span>
                     <div class="progress">
-                        <div class="progress-bar" style="width: {{ first['Total'] * first['Primo adhésion'] / 100 }}%"></div>
+                        <div class="progress-bar" style="width: {{ percentPrimo }}%"></div>
                     </div>
                     <span class="progress-description">
-                        {{ (first['Total'] * first['Primo adhésion'] / 100)|number_format(1, ',', ' ') }}%
+                        {{ percentPrimo|number_format(1, ',', ' ')|replace({',0': ''}) }} %
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        {% set percentReadhesion = first['À jour N'] > 0 ? (first['Réadhésion'] * 100.0 / first['À jour N']) : 0 %}
+        <div class="col-md-3 col-xs-12">
+            <div class="info-box bg-yellow">
+                <span class="info-box-icon"><i class="fa fa-heartbeat"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Réadhésion</span>
+                    <span class="info-box-number">{{ first['Réadhésion'] }}</span>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: {{ percentReadhesion }}%"></div>
+                    </div>
+                    <span class="progress-description">
+                        {{ percentReadhesion|number_format(1, ',', ' ')|replace({',0': ''}) }} %
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        {% set percentElu = first['À jour N'] > 0 ? (first['À jour de cotisation élu'] * 100.0 / first['À jour N']) : 0 %}
+        <div class="col-md-3 col-xs-12">
+            <div class="info-box bg-green">
+                <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">À jour de cotisation élu</span>
+                    <span class="info-box-number">{{ first['À jour de cotisation élu'] }}</span>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: {{ percentElu }}%"></div>
+                    </div>
+                    <span class="progress-description">
+                        {{ percentElu|number_format(1, ',', ' ')|replace({',0': ''}) }} %
                     </span>
                 </div>
             </div>
@@ -103,7 +106,7 @@
                                 <table class="table table-bordered table-hover dataTable">
                                     <thead>
                                         <tr role="row">
-                                            {% for key in first|keys[:-1] %}
+                                            {% for key in first|keys %}
                                                 <th class="sorting">{{ key }}</th>
                                             {% endfor %}
                                         </tr>
@@ -112,8 +115,8 @@
                                     <tbody>
                                         {% for stats in stats_per_department[1:] %}
                                             <tr>
-                                                {% for value in stats[:-1] %}
-                                                    <td class="{{ value == '0' ? 'text-muted' }}">{{ value }}</td>
+                                                {% for value in stats %}
+                                                    <td class="{{ value == '0' ? 'text-muted' }}" style="text-wrap: nowrap;">{{ value }}</td>
                                                 {% endfor %}
                                             </tr>
                                         {% endfor %}
