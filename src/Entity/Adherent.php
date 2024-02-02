@@ -82,7 +82,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="adherents")
+ * @ORM\Table(name="adherents", indexes={
+ *     @ORM\Index(columns={"tags"}),
+ * })
  * @ORM\Entity(repositoryClass="App\Repository\AdherentRepository")
  * @ORM\EntityListeners({
  *     "App\EntityListener\RevokeReferentTeamMemberRolesListener",

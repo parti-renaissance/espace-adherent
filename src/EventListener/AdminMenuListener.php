@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,32 +25,57 @@ class AdminMenuListener implements EventSubscriberInterface
 
     public function onSidebarConfigure(ConfigureMenuEvent $event): void
     {
-        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN_RENAISSANCE_CREATE_ADHERENT')) {
-            return;
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN_RENAISSANCE_CREATE_ADHERENT')) {
+            $this->addCreateAdherentMenu($event);
         }
 
-        $extras = ['icon' => '<i class="fa fa-folder"></i>'];
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN_ALL_STATS')) {
+            $this->addStatsMenu($event);
+        }
+    }
 
-        $menu = $event->getMenu();
-        $subMenu = $this->provider->get('sonata_group_menu',
+    private function addCreateAdherentMenu(ConfigureMenuEvent $event): void
+    {
+        $this->addItem($event->getMenu(), 'admin.new.renaissance_adherent.label', [
             [
-                'name' => 'admin.tools',
-                'group' => [
-                    'label' => 'admin.new.renaissance_adherent.label',
-                    'on_top' => false,
-                    'translation_domain' => 'messages',
-                    'keep_open' => false,
-                    'items' => [
-                        [
-                            'label' => 'admin.new.renaissance_adherent.create.label',
-                            'route' => 'admin_app_adherent_create_renaissance_verify_email',
-                            'route_params' => null,
-                            'route_absolute' => false,
-                        ],
-                    ],
-                ],
-            ]
-        );
+                'label' => 'admin.new.renaissance_adherent.create.label',
+                'route' => 'admin_app_adherent_create_renaissance_verify_email',
+                'route_params' => null,
+                'route_absolute' => false,
+            ],
+        ]);
+    }
+
+    private function addStatsMenu(ConfigureMenuEvent $event): void
+    {
+        $items = [];
+
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN_ADHESION_STATS')) {
+            $items[] = [
+                'label' => 'Adhésion par département',
+                'route' => 'admin_app_stats_adhesion_per_department',
+                'route_params' => null,
+                'route_absolute' => false,
+            ];
+        }
+
+        $this->addItem($event->getMenu(), 'Stats', $items, 'fa fa-bar-chart');
+    }
+
+    private function addItem(ItemInterface $menu, string $groupLabel, array $items, string $groupIcon = 'fa fa-folder'): void
+    {
+        $extras = ['icon' => '<i class="'.$groupIcon.'"></i>'];
+
+        $subMenu = $this->provider->get('sonata_group_menu', [
+            'name' => 'admin.tools',
+            'group' => [
+                'label' => $groupLabel,
+                'on_top' => false,
+                'translation_domain' => 'messages',
+                'keep_open' => false,
+                'items' => $items,
+            ],
+        ]);
 
         $subMenu = $menu->addChild($subMenu);
         $subMenu->setExtras(array_merge($subMenu->getExtras(), $extras));

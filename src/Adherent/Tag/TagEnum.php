@@ -98,7 +98,7 @@ class TagEnum extends Enum
 
     public static function getAdherentYearTag(int $year = null): string
     {
-        return self::ADHERENT.':a_jour_'.($year ?? date('Y'));
+        return sprintf(self::ADHERENT_YEAR_TAG_PATTERN, $year ?? date('Y'));
     }
 
     public static function getReducedTags(array $allTags): array
