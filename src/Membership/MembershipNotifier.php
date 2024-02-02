@@ -5,12 +5,10 @@ namespace App\Membership;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentResetPasswordToken;
-use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Mailer\MailerService;
 use App\Mailer\Message;
 use App\Mailer\Message\Renaissance\AdhesionAlreadyAdherentMessage;
 use App\Mailer\Message\Renaissance\AdhesionAlreadySympathizerMessage;
-use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountActivationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountCreatedMessage;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\CallbackManager;
@@ -48,20 +46,6 @@ class MembershipNotifier implements LoggerAwareInterface
         }
 
         return $this->transactionalMailer->sendMessage(Message\AdherentAccountActivationMessage::create($adherent, $activationUrl));
-    }
-
-    public function sendRenaissanceValidationEmail(AdherentRequest $adherentRequest): void
-    {
-        $activationUrl = $this->callbackManager->generateUrl(
-            'app_renaissance_membership_validate',
-            [
-                'uuid' => $adherentRequest->getUuid()->toString(),
-                'token' => $adherentRequest->token->toString(),
-            ],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
-
-        $this->transactionalMailer->sendMessage(RenaissanceAdherentAccountActivationMessage::create($adherentRequest, $activationUrl));
     }
 
     public function sendEmailReminder(Adherent $adherent): bool

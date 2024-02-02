@@ -391,21 +391,6 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
         $this->setReference('cms-block-local-poll-welcome-page', $object);
 
         $manager->persist($this->createCmsBlock(
-            'renaissance-adhesion-rgpd-block',
-            'Affiché en bas du formulaire d\'acceptation des mentions légales',
-            <<<'TXT'
-                <p class="mt-4">
-                    Les données recueillies sur ce formulaire sont traitées par Renaissance afin de gérer les informations relatives aux inscriptions aux évènements de LaREM et de permettre à Renaissance de vous envoyer des communications politiques.
-                    Si vous êtes élu(e) ou ancien(ne) élu(e), nous traitons également vos données dans le cadre de l’animation de notre réseau d’élu(e)s et vos données peuvent être transférer à La République Ensemble ou à l’institut de formation Tous Politiques, conformément à la politique de protection des données des élu(e)s.
-                    Toutes les informations sont obligatoires, sauf celles marquées "Optionnel". L’absence de réponse dans ces champs ne permettra pas à Renaissance de traiter votre demande.
-                    Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
-                    Vous pouvez consulter notre <a href="{{ path('app_static_page', { slug: 'politique-protection-donnees' }) }}" target="_blank">Politique de protection des données</a>
-                    (si vous êtes élu(e)s, la <a href="{{ path('app_static_page', { slug: 'politique-protection-donnees-elus' }) }}" target="_blank">Politique de protection des données des élu(e)s</a>) et exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale : La République En Marche, 68 rue du Rocher, 75008 Paris, France ou électronique suivante : <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a> ou encore en contactant notre DPO à l’adresse : <a href="mailto:dpo@en-marche.fr">dpo@en-marche.fr</a>.
-                </p>
-                TXT
-        ));
-
-        $manager->persist($this->createCmsBlock(
             'renaissance-donation-rgpd-block',
             'Affiché en bas du formulaire d\'acceptation des mentions légales des dons',
             <<<'TXT'

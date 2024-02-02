@@ -3,7 +3,7 @@
 namespace App\Controller\Renaissance\Payment;
 
 use App\Adhesion\AdhesionStepEnum;
-use App\Controller\Renaissance\Adhesion\V2\ActivateEmailController;
+use App\Controller\Renaissance\Adhesion\ActivateEmailController;
 use App\Entity\Donation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

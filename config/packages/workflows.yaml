@@ -136,41 +136,6 @@ framework:
                     from: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
                     to: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::FINISH
 
-        membership_request:
-            type: 'state_machine'
-            marking_store:
-                type: 'method'
-                property: 'state'
-            initial_marking: !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_START
-            supports:
-                - App\Membership\MembershipRequest\RenaissanceMembershipRequest
-            places:
-                - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_START
-                - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_PERSONAL_INFO
-                - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
-                - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_SUMMARY
-            transitions:
-                !php/const App\Renaissance\Membership\MembershipRequestStateEnum::TO_FILL_PERSONAL_INFO:
-                    from:
-                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_START
-                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_PERSONAL_INFO
-                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
-                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_SUMMARY
-                    to: !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_PERSONAL_INFO
-
-                !php/const App\Renaissance\Membership\MembershipRequestStateEnum::TO_CHOOSE_ADHESION_AMOUNT:
-                    from:
-                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
-                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_PERSONAL_INFO
-                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_SUMMARY
-                    to: !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
-
-                !php/const App\Renaissance\Membership\MembershipRequestStateEnum::TO_VALID_SUMMARY:
-                    from:
-                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_SUMMARY
-                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
-                    to: !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_SUMMARY
-
         donation_request:
             type: 'state_machine'
             marking_store:

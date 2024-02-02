@@ -2,12 +2,10 @@
 
 namespace App\Entity\Renaissance\Adhesion;
 
-use App\Address\PostAddressFactory;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUTMTrait;
-use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -80,24 +78,6 @@ class AdherentRequest
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->token = Uuid::uuid4();
-    }
-
-    public static function create(RenaissanceMembershipRequest $command, ?string $password): self
-    {
-        $object = new self();
-
-        $object->firstName = $command->firstName;
-        $object->lastName = $command->lastName;
-        $object->password = $password;
-        $object->email = $command->getEmailAddress();
-        $object->amount = $command->amount;
-        $object->allowEmailNotifications = $command->allowEmailNotifications;
-        $object->allowMobileNotifications = $command->allowMobileNotifications;
-        $object->setPostAddress(PostAddressFactory::createFromAddress($command->getAddress()));
-        $object->utmSource = $command->utmSource;
-        $object->utmCampaign = $command->utmCampaign;
-
-        return $object;
     }
 
     public static function createForEmail(string $email): self

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Renaissance\Adhesion\V2\Api;
+namespace App\Controller\Renaissance\Adhesion\Api;
 
 use App\Adhesion\Request\EmailValidationRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
