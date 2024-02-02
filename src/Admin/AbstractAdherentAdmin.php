@@ -679,6 +679,10 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     },
                 ],
             ])
+            ->add('role', AdherentRoleFilter::class, [
+                'label' => 'common.role',
+                'show_filter' => true,
+            ])
             ->add('er_adherent_mandate_type', CallbackFilter::class, [
                 'label' => 'Mandat(s) élu',
                 'show_filter' => true,
@@ -850,12 +854,10 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ])
             ->add('registeredAt', DateRangeFilter::class, [
                 'label' => 'Date de création de compte',
-                'show_filter' => true,
                 'field_type' => DateRangePickerType::class,
             ])
             ->add('lastLoggedAt', DateRangeFilter::class, [
                 'label' => 'Date de dernière connexion',
-                'show_filter' => true,
                 'field_type' => DateRangePickerType::class,
             ])
             ->add('city', CallbackFilter::class, [
@@ -898,7 +900,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ->add('canaryTester')
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Etat du compte',
-                'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => [
@@ -906,9 +907,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         'Désactivé' => Adherent::DISABLED,
                     ],
                 ],
-            ])
-            ->add('role', AdherentRoleFilter::class, [
-                'label' => 'common.role',
             ])
             ->add('adherent_mandates', CallbackFilter::class, [
                 'label' => 'Mandat(s) internes',
@@ -1032,7 +1030,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 'template' => 'admin/adherent/list_fullname_certified.html.twig',
             ])
             ->add('registeredAt', null, [
-                'label' => 'Date d\'adhésion',
+                'label' => 'Date de création de compte',
             ])
             ->add('lastMembershipDonation', null, [
                 'label' => 'Dernière cotisation',
@@ -1080,7 +1078,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     'Nom' => $adherent->getLastName(),
                     'Date de naissance' => $birthDate?->format('Y/m/d H:i:s'),
                     'Téléphone' => $phone,
-                    'Inscrit(e) le' => $registeredAt?->format('Y/m/d H:i:s'),
+                    'Date de création de compte' => $registeredAt?->format('Y/m/d H:i:s'),
                     'Sexe' => $adherent->getGender(),
                     'Adresse' => $adherent->getAddress(),
                     'Complément d\'adresse' => $adherent->getAdditionalAddress(),
